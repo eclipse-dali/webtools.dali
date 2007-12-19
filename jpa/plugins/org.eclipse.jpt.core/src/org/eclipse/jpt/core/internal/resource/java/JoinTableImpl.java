@@ -135,14 +135,14 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 		removeItemFromList(joinColumn, this.joinColumns, JOIN_COLUMNS_LIST);
 	}
 	
-	public void moveJoinColumn(int oldIndex, int newIndex) {
-		moveJoinColumnInternal(oldIndex, newIndex);
-		ContainerAnnotationTools.synchAnnotationsAfterMove(oldIndex, newIndex, this.joinColumnsContainerAnnotation);
-		fireItemMoved(JoinTable.JOIN_COLUMNS_LIST, newIndex, oldIndex);
+	public void moveJoinColumn(int targetIndex, int sourceIndex) {
+		moveJoinColumnInternal(targetIndex, sourceIndex);
+		ContainerAnnotationTools.synchAnnotationsAfterMove(targetIndex, sourceIndex, this.joinColumnsContainerAnnotation);
+		fireItemMoved(JoinTable.JOIN_COLUMNS_LIST, targetIndex, sourceIndex);
 	}
 	
-	protected void moveJoinColumnInternal(int oldIndex, int newIndex) {
-		this.joinColumns.add(newIndex, this.joinColumns.remove(oldIndex));
+	protected void moveJoinColumnInternal(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.joinColumns, targetIndex, sourceIndex);
 	}
 
 	public ListIterator<JoinColumn> inverseJoinColumns() {
@@ -182,14 +182,14 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 		removeItemFromList(joinColumn, this.inverseJoinColumns, INVERSE_JOIN_COLUMNS_LIST);
 	}
 	
-	public void moveInverseJoinColumn(int oldIndex, int newIndex) {
-		moveInverseJoinColumnInternal(oldIndex, newIndex);
-		ContainerAnnotationTools.synchAnnotationsAfterMove(oldIndex, newIndex, this.inverseJoinColumnsContainerAnnotation);
-		fireItemMoved(JoinTable.INVERSE_JOIN_COLUMNS_LIST, newIndex, oldIndex);
+	public void moveInverseJoinColumn(int targetIndex, int sourceIndex) {
+		moveInverseJoinColumnInternal(targetIndex, sourceIndex);
+		ContainerAnnotationTools.synchAnnotationsAfterMove(targetIndex, sourceIndex, this.inverseJoinColumnsContainerAnnotation);
+		fireItemMoved(JoinTable.INVERSE_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);
 	}
 	
-	protected void moveInverseJoinColumnInternal(int oldIndex, int newIndex) {
-		this.inverseJoinColumns.add(newIndex, this.inverseJoinColumns.remove(oldIndex));
+	protected void moveInverseJoinColumnInternal(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.inverseJoinColumns, targetIndex, sourceIndex);
 	}
 
 	protected NestableJoinColumn createJoinColumn(int index) {
@@ -218,12 +218,12 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 			return JoinTableImpl.this.indexOfJoinColumn(joinColumn);
 		}
 
-		public void move(int oldIndex, int newIndex) {
-			JoinTableImpl.this.moveJoinColumn(oldIndex, newIndex);
+		public void move(int targetIndex, int sourceIndex) {
+			JoinTableImpl.this.moveJoinColumn(targetIndex, sourceIndex);
 		}
 
-		public void moveInternal(int oldIndex, int newIndex) {
-			JoinTableImpl.this.moveJoinColumnInternal(oldIndex, newIndex);			
+		public void moveInternal(int targetIndex, int sourceIndex) {
+			JoinTableImpl.this.moveJoinColumnInternal(targetIndex, sourceIndex);			
 		}
 
 		public NestableJoinColumn nestedAnnotationAt(int index) {
@@ -261,12 +261,12 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 			return JoinTableImpl.this.indexOfInverseJoinColumn(joinColumn);
 		}
 
-		public void move(int oldIndex, int newIndex) {
-			JoinTableImpl.this.moveInverseJoinColumn(oldIndex, newIndex);
+		public void move(int targetIndex, int sourceIndex) {
+			JoinTableImpl.this.moveInverseJoinColumn(targetIndex, sourceIndex);
 		}
 
-		public void moveInternal(int oldIndex, int newIndex) {
-			JoinTableImpl.this.moveInverseJoinColumnInternal(oldIndex, newIndex);			
+		public void moveInternal(int targetIndex, int sourceIndex) {
+			JoinTableImpl.this.moveInverseJoinColumnInternal(targetIndex, sourceIndex);			
 		}
 
 		public NestableJoinColumn nestedAnnotationAt(int index) {

@@ -70,7 +70,7 @@ public interface EntityMappings extends IJpaContextNode
 	int xmlPersistentTypesSize();
 	XmlPersistentType addXmlPersistentType(String mappingKey, String className);
 	void removeXmlPersistentType(int index);
-	//void moveXmlPersistentType(int oldIndex, int newIndex);
+	//void moveXmlPersistentType(int targetIndex, int sourceIndex);
 		String PERSISTENT_TYPES_LIST = "persistentTypes";
 	
 
@@ -78,28 +78,28 @@ public interface EntityMappings extends IJpaContextNode
 	int sequenceGeneratorsSize();
 	ISequenceGenerator addSequenceGenerator(int index);
 	void removeSequenceGenerator(int index);
-	void moveSequenceGenerator(int oldIndex, int newIndex);
+	void moveSequenceGenerator(int targetIndex, int sourceIndex);
 		String SEQUENCE_GENERATORS_LIST = "sequenceGeneratorsList";
 
 	<T extends ITableGenerator> ListIterator<T> tableGenerators();
 	int tableGeneratorsSize();
 	ITableGenerator addTableGenerator(int index);
 	void removeTableGenerator(int index);
-	void moveTableGenerator(int oldIndex, int newIndex);
+	void moveTableGenerator(int targetIndex, int sourceIndex);
 		String TABLE_GENERATORS_LIST = "tableGeneratorsList";
 
 	<T extends INamedQuery> ListIterator<T> namedQueries();
 	int namedQueriesSize();
 	INamedQuery addNamedQuery(int index);
 	void removeNamedQuery(int index);
-	void moveNamedQuery(int oldIndex, int newIndex);
+	void moveNamedQuery(int targetIndex, int sourceIndex);
 		String NAMED_QUERIES_LIST = "namedQueriesList";
 
 	<T extends INamedNativeQuery> ListIterator<T> namedNativeQueries();
 	int namedNativeQueriesSize();
 	INamedNativeQuery addNamedNativeQuery(int index);
 	void removeNamedNativeQuery(int index);
-	void moveNamedNativeQuery(int oldIndex, int newIndex);
+	void moveNamedNativeQuery(int targetIndex, int sourceIndex);
 		String NAMED_NATIVE_QUERIES_LIST = "namedNativeQueriesList";
 
 		

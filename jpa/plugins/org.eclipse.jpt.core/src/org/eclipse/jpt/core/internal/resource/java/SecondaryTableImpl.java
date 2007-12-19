@@ -133,14 +133,14 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 		removeItemFromList(pkJoinColumn, this.pkJoinColumns, SecondaryTable.PK_JOIN_COLUMNS_LIST);
 	}
 
-	public void movePkJoinColumn(int oldIndex, int newIndex) {
-		movePkJoinColumnInternal(oldIndex, newIndex);
-		ContainerAnnotationTools.synchAnnotationsAfterMove(oldIndex, newIndex, this.pkJoinColumnsContainerAnnotation);
-		fireItemMoved(SecondaryTable.PK_JOIN_COLUMNS_LIST, newIndex, oldIndex);
+	public void movePkJoinColumn(int targetIndex, int sourceIndex) {
+		movePkJoinColumnInternal(targetIndex, sourceIndex);
+		ContainerAnnotationTools.synchAnnotationsAfterMove(targetIndex, sourceIndex, this.pkJoinColumnsContainerAnnotation);
+		fireItemMoved(SecondaryTable.PK_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);
 	}
 	
-	protected void movePkJoinColumnInternal(int oldIndex, int newIndex) {
-		this.pkJoinColumns.add(newIndex, this.pkJoinColumns.remove(oldIndex));
+	protected void movePkJoinColumnInternal(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.pkJoinColumns, targetIndex, sourceIndex);
 	}
 
 
@@ -201,12 +201,12 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 			return SecondaryTableImpl.this.indexOfPkJoinColumn(pkJoinColumn);
 		}
 
-		public void move(int oldIndex, int newIndex) {
-			SecondaryTableImpl.this.movePkJoinColumn(oldIndex, newIndex);
+		public void move(int targetIndex, int sourceIndex) {
+			SecondaryTableImpl.this.movePkJoinColumn(targetIndex, sourceIndex);
 		}
 		
-		public void moveInternal(int oldIndex, int newIndex) {
-			SecondaryTableImpl.this.movePkJoinColumnInternal(oldIndex, newIndex);
+		public void moveInternal(int targetIndex, int sourceIndex) {
+			SecondaryTableImpl.this.movePkJoinColumnInternal(targetIndex, sourceIndex);
 		}
 
 		public NestablePrimaryKeyJoinColumn nestedAnnotationAt(int index) {

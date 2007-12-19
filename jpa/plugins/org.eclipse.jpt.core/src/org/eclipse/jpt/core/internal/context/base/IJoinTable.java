@@ -21,7 +21,7 @@ public interface IJoinTable extends ITable
 	int specifiedJoinColumnsSize();
 	IJoinColumn addSpecifiedJoinColumn(int index);
 	void removeSpecifiedJoinColumn(int index);
-	void moveSpecifiedJoinColumn(int oldIndex, int newIndex);
+	void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex);
 		String SPECIFIED_JOIN_COLUMNS_LIST = "specifiedJoinColumnsList";
 		String DEFAULT_JOIN_COLUMNS_LIST = "defaultJoinColumnsList";
 	
@@ -34,7 +34,7 @@ public interface IJoinTable extends ITable
 	int specifiedInverseJoinColumnsSize();
 	IJoinColumn addSpecifiedInverseJoinColumn(int index);
 	void removeSpecifiedInverseJoinColumn(int index);
-	void moveSpecifiedInverseJoinColumn(int oldIndex, int newIndex);
+	void moveSpecifiedInverseJoinColumn(int targetIndex, int sourceIndex);
 		String SPECIFIED_INVERSE_JOIN_COLUMNS_LIST = "specifiedInverseJoinColumnsList";
 		String DEFAULT_INVERSE_JOIN_COLUMNS_LIST = "defaultInverseJoinColumnsList";
 

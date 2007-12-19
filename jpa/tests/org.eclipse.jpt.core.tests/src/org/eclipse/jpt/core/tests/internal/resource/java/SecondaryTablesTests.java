@@ -368,7 +368,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		assertEquals("BAR", secondaryTable.uniqueConstraintAt(1).columnNames().next());
 		assertFalse(secondaryTable.uniqueConstraintAt(2).columnNames().hasNext());
 		
-		secondaryTable.moveUniqueConstraint(0, 2);
+		secondaryTable.moveUniqueConstraint(2, 0);
 		assertEquals("BAR", secondaryTable.uniqueConstraintAt(0).columnNames().next());
 		assertFalse(secondaryTable.uniqueConstraintAt(1).columnNames().hasNext());
 		assertEquals("FOO", secondaryTable.uniqueConstraintAt(2).columnNames().next());
@@ -386,7 +386,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		assertEquals("BAR", secondaryTable.uniqueConstraintAt(1).columnNames().next());
 		assertFalse(secondaryTable.uniqueConstraintAt(2).columnNames().hasNext());
 		
-		secondaryTable.moveUniqueConstraint(2, 0);
+		secondaryTable.moveUniqueConstraint(0, 2);
 		assertFalse(secondaryTable.uniqueConstraintAt(0).columnNames().hasNext());
 		assertEquals("FOO", secondaryTable.uniqueConstraintAt(1).columnNames().next());
 		assertEquals("BAR", secondaryTable.uniqueConstraintAt(2).columnNames().next());
@@ -512,7 +512,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		PrimaryKeyJoinColumn joinColumn = table.pkJoinColumnAt(0);
 		joinColumn.setReferencedColumnName("REF_NAME");
 		joinColumn.setColumnDefinition("COLUMN_DEF");
-		table.movePkJoinColumn(0, 2);
+		table.movePkJoinColumn(2, 0);
 		assertSourceContains("@SecondaryTables(@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"FOO\"), @PrimaryKeyJoinColumn(name=\"BAZ\"), @PrimaryKeyJoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", columnDefinition = \"COLUMN_DEF\")}))");
 	}
 	
@@ -525,7 +525,7 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		PrimaryKeyJoinColumn joinColumn = table.pkJoinColumnAt(0);
 		joinColumn.setReferencedColumnName("REF_NAME");
 		joinColumn.setColumnDefinition("COLUMN_DEF");
-		table.movePkJoinColumn(2, 0);
+		table.movePkJoinColumn(0, 2);
 		assertSourceContains("@SecondaryTables(@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"BAZ\"), @PrimaryKeyJoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", columnDefinition = \"COLUMN_DEF\"), @PrimaryKeyJoinColumn(name=\"FOO\")}))");
 	}
 	

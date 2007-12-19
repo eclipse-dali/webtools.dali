@@ -20,7 +20,7 @@ public interface IEmbeddedIdMapping extends IAttributeMapping
 	int specifiedAttributeOverridesSize();
 	IAttributeOverride addSpecifiedAttributeOverride(int index);
 	void removeSpecifiedAttributeOverride(int index);
-	void moveSpecifiedAttributeOverride(int oldIndex, int newIndex);
+	void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex);
 		String SPECIFIED_ATTRIBUTE_OVERRIDES_LIST = "specifiedAttributeOverridesList";
 		String DEFAULT_ATTRIBUTE_OVERRIDES_LIST = "defaultAttributeOverridesList";	
 }

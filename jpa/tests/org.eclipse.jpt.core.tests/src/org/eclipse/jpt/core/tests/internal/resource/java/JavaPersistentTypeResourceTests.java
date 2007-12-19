@@ -827,7 +827,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 		newAnnotation.setName("BAZ");
 		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\")})");
 		
-		typeResource.move(2, 0, JPA.SECONDARY_TABLES);
+		typeResource.move(0, 2, JPA.SECONDARY_TABLES);
 		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAZ\"), @SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAR\")})");
 	}
 	
@@ -839,7 +839,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 		newAnnotation.setName("BAZ");
 		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\")})");
 		
-		typeResource.move(0, 2, JPA.SECONDARY_TABLES);
+		typeResource.move(2, 0, JPA.SECONDARY_TABLES);
 		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\"), @SecondaryTable(name=\"FOO\")})");
 	}
 	

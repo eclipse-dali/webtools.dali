@@ -35,7 +35,7 @@ public interface AssociationOverride extends OverrideResource
 	
 	void removeJoinColumn(int index);
 	
-	void moveJoinColumn(int oldIndex, int newIndex);
+	void moveJoinColumn(int targetIndex, int sourceIndex);
 	
 		String JOIN_COLUMNS_LIST = "joinColumnsList";
 }

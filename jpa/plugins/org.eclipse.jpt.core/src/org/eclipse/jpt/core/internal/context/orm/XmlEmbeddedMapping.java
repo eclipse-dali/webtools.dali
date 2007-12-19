@@ -106,9 +106,9 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping implements IEmbedded
 		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
-	public void moveSpecifiedAttributeOverride(int oldIndex, int newIndex) {
-		this.embedded.getAttributeOverrides().move(newIndex, oldIndex);
-		moveItemInList(newIndex, oldIndex, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);		
+	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
+		this.embedded.getAttributeOverrides().move(targetIndex, sourceIndex);
+		moveItemInList(targetIndex, sourceIndex, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);		
 	}
 
 	public boolean isVirtual(IOverride override) {

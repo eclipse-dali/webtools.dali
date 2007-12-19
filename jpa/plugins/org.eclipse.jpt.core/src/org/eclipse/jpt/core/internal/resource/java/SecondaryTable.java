@@ -28,7 +28,7 @@ public interface SecondaryTable extends Table
 	
 	void removePkJoinColumn(int index);
 	
-	void movePkJoinColumn(int oldIndex, int newIndex);
+	void movePkJoinColumn(int targetIndex, int sourceIndex);
 
 	String PK_JOIN_COLUMNS_LIST = "pkJoinColumnsList";
 }

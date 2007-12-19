@@ -717,7 +717,7 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 		assertSourceContains("@AttributeOverride(name=\"BAZ\")})");
 		
 		
-		attributeResource.move(2, 0, JPA.ATTRIBUTE_OVERRIDES);
+		attributeResource.move(0, 2, JPA.ATTRIBUTE_OVERRIDES);
 		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"BAZ\"), @AttributeOverride(name=\"FOO\"),");
 		assertSourceContains("@AttributeOverride(name=\"BAR\")})");
 	}
@@ -732,7 +732,7 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"), @AttributeOverride(name=\"BAR\"),");
 		assertSourceContains("@AttributeOverride(name=\"BAZ\")})");
 		
-		attributeResource.move(0, 1, JPA.ATTRIBUTE_OVERRIDES);
+		attributeResource.move(1, 0, JPA.ATTRIBUTE_OVERRIDES);
 		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"BAR\"), @AttributeOverride(name=\"FOO\"),");
 		assertSourceContains("@AttributeOverride(name=\"BAZ\")})");
 	}	

@@ -225,13 +225,13 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		return newContainerAnnotation.nestedAnnotationAt(index);
 	}
 	
-	public void move(int oldIndex, int newIndex, String containerAnnotationName) {
-		move(oldIndex, newIndex, containerAnnotation(containerAnnotationName));
+	public void move(int targetIndex, int sourceIndex, String containerAnnotationName) {
+		move(targetIndex, sourceIndex, containerAnnotation(containerAnnotationName));
 	}
 	
-	protected void move(int oldIndex, int newIndex, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
-		containerAnnotation.move(oldIndex, newIndex);
-		ContainerAnnotationTools.synchAnnotationsAfterMove(oldIndex, newIndex, containerAnnotation);
+	protected void move(int targetIndex, int sourceIndex, ContainerAnnotation<NestableAnnotation> containerAnnotation) {
+		containerAnnotation.move(targetIndex, sourceIndex);
+		ContainerAnnotationTools.synchAnnotationsAfterMove(targetIndex, sourceIndex, containerAnnotation);
 	}
 	
 	protected void addAnnotation(Annotation annotation) {

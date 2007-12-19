@@ -41,7 +41,7 @@ public interface Table extends JavaResource
 	
 	void removeUniqueConstraint(int index);
 	
-	void moveUniqueConstraint(int oldIndex, int newIndex);
+	void moveUniqueConstraint(int targetIndex, int sourceIndex);
 		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraintsList";
 
 	/**

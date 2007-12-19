@@ -272,7 +272,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		assertFalse(specifiedAttributeOverrides.hasNext());
 	
 		//move an annotation to the resource model and verify the context model is updated
-		attributeResource.move(0, 1, JPA.ATTRIBUTE_OVERRIDES);
+		attributeResource.move(1, 0, JPA.ATTRIBUTE_OVERRIDES);
 		specifiedAttributeOverrides = embeddedMapping.specifiedAttributeOverrides();		
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAZ", specifiedAttributeOverrides.next().getName());
@@ -461,7 +461,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 		
-		attributeResource.move(0, 2, AttributeOverrides.ANNOTATION_NAME);
+		attributeResource.move(2, 0, AttributeOverrides.ANNOTATION_NAME);
 		
 		Iterator<JavaResource> attributeOverrides = attributeResource.annotations(AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 

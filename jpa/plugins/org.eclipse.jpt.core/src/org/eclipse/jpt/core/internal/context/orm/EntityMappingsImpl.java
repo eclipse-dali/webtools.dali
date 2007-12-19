@@ -301,10 +301,10 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		removeItemFromList(sequenceGenerator, this.sequenceGenerators, EntityMappings.SEQUENCE_GENERATORS_LIST);
 	}
 
-	public void moveSequenceGenerator(int oldIndex, int newIndex) {
-		this.sequenceGenerators.add(newIndex, this.sequenceGenerators.remove(oldIndex));
-		this.entityMappings.getSequenceGenerators().move(newIndex, oldIndex);
-		fireItemMoved(EntityMappings.SEQUENCE_GENERATORS_LIST, newIndex, oldIndex);	
+	public void moveSequenceGenerator(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.sequenceGenerators, targetIndex, sourceIndex);
+		this.entityMappings.getSequenceGenerators().move(targetIndex, sourceIndex);
+		fireItemMoved(EntityMappings.SEQUENCE_GENERATORS_LIST, targetIndex, sourceIndex);	
 	}
 
 	
@@ -341,10 +341,10 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		removeItemFromList(tableGenerator, this.tableGenerators, EntityMappings.TABLE_GENERATORS_LIST);
 	}
 
-	public void moveTableGenerator(int oldIndex, int newIndex) {
-		this.tableGenerators.add(newIndex, this.tableGenerators.remove(oldIndex));
-		this.entityMappings.getTableGenerators().move(newIndex, oldIndex);
-		fireItemMoved(EntityMappings.TABLE_GENERATORS_LIST, newIndex, oldIndex);	
+	public void moveTableGenerator(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.tableGenerators, targetIndex, sourceIndex);
+		this.entityMappings.getTableGenerators().move(targetIndex, sourceIndex);
+		fireItemMoved(EntityMappings.TABLE_GENERATORS_LIST, targetIndex, sourceIndex);	
 	}
 
 //	public boolean containsPersistentType(IType type) {
@@ -588,12 +588,12 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		return null;
 	}
 
-	public void moveNamedNativeQuery(int oldIndex, int newIndex) {
+	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void moveNamedQuery(int oldIndex, int newIndex) {
+	public void moveNamedQuery(int targetIndex, int sourceIndex) {
 		// TODO Auto-generated method stub
 		
 	}

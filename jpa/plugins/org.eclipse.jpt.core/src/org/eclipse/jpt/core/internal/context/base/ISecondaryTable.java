@@ -21,7 +21,7 @@ public interface ISecondaryTable extends ITable
 	int specifiedPrimaryKeyJoinColumnsSize();
 	IPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 	void removeSpecifiedPrimaryKeyJoinColumn(int index);
-	void moveSpecifiedPrimaryKeyJoinColumn(int oldIndex, int newIndex);
+	void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex);
 		String SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST = "specifiedPrimaryKeyJoinColumnsList";
 
 	

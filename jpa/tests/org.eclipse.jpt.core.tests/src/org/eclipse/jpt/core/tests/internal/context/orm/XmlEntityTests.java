@@ -687,7 +687,7 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals(3, entityResource.getSecondaryTables().size());
 		
 		
-		xmlEntity.moveSpecifiedSecondaryTable(0, 2);
+		xmlEntity.moveSpecifiedSecondaryTable(2, 0);
 		ListIterator<XmlSecondaryTable> secondaryTables = xmlEntity.specifiedSecondaryTables();
 		assertEquals("BAR", secondaryTables.next().getName());
 		assertEquals("BAZ", secondaryTables.next().getName());
@@ -698,7 +698,7 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals("FOO", entityResource.getSecondaryTables().get(2).getName());
 
 
-		xmlEntity.moveSpecifiedSecondaryTable(1, 0);
+		xmlEntity.moveSpecifiedSecondaryTable(0, 1);
 		secondaryTables = xmlEntity.specifiedSecondaryTables();
 		assertEquals("BAZ", secondaryTables.next().getName());
 		assertEquals("BAR", secondaryTables.next().getName());
@@ -1220,7 +1220,7 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals(3, entityResource.getPrimaryKeyJoinColumns().size());
 		
 		
-		xmlEntity.moveSpecifiedPrimaryKeyJoinColumn(0, 2);
+		xmlEntity.moveSpecifiedPrimaryKeyJoinColumn(2, 0);
 		ListIterator<XmlPrimaryKeyJoinColumn> primaryKeyJoinColumns = xmlEntity.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
@@ -1231,7 +1231,7 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals("FOO", entityResource.getPrimaryKeyJoinColumns().get(2).getName());
 
 
-		xmlEntity.moveSpecifiedPrimaryKeyJoinColumn(1, 0);
+		xmlEntity.moveSpecifiedPrimaryKeyJoinColumn(0, 1);
 		primaryKeyJoinColumns = xmlEntity.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
@@ -1366,7 +1366,7 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals(3, entityResource.getAttributeOverrides().size());
 		
 		
-		xmlEntity.moveSpecifiedAttributeOverride(0, 2);
+		xmlEntity.moveSpecifiedAttributeOverride(2, 0);
 		ListIterator<XmlAttributeOverride> attributeOverrides = xmlEntity.specifiedAttributeOverrides();
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
@@ -1377,7 +1377,7 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals("FOO", entityResource.getAttributeOverrides().get(2).getName());
 
 
-		xmlEntity.moveSpecifiedAttributeOverride(1, 0);
+		xmlEntity.moveSpecifiedAttributeOverride(0, 1);
 		attributeOverrides = xmlEntity.specifiedAttributeOverrides();
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("BAR", attributeOverrides.next().getName());

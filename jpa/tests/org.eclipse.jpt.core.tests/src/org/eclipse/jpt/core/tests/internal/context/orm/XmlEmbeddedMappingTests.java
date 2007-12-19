@@ -119,7 +119,7 @@ public class XmlEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals(3, embeddedResource.getAttributeOverrides().size());
 		
 		
-		xmlEmbeddedMapping.moveSpecifiedAttributeOverride(0, 2);
+		xmlEmbeddedMapping.moveSpecifiedAttributeOverride(2, 0);
 		ListIterator<XmlAttributeOverride> attributeOverrides = xmlEmbeddedMapping.specifiedAttributeOverrides();
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
@@ -130,7 +130,7 @@ public class XmlEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals("FOO", embeddedResource.getAttributeOverrides().get(2).getName());
 
 
-		xmlEmbeddedMapping.moveSpecifiedAttributeOverride(1, 0);
+		xmlEmbeddedMapping.moveSpecifiedAttributeOverride(0, 1);
 		attributeOverrides = xmlEmbeddedMapping.specifiedAttributeOverrides();
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("BAR", attributeOverrides.next().getName());

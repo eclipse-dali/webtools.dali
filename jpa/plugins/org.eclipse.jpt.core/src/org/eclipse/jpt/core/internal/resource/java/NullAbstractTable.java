@@ -87,7 +87,7 @@ public abstract class NullAbstractTable extends AbstractResource implements Tabl
 		throw new UnsupportedOperationException();
 	}
 
-	public void moveUniqueConstraint(int oldIndex, int newIndex) {
+	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
 		throw new UnsupportedOperationException();
 	}
 	public UniqueConstraint uniqueConstraintAt(int index) {

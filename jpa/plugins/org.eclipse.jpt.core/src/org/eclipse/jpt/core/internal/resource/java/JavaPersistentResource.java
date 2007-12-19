@@ -121,7 +121,11 @@ public interface JavaPersistentResource extends JavaResource
 	
 	void removeAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
 	
-	void move(int oldIndex, int newIndex, String containerAnnotationName);
+	/**
+	 * Move nestableAnnotation found in the containerAnnotation from the specified source 
+	 * index to the specified target index.    
+	 */
+	void move(int targetIndex, int sourceIndex, String containerAnnotationName);
 	
 	/**
 	 * Return whether the underlying JDT member is persistable according to the JPA spec

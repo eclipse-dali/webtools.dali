@@ -837,7 +837,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		
-		typeResource.move(0, 2, SecondaryTables.ANNOTATION_NAME);
+		typeResource.move(2, 0, SecondaryTables.ANNOTATION_NAME);
 		
 		Iterator<JavaResource> secondaryTables = typeResource.annotations(SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
 
@@ -1135,7 +1135,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertFalse(specifiedPkJoinColumns.hasNext());
 	
 		//move an annotation to the resource model and verify the context model is updated
-		typeResource.move(0, 1, JPA.PRIMARY_KEY_JOIN_COLUMNS);
+		typeResource.move(1, 0, JPA.PRIMARY_KEY_JOIN_COLUMNS);
 		specifiedPkJoinColumns = javaEntity().specifiedPrimaryKeyJoinColumns();		
 		assertEquals("BAR", specifiedPkJoinColumns.next().getName());
 		assertEquals("BAZ", specifiedPkJoinColumns.next().getName());
@@ -1256,7 +1256,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		
-		typeResource.move(0, 2, PrimaryKeyJoinColumns.ANNOTATION_NAME);
+		typeResource.move(2, 0, PrimaryKeyJoinColumns.ANNOTATION_NAME);
 		
 		Iterator<JavaResource> pkJoinColumns = typeResource.annotations(PrimaryKeyJoinColumn.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME);
 
@@ -1379,7 +1379,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertFalse(specifiedAttributeOverrides.hasNext());
 	
 		//move an annotation to the resource model and verify the context model is updated
-		typeResource.move(0, 1, JPA.ATTRIBUTE_OVERRIDES);
+		typeResource.move(1, 0, JPA.ATTRIBUTE_OVERRIDES);
 		specifiedAttributeOverrides = javaEntity().specifiedAttributeOverrides();		
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAZ", specifiedAttributeOverrides.next().getName());
@@ -1512,7 +1512,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		
-		typeResource.move(0, 2, AttributeOverrides.ANNOTATION_NAME);
+		typeResource.move(2, 0, AttributeOverrides.ANNOTATION_NAME);
 		
 		Iterator<JavaResource> attributeOverrides = typeResource.annotations(AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 

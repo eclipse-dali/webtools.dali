@@ -163,9 +163,9 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 
-	public void moveSpecifiedAttributeOverride(int oldIndex, int newIndex) {
-		this.persistentAttributeResource.move(oldIndex, newIndex, AttributeOverrides.ANNOTATION_NAME);
-		moveItemInList(newIndex, oldIndex, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
+	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
+		this.persistentAttributeResource.move(targetIndex, sourceIndex, AttributeOverrides.ANNOTATION_NAME);
+		moveItemInList(targetIndex, sourceIndex, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
 	protected void addDefaultAttributeOverride(IJavaAttributeOverride attributeOverride) {

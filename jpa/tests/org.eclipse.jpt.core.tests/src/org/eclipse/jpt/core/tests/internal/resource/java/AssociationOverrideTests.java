@@ -216,17 +216,17 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 		AssociationOverride associationOverride = (AssociationOverride) attributeResource.annotation(JPA.ASSOCIATION_OVERRIDE);
 		JoinColumn joinColumn = associationOverride.joinColumnAt(0);
 		joinColumn.setReferencedColumnName("REF_NAME");
-		joinColumn.setUnique(false);
-		joinColumn.setNullable(false);
-		joinColumn.setInsertable(false);
-		joinColumn.setUpdatable(false);
+		joinColumn.setUnique(Boolean.FALSE);
+		joinColumn.setNullable(Boolean.FALSE);
+		joinColumn.setInsertable(Boolean.FALSE);
+		joinColumn.setUpdatable(Boolean.FALSE);
 		joinColumn.setColumnDefinition("COLUMN_DEF");
 		joinColumn.setTable("TABLE");
 		associationOverride.addJoinColumn(0).setName("FOO");
 		
 		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns={@JoinColumn(name=\"FOO\"), @JoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\"), @JoinColumn})");
 
-		associationOverride.moveJoinColumn(0, 2);
+		associationOverride.moveJoinColumn(2, 0);
 		assertEquals("BAR", associationOverride.joinColumnAt(0).getName());
 		assertNull(associationOverride.joinColumnAt(1).getName());
 		assertEquals("FOO", associationOverride.joinColumnAt(2).getName());
@@ -243,17 +243,17 @@ public class AssociationOverrideTests extends JavaResourceModelTestCase {
 		
 		JoinColumn joinColumn = associationOverride.joinColumnAt(0);
 		joinColumn.setReferencedColumnName("REF_NAME");
-		joinColumn.setUnique(false);
-		joinColumn.setNullable(false);
-		joinColumn.setInsertable(false);
-		joinColumn.setUpdatable(false);
+		joinColumn.setUnique(Boolean.FALSE);
+		joinColumn.setNullable(Boolean.FALSE);
+		joinColumn.setInsertable(Boolean.FALSE);
+		joinColumn.setUpdatable(Boolean.FALSE);
 		joinColumn.setColumnDefinition("COLUMN_DEF");
 		joinColumn.setTable("TABLE");
 		associationOverride.addJoinColumn(0).setName("FOO");
 		
 		assertSourceContains("@AssociationOverride(name=\"" + ASSOCIATION_OVERRIDE_NAME + "\", joinColumns={@JoinColumn(name=\"FOO\"), @JoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\"), @JoinColumn})");
 
-		associationOverride.moveJoinColumn(2, 0);
+		associationOverride.moveJoinColumn(0, 2);
 		assertNull(associationOverride.joinColumnAt(0).getName());
 		assertEquals("FOO", associationOverride.joinColumnAt(1).getName());
 		assertEquals("BAR", associationOverride.joinColumnAt(2).getName());

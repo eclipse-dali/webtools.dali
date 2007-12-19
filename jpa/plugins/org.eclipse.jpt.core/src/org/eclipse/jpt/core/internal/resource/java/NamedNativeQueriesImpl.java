@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class NamedNativeQueriesImpl extends AbstractAnnotationResource<Type> implements NamedNativeQueries
@@ -92,12 +93,12 @@ public class NamedNativeQueriesImpl extends AbstractAnnotationResource<Type> imp
 		return null;
 	}
 	
-	public void move(int oldIndex, int newIndex) {
-		moveItemInList(newIndex, oldIndex, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
+	public void move(int targetIndex, int sourceIndex) {
+		moveItemInList(targetIndex, sourceIndex, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
 	}
 	
-	public void moveInternal(int oldIndex, int newIndex) {
-		this.namedNativeQueries.add(newIndex, this.namedNativeQueries.remove(oldIndex));
+	public void moveInternal(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.namedNativeQueries, targetIndex, sourceIndex);
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {

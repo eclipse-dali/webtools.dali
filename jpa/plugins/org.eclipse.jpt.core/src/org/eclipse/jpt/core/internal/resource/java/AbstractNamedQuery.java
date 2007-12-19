@@ -139,14 +139,14 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 		removeItemFromList(queryHint, this.hints, HINTS_LIST);
 	}
 
-	public void moveHint(int oldIndex, int newIndex) {
-		moveHintInternal(oldIndex, newIndex);
-		ContainerAnnotationTools.synchAnnotationsAfterMove(oldIndex, newIndex, this.hintsContainerAnnotation);
-		fireItemMoved(Query.HINTS_LIST, newIndex, oldIndex);
+	public void moveHint(int targetIndex, int sourceIndex) {
+		moveHintInternal(targetIndex, sourceIndex);
+		ContainerAnnotationTools.synchAnnotationsAfterMove(targetIndex, sourceIndex, this.hintsContainerAnnotation);
+		fireItemMoved(Query.HINTS_LIST, targetIndex, sourceIndex);
 	}
 	
-	protected void moveHintInternal(int oldIndex, int newIndex) {
-		this.hints.add(newIndex, this.hints.remove(oldIndex));
+	protected void moveHintInternal(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.hints, targetIndex, sourceIndex);
 	}
 	
 	public ITextRange nameTextRange(CompilationUnit astRoot) {
@@ -231,12 +231,12 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 			return AbstractNamedQuery.this.indexOfHint(hint);
 		}
 
-		public void move(int oldIndex, int newIndex) {
-			AbstractNamedQuery.this.moveHint(oldIndex, newIndex);
+		public void move(int targetIndex, int sourceIndex) {
+			AbstractNamedQuery.this.moveHint(targetIndex, sourceIndex);
 		}
 		
-		public void moveInternal(int oldIndex, int newIndex) {
-			AbstractNamedQuery.this.moveHintInternal(oldIndex, newIndex);
+		public void moveInternal(int targetIndex, int sourceIndex) {
+			AbstractNamedQuery.this.moveHintInternal(targetIndex, sourceIndex);
 		}
 
 		public NestableQueryHint nestedAnnotationAt(int index) {

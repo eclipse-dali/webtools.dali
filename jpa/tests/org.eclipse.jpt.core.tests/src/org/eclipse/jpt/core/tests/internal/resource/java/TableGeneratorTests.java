@@ -514,7 +514,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		
 		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		
-		tableGenerator.moveUniqueConstraint(0, 2);
+		tableGenerator.moveUniqueConstraint(2, 0);
 		assertSourceContains("@TableGenerator(uniqueConstraints={@UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"})})");
 	}
 	
@@ -525,7 +525,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		
 		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		
-		tableGenerator.moveUniqueConstraint(2, 0);
+		tableGenerator.moveUniqueConstraint(0, 2);
 		assertSourceContains("@TableGenerator(uniqueConstraints={@UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"})})");
 	}
 	

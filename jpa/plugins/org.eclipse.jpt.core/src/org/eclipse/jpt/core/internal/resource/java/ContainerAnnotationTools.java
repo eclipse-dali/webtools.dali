@@ -21,12 +21,12 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 public class ContainerAnnotationTools
 {
 	
-	public static NestableAnnotation addNestedAnnotation( int index, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
+	public static NestableAnnotation addNestedAnnotation(int index, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
 		int size = containerAnnotation.nestedAnnotationsSize();
 		NestableAnnotation nestedAnnotation = containerAnnotation.addInternal(size);
 		nestedAnnotation.newAnnotation();
-		containerAnnotation.moveInternal(size, index);
-		synchAnnotationsAfterMove(size, index, containerAnnotation);
+		containerAnnotation.moveInternal(index, size);
+		synchAnnotationsAfterMove(index, size, containerAnnotation);
 		return nestedAnnotation;
 	}
 
@@ -59,7 +59,7 @@ public class ContainerAnnotationTools
 	/**
 	 * synchronize the annotations with the model nestableAnnotations
 	 */
-	public static void synchAnnotationsAfterMove(int sourceIndex, int targetIndex, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
+	public static void synchAnnotationsAfterMove(int targetIndex, int sourceIndex, ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
 		NestableAnnotation nestableAnnotation = containerAnnotation.nestedAnnotationAt(targetIndex);
 		
 		synch(nestableAnnotation, containerAnnotation.nestedAnnotationsSize());

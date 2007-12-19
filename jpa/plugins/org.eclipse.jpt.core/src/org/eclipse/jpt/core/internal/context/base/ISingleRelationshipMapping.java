@@ -32,7 +32,7 @@ public interface ISingleRelationshipMapping extends IRelationshipMapping
 	int specifiedJoinColumnsSize();
 	IJoinColumn addSpecifiedJoinColumn(int index);
 	void removeSpecifiedJoinColumn(int index);
-	void moveSpecifiedJoinColumn(int oldIndex, int newIndex);
+	void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex);
 		String SPECIFIED_JOIN_COLUMNS_LIST = "specifiedJoinColumnsList";
 		String DEFAULT_JOIN_COLUMNS_LIST = "defaultJoinColumnsList";
 

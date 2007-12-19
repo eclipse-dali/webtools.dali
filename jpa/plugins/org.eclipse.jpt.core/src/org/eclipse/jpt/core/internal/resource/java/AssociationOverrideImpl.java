@@ -102,14 +102,14 @@ public class AssociationOverrideImpl
 		removeItemFromList(joinColumn, this.joinColumns, AssociationOverride.JOIN_COLUMNS_LIST);
 	}
 
-	public void moveJoinColumn(int oldIndex, int newIndex) {
-		moveJoinColumnInternal(oldIndex, newIndex);
-		ContainerAnnotationTools.synchAnnotationsAfterMove(oldIndex, newIndex, this.joinColumnsContainerAnnotation);
-		fireItemMoved(AssociationOverride.JOIN_COLUMNS_LIST, newIndex, oldIndex);
+	public void moveJoinColumn(int targetIndex, int sourceIndex) {
+		moveJoinColumnInternal(targetIndex, sourceIndex);
+		ContainerAnnotationTools.synchAnnotationsAfterMove(targetIndex, sourceIndex, this.joinColumnsContainerAnnotation);
+		fireItemMoved(AssociationOverride.JOIN_COLUMNS_LIST, targetIndex, sourceIndex);
 	}
 	
-	protected void moveJoinColumnInternal(int oldIndex, int newIndex) {
-		this.joinColumns.add(newIndex, this.joinColumns.remove(oldIndex));
+	protected void moveJoinColumnInternal(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.joinColumns, targetIndex, sourceIndex);
 	}
 
 	protected NestableJoinColumn createJoinColumn(int index) {
@@ -169,12 +169,12 @@ public class AssociationOverrideImpl
 			return AssociationOverrideImpl.this.indexOfJoinColumn(pkJoinColumn);
 		}
 
-		public void move(int oldIndex, int newIndex) {
-			AssociationOverrideImpl.this.moveJoinColumn(oldIndex, newIndex);
+		public void move(int targetIndex, int sourceIndex) {
+			AssociationOverrideImpl.this.moveJoinColumn(targetIndex, sourceIndex);
 		}
 
-		public void moveInternal(int oldIndex, int newIndex) {
-			AssociationOverrideImpl.this.moveJoinColumnInternal(oldIndex, newIndex);			
+		public void moveInternal(int targetIndex, int sourceIndex) {
+			AssociationOverrideImpl.this.moveJoinColumnInternal(targetIndex, sourceIndex);			
 		}
 		
 		public NestableJoinColumn nestedAnnotationAt(int index) {

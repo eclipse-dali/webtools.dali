@@ -294,7 +294,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 
 		
 		//move an annotation to the resource model and verify the context model is updated
-		tableResource.movePkJoinColumn(0, 1);
+		tableResource.movePkJoinColumn(1, 0);
 		specifiedPkJoinColumns = secondaryTable.specifiedPrimaryKeyJoinColumns();		
 		assertEquals("FOO", specifiedPkJoinColumns.next().getName());
 		assertEquals("BAR", specifiedPkJoinColumns.next().getName());
@@ -442,7 +442,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		assertEquals("BAZ", pkJoinColumns.next().getName());
 
 		
-		secondaryTable.moveSpecifiedPrimaryKeyJoinColumn(0, 2);
+		secondaryTable.moveSpecifiedPrimaryKeyJoinColumn(2, 0);
 		pkJoinColumns = tableResource.pkJoinColumns();
 
 		assertEquals("BAR", pkJoinColumns.next().getName());

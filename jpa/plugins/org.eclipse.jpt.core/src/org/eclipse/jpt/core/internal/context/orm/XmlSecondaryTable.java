@@ -92,9 +92,9 @@ public class XmlSecondaryTable extends AbstractXmlTable
 		removeItemFromList(primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
-	public void moveSpecifiedPrimaryKeyJoinColumn(int oldIndex, int newIndex) {
-		this.secondaryTable.getPrimaryKeyJoinColumns().move(newIndex, oldIndex);
-		moveItemInList(newIndex, oldIndex, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);		
+	public void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
+		this.secondaryTable.getPrimaryKeyJoinColumns().move(targetIndex, sourceIndex);
+		moveItemInList(targetIndex, sourceIndex, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);		
 	}
 
 	

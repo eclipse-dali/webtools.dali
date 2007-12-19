@@ -160,14 +160,14 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 		removeItemFromList(uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 	}
 	
-	public void moveUniqueConstraint(int oldIndex, int newIndex) {
-		moveUniqueConstraintInternal(oldIndex, newIndex);
-		ContainerAnnotationTools.synchAnnotationsAfterMove(oldIndex, newIndex, this.uniqueConstraintsContainerAnnotation);
-		fireItemMoved(Table.UNIQUE_CONSTRAINTS_LIST, newIndex, oldIndex);
+	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
+		moveUniqueConstraintInternal(targetIndex, sourceIndex);
+		ContainerAnnotationTools.synchAnnotationsAfterMove(targetIndex, sourceIndex, this.uniqueConstraintsContainerAnnotation);
+		fireItemMoved(Table.UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);
 	}
 	
-	protected void moveUniqueConstraintInternal(int oldIndex, int newIndex) {
-		this.uniqueConstraints.add(newIndex, this.uniqueConstraints.remove(oldIndex));
+	protected void moveUniqueConstraintInternal(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.uniqueConstraints, targetIndex, sourceIndex);
 	}
 	
 	protected abstract NestableUniqueConstraint createUniqueConstraint(int index);
@@ -259,12 +259,12 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 			return AbstractTableResource.this.indexOfUniqueConstraint(uniqueConstraint);
 		}
 
-		public void move(int oldIndex, int newIndex) {
-			AbstractTableResource.this.moveUniqueConstraint(oldIndex, newIndex);
+		public void move(int targetIndex, int sourceIndex) {
+			AbstractTableResource.this.moveUniqueConstraint(targetIndex, sourceIndex);
 		}
 		
-		public void moveInternal(int oldIndex, int newIndex) {
-			AbstractTableResource.this.moveUniqueConstraintInternal(oldIndex, newIndex);
+		public void moveInternal(int targetIndex, int sourceIndex) {
+			AbstractTableResource.this.moveUniqueConstraintInternal(targetIndex, sourceIndex);
 		}
 
 		public NestableUniqueConstraint nestedAnnotationAt(int index) {

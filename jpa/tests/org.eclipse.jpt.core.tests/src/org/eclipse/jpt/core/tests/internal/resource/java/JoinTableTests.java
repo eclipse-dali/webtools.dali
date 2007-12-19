@@ -376,7 +376,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
 		assertSourceContains("@JoinTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"})})");
 		
-		table.moveUniqueConstraint(0, 2);
+		table.moveUniqueConstraint(2, 0);
 		assertSourceContains("@JoinTable(uniqueConstraints={@UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"})})");
 	}
 	
@@ -388,7 +388,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
 		assertSourceContains("@JoinTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"})})");
 		
-		table.moveUniqueConstraint(2, 0);
+		table.moveUniqueConstraint(0, 2);
 		assertSourceContains("@JoinTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"})})");
 	}
 	
@@ -488,17 +488,17 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
 		JoinColumn joinColumn = table.joinColumnAt(0);
 		joinColumn.setReferencedColumnName("REF_NAME");
-		joinColumn.setUnique(false);
-		joinColumn.setNullable(false);
-		joinColumn.setInsertable(false);
-		joinColumn.setUpdatable(false);
+		joinColumn.setUnique(Boolean.FALSE);
+		joinColumn.setNullable(Boolean.FALSE);
+		joinColumn.setInsertable(Boolean.FALSE);
+		joinColumn.setUpdatable(Boolean.FALSE);
 		joinColumn.setColumnDefinition("COLUMN_DEF");
 		joinColumn.setTable("TABLE");
 		table.addJoinColumn(0).setName("FOO");
 		
 		assertSourceContains("@JoinTable(joinColumns={@JoinColumn(name=\"FOO\"), @JoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\"), @JoinColumn})");
 
-		table.moveJoinColumn(0, 2);
+		table.moveJoinColumn(2, 0);
 		assertEquals("BAR", table.joinColumnAt(0).getName());
 		assertNull(table.joinColumnAt(1).getName());
 		assertEquals("FOO", table.joinColumnAt(2).getName());
@@ -515,10 +515,10 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		
 		JoinColumn joinColumn = table.joinColumnAt(0);
 		joinColumn.setReferencedColumnName("REF_NAME");
-		joinColumn.setUnique(false);
-		joinColumn.setNullable(false);
-		joinColumn.setInsertable(false);
-		joinColumn.setUpdatable(false);
+		joinColumn.setUnique(Boolean.FALSE);
+		joinColumn.setNullable(Boolean.FALSE);
+		joinColumn.setInsertable(Boolean.FALSE);
+		joinColumn.setUpdatable(Boolean.FALSE);
 		joinColumn.setColumnDefinition("COLUMN_DEF");
 		joinColumn.setTable("TABLE");
 		
@@ -527,7 +527,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		assertSourceContains("@JoinTable(joinColumns={@JoinColumn(name=\"FOO\"), @JoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\"), @JoinColumn})");
 
 
-		table.moveJoinColumn(2, 0);
+		table.moveJoinColumn(0, 2);
 		assertNull(table.joinColumnAt(0).getName());
 		assertEquals("FOO", table.joinColumnAt(1).getName());
 		assertEquals("BAR", table.joinColumnAt(2).getName());
@@ -657,7 +657,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		assertEquals("BAR", inverseJoinColumns.next().getName());
 		assertNull(inverseJoinColumns.next().getName());
 		
-		table.moveInverseJoinColumn(0, 2);
+		table.moveInverseJoinColumn(2, 0);
 		inverseJoinColumns = table.inverseJoinColumns();
 		assertEquals("BAR", inverseJoinColumns.next().getName());
 		assertNull(inverseJoinColumns.next().getName());
@@ -679,7 +679,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		assertEquals("FOO", inverseJoinColumns.next().getName());
 		assertNull(inverseJoinColumns.next().getName());
 		
-		table.moveInverseJoinColumn(2, 0);
+		table.moveInverseJoinColumn(0, 2);
 		inverseJoinColumns = table.inverseJoinColumns();
 		assertNull(inverseJoinColumns.next().getName());
 		assertEquals("BAR", inverseJoinColumns.next().getName());

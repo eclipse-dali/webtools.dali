@@ -422,7 +422,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 		assertEquals(3, secondaryTableResource.getPrimaryKeyJoinColumns().size());
 		
 		
-		xmlSecondaryTable.moveSpecifiedPrimaryKeyJoinColumn(0, 2);
+		xmlSecondaryTable.moveSpecifiedPrimaryKeyJoinColumn(2, 0);
 		ListIterator<XmlPrimaryKeyJoinColumn> primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
@@ -433,7 +433,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 		assertEquals("FOO", secondaryTableResource.getPrimaryKeyJoinColumns().get(2).getName());
 
 
-		xmlSecondaryTable.moveSpecifiedPrimaryKeyJoinColumn(1, 0);
+		xmlSecondaryTable.moveSpecifiedPrimaryKeyJoinColumn(0, 1);
 		primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());

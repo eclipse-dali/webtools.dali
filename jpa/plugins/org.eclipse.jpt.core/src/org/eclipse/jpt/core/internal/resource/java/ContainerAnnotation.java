@@ -39,7 +39,7 @@ public interface ContainerAnnotation<T extends NestableAnnotation> extends Annot
 	/**
 	 * Move in the List without firing change notification.
 	 */
-	void moveInternal(int oldIndex, int newIndex);
+	void moveInternal(int targetIndex, int sourceIndex);
 	
-	void move(int oldIndex, int newIndex);
+	void move(int targetIndex, int sourceIndex);
 }

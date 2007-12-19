@@ -27,7 +27,7 @@ public interface JoinTable extends Table
 	
 	void removeJoinColumn(int index);
 	
-	void moveJoinColumn(int oldIndex, int newIndex);
+	void moveJoinColumn(int targetIndex, int sourceIndex);
 		String JOIN_COLUMNS_LIST = "joinColumnsList";
 	
 	ListIterator<JoinColumn> inverseJoinColumns();
@@ -42,7 +42,7 @@ public interface JoinTable extends Table
 	
 	void removeInverseJoinColumn(int index);
 	
-	void moveInverseJoinColumn(int oldIndex, int newIndex);
+	void moveInverseJoinColumn(int targetIndex, int sourceIndex);
 		String INVERSE_JOIN_COLUMNS_LIST = "inverseJoinColumnsList";
 
 }

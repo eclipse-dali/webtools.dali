@@ -35,7 +35,7 @@ public interface Query extends JavaResource
 	
 	void removeHint(int index);
 	
-	void moveHint(int oldIndex, int newIndex);
+	void moveHint(int targetIndex, int sourceIndex);
 		String HINTS_LIST = "hintsList";
 
 	/**

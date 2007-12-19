@@ -342,7 +342,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		Table table = (Table) typeResource.annotation(JPA.TABLE);
 		
-		table.moveUniqueConstraint(0, 2);
+		table.moveUniqueConstraint(2, 0);
 		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"})})");
 	}
 	
@@ -351,7 +351,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		Table table = (Table) typeResource.annotation(JPA.TABLE);
 		
-		table.moveUniqueConstraint(2, 0);
+		table.moveUniqueConstraint(0, 2);
 		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"})})");
 	}
 	

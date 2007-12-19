@@ -30,7 +30,7 @@ public interface IEntity extends ITypeMapping, IOverride.Owner
 	int specifiedSecondaryTablesSize();
 	ISecondaryTable addSpecifiedSecondaryTable(int index);
 	void removeSpecifiedSecondaryTable(int index);
-	void moveSpecifiedSecondaryTable(int oldIndex, int newIndex);
+	void moveSpecifiedSecondaryTable(int targetIndex, int sourceIndex);
 		String SPECIFIED_SECONDARY_TABLES_LIST = "specifiedSecondaryTablesList";
 	
 	InheritanceType getInheritanceStrategy();
@@ -71,7 +71,7 @@ public interface IEntity extends ITypeMapping, IOverride.Owner
 	int specifiedPrimaryKeyJoinColumnsSize();
 	IPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 	void removeSpecifiedPrimaryKeyJoinColumn(int index);
-	void moveSpecifiedPrimaryKeyJoinColumn(int oldIndex, int newIndex);
+	void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex);
 		String SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST = "specifiedPrimaryKeyJoinColumnsList";
 		String DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST = "defaultPrimaryKeyJoinColumnsList";
 
@@ -81,7 +81,7 @@ public interface IEntity extends ITypeMapping, IOverride.Owner
 	int specifiedAttributeOverridesSize();
 	IAttributeOverride addSpecifiedAttributeOverride(int index);
 	void removeSpecifiedAttributeOverride(int index);
-	void moveSpecifiedAttributeOverride(int oldIndex, int newIndex);
+	void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex);
 		String SPECIFIED_ATTRIBUTE_OVERRIDES_LIST = "specifiedAttributeOverridesList";
 		String DEFAULT_ATTRIBUTE_OVERRIDES_LIST = "defaultAttributeOverridesList";
 
@@ -92,7 +92,7 @@ public interface IEntity extends ITypeMapping, IOverride.Owner
 	int specifiedAssociationOverridesSize();
 	IAssociationOverride addSpecifiedAssociationOverride(int index);
 	void removeSpecifiedAssociationOverride(int index);
-	void moveSpecifiedAssociationOverride(int oldIndex, int newIndex);
+	void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex);
 		String SPECIFIED_ASSOCIATION_OVERRIDES_LIST = "specifiedAssociationOverridesList";
 		String DEFAULT_ASSOCIATION_OVERRIDES_LIST = "defaulAssociationOverridesList";
 
@@ -101,14 +101,14 @@ public interface IEntity extends ITypeMapping, IOverride.Owner
 	int namedQueriesSize();
 	INamedQuery addNamedQuery(int index);
 	void removeNamedQuery(int index);
-	void moveNamedQuery(int oldIndex, int newIndex);
+	void moveNamedQuery(int targetIndex, int sourceIndex);
 		String NAMED_QUERIES_LIST = "namedQueriesList";
 
 	<T extends INamedNativeQuery> ListIterator<T> namedNativeQueries();
 	int namedNativeQueriesSize();
 	INamedNativeQuery addNamedNativeQuery(int index);
 	void removeNamedNativeQuery(int index);
-	void moveNamedNativeQuery(int oldIndex, int newIndex);
+	void moveNamedNativeQuery(int targetIndex, int sourceIndex);
 		String NAMED_NATIVE_QUERIES_LIST = "namedNativeQueriesList";
 
 

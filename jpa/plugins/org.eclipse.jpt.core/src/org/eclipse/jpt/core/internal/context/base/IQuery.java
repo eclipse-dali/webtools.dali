@@ -26,7 +26,7 @@ public interface IQuery extends IJpaContextNode
 	int hintsSize();
 	IQueryHint addHint(int index);
 	void removeHint(int index);
-	void moveHint(int oldIndex, int newIndex);
+	void moveHint(int targetIndex, int sourceIndex);
 		String HINTS_LIST = "hintsList";
 
 }

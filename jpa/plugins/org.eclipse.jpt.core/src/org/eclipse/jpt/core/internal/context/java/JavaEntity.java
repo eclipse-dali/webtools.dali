@@ -373,9 +373,9 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		removeItemFromList(secondaryTable, this.specifiedSecondaryTables, IEntity.SPECIFIED_SECONDARY_TABLES_LIST);
 	}
 	
-	public void moveSpecifiedSecondaryTable(int oldIndex, int newIndex) {
-		this.persistentTypeResource.move(oldIndex, newIndex, SecondaryTables.ANNOTATION_NAME);
-		moveItemInList(newIndex, oldIndex, this.specifiedSecondaryTables, IEntity.SPECIFIED_SECONDARY_TABLES_LIST);
+	public void moveSpecifiedSecondaryTable(int targetIndex, int sourceIndex) {
+		this.persistentTypeResource.move(targetIndex, sourceIndex, SecondaryTables.ANNOTATION_NAME);
+		moveItemInList(targetIndex, sourceIndex, this.specifiedSecondaryTables, IEntity.SPECIFIED_SECONDARY_TABLES_LIST);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -556,9 +556,9 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		removeItemFromList(primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
-	public void moveSpecifiedPrimaryKeyJoinColumn(int oldIndex, int newIndex) {
-		this.persistentTypeResource.move(oldIndex, newIndex, PrimaryKeyJoinColumns.ANNOTATION_NAME);
-		moveItemInList(newIndex, oldIndex, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);		
+	public void moveSpecifiedPrimaryKeyJoinColumn(int sourceIndex, int targetIndex) {
+		this.persistentTypeResource.move(targetIndex, sourceIndex, PrimaryKeyJoinColumns.ANNOTATION_NAME);
+		moveItemInList(targetIndex, sourceIndex, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);		
 	}
 	
 	public int specifiedPrimaryKeyJoinColumnsSize() {
@@ -607,9 +607,9 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 
-	public void moveSpecifiedAttributeOverride(int oldIndex, int newIndex) {
-		this.persistentTypeResource.move(oldIndex, newIndex, AttributeOverrides.ANNOTATION_NAME);
-		moveItemInList(newIndex, oldIndex, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
+	public void moveSpecifiedAttributeOverride(int sourceIndex, int targetIndex) {
+		this.persistentTypeResource.move(targetIndex, sourceIndex, AttributeOverrides.ANNOTATION_NAME);
+		moveItemInList(targetIndex, sourceIndex, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
 	protected void addDefaultAttributeOverride(IJavaAttributeOverride attributeOverride) {
@@ -1192,7 +1192,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		
 	}
 	
-	public void moveSpecifiedAssociationOverride(int oldIndex, int newIndex) {
+	public void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex) {
 		// TODO Auto-generated method stub
 		
 	}

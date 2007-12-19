@@ -607,13 +607,13 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("BAZ", ormResource().getEntityMappings().getTableGenerators().get(2).getName());
 		assertEquals(3, ormResource().getEntityMappings().getTableGenerators().size());
 		
-		entityMappings().moveTableGenerator(0, 2);
+		entityMappings().moveTableGenerator(2, 0);
 		assertEquals("BAR", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
 		assertEquals("BAZ", ormResource().getEntityMappings().getTableGenerators().get(1).getName());
 		assertEquals("FOO", ormResource().getEntityMappings().getTableGenerators().get(2).getName());
 		assertEquals(3, ormResource().getEntityMappings().getTableGenerators().size());
 		
-		entityMappings().moveTableGenerator(2, 0);
+		entityMappings().moveTableGenerator(0, 2);
 		assertEquals("FOO", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
 		assertEquals("BAR", ormResource().getEntityMappings().getTableGenerators().get(1).getName());
 		assertEquals("BAZ", ormResource().getEntityMappings().getTableGenerators().get(2).getName());
@@ -781,13 +781,13 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("BAZ", ormResource().getEntityMappings().getSequenceGenerators().get(2).getName());
 		assertEquals(3, ormResource().getEntityMappings().getSequenceGenerators().size());
 		
-		entityMappings().moveSequenceGenerator(0, 2);
+		entityMappings().moveSequenceGenerator(2, 0);
 		assertEquals("BAR", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
 		assertEquals("BAZ", ormResource().getEntityMappings().getSequenceGenerators().get(1).getName());
 		assertEquals("FOO", ormResource().getEntityMappings().getSequenceGenerators().get(2).getName());
 		assertEquals(3, ormResource().getEntityMappings().getSequenceGenerators().size());
 		
-		entityMappings().moveSequenceGenerator(2, 0);
+		entityMappings().moveSequenceGenerator(0, 2);
 		assertEquals("FOO", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
 		assertEquals("BAR", ormResource().getEntityMappings().getSequenceGenerators().get(1).getName());
 		assertEquals("BAZ", ormResource().getEntityMappings().getSequenceGenerators().get(2).getName());

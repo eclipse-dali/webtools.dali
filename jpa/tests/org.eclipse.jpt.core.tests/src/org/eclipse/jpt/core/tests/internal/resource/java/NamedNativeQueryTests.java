@@ -334,7 +334,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		assertNull(namedQuery.hintAt(2).getName());
 		assertEquals(3, namedQuery.hintsSize());
 	
-		namedQuery.moveHint(0, 2);
+		namedQuery.moveHint(2, 0);
 		
 		assertEquals("BAR", namedQuery.hintAt(0).getName());
 		assertNull(namedQuery.hintAt(1).getName());
@@ -355,7 +355,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		assertNull(namedQuery.hintAt(2).getName());
 		assertEquals(3, namedQuery.hintsSize());
 	
-		namedQuery.moveHint(2, 0);
+		namedQuery.moveHint(0, 2);
 		
 		assertNull(namedQuery.hintAt(0).getName());
 		assertEquals("BAZ", namedQuery.hintAt(1).getName());

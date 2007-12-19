@@ -266,9 +266,9 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		removeItemFromList(secondaryTable, this.specifiedSecondaryTables, IEntity.SPECIFIED_SECONDARY_TABLES_LIST);
 	}
 	
-	public void moveSpecifiedSecondaryTable(int oldIndex, int newIndex) {
-		typeMappingResource().getSecondaryTables().move(newIndex, oldIndex);
-		moveItemInList(newIndex, oldIndex, this.specifiedSecondaryTables, IEntity.SPECIFIED_SECONDARY_TABLES_LIST);
+	public void moveSpecifiedSecondaryTable(int targetIndex, int sourceIndex) {
+		typeMappingResource().getSecondaryTables().move(targetIndex, sourceIndex);
+		moveItemInList(targetIndex, sourceIndex, this.specifiedSecondaryTables, IEntity.SPECIFIED_SECONDARY_TABLES_LIST);
 	}
 	
 	public boolean containsSecondaryTable(String name) {
@@ -374,14 +374,14 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.specifiedInheritanceStrategy = newInheritanceType;
 		if (oldInheritanceType != newInheritanceType) {
 			if (this.inheritanceResource() != null) {
-				this.inheritanceResource().setStrategy(InheritanceType.toXmlResourceModel(newInheritanceType));						
+				this.inheritanceResource().setStrategy(InheritanceType.toOrmResourceModel(newInheritanceType));						
 				if (this.inheritanceResource().isAllFeaturesUnset()) {
 					removeInheritanceResource();
 				}
 			}
 			else if (newInheritanceType != null) {
 				addInheritanceResource();
-				inheritanceResource().setStrategy(InheritanceType.toXmlResourceModel(newInheritanceType));
+				inheritanceResource().setStrategy(InheritanceType.toOrmResourceModel(newInheritanceType));
 			}
 		}
 		firePropertyChanged(SPECIFIED_INHERITANCE_STRATEGY_PROPERTY, oldInheritanceType, newInheritanceType);
@@ -539,9 +539,9 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		removeItemFromList(primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
-	public void moveSpecifiedPrimaryKeyJoinColumn(int oldIndex, int newIndex) {
-		this.typeMappingResource().getPrimaryKeyJoinColumns().move(newIndex, oldIndex);
-		moveItemInList(newIndex, oldIndex, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);		
+	public void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
+		this.typeMappingResource().getPrimaryKeyJoinColumns().move(targetIndex, sourceIndex);
+		moveItemInList(targetIndex, sourceIndex, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -586,9 +586,9 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
-	public void moveSpecifiedAttributeOverride(int oldIndex, int newIndex) {
-		this.typeMappingResource().getAttributeOverrides().move(newIndex, oldIndex);
-		moveItemInList(newIndex, oldIndex, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);		
+	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
+		this.typeMappingResource().getAttributeOverrides().move(targetIndex, sourceIndex);
+		moveItemInList(targetIndex, sourceIndex, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);		
 	}
 
 //
@@ -1077,7 +1077,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		if (inheritanceResource == null) {
 			return null;
 		}
-		return InheritanceType.fromXmlResourceModel(inheritanceResource.getStrategy());
+		return InheritanceType.fromOrmResourceModel(inheritanceResource.getStrategy());
 	}
 	
 	protected InheritanceType defaultInheritanceStrategy() {
@@ -1178,7 +1178,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		
 	}
 	
-	public void moveSpecifiedAssociationOverride(int oldIndex, int newIndex) {
+	public void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -1203,7 +1203,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		
 	}
 	
-	public void moveNamedQuery(int oldIndex, int newIndex) {
+	public void moveNamedQuery(int targetIndex, int sourceIndex) {
 		// TODO Auto-generated method stub
 		
 	}

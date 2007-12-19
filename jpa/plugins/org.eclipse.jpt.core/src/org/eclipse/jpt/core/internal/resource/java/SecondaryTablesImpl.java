@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> implements SecondaryTables
@@ -90,8 +91,8 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 		return null;
 	}
 
-	public void move(int oldIndex, int newIndex) {
-		moveItemInList(newIndex, oldIndex,  this.secondaryTables, SecondaryTables.SECONDARY_TABLES_LIST);
+	public void move(int targetIndex, int sourceIndex) {
+		moveItemInList(targetIndex, sourceIndex,  this.secondaryTables, SecondaryTables.SECONDARY_TABLES_LIST);
 	}
 	//TODO this move is different than how we handle SecondarTable.pkJoinColumns
 //	public void movePkJoinColumn(int oldIndex, int newIndex) {
@@ -100,8 +101,8 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 //		fireItemMoved(SecondaryTable.PK_JOIN_COLUMNS_LIST, newIndex, oldIndex);
 //	}
 	
-	public void moveInternal(int oldIndex, int newIndex) {
-		this.secondaryTables.add(newIndex, this.secondaryTables.remove(oldIndex));
+	public void moveInternal(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.secondaryTables, targetIndex, sourceIndex);
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {

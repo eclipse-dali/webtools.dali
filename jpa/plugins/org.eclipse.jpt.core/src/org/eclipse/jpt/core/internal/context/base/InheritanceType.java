@@ -45,7 +45,7 @@ public enum InheritanceType {
 	}
 	
 
-	public static InheritanceType fromXmlResourceModel(org.eclipse.jpt.core.internal.resource.orm.InheritanceType ormInheritanceType) {
+	public static InheritanceType fromOrmResourceModel(org.eclipse.jpt.core.internal.resource.orm.InheritanceType ormInheritanceType) {
 		if (ormInheritanceType == org.eclipse.jpt.core.internal.resource.orm.InheritanceType.SINGLE_TABLE) {
 			return SINGLE_TABLE;
 		}
@@ -58,7 +58,7 @@ public enum InheritanceType {
 		return null;
 	}
 	
-	public static org.eclipse.jpt.core.internal.resource.orm.InheritanceType toXmlResourceModel(InheritanceType inheritanceType) {
+	public static org.eclipse.jpt.core.internal.resource.orm.InheritanceType toOrmResourceModel(InheritanceType inheritanceType) {
 		if (inheritanceType == SINGLE_TABLE)  {
 			return org.eclipse.jpt.core.internal.resource.orm.InheritanceType.SINGLE_TABLE;
 		}

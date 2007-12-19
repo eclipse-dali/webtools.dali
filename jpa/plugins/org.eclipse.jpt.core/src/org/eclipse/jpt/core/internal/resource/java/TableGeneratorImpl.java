@@ -227,14 +227,14 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 		removeItemFromList(uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 	}
 
-	public void moveUniqueConstraint(int oldIndex, int newIndex) {
-		moveUniqueConstraintInternal(oldIndex, newIndex);
-		ContainerAnnotationTools.synchAnnotationsAfterMove(oldIndex, newIndex, this.uniqueConstraintsContainerAnnotation);
-		fireItemMoved(Table.UNIQUE_CONSTRAINTS_LIST, newIndex, oldIndex);
+	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
+		moveUniqueConstraintInternal(targetIndex, sourceIndex);
+		ContainerAnnotationTools.synchAnnotationsAfterMove(targetIndex, sourceIndex, this.uniqueConstraintsContainerAnnotation);
+		fireItemMoved(Table.UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);
 	}
 	
-	protected void moveUniqueConstraintInternal(int oldIndex, int newIndex) {
-		this.uniqueConstraints.add(newIndex, this.uniqueConstraints.remove(oldIndex));
+	protected void moveUniqueConstraintInternal(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.uniqueConstraints, targetIndex, sourceIndex);
 	}
 
 	/**
@@ -358,12 +358,12 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 			return TableGeneratorImpl.this.indexOfUniqueConstraint(uniqueConstraint);
 		}
 
-		public void move(int oldIndex, int newIndex) {
-			TableGeneratorImpl.this.moveUniqueConstraint(oldIndex, newIndex);
+		public void move(int targetIndex, int sourceIndex) {
+			TableGeneratorImpl.this.moveUniqueConstraint(targetIndex, sourceIndex);
 		}
 
-		public void moveInternal(int oldIndex, int newIndex) {
-			TableGeneratorImpl.this.moveUniqueConstraintInternal(oldIndex, newIndex);
+		public void moveInternal(int targetIndex, int sourceIndex) {
+			TableGeneratorImpl.this.moveUniqueConstraintInternal(targetIndex, sourceIndex);
 		}
 
 		public NestableUniqueConstraint nestedAnnotationAt(int index) {

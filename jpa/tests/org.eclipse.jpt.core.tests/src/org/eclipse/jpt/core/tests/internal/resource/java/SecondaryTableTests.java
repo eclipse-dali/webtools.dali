@@ -337,7 +337,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		assertEquals("BAZ", secondaryTable.uniqueConstraintAt(2).columnNames().next());
 		assertEquals(3, secondaryTable.uniqueConstraintsSize());
 		
-		secondaryTable.moveUniqueConstraint(0, 2);
+		secondaryTable.moveUniqueConstraint(2, 0);
 		assertEquals("FOO", secondaryTable.uniqueConstraintAt(0).columnNames().next());
 		assertEquals("BAZ", secondaryTable.uniqueConstraintAt(1).columnNames().next());
 		assertEquals("BAR", secondaryTable.uniqueConstraintAt(2).columnNames().next());
@@ -355,7 +355,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		assertEquals("BAZ", secondaryTable.uniqueConstraintAt(2).columnNames().next());
 		assertEquals(3, secondaryTable.uniqueConstraintsSize());
 		
-		secondaryTable.moveUniqueConstraint(2, 0);
+		secondaryTable.moveUniqueConstraint(0, 2);
 		assertEquals("BAZ", secondaryTable.uniqueConstraintAt(0).columnNames().next());
 		assertEquals("BAR", secondaryTable.uniqueConstraintAt(1).columnNames().next());
 		assertEquals("FOO", secondaryTable.uniqueConstraintAt(2).columnNames().next());
@@ -439,7 +439,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		PrimaryKeyJoinColumn joinColumn = table.pkJoinColumnAt(0);
 		joinColumn.setReferencedColumnName("REF_NAME");
 		joinColumn.setColumnDefinition("COLUMN_DEF");
-		table.movePkJoinColumn(0, 2);
+		table.movePkJoinColumn(2, 0);
 		assertSourceContains("@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"FOO\"), @PrimaryKeyJoinColumn(name=\"BAZ\"), @PrimaryKeyJoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", columnDefinition = \"COLUMN_DEF\")})");
 	}
 	
@@ -452,7 +452,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		PrimaryKeyJoinColumn joinColumn = table.pkJoinColumnAt(0);
 		joinColumn.setReferencedColumnName("REF_NAME");
 		joinColumn.setColumnDefinition("COLUMN_DEF");
-		table.movePkJoinColumn(2, 0);
+		table.movePkJoinColumn(0, 2);
 		assertSourceContains("@SecondaryTable(pkJoinColumns={@PrimaryKeyJoinColumn(name=\"BAZ\"), @PrimaryKeyJoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", columnDefinition = \"COLUMN_DEF\"), @PrimaryKeyJoinColumn(name=\"FOO\")})");
 	}
 	

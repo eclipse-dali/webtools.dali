@@ -120,10 +120,10 @@ public class JavaSecondaryTable extends AbstractJavaTable
 		removeItemFromList(primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
-	public void moveSpecifiedPrimaryKeyJoinColumn(int oldIndex, int newIndex) {
-		this.specifiedPrimaryKeyJoinColumns.add(newIndex, this.specifiedPrimaryKeyJoinColumns.remove(oldIndex));
-		this.secondaryTableResource.movePkJoinColumn(oldIndex, newIndex);
-		fireItemMoved(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, newIndex, oldIndex);		
+	public void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.specifiedPrimaryKeyJoinColumns, targetIndex, sourceIndex);
+		this.secondaryTableResource.movePkJoinColumn(targetIndex, sourceIndex);
+		fireItemMoved(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 	
 	public int specifiedPrimaryKeyJoinColumnsSize() {
