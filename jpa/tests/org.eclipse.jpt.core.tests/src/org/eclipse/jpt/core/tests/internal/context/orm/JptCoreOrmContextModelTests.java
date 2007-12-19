@@ -33,6 +33,7 @@ public class JptCoreOrmContextModelTests extends TestCase
 		suite.addTestSuite(XmlBasicMappingTests.class);
 		suite.addTestSuite(XmlIdMappingTests.class);
 		suite.addTestSuite(XmlVersionMappingTests.class);
+		suite.addTestSuite(XmlEmbeddedMappingTests.class);
 		suite.addTestSuite(XmlTableTests.class);
 		suite.addTestSuite(XmlSecondaryTableTests.class);
 		suite.addTestSuite(XmlColumnTests.class);
@@ -41,6 +42,7 @@ public class JptCoreOrmContextModelTests extends TestCase
 		suite.addTestSuite(XmlGeneratedValueTests.class);
 		suite.addTestSuite(XmlDiscriminatorColumnTests.class);
 		suite.addTestSuite(XmlPrimaryKeyJoinColumnTests.class);
+		suite.addTestSuite(XmlAttributeOverrideTests.class);
 		return suite;
 	}
 	

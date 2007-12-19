@@ -24,7 +24,7 @@ import org.eclipse.jpt.db.internal.Table;
 
 
 public class XmlVersionMapping extends XmlAttributeMapping
-	implements IVersionMapping
+	implements IVersionMapping, IXmlColumnMapping
 {
 	protected final XmlColumn column;
 

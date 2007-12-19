@@ -24,7 +24,7 @@ import org.eclipse.jpt.db.internal.Table;
 
 
 public class XmlBasicMapping extends XmlAttributeMapping
-	implements IBasicMapping
+	implements IBasicMapping, IXmlColumnMapping
 {
 	protected final XmlColumn column;
 	

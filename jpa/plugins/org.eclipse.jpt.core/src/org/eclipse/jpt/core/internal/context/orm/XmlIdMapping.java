@@ -23,7 +23,7 @@ import org.eclipse.jpt.db.internal.Table;
 
 
 public class XmlIdMapping extends XmlAttributeMapping
-	implements IIdMapping
+	implements IIdMapping, IXmlColumnMapping
 {
 	protected final XmlColumn column;
 

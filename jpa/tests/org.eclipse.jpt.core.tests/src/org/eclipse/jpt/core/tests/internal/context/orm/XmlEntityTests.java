@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
+import org.eclipse.jpt.core.internal.context.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.internal.context.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.internal.context.orm.XmlEntity;
 import org.eclipse.jpt.core.internal.context.orm.XmlMappedSuperclass;
@@ -1288,5 +1289,150 @@ public class XmlEntityTests extends ContextModelTestCase
 		entityResource.getPrimaryKeyJoinColumns().remove(0);
 		assertFalse(xmlEntity.specifiedPrimaryKeyJoinColumns().hasNext());
 	}
+	
+	public void testAddSpecifiedAttributeOverride() throws Exception {
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
+		XmlAttributeOverride attributeOverride = xmlEntity.addSpecifiedAttributeOverride(0);
+		ormResource().save(null);
+		attributeOverride.setName("FOO");
+		ormResource().save(null);
+				
+		assertEquals("FOO", entityResource.getAttributeOverrides().get(0).getName());
+		
+		XmlAttributeOverride attributeOverride2 = xmlEntity.addSpecifiedAttributeOverride(0);
+		ormResource().save(null);
+		attributeOverride2.setName("BAR");
+		ormResource().save(null);
+		
+		assertEquals("BAR", entityResource.getAttributeOverrides().get(0).getName());
+		assertEquals("FOO", entityResource.getAttributeOverrides().get(1).getName());
+		
+		XmlAttributeOverride attributeOverride3 = xmlEntity.addSpecifiedAttributeOverride(1);
+		ormResource().save(null);
+		attributeOverride3.setName("BAZ");
+		ormResource().save(null);
+		
+		assertEquals("BAR", entityResource.getAttributeOverrides().get(0).getName());
+		assertEquals("BAZ", entityResource.getAttributeOverrides().get(1).getName());
+		assertEquals("FOO", entityResource.getAttributeOverrides().get(2).getName());
+		
+		ListIterator<XmlAttributeOverride> attributeOverrides = xmlEntity.specifiedAttributeOverrides();
+		assertEquals(attributeOverride2, attributeOverrides.next());
+		assertEquals(attributeOverride3, attributeOverrides.next());
+		assertEquals(attributeOverride, attributeOverrides.next());
+		
+		attributeOverrides = xmlEntity.specifiedAttributeOverrides();
+		assertEquals("BAR", attributeOverrides.next().getName());
+		assertEquals("BAZ", attributeOverrides.next().getName());
+		assertEquals("FOO", attributeOverrides.next().getName());
+	}
+	
+	public void testRemoveSpecifiedAttributeOverride() throws Exception {
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
+
+		xmlEntity.addSpecifiedAttributeOverride(0).setName("FOO");
+		xmlEntity.addSpecifiedAttributeOverride(1).setName("BAR");
+		xmlEntity.addSpecifiedAttributeOverride(2).setName("BAZ");
+		
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		assertEquals(3, entityResource.getAttributeOverrides().size());
+		
+		xmlEntity.removeSpecifiedAttributeOverride(0);
+		assertEquals(2, entityResource.getAttributeOverrides().size());
+		assertEquals("BAR", entityResource.getAttributeOverrides().get(0).getName());
+		assertEquals("BAZ", entityResource.getAttributeOverrides().get(1).getName());
+
+		xmlEntity.removeSpecifiedAttributeOverride(0);
+		assertEquals(1, entityResource.getAttributeOverrides().size());
+		assertEquals("BAZ", entityResource.getAttributeOverrides().get(0).getName());
+		
+		xmlEntity.removeSpecifiedAttributeOverride(0);
+		assertEquals(0, entityResource.getAttributeOverrides().size());
+	}
+	
+	public void testMoveSpecifiedAttributeOverride() throws Exception {
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
+
+		xmlEntity.addSpecifiedAttributeOverride(0).setName("FOO");
+		xmlEntity.addSpecifiedAttributeOverride(1).setName("BAR");
+		xmlEntity.addSpecifiedAttributeOverride(2).setName("BAZ");
+		
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		assertEquals(3, entityResource.getAttributeOverrides().size());
+		
+		
+		xmlEntity.moveSpecifiedAttributeOverride(0, 2);
+		ListIterator<XmlAttributeOverride> attributeOverrides = xmlEntity.specifiedAttributeOverrides();
+		assertEquals("BAR", attributeOverrides.next().getName());
+		assertEquals("BAZ", attributeOverrides.next().getName());
+		assertEquals("FOO", attributeOverrides.next().getName());
+
+		assertEquals("BAR", entityResource.getAttributeOverrides().get(0).getName());
+		assertEquals("BAZ", entityResource.getAttributeOverrides().get(1).getName());
+		assertEquals("FOO", entityResource.getAttributeOverrides().get(2).getName());
+
+
+		xmlEntity.moveSpecifiedAttributeOverride(1, 0);
+		attributeOverrides = xmlEntity.specifiedAttributeOverrides();
+		assertEquals("BAZ", attributeOverrides.next().getName());
+		assertEquals("BAR", attributeOverrides.next().getName());
+		assertEquals("FOO", attributeOverrides.next().getName());
+
+		assertEquals("BAZ", entityResource.getAttributeOverrides().get(0).getName());
+		assertEquals("BAR", entityResource.getAttributeOverrides().get(1).getName());
+		assertEquals("FOO", entityResource.getAttributeOverrides().get(2).getName());
+	}
+	
+	public void testUpdateAttributeOverrides() throws Exception {
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
+		
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverride());
+		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverride());
+		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverride());
+		
+		entityResource.getAttributeOverrides().get(0).setName("FOO");
+		entityResource.getAttributeOverrides().get(1).setName("BAR");
+		entityResource.getAttributeOverrides().get(2).setName("BAZ");
+
+		ListIterator<XmlAttributeOverride> attributeOverrides = xmlEntity.specifiedAttributeOverrides();
+		assertEquals("FOO", attributeOverrides.next().getName());
+		assertEquals("BAR", attributeOverrides.next().getName());
+		assertEquals("BAZ", attributeOverrides.next().getName());
+		assertFalse(attributeOverrides.hasNext());
+		
+		entityResource.getAttributeOverrides().move(2, 0);
+		attributeOverrides = xmlEntity.specifiedAttributeOverrides();
+		assertEquals("BAR", attributeOverrides.next().getName());
+		assertEquals("BAZ", attributeOverrides.next().getName());
+		assertEquals("FOO", attributeOverrides.next().getName());
+		assertFalse(attributeOverrides.hasNext());
+
+		entityResource.getAttributeOverrides().move(0, 1);
+		attributeOverrides = xmlEntity.specifiedAttributeOverrides();
+		assertEquals("BAZ", attributeOverrides.next().getName());
+		assertEquals("BAR", attributeOverrides.next().getName());
+		assertEquals("FOO", attributeOverrides.next().getName());
+		assertFalse(attributeOverrides.hasNext());
+
+		entityResource.getAttributeOverrides().remove(1);
+		attributeOverrides = xmlEntity.specifiedAttributeOverrides();
+		assertEquals("BAZ", attributeOverrides.next().getName());
+		assertEquals("FOO", attributeOverrides.next().getName());
+		assertFalse(attributeOverrides.hasNext());
+
+		entityResource.getAttributeOverrides().remove(1);
+		attributeOverrides = xmlEntity.specifiedAttributeOverrides();
+		assertEquals("BAZ", attributeOverrides.next().getName());
+		assertFalse(attributeOverrides.hasNext());
+		
+		entityResource.getAttributeOverrides().remove(0);
+		assertFalse(xmlEntity.specifiedAttributeOverrides().hasNext());
+	}
 }

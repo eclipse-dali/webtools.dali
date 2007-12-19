@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IAssociationOverride;
-import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
@@ -33,6 +32,7 @@ import org.eclipse.jpt.core.internal.context.base.InheritanceType;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
+import org.eclipse.jpt.core.internal.resource.orm.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.Inheritance;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
@@ -84,10 +84,10 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 
 	protected XmlTableGenerator tableGenerator;
 
-//	protected EList<IAttributeOverride> specifiedAttributeOverrides;
-//
-//	protected EList<IAttributeOverride> defaultAttributeOverrides;
-//
+	protected final List<XmlAttributeOverride> specifiedAttributeOverrides;
+	
+	protected final List<XmlAttributeOverride> defaultAttributeOverrides;
+
 //	protected EList<IAssociationOverride> specifiedAssociationOverrides;
 //
 //	protected EList<IAssociationOverride> defaultAssociationOverrides;
@@ -107,6 +107,8 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.discriminatorColumn = createXmlDiscriminatorColumn();
 		this.specifiedPrimaryKeyJoinColumns = new ArrayList<XmlPrimaryKeyJoinColumn>();
 		this.defaultPrimaryKeyJoinColumns = new ArrayList<XmlPrimaryKeyJoinColumn>();
+		this.specifiedAttributeOverrides = new ArrayList<XmlAttributeOverride>();
+		this.defaultAttributeOverrides = new ArrayList<XmlAttributeOverride>();
 	}
 	
 	protected XmlDiscriminatorColumn createXmlDiscriminatorColumn() {
@@ -541,28 +543,54 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.typeMappingResource().getPrimaryKeyJoinColumns().move(newIndex, oldIndex);
 		moveItemInList(newIndex, oldIndex, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public ListIterator<XmlAttributeOverride> attributeOverrides() {
+		//TODO
+		return EmptyListIterator.instance();
+	}
 
-//
-//	public EList<IAttributeOverride> getAttributeOverrides() {
-//		EList<IAttributeOverride> list = new EObjectEList<IAttributeOverride>(IAttributeOverride.class, this, OrmPackage.XML_ENTITY_INTERNAL__ATTRIBUTE_OVERRIDES);
-//		list.addAll(getSpecifiedAttributeOverrides());
-//		list.addAll(getDefaultAttributeOverrides());
-//		return list;
-//	}
-//
-//	public EList<IAttributeOverride> getSpecifiedAttributeOverrides() {
-//		if (specifiedAttributeOverrides == null) {
-//			specifiedAttributeOverrides = new EObjectContainmentEList<IAttributeOverride>(IAttributeOverride.class, this, OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_ATTRIBUTE_OVERRIDES);
-//		}
-//		return specifiedAttributeOverrides;
-//	}
-//
-//	public EList<IAttributeOverride> getDefaultAttributeOverrides() {
-//		if (defaultAttributeOverrides == null) {
-//			defaultAttributeOverrides = new EObjectContainmentEList<IAttributeOverride>(IAttributeOverride.class, this, OrmPackage.XML_ENTITY_INTERNAL__DEFAULT_ATTRIBUTE_OVERRIDES);
-//		}
-//		return defaultAttributeOverrides;
-//	}
+	@SuppressWarnings("unchecked")
+	public ListIterator<XmlAttributeOverride> defaultAttributeOverrides() {
+		return new CloneListIterator<XmlAttributeOverride>(this.defaultAttributeOverrides);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ListIterator<XmlAttributeOverride> specifiedAttributeOverrides() {
+		return new CloneListIterator<XmlAttributeOverride>(this.specifiedAttributeOverrides);
+	}
+
+	public int specifiedAttributeOverridesSize() {
+		return this.specifiedAttributeOverrides.size();
+	}
+
+	public XmlAttributeOverride addSpecifiedAttributeOverride(int index) {
+		XmlAttributeOverride attributeOverride = new XmlAttributeOverride(this, this);
+		this.specifiedAttributeOverrides.add(index, attributeOverride);
+		this.typeMappingResource().getAttributeOverrides().add(index, OrmFactory.eINSTANCE.createAttributeOverride());
+		this.fireItemAdded(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
+		return attributeOverride;
+	}
+
+	protected void addSpecifiedAttributeOverride(int index, XmlAttributeOverride attributeOverride) {
+		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
+	}
+	
+	public void removeSpecifiedAttributeOverride(int index) {
+		XmlAttributeOverride removedAttributeOverride = this.specifiedAttributeOverrides.remove(index);
+		this.typeMappingResource().getAttributeOverrides().remove(index);
+		fireItemRemoved(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, removedAttributeOverride);
+	}
+
+	protected void removeSpecifiedAttributeOverride(XmlAttributeOverride attributeOverride) {
+		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
+	}
+	
+	public void moveSpecifiedAttributeOverride(int oldIndex, int newIndex) {
+		this.typeMappingResource().getAttributeOverrides().move(newIndex, oldIndex);
+		moveItemInList(newIndex, oldIndex, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);		
+	}
+
 //
 //	public EList<IAssociationOverride> getAssociationOverrides() {
 //		EList<IAssociationOverride> list = new EObjectEList<IAssociationOverride>(IAssociationOverride.class, this, OrmPackage.XML_ENTITY_INTERNAL__ASSOCIATION_OVERRIDES);
@@ -850,6 +878,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.initializeSequenceGenerator(entity);
 		this.initializeTableGenerator(entity);
 		this.initializeSpecifiedPrimaryKeyJoinColumns(entity);
+		this.initializeSpecifiedAttributeOverrides(entity);
 	}
 	
 	protected void initializeInheritance(Inheritance inheritanceResource) {
@@ -903,6 +932,12 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 			this.specifiedPrimaryKeyJoinColumns.add(createPrimaryKeyJoinColumn(primaryKeyJoinColumn));
 		}
 	}
+	
+	protected void initializeSpecifiedAttributeOverrides(Entity entity) {
+		for (AttributeOverride attributeOverride : entity.getAttributeOverrides()) {
+			this.specifiedAttributeOverrides.add(createAttributeOverride(attributeOverride));
+		}
+	}
 
 	@Override
 	public void update(Entity entity) {
@@ -919,6 +954,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.updateSequenceGenerator(entity);
 		this.updateTableGenerator(entity);
 		this.updateSpecifiedPrimaryKeyJoinColumns(entity);
+		this.updateSpecifiedAttributeOverrides(entity);
 	}
 
 	protected String defaultName() {
@@ -1081,22 +1117,30 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return xmlPrimaryKeyJoinColumn;
 	}
 
-	public IAttributeOverride addSpecifiedAttributeOverride(int index) {
-		// TODO Auto-generated method stub
-		return null;
+	protected void updateSpecifiedAttributeOverrides(Entity entity) {
+		ListIterator<XmlAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
+		ListIterator<AttributeOverride> resourceAttributeOverrides = entity.getAttributeOverrides().listIterator();
+		
+		while (attributeOverrides.hasNext()) {
+			XmlAttributeOverride attributeOverride = attributeOverrides.next();
+			if (resourceAttributeOverrides.hasNext()) {
+				attributeOverride.update(resourceAttributeOverrides.next());
+			}
+			else {
+				removeSpecifiedAttributeOverride(attributeOverride);
+			}
+		}
+		
+		while (resourceAttributeOverrides.hasNext()) {
+			addSpecifiedAttributeOverride(specifiedAttributeOverridesSize(), createAttributeOverride(resourceAttributeOverrides.next()));
+		}
 	}
-
-	public <T extends IAttributeOverride> ListIterator<T> attributeOverrides() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	protected XmlAttributeOverride createAttributeOverride(AttributeOverride attributeOverride) {
+		XmlAttributeOverride xmlAttributeOverride = new XmlAttributeOverride(this, this);
+		xmlAttributeOverride.initialize(attributeOverride);
+		return xmlAttributeOverride;
 	}
-
-	public <T extends IAttributeOverride> ListIterator<T> defaultAttributeOverrides() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 
 	public String primaryKeyColumnName() {
 		// TODO Auto-generated method stub
@@ -1104,25 +1148,6 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	}
 
 
-	public void removeSpecifiedAttributeOverride(int index) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public <T extends IAttributeOverride> ListIterator<T> specifiedAttributeOverrides() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public int specifiedAttributeOverridesSize() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public void moveSpecifiedAttributeOverride(int oldIndex, int newIndex) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	public <T extends IAssociationOverride> ListIterator<T> associationOverrides() {
 		return EmptyListIterator.instance();
