@@ -54,7 +54,7 @@ public class OrmXmlImpl extends JpaContextNode
 		
 		org.eclipse.jpt.core.internal.resource.orm.EntityMappings ormEntityMappings = OrmFactory.eINSTANCE.createEntityMappings();
 		this.entityMappings = createEntityMappings(ormEntityMappings);
-		ormResource.getContents().add(ormEntityMappings);
+		this.ormResource.getContents().add(ormEntityMappings);
 		firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, null, this.entityMappings);
 		return this.entityMappings;
 	}

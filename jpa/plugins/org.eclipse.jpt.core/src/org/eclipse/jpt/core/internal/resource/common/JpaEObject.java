@@ -157,7 +157,7 @@ public abstract class JpaEObject extends EObjectImpl implements IJpaEObject
 	@Override
 	public EList<Adapter> eAdapters() {
 		if (this.eAdapters == null) {
-			this.eAdapters = new XmlEAdapterList(this);
+			this.eAdapters = new XmlEAdapterList<Adapter>(this);
 		}
 		return this.eAdapters;
 	}
@@ -167,14 +167,14 @@ public abstract class JpaEObject extends EObjectImpl implements IJpaEObject
 	}
 
 
-	protected class XmlEAdapterList extends EAdapterList
+	protected class XmlEAdapterList<E extends Object & Adapter> extends EAdapterList<E>
 	{
 		public XmlEAdapterList(Notifier notifier) {
 			super(notifier);
 		}
 
 		@Override
-		protected void didAdd(int index, Object newObject) {
+		protected void didAdd(int index, E newObject) {
 			super.didAdd(index, newObject);
 			try {
 				node = (IDOMNode) ClassTools.executeMethod(newObject, "getNode");
@@ -185,7 +185,7 @@ public abstract class JpaEObject extends EObjectImpl implements IJpaEObject
 		}
 
 		@Override
-		protected void didRemove(int index, Object oldObject) {
+		protected void didRemove(int index, E oldObject) {
 			super.didRemove(index, oldObject);
 			if ((oldObject instanceof EMF2DOMAdapter) && (((EMF2DOMAdapter) oldObject).getNode() == JpaEObject.this.node)) {
 				JpaEObject.this.node = null;

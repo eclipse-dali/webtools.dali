@@ -46,7 +46,7 @@ public class EmptyTagBooleanTranslator extends Translator
 		// but I really don't think that we should have to depend on the boolean
 		// being "unset" to remove the tag.
 		Boolean value = (Boolean) super.getMOFValue(mofObject);
-		return (value == true) ? value : null;
+		return (value == Boolean.TRUE) ? value : null;
 	}
 
 }
