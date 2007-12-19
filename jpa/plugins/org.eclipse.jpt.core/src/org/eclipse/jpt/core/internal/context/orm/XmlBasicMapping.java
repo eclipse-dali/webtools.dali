@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.db.internal.Table;
 
 
-public class XmlBasicMapping extends XmlAttributeMapping
+public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 	implements IBasicMapping, IXmlColumnMapping
 {
 	protected final XmlColumn column;
@@ -43,8 +43,6 @@ public class XmlBasicMapping extends XmlAttributeMapping
 	protected TemporalType temporal;
 	
 	protected boolean lob;
-
-	protected Basic basic;
 	
 	protected XmlBasicMapping(XmlPersistentAttribute parent) {
 		super(parent);
@@ -72,7 +70,7 @@ public class XmlBasicMapping extends XmlAttributeMapping
 	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
 		FetchType oldFetch = this.specifiedFetch;
 		this.specifiedFetch = newSpecifiedFetch;
-		this.basic.setFetch(FetchType.toOrmResourceModel(newSpecifiedFetch));
+		this.attributeMapping().setFetch(FetchType.toOrmResourceModel(newSpecifiedFetch));
 		firePropertyChanged(IBasicMapping.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
 
@@ -98,7 +96,7 @@ public class XmlBasicMapping extends XmlAttributeMapping
 	public void setSpecifiedOptional(Boolean newSpecifiedOptional) {
 		Boolean oldOptional = this.specifiedOptional;
 		this.specifiedOptional = newSpecifiedOptional;
-		this.basic.setOptional(newSpecifiedOptional);
+		this.attributeMapping().setOptional(newSpecifiedOptional);
 		firePropertyChanged(IBasicMapping.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
 	}
 
@@ -109,7 +107,7 @@ public class XmlBasicMapping extends XmlAttributeMapping
 	public void setLob(boolean newLob) {
 		boolean oldLob = this.lob;
 		this.lob = newLob;
-		this.basic.setLob(newLob);
+		this.attributeMapping().setLob(newLob);
 		firePropertyChanged(IBasicMapping.LOB_PROPERTY, oldLob, newLob);
 	}
 
@@ -120,7 +118,7 @@ public class XmlBasicMapping extends XmlAttributeMapping
 	public void setTemporal(TemporalType newTemporal) {
 		TemporalType oldTemporal = this.temporal;
 		this.temporal = newTemporal;
-		this.basic.setTemporal(TemporalType.toOrmResourceModel(newTemporal));
+		this.attributeMapping().setTemporal(TemporalType.toOrmResourceModel(newTemporal));
 		firePropertyChanged(IBasicMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 
@@ -140,7 +138,7 @@ public class XmlBasicMapping extends XmlAttributeMapping
 	public void setSpecifiedEnumerated(EnumType newSpecifiedEnumerated) {
 		EnumType oldEnumerated = this.specifiedEnumerated;
 		this.specifiedEnumerated = newSpecifiedEnumerated;
-		this.basic.setEnumerated(EnumType.toOrmResourceModel(newSpecifiedEnumerated));
+		this.attributeMapping().setEnumerated(EnumType.toOrmResourceModel(newSpecifiedEnumerated));
 		firePropertyChanged(IBasicMapping.SPECIFIED_ENUMERATED_PROPERTY, oldEnumerated, newSpecifiedEnumerated);
 	}
 
@@ -155,7 +153,7 @@ public class XmlBasicMapping extends XmlAttributeMapping
 	}
 
 	@Override
-	protected void initializeOn(XmlAttributeMapping newMapping) {
+	protected void initializeOn(XmlAttributeMapping<? extends AttributeMapping> newMapping) {
 		newMapping.initializeFromXmlBasicMapping(this);
 	}
 
@@ -202,8 +200,9 @@ public class XmlBasicMapping extends XmlAttributeMapping
 		return null;
 	}
 	
+	@Override
 	public void initialize(Basic basic) {
-		this.basic = basic;
+		super.initialize(basic);
 		this.specifiedFetch = this.specifiedFetch(basic);
 		this.specifiedOptional = this.specifiedOptional(basic);
 		this.specifiedEnumerated = this.specifiedEnumerated(basic);
@@ -212,8 +211,9 @@ public class XmlBasicMapping extends XmlAttributeMapping
 		this.column.initialize(basic);
 	}
 	
+	@Override
 	public void update(Basic basic) {
-		this.basic = basic;
+		super.update(basic);
 		this.setSpecifiedFetch(this.specifiedFetch(basic));
 		this.setSpecifiedOptional(this.specifiedOptional(basic));
 		this.setSpecifiedEnumerated(this.specifiedEnumerated(basic));
@@ -254,7 +254,7 @@ public class XmlBasicMapping extends XmlAttributeMapping
 	
 	@Override
 	public void removeFromResourceModel(TypeMapping typeMapping) {
-		typeMapping.getAttributes().getBasics().remove(this.basic);
+		typeMapping.getAttributes().getBasics().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}

@@ -14,9 +14,13 @@ import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 
 
-public abstract class XmlAttributeMapping extends JpaContextNode
+public abstract class XmlAttributeMapping<E extends AttributeMapping> extends JpaContextNode
 	implements IAttributeMapping
 {
+	protected String name;
+		public static final String NAME_PROPERTY = "nameProperty";
+	
+	protected E attributeMapping;
 
 	protected XmlAttributeMapping(XmlPersistentAttribute parent) {
 		super(parent);
@@ -36,6 +40,19 @@ public abstract class XmlAttributeMapping extends JpaContextNode
 //		return (XmlPersistentType) eContainer();
 //	}
 
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String newName) {
+		String oldName = this.name;
+		this.name = newName;
+		this.attributeMapping.setName(newName);
+		firePropertyChanged(NAME_PROPERTY, oldName, oldName);
+		persistentAttribute().nameChanged(oldName, oldName);
+	}
+
+	
 	public XmlPersistentAttribute persistentAttribute() {
 		return (XmlPersistentAttribute) parent();
 	}
@@ -50,9 +67,9 @@ public abstract class XmlAttributeMapping extends JpaContextNode
 	 * Subclasses should override this method to call the
 	 * appropriate initializeFrom___Mapping() method.
 	 */
-	protected abstract void initializeOn(XmlAttributeMapping newMapping);
+	protected abstract void initializeOn(XmlAttributeMapping<? extends AttributeMapping> newMapping);
 
-	public void initializeFromXmlAttributeMapping(XmlAttributeMapping oldMapping) {}
+	public void initializeFromXmlAttributeMapping(XmlAttributeMapping<? extends AttributeMapping> oldMapping) {}
 
 	public void initializeFromXmlBasicMapping(XmlBasicMapping oldMapping) {
 		initializeFromXmlAttributeMapping(oldMapping);
@@ -167,19 +184,17 @@ public abstract class XmlAttributeMapping extends JpaContextNode
 	
 	public abstract AttributeMapping addToResourceModel(org.eclipse.jpt.core.internal.resource.orm.TypeMapping typeMapping);
 
+	protected E attributeMapping() {
+		return this.attributeMapping;
+	}
 
-//	public class ColumnOwner implements INamedColumn.Owner
-//	{
-//		public ITextRange validationTextRange() {
-//			return XmlAttributeMapping.this.validationTextRange();
-//		}
-//
-//		public ITypeMapping getTypeMapping() {
-//			return XmlAttributeMapping.this.typeMapping();
-//		}
-//
-//		public Table dbTable(String tableName) {
-//			return this.getTypeMapping().dbTable(tableName);
-//		}
-//	}
+	public void initialize(E attributeMapping) {
+		this.attributeMapping = attributeMapping;
+		this.name = attributeMapping.getName();
+	}
+	
+	public void update(E attributeMapping) {
+		this.attributeMapping = attributeMapping;
+		this.setName(attributeMapping.getName());
+	}
 }

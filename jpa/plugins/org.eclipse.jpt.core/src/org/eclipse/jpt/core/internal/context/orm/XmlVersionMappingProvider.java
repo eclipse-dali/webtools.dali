@@ -38,7 +38,7 @@ public class XmlVersionMappingProvider implements IXmlAttributeMappingProvider
 		return IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public XmlAttributeMapping buildAttributeMapping(IJpaBaseContextFactory factory, XmlPersistentAttribute parent) {
+	public XmlVersionMapping buildAttributeMapping(IJpaBaseContextFactory factory, XmlPersistentAttribute parent) {
 		return new XmlVersionMapping(parent);
 	}
 	

@@ -34,7 +34,7 @@ public class XmlEmbeddedMappingProvider implements IXmlAttributeMappingProvider
 		super();
 	}
 
-	public XmlAttributeMapping buildAttributeMapping(IJpaBaseContextFactory factory, XmlPersistentAttribute parent) {
+	public XmlEmbeddedMapping buildAttributeMapping(IJpaBaseContextFactory factory, XmlPersistentAttribute parent) {
 		return new XmlEmbeddedMapping(parent);
 	}
 

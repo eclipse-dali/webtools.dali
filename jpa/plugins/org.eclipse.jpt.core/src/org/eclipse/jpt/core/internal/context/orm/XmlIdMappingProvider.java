@@ -37,7 +37,7 @@ public class XmlIdMappingProvider implements IXmlAttributeMappingProvider
 		return IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public XmlAttributeMapping buildAttributeMapping(IJpaBaseContextFactory factory, XmlPersistentAttribute parent) {
+	public XmlIdMapping buildAttributeMapping(IJpaBaseContextFactory factory, XmlPersistentAttribute parent) {
 		return new XmlIdMapping(parent);
 	}
 

@@ -38,69 +38,109 @@ public class XmlIdMappingTests extends ContextModelTestCase
 		persistenceResource().save(null);
 	}
 	
+	public void testUpdateName() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
+		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		
+		assertEquals("idMapping", xmlIdMapping.getName());
+		assertEquals("idMapping", idResource.getName());
+				
+		//set name in the resource model, verify context model updated
+		idResource.setName("newName");
+		assertEquals("newName", xmlIdMapping.getName());
+		assertEquals("newName", idResource.getName());
+	
+		//set name to null in the resource model
+		idResource.setName(null);
+		assertNull(xmlIdMapping.getName());
+		assertNull(idResource.getName());
+	}
+	
+	public void testModifyName() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
+		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		
+		assertEquals("idMapping", xmlIdMapping.getName());
+		assertEquals("idMapping", idResource.getName());
+				
+		//set name in the context model, verify resource model updated
+		xmlIdMapping.setName("newName");
+		assertEquals("newName", xmlIdMapping.getName());
+		assertEquals("newName", idResource.getName());
+	
+		//set name to null in the context model
+		xmlIdMapping.setName(null);
+		assertNull(xmlIdMapping.getName());
+		assertNull(idResource.getName());
+	}
+	
 	public void testUpdateTemporal() throws Exception {
 		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
 		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
-		Id versionResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		ormResource().save(null);
 		
 		assertNull(xmlIdMapping.getTemporal());
-		assertNull(versionResource.getTemporal());
+		assertNull(idResource.getTemporal());
 				
 		//set temporal in the resource model, verify context model updated
-		versionResource.setTemporal(org.eclipse.jpt.core.internal.resource.orm.TemporalType.DATE);
+		idResource.setTemporal(org.eclipse.jpt.core.internal.resource.orm.TemporalType.DATE);
 		ormResource().save(null);
 		assertEquals(TemporalType.DATE, xmlIdMapping.getTemporal());
-		assertEquals(org.eclipse.jpt.core.internal.resource.orm.TemporalType.DATE, versionResource.getTemporal());
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.TemporalType.DATE, idResource.getTemporal());
 	
-		versionResource.setTemporal(org.eclipse.jpt.core.internal.resource.orm.TemporalType.TIME);
+		idResource.setTemporal(org.eclipse.jpt.core.internal.resource.orm.TemporalType.TIME);
 		ormResource().save(null);
 		assertEquals(TemporalType.TIME, xmlIdMapping.getTemporal());
-		assertEquals(org.eclipse.jpt.core.internal.resource.orm.TemporalType.TIME, versionResource.getTemporal());
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.TemporalType.TIME, idResource.getTemporal());
 
-		versionResource.setTemporal(org.eclipse.jpt.core.internal.resource.orm.TemporalType.TIMESTAMP);
+		idResource.setTemporal(org.eclipse.jpt.core.internal.resource.orm.TemporalType.TIMESTAMP);
 		ormResource().save(null);
 		assertEquals(TemporalType.TIMESTAMP, xmlIdMapping.getTemporal());
-		assertEquals(org.eclipse.jpt.core.internal.resource.orm.TemporalType.TIMESTAMP, versionResource.getTemporal());
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.TemporalType.TIMESTAMP, idResource.getTemporal());
 
 		//set temporal to null in the resource model
-		versionResource.setTemporal(null);
+		idResource.setTemporal(null);
 		ormResource().save(null);
 		assertNull(xmlIdMapping.getTemporal());
-		assertNull(versionResource.getTemporal());
+		assertNull(idResource.getTemporal());
 	}
 	
 	public void testModifyTemporal() throws Exception {
 		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
 		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
-		Id versionResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		ormResource().save(null);
 		
 		assertNull(xmlIdMapping.getTemporal());
-		assertNull(versionResource.getTemporal());
+		assertNull(idResource.getTemporal());
 				
 		//set temporal in the context model, verify resource model updated
 		xmlIdMapping.setTemporal(TemporalType.DATE);
 		ormResource().save(null);
-		assertEquals(org.eclipse.jpt.core.internal.resource.orm.TemporalType.DATE, versionResource.getTemporal());
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.TemporalType.DATE, idResource.getTemporal());
 		assertEquals(TemporalType.DATE, xmlIdMapping.getTemporal());
 	
 		xmlIdMapping.setTemporal(TemporalType.TIME);
 		ormResource().save(null);
-		assertEquals(org.eclipse.jpt.core.internal.resource.orm.TemporalType.TIME, versionResource.getTemporal());
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.TemporalType.TIME, idResource.getTemporal());
 		assertEquals(TemporalType.TIME, xmlIdMapping.getTemporal());
 
 		xmlIdMapping.setTemporal(TemporalType.TIMESTAMP);
 		ormResource().save(null);
-		assertEquals(org.eclipse.jpt.core.internal.resource.orm.TemporalType.TIMESTAMP, versionResource.getTemporal());
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.TemporalType.TIMESTAMP, idResource.getTemporal());
 		assertEquals(TemporalType.TIMESTAMP, xmlIdMapping.getTemporal());
 
 		//set temporal to null in the context model
 		xmlIdMapping.setTemporal(null);
 		ormResource().save(null);
-		assertNull(versionResource.getTemporal());
+		assertNull(idResource.getTemporal());
 		assertNull(xmlIdMapping.getTemporal());
 	}
 	

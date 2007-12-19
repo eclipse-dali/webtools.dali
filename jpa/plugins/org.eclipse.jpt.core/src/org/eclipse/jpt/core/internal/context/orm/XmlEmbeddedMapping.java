@@ -28,15 +28,13 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 
-public class XmlEmbeddedMapping extends XmlAttributeMapping implements IEmbeddedMapping
+public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements IEmbeddedMapping
 {
 	protected final List<XmlAttributeOverride> specifiedAttributeOverrides;
 	
 	protected final List<XmlAttributeOverride> defaultAttributeOverrides;
 
 //	private IEmbeddable embeddable;
-
-	protected Embedded embedded;
 	
 	protected XmlEmbeddedMapping(XmlPersistentAttribute parent) {
 		super(parent);
@@ -51,7 +49,7 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping implements IEmbedded
 //	}
 
 	@Override
-	protected void initializeOn(XmlAttributeMapping newMapping) {
+	protected void initializeOn(XmlAttributeMapping<? extends AttributeMapping> newMapping) {
 		newMapping.initializeFromXmlEmbeddedMapping(this);
 	}
 
@@ -87,7 +85,7 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping implements IEmbedded
 	public XmlAttributeOverride addSpecifiedAttributeOverride(int index) {
 		XmlAttributeOverride attributeOverride = new XmlAttributeOverride(this, this);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
-		this.embedded.getAttributeOverrides().add(index, OrmFactory.eINSTANCE.createAttributeOverride());
+		this.attributeMapping().getAttributeOverrides().add(index, OrmFactory.eINSTANCE.createAttributeOverride());
 		this.fireItemAdded(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
 	}
@@ -98,7 +96,7 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping implements IEmbedded
 	
 	public void removeSpecifiedAttributeOverride(int index) {
 		XmlAttributeOverride removedAttributeOverride = this.specifiedAttributeOverrides.remove(index);
-		this.embedded.getAttributeOverrides().remove(index);
+		this.attributeMapping().getAttributeOverrides().remove(index);
 		fireItemRemoved(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, removedAttributeOverride);
 	}
 
@@ -107,7 +105,7 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping implements IEmbedded
 	}
 	
 	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
-		this.embedded.getAttributeOverrides().move(targetIndex, sourceIndex);
+		this.attributeMapping().getAttributeOverrides().move(targetIndex, sourceIndex);
 		moveItemInList(targetIndex, sourceIndex, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);		
 	}
 
@@ -223,9 +221,9 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping implements IEmbedded
 //		return JavaEmbedded.embeddableFor(attribute, defaultsContext);
 //	}
 	
-//	@Override
+	@Override
 	public void initialize(Embedded embedded) {
-		this.embedded = embedded;
+		super.initialize(embedded);
 		this.initializeSpecifiedAttributeOverrides(embedded);
 	}
 	
@@ -242,8 +240,9 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping implements IEmbedded
 	}
 
 	
+	@Override
 	public void update(Embedded embedded) {
-		this.embedded = embedded;
+		super.update(embedded);
 		this.updateSpecifiedAttributeOverrides(embedded);
 	}
 	
@@ -278,7 +277,7 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping implements IEmbedded
 	
 	@Override
 	public void removeFromResourceModel(TypeMapping typeMapping) {
-		typeMapping.getAttributes().getEmbeddeds().remove(this.embedded);
+		typeMapping.getAttributes().getEmbeddeds().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}

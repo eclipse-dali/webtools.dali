@@ -39,6 +39,45 @@ public class XmlEmbeddedMappingTests extends ContextModelTestCase
 		persistenceResource().save(null);
 	}
 
+	public void testUpdateName() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedMapping");
+		XmlEmbeddedMapping xmlEmbeddedMapping = (XmlEmbeddedMapping) xmlPersistentAttribute.getMapping();
+		Embedded embeddedResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
+		
+		assertEquals("embeddedMapping", xmlEmbeddedMapping.getName());
+		assertEquals("embeddedMapping", embeddedResource.getName());
+				
+		//set name in the resource model, verify context model updated
+		embeddedResource.setName("newName");
+		assertEquals("newName", xmlEmbeddedMapping.getName());
+		assertEquals("newName", embeddedResource.getName());
+	
+		//set name to null in the resource model
+		embeddedResource.setName(null);
+		assertNull(xmlEmbeddedMapping.getName());
+		assertNull(embeddedResource.getName());
+	}
+	
+	public void testModifyName() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedMapping");
+		XmlEmbeddedMapping xmlEmbeddedMapping = (XmlEmbeddedMapping) xmlPersistentAttribute.getMapping();
+		Embedded embeddedResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
+		
+		assertEquals("embeddedMapping", xmlEmbeddedMapping.getName());
+		assertEquals("embeddedMapping", embeddedResource.getName());
+				
+		//set name in the context model, verify resource model updated
+		xmlEmbeddedMapping.setName("newName");
+		assertEquals("newName", xmlEmbeddedMapping.getName());
+		assertEquals("newName", embeddedResource.getName());
+	
+		//set name to null in the context model
+		xmlEmbeddedMapping.setName(null);
+		assertNull(xmlEmbeddedMapping.getName());
+		assertNull(embeddedResource.getName());
+	}
 	
 	public void testAddSpecifiedAttributeOverride() throws Exception {
 		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");

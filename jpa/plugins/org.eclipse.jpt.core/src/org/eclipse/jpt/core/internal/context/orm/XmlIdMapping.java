@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.db.internal.Table;
 
 
-public class XmlIdMapping extends XmlAttributeMapping
+public class XmlIdMapping extends XmlAttributeMapping<Id>
 	implements IIdMapping, IXmlColumnMapping
 {
 	protected final XmlColumn column;
@@ -34,7 +34,6 @@ public class XmlIdMapping extends XmlAttributeMapping
 	protected XmlTableGenerator tableGenerator;
 	protected XmlSequenceGenerator sequenceGenerator;
 
-	protected Id id;
 	
 	protected XmlIdMapping(XmlPersistentAttribute parent) {
 		super(parent);
@@ -52,7 +51,7 @@ public class XmlIdMapping extends XmlAttributeMapping
 	public void setTemporal(TemporalType newTemporal) {
 		TemporalType oldTemporal = this.temporal;
 		this.temporal = newTemporal;
-		this.id.setTemporal(TemporalType.toOrmResourceModel(newTemporal));
+		this.attributeMapping().setTemporal(TemporalType.toOrmResourceModel(newTemporal));
 		firePropertyChanged(IBasicMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 
@@ -61,7 +60,7 @@ public class XmlIdMapping extends XmlAttributeMapping
 			throw new IllegalStateException("gemeratedValue already exists");
 		}
 		this.generatedValue = new XmlGeneratedValue(this);
-		this.id.setGeneratedValue(OrmFactory.eINSTANCE.createGeneratedValue());
+		this.attributeMapping().setGeneratedValue(OrmFactory.eINSTANCE.createGeneratedValue());
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, null, this.generatedValue);
 		return this.generatedValue;
 	}
@@ -72,7 +71,7 @@ public class XmlIdMapping extends XmlAttributeMapping
 		}
 		XmlGeneratedValue oldGeneratedValue = this.generatedValue;
 		this.generatedValue = null;
-		this.id.setGeneratedValue(null);
+		this.attributeMapping().setGeneratedValue(null);
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, oldGeneratedValue, null);
 	}
 	
@@ -91,7 +90,7 @@ public class XmlIdMapping extends XmlAttributeMapping
 			throw new IllegalStateException("sequenceGenerator already exists");
 		}
 		this.sequenceGenerator = new XmlSequenceGenerator(this);
-		this.id.setSequenceGenerator(OrmFactory.eINSTANCE.createSequenceGenerator());
+		this.attributeMapping().setSequenceGenerator(OrmFactory.eINSTANCE.createSequenceGenerator());
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
 		return this.sequenceGenerator;
 	}
@@ -102,7 +101,7 @@ public class XmlIdMapping extends XmlAttributeMapping
 		}
 		XmlSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
 		this.sequenceGenerator = null;
-		this.id.setSequenceGenerator(null);
+		this.attributeMapping().setSequenceGenerator(null);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, null);
 	}
 	
@@ -121,7 +120,7 @@ public class XmlIdMapping extends XmlAttributeMapping
 			throw new IllegalStateException("tableGenerator already exists");
 		}
 		this.tableGenerator = new XmlTableGenerator(this);
-		this.id.setTableGenerator(OrmFactory.eINSTANCE.createTableGenerator());
+		this.attributeMapping().setTableGenerator(OrmFactory.eINSTANCE.createTableGenerator());
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
 		return this.tableGenerator;
 	}
@@ -132,7 +131,7 @@ public class XmlIdMapping extends XmlAttributeMapping
 		}
 		XmlTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = null;
-		this.id.setTableGenerator(null);
+		this.attributeMapping().setTableGenerator(null);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldTableGenerator, null);	
 	}
 	
@@ -144,10 +143,10 @@ public class XmlIdMapping extends XmlAttributeMapping
 		XmlTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = newTableGenerator;
 		if (newTableGenerator != null) {
-			this.id.setTableGenerator(OrmFactory.eINSTANCE.createTableGenerator());
+			this.attributeMapping().setTableGenerator(OrmFactory.eINSTANCE.createTableGenerator());
 		}
 		else {
-			this.id.setTableGenerator(null);
+			this.attributeMapping().setTableGenerator(null);
 		}
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, newTableGenerator);
 	}
@@ -158,7 +157,7 @@ public class XmlIdMapping extends XmlAttributeMapping
 	}
 
 	@Override
-	protected void initializeOn(XmlAttributeMapping newMapping) {
+	protected void initializeOn(XmlAttributeMapping<? extends AttributeMapping> newMapping) {
 		newMapping.initializeFromXmlIdMapping(this);
 	}
 
@@ -212,7 +211,7 @@ public class XmlIdMapping extends XmlAttributeMapping
 	
 	@Override
 	public void removeFromResourceModel(TypeMapping typeMapping) {
-		typeMapping.getAttributes().getIds().remove(this.id);
+		typeMapping.getAttributes().getIds().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}
@@ -237,9 +236,9 @@ public class XmlIdMapping extends XmlAttributeMapping
 		return null;
 	}
 	
-	
+	@Override
 	public void initialize(Id id) {
-		this.id = id;
+		super.initialize(id);
 		this.temporal = this.specifiedTemporal(id);
 		this.column.initialize(id);
 		this.initializeSequenceGenerator(id);
@@ -268,8 +267,9 @@ public class XmlIdMapping extends XmlAttributeMapping
 		}
 	}
 	
+	@Override
 	public void update(Id id) {
-		this.id = id;
+		super.update(id);
 		this.setTemporal(this.specifiedTemporal(id));
 		this.column.update(id);
 		this.updateSequenceGenerator(id);

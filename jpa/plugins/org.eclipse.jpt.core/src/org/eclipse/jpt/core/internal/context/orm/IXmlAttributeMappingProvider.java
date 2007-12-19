@@ -17,7 +17,7 @@ public interface IXmlAttributeMappingProvider
 {
 	String key();
 	
-	XmlAttributeMapping buildAttributeMapping(IJpaBaseContextFactory factory, XmlPersistentAttribute parent);
+	XmlAttributeMapping<? extends AttributeMapping> buildAttributeMapping(IJpaBaseContextFactory factory, XmlPersistentAttribute parent);
 	
 	
 	/**

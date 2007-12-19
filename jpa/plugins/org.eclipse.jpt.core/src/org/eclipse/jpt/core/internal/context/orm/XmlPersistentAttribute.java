@@ -27,11 +27,10 @@ import org.eclipse.jpt.core.internal.resource.orm.Version;
 public class XmlPersistentAttribute extends JpaContextNode
 	implements IPersistentAttribute
 {
-	protected String name;
 
 	protected List<IXmlAttributeMappingProvider> attributeMappingProviders;
 
-	protected XmlAttributeMapping attributeMapping;
+	protected XmlAttributeMapping<? extends AttributeMapping> attributeMapping;
 	
 	protected AttributeMapping attributeMappingResource;
 	
@@ -65,19 +64,16 @@ public class XmlPersistentAttribute extends JpaContextNode
 		throw new IllegalArgumentException();
 	}
 
-	protected XmlAttributeMapping buildAttributeMapping(String key) {
+	protected XmlAttributeMapping<? extends AttributeMapping> buildAttributeMapping(String key) {
 		return this.attributeMappingProvider(key).buildAttributeMapping(jpaFactory(), this);
 	}
 	
 
 	public String getName() {
-		return this.name;
+		return getMapping().getName();
 	}
 
-	public void setName(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		this.attributeMappingResource.setName(newName);
+	protected void nameChanged(String oldName, String newName) {
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 
@@ -85,7 +81,7 @@ public class XmlPersistentAttribute extends JpaContextNode
 		return this.attributeMapping;
 	}
 	
-	public XmlAttributeMapping getMapping() {
+	public XmlAttributeMapping<? extends AttributeMapping> getMapping() {
 		return this.attributeMapping;
 	}
 
@@ -101,7 +97,7 @@ public class XmlPersistentAttribute extends JpaContextNode
 		if (this.mappingKey() == newMappingKey) {
 			return;
 		}
-		XmlAttributeMapping oldMapping = getMapping();
+		XmlAttributeMapping<? extends AttributeMapping> oldMapping = getMapping();
 		this.attributeMapping = buildAttributeMapping(newMappingKey);
 		//TODO persistentType().changeMapping(this, oldMapping, this.attributeMapping);
 		firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, oldMapping, this.attributeMapping);
@@ -111,7 +107,7 @@ public class XmlPersistentAttribute extends JpaContextNode
 		if (this.mappingKey() == newMappingKey) {
 			return;
 		}
-		XmlAttributeMapping oldMapping = getMapping();
+		XmlAttributeMapping<? extends AttributeMapping> oldMapping = getMapping();
 		this.attributeMapping = buildAttributeMapping(newMappingKey);
 		firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, oldMapping, this.attributeMapping);
 	}
@@ -191,37 +187,31 @@ public class XmlPersistentAttribute extends JpaContextNode
 	
 	public void initialize(Basic basic) {
 		this.attributeMappingResource = basic;
-		this.name = basic.getName();
 		((XmlBasicMapping) getMapping()).initialize(basic);
 	}
 	
 	public void initialize(Embedded embedded) {
 		this.attributeMappingResource = embedded;
-		this.name = embedded.getName();
 		((XmlEmbeddedMapping) getMapping()).initialize(embedded);
 	}
 	
 	public void initialize(Version version) {
 		this.attributeMappingResource = version;
-		this.name = version.getName();
 		((XmlVersionMapping) getMapping()).initialize(version);
 	}
 	
 	public void initialize(Id id) {
 		this.attributeMappingResource = id;
-		this.name = id.getName();
 		((XmlIdMapping) getMapping()).initialize(id);
 	}
 	
 	public void initialize(Transient transientResource) {
 		this.attributeMappingResource = transientResource;
-		this.name = transientResource.getName();
 		((XmlTransientMapping) getMapping()).initialize(transientResource);
 	}
 		
 	public void update(Id id) {
 		this.attributeMappingResource = id;
-		this.setName(id.getName());
 		if (mappingKey() == IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
 			((XmlIdMapping) getMapping()).update(id);
 		}
@@ -233,7 +223,6 @@ public class XmlPersistentAttribute extends JpaContextNode
 
 	public void update(Basic basic) {
 		this.attributeMappingResource = basic;
-		this.setName(basic.getName());
 		if (mappingKey() == IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
 			((XmlBasicMapping) getMapping()).update(basic);
 		}
@@ -245,7 +234,6 @@ public class XmlPersistentAttribute extends JpaContextNode
 	
 	public void update(Version version) {
 		this.attributeMappingResource = version;
-		this.setName(version.getName());
 		if (mappingKey() == IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY) {
 			((XmlVersionMapping) getMapping()).update(version);
 		}
@@ -257,7 +245,6 @@ public class XmlPersistentAttribute extends JpaContextNode
 
 	public void update(Embedded embedded) {
 		this.attributeMappingResource = embedded;
-		this.setName(embedded.getName());
 		if (mappingKey() == IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY) {
 			((XmlEmbeddedMapping) getMapping()).update(embedded);
 		}
@@ -269,7 +256,6 @@ public class XmlPersistentAttribute extends JpaContextNode
 	
 	public void update(Transient transientResource) {
 		this.attributeMappingResource = transientResource;
-		this.setName(transientResource.getName());
 		if (mappingKey() == IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
 			((XmlTransientMapping) getMapping()).update(transientResource);
 		}

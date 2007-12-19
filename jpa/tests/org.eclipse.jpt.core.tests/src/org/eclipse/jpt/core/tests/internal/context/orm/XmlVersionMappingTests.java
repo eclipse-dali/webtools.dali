@@ -37,6 +37,46 @@ public class XmlVersionMappingTests extends ContextModelTestCase
 		persistenceResource().save(null);
 	}
 	
+	public void testUpdateName() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionMapping");
+		XmlVersionMapping xmlVersionMapping = (XmlVersionMapping) xmlPersistentAttribute.getMapping();
+		Version versionResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
+		
+		assertEquals("versionMapping", xmlVersionMapping.getName());
+		assertEquals("versionMapping", versionResource.getName());
+				
+		//set name in the resource model, verify context model updated
+		versionResource.setName("newName");
+		assertEquals("newName", xmlVersionMapping.getName());
+		assertEquals("newName", versionResource.getName());
+	
+		//set name to null in the resource model
+		versionResource.setName(null);
+		assertNull(xmlVersionMapping.getName());
+		assertNull(versionResource.getName());
+	}
+	
+	public void testModifyName() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionMapping");
+		XmlVersionMapping xmlVersionMapping = (XmlVersionMapping) xmlPersistentAttribute.getMapping();
+		Version versionResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
+		
+		assertEquals("versionMapping", xmlVersionMapping.getName());
+		assertEquals("versionMapping", versionResource.getName());
+				
+		//set name in the context model, verify resource model updated
+		xmlVersionMapping.setName("newName");
+		assertEquals("newName", xmlVersionMapping.getName());
+		assertEquals("newName", versionResource.getName());
+	
+		//set name to null in the context model
+		xmlVersionMapping.setName(null);
+		assertNull(xmlVersionMapping.getName());
+		assertNull(versionResource.getName());
+	}	
+	
 	public void testUpdateTemporal() throws Exception {
 		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionMapping");

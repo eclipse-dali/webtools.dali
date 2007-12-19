@@ -23,14 +23,12 @@ import org.eclipse.jpt.core.internal.resource.orm.Version;
 import org.eclipse.jpt.db.internal.Table;
 
 
-public class XmlVersionMapping extends XmlAttributeMapping
+public class XmlVersionMapping extends XmlAttributeMapping<Version>
 	implements IVersionMapping, IXmlColumnMapping
 {
 	protected final XmlColumn column;
 
 	protected TemporalType temporal;
-
-	protected Version version;
 	
 	protected XmlVersionMapping(XmlPersistentAttribute parent) {
 		super(parent);
@@ -46,7 +44,7 @@ public class XmlVersionMapping extends XmlAttributeMapping
 		return IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
 	}
 	@Override
-	protected void initializeOn(XmlAttributeMapping newMapping) {
+	protected void initializeOn(XmlAttributeMapping<? extends AttributeMapping> newMapping) {
 		newMapping.initializeFromXmlVersionMapping(this);
 	}
 
@@ -61,7 +59,7 @@ public class XmlVersionMapping extends XmlAttributeMapping
 	public void setTemporal(TemporalType newTemporal) {
 		TemporalType oldTemporal = this.temporal;
 		this.temporal = newTemporal;
-		this.version.setTemporal(TemporalType.toOrmResourceModel(newTemporal));
+		this.attributeMapping().setTemporal(TemporalType.toOrmResourceModel(newTemporal));
 		firePropertyChanged(IBasicMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 
@@ -77,7 +75,7 @@ public class XmlVersionMapping extends XmlAttributeMapping
 	
 	@Override
 	public void removeFromResourceModel(TypeMapping typeMapping) {
-		typeMapping.getAttributes().getVersions().remove(this.version);
+		typeMapping.getAttributes().getVersions().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}
@@ -102,14 +100,16 @@ public class XmlVersionMapping extends XmlAttributeMapping
 		return null;
 	}
 	
+	@Override
 	public void initialize(Version version) {
-		this.version = version;
+		super.initialize(version);
 		this.temporal = this.specifiedTemporal(version);
 		this.column.initialize(version);
 	}
 	
+	@Override
 	public void update(Version version) {
-		this.version = version;
+		super.update(version);
 		this.setTemporal(this.specifiedTemporal(version));
 		this.column.update(version);
 	}

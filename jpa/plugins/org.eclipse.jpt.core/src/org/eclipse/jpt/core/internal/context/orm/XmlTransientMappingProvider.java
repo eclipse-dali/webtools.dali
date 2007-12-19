@@ -38,7 +38,7 @@ public class XmlTransientMappingProvider implements IXmlAttributeMappingProvider
 		return IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public XmlAttributeMapping buildAttributeMapping(IJpaBaseContextFactory factory, XmlPersistentAttribute parent) {
+	public XmlTransientMapping buildAttributeMapping(IJpaBaseContextFactory factory, XmlPersistentAttribute parent) {
 		return new XmlTransientMapping(parent);
 	}
 

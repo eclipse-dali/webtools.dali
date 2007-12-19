@@ -18,16 +18,15 @@ import org.eclipse.jpt.core.internal.resource.orm.Transient;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 
 
-public class XmlTransientMapping extends XmlAttributeMapping implements ITransientMapping
+public class XmlTransientMapping extends XmlAttributeMapping<Transient> implements ITransientMapping
 {
-	protected Transient transientResource;
 	
 	protected XmlTransientMapping(XmlPersistentAttribute parent) {
 		super(parent);
 	}
 
 	@Override
-	protected void initializeOn(XmlAttributeMapping newMapping) {
+	protected void initializeOn(XmlAttributeMapping<? extends AttributeMapping> newMapping) {
 		newMapping.initializeFromXmlTransientMapping(this);
 	}
 
@@ -52,17 +51,19 @@ public class XmlTransientMapping extends XmlAttributeMapping implements ITransie
 	
 	@Override
 	public void removeFromResourceModel(TypeMapping typeMapping) {
-		typeMapping.getAttributes().getTransients().remove(this.transientResource);
+		typeMapping.getAttributes().getTransients().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}
 	}
 	
+	@Override
 	public void initialize(Transient transientResource) {
-		this.transientResource = transientResource;
+		super.initialize(transientResource);
 	}
 	
+	@Override
 	public void update(Transient transientResource) {
-		this.transientResource = transientResource;
+		super.update(transientResource);
 	}
 }

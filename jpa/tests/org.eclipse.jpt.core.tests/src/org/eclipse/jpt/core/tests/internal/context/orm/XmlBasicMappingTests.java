@@ -39,6 +39,46 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 		persistenceResource().save(null);
 	}
 	
+	public void testUpdateName() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		XmlBasicMapping xmlBasicMapping = (XmlBasicMapping) xmlPersistentAttribute.getMapping();
+		Basic basicResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
+		
+		assertEquals("basicMapping", xmlBasicMapping.getName());
+		assertEquals("basicMapping", basicResource.getName());
+				
+		//set name in the resource model, verify context model updated
+		basicResource.setName("newName");
+		assertEquals("newName", xmlBasicMapping.getName());
+		assertEquals("newName", basicResource.getName());
+	
+		//set name to null in the resource model
+		basicResource.setName(null);
+		assertNull(xmlBasicMapping.getName());
+		assertNull(basicResource.getName());
+	}
+	
+	public void testModifyName() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		XmlBasicMapping xmlBasicMapping = (XmlBasicMapping) xmlPersistentAttribute.getMapping();
+		Basic basicResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
+		
+		assertEquals("basicMapping", xmlBasicMapping.getName());
+		assertEquals("basicMapping", basicResource.getName());
+				
+		//set name in the context model, verify resource model updated
+		xmlBasicMapping.setName("newName");
+		assertEquals("newName", xmlBasicMapping.getName());
+		assertEquals("newName", basicResource.getName());
+	
+		//set name to null in the context model
+		xmlBasicMapping.setName(null);
+		assertNull(xmlBasicMapping.getName());
+		assertNull(basicResource.getName());
+	}
+
 	public void testUpdateSpecifiedFetch() throws Exception {
 		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
