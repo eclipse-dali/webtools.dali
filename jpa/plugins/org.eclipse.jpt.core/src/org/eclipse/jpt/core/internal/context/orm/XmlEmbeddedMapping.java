@@ -268,9 +268,6 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 	@Override
 	public AttributeMapping addToResourceModel(TypeMapping typeMapping) {
 		Embedded embedded = OrmFactory.eINSTANCE.createEmbedded();
-		if (typeMapping.getAttributes() == null) {
-			typeMapping.setAttributes(OrmFactory.eINSTANCE.createAttributes());
-		}
 		typeMapping.getAttributes().getEmbeddeds().add(embedded);
 		return embedded;
 	}

@@ -179,6 +179,7 @@ public class XmlMappedSuperclass extends XmlTypeMapping<MappedSuperclass>
 	@Override
 	public MappedSuperclass addToResourceModel(EntityMappings entityMappings) {
 		MappedSuperclass mappedSuperclass = OrmFactory.eINSTANCE.createMappedSuperclass();
+		persistentType().initialize(mappedSuperclass);
 		entityMappings.getMappedSuperclasses().add(mappedSuperclass);
 		return mappedSuperclass;
 	}

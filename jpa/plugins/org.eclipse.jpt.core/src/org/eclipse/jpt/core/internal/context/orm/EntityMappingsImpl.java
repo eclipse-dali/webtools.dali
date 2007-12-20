@@ -209,15 +209,10 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 			// adds short name if package name is specified
 			className = className.substring(getPackage().length() + 1);
 		}
-		TypeMapping typeMapping = createAndAddOrmResourceMapping(persistentType, mappingKey);
+		TypeMapping typeMapping = persistentType.getMapping().addToResourceModel(this.entityMappings);
 		typeMapping.setClassName(className);
 		fireItemAdded(PERSISTENT_TYPES_LIST, index, persistentType);
 		return persistentType;
-	}
-	
-	protected TypeMapping createAndAddOrmResourceMapping(XmlPersistentType persistentType, String mappingKey) {
-		IXmlTypeMappingProvider xmlTypeMappingProvider = persistentType.typeMappingProvider(mappingKey);
-		return xmlTypeMappingProvider.createAndAddOrmResourceMapping(persistentType, this.entityMappings);
 	}
 	
 	protected void addXmlPersistentType(XmlPersistentType xmlPersistentType) { 

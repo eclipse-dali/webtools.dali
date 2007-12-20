@@ -11,9 +11,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
-import org.eclipse.jpt.core.internal.resource.orm.Attributes;
-import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.internal.resource.orm.Transient;
 
 public class XmlTransientMappingProvider implements IXmlAttributeMappingProvider
 {
@@ -41,12 +38,4 @@ public class XmlTransientMappingProvider implements IXmlAttributeMappingProvider
 	public XmlTransientMapping buildAttributeMapping(IJpaBaseContextFactory factory, XmlPersistentAttribute parent) {
 		return new XmlTransientMapping(parent);
 	}
-
-	public Transient createAndAddOrmResourceMapping(XmlPersistentAttribute xmlPersistentAttribute, Attributes attributes) {
-		Transient transientResource = OrmFactory.eINSTANCE.createTransient();
-		xmlPersistentAttribute.initialize(transientResource);
-		attributes.getTransients().add(transientResource);
-		return transientResource;
-	}
-
 }

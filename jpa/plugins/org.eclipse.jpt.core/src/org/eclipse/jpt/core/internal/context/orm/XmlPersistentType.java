@@ -246,11 +246,12 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 	public XmlPersistentAttribute addSpecifiedPersistentAttribute(String mappingKey, String attributeName) {
 		XmlPersistentAttribute persistentAttribute = jpaFactory().createXmlPersistentAttribute(this, mappingKey);
 		int index = insertionIndex(persistentAttribute);
-		if (getMapping().typeMapping.getAttributes() == null) {
-			getMapping().typeMapping.setAttributes(OrmFactory.eINSTANCE.createAttributes());
+		if (getMapping().typeMappingResource().getAttributes() == null) {
+			getMapping().typeMappingResource().setAttributes(OrmFactory.eINSTANCE.createAttributes());
 		}
 		this.specifiedPersistentAttributes.add(index, persistentAttribute);
-		AttributeMapping attributeMapping = getMapping().createAndAddOrmResourceAttributeMapping(persistentAttribute, mappingKey);
+		AttributeMapping attributeMapping = persistentAttribute.getMapping().addToResourceModel(getMapping().typeMappingResource());
+		
 		attributeMapping.setName(attributeName);
 		fireItemAdded(ATTRIBUTES_LIST, index, persistentAttribute);
 		return persistentAttribute;

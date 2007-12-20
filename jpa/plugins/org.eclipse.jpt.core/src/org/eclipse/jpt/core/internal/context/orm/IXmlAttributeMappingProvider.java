@@ -11,19 +11,11 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
-import org.eclipse.jpt.core.internal.resource.orm.Attributes;
 
 public interface IXmlAttributeMappingProvider
 {
 	String key();
 	
 	XmlAttributeMapping<? extends AttributeMapping> buildAttributeMapping(IJpaBaseContextFactory factory, XmlPersistentAttribute parent);
-	
-	
-	/**
-	 * create and orm resource mapping and add it to the attributes.  Also
-	 * set the attributeName on the new resource mapping.
-	 */
-	AttributeMapping createAndAddOrmResourceMapping(XmlPersistentAttribute xmlPersistentAttribute, Attributes attributes);
 
 }

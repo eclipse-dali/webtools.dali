@@ -42,9 +42,6 @@ public class XmlTransientMapping extends XmlAttributeMapping<Transient> implemen
 	@Override
 	public AttributeMapping addToResourceModel(TypeMapping typeMapping) {
 		Basic basic = OrmFactory.eINSTANCE.createBasic();
-		if (typeMapping.getAttributes() == null) {
-			typeMapping.setAttributes(OrmFactory.eINSTANCE.createAttributes());
-		}
 		typeMapping.getAttributes().getBasics().add(basic);
 		return basic;
 	}

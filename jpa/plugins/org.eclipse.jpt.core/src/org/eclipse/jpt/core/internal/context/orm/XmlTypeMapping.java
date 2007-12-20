@@ -15,7 +15,6 @@ import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
@@ -297,10 +296,6 @@ public abstract class XmlTypeMapping<E extends TypeMapping> extends JpaContextNo
 	
 	protected Boolean metadataComplete(TypeMapping typeMapping) {
 		return typeMapping.getMetadataComplete();
-	}
-	
-	protected AttributeMapping createAndAddOrmResourceAttributeMapping(XmlPersistentAttribute persistentAttribute, String mappingKey) {
-		return persistentAttribute.attributeMappingProvider(mappingKey).createAndAddOrmResourceMapping(persistentAttribute, this.typeMapping.getAttributes());
 	}
 
 

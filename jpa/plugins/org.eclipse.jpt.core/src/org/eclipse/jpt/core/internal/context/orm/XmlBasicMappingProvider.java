@@ -11,9 +11,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
-import org.eclipse.jpt.core.internal.resource.orm.Attributes;
-import org.eclipse.jpt.core.internal.resource.orm.Basic;
-import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 
 public class XmlBasicMappingProvider implements IXmlAttributeMappingProvider
 {
@@ -41,12 +38,4 @@ public class XmlBasicMappingProvider implements IXmlAttributeMappingProvider
 	public XmlBasicMapping buildAttributeMapping(IJpaBaseContextFactory factory, XmlPersistentAttribute parent) {
 		return new XmlBasicMapping(parent);
 	}
-	
-	public Basic createAndAddOrmResourceMapping(XmlPersistentAttribute xmlPersistentAttribute, Attributes attributes) {
-		Basic basic = OrmFactory.eINSTANCE.createBasic();
-		xmlPersistentAttribute.initialize(basic);
-		attributes.getBasics().add(basic);
-		return basic;
-	}
-
 }

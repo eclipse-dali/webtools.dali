@@ -202,9 +202,6 @@ public class XmlIdMapping extends XmlAttributeMapping<Id>
 	@Override
 	public AttributeMapping addToResourceModel(TypeMapping typeMapping) {
 		Id id = OrmFactory.eINSTANCE.createId();
-		if (typeMapping.getAttributes() == null) {
-			typeMapping.setAttributes(OrmFactory.eINSTANCE.createAttributes());
-		}
 		typeMapping.getAttributes().getIds().add(id);
 		return id;
 	}

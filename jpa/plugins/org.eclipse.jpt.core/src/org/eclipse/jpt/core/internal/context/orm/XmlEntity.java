@@ -1270,6 +1270,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	@Override
 	public Entity addToResourceModel(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
 		Entity entity = OrmFactory.eINSTANCE.createEntity();
+		persistentType().initialize(entity);
 		entityMappings.getEntities().add(entity);
 		return entity;
 	}

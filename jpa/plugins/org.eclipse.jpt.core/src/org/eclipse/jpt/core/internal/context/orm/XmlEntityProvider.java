@@ -12,8 +12,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
-import org.eclipse.jpt.core.internal.resource.orm.EntityMappings;
-import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 
 
 public class XmlEntityProvider implements IXmlTypeMappingProvider
@@ -24,12 +22,5 @@ public class XmlEntityProvider implements IXmlTypeMappingProvider
 
 	public String key() {
 		return IMappingKeys.ENTITY_TYPE_MAPPING_KEY;
-	}
-	
-	public Entity createAndAddOrmResourceMapping(XmlPersistentType xmlPersistentType, EntityMappings entityMappings) {
-		Entity entity = OrmFactory.eINSTANCE.createEntity();
-		xmlPersistentType.initialize(entity);
-		entityMappings.getEntities().add(entity);
-		return entity;
 	}
 }

@@ -11,9 +11,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
-import org.eclipse.jpt.core.internal.resource.orm.Attributes;
-import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.internal.resource.orm.Version;
 
 public class XmlVersionMappingProvider implements IXmlAttributeMappingProvider
 {
@@ -41,12 +38,4 @@ public class XmlVersionMappingProvider implements IXmlAttributeMappingProvider
 	public XmlVersionMapping buildAttributeMapping(IJpaBaseContextFactory factory, XmlPersistentAttribute parent) {
 		return new XmlVersionMapping(parent);
 	}
-	
-	public Version createAndAddOrmResourceMapping(XmlPersistentAttribute xmlPersistentAttribute, Attributes attributes) {
-		Version version = OrmFactory.eINSTANCE.createVersion();
-		xmlPersistentAttribute.initialize(version);
-		attributes.getVersions().add(version);
-		return version;
-	}
-
 }

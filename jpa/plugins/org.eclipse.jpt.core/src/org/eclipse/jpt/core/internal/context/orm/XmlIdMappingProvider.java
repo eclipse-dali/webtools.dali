@@ -11,9 +11,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
-import org.eclipse.jpt.core.internal.resource.orm.Attributes;
-import org.eclipse.jpt.core.internal.resource.orm.Id;
-import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 
 public class XmlIdMappingProvider implements IXmlAttributeMappingProvider
 {
@@ -40,12 +37,4 @@ public class XmlIdMappingProvider implements IXmlAttributeMappingProvider
 	public XmlIdMapping buildAttributeMapping(IJpaBaseContextFactory factory, XmlPersistentAttribute parent) {
 		return new XmlIdMapping(parent);
 	}
-
-	public Id createAndAddOrmResourceMapping(XmlPersistentAttribute xmlPersistentAttribute, Attributes attributes) {
-		Id id = OrmFactory.eINSTANCE.createId();
-		xmlPersistentAttribute.initialize(id);
-		attributes.getIds().add(id);
-		return id;
-	}
-
 }

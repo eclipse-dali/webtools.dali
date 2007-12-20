@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
-import org.eclipse.jpt.core.internal.resource.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 
 
@@ -20,10 +19,4 @@ public interface IXmlTypeMappingProvider
 	
 	XmlTypeMapping<? extends TypeMapping> buildTypeMapping(IJpaBaseContextFactory factory, XmlPersistentType parent);
 	
-	/**
-	 * create and orm resource mapping and add it to the entityMappings.  Also
-	 * set the className on the new resource mapping.
-	 */
-	TypeMapping createAndAddOrmResourceMapping(XmlPersistentType xmlPersistentType, EntityMappings entityMappings);
-
 }

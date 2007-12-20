@@ -66,6 +66,7 @@ public class XmlEmbeddable extends XmlTypeMapping<Embeddable> implements IEmbedd
 	@Override
 	public Embeddable addToResourceModel(EntityMappings entityMappings) {
 		Embeddable embeddable = OrmFactory.eINSTANCE.createEmbeddable();
+		persistentType().initialize(embeddable);
 		entityMappings.getEmbeddables().add(embeddable);
 		return embeddable;
 	}
