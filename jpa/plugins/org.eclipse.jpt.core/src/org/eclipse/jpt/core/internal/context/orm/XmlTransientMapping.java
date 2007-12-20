@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.ITransientMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
-import org.eclipse.jpt.core.internal.resource.orm.Basic;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.Transient;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
@@ -40,10 +39,10 @@ public class XmlTransientMapping extends XmlAttributeMapping<Transient> implemen
 	}
 
 	@Override
-	public AttributeMapping addToResourceModel(TypeMapping typeMapping) {
-		Basic basic = OrmFactory.eINSTANCE.createBasic();
-		typeMapping.getAttributes().getBasics().add(basic);
-		return basic;
+	public Transient addToResourceModel(TypeMapping typeMapping) {
+		Transient transientResource = OrmFactory.eINSTANCE.createTransient();
+		typeMapping.getAttributes().getTransients().add(transientResource);
+		return transientResource;
 	}
 	
 	@Override

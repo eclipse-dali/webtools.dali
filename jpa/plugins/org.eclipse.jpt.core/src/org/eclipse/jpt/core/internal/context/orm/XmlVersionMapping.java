@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
-import org.eclipse.jpt.core.internal.resource.orm.Basic;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.Version;
@@ -64,10 +63,10 @@ public class XmlVersionMapping extends XmlAttributeMapping<Version>
 	}
 
 	@Override
-	public AttributeMapping addToResourceModel(TypeMapping typeMapping) {
-		Basic basic = OrmFactory.eINSTANCE.createBasic();
-		typeMapping.getAttributes().getBasics().add(basic);
-		return basic;
+	public Version addToResourceModel(TypeMapping typeMapping) {
+		Version version = OrmFactory.eINSTANCE.createVersion();
+		typeMapping.getAttributes().getVersions().add(version);
+		return version;
 	}
 	
 	@Override

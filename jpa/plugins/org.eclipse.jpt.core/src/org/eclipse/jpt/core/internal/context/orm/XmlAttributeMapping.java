@@ -86,10 +86,10 @@ public abstract class XmlAttributeMapping<E extends AttributeMapping> extends Jp
 	public void initializeFromXmlEmbeddedMapping(XmlEmbeddedMapping oldMapping) {
 		initializeFromXmlAttributeMapping(oldMapping);
 	}
-//
-//	public void initializeFromXmlEmbeddedIdMapping(XmlEmbeddedId oldMapping) {
-//		initializeFromXmlAttributeMapping(oldMapping);
-//	}
+
+	public void initializeFromXmlEmbeddedIdMapping(XmlEmbeddedIdMapping oldMapping) {
+		initializeFromXmlAttributeMapping(oldMapping);
+	}
 
 	public void initializeFromXmlVersionMapping(XmlVersionMapping oldMapping) {
 		initializeFromXmlAttributeMapping(oldMapping);
@@ -182,7 +182,7 @@ public abstract class XmlAttributeMapping<E extends AttributeMapping> extends Jp
 	}
 	public abstract void removeFromResourceModel(org.eclipse.jpt.core.internal.resource.orm.TypeMapping typeMapping);
 	
-	public abstract AttributeMapping addToResourceModel(org.eclipse.jpt.core.internal.resource.orm.TypeMapping typeMapping);
+	public abstract E addToResourceModel(org.eclipse.jpt.core.internal.resource.orm.TypeMapping typeMapping);
 
 	protected E attributeMapping() {
 		return this.attributeMapping;

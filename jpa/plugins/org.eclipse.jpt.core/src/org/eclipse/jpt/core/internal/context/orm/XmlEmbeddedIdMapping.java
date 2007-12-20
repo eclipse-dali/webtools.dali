@@ -21,14 +21,14 @@ import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeOverride;
-import org.eclipse.jpt.core.internal.resource.orm.Embedded;
+import org.eclipse.jpt.core.internal.resource.orm.EmbeddedId;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 
-public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements IEmbeddedMapping
+public class XmlEmbeddedIdMapping extends XmlAttributeMapping<EmbeddedId> implements IEmbeddedMapping
 {
 	protected final List<XmlAttributeOverride> specifiedAttributeOverrides;
 	
@@ -36,7 +36,7 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 
 //	private IEmbeddable embeddable;
 	
-	protected XmlEmbeddedMapping(XmlPersistentAttribute parent) {
+	protected XmlEmbeddedIdMapping(XmlPersistentAttribute parent) {
 		super(parent);
 		this.specifiedAttributeOverrides = new ArrayList<XmlAttributeOverride>();
 		this.defaultAttributeOverrides = new ArrayList<XmlAttributeOverride>();
@@ -50,7 +50,7 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 
 	@Override
 	protected void initializeOn(XmlAttributeMapping<? extends AttributeMapping> newMapping) {
-		newMapping.initializeFromXmlEmbeddedMapping(this);
+		newMapping.initializeFromXmlEmbeddedIdMapping(this);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 	}
 
 	public String getKey() {
-		return IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
+		return IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -222,13 +222,13 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 //	}
 	
 	@Override
-	public void initialize(Embedded embedded) {
-		super.initialize(embedded);
-		this.initializeSpecifiedAttributeOverrides(embedded);
+	public void initialize(EmbeddedId embeddedId) {
+		super.initialize(embeddedId);
+		this.initializeSpecifiedAttributeOverrides(embeddedId);
 	}
 	
-	protected void initializeSpecifiedAttributeOverrides(Embedded embedded) {
-		for (AttributeOverride attributeOverride : embedded.getAttributeOverrides()) {
+	protected void initializeSpecifiedAttributeOverrides(EmbeddedId embeddedId) {
+		for (AttributeOverride attributeOverride : embeddedId.getAttributeOverrides()) {
 			this.specifiedAttributeOverrides.add(createAttributeOverride(attributeOverride));
 		}
 	}
@@ -241,14 +241,14 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 
 	
 	@Override
-	public void update(Embedded embedded) {
-		super.update(embedded);
-		this.updateSpecifiedAttributeOverrides(embedded);
+	public void update(EmbeddedId embeddedId) {
+		super.update(embeddedId);
+		this.updateSpecifiedAttributeOverrides(embeddedId);
 	}
 	
-	protected void updateSpecifiedAttributeOverrides(Embedded embedded) {
+	protected void updateSpecifiedAttributeOverrides(EmbeddedId embeddedId) {
 		ListIterator<XmlAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
-		ListIterator<AttributeOverride> resourceAttributeOverrides = embedded.getAttributeOverrides().listIterator();
+		ListIterator<AttributeOverride> resourceAttributeOverrides = embeddedId.getAttributeOverrides().listIterator();
 		
 		while (attributeOverrides.hasNext()) {
 			XmlAttributeOverride attributeOverride = attributeOverrides.next();
@@ -266,10 +266,10 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 	}
 
 	@Override
-	public Embedded addToResourceModel(TypeMapping typeMapping) {
-		Embedded embedded = OrmFactory.eINSTANCE.createEmbedded();
-		typeMapping.getAttributes().getEmbeddeds().add(embedded);
-		return embedded;
+	public EmbeddedId addToResourceModel(TypeMapping typeMapping) {
+		EmbeddedId embeddedId = OrmFactory.eINSTANCE.createEmbeddedId();
+		typeMapping.getAttributes().getEmbeddedIds().add(embeddedId);
+		return embeddedId;
 	}
 	
 	@Override

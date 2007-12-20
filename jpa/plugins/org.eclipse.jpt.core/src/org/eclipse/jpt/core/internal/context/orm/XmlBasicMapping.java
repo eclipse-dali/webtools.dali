@@ -243,7 +243,7 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 	}
 	
 	@Override
-	public AttributeMapping addToResourceModel(TypeMapping typeMapping) {
+	public Basic addToResourceModel(TypeMapping typeMapping) {
 		Basic basic = OrmFactory.eINSTANCE.createBasic();
 		typeMapping.getAttributes().getBasics().add(basic);
 		return basic;

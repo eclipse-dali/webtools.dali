@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.Basic;
 import org.eclipse.jpt.core.internal.resource.orm.Embedded;
+import org.eclipse.jpt.core.internal.resource.orm.EmbeddedId;
 import org.eclipse.jpt.core.internal.resource.orm.Id;
 import org.eclipse.jpt.core.internal.resource.orm.Transient;
 import org.eclipse.jpt.core.internal.resource.orm.Version;
@@ -46,12 +47,12 @@ public class XmlPersistentAttribute extends JpaContextNode
 		list.add(XmlBasicMappingProvider.instance());
 		list.add(XmlTransientMappingProvider.instance());
 		list.add(XmlIdMappingProvider.instance());
-//		list.add(XmlManyToManyProvider.instance());
-//		list.add(XmlOneToManyProvider.instance());
-//		list.add(XmlManyToOneProvider.instance());
-//		list.add(XmlOneToOneProvider.instance());
+//		list.add(XmlManyToManyMappingProvider.instance());
+//		list.add(XmlOneToManyMappingProvider.instance());
+//		list.add(XmlManyToOneMappingProvider.instance());
+//		list.add(XmlOneToOneMappingProvider.instance());
 		list.add(XmlVersionMappingProvider.instance());
-//		list.add(XmlEmbeddedIdProvider.instance());
+		list.add(XmlEmbeddedIdMappingProvider.instance());
 		return list;
 	}
 	
@@ -205,6 +206,11 @@ public class XmlPersistentAttribute extends JpaContextNode
 		((XmlIdMapping) getMapping()).initialize(id);
 	}
 	
+	public void initialize(EmbeddedId embeddedId) {
+		this.attributeMappingResource = embeddedId;
+		((XmlEmbeddedIdMapping) getMapping()).initialize(embeddedId);
+	}
+	
 	public void initialize(Transient transientResource) {
 		this.attributeMappingResource = transientResource;
 		((XmlTransientMapping) getMapping()).initialize(transientResource);
@@ -218,6 +224,17 @@ public class XmlPersistentAttribute extends JpaContextNode
 		else {
 			setSpecifiedMappingKey_(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 			((XmlIdMapping) getMapping()).initialize(id);				
+		}
+	}
+	
+	public void update(EmbeddedId embeddedId) {
+		this.attributeMappingResource = embeddedId;
+		if (mappingKey() == IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
+			((XmlEmbeddedIdMapping) getMapping()).update(embeddedId);
+		}
+		else {
+			setSpecifiedMappingKey_(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+			((XmlEmbeddedIdMapping) getMapping()).initialize(embeddedId);				
 		}
 	}
 

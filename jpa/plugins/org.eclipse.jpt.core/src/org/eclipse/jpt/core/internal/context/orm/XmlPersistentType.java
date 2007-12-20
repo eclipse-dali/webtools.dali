@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.internal.resource.orm.Attributes;
 import org.eclipse.jpt.core.internal.resource.orm.Basic;
 import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
 import org.eclipse.jpt.core.internal.resource.orm.Embedded;
+import org.eclipse.jpt.core.internal.resource.orm.EmbeddedId;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.Id;
 import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
@@ -346,6 +347,11 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 			xmlPersistentAttribute.initialize(id);
 			this.specifiedPersistentAttributes.add(xmlPersistentAttribute);
 		}
+		for (EmbeddedId embeddedId : attributes.getEmbeddedIds()) {
+			XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+			xmlPersistentAttribute.initialize(embeddedId);
+			this.specifiedPersistentAttributes.add(xmlPersistentAttribute);
+		}
 		for (Basic basic : attributes.getBasics()) {
 			XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 			xmlPersistentAttribute.initialize(basic);
@@ -425,6 +431,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		ListIterator<XmlPersistentAttribute> xmlPersistentAttributes = this.specifiedAttributes();
 		if (typeMapping.getAttributes() != null) {
 			this.updateIds(typeMapping.getAttributes(), xmlPersistentAttributes);
+			this.updateEmbeddedIds(typeMapping.getAttributes(), xmlPersistentAttributes);
 			this.updateBasics(typeMapping.getAttributes(), xmlPersistentAttributes);
 			this.updateVersions(typeMapping.getAttributes(), xmlPersistentAttributes);
 			this.updateEmbeddeds(typeMapping.getAttributes(), xmlPersistentAttributes);		
@@ -443,6 +450,19 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 			else {
 				XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 				xmlPersistentAttribute.initialize(id);
+				addSpecifiedPersistentAttribute_(xmlPersistentAttribute);
+			}
+		}
+	}
+	
+	protected void updateEmbeddedIds(org.eclipse.jpt.core.internal.resource.orm.Attributes attributes, ListIterator<XmlPersistentAttribute> xmlPersistentAttributes) {
+		for (EmbeddedId embeddedId : attributes.getEmbeddedIds()) {
+			if (xmlPersistentAttributes.hasNext()) {
+				xmlPersistentAttributes.next().update(embeddedId);
+			}
+			else {
+				XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+				xmlPersistentAttribute.initialize(embeddedId);
 				addSpecifiedPersistentAttribute_(xmlPersistentAttribute);
 			}
 		}
