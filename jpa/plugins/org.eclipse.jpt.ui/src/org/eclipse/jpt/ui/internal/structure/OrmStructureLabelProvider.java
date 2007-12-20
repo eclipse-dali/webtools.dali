@@ -13,6 +13,7 @@ package org.eclipse.jpt.ui.internal.structure;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.swt.graphics.Image;
 
@@ -31,10 +32,9 @@ public class OrmStructureLabelProvider implements ILabelProvider
 			return ((XmlPersistentType) element).getName();
 		}
 		
-		// TODO - attributes
-//		if (element instanceof XmlPersistentAttribute) {
-//			return ((XmlPersistentAttribute) element).getName();
-//		}
+		if (element instanceof XmlPersistentAttribute) {
+			return ((XmlPersistentAttribute) element).getName();
+		}
 		
 		return element.toString();
 	}
