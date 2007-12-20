@@ -33,8 +33,6 @@ public class XmlPersistentAttribute extends JpaContextNode
 
 	protected XmlAttributeMapping<? extends AttributeMapping> attributeMapping;
 	
-	protected AttributeMapping attributeMappingResource;
-	
 	public XmlPersistentAttribute(XmlPersistentType parent, String mappingKey) {
 		super(parent);
 		this.attributeMappingProviders = buildAttributeMappingProviders();
@@ -187,37 +185,30 @@ public class XmlPersistentAttribute extends JpaContextNode
 	}
 	
 	public void initialize(Basic basic) {
-		this.attributeMappingResource = basic;
 		((XmlBasicMapping) getMapping()).initialize(basic);
 	}
 	
 	public void initialize(Embedded embedded) {
-		this.attributeMappingResource = embedded;
 		((XmlEmbeddedMapping) getMapping()).initialize(embedded);
 	}
 	
 	public void initialize(Version version) {
-		this.attributeMappingResource = version;
 		((XmlVersionMapping) getMapping()).initialize(version);
 	}
 	
 	public void initialize(Id id) {
-		this.attributeMappingResource = id;
 		((XmlIdMapping) getMapping()).initialize(id);
 	}
 	
 	public void initialize(EmbeddedId embeddedId) {
-		this.attributeMappingResource = embeddedId;
 		((XmlEmbeddedIdMapping) getMapping()).initialize(embeddedId);
 	}
 	
 	public void initialize(Transient transientResource) {
-		this.attributeMappingResource = transientResource;
 		((XmlTransientMapping) getMapping()).initialize(transientResource);
 	}
 		
 	public void update(Id id) {
-		this.attributeMappingResource = id;
 		if (mappingKey() == IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
 			((XmlIdMapping) getMapping()).update(id);
 		}
@@ -228,7 +219,6 @@ public class XmlPersistentAttribute extends JpaContextNode
 	}
 	
 	public void update(EmbeddedId embeddedId) {
-		this.attributeMappingResource = embeddedId;
 		if (mappingKey() == IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
 			((XmlEmbeddedIdMapping) getMapping()).update(embeddedId);
 		}
@@ -239,7 +229,6 @@ public class XmlPersistentAttribute extends JpaContextNode
 	}
 
 	public void update(Basic basic) {
-		this.attributeMappingResource = basic;
 		if (mappingKey() == IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
 			((XmlBasicMapping) getMapping()).update(basic);
 		}
@@ -250,7 +239,6 @@ public class XmlPersistentAttribute extends JpaContextNode
 	}
 	
 	public void update(Version version) {
-		this.attributeMappingResource = version;
 		if (mappingKey() == IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY) {
 			((XmlVersionMapping) getMapping()).update(version);
 		}
@@ -261,7 +249,6 @@ public class XmlPersistentAttribute extends JpaContextNode
 	}
 
 	public void update(Embedded embedded) {
-		this.attributeMappingResource = embedded;
 		if (mappingKey() == IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY) {
 			((XmlEmbeddedMapping) getMapping()).update(embedded);
 		}
@@ -272,7 +259,6 @@ public class XmlPersistentAttribute extends JpaContextNode
 	}
 	
 	public void update(Transient transientResource) {
-		this.attributeMappingResource = transientResource;
 		if (mappingKey() == IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
 			((XmlTransientMapping) getMapping()).update(transientResource);
 		}
@@ -281,5 +267,4 @@ public class XmlPersistentAttribute extends JpaContextNode
 			((XmlTransientMapping) getMapping()).initialize(transientResource);				
 		}
 	}
-
 }
