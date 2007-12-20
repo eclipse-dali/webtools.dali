@@ -127,7 +127,7 @@
     <genClasses ecoreClass="orm.ecore#//Embeddable"/>
     <genClasses ecoreClass="orm.ecore#//Attributes">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Attributes/ids"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Attributes/embeddedId"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Attributes/embeddedIds"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Attributes/basics"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Attributes/versions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Attributes/manyToOnes"/>

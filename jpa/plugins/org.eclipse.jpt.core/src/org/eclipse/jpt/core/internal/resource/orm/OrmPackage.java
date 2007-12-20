@@ -925,13 +925,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int ATTRIBUTES__IDS = 0;
 
 	/**
-	 * The feature id for the '<em><b>Embedded Id</b></em>' containment reference.
+	 * The feature id for the '<em><b>Embedded Ids</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ATTRIBUTES__EMBEDDED_ID = 1;
+	public static final int ATTRIBUTES__EMBEDDED_IDS = 1;
 
 	/**
 	 * The feature id for the '<em><b>Basics</b></em>' containment reference list.
@@ -5264,15 +5264,15 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getEmbeddedId <em>Embedded Id</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getEmbeddedIds <em>Embedded Ids</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Embedded Id</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.Attributes#getEmbeddedId()
+	 * @return the meta object for the containment reference list '<em>Embedded Ids</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Attributes#getEmbeddedIds()
 	 * @see #getAttributes()
 	 * @generated
 	 */
-	public EReference getAttributes_EmbeddedId()
+	public EReference getAttributes_EmbeddedIds()
 	{
 		return (EReference)attributesEClass.getEStructuralFeatures().get(1);
 	}
@@ -8004,7 +8004,7 @@ public class OrmPackage extends EPackageImpl
 
 		attributesEClass = createEClass(ATTRIBUTES);
 		createEReference(attributesEClass, ATTRIBUTES__IDS);
-		createEReference(attributesEClass, ATTRIBUTES__EMBEDDED_ID);
+		createEReference(attributesEClass, ATTRIBUTES__EMBEDDED_IDS);
 		createEReference(attributesEClass, ATTRIBUTES__BASICS);
 		createEReference(attributesEClass, ATTRIBUTES__VERSIONS);
 		createEReference(attributesEClass, ATTRIBUTES__MANY_TO_ONES);
@@ -8397,7 +8397,7 @@ public class OrmPackage extends EPackageImpl
 
 		initEClass(attributesEClass, Attributes.class, "Attributes", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getAttributes_Ids(), this.getId(), null, "ids", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAttributes_EmbeddedId(), this.getEmbeddedId(), null, "embeddedId", null, 0, 1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAttributes_EmbeddedIds(), this.getEmbeddedId(), null, "embeddedIds", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAttributes_Basics(), this.getBasic(), null, "basics", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAttributes_Versions(), this.getVersion(), null, "versions", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getAttributes_ManyToOnes(), this.getManyToOne(), null, "manyToOnes", null, 0, -1, Attributes.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -9279,12 +9279,12 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference ATTRIBUTES__IDS = eINSTANCE.getAttributes_Ids();
 
 		/**
-		 * The meta object literal for the '<em><b>Embedded Id</b></em>' containment reference feature.
+		 * The meta object literal for the '<em><b>Embedded Ids</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference ATTRIBUTES__EMBEDDED_ID = eINSTANCE.getAttributes_EmbeddedId();
+		public static final EReference ATTRIBUTES__EMBEDDED_IDS = eINSTANCE.getAttributes_EmbeddedIds();
 
 		/**
 		 * The meta object literal for the '<em><b>Basics</b></em>' containment reference list feature.

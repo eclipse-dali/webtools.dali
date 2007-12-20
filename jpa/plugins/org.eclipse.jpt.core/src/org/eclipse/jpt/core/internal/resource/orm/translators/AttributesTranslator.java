@@ -43,7 +43,7 @@ public class AttributesTranslator extends Translator
 	}
 	
 	private Translator createEmbeddedIdTranslator() {
-		return new EmbeddedIdTranslator(EMBEDDED_ID, ORM_PKG.getAttributes_EmbeddedId());
+		return new EmbeddedIdTranslator(EMBEDDED_ID, ORM_PKG.getAttributes_EmbeddedIds());
 	}
 	
 	private Translator createBasicTranslator() {

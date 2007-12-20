@@ -10,12 +10,10 @@
 package org.eclipse.jpt.core.internal.resource.orm;
 
 import java.util.Collection;
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
@@ -30,7 +28,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getIds <em>Ids</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getEmbeddedId <em>Embedded Id</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getEmbeddedIds <em>Embedded Ids</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getBasics <em>Basics</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getVersions <em>Versions</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getManyToOnes <em>Many To Ones</em>}</li>
@@ -60,14 +58,14 @@ public class Attributes extends JpaEObject implements IJpaEObject
 	protected EList<Id> ids;
 
 	/**
-	 * The cached value of the '{@link #getEmbeddedId() <em>Embedded Id</em>}' containment reference.
+	 * The cached value of the '{@link #getEmbeddedIds() <em>Embedded Ids</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getEmbeddedId()
+	 * @see #getEmbeddedIds()
 	 * @generated
 	 * @ordered
 	 */
-	protected EmbeddedId embeddedId;
+	protected EList<EmbeddedId> embeddedIds;
 
 	/**
 	 * The cached value of the '{@link #getBasics() <em>Basics</em>}' containment reference list.
@@ -194,63 +192,26 @@ public class Attributes extends JpaEObject implements IJpaEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Embedded Id</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Embedded Ids</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.internal.resource.orm.EmbeddedId}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Embedded Id</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Embedded Ids</em>' containment reference list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Embedded Id</em>' containment reference.
-	 * @see #setEmbeddedId(EmbeddedId)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAttributes_EmbeddedId()
+	 * @return the value of the '<em>Embedded Ids</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAttributes_EmbeddedIds()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EmbeddedId getEmbeddedId()
+	public EList<EmbeddedId> getEmbeddedIds()
 	{
-		return embeddedId;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public NotificationChain basicSetEmbeddedId(EmbeddedId newEmbeddedId, NotificationChain msgs)
-	{
-		EmbeddedId oldEmbeddedId = embeddedId;
-		embeddedId = newEmbeddedId;
-		if (eNotificationRequired())
+		if (embeddedIds == null)
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ATTRIBUTES__EMBEDDED_ID, oldEmbeddedId, newEmbeddedId);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
+			embeddedIds = new EObjectContainmentEList<EmbeddedId>(EmbeddedId.class, this, OrmPackage.ATTRIBUTES__EMBEDDED_IDS);
 		}
-		return msgs;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Attributes#getEmbeddedId <em>Embedded Id</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Embedded Id</em>' containment reference.
-	 * @see #getEmbeddedId()
-	 * @generated
-	 */
-	public void setEmbeddedId(EmbeddedId newEmbeddedId)
-	{
-		if (newEmbeddedId != embeddedId)
-		{
-			NotificationChain msgs = null;
-			if (embeddedId != null)
-				msgs = ((InternalEObject)embeddedId).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ATTRIBUTES__EMBEDDED_ID, null, msgs);
-			if (newEmbeddedId != null)
-				msgs = ((InternalEObject)newEmbeddedId).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ATTRIBUTES__EMBEDDED_ID, null, msgs);
-			msgs = basicSetEmbeddedId(newEmbeddedId, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ATTRIBUTES__EMBEDDED_ID, newEmbeddedId, newEmbeddedId));
+		return embeddedIds;
 	}
 
 	/**
@@ -449,8 +410,8 @@ public class Attributes extends JpaEObject implements IJpaEObject
 		{
 			case OrmPackage.ATTRIBUTES__IDS:
 				return ((InternalEList<?>)getIds()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ATTRIBUTES__EMBEDDED_ID:
-				return basicSetEmbeddedId(null, msgs);
+			case OrmPackage.ATTRIBUTES__EMBEDDED_IDS:
+				return ((InternalEList<?>)getEmbeddedIds()).basicRemove(otherEnd, msgs);
 			case OrmPackage.ATTRIBUTES__BASICS:
 				return ((InternalEList<?>)getBasics()).basicRemove(otherEnd, msgs);
 			case OrmPackage.ATTRIBUTES__VERSIONS:
@@ -483,8 +444,8 @@ public class Attributes extends JpaEObject implements IJpaEObject
 		{
 			case OrmPackage.ATTRIBUTES__IDS:
 				return getIds();
-			case OrmPackage.ATTRIBUTES__EMBEDDED_ID:
-				return getEmbeddedId();
+			case OrmPackage.ATTRIBUTES__EMBEDDED_IDS:
+				return getEmbeddedIds();
 			case OrmPackage.ATTRIBUTES__BASICS:
 				return getBasics();
 			case OrmPackage.ATTRIBUTES__VERSIONS:
@@ -520,8 +481,9 @@ public class Attributes extends JpaEObject implements IJpaEObject
 				getIds().clear();
 				getIds().addAll((Collection<? extends Id>)newValue);
 				return;
-			case OrmPackage.ATTRIBUTES__EMBEDDED_ID:
-				setEmbeddedId((EmbeddedId)newValue);
+			case OrmPackage.ATTRIBUTES__EMBEDDED_IDS:
+				getEmbeddedIds().clear();
+				getEmbeddedIds().addAll((Collection<? extends EmbeddedId>)newValue);
 				return;
 			case OrmPackage.ATTRIBUTES__BASICS:
 				getBasics().clear();
@@ -572,8 +534,8 @@ public class Attributes extends JpaEObject implements IJpaEObject
 			case OrmPackage.ATTRIBUTES__IDS:
 				getIds().clear();
 				return;
-			case OrmPackage.ATTRIBUTES__EMBEDDED_ID:
-				setEmbeddedId((EmbeddedId)null);
+			case OrmPackage.ATTRIBUTES__EMBEDDED_IDS:
+				getEmbeddedIds().clear();
 				return;
 			case OrmPackage.ATTRIBUTES__BASICS:
 				getBasics().clear();
@@ -615,8 +577,8 @@ public class Attributes extends JpaEObject implements IJpaEObject
 		{
 			case OrmPackage.ATTRIBUTES__IDS:
 				return ids != null && !ids.isEmpty();
-			case OrmPackage.ATTRIBUTES__EMBEDDED_ID:
-				return embeddedId != null;
+			case OrmPackage.ATTRIBUTES__EMBEDDED_IDS:
+				return embeddedIds != null && !embeddedIds.isEmpty();
 			case OrmPackage.ATTRIBUTES__BASICS:
 				return basics != null && !basics.isEmpty();
 			case OrmPackage.ATTRIBUTES__VERSIONS:

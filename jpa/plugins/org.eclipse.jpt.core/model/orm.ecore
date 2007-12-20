@@ -134,8 +134,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="Attributes">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ids" upperBound="-1" eType="#//Id"
         containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="embeddedId" eType="#//EmbeddedId"
-        containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="embeddedIds" upperBound="-1"
+        eType="#//EmbeddedId" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="basics" upperBound="-1"
         eType="#//Basic" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="versions" upperBound="-1"
