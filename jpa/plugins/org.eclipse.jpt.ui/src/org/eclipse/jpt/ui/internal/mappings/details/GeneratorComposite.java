@@ -3,20 +3,17 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jpt.core.internal.mappings.IGenerator;
-import org.eclipse.jpt.core.internal.mappings.IId;
-import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.core.internal.context.base.IGenerator;
+import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
@@ -28,21 +25,22 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 /**
  * GeneratorComposite
  */
-public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaComposite
+@SuppressWarnings("nls")
+public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaComposite<IIdMapping>
 {
-	private IIdMapping id;
 	private E generator;
 	private Adapter generatorListener;
-
+	private IIdMapping id;
 	protected Text nameTextWidget;
 
-	public GeneratorComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, commandStack, widgetFactory);
+	public GeneratorComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+		super(parent, SWT.NULL, widgetFactory);
 		this.generatorListener = buildGeneratorListner();
 	}
-	
+
 	private Adapter buildGeneratorListner() {
 		return new AdapterImpl() {
+			@Override
 			public void notifyChanged(Notification notification) {
 				generatorChanged(notification);
 			}
@@ -51,7 +49,7 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 
 	/**
 	 * Builds the Generator specifiedName viewer.
-	 * 
+	 *
 	 * @param parent
 	 * @return
 	 */
@@ -62,9 +60,9 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 				if (isPopulating()) {
 					return;
 				}
-				
+
 				String name = text.getText();
-				if (name.equals("")) { //$NON-NLS-1$
+				if (name.equals("")) {
 					if (getGenerator().getName() == null) {
 						return;
 					}
@@ -80,11 +78,25 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 		return text;
 	}
 
+	protected void clear() {
+		this.clearNameViewer();
+	}
+
+	protected void clearNameViewer() {
+		this.nameTextWidget.setText("");
+	}
+
 	protected abstract E createGenerator();
 
 	@Override
-	protected void doPopulate(EObject obj) {
-		this.id = (IIdMapping) obj;
+	protected void disengageListeners() {
+		if (this.generator != null) {
+			this.generator.eAdapters().remove(this.generatorListener);
+		}
+	}
+
+	@Override
+	protected void doPopulate() {
 		if (this.id  == null) {
 			this.generator = null;
 			return;
@@ -99,27 +111,13 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 	}
 
 	@Override
-	protected void doPopulate() {
-		populateNameViewer();
-	}
-	
 	protected void engageListeners() {
 		if (this.generator != null) {
 			this.generator.eAdapters().add(this.generatorListener);
 		}
 	}
 
-	protected void disengageListeners() {
-		if (this.generator != null) {
-			this.generator.eAdapters().remove(this.generatorListener);
-		}
-	}
-
 	protected abstract E generator(IIdMapping id);
-	
-	protected IIdMapping idMapping() {
-		return this.id;
-	}
 
 	protected void generatorChanged(Notification notification) {
 		if (notification.getFeatureID(IGenerator.class) == JpaCoreMappingsPackage.IGENERATOR__NAME) {
@@ -141,6 +139,14 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 		}
 	}
 
+	protected E getGenerator() {
+		return this.generator;
+	}
+
+	protected IIdMapping idMapping() {
+		return this.id;
+	}
+
 	private void populateNameViewer() {
 		String name = this.getGenerator().getName();
 		if (name != null) {
@@ -151,17 +157,5 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 		else {
 			this.clearNameViewer();
 		}
-	}
-
-	protected E getGenerator() {
-		return this.generator;
-	}
-
-	protected void clear() {
-		this.clearNameViewer();
-	}
-
-	protected void clearNameViewer() {
-		this.nameTextWidget.setText(""); //$NON-NLS-1$
 	}
 }

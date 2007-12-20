@@ -3,24 +3,22 @@
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.eclipse.jpt.core.internal.mappings.IGeneratedValue;
-import org.eclipse.jpt.core.internal.mappings.IId;
-import org.eclipse.jpt.core.internal.mappings.ISequenceGenerator;
-import org.eclipse.jpt.core.internal.mappings.ITableGenerator;
-import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
-import org.eclipse.jpt.core.internal.mappings.TemporalType;
+import org.eclipse.jpt.core.internal.context.base.IGeneratedValue;
+import org.eclipse.jpt.core.internal.context.base.IIdMapping;
+import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
+import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
+import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -40,35 +38,29 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class IdComposite extends BaseJpaComposite 
+public class IdComposite extends BaseJpaComposite<IIdMapping>
 {
-	private IIdMapping id;
 	private Adapter idListener;
-	
 	private ColumnComposite columnComposite;
-
 	private EnumComboViewer temporalTypeViewer;
-	
 	private Section pkGenerationSection;
 	private Button primaryKeyGenerationCheckBox;
 	private GeneratedValueComposite generatedValueComposite;
-	
 	private Section tableGenSection;
 	private Button tableGeneratorCheckBox;
 	private TableGeneratorComposite tableGeneratorComposite;
-	
 	private Section sequenceGenSection;
 	private Button sequenceGeneratorCheckBox;
 	private SequenceGeneratorComposite sequenceGeneratorComposite;
 
-	
-	public IdComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, commandStack, widgetFactory);
-		this.idListener = buildIdListener();
+	public IdComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+		super(parent, SWT.NULL, widgetFactory);
+		this.subject()Listener = buildIdListener();
 	}
-	
+
 	private Adapter buildIdListener() {
 		return new AdapterImpl() {
+			@Override
 			public void notifyChanged(Notification notification) {
 				idMappingChanged(notification);
 			}
@@ -115,7 +107,7 @@ public class IdComposite extends BaseJpaComposite
 		layout.marginWidth = 0;
 		layout.marginHeight = 0;
 		composite.setLayout(layout);
-		
+
 		Control generalControl = buildGeneralComposite(composite);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -128,22 +120,22 @@ public class IdComposite extends BaseJpaComposite
 		gridData.grabExcessHorizontalSpace = true;
 		generationControl.setLayoutData(gridData);
 	}
-	
+
 	private Control buildGeneralComposite(Composite composite) {
 		Composite generalComposite = getWidgetFactory().createComposite(composite);
 		GridLayout layout = new GridLayout(2, false);
 		layout.marginWidth = 0;
-		generalComposite.setLayout(layout);	
-		
-		this.columnComposite = new ColumnComposite(generalComposite, this.commandStack, getWidgetFactory());
+		generalComposite.setLayout(layout);
+
+		this.columnComposite = new ColumnComposite(generalComposite, getWidgetFactory());
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalSpan = 2;
-		this.columnComposite.getControl().setLayoutData(gridData);	
+		this.columnComposite.getControl().setLayoutData(gridData);
 
 		CommonWidgets.buildTemporalLabel(generalComposite, getWidgetFactory());
-		this.temporalTypeViewer = CommonWidgets.buildEnumComboViewer(generalComposite, this.commandStack, getWidgetFactory());
+		this.temporalTypeViewer = CommonWidgets.buildEnumComboViewer(generalComposite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
@@ -156,13 +148,13 @@ public class IdComposite extends BaseJpaComposite
 
 	private Control buildGenerationComposite(Composite composite) {
 		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
-		
+
 		this.pkGenerationSection = getWidgetFactory().createSection(composite, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
 	    this.pkGenerationSection.setText(JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration);
 
 		Composite generationClient = getWidgetFactory().createComposite(this.pkGenerationSection);
 		this.pkGenerationSection.setClient(generationClient);
-		
+
 		GridLayout layout = new GridLayout();
 		layout.marginWidth = 0;
 		generationClient.setLayout(layout);
@@ -171,43 +163,43 @@ public class IdComposite extends BaseJpaComposite
 		GridData gridData = new GridData();
 		this.primaryKeyGenerationCheckBox.setLayoutData(gridData);
 		helpSystem.setHelp(primaryKeyGenerationCheckBox, IJpaHelpContextIds.MAPPING_PRIMARY_KEY_GENERATION);
-		
-		this.generatedValueComposite = new GeneratedValueComposite(generationClient, this.commandStack, getWidgetFactory());
+
+		this.generatedValueComposite = new GeneratedValueComposite(generationClient, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalIndent = 20;
 		this.generatedValueComposite.getControl().setLayoutData(gridData);
-		
+
 	    this.tableGenSection = getWidgetFactory().createSection(generationClient, SWT.FLAT | ExpandableComposite.TWISTIE);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.tableGenSection.setLayoutData(gridData);
-		
+
 	    this.tableGenSection.setText(JptUiMappingsMessages.IdMappingComposite_tableGenerator);
 
 		Composite tableGenClient = getWidgetFactory().createComposite(this.tableGenSection);
 		this.tableGenSection.setClient(tableGenClient);
-		
+
 		layout = new GridLayout();
 		layout.marginWidth = 0;
 		tableGenClient.setLayout(layout);
-		
+
 		this.tableGeneratorCheckBox = buildTableGeneratorCheckBox(tableGenClient);
 		gridData = new GridData();
 		this.tableGeneratorCheckBox.setLayoutData(gridData);
 		helpSystem.setHelp(tableGeneratorCheckBox, IJpaHelpContextIds.MAPPING_TABLE_GENERATOR);
-		
-		this.tableGeneratorComposite = new TableGeneratorComposite(tableGenClient, this.commandStack, getWidgetFactory());
+
+		this.tableGeneratorComposite = new TableGeneratorComposite(tableGenClient, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalIndent = 20;
 		this.tableGeneratorComposite.getControl().setLayoutData(gridData);
-		
 
-		
+
+
 	    this.sequenceGenSection = getWidgetFactory().createSection(generationClient, SWT.FLAT | ExpandableComposite.TWISTIE);
 	    this.sequenceGenSection.setText(JptUiMappingsMessages.IdMappingComposite_sequenceGenerator);
 		gridData = new GridData();
@@ -217,17 +209,17 @@ public class IdComposite extends BaseJpaComposite
 
 		Composite sequenceGenClient = getWidgetFactory().createComposite(this.sequenceGenSection);
 		this.sequenceGenSection.setClient(sequenceGenClient);
-		
+
 		layout = new GridLayout();
 		layout.marginWidth = 0;
 		sequenceGenClient.setLayout(layout);
-	
+
 		this.sequenceGeneratorCheckBox = buildSequenceGeneratorCheckBox(sequenceGenClient);
 		gridData = new GridData();
 		this.sequenceGeneratorCheckBox.setLayoutData(gridData);
 		helpSystem.setHelp(sequenceGeneratorCheckBox, IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR);
 
-		this.sequenceGeneratorComposite = new SequenceGeneratorComposite(sequenceGenClient, this.commandStack, getWidgetFactory());
+		this.sequenceGeneratorComposite = new SequenceGeneratorComposite(sequenceGenClient, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -236,7 +228,7 @@ public class IdComposite extends BaseJpaComposite
 
 		return this.pkGenerationSection;
 	}
-	
+
 	private Button buildPrimaryKeyGenerationCheckBox(Composite parent) {
 		Button button = getWidgetFactory().createButton(parent,JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration, SWT.CHECK);
 		button.addSelectionListener(new SelectionListener() {
@@ -252,16 +244,16 @@ public class IdComposite extends BaseJpaComposite
 	}
 
 	void primaryKeyGenerationCheckBoxClicked(SelectionEvent e) {
-		boolean mappingHasGeneratedValue = this.id.getGeneratedValue() != null;
+		boolean mappingHasGeneratedValue = this.subject().getGeneratedValue() != null;
 		boolean checked = this.primaryKeyGenerationCheckBox.getSelection();
 		if (checked == mappingHasGeneratedValue) {
 			return;
 		}
 		IGeneratedValue generatedValue = null;
 		if (checked) {
-			generatedValue = this.id.createGeneratedValue();
+			generatedValue = this.subject().createGeneratedValue();
 		}
-		this.id.setGeneratedValue(generatedValue);
+		this.subject().setGeneratedValue(generatedValue);
 	}
 
 	private Button buildTableGeneratorCheckBox(Composite parent) {
@@ -279,18 +271,18 @@ public class IdComposite extends BaseJpaComposite
 	}
 
 	void tableGeneratorCheckBoxClicked(SelectionEvent e) {
-		boolean mappingHasTableGenerator = this.id.getTableGenerator() != null;
+		boolean mappingHasTableGenerator = this.subject().getTableGenerator() != null;
 		boolean checked = this.tableGeneratorCheckBox.getSelection();
 		if (checked == mappingHasTableGenerator) {
 			return;
 		}
 		ITableGenerator tableGenerator = null;
 		if (checked) {
-			tableGenerator = this.id.createTableGenerator();
+			tableGenerator = this.subject().createTableGenerator();
 		}
-		this.id.setTableGenerator(tableGenerator);
+		this.subject().setTableGenerator(tableGenerator);
 		if (checked) {
-			IGeneratedValue generatedValue = this.id.getGeneratedValue();
+			IGeneratedValue generatedValue = this.subject().getGeneratedValue();
 			if (generatedValue != null && generatedValue.getGenerator() != null) {
 				tableGenerator.setName(generatedValue.getGenerator());
 			}
@@ -312,30 +304,30 @@ public class IdComposite extends BaseJpaComposite
 	}
 
 	void sequenceGeneratorCheckBoxClicked(SelectionEvent e) {
-		boolean mappingHasSequenceGenerator = this.id.getSequenceGenerator() != null;
+		boolean mappingHasSequenceGenerator = this.subject().getSequenceGenerator() != null;
 		boolean checked = this.sequenceGeneratorCheckBox.getSelection();
 		if (checked == mappingHasSequenceGenerator) {
 			return;
 		}
 		ISequenceGenerator sequenceGenerator = null;
 		if (checked) {
-			sequenceGenerator = this.id.createSequenceGenerator();
+			sequenceGenerator = this.subject().createSequenceGenerator();
 		}
-		this.id.setSequenceGenerator(sequenceGenerator);
+		this.subject().setSequenceGenerator(sequenceGenerator);
 		if (checked) {
-			IGeneratedValue generatedValue = this.id.getGeneratedValue();
+			IGeneratedValue generatedValue = this.subject().getGeneratedValue();
 			if (generatedValue != null && generatedValue.getGenerator() != null) {
 				sequenceGenerator.setName(generatedValue.getGenerator());
 			}
 		}
 	}
 
-	
-	
+
+
 	public void doPopulate(EObject obj) {
-		this.id = (IIdMapping) obj;
-		if (this.id != null) {
-			this.columnComposite.populate(this.id.getColumn());
+		this.subject() = (IIdMapping) obj;
+		if (this.subject() != null) {
+			this.columnComposite.populate(this.subject().getColumn());
 		}
 		else {
 			this.columnComposite.populate(null);
@@ -345,12 +337,13 @@ public class IdComposite extends BaseJpaComposite
 			return;
 		}
 	    this.pkGenerationSection.setExpanded(true);
-		this.temporalTypeViewer.populate(new TemporalTypeHolder(this.id));
+		this.temporalTypeViewer.populate(new TemporalTypeHolder(this.subject()));
 		populateGeneratedValueComposite();
 		populateSequenceGeneratorComposite();
 		populateTableGeneratorComposite();
 	}
-	
+
+	@Override
 	public void doPopulate() {
 		this.columnComposite.populate();
 		this.temporalTypeViewer.populate();
@@ -358,10 +351,10 @@ public class IdComposite extends BaseJpaComposite
 		this.tableGeneratorComposite.populate();
 		this.sequenceGeneratorComposite.populate();
 	}
-	
+
 	private void populateTableGeneratorComposite() {
-		this.tableGeneratorComposite.populate(this.id);
-		boolean tableGeneratorExists = this.id.getTableGenerator() != null;
+		this.tableGeneratorComposite.populate(this.subject());
+		boolean tableGeneratorExists = this.subject().getTableGenerator() != null;
 		this.tableGeneratorCheckBox.setSelection(tableGeneratorExists);
 		if (tableGeneratorExists) {
 			this.tableGenSection.setExpanded(true);
@@ -369,8 +362,8 @@ public class IdComposite extends BaseJpaComposite
 	}
 
 	private void populateSequenceGeneratorComposite() {
-		this.sequenceGeneratorComposite.populate(this.id);
-		boolean sequenceGeneratorExists = this.id.getSequenceGenerator() != null;
+		this.sequenceGeneratorComposite.populate(this.subject());
+		boolean sequenceGeneratorExists = this.subject().getSequenceGenerator() != null;
 		this.sequenceGeneratorCheckBox.setSelection(sequenceGeneratorExists);
 		if (sequenceGeneratorExists) {
 			this.sequenceGenSection.setExpanded(true);
@@ -378,23 +371,25 @@ public class IdComposite extends BaseJpaComposite
 	}
 
 	private void populateGeneratedValueComposite() {
-		this.generatedValueComposite.populate(this.id);
-		this.primaryKeyGenerationCheckBox.setSelection(this.id.getGeneratedValue() != null);
+		this.generatedValueComposite.populate(this.subject());
+		this.primaryKeyGenerationCheckBox.setSelection(this.subject().getGeneratedValue() != null);
 	}
 
-	
+
+	@Override
 	protected void engageListeners() {
-		if (this.id !=null) {
-			this.id.eAdapters().add(this.idListener);
+		if (this.subject() !=null) {
+			this.subject().eAdapters().add(this.subject()Listener);
 		}
 	}
-	
+
+	@Override
 	protected void disengageListeners() {
-		if (this.id !=null) {
-			this.id.eAdapters().remove(this.idListener);
+		if (this.subject() !=null) {
+			this.subject().eAdapters().remove(this.subject()Listener);
 		}
 	}
-	
+
 	@Override
 	public void dispose() {
 		this.columnComposite.dispose();
@@ -404,51 +399,51 @@ public class IdComposite extends BaseJpaComposite
 		this.sequenceGeneratorComposite.dispose();
 		super.dispose();
 	}
-	
+
 	protected IIdMapping getId() {
-		return this.id;
+		return this.subject();
 	}
-	
-	private class TemporalTypeHolder extends EObjectImpl implements EnumHolder {
-		
+
+	private class TemporalTypeHolder implements EnumHolder<IIdMapping, TemporalType> {
+
 		private IIdMapping id;
-		
+
 		TemporalTypeHolder(IIdMapping id) {
 			super();
 			this.id = id;
 		}
-		
-		public Object get() {
+
+		public TemporalType get() {
 			return this.id.getTemporal();
 		}
-		
-		public void set(Object enumSetting) {
-			this.id.setTemporal((TemporalType) enumSetting);
+
+		public void set(TemporalType enumSetting) {
+			this.id.setTemporal(enumSetting);
 		}
-		
-		public Class featureClass() {
+
+		public Class<IIdMapping> featureClass() {
 			return IIdMapping.class;
 		}
-		
+
 		public int featureId() {
 			return JpaCoreMappingsPackage.IID__TEMPORAL;
 		}
-		
-		public EObject wrappedObject() {
+
+		public IIdMapping wrappedObject() {
 			return this.id;
 		}
-		
-		public Object[] enumValues() {
-			return TemporalType.VALUES.toArray();
+
+		public TemporalType[] enumValues() {
+			return TemporalType.values();
 		}
-		
+
 		/**
 		 * TemporalType has no Default, return null
 		 */
-		public Object defaultValue() {
+		public TemporalType defaultValue() {
 			return null;
 		}
-		
+
 		/**
 		 * TemporalType has no Default, return null
 		 */

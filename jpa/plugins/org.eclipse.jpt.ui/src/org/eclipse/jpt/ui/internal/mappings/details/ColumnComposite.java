@@ -3,23 +3,18 @@
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors: Oracle. - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-import org.eclipse.jpt.core.internal.mappings.DefaultTrueBoolean;
-import org.eclipse.jpt.core.internal.mappings.IAbstractColumn;
-import org.eclipse.jpt.core.internal.mappings.IColumn;
-import org.eclipse.jpt.core.internal.mappings.INamedColumn;
-import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.core.internal.context.base.IAbstractColumn;
+import org.eclipse.jpt.core.internal.context.base.IColumn;
+import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
@@ -45,29 +40,27 @@ import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 //TODO repopulate this panel based on the Entity table changing
-public class ColumnComposite extends BaseJpaComposite
+public class ColumnComposite extends BaseJpaComposite<IColumn>
 {
-	
-	private IColumn column;
-
 	private Adapter columnListener;
 	private ConnectionListener connectionListener;
-		
+
 	protected CCombo columnCombo;
 	protected CCombo tableCombo;
 	protected EnumComboViewer insertableComboViewer;
 	protected EnumComboViewer updatableComboViewer;
 
 	private ConnectionProfile connectionProfile;
-	
-	public ColumnComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, commandStack, widgetFactory);
+
+	public ColumnComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+		super(parent, SWT.NULL, widgetFactory);
 		this.columnListener = buildColumnListener();
 		this.connectionListener = buildConnectionListener();
 	}
-	
+
 	private Adapter buildColumnListener() {
 		return new AdapterImpl() {
+			@Override
 			public void notifyChanged(Notification notification) {
 				columnChanged(notification);
 			}
@@ -140,17 +133,17 @@ public class ColumnComposite extends BaseJpaComposite
 			}
 		};
     }
-    
+
 	@Override
 	protected void initializeLayout(Composite composite) {
 		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
 		GridLayout layout = new GridLayout();
-		layout.marginWidth = 0;		
-		composite.setLayout(layout);	
-		
+		layout.marginWidth = 0;
+		composite.setLayout(layout);
+
 		Group columnGroup = getWidgetFactory().createGroup(composite, JptUiMappingsMessages.ColumnComposite_columnSection);
 		layout = new GridLayout();
-		layout.marginHeight = 0;				
+		layout.marginHeight = 0;
 		columnGroup.setLayout(layout);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
@@ -162,19 +155,19 @@ public class ColumnComposite extends BaseJpaComposite
 		//created this composite because combos as direct children of a Group do not have a border, no clue why
 		Composite intermediaryComposite = getWidgetFactory().createComposite(columnGroup);
 		layout = new GridLayout(2, false);
-		layout.marginWidth = 0;		
+		layout.marginWidth = 0;
 		intermediaryComposite.setLayout(layout);
-		
+
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace= true;
 		intermediaryComposite.setLayoutData(gridData);
-		
-		
+
+
 		CommonWidgets.buildColumnLabel(intermediaryComposite, getWidgetFactory());
-		
+
 		this.columnCombo = buildColumnCombo(intermediaryComposite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
@@ -182,10 +175,10 @@ public class ColumnComposite extends BaseJpaComposite
 		gridData.grabExcessHorizontalSpace = true;
 		this.columnCombo.setLayoutData(gridData);
 		helpSystem.setHelp(columnCombo, IJpaHelpContextIds.MAPPING_COLUMN);
-		
-		
+
+
 		CommonWidgets.buildColumnTableLabel(intermediaryComposite, getWidgetFactory());
-		
+
 		this.tableCombo = buildTableCombo(intermediaryComposite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
@@ -196,18 +189,18 @@ public class ColumnComposite extends BaseJpaComposite
 
 		getWidgetFactory().createLabel(intermediaryComposite, JptUiMappingsMessages.ColumnComposite_insertable);
 
-		this.insertableComboViewer = new EnumComboViewer(intermediaryComposite, this.commandStack, getWidgetFactory());
+		this.insertableComboViewer = new EnumComboViewer(intermediaryComposite, getWidgetFactory());
 		this.insertableComboViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
 		helpSystem.setHelp(this.insertableComboViewer.getControl(), IJpaHelpContextIds.MAPPING_COLUMN_INSERTABLE);
 
 		getWidgetFactory().createLabel(intermediaryComposite, JptUiMappingsMessages.ColumnComposite_updatable);
 
-		this.updatableComboViewer = new EnumComboViewer(intermediaryComposite, this.commandStack, getWidgetFactory());
+		this.updatableComboViewer = new EnumComboViewer(intermediaryComposite, getWidgetFactory());
 		this.updatableComboViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
 		helpSystem.setHelp(this.updatableComboViewer.getControl(), IJpaHelpContextIds.MAPPING_COLUMN_UPDATABLE);
 	}
-	
-	
+
+
 	private CCombo buildColumnCombo(Composite parent) {
 		final CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
   		combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
@@ -219,26 +212,26 @@ public class ColumnComposite extends BaseJpaComposite
 				String columnText = ((CCombo) e.getSource()).getText();
 				if (columnText.equals("")) { //$NON-NLS-1$
 					columnText = null;
-					if (column.getSpecifiedName() == null || column.getSpecifiedName().equals("")) { //$NON-NLS-1$
+					if (subject().getSpecifiedName() == null || subject().getSpecifiedName().equals("")) { //$NON-NLS-1$
 						return;
 					}
 				}
-				
+
 				if (columnText != null && combo.getItemCount() > 0 && columnText.equals(combo.getItem(0))) {
 					columnText = null;
 				}
 
-				if (column.getSpecifiedName() == null && columnText != null) {
-					column.setSpecifiedName(columnText);
+				if (subject().getSpecifiedName() == null && columnText != null) {
+					subject().setSpecifiedName(columnText);
 				}
-				if (column.getSpecifiedName() != null && !column.getSpecifiedName().equals(columnText)) {
-					column.setSpecifiedName(columnText);
+				if (subject().getSpecifiedName() != null && !subject().getSpecifiedName().equals(columnText)) {
+					subject().setSpecifiedName(columnText);
 				}
 			}
 		});
 		return combo;
 	}
-	
+
 	private CCombo buildTableCombo(Composite parent) {
 		final CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
   		combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
@@ -250,27 +243,27 @@ public class ColumnComposite extends BaseJpaComposite
 				String tableText = ((CCombo) e.getSource()).getText();
 				if (tableText.equals("")) { //$NON-NLS-1$
 					tableText = null;
-					if (column.getSpecifiedTable() == null || column.getSpecifiedTable().equals("")) { //$NON-NLS-1$
+					if (subject().getSpecifiedTable() == null || subject().getSpecifiedTable().equals("")) { //$NON-NLS-1$
 						return;
 					}
 				}
-				
+
 				if (tableText != null && combo.getItemCount() > 0 && tableText.equals(combo.getItem(0))) {
 					tableText = null;
 				}
 
-				if (column.getSpecifiedTable() == null && tableText != null) {
-					column.setSpecifiedTable(tableText);
+				if (subject().getSpecifiedTable() == null && tableText != null) {
+					subject().setSpecifiedTable(tableText);
 				}
-				if (column.getSpecifiedTable() != null && !column.getSpecifiedTable().equals(tableText)) {
-					column.setSpecifiedTable(tableText);
+				if (subject().getSpecifiedTable() != null && !subject().getSpecifiedTable().equals(tableText)) {
+					subject().setSpecifiedTable(tableText);
 				}
 			}
 		});
 		return combo;
-		
+
 	}
-	
+
 	protected void columnChanged(Notification notification) {
 		if (notification.getFeatureID(INamedColumn.class) == JpaCoreMappingsPackage.INAMED_COLUMN__SPECIFIED_NAME) {
 			Display.getDefault().asyncExec(new Runnable() {
@@ -315,40 +308,40 @@ public class ColumnComposite extends BaseJpaComposite
 			});
 		}
 	}
-	
+
 	@Override
 	protected void engageListeners() {
-		if (this.column != null) {
-			this.column.eAdapters().add(this.columnListener);
+		if (this.subject() != null) {
+			this.subject().eAdapters().add(this.columnListener);
 			this.addConnectionListener();
 		}
 	}
 
 	@Override
 	protected void disengageListeners() {
-		if (this.column != null) {
+		if (this.subject() != null) {
 			this.removeConnectionListener();
-			this.column.eAdapters().remove(this.columnListener);
+			this.subject().eAdapters().remove(this.columnListener);
 		}
 	}
 
 	private ConnectionProfile getConnectionProfile() {
 		if (this.connectionProfile == null) {
-			this.connectionProfile = this.column.getJpaProject().connectionProfile();
+			this.connectionProfile = this.subject().getJpaProject().connectionProfile();
 		}
 		return this.connectionProfile;
 	}
-	
+
 	private void addConnectionListener() {
 		this.getConnectionProfile().addConnectionListener(this.connectionListener);
 	}
-	
+
 	private void removeConnectionListener() {
 		this.getConnectionProfile().removeConnectionListener(this.connectionListener);
 	}
-	
+
 	private Table getDbTable() {
-		return this.column.dbTable();
+		return this.subject().dbTable();
 	}
 
 	private void populateColumnCombo() {
@@ -370,63 +363,63 @@ public class ColumnComposite extends BaseJpaComposite
 		}
 		populateColumnName();
 	}
-	
+
 	protected void populateDefaultColumnName() {
-		String defaultTableName = column.getDefaultName();
+		String defaultTableName = subject().getDefaultName();
 		int selectionIndex = columnCombo.getSelectionIndex();
 		columnCombo.setItem(0, NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultTableName));
 		if (selectionIndex == 0) {
 			//combo text does not update when switching between 2 mappings of the same type
-			//that both have a default column name.  clear the selection and then set it again
+			//that both have a default subject() name.  clear the selection and then set it again
 			columnCombo.clearSelection();
 			columnCombo.select(0);
-		}		
+		}
 	}
-	
+
 	protected void populateColumnName() {
-		String specifiedColumnName = this.column.getSpecifiedName();
+		String specifiedColumnName = this.subject().getSpecifiedName();
 		if (specifiedColumnName != null) {
 			if (!this.columnCombo.getText().equals(specifiedColumnName)) {
 				this.columnCombo.setText(specifiedColumnName);
 			}
 		}
 		else {
-			String defaultColumnName = this.column.getDefaultName();
+			String defaultColumnName = this.subject().getDefaultName();
 			if (!this.columnCombo.getText().equals(NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultColumnName))) {
 				this.columnCombo.select(0);
 			}
 		}
 	}
-	
+
 	private void populateTableCombo() {
 		//TODO don't do instanceof check here - check on Table, or isRoot check on Entity
 		//this.tableCombo.setEnabled(!(this.table instanceof SingleTableInheritanceChildTableImpl));
 		populateDefaultColumnTable();
 		this.tableCombo.remove(1, this.tableCombo.getItemCount()-1);
-		
-		if (this.column != null) {
-			for (Iterator i = this.column.getOwner().getTypeMapping().associatedTableNamesIncludingInherited(); i.hasNext(); ) {
-				this.tableCombo.add((String) i.next());			
+
+		if (this.subject() != null) {
+			for (Iterator i = this.subject().getOwner().getTypeMapping().associatedTableNamesIncludingInherited(); i.hasNext(); ) {
+				this.tableCombo.add((String) i.next());
 			}
 		}
 		populateColumnTable();
 	}
-	
+
 	protected void populateDefaultColumnTable() {
-		String defaultTableName = column.getDefaultTable();
+		String defaultTableName = subject().getDefaultTable();
 		int selectionIndex = tableCombo.getSelectionIndex();
 		tableCombo.setItem(0, NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultTableName));
 		if (selectionIndex == 0) {
 			//combo text does not update when switching between 2 mappings of the same type
-			//that both have a default column name.  clear the selection and then set it again
+			//that both have a default subject() name.  clear the selection and then set it again
 			tableCombo.clearSelection();
 			tableCombo.select(0);
-		}		
+		}
 	}
-	
+
 	protected void populateColumnTable() {
-		String tableName = this.column.getSpecifiedTable();
-		String defaultTableName = this.column.getDefaultTable();
+		String tableName = this.subject().getSpecifiedTable();
+		String defaultTableName = this.subject().getDefaultTable();
 		if (tableName != null) {
 			if (!this.tableCombo.getText().equals(tableName)) {
 				this.tableCombo.setText(tableName);
@@ -439,18 +432,9 @@ public class ColumnComposite extends BaseJpaComposite
 		}
 	}
 
-	public void doPopulate(EObject obj) {
-		this.column = (IColumn) obj;
-		if (this.column != null) {
-			populateColumnCombo();
-			populateTableCombo();
-		}
-		this.insertableComboViewer.populate(new InsertableHolder(this.column));
-		this.updatableComboViewer.populate(new UpdatableHolder(this.column));
-	}
-	
+	@Override
 	public void doPopulate() {
-		if (this.column != null) {
+		if (this.subject() != null) {
 			populateColumnCombo();
 			populateTableCombo();
 		}
@@ -460,103 +444,101 @@ public class ColumnComposite extends BaseJpaComposite
 		this.insertableComboViewer.populate();
 		this.updatableComboViewer.populate();
 	}
-	
+
 	protected void enableWidgets(boolean enabled) {
 		this.columnCombo.setEnabled(enabled);
 		this.tableCombo.setEnabled(enabled);
 		this.insertableComboViewer.getControl().setEnabled(enabled);
 		this.updatableComboViewer.getControl().setEnabled(enabled);
 	}
-	
+
 	@Override
 	public void dispose() {
 		this.insertableComboViewer.dispose();
 		this.updatableComboViewer.dispose();
 		super.dispose();
 	}
-	
-	private class InsertableHolder extends EObjectImpl implements EnumHolder {
-		
-		private IAbstractColumn column;
-		
-		InsertableHolder(IAbstractColumn column) {
+
+	private class InsertableHolder implements EnumHolder<IColumn, Boolean> {
+
+		private IColumn column;
+
+		InsertableHolder(IColumn column) {
 			super();
 			this.column = column;
 		}
-		
-		public Object get() {
+
+		public Boolean get() {
 			return this.column.getInsertable();
 		}
-		
-		public void set(Object enumSetting) {
-			this.column.setInsertable((DefaultTrueBoolean) enumSetting);
-			
+
+		public void set(Boolean enumSetting) {
+			this.column.setInsertable(enumSetting);
 		}
-		
-		public Class featureClass() {
+
+		public Class<IAbstractColumn> featureClass() {
 			return IAbstractColumn.class;
 		}
-		
+
 		public int featureId() {
 			return JpaCoreMappingsPackage.IABSTRACT_COLUMN__INSERTABLE;
 		}
-		
-		public EObject wrappedObject() {
+
+		public IColumn wrappedObject() {
 			return this.column;
 		}
-		
-		public Object[] enumValues() {
+
+		public Boolean[] enumValues() {
 			return DefaultTrueBoolean.VALUES.toArray();
 		}
-		
-		public Object defaultValue() {
-			return DefaultTrueBoolean.DEFAULT;
+
+		public Boolean defaultValue() {
+			return new Boolean[] { Boolean.TRUE, Boolean.FALSE };
 		}
-		
+
 		public String defaultString() {
 			//TODO move this out of the UI into the model
 			return "True";
 		}
 	}
 
-	private class UpdatableHolder extends EObjectImpl implements EnumHolder {
-		
-		private IAbstractColumn column;
-		
-		UpdatableHolder(IAbstractColumn column) {
+	private class UpdatableHolder implements EnumHolder<IColumn, Boolean> {
+
+		private IColumn column;
+
+		UpdatableHolder(IColumn column) {
 			super();
 			this.column = column;
 		}
-		
-		public Object get() {
+
+		public Boolean get() {
 			return this.column.getUpdatable();
 		}
-		
-		public void set(Object enumSetting) {
-			this.column.setUpdatable((DefaultTrueBoolean) enumSetting);
-			
+
+		public void set(Boolean enumSetting) {
+			this.column.setUpdatable(enumSetting);
 		}
-		
-		public Class featureClass() {
+
+		public Class<IAbstractColumn> featureClass() {
 			return IAbstractColumn.class;
 		}
-		
+
 		public int featureId() {
 			return JpaCoreMappingsPackage.IABSTRACT_COLUMN__UPDATABLE;
 		}
-		
-		public EObject wrappedObject() {
+
+		public IColumn wrappedObject() {
 			return this.column;
 		}
-		
-		public Object[] enumValues() {
-			return DefaultTrueBoolean.VALUES.toArray();
+
+		public Boolean[] enumValues() {
+			return new Boolean[] { Boolean.TRUE, Boolean.FALSE };
 		}
-		
-		public Object defaultValue() {
+
+		public Boolean defaultValue() {
 			return DefaultTrueBoolean.DEFAULT;
 		}
-		
+
 		public String defaultString() {
 			//TODO move this out of the UI into the model
 			return "True";

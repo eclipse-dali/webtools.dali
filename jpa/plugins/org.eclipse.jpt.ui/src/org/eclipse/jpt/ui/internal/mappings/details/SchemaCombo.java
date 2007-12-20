@@ -3,20 +3,17 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jpt.core.internal.mappings.ITable;
-import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
@@ -36,10 +33,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class SchemaCombo extends BaseJpaController
+public class SchemaCombo extends BaseJpaController<ITable>
 {
-	private ITable table;
-
 	private Adapter listener;
 
 	/**
@@ -53,14 +48,15 @@ public class SchemaCombo extends BaseJpaController
 
 	private CCombo combo;
 
-	public SchemaCombo(Composite parent, CommandStack theCommandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, theCommandStack, widgetFactory);
+	public SchemaCombo(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+		super(parent, widgetFactory);
 		this.listener = this.buildTableListener();
 		this.connectionListener = this.buildConnectionListener();
 	}
 
 	private Adapter buildTableListener() {
 		return new AdapterImpl() {
+			@Override
 			public void notifyChanged(Notification notification) {
 				SchemaCombo.this.schemaChanged(notification);
 			}
@@ -153,18 +149,18 @@ public class SchemaCombo extends BaseJpaController
 				String schemaText = ((CCombo) e.getSource()).getText();
 				if (schemaText.equals("")) { //$NON-NLS-1$
 					schemaText = null;
-					if (SchemaCombo.this.table.getSpecifiedSchema() == null || SchemaCombo.this.table.getSpecifiedSchema().equals("")) { //$NON-NLS-1$
+					if (SchemaCombo.this.subject().getSpecifiedSchema() == null || SchemaCombo.this.subject().getSpecifiedSchema().equals("")) { //$NON-NLS-1$
 						return;
 					}
 				}
 				if (schemaText != null && combo.getItemCount() > 0 && schemaText.equals(combo.getItem(0))) {
 					schemaText = null;
 				}
-				if (SchemaCombo.this.table.getSpecifiedSchema() == null && schemaText != null) {
-					SchemaCombo.this.table.setSpecifiedSchema(schemaText);
+				if (SchemaCombo.this.subject().getSpecifiedSchema() == null && schemaText != null) {
+					SchemaCombo.this.subject().setSpecifiedSchema(schemaText);
 				}
-				if (SchemaCombo.this.table.getSpecifiedSchema() != null && !SchemaCombo.this.table.getSpecifiedSchema().equals(schemaText)) {
-					SchemaCombo.this.table.setSpecifiedSchema(schemaText);
+				if (SchemaCombo.this.subject().getSpecifiedSchema() != null && !SchemaCombo.this.subject().getSpecifiedSchema().equals(schemaText)) {
+					SchemaCombo.this.subject().setSpecifiedSchema(schemaText);
 				}
 			}
 		});
@@ -213,18 +209,14 @@ public class SchemaCombo extends BaseJpaController
 		}
 	}
 
-	public void doPopulate(EObject obj) {
-		this.table = (ITable) obj;
-		if (this.table != null) {
+	@Override
+	public void doPopulate() {
+		if (this.subject() != null) {
 			this.populateShemaCombo();
 		}
 		else {
 			this.connectionProfile = null;
 		}
-	}
-
-	public void doPopulate() {
-		this.populateShemaCombo();
 	}
 
 	protected Database getDatabase() {
@@ -233,13 +225,13 @@ public class SchemaCombo extends BaseJpaController
 
 	private ConnectionProfile getConnectionProfile() {
 		if (this.connectionProfile == null) {
-			this.connectionProfile = this.table.getJpaProject().connectionProfile();
+			this.connectionProfile = this.subject().getJpaProject().connectionProfile();
 		}
 		return this.connectionProfile;
 	}
 
 	private void populateShemaCombo() {
-		if (this.table == null) {
+		if (this.subject() == null) {
 			return;
 		}
 		this.populateDefaultSchemaName();
@@ -260,7 +252,7 @@ public class SchemaCombo extends BaseJpaController
 	}
 
 	protected void populateDefaultSchemaName() {
-		String defaultSchemaName = this.table.getDefaultSchema();
+		String defaultSchemaName = this.subject().getDefaultSchema();
 		int selectionIndex = combo.getSelectionIndex();
 		combo.setItem(0, NLS.bind(JptUiMappingsMessages.TableComposite_defaultWithOneParam, defaultSchemaName));
 		if (selectionIndex == 0) {
@@ -270,11 +262,11 @@ public class SchemaCombo extends BaseJpaController
 	}
 
 	protected void populateSchemaName() {
-		if (this.table == null) {
+		if (this.subject() == null) {
 			return;
 		}
-		String schemaName = this.table.getSpecifiedSchema();
-		String defaultSchemaName = this.table.getDefaultSchema();
+		String schemaName = this.subject().getSpecifiedSchema();
+		String defaultSchemaName = this.subject().getDefaultSchema();
 		if (!StringTools.stringIsEmpty(schemaName)) {
 			if (!this.combo.getText().equals(schemaName)) {
 				this.combo.setText(schemaName);
@@ -302,16 +294,16 @@ public class SchemaCombo extends BaseJpaController
 
 	@Override
 	protected void disengageListeners() {
-		if (this.table != null) {
+		if (this.subject() != null) {
 			this.removeConnectionListener();
-			this.table.eAdapters().remove(this.listener);
+			this.subject().eAdapters().remove(this.listener);
 		}
 	}
 
 	@Override
 	protected void engageListeners() {
-		if (this.table != null) {
-			this.table.eAdapters().add(this.listener);
+		if (this.subject() != null) {
+			this.subject().eAdapters().add(this.listener);
 			this.addConnectionListener();
 		}
 	}

@@ -3,16 +3,14 @@
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
- *  
+ *
  *  Contributors: Oracle. - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
@@ -26,54 +24,52 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class CascadePersistCheckBox extends BaseJpaController
+public class CascadePersistCheckBox extends BaseJpaController<PersistenceUnitDefaults>
 {
-	private PersistenceUnitDefaults persistenceUnitDefaults;
 	private Adapter persistenceUnitDefaultsListener;
-	
 	private Button button;
 
-
-	public CascadePersistCheckBox(Composite parent, CommandStack theCommandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, theCommandStack, widgetFactory);
+	public CascadePersistCheckBox(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+		super(parent, widgetFactory);
 		buildPeristenceUnitDefaultsListener();
 	}
-	
+
 	private void buildPeristenceUnitDefaultsListener() {
 		this.persistenceUnitDefaultsListener = new AdapterImpl() {
+			@Override
 			public void notifyChanged(Notification notification) {
 				persistenceUnitDefaultsChanged(notification);
 			}
 		};
 	}
-	
+
 	@Override
 	protected void buildWidget(Composite parent) {
 		this.button = getWidgetFactory().createButton(
-						parent, 
+						parent,
 						JptUiXmlMessages.XMLEntityMappingsPage_CascadePersistCheckBox,
 						SWT.CHECK);
-		
+
 		this.button.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
 				CascadePersistCheckBox.this.cascadePersistSelectionChanged();
 			}
-		
+
 			public void widgetDefaultSelected(SelectionEvent e) {
 				CascadePersistCheckBox.this.cascadePersistSelectionChanged();
 			}
 		});
 	}
-	
+
 	void cascadePersistSelectionChanged() {
 		boolean cascadePersist = this.button.getSelection();
-		if (this.persistenceUnitDefaults.isCascadePersist() != cascadePersist) {
-			this.persistenceUnitDefaults.setCascadePersist(cascadePersist);
+		if (this.subject().isCascadePersist() != cascadePersist) {
+			this.subject().setCascadePersist(cascadePersist);
 		}
 	}
 
 	private void persistenceUnitDefaultsChanged(Notification notification) {
-		if (notification.getFeatureID(PersistenceUnitDefaults.class) == 
+		if (notification.getFeatureID(PersistenceUnitDefaults.class) ==
 				OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST) {
 			Display.getDefault().asyncExec(
 				new Runnable() {
@@ -83,44 +79,46 @@ public class CascadePersistCheckBox extends BaseJpaController
 				});
 		}
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void engageListeners() {
-		if (this.persistenceUnitDefaults != null) {
-			this.persistenceUnitDefaults.eAdapters().add(this.persistenceUnitDefaultsListener);
+		if (this.subject() != null) {
+			this.subject().eAdapters().add(this.persistenceUnitDefaultsListener);
 		}
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void disengageListeners() {
-		if (this.persistenceUnitDefaults != null) {
-			this.persistenceUnitDefaults.eAdapters().remove(this.persistenceUnitDefaultsListener);
+		if (this.subject() != null) {
+			this.subject().eAdapters().remove(this.persistenceUnitDefaultsListener);
 		}
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	public void doPopulate(EObject obj) {
-		this.persistenceUnitDefaults = (PersistenceUnitDefaults) obj;
+	public void doPopulate() {
 		populateButton();
 	}
-	
-	@Override
-	protected void doPopulate() {
-		populateButton();
-	}
-	
+
 	private void populateButton() {
 		boolean cascadePersist = false;
-		if (this.persistenceUnitDefaults != null) {
-			cascadePersist  = this.persistenceUnitDefaults.isCascadePersist();
+		if (this.subject() != null) {
+			cascadePersist  = this.subject().isCascadePersist();
 		}
-		
+
 		if (this.button.getSelection() != cascadePersist) {
 			this.button.setSelection(cascadePersist);
 		}
 	}
 
-	
 	@Override
 	public Control getControl() {
 		return this.button;

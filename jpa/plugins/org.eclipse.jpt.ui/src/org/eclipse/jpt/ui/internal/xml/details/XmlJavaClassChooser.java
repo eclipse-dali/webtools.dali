@@ -3,18 +3,16 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -28,6 +26,7 @@ import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaTypeCompletionP
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
@@ -50,31 +49,29 @@ import org.eclipse.ui.progress.IProgressService;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 //TODO possibly help the user and if they have chosen a package at the entity-mappings level
-//only insert the class name in the xml file if they choose a class from the package.  
+//only insert the class name in the xml file if they choose a class from the package.
 //Not sure if this should be driven by the UI or by ui api in the model
-public class XmlJavaClassChooser extends BaseJpaController
-{
-	private XmlPersistentType persistentType;
+public class XmlJavaClassChooser extends BaseJpaController<XmlPersistentType> {
+
 	private Adapter persistentTypeListener;
-	
 	private Composite composite;
 	private Text text;
 	private JavaTypeCompletionProcessor javaTypeCompletionProcessor;
-	
-	public XmlJavaClassChooser(Composite parent, CommandStack theCommandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, theCommandStack, widgetFactory);
+
+	public XmlJavaClassChooser(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+		super(parent, widgetFactory);
 		buildPersistentTypeListener();
 	}
-	
-	
+
 	private void buildPersistentTypeListener() {
 		persistentTypeListener = new AdapterImpl() {
+			@Override
 			public void notifyChanged(Notification notification) {
 				persistentTypeChanged(notification);
 			}
 		};
 	}
-	
+
 	@Override
 	protected void buildWidget(Composite parent) {
 		this.composite = getWidgetFactory().createComposite(parent);
@@ -83,7 +80,7 @@ public class XmlJavaClassChooser extends BaseJpaController
 	    gridLayout.marginWidth = 1;
 	    gridLayout.numColumns = 2;
 	    this.composite.setLayout(gridLayout);
-	    
+
 		text = getWidgetFactory().createText(this.composite, "");
 		GridData data = new GridData();
 	    data.grabExcessHorizontalSpace = true;
@@ -100,7 +97,7 @@ public class XmlJavaClassChooser extends BaseJpaController
 		this.javaTypeCompletionProcessor = new JavaTypeCompletionProcessor(false, false);
 		ControlContentAssistHelper.createTextContentAssistant(this.text,  this.javaTypeCompletionProcessor);
 
-		
+
 		Button browseButton = getWidgetFactory().createButton(this.composite, "Browse...", SWT.FLAT);
 		data = new GridData();
 		browseButton.setLayoutData(data);
@@ -125,25 +122,25 @@ public class XmlJavaClassChooser extends BaseJpaController
 		if (isPopulating()) {
 			return;
 		}
-		
+
 		String text = ((Text) e.getSource()).getText();
-		persistentType.setClass(text);
-		
+		subject().setClass(text);
+
 		// TODO Does this need to be done?
 		//this.editingDomain.getCommandStack().execute(SetCommand.create(this.editingDomain, this.entity, MappingsPackage.eINSTANCE.getEntity_SpecifiedName(), text));
 	}
-	
-	
+
+
 	protected IType chooseType() {
 		IPackageFragmentRoot root= getPackageFragmentRoot();
 		if (root == null) {
 			return null;
-		}	
-		
+		}
+
 		IJavaElement[] elements= new IJavaElement[] { root.getJavaProject() };
 		IJavaSearchScope scope= SearchEngine.createJavaSearchScope(elements);
 		IProgressService service = PlatformUI.getWorkbench().getProgressService();
-		
+
 		SelectionDialog typeSelectionDialog;
 		try {
 			typeSelectionDialog = JavaUI.createTypeDialog(this.text.getShell(), service, scope, IJavaElementSearchConstants.CONSIDER_CLASSES, false, getType());
@@ -152,21 +149,21 @@ public class XmlJavaClassChooser extends BaseJpaController
 			JptUiPlugin.log(e);
 			throw new RuntimeException(e);
 		}
-		typeSelectionDialog.setTitle(JptUiXmlMessages.XmlJavaClassChooser_XmlJavaClassDialog_title); 
-		typeSelectionDialog.setMessage(JptUiXmlMessages.XmlJavaClassChooser_XmlJavaClassDialog_message); 
+		typeSelectionDialog.setTitle(JptUiXmlMessages.XmlJavaClassChooser_XmlJavaClassDialog_title);
+		typeSelectionDialog.setMessage(JptUiXmlMessages.XmlJavaClassChooser_XmlJavaClassDialog_message);
 
 		if (typeSelectionDialog.open() == Window.OK) {
 			return (IType) typeSelectionDialog.getResult()[0];
 		}
 		return null;
 	}
-	
+
 	private String getType() {
 		return this.text.getText();
 	}
-	
+
 	private IPackageFragmentRoot getPackageFragmentRoot() {
-		IProject project = this.persistentType.getJpaProject().project();
+		IProject project = this.subject().getJpaProject().project();
 		IJavaProject root = JavaCore.create(project);
 		try {
 			return root.getAllPackageFragmentRoots()[0];
@@ -178,7 +175,7 @@ public class XmlJavaClassChooser extends BaseJpaController
 	}
 
 	private void persistentTypeChanged(Notification notification) {
-		if (notification.getFeatureID(XmlPersistentType.class) == 
+		if (notification.getFeatureID(XmlPersistentType.class) ==
 				OrmPackage.XML_PERSISTENT_TYPE__CLASS) {
 			Display.getDefault().asyncExec(
 				new Runnable() {
@@ -188,46 +185,39 @@ public class XmlJavaClassChooser extends BaseJpaController
 				});
 		}
 	}
-	
+
 	@Override
 	protected void engageListeners() {
-		if (persistentType != null) {
-			persistentType.eAdapters().add(persistentTypeListener);
+		if (this.subject() != null) {
+			this.subject().eAdapters().add(persistentTypeListener);
 		}
 	}
-	
+
 	@Override
 	protected void disengageListeners() {
-		if (persistentType != null) {
-			persistentType.eAdapters().remove(persistentTypeListener);
+		if (this.subject() != null) {
+			this.subject().eAdapters().remove(persistentTypeListener);
 		}
 	}
-	
-	@Override
-	public void doPopulate(EObject obj) {
-		persistentType = (obj == null) ? null : ((XmlTypeMapping) obj).getPersistentType();
-		populateText();
-	}
-	
+
 	@Override
 	protected void doPopulate() {
 		populateText();
 	}
-	
+
 	private void populateText() {
-		if (persistentType == null) {
+		if (this.subject() == null) {
 			text.clearSelection();
 			return;
 		}
-		
+
 		IPackageFragmentRoot root = getPackageFragmentRoot();
 		if (root != null) {
 			 this.javaTypeCompletionProcessor.setPackageFragment(root.getPackageFragment(""));
 		}
-		
 
-		String javaClass = persistentType.getClass_();
-		
+		String javaClass = this.subject().getClass_();
+
 		if (javaClass == null) {
 			setTextData("");
 		}
@@ -235,13 +225,14 @@ public class XmlJavaClassChooser extends BaseJpaController
 			setTextData(javaClass);
 		}
 	}
-	
+
 	private void setTextData(String textData) {
 		if (! textData.equals(text.getText())) {
 			text.setText(textData);
 		}
 	}
-	
+
+	@Override
 	public Control getControl() {
 		return this.composite;
 	}

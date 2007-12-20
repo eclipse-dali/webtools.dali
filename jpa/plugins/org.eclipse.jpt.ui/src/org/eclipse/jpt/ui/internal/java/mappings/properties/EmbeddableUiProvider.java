@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.mappings.properties;
 
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.ui.internal.details.IJpaComposite;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
@@ -46,7 +45,7 @@ public class EmbeddableUiProvider implements ITypeMappingUiProvider
 	}
 	
 	public IJpaComposite buildPersistentTypeMappingComposite(
-				Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return new EmbeddableComposite(parent, commandStack, widgetFactory);
+				Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+		return new EmbeddableComposite(parent, widgetFactory);
 	}
 }

@@ -3,14 +3,13 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.emf.common.command.CommandStack;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -18,14 +17,33 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class EmbeddedComposite extends BaseJpaComposite 
-{	
+public class EmbeddedComposite extends BaseJpaComposite<IEmbeddedMapping>
+{
 	private EmbeddedAttributeOverridesComposite attributeOverridesComposite;
 
-	public EmbeddedComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, commandStack, widgetFactory);
+	public EmbeddedComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+		super(parent, SWT.NULL, widgetFactory);
 	}
-	
+
+	@Override
+	protected void disengageListeners() {
+	}
+
+
+	@Override
+	public void dispose() {
+		this.attributeOverridesComposite.dispose();
+	}
+
+	@Override
+	public void doPopulate() {
+		this.attributeOverridesComposite.populate();
+	}
+
+	@Override
+	protected void engageListeners() {
+	}
+
 	@Override
 	protected void initializeLayout(Composite composite) {
 		GridLayout layout = new GridLayout();
@@ -33,35 +51,12 @@ public class EmbeddedComposite extends BaseJpaComposite
 		layout.marginWidth = 0;
 		composite.setLayout(layout);
 
-		GridData gridData;
-		
-		this.attributeOverridesComposite = new EmbeddedAttributeOverridesComposite(composite, this.commandStack, getWidgetFactory());
-		gridData = new GridData();
+		this.attributeOverridesComposite = new EmbeddedAttributeOverridesComposite(composite, getWidgetFactory());
+		GridData gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		this.attributeOverridesComposite.getControl().setLayoutData(gridData);
 	}
-	
-	
-	public void doPopulate(EObject obj) {
-		this.attributeOverridesComposite.populate(obj);
-	}
-	
-	public void doPopulate() {
-		this.attributeOverridesComposite.populate();
-	}
-	
-	protected void engageListeners() {
-	}
-	
-	protected void disengageListeners() {
-	}
-	
-	@Override
-	public void dispose() {
-		this.attributeOverridesComposite.dispose();
-	}
-
 }

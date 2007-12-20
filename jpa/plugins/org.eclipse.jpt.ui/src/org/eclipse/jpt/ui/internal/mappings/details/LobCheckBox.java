@@ -3,18 +3,15 @@
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
- *  
+ *
  *  Contributors: Oracle. - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jpt.core.internal.mappings.IBasic;
-import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.SWT;
@@ -26,54 +23,18 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class LobCheckBox extends BaseJpaController
+public class LobCheckBox extends BaseJpaController<IBasicMapping>
 {
-	private IBasicMapping basicMapping;
 	private Adapter basicMappingListener;
-	
 	private Button button;
 
-
-	public LobCheckBox(Composite parent, CommandStack theCommandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, theCommandStack, widgetFactory);
+	public LobCheckBox(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+		super(parent, widgetFactory);
 		buildBasicMappingListener();
-	}
-	
-	private void buildBasicMappingListener() {
-		this.basicMappingListener = new AdapterImpl() {
-			public void notifyChanged(Notification notification) {
-				bsaicMappingChanged(notification);
-			}
-		};
-	}
-	
-	@Override
-	protected void buildWidget(Composite parent) {
-		this.button = getWidgetFactory().createButton(
-						parent, 
-						JptUiMappingsMessages.BasicGeneralSection_lobLabel,
-						SWT.CHECK);
-		
-		this.button.addSelectionListener(new SelectionListener() {
-			public void widgetSelected(SelectionEvent event) {
-				LobCheckBox.this.lobSelectionChanged();
-			}
-		
-			public void widgetDefaultSelected(SelectionEvent e) {
-				LobCheckBox.this.lobSelectionChanged();
-			}
-		});
-	}
-	
-	void lobSelectionChanged() {
-		boolean lob = this.button.getSelection();
-		if (this.basicMapping.isLob() != lob) {
-			this.basicMapping.setLob(lob);
-		}
 	}
 
 	private void bsaicMappingChanged(Notification notification) {
-		if (notification.getFeatureID(IBasicMapping.class) == 
+		if (notification.getFeatureID(IBasicMapping.class) ==
 				JpaCoreMappingsPackage.IBASIC__LOB) {
 			Display.getDefault().asyncExec(
 				new Runnable() {
@@ -83,46 +44,73 @@ public class LobCheckBox extends BaseJpaController
 				});
 		}
 	}
-	
-	@Override
-	protected void engageListeners() {
-		if (this.basicMapping != null) {
-			this.basicMapping.eAdapters().add(this.basicMappingListener);
-		}
+
+	private void buildBasicMappingListener() {
+		this.basicMappingListener = new AdapterImpl() {
+			@Override
+			public void notifyChanged(Notification notification) {
+				bsaicMappingChanged(notification);
+			}
+		};
 	}
-	
+
+	@Override
+	protected void buildWidget(Composite parent) {
+		this.button = getWidgetFactory().createButton(
+						parent,
+						JptUiMappingsMessages.BasicGeneralSection_lobLabel,
+						SWT.CHECK);
+
+		this.button.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {
+				LobCheckBox.this.lobSelectionChanged();
+			}
+
+			public void widgetSelected(SelectionEvent event) {
+				LobCheckBox.this.lobSelectionChanged();
+			}
+		});
+	}
+
 	@Override
 	protected void disengageListeners() {
-		if (this.basicMapping != null) {
-			this.basicMapping.eAdapters().remove(this.basicMappingListener);
+		if (this.subject() != null) {
+			this.subject().eAdapters().remove(this.basicMappingListener);
 		}
 	}
-	
-	@Override
-	public void doPopulate(EObject obj) {
-		this.basicMapping = (IBasicMapping) obj;
-		populateButton();
-	}
-	
+
 	@Override
 	protected void doPopulate() {
 		populateButton();
 	}
-	
-	private void populateButton() {
-		boolean lob = false;
-		if (this.basicMapping != null) {
-			lob  = this.basicMapping.isLob();
-		}
-		
-		if (this.button.getSelection() != lob) {
-			this.button.setSelection(lob);
+
+	@Override
+	protected void engageListeners() {
+		if (this.subject() != null) {
+			this.subject().eAdapters().add(this.basicMappingListener);
 		}
 	}
 
-	
 	@Override
 	public Control getControl() {
 		return this.button;
+	}
+
+	void lobSelectionChanged() {
+		boolean lob = this.button.getSelection();
+		if (this.subject().isLob() != lob) {
+			this.subject().setLob(lob);
+		}
+	}
+
+	private void populateButton() {
+		boolean lob = false;
+		if (this.subject() != null) {
+			lob  = this.subject().isLob();
+		}
+
+		if (this.button.getSelection() != lob) {
+			this.button.setSelection(lob);
+		}
 	}
 }

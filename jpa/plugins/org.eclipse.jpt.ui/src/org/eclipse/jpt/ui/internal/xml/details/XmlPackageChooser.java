@@ -3,18 +3,16 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -51,49 +49,47 @@ public class XmlPackageChooser extends BaseJpaController
 {
 	private EntityMappingsInternal entityMappings;
 	private Adapter entityMappingsListener;
-    private IContentAssistProcessor contentAssistProcessor;
-	
-    private Composite composite;
+	private IContentAssistProcessor contentAssistProcessor;
+	private Composite composite;
 	private Text text;
-	
-	
-	public XmlPackageChooser(Composite parent, CommandStack theCommandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, theCommandStack, widgetFactory);
+
+	public XmlPackageChooser(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+		super(parent, widgetFactory);
 		buildSchemaHolderListener();
 	}
-	
-	
+
+
 	private void buildSchemaHolderListener() {
 		this.entityMappingsListener = new AdapterImpl() {
+			@Override
 			public void notifyChanged(Notification notification) {
 				entityMappingsChanged(notification);
 			}
 		};
 	}
-	
+
 	@Override
 	protected void buildWidget(Composite parent) {
 		this.composite = getWidgetFactory().createComposite(parent);
-	    GridLayout gridLayout = new GridLayout();
-	    gridLayout.marginHeight = 0;
-	    gridLayout.marginWidth = 1;
-	    gridLayout.numColumns = 2;
-	    this.composite.setLayout(gridLayout);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.marginHeight = 0;
+		gridLayout.marginWidth = 1;
+		gridLayout.numColumns = 2;
+		this.composite.setLayout(gridLayout);
 		this.text = getWidgetFactory().createText(this.composite, "");
 		GridData data = new GridData();
-	    data.grabExcessHorizontalSpace = true;
-	    data.horizontalAlignment = GridData.FILL;
-	    this.text.setLayoutData(data);
+		data.grabExcessHorizontalSpace = true;
+		data.horizontalAlignment = GridData.FILL;
+		this.text.setLayoutData(data);
 		this.contentAssistProcessor = new JavaPackageCompletionProcessor(new JavaElementLabelProvider(JavaElementLabelProvider.SHOW_ROOT));
 		ControlContentAssistHelper.createTextContentAssistant(this.text, this.contentAssistProcessor);
 
-	    this.text.addModifyListener(
-			new ModifyListener() {
-				public void modifyText(ModifyEvent e) {
-					textModified(e);
-				}
-			});
-	    
+		this.text.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				textModified(e);
+			}
+		});
+
 		Button browseButton = getWidgetFactory().createButton(this.composite, "Browse...", SWT.FLAT);
 		data = new GridData();
 		browseButton.setLayoutData(data);
@@ -112,23 +108,23 @@ public class XmlPackageChooser extends BaseJpaController
 			}
 		});
 	}
-	
+
 	private void textModified(ModifyEvent e) {
 		if (isPopulating()) {
 			return;
 		}
-		
+
 		String text = ((Text) e.getSource()).getText();
-		this.entityMappings.setPackage(text);
+		this.subject().setPackage(text);
 		//TODO set a JEM Package??
 		//.setJavaClass(JavaRefFactory.eINSTANCE.createClassRef(text));
-		
+
 		// TODO Does this need to be done?
 		//this.editingDomain.getCommandStack().execute(SetCommand.create(this.editingDomain, this.entity, MappingsPackage.eINSTANCE.getEntity_SpecifiedName(), text));
 	}
-	
+
 	private void entityMappingsChanged(Notification notification) {
-		if (notification.getFeatureID(EntityMappings.class) == 
+		if (notification.getFeatureID(EntityMappings.class) ==
 				OrmPackage.ENTITY_MAPPINGS__PACKAGE) {
 			Display.getDefault().asyncExec(
 				new Runnable() {
@@ -138,34 +134,28 @@ public class XmlPackageChooser extends BaseJpaController
 				});
 		}
 	}
-	
+
 	@Override
 	protected void engageListeners() {
-		if (this.entityMappings != null) {
-			entityMappings.eAdapters().add(this.entityMappingsListener);
+		if (this.subject() != null) {
+			subject().eAdapters().add(this.entityMappingsListener);
 		}
 	}
-	
+
 	@Override
 	protected void disengageListeners() {
-		if (this.entityMappings != null) {
-			this.entityMappings.eAdapters().remove(this.entityMappingsListener);
+		if (this.subject() != null) {
+			this.subject().eAdapters().remove(this.entityMappingsListener);
 		}
 	}
-	
-	@Override
-	public void doPopulate(EObject obj) {
-		this.entityMappings = (EntityMappingsInternal) obj;
-		populateText();
-	}
-	
+
 	@Override
 	protected void doPopulate() {
 		populateText();
 	}
-	
+
 	private void populateText() {
-		if (entityMappings == null) {
+		if (subject() == null) {
 			text.clearSelection();
 			return;
 		}
@@ -174,9 +164,9 @@ public class XmlPackageChooser extends BaseJpaController
 		if (root != null) {
 			((JavaPackageCompletionProcessor)this.contentAssistProcessor).setPackageFragmentRoot(root);
 		}
-		
-		String package_ = this.entityMappings.getPackage();
-		
+
+		String package_ = this.subject().getPackage();
+
 		if (package_ == null) {
 			setTextData("");
 		}
@@ -184,9 +174,9 @@ public class XmlPackageChooser extends BaseJpaController
 			setTextData(package_);
 		}
 	}
-	
+
 	private IPackageFragmentRoot getPackageFragmentRoot() {
-		IProject project = ((JpaEObject) this.entityMappings).getJpaProject().project();
+		IProject project = ((JpaEObject) this.subject()).getJpaProject().project();
 		IJavaProject root = JavaCore.create(project);
 		try {
 			return root.getAllPackageFragmentRoots()[0];
@@ -196,30 +186,30 @@ public class XmlPackageChooser extends BaseJpaController
 		}
 		return null;
 	}
-	
+
 	private void setTextData(String textData) {
 		if (! textData.equals(text.getText())) {
 			text.setText(textData);
 		}
 	}
-	
+
 	@Override
 	public Control getControl() {
 		return this.composite;
 	}
-	
+
 	/**
-	 * Opens a selection dialog that allows to select a package. 
-	 * 
+	 * Opens a selection dialog that allows to select a package.
+	 *
 	 * @return returns the selected package or <code>null</code> if the dialog has been canceled.
 	 * The caller typically sets the result to the package input field.
 	 * <p>
 	 * Clients can override this method if they want to offer a different dialog.
 	 * </p>
-	 * 
+	 *
 	 * @since 3.2
 	 */
-	protected IPackageFragment choosePackage() {		
+	protected IPackageFragment choosePackage() {
 		SelectionDialog selectionDialog;
 		try {
 			selectionDialog = JavaUI.createPackageDialog(text.getShell(), getPackageFragmentRoot());
@@ -228,8 +218,8 @@ public class XmlPackageChooser extends BaseJpaController
 			JptUiPlugin.log(e);
 			throw new RuntimeException(e);
 		}
-		selectionDialog.setTitle(JptUiXmlMessages.XmlPackageChooser_PackageDialog_title); 
-		selectionDialog.setMessage(JptUiXmlMessages.XmlPackageChooser_PackageDialog_message); 
+		selectionDialog.setTitle(JptUiXmlMessages.XmlPackageChooser_PackageDialog_title);
+		selectionDialog.setMessage(JptUiXmlMessages.XmlPackageChooser_PackageDialog_message);
 		selectionDialog.setHelpAvailable(false);
 		IPackageFragment pack= getPackageFragment();
 		if (pack != null) {
@@ -244,8 +234,8 @@ public class XmlPackageChooser extends BaseJpaController
 
 	/**
 	 * Returns the package fragment corresponding to the current input.
-	 * 
-	 * @return a package fragment or <code>null</code> if the input 
+	 *
+	 * @return a package fragment or <code>null</code> if the input
 	 * could not be resolved.
 	 */
 	public IPackageFragment getPackageFragment() {

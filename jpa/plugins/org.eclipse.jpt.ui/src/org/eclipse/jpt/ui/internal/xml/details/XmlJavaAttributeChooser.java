@@ -3,16 +3,16 @@
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
- *  
+ *
  *  Contributors: Oracle. - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jpt.core.internal.context.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.swt.events.ModifyEvent;
@@ -23,28 +23,29 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class XmlJavaAttributeChooser extends BaseJpaController
+public class XmlJavaAttributeChooser extends BaseJpaController<XmlAttributeMapping>
 {
 	private XmlPersistentAttribute attribute;
 	private Adapter persistentAttributeListener;
-	
+
 	private Text text;
-	
-	
-	public XmlJavaAttributeChooser(Composite parent, CommandStack theCommandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, theCommandStack, widgetFactory);
+
+
+	public XmlJavaAttributeChooser(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+		super(parent, widgetFactory);
 		buildPersistentAttributeListener();
 	}
-	
-	
+
+
 	private void buildPersistentAttributeListener() {
 		this.persistentAttributeListener = new AdapterImpl() {
+			@Override
 			public void notifyChanged(Notification notification) {
 				persistentAttributeChanged(notification);
 			}
 		};
 	}
-	
+
 	@Override
 	protected void buildWidget(Composite parent) {
 		text = getWidgetFactory().createText(parent, "");
@@ -55,21 +56,21 @@ public class XmlJavaAttributeChooser extends BaseJpaController
 				}
 			});
 	}
-	
+
 	private void textModified(ModifyEvent e) {
 		if (isPopulating()) {
 			return;
 		}
-		
+
 		String text = ((Text) e.getSource()).getText();
 		attribute.setName(text);
-		
+
 		// TODO Does this need to be done?
 		//this.editingDomain.getCommandStack().execute(SetCommand.create(this.editingDomain, this.entity, MappingsPackage.eINSTANCE.getEntity_SpecifiedName(), text));
 	}
-	
+
 	private void persistentAttributeChanged(Notification notification) {
-		if (notification.getFeatureID(XmlAttributeMapping.class) == 
+		if (notification.getFeatureID(XmlAttributeMapping.class) ==
 				OrmPackage.XML_PERSISTENT_ATTRIBUTE__NAME) {
 			Display.getDefault().asyncExec(
 				new Runnable() {
@@ -79,52 +80,51 @@ public class XmlJavaAttributeChooser extends BaseJpaController
 				});
 		}
 	}
-	
+
 	@Override
 	protected void engageListeners() {
-		if (attribute != null) {
-			attribute.eAdapters().add(persistentAttributeListener);
+		if (attribute() != null) {
+			attribute().eAdapters().add(persistentAttributeListener);
 		}
 	}
-	
+
 	@Override
 	protected void disengageListeners() {
-		if (attribute != null) {
-			attribute.eAdapters().remove(persistentAttributeListener);
+		if (attribute() != null) {
+			attribute().eAdapters().remove(persistentAttributeListener);
 		}
 	}
-	
+
 	@Override
-	public void doPopulate(EObject obj) {
-		attribute = (obj == null) ? null : ((XmlAttributeMapping) obj).getPersistentAttribute();
+	public void doPopulate() {
 		populateText();
 	}
-	
-	@Override
-	protected void doPopulate() {
-		populateText();
+
+	private XmlPersistentAttribute attribute() {
+		return (subject() != null) ? subject().getPersistentAttribute() : null;
 	}
-	
+
 	private void populateText() {
-		if (attribute == null) {
+		if (attribute() == null) {
 			text.clearSelection();
 			return;
 		}
-		
-		String name = attribute.getName();
-		
+
+		String name = attribute().getName();
+
 		if (name == null) {
 			name = "";
 		}
 		setTextData(name);
 	}
-	
+
 	private void setTextData(String textData) {
 		if (! textData.equals(text.getText())) {
 			text.setText(textData);
 		}
 	}
-	
+
+	@Override
 	public Control getControl() {
 		return text;
 	}

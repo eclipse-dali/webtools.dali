@@ -3,20 +3,17 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jpt.core.internal.mappings.ITable;
-import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
@@ -36,10 +33,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class CatalogCombo extends BaseJpaController
+public class CatalogCombo extends BaseJpaController<ITable>
 {
-	private ITable table;
-
 	private Adapter listener;
 
 	/**
@@ -53,14 +48,15 @@ public class CatalogCombo extends BaseJpaController
 
 	private CCombo combo;
 
-	public CatalogCombo(Composite parent, CommandStack theCommandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, theCommandStack, widgetFactory);
+	public CatalogCombo(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+		super(parent, widgetFactory);
 		this.listener = this.buildTableListener();
 		this.connectionListener = this.buildConnectionListener();
 	}
 
 	private Adapter buildTableListener() {
 		return new AdapterImpl() {
+			@Override
 			public void notifyChanged(Notification notification) {
 				CatalogCombo.this.catalogChanged(notification);
 			}
@@ -145,17 +141,17 @@ public class CatalogCombo extends BaseJpaController
 				String catalogText = ((CCombo) e.getSource()).getText();
 				if (catalogText.equals("")) { //$NON-NLS-1$
 					catalogText = null;
-					if (CatalogCombo.this.table.getSpecifiedCatalog() == null || CatalogCombo.this.table.getSpecifiedCatalog().equals("")) { //$NON-NLS-1$
+					if (CatalogCombo.this.subject().getSpecifiedCatalog() == null || CatalogCombo.this.subject().getSpecifiedCatalog().equals("")) { //$NON-NLS-1$
 						return;
 					}
 				}
 				if (catalogText != null && combo.getItemCount() > 0 && catalogText.equals(combo.getItem(0))) {
 					catalogText = null;
 				}
-				if (CatalogCombo.this.table.getSpecifiedCatalog() == null && catalogText != null) {
+				if (CatalogCombo.this.subject().getSpecifiedCatalog() == null && catalogText != null) {
 					CatalogCombo.this.setSpecifiedCatalog(catalogText);
 				}
-				if (CatalogCombo.this.table.getSpecifiedCatalog() != null && !CatalogCombo.this.table.getSpecifiedCatalog().equals(catalogText)) {
+				if (CatalogCombo.this.subject().getSpecifiedCatalog() != null && !CatalogCombo.this.subject().getSpecifiedCatalog().equals(catalogText)) {
 					CatalogCombo.this.setSpecifiedCatalog(catalogText);
 				}
 			}
@@ -163,7 +159,7 @@ public class CatalogCombo extends BaseJpaController
 	}
 
 	private void setSpecifiedCatalog(String catalogName) {
-		this.table.setSpecifiedCatalog(catalogName);
+		this.subject().setSpecifiedCatalog(catalogName);
 		this.getConnectionProfile().setCatalogName(catalogName);
 	}
 
@@ -190,9 +186,9 @@ public class CatalogCombo extends BaseJpaController
 		}
 	}
 
-	public void doPopulate(EObject obj) {
-		this.table = (ITable) obj;
-		if (this.table != null) {
+	@Override
+	public void doPopulate() {
+		if (this.subject() != null) {
 			this.populateCatalogCombo();
 		}
 		else {
@@ -200,9 +196,9 @@ public class CatalogCombo extends BaseJpaController
 		}
 	}
 
-	public void doPopulate() {
-		this.populateCatalogCombo();
-	}
+//	public void doPopulate() {
+//		this.populateCatalogCombo();
+//	}
 
 	protected Database getDatabase() {
 		return this.getConnectionProfile().getDatabase();
@@ -210,13 +206,13 @@ public class CatalogCombo extends BaseJpaController
 
 	private ConnectionProfile getConnectionProfile() {
 		if (this.connectionProfile == null) {
-			this.connectionProfile = this.table.getJpaProject().connectionProfile();
+			this.connectionProfile = this.subject().getJpaProject().connectionProfile();
 		}
 		return this.connectionProfile;
 	}
 
 	private void populateCatalogCombo() {
-		if (this.table == null) {
+		if (this.subject() == null) {
 			return;
 		}
 		this.populateDefaultCatalogName();
@@ -237,7 +233,7 @@ public class CatalogCombo extends BaseJpaController
 	}
 
 	protected void populateDefaultCatalogName() {
-		// String defaultCatalogName = this.table.getDefaultCatalog(); //
+		// String defaultCatalogName = this.subject().getDefaultCatalog(); //
 		// DefaultCatalog cannot be initialized if DB not online
 		String defaultCatalogName = this.getDatabase().getDefaultCatalogName(); // TOREVIEW
 		int selectionIndex = combo.getSelectionIndex();
@@ -249,11 +245,11 @@ public class CatalogCombo extends BaseJpaController
 	}
 
 	protected void populateCatalogName() {
-		if (this.table == null) {
+		if (this.subject() == null) {
 			return;
 		}
-		String catalogName = this.table.getSpecifiedCatalog();
-		// String defaultCatalogName = this.table.getDefaultCatalog(); //
+		String catalogName = this.subject().getSpecifiedCatalog();
+		// String defaultCatalogName = this.subject().getDefaultCatalog(); //
 		// DefaultCatalog cannot be initialized if DB not online
 		String defaultCatalogName = this.getDatabase().getDefaultCatalogName(); // TOREVIEW
 		if (!StringTools.stringIsEmpty(catalogName)) {
@@ -279,16 +275,16 @@ public class CatalogCombo extends BaseJpaController
 
 	@Override
 	protected void disengageListeners() {
-		if (this.table != null) {
+		if (this.subject() != null) {
 			this.removeConnectionListener();
-			this.table.eAdapters().remove(this.listener);
+			this.subject().eAdapters().remove(this.listener);
 		}
 	}
 
 	@Override
 	protected void engageListeners() {
-		if (this.table != null) {
-			this.table.eAdapters().add(this.listener);
+		if (this.subject() != null) {
+			this.subject().eAdapters().add(this.listener);
 			this.addConnectionListener();
 		}
 	}

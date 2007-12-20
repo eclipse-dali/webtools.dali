@@ -3,20 +3,17 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.mappings.IId;
-import org.eclipse.jpt.core.internal.mappings.ITableGenerator;
-import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.core.internal.context.base.IIdMapping;
+import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
@@ -43,22 +40,22 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	private CCombo pkColumnNameCombo;
 	private CCombo valueColumnNameCombo;
 	private CCombo pkColumnValueCombo;
-
 	private ConnectionListener connectionListener;
-
 	private ConnectionProfile connectionProfile;
 
-	public TableGeneratorComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, commandStack, widgetFactory);
+	public TableGeneratorComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+		super(parent, widgetFactory);
 		this.connectionListener = this.buildConnectionListener();
 	}
-	
+
+	@Override
 	protected ITableGenerator createGenerator() {
 		ITableGenerator tableGenerator = idMapping().createTableGenerator();
 		idMapping().setTableGenerator(tableGenerator);
 		return tableGenerator;
 	}
-	
+
+	@Override
 	protected ITableGenerator generator(IIdMapping idMapping) {
 		return idMapping.getTableGenerator();
 	}
@@ -67,47 +64,47 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	protected void initializeLayout(Composite composite) {
 		GridLayout layout = new GridLayout(2, false);
 		composite.setLayout(layout);
-		
+
 		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
-		
+
 		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.TableGeneratorComposite_name);
-		
+
 		this.nameTextWidget = buildNameText(composite);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.nameTextWidget.setLayoutData(gridData);
 		helpSystem.setHelp(this.nameTextWidget, IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_NAME);
-		
+
 		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.TableGeneratorComposite_table);
-		
+
 		this.tableNameCombo = buildTableNameCombo(composite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.tableNameCombo.setLayoutData(gridData);
 		helpSystem.setHelp(this.tableNameCombo, IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_TABLE);
-		
+
 		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.TableGeneratorComposite_pkColumn);
-		
+
 		this.pkColumnNameCombo = buildPkColumnNameCombo(composite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.pkColumnNameCombo.setLayoutData(gridData);
 		helpSystem.setHelp(this.pkColumnNameCombo, IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN);
-		
+
 		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.TableGeneratorComposite_valueColumn);
-		
+
 		this.valueColumnNameCombo = buildValueColumnNameCombo(composite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.valueColumnNameCombo.setLayoutData(gridData);
 		helpSystem.setHelp(this.valueColumnNameCombo, IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_VALUE_COLUMN);
-		
+
 		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.TableGeneratorComposite_pkColumnValue);
-		
+
 		this.pkColumnValueCombo = buildPkColumnValueCombo(composite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -224,6 +221,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		};
 	}
 
+	@Override
 	protected void generatorChanged(Notification notification) {
 		super.generatorChanged(notification);
 		if (notification.getFeatureID(ITableGenerator.class) == JpaCoreMappingsPackage.ITABLE_GENERATOR__SPECIFIED_TABLE) {
@@ -290,27 +288,20 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	}
 
 	@Override
-	protected void doPopulate(EObject obj) {
-		super.doPopulate(obj);
-		if (obj == null) {
-			this.connectionProfile = null;
-			return;
-		}
-		populateTableNameCombo();
-		populatePkColumnNameCombo();
-		populateValueColumnNameCombo();
-		populatePkColumnValueCombo();
-	}
-
-	@Override
 	protected void doPopulate() {
 		super.doPopulate();
-		populateTableNameCombo();
-		populatePkColumnNameCombo();
-		populateValueColumnNameCombo();
-		populatePkColumnValueCombo();
+
+		if (subject() == null) {
+			this.connectionProfile = null;
+		}
+		else {
+			populateTableNameCombo();
+			populatePkColumnNameCombo();
+			populateValueColumnNameCombo();
+			populatePkColumnValueCombo();
+		}
 	}
-	
+
 	@Override
 	protected void engageListeners() {
 		super.engageListeners();
@@ -326,7 +317,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		}
 		super.disengageListeners();
 	}
-	
+
 	private ConnectionProfile getConnectionProfile() {
 		if(this.connectionProfile == null) {
 			IJpaProject jpaProject = idMapping().getJpaProject();
@@ -334,12 +325,12 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		}
 		return this.connectionProfile;
 	}
-	
+
 
 	private void addConnectionListener() {
 		this.getConnectionProfile().addConnectionListener(this.connectionListener);
 	}
-	
+
 	private void removeConnectionListener() {
 		this.getConnectionProfile().removeConnectionListener(this.connectionListener);
 	}
@@ -384,7 +375,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	}
 	private void populatePkColumnChoices() {
 		this.pkColumnNameCombo.remove(1, this.pkColumnNameCombo.getItemCount() - 1);
-		
+
 		if (this.getConnectionProfile().isConnected()) {
 			if (!this.tableNameCombo.getText().equals(JptUiMappingsMessages.TableGeneratorComposite_default)) { // hmm,
 				// if
@@ -408,7 +399,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 			}
 		}
 	}
-	
+
 	private void populatePkColumnName() {
 		String pkColumnName = this.getGenerator().getSpecifiedPkColumnName();
 		if (pkColumnName != null) {
@@ -474,6 +465,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		}
 	}
 
+	@Override
 	protected void clear() {
 		super.clear();
 		this.tableNameCombo.select(0);
@@ -481,13 +473,13 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		this.pkColumnValueCombo.select(0);
 		this.valueColumnNameCombo.select(0);
 	}
-	
+
 	private ConnectionListener buildConnectionListener() {
 		return new ConnectionListener() {
 			public void closed(ConnectionProfile profile) {
 				populate();
 			}
-			
+
 			public void modified(ConnectionProfile profile) {
 				populate();
 			}
@@ -499,7 +491,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 			public void databaseChanged(ConnectionProfile profile, final Database database) {
 				populate();
 			}
-			
+
 			public void schemaChanged(ConnectionProfile profile, final Schema schema) {
 				populate();
 			}
@@ -516,16 +508,16 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 					}
 				});
 			}
-			
+
 			public void aboutToClose(ConnectionProfile profile) {
 				// not interested to this event.
 			}
-			
+
 			public boolean okToClose(ConnectionProfile profile) {
 				// not interested to this event.
 				return true;
 			}
-			
+
 			public void tableChanged(ConnectionProfile profile, final Table table) {
 				// not interested to this event.
 			}

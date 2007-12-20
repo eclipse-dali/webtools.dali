@@ -3,20 +3,16 @@
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jpt.core.internal.mappings.ICascade;
-import org.eclipse.jpt.core.internal.mappings.IRelationshipMapping;
-import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -30,29 +26,29 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class CascadeComposite extends BaseJpaComposite 
+public class CascadeComposite extends BaseJpaComposite<IRelationshipMapping>
 {
-	private IRelationshipMapping relationshipMapping;	
 	private ICascade cascade;
-	
+
 	private Adapter relationshipMappingListener;
 	private Adapter cascadeListener;
-	
-	
+
+
 	private Button allCheckBox;
 	private Button persistCheckBox;
 	private Button mergeCheckBox;
 	private Button removeCheckBox;
 	private Button refreshCheckBox;
-	
-	public CascadeComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, commandStack, widgetFactory);
+
+	public CascadeComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+		super(parent, SWT.NULL, widgetFactory);
 		this.relationshipMappingListener = buildRelationshipMappingListener();
 		this.cascadeListener = buildCascadeListener();
 	}
 
 	private Adapter buildRelationshipMappingListener() {
 		return new AdapterImpl() {
+			@Override
 			public void notifyChanged(Notification notification) {
 				relationshipMappingChanged(notification);
 			}
@@ -61,22 +57,23 @@ public class CascadeComposite extends BaseJpaComposite
 
 	private Adapter buildCascadeListener() {
 		return new AdapterImpl() {
+			@Override
 			public void notifyChanged(Notification notification) {
 				cascadeChanged(notification);
 			}
 		};
 	}
-	
+
 	@Override
 	protected void initializeLayout(Composite composite) {
 		composite.setLayout(new FillLayout());
-		
+
 		Group cascadeGroup = getWidgetFactory().createGroup(composite, "Cascade");
 		GridLayout layout = new GridLayout(5, false);
 		cascadeGroup.setLayout(layout);
-		
+
 		GridData gridData;
-		
+
 		this.allCheckBox = createAllCheckBox(cascadeGroup);
 		gridData = new GridData();
 		this.allCheckBox.setLayoutData(gridData);
@@ -97,7 +94,7 @@ public class CascadeComposite extends BaseJpaComposite
 		gridData = new GridData();
 		this.refreshCheckBox.setLayoutData(gridData);
 	}
-	
+
 	private Button createAllCheckBox(Composite composite) {
 		Button button = getWidgetFactory().createButton(composite, "All", SWT.CHECK);
 		button.addSelectionListener(new SelectionListener() {
@@ -105,19 +102,19 @@ public class CascadeComposite extends BaseJpaComposite
 				CascadeComposite.this.allSelected(e);
 			}
 			public void widgetSelected(SelectionEvent e) {
-				CascadeComposite.this.allSelected(e);				
+				CascadeComposite.this.allSelected(e);
 			}
 		});
 		return button;
 	}
-	
+
 	protected void allSelected(SelectionEvent e) {
 		boolean setSelection = initializeCascade();
 		if (setSelection) {
 			this.cascade.setAll(this.allCheckBox.getSelection());
 		}
 	}
-	
+
 	private boolean initializeCascade() {
 		if (allCheckBoxesFalse() && this.cascade != null) {
 			disengageCascadeListener();
@@ -131,7 +128,7 @@ public class CascadeComposite extends BaseJpaComposite
 		}
 		return true;
 	}
-	
+
 	private Button createPersistCheckBox(Composite composite) {
 		Button button = getWidgetFactory().createButton(composite, "Persist", SWT.CHECK);
 		button.addSelectionListener(new SelectionListener() {
@@ -139,12 +136,12 @@ public class CascadeComposite extends BaseJpaComposite
 				CascadeComposite.this.persistSelected(e);
 			}
 			public void widgetSelected(SelectionEvent e) {
-				CascadeComposite.this.persistSelected(e);				
+				CascadeComposite.this.persistSelected(e);
 			}
 		});
 		return button;
 	}
-	
+
 	protected void persistSelected(SelectionEvent e) {
 		boolean setSelection = initializeCascade();
 		if (setSelection) {
@@ -159,19 +156,19 @@ public class CascadeComposite extends BaseJpaComposite
 				CascadeComposite.this.mergeSelected(e);
 			}
 			public void widgetSelected(SelectionEvent e) {
-				CascadeComposite.this.mergeSelected(e);				
+				CascadeComposite.this.mergeSelected(e);
 			}
 		});
 		return button;
 	}
-	
+
 	protected void mergeSelected(SelectionEvent e) {
 		boolean setSelection = initializeCascade();
 		if (setSelection) {
 			this.cascade.setMerge(this.mergeCheckBox.getSelection());
 		}
 	}
-	
+
 	private Button createRemoveCheckBox(Composite composite) {
 		Button button = getWidgetFactory().createButton(composite, "Remove", SWT.CHECK);
 		button.addSelectionListener(new SelectionListener() {
@@ -179,19 +176,19 @@ public class CascadeComposite extends BaseJpaComposite
 				CascadeComposite.this.removeSelected(e);
 			}
 			public void widgetSelected(SelectionEvent e) {
-				CascadeComposite.this.removeSelected(e);				
+				CascadeComposite.this.removeSelected(e);
 			}
 		});
 		return button;
 	}
-	
+
 	protected void removeSelected(SelectionEvent e) {
 		boolean setSelection = initializeCascade();
 		if (setSelection) {
 			this.cascade.setRemove(this.removeCheckBox.getSelection());
 		}
 	}
-	
+
 	private Button createRefreshCheckBox(Composite composite) {
 		Button button = getWidgetFactory().createButton(composite, "Refresh", SWT.CHECK);
 		button.addSelectionListener(new SelectionListener() {
@@ -199,31 +196,31 @@ public class CascadeComposite extends BaseJpaComposite
 				CascadeComposite.this.refreshSelected(e);
 			}
 			public void widgetSelected(SelectionEvent e) {
-				CascadeComposite.this.refreshSelected(e);				
+				CascadeComposite.this.refreshSelected(e);
 			}
 		});
 		return button;
 	}
-	
+
 	protected void refreshSelected(SelectionEvent e) {
 		boolean setSelection = initializeCascade();
 		if (setSelection) {
 			this.cascade.setRefresh(this.refreshCheckBox.getSelection());
 		}
 	}
-	
+
 	private boolean allCheckBoxesFalse() {
-		return !(this.allCheckBox.getSelection() 
-				|| this.persistCheckBox.getSelection() 
-				|| this.mergeCheckBox.getSelection() 
-				|| this.removeCheckBox.getSelection() 
+		return !(this.allCheckBox.getSelection()
+				|| this.persistCheckBox.getSelection()
+				|| this.mergeCheckBox.getSelection()
+				|| this.removeCheckBox.getSelection()
 				|| this.refreshCheckBox.getSelection());
-		
-			
+
+
 	}
-	
+
 	private void relationshipMappingChanged(Notification notification) {
-		if (notification.getFeatureID(IRelationshipMapping.class) == 
+		if (notification.getFeatureID(IRelationshipMapping.class) ==
 				JpaCoreMappingsPackage.IRELATIONSHIP_MAPPING__CASCADE) {
 			Display.getDefault().asyncExec(
 				new Runnable() {
@@ -236,7 +233,7 @@ public class CascadeComposite extends BaseJpaComposite
 						}
 						CascadeComposite.this.cascade = CascadeComposite.this.relationshipMapping.getCascade();
 						populateCascade();
-						
+
 						if (CascadeComposite.this.cascade != null) {
 							engageCascadeListener();
 						}
@@ -244,7 +241,7 @@ public class CascadeComposite extends BaseJpaComposite
 				});
 		}
 	}
-	
+
 	private void cascadeChanged(final Notification notification) {
 		switch (notification.getFeatureID(ICascade.class)) {
 			case JpaCoreMappingsPackage.ICASCADE__ALL :
@@ -256,7 +253,7 @@ public class CascadeComposite extends BaseJpaComposite
 							}
 							CascadeComposite.this.allCheckBox.setSelection(notification.getNewBooleanValue());
 						}
-					});			
+					});
 				break;
 			case JpaCoreMappingsPackage.ICASCADE__PERSIST :
 				Display.getDefault().asyncExec(
@@ -267,7 +264,7 @@ public class CascadeComposite extends BaseJpaComposite
 							}
 							CascadeComposite.this.persistCheckBox.setSelection(notification.getNewBooleanValue());
 						}
-					});			
+					});
 				break;
 			case JpaCoreMappingsPackage.ICASCADE__MERGE :
 				Display.getDefault().asyncExec(
@@ -278,7 +275,7 @@ public class CascadeComposite extends BaseJpaComposite
 							}
 							CascadeComposite.this.mergeCheckBox.setSelection(notification.getNewBooleanValue());
 						}
-					});			
+					});
 				break;
 			case JpaCoreMappingsPackage.ICASCADE__REMOVE :
 				Display.getDefault().asyncExec(
@@ -289,7 +286,7 @@ public class CascadeComposite extends BaseJpaComposite
 							}
 							CascadeComposite.this.removeCheckBox.setSelection(notification.getNewBooleanValue());
 						}
-					});			
+					});
 				break;
 			case JpaCoreMappingsPackage.ICASCADE__REFRESH :
 				Display.getDefault().asyncExec(
@@ -300,12 +297,12 @@ public class CascadeComposite extends BaseJpaComposite
 							}
 							CascadeComposite.this.refreshCheckBox.setSelection(notification.getNewBooleanValue());
 						}
-					});			
+					});
 				break;
 			default :
 				break;
 		}
-		if (notification.getFeatureID(ICascade.class) == 
+		if (notification.getFeatureID(ICascade.class) ==
 				JpaCoreMappingsPackage.ICASCADE__ALL) {
 			Display.getDefault().asyncExec(
 				new Runnable() {
@@ -317,19 +314,18 @@ public class CascadeComposite extends BaseJpaComposite
 					}
 				});
 		}
-		
-	}
-	
 
-	public void doPopulate(EObject obj) {
-		this.relationshipMapping = (IRelationshipMapping) obj;
-		
-		if (this.relationshipMapping != null) {
-			this.cascade = this.relationshipMapping.getCascade();
+	}
+
+
+	@Override
+	public void doPopulate() {
+		if (this.subject() != null) {
+			this.cascade = this.subject().getCascade();
 			populateCascade();
 		}
 	}
-	
+
 	private void populateCascade() {
 		if (this.cascade != null) {
 			this.allCheckBox.setSelection(this.cascade.isAll());
@@ -343,33 +339,32 @@ public class CascadeComposite extends BaseJpaComposite
 			this.persistCheckBox.setSelection(false);
 			this.mergeCheckBox.setSelection(false);
 			this.removeCheckBox.setSelection(false);
-			this.refreshCheckBox.setSelection(false);		
+			this.refreshCheckBox.setSelection(false);
 		}
 	}
-	
-	public void doPopulate() {
-	}
-	
+
+	@Override
 	protected void engageListeners() {
-		if (this.relationshipMapping != null) {
-			this.relationshipMapping.eAdapters().add(this.relationshipMappingListener);
-			if (this.cascade != null) {
+		if (this.subject() != null) {
+			this.subject().eAdapters().add(this.relationshipMappingListener);
+			if (this.subject() != null) {
 				engageCascadeListener();
 			}
 		}
 	}
-	
+
 	protected void engageCascadeListener() {
 		this.cascade.eAdapters().add(this.cascadeListener);
 	}
-	
+
 	protected void disengageCascadeListener() {
 		this.cascade.eAdapters().remove(this.cascadeListener);
 	}
-	
+
+	@Override
 	protected void disengageListeners() {
-		if (this.relationshipMapping != null) {
-			this.relationshipMapping.eAdapters().remove(this.relationshipMappingListener);
+		if (this.subject() != null) {
+			this.subject().eAdapters().remove(this.relationshipMappingListener);
 			if (this.cascade != null) {
 				disengageCascadeListener();
 			}

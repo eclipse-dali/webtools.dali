@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -21,6 +20,8 @@ import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
+import org.eclipse.jpt.core.internal.context.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
@@ -49,21 +50,21 @@ import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class XmlPersistentAttributeDetailsPage
-	extends PersistentAttributeDetailsPage 
+	extends PersistentAttributeDetailsPage
 {
 	private XmlJavaAttributeChooser javaAttributeChooser;
-	
+
 	private Adapter persistentTypeListener;
-	
+
 	private IPersistentType persistentType;
-	
+
 	private List<IAttributeMappingUiProvider> attributeMappingUiProviders;
 
 	public XmlPersistentAttributeDetailsPage(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
 		super(parent, widgetFactory);
 		buildPersistentTypeListener();
 	}
-	
+
 	private void buildPersistentTypeListener() {
 		this.persistentTypeListener = new AdapterImpl() {
 			@Override
@@ -72,9 +73,9 @@ public class XmlPersistentAttributeDetailsPage
 			}
 		};
 	}
-	
+
 	void persistentTypeChanged(Notification notification) {
-		if (notification.getFeatureID(XmlPersistentType.class) == 
+		if (notification.getFeatureID(XmlPersistentType.class) ==
 			OrmPackage.XML_PERSISTENT_TYPE__SPECIFIED_ATTRIBUTE_MAPPINGS) {
 			Display.getDefault().asyncExec(
 				new Runnable() {
@@ -99,25 +100,25 @@ public class XmlPersistentAttributeDetailsPage
 		providers.add(BasicMappingUiProvider.instance());
 		providers.add(EmbeddedMappingUiProvider.instance());
 		providers.add(EmbeddedIdMappingUiProvider.instance());
-		providers.add(IdMappingUiProvider.instance());			
-		providers.add(ManyToManyMappingUiProvider.instance());			
-		providers.add(ManyToOneMappingUiProvider.instance());			
-		providers.add(OneToManyMappingUiProvider.instance());			
+		providers.add(IdMappingUiProvider.instance());
+		providers.add(ManyToManyMappingUiProvider.instance());
+		providers.add(ManyToOneMappingUiProvider.instance());
+		providers.add(OneToManyMappingUiProvider.instance());
 		providers.add(OneToOneMappingUiProvider.instance());
 		providers.add(TransientMappingUiProvider.instance());
 		providers.add(VersionMappingUiProvider.instance());
 	}
-	
+
 	@Override
 	protected ListIterator<IAttributeMappingUiProvider> defaultAttributeMappingUiProviders() {
 		return EmptyListIterator.instance();
 	}
-	
+
 	@Override
 	protected IAttributeMappingUiProvider defaultAttributeMappingUiProvider(String key) {
 		throw new UnsupportedOperationException("Xml attributeMappings should not be default");
 	}
-	
+
 	@Override
 	//bug 192035 - no default mapping option in xml
 	protected IAttributeMappingUiProvider[] attributeMappingUiProvidersFor(IPersistentAttribute persistentAttribute) {
@@ -127,28 +128,28 @@ public class XmlPersistentAttributeDetailsPage
 	@Override
 	protected void initializeLayout(Composite composite) {
 		composite.setLayout(new GridLayout(2, false));
-		
+
 		GridData gridData;
-		
+
 		CommonWidgets.buildJavaAttributeNameLabel(composite, getWidgetFactory());
-		
-		this.javaAttributeChooser = CommonWidgets.buildJavaAttributeChooser(composite, this.commandStack, getWidgetFactory());
+
+		this.javaAttributeChooser = CommonWidgets.buildJavaAttributeChooser(composite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.javaAttributeChooser.getControl().setLayoutData(gridData);
 
-		
+
 		buildMappingLabel(composite);
-		
+
 		ComboViewer mappingCombo = buildMappingCombo(composite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		mappingCombo.getCombo().setLayoutData(gridData);
-		
+
 		PageBook book = buildMappingPageBook(composite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
@@ -158,7 +159,7 @@ public class XmlPersistentAttributeDetailsPage
 		gridData.horizontalSpan = 2;
 		book.setLayoutData(gridData);
 	}
-	
+
 	@Override
 	protected void engageListeners() {
 		super.engageListeners();
@@ -167,7 +168,7 @@ public class XmlPersistentAttributeDetailsPage
 			this.persistentType.eAdapters().add(this.persistentTypeListener);
 		}
 	}
-	
+
 	@Override
 	protected void disengageListeners() {
 		if (this.persistentType != null) {
@@ -176,7 +177,7 @@ public class XmlPersistentAttributeDetailsPage
 		}
 		super.disengageListeners();
 	}
-	
+
 	@Override
 	protected void doPopulate(IJpaContentNode persistentAttributeNode) {
 		super.doPopulate(persistentAttributeNode);
@@ -189,20 +190,20 @@ public class XmlPersistentAttributeDetailsPage
 			updateEnbabledState();
 		}
 	}
-	
+
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
 		this.javaAttributeChooser.populate();
 		updateEnbabledState();
 	}
-	
+
 	@Override
 	public void dispose() {
 		this.javaAttributeChooser.dispose();
 		super.dispose();
 	}
-	
+
 	public void updateEnbabledState() {
 		if (getAttribute() == null || getAttribute().eContainer() == null) {
 			return;
@@ -210,7 +211,7 @@ public class XmlPersistentAttributeDetailsPage
 		boolean enabled = !((XmlPersistentAttribute) getAttribute()).isVirtual();
 		updateEnabledState(enabled, getControl());
 	}
-	
+
 	public void updateEnabledState(boolean enabled, Control control) {
 		control.setEnabled(enabled);
 		if (control instanceof Composite) {

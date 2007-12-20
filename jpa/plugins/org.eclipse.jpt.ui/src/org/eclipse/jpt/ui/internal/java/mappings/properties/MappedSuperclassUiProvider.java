@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.mappings.properties;
 
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.ui.internal.details.IJpaComposite;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
@@ -45,7 +44,7 @@ public class MappedSuperclassUiProvider implements ITypeMappingUiProvider
 		return JptUiMappingsMessages.PersistentTypePage_MappedSuperclassLabel;
 	}
 
-	public IJpaComposite buildPersistentTypeMappingComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return new MappedSuperclassComposite(parent, commandStack, widgetFactory);
+	public IJpaComposite buildPersistentTypeMappingComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+		return new MappedSuperclassComposite(parent, widgetFactory);
 	}
 }

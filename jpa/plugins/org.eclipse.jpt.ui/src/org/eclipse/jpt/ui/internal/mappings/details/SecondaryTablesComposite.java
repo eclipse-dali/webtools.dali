@@ -3,14 +3,13 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -26,10 +25,9 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.internal.mappings.IEntity;
-import org.eclipse.jpt.core.internal.mappings.ISecondaryTable;
-import org.eclipse.jpt.core.internal.mappings.ITable;
-import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
+import org.eclipse.jpt.core.internal.context.base.IEntity;
+import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
+import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.SWT;
@@ -43,50 +41,48 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 //TODO handle xml, how to handle virtual secondaryTables, adding them to xml, are they overriden, etc??
-public class SecondaryTablesComposite extends BaseJpaComposite 
+public class SecondaryTablesComposite extends BaseJpaComposite<IEntity>
 {
-	private IEntity entity;
 	private final Adapter entityListener;
 	private final Adapter secondaryTableListener;
-	
-	ListViewer secondaryTablesListViewer;
-
+	private ListViewer secondaryTablesListViewer;
 	private Button addButton;
 	private Button editButton;
 	private Button removeButton;
-	
 	private PrimaryKeyJoinColumnsInSecondaryTableComposite pkJoinColumnsComposite;
-	
-	public SecondaryTablesComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, commandStack, widgetFactory);
+
+	public SecondaryTablesComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+		super(parent, SWT.NULL, widgetFactory);
 		this.entityListener = buildEntityListener();
 		this.secondaryTableListener = buildSecondaryTableListener();
 	}
-	
+
 	private Adapter buildEntityListener() {
 		return new AdapterImpl() {
+			@Override
 			public void notifyChanged(Notification notification) {
 				entityChanged(notification);
 			}
 		};
 	}
-	
+
 	private Adapter buildSecondaryTableListener() {
 		return new AdapterImpl() {
+			@Override
 			public void notifyChanged(Notification notification) {
 				seoncaryTableChanged(notification);
 			}
 		};
 	}
-	
+
 	@Override
 	protected void initializeLayout(Composite composite) {
 		GridLayout layout = new GridLayout(2, false);
 		layout.marginWidth = 0;
 		composite.setLayout(layout);
-		
+
 		GridData gridData =  new GridData();
-		
+
 		Composite secondaryTablesComposite = new Composite(composite, SWT.NONE);
 		layout = new GridLayout(3, false);
 		layout.marginWidth = 0;
@@ -97,7 +93,7 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		secondaryTablesComposite.setLayoutData(gridData);
-	
+
 		this.secondaryTablesListViewer = buildSecondaryTablesListViewer(secondaryTablesComposite);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -107,7 +103,7 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 		gridData.grabExcessVerticalSpace = true;
 		this.secondaryTablesListViewer.getList().setLayoutData(gridData);
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(this.secondaryTablesListViewer.getList(), IJpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS);
-		
+
 		Composite buttonsComposite = new Composite(secondaryTablesComposite, SWT.NONE);
 		layout = new GridLayout(3, false);
 		layout.marginWidth = 0;
@@ -115,10 +111,10 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 		gridData =  new GridData();
 		gridData.horizontalAlignment = SWT.END;
 		buttonsComposite.setLayoutData(gridData);
-		
+
 		this.addButton = getWidgetFactory().createButton(
-			buttonsComposite, 
-			JptUiMappingsMessages.SecondaryTablesComposite_add, 
+			buttonsComposite,
+			JptUiMappingsMessages.SecondaryTablesComposite_add,
 			SWT.NONE);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -127,15 +123,15 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// do nothing
 			}
-		
+
 			public void widgetSelected(SelectionEvent e) {
 				addSecondaryTable();
 			}
 		});
-		
+
 		this.editButton = getWidgetFactory().createButton(
-			buttonsComposite, 
-			JptUiMappingsMessages.SecondaryTablesComposite_edit, 
+			buttonsComposite,
+			JptUiMappingsMessages.SecondaryTablesComposite_edit,
 			SWT.NONE);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -144,15 +140,15 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// do nothing
 			}
-		
+
 			public void widgetSelected(SelectionEvent e) {
 				editSecondaryTable();
 			}
 		});
 
 		this.removeButton = getWidgetFactory().createButton(
-			buttonsComposite, 
-			JptUiMappingsMessages.SecondaryTablesComposite_remove, 
+			buttonsComposite,
+			JptUiMappingsMessages.SecondaryTablesComposite_remove,
 			SWT.NONE);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -162,13 +158,13 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// do nothing
 			}
-		
+
 			public void widgetSelected(SelectionEvent e) {
 				removeSecondaryTable();
 			}
 		});
-		
-		this.pkJoinColumnsComposite = new PrimaryKeyJoinColumnsInSecondaryTableComposite(composite, this.commandStack, getWidgetFactory());
+
+		this.pkJoinColumnsComposite = new PrimaryKeyJoinColumnsInSecondaryTableComposite(composite, getWidgetFactory());
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
@@ -176,12 +172,12 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 		gridData.grabExcessVerticalSpace = true;
 		this.pkJoinColumnsComposite.getControl().setLayoutData(gridData);
 	}
-	
+
 	private ListViewer buildSecondaryTablesListViewer(Composite parent) {
 		ListViewer listViewer = new ListViewer(parent, SWT.SINGLE | SWT.BORDER);
 		listViewer.setLabelProvider(buildSecondaryTablesListLabelProvider());
 		listViewer.setContentProvider(buildSecondaryTablesListContentProvider());
-		
+
 		listViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
 				updateEnablement();
@@ -191,7 +187,7 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 
 		return listViewer;
 	}
-	
+
 	protected void secondaryTablesListSelectionChanged(SelectionChangedEvent event) {
 		if (((StructuredSelection) event.getSelection()).isEmpty()) {
 			this.pkJoinColumnsComposite.populate(null);
@@ -209,19 +205,20 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 				// do nothing
 			}
-		
+
 			public void dispose() {
 				// do nothing
 			}
-		
+
 			public Object[] getElements(Object inputElement) {
 				return ((IEntity) inputElement).getSecondaryTables().toArray();
 			}
 		};
 	}
-	
+
 	private ILabelProvider buildSecondaryTablesListLabelProvider() {
 		return new LabelProvider() {
+			@Override
 			public String getText(Object element) {
 				//TODO display a qualified name instead
 				ISecondaryTable secondaryTable = (ISecondaryTable) element;
@@ -229,40 +226,40 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 			}
 		};
 	}
-	
+
 	void addSecondaryTable() {
 		SecondaryTableDialog dialog = new SecondaryTableDialog(this.getControl().getShell(), this.entity);
 		addSecondaryTableFromDialog(dialog);
 	}
-	
+
 	private void addSecondaryTableFromDialog(SecondaryTableDialog dialog) {
 		if (dialog.open() == Window.OK) {
-			int index = this.entity.getSpecifiedSecondaryTables().size();
+			int index = this.subject().getSpecifiedSecondaryTables().size();
 			String name = dialog.getSelectedName();
 			String catalog = dialog.getSelectedCatalog();
 			String schema = dialog.getSelectedSchema();
-			ISecondaryTable secondaryTable = this.entity.createSecondaryTable(index);
-			this.entity.getSpecifiedSecondaryTables().add(secondaryTable);
+			ISecondaryTable secondaryTable = this.subject().createSecondaryTable(index);
+			this.subject().getSpecifiedSecondaryTables().add(secondaryTable);
 			secondaryTable.setSpecifiedName(name);
 			secondaryTable.setSpecifiedCatalog(catalog);
 			secondaryTable.setSpecifiedSchema(schema);
-			
+
 			this.secondaryTablesListViewer.setSelection(new StructuredSelection(secondaryTable));
 		}
 	}
-	
+
 	void editSecondaryTable() {
 		ISecondaryTable secondaryTable = getSelectedSecondaryTable();
 		SecondaryTableDialog dialog = new SecondaryTableDialog(this.getControl().getShell(), secondaryTable, this.entity);
 		editSecondaryTableFromDialog(dialog, secondaryTable);
 	}
-	
+
 	private void editSecondaryTableFromDialog(SecondaryTableDialog dialog, ISecondaryTable secondaryTable) {
 		if (dialog.open() == Window.OK) {
 			editSecondaryTableDialogOkd(dialog, secondaryTable);
 		}
 	}
-	
+
 	private void editSecondaryTableDialogOkd(SecondaryTableDialog dialog, ISecondaryTable secondaryTable) {
 		String name = dialog.getSelectedName();
 		String catalog = dialog.getSelectedCatalog();
@@ -271,7 +268,7 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 		if (secondaryTable.getSpecifiedName() == null || !secondaryTable.getSpecifiedName().equals(name)){
 			secondaryTable.setSpecifiedName(name);
 		}
-		
+
 		if (dialog.isDefaultCatalogSelected()) {
 			if (secondaryTable.getSpecifiedCatalog() != null) {
 				secondaryTable.setSpecifiedCatalog(null);
@@ -280,7 +277,7 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 		else if (secondaryTable.getSpecifiedCatalog() == null || !secondaryTable.getSpecifiedCatalog().equals(catalog)){
 			secondaryTable.setSpecifiedCatalog(catalog);
 		}
-		
+
 		if (dialog.isDefaultSchemaSelected()) {
 			if (secondaryTable.getSpecifiedSchema() != null) {
 				secondaryTable.setSpecifiedSchema(null);
@@ -295,67 +292,65 @@ public class SecondaryTablesComposite extends BaseJpaComposite
 		return (ISecondaryTable) ((StructuredSelection) this.secondaryTablesListViewer.getSelection()).getFirstElement();
 	}
 
-	
+
 	void removeSecondaryTable() {
 		ISelection selection = this.secondaryTablesListViewer.getSelection();
 		if (selection instanceof StructuredSelection) {
 			for (Iterator<ISecondaryTable> i = ((StructuredSelection) selection).iterator(); i.hasNext(); ) {
-				this.entity.getSpecifiedSecondaryTables().remove(i.next());
+				this.subject().getSpecifiedSecondaryTables().remove(i.next());
 			}
 		}
 	}
-	
+
 	void updateEnablement() {
 		this.editButton.setEnabled(!((StructuredSelection) this.secondaryTablesListViewer.getSelection()).isEmpty());
 		this.removeButton.setEnabled(!((StructuredSelection) this.secondaryTablesListViewer.getSelection()).isEmpty());
-	}	
-	
-	public void doPopulate(EObject obj) {
-		this.entity = (IEntity) obj;
-		if (this.entity == null) {
+	}
+
+	@Override
+	protected void doPopulate() {
+		if (this.subject() == null) {
 			this.secondaryTablesListViewer.setInput(null);
 			return;
 		}
-		
-		this.secondaryTablesListViewer.setInput(this.entity);
-		if (!this.entity.getSecondaryTables().isEmpty()) {
-			this.secondaryTablesListViewer.setSelection(new StructuredSelection(this.entity.getSecondaryTables().get(0)));
+
+		this.secondaryTablesListViewer.setInput(this.subject());
+		if (!this.subject().getSecondaryTables().isEmpty()) {
+			this.secondaryTablesListViewer.setSelection(new StructuredSelection(this.subject().getSecondaryTables().get(0)));
 		}
 		else {
-			this.secondaryTablesListViewer.setSelection(null);			
+			this.secondaryTablesListViewer.setSelection(null);
 		}
 		updateEnablement();
 	}
 
 	@Override
-	protected void doPopulate() {
+	protected void engageListeners() {
+		if (this.subject() != null) {
+			this.subject().eAdapters().add(this.subject()Listener);
+			for (ISecondaryTable secondaryTable : this.subject().getSecondaryTables()) {
+				secondaryTable.eAdapters().add(this.secondaryTableListener);
+			}
+		}
 	}
 
-	protected void engageListeners() {
-		if (this.entity != null) {
-			this.entity.eAdapters().add(this.entityListener);
-			for (ISecondaryTable secondaryTable : this.entity.getSecondaryTables()) {
-				secondaryTable.eAdapters().add(this.secondaryTableListener);
-			}	
-		}
-	}
-	
+	@Override
 	protected void disengageListeners() {
-		if (this.entity != null) {
-			for (ISecondaryTable secondaryTable : this.entity.getSecondaryTables()) {
+		if (this.subject() != null) {
+			for (ISecondaryTable secondaryTable : this.subject().getSecondaryTables()) {
 				secondaryTable.eAdapters().remove(this.secondaryTableListener);
 			}
-			this.entity.eAdapters().remove(this.entityListener);
+			this.subject().eAdapters().remove(this.subject()Listener);
 		}
 	}
-	
+
 	protected void entityChanged(Notification notification) {
 		if (notification.getFeatureID(IEntity.class) == JpaCoreMappingsPackage.IENTITY__SPECIFIED_SECONDARY_TABLES) {
 			if (notification.getEventType() == Notification.ADD) {
 				((ISecondaryTable) notification.getNewValue()).eAdapters().add(this.secondaryTableListener);
 			}
 			else if (notification.getEventType() == Notification.REMOVE) {
-				((ISecondaryTable) notification.getOldValue()).eAdapters().remove(this.secondaryTableListener);				
+				((ISecondaryTable) notification.getOldValue()).eAdapters().remove(this.secondaryTableListener);
 			}
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {

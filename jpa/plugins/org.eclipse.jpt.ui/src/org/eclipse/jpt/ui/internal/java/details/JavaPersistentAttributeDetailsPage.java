@@ -3,14 +3,13 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.details;
 
 import java.util.ListIterator;
-
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
@@ -24,18 +23,17 @@ import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class JavaPersistentAttributeDetailsPage
-	extends PersistentAttributeDetailsPage 
+	extends PersistentAttributeDetailsPage
 {
 	public JavaPersistentAttributeDetailsPage(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
 		super(parent, widgetFactory);
 	}
-	
-	
+
 	@Override
 	protected ListIterator<IAttributeMappingUiProvider> attributeMappingUiProviders() {
 		return jpaPlatformUi().javaAttributeMappingUiProviders();
 	}
-	
+
 	protected IAttributeMappingUiProvider nullAttributeMappingUiProvider() {
 		return NullAttributeMappingUiProvider.instance();
 	}
@@ -45,13 +43,12 @@ public class JavaPersistentAttributeDetailsPage
 		return jpaPlatformUi().defaultJavaAttributeMappingUiProviders();
 	}
 
-
 	/**
 	 * These IAtttributeMappingUiProviders will be used as elements in the attributeMapping combo
 	 * The first element in the combo will be one of the defaultAttributeMappingUiProviders or
 	 * if none of those apply the nullAttributeMappingUiProvider will be used. The rest of the elements
 	 * will be the attributeMappingUiProviders.  The defaultAttributeMappingUiProvider is
-	 * determined by matching its key with the key of the current attributeMapping.  
+	 * determined by matching its key with the key of the current attributeMapping.
 	 */
 	@Override
 	protected IAttributeMappingUiProvider[] attributeMappingUiProvidersFor(IPersistentAttribute persistentAttribute) {
@@ -63,7 +60,7 @@ public class JavaPersistentAttributeDetailsPage
 		}
 		return providers;
 	}
-	
+
 	@Override
 	protected IAttributeMappingUiProvider defaultAttributeMappingUiProvider(String key) {
 		for (ListIterator<IAttributeMappingUiProvider> i = defaultAttributeMappingUiProviders(); i.hasNext(); ) {
@@ -74,22 +71,22 @@ public class JavaPersistentAttributeDetailsPage
 		}
 		return this.nullAttributeMappingUiProvider();
 	}
-	
+
 	@Override
 	protected void initializeLayout(Composite composite) {
 		composite.setLayout(new GridLayout(2, false));
-		
+
 		GridData gridData;
-		
+
 		buildMappingLabel(composite);
-		
+
 		ComboViewer mappingCombo = buildMappingCombo(composite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		mappingCombo.getCombo().setLayoutData(gridData);
-		
+
 		PageBook book = buildMappingPageBook(composite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;

@@ -3,14 +3,13 @@
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors: Oracle. - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jpt.core.internal.AccessType;
+import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults;
@@ -32,20 +31,24 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class PersistenceUnitMetadataSection extends BaseJpaController
+public class PersistenceUnitMetadataSection extends BaseJpaController<PersistenceUnitMetadata>
 {
-	
-	private Section section;
-	private XmlMappingMetadataCompleteCheckBox xmlMappingMetadataCompleteCheckBox;
-	private StringWithDefaultChooser xmlSchemaChooser;
-	private StringWithDefaultChooser xmlCatalogChooser;
+
 	private AccessTypeComboViewer accessComboViewer;
 	private CascadePersistCheckBox cascadePersistCheckBox;
-	
-	public PersistenceUnitMetadataSection(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, commandStack, widgetFactory);
+	private Section section;
+	private StringWithDefaultChooser xmlCatalogChooser;
+	private XmlMappingMetadataCompleteCheckBox xmlMappingMetadataCompleteCheckBox;
+	private StringWithDefaultChooser xmlSchemaChooser;
+
+	public PersistenceUnitMetadataSection(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+		super(parent, widgetFactory);
 	}
-	
+
+	private CascadePersistCheckBox buildCascadePersistCheckBox(Composite parent) {
+		return new CascadePersistCheckBox(parent, getWidgetFactory());
+	}
+
 	@Override
 	protected void buildWidget(Composite parent) {
 		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
@@ -54,12 +57,12 @@ public class PersistenceUnitMetadataSection extends BaseJpaController
 
 		Composite persistenceUnitComposite = getWidgetFactory().createComposite(this.section);
 		this.section.setClient(persistenceUnitComposite);
-		
+
 		GridLayout layout = new GridLayout(2, false);
 		layout.marginWidth = 1;
 		persistenceUnitComposite.setLayout(layout);
 
-	    
+
 	    this.xmlMappingMetadataCompleteCheckBox = buildXmlMappingMetadataCompleteCheckBox(persistenceUnitComposite);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
@@ -68,10 +71,10 @@ public class PersistenceUnitMetadataSection extends BaseJpaController
 		gridData.horizontalSpan = 2;
 		this.xmlMappingMetadataCompleteCheckBox.getControl().setLayoutData(gridData);
 		helpSystem.setHelp(xmlMappingMetadataCompleteCheckBox.getControl(), IJpaHelpContextIds.ENTITY_ORM_XML);
-		
+
 		CommonWidgets.buildSchemaLabel(persistenceUnitComposite, getWidgetFactory());
-		
-		this.xmlSchemaChooser = CommonWidgets.buildSchemaChooser(persistenceUnitComposite, this.commandStack, getWidgetFactory());
+
+		this.xmlSchemaChooser = CommonWidgets.buildSchemaChooser(persistenceUnitComposite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
@@ -80,18 +83,18 @@ public class PersistenceUnitMetadataSection extends BaseJpaController
 		helpSystem.setHelp(xmlSchemaChooser.getControl(), IJpaHelpContextIds.ENTITY_ORM_SCHEMA);
 
 		CommonWidgets.buildCatalogLabel(persistenceUnitComposite, getWidgetFactory());
-		
-		this.xmlCatalogChooser = CommonWidgets.buildCatalogChooser(persistenceUnitComposite, this.commandStack, getWidgetFactory());
+
+		this.xmlCatalogChooser = CommonWidgets.buildCatalogChooser(persistenceUnitComposite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.xmlCatalogChooser.getCombo().setLayoutData(gridData);
 		helpSystem.setHelp(xmlCatalogChooser.getControl(), IJpaHelpContextIds.ENTITY_ORM_CATALOG);
-		
+
 		CommonWidgets.buildAccessLabel(persistenceUnitComposite, getWidgetFactory());
-		
-		this.accessComboViewer = CommonWidgets.buildAccessTypeComboViewer(persistenceUnitComposite, this.commandStack, getWidgetFactory());
+
+		this.accessComboViewer = CommonWidgets.buildAccessTypeComboViewer(persistenceUnitComposite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
@@ -99,7 +102,7 @@ public class PersistenceUnitMetadataSection extends BaseJpaController
 		this.accessComboViewer.getControl().setLayoutData(gridData);
 		helpSystem.setHelp(accessComboViewer.getControl(), IJpaHelpContextIds.ENTITY_ORM_ACCESS);
 
-	
+
 	    this.cascadePersistCheckBox = buildCascadePersistCheckBox(persistenceUnitComposite);
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
@@ -110,158 +113,15 @@ public class PersistenceUnitMetadataSection extends BaseJpaController
 		helpSystem.setHelp(cascadePersistCheckBox.getControl(), IJpaHelpContextIds.ENTITY_ORM_CASCADE);
 
 	}
-	
+
 	private XmlMappingMetadataCompleteCheckBox buildXmlMappingMetadataCompleteCheckBox(Composite parent) {
-		return new XmlMappingMetadataCompleteCheckBox(parent, this.commandStack, getWidgetFactory());
-	}
-	
-	private CascadePersistCheckBox buildCascadePersistCheckBox(Composite parent) {
-		return new CascadePersistCheckBox(parent, this.commandStack, getWidgetFactory());
+		return new XmlMappingMetadataCompleteCheckBox(parent, getWidgetFactory());
 	}
 
-	@Override
-	protected void engageListeners() {
-	}
-	
 	@Override
 	protected void disengageListeners() {
 	}
-	
-	@Override
-	public void doPopulate(EObject obj) {
-		PersistenceUnitMetadata persistenceUnitMetadata = (PersistenceUnitMetadata) obj;
-		this.xmlMappingMetadataCompleteCheckBox.populate(persistenceUnitMetadata);
-		if (persistenceUnitMetadata != null) {
-			this.accessComboViewer.populate(new MyAccessHolder(persistenceUnitMetadata.getPersistenceUnitDefaults()));
-			this.xmlSchemaChooser.populate(new SchemaHolder(persistenceUnitMetadata.getPersistenceUnitDefaults()));
-			this.xmlCatalogChooser.populate(new CatalogHolder(persistenceUnitMetadata.getPersistenceUnitDefaults()));
-			this.cascadePersistCheckBox.populate(persistenceUnitMetadata.getPersistenceUnitDefaults());
-		}
-		else {
-			this.accessComboViewer.populate(new MyAccessHolder(null));			
-			this.xmlSchemaChooser.populate(new SchemaHolder(null));			
-			this.xmlCatalogChooser.populate(new CatalogHolder(null));			
-			this.cascadePersistCheckBox.populate(null);			
-		}
-	}
-	private class MyAccessHolder extends JpaEObject implements AccessHolder{
-		
-		private PersistenceUnitDefaultsInternal persistenceUnitDefaults;
-		MyAccessHolder(PersistenceUnitDefaults persistenceUnitDefaultsInternal) {
-			super();
-			this.persistenceUnitDefaults = (PersistenceUnitDefaultsInternal) persistenceUnitDefaultsInternal;
-		}
-		public void setAccess(AccessType accessType) {
-			persistenceUnitDefaults.setAccess(accessType);
-		}
-	
-		public AccessType getAccess() {
-			return persistenceUnitDefaults.getAccess();
-		}
-		
-		public Class featureClass() {
-			return PersistenceUnitDefaults.class;
-		}
-		
-		public int featureId() {
-			return OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ACCESS;
-		}
-		
-		public EObject wrappedObject() {
-			return this.persistenceUnitDefaults;
-		}
-	}
-	
-	private class SchemaHolder extends JpaEObject implements StringHolder {
-		private PersistenceUnitDefaults persistenceUnitDefaults;
-		SchemaHolder(PersistenceUnitDefaults persistenceUnitDefaults) {
-			super();
-			this.persistenceUnitDefaults = persistenceUnitDefaults;
-		}
-		
-		public Class featureClass() {
-			return PersistenceUnitDefaults.class;
-		}
-		
-		public int featureId() {
-			return OrmPackage.PERSISTENCE_UNIT_DEFAULTS__SCHEMA;
-		}
-		
-		public boolean supportsDefault() {
-			return false;
-		}
-		
-		public int defaultFeatureId() {
-			throw new UnsupportedOperationException();
-		}
-		
-		public String defaultItem() {
-			return JptUiXmlMessages.PersistenceUnitMetadataSection_SchemaDefault;
-		}
-		
-		public String getString() {
-			return this.persistenceUnitDefaults.getSchema();
-		}
-		
-		public void setString(String newSchema) {
-			this.persistenceUnitDefaults.setSchema(newSchema);
-		}
-		
-		public EObject wrappedObject() {
-			return this.persistenceUnitDefaults;
-		}
-	}
-	
-	private class CatalogHolder extends JpaEObject implements StringHolder {
-		private PersistenceUnitDefaults persistenceUnitDefaults;
-		CatalogHolder(PersistenceUnitDefaults persistenceUnitDefaults) {
-			super();
-			this.persistenceUnitDefaults = persistenceUnitDefaults;
-		}
-		
-		public Class featureClass() {
-			return PersistenceUnitDefaults.class;
-		}
-		
-		public int featureId() {
-			return OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CATALOG;
-		}
-		
-		public boolean supportsDefault() {
-			return false;
-		}
-		
-		public int defaultFeatureId() {
-			throw new UnsupportedOperationException();
-		}
-		
-		public String defaultItem() {
-			return JptUiXmlMessages.PersistenceUnitMetadataSection_CatalogDefault;
-		}
-		
-		public String getString() {
-			return this.persistenceUnitDefaults.getCatalog();
-		}
-		
-		public void setString(String string) {
-			this.persistenceUnitDefaults.setCatalog(string);
-		}
-		
-		public EObject wrappedObject() {
-			return this.persistenceUnitDefaults;
-		}
-		
-	}
 
-	@Override
-	protected void doPopulate() {
-		this.xmlMappingMetadataCompleteCheckBox.populate();
-		this.xmlSchemaChooser.populate();
-		this.xmlCatalogChooser.populate();
-		this.accessComboViewer.populate();
-		this.cascadePersistCheckBox.populate();
-	}
-	
 	@Override
 	public void dispose() {
 		this.xmlMappingMetadataCompleteCheckBox.dispose();
@@ -270,15 +130,142 @@ public class PersistenceUnitMetadataSection extends BaseJpaController
 		this.accessComboViewer.dispose();
 		this.cascadePersistCheckBox.dispose();
 		super.dispose();
-	}	
-	
-	public Section getSection() {
-		return this.section;
 	}
-	
+
+	@Override
+	protected void doPopulate() {
+		if (subject() != null) {
+			this.accessComboViewer.populate(new MyAccessHolder(subject().getPersistenceUnitDefaults()));
+			this.xmlSchemaChooser.populate(new SchemaHolder(subject().getPersistenceUnitDefaults()));
+			this.xmlCatalogChooser.populate(new CatalogHolder(subject().getPersistenceUnitDefaults()));
+			this.cascadePersistCheckBox.populate(subject().getPersistenceUnitDefaults());
+		}
+		else {
+			this.accessComboViewer.populate(new MyAccessHolder(null));
+			this.xmlSchemaChooser.populate(new SchemaHolder(null));
+			this.xmlCatalogChooser.populate(new CatalogHolder(null));
+			this.cascadePersistCheckBox.populate(null);
+		}
+	}
+
+	@Override
+	protected void engageListeners() {
+	}
+
 	@Override
 	public Control getControl() {
 		return getSection();
 	}
 
+	public Section getSection() {
+		return this.section;
+	}
+
+	private class CatalogHolder extends JpaEObject implements StringHolder {
+		private PersistenceUnitDefaults persistenceUnitDefaults;
+		CatalogHolder(PersistenceUnitDefaults persistenceUnitDefaults) {
+			super();
+			this.persistenceUnitDefaults = persistenceUnitDefaults;
+		}
+
+		public int defaultFeatureId() {
+			throw new UnsupportedOperationException();
+		}
+
+		public String defaultItem() {
+			return JptUiXmlMessages.PersistenceUnitMetadataSection_CatalogDefault;
+		}
+
+		public Class featureClass() {
+			return PersistenceUnitDefaults.class;
+		}
+
+		public int featureId() {
+			return OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CATALOG;
+		}
+
+		public String getString() {
+			return this.persistenceUnitDefaults.getCatalog();
+		}
+
+		public void setString(String string) {
+			this.persistenceUnitDefaults.setCatalog(string);
+		}
+
+		public boolean supportsDefault() {
+			return false;
+		}
+
+		public EObject wrappedObject() {
+			return this.persistenceUnitDefaults;
+		}
+	}
+
+	private class MyAccessHolder extends JpaEObject implements AccessHolder{
+
+		private PersistenceUnitDefaultsInternal persistenceUnitDefaults;
+		MyAccessHolder(PersistenceUnitDefaults persistenceUnitDefaultsInternal) {
+			super();
+			this.persistenceUnitDefaults = (PersistenceUnitDefaultsInternal) persistenceUnitDefaultsInternal;
+		}
+		public Class featureClass() {
+			return PersistenceUnitDefaults.class;
+		}
+
+		public int featureId() {
+			return OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ACCESS;
+		}
+
+		public AccessType getAccess() {
+			return persistenceUnitDefaults.getAccess();
+		}
+
+		public void setAccess(AccessType accessType) {
+			persistenceUnitDefaults.setAccess(accessType);
+		}
+
+		public EObject wrappedObject() {
+			return this.persistenceUnitDefaults;
+		}
+	}
+
+	private class SchemaHolder extends JpaEObject implements StringHolder {
+		private PersistenceUnitDefaults persistenceUnitDefaults;
+		SchemaHolder(PersistenceUnitDefaults persistenceUnitDefaults) {
+			super();
+			this.persistenceUnitDefaults = persistenceUnitDefaults;
+		}
+
+		public int defaultFeatureId() {
+			throw new UnsupportedOperationException();
+		}
+
+		public String defaultItem() {
+			return JptUiXmlMessages.PersistenceUnitMetadataSection_SchemaDefault;
+		}
+
+		public Class featureClass() {
+			return PersistenceUnitDefaults.class;
+		}
+
+		public int featureId() {
+			return OrmPackage.PERSISTENCE_UNIT_DEFAULTS__SCHEMA;
+		}
+
+		public String getString() {
+			return this.persistenceUnitDefaults.getSchema();
+		}
+
+		public void setString(String newSchema) {
+			this.persistenceUnitDefaults.setSchema(newSchema);
+		}
+
+		public boolean supportsDefault() {
+			return false;
+		}
+
+		public EObject wrappedObject() {
+			return this.persistenceUnitDefaults;
+		}
+	}
 }

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.mappings.properties;
 
-import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.ui.internal.IJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.IJpaComposite;
@@ -46,7 +45,7 @@ public class IdMappingUiProvider
 		return JptUiMappingsMessages.PersistentAttributePage_IdLabel;
 	}
 
-	public IJpaComposite buildAttributeMappingComposite(IJpaUiFactory factory, Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return factory.createIdMappingComposite(parent, commandStack, widgetFactory);
+	public IJpaComposite buildAttributeMappingComposite(IJpaUiFactory factory, Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+		return factory.createIdMappingComposite(parent, widgetFactory);
 	}
 }

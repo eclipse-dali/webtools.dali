@@ -3,19 +3,17 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.details;
 
-import org.eclipse.emf.common.command.CommandStack;
-import org.eclipse.jpt.core.internal.IAttributeMapping;
+import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.ui.internal.IJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.IJpaComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
-
 
 public interface IAttributeMappingUiProvider
 {
@@ -26,7 +24,7 @@ public interface IAttributeMappingUiProvider
 	String attributeMappingKey();
 
 	/**
-	 * A label to be displayed to the label as an option in the mapping type combo box 
+	 * A label to be displayed to the label as an option in the mapping type combo box
 	 * @return
 	 */
 	String label();
@@ -37,12 +35,11 @@ public interface IAttributeMappingUiProvider
 	 * by this provider.  The composites will be stored in a Map with the mapping key as the key.
 	 * @param factory
 	 * @param parent
-	 * @param commandStack
 	 * @param widgetFactory
-	 * 
+	 *
 	 * @return
 	 */
 	IJpaComposite<IAttributeMapping> buildAttributeMappingComposite(
-			IJpaUiFactory factory, Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory);
-	
+			IJpaUiFactory factory, Composite parent, TabbedPropertySheetWidgetFactory widgetFactory);
+
 }
