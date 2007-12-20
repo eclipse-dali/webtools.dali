@@ -23,20 +23,24 @@ public class OrmStructureContentProvider
 		super();
 	}
 	
+	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
 		super.dispose();
 	}
 	
+	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		// TODO Auto-generated method stub
 		super.inputChanged(viewer, oldInput, newInput);
 	}
 	
+	@Override
 	public Object[] getElements(Object inputElement) {
 		return getChildren(inputElement);
 	}
 	
+	@Override
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof EntityMappings) {
 			return CollectionTools.array(((EntityMappings) parentElement).xmlPersistentTypes());
@@ -49,6 +53,7 @@ public class OrmStructureContentProvider
 		return super.getChildren(parentElement);
 	}
 	
+	@Override
 	public Object getParent(Object element) {
 		if (element instanceof XmlPersistentAttribute) {
 			return ((XmlPersistentAttribute) element).persistentType();
@@ -61,6 +66,7 @@ public class OrmStructureContentProvider
 		return super.getParent(element);
 	}
 	
+	@Override
 	public boolean hasChildren(Object element) {
 		return true;
 	}

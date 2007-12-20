@@ -36,11 +36,11 @@ public abstract class JpaXmlResourceModel implements IResourceModel
 	
 	protected JpaXmlResourceModel(IFile file) {
 		super();
-		artifactEdit = buildArtifactEdit(file.getProject());
-		resource = artifactEdit.getResource(file);
-		resource.setResourceModel(this);
-		artifactEdit.addListener(buildReloadListener(resource));
-		rootContextNodes = new ArrayList<IJpaContextNode>();
+		this.artifactEdit = buildArtifactEdit(file.getProject());
+		this.resource = this.artifactEdit.getResource(file);
+		this.resource.setResourceModel(this);
+		this.artifactEdit.addListener(buildReloadListener(this.resource));
+		this.rootContextNodes = new ArrayList<IJpaContextNode>();
 	}
 	
 	
@@ -51,25 +51,25 @@ public abstract class JpaXmlResourceModel implements IResourceModel
 	}
 	
 	public JpaXmlResource resource() {
-		return resource;
+		return this.resource;
 	}
 	
 	public void dispose() {
-		artifactEdit.dispose();
+		this.artifactEdit.dispose();
 	}
 	
 	public Iterator<IJpaContextNode> rootContextNodes() {
-		return new CloneIterator<IJpaContextNode>(rootContextNodes);
+		return new CloneIterator<IJpaContextNode>(this.rootContextNodes);
 	}
 	
 	public void addRootContextNode(IJpaContextNode contextNode) {
-		if (! rootContextNodes.contains(contextNode)) {
-			rootContextNodes.add(contextNode);
+		if (! this.rootContextNodes.contains(contextNode)) {
+			this.rootContextNodes.add(contextNode);
 		}
 	}
 	
 	public void removeRootContextNode(IJpaContextNode contextNode) {
-		rootContextNodes.remove(contextNode);
+		this.rootContextNodes.remove(contextNode);
 	}
 
 	public void handleJavaElementChangedEvent(ElementChangedEvent event) {

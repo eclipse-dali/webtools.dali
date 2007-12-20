@@ -24,20 +24,24 @@ public class PersistenceStructureContentProvider
 		super();
 	}
 	
+	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
 		super.dispose();
 	}
 	
+	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		// TODO Auto-generated method stub
 		super.inputChanged(viewer, oldInput, newInput);
 	}
 	
+	@Override
 	public Object[] getElements(Object inputElement) {
 		return getChildren(inputElement);
 	}
 	
+	@Override
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof IPersistence) {
 			return CollectionTools.array(((IPersistence) parentElement).persistenceUnits());
@@ -52,6 +56,7 @@ public class PersistenceStructureContentProvider
 		return super.getChildren(parentElement);
 	}
 	
+	@Override
 	public Object getParent(Object element) {
 		if (element instanceof IClassRef) {
 			return ((IClassRef) element).persistenceUnit();
@@ -68,6 +73,7 @@ public class PersistenceStructureContentProvider
 		return super.getParent(element);
 	}
 	
+	@Override
 	public boolean hasChildren(Object element) {
 		return true;
 	}
