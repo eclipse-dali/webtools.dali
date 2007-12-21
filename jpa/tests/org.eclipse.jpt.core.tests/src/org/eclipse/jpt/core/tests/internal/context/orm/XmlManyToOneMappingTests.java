@@ -164,5 +164,53 @@ public class XmlManyToOneMappingTests extends ContextModelTestCase
 		assertNull(manyToOneResource.getFetch());
 		assertNull(xmlManyToOneMapping.getSpecifiedFetch());
 	}
+	
+	public void testUpdateSpecifiedOptional() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
+		XmlManyToOneMapping xmlManyToOneMapping = (XmlManyToOneMapping) xmlPersistentAttribute.getMapping();
+		ManyToOne manyToOneResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
+		
+		assertNull(xmlManyToOneMapping.getSpecifiedOptional());
+		assertNull(manyToOneResource.getOptional());
+				
+		//set optional in the resource model, verify context model updated
+		manyToOneResource.setOptional(Boolean.TRUE);
+		assertEquals(Boolean.TRUE, xmlManyToOneMapping.getSpecifiedOptional());
+		assertEquals(Boolean.TRUE, manyToOneResource.getOptional());
+	
+		manyToOneResource.setOptional(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, xmlManyToOneMapping.getSpecifiedOptional());
+		assertEquals(Boolean.FALSE, manyToOneResource.getOptional());
+
+		//set optional to null in the resource model
+		manyToOneResource.setOptional(null);
+		assertNull(xmlManyToOneMapping.getSpecifiedOptional());
+		assertNull(manyToOneResource.getOptional());
+	}
+	
+	public void testModifySpecifiedOptional() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
+		XmlManyToOneMapping xmlManyToOneMapping = (XmlManyToOneMapping) xmlPersistentAttribute.getMapping();
+		ManyToOne manyToOneResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
+		
+		assertNull(xmlManyToOneMapping.getSpecifiedOptional());
+		assertNull(manyToOneResource.getOptional());
+				
+		//set optional in the context model, verify resource model updated
+		xmlManyToOneMapping.setSpecifiedOptional(Boolean.TRUE);
+		assertEquals(Boolean.TRUE, manyToOneResource.getOptional());
+		assertEquals(Boolean.TRUE, xmlManyToOneMapping.getSpecifiedOptional());
+	
+		xmlManyToOneMapping.setSpecifiedOptional(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, manyToOneResource.getOptional());
+		assertEquals(Boolean.FALSE, xmlManyToOneMapping.getSpecifiedOptional());
+
+		//set optional to null in the context model
+		xmlManyToOneMapping.setSpecifiedOptional(null);
+		assertNull(manyToOneResource.getOptional());
+		assertNull(xmlManyToOneMapping.getSpecifiedOptional());
+	}
 
 }

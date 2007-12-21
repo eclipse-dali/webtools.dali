@@ -204,4 +204,53 @@ public class XmlOneToOneMappingTests extends ContextModelTestCase
 		assertNull(xmlOneToOneMapping.getMappedBy());
 		assertNull(oneToOne.getMappedBy());
 	}
+	
+	
+	public void testUpdateSpecifiedOptional() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		XmlOneToOneMapping xmlOneToOneMapping = (XmlOneToOneMapping) xmlPersistentAttribute.getMapping();
+		OneToOne oneToOneResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
+		
+		assertNull(xmlOneToOneMapping.getSpecifiedOptional());
+		assertNull(oneToOneResource.getOptional());
+				
+		//set optional in the resource model, verify context model updated
+		oneToOneResource.setOptional(Boolean.TRUE);
+		assertEquals(Boolean.TRUE, xmlOneToOneMapping.getSpecifiedOptional());
+		assertEquals(Boolean.TRUE, oneToOneResource.getOptional());
+	
+		oneToOneResource.setOptional(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, xmlOneToOneMapping.getSpecifiedOptional());
+		assertEquals(Boolean.FALSE, oneToOneResource.getOptional());
+
+		//set optional to null in the resource model
+		oneToOneResource.setOptional(null);
+		assertNull(xmlOneToOneMapping.getSpecifiedOptional());
+		assertNull(oneToOneResource.getOptional());
+	}
+	
+	public void testModifySpecifiedOptional() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		XmlOneToOneMapping xmlOneToOneMapping = (XmlOneToOneMapping) xmlPersistentAttribute.getMapping();
+		OneToOne oneToOneResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
+		
+		assertNull(xmlOneToOneMapping.getSpecifiedOptional());
+		assertNull(oneToOneResource.getOptional());
+				
+		//set optional in the context model, verify resource model updated
+		xmlOneToOneMapping.setSpecifiedOptional(Boolean.TRUE);
+		assertEquals(Boolean.TRUE, oneToOneResource.getOptional());
+		assertEquals(Boolean.TRUE, xmlOneToOneMapping.getSpecifiedOptional());
+	
+		xmlOneToOneMapping.setSpecifiedOptional(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, oneToOneResource.getOptional());
+		assertEquals(Boolean.FALSE, xmlOneToOneMapping.getSpecifiedOptional());
+
+		//set optional to null in the context model
+		xmlOneToOneMapping.setSpecifiedOptional(null);
+		assertNull(oneToOneResource.getOptional());
+		assertNull(xmlOneToOneMapping.getSpecifiedOptional());
+	}
 }

@@ -22,7 +22,8 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 //
 //	protected EList<IJoinColumn> defaultJoinColumns;
 
-	protected Boolean secifiedOptional;
+	protected Boolean specifiedOptional;
+	
 	protected Boolean defaultOptional;
 
 	protected XmlSingleRelationshipMapping(XmlPersistentAttribute parent) {
@@ -82,18 +83,25 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 //		return defaultJoinColumns;
 //	}
 //
-//	public DefaultTrueBoolean getOptional() {
-//		return optional;
-//	}
-//
-//	public void setOptional(DefaultTrueBoolean newOptional) {
-//		DefaultTrueBoolean oldOptional = optional;
-//		optional = newOptional == null ? OPTIONAL_EDEFAULT : newOptional;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL, oldOptional, optional));
-//	}
-//
-//
+	public Boolean getOptional() {
+		return getSpecifiedOptional() == null ? getDefaultOptional() : getSpecifiedOptional();
+	}
+	
+	public Boolean getDefaultOptional() {
+		return this.defaultOptional;
+	}
+	
+	public Boolean getSpecifiedOptional() {
+		return this.specifiedOptional;
+	}
+	
+	public void setSpecifiedOptional(Boolean newSpecifiedOptional) {
+		Boolean oldSpecifiedOptional = this.specifiedOptional;
+		this.specifiedOptional = newSpecifiedOptional;
+		attributeMapping().setOptional(newSpecifiedOptional);
+		firePropertyChanged(SPECIFIED_OPTIONAL_PROPERTY, oldSpecifiedOptional, newSpecifiedOptional);
+	}
+
 //
 //	@Override
 //	public void initializeFromXmlSingleRelationshipMapping(XmlSingleRelationshipMapping oldMapping) {
@@ -109,25 +117,6 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 //		return !this.getSpecifiedJoinColumns().isEmpty();
 //	}
 	
-	public Boolean getOptional() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public Boolean getDefaultOptional() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public Boolean getSpecifiedOptional() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void setSpecifiedOptional(Boolean newSpecifiedOptional) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	public <T extends IJoinColumn> ListIterator<T> joinColumns() {
 		// TODO Auto-generated method stub
@@ -167,4 +156,19 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	@Override
+	public void initialize(T singleRelationshipMapping) {
+		super.initialize(singleRelationshipMapping);
+		this.specifiedOptional = singleRelationshipMapping.getOptional();
+		
+		//TODO defaultOptional
+	}
+
+	@Override
+	public void update(T singleRelationshipMapping) {
+		super.update(singleRelationshipMapping);
+		this.setSpecifiedOptional(singleRelationshipMapping.getOptional());
+	}
+
 }
