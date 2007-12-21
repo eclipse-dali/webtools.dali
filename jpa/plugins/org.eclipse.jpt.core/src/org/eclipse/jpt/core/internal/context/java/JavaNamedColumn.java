@@ -87,7 +87,7 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 		firePropertyChanged(COLUMN_DEFINITION_PROPERTY, oldColumnDefinition, newColumnDefinition);
 	}
 
-	protected Owner owner() {
+	public Owner owner() {
 		return this.owner;
 	}
 
