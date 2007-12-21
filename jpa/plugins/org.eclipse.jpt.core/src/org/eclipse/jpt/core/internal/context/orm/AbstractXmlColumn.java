@@ -35,6 +35,11 @@ public abstract class AbstractXmlColumn<T extends AbstractColumn> extends Abstra
 		super(parent, owner);
 	}
 
+	@Override
+	public IAbstractColumn.Owner owner() {
+		return (IAbstractColumn.Owner) super.owner();
+	}
+	
 //	@Override
 //	protected void addInsignificantXmlFeatureIdsTo(Set<Integer> insignificantXmlFeatureIds) {
 //		super.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);

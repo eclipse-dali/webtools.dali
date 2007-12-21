@@ -51,7 +51,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumn> extends JavaN
 	}
 	
 	@Override
-	protected IAbstractColumn.Owner owner() {
+	public IAbstractColumn.Owner owner() {
 		return (IAbstractColumn.Owner) super.owner();
 	}
 

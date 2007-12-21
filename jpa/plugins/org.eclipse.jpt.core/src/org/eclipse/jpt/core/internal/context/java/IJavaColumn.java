@@ -19,6 +19,7 @@ public interface IJavaColumn extends IJavaNamedColumn, IColumn
 	
 	void update(Column columnResource);
 	
+	Owner owner();
 	/**
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)

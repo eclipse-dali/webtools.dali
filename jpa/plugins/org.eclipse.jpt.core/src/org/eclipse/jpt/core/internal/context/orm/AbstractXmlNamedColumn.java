@@ -41,7 +41,7 @@ public abstract class AbstractXmlNamedColumn<T extends NamedColumn>  extends Jpa
 	
 	protected abstract void addColumnResource();
 
-	protected Owner owner() {
+	public Owner owner() {
 		return this.owner;
 	}
 

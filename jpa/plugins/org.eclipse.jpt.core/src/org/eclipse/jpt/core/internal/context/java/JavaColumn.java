@@ -36,7 +36,7 @@ public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColum
 	}
 	
 	@Override
-	protected IJavaColumn.Owner owner() {
+	public IJavaColumn.Owner owner() {
 		return (IJavaColumn.Owner) super.owner();
 	}
 
