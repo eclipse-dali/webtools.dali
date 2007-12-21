@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
-public interface IFetchable
+public interface IFetchable extends IAttributeMapping
 {
 	FetchType getFetch();
 
