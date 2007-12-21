@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.resource.orm.SingleRelationshipMapping;
 
 
 public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipMapping>
-	extends XmlRelationshipMapping<SingleRelationshipMapping> implements ISingleRelationshipMapping
+	extends XmlRelationshipMapping<T> implements ISingleRelationshipMapping
 {
 	
 //	protected EList<IJoinColumn> specifiedJoinColumns;

@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.orm.RelationshipMapping;
 
 
-public abstract class XmlRelationshipMapping<T extends RelationshipMapping> extends XmlAttributeMapping<RelationshipMapping>
+public abstract class XmlRelationshipMapping<T extends RelationshipMapping> extends XmlAttributeMapping<T>
 	implements IRelationshipMapping
 {
 	
@@ -207,7 +207,7 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 	}
 	
 	@Override
-	public void initialize(RelationshipMapping relationshipMapping) {
+	public void initialize(T relationshipMapping) {
 		super.initialize(relationshipMapping);
 		this.specifiedTargetEntity = relationshipMapping.getTargetEntity();
 		this.defaultTargetEntity = null;//TODO default target entity
@@ -216,7 +216,7 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 	}
 	
 	@Override
-	public void update(RelationshipMapping relationshipMapping) {
+	public void update(T relationshipMapping) {
 		super.update(relationshipMapping);
 		this.setSpecifiedTargetEntity(relationshipMapping.getTargetEntity());
 		this.setDefaultTargetEntity(null);//TODO default target entity

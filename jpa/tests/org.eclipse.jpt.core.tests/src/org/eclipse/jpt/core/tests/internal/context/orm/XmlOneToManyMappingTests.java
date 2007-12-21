@@ -167,5 +167,45 @@ public class XmlOneToManyMappingTests extends ContextModelTestCase
 		assertNull(oneToManyResource.getFetch());
 		assertNull(xmlOneToManyMapping.getSpecifiedFetch());
 	}
+	
+	public void testUpdateMappedBy() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, "oneToManyMapping");
+		XmlOneToManyMapping xmlOneToManyMapping = (XmlOneToManyMapping) xmlPersistentAttribute.getMapping();
+		OneToMany oneToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToManys().get(0);
+		
+		assertNull(xmlOneToManyMapping.getMappedBy());
+		assertNull(oneToMany.getMappedBy());
+				
+		//set mappedBy in the resource model, verify context model updated
+		oneToMany.setMappedBy("newMappedBy");
+		assertEquals("newMappedBy", xmlOneToManyMapping.getMappedBy());
+		assertEquals("newMappedBy", oneToMany.getMappedBy());
+	
+		//setmappedBy to null in the resource model
+		oneToMany.setMappedBy(null);
+		assertNull(xmlOneToManyMapping.getMappedBy());
+		assertNull(oneToMany.getMappedBy());
+	}
+	
+	public void testModifyMappedBy() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, "oneToManyMapping");
+		XmlOneToManyMapping xmlOneToManyMapping = (XmlOneToManyMapping) xmlPersistentAttribute.getMapping();
+		OneToMany oneToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToManys().get(0);
+		
+		assertNull(xmlOneToManyMapping.getMappedBy());
+		assertNull(oneToMany.getMappedBy());
+				
+		//set mappedBy in the context model, verify resource model updated
+		xmlOneToManyMapping.setMappedBy("newMappedBy");
+		assertEquals("newMappedBy", xmlOneToManyMapping.getMappedBy());
+		assertEquals("newMappedBy", oneToMany.getMappedBy());
+	
+		//set mappedBy to null in the context model
+		xmlOneToManyMapping.setMappedBy(null);
+		assertNull(xmlOneToManyMapping.getMappedBy());
+		assertNull(oneToMany.getMappedBy());
+	}
 
 }

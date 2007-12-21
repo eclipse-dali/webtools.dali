@@ -36,16 +36,18 @@ public class XmlOneToOneMapping extends XmlSingleRelationshipMapping<OneToOne>
 		newMapping.initializeFromXmlOneToOneMapping(this);
 	}
 
+
 	public String getMappedBy() {
-		return mappedBy;
+		return this.mappedBy;
 	}
 
 	public void setMappedBy(String newMappedBy) {
-		String oldMappedBy = mappedBy;
-		mappedBy = newMappedBy;
-
-	}
-
+		String oldMappedBy = this.mappedBy;
+		this.mappedBy = newMappedBy;
+		attributeMapping().setMappedBy(newMappedBy);
+		firePropertyChanged(MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
+	}	
+	
 	public boolean mappedByIsValid(IAttributeMapping mappedByMapping) {
 		String mappedByKey = mappedByMapping.getKey();
 		return (mappedByKey == IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -94,4 +96,15 @@ public class XmlOneToOneMapping extends XmlSingleRelationshipMapping<OneToOne>
 		return null;
 	}
 	
+	@Override
+	public void initialize(OneToOne oneToOne) {
+		super.initialize(oneToOne);
+		this.mappedBy = oneToOne.getMappedBy();
+	}
+	
+	@Override
+	public void update(OneToOne oneToOne) {
+		super.update(oneToOne);
+		this.setMappedBy(oneToOne.getMappedBy());
+	}
 }

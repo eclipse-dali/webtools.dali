@@ -164,5 +164,44 @@ public class XmlManyToManyMappingTests extends ContextModelTestCase
 		assertNull(manyToManyResource.getFetch());
 		assertNull(xmlManyToManyMapping.getSpecifiedFetch());
 	}
-
+		
+	public void testUpdateMappedBy() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
+		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		
+		assertNull(xmlManyToManyMapping.getMappedBy());
+		assertNull(manyToMany.getMappedBy());
+				
+		//set mappedBy in the resource model, verify context model updated
+		manyToMany.setMappedBy("newMappedBy");
+		assertEquals("newMappedBy", xmlManyToManyMapping.getMappedBy());
+		assertEquals("newMappedBy", manyToMany.getMappedBy());
+	
+		//setmappedBy to null in the resource model
+		manyToMany.setMappedBy(null);
+		assertNull(xmlManyToManyMapping.getMappedBy());
+		assertNull(manyToMany.getMappedBy());
+	}
+	
+	public void testModifyMappedBy() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
+		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		
+		assertNull(xmlManyToManyMapping.getMappedBy());
+		assertNull(manyToMany.getMappedBy());
+				
+		//set mappedBy in the context model, verify resource model updated
+		xmlManyToManyMapping.setMappedBy("newMappedBy");
+		assertEquals("newMappedBy", xmlManyToManyMapping.getMappedBy());
+		assertEquals("newMappedBy", manyToMany.getMappedBy());
+	
+		//set mappedBy to null in the context model
+		xmlManyToManyMapping.setMappedBy(null);
+		assertNull(xmlManyToManyMapping.getMappedBy());
+		assertNull(manyToMany.getMappedBy());
+	}
 }

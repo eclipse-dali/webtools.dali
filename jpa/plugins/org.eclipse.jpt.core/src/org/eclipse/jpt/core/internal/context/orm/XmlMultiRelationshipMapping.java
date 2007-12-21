@@ -17,14 +17,12 @@ import org.eclipse.jpt.core.internal.resource.orm.MultiRelationshipMapping;
 
 
 public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMapping>
-	extends XmlRelationshipMapping<MultiRelationshipMapping>
+	extends XmlRelationshipMapping<T>
 	implements IMultiRelationshipMapping
 {
 
-//	protected String specifiedMappedBy;
-//	
-//	protected String defaultMappedBy;
-//
+	protected String mappedBy;
+
 //	protected String specifiedOrderBy;
 //
 //	protected String defaultOrderBy;
@@ -95,20 +93,18 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 //			}
 //		};
 //	}
-//
-//
-//
-//	public String getMappedBy() {
-//		return null;// mappedBy;
-//	}
-//
-//	public void setMappedBy(String newMappedBy) {
-//		String oldMappedBy = mappedBy;
-//		mappedBy = newMappedBy;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__MAPPED_BY, oldMappedBy, mappedBy));
-//	}
-//
+
+	public String getMappedBy() {
+		return this.mappedBy;
+	}
+
+	public void setMappedBy(String newMappedBy) {
+		String oldMappedBy = this.mappedBy;
+		this.mappedBy = newMappedBy;
+		attributeMapping().setMappedBy(newMappedBy);
+		firePropertyChanged(MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
+	}
+
 //	public String getOrderBy() {
 //		return null;// orderBy;
 //	}
@@ -231,16 +227,6 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 		
 	}
 	
-	public String getMappedBy() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void setMappedBy(String value) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public String getOrderBy() {
 		// TODO Auto-generated method stub
 		return null;
@@ -303,5 +289,17 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 	public boolean mappedByIsValid(IAttributeMapping mappedByMapping) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	@Override
+	public void initialize(T multiRelationshipMapping) {
+		super.initialize(multiRelationshipMapping);
+		this.mappedBy = multiRelationshipMapping.getMappedBy();
+	}
+	
+	@Override
+	public void update(T multiRelationshipMapping) {
+		super.update(multiRelationshipMapping);
+		this.setMappedBy(multiRelationshipMapping.getMappedBy());
 	}
 }
