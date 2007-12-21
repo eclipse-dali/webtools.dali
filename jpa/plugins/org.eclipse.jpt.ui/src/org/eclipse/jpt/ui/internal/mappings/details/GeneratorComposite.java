@@ -15,6 +15,7 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jpt.core.internal.context.base.IGenerator;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
@@ -33,8 +34,11 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 	private IIdMapping id;
 	protected Text nameTextWidget;
 
-	public GeneratorComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public GeneratorComposite(PropertyValueModel<? extends IIdMapping> subjectHolder,
+	                          Composite parent,
+	                          TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 		this.generatorListener = buildGeneratorListner();
 	}
 

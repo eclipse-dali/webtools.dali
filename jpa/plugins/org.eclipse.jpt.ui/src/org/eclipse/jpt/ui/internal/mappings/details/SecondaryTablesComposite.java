@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -51,8 +52,11 @@ public class SecondaryTablesComposite extends BaseJpaComposite<IEntity>
 	private Button removeButton;
 	private PrimaryKeyJoinColumnsInSecondaryTableComposite pkJoinColumnsComposite;
 
-	public SecondaryTablesComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public SecondaryTablesComposite(PropertyValueModel<? extends IEntity> subjectHolder,
+	                                Composite parent,
+	                                TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 		this.entityListener = buildEntityListener();
 		this.secondaryTableListener = buildSecondaryTableListener();
 	}

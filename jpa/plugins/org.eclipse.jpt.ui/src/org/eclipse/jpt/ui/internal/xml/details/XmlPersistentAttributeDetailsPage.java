@@ -40,6 +40,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -60,8 +61,11 @@ public class XmlPersistentAttributeDetailsPage
 
 	private List<IAttributeMappingUiProvider> attributeMappingUiProviders;
 
-	public XmlPersistentAttributeDetailsPage(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public XmlPersistentAttributeDetailsPage(PropertyValueModel<? extends IPersistentAttribute> subjectHolder,
+	                                         Composite parent,
+	                                         TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 		buildPersistentTypeListener();
 	}
 

@@ -8,8 +8,12 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
+import org.eclipse.jpt.core.internal.context.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
+import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -22,8 +26,11 @@ public class CommonWidgets
 	}
 
 	public static XmlJavaClassChooser buildJavaClassChooser(
-			Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return new XmlJavaClassChooser(parent, widgetFactory);
+			PropertyValueModel<? extends XmlPersistentType> subjectHolder,
+			Composite parent,
+			TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		return new XmlJavaClassChooser(subjectHolder, parent, widgetFactory);
 	}
 
 	public static Label buildJavaAttributeNameLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
@@ -32,8 +39,11 @@ public class CommonWidgets
 	}
 
 	public static XmlJavaAttributeChooser buildJavaAttributeChooser(
-			Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return new XmlJavaAttributeChooser(parent, widgetFactory);
+			PropertyValueModel<? extends XmlAttributeMapping<? extends AttributeMapping>> subjectHolder,
+			Composite parent,
+			TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		return new XmlJavaAttributeChooser(subjectHolder, parent, widgetFactory);
 	}
 
 
@@ -41,9 +51,12 @@ public class CommonWidgets
 		return widgetFactory.createLabel(parent, JptUiXmlMessages.PersistentTypePage_AccessLabel);
 	}
 
-	public static AccessTypeComboViewer buildAccessTypeComboViewer(
-			Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return new AccessTypeComboViewer(parent, widgetFactory);
+	public static <T> AccessTypeComboViewer<T> buildAccessTypeComboViewer(
+		PropertyValueModel<? extends AccessTypeComboViewer.AccessHolder<? extends T>> subjectHolder,
+		Composite parent,
+		TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		return new AccessTypeComboViewer<T>(subjectHolder, parent, widgetFactory);
 	}
 
 
@@ -52,8 +65,11 @@ public class CommonWidgets
 	}
 
 	public static StringWithDefaultChooser buildCatalogChooser(
-			Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return new StringWithDefaultChooser(parent, widgetFactory);
+			PropertyValueModel<?> subjectHolder,
+			Composite parent,
+			TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		return new StringWithDefaultChooser(subjectHolder, parent, widgetFactory);
 	}
 
 
@@ -62,8 +78,11 @@ public class CommonWidgets
 	}
 
 	public static StringWithDefaultChooser buildSchemaChooser(
-			Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return new StringWithDefaultChooser(parent, widgetFactory);
+			PropertyValueModel<?> subjectHolder,
+			Composite parent,
+			TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		return new StringWithDefaultChooser(subjectHolder, parent, widgetFactory);
 	}
 
 
@@ -72,7 +91,10 @@ public class CommonWidgets
 	}
 
 	public static XmlPackageChooser buildXmlPackageChooser(
-			Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return new XmlPackageChooser(parent, widgetFactory);
+			PropertyValueModel<?> subjectHolder,
+			Composite parent,
+			TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		return new XmlPackageChooser(subjectHolder, parent, widgetFactory);
 	}
 }

@@ -20,6 +20,9 @@ import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser.StringHolder;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.ui.internal.xml.details.AccessTypeComboViewer.AccessHolder;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -41,16 +44,30 @@ public class PersistenceUnitMetadataSection extends BaseJpaController<Persistenc
 	private XmlMappingMetadataCompleteCheckBox xmlMappingMetadataCompleteCheckBox;
 	private StringWithDefaultChooser xmlSchemaChooser;
 
-	public PersistenceUnitMetadataSection(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public PersistenceUnitMetadataSection(PropertyValueModel<? extends PersistenceUnitMetadata> subjectHolder,
+	                                      Composite parent,
+	                                      TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 	}
 
 	private CascadePersistCheckBox buildCascadePersistCheckBox(Composite parent) {
-		return new CascadePersistCheckBox(parent, getWidgetFactory());
+		return new CascadePersistCheckBox(buildPersistenceUnitDefaultsHolder(), parent, getWidgetFactory());
+	}
+
+	private PropertyValueModel<? extends PersistenceUnitDefaults> buildPersistenceUnitDefaultsHolder() {
+		// TODO: Have TransformationPropertyValueModel and
+		// TransformationWritablePropertyValueModel
+		return new TransformationPropertyValueModel<PersistenceUnitMetadata, PersistenceUnitDefaults>((WritablePropertyValueModel<PersistenceUnitMetadata>) getSubjectHolder()) {
+			@Override
+			protected PersistenceUnitDefaults transform(PersistenceUnitMetadata value) {
+				return (value == null) ? null : value.getPersistenceUnitDefaults();
+			}
+		};
 	}
 
 	@Override
-	protected void buildWidget(Composite parent) {
+	protected void buildWidget(Composite parent, int style) {
 		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
 	    this.section = getWidgetFactory().createSection(parent, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
 	    this.section.setText(JptUiXmlMessages.XMLEntityMappingsPage_PersistenceUnitSection);
@@ -74,7 +91,7 @@ public class PersistenceUnitMetadataSection extends BaseJpaController<Persistenc
 
 		CommonWidgets.buildSchemaLabel(persistenceUnitComposite, getWidgetFactory());
 
-		this.xmlSchemaChooser = CommonWidgets.buildSchemaChooser(persistenceUnitComposite, getWidgetFactory());
+		this.xmlSchemaChooser = CommonWidgets.buildSchemaChooser(getSubjectHolder(), persistenceUnitComposite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
@@ -84,7 +101,7 @@ public class PersistenceUnitMetadataSection extends BaseJpaController<Persistenc
 
 		CommonWidgets.buildCatalogLabel(persistenceUnitComposite, getWidgetFactory());
 
-		this.xmlCatalogChooser = CommonWidgets.buildCatalogChooser(persistenceUnitComposite, getWidgetFactory());
+		this.xmlCatalogChooser = CommonWidgets.buildCatalogChooser(getSubjectHolder(), persistenceUnitComposite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
@@ -94,7 +111,7 @@ public class PersistenceUnitMetadataSection extends BaseJpaController<Persistenc
 
 		CommonWidgets.buildAccessLabel(persistenceUnitComposite, getWidgetFactory());
 
-		this.accessComboViewer = CommonWidgets.buildAccessTypeComboViewer(persistenceUnitComposite, getWidgetFactory());
+		this.accessComboViewer = CommonWidgets.buildAccessTypeComboViewer(getSubjectHolder(), persistenceUnitComposite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
@@ -115,7 +132,7 @@ public class PersistenceUnitMetadataSection extends BaseJpaController<Persistenc
 	}
 
 	private XmlMappingMetadataCompleteCheckBox buildXmlMappingMetadataCompleteCheckBox(Composite parent) {
-		return new XmlMappingMetadataCompleteCheckBox(parent, getWidgetFactory());
+		return new XmlMappingMetadataCompleteCheckBox(getSubjectHolder(), parent, getWidgetFactory());
 	}
 
 	@Override

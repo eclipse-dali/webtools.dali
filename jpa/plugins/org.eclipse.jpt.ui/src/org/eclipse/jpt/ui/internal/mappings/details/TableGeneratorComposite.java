@@ -22,6 +22,7 @@ import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
@@ -43,8 +44,11 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	private ConnectionListener connectionListener;
 	private ConnectionProfile connectionProfile;
 
-	public TableGeneratorComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public TableGeneratorComposite(PropertyValueModel<? extends IIdMapping> subjectHolder,
+                                  Composite parent,
+                                  TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 		this.connectionListener = this.buildConnectionListener();
 	}
 

@@ -32,6 +32,7 @@ import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -55,8 +56,11 @@ public class JoinColumnsComposite extends BaseJpaComposite<JoinColumnsComposite.
 	private Button joinColumnsRemoveButton;
 	private Button joinColumnsEditButton;
 
-	public JoinColumnsComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory, String groupTitle) {
-		super(parent, SWT.NULL, widgetFactory);
+	public JoinColumnsComposite(PropertyValueModel<? extends JoinColumnsComposite.Owner> subjectHolder,
+	                            Composite parent,
+	                            TabbedPropertySheetWidgetFactory widgetFactory, String groupTitle) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 		this.joinColumnsOwnerListener = buildJoinColumnsOwnerListener();
 		this.joinColumnListener = buildJoinColumnListener();
 		this.joinColumnsGroup.setText(groupTitle);

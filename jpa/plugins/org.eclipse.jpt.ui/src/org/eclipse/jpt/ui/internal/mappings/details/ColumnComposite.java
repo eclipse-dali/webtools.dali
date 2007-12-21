@@ -23,8 +23,10 @@ import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.mappings.details.EnumComboViewer.EnumHolder;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -40,6 +42,7 @@ import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 //TODO repopulate this panel based on the Entity table changing
+@SuppressWarnings("nls")
 public class ColumnComposite extends BaseJpaComposite<IColumn>
 {
 	private Adapter columnListener;
@@ -47,13 +50,16 @@ public class ColumnComposite extends BaseJpaComposite<IColumn>
 
 	protected CCombo columnCombo;
 	protected CCombo tableCombo;
-	protected EnumComboViewer insertableComboViewer;
-	protected EnumComboViewer updatableComboViewer;
+	protected EnumComboViewer<IAbstractColumn, Boolean> insertableComboViewer;
+	protected EnumComboViewer<IAbstractColumn, Boolean> updatableComboViewer;
 
 	private ConnectionProfile connectionProfile;
 
-	public ColumnComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public ColumnComposite(PropertyValueModel<? extends IColumn> subjectHolder,
+	                       Composite parent,
+	                       TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 		this.columnListener = buildColumnListener();
 		this.connectionListener = buildConnectionListener();
 	}
@@ -189,17 +195,39 @@ public class ColumnComposite extends BaseJpaComposite<IColumn>
 
 		getWidgetFactory().createLabel(intermediaryComposite, JptUiMappingsMessages.ColumnComposite_insertable);
 
-		this.insertableComboViewer = new EnumComboViewer(intermediaryComposite, getWidgetFactory());
+		this.insertableComboViewer = new EnumComboViewer<IAbstractColumn, Boolean>(buildInsertableHolder(), intermediaryComposite, getWidgetFactory());
 		this.insertableComboViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
 		helpSystem.setHelp(this.insertableComboViewer.getControl(), IJpaHelpContextIds.MAPPING_COLUMN_INSERTABLE);
 
 		getWidgetFactory().createLabel(intermediaryComposite, JptUiMappingsMessages.ColumnComposite_updatable);
 
-		this.updatableComboViewer = new EnumComboViewer(intermediaryComposite, getWidgetFactory());
+		this.updatableComboViewer = new EnumComboViewer<IAbstractColumn, Boolean>(buildUpdateHolder(), intermediaryComposite, getWidgetFactory());
 		this.updatableComboViewer.getControl().setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.GRAB_HORIZONTAL));
 		helpSystem.setHelp(this.updatableComboViewer.getControl(), IJpaHelpContextIds.MAPPING_COLUMN_UPDATABLE);
 	}
 
+
+	private PropertyValueModel<EnumHolder<IAbstractColumn, Boolean>> buildInsertableHolder() {
+		// TODO: Have TransformationPropertyValueModel and
+		// TransformationWritablePropertyValueModel
+		return new TransformationPropertyValueModel<IColumn, EnumHolder<IAbstractColumn, Boolean>>((WritablePropertyValueModel<IColumn>) getSubjectHolder()) {
+			@Override
+			protected EnumHolder<IAbstractColumn, Boolean> transform(IColumn value) {
+				return (value == null) ? null : new InsertableHolder(value);
+			}
+		};
+	}
+
+	private PropertyValueModel<EnumHolder<IAbstractColumn, Boolean>> buildUpdateHolder() {
+		// TODO: Have TransformationPropertyValueModel and
+		// TransformationWritablePropertyValueModel
+		return new TransformationPropertyValueModel<IColumn, EnumHolder<IAbstractColumn, Boolean>>((WritablePropertyValueModel<IColumn>) getSubjectHolder()) {
+			@Override
+			protected EnumHolder<IAbstractColumn, Boolean> transform(IColumn value) {
+				return (value == null) ? null : new UpdatableHolder(value);
+			}
+		};
+	}
 
 	private CCombo buildColumnCombo(Composite parent) {
 		final CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
@@ -210,9 +238,9 @@ public class ColumnComposite extends BaseJpaComposite<IColumn>
 					return;
 				}
 				String columnText = ((CCombo) e.getSource()).getText();
-				if (columnText.equals("")) { //$NON-NLS-1$
+				if (columnText.equals("")) {
 					columnText = null;
-					if (subject().getSpecifiedName() == null || subject().getSpecifiedName().equals("")) { //$NON-NLS-1$
+					if (subject().getSpecifiedName() == null || subject().getSpecifiedName().equals("")) {
 						return;
 					}
 				}
@@ -241,9 +269,9 @@ public class ColumnComposite extends BaseJpaComposite<IColumn>
 					return;
 				}
 				String tableText = ((CCombo) e.getSource()).getText();
-				if (tableText.equals("")) { //$NON-NLS-1$
+				if (tableText.equals("")) {
 					tableText = null;
-					if (subject().getSpecifiedTable() == null || subject().getSpecifiedTable().equals("")) { //$NON-NLS-1$
+					if (subject().getSpecifiedTable() == null || subject().getSpecifiedTable().equals("")) {
 						return;
 					}
 				}
@@ -327,7 +355,7 @@ public class ColumnComposite extends BaseJpaComposite<IColumn>
 
 	private ConnectionProfile getConnectionProfile() {
 		if (this.connectionProfile == null) {
-			this.connectionProfile = this.subject().getJpaProject().connectionProfile();
+			this.connectionProfile = this.subject().jpaProject().connectionProfile();
 		}
 		return this.connectionProfile;
 	}
@@ -398,8 +426,8 @@ public class ColumnComposite extends BaseJpaComposite<IColumn>
 		this.tableCombo.remove(1, this.tableCombo.getItemCount()-1);
 
 		if (this.subject() != null) {
-			for (Iterator i = this.subject().getOwner().getTypeMapping().associatedTableNamesIncludingInherited(); i.hasNext(); ) {
-				this.tableCombo.add((String) i.next());
+			for (Iterator<String> i = this.subject().owner().typeMapping().associatedTableNamesIncludingInherited(); i.hasNext(); ) {
+				this.tableCombo.add(i.next());
 			}
 		}
 		populateColumnTable();
@@ -459,11 +487,11 @@ public class ColumnComposite extends BaseJpaComposite<IColumn>
 		super.dispose();
 	}
 
-	private class InsertableHolder implements EnumHolder<IColumn, Boolean> {
+	private class InsertableHolder implements EnumHolder<IAbstractColumn, Boolean> {
 
-		private IColumn column;
+		private IAbstractColumn column;
 
-		InsertableHolder(IColumn column) {
+		InsertableHolder(IAbstractColumn column) {
 			super();
 			this.column = column;
 		}
@@ -473,27 +501,19 @@ public class ColumnComposite extends BaseJpaComposite<IColumn>
 		}
 
 		public void set(Boolean enumSetting) {
-			this.column.setInsertable(enumSetting);
+			this.column.setSpecifiedInsertable(enumSetting);
 		}
 
-		public Class<IAbstractColumn> featureClass() {
-			return IAbstractColumn.class;
-		}
-
-		public int featureId() {
-			return JpaCoreMappingsPackage.IABSTRACT_COLUMN__INSERTABLE;
-		}
-
-		public IColumn wrappedObject() {
+		public IAbstractColumn subject() {
 			return this.column;
 		}
 
 		public Boolean[] enumValues() {
-			return DefaultTrueBoolean.VALUES.toArray();
+			return new Boolean[] { Boolean.TRUE, Boolean.FALSE };
 		}
 
 		public Boolean defaultValue() {
-			return new Boolean[] { Boolean.TRUE, Boolean.FALSE };
+			return Boolean.TRUE; // TODO
 		}
 
 		public String defaultString() {
@@ -502,11 +522,11 @@ public class ColumnComposite extends BaseJpaComposite<IColumn>
 		}
 	}
 
-	private class UpdatableHolder implements EnumHolder<IColumn, Boolean> {
+	private class UpdatableHolder implements EnumHolder<IAbstractColumn, Boolean> {
 
-		private IColumn column;
+		private IAbstractColumn column;
 
-		UpdatableHolder(IColumn column) {
+		UpdatableHolder(IAbstractColumn column) {
 			super();
 			this.column = column;
 		}
@@ -516,18 +536,10 @@ public class ColumnComposite extends BaseJpaComposite<IColumn>
 		}
 
 		public void set(Boolean enumSetting) {
-			this.column.setUpdatable(enumSetting);
+			this.column.setSpecifiedUpdatable(enumSetting);
 		}
 
-		public Class<IAbstractColumn> featureClass() {
-			return IAbstractColumn.class;
-		}
-
-		public int featureId() {
-			return JpaCoreMappingsPackage.IABSTRACT_COLUMN__UPDATABLE;
-		}
-
-		public IColumn wrappedObject() {
+		public IAbstractColumn subject() {
 			return this.column;
 		}
 
@@ -536,7 +548,7 @@ public class ColumnComposite extends BaseJpaComposite<IColumn>
 		}
 
 		public Boolean defaultValue() {
-			return DefaultTrueBoolean.DEFAULT;
+			return Boolean.TRUE;// TODO DefaultTrueBoolean.DEFAULT;
 		}
 
 		public String defaultString() {

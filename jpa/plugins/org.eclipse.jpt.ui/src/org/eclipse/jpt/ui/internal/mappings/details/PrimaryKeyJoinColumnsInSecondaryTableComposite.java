@@ -31,6 +31,7 @@ import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -55,8 +56,11 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaCompo
 	private Button pkJoinColumnsRemoveButton;
 	private Button pkJoinColumnsEditButton;
 
-	public PrimaryKeyJoinColumnsInSecondaryTableComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public PrimaryKeyJoinColumnsInSecondaryTableComposite(PropertyValueModel<? extends ISecondaryTable> subjectHolder,
+	                                                      Composite parent,
+	                                                      TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 		this.secondaryTableListener = buildSecondaryTableListener();
 		this.pkJoinColumnListener = buildPkJoinColumnListener();
 	}

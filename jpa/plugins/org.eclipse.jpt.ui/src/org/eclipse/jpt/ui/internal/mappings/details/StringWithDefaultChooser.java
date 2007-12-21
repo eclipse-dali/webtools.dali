@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
@@ -24,6 +23,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
@@ -43,8 +43,11 @@ public class StringWithDefaultChooser extends BaseJpaController
 	private static final String DEFAULT = "default";
 
 
-	public StringWithDefaultChooser(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public StringWithDefaultChooser(PropertyValueModel<?> subjectHolder,
+	                                Composite parent,
+	                                TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 		buildStringHolderListener();
 	}
 
@@ -87,7 +90,7 @@ public class StringWithDefaultChooser extends BaseJpaController
 
 
 	@Override
-	protected void buildWidget(Composite parent) {
+	protected void buildWidget(Composite parent, int style) {
 		CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
 		this.comboViewer = new ComboViewer(combo);
 		this.comboViewer.setContentProvider(buildContentProvider());
@@ -228,7 +231,7 @@ public class StringWithDefaultChooser extends BaseJpaController
 	 * An interface to wrap an object that supports a string with a default setting
 	 * An object of this type must be passed in to populate(EObject)
 	 */
-	public static interface StringHolder extends EObject {
+	public static interface StringHolder<T> {
 		int defaultFeatureId();
 
 		String defaultItem();
@@ -237,7 +240,7 @@ public class StringWithDefaultChooser extends BaseJpaController
 		 * Return the Class of the wrapped object
 		 * @return
 		 */
-		Class<?> featureClass();
+		Class<T> featureClass();
 
 		/**
 		 * Return the feature id of string setting on the wrapped object
@@ -263,6 +266,6 @@ public class StringWithDefaultChooser extends BaseJpaController
 		 * The wrapped EObject that the enum setting is stored on
 		 * @return
 		 */
-		EObject wrappedObject();
+		T wrappedObject();
 	}
 }

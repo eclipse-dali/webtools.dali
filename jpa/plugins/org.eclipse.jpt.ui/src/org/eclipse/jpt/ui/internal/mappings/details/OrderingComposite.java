@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.internal.context.base.IMultiRelationshipMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -32,6 +33,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
+import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  *
@@ -47,8 +49,11 @@ public class OrderingComposite extends BaseJpaComposite<IMultiRelationshipMappin
 	// short circuit flag for user typing
 	private boolean updatingCustomOrderBy = false;
 
-	public OrderingComposite(Composite parent, PropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public OrderingComposite(PropertyValueModel<? extends IMultiRelationshipMapping> subjectHolder,
+	                         Composite parent,
+	                         TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 		mappingListener = buildMappingListener();
 	}
 

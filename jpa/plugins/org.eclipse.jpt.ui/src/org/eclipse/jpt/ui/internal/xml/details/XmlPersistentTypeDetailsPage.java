@@ -26,6 +26,9 @@ import org.eclipse.jpt.ui.internal.java.mappings.properties.MappedSuperclassUiPr
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.ui.internal.xml.details.AccessTypeComboViewer.AccessHolder;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -46,8 +49,11 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlP
 	//is not extensible.  We only need to support extensibility for java
 	private List<ITypeMappingUiProvider> xmlTypeMappingUiProviders;
 
-	public XmlPersistentTypeDetailsPage(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public XmlPersistentTypeDetailsPage(PropertyValueModel<? extends XmlPersistentType> subjectHolder,
+	                                    Composite parent,
+	                                    TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 	}
 
 	protected void addXmlTypeMappingUiProvidersTo(Collection<ITypeMappingUiProvider> providers) {
@@ -71,17 +77,10 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlP
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
-		if (subject() == null) {
-			this.javaClassChooser.populate(null);
-			this.metadataCompleteComboViewer.populate(null);
-			this.accessComboViewer.populate(new MyAccessHolder(null));
-		}
-		else {
-			XmlTypeMapping<? extends TypeMapping> mapping = subject().getMapping();
-			this.javaClassChooser.populate();
-			this.metadataCompleteComboViewer.populate(mapping);
-			this.accessComboViewer.populate(new MyAccessHolder(mapping));
-		}
+
+		this.javaClassChooser.populate();
+		this.metadataCompleteComboViewer.populate();
+		this.accessComboViewer.populate();
 	}
 
 	@Override
@@ -117,7 +116,7 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlP
 		this.metadataCompleteComboViewer.getControl().setLayoutData(gridData);
 
 		CommonWidgets.buildAccessLabel(composite, getWidgetFactory());
-		this.accessComboViewer = CommonWidgets.buildAccessTypeComboViewer(composite, getWidgetFactory());
+		this.accessComboViewer = CommonWidgets.buildAccessTypeComboViewer(buildAccessTypeHolder(), composite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
@@ -134,6 +133,18 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlP
 		typeMappingPageBook.setLayoutData(gridData);
 	}
 
+	private PropertyValueModel<? extends AccessTypeComboViewer.AccessHolder<XmlTypeMapping<? extends TypeMapping>>> buildAccessTypeHolder() {
+		return new TransformationPropertyValueModel<XmlPersistentType, AccessTypeComboViewer.AccessHolder<XmlTypeMapping<? extends TypeMapping>>>(
+			(WritablePropertyValueModel<XmlPersistentType>) getSubjectHolder()) {
+
+			@Override
+			protected AccessHolder<XmlTypeMapping<? extends TypeMapping>> transform(XmlPersistentType value) {
+				XmlTypeMapping<? extends TypeMapping> mapping = subject().getMapping();
+				return new MyAccessHolder(mapping);
+			}
+		};
+	}
+
 	@Override
 	public ListIterator<ITypeMappingUiProvider> typeMappingUiProviders() {
 		if (this.xmlTypeMappingUiProviders == null) {
@@ -142,7 +153,6 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlP
 		}
 		return new CloneListIterator<ITypeMappingUiProvider>(this.xmlTypeMappingUiProviders);
 	}
-
 
 	private class MyAccessHolder implements AccessHolder<XmlTypeMapping<? extends TypeMapping>> {
 

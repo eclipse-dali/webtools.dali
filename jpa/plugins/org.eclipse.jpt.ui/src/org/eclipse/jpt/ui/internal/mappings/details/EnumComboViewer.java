@@ -8,187 +8,188 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jpt.core.internal.IJpaNode;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class EnumComboViewer extends BaseJpaController<EnumComboViewer.EnumHolder>
+/**
+ * Here the layout of this pane:
+ * <pre>
+ * â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??
+ * â?? â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â?¬â??â?? â??
+ * â?? â??                                                                     â??â?¼â?? â??
+ * â?? â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â?´â??â?? â??
+ * â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??â??</pre>
+ *
+ * @see EnumHolder
+ * @see ColumnComposite - A container of this controller
+ * @see CommonWidgets - A factory creating it
+ *
+ * @version 2.0
+ * @since 1.0
+ */
+public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaController<T>
 {
-	private EnumHolder enumHolder;
-	private Adapter enumListener;
-
 	private ComboViewer comboViewer;
+	private PropertyChangeListener propertyChangeListener;
 
+	public EnumComboViewer(PropertyValueModel<? extends T> subjectHolder,
+	                       Composite parent,
+	                       TabbedPropertySheetWidgetFactory widgetFactory) {
 
-	public EnumComboViewer(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
-		buildListener();
+		super(subjectHolder, parent, widgetFactory);
 	}
 
-
-	private void buildListener() {
-		this.enumListener = new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				modelChanged(notification);
-			}
-		};
-	}
-
-	@Override
-	protected void buildWidget(Composite parent) {
-		CCombo combo = getWidgetFactory().createCCombo(parent);
-		this.comboViewer = new ComboViewer(combo);
-		this.comboViewer.setLabelProvider(buildLabelProvider());
-		this.comboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			public void selectionChanged(SelectionChangedEvent event) {
-				EnumComboViewer.this.selectionChanged(event.getSelection());
-			}
-		});
-	}
 	protected IBaseLabelProvider buildLabelProvider() {
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if (element == enumHolder.defaultValue()) {
-					return NLS.bind(JptUiMappingsMessages.EnumComboViewer_default, enumHolder.defaultString());
+				if (element == defaultValue()) {
+					return NLS.bind(JptUiMappingsMessages.EnumComboViewer_default, defaultStringValue());
 				}
 				return super.getText(element);
 			}
 		};
 	}
 
-	void selectionChanged(ISelection sel) {
-		if (sel instanceof IStructuredSelection) {
-			Object selection = ((IStructuredSelection) sel).getFirstElement();
-			if ( ! this.enumHolder.get().equals(selection)) {
-				this.enumHolder.set(selection);
-//				this.editingDomain.getCommandStack().execute(
-//					SetCommand.create(
-//						this.editingDomain,
-//						this.basicMapping,
-//						OrmPackage.eINSTANCE.getBasicMapping_Optional(),
-//						optional
-//					)
-//				);
+	private PropertyChangeListener buildPropertyChangeListener() {
+		return new PropertyChangeListener() {
+			public void propertyChanged(PropertyChangeEvent e) {
+				EnumComboViewer.this.populate();
 			}
-		}
+		};
 	}
 
-	private void modelChanged(Notification notification) {
-		if (notification.getFeatureID(this.enumHolder.featureClass()) ==
-				this.enumHolder.featureId()) {
-			Display.getDefault().asyncExec(
-				new Runnable() {
-					public void run() {
-						populate();
-					}
-				});
-		}
+	@SuppressWarnings("unchecked")
+	private ISelectionChangedListener buildSelectionChangedListener() {
+		return new ISelectionChangedListener() {
+			public void selectionChanged(SelectionChangedEvent e) {
+				StructuredSelection selection = (StructuredSelection) e.getSelection();
+				V value = (V) selection.getFirstElement();
+				EnumComboViewer.this.setValue(value);
+			}
+		};
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected void engageListeners() {
-		if (this.enumHolder != null && this.enumHolder.wrappedObject() != null) {
-			this.enumHolder.wrappedObject().eAdapters().add(this.enumListener);
-		}
+	protected void buildWidget(Composite parent, int style) {
+		CCombo combo = getWidgetFactory().createCCombo(parent);
+
+		this.comboViewer = new ComboViewer(combo);
+		this.comboViewer.setLabelProvider(buildLabelProvider());
+		this.comboViewer.addSelectionChangedListener(buildSelectionChangedListener());
 	}
 
+	/**
+	 * Returns the possible choices to show in the viewer.
+	 *
+	 * @return The items to show in the combos
+	 */
+	protected abstract V[] choices();
+
+	/**
+	 * Returns the displayable string of the default value.
+	 *
+	 * @return The human readable text of the default value
+	 */
+	protected abstract String defaultStringValue();
+
+	/**
+	 * Returns the default value.
+	 *
+	 * @return The value that is declared as being the default when it is not
+	 * defined or <code>null</code> if there is no default value
+	 */
+	protected abstract V defaultValue();
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void disengageListeners() {
-		if (this.enumHolder != null && this.enumHolder.wrappedObject() != null) {
-			this.enumHolder.wrappedObject().eAdapters().remove(this.enumListener);
-		}
+		super.disengageListeners();
+		getSubjectHolder().removePropertyChangeListener(propertyName(), propertyChangeListener);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void doPopulate() {
 		populateCombo();
 	}
 
-	private void populateCombo() {
-		this.comboViewer.getCombo().removeAll();
-		if (this.enumHolder.wrappedObject() == null) {
-			return;
-		}
-
-		this.comboViewer.add(this.enumHolder.enumValues());
-
-		Object modelSetting = this.enumHolder.get();
-
-		if (((IStructuredSelection) this.comboViewer.getSelection()).getFirstElement() != modelSetting) {
-			this.comboViewer.setSelection(new StructuredSelection(modelSetting));
-		}
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void engageListeners() {
+		super.engageListeners();
+		getSubjectHolder().addPropertyChangeListener(propertyName(), propertyChangeListener);
 	}
 
-
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	public Control getControl() {
-		return this.comboViewer.getCombo();
+	public CCombo getControl() {
+		return this.comboViewer.getCCombo();
+	}
+
+	protected abstract V getValue();
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void initialize() {
+		super.initialize();
+		propertyChangeListener = buildPropertyChangeListener();
+	}
+
+	private void populateCombo() {
+		this.getControl().removeAll();
+		this.comboViewer.add(this.choices());
+
+		V value = getValue();
+		if (value != null) {
+
+			this.comboViewer.setSelection(new StructuredSelection(value));
+		}
+		else {
+			this.comboViewer.setSelection(new StructuredSelection());
+		}
 	}
 
 	/**
-	 * An interface to wrap an object that supports accessType
-	 * An object of this type must be passed in to populate(EObject)
+	 * Returns the property name used to listen for changes of the value when it
+	 * is done outside of this viewer.
+	 *
+	 * @return The property name associated with the value being shown by this
+	 * viewer
 	 */
-	public static interface EnumHolder<S, T> {
-		/**
-		 * Return the num setting from the wrapped object
-		 * @return
-		 */
-		T get();
+	protected abstract String propertyName();
 
-		/**
-		 * Set the enum setting on the wrapped object
-		 * @param fetch
-		 */
-		void set(T enumSetting);
-
-		/**
-		 * Return the Class of the wrapped object
-		 * @return
-		 */
-		Class<?> featureClass();
-
-		/**
-		 * Return the feature id of enum setting on the wrapped object
-		 * @return
-		 */
-		int featureId();
-
-		/**
-		 * The wrapped EObject that the enum setting is stored on
-		 * @return
-		 */
-		S wrappedObject();
-
-		T[] enumValues();
-
-		/**
-		 * Return the Default Enumerator object
-		 */
-		T defaultValue();
-
-		/**
-		 * Return the String to be displayed to the user
-		 * Deafult ([defaultString()])
-		 */
-		String defaultString();
-	}
+	/**
+	 * Requests the given new value be set on the subject.
+	 *
+	 * @param value The new value to be set
+	 */
+	protected abstract void setValue(V value);
 }

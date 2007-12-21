@@ -24,6 +24,7 @@ import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
@@ -36,8 +37,11 @@ public class MetaDataCompleteComboViewer extends BaseJpaController<XmlTypeMappin
 	private Adapter typeMappingListener;
 	private ComboViewer comboViewer;
 
-	public MetaDataCompleteComboViewer(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public MetaDataCompleteComboViewer(PropertyValueModel<? extends XmlTypeMapping<? extends TypeMapping>> subjectHolder,
+	                                   Composite parent,
+	                                   TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 		buildTypeMappingListener();
 	}
 
@@ -51,7 +55,7 @@ public class MetaDataCompleteComboViewer extends BaseJpaController<XmlTypeMappin
 	}
 
 	@Override
-	protected void buildWidget(Composite parent) {
+	protected void buildWidget(Composite parent, int style) {
 		CCombo combo = getWidgetFactory().createCCombo(parent);
 		this.comboViewer = new ComboViewer(combo);
 		this.comboViewer.setLabelProvider(buildLabelProvider());

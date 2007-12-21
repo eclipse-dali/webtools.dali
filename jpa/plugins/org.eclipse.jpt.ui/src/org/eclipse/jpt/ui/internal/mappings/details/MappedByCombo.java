@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.internal.context.base.INonOwningMapping;
 import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
@@ -34,8 +35,11 @@ public class MappedByCombo extends BaseJpaController<INonOwningMapping>
 	private CCombo combo;
 	private Adapter nonOwningMappingListener;
 
-	public MappedByCombo(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public MappedByCombo(PropertyValueModel<? extends INonOwningMapping> subjectHolder,
+	                     Composite parent,
+	                     TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 		this.nonOwningMappingListener = buildListener();
 	}
 
@@ -48,7 +52,7 @@ public class MappedByCombo extends BaseJpaController<INonOwningMapping>
 		};
 	}
 	@Override
-	protected void buildWidget(Composite parent) {
+	protected void buildWidget(Composite parent, int style) {
 		this.combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(combo,IJpaHelpContextIds.MAPPING_MAPPED_BY);
 		this.combo.addModifyListener(new ModifyListener() {

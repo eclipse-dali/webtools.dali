@@ -10,13 +10,16 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IAbstractColumn;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
+import org.eclipse.jpt.core.internal.context.base.IEntity;
+import org.eclipse.jpt.core.internal.context.base.IMultiRelationshipMapping;
+import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
+import org.eclipse.jpt.core.internal.context.base.ISingleRelationshipMapping;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.mappings.details.EnumComboViewer.EnumHolder;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser.StringHolder;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -29,8 +32,11 @@ public class CommonWidgets
 	}
 
 	public static EntityNameCombo buildEntityNameCombo(
-			Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return new EntityNameCombo(parent, widgetFactory);
+			PropertyValueModel<? extends IEntity> subjectHolder,
+			Composite parent,
+			TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		return new EntityNameCombo(subjectHolder, parent, widgetFactory);
 	}
 
 	public static Label buildTableLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
@@ -46,10 +52,12 @@ public class CommonWidgets
 	}
 
 	public static StringWithDefaultChooser buildStringWithDefaultChooser(
-			Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return new StringWithDefaultChooser(parent, widgetFactory);
-	}
+			PropertyValueModel<?> subjectHolder,
+			Composite parent,
+			TabbedPropertySheetWidgetFactory widgetFactory) {
 
+		return new StringWithDefaultChooser(subjectHolder, parent, widgetFactory);
+	}
 
 	public static Label buildFetchLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
 		return widgetFactory.createLabel(parent, JptUiMappingsMessages.BasicGeneralSection_fetchLabel);
@@ -75,20 +83,15 @@ public class CommonWidgets
 		return widgetFactory.createLabel(parent, JptUiMappingsMessages.NonOwningMapping_mappedByLabel);
 	}
 
-	public static EnumComboViewer buildEnumComboViewer(
-			Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return new EnumComboViewer(parent, widgetFactory);
-	}
-
-	public static EnumHolder buildMultiRelationshipMappingFetchEnumHolder(IMultiRelationshipMapping mapping) {
+	public static EnumHolder<IMultiRelationshipMapping, FetchType> buildMultiRelationshipMappingFetchEnumHolder(IMultiRelationshipMapping mapping) {
 		return new FetchHolder(mapping);
 	}
 
-	public static EnumHolder buildSingleRelationshipMappingFetchEnumHolder(ISingleRelationshipMapping mapping) {
+	public static EnumHolder<ISingleRelationshipMapping, FetchType> buildSingleRelationshipMappingFetchEnumHolder(ISingleRelationshipMapping mapping) {
 		return new SingleRelationshipMappingFetchHolder(mapping);
 	}
 
-	public static EnumHolder buildOptionalHolder(ISingleRelationshipMapping mapping) {
+	public static EnumHolder<ISingleRelationshipMapping, Boolean> buildOptionalHolder(ISingleRelationshipMapping mapping) {
 		return new OptionalHolder(mapping);
 	}
 
@@ -104,10 +107,15 @@ public class CommonWidgets
 		return new ColumnTableHolder(column);
 	}
 
-	public static TargetEntityChooser buildTargetEntityChooser(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return new TargetEntityChooser(parent, widgetFactory);
+	public static TargetEntityChooser buildTargetEntityChooser(
+			PropertyValueModel<? extends IRelationshipMapping> subjectHolder,
+			Composite parent,
+			TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		return new TargetEntityChooser(subjectHolder, parent, widgetFactory);
 	}
-	private static class FetchHolder extends EObjectImpl implements EnumHolder {
+
+	private static class FetchHolder implements EnumHolder<IMultiRelationshipMapping, FetchType> {
 
 		private IMultiRelationshipMapping mapping;
 
@@ -116,16 +124,16 @@ public class CommonWidgets
 			this.mapping = mapping;
 		}
 
-		public Object get() {
+		public FetchType get() {
 			return this.mapping.getFetch();
 		}
 
-		public void set(Object enumSetting) {
-			this.mapping.setFetch((DefaultLazyFetchType) enumSetting);
+		public void set(FetchType enumSetting) {
+			this.mapping.setSpecifiedFetch(enumSetting);
 
 		}
 
-		public Class featureClass() {
+		public Class<IMultiRelationshipMapping> featureClass() {
 			return IMultiRelationshipMapping.class;
 		}
 
@@ -133,15 +141,15 @@ public class CommonWidgets
 			return JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__FETCH;
 		}
 
-		public EObject wrappedObject() {
+		public IMultiRelationshipMapping subject() {
 			return this.mapping;
 		}
 
-		public Object[] enumValues() {
-			return DefaultLazyFetchType.VALUES.toArray();
+		public FetchType[] enumValues() {
+			return FetchType.values();
 		}
 
-		public Object defaultValue() {
+		public FetchType defaultValue() {
 			return DefaultLazyFetchType.DEFAULT;
 		}
 
@@ -151,7 +159,7 @@ public class CommonWidgets
 		}
 	}
 
-	private static class SingleRelationshipMappingFetchHolder extends EObjectImpl implements EnumHolder {
+	private static class SingleRelationshipMappingFetchHolder implements EnumHolder<ISingleRelationshipMapping, FetchType> {
 
 		private ISingleRelationshipMapping mapping;
 
@@ -160,16 +168,15 @@ public class CommonWidgets
 			this.mapping = mapping;
 		}
 
-		public Object get() {
+		public FetchType get() {
 			return this.mapping.getFetch();
 		}
 
-		public void set(Object enumSetting) {
-			this.mapping.setFetch((DefaultEagerFetchType) enumSetting);
-
+		public void set(FetchType enumSetting) {
+			this.mapping.setSpecifiedFetch(enumSetting);
 		}
 
-		public Class featureClass() {
+		public Class<ISingleRelationshipMapping> featureClass() {
 			return ISingleRelationshipMapping.class;
 		}
 
@@ -177,15 +184,15 @@ public class CommonWidgets
 			return JpaCoreMappingsPackage.ISINGLE_RELATIONSHIP_MAPPING__FETCH;
 		}
 
-		public EObject wrappedObject() {
+		public ISingleRelationshipMapping subject() {
 			return this.mapping;
 		}
 
-		public Object[] enumValues() {
-			return DefaultEagerFetchType.VALUES.toArray();
+		public FetchType[] enumValues() {
+			return FetchType.values();
 		}
 
-		public Object defaultValue() {
+		public FetchType defaultValue() {
 			return DefaultEagerFetchType.DEFAULT;
 		}
 
@@ -194,7 +201,7 @@ public class CommonWidgets
 			return "Eager";
 		}
 	}
-	private static abstract class ColumnHolder extends EObjectImpl implements StringHolder {
+	private static abstract class ColumnHolder implements StringHolder<IAbstractColumn> {
 		private IAbstractColumn column;
 
 		ColumnHolder(IAbstractColumn column) {
@@ -202,7 +209,7 @@ public class CommonWidgets
 			this.column = column;
 		}
 
-		public Class featureClass() {
+		public Class<IAbstractColumn> featureClass() {
 			return IAbstractColumn.class;
 		}
 
@@ -210,7 +217,7 @@ public class CommonWidgets
 			return true;
 		}
 
-		public EObject wrappedObject() {
+		public IAbstractColumn wrappedObject() {
 			return this.column;
 		}
 
@@ -219,7 +226,7 @@ public class CommonWidgets
 		}
 	}
 
-	public static class ColumnTableHolder extends ColumnHolder implements StringHolder {
+	public static class ColumnTableHolder extends ColumnHolder implements StringHolder<IAbstractColumn> {
 
 		ColumnTableHolder(IAbstractColumn column) {
 			super(column);
@@ -250,7 +257,7 @@ public class CommonWidgets
 		}
 	}
 
-	private static class OptionalHolder extends EObjectImpl implements EnumHolder {
+	private static class OptionalHolder implements EnumHolder<ISingleRelationshipMapping, Boolean> {
 
 		private ISingleRelationshipMapping mapping;
 
@@ -259,15 +266,15 @@ public class CommonWidgets
 			this.mapping = mapping;
 		}
 
-		public Object get() {
+		public Boolean get() {
 			return this.mapping.getOptional();
 		}
 
-		public void set(Object enumSetting) {
-			this.mapping.setOptional((DefaultTrueBoolean) enumSetting);
+		public void set(Boolean enumSetting) {
+			this.mapping.setSpecifiedOptional(enumSetting);
 		}
 
-		public Class featureClass() {
+		public Class<ISingleRelationshipMapping> featureClass() {
 			return ISingleRelationshipMapping.class;
 		}
 
@@ -275,15 +282,17 @@ public class CommonWidgets
 			return JpaCoreMappingsPackage.ISINGLE_RELATIONSHIP_MAPPING__OPTIONAL;
 		}
 
-		public EObject wrappedObject() {
+		public ISingleRelationshipMapping subject() {
 			return this.mapping;
 		}
 
-		public Object[] enumValues() {
-			return DefaultTrueBoolean.VALUES.toArray();
+		public Boolean[] enumValues() {
+			//TODO
+			return new Boolean[] { Boolean.TRUE, Boolean.FALSE };
+//			return DefaultTrueBoolean.VALUES.toArray();
 		}
 
-		public Object defaultValue() {
+		public Boolean defaultValue() {
 			return DefaultTrueBoolean.DEFAULT;
 		}
 
@@ -293,5 +302,4 @@ public class CommonWidgets
 		}
 
 	}
-
 }

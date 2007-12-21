@@ -86,6 +86,10 @@ public abstract class AbstractJpaView extends ViewPart
 		select(selectionManager.getCurrentSelection());
 	}
 
+	protected final PageBook getPageBook() {
+		return pageBook;
+	}
+
 	public final TabbedPropertySheetWidgetFactory getWidgetFactory() {
 		return this.widgetFactory;
 	}

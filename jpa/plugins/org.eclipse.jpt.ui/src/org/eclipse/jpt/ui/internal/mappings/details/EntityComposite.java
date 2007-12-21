@@ -12,6 +12,7 @@ import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -31,8 +32,11 @@ public class EntityComposite extends BaseJpaComposite<IEntity>
 	private SecondaryTablesComposite secondaryTablesComposite;
 	private OverridesComposite attributeOverridesComposite;
 
-	public EntityComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public EntityComposite(PropertyValueModel<? extends IEntity> subjectHolder,
+	                       Composite parent,
+	                       TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 	}
 
 	@Override

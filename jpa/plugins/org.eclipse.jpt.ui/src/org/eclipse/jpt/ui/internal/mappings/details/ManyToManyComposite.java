@@ -9,9 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import org.eclipse.jpt.core.internal.context.base.IJoinTable;
 import org.eclipse.jpt.core.internal.context.base.IManyToManyMapping;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -30,8 +33,11 @@ public class ManyToManyComposite extends BaseJpaComposite<IManyToManyMapping>
 	private OrderingComposite orderingComposite;
 	private TargetEntityChooser targetEntityChooser;
 
-	public ManyToManyComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public ManyToManyComposite(PropertyValueModel<? extends IManyToManyMapping> subjectHolder,
+	                           Composite parent,
+	                           TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 	}
 
 	private Control buildGeneralComposite(Composite composite) {
@@ -61,14 +67,14 @@ public class ManyToManyComposite extends BaseJpaComposite<IManyToManyMapping>
 
 
 		CommonWidgets.buildMappedByLabel(generalComposite, getWidgetFactory());
-		this.mappedByCombo = new MappedByCombo(generalComposite, getWidgetFactory());
+		this.mappedByCombo = new MappedByCombo(getSubjectHolder(), generalComposite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.mappedByCombo.getControl().setLayoutData(gridData);
 
-		this.cascadeComposite = new CascadeComposite(generalComposite, getWidgetFactory());
+		this.cascadeComposite = new CascadeComposite(getSubjectHolder(), generalComposite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		gridData.horizontalAlignment = GridData.FILL;
@@ -76,7 +82,7 @@ public class ManyToManyComposite extends BaseJpaComposite<IManyToManyMapping>
 		this.cascadeComposite.getControl().setLayoutData(gridData);
 
 
-		this.orderingComposite = new OrderingComposite(composite, getWidgetFactory());
+		this.orderingComposite = new OrderingComposite(getSubjectHolder(), composite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		gridData.horizontalAlignment = GridData.FILL;
@@ -97,7 +103,7 @@ public class ManyToManyComposite extends BaseJpaComposite<IManyToManyMapping>
 		layout.marginWidth = 0;
 		joinTableClient.setLayout(layout);
 
-		this.joinTableComposite = new JoinTableComposite(joinTableClient, getWidgetFactory());
+		this.joinTableComposite = new JoinTableComposite(buildJointTableHolder(), joinTableClient, getWidgetFactory());
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
@@ -106,6 +112,15 @@ public class ManyToManyComposite extends BaseJpaComposite<IManyToManyMapping>
 		this.joinTableComposite.getControl().setLayoutData(gridData);
 
 		return section;
+	}
+
+	private PropertyValueModel<? extends IJoinTable> buildJointTableHolder() {
+		return new PropertyAspectAdapter<IManyToManyMapping, IJoinTable>(getSubjectHolder(), "TODO") {
+			@Override
+			protected IJoinTable buildValue_() {
+				return subject.getJoinTable();
+			}
+		};
 	}
 
 	@Override

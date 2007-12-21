@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
@@ -37,8 +38,11 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 	private CCombo sequenceNameCombo;
 	private ModifyListener sequenceNameComboListener;
 
-	public SequenceGeneratorComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public SequenceGeneratorComposite(PropertyValueModel<? extends IIdMapping> subjectHolder,
+	                                  Composite parent,
+	                                  TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 	}
 
 	private CCombo buildSequenceNameCombo(Composite parent) {
@@ -95,7 +99,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 
 	private ConnectionProfile getConnectionProfile() {
 		if(this.connectionProfile == null) {
-			IJpaProject jpaProject = getGenerator().getJpaProject();
+			IJpaProject jpaProject = getGenerator().jpaProject();
 			this.connectionProfile = jpaProject.connectionProfile();
 		}
 		return this.connectionProfile;

@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IOneToOneMapping;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -27,8 +28,11 @@ public class OneToOneComposite extends BaseJpaComposite<IOneToOneMapping>
 	private EnumComboViewer optionalComboViewer;
 	private TargetEntityChooser targetEntityChooser;
 
-	public OneToOneComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public OneToOneComposite(PropertyValueModel<? extends IOneToOneMapping> subjectHolder,
+	                         Composite parent,
+	                         TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 	}
 
 	protected Control buildGeneralComposite(Composite composite) {
@@ -92,7 +96,7 @@ public class OneToOneComposite extends BaseJpaComposite<IOneToOneMapping>
 	}
 
 	protected CascadeComposite createCascadeComposite(Composite parentComposite) {
-		return new CascadeComposite(parentComposite, getWidgetFactory());
+		return new CascadeComposite(getSubjectHolder(), parentComposite, getWidgetFactory());
 	}
 
 	protected EnumComboViewer createFetchTypeComboViewer(Composite parentComposite) {
@@ -100,11 +104,11 @@ public class OneToOneComposite extends BaseJpaComposite<IOneToOneMapping>
 	}
 
 	protected JoinColumnComposite createJoinColumnComposite(Composite parentComposite) {
-		return new JoinColumnComposite(parentComposite, getWidgetFactory());
+		return new JoinColumnComposite(getSubjectHolder(), parentComposite, getWidgetFactory());
 	}
 
 	protected MappedByCombo createMappedByCombo(Composite parentComposite) {
-		return new MappedByCombo(parentComposite, getWidgetFactory());
+		return new MappedByCombo(getSubjectHolder(), parentComposite, getWidgetFactory());
 	}
 
 	protected EnumComboViewer createOptionalComboViewer(Composite parentComposite) {
@@ -132,12 +136,12 @@ public class OneToOneComposite extends BaseJpaComposite<IOneToOneMapping>
 
 	@Override
 	protected void doPopulate() {
-		this.targetEntityChooser.populate(subject());
+		this.targetEntityChooser.populate();
 		this.fetchTypeComboViewer.populate(CommonWidgets.buildSingleRelationshipMappingFetchEnumHolder(subject()));
-		this.mappedByCombo.populate(subject());
+		this.mappedByCombo.populate();
 		this.optionalComboViewer.populate(CommonWidgets.buildOptionalHolder(subject()));
-		this.cascadeComposite.populate(subject());
-		this.joinColumnComposite.populate(subject());
+		this.cascadeComposite.populate();
+		this.joinColumnComposite.populate();
 	}
 
 	@Override

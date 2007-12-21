@@ -20,6 +20,8 @@ import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.jpt.ui.internal.selection.IJpaSelection;
 import org.eclipse.jpt.ui.internal.selection.JpaSelection;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -49,9 +51,10 @@ public class JpaDetailsView extends AbstractJpaView
 	private Map<Object, IJpaDetailsPage<? extends IJpaContextNode>> detailsPages;
 
 	/**
-	 * Key: String file content id,  value: IJpaDetailsProvider.
+	 * The holder of the current selection, which is the
+	 * <code>IJpaDetailsPage</code>'s subject.
 	 */
-	private Map<String, IJpaDetailsProvider> detailsProviders;
+	private WritablePropertyValueModel<IJpaContextNode> subjectHolder;
 
 	/**
 	 * Creates a new <code>JpaDetailsView</code>.
@@ -69,12 +72,13 @@ public class JpaDetailsView extends AbstractJpaView
 
 		String id = contextNode.jpaProject().jpaPlatform().getId();
 
-		Composite parentComposite = getWidgetFactory().createComposite(getPageBook(), SWT.NONE);
-		parentComposite.setLayout(new FillLayout(SWT.VERTICAL));
+		Composite parentComposite = getWidgetFactory().createComposite(getPageBook());
+		parentComposite.setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		IJpaDetailsPage<? extends IJpaContextNode> page = detailsProvider.buildDetailsPage(
+			subjectHolder,
 			parentComposite,
-			id,
+			contextNode,
 			getWidgetFactory()
 		);
 
@@ -85,16 +89,15 @@ public class JpaDetailsView extends AbstractJpaView
 		return page;
 	}
 
+	private WritablePropertyValueModel<IJpaContextNode> buildSubjectHolder() {
+		return new SimplePropertyValueModel<IJpaContextNode>();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
 	public void dispose() {
-		for (Iterator<String> stream = new CloneIterator<String>(detailsProviders.keySet()); stream.hasNext(); ) {
-			String key = stream.next();
-			IJpaDetailsProvider provider = detailsProviders.remove(key);
-			provider.dispose();
-		}
 
 		for (Iterator<Object> stream = new CloneIterator<Object>(detailsPages.keySet()); stream.hasNext(); ) {
 			Object key = stream.next();
@@ -126,23 +129,13 @@ public class JpaDetailsView extends AbstractJpaView
 	}
 
 	private IJpaDetailsProvider getDetailsProvider(IJpaContextNode contextNode) {
-		String contentId = contextNode.getJpaFile().getContentId();
-		IJpaDetailsProvider provider = detailsProviders.get(contentId);
 
-		if (provider == null) {
-			String platformId = contextNode.jpaProject().jpaPlatform().getId();
-			IJpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
-			provider = jpaPlatformUI.detailsProvider(contentId);
+		String platformId = contextNode.jpaProject().jpaPlatform().getId();
+		IJpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
+		return jpaPlatformUI.detailsProvider(contextNode);
 
-			//TODO this view and the detailsProviders Map is not created on a per project basis.
-			//the detailsProviders and their fileContentTypes could overlap across project, this would cause problems with storing this map.
-
-			if (provider != null) {
-				detailsProviders.put(contentId, provider);
-			}
-		}
-
-		return provider;
+		//TODO this view and the detailsProviders Map is not created on a per project basis.
+		//the detailsProviders and their fileContentTypes could overlap across project, this would cause problems with storing this map.
 	}
 
 	public IJpaSelection getSelection() {
@@ -155,9 +148,10 @@ public class JpaDetailsView extends AbstractJpaView
 	@Override
 	protected void initialize() {
 		super.initialize();
+
 		this.currentSelection = IJpaSelection.NULL_SELECTION;
-		this.detailsProviders = new HashMap<String, IJpaDetailsProvider>();
-		this.detailsPages = new HashMap<Object, IJpaDetailsPage<? extends IJpaContextNode>>();
+		this.detailsPages     = new HashMap<Object, IJpaDetailsPage<? extends IJpaContextNode>>();
+		this.subjectHolder    = buildSubjectHolder();
 	}
 
 	/*
@@ -182,21 +176,34 @@ public class JpaDetailsView extends AbstractJpaView
 	}
 
 	/**
-	 * Changes the current page and show the given page.
+	 * Changes the current page and shows the given page.
 	 *
 	 * @param newPage The new page to display
 	 */
 	@SuppressWarnings("unchecked")
 	private void setCurrentPage(IJpaDetailsPage<? extends IJpaContextNode> newPage) {
+
 		// Depopulate old page
 		if ((currentPage != null) && (currentPage != newPage)) {
-			currentPage.populate(null);
+			try {
+				currentPage.dispose();
+				subjectHolder.setValue(null);
+			}
+			finally {
+				// Log the exception
+			}
 		}
 
 		// Populate new page
 		if (newPage != null) {
-			IJpaDetailsPage<IJpaContextNode> page = (IJpaDetailsPage<IJpaContextNode>) newPage;
-			page.populate(currentSelection.getSelectedNode());
+			try {
+				IJpaDetailsPage<IJpaContextNode> page = (IJpaDetailsPage<IJpaContextNode>) newPage;
+				subjectHolder.setValue(currentSelection.getSelectedNode());
+				page.populate();
+			}
+			finally {
+				// Show error page
+			}
 		}
 
 		currentPage = newPage;

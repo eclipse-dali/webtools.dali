@@ -14,24 +14,31 @@ import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.NullAttributeMappingUiProvider;
+import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class JavaPersistentAttributeDetailsPage
 	extends PersistentAttributeDetailsPage
 {
-	public JavaPersistentAttributeDetailsPage(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public JavaPersistentAttributeDetailsPage(PropertyValueModel<? extends IPersistentAttribute> subjectHolder,
+	                                          Composite parent,
+	                                          TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 	}
 
 	@Override
 	protected ListIterator<IAttributeMappingUiProvider> attributeMappingUiProviders() {
-		return jpaPlatformUi().javaAttributeMappingUiProviders();
+		// TODO
+		return ((BaseJpaPlatformUi) jpaPlatformUi()).javaAttributeMappingUiProviders();
 	}
 
 	protected IAttributeMappingUiProvider nullAttributeMappingUiProvider() {
@@ -40,7 +47,9 @@ public class JavaPersistentAttributeDetailsPage
 
 	@Override
 	protected ListIterator<IAttributeMappingUiProvider> defaultAttributeMappingUiProviders() {
-		return jpaPlatformUi().defaultJavaAttributeMappingUiProviders();
+		// TODO
+//		return jpaPlatformUi().defaultJavaAttributeMappingUiProviders();
+		return ((BaseJpaPlatformUi) jpaPlatformUi()).defaultJavaAttributeMappingUiProviders();
 	}
 
 	/**
@@ -76,16 +85,15 @@ public class JavaPersistentAttributeDetailsPage
 	protected void initializeLayout(Composite composite) {
 		composite.setLayout(new GridLayout(2, false));
 
-		GridData gridData;
-
-		buildMappingLabel(composite);
+		Label mapAsLabel = buildMappingLabel(composite);
+		addAlignLeft(mapAsLabel);
 
 		ComboViewer mappingCombo = buildMappingCombo(composite);
-		gridData = new GridData();
+		GridData gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
-		mappingCombo.getCombo().setLayoutData(gridData);
+		mappingCombo.getCCombo().setLayoutData(gridData);
 
 		PageBook book = buildMappingPageBook(composite);
 		gridData = new GridData();

@@ -18,10 +18,15 @@ public interface IJpaDetailsPage<T extends IJpaContextNode>
 	 */
 	void dispose();
 
+	/**
+	 * Returns this details' page's widget.
+	 *
+	 * @return The container of the widgets shown by this details page
+	 */
 	Control getControl();
 
 	/**
 	 * Set the content for the page and populate widgets
 	 */
-	void populate(T contentNode);
+	void populate();
 }

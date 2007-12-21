@@ -34,6 +34,7 @@ import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -59,8 +60,11 @@ public class InheritanceComposite extends BaseJpaComposite<IEntity> {
 	private PrimaryKeyJoinColumnsComposite pkJoinColumnsComposite;
 	private ComboViewer strategyViewer;
 
-	public InheritanceComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public InheritanceComposite(PropertyValueModel<? extends IEntity> subjectHolder,
+	                            Composite parent,
+	                            TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 		this.entityListener = buildEntityListener();
 		this.discriminatorColumnListener = buildDiscriminatorColumnListener();
 		this.connectionListener = buildConnectionListener();

@@ -15,6 +15,8 @@ import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.details.PersistentTypeDetailsPage;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
+import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -25,8 +27,11 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 public class JavaPersistentTypeDetailsPage extends
 		PersistentTypeDetailsPage<IJavaPersistentType>
 {
-	public JavaPersistentTypeDetailsPage(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public JavaPersistentTypeDetailsPage(PropertyValueModel<? extends IJavaPersistentType> subjectHolder,
+	                                     Composite parent,
+	                                     TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 	}
 
 	protected IJpaPlatformUi jpaPlatformUi() {
@@ -36,7 +41,8 @@ public class JavaPersistentTypeDetailsPage extends
 
 	@Override
 	protected ListIterator<ITypeMappingUiProvider> typeMappingUiProviders() {
-		return jpaPlatformUi().javaTypeMappingUiProviders();
+		// TODO
+		return ((BaseJpaPlatformUi) jpaPlatformUi()).javaTypeMappingUiProviders();
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -28,8 +29,11 @@ public class TableComposite extends BaseJpaComposite<ITable>
 	private CatalogCombo catalogCombo;
 	private SchemaCombo schemaCombo;
 
-	public TableComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public TableComposite(PropertyValueModel<? extends ITable> subjectHolder,
+	                      Composite parent,
+	                      TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 	}
 
 	@Override
@@ -65,7 +69,7 @@ public class TableComposite extends BaseJpaComposite<ITable>
 
 		CommonWidgets.buildTableLabel(intermediaryComposite, getWidgetFactory());
 
-		this.tableCombo = new TableCombo(intermediaryComposite, getWidgetFactory());
+		this.tableCombo = new TableCombo(getSubjectHolder(), intermediaryComposite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
@@ -74,7 +78,7 @@ public class TableComposite extends BaseJpaComposite<ITable>
 		helpSystem.setHelp(tableCombo.getCombo(), IJpaHelpContextIds.ENTITY_TABLE);
 
 		CommonWidgets.buildCatalogLabel(intermediaryComposite, getWidgetFactory());
-		this.catalogCombo = new CatalogCombo(intermediaryComposite, getWidgetFactory());
+		this.catalogCombo = new CatalogCombo(getSubjectHolder(), intermediaryComposite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
@@ -83,7 +87,7 @@ public class TableComposite extends BaseJpaComposite<ITable>
 		helpSystem.setHelp(catalogCombo.getCombo(), IJpaHelpContextIds.ENTITY_CATALOG);
 
 		CommonWidgets.buildSchemaLabel(intermediaryComposite, getWidgetFactory());
-		this.schemaCombo = new SchemaCombo(intermediaryComposite, getWidgetFactory());
+		this.schemaCombo = new SchemaCombo(getSubjectHolder(), intermediaryComposite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
@@ -102,9 +106,9 @@ public class TableComposite extends BaseJpaComposite<ITable>
 
 	@Override
 	public void doPopulate() {
-		this.tableCombo.populate(this.subject());
-		this.catalogCombo.populate(this.subject());
-		this.schemaCombo.populate(this.subject());
+		this.tableCombo.populate();
+		this.catalogCombo.populate();
+		this.schemaCombo.populate();
 	}
 
 	@Override

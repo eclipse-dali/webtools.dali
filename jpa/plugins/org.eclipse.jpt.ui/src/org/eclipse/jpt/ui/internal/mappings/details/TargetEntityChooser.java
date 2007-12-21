@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
@@ -46,8 +47,11 @@ public class TargetEntityChooser extends BaseJpaController<IRelationshipMapping>
 	protected CCombo targetEntityCombo;
 	private Composite composite;
 
-	public TargetEntityChooser(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public TargetEntityChooser(PropertyValueModel<? extends IRelationshipMapping> subjectHolder,
+	                           Composite parent,
+	                           TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 		buildRelationshipMappingListener();
 	}
 
@@ -61,7 +65,7 @@ public class TargetEntityChooser extends BaseJpaController<IRelationshipMapping>
 	}
 
 	@Override
-	protected void buildWidget(Composite parent) {
+	protected void buildWidget(Composite parent, int style) {
 		this.composite = getWidgetFactory().createComposite(parent);
 	    GridLayout gridLayout = new GridLayout();
 	    gridLayout.marginHeight = 0;
@@ -150,7 +154,7 @@ public class TargetEntityChooser extends BaseJpaController<IRelationshipMapping>
 			return;
 		}
 		String targetEntity = this.subject().getSpecifiedTargetEntity();
-		this.targetEntityCombo.setItem(0, NLS.bind(JptUiMappingsMessages.TargetEntityChooser_defaultWithOneParam, this.relationshipMapping.getDefaultTargetEntity()));
+		this.targetEntityCombo.setItem(0, NLS.bind(JptUiMappingsMessages.TargetEntityChooser_defaultWithOneParam, this.subject().getDefaultTargetEntity()));
 		if (targetEntity != null) {
 			if (!this.targetEntityCombo.getText().equals(targetEntity)) {
 				this.targetEntityCombo.setText(targetEntity);

@@ -10,6 +10,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IMappedSuperclass;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -20,8 +21,11 @@ public class MappedSuperclassComposite extends BaseJpaComposite<IMappedSuperclas
 //	private IMappedSuperclass mappedSuperclass;
 //	private Adapter mappedSuperclassListener;
 
-	public MappedSuperclassComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public MappedSuperclassComposite(PropertyValueModel<? extends IMappedSuperclass> subjectHolder,
+	                                 Composite parent,
+	                                 TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 //		this.mappedSuperclassListener = buildMappedSuperclassListener();
 	}
 //

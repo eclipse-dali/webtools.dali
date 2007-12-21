@@ -23,6 +23,7 @@ import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -48,8 +49,11 @@ public class CatalogCombo extends BaseJpaController<ITable>
 
 	private CCombo combo;
 
-	public CatalogCombo(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public CatalogCombo(PropertyValueModel<? extends ITable> subjectHolder,
+	                    Composite parent,
+	                    TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 		this.listener = this.buildTableListener();
 		this.connectionListener = this.buildConnectionListener();
 	}
@@ -130,7 +134,7 @@ public class CatalogCombo extends BaseJpaController<ITable>
 	}
 
 	@Override
-	protected void buildWidget(Composite parent) {
+	protected void buildWidget(Composite parent, int style) {
 		this.combo = getWidgetFactory().createCCombo(parent, SWT.FLAT | SWT.READ_ONLY);
 		this.combo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
 		this.combo.addModifyListener(new ModifyListener() {

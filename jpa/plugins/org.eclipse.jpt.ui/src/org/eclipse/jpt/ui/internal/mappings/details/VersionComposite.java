@@ -10,10 +10,14 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
+import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.EnumComboViewer.EnumHolder;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -26,8 +30,11 @@ public class VersionComposite extends BaseJpaComposite<IVersionMapping> {
 	private ColumnComposite columnComposite;
 	private EnumComboViewer temporalTypeViewer;
 
-	public VersionComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public VersionComposite(PropertyValueModel<? extends IVersionMapping> subjectHolder,
+	                        Composite parent,
+	                        TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 	}
 
 	private Control buildGeneralComposite(Composite composite) {
@@ -38,7 +45,7 @@ public class VersionComposite extends BaseJpaComposite<IVersionMapping> {
 		layout.marginWidth = 0;
 		generalComposite.setLayout(layout);
 
-		this.columnComposite = new ColumnComposite(generalComposite, getWidgetFactory());
+		this.columnComposite = new ColumnComposite(buildColumnHolder(), generalComposite, getWidgetFactory());
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -56,6 +63,17 @@ public class VersionComposite extends BaseJpaComposite<IVersionMapping> {
 		return generalComposite;
 	}
 
+	private PropertyValueModel<? extends IColumn> buildColumnHolder() {
+		// TODO: Maybe have TransformationPropertyValueModel and
+		// TransformationWritablePropertyValueModel
+		return new TransformationPropertyValueModel<IVersionMapping, IColumn>((WritablePropertyValueModel<IVersionMapping>) getSubjectHolder()) {
+			@Override
+			protected IColumn transform(IVersionMapping value) {
+				return (value == null) ? null : value.getColumn();
+			}
+		};
+	}
+
 	@Override
 	protected void disengageListeners() {
 	}
@@ -69,12 +87,7 @@ public class VersionComposite extends BaseJpaComposite<IVersionMapping> {
 
 	@Override
 	public void doPopulate() {
-		if (this.subject() != null) {
-			this.columnComposite.populate(this.subject().getColumn());
-		}
-		else {
-			this.columnComposite.populate(null);
-		}
+		this.columnComposite.populate();
 		this.temporalTypeViewer.populate(new TemporalTypeHolder(this.subject()));
 	}
 
@@ -139,7 +152,7 @@ public class VersionComposite extends BaseJpaComposite<IVersionMapping> {
 			this.version.setTemporal(enumSetting);
 		}
 
-		public IVersionMapping wrappedObject() {
+		public IVersionMapping subject() {
 			return this.version;
 		}
 	}

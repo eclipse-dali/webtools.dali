@@ -26,6 +26,7 @@ import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.Owner;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -48,8 +49,11 @@ public class JoinTableComposite extends BaseJpaComposite<IJoinTable>
 	private Button overrideDefaultInverseJoinColumnsCheckBox;
 	private JoinColumnsComposite inverseJoinColumnsComposite;
 
-	public JoinTableComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public JoinTableComposite(PropertyValueModel<? extends IJoinTable> subjectHolder,
+	                          Composite parent,
+	                          TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 		this.joinTableListener = buildJoinTableListener();
 		this.connectionListener = buildConnectionListener();
 	}
@@ -131,7 +135,7 @@ public class JoinTableComposite extends BaseJpaComposite<IJoinTable>
 
 	private ConnectionProfile getConnectionProfile() {
 		if(this.connectionProfile == null) {
-			IJpaProject jpaProject = this.subject().getJpaProject();
+			IJpaProject jpaProject = this.subject().jpaProject();
 			this.connectionProfile = jpaProject.connectionProfile();
 		}
 		return this.connectionProfile;
@@ -153,7 +157,7 @@ public class JoinTableComposite extends BaseJpaComposite<IJoinTable>
 
 		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.JoinTableComposite_name);
 
-		this.tableCombo = new TableCombo(composite, this.commandStack, getWidgetFactory());
+		this.tableCombo = new TableCombo(getSubjectHolder(), composite, getWidgetFactory());
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;

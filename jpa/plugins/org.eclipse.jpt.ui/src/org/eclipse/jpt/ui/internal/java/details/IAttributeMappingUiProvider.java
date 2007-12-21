@@ -12,22 +12,17 @@ package org.eclipse.jpt.ui.internal.java.details;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.ui.internal.IJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.IJpaComposite;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public interface IAttributeMappingUiProvider
+public interface IAttributeMappingUiProvider<T extends IAttributeMapping>
 {
 	/**
 	 * A unique string that corresponds to the key of a MappingProvider in the core
 	 * (IJavaAttributeMappingProvider and/or IXmlAttributeMappingProvider)
 	 */
 	String attributeMappingKey();
-
-	/**
-	 * A label to be displayed to the label as an option in the mapping type combo box
-	 * @return
-	 */
-	String label();
 
 	/**
 	 * The IJpaComposite that correponds to this mapping type.  This will be displayed
@@ -39,7 +34,15 @@ public interface IAttributeMappingUiProvider
 	 *
 	 * @return
 	 */
-	IJpaComposite<IAttributeMapping> buildAttributeMappingComposite(
-			IJpaUiFactory factory, Composite parent, TabbedPropertySheetWidgetFactory widgetFactory);
+	IJpaComposite<T> buildAttributeMappingComposite(
+			IJpaUiFactory factory,
+			PropertyValueModel<T> subjectHolder,
+			Composite parent,
+			TabbedPropertySheetWidgetFactory widgetFactory);
 
+	/**
+	 * A label to be displayed to the label as an option in the mapping type combo box
+	 * @return
+	 */
+	String label();
 }

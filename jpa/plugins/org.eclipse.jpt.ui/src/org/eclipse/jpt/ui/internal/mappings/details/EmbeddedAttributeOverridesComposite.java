@@ -24,10 +24,13 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
+import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -40,7 +43,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class EmbeddedAttributeOverridesComposite extends BaseJpaComposite
+public class EmbeddedAttributeOverridesComposite extends BaseJpaComposite<IEmbeddedMapping>
 {
 	private ListViewer listViewer;
 
@@ -54,8 +57,11 @@ public class EmbeddedAttributeOverridesComposite extends BaseJpaComposite
 
 	private Button overrideDefaultButton;
 
-	public EmbeddedAttributeOverridesComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public EmbeddedAttributeOverridesComposite(PropertyValueModel<? extends IEmbeddedMapping> subjectHolder,
+	                                           Composite parent,
+	                                           TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 		this.embeddedListener = buildEmbeddedListener();
 		this.attributeOverrideListener = buildAttributeOverrideListener();
 	}
@@ -114,13 +120,22 @@ public class EmbeddedAttributeOverridesComposite extends BaseJpaComposite
 		this.overrideDefaultButton.setLayoutData(gridData);
 
 
-		this.columnComposite = new ColumnComposite(attributeOverridesGroup, getWidgetFactory());
+		this.columnComposite = new ColumnComposite(buildColumnHolder(), attributeOverridesGroup, getWidgetFactory());
 		gridData = new GridData();
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.FILL;
 		this.columnComposite.getControl().setLayoutData(gridData);
 
+	}
+
+	private PropertyValueModel<? extends IColumn> buildColumnHolder() 	{
+		return new PropertyAspectAdapter<IEmbeddedMapping, IColumn>(getSubjectHolder(), "TODO") {
+			@Override
+			protected IColumn buildValue_() {
+				return null; // TODO
+			}
+		};
 	}
 
 	private SelectionListener buildOverrideDefaultSelectionListener() {

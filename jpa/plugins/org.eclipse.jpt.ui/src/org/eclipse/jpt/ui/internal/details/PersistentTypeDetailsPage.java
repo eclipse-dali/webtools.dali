@@ -29,6 +29,7 @@ import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
@@ -52,8 +53,11 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 
 	private IJpaComposite<ITypeMapping> visibleMappingComposite;
 
-	public PersistentTypeDetailsPage(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NONE, widgetFactory);
+	public PersistentTypeDetailsPage(PropertyValueModel<? extends T> subjectHolder,
+                                    Composite parent,
+                                    TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NONE, widgetFactory);
 		this.persistentTypeListener = buildPersistentTypeListener();
 		this.composites = new HashMap<String, IJpaComposite<ITypeMapping>>();
 	}
@@ -205,12 +209,12 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 		if (this.visibleMappingComposite != null) {
 			if (mappingKey  == this.currentMappingKey) {
 				if (this.visibleMappingComposite != null) {
-					this.visibleMappingComposite.populate(this.persistentType.getMapping());
+					this.visibleMappingComposite.populate();
 					return;
 				}
 			}
 			else {
-				this.visibleMappingComposite.populate(null);
+				this.visibleMappingComposite.populate();
 				// don't return
 			}
 		}
@@ -221,7 +225,7 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 		this.typeMappingPageBook.showPage(mappingComposite.getControl());
 
 		this.visibleMappingComposite = mappingComposite;
-		this.visibleMappingComposite.populate(this.persistentType.getMapping());
+		this.visibleMappingComposite.populate();
 	}
 
 	private void setComboData(String mappingKey) {

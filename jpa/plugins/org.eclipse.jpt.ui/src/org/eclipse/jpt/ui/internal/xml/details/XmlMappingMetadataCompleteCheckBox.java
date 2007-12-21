@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -30,8 +31,11 @@ public class XmlMappingMetadataCompleteCheckBox extends BaseJpaController<Persis
 	private PersistenceUnitMetadata persistenceUnitMetadata;
 	private Adapter persistenceUnitMetadataListener;
 
-	public XmlMappingMetadataCompleteCheckBox(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public XmlMappingMetadataCompleteCheckBox(PropertyValueModel<? extends PersistenceUnitMetadata> subjectHolder,
+	                                          Composite parent,
+	                                          TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 		buildPeristenceUnitMetadataListener();
 	}
 
@@ -45,7 +49,7 @@ public class XmlMappingMetadataCompleteCheckBox extends BaseJpaController<Persis
 	}
 
 	@Override
-	protected void buildWidget(Composite parent) {
+	protected void buildWidget(Composite parent, int style) {
 		this.button = getWidgetFactory().createButton(
 						parent,
 						JptUiXmlMessages.XMLEntityMappingsPage_XmlMappingMetadataCompleteCheckBox,

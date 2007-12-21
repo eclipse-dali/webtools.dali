@@ -3,44 +3,74 @@
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
- *  
+ *
  *  Contributors: Oracle. - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
-import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class XmlDetailsProvider 
-	implements IJpaDetailsProvider 
+/**
+ * This provider is responsible for creating the <code>IJpaDetailsPage</code>
+ * when the information comes from the XML file (either from the persistence
+ * configuration or from the Mappings Descriptor).
+ *
+ * @version 2.0
+ * @since 1.0
+ */
+public class XmlDetailsProvider
+	implements IJpaDetailsProvider
 {
 	public XmlDetailsProvider() {
 		super();
 	}
-	
-	public String fileContentType() {
-		return JptCorePlugin.ORM_XML_CONTENT_TYPE;
-	}
-	
-	public IJpaDetailsPage buildDetailsPage(
-			Composite parentComposite, Object contentNodeId, TabbedPropertySheetWidgetFactory widgetFactory) {
-		if (contentNodeId.equals(IXmlContentNodes.ENTITY_MAPPINGS_ID)) {
-			return new XmlEntityMappingsDetailsPage(parentComposite, widgetFactory);
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@SuppressWarnings("unchecked")
+	public IJpaDetailsPage<? extends IJpaContextNode> buildDetailsPage(
+		PropertyValueModel<? extends IJpaContextNode> subjectHolder,
+		Composite parentComposite,
+		Object contentNodeId,
+		TabbedPropertySheetWidgetFactory widgetFactory) {
+
+//		if (contentNodeId.equals(IXmlContentNodes.ENTITY_MAPPINGS_ID)) {
+		if (contentNodeId instanceof EntityMappings) {
+
+			return new XmlEntityMappingsDetailsPage(
+				(PropertyValueModel<EntityMappings>) subjectHolder,
+				parentComposite,
+				widgetFactory
+			);
 		}
-		else if (contentNodeId.equals(IXmlContentNodes.PERSISTENT_TYPE_ID)) {
-			return new XmlPersistentTypeDetailsPage(parentComposite, widgetFactory);
+
+//		if (contentNodeId.equals(IXmlContentNodes.PERSISTENT_TYPE_ID)) {
+		if (contentNodeId instanceof XmlPersistentType) {
+			return new XmlPersistentTypeDetailsPage(
+				(PropertyValueModel<XmlPersistentType>) subjectHolder,
+				parentComposite,
+				widgetFactory);
 		}
-		else if (contentNodeId.equals(IXmlContentNodes.PERSISTENT_ATTRIBUTE_ID)) {
-			return new XmlPersistentAttributeDetailsPage(parentComposite, widgetFactory);
+
+//		if (contentNodeId.equals(IXmlContentNodes.PERSISTENT_ATTRIBUTE_ID)) {
+		if (contentNodeId instanceof IJavaPersistentAttribute) {
+			return new XmlPersistentAttributeDetailsPage(
+				(PropertyValueModel<IPersistentAttribute>) subjectHolder,
+				parentComposite,
+				widgetFactory
+			);
 		}
-		
+
 		return null;
-	}
-	
-	public void dispose() {
-		// no op ... for now
 	}
 }

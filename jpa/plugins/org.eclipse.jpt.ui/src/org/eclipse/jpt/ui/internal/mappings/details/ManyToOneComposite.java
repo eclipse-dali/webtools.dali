@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.internal.context.base.IManyToOneMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -29,8 +30,11 @@ public class ManyToOneComposite extends BaseJpaComposite<IManyToOneMapping>
 	private EnumComboViewer optionalComboViewer;
 	private TargetEntityChooser targetEntityChooser;
 
-	public ManyToOneComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public ManyToOneComposite(PropertyValueModel<? extends IManyToOneMapping> subjectHolder,
+	                          Composite parent,
+	                          TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 	}
 
 	private Control buildGeneralComposite(Composite composite) {
@@ -67,14 +71,14 @@ public class ManyToOneComposite extends BaseJpaComposite<IManyToOneMapping>
 		gridData.grabExcessHorizontalSpace = true;
 		this.optionalComboViewer.getControl().setLayoutData(gridData);
 
-		this.cascadeComposite = new CascadeComposite(generalComposite, getWidgetFactory());
+		this.cascadeComposite = new CascadeComposite(getSubjectHolder(), generalComposite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalSpan = 3;
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		this.cascadeComposite.getControl().setLayoutData(gridData);
 
-		this.joinColumnComposite = new JoinColumnComposite(generalComposite, getWidgetFactory());
+		this.joinColumnComposite = new JoinColumnComposite(getSubjectHolder(), generalComposite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;

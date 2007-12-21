@@ -11,28 +11,44 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IEmbeddedIdMapping;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class EmbeddedIdComposite extends BaseJpaComposite<IEmbeddedIdMapping>
 {
-	public EmbeddedIdComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public EmbeddedIdComposite(PropertyValueModel<? extends IEmbeddedIdMapping> subjectHolder,
+	                           Composite parent,
+	                           TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void disengageListeners() {
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	public void doPopulate() {
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void engageListeners() {
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void initializeLayout(Composite composite) {
 	}

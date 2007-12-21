@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
 import org.eclipse.ui.navigator.ICommonContentProvider;
 import org.eclipse.ui.navigator.ICommonLabelProvider;
@@ -53,7 +54,7 @@ public interface IJpaPlatformUi
 //
 //	Iterator<IJpaDetailsProvider> detailsProviders();
 //
-	IJpaDetailsProvider detailsProvider(String fileContentType);
+	IJpaDetailsProvider detailsProvider(IJpaContextNode contextNode);
 //
 //	/**
 //	 * Return the type mapping UI providers for java.  This will populate

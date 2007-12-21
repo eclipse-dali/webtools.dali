@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -45,8 +46,11 @@ public class GeneratedValueComposite extends BaseJpaComposite<IIdMapping>
 	private CCombo generatorNameCombo;
 	private ComboViewer strategyComboViewer;
 
-	public GeneratedValueComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public GeneratedValueComposite(PropertyValueModel<? extends IIdMapping> subjectHolder,
+	                               Composite parent,
+	                               TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 		this.generatedValueListener = buildGeneratedValueListener();
 	}
 
@@ -78,7 +82,7 @@ public class GeneratedValueComposite extends BaseJpaComposite<IIdMapping>
 				if (generatedValue == null) {
 					createGeneratedValue();
 				}
-				generatedValue.setGenerator(generatorName);
+				generatedValue.setSpecifiedGenerator(generatorName);
 			}
 		});
 		return combo;
@@ -88,7 +92,7 @@ public class GeneratedValueComposite extends BaseJpaComposite<IIdMapping>
 		CCombo combo = getWidgetFactory().createCCombo(parent);
 		ComboViewer viewer = new ComboViewer(combo);
 		viewer.setLabelProvider(buildStrategyLabelProvider());
-		viewer.add(GenerationType.VALUES.toArray());
+		viewer.add(GenerationType.values());
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
 				if (event.getSelection() instanceof StructuredSelection) {
@@ -98,7 +102,7 @@ public class GeneratedValueComposite extends BaseJpaComposite<IIdMapping>
 						createGeneratedValue();
 					}
 					if (!generatedValue.getStrategy().equals(selectedType)) {
-						generatedValue.setStrategy(selectedType);
+						generatedValue.setSpecifiedStrategy(selectedType);
 					}
 				}
 			}
@@ -110,7 +114,8 @@ public class GeneratedValueComposite extends BaseJpaComposite<IIdMapping>
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				if (element == GenerationType.DEFAULT) {
+				// TODO
+				if (element == GenerationType.AUTO) {// GenerationType.DEFAULT) {
 					//TODO need to move this to the model, don't want hardcoded String
 					return NLS.bind(JptUiMappingsMessages.GeneratedValueComposite_default, "Auto");
 				}
@@ -121,8 +126,8 @@ public class GeneratedValueComposite extends BaseJpaComposite<IIdMapping>
 
 
 	private void createGeneratedValue() {
-		this.generatedValue = this.id.createGeneratedValue();
-		this.id.setGeneratedValue(this.generatedValue);
+		this.generatedValue = this.subject().createGeneratedValue();
+		this.subject().setGeneratedValue(this.generatedValue);
 	}
 
 	@Override
@@ -134,14 +139,14 @@ public class GeneratedValueComposite extends BaseJpaComposite<IIdMapping>
 
 	@Override
 	protected void doPopulate() {
-		if (this.id == null) {
+		if (this.subject() == null) {
 			this.generatedValue= null;
 		}
 		else {
 			this.generatedValue = this.subject().getGeneratedValue();
 		}
 		if (this.generatedValue == null) {
-			this.strategyComboViewer.getCombo().setText("");
+			this.strategyComboViewer.getCCombo().setText("");
 			this.generatorNameCombo.setText("");
 			return;
 		}
@@ -198,8 +203,8 @@ public class GeneratedValueComposite extends BaseJpaComposite<IIdMapping>
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
-		this.strategyComboViewer.getCombo().setLayoutData(gridData);
-		helpSystem.setHelp(this.strategyComboViewer.getCombo(), IJpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY);
+		this.strategyComboViewer.getCCombo().setLayoutData(gridData);
+		helpSystem.setHelp(this.strategyComboViewer.getCCombo(), IJpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY);
 
 		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.GeneratedValueComposite_generatorName);
 

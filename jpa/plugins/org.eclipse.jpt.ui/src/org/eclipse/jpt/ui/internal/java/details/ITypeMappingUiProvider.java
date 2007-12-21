@@ -11,10 +11,11 @@ package org.eclipse.jpt.ui.internal.java.details;
 
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.ui.internal.details.IJpaComposite;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public interface ITypeMappingUiProvider
+public interface ITypeMappingUiProvider<T extends ITypeMapping>
 {
 	/**
 	 * A unique string that corresponds to the key of a MappingProvider in the core
@@ -36,7 +37,9 @@ public interface ITypeMappingUiProvider
 	 * @param widgetFactory
 	 * @return
 	 */
-	IJpaComposite<ITypeMapping> buildPersistentTypeMappingComposite(
-			Composite parent, TabbedPropertySheetWidgetFactory widgetFactory);
+	IJpaComposite<T> buildPersistentTypeMappingComposite(
+			PropertyValueModel<T> subjectHolder,
+			Composite parent,
+			TabbedPropertySheetWidgetFactory widgetFactory);
 
 }

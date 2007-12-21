@@ -8,7 +8,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -21,12 +24,46 @@ public abstract class BaseJpaComposite<T> extends BaseJpaController<T>
 	 */
 	private Composite composite;
 
-	public BaseJpaComposite(Composite parent, int style, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, style, widgetFactory);
+	/**
+	 * Creates a new <code>BaseJpaComposite</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param parent The parent container
+	 */
+	protected BaseJpaComposite(BaseJpaController<? extends T> parentController,
+	                           Composite parent) {
+
+		super(parentController, parent);
 	}
 
-	public BaseJpaComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		this(parent, SWT.NULL, widgetFactory);
+	/**
+	 * Creates a new <code>BaseJpaComposite</code>.
+	 *
+	 * @param subjectHolder The holder of the subject <code>T</code>
+	 * @param parent The parent container
+	 * @param style
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
+	protected BaseJpaComposite(PropertyValueModel<? extends T> subjectHolder,
+	                           Composite parent,
+	                           int style,
+	                           TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, style, widgetFactory);
+	}
+
+	/**
+	 * Creates a new <code>BaseJpaComposite</code>.
+	 *
+	 * @param subjectHolder The holder of the subject <code>T</code>
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
+	protected BaseJpaComposite(PropertyValueModel<? extends T> subjectHolder,
+	                           Composite parent,
+	                           TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		this(subjectHolder, parent, SWT.NONE, widgetFactory);
 	}
 
 	/*
@@ -34,13 +71,24 @@ public abstract class BaseJpaComposite<T> extends BaseJpaController<T>
 	 */
 	@Override
 	protected void buildWidget(Composite parent, int style) {
-		super.buildWidget(parent);
 		this.composite = createComposite(parent, style);
 		initializeLayout(this.composite);
 	}
 
 	protected Composite createComposite(Composite parent, int style) {
-		return this.widgetFactory.createComposite(parent, style);
+		Composite container = this.widgetFactory.createComposite(parent, style);
+
+		GridLayout layout = new GridLayout(1, false);
+		layout.marginWidth  = 0;
+		layout.marginHeight = 0;
+		container.setLayout(layout);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment       = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		container.setLayoutData(gridData);
+
+		return container;
 	}
 
 	/*
@@ -51,5 +99,10 @@ public abstract class BaseJpaComposite<T> extends BaseJpaController<T>
 		return this.composite;
 	}
 
+	/**
+	 * Initializes the layout of this pane.
+	 *
+	 * @param composite The parent container
+	 */
 	protected abstract void initializeLayout(Composite composite);
 }

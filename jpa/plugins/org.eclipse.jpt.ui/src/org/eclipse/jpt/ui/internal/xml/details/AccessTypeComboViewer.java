@@ -22,22 +22,25 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public final class AccessTypeComboViewer extends BaseJpaController<AccessTypeComboViewer.AccessHolder> {
+public final class AccessTypeComboViewer<T> extends BaseJpaController<AccessTypeComboViewer.AccessHolder<? extends T>> {
 
 	private Adapter accessHolderListener;
 	private ComboViewer comboViewer;
 
-	public AccessTypeComboViewer(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public AccessTypeComboViewer(PropertyValueModel<? extends AccessTypeComboViewer.AccessHolder<? extends T>> subjectHolder,
+	                             Composite parent,
+	                             TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 		buildAccessHolderListener();
 	}
-
 
 	private void buildAccessHolderListener() {
 		this.accessHolderListener = new AdapterImpl() {
@@ -49,7 +52,7 @@ public final class AccessTypeComboViewer extends BaseJpaController<AccessTypeCom
 	}
 
 	@Override
-	protected void buildWidget(Composite parent) {
+	protected void buildWidget(Composite parent, int style) {
 		CCombo combo = getWidgetFactory().createCCombo(parent);
 		this.comboViewer = new ComboViewer(combo);
 		this.comboViewer.setLabelProvider(buildAccessTypeLabelProvider());
@@ -77,15 +80,15 @@ public final class AccessTypeComboViewer extends BaseJpaController<AccessTypeCom
 	void accessTypeSelectionChanged(ISelection selection) {
 		if (selection instanceof IStructuredSelection) {
 			AccessType access = (AccessType) ((IStructuredSelection) selection).getFirstElement();
-			if ( ! this.accessHolder.getAccess().equals(access)) {
-				this.accessHolder.setAccess(access);
+			if ( ! this.subject().getAccess().equals(access)) {
+				this.subject().setAccess(access);
 			}
 		}
 	}
 
 	private void accessHolderChanged(Notification notification) {
-		if (notification.getFeatureID(this.accessHolder.featureClass()) ==
-				this.accessHolder.featureId()) {
+		if (notification.getFeatureID(this.subject().featureClass()) ==
+				this.subject().featureId()) {
 			Display.getDefault().asyncExec(
 				new Runnable() {
 					public void run() {
@@ -97,15 +100,15 @@ public final class AccessTypeComboViewer extends BaseJpaController<AccessTypeCom
 
 	@Override
 	protected void engageListeners() {
-		if (this.accessHolder != null && this.accessHolder.wrappedObject() != null) {
-			this.accessHolder.wrappedObject().eAdapters().add(this.accessHolderListener);
+		if (this.subject() != null && this.subject().wrappedObject() != null) {
+			this.subject().wrappedObject().eAdapters().add(this.accessHolderListener);
 		}
 	}
 
 	@Override
 	protected void disengageListeners() {
-		if (this.accessHolder != null && this.accessHolder.wrappedObject() != null) {
-			this.accessHolder.wrappedObject().eAdapters().remove(this.accessHolderListener);
+		if (this.subject() != null && this.subject().wrappedObject() != null) {
+			this.subject().wrappedObject().eAdapters().remove(this.accessHolderListener);
 		}
 	}
 
@@ -115,11 +118,11 @@ public final class AccessTypeComboViewer extends BaseJpaController<AccessTypeCom
 	}
 
 	private void populateCombo() {
-		if (this.accessHolder.wrappedObject() == null) {
+		if (this.subject().wrappedObject() == null) {
 			return;
 		}
 
-		AccessType access = this.accessHolder.getAccess();
+		AccessType access = this.subject().getAccess();
 
 		if (((IStructuredSelection) this.comboViewer.getSelection()).getFirstElement() != access) {
 			this.comboViewer.setSelection(new StructuredSelection(access));

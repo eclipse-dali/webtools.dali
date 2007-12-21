@@ -10,6 +10,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IEmbeddable;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -20,8 +21,11 @@ public class EmbeddableComposite extends BaseJpaComposite<IEmbeddable>
 //	private IEmbeddable embeddable;
 //	private Adapter mappedSuperclassListener;
 
-	public EmbeddableComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public EmbeddableComposite(PropertyValueModel<? extends IEmbeddable> subjectHolder,
+	                           Composite parent,
+	                           TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 		//this.mappedSuperclassListener = buildMappedSuperclassListener();
 	}
 

@@ -16,6 +16,7 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -33,12 +34,13 @@ public class EntityNameCombo extends BaseJpaController<IEntity>
 	private Adapter entityListener;
 	private CCombo combo;
 
+	public EntityNameCombo(PropertyValueModel<? extends IEntity> subjectHolder,
+	                       Composite parent,
+	                       TabbedPropertySheetWidgetFactory widgetFactory) {
 
-	public EntityNameCombo(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+		super(subjectHolder, parent, widgetFactory);
 		buildEntityListener();
 	}
-
 
 	private void buildEntityListener() {
 		entityListener = new AdapterImpl() {
@@ -50,7 +52,7 @@ public class EntityNameCombo extends BaseJpaController<IEntity>
 	}
 
 	@Override
-	protected void buildWidget(Composite parent) {
+	protected void buildWidget(Composite parent, int style) {
 		combo = this.widgetFactory.createCCombo(parent, SWT.FLAT);
 		combo.addModifyListener(
 			new ModifyListener() {

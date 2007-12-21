@@ -14,6 +14,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -40,8 +41,11 @@ public class CascadeComposite extends BaseJpaComposite<IRelationshipMapping>
 	private Button removeCheckBox;
 	private Button refreshCheckBox;
 
-	public CascadeComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public CascadeComposite(PropertyValueModel<? extends IRelationshipMapping> subjectHolder,
+		                     Composite parent,
+		                     TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 		this.relationshipMappingListener = buildRelationshipMappingListener();
 		this.cascadeListener = buildCascadeListener();
 	}

@@ -34,6 +34,7 @@ import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.Owner;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -58,8 +59,11 @@ public class OverridesComposite extends BaseJpaComposite<IEntity>
 	private JoinColumnsComposite joinColumnsComposite;
 	private Button overrideDefaultButton;
 
-	public OverridesComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
+	public OverridesComposite(PropertyValueModel<? extends IEntity> subjectHolder,
+	                          Composite parent,
+	                          TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 		this.entityListener = buildEntityListener();
 		this.overrideListener = buildOverrideListener();
 	}
@@ -129,8 +133,8 @@ public class OverridesComposite extends BaseJpaComposite<IEntity>
 		gridData.horizontalAlignment = SWT.FILL;
 		this.overridePageBook.setLayoutData(gridData);
 
-		this.joinColumnsComposite = new JoinColumnsComposite(this.overridePageBook, getWidgetFactory(), JptUiMappingsMessages.OverridesComposite_joinColumn);
-		this.columnComposite = new ColumnComposite(this.overridePageBook, getWidgetFactory());
+		this.joinColumnsComposite = new JoinColumnsComposite(getSubjectHolder(), this.overridePageBook, getWidgetFactory(), JptUiMappingsMessages.OverridesComposite_joinColumn);
+		this.columnComposite = new ColumnComposite(getSubjectHolder(), this.overridePageBook, getWidgetFactory());
 		this.overridePageBook.showPage(this.joinColumnsComposite.getControl());
 	}
 

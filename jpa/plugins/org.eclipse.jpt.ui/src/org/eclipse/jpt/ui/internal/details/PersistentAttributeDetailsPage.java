@@ -31,7 +31,11 @@ import org.eclipse.jpt.ui.internal.IJpaUiFactory;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
+import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
@@ -42,27 +46,30 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<IPersistentAttribute>
 {
-	private IAttributeMapping attributeMapping;
 	private Adapter persistentAttributeListener;
 	private String currentMappingKey;
 	private ComboViewer mappingCombo;
-	private Map<String, IJpaComposite<IAttributeMapping>> mappingComposites;
+	private Map<String, IJpaComposite<? extends IAttributeMapping>> mappingComposites;
 	protected PageBook mappingPageBook;
-	private IJpaComposite<IAttributeMapping> currentMappingComposite;
+	private IJpaComposite<? extends IAttributeMapping> currentMappingComposite;
 
-	public PersistentAttributeDetailsPage(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NONE, widgetFactory);
+	public PersistentAttributeDetailsPage(PropertyValueModel<? extends IPersistentAttribute> subjectHolder,
+                                         Composite parent,
+                                         TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NONE, widgetFactory);
 		this.persistentAttributeListener = buildAttributeListener();
-		this.mappingComposites = new HashMap<String, IJpaComposite<IAttributeMapping>>();
+		this.mappingComposites = new HashMap<String, IJpaComposite<? extends IAttributeMapping>>();
 	}
 
 	protected IJpaPlatformUi jpaPlatformUi() {
-		String platformId = getAttribute().jpaPlatform().getId();
+		String platformId = subject().jpaProject().jpaPlatform().getId();
 		return JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
 	}
 
 	protected IJpaUiFactory jpaUiFactory() {
-		return jpaPlatformUi().getJpaUiFactory();
+		// TODO: Remove the type cast, used for testing
+		return ((BaseJpaPlatformUi) jpaPlatformUi()).getJpaUiFactory();
 	}
 
 	protected abstract ListIterator<IAttributeMappingUiProvider> attributeMappingUiProviders();
@@ -155,12 +162,23 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 		return this.mappingPageBook;
 	}
 
-	protected IJpaComposite<IAttributeMapping> buildMappingComposite(PageBook pageBook, String key) {
-		if (this.attributeMapping == null || this.attributeMapping.isDefault()) {
-			return defaultAttributeMappingUiProvider(key).buildAttributeMappingComposite(jpaUiFactory(), pageBook, this.commandStack, getWidgetFactory());
+	private PropertyValueModel<IAttributeMapping> buildMappingHolder() {
+		// TODO: Have TransformationPropertyValueModel and
+		// TransformationWritablePropertyValueModel
+		return new TransformationPropertyValueModel<IPersistentAttribute, IAttributeMapping>((WritablePropertyValueModel<IPersistentAttribute>) getSubjectHolder()) {
+			@Override
+			protected IAttributeMapping transform(IPersistentAttribute value) {
+				return (value == null) ? null : value.getMapping();
+			}
+		};
+	}
+
+	protected IJpaComposite<? extends IAttributeMapping> buildMappingComposite(PageBook pageBook, String key) {
+		if (this.subject().getMapping() == null || this.subject().getMapping().isDefault()) {
+			return defaultAttributeMappingUiProvider(key).buildAttributeMappingComposite(jpaUiFactory(), buildMappingHolder(), pageBook, getWidgetFactory());
 		}
 
-		return attributeMappingUiProvider(key).buildAttributeMappingComposite(jpaUiFactory(), pageBook, this.commandStack, getWidgetFactory());
+		return attributeMappingUiProvider(key).buildAttributeMappingComposite(jpaUiFactory(), buildMappingHolder(), pageBook, getWidgetFactory());
 	}
 
 	void mappingChanged(SelectionChangedEvent event) {
@@ -182,65 +200,66 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 	@Override
 	protected void engageListeners() {
 		if (this.subject() != null) {
-			this.subject().eAdapters().add(this.persistentAttributeListener);
+			//TODO this.subject().eAdapters().add(this.persistentAttributeListener);
 		}
 	}
 
 	@Override
 	protected void disengageListeners() {
 		if (this.subject() != null) {
-			this.subject().eAdapters().remove(this.persistentAttributeListener);
+			//TODO this.subject().eAdapters().remove(this.persistentAttributeListener);
 		}
 	}
 
 	private void populateMappingComboAndPage() {
-		if (this.subject() == null) {
-			this.attributeMapping = null;
-			this.currentMappingKey = null;
-			this.mappingCombo.setInput(null);
-			this.mappingCombo.setSelection(StructuredSelection.EMPTY);
+//		this.currentMappingKey = null;
+//		this.mappingCombo.setInput(null);
+//		this.mappingCombo.setSelection(StructuredSelection.EMPTY);
 
-			if (this.currentMappingComposite != null) {
-				this.currentMappingComposite.populate(null);
-				this.currentMappingComposite = null;
-			}
+//		if (this.currentMappingComposite != null) {
+//			this.currentMappingComposite.populate();
+//			this.currentMappingComposite = null;
+//		}
 
-			return;
-		}
-		this.attributeMapping = this.subject().getMapping();
 		setComboData();
 
-		populateMappingPage(this.attributeMapping == null ? null : this.attributeMapping.getKey());
+		IAttributeMapping mapping = this.subject().getMapping();
+		populateMappingPage(mapping == null ? null : mapping.getKey());
 	}
 
 	private void populateMappingPage(String mappingKey) {
+		if (this.currentMappingComposite != null &&
+		    this.currentMappingKey == mappingKey) {
+
+			this.currentMappingComposite.populate();
+			return;
+		}
+
+		// TODO: Remove the type casting
 		if (this.currentMappingComposite != null) {
-			if (mappingKey == this.currentMappingKey) {
-				if (this.currentMappingComposite != null) {
-					this.currentMappingComposite.populate(this.attributeMapping);
-					return;
-				}
-			}
-			else {
-				this.currentMappingComposite.populate(null);
-				// don't return
-			}
+			this.removePaneForAlignment((BaseJpaController<?>) this.currentMappingComposite);
 		}
 
 		this.currentMappingKey = mappingKey;
+		this.currentMappingComposite = mappingCompositeFor(mappingKey);
+		this.mappingPageBook.showPage(this.currentMappingComposite.getControl());
 
-		IJpaComposite<IAttributeMapping> composite = mappingCompositeFor(mappingKey);
-		this.mappingPageBook.showPage(composite.getControl());
+		// TODO: Remove the type casting
+		this.addPaneForAlignment((BaseJpaController<?>) this.currentMappingComposite);
 
-		this.currentMappingComposite = composite;
-		this.currentMappingComposite.populate(this.attributeMapping);
+		try {
+			this.currentMappingComposite.populate();
+		}
+		finally {
+			// Log or show error
+		}
 	}
 
 	private void setComboData() {
 		if (this.subject() != this.mappingCombo.getInput()) {
 			this.mappingCombo.setInput(this.subject());
 		}
-		if (this.attributeMapping == null || this.attributeMapping.isDefault()) {
+		if (this.subject().getMapping() == null || this.subject().getMapping().isDefault()) {
 			this.mappingCombo.setSelection(new StructuredSelection(this.mappingCombo.getElementAt(0)));
 		}
 		else {
@@ -251,8 +270,8 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 		}
 	}
 
-	private IJpaComposite<IAttributeMapping> mappingCompositeFor(String key) {
-		IJpaComposite<IAttributeMapping> composite = this.mappingComposites.get(key);
+	private IJpaComposite<? extends IAttributeMapping> mappingCompositeFor(String key) {
+		IJpaComposite<? extends IAttributeMapping> composite = this.mappingComposites.get(key);
 		if (composite != null) {
 			return composite;
 		}
@@ -274,7 +293,7 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 
 	@Override
 	public void dispose() {
-		for (IJpaComposite<IAttributeMapping> composite : this.mappingComposites.values()) {
+		for (IJpaComposite<? extends IAttributeMapping> composite : this.mappingComposites.values()) {
 			composite.dispose();
 		}
 		super.dispose();

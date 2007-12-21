@@ -22,7 +22,7 @@ public interface IJpaComposite<T> {
 	 *
 	 * @param model The model used to retrieve the information to be displayed
 	 */
-	void populate(T model);
+	void populate();
 
 	/**
 	 * Returns the actual <code>Control</code>.

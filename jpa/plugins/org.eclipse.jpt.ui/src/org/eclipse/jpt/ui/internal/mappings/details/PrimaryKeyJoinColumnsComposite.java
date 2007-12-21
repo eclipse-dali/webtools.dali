@@ -32,6 +32,7 @@ import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -55,9 +56,12 @@ public class PrimaryKeyJoinColumnsComposite extends BaseJpaComposite<IEntity>
 	ListViewer pkJoinColumnsListViewer;
 	private Button pkJoinColumnsRemoveButton;
 
-	public PrimaryKeyJoinColumnsComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
-		this.subject()Listener = buildEntityListener();
+	public PrimaryKeyJoinColumnsComposite(PropertyValueModel<? extends IEntity> subjectHolder,
+	                                      Composite parent,
+	                                      TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
+		this.entityListener = buildEntityListener();
 		this.pkJoinColumnListener = buildPkJoinColumnListener();
 	}
 

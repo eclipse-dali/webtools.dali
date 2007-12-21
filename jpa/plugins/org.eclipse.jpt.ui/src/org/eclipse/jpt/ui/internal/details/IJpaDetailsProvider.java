@@ -9,6 +9,7 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
@@ -20,11 +21,8 @@ public interface IJpaDetailsProvider
 	 * It is legal to set the layout for the given Composite.
 	 */
 	IJpaDetailsPage<? extends IJpaContextNode> buildDetailsPage(
+		PropertyValueModel<? extends IJpaContextNode> subjectHolder,
 		Composite parentComposite,
 		Object contentNodeId,
 		TabbedPropertySheetWidgetFactory widgetFactory);
-
-	void dispose();
-
-	String fileContentType();
 }

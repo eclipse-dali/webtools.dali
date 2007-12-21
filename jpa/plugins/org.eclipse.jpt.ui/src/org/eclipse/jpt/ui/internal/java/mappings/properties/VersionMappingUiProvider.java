@@ -3,31 +3,33 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.mappings.properties;
 
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 import org.eclipse.jpt.ui.internal.IJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.IJpaComposite;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class VersionMappingUiProvider
-	implements IAttributeMappingUiProvider
+	implements IAttributeMappingUiProvider<IVersionMapping>
 {
-	
+
 	// singleton
 	private static final VersionMappingUiProvider INSTANCE = new VersionMappingUiProvider();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static IAttributeMappingUiProvider instance() {
+	public static IAttributeMappingUiProvider<IVersionMapping> instance() {
 		return INSTANCE;
 	}
 
@@ -41,12 +43,17 @@ public class VersionMappingUiProvider
 	public String attributeMappingKey() {
 		return IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
 	}
-	
+
 	public String label() {
 		return JptUiMappingsMessages.PersistentAttributePage_VersionLabel;
 	}
-	
-	public IJpaComposite buildAttributeMappingComposite(IJpaUiFactory factory, Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return factory.createVersionMappingComposite(parent, widgetFactory);
+
+	public IJpaComposite<IVersionMapping> buildAttributeMappingComposite(
+			IJpaUiFactory factory,
+			PropertyValueModel<IVersionMapping> subjectHolder,
+			Composite parent,
+			TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		return factory.createVersionMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

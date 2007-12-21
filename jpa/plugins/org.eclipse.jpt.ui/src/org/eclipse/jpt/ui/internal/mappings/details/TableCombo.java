@@ -21,6 +21,7 @@ import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -46,8 +47,11 @@ public class TableCombo extends BaseJpaController<ITable>
 
 	private CCombo combo;
 
-	public TableCombo(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public TableCombo(PropertyValueModel<? extends ITable> subjectHolder,
+	                  Composite parent,
+	                  TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 		this.listener = buildTableListener();
 		this.connectionListener = buildConnectionListener();
 	}
@@ -136,7 +140,7 @@ public class TableCombo extends BaseJpaController<ITable>
 	}
 
 	@Override
-	protected void buildWidget(Composite parent) {
+	protected void buildWidget(Composite parent, int style) {
 		this.combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
 		this.combo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
 		this.combo.addModifyListener(new ModifyListener() {
@@ -227,7 +231,7 @@ public class TableCombo extends BaseJpaController<ITable>
 
 	private ConnectionProfile getConnectionProfile() {
 		if (this.connectionProfile == null) {
-			this.connectionProfile = this.subject().getJpaProject().connectionProfile();
+			this.connectionProfile = this.subject().jpaProject().connectionProfile();
 		}
 		return this.connectionProfile;
 	}

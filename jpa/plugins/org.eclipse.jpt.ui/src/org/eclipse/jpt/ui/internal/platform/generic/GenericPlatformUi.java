@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -25,20 +25,19 @@ public class GenericPlatformUi extends BaseJpaPlatformUi
 	public GenericPlatformUi() {
 		super();
 	}
-	
+
 	@Override
 	protected IJpaUiFactory createJpaUiFactory() {
 		return new GenericJpaUiFactory();
 	}
-	
+
 	public void generateDDL(IJpaProject project, IStructuredSelection selection) {
 		this.displayNotSupportedMessage(JptUiMessages.GenericPlatformUiDialog_notSupportedMessageTitle, JptUiMessages.GenericPlatformUiDialog_notSupportedMessageText);
 	}
 
 	protected void displayNotSupportedMessage(String title, String message) {
-	    String formattedMessage = MessageFormat.format( message, (Object [])(new String [] { message}));
+	    String formattedMessage = MessageFormat.format(message, message);
 	    Shell currentShell = Display.getCurrent().getActiveShell();
-	    MessageDialog.openInformation(currentShell, title, formattedMessage);	  
+	    MessageDialog.openInformation(currentShell, title, formattedMessage);
 	}
-	
 }

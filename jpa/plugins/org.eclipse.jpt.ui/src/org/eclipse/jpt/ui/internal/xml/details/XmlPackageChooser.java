@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -53,8 +54,11 @@ public class XmlPackageChooser extends BaseJpaController
 	private Composite composite;
 	private Text text;
 
-	public XmlPackageChooser(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public XmlPackageChooser(PropertyValueModel<?> subjectHolder,
+	                         Composite parent,
+	                         TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 		buildSchemaHolderListener();
 	}
 
@@ -69,7 +73,7 @@ public class XmlPackageChooser extends BaseJpaController
 	}
 
 	@Override
-	protected void buildWidget(Composite parent) {
+	protected void buildWidget(Composite parent, int style) {
 		this.composite = getWidgetFactory().createComposite(parent);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.marginHeight = 0;

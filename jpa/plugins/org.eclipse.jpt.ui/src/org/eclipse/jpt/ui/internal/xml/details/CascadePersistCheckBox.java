@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -29,8 +30,11 @@ public class CascadePersistCheckBox extends BaseJpaController<PersistenceUnitDef
 	private Adapter persistenceUnitDefaultsListener;
 	private Button button;
 
-	public CascadePersistCheckBox(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public CascadePersistCheckBox(PropertyValueModel<? extends PersistenceUnitDefaults> subjectHolder,
+	                              Composite parent,
+	                              TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 		buildPeristenceUnitDefaultsListener();
 	}
 
@@ -44,7 +48,7 @@ public class CascadePersistCheckBox extends BaseJpaController<PersistenceUnitDef
 	}
 
 	@Override
-	protected void buildWidget(Composite parent) {
+	protected void buildWidget(Composite parent, int style) {
 		this.button = getWidgetFactory().createButton(
 						parent,
 						JptUiXmlMessages.XMLEntityMappingsPage_CascadePersistCheckBox,

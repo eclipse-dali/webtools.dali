@@ -13,8 +13,10 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jpt.core.internal.context.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
+import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
@@ -23,7 +25,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class XmlJavaAttributeChooser extends BaseJpaController<XmlAttributeMapping>
+public class XmlJavaAttributeChooser extends BaseJpaController<XmlAttributeMapping<? extends AttributeMapping>>
 {
 	private XmlPersistentAttribute attribute;
 	private Adapter persistentAttributeListener;
@@ -31,8 +33,11 @@ public class XmlJavaAttributeChooser extends BaseJpaController<XmlAttributeMappi
 	private Text text;
 
 
-	public XmlJavaAttributeChooser(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public XmlJavaAttributeChooser(PropertyValueModel<? extends XmlAttributeMapping<? extends AttributeMapping>> subjectHolder,
+	                               Composite parent,
+	                               TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 		buildPersistentAttributeListener();
 	}
 
@@ -47,7 +52,7 @@ public class XmlJavaAttributeChooser extends BaseJpaController<XmlAttributeMappi
 	}
 
 	@Override
-	protected void buildWidget(Composite parent) {
+	protected void buildWidget(Composite parent, int style) {
 		text = getWidgetFactory().createText(parent, "");
 		text.addModifyListener(
 			new ModifyListener() {

@@ -9,8 +9,9 @@
 package org.eclipse.jpt.ui.internal.xml.details;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jpt.core.internal.context.base.AccessType;
+import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
-import org.eclipse.jpt.core.internal.resource.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaDetailsPage;
@@ -18,6 +19,7 @@ import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser.StringHolder;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.ui.internal.xml.details.AccessTypeComboViewer.AccessHolder;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -35,8 +37,11 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 	private XmlPackageChooser xmlPackageChooser;
 	private StringWithDefaultChooser xmlSchemaChooser;
 
-	public XmlEntityMappingsDetailsPage(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public XmlEntityMappingsDetailsPage(PropertyValueModel<EntityMappings> subjectHolder,
+	                                    Composite parent,
+	                                    TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 	}
 
 	@Override
@@ -55,7 +60,7 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 
 	@Override
 	protected void doPopulate() {
-		this.xmlPackageChooser.populate(this.subject());
+		this.xmlPackageChooser.populate();
 		this.xmlSchemaChooser.populate(new SchemaHolder(this.subject()));
 		this.xmlCatalogChooser.populate(new CatalogHolder(this.subject()));
 		this.accessComboViewer.populate(new MyAccessHolder(this.subject()));
@@ -82,7 +87,7 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 
 		CommonWidgets.buildPackageLabel(composite, getWidgetFactory());
 
-		this.xmlPackageChooser = CommonWidgets.buildXmlPackageChooser(composite, getWidgetFactory());
+		this.xmlPackageChooser = CommonWidgets.buildXmlPackageChooser(getSubjectHolder(), composite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
@@ -93,7 +98,7 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 
 		CommonWidgets.buildSchemaLabel(composite, getWidgetFactory());
 
-		this.xmlSchemaChooser = CommonWidgets.buildSchemaChooser(composite, getWidgetFactory());
+		this.xmlSchemaChooser = CommonWidgets.buildSchemaChooser(getSubjectHolder(), composite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
@@ -104,7 +109,7 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 
 		CommonWidgets.buildCatalogLabel(composite, getWidgetFactory());
 
-		this.xmlCatalogChooser = CommonWidgets.buildCatalogChooser(composite, getWidgetFactory());
+		this.xmlCatalogChooser = CommonWidgets.buildCatalogChooser(getSubjectHolder(), composite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
@@ -115,7 +120,7 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 
 		CommonWidgets.buildAccessLabel(composite, getWidgetFactory());
 
-		this.accessComboViewer = CommonWidgets.buildAccessTypeComboViewer(composite, getWidgetFactory());
+		this.accessComboViewer = CommonWidgets.buildAccessTypeComboViewer(getSubjectHolder(), composite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;

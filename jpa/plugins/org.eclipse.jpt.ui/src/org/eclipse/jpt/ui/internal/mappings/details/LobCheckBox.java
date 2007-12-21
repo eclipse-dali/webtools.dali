@@ -14,13 +14,13 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class LobCheckBox extends BaseJpaController<IBasicMapping>
@@ -28,21 +28,25 @@ public class LobCheckBox extends BaseJpaController<IBasicMapping>
 	private Adapter basicMappingListener;
 	private Button button;
 
-	public LobCheckBox(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
+	public LobCheckBox(PropertyValueModel<? extends IBasicMapping> subjectHolder,
+	                   Composite parent,
+	                   TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 		buildBasicMappingListener();
 	}
 
 	private void bsaicMappingChanged(Notification notification) {
-		if (notification.getFeatureID(IBasicMapping.class) ==
-				JpaCoreMappingsPackage.IBASIC__LOB) {
-			Display.getDefault().asyncExec(
-				new Runnable() {
-					public void run() {
-						populate();
-					}
-				});
-		}
+		//TODO commented this out so we didn't hit the compiler error while closing eclipse
+//		if (notification.getFeatureID(IBasicMapping.class) ==
+//				JpaCoreMappingsPackage.IBASIC__LOB) {
+//			Display.getDefault().asyncExec(
+//				new Runnable() {
+//					public void run() {
+//						populate();
+//					}
+//				});
+//		}
 	}
 
 	private void buildBasicMappingListener() {
@@ -55,7 +59,7 @@ public class LobCheckBox extends BaseJpaController<IBasicMapping>
 	}
 
 	@Override
-	protected void buildWidget(Composite parent) {
+	protected void buildWidget(Composite parent, int style) {
 		this.button = getWidgetFactory().createButton(
 						parent,
 						JptUiMappingsMessages.BasicGeneralSection_lobLabel,
@@ -75,7 +79,8 @@ public class LobCheckBox extends BaseJpaController<IBasicMapping>
 	@Override
 	protected void disengageListeners() {
 		if (this.subject() != null) {
-			this.subject().eAdapters().remove(this.basicMappingListener);
+			//TODO commented this out so we didn't hit the compiler error while closing eclipse
+			//this.subject().eAdapters().remove(this.basicMappingListener);
 		}
 	}
 
@@ -87,7 +92,8 @@ public class LobCheckBox extends BaseJpaController<IBasicMapping>
 	@Override
 	protected void engageListeners() {
 		if (this.subject() != null) {
-			this.subject().eAdapters().add(this.basicMappingListener);
+			//TODO commented this out so we didn't hit the compiler error while closing eclipse
+			//this.subject().eAdapters().add(this.basicMappingListener);
 		}
 	}
 

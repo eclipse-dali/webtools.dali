@@ -13,7 +13,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IGeneratedValue;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
@@ -23,6 +23,9 @@ import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.EnumComboViewer.EnumHolder;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -53,9 +56,12 @@ public class IdComposite extends BaseJpaComposite<IIdMapping>
 	private Button sequenceGeneratorCheckBox;
 	private SequenceGeneratorComposite sequenceGeneratorComposite;
 
-	public IdComposite(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, widgetFactory);
-		this.subject()Listener = buildIdListener();
+	public IdComposite(PropertyValueModel<? extends IIdMapping> subjectHolder,
+	                   Composite parent,
+	                   TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, SWT.NULL, widgetFactory);
+		this.idListener = buildIdListener();
 	}
 
 	private Adapter buildIdListener() {
@@ -127,7 +133,7 @@ public class IdComposite extends BaseJpaComposite<IIdMapping>
 		layout.marginWidth = 0;
 		generalComposite.setLayout(layout);
 
-		this.columnComposite = new ColumnComposite(generalComposite, getWidgetFactory());
+		this.columnComposite = new ColumnComposite(buildColumnHolder(), generalComposite, getWidgetFactory());
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -135,7 +141,7 @@ public class IdComposite extends BaseJpaComposite<IIdMapping>
 		this.columnComposite.getControl().setLayoutData(gridData);
 
 		CommonWidgets.buildTemporalLabel(generalComposite, getWidgetFactory());
-		this.temporalTypeViewer = CommonWidgets.buildEnumComboViewer(generalComposite, getWidgetFactory());
+		this.temporalTypeViewer = CommonWidgets.buildEnumComboViewer(buildTemporalTypeHolder(), generalComposite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
@@ -144,6 +150,28 @@ public class IdComposite extends BaseJpaComposite<IIdMapping>
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(temporalTypeViewer.getControl(), IJpaHelpContextIds.MAPPING_TEMPORAL);
 
 		return generalComposite;
+	}
+
+	private PropertyValueModel<EnumHolder<IIdMapping, TemporalType>> buildTemporalTypeHolder() {
+		// TODO: Have TransformationPropertyValueModel and
+		// TransformationWritablePropertyValueModel
+		return new TransformationPropertyValueModel<IIdMapping, EnumHolder<IIdMapping, TemporalType>>((WritablePropertyValueModel<IIdMapping>) getSubjectHolder()) {
+			@Override
+			protected EnumHolder<IIdMapping, TemporalType> transform(IIdMapping value) {
+				return (value == null) ? null : new TemporalTypeHolder(value);
+			}
+		};
+	}
+
+	private PropertyValueModel<? extends IColumn> buildColumnHolder() {
+		// TODO: Have TransformationPropertyValueModel and
+		// TransformationWritablePropertyValueModel
+		return new TransformationPropertyValueModel<IIdMapping, IColumn>((WritablePropertyValueModel<IIdMapping>) getSubjectHolder())  {
+			@Override
+			protected IColumn transform(IIdMapping value) {
+				return (value == null) ? null : value.getColumn();
+			}
+		};
 	}
 
 	private Control buildGenerationComposite(Composite composite) {
@@ -164,7 +192,7 @@ public class IdComposite extends BaseJpaComposite<IIdMapping>
 		this.primaryKeyGenerationCheckBox.setLayoutData(gridData);
 		helpSystem.setHelp(primaryKeyGenerationCheckBox, IJpaHelpContextIds.MAPPING_PRIMARY_KEY_GENERATION);
 
-		this.generatedValueComposite = new GeneratedValueComposite(generationClient, getWidgetFactory());
+		this.generatedValueComposite = new GeneratedValueComposite(getSubjectHolder(), generationClient, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -191,7 +219,7 @@ public class IdComposite extends BaseJpaComposite<IIdMapping>
 		this.tableGeneratorCheckBox.setLayoutData(gridData);
 		helpSystem.setHelp(tableGeneratorCheckBox, IJpaHelpContextIds.MAPPING_TABLE_GENERATOR);
 
-		this.tableGeneratorComposite = new TableGeneratorComposite(tableGenClient, getWidgetFactory());
+		this.tableGeneratorComposite = new TableGeneratorComposite(getSubjectHolder(), tableGenClient, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -219,7 +247,7 @@ public class IdComposite extends BaseJpaComposite<IIdMapping>
 		this.sequenceGeneratorCheckBox.setLayoutData(gridData);
 		helpSystem.setHelp(sequenceGeneratorCheckBox, IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR);
 
-		this.sequenceGeneratorComposite = new SequenceGeneratorComposite(sequenceGenClient, getWidgetFactory());
+		this.sequenceGeneratorComposite = new SequenceGeneratorComposite(getSubjectHolder(), sequenceGenClient, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -325,19 +353,13 @@ public class IdComposite extends BaseJpaComposite<IIdMapping>
 
 
 	public void doPopulate(EObject obj) {
-		this.subject() = (IIdMapping) obj;
-		if (this.subject() != null) {
-			this.columnComposite.populate(this.subject().getColumn());
-		}
-		else {
-			this.columnComposite.populate(null);
-			this.generatedValueComposite.populate(null);
-			this.tableGeneratorComposite.populate(null);
-			this.sequenceGeneratorComposite.populate(null);
-			return;
-		}
-	    this.pkGenerationSection.setExpanded(true);
-		this.temporalTypeViewer.populate(new TemporalTypeHolder(this.subject()));
+		this.columnComposite.populate();
+		this.generatedValueComposite.populate();
+		this.tableGeneratorComposite.populate();
+		this.sequenceGeneratorComposite.populate();
+
+		this.pkGenerationSection.setExpanded(true);
+		this.temporalTypeViewer.populate();
 		populateGeneratedValueComposite();
 		populateSequenceGeneratorComposite();
 		populateTableGeneratorComposite();
@@ -353,7 +375,7 @@ public class IdComposite extends BaseJpaComposite<IIdMapping>
 	}
 
 	private void populateTableGeneratorComposite() {
-		this.tableGeneratorComposite.populate(this.subject());
+		this.tableGeneratorComposite.populate();
 		boolean tableGeneratorExists = this.subject().getTableGenerator() != null;
 		this.tableGeneratorCheckBox.setSelection(tableGeneratorExists);
 		if (tableGeneratorExists) {
@@ -362,7 +384,7 @@ public class IdComposite extends BaseJpaComposite<IIdMapping>
 	}
 
 	private void populateSequenceGeneratorComposite() {
-		this.sequenceGeneratorComposite.populate(this.subject());
+		this.sequenceGeneratorComposite.populate();
 		boolean sequenceGeneratorExists = this.subject().getSequenceGenerator() != null;
 		this.sequenceGeneratorCheckBox.setSelection(sequenceGeneratorExists);
 		if (sequenceGeneratorExists) {
@@ -371,7 +393,7 @@ public class IdComposite extends BaseJpaComposite<IIdMapping>
 	}
 
 	private void populateGeneratedValueComposite() {
-		this.generatedValueComposite.populate(this.subject());
+		this.generatedValueComposite.populate();
 		this.primaryKeyGenerationCheckBox.setSelection(this.subject().getGeneratedValue() != null);
 	}
 
@@ -379,14 +401,14 @@ public class IdComposite extends BaseJpaComposite<IIdMapping>
 	@Override
 	protected void engageListeners() {
 		if (this.subject() !=null) {
-			this.subject().eAdapters().add(this.subject()Listener);
+			this.subject().eAdapters().add(IdComposite);
 		}
 	}
 
 	@Override
 	protected void disengageListeners() {
 		if (this.subject() !=null) {
-			this.subject().eAdapters().remove(this.subject()Listener);
+			this.subject().eAdapters().remove(this.idListener);
 		}
 	}
 
@@ -429,7 +451,7 @@ public class IdComposite extends BaseJpaComposite<IIdMapping>
 			return JpaCoreMappingsPackage.IID__TEMPORAL;
 		}
 
-		public IIdMapping wrappedObject() {
+		public IIdMapping subject() {
 			return this.id;
 		}
 

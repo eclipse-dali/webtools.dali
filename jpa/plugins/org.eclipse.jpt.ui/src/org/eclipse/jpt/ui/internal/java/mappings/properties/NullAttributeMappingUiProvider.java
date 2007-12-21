@@ -13,13 +13,14 @@ import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.ui.internal.IJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.IJpaComposite;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class NullAttributeMappingUiProvider
-	implements IAttributeMappingUiProvider
+	implements IAttributeMappingUiProvider<IAttributeMapping>
 {
 
 	// singleton
@@ -28,7 +29,7 @@ public class NullAttributeMappingUiProvider
 	/**
 	 * Return the singleton.
 	 */
-	public static IAttributeMappingUiProvider instance() {
+	public static IAttributeMappingUiProvider<IAttributeMapping> instance() {
 		return INSTANCE;
 	}
 
@@ -48,7 +49,12 @@ public class NullAttributeMappingUiProvider
 		return "";
 	}
 
-	public IJpaComposite<IAttributeMapping> buildAttributeMappingComposite(IJpaUiFactory factory, Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+	public IJpaComposite<IAttributeMapping> buildAttributeMappingComposite(
+			IJpaUiFactory factory,
+			PropertyValueModel<IAttributeMapping> subjectHolder,
+			Composite parent,
+			TabbedPropertySheetWidgetFactory widgetFactory) {
+
 		return new NullComposite(parent);
 	}
 
@@ -60,7 +66,7 @@ public class NullAttributeMappingUiProvider
 			super(parent, SWT.NONE);
 		}
 
-		public void populate(IAttributeMapping model) {
+		public void populate() {
 			// no op
 		}
 
