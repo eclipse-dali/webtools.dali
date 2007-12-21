@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.context.orm.XmlManyToManyMapping;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.resource.orm.ManyToMany;
+import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -204,4 +205,55 @@ public class XmlManyToManyMappingTests extends ContextModelTestCase
 		assertNull(xmlManyToManyMapping.getMappedBy());
 		assertNull(manyToMany.getMappedBy());
 	}
+	
+	public void testUpdateMapKey() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
+		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		
+		assertNull(xmlManyToManyMapping.getMapKey());
+		assertNull(manyToMany.getMapKey());
+		
+		//set mapKey in the resource model, verify context model does not change
+		manyToMany.setMapKey(OrmFactory.eINSTANCE.createMapKey());
+		assertNull(xmlManyToManyMapping.getMapKey());
+		assertNotNull(manyToMany.getMapKey());
+				
+		//set mapKey name in the resource model, verify context model updated
+		manyToMany.getMapKey().setName("myMapKey");
+		assertEquals("myMapKey", xmlManyToManyMapping.getMapKey());
+		assertEquals("myMapKey", manyToMany.getMapKey().getName());
+		
+		//set mapKey name to null in the resource model
+		manyToMany.getMapKey().setName(null);
+		assertNull(xmlManyToManyMapping.getMapKey());
+		assertNull(manyToMany.getMapKey().getName());
+		
+		manyToMany.getMapKey().setName("myMapKey");
+		manyToMany.setMapKey(null);
+		assertNull(xmlManyToManyMapping.getMapKey());
+		assertNull(manyToMany.getMapKey());
+	}
+	
+	public void testModifyMapKey() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
+		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		
+		assertNull(xmlManyToManyMapping.getMapKey());
+		assertNull(manyToMany.getMapKey());
+					
+		//set mapKey  in the context model, verify resource model updated
+		xmlManyToManyMapping.setMapKey("myMapKey");
+		assertEquals("myMapKey", xmlManyToManyMapping.getMapKey());
+		assertEquals("myMapKey", manyToMany.getMapKey().getName());
+	
+		//set mapKey to null in the context model
+		xmlManyToManyMapping.setMapKey(null);
+		assertNull(xmlManyToManyMapping.getMapKey());
+		assertNull(manyToMany.getMapKey());
+	}
+
 }

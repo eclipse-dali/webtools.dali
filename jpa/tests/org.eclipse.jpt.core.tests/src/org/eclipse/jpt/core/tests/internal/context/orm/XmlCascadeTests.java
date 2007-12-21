@@ -85,6 +85,7 @@ public class XmlCascadeTests extends ContextModelTestCase
 		assertEquals(false, xmlCascade.isAll());
 		assertNull(oneToOne.getCascade());
 	}
+	
 	public void testUpdateCascadePersist() throws Exception {
 		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
