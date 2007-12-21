@@ -10,7 +10,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.context.base.IJoinTable;
 import org.eclipse.jpt.core.internal.context.base.IMultiRelationshipMapping;
@@ -29,10 +28,6 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 //	protected String specifiedOrderBy;
 //
 //	protected String defaultOrderBy;
-//
-//	protected FetchType specifiedFetch;
-//	
-//	protected FetchType defaultFetch;
 //
 //	protected IJoinTable joinTable;
 
@@ -154,17 +149,6 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 //		return (mappedByNode == null) ? validationTextRange() : buildTextRange(mappedByNode);
 //	}
 //
-//	public DefaultLazyFetchType getFetch() {
-//		return fetch;
-//	}
-//
-//	public void setFetch(DefaultLazyFetchType newFetch) {
-//		DefaultLazyFetchType oldFetch = fetch;
-//		fetch = newFetch == null ? FETCH_EDEFAULT : newFetch;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__FETCH, oldFetch, fetch));
-//	}
-//
 //	public IJoinTable getJoinTable() {
 //		return joinTable;
 //	}
@@ -236,26 +220,6 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 //		return JavaMultiRelationshipMapping.javaDefaultTargetEntityFromContainer(typeBinding);
 //	}
 	
-	
-	public FetchType getFetch() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public FetchType getDefaultFetch() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public FetchType getSpecifiedFetch() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	public String getMapKey() {
 		// TODO Auto-generated method stub

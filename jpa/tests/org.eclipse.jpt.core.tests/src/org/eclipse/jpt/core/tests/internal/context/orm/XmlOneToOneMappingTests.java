@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.orm.XmlOneToOneMapping;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
@@ -115,4 +116,53 @@ public class XmlOneToOneMappingTests extends ContextModelTestCase
 		assertNull(xmlOneToOneMapping.getSpecifiedTargetEntity());
 		assertNull(oneToOne.getTargetEntity());
 	}
+	
+	public void testUpdateSpecifiedFetch() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		XmlOneToOneMapping xmlOneToOneMapping = (XmlOneToOneMapping) xmlPersistentAttribute.getMapping();
+		OneToOne oneToOneResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
+		
+		assertNull(xmlOneToOneMapping.getSpecifiedFetch());
+		assertNull(oneToOneResource.getFetch());
+				
+		//set fetch in the resource model, verify context model updated
+		oneToOneResource.setFetch(org.eclipse.jpt.core.internal.resource.orm.FetchType.EAGER);
+		assertEquals(FetchType.EAGER, xmlOneToOneMapping.getSpecifiedFetch());
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.FetchType.EAGER, oneToOneResource.getFetch());
+	
+		oneToOneResource.setFetch(org.eclipse.jpt.core.internal.resource.orm.FetchType.LAZY);
+		assertEquals(FetchType.LAZY, xmlOneToOneMapping.getSpecifiedFetch());
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.FetchType.LAZY, oneToOneResource.getFetch());
+
+		//set fetch to null in the resource model
+		oneToOneResource.setFetch(null);
+		assertNull(xmlOneToOneMapping.getSpecifiedFetch());
+		assertNull(oneToOneResource.getFetch());
+	}
+	
+	public void testModifySpecifiedFetch() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		XmlOneToOneMapping xmlOneToOneMapping = (XmlOneToOneMapping) xmlPersistentAttribute.getMapping();
+		OneToOne oneToOneResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
+		
+		assertNull(xmlOneToOneMapping.getSpecifiedFetch());
+		assertNull(oneToOneResource.getFetch());
+				
+		//set fetch in the context model, verify resource model updated
+		xmlOneToOneMapping.setSpecifiedFetch(FetchType.EAGER);
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.FetchType.EAGER, oneToOneResource.getFetch());
+		assertEquals(FetchType.EAGER, xmlOneToOneMapping.getSpecifiedFetch());
+	
+		xmlOneToOneMapping.setSpecifiedFetch(FetchType.LAZY);
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.FetchType.LAZY, oneToOneResource.getFetch());
+		assertEquals(FetchType.LAZY, xmlOneToOneMapping.getSpecifiedFetch());
+
+		//set fetch to null in the context model
+		xmlOneToOneMapping.setSpecifiedFetch(null);
+		assertNull(oneToOneResource.getFetch());
+		assertNull(xmlOneToOneMapping.getSpecifiedFetch());
+	}
+
 }

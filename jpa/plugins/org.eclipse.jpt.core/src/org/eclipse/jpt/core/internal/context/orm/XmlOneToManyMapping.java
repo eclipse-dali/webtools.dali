@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.context.base.IOneToManyMapping;
+import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.OneToMany;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
@@ -30,7 +31,7 @@ public class XmlOneToManyMapping extends XmlMultiRelationshipMapping<OneToMany>
 	}
 
 	@Override
-	protected void initializeOn(XmlAttributeMapping newMapping) {
+	protected void initializeOn(XmlAttributeMapping<? extends AttributeMapping> newMapping) {
 		newMapping.initializeFromXmlOneToManyMapping(this);
 	}
 
@@ -40,6 +41,7 @@ public class XmlOneToManyMapping extends XmlMultiRelationshipMapping<OneToMany>
 	}
 
 	// ********** INonOwningMapping implementation **********
+	@Override
 	public boolean mappedByIsValid(IAttributeMapping mappedByMapping) {
 		String mappedByKey = mappedByMapping.getKey();
 		return (mappedByKey == IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);

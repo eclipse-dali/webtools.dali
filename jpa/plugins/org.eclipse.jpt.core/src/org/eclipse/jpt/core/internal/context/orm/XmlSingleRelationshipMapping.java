@@ -9,7 +9,6 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.ISingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.orm.SingleRelationshipMapping;
@@ -18,9 +17,6 @@ import org.eclipse.jpt.core.internal.resource.orm.SingleRelationshipMapping;
 public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipMapping>
 	extends XmlRelationshipMapping<SingleRelationshipMapping> implements ISingleRelationshipMapping
 {
-
-	protected FetchType specifiedFetch;
-	protected FetchType defaultFetch;
 	
 //	protected EList<IJoinColumn> specifiedJoinColumns;
 //
@@ -68,17 +64,6 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 //		throw new IllegalStateException("'defaultJoinColumns' cannot be changed");
 //	}
 //
-//	public DefaultEagerFetchType getFetch() {
-//		return fetch;
-//	}
-//
-//	public void setFetch(DefaultEagerFetchType newFetch) {
-//		DefaultEagerFetchType oldFetch = fetch;
-//		fetch = newFetch == null ? FETCH_EDEFAULT : newFetch;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__FETCH, oldFetch, fetch));
-//	}
-//
 //	public EList<IJoinColumn> getJoinColumns() {
 //		return this.getSpecifiedJoinColumns().isEmpty() ? this.getDefaultJoinColumns() : this.getSpecifiedJoinColumns();
 //	}
@@ -123,26 +108,6 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 //	public boolean containsSpecifiedJoinColumns() {
 //		return !this.getSpecifiedJoinColumns().isEmpty();
 //	}
-	
-	public FetchType getFetch() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public FetchType getDefaultFetch() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public FetchType getSpecifiedFetch() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	public Boolean getOptional() {
 		// TODO Auto-generated method stub

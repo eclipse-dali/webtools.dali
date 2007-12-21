@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.orm.XmlManyToManyMapping;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
@@ -115,4 +116,53 @@ public class XmlManyToManyMappingTests extends ContextModelTestCase
 		assertNull(xmlManyToManyMapping.getSpecifiedTargetEntity());
 		assertNull(manyToMany.getTargetEntity());
 	}
+	
+	public void testUpdateSpecifiedFetch() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
+		ManyToMany manyToManyResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		
+		assertNull(xmlManyToManyMapping.getSpecifiedFetch());
+		assertNull(manyToManyResource.getFetch());
+				
+		//set fetch in the resource model, verify context model updated
+		manyToManyResource.setFetch(org.eclipse.jpt.core.internal.resource.orm.FetchType.EAGER);
+		assertEquals(FetchType.EAGER, xmlManyToManyMapping.getSpecifiedFetch());
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.FetchType.EAGER, manyToManyResource.getFetch());
+	
+		manyToManyResource.setFetch(org.eclipse.jpt.core.internal.resource.orm.FetchType.LAZY);
+		assertEquals(FetchType.LAZY, xmlManyToManyMapping.getSpecifiedFetch());
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.FetchType.LAZY, manyToManyResource.getFetch());
+
+		//set fetch to null in the resource model
+		manyToManyResource.setFetch(null);
+		assertNull(xmlManyToManyMapping.getSpecifiedFetch());
+		assertNull(manyToManyResource.getFetch());
+	}
+	
+	public void testModifySpecifiedFetch() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
+		ManyToMany manyToManyResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		
+		assertNull(xmlManyToManyMapping.getSpecifiedFetch());
+		assertNull(manyToManyResource.getFetch());
+				
+		//set fetch in the context model, verify resource model updated
+		xmlManyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.FetchType.EAGER, manyToManyResource.getFetch());
+		assertEquals(FetchType.EAGER, xmlManyToManyMapping.getSpecifiedFetch());
+	
+		xmlManyToManyMapping.setSpecifiedFetch(FetchType.LAZY);
+		assertEquals(org.eclipse.jpt.core.internal.resource.orm.FetchType.LAZY, manyToManyResource.getFetch());
+		assertEquals(FetchType.LAZY, xmlManyToManyMapping.getSpecifiedFetch());
+
+		//set fetch to null in the context model
+		xmlManyToManyMapping.setSpecifiedFetch(null);
+		assertNull(manyToManyResource.getFetch());
+		assertNull(xmlManyToManyMapping.getSpecifiedFetch());
+	}
+
 }

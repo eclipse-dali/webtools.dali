@@ -9,7 +9,9 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
+import org.eclipse.jpt.core.internal.context.base.IFetchable;
 import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.orm.RelationshipMapping;
 
@@ -24,6 +26,10 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 
 	protected IEntity resolvedTargetEntity;
 
+	
+	protected FetchType specifiedFetch;
+	
+	protected FetchType defaultFetch;	
 
 //	protected ICascade cascade;
 
@@ -68,6 +74,32 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 	}
 
 
+	public FetchType getFetch() {
+		return (this.getSpecifiedFetch() == null) ? this.getDefaultFetch() : this.getSpecifiedFetch();
+	}
+
+	public FetchType getDefaultFetch() {
+		return this.defaultFetch;
+	}
+	
+	protected void setDefaultFetch(FetchType newDefaultFetch) {
+		FetchType oldFetch = this.defaultFetch;
+		this.defaultFetch = newDefaultFetch;
+		firePropertyChanged(IFetchable.DEFAULT_FETCH_PROPERTY, oldFetch, newDefaultFetch);
+	}
+
+	public FetchType getSpecifiedFetch() {
+		return this.specifiedFetch;
+	}
+	
+	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
+		FetchType oldFetch = this.specifiedFetch;
+		this.specifiedFetch = newSpecifiedFetch;
+		this.attributeMapping().setFetch(FetchType.toOrmResourceModel(newSpecifiedFetch));
+		firePropertyChanged(IFetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
+	}
+
+
 //	public ICascade getCascade() {
 //		return cascade;
 //	}
@@ -82,8 +114,11 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 	public void initializeFromXmlRelationshipMapping(XmlRelationshipMapping<? extends RelationshipMapping> oldMapping) {
 		super.initializeFromXmlRelationshipMapping(oldMapping);
 		setSpecifiedTargetEntity(oldMapping.getSpecifiedTargetEntity());
+		setSpecifiedFetch(oldMapping.getSpecifiedFetch());
 	}
+	//TODO should we set the fetch type from a BasicMapping??
 
+	
 //	public boolean targetEntityIsValid(String targetEntity) {
 //		return RelationshipMappingTools.targetEntityIsValid(targetEntity);
 //	}
@@ -180,6 +215,7 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 		super.initialize(relationshipMapping);
 		this.specifiedTargetEntity = relationshipMapping.getTargetEntity();
 		this.defaultTargetEntity = null;//TODO default target entity
+		this.specifiedFetch = this.specifiedFetch(relationshipMapping);
 	}
 	
 	@Override
@@ -187,5 +223,12 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 		super.update(relationshipMapping);
 		this.setSpecifiedTargetEntity(relationshipMapping.getTargetEntity());
 		this.setDefaultTargetEntity(null);//TODO default target entity
+		this.setSpecifiedFetch(this.specifiedFetch(relationshipMapping));
 	}
+	
+	protected FetchType specifiedFetch(RelationshipMapping relationshipMapping) {
+		return FetchType.fromOrmResourceModel(relationshipMapping.getFetch());
+	}
+	
+
 }
