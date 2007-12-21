@@ -29,6 +29,7 @@ public class JptCoreOrmContextModelTests extends TestCase
 		suite.addTestSuite(XmlPersistentTypeTests.class);
 		suite.addTestSuite(XmlAttributeOverrideTests.class);
 		suite.addTestSuite(XmlBasicMappingTests.class);
+		suite.addTestSuite(XmlCascadeTests.class);
 		suite.addTestSuite(XmlColumnTests.class);
 		suite.addTestSuite(XmlDiscriminatorColumnTests.class);
 		suite.addTestSuite(XmlIdMappingTests.class);

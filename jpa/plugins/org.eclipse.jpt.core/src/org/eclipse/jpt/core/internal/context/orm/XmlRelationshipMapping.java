@@ -31,11 +31,12 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 	
 	protected FetchType defaultFetch;	
 
-//	protected ICascade cascade;
+	protected final XmlCascade cascade;
 
 	
 	protected XmlRelationshipMapping(XmlPersistentAttribute parent) {
 		super(parent);
+		this.cascade = new XmlCascade(this);
 	}
 
 	public String getTargetEntity() {
@@ -100,14 +101,9 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 	}
 
 
-//	public ICascade getCascade() {
-//		return cascade;
-//	}
-//
-//	public ICascade createCascade() {
-//		return OrmFactory.eINSTANCE.createXmlCascade();
-//	}
-//
+	public XmlCascade getCascade() {
+		return this.cascade;
+	}
 
 
 	@Override
@@ -216,6 +212,7 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 		this.specifiedTargetEntity = relationshipMapping.getTargetEntity();
 		this.defaultTargetEntity = null;//TODO default target entity
 		this.specifiedFetch = this.specifiedFetch(relationshipMapping);
+		this.cascade.initialize(relationshipMapping);
 	}
 	
 	@Override
@@ -224,11 +221,11 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 		this.setSpecifiedTargetEntity(relationshipMapping.getTargetEntity());
 		this.setDefaultTargetEntity(null);//TODO default target entity
 		this.setSpecifiedFetch(this.specifiedFetch(relationshipMapping));
+		this.cascade.update(relationshipMapping);
 	}
 	
 	protected FetchType specifiedFetch(RelationshipMapping relationshipMapping) {
 		return FetchType.fromOrmResourceModel(relationshipMapping.getFetch());
 	}
-	
 
 }

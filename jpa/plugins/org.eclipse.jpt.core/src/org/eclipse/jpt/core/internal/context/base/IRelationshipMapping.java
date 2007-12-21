@@ -27,9 +27,7 @@ public interface IRelationshipMapping extends IAttributeMapping, IFetchable
 	IEntity getResolvedTargetEntity();
 		String RESOLVED_TARGET_ENTITY_PROPERTY = "resolvedTargetEntityProperty";
 	
-//	ICascade getCascade();
-
-//	void setCascade(ICascade value);
+	ICascade getCascade();
 
 	/**
 	 * Return whether the specified 'targetEntity' is valid.
@@ -49,5 +47,4 @@ public interface IRelationshipMapping extends IAttributeMapping, IFetchable
 	 */
 	IEntity getEntity();
 
-//	ICascade createCascade();
 }

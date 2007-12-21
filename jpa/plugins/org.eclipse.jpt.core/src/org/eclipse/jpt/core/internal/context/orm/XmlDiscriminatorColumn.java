@@ -135,8 +135,7 @@ public class XmlDiscriminatorColumn extends AbstractXmlNamedColumn<Discriminator
 	
 	@Override
 	protected void addColumnResource() {
-		this.entity.setDiscriminatorColumn(OrmFactory.eINSTANCE.createDiscriminatorColumn());
-		
+		this.entity.setDiscriminatorColumn(OrmFactory.eINSTANCE.createDiscriminatorColumn());		
 	}
 	
 	@Override
