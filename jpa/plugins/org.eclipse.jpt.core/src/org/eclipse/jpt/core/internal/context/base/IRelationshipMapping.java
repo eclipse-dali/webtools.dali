@@ -25,8 +25,7 @@ public interface IRelationshipMapping extends IAttributeMapping, IFetchable
 		String DEFAULT_TARGET_ENTITY_PROPERTY = "defaultTargetEntityProperty";
 
 	IEntity getResolvedTargetEntity();
-
-	void setResolvedTargetEntity(IEntity value);
+		String RESOLVED_TARGET_ENTITY_PROPERTY = "resolvedTargetEntityProperty";
 	
 //	ICascade getCascade();
 

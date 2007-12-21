@@ -43,7 +43,7 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 	public void setSpecifiedTargetEntity(String newSpecifiedTargetEntity) {
 		String oldSpecifiedTargetEntity = this.specifiedTargetEntity;
 		this.specifiedTargetEntity = newSpecifiedTargetEntity;
-		
+		attributeMapping().setTargetEntity(newSpecifiedTargetEntity);
 		firePropertyChanged(SPECIFIED_TARGET_ENTITY_PROPERTY, oldSpecifiedTargetEntity, newSpecifiedTargetEntity);
 	}
 
@@ -61,30 +61,29 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 		return this.resolvedTargetEntity;
 	}
 
-//	protected void setResolvedTargetEntity(IEntity newResolvedTargetEntity) {
-//		IEntity oldResolvedTargetEntity = this.resolvedTargetEntity;
-//		this.resolvedTargetEntity = newResolvedTargetEntity;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_RELATIONSHIP_MAPPING__RESOLVED_TARGET_ENTITY, oldResolvedTargetEntity, resolvedTargetEntity));
+	protected void setResolvedTargetEntity(IEntity newResolvedTargetEntity) {
+		IEntity oldResolvedTargetEntity = this.resolvedTargetEntity;
+		this.resolvedTargetEntity = newResolvedTargetEntity;
+		firePropertyChanged(RESOLVED_TARGET_ENTITY_PROPERTY, oldResolvedTargetEntity, newResolvedTargetEntity);
+	}
+
+
+//	public ICascade getCascade() {
+//		return cascade;
 //	}
 //
-//
-////	public ICascade getCascade() {
-////		return cascade;
-////	}
-////
-////	public ICascade createCascade() {
-////		return OrmFactory.eINSTANCE.createXmlCascade();
-////	}
-//
-//
-//
-//	@Override
-//	public void initializeFromXmlRelationshipMapping(XmlRelationshipMapping oldMapping) {
-//		super.initializeFromXmlRelationshipMapping(oldMapping);
-//		setSpecifiedTargetEntity(oldMapping.getSpecifiedTargetEntity());
+//	public ICascade createCascade() {
+//		return OrmFactory.eINSTANCE.createXmlCascade();
 //	}
 //
+
+
+	@Override
+	public void initializeFromXmlRelationshipMapping(XmlRelationshipMapping<? extends RelationshipMapping> oldMapping) {
+		super.initializeFromXmlRelationshipMapping(oldMapping);
+		setSpecifiedTargetEntity(oldMapping.getSpecifiedTargetEntity());
+	}
+
 //	public boolean targetEntityIsValid(String targetEntity) {
 //		return RelationshipMappingTools.targetEntityIsValid(targetEntity);
 //	}
@@ -165,12 +164,7 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	public void setResolvedTargetEntity(IEntity value) {
-		// TODO Auto-generated method stub
 		
-	}
-	
 	public IEntity getEntity() {
 		// TODO Auto-generated method stub
 		return null;
@@ -179,5 +173,19 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 	public boolean targetEntityIsValid(String targetEntity) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	@Override
+	public void initialize(RelationshipMapping relationshipMapping) {
+		super.initialize(relationshipMapping);
+		this.specifiedTargetEntity = relationshipMapping.getTargetEntity();
+		this.defaultTargetEntity = null;//TODO default target entity
+	}
+	
+	@Override
+	public void update(RelationshipMapping relationshipMapping) {
+		super.update(relationshipMapping);
+		this.setSpecifiedTargetEntity(relationshipMapping.getTargetEntity());
+		this.setDefaultTargetEntity(null);//TODO default target entity
 	}
 }

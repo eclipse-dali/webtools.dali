@@ -75,4 +75,44 @@ public class XmlManyToOneMappingTests extends ContextModelTestCase
 		assertNull(xmlManyToOneMapping.getName());
 		assertNull(manyToOne.getName());
 	}
+	
+	public void testUpdateTargetEntity() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
+		XmlManyToOneMapping xmlManyToOneMapping = (XmlManyToOneMapping) xmlPersistentAttribute.getMapping();
+		ManyToOne manyToOne = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
+		
+		assertNull(xmlManyToOneMapping.getSpecifiedTargetEntity());
+		assertNull(manyToOne.getTargetEntity());
+				
+		//set target entity in the resource model, verify context model updated
+		manyToOne.setTargetEntity("newTargetEntity");
+		assertEquals("newTargetEntity", xmlManyToOneMapping.getSpecifiedTargetEntity());
+		assertEquals("newTargetEntity", manyToOne.getTargetEntity());
+	
+		//set target entity to null in the resource model
+		manyToOne.setTargetEntity(null);
+		assertNull(xmlManyToOneMapping.getSpecifiedTargetEntity());
+		assertNull(manyToOne.getTargetEntity());
+	}
+	
+	public void testModifyTargetEntity() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
+		XmlManyToOneMapping xmlManyToOneMapping = (XmlManyToOneMapping) xmlPersistentAttribute.getMapping();
+		ManyToOne manyToOne = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
+		
+		assertNull(xmlManyToOneMapping.getSpecifiedTargetEntity());
+		assertNull(manyToOne.getTargetEntity());
+				
+		//set target entity in the context model, verify resource model updated
+		xmlManyToOneMapping.setSpecifiedTargetEntity("newTargetEntity");
+		assertEquals("newTargetEntity", xmlManyToOneMapping.getSpecifiedTargetEntity());
+		assertEquals("newTargetEntity", manyToOne.getTargetEntity());
+	
+		//set target entity to null in the context model
+		xmlManyToOneMapping.setSpecifiedTargetEntity(null);
+		assertNull(xmlManyToOneMapping.getSpecifiedTargetEntity());
+		assertNull(manyToOne.getTargetEntity());
+	}
 }

@@ -12,6 +12,9 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
+import org.eclipse.jpt.core.internal.resource.orm.MultiRelationshipMapping;
+import org.eclipse.jpt.core.internal.resource.orm.RelationshipMapping;
+import org.eclipse.jpt.core.internal.resource.orm.SingleRelationshipMapping;
 
 
 public abstract class XmlAttributeMapping<T extends AttributeMapping> extends JpaContextNode
@@ -95,15 +98,15 @@ public abstract class XmlAttributeMapping<T extends AttributeMapping> extends Jp
 		initializeFromXmlAttributeMapping(oldMapping);
 	}
 
-	public void initializeFromXmlRelationshipMapping(XmlRelationshipMapping oldMapping) {
+	public void initializeFromXmlRelationshipMapping(XmlRelationshipMapping<? extends RelationshipMapping> oldMapping) {
 		initializeFromXmlAttributeMapping(oldMapping);
 	}
 
-	public void initializeFromXmlMulitRelationshipMapping(XmlMultiRelationshipMapping oldMapping) {
+	public void initializeFromXmlMulitRelationshipMapping(XmlMultiRelationshipMapping<? extends MultiRelationshipMapping> oldMapping) {
 		initializeFromXmlRelationshipMapping(oldMapping);
 	}
 
-	public void initializeFromXmlSingleRelationshipMapping(XmlSingleRelationshipMapping oldMapping) {
+	public void initializeFromXmlSingleRelationshipMapping(XmlSingleRelationshipMapping<? extends SingleRelationshipMapping> oldMapping) {
 		initializeFromXmlRelationshipMapping(oldMapping);
 	}
 
