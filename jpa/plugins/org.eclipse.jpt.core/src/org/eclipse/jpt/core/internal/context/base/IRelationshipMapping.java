@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.base;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 
-public interface IRelationshipMapping extends IAttributeMapping
+public interface IRelationshipMapping extends IAttributeMapping, IFetchable
 {
 
 	String getTargetEntity();
@@ -28,15 +28,6 @@ public interface IRelationshipMapping extends IAttributeMapping
 
 	void setResolvedTargetEntity(IEntity value);
 	
-	FetchType getFetch();
-
-	FetchType getDefaultFetch();
-		String DEFAULT_FETCH_PROPERTY = "defaultFetchProperty";
-		
-	FetchType getSpecifiedFetch();
-	void setSpecifiedFetch(FetchType newSpecifiedFetch);
-		String SPECIFIED_FETCH_PROPERTY = "specifiedFetchProperty";
-
 //	ICascade getCascade();
 
 //	void setCascade(ICascade value);

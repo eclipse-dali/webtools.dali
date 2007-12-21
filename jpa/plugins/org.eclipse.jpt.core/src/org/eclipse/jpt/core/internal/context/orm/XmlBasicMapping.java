@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.EnumType;
 import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
+import org.eclipse.jpt.core.internal.context.base.IFetchable;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.Basic;
@@ -60,7 +61,7 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 	protected void setDefaultFetch(FetchType newDefaultFetch) {
 		FetchType oldFetch = this.defaultFetch;
 		this.defaultFetch = newDefaultFetch;
-		firePropertyChanged(IBasicMapping.DEFAULT_FETCH_PROPERTY, oldFetch, newDefaultFetch);
+		firePropertyChanged(IFetchable.DEFAULT_FETCH_PROPERTY, oldFetch, newDefaultFetch);
 	}
 
 	public FetchType getSpecifiedFetch() {
@@ -71,7 +72,7 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 		FetchType oldFetch = this.specifiedFetch;
 		this.specifiedFetch = newSpecifiedFetch;
 		this.attributeMapping().setFetch(FetchType.toOrmResourceModel(newSpecifiedFetch));
-		firePropertyChanged(IBasicMapping.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
+		firePropertyChanged(IFetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
 
 
