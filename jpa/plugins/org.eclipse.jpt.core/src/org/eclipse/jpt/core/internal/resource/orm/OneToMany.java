@@ -28,14 +28,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToMany#getTargetEntity <em>Target Entity</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToMany#getFetch <em>Fetch</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToMany#getMappedBy <em>Mapped By</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToMany#getOrderBy <em>Order By</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToMany#getMapKey <em>Map Key</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToMany#getJoinTable <em>Join Table</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToMany#getJoinColumns <em>Join Columns</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToMany#getCascade <em>Cascade</em>}</li>
  * </ul>
  * </p>
  *
@@ -43,7 +36,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * @model kind="class"
  * @generated
  */
-public class OneToMany extends JpaEObject implements AttributeMapping
+public class OneToMany extends JpaEObject implements MultiRelationshipMapping
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -102,6 +95,26 @@ public class OneToMany extends JpaEObject implements AttributeMapping
 	protected FetchType fetch = FETCH_EDEFAULT;
 
 	/**
+	 * The cached value of the '{@link #getJoinTable() <em>Join Table</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJoinTable()
+	 * @generated
+	 * @ordered
+	 */
+	protected JoinTable joinTable;
+
+	/**
+	 * The cached value of the '{@link #getCascade() <em>Cascade</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCascade()
+	 * @generated
+	 * @ordered
+	 */
+	protected CascadeType cascade;
+
+	/**
 	 * The default value of the '{@link #getMappedBy() <em>Mapped By</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -152,16 +165,6 @@ public class OneToMany extends JpaEObject implements AttributeMapping
 	protected MapKey mapKey;
 
 	/**
-	 * The cached value of the '{@link #getJoinTable() <em>Join Table</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getJoinTable()
-	 * @generated
-	 * @ordered
-	 */
-	protected JoinTable joinTable;
-
-	/**
 	 * The cached value of the '{@link #getJoinColumns() <em>Join Columns</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -170,16 +173,6 @@ public class OneToMany extends JpaEObject implements AttributeMapping
 	 * @ordered
 	 */
 	protected EList<JoinColumn> joinColumns;
-
-	/**
-	 * The cached value of the '{@link #getCascade() <em>Cascade</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getCascade()
-	 * @generated
-	 * @ordered
-	 */
-	protected CascadeType cascade;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -247,7 +240,7 @@ public class OneToMany extends JpaEObject implements AttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Target Entity</em>' attribute.
 	 * @see #setTargetEntity(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOneToMany_TargetEntity()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getRelationshipMapping_TargetEntity()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -285,7 +278,7 @@ public class OneToMany extends JpaEObject implements AttributeMapping
 	 * @return the value of the '<em>Fetch</em>' attribute.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.FetchType
 	 * @see #setFetch(FetchType)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOneToMany_Fetch()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getRelationshipMapping_Fetch()
 	 * @model default="LAZY"
 	 * @generated
 	 */
@@ -321,7 +314,7 @@ public class OneToMany extends JpaEObject implements AttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Mapped By</em>' attribute.
 	 * @see #setMappedBy(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOneToMany_MappedBy()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getMultiRelationshipMapping_MappedBy()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -356,7 +349,7 @@ public class OneToMany extends JpaEObject implements AttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Order By</em>' attribute.
 	 * @see #setOrderBy(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOneToMany_OrderBy()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getMultiRelationshipMapping_OrderBy()
 	 * @model dataType="org.eclipse.jpt.core.internal.resource.orm.OrderBy"
 	 * @generated
 	 */
@@ -391,7 +384,7 @@ public class OneToMany extends JpaEObject implements AttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Map Key</em>' containment reference.
 	 * @see #setMapKey(MapKey)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOneToMany_MapKey()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getMultiRelationshipMapping_MapKey()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -451,7 +444,7 @@ public class OneToMany extends JpaEObject implements AttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Table</em>' containment reference.
 	 * @see #setJoinTable(JoinTable)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOneToMany_JoinTable()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getRelationshipMapping_JoinTable()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -534,7 +527,7 @@ public class OneToMany extends JpaEObject implements AttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cascade</em>' containment reference.
 	 * @see #setCascade(CascadeType)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOneToMany_Cascade()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getRelationshipMapping_Cascade()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -594,14 +587,14 @@ public class OneToMany extends JpaEObject implements AttributeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ONE_TO_MANY__MAP_KEY:
-				return basicSetMapKey(null, msgs);
 			case OrmPackage.ONE_TO_MANY__JOIN_TABLE:
 				return basicSetJoinTable(null, msgs);
-			case OrmPackage.ONE_TO_MANY__JOIN_COLUMNS:
-				return ((InternalEList<?>)getJoinColumns()).basicRemove(otherEnd, msgs);
 			case OrmPackage.ONE_TO_MANY__CASCADE:
 				return basicSetCascade(null, msgs);
+			case OrmPackage.ONE_TO_MANY__MAP_KEY:
+				return basicSetMapKey(null, msgs);
+			case OrmPackage.ONE_TO_MANY__JOIN_COLUMNS:
+				return ((InternalEList<?>)getJoinColumns()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -622,18 +615,18 @@ public class OneToMany extends JpaEObject implements AttributeMapping
 				return getTargetEntity();
 			case OrmPackage.ONE_TO_MANY__FETCH:
 				return getFetch();
+			case OrmPackage.ONE_TO_MANY__JOIN_TABLE:
+				return getJoinTable();
+			case OrmPackage.ONE_TO_MANY__CASCADE:
+				return getCascade();
 			case OrmPackage.ONE_TO_MANY__MAPPED_BY:
 				return getMappedBy();
 			case OrmPackage.ONE_TO_MANY__ORDER_BY:
 				return getOrderBy();
 			case OrmPackage.ONE_TO_MANY__MAP_KEY:
 				return getMapKey();
-			case OrmPackage.ONE_TO_MANY__JOIN_TABLE:
-				return getJoinTable();
 			case OrmPackage.ONE_TO_MANY__JOIN_COLUMNS:
 				return getJoinColumns();
-			case OrmPackage.ONE_TO_MANY__CASCADE:
-				return getCascade();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -658,6 +651,12 @@ public class OneToMany extends JpaEObject implements AttributeMapping
 			case OrmPackage.ONE_TO_MANY__FETCH:
 				setFetch((FetchType)newValue);
 				return;
+			case OrmPackage.ONE_TO_MANY__JOIN_TABLE:
+				setJoinTable((JoinTable)newValue);
+				return;
+			case OrmPackage.ONE_TO_MANY__CASCADE:
+				setCascade((CascadeType)newValue);
+				return;
 			case OrmPackage.ONE_TO_MANY__MAPPED_BY:
 				setMappedBy((String)newValue);
 				return;
@@ -667,15 +666,9 @@ public class OneToMany extends JpaEObject implements AttributeMapping
 			case OrmPackage.ONE_TO_MANY__MAP_KEY:
 				setMapKey((MapKey)newValue);
 				return;
-			case OrmPackage.ONE_TO_MANY__JOIN_TABLE:
-				setJoinTable((JoinTable)newValue);
-				return;
 			case OrmPackage.ONE_TO_MANY__JOIN_COLUMNS:
 				getJoinColumns().clear();
 				getJoinColumns().addAll((Collection<? extends JoinColumn>)newValue);
-				return;
-			case OrmPackage.ONE_TO_MANY__CASCADE:
-				setCascade((CascadeType)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -700,6 +693,12 @@ public class OneToMany extends JpaEObject implements AttributeMapping
 			case OrmPackage.ONE_TO_MANY__FETCH:
 				setFetch(FETCH_EDEFAULT);
 				return;
+			case OrmPackage.ONE_TO_MANY__JOIN_TABLE:
+				setJoinTable((JoinTable)null);
+				return;
+			case OrmPackage.ONE_TO_MANY__CASCADE:
+				setCascade((CascadeType)null);
+				return;
 			case OrmPackage.ONE_TO_MANY__MAPPED_BY:
 				setMappedBy(MAPPED_BY_EDEFAULT);
 				return;
@@ -709,14 +708,8 @@ public class OneToMany extends JpaEObject implements AttributeMapping
 			case OrmPackage.ONE_TO_MANY__MAP_KEY:
 				setMapKey((MapKey)null);
 				return;
-			case OrmPackage.ONE_TO_MANY__JOIN_TABLE:
-				setJoinTable((JoinTable)null);
-				return;
 			case OrmPackage.ONE_TO_MANY__JOIN_COLUMNS:
 				getJoinColumns().clear();
-				return;
-			case OrmPackage.ONE_TO_MANY__CASCADE:
-				setCascade((CascadeType)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -738,18 +731,18 @@ public class OneToMany extends JpaEObject implements AttributeMapping
 				return TARGET_ENTITY_EDEFAULT == null ? targetEntity != null : !TARGET_ENTITY_EDEFAULT.equals(targetEntity);
 			case OrmPackage.ONE_TO_MANY__FETCH:
 				return fetch != FETCH_EDEFAULT;
+			case OrmPackage.ONE_TO_MANY__JOIN_TABLE:
+				return joinTable != null;
+			case OrmPackage.ONE_TO_MANY__CASCADE:
+				return cascade != null;
 			case OrmPackage.ONE_TO_MANY__MAPPED_BY:
 				return MAPPED_BY_EDEFAULT == null ? mappedBy != null : !MAPPED_BY_EDEFAULT.equals(mappedBy);
 			case OrmPackage.ONE_TO_MANY__ORDER_BY:
 				return ORDER_BY_EDEFAULT == null ? orderBy != null : !ORDER_BY_EDEFAULT.equals(orderBy);
 			case OrmPackage.ONE_TO_MANY__MAP_KEY:
 				return mapKey != null;
-			case OrmPackage.ONE_TO_MANY__JOIN_TABLE:
-				return joinTable != null;
 			case OrmPackage.ONE_TO_MANY__JOIN_COLUMNS:
 				return joinColumns != null && !joinColumns.isEmpty();
-			case OrmPackage.ONE_TO_MANY__CASCADE:
-				return cascade != null;
 		}
 		return super.eIsSet(featureID);
 	}

@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmAdapterFactory.java,v 1.1.2.9 2007/12/13 19:16:33 kmoore Exp $
+ * $Id: OrmAdapterFactory.java,v 1.1.2.10 2007/12/21 16:15:58 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
@@ -183,6 +183,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 			public Adapter caseColumnMapping(ColumnMapping object)
 			{
 				return createColumnMappingAdapter();
+			}
+			@Override
+			public Adapter caseRelationshipMapping(RelationshipMapping object)
+			{
+				return createRelationshipMappingAdapter();
+			}
+			@Override
+			public Adapter caseMultiRelationshipMapping(MultiRelationshipMapping object)
+			{
+				return createMultiRelationshipMappingAdapter();
+			}
+			@Override
+			public Adapter caseSingleRelationshipMapping(SingleRelationshipMapping object)
+			{
+				return createSingleRelationshipMappingAdapter();
 			}
 			@Override
 			public Adapter caseId(Id object)
@@ -597,6 +612,51 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createColumnMappingAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.RelationshipMapping <em>Relationship Mapping</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.RelationshipMapping
+	 * @generated
+	 */
+	public Adapter createRelationshipMappingAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.MultiRelationshipMapping <em>Multi Relationship Mapping</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.MultiRelationshipMapping
+	 * @generated
+	 */
+	public Adapter createMultiRelationshipMappingAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.SingleRelationshipMapping <em>Single Relationship Mapping</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.SingleRelationshipMapping
+	 * @generated
+	 */
+	public Adapter createSingleRelationshipMappingAdapter()
 	{
 		return null;
 	}

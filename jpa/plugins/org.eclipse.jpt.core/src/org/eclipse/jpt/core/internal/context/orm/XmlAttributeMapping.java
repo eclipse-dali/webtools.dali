@@ -14,13 +14,13 @@ import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 
 
-public abstract class XmlAttributeMapping<E extends AttributeMapping> extends JpaContextNode
+public abstract class XmlAttributeMapping<T extends AttributeMapping> extends JpaContextNode
 	implements IAttributeMapping
 {
 	protected String name;
 		public static final String NAME_PROPERTY = "nameProperty";
 	
-	protected E attributeMapping;
+	protected T attributeMapping;
 
 	protected XmlAttributeMapping(XmlPersistentAttribute parent) {
 		super(parent);
@@ -95,34 +95,34 @@ public abstract class XmlAttributeMapping<E extends AttributeMapping> extends Jp
 		initializeFromXmlAttributeMapping(oldMapping);
 	}
 
-//	public void initializeFromXmlRelationshipMapping(XmlRelationshipMapping oldMapping) {
-//		initializeFromXmlAttributeMapping(oldMapping);
-//	}
-//
-//	public void initializeFromXmlMulitRelationshipMapping(XmlMultiRelationshipMappingInternal oldMapping) {
-//		initializeFromXmlRelationshipMapping(oldMapping);
-//	}
-//
-//	public void initializeFromXmlSingleRelationshipMapping(XmlSingleRelationshipMapping oldMapping) {
-//		initializeFromXmlRelationshipMapping(oldMapping);
-//	}
-//
-//	public void initializeFromXmlOneToManyMapping(XmlOneToMany oldMapping) {
-//		initializeFromXmlMulitRelationshipMapping(oldMapping);
-//	}
-//
-//	public void initializeFromXmlManyToOneMapping(XmlManyToOne oldMapping) {
-//		initializeFromXmlSingleRelationshipMapping(oldMapping);
-//	}
-//
-//	public void initializeFromXmlOneToOneMapping(XmlOneToOne oldMapping) {
-//		initializeFromXmlSingleRelationshipMapping(oldMapping);
-//	}
-//
-//	public void initializeFromXmlManyToManyMapping(XmlManyToMany oldMapping) {
-//		initializeFromXmlMulitRelationshipMapping(oldMapping);
-//	}
-//
+	public void initializeFromXmlRelationshipMapping(XmlRelationshipMapping oldMapping) {
+		initializeFromXmlAttributeMapping(oldMapping);
+	}
+
+	public void initializeFromXmlMulitRelationshipMapping(XmlMultiRelationshipMapping oldMapping) {
+		initializeFromXmlRelationshipMapping(oldMapping);
+	}
+
+	public void initializeFromXmlSingleRelationshipMapping(XmlSingleRelationshipMapping oldMapping) {
+		initializeFromXmlRelationshipMapping(oldMapping);
+	}
+
+	public void initializeFromXmlOneToManyMapping(XmlOneToManyMapping oldMapping) {
+		initializeFromXmlMulitRelationshipMapping(oldMapping);
+	}
+
+	public void initializeFromXmlManyToOneMapping(XmlManyToOneMapping oldMapping) {
+		initializeFromXmlSingleRelationshipMapping(oldMapping);
+	}
+
+	public void initializeFromXmlOneToOneMapping(XmlOneToOneMapping oldMapping) {
+		initializeFromXmlSingleRelationshipMapping(oldMapping);
+	}
+
+	public void initializeFromXmlManyToManyMapping(XmlManyToManyMapping oldMapping) {
+		initializeFromXmlMulitRelationshipMapping(oldMapping);
+	}
+
 //	public IJpaContentNode getContentNode(int offset) {
 //		return getPersistentAttribute();
 //	}
@@ -182,18 +182,18 @@ public abstract class XmlAttributeMapping<E extends AttributeMapping> extends Jp
 	}
 	public abstract void removeFromResourceModel(org.eclipse.jpt.core.internal.resource.orm.TypeMapping typeMapping);
 	
-	public abstract E addToResourceModel(org.eclipse.jpt.core.internal.resource.orm.TypeMapping typeMapping);
+	public abstract T addToResourceModel(org.eclipse.jpt.core.internal.resource.orm.TypeMapping typeMapping);
 
-	protected E attributeMapping() {
+	protected T attributeMapping() {
 		return this.attributeMapping;
 	}
 
-	public void initialize(E attributeMapping) {
+	public void initialize(T attributeMapping) {
 		this.attributeMapping = attributeMapping;
 		this.name = attributeMapping.getName();
 	}
 	
-	public void update(E attributeMapping) {
+	public void update(T attributeMapping) {
 		this.attributeMapping = attributeMapping;
 		this.setName(attributeMapping.getName());
 	}

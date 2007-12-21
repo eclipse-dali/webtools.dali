@@ -13,21 +13,24 @@ import java.util.Iterator;
 
 public interface IMultiRelationshipMapping extends INonOwningMapping
 {
+	FetchType DEFAULT_FETCH_TYPE = FetchType.LAZY;
 
 	String getOrderBy();
 	void setOrderBy(String value);
 		String ORDER_BY_PROPERTY = "orderByProperty";
 
-	FetchType getFetch();
 
-	FetchType getDefaultFetch();
-		String DEFAULT_FETCH_PROPERTY = "defaultFetchProperty";
-		FetchType DEFAULT_FETCH_TYPE = FetchType.LAZY;
-		
-	FetchType getSpecifiedFetch();
-	void setSpecifiedFetch(FetchType newSpecifiedFetch);
-		String SPECIFIED_FETCH_PROPERTY = "specifiedFetchProperty";
+	boolean isNoOrdering();
 
+	void setNoOrdering();
+
+	boolean isOrderByPk();
+
+	void setOrderByPk();
+
+	boolean isCustomOrdering();
+
+	
 	IJoinTable getJoinTable();
 	
 	boolean isJoinTableSpecified();
@@ -36,18 +39,6 @@ public interface IMultiRelationshipMapping extends INonOwningMapping
 	String getMapKey();
 	void setMapKey(String value);
 		String MAP_KEY_PROPERTY = "mapKeyProperty";
-
-
-	boolean isNoOrdering();
-
-	void setNoOrdering();
-
-
-	boolean isOrderByPk();
-
-	void setOrderByPk();
-
-	boolean isCustomOrdering();
 
 	Iterator<String> candidateMapKeyNames();
 }

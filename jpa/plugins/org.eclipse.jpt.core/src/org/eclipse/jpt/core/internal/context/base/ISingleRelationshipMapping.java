@@ -15,16 +15,7 @@ import java.util.ListIterator;
 public interface ISingleRelationshipMapping extends IRelationshipMapping
 {
 
-	FetchType getFetch();
-
-	FetchType getDefaultFetch();
-		String DEFAULT_FETCH_PROPERTY = "defaultFetchProperty";
-		FetchType DEFAULT_FETCH_TYPE = FetchType.EAGER;
-		
-	FetchType getSpecifiedFetch();
-	void setSpecifiedFetch(FetchType newSpecifiedFetch);
-		String SPECIFIED_FETCH_PROPERTY = "specifiedFetchProperty";
-
+	FetchType DEFAULT_FETCH_TYPE = FetchType.EAGER;
 
 	<T extends IJoinColumn> ListIterator<T> joinColumns();
 	<T extends IJoinColumn> ListIterator<T> specifiedJoinColumns();

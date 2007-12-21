@@ -28,14 +28,8 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToOne#getTargetEntity <em>Target Entity</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToOne#getFetch <em>Fetch</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToOne#getOptional <em>Optional</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToOne#getMappedBy <em>Mapped By</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToOne#getPrimaryKeyJoinColumns <em>Primary Key Join Columns</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToOne#getJoinColumns <em>Join Columns</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToOne#getJoinTable <em>Join Table</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.OneToOne#getCascade <em>Cascade</em>}</li>
  * </ul>
  * </p>
  *
@@ -43,7 +37,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * @model kind="class"
  * @generated
  */
-public class OneToOne extends JpaEObject implements AttributeMapping
+public class OneToOne extends JpaEObject implements SingleRelationshipMapping
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -102,6 +96,26 @@ public class OneToOne extends JpaEObject implements AttributeMapping
 	protected FetchType fetch = FETCH_EDEFAULT;
 
 	/**
+	 * The cached value of the '{@link #getJoinTable() <em>Join Table</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJoinTable()
+	 * @generated
+	 * @ordered
+	 */
+	protected JoinTable joinTable;
+
+	/**
+	 * The cached value of the '{@link #getCascade() <em>Cascade</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCascade()
+	 * @generated
+	 * @ordered
+	 */
+	protected CascadeType cascade;
+
+	/**
 	 * The default value of the '{@link #getOptional() <em>Optional</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -120,6 +134,16 @@ public class OneToOne extends JpaEObject implements AttributeMapping
 	 * @ordered
 	 */
 	protected Boolean optional = OPTIONAL_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getJoinColumns() <em>Join Columns</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJoinColumns()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<JoinColumn> joinColumns;
 
 	/**
 	 * The default value of the '{@link #getMappedBy() <em>Mapped By</em>}' attribute.
@@ -150,36 +174,6 @@ public class OneToOne extends JpaEObject implements AttributeMapping
 	 * @ordered
 	 */
 	protected EList<PrimaryKeyJoinColumn> primaryKeyJoinColumns;
-
-	/**
-	 * The cached value of the '{@link #getJoinColumns() <em>Join Columns</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getJoinColumns()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<JoinColumn> joinColumns;
-
-	/**
-	 * The cached value of the '{@link #getJoinTable() <em>Join Table</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getJoinTable()
-	 * @generated
-	 * @ordered
-	 */
-	protected JoinTable joinTable;
-
-	/**
-	 * The cached value of the '{@link #getCascade() <em>Cascade</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getCascade()
-	 * @generated
-	 * @ordered
-	 */
-	protected CascadeType cascade;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -247,7 +241,7 @@ public class OneToOne extends JpaEObject implements AttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Target Entity</em>' attribute.
 	 * @see #setTargetEntity(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOneToOne_TargetEntity()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getRelationshipMapping_TargetEntity()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -285,7 +279,7 @@ public class OneToOne extends JpaEObject implements AttributeMapping
 	 * @return the value of the '<em>Fetch</em>' attribute.
 	 * @see org.eclipse.jpt.core.internal.resource.orm.FetchType
 	 * @see #setFetch(FetchType)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOneToOne_Fetch()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getRelationshipMapping_Fetch()
 	 * @model default="LAZY"
 	 * @generated
 	 */
@@ -321,7 +315,7 @@ public class OneToOne extends JpaEObject implements AttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Optional</em>' attribute.
 	 * @see #setOptional(Boolean)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOneToOne_Optional()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getSingleRelationshipMapping_Optional()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -414,7 +408,7 @@ public class OneToOne extends JpaEObject implements AttributeMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOneToOne_JoinColumns()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getSingleRelationshipMapping_JoinColumns()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -437,7 +431,7 @@ public class OneToOne extends JpaEObject implements AttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Table</em>' containment reference.
 	 * @see #setJoinTable(JoinTable)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOneToOne_JoinTable()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getRelationshipMapping_JoinTable()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -497,7 +491,7 @@ public class OneToOne extends JpaEObject implements AttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cascade</em>' containment reference.
 	 * @see #setCascade(CascadeType)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOneToOne_Cascade()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getRelationshipMapping_Cascade()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -557,14 +551,14 @@ public class OneToOne extends JpaEObject implements AttributeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
-				return ((InternalEList<?>)getPrimaryKeyJoinColumns()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ONE_TO_ONE__JOIN_COLUMNS:
-				return ((InternalEList<?>)getJoinColumns()).basicRemove(otherEnd, msgs);
 			case OrmPackage.ONE_TO_ONE__JOIN_TABLE:
 				return basicSetJoinTable(null, msgs);
 			case OrmPackage.ONE_TO_ONE__CASCADE:
 				return basicSetCascade(null, msgs);
+			case OrmPackage.ONE_TO_ONE__JOIN_COLUMNS:
+				return ((InternalEList<?>)getJoinColumns()).basicRemove(otherEnd, msgs);
+			case OrmPackage.ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
+				return ((InternalEList<?>)getPrimaryKeyJoinColumns()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -585,18 +579,18 @@ public class OneToOne extends JpaEObject implements AttributeMapping
 				return getTargetEntity();
 			case OrmPackage.ONE_TO_ONE__FETCH:
 				return getFetch();
-			case OrmPackage.ONE_TO_ONE__OPTIONAL:
-				return getOptional();
-			case OrmPackage.ONE_TO_ONE__MAPPED_BY:
-				return getMappedBy();
-			case OrmPackage.ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
-				return getPrimaryKeyJoinColumns();
-			case OrmPackage.ONE_TO_ONE__JOIN_COLUMNS:
-				return getJoinColumns();
 			case OrmPackage.ONE_TO_ONE__JOIN_TABLE:
 				return getJoinTable();
 			case OrmPackage.ONE_TO_ONE__CASCADE:
 				return getCascade();
+			case OrmPackage.ONE_TO_ONE__OPTIONAL:
+				return getOptional();
+			case OrmPackage.ONE_TO_ONE__JOIN_COLUMNS:
+				return getJoinColumns();
+			case OrmPackage.ONE_TO_ONE__MAPPED_BY:
+				return getMappedBy();
+			case OrmPackage.ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
+				return getPrimaryKeyJoinColumns();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -621,8 +615,18 @@ public class OneToOne extends JpaEObject implements AttributeMapping
 			case OrmPackage.ONE_TO_ONE__FETCH:
 				setFetch((FetchType)newValue);
 				return;
+			case OrmPackage.ONE_TO_ONE__JOIN_TABLE:
+				setJoinTable((JoinTable)newValue);
+				return;
+			case OrmPackage.ONE_TO_ONE__CASCADE:
+				setCascade((CascadeType)newValue);
+				return;
 			case OrmPackage.ONE_TO_ONE__OPTIONAL:
 				setOptional((Boolean)newValue);
+				return;
+			case OrmPackage.ONE_TO_ONE__JOIN_COLUMNS:
+				getJoinColumns().clear();
+				getJoinColumns().addAll((Collection<? extends JoinColumn>)newValue);
 				return;
 			case OrmPackage.ONE_TO_ONE__MAPPED_BY:
 				setMappedBy((String)newValue);
@@ -630,16 +634,6 @@ public class OneToOne extends JpaEObject implements AttributeMapping
 			case OrmPackage.ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
 				getPrimaryKeyJoinColumns().clear();
 				getPrimaryKeyJoinColumns().addAll((Collection<? extends PrimaryKeyJoinColumn>)newValue);
-				return;
-			case OrmPackage.ONE_TO_ONE__JOIN_COLUMNS:
-				getJoinColumns().clear();
-				getJoinColumns().addAll((Collection<? extends JoinColumn>)newValue);
-				return;
-			case OrmPackage.ONE_TO_ONE__JOIN_TABLE:
-				setJoinTable((JoinTable)newValue);
-				return;
-			case OrmPackage.ONE_TO_ONE__CASCADE:
-				setCascade((CascadeType)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -664,23 +658,23 @@ public class OneToOne extends JpaEObject implements AttributeMapping
 			case OrmPackage.ONE_TO_ONE__FETCH:
 				setFetch(FETCH_EDEFAULT);
 				return;
+			case OrmPackage.ONE_TO_ONE__JOIN_TABLE:
+				setJoinTable((JoinTable)null);
+				return;
+			case OrmPackage.ONE_TO_ONE__CASCADE:
+				setCascade((CascadeType)null);
+				return;
 			case OrmPackage.ONE_TO_ONE__OPTIONAL:
 				setOptional(OPTIONAL_EDEFAULT);
+				return;
+			case OrmPackage.ONE_TO_ONE__JOIN_COLUMNS:
+				getJoinColumns().clear();
 				return;
 			case OrmPackage.ONE_TO_ONE__MAPPED_BY:
 				setMappedBy(MAPPED_BY_EDEFAULT);
 				return;
 			case OrmPackage.ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
 				getPrimaryKeyJoinColumns().clear();
-				return;
-			case OrmPackage.ONE_TO_ONE__JOIN_COLUMNS:
-				getJoinColumns().clear();
-				return;
-			case OrmPackage.ONE_TO_ONE__JOIN_TABLE:
-				setJoinTable((JoinTable)null);
-				return;
-			case OrmPackage.ONE_TO_ONE__CASCADE:
-				setCascade((CascadeType)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -702,18 +696,18 @@ public class OneToOne extends JpaEObject implements AttributeMapping
 				return TARGET_ENTITY_EDEFAULT == null ? targetEntity != null : !TARGET_ENTITY_EDEFAULT.equals(targetEntity);
 			case OrmPackage.ONE_TO_ONE__FETCH:
 				return fetch != FETCH_EDEFAULT;
-			case OrmPackage.ONE_TO_ONE__OPTIONAL:
-				return OPTIONAL_EDEFAULT == null ? optional != null : !OPTIONAL_EDEFAULT.equals(optional);
-			case OrmPackage.ONE_TO_ONE__MAPPED_BY:
-				return MAPPED_BY_EDEFAULT == null ? mappedBy != null : !MAPPED_BY_EDEFAULT.equals(mappedBy);
-			case OrmPackage.ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
-				return primaryKeyJoinColumns != null && !primaryKeyJoinColumns.isEmpty();
-			case OrmPackage.ONE_TO_ONE__JOIN_COLUMNS:
-				return joinColumns != null && !joinColumns.isEmpty();
 			case OrmPackage.ONE_TO_ONE__JOIN_TABLE:
 				return joinTable != null;
 			case OrmPackage.ONE_TO_ONE__CASCADE:
 				return cascade != null;
+			case OrmPackage.ONE_TO_ONE__OPTIONAL:
+				return OPTIONAL_EDEFAULT == null ? optional != null : !OPTIONAL_EDEFAULT.equals(optional);
+			case OrmPackage.ONE_TO_ONE__JOIN_COLUMNS:
+				return joinColumns != null && !joinColumns.isEmpty();
+			case OrmPackage.ONE_TO_ONE__MAPPED_BY:
+				return MAPPED_BY_EDEFAULT == null ? mappedBy != null : !MAPPED_BY_EDEFAULT.equals(mappedBy);
+			case OrmPackage.ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
+				return primaryKeyJoinColumns != null && !primaryKeyJoinColumns.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

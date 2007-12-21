@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmSwitch.java,v 1.1.2.9 2007/12/13 19:16:32 kmoore Exp $
+ * $Id: OrmSwitch.java,v 1.1.2.10 2007/12/21 16:15:58 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
@@ -226,6 +226,32 @@ public class OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.RELATIONSHIP_MAPPING:
+			{
+				RelationshipMapping relationshipMapping = (RelationshipMapping)theEObject;
+				T result = caseRelationshipMapping(relationshipMapping);
+				if (result == null) result = caseAttributeMapping(relationshipMapping);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case OrmPackage.MULTI_RELATIONSHIP_MAPPING:
+			{
+				MultiRelationshipMapping multiRelationshipMapping = (MultiRelationshipMapping)theEObject;
+				T result = caseMultiRelationshipMapping(multiRelationshipMapping);
+				if (result == null) result = caseRelationshipMapping(multiRelationshipMapping);
+				if (result == null) result = caseAttributeMapping(multiRelationshipMapping);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case OrmPackage.SINGLE_RELATIONSHIP_MAPPING:
+			{
+				SingleRelationshipMapping singleRelationshipMapping = (SingleRelationshipMapping)theEObject;
+				T result = caseSingleRelationshipMapping(singleRelationshipMapping);
+				if (result == null) result = caseRelationshipMapping(singleRelationshipMapping);
+				if (result == null) result = caseAttributeMapping(singleRelationshipMapping);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case OrmPackage.ID:
 			{
 				Id id = (Id)theEObject;
@@ -265,6 +291,8 @@ public class OrmSwitch<T>
 			{
 				ManyToOne manyToOne = (ManyToOne)theEObject;
 				T result = caseManyToOne(manyToOne);
+				if (result == null) result = caseSingleRelationshipMapping(manyToOne);
+				if (result == null) result = caseRelationshipMapping(manyToOne);
 				if (result == null) result = caseAttributeMapping(manyToOne);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -273,6 +301,8 @@ public class OrmSwitch<T>
 			{
 				OneToMany oneToMany = (OneToMany)theEObject;
 				T result = caseOneToMany(oneToMany);
+				if (result == null) result = caseMultiRelationshipMapping(oneToMany);
+				if (result == null) result = caseRelationshipMapping(oneToMany);
 				if (result == null) result = caseAttributeMapping(oneToMany);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -281,6 +311,8 @@ public class OrmSwitch<T>
 			{
 				OneToOne oneToOne = (OneToOne)theEObject;
 				T result = caseOneToOne(oneToOne);
+				if (result == null) result = caseSingleRelationshipMapping(oneToOne);
+				if (result == null) result = caseRelationshipMapping(oneToOne);
 				if (result == null) result = caseAttributeMapping(oneToOne);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -289,6 +321,8 @@ public class OrmSwitch<T>
 			{
 				ManyToMany manyToMany = (ManyToMany)theEObject;
 				T result = caseManyToMany(manyToMany);
+				if (result == null) result = caseMultiRelationshipMapping(manyToMany);
+				if (result == null) result = caseRelationshipMapping(manyToMany);
 				if (result == null) result = caseAttributeMapping(manyToMany);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -761,6 +795,54 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseColumnMapping(ColumnMapping object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Relationship Mapping</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Relationship Mapping</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseRelationshipMapping(RelationshipMapping object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Multi Relationship Mapping</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Multi Relationship Mapping</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseMultiRelationshipMapping(MultiRelationshipMapping object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Single Relationship Mapping</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Single Relationship Mapping</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSingleRelationshipMapping(SingleRelationshipMapping object)
 	{
 		return null;
 	}

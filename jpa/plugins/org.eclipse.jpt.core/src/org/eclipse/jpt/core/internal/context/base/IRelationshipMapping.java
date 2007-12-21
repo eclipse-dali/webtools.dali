@@ -27,6 +27,15 @@ public interface IRelationshipMapping extends IAttributeMapping
 	IEntity getResolvedTargetEntity();
 
 	void setResolvedTargetEntity(IEntity value);
+	
+	FetchType getFetch();
+
+	FetchType getDefaultFetch();
+		String DEFAULT_FETCH_PROPERTY = "defaultFetchProperty";
+		
+	FetchType getSpecifiedFetch();
+	void setSpecifiedFetch(FetchType newSpecifiedFetch);
+		String SPECIFIED_FETCH_PROPERTY = "specifiedFetchProperty";
 
 //	ICascade getCascade();
 

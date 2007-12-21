@@ -50,27 +50,27 @@ public class OneToManyTranslator extends Translator
 	}
 	
 	private Translator createTargetEntityTranslator() {
-		return new Translator(TARGET_ENTITY, ORM_PKG.getOneToMany_TargetEntity(), DOM_ATTRIBUTE);
+		return new Translator(TARGET_ENTITY, ORM_PKG.getRelationshipMapping_TargetEntity(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createFetchTranslator() {
-		return new Translator(FETCH, ORM_PKG.getOneToMany_Fetch(), DOM_ATTRIBUTE);
+		return new Translator(FETCH, ORM_PKG.getRelationshipMapping_Fetch(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createMappedByTranslator() {
-		return new Translator(MAPPED_BY, ORM_PKG.getOneToMany_MappedBy(), DOM_ATTRIBUTE);
+		return new Translator(MAPPED_BY, ORM_PKG.getMultiRelationshipMapping_MappedBy(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createOrderByTranslator() {
-		return new Translator(ORDER_BY, ORM_PKG.getOneToMany_OrderBy());
+		return new Translator(ORDER_BY, ORM_PKG.getMultiRelationshipMapping_OrderBy());
 	}
 	
 	private Translator createMapKeyTranslator() {
-		return new MapKeyTranslator(MAP_KEY, ORM_PKG.getOneToMany_MapKey());
+		return new MapKeyTranslator(MAP_KEY, ORM_PKG.getMultiRelationshipMapping_MapKey());
 	}
 	
 	private Translator createJoinTableTranslator() {
-		return new JoinTableTranslator(JOIN_TABLE, ORM_PKG.getOneToMany_JoinTable());
+		return new JoinTableTranslator(JOIN_TABLE, ORM_PKG.getRelationshipMapping_JoinTable());
 	}
 		
 	private Translator createJoinColumnTranslator() {
@@ -78,6 +78,6 @@ public class OneToManyTranslator extends Translator
 	}
 	
 	private Translator createCascadeTranslator() {
-		return new CascadeTypeTranslator(CASCADE, ORM_PKG.getOneToMany_Cascade());
+		return new CascadeTypeTranslator(CASCADE, ORM_PKG.getRelationshipMapping_Cascade());
 	}
 }

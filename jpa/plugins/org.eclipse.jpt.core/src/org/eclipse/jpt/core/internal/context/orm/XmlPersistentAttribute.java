@@ -21,6 +21,10 @@ import org.eclipse.jpt.core.internal.resource.orm.Basic;
 import org.eclipse.jpt.core.internal.resource.orm.Embedded;
 import org.eclipse.jpt.core.internal.resource.orm.EmbeddedId;
 import org.eclipse.jpt.core.internal.resource.orm.Id;
+import org.eclipse.jpt.core.internal.resource.orm.ManyToMany;
+import org.eclipse.jpt.core.internal.resource.orm.ManyToOne;
+import org.eclipse.jpt.core.internal.resource.orm.OneToMany;
+import org.eclipse.jpt.core.internal.resource.orm.OneToOne;
 import org.eclipse.jpt.core.internal.resource.orm.Transient;
 import org.eclipse.jpt.core.internal.resource.orm.Version;
 
@@ -45,10 +49,10 @@ public class XmlPersistentAttribute extends JpaContextNode
 		list.add(XmlBasicMappingProvider.instance());
 		list.add(XmlTransientMappingProvider.instance());
 		list.add(XmlIdMappingProvider.instance());
-//		list.add(XmlManyToManyMappingProvider.instance());
-//		list.add(XmlOneToManyMappingProvider.instance());
-//		list.add(XmlManyToOneMappingProvider.instance());
-//		list.add(XmlOneToOneMappingProvider.instance());
+		list.add(XmlManyToManyMappingProvider.instance());
+		list.add(XmlOneToManyMappingProvider.instance());
+		list.add(XmlManyToOneMappingProvider.instance());
+		list.add(XmlOneToOneMappingProvider.instance());
 		list.add(XmlVersionMappingProvider.instance());
 		list.add(XmlEmbeddedIdMappingProvider.instance());
 		return list;
@@ -184,6 +188,9 @@ public class XmlPersistentAttribute extends JpaContextNode
 		return this.getMapping().isIdMapping();
 	}
 	
+	//TODO is there a way to avoid a method for every mapping type?
+	//I am trying to take adavantage of generics here, but it sure is
+	//leading to a lot of duplicated code. - KFM
 	public void initialize(Basic basic) {
 		((XmlBasicMapping) getMapping()).initialize(basic);
 	}
@@ -194,6 +201,22 @@ public class XmlPersistentAttribute extends JpaContextNode
 	
 	public void initialize(Version version) {
 		((XmlVersionMapping) getMapping()).initialize(version);
+	}
+	
+	public void initialize(ManyToOne manyToOne) {
+		((XmlManyToOneMapping) getMapping()).initialize(manyToOne);
+	}
+	
+	public void initialize(OneToMany oneToMany) {
+		((XmlOneToManyMapping) getMapping()).initialize(oneToMany);
+	}
+	
+	public void initialize(OneToOne oneToOne) {
+		((XmlOneToOneMapping) getMapping()).initialize(oneToOne);
+	}
+	
+	public void initialize(ManyToMany manyToMany) {
+		((XmlManyToManyMapping) getMapping()).initialize(manyToMany);
 	}
 	
 	public void initialize(Id id) {
@@ -245,6 +268,42 @@ public class XmlPersistentAttribute extends JpaContextNode
 		else {
 			setSpecifiedMappingKey_(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 			((XmlVersionMapping) getMapping()).initialize(version);				
+		}
+	}
+	public void update(ManyToOne version) {
+		if (mappingKey() == IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
+			((XmlManyToOneMapping) getMapping()).update(version);
+		}
+		else {
+			setSpecifiedMappingKey_(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+			((XmlManyToOneMapping) getMapping()).initialize(version);				
+		}
+	}
+	public void update(OneToMany version) {
+		if (mappingKey() == IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
+			((XmlOneToManyMapping) getMapping()).update(version);
+		}
+		else {
+			setSpecifiedMappingKey_(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+			((XmlOneToManyMapping) getMapping()).initialize(version);				
+		}
+	}
+	public void update(OneToOne version) {
+		if (mappingKey() == IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
+			((XmlOneToOneMapping) getMapping()).update(version);
+		}
+		else {
+			setSpecifiedMappingKey_(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+			((XmlOneToOneMapping) getMapping()).initialize(version);				
+		}
+	}
+	public void update(ManyToMany version) {
+		if (mappingKey() == IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
+			((XmlManyToManyMapping) getMapping()).update(version);
+		}
+		else {
+			setSpecifiedMappingKey_(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+			((XmlManyToManyMapping) getMapping()).initialize(version);				
 		}
 	}
 

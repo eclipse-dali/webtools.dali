@@ -29,7 +29,11 @@ import org.eclipse.jpt.core.internal.resource.orm.Embedded;
 import org.eclipse.jpt.core.internal.resource.orm.EmbeddedId;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.Id;
+import org.eclipse.jpt.core.internal.resource.orm.ManyToMany;
+import org.eclipse.jpt.core.internal.resource.orm.ManyToOne;
 import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
+import org.eclipse.jpt.core.internal.resource.orm.OneToMany;
+import org.eclipse.jpt.core.internal.resource.orm.OneToOne;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.Transient;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
@@ -315,6 +319,10 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		return getMapping().getJavaPersistentType();
 	}
 	
+	
+	//TODO is there a way to avoid a method for every mapping type?
+	//I am trying to take adavantage of generics here, but it sure is
+	//leading to a lot of duplicated code. - KFM
 	public void initialize(Entity entity) {
 		((XmlEntity) getMapping()).initialize(entity);
 		this.initializeParentPersistentType();	
@@ -360,6 +368,26 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		for (Version version : attributes.getVersions()) {
 			XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 			xmlPersistentAttribute.initialize(version);
+			this.specifiedPersistentAttributes.add(xmlPersistentAttribute);
+		}
+		for (ManyToOne manyToOne : attributes.getManyToOnes()) {
+			XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+			xmlPersistentAttribute.initialize(manyToOne);
+			this.specifiedPersistentAttributes.add(xmlPersistentAttribute);
+		}
+		for (OneToMany oneToMany : attributes.getOneToManys()) {
+			XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+			xmlPersistentAttribute.initialize(oneToMany);
+			this.specifiedPersistentAttributes.add(xmlPersistentAttribute);
+		}
+		for (OneToOne oneToOne : attributes.getOneToOnes()) {
+			XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+			xmlPersistentAttribute.initialize(oneToOne);
+			this.specifiedPersistentAttributes.add(xmlPersistentAttribute);
+		}
+		for (ManyToMany manyToMany : attributes.getManyToManys()) {
+			XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+			xmlPersistentAttribute.initialize(manyToMany);
 			this.specifiedPersistentAttributes.add(xmlPersistentAttribute);
 		}
 		for (Embedded embedded : attributes.getEmbeddeds()) {
@@ -434,6 +462,10 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 			this.updateEmbeddedIds(typeMapping.getAttributes(), xmlPersistentAttributes);
 			this.updateBasics(typeMapping.getAttributes(), xmlPersistentAttributes);
 			this.updateVersions(typeMapping.getAttributes(), xmlPersistentAttributes);
+			this.updateManyToOnes(typeMapping.getAttributes(), xmlPersistentAttributes);
+			this.updateOneToManys(typeMapping.getAttributes(), xmlPersistentAttributes);
+			this.updateOneToOnes(typeMapping.getAttributes(), xmlPersistentAttributes);
+			this.updateManyToManys(typeMapping.getAttributes(), xmlPersistentAttributes);
 			this.updateEmbeddeds(typeMapping.getAttributes(), xmlPersistentAttributes);		
 			this.updateTransients(typeMapping.getAttributes(), xmlPersistentAttributes);		
 		}
@@ -489,6 +521,54 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 			else {
 				XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 				xmlPersistentAttribute.initialize(version);
+				addSpecifiedPersistentAttribute_(xmlPersistentAttribute);
+			}
+		}
+	}
+	protected void updateManyToOnes(org.eclipse.jpt.core.internal.resource.orm.Attributes attributes, ListIterator<XmlPersistentAttribute> xmlPersistentAttributes) {
+		for (ManyToOne manyToOne : attributes.getManyToOnes()) {
+			if (xmlPersistentAttributes.hasNext()) {
+				xmlPersistentAttributes.next().update(manyToOne);
+			}
+			else {
+				XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+				xmlPersistentAttribute.initialize(manyToOne);
+				addSpecifiedPersistentAttribute_(xmlPersistentAttribute);
+			}
+		}
+	}
+	protected void updateOneToManys(org.eclipse.jpt.core.internal.resource.orm.Attributes attributes, ListIterator<XmlPersistentAttribute> xmlPersistentAttributes) {
+		for (OneToMany oneToMany : attributes.getOneToManys()) {
+			if (xmlPersistentAttributes.hasNext()) {
+				xmlPersistentAttributes.next().update(oneToMany);
+			}
+			else {
+				XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+				xmlPersistentAttribute.initialize(oneToMany);
+				addSpecifiedPersistentAttribute_(xmlPersistentAttribute);
+			}
+		}
+	}
+	protected void updateOneToOnes(org.eclipse.jpt.core.internal.resource.orm.Attributes attributes, ListIterator<XmlPersistentAttribute> xmlPersistentAttributes) {
+		for (OneToOne oneToOne : attributes.getOneToOnes()) {
+			if (xmlPersistentAttributes.hasNext()) {
+				xmlPersistentAttributes.next().update(oneToOne);
+			}
+			else {
+				XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+				xmlPersistentAttribute.initialize(oneToOne);
+				addSpecifiedPersistentAttribute_(xmlPersistentAttribute);
+			}
+		}
+	}
+	protected void updateManyToManys(org.eclipse.jpt.core.internal.resource.orm.Attributes attributes, ListIterator<XmlPersistentAttribute> xmlPersistentAttributes) {
+		for (ManyToMany manyToMany : attributes.getManyToManys()) {
+			if (xmlPersistentAttributes.hasNext()) {
+				xmlPersistentAttributes.next().update(manyToMany);
+			}
+			else {
+				XmlPersistentAttribute xmlPersistentAttribute = jpaFactory().createXmlPersistentAttribute(this, IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+				xmlPersistentAttribute.initialize(manyToMany);
 				addSpecifiedPersistentAttribute_(xmlPersistentAttribute);
 			}
 		}

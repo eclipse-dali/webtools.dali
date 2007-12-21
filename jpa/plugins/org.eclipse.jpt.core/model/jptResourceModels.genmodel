@@ -143,6 +143,21 @@
     <genClasses ecoreClass="orm.ecore#//ColumnMapping">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//ColumnMapping/column"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//RelationshipMapping">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//RelationshipMapping/targetEntity"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//RelationshipMapping/fetch"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//RelationshipMapping/joinTable"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//RelationshipMapping/cascade"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//MultiRelationshipMapping">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//MultiRelationshipMapping/mappedBy"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//MultiRelationshipMapping/orderBy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//MultiRelationshipMapping/mapKey"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//SingleRelationshipMapping">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//SingleRelationshipMapping/optional"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//SingleRelationshipMapping/joinColumns"/>
+    </genClasses>
     <genClasses ecoreClass="orm.ecore#//Id">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Id/generatedValue"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Id/temporal"/>
@@ -162,43 +177,15 @@
     <genClasses ecoreClass="orm.ecore#//Version">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Version/temporal"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//ManyToOne">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ManyToOne/targetEntity"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ManyToOne/fetch"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ManyToOne/optional"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//ManyToOne/joinColumns"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//ManyToOne/joinTable"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//ManyToOne/cascade"/>
-    </genClasses>
+    <genClasses ecoreClass="orm.ecore#//ManyToOne"/>
     <genClasses ecoreClass="orm.ecore#//OneToMany">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//OneToMany/targetEntity"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//OneToMany/fetch"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//OneToMany/mappedBy"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//OneToMany/orderBy"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//OneToMany/mapKey"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//OneToMany/joinTable"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//OneToMany/joinColumns"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//OneToMany/cascade"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//OneToOne">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//OneToOne/targetEntity"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//OneToOne/fetch"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//OneToOne/optional"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//OneToOne/mappedBy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//OneToOne/primaryKeyJoinColumns"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//OneToOne/joinColumns"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//OneToOne/joinTable"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//OneToOne/cascade"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//ManyToMany">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ManyToMany/targetEntity"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ManyToMany/fetch"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ManyToMany/mappedBy"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ManyToMany/orderBy"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//ManyToMany/mapKey"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//ManyToMany/joinTable"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//ManyToMany/cascade"/>
-    </genClasses>
+    <genClasses ecoreClass="orm.ecore#//ManyToMany"/>
     <genClasses ecoreClass="orm.ecore#//Embedded">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Embedded/attributeOverrides"/>
     </genClasses>
