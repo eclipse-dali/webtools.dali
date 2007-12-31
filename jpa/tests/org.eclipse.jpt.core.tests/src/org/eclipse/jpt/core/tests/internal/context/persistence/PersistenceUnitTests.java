@@ -728,6 +728,79 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertNull(xmlPersistenceUnit.getProperties());
 	}
 	
+	public void testModifyProperties3() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// add two properties and test that there are two existing in xml and context
+		persistenceUnit.putProperty("foo", "bar");
+		persistenceUnit.putProperty("FOO", "BAR");
+		
+		assertEquals(xmlPersistenceUnit.getProperties().getProperties().size(), 2);
+		assertEquals(CollectionTools.size(persistenceUnit.properties()), 2);
+		
+		// remove property from context, test that it's removed from resource
+		persistenceUnit.removeProperty(0);
+		
+		assertEquals(xmlPersistenceUnit.getProperties().getProperties().size(), 1);
+		
+		// remove another one, test that properties object is nulled
+		persistenceUnit.removeProperty(0);
+		
+		assertNull(xmlPersistenceUnit.getProperties());
+	}
+	
+	public void testModifyProperties4() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// add two properties and test that there are two existing in xml and context
+		persistenceUnit.putProperty("foo", "bar");
+		persistenceUnit.putProperty("FOO", "BAR");
+		
+		assertEquals(xmlPersistenceUnit.getProperties().getProperties().size(), 2);
+		assertEquals(CollectionTools.size(persistenceUnit.properties()), 2);
+		
+		// modify a property, test its value
+		persistenceUnit.putProperty("FOO", null);
+		assertNull(persistenceUnit.getProperty("FOO").getValue());
+
+		persistenceUnit.putProperty("foo", "");
+		assertEquals("", persistenceUnit.getProperty("foo").getValue());
+
+		persistenceUnit.putProperty("foo", "BAR");
+		assertEquals("BAR", persistenceUnit.getProperty("foo").getValue());
+		
+		// remove property that doesn't from context, test that the resource is unchanged
+		persistenceUnit.removeProperty("notExist");
+		assertEquals(xmlPersistenceUnit.getProperties().getProperties().size(), 2);
+		
+		// remove property from context, test that it's removed from resource
+		persistenceUnit.removeProperty("FOO");
+		assertNull(persistenceUnit.getProperty("FOO"));
+		assertEquals(xmlPersistenceUnit.getProperties().getProperties().size(), 1);
+
+		// remove another one, test that properties object is nulled
+		persistenceUnit.removeProperty("foo");
+		assertNull(persistenceUnit.getProperty("foo"));
+		assertNull(xmlPersistenceUnit.getProperties());
+	}
+	
+	public void testAccessProperty() {
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// add two properties and try to access it.
+		persistenceUnit.putProperty("foo", "bar");
+		persistenceUnit.putProperty("FOO", "BAR");
+		
+		IProperty property = persistenceUnit.getProperty("foo");
+		assertNotNull(property);
+		assertEquals("bar", property.getValue());
+		assertTrue(persistenceUnit.containsProperty("FOO"));
+		assertEquals("BAR", persistenceUnit.getProperty("FOO").getValue());
+		assertNull(persistenceUnit.getProperty("notExist"));
+	}
+	
 	public void testUpdatePropertyName() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
 		IPersistenceUnit persistenceUnit = persistenceUnit();

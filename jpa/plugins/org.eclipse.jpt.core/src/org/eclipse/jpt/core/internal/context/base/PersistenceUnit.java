@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
@@ -340,14 +342,63 @@ public class PersistenceUnit extends JpaContextNode
 	public ListIterator<IProperty> properties() {
 		return new CloneListIterator<IProperty>(this.properties);
 	}
-	
-	public IProperty addProperty() {
-		return addProperty(this.properties.size());
+
+	public IProperty getProperty(String name) {
+		for(IProperty property : this.properties) {
+			if(name.equals(property.getName())) {
+				return property;
+			}
+		}
+		return null;
+	}
+
+	protected XmlProperty getXmlProperty(String name) {
+		if (this.xmlPersistenceUnit.getProperties() == null) {
+			XmlProperties xmlProperties = PersistenceFactory.eINSTANCE.createXmlProperties();
+			this.xmlPersistenceUnit.setProperties(xmlProperties);
+		}
+		for(XmlProperty xmlProperty : this.xmlPersistenceUnit.getProperties().getProperties()) {
+			if(name.equals(xmlProperty.getName())) {
+				return xmlProperty;
+			}
+		}
+		return null;
+	}
+
+	public void putProperty(String key, String value) {
+		if( ! this.containsProperty(key)) {
+			XmlProperty xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
+			xmlProperty.setName(key);
+			xmlProperty.setValue(value);
+			
+			this.addXmlProperty(xmlProperty);
+			return;
+		}
+		this.putXmlProperty(key, value);
 	}
 	
-	public IProperty addProperty(int index) {
+	protected void putXmlProperty(String key, String value) {
+		EList<XmlProperty> xmlProperties = this.xmlPersistenceUnit.getProperties().getProperties();
+
+		XmlProperty xmlProperty = this.getXmlProperty(key);
+		xmlProperty.setValue(value);
+		this.setItemInList(xmlProperties.indexOf(xmlProperty), xmlProperty, xmlProperties, PROPERTIES_LIST);
+	}	
+	
+	public boolean containsProperty(String key) {
+		return (this.getProperty(key) != null);
+	}
+	
+	public IProperty addProperty() {
 		XmlProperty xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
+		
+		return this.addXmlProperty(xmlProperty);
+	}
+	
+	protected IProperty addXmlProperty(XmlProperty xmlProperty) {
+
 		IProperty property = createProperty(xmlProperty);
+		int index = this.properties.size();
 		this.properties.add(index, property);
 		
 		if (this.xmlPersistenceUnit.getProperties() == null) {
@@ -356,12 +407,18 @@ public class PersistenceUnit extends JpaContextNode
 		}
 		
 		this.xmlPersistenceUnit.getProperties().getProperties().add(xmlProperty);
-		fireItemAdded(PROPERTIES_LIST, index, property);
+		this.fireItemAdded(PROPERTIES_LIST, index, property);
 		return property;
 	}
 	
+	public void removeProperty(String key) {
+		this.removeProperty(this.getProperty(key));
+	}
+	
 	public void removeProperty(IProperty property) {
-		removeProperty(this.properties.indexOf(property));
+		if(property != null) {
+			this.removeProperty(this.properties.indexOf(property));
+		}
 	}
 	
 	public void removeProperty(int index) {

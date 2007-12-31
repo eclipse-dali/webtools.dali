@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.base;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public interface IPersistenceUnit extends IJpaContextNode
 {
@@ -288,16 +289,21 @@ public interface IPersistenceUnit extends IJpaContextNode
 	 */
 	IProperty addProperty();
 	
-	/**
-	 * Add a property to the persistence unit at the specified index and 
-	 * return the object representing it.
-	 */
-	IProperty addProperty(int index);
+	IProperty getProperty(String name);
+
+	void putProperty(String key, String value);
+	
+	boolean containsProperty(String key);
 	
 	/**
 	 * Remove the property from the persistence unit.
 	 */
 	void removeProperty(IProperty property);
+	
+	/**
+	 * Remove the property with the given key from the persistence unit.
+	 */
+	void removeProperty(String key);
 	
 	/**
 	 * Remove the property at the specified index from the persistence unit.
