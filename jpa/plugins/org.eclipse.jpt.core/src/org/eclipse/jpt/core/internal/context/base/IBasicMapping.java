@@ -27,11 +27,6 @@ public interface IBasicMapping extends IAttributeMapping, IColumnMapping, IFetch
 
 	void setLob(boolean value);
 		String LOB_PROPERTY = "lobProperty";
-
-	TemporalType getTemporal();
-	void setTemporal(TemporalType value);
-		String TEMPORAL_PROPERTY = "temporalProperty";
-
 	
 	EnumType getEnumerated();
 	

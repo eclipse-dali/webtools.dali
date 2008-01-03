@@ -10,7 +10,8 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 
-public interface IAttributeOverride extends IOverride, IColumnMapping, IColumn.Owner
+public interface IAttributeOverride extends IOverride, IColumn.Owner
 {
+	IColumn getColumn();
 
 }

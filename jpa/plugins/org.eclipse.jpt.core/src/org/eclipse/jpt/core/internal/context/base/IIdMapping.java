@@ -15,10 +15,6 @@ public interface IIdMapping extends IAttributeMapping, IColumnMapping
 	IGeneratedValue addGeneratedValue();
 	void removeGeneratedValue();
 		String GENERATED_VALUE_PROPERTY = "generatedValueProperty";
-
-	TemporalType getTemporal();
-	void setTemporal(TemporalType value);
-		String TEMPORAL_PROPERTY = "temporalProperty";
 	
 	ITableGenerator getTableGenerator();
 	ITableGenerator addTableGenerator();

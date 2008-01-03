@@ -12,7 +12,4 @@ package org.eclipse.jpt.core.internal.context.base;
 
 public interface IVersionMapping extends IAttributeMapping, IColumnMapping
 {
-	TemporalType getTemporal();	
-	void setTemporal(TemporalType value);
-		String TEMPORAL_PROPERTY = "temporalProperty";
 }

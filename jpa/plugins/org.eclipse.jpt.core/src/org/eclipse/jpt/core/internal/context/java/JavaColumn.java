@@ -23,7 +23,7 @@ public class JavaColumn extends AbstractJavaColumn<Column> implements IJavaColum
 
 	protected Integer specifiedScale;
 	
-	public JavaColumn(IJavaColumnMapping parent, IJavaColumn.Owner owner) {
+	public JavaColumn(IJavaJpaContextNode parent, IJavaColumn.Owner owner) {
 		super(parent, owner);
 	}
 	

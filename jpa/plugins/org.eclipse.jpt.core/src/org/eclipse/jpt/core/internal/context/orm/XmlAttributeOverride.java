@@ -21,7 +21,7 @@ import org.eclipse.jpt.db.internal.Table;
 
 
 public class XmlAttributeOverride extends JpaContextNode
-	implements IAttributeOverride, IXmlColumnMapping
+	implements IAttributeOverride
 {
 
 	protected String name;

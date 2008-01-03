@@ -26,7 +26,6 @@ import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeOverride;
 import org.eclipse.jpt.core.internal.context.java.IJavaBasicMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaColumn;
-import org.eclipse.jpt.core.internal.context.java.IJavaColumnMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddable;
 import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddedMapping;
@@ -105,7 +104,7 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	
 	IJavaTable createJavaTable(IJavaEntity parent);
 	
-	IJavaColumn createJavaColumn(IJavaColumnMapping parent, IJavaColumn.Owner owner);
+	IJavaColumn createJavaColumn(IJavaJpaContextNode parent, IJavaColumn.Owner owner);
 
 	IJavaDiscriminatorColumn createJavaDiscriminatorColumn(IJavaEntity parent, INamedColumn.Owner owner);
 	

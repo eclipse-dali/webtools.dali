@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.context.base.IAbstractColumn;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.resource.orm.Column;
 import org.eclipse.jpt.core.internal.resource.orm.ColumnMapping;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
@@ -28,7 +29,7 @@ public class XmlColumn extends AbstractXmlColumn<Column> implements IColumn
 
 	protected ColumnMapping columnMapping;
 	
-	protected XmlColumn(IXmlColumnMapping parent, IAbstractColumn.Owner owner) {
+	protected XmlColumn(IJpaContextNode parent, IAbstractColumn.Owner owner) {
 		super(parent, owner);
 	}
 //
