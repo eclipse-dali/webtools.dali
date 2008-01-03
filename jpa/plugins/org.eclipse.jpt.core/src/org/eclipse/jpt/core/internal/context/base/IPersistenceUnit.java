@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.base;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public interface IPersistenceUnit extends IJpaContextNode
 {
