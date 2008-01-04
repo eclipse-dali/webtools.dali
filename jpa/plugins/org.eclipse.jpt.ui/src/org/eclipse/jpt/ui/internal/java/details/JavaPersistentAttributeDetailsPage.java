@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.java.details;
 
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.NullAttributeMappingUiProvider;
@@ -36,17 +37,17 @@ public class JavaPersistentAttributeDetailsPage
 	}
 
 	@Override
-	protected ListIterator<IAttributeMappingUiProvider> attributeMappingUiProviders() {
+	protected ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> attributeMappingUiProviders() {
 		// TODO
 		return ((BaseJpaPlatformUi) jpaPlatformUi()).javaAttributeMappingUiProviders();
 	}
 
-	protected IAttributeMappingUiProvider nullAttributeMappingUiProvider() {
+	protected IAttributeMappingUiProvider<IAttributeMapping> nullAttributeMappingUiProvider() {
 		return NullAttributeMappingUiProvider.instance();
 	}
 
 	@Override
-	protected ListIterator<IAttributeMappingUiProvider> defaultAttributeMappingUiProviders() {
+	protected ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> defaultAttributeMappingUiProviders() {
 		// TODO
 //		return jpaPlatformUi().defaultJavaAttributeMappingUiProviders();
 		return ((BaseJpaPlatformUi) jpaPlatformUi()).defaultJavaAttributeMappingUiProviders();
@@ -60,20 +61,20 @@ public class JavaPersistentAttributeDetailsPage
 	 * determined by matching its key with the key of the current attributeMapping.
 	 */
 	@Override
-	protected IAttributeMappingUiProvider[] attributeMappingUiProvidersFor(IPersistentAttribute persistentAttribute) {
-		IAttributeMappingUiProvider[] providers = new IAttributeMappingUiProvider[CollectionTools.size(attributeMappingUiProviders()) + 1];
+	protected IAttributeMappingUiProvider<? extends IAttributeMapping>[] attributeMappingUiProvidersFor(IPersistentAttribute persistentAttribute) {
+		IAttributeMappingUiProvider<? extends IAttributeMapping>[] providers = new IAttributeMappingUiProvider<?>[CollectionTools.size(attributeMappingUiProviders()) + 1];
 		providers[0] =  defaultAttributeMappingUiProvider(persistentAttribute.defaultMappingKey());
 		int i = 1;
-		for (ListIterator<IAttributeMappingUiProvider> iterator = attributeMappingUiProviders(); iterator.hasNext(); ) {
+		for (ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> iterator = attributeMappingUiProviders(); iterator.hasNext(); ) {
 			providers[i++] = iterator.next();
 		}
 		return providers;
 	}
 
 	@Override
-	protected IAttributeMappingUiProvider defaultAttributeMappingUiProvider(String key) {
-		for (ListIterator<IAttributeMappingUiProvider> i = defaultAttributeMappingUiProviders(); i.hasNext(); ) {
-			IAttributeMappingUiProvider provider = i.next();
+	protected IAttributeMappingUiProvider<? extends IAttributeMapping> defaultAttributeMappingUiProvider(String key) {
+		for (ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> i = defaultAttributeMappingUiProviders(); i.hasNext(); ) {
+			IAttributeMappingUiProvider<? extends IAttributeMapping> provider = i.next();
 			if (provider.attributeMappingKey() == key) {
 				return provider;
 			}

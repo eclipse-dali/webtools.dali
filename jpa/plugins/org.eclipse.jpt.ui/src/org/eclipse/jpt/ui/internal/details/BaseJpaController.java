@@ -16,6 +16,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
@@ -29,11 +30,14 @@ public abstract class BaseJpaController<T>
 	 */
 	private ControlAligner leftControlAligner;
 
-	//put in the populating flag to stop the circular population of the entity name combo
-	//populateEntityNameCombo is calling select() which causes entityNameComboModified() to be called
-	//this sets the name in the model which starts the circle over again. We should probably
-	//short-circuit this differently, like in the emf model, keep the property change from being fired if
-	//a change did not actually occur - KFM
+	/**
+	 * Put in the populating flag to stop the circular population of the entity
+	 * name combo populateEntityNameCombo is calling select() which causes
+	 * entityNameComboModified() to be called this sets the name in the model
+	 * which starts the circle over again. We should probably short-circuit this
+	 * differently, like in the emf model, keep the property change from being
+	 * fired if a change did not actually occur - KFM.
+	 */
 	private boolean populating;
 
 	/**
@@ -101,22 +105,59 @@ public abstract class BaseJpaController<T>
 		this(subjectHolder, parent, SWT.NULL, widgetFactory);
 	}
 
+	/**
+	 * Adds the given controller's widgets (those that were registered with its
+	 * left <code>ControlAligner</code>) to this controller's left
+	 * <code>ControlAligner</code> so that their width can be adjusted to have
+	 * the width of the widest widget.
+	 *
+	 * @param controller The controller containing the widgets to add
+	 */
 	protected final void addAlignLeft(BaseJpaController<?> container) {
 		leftControlAligner.add(container.leftControlAligner);
 	}
 
+	/**
+	 * Adds the given control to the collection of widgets that have their width
+	 * adjust with the width of the widest widget. The left alignment is usually
+	 * used for labels.
+	 *
+	 * @param controller The controller to add
+	 */
 	protected final void addAlignLeft(Control control) {
 		leftControlAligner.add(control);
 	}
 
+	/**
+	 * Adds the given controller's widgets (those that were registered with its
+	 * right <code>ControlAligner</code>) to this controller's right
+	 * <code>ControlAligner</code> so that their width can be adjusted to have
+	 * the width of the widest widget.
+	 *
+	 * @param controller The controller containing the widgets to add
+	 */
 	protected final void addAlignRight(BaseJpaController<?> container) {
 		rightControlAligner.add(container.rightControlAligner);
 	}
 
+	/**
+	 * Adds the given control to the collection of widgets that have their width
+	 * adjust with the width of the widest widget. The left alignment is usually
+	 * used for buttons.
+	 *
+	 * @param controller The controller to add
+	 */
 	protected final void addAlignRight(Control control) {
 		rightControlAligner.add(control);
 	}
 
+	/**
+	 * Adds the given controller's controls (those that were registered for
+	 * alignment) from this controller.
+	 *
+	 * @param controller The controller containing the widgets to add for
+	 * alignment
+	 */
 	protected final void addPaneForAlignment(BaseJpaController<?> container) {
 		addAlignLeft(container);
 		addAlignRight(container);
@@ -136,13 +177,36 @@ public abstract class BaseJpaController<T>
 	                                                Composite centerComposite) {
 
 
+		return buildLabeledComposite(labelText, container, centerComposite, null);
+	}
+
+	/**
+	 * Creates a new container that will have the given center composite labeled
+	 * with the given label text.
+	 *
+	 * @param labelText The text to label the main composite
+	 * @param container The parent container
+	 * @param centerComposite The main component
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The container of the label and the given center composite
+	 */
+	protected final Composite buildLabeledComposite(String labelText,
+	                                                Composite container,
+	                                                Composite centerComposite,
+	                                                String helpId) {
+
+
 		// Container for the label and main composite
 		container = this.widgetFactory.createComposite(container);
 
 		GridLayout layout = new GridLayout(2, false);
+		layout.marginHeight = 0;
 		layout.marginWidth  = 0;
-		layout.marginBottom = 0;
-		layout.marginRight  = 1;
+		layout.marginTop    = 5;
+		layout.marginLeft   = 0;
+		layout.marginBottom = 1; // Weird, it seems the right and bottom borders
+		layout.marginRight  = 1; // are not painted if it's zero
 		container.setLayout(layout);
 
 		GridData gridData = new GridData();
@@ -158,11 +222,71 @@ public abstract class BaseJpaController<T>
 		gridData = new GridData();
 		gridData.horizontalAlignment       = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
-
-		centerComposite.setParent(container);
 		centerComposite.setLayoutData(gridData);
 
+		// Re-parent the center container to the new sub pane
+		centerComposite.setParent(container);
+
+		// Register the help id for the center composite
+		if (helpId != null) {
+			helpSystem().setHelp(centerComposite, helpId);
+		}
+
 		return container;
+	}
+
+	/**
+	 * Creates a new <code>Composite</code> used as a sub-pane.
+	 *
+	 * @param container The parent container
+	 * @return A new <code>Composite</code> used as a sub-pane
+	 */
+	protected final Composite buildSubPane(Composite container) {
+		Composite group = this.widgetFactory.createComposite(container);
+
+		GridLayout layout = new GridLayout(1, false);
+		layout.marginHeight = 0;
+		layout.marginWidth  = 0;
+		layout.marginTop    = 0;
+		layout.marginLeft   = 0;
+		layout.marginBottom = 0;
+		layout.marginRight  = 0;
+		group.setLayout(layout);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment       = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		group.setLayoutData(gridData);
+
+		return group;
+	}
+
+	/**
+	 * Creates a new container with a titled border.
+	 *
+	 * @param title The text of the titled border
+	 * @param container The parent container
+	 * @return A new <code>Composite</code> with a titled border
+	 */
+	protected final Composite buildTitledPane(String title, Composite container) {
+		Group group = this.widgetFactory.createGroup(container, title);
+
+		GridLayout layout = new GridLayout(1, false);
+		layout.marginHeight = 0;
+		layout.marginWidth  = 0;
+		layout.marginTop    = 2;
+		layout.marginLeft   = 5;
+		layout.marginBottom = 6;
+		layout.marginRight  = 5;
+		group.setLayout(layout);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment       = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.verticalIndent            = 10;
+		group.setLayoutData(gridData);
+
+		return group;
 	}
 
 	/**
@@ -183,7 +307,9 @@ public abstract class BaseJpaController<T>
 	 * Notifies this controller is should dispose itself.
 	 */
 	public void dispose() {
-		disengageListeners();
+		if (!getControl().isDisposed()) {
+			disengageListeners();
+		}
 	}
 
 	/**
@@ -198,6 +324,11 @@ public abstract class BaseJpaController<T>
 	protected void engageListeners() {
 	}
 
+	/**
+	 * Returns this controller's widget.
+	 *
+	 * @return The main widget of this controller
+	 */
 	public abstract Control getControl();
 
 	/**
@@ -264,23 +395,68 @@ public abstract class BaseJpaController<T>
 		finally {
 			this.populating = false;
 		}
+
+		this.engageListeners();
 	}
 
-	protected final void removeAlignLeft(BaseJpaController<?> container) {
-		leftControlAligner.remove(container.rightControlAligner);
+	/**
+	 * Removes the given controller's widgets (those that were registered with
+	 * its left <code>ControlAligner</code>) from this controller's left
+	 * <code>ControlAligner</code> so that their width will no longer be adjusted
+	 * with the width of the widest widget.
+	 *
+	 * @param controller The controller containing the widgets to remove
+	 */
+	protected final void removeAlignLeft(BaseJpaController<?> controller) {
+		leftControlAligner.remove(controller.leftControlAligner);
 	}
 
-	protected final void removeAlignRight(BaseJpaController<?> container) {
-		rightControlAligner.remove(container.rightControlAligner);
+	/**
+	 * Removes the given control from the collection of widgets that are aligned
+	 * to have the same width when they are shown to the left side of the 3
+	 * widget colums.
+	 *
+	 * @param controller The controller to remove, its width will no longer be
+	 * ajusted to be the width of the longest widget
+	 */
+	protected final void removeAlignLeft(Control control) {
+		leftControlAligner.remove(control);
 	}
 
+	/**
+	 * Removes the given controller's widgets (those that were registered with
+	 * its right <code>ControlAligner</code>) from this controller's right
+	 * <code>ControlAligner</code> so that their width will no longer be adjusted
+	 * with the width of the widest widget.
+	 *
+	 * @param controller The controller containing the widgets to remove
+	 */
+	protected final void removeAlignRight(BaseJpaController<?> controller) {
+		rightControlAligner.remove(controller.rightControlAligner);
+	}
+
+	/**
+	 * Removes the given control from the collection of widgets that are aligned
+	 * to have the same width when they are shown to the right side of the 3
+	 * widget colums.
+	 *
+	 * @param controller The controller to remove, its width will no longer be
+	 * ajusted to be the width of the longest widget
+	 */
 	protected final void removeAlignRight(Control control) {
 		rightControlAligner.remove(control);
 	}
 
-	protected final void removePaneForAlignment(BaseJpaController<?> container) {
-		removeAlignLeft(container);
-		removeAlignRight(container);
+	/**
+	 * Removes the given controller's controls (those that were registered for
+	 * alignment) from this controller.
+	 *
+	 * @param controller The controller containing the widgets that no longer
+	 * requires their width adjusted with the width of the longest widget
+	 */
+	protected final void removePaneForAlignment(BaseJpaController<?> controller) {
+		removeAlignLeft(controller);
+		removeAlignRight(controller);
 	}
 
 	/**

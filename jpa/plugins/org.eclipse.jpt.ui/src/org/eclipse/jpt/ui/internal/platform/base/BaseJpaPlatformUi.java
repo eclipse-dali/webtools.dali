@@ -16,7 +16,9 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaJpaContextNode;
 import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.IJpaUiFactory;
@@ -53,9 +55,9 @@ public abstract class BaseJpaPlatformUi implements IJpaPlatformUi
 	private List<IJpaDetailsProvider> detailsProviders;
 	private Collection<IJpaStructureProvider> structureProviders;
 
-	private List<ITypeMappingUiProvider> javaTypeMappingUiProviders;
-	private List<IAttributeMappingUiProvider> javaAttributeMappingUiProviders;
-	private List<IAttributeMappingUiProvider> defaultJavaAttributeMappingUiProviders;
+	private List<ITypeMappingUiProvider<? extends ITypeMapping>> javaTypeMappingUiProviders;
+	private List<IAttributeMappingUiProvider<? extends IAttributeMapping>> javaAttributeMappingUiProviders;
+	private List<IAttributeMappingUiProvider<? extends IAttributeMapping>> defaultJavaAttributeMappingUiProviders;
 
 	private IJpaUiFactory jpaUiFactory;
 
@@ -120,12 +122,14 @@ public abstract class BaseJpaPlatformUi implements IJpaPlatformUi
 //		return null;
 	}
 
-	public ListIterator<ITypeMappingUiProvider> javaTypeMappingUiProviders() {
+	public ListIterator<ITypeMappingUiProvider<? extends ITypeMapping>> javaTypeMappingUiProviders() {
 		if (this.javaTypeMappingUiProviders == null) {
-			this.javaTypeMappingUiProviders = new ArrayList<ITypeMappingUiProvider>();
+			this.javaTypeMappingUiProviders = new ArrayList<ITypeMappingUiProvider<? extends ITypeMapping>>();
 			this.addJavaTypeMappingUiProvidersTo(this.javaTypeMappingUiProviders);
 		}
-		return new CloneListIterator<ITypeMappingUiProvider>(this.javaTypeMappingUiProviders);
+		return new CloneListIterator<ITypeMappingUiProvider<? extends ITypeMapping>>(
+			this.javaTypeMappingUiProviders
+		);
 	}
 
 	/**
@@ -133,20 +137,22 @@ public abstract class BaseJpaPlatformUi implements IJpaPlatformUi
 	 * The default includes the JPA spec-defined entity, mapped superclass, embeddable,
 	 * and null (when the others don't apply)
 	 */
-	protected void addJavaTypeMappingUiProvidersTo(List<ITypeMappingUiProvider> providers) {
+	protected void addJavaTypeMappingUiProvidersTo(List<ITypeMappingUiProvider<? extends ITypeMapping>> providers) {
 		providers.add(NullTypeMappingUiProvider.instance());
 		providers.add(EntityUiProvider.instance());
 		providers.add(MappedSuperclassUiProvider.instance());
 		providers.add(EmbeddableUiProvider.instance());
 	}
 
-	public ListIterator<IAttributeMappingUiProvider> javaAttributeMappingUiProviders() {
+	public ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> javaAttributeMappingUiProviders() {
 		if (this.javaAttributeMappingUiProviders == null) {
-			this.javaAttributeMappingUiProviders = new ArrayList<IAttributeMappingUiProvider>();
+			this.javaAttributeMappingUiProviders = new ArrayList<IAttributeMappingUiProvider<? extends IAttributeMapping>>();
 			this.addJavaAttributeMappingUiProvidersTo(this.javaAttributeMappingUiProviders);
 		}
-		return new CloneListIterator<IAttributeMappingUiProvider>(this.javaAttributeMappingUiProviders);
 
+		return new CloneListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>>(
+			this.javaAttributeMappingUiProviders
+		);
 	}
 
 	/**
@@ -154,7 +160,7 @@ public abstract class BaseJpaPlatformUi implements IJpaPlatformUi
 	 * The default includes the JPA spec-defined basic, embedded, embeddedId, id,
 	 * manyToMany, manyToOne, oneToMany, oneToOne, transient, and version
 	 */
-	protected void addJavaAttributeMappingUiProvidersTo(List<IAttributeMappingUiProvider> providers) {
+	protected void addJavaAttributeMappingUiProvidersTo(List<IAttributeMappingUiProvider<? extends IAttributeMapping>> providers) {
 		providers.add(BasicMappingUiProvider.instance());
 		providers.add(EmbeddedMappingUiProvider.instance());
 		providers.add(EmbeddedIdMappingUiProvider.instance());
@@ -167,24 +173,25 @@ public abstract class BaseJpaPlatformUi implements IJpaPlatformUi
 		providers.add(VersionMappingUiProvider.instance());
 	}
 
-	public ListIterator<IAttributeMappingUiProvider> defaultJavaAttributeMappingUiProviders() {
+	public ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> defaultJavaAttributeMappingUiProviders() {
 		if (this.defaultJavaAttributeMappingUiProviders == null) {
-			this.defaultJavaAttributeMappingUiProviders = new ArrayList<IAttributeMappingUiProvider>();
+			this.defaultJavaAttributeMappingUiProviders = new ArrayList<IAttributeMappingUiProvider<? extends IAttributeMapping>>();
 			this.addDefaultJavaAttributeMappingUiProvidersTo(this.defaultJavaAttributeMappingUiProviders);
 		}
-		return new CloneListIterator<IAttributeMappingUiProvider>(this.defaultJavaAttributeMappingUiProviders);
 
+		return new CloneListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>>(
+			this.defaultJavaAttributeMappingUiProviders
+		);
 	}
 
 	/**
 	 * Override this to specify more or different default java attribute mapping ui providers.
 	 * The default includes the JPA spec-defined basic, embedded
 	 */
-	protected void addDefaultJavaAttributeMappingUiProvidersTo(List<IAttributeMappingUiProvider> providers) {
+	protected void addDefaultJavaAttributeMappingUiProvidersTo(List<IAttributeMappingUiProvider<? extends IAttributeMapping>> providers) {
 		providers.add(DefaultBasicMappingUiProvider.instance());
 		providers.add(DefaultEmbeddedMappingUiProvider.instance());
 	}
-
 
 	public void generateEntities(IJpaProject project, IStructuredSelection selection) {
 		EntitiesGenerator.generate(project, selection);

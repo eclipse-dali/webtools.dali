@@ -9,20 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IGeneratedValue;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
 import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
-import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.mappings.details.EnumComboViewer.EnumHolder;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
@@ -34,18 +29,29 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
+/**
+ * Here the layout of this pane:
+ * <pre>
+ * </pre>
+ *
+ * @see IIdMapping
+ * @see BaseJpaUiFactory
+ * @see ColumnComposite
+ * @see TemporalTypeComposite
+ *
+ * @version 2.0
+ * @since 1.0
+ */
 public class IdComposite extends BaseJpaComposite<IIdMapping>
 {
-	private Adapter idListener;
 	private ColumnComposite columnComposite;
-	private EnumComboViewer temporalTypeViewer;
+	private TemporalTypeComposite temporalTypeComposite;
 	private Section pkGenerationSection;
 	private Button primaryKeyGenerationCheckBox;
 	private GeneratedValueComposite generatedValueComposite;
@@ -56,111 +62,46 @@ public class IdComposite extends BaseJpaComposite<IIdMapping>
 	private Button sequenceGeneratorCheckBox;
 	private SequenceGeneratorComposite sequenceGeneratorComposite;
 
+	/**
+	 * Creates a new <code>IdComposite</code>.
+	 *
+	 * @param subjectHolder The holder of the subject <code>IIdMapping</code>
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public IdComposite(PropertyValueModel<? extends IIdMapping> subjectHolder,
 	                   Composite parent,
 	                   TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, SWT.NULL, widgetFactory);
-		this.idListener = buildIdListener();
 	}
 
-	private Adapter buildIdListener() {
-		return new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				idMappingChanged(notification);
-			}
-		};
-	}
-	void idMappingChanged(Notification notification) {
-		switch (notification.getFeatureID(IIdMapping.class)) {
-			case JpaCoreMappingsPackage.IID__TABLE_GENERATOR :
-				Display.getDefault().asyncExec(new Runnable() {
-					public void run() {
-						if (getControl().isDisposed()) {
-							return;
-						}
-						IdComposite.this.populateTableGeneratorComposite();
-					}
-				});
-				break;
-			case JpaCoreMappingsPackage.IID__SEQUENCE_GENERATOR :
-				Display.getDefault().asyncExec(new Runnable() {
-					public void run() {
-						if (getControl().isDisposed()) {
-							return;
-						}
-						IdComposite.this.populateSequenceGeneratorComposite();
-					}
-				});
-				break;
-			case JpaCoreMappingsPackage.IID__GENERATED_VALUE :
-				Display.getDefault().asyncExec(new Runnable() {
-					public void run() {
-						if (getControl().isDisposed()) {
-							return;
-						}
-						IdComposite.this.populateGeneratedValueComposite();
-					}
-				});
-				break;
-		}
-	}
-
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected void initializeLayout(Composite composite) {
-		GridLayout layout = new GridLayout();
-		layout.marginWidth = 0;
-		layout.marginHeight = 0;
-		composite.setLayout(layout);
+	protected void initializeLayout(Composite container) {
 
-		Control generalControl = buildGeneralComposite(composite);
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		generalControl.setLayoutData(gridData);
+		// Temporal Type widgets
+		buildGeneralComposite(container);
 
-		Control generationControl = buildGenerationComposite(composite);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		generationControl.setLayoutData(gridData);
+		// Generation pane
+		buildGenerationComposite(container);
 	}
 
-	private Control buildGeneralComposite(Composite composite) {
-		Composite generalComposite = getWidgetFactory().createComposite(composite);
-		GridLayout layout = new GridLayout(2, false);
-		layout.marginWidth = 0;
-		generalComposite.setLayout(layout);
+	private void buildGeneralComposite(Composite container) {
 
-		this.columnComposite = new ColumnComposite(buildColumnHolder(), generalComposite, getWidgetFactory());
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalSpan = 2;
-		this.columnComposite.getControl().setLayoutData(gridData);
+		container = buildSubPane(container);
 
-		CommonWidgets.buildTemporalLabel(generalComposite, getWidgetFactory());
-		this.temporalTypeViewer = CommonWidgets.buildEnumComboViewer(buildTemporalTypeHolder(), generalComposite, getWidgetFactory());
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		this.temporalTypeViewer.getControl().setLayoutData(gridData);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(temporalTypeViewer.getControl(), IJpaHelpContextIds.MAPPING_TEMPORAL);
+		// Column widgets
+		this.columnComposite = new ColumnComposite(
+			buildColumnHolder(),
+			container,
+			getWidgetFactory()
+		);
 
-		return generalComposite;
-	}
-
-	private PropertyValueModel<EnumHolder<IIdMapping, TemporalType>> buildTemporalTypeHolder() {
-		// TODO: Have TransformationPropertyValueModel and
-		// TransformationWritablePropertyValueModel
-		return new TransformationPropertyValueModel<IIdMapping, EnumHolder<IIdMapping, TemporalType>>((WritablePropertyValueModel<IIdMapping>) getSubjectHolder()) {
-			@Override
-			protected EnumHolder<IIdMapping, TemporalType> transform(IIdMapping value) {
-				return (value == null) ? null : new TemporalTypeHolder(value);
-			}
-		};
+		// Temporal Type widgets
+		this.temporalTypeComposite = new TemporalTypeComposite(this, container);
 	}
 
 	private PropertyValueModel<? extends IColumn> buildColumnHolder() {
@@ -351,7 +292,6 @@ public class IdComposite extends BaseJpaComposite<IIdMapping>
 	}
 
 
-
 	public void doPopulate(EObject obj) {
 		this.columnComposite.populate();
 		this.generatedValueComposite.populate();
@@ -359,16 +299,19 @@ public class IdComposite extends BaseJpaComposite<IIdMapping>
 		this.sequenceGeneratorComposite.populate();
 
 		this.pkGenerationSection.setExpanded(true);
-		this.temporalTypeViewer.populate();
+		this.temporalTypeComposite.populate();
 		populateGeneratedValueComposite();
 		populateSequenceGeneratorComposite();
 		populateTableGeneratorComposite();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	public void doPopulate() {
+	protected void doPopulate() {
 		this.columnComposite.populate();
-		this.temporalTypeViewer.populate();
+		this.temporalTypeComposite.populate();
 		this.generatedValueComposite.populate();
 		this.tableGeneratorComposite.populate();
 		this.sequenceGeneratorComposite.populate();
@@ -397,80 +340,37 @@ public class IdComposite extends BaseJpaComposite<IIdMapping>
 		this.primaryKeyGenerationCheckBox.setSelection(this.subject().getGeneratedValue() != null);
 	}
 
-
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void engageListeners() {
-		if (this.subject() !=null) {
-			this.subject().eAdapters().add(IdComposite);
-		}
+		super.engageListeners();
+
+		temporalTypeComposite.engageListeners();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void disengageListeners() {
-		if (this.subject() !=null) {
-			this.subject().eAdapters().remove(this.idListener);
-		}
+		super.disengageListeners();
+
+		temporalTypeComposite.disengageListeners();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	public void dispose() {
+		super.dispose();
+
 		this.columnComposite.dispose();
-		this.temporalTypeViewer.dispose();
+		this.temporalTypeComposite.dispose();
 		this.generatedValueComposite.dispose();
 		this.tableGeneratorComposite.dispose();
 		this.sequenceGeneratorComposite.dispose();
-		super.dispose();
-	}
-
-	protected IIdMapping getId() {
-		return this.subject();
-	}
-
-	private class TemporalTypeHolder implements EnumHolder<IIdMapping, TemporalType> {
-
-		private IIdMapping id;
-
-		TemporalTypeHolder(IIdMapping id) {
-			super();
-			this.id = id;
-		}
-
-		public TemporalType get() {
-			return this.id.getTemporal();
-		}
-
-		public void set(TemporalType enumSetting) {
-			this.id.setTemporal(enumSetting);
-		}
-
-		public Class<IIdMapping> featureClass() {
-			return IIdMapping.class;
-		}
-
-		public int featureId() {
-			return JpaCoreMappingsPackage.IID__TEMPORAL;
-		}
-
-		public IIdMapping subject() {
-			return this.id;
-		}
-
-		public TemporalType[] enumValues() {
-			return TemporalType.values();
-		}
-
-		/**
-		 * TemporalType has no Default, return null
-		 */
-		public TemporalType defaultValue() {
-			return null;
-		}
-
-		/**
-		 * TemporalType has no Default, return null
-		 */
-		public String defaultString() {
-			return null;
-		}
 	}
 }

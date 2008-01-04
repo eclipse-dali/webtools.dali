@@ -20,7 +20,12 @@ import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
-//copied from jdt.internal.ui.util
+/**
+ * A suite of utility methods related to the user interface.
+ *
+ * @version 2.0
+ * @since 1.0
+ */
 public class SWTUtil {
 
 	/**

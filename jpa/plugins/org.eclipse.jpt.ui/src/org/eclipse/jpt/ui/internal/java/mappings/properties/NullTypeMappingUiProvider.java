@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
+@SuppressWarnings("nls")
 public class NullTypeMappingUiProvider implements ITypeMappingUiProvider<ITypeMapping>
 {
 	// singleton
@@ -26,7 +27,7 @@ public class NullTypeMappingUiProvider implements ITypeMappingUiProvider<ITypeMa
 	/**
 	 * Return the singleton.
 	 */
-	public static ITypeMappingUiProvider instance() {
+	public static ITypeMappingUiProvider<ITypeMapping> instance() {
 		return INSTANCE;
 	}
 

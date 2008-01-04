@@ -11,14 +11,15 @@ package org.eclipse.jpt.ui.internal.java.mappings.properties;
 
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.ui.internal.IJpaUiFactory;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.details.IJpaComposite;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
+@SuppressWarnings("nls")
 public class NullAttributeMappingUiProvider
 	implements IAttributeMappingUiProvider<IAttributeMapping>
 {
@@ -41,41 +42,65 @@ public class NullAttributeMappingUiProvider
 	}
 
 
+	/*
+	 * (non-Javadoc)
+	 */
 	public String attributeMappingKey() {
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	public String label() {
 		return "";
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	public IJpaComposite<IAttributeMapping> buildAttributeMappingComposite(
 			IJpaUiFactory factory,
 			PropertyValueModel<IAttributeMapping> subjectHolder,
 			Composite parent,
 			TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		return new NullComposite(parent);
+		return new NullComposite(subjectHolder, parent, widgetFactory);
 	}
 
+	public static class NullComposite extends BaseJpaController<IAttributeMapping>
+	                                  implements IJpaComposite<IAttributeMapping>{
 
-	public static class NullComposite extends Composite
-		implements IJpaComposite<IAttributeMapping>
-	{
-		NullComposite(Composite parent) {
-			super(parent, SWT.NONE);
+		private Composite container;
+
+		NullComposite(PropertyValueModel<IAttributeMapping> subjectHolder,
+		              Composite parent,
+		              TabbedPropertySheetWidgetFactory widgetFactory) {
+
+			super(subjectHolder, parent, widgetFactory);
 		}
 
-		public void populate() {
-			// no op
-		}
-
+		/*
+		 * (non-Javadoc)
+		 */
 		@Override
-		public void dispose() {
-			super.dispose();
+		protected void buildWidget(Composite parent, int style) {
+			container = getWidgetFactory().createComposite(parent, style);
 		}
+
+		/*
+		 * (non-Javadoc)
+		 */
+		@Override
+		protected void doPopulate() {
+		}
+
+		/*
+		 * (non-Javadoc)
+		 */
+		@Override
 		public Control getControl() {
-			return this;
+			return container;
 		}
 	}
 }

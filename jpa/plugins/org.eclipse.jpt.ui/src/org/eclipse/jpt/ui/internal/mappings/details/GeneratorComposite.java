@@ -94,9 +94,10 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 
 	@Override
 	protected void disengageListeners() {
-		if (this.generator != null) {
-			this.generator.eAdapters().remove(this.generatorListener);
-		}
+		super.disengageListeners();
+//		if (this.generator != null) {
+//			this.generator.eAdapters().remove(this.generatorListener);
+//		}
 	}
 
 	@Override
@@ -116,9 +117,10 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 
 	@Override
 	protected void engageListeners() {
-		if (this.generator != null) {
-			this.generator.eAdapters().add(this.generatorListener);
-		}
+		super.engageListeners();
+//		if (this.generator != null) {
+//			this.generator.eAdapters().add(this.generatorListener);
+//		}
 	}
 
 	protected abstract E generator(IIdMapping id);

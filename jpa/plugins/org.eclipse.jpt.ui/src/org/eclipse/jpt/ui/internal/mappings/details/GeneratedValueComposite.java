@@ -132,9 +132,10 @@ public class GeneratedValueComposite extends BaseJpaComposite<IIdMapping>
 
 	@Override
 	protected void disengageListeners() {
-		if (this.generatedValue != null) {
-			this.generatedValue.eAdapters().remove(this.generatedValueListener);
-		}
+		super.disengageListeners();
+//		if (this.generatedValue != null) {
+//			this.generatedValue.eAdapters().remove(this.generatedValueListener);
+//		}
 	}
 
 	@Override
@@ -156,9 +157,10 @@ public class GeneratedValueComposite extends BaseJpaComposite<IIdMapping>
 
 	@Override
 	protected void engageListeners() {
-		if (this.generatedValue != null) {
-			this.generatedValue.eAdapters().add(this.generatedValueListener);
-		}
+		super.engageListeners();
+//		if (this.generatedValue != null) {
+//			this.generatedValue.eAdapters().add(this.generatedValueListener);
+//		}
 	}
 
 	protected void generatedValueChanged(Notification notification) {

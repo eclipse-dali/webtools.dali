@@ -14,16 +14,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jpt.core.internal.IJpaContentNode;
+import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
-import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.BasicMappingUiProvider;
@@ -46,7 +43,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
@@ -54,53 +50,52 @@ public class XmlPersistentAttributeDetailsPage
 	extends PersistentAttributeDetailsPage
 {
 	private XmlJavaAttributeChooser javaAttributeChooser;
-
 	private Adapter persistentTypeListener;
-
 	private IPersistentType persistentType;
-
-	private List<IAttributeMappingUiProvider> attributeMappingUiProviders;
+	private List<IAttributeMappingUiProvider<? extends IAttributeMapping>> attributeMappingUiProviders;
 
 	public XmlPersistentAttributeDetailsPage(PropertyValueModel<? extends IPersistentAttribute> subjectHolder,
 	                                         Composite parent,
 	                                         TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-		buildPersistentTypeListener();
+//		buildPersistentTypeListener();
 	}
 
-	private void buildPersistentTypeListener() {
-		this.persistentTypeListener = new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				persistentTypeChanged(notification);
-			}
-		};
-	}
-
-	void persistentTypeChanged(Notification notification) {
-		if (notification.getFeatureID(XmlPersistentType.class) ==
-			OrmPackage.XML_PERSISTENT_TYPE__SPECIFIED_ATTRIBUTE_MAPPINGS) {
-			Display.getDefault().asyncExec(
-				new Runnable() {
-					public void run() {
-						updateEnbabledState();
-					}
-				});
-		}
-	}
+//	private void buildPersistentTypeListener() {
+//		this.persistentTypeListener = new AdapterImpl() {
+//			@Override
+//			public void notifyChanged(Notification notification) {
+//				persistentTypeChanged(notification);
+//			}
+//		};
+//	}
+//
+//	void persistentTypeChanged(Notification notification) {
+//		if (notification.getFeatureID(XmlPersistentType.class) ==
+//			OrmPackage.XML_PERSISTENT_TYPE__SPECIFIED_ATTRIBUTE_MAPPINGS) {
+//			Display.getDefault().asyncExec(
+//				new Runnable() {
+//					public void run() {
+//						updateEnbabledState();
+//					}
+//				});
+//		}
+//	}
 
 	@Override
-	public ListIterator<IAttributeMappingUiProvider> attributeMappingUiProviders() {
+	public ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> attributeMappingUiProviders() {
 		if (this.attributeMappingUiProviders == null) {
-			this.attributeMappingUiProviders = new ArrayList<IAttributeMappingUiProvider>();
+			this.attributeMappingUiProviders = new ArrayList<IAttributeMappingUiProvider<? extends IAttributeMapping>>();
 			this.addAttributeMappingUiProvidersTo(this.attributeMappingUiProviders);
 		}
-		return new CloneListIterator<IAttributeMappingUiProvider>(this.attributeMappingUiProviders);
 
+		return new CloneListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>>(
+			this.attributeMappingUiProviders
+		);
 	}
 
-	protected void addAttributeMappingUiProvidersTo(List<IAttributeMappingUiProvider> providers) {
+	protected void addAttributeMappingUiProvidersTo(List<IAttributeMappingUiProvider<? extends IAttributeMapping>> providers) {
 		providers.add(BasicMappingUiProvider.instance());
 		providers.add(EmbeddedMappingUiProvider.instance());
 		providers.add(EmbeddedIdMappingUiProvider.instance());
@@ -114,18 +109,19 @@ public class XmlPersistentAttributeDetailsPage
 	}
 
 	@Override
-	protected ListIterator<IAttributeMappingUiProvider> defaultAttributeMappingUiProviders() {
+	protected ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> defaultAttributeMappingUiProviders() {
 		return EmptyListIterator.instance();
 	}
 
 	@Override
-	protected IAttributeMappingUiProvider defaultAttributeMappingUiProvider(String key) {
+	protected IAttributeMappingUiProvider<IAttributeMapping> defaultAttributeMappingUiProvider(String key) {
 		throw new UnsupportedOperationException("Xml attributeMappings should not be default");
 	}
 
 	@Override
 	//bug 192035 - no default mapping option in xml
-	protected IAttributeMappingUiProvider[] attributeMappingUiProvidersFor(IPersistentAttribute persistentAttribute) {
+	@SuppressWarnings("unchecked")
+	protected IAttributeMappingUiProvider<? extends IAttributeMapping>[] attributeMappingUiProvidersFor(IPersistentAttribute persistentAttribute) {
 		return CollectionTools.array(attributeMappingUiProviders(), new IAttributeMappingUiProvider[CollectionTools.size(attributeMappingUiProviders())]);
 	}
 
