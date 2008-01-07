@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,11 +16,11 @@ import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 
 /**
- * Extend ValueAspectPropertyValueModelAdapter to listen to one or more collection
+ * Extend ValueAspectAdapter to listen to one or more collection
  * aspects of the value in the wrapped value model.
  */
-public class ValueCollectionPropertyValueModelAdapter<T extends Model>
-	extends ValueAspectPropertyValueModelAdapter<T>
+public class ValueCollectionAdapter<T extends Model>
+	extends ValueAspectAdapter<T>
 {
 
 	/** The names of the value's collections that we listen to. */
@@ -35,7 +35,7 @@ public class ValueCollectionPropertyValueModelAdapter<T extends Model>
 	/**
 	 * Construct an adapter for the specified value collections.
 	 */
-	public ValueCollectionPropertyValueModelAdapter(WritablePropertyValueModel<T> valueHolder, String... collectionNames) {
+	public ValueCollectionAdapter(WritablePropertyValueModel<T> valueHolder, String... collectionNames) {
 		super(valueHolder);
 		this.collectionNames = collectionNames;
 		this.valueCollectionListener = this.buildValueCollectionListener();
@@ -51,20 +51,20 @@ public class ValueCollectionPropertyValueModelAdapter<T extends Model>
 	protected CollectionChangeListener buildValueCollectionListener() {
 		return new CollectionChangeListener() {
 			public void itemsAdded(CollectionChangeEvent e) {
-				ValueCollectionPropertyValueModelAdapter.this.valueAspectChanged();
+				ValueCollectionAdapter.this.valueAspectChanged();
 			}
 			public void itemsRemoved(CollectionChangeEvent e) {
-				ValueCollectionPropertyValueModelAdapter.this.valueAspectChanged();
+				ValueCollectionAdapter.this.valueAspectChanged();
 			}
 			public void collectionCleared(CollectionChangeEvent e) {
-				ValueCollectionPropertyValueModelAdapter.this.valueAspectChanged();
+				ValueCollectionAdapter.this.valueAspectChanged();
 			}
 			public void collectionChanged(CollectionChangeEvent e) {
-				ValueCollectionPropertyValueModelAdapter.this.valueAspectChanged();
+				ValueCollectionAdapter.this.valueAspectChanged();
 			}
 			@Override
 			public String toString() {
-				return "value collection listener: " + Arrays.asList(ValueCollectionPropertyValueModelAdapter.this.collectionNames);
+				return "value collection listener: " + Arrays.asList(ValueCollectionAdapter.this.collectionNames);
 			}
 		};
 	}

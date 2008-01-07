@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,49 +9,60 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 
 /**
- * Abstract property value model that provides behavior for wrapping a property
+ * Abstract model that provides behavior for wrapping a property
  * value model and listening for changes to aspects of the *value* contained
- * by the value model. Changes to the actual value are also monitored.
+ * by the property value model. Changes to the actual value are also monitored.
  * 
  * This is useful if you have a value that may change, but whose aspects can also
- * change in a fashion that might change the value's external appearance.
+ * change in a fashion that might be of interest to the client.
+ * 
+ * NB: Clients will need to listen for two different change notifications: a property
+ * change event will be be fired when the value changes; a state change event
+ * will be fired when an aspect of the value changes.
  * 
  * Subclasses need to override two methods:
  * 
- * listenToValue(Model)
- *     begin listening to the appropriate aspect of the specified value and call
+ * #engageValue_()
+ *     begin listening to the appropriate aspect of the value and call
  *     #valueAspectChanged(Object) whenever the aspect changes
  * 
- * stopListeningToValue(Model)
- *     stop listening to the appropriate aspect of the specified value
+ * #disengageValue_()
+ *     stop listening to the appropriate aspect of the value
  */
-public abstract class ValueAspectPropertyValueModelAdapter<T>
-	extends WritablePropertyValueModelWrapper<T>
+public abstract class ValueAspectAdapter<T>
+	extends PropertyValueModelWrapper<T>
 	implements WritablePropertyValueModel<T>
 {
 	/** Cache the value so we can disengage. */
 	protected T value;
 
 
-	// ********** constructor **********
+	// ********** constructors/initialization **********
 
 	/**
 	 * Constructor - the value holder is required.
 	 */
-	protected ValueAspectPropertyValueModelAdapter(WritablePropertyValueModel<T> valueHolder) {
+	protected ValueAspectAdapter(WritablePropertyValueModel<T> valueHolder) {
 		super(valueHolder);
 	}
-
-
-	// ********** initialization **********
 
 	@Override
 	protected void initialize() {
 		super.initialize();
 		this.value = null;
+	}
+
+	/**
+	 * Override to allow both property value model change and state change
+	 * listeners.
+	 */
+	@Override
+	protected ChangeSupport buildChangeSupport() {
+		return new ChangeSupport(this);
 	}
 
 
@@ -65,7 +76,7 @@ public abstract class ValueAspectPropertyValueModelAdapter<T>
 	// ********** WritablePropertyValueModel implementation **********
 
 	public void setValue(T value) {
-		this.valueHolder.setValue(value);
+		this.valueHolder().setValue(value);
 	}
 
 
@@ -126,7 +137,14 @@ public abstract class ValueAspectPropertyValueModelAdapter<T>
 	protected abstract void disengageValue_();
 
 	protected void valueAspectChanged() {
-		this.firePropertyChanged(VALUE, this.value);		// hmmm...
+		this.fireStateChanged();
+	}
+
+	/**
+	 * Our constructors accept only a writable property value model.
+	 */
+	protected WritablePropertyValueModel<T> valueHolder() {
+		return (WritablePropertyValueModel<T>) this.valueHolder;
 	}
 
 }

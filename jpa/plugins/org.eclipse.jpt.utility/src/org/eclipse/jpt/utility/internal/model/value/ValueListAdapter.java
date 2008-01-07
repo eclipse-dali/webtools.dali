@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,11 +16,11 @@ import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 
 /**
- * Extend ValueAspectPropertyValueModelAdapter to listen to one or more list
+ * Extend ValueAspectAdapter to listen to one or more list
  * aspects of the value in the wrapped value model.
  */
-public class ValueListPropertyValueModelAdapter<T extends Model>
-	extends ValueAspectPropertyValueModelAdapter<T>
+public class ValueListAdapter<T extends Model>
+	extends ValueAspectAdapter<T>
 {
 
 	/** The names of the value's lists that we listen to. */
@@ -35,7 +35,7 @@ public class ValueListPropertyValueModelAdapter<T extends Model>
 	/**
 	 * Construct an adapter for the specified value lists.
 	 */
-	public ValueListPropertyValueModelAdapter(WritablePropertyValueModel<T> valueHolder, String... listNames) {
+	public ValueListAdapter(WritablePropertyValueModel<T> valueHolder, String... listNames) {
 		super(valueHolder);
 		this.listNames = listNames;
 		this.valueListListener = this.buildValueListListener();
@@ -51,26 +51,26 @@ public class ValueListPropertyValueModelAdapter<T extends Model>
 	protected ListChangeListener buildValueListListener() {
 		return new ListChangeListener() {
 			public void itemsAdded(ListChangeEvent e) {
-				ValueListPropertyValueModelAdapter.this.valueAspectChanged();
+				ValueListAdapter.this.valueAspectChanged();
 			}
 			public void itemsRemoved(ListChangeEvent e) {
-				ValueListPropertyValueModelAdapter.this.valueAspectChanged();
+				ValueListAdapter.this.valueAspectChanged();
 			}
 			public void itemsReplaced(ListChangeEvent e) {
-				ValueListPropertyValueModelAdapter.this.valueAspectChanged();
+				ValueListAdapter.this.valueAspectChanged();
 			}
 			public void itemsMoved(ListChangeEvent e) {
-				ValueListPropertyValueModelAdapter.this.valueAspectChanged();
+				ValueListAdapter.this.valueAspectChanged();
 			}
 			public void listCleared(ListChangeEvent e) {
-				ValueListPropertyValueModelAdapter.this.valueAspectChanged();
+				ValueListAdapter.this.valueAspectChanged();
 			}
 			public void listChanged(ListChangeEvent e) {
-				ValueListPropertyValueModelAdapter.this.valueAspectChanged();
+				ValueListAdapter.this.valueAspectChanged();
 			}
 			@Override
 			public String toString() {
-				return "value list listener: " + Arrays.asList(ValueListPropertyValueModelAdapter.this.listNames);
+				return "value list listener: " + Arrays.asList(ValueListAdapter.this.listNames);
 			}
 		};
 	}

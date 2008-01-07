@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,11 +14,11 @@ import org.eclipse.jpt.utility.internal.model.event.StateChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
 
 /**
- * Extend ValueAspectPropertyValueModelAdapter to listen to the
+ * Extend ValueAspectAdapter to listen to the
  * "state" of the value in the wrapped value model.
  */
-public class ValueStatePropertyValueModelAdapter<T extends Model>
-	extends ValueAspectPropertyValueModelAdapter<T>
+public class ValueStateAdapter<T extends Model>
+	extends ValueAspectAdapter<T>
 {
 	/** Listener that listens to value. */
 	protected final StateChangeListener valueStateListener;
@@ -29,7 +29,7 @@ public class ValueStatePropertyValueModelAdapter<T extends Model>
 	/**
 	 * Construct an adapter for the value state.
 	 */
-	public ValueStatePropertyValueModelAdapter(WritablePropertyValueModel<T> valueHolder) {
+	public ValueStateAdapter(WritablePropertyValueModel<T> valueHolder) {
 		super(valueHolder);
 		this.valueStateListener = this.buildValueStateListener();
 	}
@@ -40,7 +40,7 @@ public class ValueStatePropertyValueModelAdapter<T extends Model>
 	protected StateChangeListener buildValueStateListener() {
 		return new StateChangeListener() {
 			public void stateChanged(StateChangeEvent e) {
-				ValueStatePropertyValueModelAdapter.this.valueAspectChanged();
+				ValueStateAdapter.this.valueAspectChanged();
 			}
 			@Override
 			public String toString() {
