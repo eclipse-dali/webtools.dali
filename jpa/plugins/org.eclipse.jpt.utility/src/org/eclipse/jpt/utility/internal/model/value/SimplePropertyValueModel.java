@@ -15,7 +15,7 @@ import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 
 /**
- * Implementation of PropertyValueModel that simply holds on to an
+ * Implementation of WritablePropertyValueModel that simply holds on to an
  * object and uses it as the value.
  */
 public class SimplePropertyValueModel<T>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,11 +32,11 @@ import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
  * 
  * Subclasses need to override two methods:
  * 
- * listenToItem(Model)
+ * #listenToItem(Model)
  *     begin listening to the appropriate aspect of the specified item and call
  *     #itemAspectChanged(Object) whenever the aspect changes
  * 
- * stopListeningToItem(Model)
+ * #stopListeningToItem(Model)
  *     stop listening to the appropriate aspect of the specified item
  */
 public abstract class ItemAspectListValueModelAdapter

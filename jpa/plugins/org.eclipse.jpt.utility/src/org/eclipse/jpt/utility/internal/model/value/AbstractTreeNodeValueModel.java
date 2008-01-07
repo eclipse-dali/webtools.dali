@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -58,14 +58,18 @@ public abstract class AbstractTreeNodeValueModel<T>
 	
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		// this value model is allowed to fire state change events...
-//		return new ValueModelChangeSupport(this);
+		// this model fires *both* "value property change" and "state change" events...
+//		return new SingleAspectChangeSupport(this, PropertyChangeListener.class, PropertyValueModel.VALUE);
 		return super.buildChangeSupport();
 	}
 
 
 	// ********** extend AbstractModel implementation **********
 
+	/**
+	 * Clients should be adding both "state change" and "value property change"
+	 * listeners. We watch only for the first "state change" listener.
+	 */
 	@Override
 	public void addStateChangeListener(StateChangeListener listener) {
 		if (this.hasNoStateChangeListeners()) {
@@ -82,6 +86,9 @@ public abstract class AbstractTreeNodeValueModel<T>
 	 */
 	protected abstract void engageValue();
 
+	/**
+	 * @see #addStateChangeListener(StateChangeListener)
+	 */
 	@Override
 	public void removeStateChangeListener(StateChangeListener listener) {
 		super.removeStateChangeListener(listener);
