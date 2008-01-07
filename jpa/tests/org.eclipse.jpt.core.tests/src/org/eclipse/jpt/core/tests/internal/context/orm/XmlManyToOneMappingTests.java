@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.FetchType;
+import org.eclipse.jpt.core.internal.context.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.internal.context.orm.XmlManyToOneMapping;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
@@ -212,5 +214,105 @@ public class XmlManyToOneMappingTests extends ContextModelTestCase
 		assertNull(manyToOneResource.getOptional());
 		assertNull(xmlManyToOneMapping.getSpecifiedOptional());
 	}
+	
+	public void testAddSpecifiedJoinColumn() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
+		XmlManyToOneMapping xmlManyToOneMapping = (XmlManyToOneMapping) xmlPersistentAttribute.getMapping();
+		ManyToOne manyToOneResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
+		
+		XmlJoinColumn joinColumn = xmlManyToOneMapping.addSpecifiedJoinColumn(0);
+		ormResource().save(null);
+		joinColumn.setSpecifiedName("FOO");
+		ormResource().save(null);
+				
+		assertEquals("FOO", manyToOneResource.getJoinColumns().get(0).getName());
+		
+		XmlJoinColumn joinColumn2 = xmlManyToOneMapping.addSpecifiedJoinColumn(0);
+		ormResource().save(null);
+		joinColumn2.setSpecifiedName("BAR");
+		ormResource().save(null);
+		
+		assertEquals("BAR", manyToOneResource.getJoinColumns().get(0).getName());
+		assertEquals("FOO", manyToOneResource.getJoinColumns().get(1).getName());
+		
+		XmlJoinColumn joinColumn3 = xmlManyToOneMapping.addSpecifiedJoinColumn(1);
+		ormResource().save(null);
+		joinColumn3.setSpecifiedName("BAZ");
+		ormResource().save(null);
+		
+		assertEquals("BAR", manyToOneResource.getJoinColumns().get(0).getName());
+		assertEquals("BAZ", manyToOneResource.getJoinColumns().get(1).getName());
+		assertEquals("FOO", manyToOneResource.getJoinColumns().get(2).getName());
+		
+		ListIterator<XmlJoinColumn> joinColumns = xmlManyToOneMapping.specifiedJoinColumns();
+		assertEquals(joinColumn2, joinColumns.next());
+		assertEquals(joinColumn3, joinColumns.next());
+		assertEquals(joinColumn, joinColumns.next());
+		
+		joinColumns = xmlManyToOneMapping.specifiedJoinColumns();
+		assertEquals("BAR", joinColumns.next().getName());
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertEquals("FOO", joinColumns.next().getName());
+	}
+	
+	public void testRemoveSpecifiedJoinColumn() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
+		XmlManyToOneMapping xmlManyToOneMapping = (XmlManyToOneMapping) xmlPersistentAttribute.getMapping();
+		ManyToOne manyToOneResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
 
+		xmlManyToOneMapping.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
+		xmlManyToOneMapping.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
+		xmlManyToOneMapping.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
+		
+		assertEquals(3, manyToOneResource.getJoinColumns().size());
+		
+		xmlManyToOneMapping.removeSpecifiedJoinColumn(0);
+		assertEquals(2, manyToOneResource.getJoinColumns().size());
+		assertEquals("BAR", manyToOneResource.getJoinColumns().get(0).getName());
+		assertEquals("BAZ", manyToOneResource.getJoinColumns().get(1).getName());
+
+		xmlManyToOneMapping.removeSpecifiedJoinColumn(0);
+		assertEquals(1, manyToOneResource.getJoinColumns().size());
+		assertEquals("BAZ", manyToOneResource.getJoinColumns().get(0).getName());
+		
+		xmlManyToOneMapping.removeSpecifiedJoinColumn(0);
+		assertEquals(0, manyToOneResource.getJoinColumns().size());
+	}
+	
+	public void testMoveSpecifiedJoinColumn() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
+		XmlManyToOneMapping xmlManyToOneMapping = (XmlManyToOneMapping) xmlPersistentAttribute.getMapping();
+		ManyToOne manyToOneResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
+
+		xmlManyToOneMapping.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
+		xmlManyToOneMapping.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
+		xmlManyToOneMapping.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
+		
+		assertEquals(3, manyToOneResource.getJoinColumns().size());
+		
+		
+		xmlManyToOneMapping.moveSpecifiedJoinColumn(2, 0);
+		ListIterator<XmlJoinColumn> joinColumns = xmlManyToOneMapping.specifiedJoinColumns();
+		assertEquals("BAR", joinColumns.next().getName());
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertEquals("FOO", joinColumns.next().getName());
+
+		assertEquals("BAR", manyToOneResource.getJoinColumns().get(0).getName());
+		assertEquals("BAZ", manyToOneResource.getJoinColumns().get(1).getName());
+		assertEquals("FOO", manyToOneResource.getJoinColumns().get(2).getName());
+
+
+		xmlManyToOneMapping.moveSpecifiedJoinColumn(0, 1);
+		joinColumns = xmlManyToOneMapping.specifiedJoinColumns();
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertEquals("BAR", joinColumns.next().getName());
+		assertEquals("FOO", joinColumns.next().getName());
+
+		assertEquals("BAZ", manyToOneResource.getJoinColumns().get(0).getName());
+		assertEquals("BAR", manyToOneResource.getJoinColumns().get(1).getName());
+		assertEquals("FOO", manyToOneResource.getJoinColumns().get(2).getName());
+	}
 }
