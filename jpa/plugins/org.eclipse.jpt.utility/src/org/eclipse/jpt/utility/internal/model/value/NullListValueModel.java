@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,52 +9,53 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import java.util.Iterator;
 import java.util.ListIterator;
 
+import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
-
+import org.eclipse.jpt.utility.internal.model.AbstractModel;
 
 /**
- * A read-only list value model for when you don't
+ * An empty list value model for when you don't
  * need to support a list.
+ * 
+ * We don't use a singleton because we hold on to listeners.
  */
 public final class NullListValueModel
-	extends AbstractReadOnlyListValueModel
+	extends AbstractModel
+	implements ListValueModel
 {
-
 	private static final Object[] EMPTY_ARRAY = new Object[0];
 	private static final long serialVersionUID = 1L;
 
-	// singleton
-	private static final NullListValueModel INSTANCE = new NullListValueModel();
-
 	/**
-	 * Return the singleton.
+	 * Default constructor.
 	 */
-	public static synchronized ListValueModel instance() {
-		return INSTANCE;
-	}
-
-	/**
-	 * Ensure non-instantiability.
-	 */
-	private NullListValueModel() {
+	public NullListValueModel() {
 		super();
 	}
 
 
 	// ********** ListValueModel implementation **********
 
-    @Override
-	public int size() {
-		return 0;
+	public Iterator iterator() {
+		return EmptyIterator.instance();
 	}
 
 	public ListIterator listIterator() {
 		return EmptyListIterator.instance();
 	}
 
-	@Override
+	public int size() {
+		return 0;
+	}
+
+	public Object get(int index) {
+		throw new IndexOutOfBoundsException("Index: " + index + ", Size: 0");
+	}
+
 	public Object[] toArray() {
 		return EMPTY_ARRAY;
 	}
@@ -62,16 +63,9 @@ public final class NullListValueModel
 
 	// ********** Object overrides **********
 
-    @Override
+	@Override
 	public String toString() {
-		return "NullListValueModel";
-	}
-
-	/**
-	 * Serializable singleton support
-	 */
-	private Object readResolve() {
-		return instance();
+		return ClassTools.shortClassNameForObject(this);
 	}
 
 }

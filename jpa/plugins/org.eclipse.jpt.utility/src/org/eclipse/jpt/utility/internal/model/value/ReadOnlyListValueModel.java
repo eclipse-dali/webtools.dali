@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
+import org.eclipse.jpt.utility.internal.model.AbstractModel;
 
 /**
  * Implementation of ListValueModel that can be used for
@@ -18,7 +21,8 @@ import java.util.ListIterator;
  * Listeners will NEVER be notified of any changes, because there should be none.
  */
 public class ReadOnlyListValueModel
-	extends AbstractReadOnlyListValueModel
+	extends AbstractModel
+	implements ListValueModel
 {
 	/** The value. */
 	protected final List list;
@@ -40,16 +44,22 @@ public class ReadOnlyListValueModel
 
 	// ********** ListValueModel implementation **********
 
-    @Override
-	public int size() {
-		return this.list.size();
+	public Iterator iterator() {
+		return this.list.iterator();
 	}
 
 	public ListIterator listIterator() {
 		return this.list.listIterator();
 	}
 
-	@Override
+	public int size() {
+		return this.list.size();
+	}
+
+	public Object get(int index) {
+		return this.list.get(index);
+	}
+
 	public Object[] toArray() {
 		return this.list.toArray();
 	}

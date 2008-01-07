@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,14 +10,14 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ReadOnlyPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class StaticValueModelTests extends TestCase {
 	private PropertyValueModel<String> objectHolder;
-	private static final PropertyValueModel<String> OBJECT_HOLDER = new ReadOnlyPropertyValueModel<String>("foo");
+	private static final PropertyValueModel<String> OBJECT_HOLDER = new StaticPropertyValueModel<String>("foo");
 
 	
 	public StaticValueModelTests(String name) {

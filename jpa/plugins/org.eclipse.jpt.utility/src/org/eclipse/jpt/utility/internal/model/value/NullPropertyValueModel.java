@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,35 +10,24 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import org.eclipse.jpt.utility.internal.ClassTools;
-import org.eclipse.jpt.utility.internal.model.NullModel;
+import org.eclipse.jpt.utility.internal.model.AbstractModel;
 
 /**
- * A read-only property value model for when you
+ * A property value model for when you
  * don't need to support a value.
+ * 
+ * We don't use a singleton because we hold on to listeners.
  */
-public final class NullPropertyValueModel<T>
-	extends NullModel
+public class NullPropertyValueModel<T>
+	extends AbstractModel
 	implements PropertyValueModel<T>
 {
-
 	private static final long serialVersionUID = 1L;
 
-	// singleton
-	@SuppressWarnings("unchecked")
-	private static final NullPropertyValueModel INSTANCE = new NullPropertyValueModel();
-
 	/**
-	 * Return the singleton.
+	 * Default constructor.
 	 */
-	@SuppressWarnings("unchecked")
-	public static synchronized <T> PropertyValueModel<T> instance() {
-		return INSTANCE;
-	}
-
-	/**
-	 * Ensure single instance.
-	 */
-	private NullPropertyValueModel() {
+	public NullPropertyValueModel() {
 		super();
 	}
 	
@@ -55,13 +44,6 @@ public final class NullPropertyValueModel<T>
     @Override
 	public String toString() {
 		return ClassTools.shortClassNameForObject(this);
-	}
-
-	/**
-	 * Serializable singleton support
-	 */
-	private Object readResolve() {
-		return instance();
 	}
 
 }

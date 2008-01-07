@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,7 +29,7 @@ import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeList
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTStateChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ReadOnlyPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TreeNodeValueModel;
 
 /**
@@ -128,7 +128,7 @@ public class TreeModelAdapter<T>
 	 * Construct a tree model for the specified root.
 	 */
 	public TreeModelAdapter(TreeNodeValueModel<T> root) {
-		this(new ReadOnlyPropertyValueModel<TreeNodeValueModel<T>>(root));
+		this(new StaticPropertyValueModel<TreeNodeValueModel<T>>(root));
 	}
 
 
