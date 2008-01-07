@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -56,7 +56,7 @@ public abstract class CollectionAspectAdapter
 	 * and collection.
 	 */
 	protected CollectionAspectAdapter(String collectionName, Model subject) {
-		this(new ReadOnlyPropertyValueModel(subject), collectionName);
+		this(new StaticPropertyValueModel(subject), collectionName);
 	}
 
 	/**
@@ -171,14 +171,14 @@ public abstract class CollectionAspectAdapter
 	}
 
 	@Override
-	protected void engageNonNullSubject() {
+	protected void engageSubject_() {
 		if (this.collectionName != null) {
 			((Model) this.subject).addCollectionChangeListener(this.collectionName, this.collectionChangeListener);
 		}
 	}
 
 	@Override
-	protected void disengageNonNullSubject() {
+	protected void disengageSubject_() {
 		if (this.collectionName != null) {
 			((Model) this.subject).removeCollectionChangeListener(this.collectionName, this.collectionChangeListener);
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -58,7 +58,7 @@ public abstract class AspectAdapter<S>
 	 * Construct an AspectAdapter for the specified subject.
 	 */
 	protected AspectAdapter(S subject) {
-		this(new ReadOnlyPropertyValueModel<S>(subject));
+		this(new StaticPropertyValueModel<S>(subject));
 	}
 
 	/**
@@ -154,29 +154,29 @@ public abstract class AspectAdapter<S>
 	 */
 	protected abstract void fireAspectChange(Object oldValue, Object newValue);
 
-	/**
-	 * The subject is not null - add our listener.
-	 */
-	protected abstract void engageNonNullSubject();
-
 	protected void engageSubject() {
 		// check for nothing to listen to
 		if (this.subject != null) {
-			this.engageNonNullSubject();
+			this.engageSubject_();
+		}
+	}
+
+	/**
+	 * The subject is not null - add our listener.
+	 */
+	protected abstract void engageSubject_();
+
+	protected void disengageSubject() {
+		// check for nothing to listen to
+		if (this.subject != null) {
+			this.disengageSubject_();
 		}
 	}
 
 	/**
 	 * The subject is not null - remove our listener.
 	 */
-	protected abstract void disengageNonNullSubject();
-
-	protected void disengageSubject() {
-		// check for nothing to listen to
-		if (this.subject != null) {
-			this.disengageNonNullSubject();
-		}
-	}
+	protected abstract void disengageSubject_();
 
 	protected void engageSubjectHolder() {
 		this.subjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);

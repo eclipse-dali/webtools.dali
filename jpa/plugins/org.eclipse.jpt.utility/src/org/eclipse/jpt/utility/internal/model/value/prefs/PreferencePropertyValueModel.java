@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,7 @@ import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.AspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ReadOnlyPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 
 /**
@@ -95,7 +95,7 @@ public class PreferencePropertyValueModel<P>
 	 * the specified default value for the preference.
 	 */
 	public PreferencePropertyValueModel(Preferences preferences, String key, P defaultValue, BidiStringConverter<P> converter) {
-		this(new ReadOnlyPropertyValueModel<Preferences>(preferences), key, defaultValue, converter);
+		this(new StaticPropertyValueModel<Preferences>(preferences), key, defaultValue, converter);
 	}
 
 	/**
@@ -228,13 +228,13 @@ public class PreferencePropertyValueModel<P>
 	}
 
 	@Override
-	protected void engageNonNullSubject() {
+	protected void engageSubject_() {
 		this.subject.addPreferenceChangeListener(this.preferenceChangeListener);
 		this.value = this.buildValue();
 	}
 
 	@Override
-	protected void disengageNonNullSubject() {
+	protected void disengageSubject_() {
 		try {
 			this.subject.removePreferenceChangeListener(this.preferenceChangeListener);
 		} catch (IllegalStateException ex) {

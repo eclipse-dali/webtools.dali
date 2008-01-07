@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -44,7 +44,7 @@ public abstract class ListCurator
 	 * Construct a Curator for the specified subject.
 	 */
 	protected ListCurator(Model subject) {
-		this(new ReadOnlyPropertyValueModel(subject));
+		this(new StaticPropertyValueModel(subject));
 	}
 
 	/**
@@ -142,7 +142,7 @@ public abstract class ListCurator
 	 * The subject is not null - add our listener.
 	 */
 	@Override
-	protected void engageNonNullSubject() {
+	protected void engageSubject_() {
 		((Model) this.subject).addStateChangeListener(this.stateChangeListener);
 		// synch our list *after* we start listening to the subject,
 		// since its value might change when a listener is added
@@ -153,7 +153,7 @@ public abstract class ListCurator
 	 * The subject is not null - remove our listener.
 	 */
 	@Override
-	protected void disengageNonNullSubject() {
+	protected void disengageSubject_() {
 		((Model) this.subject).removeStateChangeListener(this.stateChangeListener);
 		// clear out the list when we are not listening to the subject
 		this.record.clear();

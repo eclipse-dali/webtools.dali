@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -61,7 +61,7 @@ public abstract class ListAspectAdapter
 	 * and list.
 	 */
 	protected ListAspectAdapter(String listName, Model subject) {
-		this(new ReadOnlyPropertyValueModel(subject), listName);
+		this(new StaticPropertyValueModel(subject), listName);
 	}
 
 	/**
@@ -212,14 +212,14 @@ public abstract class ListAspectAdapter
 	}
 
 	@Override
-	protected void engageNonNullSubject() {
+	protected void engageSubject_() {
 		if (this.listName != null) {
 			((Model) this.subject).addListChangeListener(this.listName, this.listChangeListener);
 		}
 	}
 
 	@Override
-	protected void disengageNonNullSubject() {
+	protected void disengageSubject_() {
 		if (this.listName != null) {
 			((Model) this.subject).removeListChangeListener(this.listName, this.listChangeListener);
 		}

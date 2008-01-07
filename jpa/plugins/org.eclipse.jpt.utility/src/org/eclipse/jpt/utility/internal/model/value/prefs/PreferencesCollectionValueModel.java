@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.AspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ReadOnlyPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 
 /**
@@ -48,7 +48,7 @@ public class PreferencesCollectionValueModel
 	 * Construct an adapter for the specified preferences node.
 	 */
 	public PreferencesCollectionValueModel(Preferences preferences) {
-		this(new ReadOnlyPropertyValueModel(preferences));
+		this(new StaticPropertyValueModel(preferences));
 	}
 
 	/**
@@ -122,7 +122,7 @@ public class PreferencesCollectionValueModel
 	}
 
     @Override
-	protected void engageNonNullSubject() {
+	protected void engageSubject_() {
 		((Preferences) this.subject).addPreferenceChangeListener(this.preferenceChangeListener);
 		for (Iterator<PreferencePropertyValueModel> stream = this.preferenceModels(); stream.hasNext(); ) {
 			PreferencePropertyValueModel preferenceModel = stream.next();
@@ -131,7 +131,7 @@ public class PreferencesCollectionValueModel
 	}
 
     @Override
-	protected void disengageNonNullSubject() {
+	protected void disengageSubject_() {
 		try {
 			((Preferences) this.subject).removePreferenceChangeListener(this.preferenceChangeListener);
 		} catch (IllegalStateException ex) {

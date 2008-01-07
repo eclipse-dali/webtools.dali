@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -75,7 +75,7 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	 * and properties.
 	 */
 	protected PropertyAspectAdapter(String[] propertyNames, S subject) {
-		this(new ReadOnlyPropertyValueModel<S>(subject), propertyNames);
+		this(new StaticPropertyValueModel<S>(subject), propertyNames);
 	}
 
 	/**
@@ -102,7 +102,8 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	 * Construct a PropertyAspectAdapter for an "unchanging" property in
 	 * the specified subject. This is useful for a property aspect that does not
 	 * change for a particular subject; but the subject will change, resulting in
-	 * a new property.
+	 * a new property. (A TransformationPropertyValueModel could also be
+	 * used in this situation.)
 	 */
 	protected PropertyAspectAdapter(PropertyValueModel<S> subjectHolder) {
 		this(subjectHolder, EMPTY_PROPERTY_NAMES);
@@ -128,7 +129,7 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	}
 
 
-	// ********** ValueModel implementation **********
+	// ********** PropertyValueModel implementation **********
 
 	/**
 	 * Return the value of the subject's property.
@@ -139,7 +140,7 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	}
 
 
-	// ********** PropertyValueModel implementation **********
+	// ********** WritablePropertyValueModel implementation **********
 
 	/**
 	 * Set the value of the subject's property.
@@ -191,7 +192,7 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	}
 
     @Override
-	protected void engageNonNullSubject() {
+	protected void engageSubject_() {
 		for (int i = this.propertyNames.length; i-- > 0; ) {
 			((Model) this.subject).addPropertyChangeListener(this.propertyNames[i], this.propertyChangeListener);
 		}
@@ -205,7 +206,7 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	}
 
     @Override
-	protected void disengageNonNullSubject() {
+	protected void disengageSubject_() {
 		for (int i = this.propertyNames.length; i-- > 0; ) {
 			((Model) this.subject).removePropertyChangeListener(this.propertyNames[i], this.propertyChangeListener);
 		}
