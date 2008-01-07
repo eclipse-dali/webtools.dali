@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,24 +20,24 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
  * another property value model, "lazily" listen to it, and propagate
  * its change notifications.
  */
-public abstract class WritablePropertyValueModelWrapper<T>
+public abstract class PropertyValueModelWrapper<T>
 	extends AbstractModel
 {
 
 	/** The wrapped property value model. */
-	protected final WritablePropertyValueModel<T> valueHolder;
+	protected final PropertyValueModel<T> valueHolder;
 
 	/** A listener that allows us to synch with changes to the wrapped value holder. */
 	protected final PropertyChangeListener valueChangeListener;
 
 
-	// ********** constructors **********
+	// ********** constructors/initialization **********
 
 	/**
 	 * Construct a property value model with the specified wrapped
 	 * property value model. The value holder is required.
 	 */
-	protected WritablePropertyValueModelWrapper(WritablePropertyValueModel<T> valueHolder) {
+	protected PropertyValueModelWrapper(PropertyValueModel<T> valueHolder) {
 		super();
 		if (valueHolder == null) {
 			throw new NullPointerException();
@@ -46,9 +46,6 @@ public abstract class WritablePropertyValueModelWrapper<T>
 		this.valueChangeListener = this.buildValueChangeListener();
 	}
 	
-
-	// ********** initialization **********
-
 	@Override
 	protected ChangeSupport buildChangeSupport() {
 		return new SingleAspectChangeSupport(this, PropertyChangeListener.class, PropertyValueModel.VALUE);
@@ -57,7 +54,7 @@ public abstract class WritablePropertyValueModelWrapper<T>
 	protected PropertyChangeListener buildValueChangeListener() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-				WritablePropertyValueModelWrapper.this.valueChanged(e);
+				PropertyValueModelWrapper.this.valueChanged(e);
 			}
 		    @Override
 			public String toString() {

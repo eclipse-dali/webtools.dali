@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,9 +11,9 @@ package org.eclipse.jpt.utility.internal.model.value.swing;
 
 import org.eclipse.jpt.utility.internal.BidiFilter;
 import org.eclipse.jpt.utility.internal.BidiTransformer;
-import org.eclipse.jpt.utility.internal.model.value.FilteringPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.FilteringWritablePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationWritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 
 /**
  * This javax.swing.ButtonModel can be used to keep a listener
@@ -60,8 +60,8 @@ public class RadioButtonModelAdapter
 	 * value to the button value.
 	 */
 	public static WritablePropertyValueModel buildBooleanHolder(WritablePropertyValueModel valueHolder, Object buttonValue) {
-		WritablePropertyValueModel filteringPVM = new FilteringPropertyValueModel(valueHolder, new RadioButtonFilter(buttonValue));
-		return new TransformationPropertyValueModel(filteringPVM, new RadioButtonTransformer(buttonValue));
+		WritablePropertyValueModel filteringPVM = new FilteringWritablePropertyValueModel(valueHolder, new RadioButtonFilter(buttonValue));
+		return new TransformationWritablePropertyValueModel(filteringPVM, new RadioButtonTransformer(buttonValue));
 	}
 
 

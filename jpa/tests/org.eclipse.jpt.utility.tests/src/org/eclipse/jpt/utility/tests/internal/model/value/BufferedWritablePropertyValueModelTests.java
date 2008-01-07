@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import java.util.Date;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.internal.model.value.BufferedPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.BufferedWritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -23,23 +23,23 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
-public class BufferedPropertyValueModelTests extends TestCase {
+public class BufferedWritablePropertyValueModelTests extends TestCase {
 	private Employee employee;
-	private WritablePropertyValueModel employeeHolder;
+	private WritablePropertyValueModel<Employee> employeeHolder;
 	PropertyChangeEvent employeeEvent;
 
-	private WritablePropertyValueModel idAdapter;
-	private WritablePropertyValueModel nameAdapter;
-	private WritablePropertyValueModel hireDateAdapter;
+	private WritablePropertyValueModel<Integer> idAdapter;
+	private WritablePropertyValueModel<String> nameAdapter;
+	private WritablePropertyValueModel<Date> hireDateAdapter;
 	PropertyChangeEvent adapterEvent;
 
-	private BufferedPropertyValueModel.Trigger trigger;
-	private WritablePropertyValueModel bufferedIDHolder;
-	private WritablePropertyValueModel bufferedNameHolder;
-	private WritablePropertyValueModel bufferedHireDateHolder;
+	private BufferedWritablePropertyValueModel.Trigger trigger;
+	private WritablePropertyValueModel<Integer> bufferedIDHolder;
+	private WritablePropertyValueModel<String> bufferedNameHolder;
+	private WritablePropertyValueModel<Date> bufferedHireDateHolder;
 	PropertyChangeEvent bufferedEvent;
 
-	public BufferedPropertyValueModelTests(String name) {
+	public BufferedWritablePropertyValueModelTests(String name) {
 		super(name);
 	}
 
@@ -48,18 +48,18 @@ public class BufferedPropertyValueModelTests extends TestCase {
 		super.setUp();
 
 		this.employee = new Employee(17, "Freddy", new Date());
-		this.employeeHolder = new SimplePropertyValueModel(this.employee);
+		this.employeeHolder = new SimplePropertyValueModel<Employee>(this.employee);
 
-		this.trigger = new BufferedPropertyValueModel.Trigger();
+		this.trigger = new BufferedWritablePropertyValueModel.Trigger();
 
 		this.idAdapter = this.buildIDAdapter(this.employeeHolder);
-		this.bufferedIDHolder = new BufferedPropertyValueModel(this.idAdapter, this.trigger);
+		this.bufferedIDHolder = new BufferedWritablePropertyValueModel<Integer>(this.idAdapter, this.trigger);
 
 		this.nameAdapter = this.buildNameAdapter(this.employeeHolder);
-		this.bufferedNameHolder = new BufferedPropertyValueModel(this.nameAdapter, this.trigger);
+		this.bufferedNameHolder = new BufferedWritablePropertyValueModel<String>(this.nameAdapter, this.trigger);
 
 		this.hireDateAdapter = this.buildHireDateAdapter(this.employeeHolder);
-		this.bufferedHireDateHolder = new BufferedPropertyValueModel(this.hireDateAdapter, this.trigger);
+		this.bufferedHireDateHolder = new BufferedWritablePropertyValueModel<Date>(this.hireDateAdapter, this.trigger);
 	}
 
 	private WritablePropertyValueModel<Integer> buildIDAdapter(PropertyValueModel<Employee> eHolder) {
@@ -333,7 +333,7 @@ public class BufferedPropertyValueModelTests extends TestCase {
 	private PropertyChangeListener buildBufferedListener() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-				BufferedPropertyValueModelTests.this.bufferedEvent = e;
+				BufferedWritablePropertyValueModelTests.this.bufferedEvent = e;
 			}
 		};
 	}
@@ -341,7 +341,7 @@ public class BufferedPropertyValueModelTests extends TestCase {
 	private PropertyChangeListener buildAdapterListener() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-				BufferedPropertyValueModelTests.this.adapterEvent = e;
+				BufferedWritablePropertyValueModelTests.this.adapterEvent = e;
 			}
 		};
 	}
@@ -349,7 +349,7 @@ public class BufferedPropertyValueModelTests extends TestCase {
 	private PropertyChangeListener buildEmployeeListener() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-				BufferedPropertyValueModelTests.this.employeeEvent = e;
+				BufferedWritablePropertyValueModelTests.this.employeeEvent = e;
 			}
 		};
 	}

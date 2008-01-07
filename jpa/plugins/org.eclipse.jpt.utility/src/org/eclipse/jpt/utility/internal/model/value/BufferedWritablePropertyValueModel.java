@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,8 +37,8 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
  * 
  * @see PropertyAspectAdapter
  */
-public class BufferedPropertyValueModel<T>
-	extends WritablePropertyValueModelWrapper<T>
+public class BufferedWritablePropertyValueModel<T>
+	extends PropertyValueModelWrapper<T>
 	implements WritablePropertyValueModel<T>
 {
 
@@ -81,7 +81,7 @@ public class BufferedPropertyValueModel<T>
 	 * Construct a buffered property value model with the specified wrapped
 	 * property value model and trigger holder.
 	 */
-	public BufferedPropertyValueModel(WritablePropertyValueModel<T> valueHolder, PropertyValueModel<Boolean> triggerHolder) {
+	public BufferedWritablePropertyValueModel(WritablePropertyValueModel<T> valueHolder, PropertyValueModel<Boolean> triggerHolder) {
 		super(valueHolder);
 		if (triggerHolder == null) {
 			throw new NullPointerException();
@@ -99,7 +99,7 @@ public class BufferedPropertyValueModel<T>
 	protected PropertyChangeListener buildTriggerChangeListener() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-				BufferedPropertyValueModel.this.triggerChanged(e);
+				BufferedWritablePropertyValueModel.this.triggerChanged(e);
 			}
 			@Override
 			public String toString() {
@@ -203,7 +203,7 @@ public class BufferedPropertyValueModel<T>
 			// set the accepting flag so we ignore any events
 			// fired by the wrapped value holder
 			this.accepting = true;
-			this.valueHolder.setValue(this.bufferedValue);
+			this.valueHolder().setValue(this.bufferedValue);
 			this.bufferedValue = null;
 			this.buffering = false;
 			// clear the flag once the "accept" is complete
@@ -216,7 +216,7 @@ public class BufferedPropertyValueModel<T>
 			this.firePropertyChanged(VALUE, old, this.valueHolder.value());
 		}
 	}
-	
+
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.value());
@@ -231,6 +231,13 @@ public class BufferedPropertyValueModel<T>
 	 */
 	public boolean isBuffering() {
 		return this.buffering;
+	}
+
+	/**
+	 * Our constructor accepts only a writable property value model.
+	 */
+	protected WritablePropertyValueModel<T> valueHolder() {
+		return (WritablePropertyValueModel<T>) this.valueHolder;
 	}
 
 
