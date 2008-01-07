@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -107,10 +107,10 @@ public class IdComposite extends BaseJpaComposite<IIdMapping>
 	private PropertyValueModel<? extends IColumn> buildColumnHolder() {
 		// TODO: Have TransformationPropertyValueModel and
 		// TransformationWritablePropertyValueModel
-		return new TransformationPropertyValueModel<IIdMapping, IColumn>((WritablePropertyValueModel<IIdMapping>) getSubjectHolder())  {
+		return new TransformationPropertyValueModel<IIdMapping, IColumn>(getSubjectHolder())  {
 			@Override
-			protected IColumn transform(IIdMapping value) {
-				return (value == null) ? null : value.getColumn();
+			protected IColumn transform_(IIdMapping value) {
+				return value.getColumn();
 			}
 		};
 	}

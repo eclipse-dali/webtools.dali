@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,6 @@ import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -92,10 +91,10 @@ public class BasicComposite extends BaseJpaComposite<IBasicMapping>
 	private PropertyValueModel<IColumn> buildColumnHolder() {
 		// TODO: Have a TransformationPropertyValueModel and
 		// TransformationWritablePropertyValue
-		return new TransformationPropertyValueModel<IBasicMapping, IColumn>((WritablePropertyValueModel<IBasicMapping>) getSubjectHolder()) {
+		return new TransformationPropertyValueModel<IBasicMapping, IColumn>(getSubjectHolder()) {
 			@Override
-			protected IColumn transform(IBasicMapping value) {
-				return (value == null) ? null : value.getColumn();
+			protected IColumn transform_(IBasicMapping value) {
+				return value.getColumn();
 			}
 		};
 	}

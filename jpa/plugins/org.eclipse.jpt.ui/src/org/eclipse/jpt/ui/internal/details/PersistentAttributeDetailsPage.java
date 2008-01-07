@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -161,13 +161,9 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 	private PropertyValueModel<IAttributeMapping> buildMappingHolder(final String key) {
 		// TODO: Have TransformationPropertyValueModel and
 		// TransformationWritablePropertyValueModel
-		return new TransformationPropertyValueModel<IPersistentAttribute, IAttributeMapping>((WritablePropertyValueModel<IPersistentAttribute>) getSubjectHolder()) {
+		return new TransformationPropertyValueModel<IPersistentAttribute, IAttributeMapping>(getSubjectHolder()) {
 			@Override
-			protected IAttributeMapping transform(IPersistentAttribute value) {
-				if (value == null) {
-					return null;
-				}
-
+			protected IAttributeMapping transform_(IPersistentAttribute value) {
 				return key.equals(value.mappingKey()) ? value.getMapping() : null;
 			}
 		};

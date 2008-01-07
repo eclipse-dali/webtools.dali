@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved. This
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved. This
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
@@ -135,7 +135,7 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlP
 
 	private PropertyValueModel<? extends AccessTypeComboViewer.AccessHolder<XmlTypeMapping<? extends TypeMapping>>> buildAccessTypeHolder() {
 		return new TransformationPropertyValueModel<XmlPersistentType, AccessTypeComboViewer.AccessHolder<XmlTypeMapping<? extends TypeMapping>>>(
-			(WritablePropertyValueModel<XmlPersistentType>) getSubjectHolder()) {
+			getSubjectHolder()) {
 
 			@Override
 			protected AccessHolder<XmlTypeMapping<? extends TypeMapping>> transform(XmlPersistentType value) {
