@@ -1150,24 +1150,18 @@ public class XmlEntityTests extends ContextModelTestCase
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
 		XmlPrimaryKeyJoinColumn primaryKeyJoinColumn = xmlEntity.addSpecifiedPrimaryKeyJoinColumn(0);
-		ormResource().save(null);
 		primaryKeyJoinColumn.setSpecifiedName("FOO");
-		ormResource().save(null);
 				
 		assertEquals("FOO", entityResource.getPrimaryKeyJoinColumns().get(0).getName());
 		
 		XmlPrimaryKeyJoinColumn primaryKeyJoinColumn2 = xmlEntity.addSpecifiedPrimaryKeyJoinColumn(0);
-		ormResource().save(null);
 		primaryKeyJoinColumn2.setSpecifiedName("BAR");
-		ormResource().save(null);
 		
 		assertEquals("BAR", entityResource.getPrimaryKeyJoinColumns().get(0).getName());
 		assertEquals("FOO", entityResource.getPrimaryKeyJoinColumns().get(1).getName());
 		
 		XmlPrimaryKeyJoinColumn primaryKeyJoinColumn3 = xmlEntity.addSpecifiedPrimaryKeyJoinColumn(1);
-		ormResource().save(null);
 		primaryKeyJoinColumn3.setSpecifiedName("BAZ");
-		ormResource().save(null);
 		
 		assertEquals("BAR", entityResource.getPrimaryKeyJoinColumns().get(0).getName());
 		assertEquals("BAZ", entityResource.getPrimaryKeyJoinColumns().get(1).getName());
@@ -1296,24 +1290,18 @@ public class XmlEntityTests extends ContextModelTestCase
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
 		XmlAttributeOverride attributeOverride = xmlEntity.addSpecifiedAttributeOverride(0);
-		ormResource().save(null);
 		attributeOverride.setName("FOO");
-		ormResource().save(null);
 				
 		assertEquals("FOO", entityResource.getAttributeOverrides().get(0).getName());
 		
 		XmlAttributeOverride attributeOverride2 = xmlEntity.addSpecifiedAttributeOverride(0);
-		ormResource().save(null);
 		attributeOverride2.setName("BAR");
-		ormResource().save(null);
 		
 		assertEquals("BAR", entityResource.getAttributeOverrides().get(0).getName());
 		assertEquals("FOO", entityResource.getAttributeOverrides().get(1).getName());
 		
 		XmlAttributeOverride attributeOverride3 = xmlEntity.addSpecifiedAttributeOverride(1);
-		ormResource().save(null);
 		attributeOverride3.setName("BAZ");
-		ormResource().save(null);
 		
 		assertEquals("BAR", entityResource.getAttributeOverrides().get(0).getName());
 		assertEquals("BAZ", entityResource.getAttributeOverrides().get(1).getName());

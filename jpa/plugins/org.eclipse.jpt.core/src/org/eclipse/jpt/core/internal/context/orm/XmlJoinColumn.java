@@ -11,43 +11,25 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
-import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.internal.resource.orm.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.resource.orm.JoinColumn;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
 
-public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn<PrimaryKeyJoinColumn>
-	implements IPrimaryKeyJoinColumn
+public class XmlJoinColumn extends AbstractXmlColumn<JoinColumn> implements IJoinColumn
 {
+
 	protected String specifiedReferencedColumnName;
 
 	protected String defaultReferencedColumnName;
 
-	protected PrimaryKeyJoinColumn primaryKeyJoinColumn;
-	
-	protected XmlPrimaryKeyJoinColumn(IJpaContextNode parent, IAbstractJoinColumn.Owner owner) {
+	protected JoinColumn joinColumn;
+
+	protected XmlJoinColumn(IJpaContextNode parent, IJoinColumn.Owner owner) {
 		super(parent, owner);
 	}
 
-	@Override
-	protected PrimaryKeyJoinColumn columnResource() {
-		return this.primaryKeyJoinColumn;
-	}
-	
-	@Override
-	protected void addColumnResource() {
-		//primaryKeyJoinColumns are part of a collection, the pk-join-column element will be removed/added
-		//when the XmlPrimaryKeyJoinColumn is removed/added to the XmlEntity collection
-	}
-	
-	@Override
-	protected void removeColumnResource() {
-		//primaryKeyJoinColumns are part of a collection, the pk-join-column element will be removed/added
-		//when the XmlPrimaryKeyJoinColumn is removed/added to the XmlEntity collection
-	}
-	
 	public String getReferencedColumnName() {
 		return (this.getSpecifiedReferencedColumnName() == null) ? getDefaultReferencedColumnName() : this.getSpecifiedReferencedColumnName();
 	}
@@ -73,33 +55,28 @@ public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn<PrimaryKeyJo
 		firePropertyChanged(DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY, oldDefaultReferencedColumnName, newDefaultReferencedColumnName);
 	}
 
-	@Override
-	public IAbstractJoinColumn.Owner owner() {
-		return (IAbstractJoinColumn.Owner) this.owner;
+	public boolean isVirtual() {
+		return owner().isVirtual(this);
 	}
-
-	public Column dbReferencedColumn() {
-		Table table = this.dbReferencedColumnTable();
-		return (table == null) ? null : table.columnNamed(this.getReferencedColumnName());
+	
+	@Override
+	public IJoinColumn.Owner owner() {
+		return (IJoinColumn.Owner) this.owner;
 	}
 
 	public Table dbReferencedColumnTable() {
 		return owner().dbReferencedColumnTable();
 	}
 
-	@Override
-	protected String tableName() {
-		return this.owner().typeMapping().getTableName();
+	public Column dbReferencedColumn() {
+		Table table = dbReferencedColumnTable();
+		return (table == null) ? null : table.columnNamed(getReferencedColumnName());
 	}
 
 	public boolean isReferencedColumnResolved() {
 		return dbReferencedColumn() != null;
 	}
-
-	public ITextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//
 //	public ITextRange referencedColumnNameTextRange() {
 //		if (node == null) {
 //			return owner.validationTextRange();
@@ -111,24 +88,43 @@ public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn<PrimaryKeyJo
 //	public void refreshDefaults(DefaultsContext defaultsContext) {
 //		setDefaultReferencedColumnName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_REFERENCED_COLUMN_NAME_KEY));
 //		setDefaultName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_NAME_KEY));
+//		setDefaultTable((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_TABLE_KEY));
 //	}
 
-		
-	public boolean isVirtual() {
-		return owner().isVirtual(this);
+	@Override
+	protected JoinColumn columnResource() {
+		return this.joinColumn;
+	}
+
+	@Override
+	protected void addColumnResource() {
+		//joinColumns are part of a collection, the join-column element will be removed/added
+		//when the XmlJoinColumn is removed/added to the XmlEntity collection
 	}
 	
 	@Override
-	protected void initialize(PrimaryKeyJoinColumn column) {
-		this.primaryKeyJoinColumn = column;
+	protected void removeColumnResource() {
+		//joinColumns are part of a collection, the pk-join-column element will be removed/added
+		//when the XmlJoinColumn is removed/added to the XmlEntity collection
+	}
+
+	public ITextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	@Override
+	protected void initialize(JoinColumn column) {
+		this.joinColumn = column;
 		super.initialize(column);
 		this.specifiedReferencedColumnName = column.getReferencedColumnName();
 		this.defaultReferencedColumnName = defaultReferencedColumnName();
 	}
 	
 	@Override
-	protected void update(PrimaryKeyJoinColumn column) {
-		this.primaryKeyJoinColumn = column;
+	protected void update(JoinColumn column) {
+		this.joinColumn = column;
 		super.update(column);
 		this.setSpecifiedReferencedColumnName(column.getReferencedColumnName());
 		this.setDefaultReferencedColumnName(defaultReferencedColumnName());
@@ -138,4 +134,5 @@ public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn<PrimaryKeyJo
 		//TODO
 		return null;
 	}
+
 }

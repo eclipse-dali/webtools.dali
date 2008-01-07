@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
-import org.eclipse.jpt.core.internal.context.base.IJoinTable;
 import org.eclipse.jpt.core.internal.context.base.IMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.orm.MapKey;
 import org.eclipse.jpt.core.internal.resource.orm.MultiRelationshipMapping;
@@ -28,15 +27,14 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 //	protected String specifiedOrderBy;
 //
 //	protected String defaultOrderBy;
-//
-//	protected IJoinTable joinTable;
+
+	protected final XmlJoinTable joinTable;
 
 	protected String mapKey;
 
 	protected XmlMultiRelationshipMapping(XmlPersistentAttribute parent) {
 		super(parent);
-//		this.joinTable = OrmFactory.eINSTANCE.createXmlJoinTable(buildJoinTableOwner());
-//		((InternalEObject) this.joinTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__JOIN_TABLE, null, null);
+		this.joinTable = new XmlJoinTable(this);
 	}
 
 //	private IJoinTable.Owner buildJoinTableOwner() {
@@ -101,15 +99,14 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 //		IDOMNode mappedByNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.MAPPED_BY);
 //		return (mappedByNode == null) ? validationTextRange() : buildTextRange(mappedByNode);
 //	}
-//
-//	public IJoinTable getJoinTable() {
-//		return joinTable;
-//	}
-//
-//	public boolean isJoinTableSpecified() {
-//		XmlJoinTable table = getJoinTableForXml();
-//		return table != null && table.isSpecified();
-//	}
+	
+	public XmlJoinTable getJoinTable() {
+		return this.joinTable;
+	}
+
+	public boolean isJoinTableSpecified() {
+		return getJoinTable().isSpecified();
+	}
 
 	public String getMapKey() {
 		return this.mapKey;
@@ -151,19 +148,12 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 		attributeMapping().setMapKey(OrmFactory.eINSTANCE.createMapKey());
 	}
 
-
 //	public void makeJoinTableForXmlNull() {
 //		setJoinTableForXmlGen(null);
 //	}
 //
 //	public void makeJoinTableForXmlNonNull() {
 //		setJoinTableForXmlGen(getJoinTableForXml());
-//	}
-//
-//	@Override
-//	public void initializeFromXmlMulitRelationshipMapping(XmlMultiRelationshipMapping oldMapping) {
-//		super.initializeFromXmlMulitRelationshipMapping(oldMapping);
-//		setFetch(oldMapping.getFetch());
 //	}
 //
 //	public Iterator<String> candidateMapKeyNames() {
@@ -222,11 +212,6 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 		
 	}
 	
-	public IJoinTable getJoinTable() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	public boolean isCustomOrdering() {
 		// TODO Auto-generated method stub
 		return false;
@@ -238,11 +223,6 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 	}
 	
 	public boolean isOrderByPk() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	public boolean isJoinTableSpecified() {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -272,6 +252,7 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 		super.initialize(multiRelationshipMapping);
 		this.mappedBy = multiRelationshipMapping.getMappedBy();
 		this.mapKey = this.mapKey(multiRelationshipMapping);
+		this.joinTable.initialize(multiRelationshipMapping);
 	}
 	
 	@Override
@@ -279,6 +260,7 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 		super.update(multiRelationshipMapping);
 		this.setMappedBy(multiRelationshipMapping.getMappedBy());
 		this.setMapKey_(this.mapKey(multiRelationshipMapping));
+		this.joinTable.update(multiRelationshipMapping);
 	}
 	
 	protected String mapKey(T multiRelationshipMapping) {

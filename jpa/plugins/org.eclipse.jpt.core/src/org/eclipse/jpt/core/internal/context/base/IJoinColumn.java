@@ -11,38 +11,38 @@ package org.eclipse.jpt.core.internal.context.base;
 
 public interface IJoinColumn extends IAbstractColumn, IAbstractJoinColumn
 {
-//	IJoinColumn.Owner getOwner();
-//
-//	/**
-//	 * interface allowing join columns to be used in multiple places
-//	 * (e.g. 1:1 mappings and join tables)
-//	 */
-//	interface Owner extends IAbstractJoinColumn.Owner
-//	{
-//		/**
-//		 * return whether the specified table cannot be explicitly specified
-//		 * in the join column's 'table' element
-//		 */
-//		boolean tableNameIsInvalid(String tableName);
-//
-//		/**
-//		 * return whether the join column's table can be specified explicitly
-//		 */
-//		boolean tableIsAllowed();
-//
-//		/**
-//		 * return the entity referenced by the join column
-//		 */
-//		IEntity targetEntity();
-//
-//		/**
-//		 * return the join column's attribute name
-//		 */
-//		String attributeName();
-//
-//		/**
-//		 * return the relationship mapping for this join column
-//		 */
-//		IRelationshipMapping getRelationshipMapping();
-//	}
+	IJoinColumn.Owner owner();
+
+	/**
+	 * interface allowing join columns to be used in multiple places
+	 * (e.g. 1:1 mappings and join tables)
+	 */
+	interface Owner extends IAbstractJoinColumn.Owner, IAbstractColumn.Owner
+	{
+		/**
+		 * return whether the specified table cannot be explicitly specified
+		 * in the join column's 'table' element
+		 */
+		boolean tableNameIsInvalid(String tableName);
+
+		/**
+		 * return whether the join column's table can be specified explicitly
+		 */
+		boolean tableIsAllowed();
+
+		/**
+		 * return the entity referenced by the join column
+		 */
+		IEntity targetEntity();
+
+		/**
+		 * return the join column's attribute name
+		 */
+		String attributeName();
+
+		/**
+		 * return the relationship mapping for this join column
+		 */
+		IRelationshipMapping relationshipMapping();
+	}
 }

@@ -47,10 +47,6 @@ public interface IAbstractJoinColumn extends INamedColumn
 		 * Return the wrapper for the datasource table for the referenced column
 		 */
 		Table dbReferencedColumnTable();
-
-		int joinColumnsSize();
-		
-		int indexOf(IAbstractJoinColumn joinColumn);
 		
 		boolean isVirtual(IAbstractJoinColumn joinColumn);
 	}
