@@ -123,10 +123,6 @@ public class XmlJavaClassChooser extends BaseJpaController<XmlPersistentType> {
 	}
 
 	private void textModified(ModifyEvent e) {
-		if (isPopulating()) {
-			return;
-		}
-
 		String text = ((Text) e.getSource()).getText();
 		subject().setClass(text);
 

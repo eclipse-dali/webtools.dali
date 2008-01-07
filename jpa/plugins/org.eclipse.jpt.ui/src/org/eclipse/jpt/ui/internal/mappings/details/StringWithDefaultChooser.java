@@ -110,9 +110,6 @@ public class StringWithDefaultChooser extends BaseJpaController
 			});
 	}
 	private void comboModified(ModifyEvent e) {
-		if (isPopulating()) {
-			return;
-		}
 		CCombo combo = (CCombo) e.getSource();
 		combo.getSelectionIndex();
 		String text = combo.getText();
@@ -178,10 +175,6 @@ public class StringWithDefaultChooser extends BaseJpaController
 	}
 
 	void selectionChanged(ISelection sel) {
-		if (isPopulating()) {
-			return;
-		}
-
 		if (sel instanceof IStructuredSelection) {
 			String selection = (String) ((IStructuredSelection) sel).getFirstElement();
 			if (this.comboViewer.getCombo().getSelectionIndex() == 0) {

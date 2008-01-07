@@ -145,9 +145,6 @@ public class TableCombo extends BaseJpaController<ITable>
 		this.combo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
 		this.combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (isPopulating()) {
-					return;
-				}
 				String tableText = ((CCombo) e.getSource()).getText();
 				if (tableText.equals("")) { //$NON-NLS-1$
 					tableText = null;

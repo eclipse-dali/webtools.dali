@@ -66,9 +66,6 @@ public class ColumnComposite extends BaseJpaComposite<IColumn>
   		combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
 		combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (isPopulating()) {
-					return;
-				}
 				String columnText = ((CCombo) e.getSource()).getText();
 				if (columnText.equals("")) {
 					columnText = null;
@@ -213,9 +210,6 @@ public class ColumnComposite extends BaseJpaComposite<IColumn>
   		combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
 		combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (isPopulating()) {
-					return;
-				}
 				String tableText = ((CCombo) e.getSource()).getText();
 				if (tableText.equals("")) {
 					tableText = null;

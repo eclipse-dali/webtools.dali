@@ -194,9 +194,6 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 	}
 
 	void mappingChanged(SelectionChangedEvent event) {
-		if (isPopulating()) {
-			return;
-		}
 		if (event.getSelection() instanceof StructuredSelection) {
 			IAttributeMappingUiProvider<?> provider = (IAttributeMappingUiProvider<?>) ((StructuredSelection) event.getSelection()).getFirstElement();
 			String key = (CollectionTools.contains(defaultAttributeMappingUiProviders(), provider) ? null : provider.attributeMappingKey());

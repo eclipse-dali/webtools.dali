@@ -61,10 +61,6 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 		final Text text = getWidgetFactory().createText(parent, null);
 		text.addModifyListener(new ModifyListener() {
 			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				if (isPopulating()) {
-					return;
-				}
-
 				String name = text.getText();
 				if (name.equals("")) {
 					if (getGenerator().getName() == null) {

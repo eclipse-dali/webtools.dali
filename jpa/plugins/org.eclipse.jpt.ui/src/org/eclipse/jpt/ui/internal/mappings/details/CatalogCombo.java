@@ -139,9 +139,6 @@ public class CatalogCombo extends BaseJpaController<ITable>
 		this.combo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
 		this.combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (isPopulating()) {
-					return;
-				}
 				String catalogText = ((CCombo) e.getSource()).getText();
 				if (catalogText.equals("")) { //$NON-NLS-1$
 					catalogText = null;

@@ -63,10 +63,6 @@ public class XmlJavaAttributeChooser extends BaseJpaController<XmlAttributeMappi
 	}
 
 	private void textModified(ModifyEvent e) {
-		if (isPopulating()) {
-			return;
-		}
-
 		String text = ((Text) e.getSource()).getText();
 		attribute.setName(text);
 

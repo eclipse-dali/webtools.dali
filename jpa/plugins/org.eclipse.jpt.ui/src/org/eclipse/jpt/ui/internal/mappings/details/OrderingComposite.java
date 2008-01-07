@@ -228,9 +228,6 @@ public class OrderingComposite extends BaseJpaComposite<IMultiRelationshipMappin
 	}
 
 	private void orderingTextViewerChanged() {
-		if (isPopulating()) {
-			return;
-		}
 		String orderByValue = this.orderingTextViewer.getDocument().get();
 		if (orderByValue.equals(this.subject().getOrderBy())) {
 			return;

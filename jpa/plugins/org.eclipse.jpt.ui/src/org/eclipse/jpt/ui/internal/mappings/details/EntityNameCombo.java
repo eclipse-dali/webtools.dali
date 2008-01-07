@@ -63,10 +63,6 @@ public class EntityNameCombo extends BaseJpaController<IEntity>
 	}
 
 	private void comboModified(ModifyEvent e) {
-		if (isPopulating()) {
-			return;
-		}
-
 		String text = ((CCombo) e.getSource()).getText();
 		if (text.equals(combo.getItem(0))) {
 			text = null;

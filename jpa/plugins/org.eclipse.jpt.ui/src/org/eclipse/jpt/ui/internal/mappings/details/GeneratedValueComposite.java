@@ -68,13 +68,10 @@ public class GeneratedValueComposite extends BaseJpaComposite<IIdMapping>
 		combo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
 		combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (isPopulating()) {
-					return;
-				}
 				String generatorName = ((CCombo) e.getSource()).getText();
 
 				if (generatorName.equals("")) { //$NON-NLS-1$
-					if (generatedValue.getGenerator() == null || generatedValue.getGenerator().equals("")) {
+					if (generatedValue == null || generatedValue.getGenerator() == null || generatedValue.getGenerator().equals("")) {
 						return;
 					}
 					generatorName = null;

@@ -114,10 +114,6 @@ public class XmlPackageChooser extends BaseJpaController
 	}
 
 	private void textModified(ModifyEvent e) {
-		if (isPopulating()) {
-			return;
-		}
-
 		String text = ((Text) e.getSource()).getText();
 		this.subject().setPackage(text);
 		//TODO set a JEM Package??

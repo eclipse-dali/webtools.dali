@@ -240,9 +240,6 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 	}
 
 	private void typeMappingChanged(SelectionChangedEvent event) {
-		if (isPopulating()) {
-			return;
-		}
 		if (event.getSelection() instanceof StructuredSelection) {
 			ITypeMappingUiProvider provider = (ITypeMappingUiProvider) ((StructuredSelection) event.getSelection()).getFirstElement();
 			this.persistentType.setMappingKey(provider.mappingKey());

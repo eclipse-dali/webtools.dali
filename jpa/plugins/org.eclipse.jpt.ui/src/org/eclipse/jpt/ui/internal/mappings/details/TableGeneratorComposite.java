@@ -152,9 +152,6 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	private ModifyListener buildTableNameListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (isPopulating()) {
-					return;
-				}
 				String text = ((CCombo) e.getSource()).getText();
 				if (text != null && tableNameCombo.getItemCount() > 0 && text.equals(tableNameCombo.getItem(0))) {
 					text = null;
@@ -171,9 +168,6 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	private ModifyListener buildPkColumnNameListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (isPopulating()) {
-					return;
-				}
 				String text = ((CCombo) e.getSource()).getText();
 				if (text != null && pkColumnNameCombo.getItemCount() > 0 && text.equals(pkColumnNameCombo.getItem(0))) {
 					text = null;
@@ -190,9 +184,6 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	private ModifyListener buildValueColumnNameListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (isPopulating()) {
-					return;
-				}
 				String text = ((CCombo) e.getSource()).getText();
 				if (text != null && valueColumnNameCombo.getItemCount() > 0 && text.equals(valueColumnNameCombo.getItem(0))) {
 					text = null;
@@ -209,9 +200,6 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	private ModifyListener buildPkColumnValueListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (isPopulating()) {
-					return;
-				}
 				String text = ((CCombo) e.getSource()).getText();
 				if (text != null && pkColumnValueCombo.getItemCount() > 0 && text.equals(pkColumnValueCombo.getItem(0))) {
 					text = null;

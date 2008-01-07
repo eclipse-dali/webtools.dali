@@ -109,9 +109,6 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 		if (this.sequenceNameComboListener == null) {
 			this.sequenceNameComboListener = new ModifyListener() {
 				public void modifyText(ModifyEvent e) {
-					if (isPopulating()) {
-						return;
-					}
 					String text = ((CCombo) e.getSource()).getText();
 					if (text != null && sequenceNameCombo.getItemCount() > 0 && text.equals(sequenceNameCombo.getItem(0))) {
 						text = null;

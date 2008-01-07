@@ -79,9 +79,6 @@ public class InheritanceComposite extends BaseJpaComposite<IEntity> {
   		combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
 		combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (isPopulating()) {
-					return;
-				}
 				String tableText = ((CCombo) e.getSource()).getText();
 				if (tableText.equals("")) { //$NON-NLS-1$
 					tableText = null;
@@ -214,9 +211,6 @@ public class InheritanceComposite extends BaseJpaComposite<IEntity> {
 		final CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
 		combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (isPopulating()) {
-					return;
-				}
 				String discriminatorValue = subject.getSpecifiedDiscriminatorValue();
 				String value = ((CCombo) e.getSource()).getText();
 				if (value.equals("")) { //$NON-NLS-1$

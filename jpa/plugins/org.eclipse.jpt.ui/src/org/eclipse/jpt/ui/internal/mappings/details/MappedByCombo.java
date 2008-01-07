@@ -57,9 +57,6 @@ public class MappedByCombo extends BaseJpaController<INonOwningMapping>
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(combo,IJpaHelpContextIds.MAPPING_MAPPED_BY);
 		this.combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (isPopulating()) {
-					return;
-				}
 				String mappedBy = ((CCombo) e.getSource()).getText();
 				if (mappedBy.equals("")) {
 					mappedBy = null;

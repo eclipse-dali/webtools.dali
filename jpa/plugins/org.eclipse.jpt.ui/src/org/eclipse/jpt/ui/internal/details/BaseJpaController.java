@@ -31,16 +31,6 @@ public abstract class BaseJpaController<T>
 	private ControlAligner leftControlAligner;
 
 	/**
-	 * Put in the populating flag to stop the circular population of the entity
-	 * name combo populateEntityNameCombo is calling select() which causes
-	 * entityNameComboModified() to be called this sets the name in the model
-	 * which starts the circle over again. We should probably short-circuit this
-	 * differently, like in the emf model, keep the property change from being
-	 * fired if a change did not actually occur - KFM.
-	 */
-	private boolean populating;
-
-	/**
 	 * The aligner responsible to align the left controls.
 	 */
 	private ControlAligner rightControlAligner;
@@ -374,10 +364,6 @@ public abstract class BaseJpaController<T>
 		this.initialize();
 	}
 
-	protected final boolean isPopulating() {
-		return this.populating;
-	}
-
 	/**
 	 * This method is called (perhaps internally) when this needs to repopulate
 	 * but the object of interest has not changed
@@ -387,15 +373,8 @@ public abstract class BaseJpaController<T>
 			return;
 		}
 
-		this.populating = true;
-
-		try {
-			doPopulate();
-		}
-		finally {
-			this.populating = false;
-		}
-
+		doPopulate();
+		
 		this.engageListeners();
 	}
 

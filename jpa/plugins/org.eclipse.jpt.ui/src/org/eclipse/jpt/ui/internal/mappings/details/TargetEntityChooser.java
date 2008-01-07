@@ -91,9 +91,6 @@ public class TargetEntityChooser extends BaseJpaController<IRelationshipMapping>
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(combo, IJpaHelpContextIds.MAPPING_TARGET_ENTITY);
 		combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (isPopulating()) {
-					return;
-				}
 				String targetEntityName = ((CCombo) e.getSource()).getText();
 				if (targetEntityName.equals(combo.getItem(0)) || targetEntityName.equals("")) {
 					targetEntityName = null;
