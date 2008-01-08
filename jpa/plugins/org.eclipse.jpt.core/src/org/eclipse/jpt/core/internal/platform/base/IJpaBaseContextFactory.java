@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.internal.context.java.IJavaBasicMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddable;
+import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddedIdMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
 import org.eclipse.jpt.core.internal.context.java.IJavaGeneratedValue;
@@ -111,6 +112,8 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	IJavaSecondaryTable createJavaSecondaryTable(IJavaEntity parent);
 	
 	IJavaBasicMapping createJavaBasicMapping(IJavaPersistentAttribute parent);
+	
+	IJavaEmbeddedIdMapping createJavaEmbeddedIdMapping(IJavaPersistentAttribute parent);
 	
 	IJavaEmbeddedMapping createJavaEmbeddedMapping(IJavaPersistentAttribute parent);
 	

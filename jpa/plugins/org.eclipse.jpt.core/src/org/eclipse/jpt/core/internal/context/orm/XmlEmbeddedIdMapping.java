@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
-import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
+import org.eclipse.jpt.core.internal.context.base.IEmbeddedIdMapping;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
@@ -28,7 +28,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 
-public class XmlEmbeddedIdMapping extends XmlAttributeMapping<EmbeddedId> implements IEmbeddedMapping
+public class XmlEmbeddedIdMapping extends XmlAttributeMapping<EmbeddedId> implements IEmbeddedIdMapping
 {
 	protected final List<XmlAttributeOverride> specifiedAttributeOverrides;
 	

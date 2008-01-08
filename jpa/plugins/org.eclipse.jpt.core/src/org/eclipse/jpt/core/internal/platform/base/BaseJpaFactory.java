@@ -48,6 +48,7 @@ import org.eclipse.jpt.core.internal.context.java.IJavaBasicMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddable;
+import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddedIdMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
 import org.eclipse.jpt.core.internal.context.java.IJavaGeneratedValue;
@@ -69,6 +70,7 @@ import org.eclipse.jpt.core.internal.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaColumn;
 import org.eclipse.jpt.core.internal.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.java.JavaEmbeddable;
+import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedIdMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaEntity;
 import org.eclipse.jpt.core.internal.context.java.JavaGeneratedValue;
@@ -291,6 +293,10 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	public IJavaBasicMapping createJavaBasicMapping(IJavaPersistentAttribute parent) {
 		return new JavaBasicMapping(parent);
+	}
+	
+	public IJavaEmbeddedIdMapping createJavaEmbeddedIdMapping(IJavaPersistentAttribute parent) {
+		return new JavaEmbeddedIdMapping(parent);
 	}
 	
 	public IJavaEmbeddedMapping createJavaEmbeddedMapping(IJavaPersistentAttribute parent) {
