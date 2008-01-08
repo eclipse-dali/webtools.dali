@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.internal.context.base.IMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.orm.MapKey;
 import org.eclipse.jpt.core.internal.resource.orm.MultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
+import org.eclipse.jpt.utility.internal.StringTools;
 
 
 public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMapping>
@@ -24,9 +25,7 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 
 	protected String mappedBy;
 
-//	protected String specifiedOrderBy;
-//
-//	protected String defaultOrderBy;
+	protected String orderBy;//TODO change this to defaultOrderBy and specifiedOrderBy?
 
 	protected final XmlJoinTable joinTable;
 
@@ -36,18 +35,6 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 		super(parent);
 		this.joinTable = new XmlJoinTable(this);
 	}
-
-//	private IJoinTable.Owner buildJoinTableOwner() {
-//		return new IJoinTable.Owner() {
-//			public ITextRange validationTextRange() {
-//				return XmlMultiRelationshipMapping.this.validationTextRange();
-//			}
-//
-//			public ITypeMapping getTypeMapping() {
-//				return XmlMultiRelationshipMapping.this.typeMapping();
-//			}
-//		};
-//	}
 
 	public String getMappedBy() {
 		return this.mappedBy;
@@ -60,38 +47,38 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 		firePropertyChanged(MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
 	}
 
-//	public String getOrderBy() {
-//		return null;// orderBy;
-//	}
-//
-//	public void setOrderBy(String newOrderBy) {
-//		String oldOrderBy = orderBy;
-//		orderBy = newOrderBy;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING_INTERNAL__ORDER_BY, oldOrderBy, orderBy));
-//	}
-//
-//	public boolean isNoOrdering() {
-//		return getOrderBy() == null;
-//	}
-//
-//
-//	public void setNoOrdering() {
-//		setOrderBy(null);
-//	}
-//
-//	public boolean isOrderByPk() {
-//		return "".equals(getOrderBy());
-//	}
-//
-//	public void setOrderByPk() {
-//		setOrderBy("");
-//	}
-//
-//	public boolean isCustomOrdering() {
-//		return !StringTools.stringIsEmpty(getOrderBy());
-//	}
-//
+	public String getOrderBy() {
+		return this.orderBy;
+	}
+
+	public void setOrderBy(String newOrderBy) {
+		String oldOrderBy = this.orderBy;
+		this.orderBy = newOrderBy;
+		attributeMapping().setOrderBy(newOrderBy);
+		firePropertyChanged(ORDER_BY_PROPERTY, oldOrderBy, newOrderBy);
+	}
+
+	public boolean isNoOrdering() {
+		return getOrderBy() == null;
+	}
+
+	public void setNoOrdering() {
+		setOrderBy(null);
+	}
+
+	//hmm, this looks odd TODO for default orderBy for pk ordering
+	public boolean isOrderByPk() {
+		return "".equals(getOrderBy());
+	}
+
+	public void setOrderByPk() {
+		setOrderBy("");
+	}
+
+	public boolean isCustomOrdering() {
+		return !StringTools.stringIsEmpty(getOrderBy());
+	}
+
 //	public ITextRange mappedByTextRange() {
 //		if (node == null) {
 //			return typeMapping().validationTextRange();
@@ -148,18 +135,10 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 		attributeMapping().setMapKey(OrmFactory.eINSTANCE.createMapKey());
 	}
 
-//	public void makeJoinTableForXmlNull() {
-//		setJoinTableForXmlGen(null);
-//	}
-//
-//	public void makeJoinTableForXmlNonNull() {
-//		setJoinTableForXmlGen(getJoinTableForXml());
-//	}
-//
-//	public Iterator<String> candidateMapKeyNames() {
-//		return this.allTargetEntityAttributeNames();
-//	}
-//
+	public Iterator<String> candidateMapKeyNames() {
+		return this.allTargetEntityAttributeNames();
+	}
+
 //	public void refreshDefaults(DefaultsContext defaultsContext) {
 //		super.refreshDefaults(defaultsContext);
 //		// TODO
@@ -192,52 +171,8 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 //	protected String javaDefaultTargetEntityFromContainer(ITypeBinding typeBinding) {
 //		return JavaMultiRelationshipMapping.javaDefaultTargetEntityFromContainer(typeBinding);
 //	}
-		
-	public String getOrderBy() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void setOrderBy(String value) {
-		// TODO Auto-generated method stub
-		
-	}
-	public void setOrderByPk() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public void setNoOrdering() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public boolean isCustomOrdering() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	public boolean isNoOrdering() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	public boolean isOrderByPk() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	public Iterator<String> candidateMapKeyNames() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	public ITextRange mappedByTextRange() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public Iterator<String> candidateMappedByAttributeNames() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -252,6 +187,7 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 		super.initialize(multiRelationshipMapping);
 		this.mappedBy = multiRelationshipMapping.getMappedBy();
 		this.mapKey = this.mapKey(multiRelationshipMapping);
+		this.orderBy = this.orderBy(multiRelationshipMapping);
 		this.joinTable.initialize(multiRelationshipMapping);
 	}
 	
@@ -260,10 +196,15 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 		super.update(multiRelationshipMapping);
 		this.setMappedBy(multiRelationshipMapping.getMappedBy());
 		this.setMapKey_(this.mapKey(multiRelationshipMapping));
+		this.setOrderBy(this.orderBy(multiRelationshipMapping));
 		this.joinTable.update(multiRelationshipMapping);
 	}
 	
 	protected String mapKey(T multiRelationshipMapping) {
 		return attributeMapping().getMapKey() == null ? null : attributeMapping().getMapKey().getName();
+	}
+	
+	protected String orderBy(T multiRelationshipMapping) {
+		return attributeMapping().getOrderBy();
 	}
 }

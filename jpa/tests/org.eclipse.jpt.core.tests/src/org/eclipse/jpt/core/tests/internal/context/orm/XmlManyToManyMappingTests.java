@@ -255,5 +255,95 @@ public class XmlManyToManyMappingTests extends ContextModelTestCase
 		assertNull(xmlManyToManyMapping.getMapKey());
 		assertNull(manyToMany.getMapKey());
 	}
+	
+	public void testUpdateOrderBy() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
+		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		
+		assertNull(xmlManyToManyMapping.getOrderBy());
+		assertNull(manyToMany.getOrderBy());
+				
+		//set orderBy in the resource model, verify context model updated
+		manyToMany.setOrderBy("newOrderBy");
+		assertEquals("newOrderBy", xmlManyToManyMapping.getOrderBy());
+		assertEquals("newOrderBy", manyToMany.getOrderBy());
+	
+		//set orderBy to null in the resource model
+		manyToMany.setOrderBy(null);
+		assertNull(xmlManyToManyMapping.getOrderBy());
+		assertNull(manyToMany.getOrderBy());
+	}
+	
+	public void testModifyOrderBy() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
+		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		
+		assertNull(xmlManyToManyMapping.getOrderBy());
+		assertNull(manyToMany.getOrderBy());
+				
+		//set mappedBy in the context model, verify resource model updated
+		xmlManyToManyMapping.setOrderBy("newOrderBy");
+		assertEquals("newOrderBy", xmlManyToManyMapping.getOrderBy());
+		assertEquals("newOrderBy", manyToMany.getOrderBy());
+	
+		//set mappedBy to null in the context model
+		xmlManyToManyMapping.setOrderBy(null);
+		assertNull(xmlManyToManyMapping.getOrderBy());
+		assertNull(manyToMany.getOrderBy());
+	}
+	
+	public void testIsNoOrdering() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
+		
+		assertTrue(xmlManyToManyMapping.isNoOrdering());
 
+		xmlManyToManyMapping.setOrderBy("foo");
+		assertFalse(xmlManyToManyMapping.isNoOrdering());
+		
+		xmlManyToManyMapping.setOrderBy(null);
+		assertTrue(xmlManyToManyMapping.isNoOrdering());
+	}
+	
+	public void testSetNoOrdering() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
+		
+		assertTrue(xmlManyToManyMapping.isNoOrdering());
+
+		xmlManyToManyMapping.setOrderBy("foo");
+		assertFalse(xmlManyToManyMapping.isNoOrdering());
+		
+		xmlManyToManyMapping.setNoOrdering();
+		assertTrue(xmlManyToManyMapping.isNoOrdering());
+		assertNull(xmlManyToManyMapping.getOrderBy());
+	}
+//TODO
+//	public boolean isOrderByPk() {
+//		return "".equals(getOrderBy());
+//	}
+//
+//	public void setOrderByPk() {
+//		setOrderBy("");
+//	}
+
+	public void testIsCustomOrdering() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
+		
+		assertFalse(xmlManyToManyMapping.isCustomOrdering());
+
+		xmlManyToManyMapping.setOrderBy("foo");
+		assertTrue(xmlManyToManyMapping.isCustomOrdering());
+		
+		xmlManyToManyMapping.setOrderBy(null);
+		assertFalse(xmlManyToManyMapping.isCustomOrdering());
+	}
 }
