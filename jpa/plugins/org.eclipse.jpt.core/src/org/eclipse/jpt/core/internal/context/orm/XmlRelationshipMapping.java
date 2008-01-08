@@ -8,12 +8,14 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IFetchable;
 import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.orm.RelationshipMapping;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 
 public abstract class XmlRelationshipMapping<T extends RelationshipMapping> extends XmlAttributeMapping<T>
@@ -144,16 +146,16 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 //	private boolean targetEntityIncludesPackage() {
 //		return getTargetEntity().lastIndexOf('.') != -1;
 //	}
-//
-//	public Iterator<String> allTargetEntityAttributeNames() {
-//		IEntity targetEntity = this.getResolvedTargetEntity();
-//		return (targetEntity == null) ? EmptyIterator.<String> instance() : targetEntity.getPersistentType().allAttributeNames();
-//	}
-//
-//	public Iterator<String> candidateMappedByAttributeNames() {
-//		return this.allTargetEntityAttributeNames();
-//	}
-//
+
+	public Iterator<String> allTargetEntityAttributeNames() {
+		IEntity targetEntity = this.getResolvedTargetEntity();
+		return (targetEntity == null) ? EmptyIterator.<String> instance() : targetEntity.persistentType().allAttributeNames();
+	}
+
+	public Iterator<String> candidateMappedByAttributeNames() {
+		return this.allTargetEntityAttributeNames();
+	}
+
 //	@Override
 //	public void refreshDefaults(DefaultsContext defaultsContext) {
 //		super.refreshDefaults(defaultsContext);
