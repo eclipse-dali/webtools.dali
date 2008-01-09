@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,30 +33,9 @@ public class ItemCollectionListValueModelAdapter
 	// ********** constructors **********
 
 	/**
-	 * Construct an adapter for the specified item Collection.
-	 */
-	public ItemCollectionListValueModelAdapter(ListValueModel listHolder, String collectionName) {
-		this(listHolder, new String[] {collectionName});
-	}
-
-	/**
 	 * Construct an adapter for the specified item Collections.
 	 */
-	public ItemCollectionListValueModelAdapter(ListValueModel listHolder, String collectionName1, String collectionName2) {
-		this(listHolder, new String[] {collectionName1, collectionName2});
-	}
-
-	/**
-	 * Construct an adapter for the specified item Collections.
-	 */
-	public ItemCollectionListValueModelAdapter(ListValueModel listHolder, String collectionName1, String collectionName2, String collectionName3) {
-		this(listHolder, new String[] {collectionName1, collectionName2, collectionName3});
-	}
-
-	/**
-	 * Construct an adapter for the specified item Collections.
-	 */
-	public ItemCollectionListValueModelAdapter(ListValueModel listHolder, String[] collectionNames) {
+	public ItemCollectionListValueModelAdapter(ListValueModel listHolder, String... collectionNames) {
 		super(listHolder);
 		this.collectionNames = collectionNames;
 		this.itemCollectionListener = this.buildItemCollectionListener();
@@ -65,28 +44,7 @@ public class ItemCollectionListValueModelAdapter
 	/**
 	 * Construct an adapter for the specified item Collections.
 	 */
-	public ItemCollectionListValueModelAdapter(CollectionValueModel collectionHolder, String collectionName) {
-		this(collectionHolder, new String[] {collectionName});
-	}
-
-	/**
-	 * Construct an adapter for the specified item Collections.
-	 */
-	public ItemCollectionListValueModelAdapter(CollectionValueModel collectionHolder, String collectionName1, String collectionName2) {
-		this(collectionHolder, new String[] {collectionName1, collectionName2});
-	}
-
-	/**
-	 * Construct an adapter for the specified item Collections.
-	 */
-	public ItemCollectionListValueModelAdapter(CollectionValueModel collectionHolder, String collectionName1, String collectionName2, String collectionName3) {
-		this(collectionHolder, new String[] {collectionName1, collectionName2, collectionName3});
-	}
-
-	/**
-	 * Construct an adapter for the specified item Collections.
-	 */
-	public ItemCollectionListValueModelAdapter(CollectionValueModel collectionHolder, String[] collectionNames) {
+	public ItemCollectionListValueModelAdapter(CollectionValueModel collectionHolder, String... collectionNames) {
 		this(new CollectionListValueModelAdapter(collectionHolder), collectionNames);
 	}
 
@@ -123,15 +81,15 @@ public class ItemCollectionListValueModelAdapter
 
 	@Override
 	protected void startListeningToItem(Model item) {
-		for (int i = this.collectionNames.length; i-- > 0; ) {
-			item.addCollectionChangeListener(this.collectionNames[i], this.itemCollectionListener);
+		for (String collectionName : this.collectionNames) {
+			item.addCollectionChangeListener(collectionName, this.itemCollectionListener);
 		}
 	}
 
 	@Override
 	protected void stopListeningToItem(Model item) {
-		for (int i = this.collectionNames.length; i-- > 0; ) {
-			item.removeCollectionChangeListener(this.collectionNames[i], this.itemCollectionListener);
+		for (String collectionName : this.collectionNames) {
+			item.removeCollectionChangeListener(collectionName, this.itemCollectionListener);
 		}
 	}
 

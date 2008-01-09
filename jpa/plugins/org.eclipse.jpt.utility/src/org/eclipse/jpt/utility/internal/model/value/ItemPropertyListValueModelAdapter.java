@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,60 +33,18 @@ public class ItemPropertyListValueModelAdapter
 	// ********** constructors **********
 
 	/**
-	 * Construct an adapter for the specified item property.
-	 */
-	public ItemPropertyListValueModelAdapter(ListValueModel listHolder, String propertyName) {
-		this(listHolder, new String[] {propertyName});
-	}
-
-	/**
 	 * Construct an adapter for the specified item properties.
 	 */
-	public ItemPropertyListValueModelAdapter(ListValueModel listHolder, String propertyName1, String propertyName2) {
-		this(listHolder, new String[] {propertyName1, propertyName2});
-	}
-
-	/**
-	 * Construct an adapter for the specified item properties.
-	 */
-	public ItemPropertyListValueModelAdapter(ListValueModel listHolder, String propertyName1, String propertyName2, String propertyName3) {
-		this(listHolder, new String[] {propertyName1, propertyName2, propertyName3});
-	}
-
-	/**
-	 * Construct an adapter for the specified item properties.
-	 */
-	public ItemPropertyListValueModelAdapter(ListValueModel listHolder, String[] propertyNames) {
+	public ItemPropertyListValueModelAdapter(ListValueModel listHolder, String... propertyNames) {
 		super(listHolder);
 		this.propertyNames = propertyNames;
 		this.itemPropertyListener = this.buildItemPropertyListener();
 	}
 
 	/**
-	 * Construct an adapter for the specified item property.
-	 */
-	public ItemPropertyListValueModelAdapter(CollectionValueModel collectionHolder, String propertyName) {
-		this(collectionHolder, new String[] {propertyName});
-	}
-
-	/**
 	 * Construct an adapter for the specified item properties.
 	 */
-	public ItemPropertyListValueModelAdapter(CollectionValueModel collectionHolder, String propertyName1, String propertyName2) {
-		this(collectionHolder, new String[] {propertyName1, propertyName2});
-	}
-
-	/**
-	 * Construct an adapter for the specified item properties.
-	 */
-	public ItemPropertyListValueModelAdapter(CollectionValueModel collectionHolder, String propertyName1, String propertyName2, String propertyName3) {
-		this(collectionHolder, new String[] {propertyName1, propertyName2, propertyName3});
-	}
-
-	/**
-	 * Construct an adapter for the specified item properties.
-	 */
-	public ItemPropertyListValueModelAdapter(CollectionValueModel collectionHolder, String[] propertyNames) {
+	public ItemPropertyListValueModelAdapter(CollectionValueModel collectionHolder, String... propertyNames) {
 		this(new CollectionListValueModelAdapter(collectionHolder), propertyNames);
 	}
 
@@ -110,15 +68,15 @@ public class ItemPropertyListValueModelAdapter
 
 	@Override
 	protected void startListeningToItem(Model item) {
-		for (int i = this.propertyNames.length; i-- > 0; ) {
-			item.addPropertyChangeListener(this.propertyNames[i], this.itemPropertyListener);
+		for (String propertyName : this.propertyNames) {
+			item.addPropertyChangeListener(propertyName, this.itemPropertyListener);
 		}
 	}
 
 	@Override
 	protected void stopListeningToItem(Model item) {
-		for (int i = this.propertyNames.length; i-- > 0; ) {
-			item.removePropertyChangeListener(this.propertyNames[i], this.itemPropertyListener);
+		for (String propertyName : this.propertyNames) {
+			item.removePropertyChangeListener(propertyName, this.itemPropertyListener);
 		}
 	}
 

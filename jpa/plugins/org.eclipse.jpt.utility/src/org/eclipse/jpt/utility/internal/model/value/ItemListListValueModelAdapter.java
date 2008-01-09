@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,60 +33,18 @@ public class ItemListListValueModelAdapter
 	// ********** constructors **********
 
 	/**
-	 * Construct an adapter for the specified item List aspect.
-	 */
-	public ItemListListValueModelAdapter(ListValueModel listHolder, String listName) {
-		this(listHolder, new String[] {listName});
-	}
-
-	/**
 	 * Construct an adapter for the specified item List aspects.
 	 */
-	public ItemListListValueModelAdapter(ListValueModel listHolder, String listName1, String listName2) {
-		this(listHolder, new String[] {listName1, listName2});
-	}
-
-	/**
-	 * Construct an adapter for the specified item List aspects.
-	 */
-	public ItemListListValueModelAdapter(ListValueModel listHolder, String listName1, String listName2, String listName3) {
-		this(listHolder, new String[] {listName1, listName2, listName3});
-	}
-
-	/**
-	 * Construct an adapter for the specified item List aspects.
-	 */
-	public ItemListListValueModelAdapter(ListValueModel listHolder, String[] listNames) {
+	public ItemListListValueModelAdapter(ListValueModel listHolder, String... listNames) {
 		super(listHolder);
 		this.listNames = listNames;
 		this.itemListListener = this.buildItemListListener();
 	}
 
 	/**
-	 * Construct an adapter for the specified item List aspect.
-	 */
-	public ItemListListValueModelAdapter(CollectionValueModel collectionHolder, String listName) {
-		this(collectionHolder, new String[] {listName});
-	}
-
-	/**
 	 * Construct an adapter for the specified item List aspects.
 	 */
-	public ItemListListValueModelAdapter(CollectionValueModel collectionHolder, String listName1, String listName2) {
-		this(collectionHolder, new String[] {listName1, listName2});
-	}
-
-	/**
-	 * Construct an adapter for the specified item List aspects.
-	 */
-	public ItemListListValueModelAdapter(CollectionValueModel collectionHolder, String listName1, String listName2, String listName3) {
-		this(collectionHolder, new String[] {listName1, listName2, listName3});
-	}
-
-	/**
-	 * Construct an adapter for the specified item List aspects.
-	 */
-	public ItemListListValueModelAdapter(CollectionValueModel collectionHolder, String[] listNames) {
+	public ItemListListValueModelAdapter(CollectionValueModel collectionHolder, String... listNames) {
 		this(new CollectionListValueModelAdapter(collectionHolder), listNames);
 	}
 
@@ -129,15 +87,15 @@ public class ItemListListValueModelAdapter
 
 	@Override
 	protected void startListeningToItem(Model item) {
-		for (int i = this.listNames.length; i-- > 0; ) {
-			item.addListChangeListener(this.listNames[i], this.itemListListener);
+		for (String listName : this.listNames) {
+			item.addListChangeListener(listName, this.itemListListener);
 		}
 	}
 
 	@Override
 	protected void stopListeningToItem(Model item) {
-		for (int i = this.listNames.length; i-- > 0; ) {
-			item.removeListChangeListener(this.listNames[i], this.itemListListener);
+		for (String listName : this.listNames) {
+			item.removeListChangeListener(listName, this.itemListListener);
 		}
 	}
 

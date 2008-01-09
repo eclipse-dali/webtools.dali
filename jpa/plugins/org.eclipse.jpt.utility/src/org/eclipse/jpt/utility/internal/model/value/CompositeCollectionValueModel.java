@@ -140,9 +140,10 @@ public class CompositeCollectionValueModel
 	}
 
 	protected Iterator buildCollectionsIterators() {
-		return new TransformationIterator(this.collections.values().iterator()) {
-			protected Object transform(Object next) {
-				return ((ArrayList) next).iterator();
+		return new TransformationIterator<ArrayList, Iterator>(this.collections.values().iterator()) {
+			@Override
+			protected Iterator transform(ArrayList next) {
+				return next.iterator();
 			}
 		};
 	}
