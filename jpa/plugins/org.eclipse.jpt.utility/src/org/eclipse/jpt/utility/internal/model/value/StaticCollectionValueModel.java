@@ -12,7 +12,6 @@ package org.eclipse.jpt.utility.internal.model.value;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 
@@ -25,31 +24,31 @@ public class StaticCollectionValueModel
 	extends AbstractModel
 	implements CollectionValueModel
 {
-	/** The value. */
-	protected final Collection value;
+	/** The collection. */
+	protected final Collection collection;
 
 	private static final long serialVersionUID = 1L;
 
 
 	/**
-	 * Construct a read-only CollectionValueModel for the specified value.
+	 * Construct a static CollectionValueModel for the specified collection.
 	 */
-	public StaticCollectionValueModel(Collection value) {
+	public StaticCollectionValueModel(Collection collection) {
 		super();
-		if (value == null) {
+		if (collection == null) {
 			throw new NullPointerException();
 		}
-		this.value = value;
+		this.collection = collection;
 	}
 
 	// ********** CollectionValueModel implementation **********
 
 	public int size() {
-		return this.value.size();
+		return this.collection.size();
 	}
 
 	public Iterator iterator() {
-		return this.value.iterator();
+		return this.collection.iterator();
 	}
 
 
@@ -57,7 +56,7 @@ public class StaticCollectionValueModel
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, CollectionTools.collection((Iterator) this.iterator()));
+		return StringTools.buildToStringFor(this, this.collection);
 	}
 
 }
