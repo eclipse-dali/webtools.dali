@@ -26,6 +26,8 @@ import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -127,6 +129,34 @@ public class ListBoxModelAdapter<E> {
 			StringConverter<T> stringConverter)
 	{
 		return new ListBoxModelAdapter<T>(listHolder, selectedItemsHolder, listBox, stringConverter);
+	}
+
+	/**
+	 * Adapt the specified model list and selection to the specified list box.
+	 * Use the default string converter to convert the model items to strings
+	 * to be displayed in the list box, which calls #toString() on the
+	 * items in the model list.
+	 */
+	public static <T> ListBoxModelAdapter<T> adapt(
+			ListValueModel listHolder,
+			PropertyValueModel<T> selectedItemHolder,
+			List listBox)
+	{
+		return adapt(listHolder, selectedItemHolder, listBox, StringConverter.Default.<T>instance());
+	}
+
+	/**
+	 * Adapt the specified model list and selection to the specified list box.
+	 * Use the specified string converter to convert the model items to strings
+	 * to be displayed in the list box.
+	 */
+	public static <T> ListBoxModelAdapter<T> adapt(
+			ListValueModel listHolder,
+			PropertyValueModel<T> selectedItemHolder,
+			List listBox,
+			StringConverter<T> stringConverter)
+	{
+		return new ListBoxModelAdapter<T>(listHolder, new PropertyCollectionValueModelAdapter(selectedItemHolder), listBox, stringConverter);
 	}
 
 
