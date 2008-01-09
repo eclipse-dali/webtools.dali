@@ -28,7 +28,7 @@ public class StaticPropertyValueModel<T>
 
 
 	/**
-	 * Construct a read-only PropertyValueModel for the specified value.
+	 * Construct a static PropertyValueModel for the specified value.
 	 */
 	public StaticPropertyValueModel(T value) {
 		super();
@@ -36,11 +36,14 @@ public class StaticPropertyValueModel<T>
 	}
 
 
-	// ********** ValueModel implementation **********
+	// ********** PropertyValueModel implementation **********
 
 	public T value() {
 		return this.value;
 	}
+
+
+	// ********** Object overrides **********
 
 	@Override
 	public String toString() {

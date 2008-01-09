@@ -68,7 +68,7 @@ public abstract class AbstractTreeNodeValueModel<T>
 
 	/**
 	 * Clients should be adding both "state change" and "value property change"
-	 * listeners. We watch only for the first "state change" listener.
+	 * listeners.
 	 */
 	@Override
 	public void addStateChangeListener(StateChangeListener listener) {
@@ -79,10 +79,8 @@ public abstract class AbstractTreeNodeValueModel<T>
 	}
 
 	/**
-	 * Begin listening to the node's value. If the state of the node changes
+	 * Begin listening to the node's value's state. If the state of the node changes
 	 * in a way that should be reflected in the tree, fire a "state change" event.
-	 * If the entire value of the node changes, fire a "value property change"
-	 * event.
 	 */
 	protected abstract void engageValue();
 
