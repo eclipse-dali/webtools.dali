@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ReadOnlyListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
@@ -39,7 +39,7 @@ public class StaticListValueModelTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.listHolder = new ReadOnlyListValueModel(LIST);
+		this.listHolder = new StaticListValueModel(LIST);
 	}
 
 	@Override

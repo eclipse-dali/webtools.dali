@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 
 /**
@@ -20,7 +21,7 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
  * returning a list iterator on a static list, but still allows listeners to be added.
  * Listeners will NEVER be notified of any changes, because there should be none.
  */
-public class ReadOnlyListValueModel
+public class StaticListValueModel
 	extends AbstractModel
 	implements ListValueModel
 {
@@ -31,9 +32,9 @@ public class ReadOnlyListValueModel
 
 
 	/**
-	 * Construct a ListValueModel for the specified value.
+	 * Construct a static ListValueModel for the specified list.
 	 */
-	public ReadOnlyListValueModel(List list) {
+	public StaticListValueModel(List list) {
 		super();
 		if (list == null) {
 			throw new NullPointerException();
@@ -62,6 +63,14 @@ public class ReadOnlyListValueModel
 
 	public Object[] toArray() {
 		return this.list.toArray();
+	}
+
+
+	// ********** Object overrides **********
+
+	@Override
+	public String toString() {
+		return StringTools.buildToStringFor(this, this.list);
 	}
 
 }
