@@ -53,30 +53,40 @@ public class ValueListAdapterTests extends TestCase {
 		Junk junk2 = new Junk("bar");
 		LocalListener l = new LocalListener(this.junkHolder2, this.junk, junk2);
 		this.junkHolder2.addPropertyChangeListener(l);
-		this.junkHolder2.addStateChangeListener(l);
 		this.junkHolder.setValue(junk2);
 		assertTrue(l.eventReceived());
 	}
 
-	public void testHasListeners() throws Exception {
+	public void testHasPropertyChangeListeners() throws Exception {
 		assertFalse(this.junkHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertFalse(this.junkHolder2.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 
 		LocalListener l = new LocalListener(this.junkHolder2, null, this.junk);
 		this.junkHolder2.addPropertyChangeListener(l);
-		this.junkHolder2.addStateChangeListener(l);
 		assertTrue(this.junkHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(this.junkHolder2.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 
-		this.junkHolder2.removeStateChangeListener(l);
 		this.junkHolder2.removePropertyChangeListener(l);
 		assertFalse(this.junkHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertFalse(this.junkHolder2.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 	}
 
+	public void testHasStateChangeListeners() throws Exception {
+		assertFalse(this.junk.hasAnyListChangeListeners(Junk.STUFF_LIST));
+		assertFalse(this.junkHolder2.hasAnyStateChangeListeners());
+
+		LocalListener l = new LocalListener(this.junkHolder2, null, this.junk);
+		this.junkHolder2.addStateChangeListener(l);
+		assertTrue(this.junk.hasAnyListChangeListeners(Junk.STUFF_LIST));
+		assertTrue(this.junkHolder2.hasAnyStateChangeListeners());
+
+		this.junkHolder2.removeStateChangeListener(l);
+		assertFalse(this.junk.hasAnyListChangeListeners(Junk.STUFF_LIST));
+		assertFalse(this.junkHolder2.hasAnyStateChangeListeners());
+	}
+
 	public void testListAdd() {
 		LocalListener l = new LocalListener(this.junkHolder2, null, this.junk);
-		this.junkHolder2.addPropertyChangeListener(l);
 		this.junkHolder2.addStateChangeListener(l);
 		this.junk.addStuff("bar");
 		assertTrue(l.eventReceived());
@@ -84,7 +94,6 @@ public class ValueListAdapterTests extends TestCase {
 
 	public void testListRemove() {
 		LocalListener l = new LocalListener(this.junkHolder2, null, this.junk);
-		this.junkHolder2.addPropertyChangeListener(l);
 		this.junkHolder2.addStateChangeListener(l);
 		this.junk.removeStuff("foo");
 		assertTrue(l.eventReceived());
@@ -92,7 +101,6 @@ public class ValueListAdapterTests extends TestCase {
 
 	public void testListReplace() {
 		LocalListener l = new LocalListener(this.junkHolder2, null, this.junk);
-		this.junkHolder2.addPropertyChangeListener(l);
 		this.junkHolder2.addStateChangeListener(l);
 		this.junk.replaceStuff("foo", "bar");
 		assertTrue(l.eventReceived());

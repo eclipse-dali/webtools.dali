@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
 
 /**
  * Abstract model that provides behavior for wrapping a property
@@ -90,17 +91,30 @@ public abstract class ValueAspectAdapter<T>
 	}
 
 
+	// ********** extend change support **********
+
+	@Override
+	public synchronized void addStateChangeListener(StateChangeListener listener) {
+		if (this.hasNoStateChangeListeners()) {
+			this.engageValue();
+		}
+		super.addStateChangeListener(listener);
+	}
+
+	@Override
+	public synchronized void removeStateChangeListener(StateChangeListener listener) {
+		super.removeStateChangeListener(listener);
+		if (this.hasNoStateChangeListeners()) {
+			this.disengageValue();
+		}
+	}
+
+
 	// ********** behavior **********
 
 	/**
-	 * Start listening to the value holder and the value.
+	 * Start listening to the current value.
 	 */
-	@Override
-	protected void engageValueHolder() {
-		super.engageValueHolder();
-		this.engageValue();
-	}
-
 	protected void engageValue() {
 		this.value = this.valueHolder.value();
 		if (this.value != null) {
@@ -115,14 +129,8 @@ public abstract class ValueAspectAdapter<T>
 	protected abstract void engageValue_();
 
 	/**
-	 * Stop listening to the value holder and the value.
+	 * Stop listening to the current value.
 	 */
-	@Override
-	protected void disengageValueHolder() {
-		this.disengageValue();
-		super.disengageValueHolder();
-	}
-
 	protected void disengageValue() {
 		if (this.value != null) {
 			this.disengageValue_();
@@ -136,6 +144,9 @@ public abstract class ValueAspectAdapter<T>
 	 */
 	protected abstract void disengageValue_();
 
+	/**
+	 * Subclasses should call this method whenever the value's aspect changes.
+	 */
 	protected void valueAspectChanged() {
 		this.fireStateChanged();
 	}
