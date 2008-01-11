@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 import java.util.Iterator;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 
 public interface INonOwningMapping extends IRelationshipMapping
@@ -22,5 +23,5 @@ public interface INonOwningMapping extends IRelationshipMapping
 
 	boolean mappedByIsValid(IAttributeMapping mappedByMapping);
 
-	ITextRange mappedByTextRange();
+	ITextRange mappedByTextRange(CompilationUnit astRoot);
 }

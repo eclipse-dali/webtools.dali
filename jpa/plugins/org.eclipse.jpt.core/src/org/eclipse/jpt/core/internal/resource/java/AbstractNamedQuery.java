@@ -287,5 +287,10 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 		public ITextRange textRange(CompilationUnit astRoot) {
 			return AbstractNamedQuery.this.textRange(astRoot);
 		}
+		
+		public String getElementName() {
+			return "hints";
+		}
+
 	}
 }

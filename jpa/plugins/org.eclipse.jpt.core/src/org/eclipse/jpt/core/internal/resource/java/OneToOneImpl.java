@@ -183,15 +183,6 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
 			return null;
 		}
-//TODO put this in the java context model when JavaOneToOneMapping exists
-//		public Iterator<String> correspondingAnnotationNames() {
-//			return new ArrayIterator<String>(
-//				JPA.PRIMARY_KEY_JOIN_COLUMN,
-//				JPA.PRIMARY_KEY_JOIN_COLUMNS,
-//				JPA.JOIN_COLUMN,
-//				JPA.JOIN_COLUMNS,
-//				JPA.JOIN_TABLE);
-//		}
 
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;

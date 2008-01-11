@@ -148,14 +148,6 @@ public class ManyToManyImpl extends AbstractRelationshipMappingAnnotation implem
 			return null;
 		}
 
-		//TODO put this in the java context model when JavaOneToOneMapping exists
-//		public Iterator<String> correspondingAnnotationNames() {
-//			return new ArrayIterator<String>(
-//				JPA.ORDER_BY,
-//				JPA.MAP_KEY,
-//				JPA.JOIN_TABLE);
-//		}
-
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}

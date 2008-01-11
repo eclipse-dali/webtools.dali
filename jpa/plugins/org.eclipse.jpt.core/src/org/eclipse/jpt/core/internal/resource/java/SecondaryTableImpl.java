@@ -265,6 +265,10 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 		public ITextRange textRange(CompilationUnit astRoot) {
 			return SecondaryTableImpl.this.textRange(astRoot);
 		}
+		
+		public String getElementName() {
+			return "pkJoinColumns";
+		}
 	}
 
 	public static class SecondaryTableAnnotationDefinition implements AnnotationDefinition

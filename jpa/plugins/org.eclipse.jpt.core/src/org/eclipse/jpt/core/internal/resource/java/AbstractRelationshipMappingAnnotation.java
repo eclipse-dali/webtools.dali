@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleTypeStringExpressionConver
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 
-public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnnotationResource<Attribute> implements RelationshipMappingAnnotation
+public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnnotationResource<Attribute> implements RelationshipMapping
 {
 	// hold this so we can get the 'targetEntity' text range
 	private final DeclarationAnnotationElementAdapter<String> targetEntityDeclarationAdapter;

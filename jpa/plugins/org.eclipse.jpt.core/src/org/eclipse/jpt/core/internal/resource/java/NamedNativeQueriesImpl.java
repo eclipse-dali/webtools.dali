@@ -43,6 +43,10 @@ public class NamedNativeQueriesImpl extends AbstractAnnotationResource<Type> imp
 	public String getNestableAnnotationName() {
 		return NamedNativeQuery.ANNOTATION_NAME;
 	}
+
+	public String getElementName() {
+		return "value";
+	}
 		
 	public ListIterator<NestableNamedNativeQuery> nestedAnnotations() {
 		return new CloneListIterator<NestableNamedNativeQuery>(this.namedNativeQueries);

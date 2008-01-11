@@ -22,6 +22,4 @@ public interface NestableAnnotation extends Annotation
 	 * @param newIndex
 	 */
 	void moveAnnotation(int newIndex);
-	
-	void removeAnnotation();
 }

@@ -100,6 +100,10 @@ public class JoinColumnsImpl extends AbstractAnnotationResource<Member> implemen
 	public void moveInternal(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.joinColumns, targetIndex, sourceIndex);
 	}
+
+	public String getElementName() {
+		return "value";
+	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);

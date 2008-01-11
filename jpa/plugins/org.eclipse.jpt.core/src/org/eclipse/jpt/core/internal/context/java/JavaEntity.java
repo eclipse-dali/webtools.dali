@@ -90,7 +90,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 
 	protected String specifiedDiscriminatorValue;
 	
-	protected IJavaDiscriminatorColumn discriminatorColumn;
+	protected final IJavaDiscriminatorColumn discriminatorColumn;
 
 	protected IJavaSequenceGenerator sequenceGenerator;
 
@@ -175,9 +175,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		ListIterator<JavaResource> annotations = persistentTypeResource.annotations(SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
-			IJavaSecondaryTable secondaryTable = jpaFactory().createJavaSecondaryTable(this);
-			secondaryTable.initializeFromResource((SecondaryTable) annotations.next());
-			this.specifiedSecondaryTables.add(secondaryTable);
+			this.specifiedSecondaryTables.add(createSecondaryTable((SecondaryTable) annotations.next()));
 		}
 	}
 	
@@ -201,9 +199,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		ListIterator<JavaResource> annotations = persistentTypeResource.annotations(PrimaryKeyJoinColumn.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
-			IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
-			primaryKeyJoinColumn.initializeFromResource((PrimaryKeyJoinColumn) annotations.next());
-			this.specifiedPrimaryKeyJoinColumns.add(primaryKeyJoinColumn);
+			this.specifiedPrimaryKeyJoinColumns.add(createPrimaryKeyJoinColumn((PrimaryKeyJoinColumn) annotations.next()));
 		}
 	}
 	
@@ -211,9 +207,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		ListIterator<JavaResource> annotations = persistentTypeResource.annotations(AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
-			IJavaAttributeOverride attributeOverride = jpaFactory().createJavaAttributeOverride(this, this);
-			attributeOverride.initializeFromResource((AttributeOverride) annotations.next());
-			this.specifiedAttributeOverrides.add(attributeOverride);
+			this.specifiedAttributeOverrides.add(createAttributeOverride((AttributeOverride) annotations.next()));
 		}
 	}
 	
@@ -1352,10 +1346,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		
 		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
 			return JavaEntity.this.defaultPrimaryKeyJoinColumn == joinColumn;
-		}
-		
-		public int indexOf(IAbstractJoinColumn joinColumn) {
-			return CollectionTools.indexOf(JavaEntity.this.primaryKeyJoinColumns(), joinColumn);
 		}
 		
 		public String defaultColumnName() {

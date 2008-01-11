@@ -193,7 +193,7 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 		}
 
 		public String attributeName() {
-			return XmlSingleRelationshipMapping.this.attributeMapping().getName();
+			return XmlSingleRelationshipMapping.this.getName();
 		}
 
 		public IRelationshipMapping relationshipMapping() {

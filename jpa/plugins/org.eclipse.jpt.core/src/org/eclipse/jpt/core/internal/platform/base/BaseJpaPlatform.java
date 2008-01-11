@@ -34,9 +34,13 @@ import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedIdMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaEntityProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaIdMappingProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaManyToManyMappingProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaManyToOneMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaMappedSuperclassProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaNullAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMappingProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaOneToManyMappingProvider;
+import org.eclipse.jpt.core.internal.context.java.JavaOneToOneMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
@@ -193,6 +197,10 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		providers.add(JavaEmbeddedMappingProvider.instance());
 		providers.add(JavaEmbeddedIdMappingProvider.instance());
 		providers.add(JavaIdMappingProvider.instance());
+		providers.add(JavaManyToManyMappingProvider.instance());
+		providers.add(JavaManyToOneMappingProvider.instance());
+		providers.add(JavaOneToManyMappingProvider.instance());
+		providers.add(JavaOneToOneMappingProvider.instance());
 		providers.add(JavaTransientMappingProvider.instance());
 		providers.add(JavaVersionMappingProvider.instance());
 	}

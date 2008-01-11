@@ -413,7 +413,11 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 		
 		public ITextRange textRange(CompilationUnit astRoot) {
 			return TableGeneratorImpl.this.textRange(astRoot);
-		}		
+		}
+		
+		public String getElementName() {
+			return "uniqueConstraints";
+		}
 	}
 	
 	public static class TableGeneratorAnnotationDefinition implements AnnotationDefinition

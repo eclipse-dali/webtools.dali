@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
+import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
@@ -87,8 +88,18 @@ public class ContainerAnnotationTools
 		containerAnnotation.jdtAnnotation(astRoot).accept(initialJavaMemberAnnotationAstVisitor(astRoot, containerAnnotation));
 	}
 	
+	/**
+	 * Only visit the member value pair with the given element name.  
+	 * If there is no element name (like in the case of value elements)
+	 * then we will visit all annotations with the annotation name inside
+	 * the given container annotation
+	 */
 	private static ASTVisitor initialJavaMemberAnnotationAstVisitor(final CompilationUnit astRoot, final ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
 		return new ASTVisitor() {
+			@Override
+			public boolean visit(MemberValuePair node) {
+				return node.getName().getFullyQualifiedName().equals(containerAnnotation.getElementName());
+			}
 			@Override
 			public boolean visit(SingleMemberAnnotation node) {
 				return visit((org.eclipse.jdt.core.dom.Annotation) node);
@@ -135,8 +146,19 @@ public class ContainerAnnotationTools
 		}		
 	}
 	
+	/**
+	 * Only visit the member value pair with the given element name.  
+	 * If there is no element name (like in the case of value elements)
+	 * then we will visit all annotations with the annotation name inside
+	 * the given container annotation
+	 */
 	private static ASTVisitor javaMemberAnnotationAstVisitor(final CompilationUnit astRoot, final ContainerAnnotation<? extends NestableAnnotation> containerAnnotation) {
 		return new ASTVisitor() {
+			@Override
+			public boolean visit(MemberValuePair node) {
+				return node.getName().getFullyQualifiedName().equals(containerAnnotation.getElementName());
+			}
+			
 			@Override
 			public boolean visit(SingleMemberAnnotation node) {
 				return visit((org.eclipse.jdt.core.dom.Annotation) node);

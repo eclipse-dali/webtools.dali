@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
+import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.INamedColumn;
@@ -33,11 +34,18 @@ import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
 import org.eclipse.jpt.core.internal.context.java.IJavaGeneratedValue;
 import org.eclipse.jpt.core.internal.context.java.IJavaIdMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaJoinColumn;
+import org.eclipse.jpt.core.internal.context.java.IJavaJoinTable;
 import org.eclipse.jpt.core.internal.context.java.IJavaJpaContextNode;
+import org.eclipse.jpt.core.internal.context.java.IJavaManyToManyMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaManyToOneMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaMappedSuperclass;
+import org.eclipse.jpt.core.internal.context.java.IJavaOneToManyMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaOneToOneMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.context.java.IJavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
 import org.eclipse.jpt.core.internal.context.java.IJavaSequenceGenerator;
 import org.eclipse.jpt.core.internal.context.java.IJavaTable;
@@ -105,10 +113,14 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	
 	IJavaTable createJavaTable(IJavaEntity parent);
 	
+	IJavaJoinTable createJavaJoinTable(IJavaRelationshipMapping parent);
+	
 	IJavaColumn createJavaColumn(IJavaJpaContextNode parent, IJavaColumn.Owner owner);
 
 	IJavaDiscriminatorColumn createJavaDiscriminatorColumn(IJavaEntity parent, INamedColumn.Owner owner);
 	
+	IJavaJoinColumn createJavaJoinColumn(IJavaJpaContextNode parent, IJoinColumn.Owner owner);
+
 	IJavaSecondaryTable createJavaSecondaryTable(IJavaEntity parent);
 	
 	IJavaBasicMapping createJavaBasicMapping(IJavaPersistentAttribute parent);
@@ -119,6 +131,14 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	
 	IJavaIdMapping createJavaIdMapping(IJavaPersistentAttribute parent);
 	
+	IJavaManyToManyMapping createJavaManyToManyMapping(IJavaPersistentAttribute parent);
+	
+	IJavaManyToOneMapping createJavaManyToOneMapping(IJavaPersistentAttribute parent);
+	
+	IJavaOneToManyMapping createJavaOneToManyMapping(IJavaPersistentAttribute parent);
+	
+	IJavaOneToOneMapping createJavaOneToOneMapping(IJavaPersistentAttribute parent);
+
 	IJavaTransientMapping createJavaTransientMapping(IJavaPersistentAttribute parent);
 	
 	IJavaVersionMapping createJavaVersionMapping(IJavaPersistentAttribute parent);

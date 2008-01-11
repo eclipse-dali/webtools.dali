@@ -205,10 +205,6 @@ public class XmlSecondaryTable extends AbstractXmlTable
 			return XmlSecondaryTable.this.defaultPrimaryKeyJoinColumns.contains(joinColumn);
 		}
 		
-		public int indexOf(IAbstractJoinColumn joinColumn) {
-			return CollectionTools.indexOf(XmlSecondaryTable.this.primaryKeyJoinColumns(), joinColumn);
-		}
-		
 		public String defaultColumnName() {
 			if (joinColumnsSize() != 1) {
 				return null;

@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 
 
-public interface ManyToMany extends RelationshipMappingAnnotation
+public interface ManyToMany extends RelationshipMapping
 {
 	String ANNOTATION_NAME = JPA.MANY_TO_MANY;
 

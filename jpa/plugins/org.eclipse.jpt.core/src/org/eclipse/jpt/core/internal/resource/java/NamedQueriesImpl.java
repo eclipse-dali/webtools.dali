@@ -44,6 +44,10 @@ public class NamedQueriesImpl extends AbstractAnnotationResource<Type> implement
 	public String getNestableAnnotationName() {
 		return NamedQuery.ANNOTATION_NAME;
 	}
+
+	public String getElementName() {
+		return "value";
+	}
 		
 	public ListIterator<NestableNamedQuery> nestedAnnotations() {
 		return new CloneListIterator<NestableNamedQuery>(this.namedQueries);

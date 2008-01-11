@@ -233,6 +233,11 @@ public class AssociationOverrideImpl
 		public ITextRange textRange(CompilationUnit astRoot) {
 			return AssociationOverrideImpl.this.textRange(astRoot);
 		}
+		
+		public String getElementName() {
+			return "joinColumns";
+		}
+
 	}
 
 	public static class AssociationOverrideAnnotationDefinition implements AnnotationDefinition

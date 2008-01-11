@@ -125,6 +125,29 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		return JPTTools.typeIsPersistable(getMember().binding(astRoot));
 	}
 
+
+	@Override
+	@SuppressWarnings("unchecked")
+	//overriding purely to suppress the warning you get at the class level
+	public ListIterator<NestableAnnotation> annotations(String nestableAnnotationName, String containerAnnotationName) {
+		return super.annotations(nestableAnnotationName, containerAnnotationName);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	//overriding purely to suppress the warning you get at the class level
+	public Iterator<Annotation> mappingAnnotations() {
+		return super.mappingAnnotations();
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	//overriding purely to suppress the warning you get at the class level
+	public Iterator<Annotation> annotations() {
+		return super.annotations();
+	}
+
+	
 	// ******** JavaPersistentTypeResource implementation ********
 	public JavaPersistentTypeResource javaPersistentTypeResource(String fullyQualifiedTypeName) {
 		if (getQualifiedName().equals(fullyQualifiedTypeName)) {

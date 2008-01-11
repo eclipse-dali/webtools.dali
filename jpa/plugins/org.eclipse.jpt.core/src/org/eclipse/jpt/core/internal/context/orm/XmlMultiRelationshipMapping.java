@@ -9,6 +9,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.context.base.IMultiRelationshipMapping;
@@ -172,7 +173,7 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 //		return JavaMultiRelationshipMapping.javaDefaultTargetEntityFromContainer(typeBinding);
 //	}
 	
-	public ITextRange mappedByTextRange() {
+	public ITextRange mappedByTextRange(CompilationUnit astRoot) {
 		// TODO Auto-generated method stub
 		return null;
 	}

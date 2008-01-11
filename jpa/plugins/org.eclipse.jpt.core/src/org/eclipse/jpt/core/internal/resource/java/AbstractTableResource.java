@@ -315,5 +315,10 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 		public ITextRange textRange(CompilationUnit astRoot) {
 			return AbstractTableResource.this.textRange(astRoot);
 		}
+		
+		public String getElementName() {
+			return "uniqueConstraints";
+		}
+
 	}
 }

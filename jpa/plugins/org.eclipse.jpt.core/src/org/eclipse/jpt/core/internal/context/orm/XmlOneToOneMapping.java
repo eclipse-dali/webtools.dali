@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
@@ -53,7 +54,7 @@ public class XmlOneToOneMapping extends XmlSingleRelationshipMapping<OneToOne>
 		return (mappedByKey == IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 	}
 
-	public ITextRange mappedByTextRange() {
+	public ITextRange mappedByTextRange(CompilationUnit astRoot) {
 		return null;
 //		if (node == null) {
 //			return typeMapping().validationTextRange();
@@ -91,6 +92,7 @@ public class XmlOneToOneMapping extends XmlSingleRelationshipMapping<OneToOne>
 		}
 	}
 	
+	@Override
 	public Iterator<String> candidateMappedByAttributeNames() {
 		// TODO Auto-generated method stub
 		return null;

@@ -119,7 +119,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	protected abstract boolean calculatePersistability(CompilationUnit astRoot);
 
 	public Annotation annotation(String annotationName) {
-		for (Iterator<Annotation> i = _annotations(); i.hasNext(); ) {
+		for (Iterator<Annotation> i = annotations(); i.hasNext(); ) {
 			Annotation annotation = i.next();
 			if (annotation.getAnnotationName().equals(annotationName)) {
 				return annotation;
@@ -137,7 +137,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	}
 	
 	public Annotation mappingAnnotation(String annotationName) {
-		for (Iterator<Annotation> i = _mappingAnnotations(); i.hasNext(); ) {
+		for (Iterator<Annotation> i = mappingAnnotations(); i.hasNext(); ) {
 			Annotation mappingAnnotation = i.next();
 			if (mappingAnnotation.getAnnotationName().equals(annotationName)) {
 				return mappingAnnotation;
@@ -154,14 +154,11 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		return annotation;
 	}
 
-	public Iterator<JavaResource> annotations() {
-		return new CloneIterator<JavaResource>(this.annotations);
-	}
-	
-	protected Iterator<Annotation> _annotations() {
+	@SuppressWarnings("unchecked")
+	public Iterator<Annotation> annotations() {
 		return new CloneIterator<Annotation>(this.annotations);
 	}
-
+	
 	public Annotation addAnnotation(String annotationName) {
 		Annotation annotation = buildAnnotation(annotationName);
 		this.annotations.add(annotation);
@@ -176,12 +173,17 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	}
 	
 	protected ContainerAnnotation<NestableAnnotation> addContainerAnnotationTwoNestableAnnotations(String containerAnnotationName) {
-		ContainerAnnotation<NestableAnnotation> containerAnnotation = (ContainerAnnotation<NestableAnnotation>) buildAnnotation(containerAnnotationName);
+		ContainerAnnotation<NestableAnnotation> containerAnnotation = buildContainerAnnotation(containerAnnotationName);
 		this.annotations.add(containerAnnotation);
 		containerAnnotation.newAnnotation();
 		containerAnnotation.addInternal(0).newAnnotation();
 		containerAnnotation.addInternal(1).newAnnotation();
 		return containerAnnotation;
+	}
+		
+	@SuppressWarnings("unchecked")
+	protected ContainerAnnotation<NestableAnnotation>  buildContainerAnnotation(String containerAnnotationName) {
+		return (ContainerAnnotation<NestableAnnotation>) buildAnnotation(containerAnnotationName);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -263,11 +265,8 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		annotation.removeAnnotation();
 	}
 	
-	public Iterator<JavaResource> mappingAnnotations() {
-		return new CloneIterator<JavaResource>(this.mappingAnnotations);
-	}
-	
-	protected Iterator<Annotation> _mappingAnnotations() {
+	@SuppressWarnings("unchecked")
+	public Iterator<Annotation> mappingAnnotations() {
 		return new CloneIterator<Annotation>(this.mappingAnnotations);
 	}
 
@@ -341,7 +340,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	public Annotation mappingAnnotation() {
 		for (ListIterator<String> i = possibleMappingAnnotationNames(); i.hasNext(); ) {
 			String mappingAnnotationName = i.next();
-			for (Iterator<Annotation> j = _mappingAnnotations(); j.hasNext(); ) {
+			for (Iterator<Annotation> j = mappingAnnotations(); j.hasNext(); ) {
 				Annotation mappingAnnotation = j.next();
 				if (mappingAnnotationName == mappingAnnotation.getAnnotationName()) {
 					return mappingAnnotation;
@@ -351,8 +350,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		return null;
 	}
 	
-	//TODO handle this compiler warning.  Also look at _annotations() and _mappingAnnotations, my workarounds
-	//for those compiler warnings
+	@SuppressWarnings("unchecked")
 	public ListIterator<NestableAnnotation> annotations(String nestableAnnotationName, String containerAnnotationName) {
 		ContainerAnnotation<NestableAnnotation> containerAnnotation = containerAnnotation(containerAnnotationName);
 		if (containerAnnotation != null) {
@@ -383,7 +381,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	}
 	
 	protected void removeAnnotationsNotInSource(CompilationUnit astRoot) {
-		for (Annotation annotation : CollectionTools.iterable(_annotations())) {
+		for (Annotation annotation : CollectionTools.iterable(annotations())) {
 			if (annotation.jdtAnnotation(astRoot) == null) {
 				removeAnnotation(annotation);
 			}
@@ -391,7 +389,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	}
 	
 	protected void removeMappingAnnotationsNotInSource(CompilationUnit astRoot) {
-		for (Annotation mappingAnnotation : CollectionTools.iterable(_mappingAnnotations())) {
+		for (Annotation mappingAnnotation : CollectionTools.iterable(mappingAnnotations())) {
 			if (mappingAnnotation.jdtAnnotation(astRoot) == null) {
 				removeMappingAnnotation(mappingAnnotation);
 			}

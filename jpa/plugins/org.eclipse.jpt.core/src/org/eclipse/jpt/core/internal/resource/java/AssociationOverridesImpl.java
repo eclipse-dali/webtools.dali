@@ -100,6 +100,10 @@ public class AssociationOverridesImpl extends AbstractAnnotationResource<Member>
 		CollectionTools.move(this.associationOverrides, targetIndex, sourceIndex);		
 	}
 
+	public String getElementName() {
+		return "value";
+	}
+
 	public void updateFromJava(CompilationUnit astRoot) {
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);
 	}
@@ -108,7 +112,6 @@ public class AssociationOverridesImpl extends AbstractAnnotationResource<Member>
 		return AssociationOverrideImpl.createNestedAssociationOverride(this, getMember(), index, getDeclarationAnnotationAdapter());
 	}
 
-	
 	public static class AssociationOverridesAnnotationDefinition implements AnnotationDefinition
 	{
 		// singleton

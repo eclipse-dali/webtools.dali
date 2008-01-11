@@ -1308,10 +1308,6 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 			return XmlEntity.this.defaultPrimaryKeyJoinColumns.contains(joinColumn);
 		}
 		
-		public int indexOf(IAbstractJoinColumn joinColumn) {
-			return CollectionTools.indexOf(XmlEntity.this.primaryKeyJoinColumns(), joinColumn);
-		}
-		
 		public String defaultColumnName() {
 			if (joinColumnsSize() != 1) {
 				return null;

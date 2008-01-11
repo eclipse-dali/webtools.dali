@@ -33,7 +33,7 @@ public class JavaSecondaryTable extends AbstractJavaTable
 {
 	protected final List<IJavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns;
 
-	protected IJavaPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
+	protected final IJavaPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
 	protected SecondaryTable secondaryTableResource;
 	
@@ -245,10 +245,6 @@ public class JavaSecondaryTable extends AbstractJavaTable
 		
 		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
 			return JavaSecondaryTable.this.defaultPrimaryKeyJoinColumn == joinColumn;
-		}
-		
-		public int indexOf(IAbstractJoinColumn joinColumn) {
-			return CollectionTools.indexOf(JavaSecondaryTable.this.primaryKeyJoinColumns(), joinColumn);
 		}
 		
 		public String defaultColumnName() {

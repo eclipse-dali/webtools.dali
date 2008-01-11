@@ -13,7 +13,16 @@ import java.util.ListIterator;
 
 public interface ContainerAnnotation<T extends NestableAnnotation> extends Annotation
 {
+	/**
+	 * Return the fully qualified nestable annotation name.  
+	 */
 	String getNestableAnnotationName();
+
+	/**
+	 * Return the element name of the nestable annotation when
+	 * it is nested withing the container annotatio as a member value pai  
+	 */
+	String getElementName();
 
 	ListIterator<T> nestedAnnotations();
 	
@@ -42,4 +51,5 @@ public interface ContainerAnnotation<T extends NestableAnnotation> extends Annot
 	void moveInternal(int targetIndex, int sourceIndex);
 	
 	void move(int targetIndex, int sourceIndex);
+	
 }

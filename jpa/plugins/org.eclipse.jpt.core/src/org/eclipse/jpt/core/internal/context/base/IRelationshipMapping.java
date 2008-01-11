@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-
 
 public interface IRelationshipMapping extends IAttributeMapping, IFetchable
 {
@@ -33,13 +31,6 @@ public interface IRelationshipMapping extends IAttributeMapping, IFetchable
 	 * Return whether the specified 'targetEntity' is valid.
 	 */
 	boolean targetEntityIsValid(String targetEntity);
-
-	/**
-	 * Return the fully qualified target entity.  If it is already specified
-	 * as fully qualified then just return that.
-	 * @return
-	 */
-	String fullyQualifiedTargetEntity(CompilationUnit astRoot);
 
 	/**
 	 * Return the Entity that owns this relationship mapping

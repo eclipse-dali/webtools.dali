@@ -79,7 +79,7 @@ public class XmlOneToOneMappingTests extends ContextModelTestCase
 		assertNull(oneToOne.getName());
 	}
 	
-	public void testUpdateTargetEntity() throws Exception {
+	public void testUpdateSpecifiedTargetEntity() throws Exception {
 		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
 		XmlOneToOneMapping xmlOneToOneMapping = (XmlOneToOneMapping) xmlPersistentAttribute.getMapping();
@@ -99,7 +99,7 @@ public class XmlOneToOneMappingTests extends ContextModelTestCase
 		assertNull(oneToOne.getTargetEntity());
 	}
 	
-	public void testModifyTargetEntity() throws Exception {
+	public void testModifySpecifiedTargetEntity() throws Exception {
 		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
 		XmlOneToOneMapping xmlOneToOneMapping = (XmlOneToOneMapping) xmlPersistentAttribute.getMapping();

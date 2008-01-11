@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
 
 
 
-public interface RelationshipMappingAnnotation extends JavaResource
+public interface RelationshipMapping extends JavaResource
 {
 	/**
 	 * Corresponds to the targetEntity element of the relationship 

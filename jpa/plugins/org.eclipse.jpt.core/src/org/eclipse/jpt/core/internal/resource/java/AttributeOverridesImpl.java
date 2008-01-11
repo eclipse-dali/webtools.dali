@@ -100,6 +100,10 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 		CollectionTools.move(this.attributesOverrides, targetIndex, sourceIndex);
 	}
 
+	public String getElementName() {
+		return "value";
+	}
+
 	public void updateFromJava(CompilationUnit astRoot) {
 		ContainerAnnotationTools.updateNestedAnnotationsFromJava(astRoot, this);
 	}

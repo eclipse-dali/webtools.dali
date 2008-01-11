@@ -1159,9 +1159,10 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertFalse(specifiedPkJoinColumns.hasNext());
 	}
 	
-	public void testDefaultPrimarykeyJoinColumns() {
-		
+	public void testDefaultPrimaryKeyJoinColumns() {
+		//TODO
 	}
+	
 	public void testSpecifiedPrimaryKeyJoinColumnsSize() throws Exception {
 		createTestEntityWithPrimaryKeyJoinColumns();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
@@ -1404,7 +1405,7 @@ public class JavaEntityTests extends ContextModelTestCase
 	}
 
 	public void testDefaultAttributeOverrides() throws Exception {
-		
+		//TODO
 	}
 	
 	public void testSpecifiedAttributeOverridesSize() throws Exception {

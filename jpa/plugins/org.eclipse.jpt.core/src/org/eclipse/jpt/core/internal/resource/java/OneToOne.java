@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 
 
-public interface OneToOne extends RelationshipMappingAnnotation
+public interface OneToOne extends RelationshipMapping
 {
 	String ANNOTATION_NAME = JPA.ONE_TO_ONE;
 

@@ -41,6 +41,10 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 	public String getNestableAnnotationName() {
 		return SecondaryTable.ANNOTATION_NAME;
 	}
+
+	public String getElementName() {
+		return "value";
+	}
 	
 	public ListIterator<NestableSecondaryTable> nestedAnnotations() {
 		return new CloneListIterator<NestableSecondaryTable>(this.secondaryTables);

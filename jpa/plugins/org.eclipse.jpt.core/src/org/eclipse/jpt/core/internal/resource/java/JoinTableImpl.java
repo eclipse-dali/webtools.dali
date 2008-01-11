@@ -241,6 +241,9 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 		public void remove(NestableJoinColumn nestedAnnotation) {
 			JoinTableImpl.this.removeJoinColumn(nestedAnnotation);	
 		}
+		public String getElementName() {
+			return "joinColumns";
+		}
 	}
 	
 	private class InverseJoinColumnsContainerAnnotation extends AbstractContainerAnnotation {
@@ -283,6 +286,10 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 
 		public void remove(NestableJoinColumn nestedAnnotation) {
 			JoinTableImpl.this.removeInverseJoinColumn(nestedAnnotation);	
+		}
+		
+		public String getElementName() {
+			return "inverseJoinColumns";
 		}
 	}
 
@@ -361,7 +368,7 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTable
 		}
 		
 		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
-			return null;
+			return new NullJoinTable(parent);
 		}
 		
 		public String getAnnotationName() {

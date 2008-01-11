@@ -144,16 +144,6 @@ public class OneToManyImpl extends AbstractRelationshipMappingAnnotation impleme
 			return null;
 		}
 
-		//TODO put this in the java context model when JavaOneToOneMapping exists
-//		public Iterator<String> correspondingAnnotationNames() {
-//			return new ArrayIterator<String>(
-//				JPA.ORDER_BY,
-//				JPA.MAP_KEY,
-//				JPA.JOIN_TABLE,
-//				JPA.JOIN_COLUMN,
-//				JPA.JOIN_COLUMNS);
-//		}
-
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}

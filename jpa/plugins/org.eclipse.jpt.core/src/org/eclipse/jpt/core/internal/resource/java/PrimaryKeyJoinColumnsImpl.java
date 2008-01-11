@@ -43,6 +43,10 @@ public class PrimaryKeyJoinColumnsImpl extends AbstractAnnotationResource<Member
 	public String getNestableAnnotationName() {
 		return PrimaryKeyJoinColumn.ANNOTATION_NAME;
 	}
+
+	public String getElementName() {
+		return "value";
+	}
 		
 	public ListIterator<NestablePrimaryKeyJoinColumn> nestedAnnotations() {
 		return new CloneListIterator<NestablePrimaryKeyJoinColumn>(this.pkJoinColumns);
