@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
+import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
@@ -93,7 +93,7 @@ public class JavaVersionMapping extends JavaAttributeMapping implements IJavaVer
 		TemporalType oldTemporal = this.temporal;
 		this.temporal = newTemporal;
 		this.temporalResource().setValue(TemporalType.toJavaResourceModel(newTemporal));
-		firePropertyChanged(IVersionMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+		firePropertyChanged(IColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 
 	@Override

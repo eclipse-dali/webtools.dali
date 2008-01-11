@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.context.base.IIdMapping;
+import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.java.GeneratedValue;
@@ -130,7 +130,7 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 		TemporalType oldTemporal = this.temporal;
 		this.temporal = newTemporal;
 		this.temporalResource().setValue(TemporalType.toJavaResourceModel(newTemporal));
-		firePropertyChanged(IIdMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+		firePropertyChanged(IColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 	
 	public IJavaGeneratedValue addGeneratedValue() {

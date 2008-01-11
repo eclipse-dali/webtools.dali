@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.EnumType;
 import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
+import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IFetchable;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.java.Basic;
@@ -177,7 +178,7 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 		TemporalType oldTemporal = this.temporal;
 		this.temporal = newTemporal;
 		this.temporalResource().setValue(TemporalType.toJavaResourceModel(newTemporal));
-		firePropertyChanged(IBasicMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+		firePropertyChanged(IColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 	
 	public EnumType getEnumerated() {
