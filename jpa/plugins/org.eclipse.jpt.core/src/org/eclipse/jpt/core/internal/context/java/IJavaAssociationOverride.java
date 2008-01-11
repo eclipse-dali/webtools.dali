@@ -10,15 +10,21 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.internal.context.base.ISingleRelationshipMapping;
+import org.eclipse.jpt.core.internal.context.base.IAssociationOverride;
+import org.eclipse.jpt.core.internal.resource.java.AssociationOverride;
 
-public interface IJavaSingleRelationshipMapping extends IJavaRelationshipMapping, ISingleRelationshipMapping
+public interface IJavaAssociationOverride extends IAssociationOverride, IJavaJpaContextNode
 {
 	@SuppressWarnings("unchecked")
 	ListIterator<IJavaJoinColumn> joinColumns();
 	@SuppressWarnings("unchecked")
-	ListIterator<IJavaJoinColumn> defaultJoinColumns();
-	@SuppressWarnings("unchecked")
 	ListIterator<IJavaJoinColumn> specifiedJoinColumns();
+	@SuppressWarnings("unchecked")
+	ListIterator<IJavaJoinColumn> defaultJoinColumns();
 	IJavaJoinColumn addSpecifiedJoinColumn(int index);
+	
+	void initializeFromResource(AssociationOverride associationOverride);
+	
+	void update(AssociationOverride associationOverride);
+	
 }

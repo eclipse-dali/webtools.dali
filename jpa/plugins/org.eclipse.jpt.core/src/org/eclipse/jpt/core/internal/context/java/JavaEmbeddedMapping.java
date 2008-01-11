@@ -127,12 +127,10 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 		return new CompositeListIterator<IJavaAttributeOverride>(specifiedAttributeOverrides(), defaultAttributeOverrides());
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaAttributeOverride> defaultAttributeOverrides() {
 		return new CloneListIterator<IJavaAttributeOverride>(this.defaultAttributeOverrides);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaAttributeOverride> specifiedAttributeOverrides() {
 		return new CloneListIterator<IJavaAttributeOverride>(this.specifiedAttributeOverrides);
 	}
@@ -141,7 +139,7 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 		return this.specifiedAttributeOverrides.size();
 	}
 
-	public IAttributeOverride addSpecifiedAttributeOverride(int index) {
+	public IJavaAttributeOverride addSpecifiedAttributeOverride(int index) {
 		IJavaAttributeOverride attributeOverride = jpaFactory().createJavaAttributeOverride(this, this);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
 		this.persistentAttributeResource.addAnnotation(index, AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);

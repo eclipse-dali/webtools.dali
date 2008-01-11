@@ -19,19 +19,14 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.IAssociationOverride;
-import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.INamedColumn;
-import org.eclipse.jpt.core.internal.context.base.INamedNativeQuery;
-import org.eclipse.jpt.core.internal.context.base.INamedQuery;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
@@ -336,7 +331,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return this.table;
 	}
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaSecondaryTable> specifiedSecondaryTables() {
 		return new CloneListIterator<IJavaSecondaryTable>(this.specifiedSecondaryTables);
 	}
@@ -345,7 +339,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return this.specifiedSecondaryTables.size();
 	}
 	
-	public ISecondaryTable addSpecifiedSecondaryTable(int index) {
+	public IJavaSecondaryTable addSpecifiedSecondaryTable(int index) {
 		IJavaSecondaryTable secondaryTable = jpaFactory().createJavaSecondaryTable(this);
 		this.specifiedSecondaryTables.add(index, secondaryTable);
 		this.persistentTypeResource.addAnnotation(index, SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
@@ -372,7 +366,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		moveItemInList(targetIndex, sourceIndex, this.specifiedSecondaryTables, IEntity.SPECIFIED_SECONDARY_TABLES_LIST);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaSecondaryTable> secondaryTables() {
 		return specifiedSecondaryTables();
 	}
@@ -513,17 +506,14 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, newSequenceGenerator);
 	}
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
 		return this.specifiedPrimaryKeyJoinColumns.isEmpty() ? this.defaultPrimaryKeyJoinColumns() : this.specifiedPrimaryKeyJoinColumns();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns() {
 		return new CloneListIterator<IJavaPrimaryKeyJoinColumn>(this.specifiedPrimaryKeyJoinColumns);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns() {
 		return new SingleElementListIterator<IJavaPrimaryKeyJoinColumn>(this.defaultPrimaryKeyJoinColumn);
 	}
@@ -565,12 +555,10 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return new CompositeListIterator<IJavaAttributeOverride>(specifiedAttributeOverrides(), defaultAttributeOverrides());
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaAttributeOverride> defaultAttributeOverrides() {
 		return new CloneListIterator<IJavaAttributeOverride>(this.defaultAttributeOverrides);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaAttributeOverride> specifiedAttributeOverrides() {
 		return new CloneListIterator<IJavaAttributeOverride>(this.specifiedAttributeOverrides);
 	}
@@ -579,7 +567,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return this.specifiedAttributeOverrides.size();
 	}
 
-	public IAttributeOverride addSpecifiedAttributeOverride(int index) {
+	public IJavaAttributeOverride addSpecifiedAttributeOverride(int index) {
 		IJavaAttributeOverride attributeOverride = jpaFactory().createJavaAttributeOverride(this, this);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
 		this.persistentTypeResource.addAnnotation(index, AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
@@ -1157,16 +1145,16 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		});
 	}
 
-	public <T extends IAssociationOverride> ListIterator<T> associationOverrides() {
+	public ListIterator<IJavaAssociationOverride> associationOverrides() {
 		return EmptyListIterator.instance();
 	}
 	
-	public <T extends IAssociationOverride> ListIterator<T> defaultAssociationOverrides() {
+	public  ListIterator<IJavaAssociationOverride> defaultAssociationOverrides() {
 		// TODO Auto-generated method stub
 		return EmptyListIterator.instance();
 	}
 	
-	public <T extends IAssociationOverride> ListIterator<T> specifiedAssociationOverrides() {
+	public ListIterator<IJavaAssociationOverride> specifiedAssociationOverrides() {
 		// TODO Auto-generated method stub
 		return EmptyListIterator.instance();
 	}
@@ -1176,7 +1164,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return 0;
 	}
 	
-	public IAssociationOverride addSpecifiedAssociationOverride(int index) {
+	public IJavaAssociationOverride addSpecifiedAssociationOverride(int index) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -1191,7 +1179,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		
 	}
 
-	public <T extends INamedQuery> ListIterator<T> namedQueries() {
+	public ListIterator<IJavaNamedQuery> namedQueries() {
 		// TODO Auto-generated method stub
 		return EmptyListIterator.instance();
 	}
@@ -1201,7 +1189,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return 0;
 	}
 	
-	public INamedQuery addNamedQuery(int index) {
+	public IJavaNamedQuery addNamedQuery(int index) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -1216,7 +1204,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		
 	}
 	
-	public <T extends INamedNativeQuery> ListIterator<T> namedNativeQueries() {
+	public ListIterator<IJavaNamedNativeQuery> namedNativeQueries() {
 		// TODO Auto-generated method stub
 		return EmptyListIterator.instance();
 	}
@@ -1226,7 +1214,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return 0;
 	}
 	
-	public INamedNativeQuery addNamedNativeQuery(int index) {
+	public IJavaNamedNativeQuery addNamedNativeQuery(int index) {
 		// TODO Auto-generated method stub
 		return null;
 	}

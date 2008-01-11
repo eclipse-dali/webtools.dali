@@ -9,16 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.ListIterator;
-import org.eclipse.jpt.core.internal.context.base.ISingleRelationshipMapping;
+import org.eclipse.jpt.core.internal.context.base.IQueryHint;
 
-public interface IJavaSingleRelationshipMapping extends IJavaRelationshipMapping, ISingleRelationshipMapping
+public interface IJavaQueryHint extends IQueryHint, IJavaJpaContextNode
 {
-	@SuppressWarnings("unchecked")
-	ListIterator<IJavaJoinColumn> joinColumns();
-	@SuppressWarnings("unchecked")
-	ListIterator<IJavaJoinColumn> defaultJoinColumns();
-	@SuppressWarnings("unchecked")
-	ListIterator<IJavaJoinColumn> specifiedJoinColumns();
-	IJavaJoinColumn addSpecifiedJoinColumn(int index);
+
 }

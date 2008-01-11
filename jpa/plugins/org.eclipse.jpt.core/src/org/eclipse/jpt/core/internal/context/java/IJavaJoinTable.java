@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.IJoinTable;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 
@@ -20,5 +21,21 @@ public interface IJavaJoinTable extends IJoinTable, IJavaJpaContextNode
 	void update(JavaPersistentAttributeResource attributeResource);
 	
 	boolean isSpecified();
+	
+	@SuppressWarnings("unchecked")
+	ListIterator<IJavaJoinColumn> joinColumns();
+	@SuppressWarnings("unchecked")
+	ListIterator<IJavaJoinColumn> defaultJoinColumns();
+	@SuppressWarnings("unchecked")
+	ListIterator<IJavaJoinColumn> specifiedJoinColumns();
+	IJavaJoinColumn addSpecifiedJoinColumn(int index);
+	
+	@SuppressWarnings("unchecked")
+	ListIterator<IJavaJoinColumn> inverseJoinColumns();
+	@SuppressWarnings("unchecked")
+	ListIterator<IJavaJoinColumn> defaultInverseJoinColumns();
+	@SuppressWarnings("unchecked")
+	ListIterator<IJavaJoinColumn> specifiedInverseJoinColumns();
+	IJavaJoinColumn addSpecifiedInverseJoinColumn(int index);
 
 }

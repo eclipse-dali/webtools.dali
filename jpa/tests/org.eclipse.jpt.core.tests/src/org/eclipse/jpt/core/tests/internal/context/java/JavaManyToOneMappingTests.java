@@ -49,11 +49,6 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 	private void createManyToOneAnnotation() throws Exception{
 		this.createAnnotationAndMembers("ManyToOne", "");		
 	}
-	
-	private void createOneToOneAnnotation() throws Exception{
-		this.createAnnotationAndMembers("OneToOne", "");		
-	}
-
 
 	private IType createTestTargetEntityAddress() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {

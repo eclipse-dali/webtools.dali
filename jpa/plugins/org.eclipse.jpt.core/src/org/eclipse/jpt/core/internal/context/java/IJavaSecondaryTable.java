@@ -9,12 +9,22 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTable;
 
 
 public interface IJavaSecondaryTable extends ISecondaryTable, IJavaJpaContextNode
 {
+	
+	@SuppressWarnings("unchecked")
+	ListIterator<IJavaPrimaryKeyJoinColumn> primaryKeyJoinColumns();
+	@SuppressWarnings("unchecked")
+	ListIterator<IJavaPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns();
+	@SuppressWarnings("unchecked")
+	ListIterator<IJavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns();
+	IJavaPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
+	
 	void initializeFromResource(SecondaryTable secondaryTable);
 	
 	void update(SecondaryTable secondaryTable);

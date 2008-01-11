@@ -9,7 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
 
 public interface IJavaEmbeddedMapping extends IJavaAttributeMapping, IEmbeddedMapping
-{}
+{
+	@SuppressWarnings("unchecked")
+	ListIterator<IJavaAttributeOverride> attributeOverrides();
+	@SuppressWarnings("unchecked")
+	ListIterator<IJavaAttributeOverride> defaultAttributeOverrides();
+	@SuppressWarnings("unchecked")
+	ListIterator<IJavaAttributeOverride> specifiedAttributeOverrides();
+	IJavaAttributeOverride addSpecifiedAttributeOverride(int index);
+
+}

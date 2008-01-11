@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
+import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.Embeddable;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
@@ -498,7 +499,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 	public void testAttributes() throws Exception {
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		ListIterator<IPersistentAttribute> attributes = javaPersistentType().attributes();
+		ListIterator<IJavaPersistentAttribute> attributes = javaPersistentType().attributes();
 		
 		assertEquals("id", attributes.next().getName());
 		assertFalse(attributes.hasNext());
@@ -508,7 +509,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		createTestEntityAnnotatedFieldAndMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		ListIterator<IPersistentAttribute> attributes = javaPersistentType().attributes();
+		ListIterator<IJavaPersistentAttribute> attributes = javaPersistentType().attributes();
 		
 		assertEquals("id", attributes.next().getName());
 		assertEquals("name", attributes.next().getName());

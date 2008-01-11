@@ -17,7 +17,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumn;
@@ -83,22 +82,19 @@ public class JavaSecondaryTable extends AbstractJavaTable
 	//***************** ISecondaryTable implementation ********************
 	
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
 		return this.specifiedPrimaryKeyJoinColumns.isEmpty() ? this.defaultPrimaryKeyJoinColumns() : this.specifiedPrimaryKeyJoinColumns();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns() {
 		return new CloneListIterator<IJavaPrimaryKeyJoinColumn>(this.specifiedPrimaryKeyJoinColumns);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns() {
 		return new SingleElementListIterator<IJavaPrimaryKeyJoinColumn>(this.defaultPrimaryKeyJoinColumn);
 	}
 
-	public IPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
+	public IJavaPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
 		IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
 		this.secondaryTableResource.addPkJoinColumn(index);

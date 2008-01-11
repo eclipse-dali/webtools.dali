@@ -11,5 +11,5 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.internal.context.base.IManyToManyMapping;
 
-public interface IJavaManyToManyMapping extends IJavaAttributeMapping, IManyToManyMapping
+public interface IJavaManyToManyMapping extends IJavaMultiRelationshipMapping, IManyToManyMapping
 {}

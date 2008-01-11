@@ -77,17 +77,14 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 	//******************* IJoinTable implementation *****************
 
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaJoinColumn> joinColumns() {
 		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumns() : this.specifiedJoinColumns();
 	}
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaJoinColumn> defaultJoinColumns() {
 		return new SingleElementListIterator<IJavaJoinColumn>(this.defaultJoinColumn);
 	}
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaJoinColumn> specifiedJoinColumns() {
 		return new CloneListIterator<IJavaJoinColumn>(this.specifiedJoinColumns);
 	}
@@ -137,17 +134,14 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 	}
 
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaJoinColumn> inverseJoinColumns() {
 		return this.specifiedInverseJoinColumns.isEmpty() ? this.defaultInverseJoinColumns() : this.specifiedInverseJoinColumns();
 	}
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaJoinColumn> defaultInverseJoinColumns() {
 		return new SingleElementListIterator<IJavaJoinColumn>(this.defaultInverseJoinColumn);
 	}
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaJoinColumn> specifiedInverseJoinColumns() {
 		return new CloneListIterator<IJavaJoinColumn>(this.specifiedInverseJoinColumns);
 	}

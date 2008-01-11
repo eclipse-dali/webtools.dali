@@ -14,6 +14,15 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResour
 
 public interface IJavaPersistentAttribute extends IPersistentAttribute, IJavaJpaContextNode
 {
+	
+	IJavaAttributeMapping getMapping();
+	
+	IJavaAttributeMapping getSpecifiedMapping();
+	
+	IJavaTypeMapping typeMapping();
+	
+	IJavaPersistentType persistentType();
+	
 	void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource);
 
 	void update(JavaPersistentAttributeResource persistentAttributeResource);

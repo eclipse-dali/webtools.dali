@@ -172,7 +172,6 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 //		return (parentPersistentType() == null) ? null : parentPersistentType().resolveAttribute(attributeName);
 //	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaPersistentAttribute> attributes() {
 		return new CloneListIterator<IJavaPersistentAttribute>(this.attributes);
 	}

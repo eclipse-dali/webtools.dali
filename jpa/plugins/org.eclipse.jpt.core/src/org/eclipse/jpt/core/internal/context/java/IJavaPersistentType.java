@@ -9,11 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 
 public interface IJavaPersistentType extends IPersistentType, IJavaJpaContextNode
 {
+	IJavaTypeMapping getMapping();
+	
+	@SuppressWarnings("unchecked")
+	ListIterator<IJavaPersistentAttribute> attributes();
+	
+	IJavaPersistentAttribute attributeNamed(String attributeName);
+	
 	void initializeFromResource(JavaPersistentTypeResource persistentTypeResource);
 
 	void update(JavaPersistentTypeResource persistentTypeResource);

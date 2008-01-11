@@ -15,8 +15,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.base.IPersistentType;
-import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.resource.java.Annotation;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -57,11 +55,11 @@ public class JavaPersistentAttribute extends JavaContextModel
 		return this.persistentAttributeResource;
 	}
 	
-	public IPersistentType persistentType() {
-		return (IPersistentType) this.parent();
+	public IJavaPersistentType persistentType() {
+		return (IJavaPersistentType) this.parent();
 	}
 
-	public ITypeMapping typeMapping() {
+	public IJavaTypeMapping typeMapping() {
 		return this.persistentType().getMapping();
 	}
 

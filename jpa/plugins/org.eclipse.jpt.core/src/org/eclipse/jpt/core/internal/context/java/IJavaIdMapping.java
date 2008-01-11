@@ -13,4 +13,13 @@ import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 
 
 public interface IJavaIdMapping extends IJavaAttributeMapping, IIdMapping, IJavaColumnMapping
-{} 
+{
+	IJavaGeneratedValue getGeneratedValue();
+	IJavaGeneratedValue addGeneratedValue();	
+	
+	IJavaSequenceGenerator getSequenceGenerator();
+	IJavaSequenceGenerator addSequenceGenerator();
+	
+	IJavaTableGenerator getTableGenerator();
+	IJavaTableGenerator addTableGenerator();
+} 
