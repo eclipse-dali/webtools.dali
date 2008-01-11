@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.MappedSuperclass;
@@ -78,11 +77,11 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 		return this.namesOf(this.overridableAttributes());
 	}
 
-	protected Iterator<IPersistentAttribute> overridableAttributes() {
-		return new FilteringIterator<IPersistentAttribute>(this.persistentType().attributes()) {
+	protected Iterator<IJavaPersistentAttribute> overridableAttributes() {
+		return new FilteringIterator<IJavaPersistentAttribute>(this.persistentType().attributes()) {
 			@Override
 			protected boolean accept(Object o) {
-				return ((IPersistentAttribute) o).isOverridableAttribute();
+				return ((IJavaPersistentAttribute) o).isOverridableAttribute();
 			}
 		};
 	}
@@ -92,19 +91,19 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 		return this.namesOf(this.overridableAssociations());
 	}
 
-	protected Iterator<IPersistentAttribute> overridableAssociations() {
-		return new FilteringIterator<IPersistentAttribute>(this.persistentType().attributes()) {
+	protected Iterator<IJavaPersistentAttribute> overridableAssociations() {
+		return new FilteringIterator<IJavaPersistentAttribute>(this.persistentType().attributes()) {
 			@Override
 			protected boolean accept(Object o) {
-				return ((IPersistentAttribute) o).isOverridableAssociation();
+				return ((IJavaPersistentAttribute) o).isOverridableAssociation();
 			}
 		};
 	}
 
-	protected Iterator<String> namesOf(Iterator<IPersistentAttribute> attributes) {
-		return new TransformationIterator<IPersistentAttribute, String>(attributes) {
+	protected Iterator<String> namesOf(Iterator<IJavaPersistentAttribute> attributes) {
+		return new TransformationIterator<IJavaPersistentAttribute, String>(attributes) {
 			@Override
-			protected String transform(IPersistentAttribute attribute) {
+			protected String transform(IJavaPersistentAttribute attribute) {
 				return attribute.getName();
 			}
 		};
