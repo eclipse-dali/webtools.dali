@@ -56,17 +56,14 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 	}
 	
 	//***************** ISingleRelationshipMapping implementation *****************
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaJoinColumn> joinColumns() {
 		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumns() : this.specifiedJoinColumns();
 	}
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaJoinColumn> defaultJoinColumns() {
 		return new SingleElementListIterator<IJavaJoinColumn>(this.defaultJoinColumn);
 	}
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaJoinColumn> specifiedJoinColumns() {
 		return new CloneListIterator<IJavaJoinColumn>(this.specifiedJoinColumns);
 	}

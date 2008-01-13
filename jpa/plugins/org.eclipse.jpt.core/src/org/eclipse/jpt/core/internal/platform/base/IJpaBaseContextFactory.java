@@ -40,11 +40,15 @@ import org.eclipse.jpt.core.internal.context.java.IJavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.IJavaManyToManyMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaManyToOneMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaMappedSuperclass;
+import org.eclipse.jpt.core.internal.context.java.IJavaNamedNativeQuery;
+import org.eclipse.jpt.core.internal.context.java.IJavaNamedQuery;
 import org.eclipse.jpt.core.internal.context.java.IJavaOneToManyMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaOneToOneMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.context.java.IJavaQuery;
+import org.eclipse.jpt.core.internal.context.java.IJavaQueryHint;
 import org.eclipse.jpt.core.internal.context.java.IJavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
 import org.eclipse.jpt.core.internal.context.java.IJavaSequenceGenerator;
@@ -154,6 +158,12 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	IJavaPrimaryKeyJoinColumn createJavaPrimaryKeyJoinColumn(IJavaJpaContextNode parent, IAbstractJoinColumn.Owner owner);
 	
 	IJavaAttributeOverride createJavaAttributeOverride(IJavaJpaContextNode parent, IOverride.Owner owner);
+	
+	IJavaNamedQuery createJavaNamedQuery(IJavaJpaContextNode parent);
+	
+	IJavaNamedNativeQuery createJavaNamedNativeQuery(IJavaJpaContextNode parent);
+	
+	IJavaQueryHint createJavaQueryHint(IJavaQuery parent);
 	
 	//TODO need an interface??
 	XmlPersistentType createXmlPersistentType(EntityMappings parent, String mappingKey);

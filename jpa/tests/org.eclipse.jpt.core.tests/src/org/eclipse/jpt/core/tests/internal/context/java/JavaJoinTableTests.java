@@ -525,26 +525,20 @@ public class JavaJoinTableTests extends ContextModelTestCase
 	
 		
 		IJoinColumn joinColumn = joinTable.addSpecifiedJoinColumn(0);
-		ormResource().save(null);
 		joinColumn.setSpecifiedName("FOO");
-		ormResource().save(null);
 				
 		JoinTable joinTableResource = (JoinTable) attributeResource.annotation(JoinTable.ANNOTATION_NAME);
 
 		assertEquals("FOO", joinTableResource.joinColumnAt(0).getName());
 		
 		IJoinColumn joinColumn2 = joinTable.addSpecifiedJoinColumn(0);
-		ormResource().save(null);
 		joinColumn2.setSpecifiedName("BAR");
-		ormResource().save(null);
 		
 		assertEquals("BAR", joinTableResource.joinColumnAt(0).getName());
 		assertEquals("FOO", joinTableResource.joinColumnAt(1).getName());
 		
 		IJoinColumn joinColumn3 = joinTable.addSpecifiedJoinColumn(1);
-		ormResource().save(null);
 		joinColumn3.setSpecifiedName("BAZ");
-		ormResource().save(null);
 		
 		assertEquals("BAR", joinTableResource.joinColumnAt(0).getName());
 		assertEquals("BAZ", joinTableResource.joinColumnAt(1).getName());
@@ -698,26 +692,20 @@ public class JavaJoinTableTests extends ContextModelTestCase
 	
 		
 		IJoinColumn inverseJoinColumn = joinTable.addSpecifiedInverseJoinColumn(0);
-		ormResource().save(null);
 		inverseJoinColumn.setSpecifiedName("FOO");
-		ormResource().save(null);
 				
 		JoinTable joinTableResource = (JoinTable) attributeResource.annotation(JoinTable.ANNOTATION_NAME);
 
 		assertEquals("FOO", joinTableResource.inverseJoinColumnAt(0).getName());
 		
 		IJoinColumn inverseJoinColumn2 = joinTable.addSpecifiedInverseJoinColumn(0);
-		ormResource().save(null);
 		inverseJoinColumn2.setSpecifiedName("BAR");
-		ormResource().save(null);
 		
 		assertEquals("BAR", joinTableResource.inverseJoinColumnAt(0).getName());
 		assertEquals("FOO", joinTableResource.inverseJoinColumnAt(1).getName());
 		
 		IJoinColumn inverseJoinColumn3 = joinTable.addSpecifiedInverseJoinColumn(1);
-		ormResource().save(null);
 		inverseJoinColumn3.setSpecifiedName("BAZ");
-		ormResource().save(null);
 		
 		assertEquals("BAR", joinTableResource.inverseJoinColumnAt(0).getName());
 		assertEquals("BAZ", joinTableResource.inverseJoinColumnAt(1).getName());

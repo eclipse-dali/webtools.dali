@@ -11,12 +11,18 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.IQuery;
+import org.eclipse.jpt.core.internal.resource.java.Query;
 
-public interface IJavaQuery extends IQuery, IJavaJpaContextNode
+public interface IJavaQuery<E extends Query> extends IQuery, IJavaJpaContextNode
 {
 
 	@SuppressWarnings("unchecked")
 	ListIterator<IJavaQueryHint> hints();
-	
 	IJavaQueryHint addHint(int index);
+	
+	
+	void initializeFromResource(E queryResource);
+	
+	void update(E queryResource);
+
 }

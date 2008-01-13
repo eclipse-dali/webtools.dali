@@ -60,11 +60,15 @@ import org.eclipse.jpt.core.internal.context.java.IJavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.IJavaManyToManyMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaManyToOneMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaMappedSuperclass;
+import org.eclipse.jpt.core.internal.context.java.IJavaNamedNativeQuery;
+import org.eclipse.jpt.core.internal.context.java.IJavaNamedQuery;
 import org.eclipse.jpt.core.internal.context.java.IJavaOneToManyMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaOneToOneMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.context.java.IJavaQuery;
+import org.eclipse.jpt.core.internal.context.java.IJavaQueryHint;
 import org.eclipse.jpt.core.internal.context.java.IJavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
 import org.eclipse.jpt.core.internal.context.java.IJavaSequenceGenerator;
@@ -88,6 +92,8 @@ import org.eclipse.jpt.core.internal.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.internal.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.core.internal.context.java.JavaNamedNativeQuery;
+import org.eclipse.jpt.core.internal.context.java.JavaNamedQuery;
 import org.eclipse.jpt.core.internal.context.java.JavaNullAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaOneToManyMapping;
@@ -95,6 +101,7 @@ import org.eclipse.jpt.core.internal.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.JavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.context.java.JavaQueryHint;
 import org.eclipse.jpt.core.internal.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.internal.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.internal.context.java.JavaTable;
@@ -375,6 +382,18 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	public IJavaAttributeOverride createJavaAttributeOverride(IJavaJpaContextNode parent, Owner owner) {
 		return new JavaAttributeOverride(parent, owner);
+	}
+	
+	public IJavaNamedQuery createJavaNamedQuery(IJavaJpaContextNode parent) {
+		return new JavaNamedQuery(parent);
+	}
+	
+	public IJavaNamedNativeQuery createJavaNamedNativeQuery(IJavaJpaContextNode parent) {
+		return new JavaNamedNativeQuery(parent);
+	}
+	
+	public IJavaQueryHint createJavaQueryHint(IJavaQuery parent) {
+		return new JavaQueryHint(parent);
 	}
 	
 	public XmlPersistentType createXmlPersistentType(EntityMappings parent, String mappingKey) {

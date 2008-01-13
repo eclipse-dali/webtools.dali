@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
-import org.eclipse.jpt.core.internal.IJpaSourceObject;
 
-
-public interface INamedQuery extends IJpaSourceObject, IQuery
+public interface INamedQuery extends IQuery
 {}

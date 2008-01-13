@@ -10,8 +10,9 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.internal.context.base.INamedQuery;
+import org.eclipse.jpt.core.internal.resource.java.NamedQuery;
 
-public interface IJavaNamedQuery extends INamedQuery, IJavaQuery
+public interface IJavaNamedQuery extends INamedQuery, IJavaQuery<NamedQuery>
 {
 
 }

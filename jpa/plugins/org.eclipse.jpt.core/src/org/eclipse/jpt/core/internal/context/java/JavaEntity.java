@@ -38,6 +38,10 @@ import org.eclipse.jpt.core.internal.resource.java.Inheritance;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
+import org.eclipse.jpt.core.internal.resource.java.NamedNativeQueries;
+import org.eclipse.jpt.core.internal.resource.java.NamedNativeQuery;
+import org.eclipse.jpt.core.internal.resource.java.NamedQueries;
+import org.eclipse.jpt.core.internal.resource.java.NamedQuery;
 import org.eclipse.jpt.core.internal.resource.java.NullAttributeOverride;
 import org.eclipse.jpt.core.internal.resource.java.NullColumn;
 import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumn;
@@ -98,11 +102,11 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //	protected List<IAssociationOverride> specifiedAssociationOverrides;
 //
 //	protected List<IAssociationOverride> defaultAssociationOverrides;
-//
-//	protected List<INamedQuery> namedQueries;
-//
-//	protected List<INamedNativeQuery> namedNativeQueries;
-//
+
+	protected final List<IJavaNamedQuery> namedQueries;
+
+	protected final List<IJavaNamedNativeQuery> namedNativeQueries;
+
 //	protected String idClass;
 
 	
@@ -115,6 +119,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.defaultPrimaryKeyJoinColumn = this.jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		this.specifiedAttributeOverrides = new ArrayList<IJavaAttributeOverride>();
 		this.defaultAttributeOverrides = new ArrayList<IJavaAttributeOverride>();
+		this.namedQueries = new ArrayList<IJavaNamedQuery>();
+		this.namedNativeQueries = new ArrayList<IJavaNamedNativeQuery>();
 	}
 	
 	protected IAbstractJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
@@ -164,6 +170,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.initializePrimaryKeyJoinColumns(persistentTypeResource);
 		this.initializeAttributeOverrides(persistentTypeResource);
 		this.initializeDefaultAttributeOverrides(persistentTypeResource);
+		this.initializeNamedQueries(persistentTypeResource);
+		this.initializeNamedNativeQueries(persistentTypeResource);
 	}
 	
 	protected void initializeSecondaryTables(JavaPersistentTypeResource persistentTypeResource) {
@@ -215,6 +223,22 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 				attributeOverride.setName(attributeName);
 				this.defaultAttributeOverrides.add(attributeOverride);
 			}
+		}
+	}
+	
+	protected void initializeNamedQueries(JavaPersistentTypeResource persistentTypeResource) {
+		ListIterator<JavaResource> annotations = persistentTypeResource.annotations(NamedQuery.ANNOTATION_NAME, NamedQueries.ANNOTATION_NAME);
+		
+		while(annotations.hasNext()) {
+			this.namedQueries.add(createNamedQuery((NamedQuery) annotations.next()));
+		}
+	}
+	
+	protected void initializeNamedNativeQueries(JavaPersistentTypeResource persistentTypeResource) {
+		ListIterator<JavaResource> annotations = persistentTypeResource.annotations(NamedNativeQuery.ANNOTATION_NAME, NamedNativeQueries.ANNOTATION_NAME);
+		
+		while(annotations.hasNext()) {
+			this.namedNativeQueries.add(createNamedNativeQuery((NamedNativeQuery) annotations.next()));
 		}
 	}
 
@@ -682,19 +706,76 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 //		return defaultAssociationOverrides;
 //	}
 //
-//	public EList<INamedQuery> getNamedQueries() {
-//		if (namedQueries == null) {
-//			namedQueries = new EObjectContainmentEList<INamedQuery>(INamedQuery.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__NAMED_QUERIES);
-//		}
-//		return namedQueries;
-//	}
-//
-//	public EList<INamedNativeQuery> getNamedNativeQueries() {
-//		if (namedNativeQueries == null) {
-//			namedNativeQueries = new EObjectContainmentEList<INamedNativeQuery>(INamedNativeQuery.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__NAMED_NATIVE_QUERIES);
-//		}
-//		return namedNativeQueries;
-//	}
+	public ListIterator<IJavaNamedQuery> namedQueries() {
+		return new CloneListIterator<IJavaNamedQuery>(this.namedQueries);
+	}
+	
+	public int namedQueriesSize() {
+		return this.namedQueries.size();
+	}
+	
+	public IJavaNamedQuery addNamedQuery(int index) {
+		IJavaNamedQuery namedQuery = jpaFactory().createJavaNamedQuery(this);
+		this.namedQueries.add(index, namedQuery);
+		this.persistentTypeResource.addAnnotation(index, NamedQuery.ANNOTATION_NAME, NamedQueries.ANNOTATION_NAME);
+		fireItemAdded(IEntity.NAMED_QUERIES_LIST, index, namedQuery);
+		return namedQuery;
+	}
+	
+	protected void addNamedQuery(int index, IJavaNamedQuery namedQuery) {
+		addItemToList(index, namedQuery, this.namedQueries, IEntity.NAMED_QUERIES_LIST);
+	}
+	
+	public void removeNamedQuery(int index) {
+		IJavaNamedQuery removedNamedQuery = this.namedQueries.remove(index);
+		this.persistentTypeResource.removeAnnotation(index, NamedQuery.ANNOTATION_NAME, NamedQueries.ANNOTATION_NAME);
+		fireItemRemoved(IEntity.NAMED_QUERIES_LIST, index, removedNamedQuery);
+	}
+	
+	protected void removeNamedQuery(IJavaNamedQuery namedQuery) {
+		removeItemFromList(namedQuery, this.namedQueries, IEntity.NAMED_QUERIES_LIST);
+	}
+	
+	public void moveNamedQuery(int targetIndex, int sourceIndex) {
+		this.persistentTypeResource.move(targetIndex, sourceIndex, NamedQueries.ANNOTATION_NAME);
+		moveItemInList(targetIndex, sourceIndex, this.namedQueries, IEntity.NAMED_QUERIES_LIST);
+	}
+	
+	public ListIterator<IJavaNamedNativeQuery> namedNativeQueries() {
+		return new CloneListIterator<IJavaNamedNativeQuery>(this.namedNativeQueries);
+	}
+	
+	public int namedNativeQueriesSize() {
+		return this.namedNativeQueries.size();
+	}
+	
+	public IJavaNamedNativeQuery addNamedNativeQuery(int index) {
+		IJavaNamedNativeQuery namedNativeQuery = jpaFactory().createJavaNamedNativeQuery(this);
+		this.namedNativeQueries.add(index, namedNativeQuery);
+		this.persistentTypeResource.addAnnotation(index, NamedNativeQuery.ANNOTATION_NAME, NamedNativeQueries.ANNOTATION_NAME);
+		fireItemAdded(IEntity.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
+		return namedNativeQuery;
+	}
+	
+	protected void addNamedNativeQuery(int index, IJavaNamedNativeQuery namedNativeQuery) {
+		addItemToList(index, namedNativeQuery, this.namedNativeQueries, IEntity.NAMED_NATIVE_QUERIES_LIST);
+	}
+	
+	public void removeNamedNativeQuery(int index) {
+		IJavaNamedNativeQuery removedNamedNativeQuery = this.namedNativeQueries.remove(index);
+		this.persistentTypeResource.removeAnnotation(index, NamedNativeQuery.ANNOTATION_NAME, NamedNativeQueries.ANNOTATION_NAME);
+		fireItemRemoved(IEntity.NAMED_NATIVE_QUERIES_LIST, index, removedNamedNativeQuery);
+	}
+	
+	protected void removeNamedNativeQuery(IJavaNamedNativeQuery namedNativeQuery) {
+		removeItemFromList(namedNativeQuery, this.namedNativeQueries, IEntity.NAMED_NATIVE_QUERIES_LIST);
+	}
+	
+	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
+		this.persistentTypeResource.move(targetIndex, sourceIndex, NamedNativeQueries.ANNOTATION_NAME);
+		moveItemInList(targetIndex, sourceIndex, this.namedNativeQueries, IEntity.NAMED_NATIVE_QUERIES_LIST);
+	}
+
 //
 //	public String getIdClass() {
 //		return idClass;
@@ -781,6 +862,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.updateDefaultPrimaryKeyJoinColumns(persistentTypeResource);
 		this.updateSpecifiedAttributeOverrides(persistentTypeResource);
 		this.updateDefaultAttributeOverrides(persistentTypeResource);
+		this.updateNamedQueries(persistentTypeResource);
+		this.updateNamedNativeQueries(persistentTypeResource);
 	}
 		
 	protected String specifiedName(Entity entityResource) {
@@ -970,7 +1053,57 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		}
 	}
 
+	protected void updateNamedQueries(JavaPersistentTypeResource persistentTypeResource) {
+		ListIterator<IJavaNamedQuery> namedQueries = namedQueries();
+		ListIterator<JavaResource> resourceNamedQueries = persistentTypeResource.annotations(NamedQuery.ANNOTATION_NAME, NamedQueries.ANNOTATION_NAME);
+		
+		while (namedQueries.hasNext()) {
+			IJavaNamedQuery namedQuery = namedQueries.next();
+			if (resourceNamedQueries.hasNext()) {
+				namedQuery.update((NamedQuery) resourceNamedQueries.next());
+			}
+			else {
+				removeNamedQuery(namedQuery);
+			}
+		}
+		
+		while (resourceNamedQueries.hasNext()) {
+			addNamedQuery(namedQueriesSize(), createNamedQuery((NamedQuery) resourceNamedQueries.next()));
+		}	
+	}
 	
+	protected void updateNamedNativeQueries(JavaPersistentTypeResource persistentTypeResource) {
+		ListIterator<IJavaNamedNativeQuery> namedNativeQueries = namedNativeQueries();
+		ListIterator<JavaResource> resourceNamedNativeQueries = persistentTypeResource.annotations(NamedNativeQuery.ANNOTATION_NAME, NamedNativeQueries.ANNOTATION_NAME);
+		
+		while (namedNativeQueries.hasNext()) {
+			IJavaNamedNativeQuery namedQuery = namedNativeQueries.next();
+			if (resourceNamedNativeQueries.hasNext()) {
+				namedQuery.update((NamedNativeQuery) resourceNamedNativeQueries.next());
+			}
+			else {
+				removeNamedNativeQuery(namedQuery);
+			}
+		}
+		
+		while (resourceNamedNativeQueries.hasNext()) {
+			addNamedNativeQuery(namedQueriesSize(), createNamedNativeQuery((NamedNativeQuery) resourceNamedNativeQueries.next()));
+		}	
+	}
+	
+	
+	protected IJavaNamedQuery createNamedQuery(NamedQuery namedQueryResource) {
+		IJavaNamedQuery namedQuery = jpaFactory().createJavaNamedQuery(this);
+		namedQuery.initializeFromResource(namedQueryResource);
+		return namedQuery;
+	}
+	
+	protected IJavaNamedNativeQuery createNamedNativeQuery(NamedNativeQuery namedNativeQueryResource) {
+		IJavaNamedNativeQuery namedNativeQuery = jpaFactory().createJavaNamedNativeQuery(this);
+		namedNativeQuery.initializeFromResource(namedNativeQueryResource);
+		return namedNativeQuery;
+	}
+
 //	@Override
 //	public void updateFromJava(CompilationUnit astRoot) {
 //		this.setSpecifiedName(this.getType().annotationElementValue(NAME_ADAPTER, astRoot));
@@ -1179,55 +1312,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		
 	}
 
-	public ListIterator<IJavaNamedQuery> namedQueries() {
-		// TODO Auto-generated method stub
-		return EmptyListIterator.instance();
-	}
-	
-	public int namedQueriesSize() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	public IJavaNamedQuery addNamedQuery(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void removeNamedQuery(int index) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public void moveNamedQuery(int oldIndex, int newIndex) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public ListIterator<IJavaNamedNativeQuery> namedNativeQueries() {
-		// TODO Auto-generated method stub
-		return EmptyListIterator.instance();
-	}
-	
-	public int namedNativeQueriesSize() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	public IJavaNamedNativeQuery addNamedNativeQuery(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void removeNamedNativeQuery(int index) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public void moveNamedNativeQuery(int oldIndex, int newIndex) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	public String getIdClass() {
 		// TODO Auto-generated method stub
@@ -1275,18 +1359,18 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 				return result;
 			}
 		}
-//		for (IAttributeOverride override : this.getAttributeOverrides()) {
-//			result = ((JavaAttributeOverride) override).candidateValuesFor(pos, filter, astRoot);
-//			if (result != null) {
-//				return result;
-//			}
-//		}
-//		for (IAssociationOverride override : this.getAssociationOverrides()) {
-//			result = ((JavaAssociationOverride) override).candidateValuesFor(pos, filter, astRoot);
-//			if (result != null) {
-//				return result;
-//			}
-//		}
+		for (IJavaAttributeOverride override : CollectionTools.iterable(this.attributeOverrides())) {
+			result = override.candidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		for (IJavaAssociationOverride override : CollectionTools.iterable(this.associationOverrides())) {
+			result = override.candidateValuesFor(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
 		result = this.getDiscriminatorColumn().candidateValuesFor(pos, filter, astRoot);
 		if (result != null) {
 			return result;

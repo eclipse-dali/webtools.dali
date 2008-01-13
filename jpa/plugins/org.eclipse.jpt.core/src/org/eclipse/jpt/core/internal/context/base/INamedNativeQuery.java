@@ -9,10 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
-import org.eclipse.jpt.core.internal.IJpaSourceObject;
 
-
-public interface INamedNativeQuery extends IJpaSourceObject, IQuery
+public interface INamedNativeQuery extends IQuery
 {
 	String getResultClass();
 	void setResultClass(String value);

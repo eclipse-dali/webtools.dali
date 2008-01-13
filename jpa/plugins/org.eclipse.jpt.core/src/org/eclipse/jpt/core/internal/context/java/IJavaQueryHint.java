@@ -10,8 +10,11 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.internal.context.base.IQueryHint;
+import org.eclipse.jpt.core.internal.resource.java.QueryHint;
 
 public interface IJavaQueryHint extends IQueryHint, IJavaJpaContextNode
 {
-
+	void initializeFromResource(QueryHint queryHint);
+	
+	void update(QueryHint queryHint);
 }

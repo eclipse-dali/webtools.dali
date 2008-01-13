@@ -22,9 +22,8 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class NamedQueriesImpl extends AbstractAnnotationResource<Type> implements NamedQueries
 {
-	private static final String ANNOTATION_NAME = JPA.NAMED_QUERIES;
 	
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(NamedQueries.ANNOTATION_NAME);
 
 	private List<NestableNamedQuery> namedQueries;
 	
@@ -38,7 +37,7 @@ public class NamedQueriesImpl extends AbstractAnnotationResource<Type> implement
 	}
 	
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return NamedQueries.ANNOTATION_NAME;
 	}
 
 	public String getNestableAnnotationName() {
@@ -70,15 +69,15 @@ public class NamedQueriesImpl extends AbstractAnnotationResource<Type> implement
 	}
 	
 	protected void add(int index, NestableNamedQuery namedQuery) {
-		addItemToList(index, namedQuery, this.namedQueries, NAMED_QUERIES_LIST);
+		addItemToList(index, namedQuery, this.namedQueries, NamedQueries.NAMED_QUERIES_LIST);
 	}
 
 	public void remove(NestableNamedQuery namedQuery) {
-		removeItemFromList(namedQuery, this.namedQueries, NAMED_QUERIES_LIST);
+		removeItemFromList(namedQuery, this.namedQueries, NamedQueries.NAMED_QUERIES_LIST);
 	}
 	
 	public void remove(int index) {
-		removeItemFromList(index, this.namedQueries, NAMED_QUERIES_LIST);
+		removeItemFromList(index, this.namedQueries, NamedQueries.NAMED_QUERIES_LIST);
 	}
 	
 	public int indexOf(NestableNamedQuery attributeOverride) {
@@ -99,7 +98,7 @@ public class NamedQueriesImpl extends AbstractAnnotationResource<Type> implement
 	}
 	
 	public void move(int targetIndex, int sourceIndex) {
-		moveItemInList(targetIndex, sourceIndex, this.namedQueries, NAMED_QUERIES_LIST);
+		moveItemInList(targetIndex, sourceIndex, this.namedQueries, NamedQueries.NAMED_QUERIES_LIST);
 	}
 	
 	public void moveInternal(int targetIndex, int sourceIndex) {

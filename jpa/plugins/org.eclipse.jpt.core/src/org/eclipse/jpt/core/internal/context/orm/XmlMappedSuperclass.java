@@ -10,8 +10,11 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IMappedSuperclass;
+import org.eclipse.jpt.core.internal.context.base.INamedNativeQuery;
+import org.eclipse.jpt.core.internal.context.base.INamedQuery;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.resource.orm.EntityMappings;
@@ -182,5 +185,55 @@ public class XmlMappedSuperclass extends XmlTypeMapping<MappedSuperclass>
 		persistentType().initialize(mappedSuperclass);
 		entityMappings.getMappedSuperclasses().add(mappedSuperclass);
 		return mappedSuperclass;
+	}
+
+	public INamedNativeQuery addNamedNativeQuery(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public INamedQuery addNamedQuery(int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void moveNamedQuery(int targetIndex, int sourceIndex) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public <T extends INamedNativeQuery> ListIterator<T> namedNativeQueries() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int namedNativeQueriesSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public <T extends INamedQuery> ListIterator<T> namedQueries() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int namedQueriesSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void removeNamedNativeQuery(int index) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void removeNamedQuery(int index) {
+		// TODO Auto-generated method stub
+		
 	}
 }

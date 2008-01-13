@@ -10,17 +10,20 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.internal.context.base.IMappedSuperclass;
+import org.eclipse.jpt.core.internal.resource.java.NamedQuery;
 
 
-public interface IJavaMappedSuperclass
-	extends IJavaTypeMapping, IMappedSuperclass
+
+public class JavaNamedQuery extends AbstractJavaQuery<NamedQuery> implements IJavaNamedQuery
 {
-	@SuppressWarnings("unchecked")
-	ListIterator<IJavaNamedQuery> namedQueries();
-	IJavaNamedQuery addNamedQuery(int index);
 	
+	public JavaNamedQuery(IJavaJpaContextNode parent) {
+		super(parent);
+	}
+
 	@SuppressWarnings("unchecked")
-	ListIterator<IJavaNamedNativeQuery> namedNativeQueries();
-	IJavaNamedNativeQuery addNamedNativeQuery(int index);
+	@Override
+	public ListIterator<IJavaQueryHint> hints() {
+		return super.hints();
+	}
 }
