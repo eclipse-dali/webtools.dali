@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddable;
-import org.eclipse.jpt.core.internal.context.base.IEntity;
+import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
@@ -143,35 +143,35 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 		IJavaAttributeOverride attributeOverride = jpaFactory().createJavaAttributeOverride(this, this);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
 		this.persistentAttributeResource.addAnnotation(index, AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
-		this.fireItemAdded(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
+		this.fireItemAdded(IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
 	}
 	
 	protected void addSpecifiedAttributeOverride(int index, IJavaAttributeOverride attributeOverride) {
-		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
+		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
 	public void removeSpecifiedAttributeOverride(int index) {
 		IJavaAttributeOverride removedAttributeOverride = this.specifiedAttributeOverrides.remove(index);
 		this.persistentAttributeResource.removeAnnotation(index, AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
-		fireItemRemoved(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, removedAttributeOverride);
+		fireItemRemoved(IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, removedAttributeOverride);
 	}
 	
 	protected void removeSpecifiedAttributeOverride(IJavaAttributeOverride attributeOverride) {
-		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
+		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 
 	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
 		this.persistentAttributeResource.move(targetIndex, sourceIndex, AttributeOverrides.ANNOTATION_NAME);
-		moveItemInList(targetIndex, sourceIndex, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
+		moveItemInList(targetIndex, sourceIndex, this.specifiedAttributeOverrides, IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
 	protected void addDefaultAttributeOverride(IJavaAttributeOverride attributeOverride) {
-		addItemToList(attributeOverride, this.defaultAttributeOverrides, IEntity.DEFAULT_ATTRIBUTE_OVERRIDES_LIST);
+		addItemToList(attributeOverride, this.defaultAttributeOverrides, IEmbeddedMapping.DEFAULT_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
 	protected void removeDefaultAttributeOverride(IJavaAttributeOverride attributeOverride) {
-		removeItemFromList(attributeOverride, this.defaultAttributeOverrides, IEntity.DEFAULT_ATTRIBUTE_OVERRIDES_LIST);
+		removeItemFromList(attributeOverride, this.defaultAttributeOverrides, IEmbeddedMapping.DEFAULT_ATTRIBUTE_OVERRIDES_LIST);
 	}
 
 	public IJavaAttributeOverride attributeOverrideNamed(String name) {

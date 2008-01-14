@@ -17,7 +17,6 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddedIdMapping;
-import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeOverride;
@@ -86,27 +85,27 @@ public class XmlEmbeddedIdMapping extends XmlAttributeMapping<EmbeddedId> implem
 		XmlAttributeOverride attributeOverride = new XmlAttributeOverride(this, this);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
 		this.attributeMapping().getAttributeOverrides().add(index, OrmFactory.eINSTANCE.createAttributeOverride());
-		this.fireItemAdded(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
+		this.fireItemAdded(IEmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
 	}
 
 	protected void addSpecifiedAttributeOverride(int index, XmlAttributeOverride attributeOverride) {
-		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
+		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, IEmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
 	public void removeSpecifiedAttributeOverride(int index) {
 		XmlAttributeOverride removedAttributeOverride = this.specifiedAttributeOverrides.remove(index);
 		this.attributeMapping().getAttributeOverrides().remove(index);
-		fireItemRemoved(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, removedAttributeOverride);
+		fireItemRemoved(IEmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, removedAttributeOverride);
 	}
 
 	protected void removeSpecifiedAttributeOverride(XmlAttributeOverride attributeOverride) {
-		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
+		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, IEmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
 	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
 		this.attributeMapping().getAttributeOverrides().move(targetIndex, sourceIndex);
-		moveItemInList(targetIndex, sourceIndex, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);		
+		moveItemInList(targetIndex, sourceIndex, this.specifiedAttributeOverrides, IEmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);		
 	}
 
 	public boolean isVirtual(IOverride override) {

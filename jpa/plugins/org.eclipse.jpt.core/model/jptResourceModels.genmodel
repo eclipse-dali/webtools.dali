@@ -274,18 +274,16 @@
     <genClasses ecoreClass="orm.ecore#//MapKey">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//MapKey/name"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//Query">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Query/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Query/query"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Query/hints"/>
+    </genClasses>
     <genClasses ecoreClass="orm.ecore#//NamedNativeQuery">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//NamedNativeQuery/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//NamedNativeQuery/resultClass"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//NamedNativeQuery/resultSetMapping"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//NamedNativeQuery/query"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//NamedNativeQuery/hints"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//NamedQuery">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//NamedQuery/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//NamedQuery/query"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//NamedQuery/hints"/>
-    </genClasses>
+    <genClasses ecoreClass="orm.ecore#//NamedQuery"/>
     <genClasses ecoreClass="orm.ecore#//PostLoad"/>
     <genClasses ecoreClass="orm.ecore#//PostPersist"/>
     <genClasses ecoreClass="orm.ecore#//PostRemove"/>

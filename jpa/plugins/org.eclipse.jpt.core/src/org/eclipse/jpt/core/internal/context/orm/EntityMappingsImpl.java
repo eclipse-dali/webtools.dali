@@ -15,14 +15,14 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
-import org.eclipse.jpt.core.internal.context.base.INamedNativeQuery;
-import org.eclipse.jpt.core.internal.context.base.INamedQuery;
 import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
 import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
+import org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery;
+import org.eclipse.jpt.core.internal.resource.orm.NamedQuery;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator;
 import org.eclipse.jpt.core.internal.resource.orm.TableGenerator;
@@ -61,9 +61,9 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	
 	protected final List<XmlTableGenerator> tableGenerators;
 
-//	protected EList<XmlNamedQuery> namedQueries;
-//
-//	protected EList<XmlNamedNativeQuery> namedNativeQueries;
+	protected final List<XmlNamedQuery> namedQueries;
+
+	protected final List<XmlNamedNativeQuery> namedNativeQueries;
 
 
 	public EntityMappingsImpl(OrmXml parent) {
@@ -72,6 +72,8 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		this.persistentTypes = new ArrayList<XmlPersistentType>();
 		this.sequenceGenerators = new ArrayList<XmlSequenceGenerator>();
 		this.tableGenerators = new ArrayList<XmlTableGenerator>();
+		this.namedQueries = new ArrayList<XmlNamedQuery>();
+		this.namedNativeQueries = new ArrayList<XmlNamedNativeQuery>();
 	}
 	
 	@Override
@@ -342,6 +344,76 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		fireItemMoved(EntityMappings.TABLE_GENERATORS_LIST, targetIndex, sourceIndex);	
 	}
 
+	public ListIterator<XmlNamedQuery> namedQueries() {
+		return new CloneListIterator<XmlNamedQuery>(this.namedQueries);
+	}
+	
+	public int namedQueriesSize() {
+		return this.namedQueries.size();
+	}
+	
+	public XmlNamedQuery addNamedQuery(int index) {
+		XmlNamedQuery namedQuery = new XmlNamedQuery(this);
+		this.namedQueries.add(index, namedQuery);
+		this.entityMappings.getNamedQueries().add(index, OrmFactory.eINSTANCE.createNamedQuery());
+		this.fireItemAdded(EntityMappings.NAMED_QUERIES_LIST, index, namedQuery);
+		return namedQuery;
+	}
+	
+	protected void addNamedQuery(int index, XmlNamedQuery namedQuery) {
+		addItemToList(index, namedQuery, this.namedQueries, EntityMappings.NAMED_QUERIES_LIST);
+	}
+	
+	public void removeNamedQuery(int index) {
+		XmlNamedQuery namedQuery = this.namedQueries.remove(index);
+		this.entityMappings.getNamedQueries().remove(index);
+		fireItemRemoved(EntityMappings.NAMED_QUERIES_LIST, index, namedQuery);
+	}
+
+	protected void removeNamedQuery(XmlNamedQuery namedQuery) {
+		removeItemFromList(namedQuery, this.namedQueries, EntityMappings.NAMED_QUERIES_LIST);
+	}
+	
+	public void moveNamedQuery(int targetIndex, int sourceIndex) {
+		this.entityMappings.getNamedQueries().move(targetIndex, sourceIndex);
+		moveItemInList(targetIndex, sourceIndex, this.namedQueries, EntityMappings.NAMED_QUERIES_LIST);		
+	}
+	
+	public ListIterator<XmlNamedNativeQuery> namedNativeQueries() {
+		return new CloneListIterator<XmlNamedNativeQuery>(this.namedNativeQueries);
+	}
+	
+	public int namedNativeQueriesSize() {
+		return this.namedNativeQueries.size();
+	}
+	
+	public XmlNamedNativeQuery addNamedNativeQuery(int index) {
+		XmlNamedNativeQuery namedNativeQuery = new XmlNamedNativeQuery(this);
+		this.namedNativeQueries.add(index, namedNativeQuery);
+		this.entityMappings.getNamedNativeQueries().add(index, OrmFactory.eINSTANCE.createNamedNativeQuery());
+		this.fireItemAdded(EntityMappings.NAMED_QUERIES_LIST, index, namedNativeQuery);
+		return namedNativeQuery;
+	}
+	
+	protected void addNamedNativeQuery(int index, XmlNamedNativeQuery namedNativeQuery) {
+		addItemToList(index, namedNativeQuery, this.namedNativeQueries, EntityMappings.NAMED_NATIVE_QUERIES_LIST);
+	}
+	
+	public void removeNamedNativeQuery(int index) {
+		XmlNamedNativeQuery namedNativeQuery = this.namedNativeQueries.remove(index);
+		this.entityMappings.getNamedNativeQueries().remove(index);
+		fireItemRemoved(EntityMappings.NAMED_QUERIES_LIST, index, namedNativeQuery);
+	}
+
+	protected void removeNamedNativeQuery(XmlNamedNativeQuery namedNativeQuery) {
+		removeItemFromList(namedNativeQuery, this.namedNativeQueries, EntityMappings.NAMED_NATIVE_QUERIES_LIST);
+	}
+	
+	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
+		this.entityMappings.getNamedNativeQueries().move(targetIndex, sourceIndex);
+		moveItemInList(targetIndex, sourceIndex, this.namedNativeQueries, EntityMappings.NAMED_NATIVE_QUERIES_LIST);		
+	}
+
 //	public boolean containsPersistentType(IType type) {
 //		if (type == null) {
 //			return false;
@@ -353,22 +425,6 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 //		}
 //		return false;
 //	}
-//
-//
-//	public EList<XmlNamedQuery> getNamedQueries() {
-//		if (namedQueries == null) {
-//			namedQueries = new EObjectContainmentEList<XmlNamedQuery>(XmlNamedQuery.class, this, OrmPackage.ENTITY_MAPPINGS_INTERNAL__NAMED_QUERIES);
-//		}
-//		return namedQueries;
-//	}
-
-//	public EList<XmlNamedNativeQuery> getNamedNativeQueries() {
-//		if (namedNativeQueries == null) {
-//			namedNativeQueries = new EObjectContainmentEList<XmlNamedNativeQuery>(XmlNamedNativeQuery.class, this, OrmPackage.ENTITY_MAPPINGS_INTERNAL__NAMED_NATIVE_QUERIES);
-//		}
-//		return namedNativeQueries;
-//	}
-//
 //
 //	/* @see IJpaContentNode#getId() */
 //	public Object getId() {
@@ -407,6 +463,8 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		this.initializePersistentTypes(entityMappings);
 		this.initializeTableGenerators(entityMappings);
 		this.initializeSequenceGenerators(entityMappings);
+		this.initializeNamedQueries(entityMappings);
+		this.initializeNamedNativeQueries(entityMappings);
 	}
 	
 	protected void initializePersistentTypes(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
@@ -455,6 +513,18 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		}
 	}
 	
+	protected void initializeNamedQueries(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
+		for (NamedQuery namedQuery : entityMappings.getNamedQueries()) {
+			this.namedQueries.add(createNamedQuery(namedQuery));
+		}
+	}
+	
+	protected void initializeNamedNativeQueries(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
+		for (NamedNativeQuery namedNativeQuery : entityMappings.getNamedNativeQueries()) {
+			this.namedNativeQueries.add(createNamedNativeQuery(namedNativeQuery));
+		}
+	}
+
 	public void update(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
 		this.entityMappings = entityMappings;
 		this.setDescription(entityMappings.getDescription());
@@ -469,6 +539,8 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		this.updatePersistentTypes(entityMappings);
 		this.updateTableGenerators(entityMappings);
 		this.updateSequenceGenerators(entityMappings);
+		this.updateNamedQueries(entityMappings);
+		this.updateNamedNativeQueries(entityMappings);
 	}
 	
 	protected AccessType specifiedAccess(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
@@ -572,56 +644,55 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		sequenceGenerator.initialize(sequenceGeneratorResource);
 		return sequenceGenerator;
 	}
-
-	public INamedNativeQuery addNamedNativeQuery(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public INamedQuery addNamedQuery(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
-		// TODO Auto-generated method stub
+	
+	protected void updateNamedQueries(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
+		ListIterator<XmlNamedQuery> namedQueries = namedQueries();
+		ListIterator<NamedQuery> resourceNamedQueries = entityMappings.getNamedQueries().listIterator();
 		
-	}
-
-	public void moveNamedQuery(int targetIndex, int sourceIndex) {
-		// TODO Auto-generated method stub
+		while (namedQueries.hasNext()) {
+			XmlNamedQuery namedQuery = namedQueries.next();
+			if (resourceNamedQueries.hasNext()) {
+				namedQuery.update(resourceNamedQueries.next());
+			}
+			else {
+				removeNamedQuery(namedQuery);
+			}
+		}
 		
+		while (resourceNamedQueries.hasNext()) {
+			addNamedQuery(namedQueriesSize(), createNamedQuery(resourceNamedQueries.next()));
+		}
 	}
 
-
-	public <T extends INamedNativeQuery> ListIterator<T> namedNativeQueries() {
-		// TODO Auto-generated method stub
-		return null;
+	protected XmlNamedQuery createNamedQuery(NamedQuery namedQuery) {
+		XmlNamedQuery xmlNamedQuery = new XmlNamedQuery(this);
+		xmlNamedQuery.initialize(namedQuery);
+		return xmlNamedQuery;
 	}
 
-	public int namedNativeQueriesSize() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public <T extends INamedQuery> ListIterator<T> namedQueries() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public int namedQueriesSize() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public void removeNamedNativeQuery(int index) {
-		// TODO Auto-generated method stub
+	protected void updateNamedNativeQueries(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
+		ListIterator<XmlNamedNativeQuery> namedNativeQueries = namedNativeQueries();
+		ListIterator<NamedNativeQuery> resourceNamedNativeQueries = entityMappings.getNamedNativeQueries().listIterator();
 		
+		while (namedNativeQueries.hasNext()) {
+			XmlNamedNativeQuery namedQuery = namedNativeQueries.next();
+			if (resourceNamedNativeQueries.hasNext()) {
+				namedQuery.update(resourceNamedNativeQueries.next());
+			}
+			else {
+				removeNamedNativeQuery(namedQuery);
+			}
+		}
+		
+		while (resourceNamedNativeQueries.hasNext()) {
+			addNamedNativeQuery(namedQueriesSize(), createNamedNativeQuery(resourceNamedNativeQueries.next()));
+		}
 	}
 
-	public void removeNamedQuery(int index) {
-		// TODO Auto-generated method stub
-		
+	protected XmlNamedNativeQuery createNamedNativeQuery(NamedNativeQuery namedQuery) {
+		XmlNamedNativeQuery xmlNamedNativeQuery = new XmlNamedNativeQuery(this);
+		xmlNamedNativeQuery.initialize(namedQuery);
+		return xmlNamedNativeQuery;
 	}
 
 

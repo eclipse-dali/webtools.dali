@@ -13,8 +13,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
-import org.eclipse.jpt.core.internal.context.base.INamedNativeQuery;
-import org.eclipse.jpt.core.internal.context.base.INamedQuery;
 import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
 import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
@@ -88,16 +86,16 @@ public interface EntityMappings extends IJpaContextNode
 	void moveTableGenerator(int targetIndex, int sourceIndex);
 		String TABLE_GENERATORS_LIST = "tableGeneratorsList";
 
-	<T extends INamedQuery> ListIterator<T> namedQueries();
+	ListIterator<XmlNamedQuery> namedQueries();
 	int namedQueriesSize();
-	INamedQuery addNamedQuery(int index);
+	XmlNamedQuery addNamedQuery(int index);
 	void removeNamedQuery(int index);
 	void moveNamedQuery(int targetIndex, int sourceIndex);
 		String NAMED_QUERIES_LIST = "namedQueriesList";
 
-	<T extends INamedNativeQuery> ListIterator<T> namedNativeQueries();
+	ListIterator<XmlNamedNativeQuery> namedNativeQueries();
 	int namedNativeQueriesSize();
-	INamedNativeQuery addNamedNativeQuery(int index);
+	XmlNamedNativeQuery addNamedNativeQuery(int index);
 	void removeNamedNativeQuery(int index);
 	void moveNamedNativeQuery(int targetIndex, int sourceIndex);
 		String NAMED_NATIVE_QUERIES_LIST = "namedNativeQueriesList";

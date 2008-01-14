@@ -42,7 +42,7 @@ public class NamedNativeQueryTranslator extends Translator
 	}
 
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getNamedNativeQuery_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getQuery_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createResultClassTranslator() {
@@ -54,10 +54,10 @@ public class NamedNativeQueryTranslator extends Translator
 	}
 	
 	private Translator createQueryTranslator() {
-		return new Translator(QUERY, ORM_PKG.getNamedNativeQuery_Query());
+		return new Translator(QUERY, ORM_PKG.getQuery_Query());
 	}
 	
 	private Translator createHintTranslator() {
-		return new QueryHintTranslator(HINT, ORM_PKG.getNamedNativeQuery_Hints());
+		return new QueryHintTranslator(HINT, ORM_PKG.getQuery_Hints());
 	}
 }

@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmSwitch.java,v 1.1.2.10 2007/12/21 16:15:58 kmoore Exp $
+ * $Id: OrmSwitch.java,v 1.1.2.11 2008/01/14 22:30:00 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
@@ -490,10 +490,18 @@ public class OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.QUERY:
+			{
+				Query query = (Query)theEObject;
+				T result = caseQuery(query);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case OrmPackage.NAMED_NATIVE_QUERY:
 			{
 				NamedNativeQuery namedNativeQuery = (NamedNativeQuery)theEObject;
 				T result = caseNamedNativeQuery(namedNativeQuery);
+				if (result == null) result = caseQuery(namedNativeQuery);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -501,6 +509,7 @@ public class OrmSwitch<T>
 			{
 				NamedQuery namedQuery = (NamedQuery)theEObject;
 				T result = caseNamedQuery(namedQuery);
+				if (result == null) result = caseQuery(namedQuery);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -1307,6 +1316,22 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseMapKey(MapKey object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Query</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Query</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseQuery(Query object)
 	{
 		return null;
 	}

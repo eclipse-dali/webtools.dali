@@ -22,8 +22,6 @@ import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.INamedColumn;
-import org.eclipse.jpt.core.internal.context.base.INamedNativeQuery;
-import org.eclipse.jpt.core.internal.context.base.INamedQuery;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.ITable;
@@ -35,6 +33,8 @@ import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.Inheritance;
+import org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery;
+import org.eclipse.jpt.core.internal.resource.orm.NamedQuery;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.resource.orm.SecondaryTable;
@@ -91,11 +91,11 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 //	protected EList<IAssociationOverride> specifiedAssociationOverrides;
 //
 //	protected EList<IAssociationOverride> defaultAssociationOverrides;
-//
-//	protected EList<INamedQuery> namedQueries;
-//
-//	protected EList<INamedNativeQuery> namedNativeQueries;
-//
+
+	protected final List<XmlNamedQuery> namedQueries;
+
+	protected final List<XmlNamedNativeQuery> namedNativeQueries;
+
 //	protected String idClass;
 //
 
@@ -109,6 +109,8 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.defaultPrimaryKeyJoinColumns = new ArrayList<XmlPrimaryKeyJoinColumn>();
 		this.specifiedAttributeOverrides = new ArrayList<XmlAttributeOverride>();
 		this.defaultAttributeOverrides = new ArrayList<XmlAttributeOverride>();
+		this.namedQueries = new ArrayList<XmlNamedQuery>();
+		this.namedNativeQueries = new ArrayList<XmlNamedNativeQuery>();
 	}
 	
 	protected XmlDiscriminatorColumn createXmlDiscriminatorColumn() {
@@ -879,6 +881,8 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.initializeTableGenerator(entity);
 		this.initializeSpecifiedPrimaryKeyJoinColumns(entity);
 		this.initializeSpecifiedAttributeOverrides(entity);
+		this.initializeNamedQueries(entity);
+		this.initializeNamedNativeQueries(entity);
 	}
 	
 	protected void initializeInheritance(Inheritance inheritanceResource) {
@@ -938,6 +942,18 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 			this.specifiedAttributeOverrides.add(createAttributeOverride(attributeOverride));
 		}
 	}
+	
+	protected void initializeNamedQueries(Entity entity) {
+		for (NamedQuery namedQuery : entity.getNamedQueries()) {
+			this.namedQueries.add(createNamedQuery(namedQuery));
+		}
+	}
+	
+	protected void initializeNamedNativeQueries(Entity entity) {
+		for (NamedNativeQuery namedNativeQuery : entity.getNamedNativeQueries()) {
+			this.namedNativeQueries.add(createNamedNativeQuery(namedNativeQuery));
+		}
+	}
 
 	@Override
 	public void update(Entity entity) {
@@ -955,6 +971,8 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.updateTableGenerator(entity);
 		this.updateSpecifiedPrimaryKeyJoinColumns(entity);
 		this.updateSpecifiedAttributeOverrides(entity);
+		this.updateNamedQueries(entity);
+		this.updateNamedNativeQueries(entity);
 	}
 
 	protected String defaultName() {
@@ -1142,6 +1160,56 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return xmlAttributeOverride;
 	}
 
+	protected void updateNamedQueries(Entity entity) {
+		ListIterator<XmlNamedQuery> namedQueries = namedQueries();
+		ListIterator<NamedQuery> resourceNamedQueries = entity.getNamedQueries().listIterator();
+		
+		while (namedQueries.hasNext()) {
+			XmlNamedQuery namedQuery = namedQueries.next();
+			if (resourceNamedQueries.hasNext()) {
+				namedQuery.update(resourceNamedQueries.next());
+			}
+			else {
+				removeNamedQuery(namedQuery);
+			}
+		}
+		
+		while (resourceNamedQueries.hasNext()) {
+			addNamedQuery(namedQueriesSize(), createNamedQuery(resourceNamedQueries.next()));
+		}
+	}
+
+	protected XmlNamedQuery createNamedQuery(NamedQuery namedQuery) {
+		XmlNamedQuery xmlNamedQuery = new XmlNamedQuery(this);
+		xmlNamedQuery.initialize(namedQuery);
+		return xmlNamedQuery;
+	}
+
+	protected void updateNamedNativeQueries(Entity entity) {
+		ListIterator<XmlNamedNativeQuery> namedNativeQueries = namedNativeQueries();
+		ListIterator<NamedNativeQuery> resourceNamedNativeQueries = entity.getNamedNativeQueries().listIterator();
+		
+		while (namedNativeQueries.hasNext()) {
+			XmlNamedNativeQuery namedQuery = namedNativeQueries.next();
+			if (resourceNamedNativeQueries.hasNext()) {
+				namedQuery.update(resourceNamedNativeQueries.next());
+			}
+			else {
+				removeNamedNativeQuery(namedQuery);
+			}
+		}
+		
+		while (resourceNamedNativeQueries.hasNext()) {
+			addNamedNativeQuery(namedQueriesSize(), createNamedNativeQuery(resourceNamedNativeQueries.next()));
+		}
+	}
+
+	protected XmlNamedNativeQuery createNamedNativeQuery(NamedNativeQuery namedQuery) {
+		XmlNamedNativeQuery xmlNamedNativeQuery = new XmlNamedNativeQuery(this);
+		xmlNamedNativeQuery.initialize(namedQuery);
+		return xmlNamedNativeQuery;
+	}
+
 	public String primaryKeyColumnName() {
 		// TODO Auto-generated method stub
 		return null;
@@ -1183,54 +1251,76 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		
 	}
 
-	public <T extends INamedQuery> ListIterator<T> namedQueries() {
-		// TODO Auto-generated method stub
-		return EmptyListIterator.instance();
+	@SuppressWarnings("unchecked")
+	public ListIterator<XmlNamedQuery> namedQueries() {
+		return new CloneListIterator<XmlNamedQuery>(this.namedQueries);
 	}
 	
 	public int namedQueriesSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.namedQueries.size();
 	}
 	
-	public INamedQuery addNamedQuery(int index) {
-		// TODO Auto-generated method stub
-		return null;
+	public XmlNamedQuery addNamedQuery(int index) {
+		XmlNamedQuery namedQuery = new XmlNamedQuery(this);
+		this.namedQueries.add(index, namedQuery);
+		this.typeMappingResource().getNamedQueries().add(index, OrmFactory.eINSTANCE.createNamedQuery());
+		this.fireItemAdded(IEntity.NAMED_QUERIES_LIST, index, namedQuery);
+		return namedQuery;
+	}
+	
+	protected void addNamedQuery(int index, XmlNamedQuery namedQuery) {
+		addItemToList(index, namedQuery, this.namedQueries, IEntity.NAMED_QUERIES_LIST);
 	}
 	
 	public void removeNamedQuery(int index) {
-		// TODO Auto-generated method stub
-		
+		XmlNamedQuery namedQuery = this.namedQueries.remove(index);
+		this.typeMappingResource().getNamedQueries().remove(index);
+		fireItemRemoved(IEntity.NAMED_QUERIES_LIST, index, namedQuery);
+	}
+
+	protected void removeNamedQuery(XmlNamedQuery namedQuery) {
+		removeItemFromList(namedQuery, this.namedQueries, IEntity.NAMED_QUERIES_LIST);
 	}
 	
 	public void moveNamedQuery(int targetIndex, int sourceIndex) {
-		// TODO Auto-generated method stub
-		
+		this.typeMappingResource().getNamedQueries().move(targetIndex, sourceIndex);
+		moveItemInList(targetIndex, sourceIndex, this.namedQueries, IEntity.NAMED_QUERIES_LIST);		
 	}
 	
-	public <T extends INamedNativeQuery> ListIterator<T> namedNativeQueries() {
-		// TODO Auto-generated method stub
-		return EmptyListIterator.instance();
+	@SuppressWarnings("unchecked")
+	public ListIterator<XmlNamedNativeQuery> namedNativeQueries() {
+		return new CloneListIterator<XmlNamedNativeQuery>(this.namedNativeQueries);
 	}
 	
 	public int namedNativeQueriesSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.namedNativeQueries.size();
 	}
 	
-	public INamedNativeQuery addNamedNativeQuery(int index) {
-		// TODO Auto-generated method stub
-		return null;
+	public XmlNamedNativeQuery addNamedNativeQuery(int index) {
+		XmlNamedNativeQuery namedNativeQuery = new XmlNamedNativeQuery(this);
+		this.namedNativeQueries.add(index, namedNativeQuery);
+		this.typeMappingResource().getNamedNativeQueries().add(index, OrmFactory.eINSTANCE.createNamedNativeQuery());
+		this.fireItemAdded(IEntity.NAMED_QUERIES_LIST, index, namedNativeQuery);
+		return namedNativeQuery;
+	}
+	
+	protected void addNamedNativeQuery(int index, XmlNamedNativeQuery namedNativeQuery) {
+		addItemToList(index, namedNativeQuery, this.namedNativeQueries, IEntity.NAMED_NATIVE_QUERIES_LIST);
 	}
 	
 	public void removeNamedNativeQuery(int index) {
-		// TODO Auto-generated method stub
-		
+		XmlNamedNativeQuery namedNativeQuery = this.namedNativeQueries.remove(index);
+		this.typeMappingResource().getNamedNativeQueries().remove(index);
+		fireItemRemoved(IEntity.NAMED_QUERIES_LIST, index, namedNativeQuery);
+	}
+
+	protected void removeNamedNativeQuery(XmlNamedNativeQuery namedNativeQuery) {
+		removeItemFromList(namedNativeQuery, this.namedNativeQueries, IEntity.NAMED_NATIVE_QUERIES_LIST);
 	}
 	
-	public void moveNamedNativeQuery(int oldIndex, int newIndex) {
-		// TODO Auto-generated method stub
-		
+	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
+		this.typeMappingResource().getNamedNativeQueries().move(targetIndex, sourceIndex);
+		moveItemInList(targetIndex, sourceIndex, this.namedNativeQueries, IEntity.NAMED_NATIVE_QUERIES_LIST);		
 	}
 	
 	public String getIdClass() {

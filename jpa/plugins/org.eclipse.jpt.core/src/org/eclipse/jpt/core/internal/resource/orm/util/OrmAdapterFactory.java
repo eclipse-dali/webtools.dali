@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmAdapterFactory.java,v 1.1.2.10 2007/12/21 16:15:58 kmoore Exp $
+ * $Id: OrmAdapterFactory.java,v 1.1.2.11 2008/01/14 22:30:00 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
@@ -126,7 +126,7 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * The switch the delegates to the <code>createXXX</code> methods.
+	 * The switch that delegates to the <code>createXXX</code> methods.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -348,6 +348,11 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 			public Adapter caseMapKey(MapKey object)
 			{
 				return createMapKeyAdapter();
+			}
+			@Override
+			public Adapter caseQuery(Query object)
+			{
+				return createQueryAdapter();
 			}
 			@Override
 			public Adapter caseNamedNativeQuery(NamedNativeQuery object)
@@ -1092,6 +1097,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createMapKeyAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.Query <em>Query</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Query
+	 * @generated
+	 */
+	public Adapter createQueryAdapter()
 	{
 		return null;
 	}

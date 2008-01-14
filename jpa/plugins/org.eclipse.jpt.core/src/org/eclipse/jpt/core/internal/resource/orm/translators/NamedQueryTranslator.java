@@ -40,14 +40,14 @@ public class NamedQueryTranslator extends Translator
 	}
 
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getNamedQuery_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getQuery_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createQueryTranslator() {
-		return new Translator(QUERY, ORM_PKG.getNamedQuery_Query());
+		return new Translator(QUERY, ORM_PKG.getQuery_Query());
 	}
 	
 	private Translator createHintTranslator() {
-		return new QueryHintTranslator(HINT, ORM_PKG.getNamedQuery_Hints());
+		return new QueryHintTranslator(HINT, ORM_PKG.getQuery_Hints());
 	}
 }

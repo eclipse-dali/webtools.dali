@@ -9,18 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.IMappedSuperclass;
 
 
 public interface IJavaMappedSuperclass
 	extends IJavaTypeMapping, IMappedSuperclass
 {
-	@SuppressWarnings("unchecked")
-	ListIterator<IJavaNamedQuery> namedQueries();
-	IJavaNamedQuery addNamedQuery(int index);
-	
-	@SuppressWarnings("unchecked")
-	ListIterator<IJavaNamedNativeQuery> namedNativeQueries();
-	IJavaNamedNativeQuery addNamedNativeQuery(int index);
+
 }

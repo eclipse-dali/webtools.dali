@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
@@ -26,21 +25,12 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * A representation of the model object '<em><b>Named Query</b></em>'.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.NamedQuery#getName <em>Name</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.NamedQuery#getQuery <em>Query</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.NamedQuery#getHints <em>Hints</em>}</li>
- * </ul>
- * </p>
  *
  * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getNamedQuery()
  * @model kind="class"
- * @extends IJpaEObject
  * @generated
  */
-public class NamedQuery extends JpaEObject implements IJpaEObject
+public class NamedQuery extends JpaEObject implements Query
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -123,7 +113,7 @@ public class NamedQuery extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getNamedQuery_Name()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getQuery_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -158,7 +148,7 @@ public class NamedQuery extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Query</em>' attribute.
 	 * @see #setQuery(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getNamedQuery_Query()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getQuery_Query()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -193,7 +183,7 @@ public class NamedQuery extends JpaEObject implements IJpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Hints</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getNamedQuery_Hints()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getQuery_Hints()
 	 * @model containment="true"
 	 * @generated
 	 */

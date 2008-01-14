@@ -19,7 +19,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
@@ -30,20 +29,16 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery#getResultClass <em>Result Class</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery#getResultSetMapping <em>Result Set Mapping</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery#getQuery <em>Query</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery#getHints <em>Hints</em>}</li>
  * </ul>
  * </p>
  *
  * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getNamedNativeQuery()
  * @model kind="class"
- * @extends IJpaEObject
  * @generated
  */
-public class NamedNativeQuery extends JpaEObject implements IJpaEObject
+public class NamedNativeQuery extends JpaEObject implements Query
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -64,6 +59,36 @@ public class NamedNativeQuery extends JpaEObject implements IJpaEObject
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getQuery() <em>Query</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getQuery()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String QUERY_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getQuery() <em>Query</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getQuery()
+	 * @generated
+	 * @ordered
+	 */
+	protected String query = QUERY_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getHints() <em>Hints</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getHints()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<QueryHint> hints;
 
 	/**
 	 * The default value of the '{@link #getResultClass() <em>Result Class</em>}' attribute.
@@ -106,36 +131,6 @@ public class NamedNativeQuery extends JpaEObject implements IJpaEObject
 	protected String resultSetMapping = RESULT_SET_MAPPING_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getQuery() <em>Query</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getQuery()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String QUERY_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getQuery() <em>Query</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getQuery()
-	 * @generated
-	 * @ordered
-	 */
-	protected String query = QUERY_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getHints() <em>Hints</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getHints()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<QueryHint> hints;
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -166,7 +161,7 @@ public class NamedNativeQuery extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getNamedNativeQuery_Name()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getQuery_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -271,7 +266,7 @@ public class NamedNativeQuery extends JpaEObject implements IJpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Query</em>' attribute.
 	 * @see #setQuery(String)
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getNamedNativeQuery_Query()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getQuery_Query()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -306,7 +301,7 @@ public class NamedNativeQuery extends JpaEObject implements IJpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Hints</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getNamedNativeQuery_Hints()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getQuery_Hints()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -347,14 +342,14 @@ public class NamedNativeQuery extends JpaEObject implements IJpaEObject
 		{
 			case OrmPackage.NAMED_NATIVE_QUERY__NAME:
 				return getName();
-			case OrmPackage.NAMED_NATIVE_QUERY__RESULT_CLASS:
-				return getResultClass();
-			case OrmPackage.NAMED_NATIVE_QUERY__RESULT_SET_MAPPING:
-				return getResultSetMapping();
 			case OrmPackage.NAMED_NATIVE_QUERY__QUERY:
 				return getQuery();
 			case OrmPackage.NAMED_NATIVE_QUERY__HINTS:
 				return getHints();
+			case OrmPackage.NAMED_NATIVE_QUERY__RESULT_CLASS:
+				return getResultClass();
+			case OrmPackage.NAMED_NATIVE_QUERY__RESULT_SET_MAPPING:
+				return getResultSetMapping();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -373,18 +368,18 @@ public class NamedNativeQuery extends JpaEObject implements IJpaEObject
 			case OrmPackage.NAMED_NATIVE_QUERY__NAME:
 				setName((String)newValue);
 				return;
-			case OrmPackage.NAMED_NATIVE_QUERY__RESULT_CLASS:
-				setResultClass((String)newValue);
-				return;
-			case OrmPackage.NAMED_NATIVE_QUERY__RESULT_SET_MAPPING:
-				setResultSetMapping((String)newValue);
-				return;
 			case OrmPackage.NAMED_NATIVE_QUERY__QUERY:
 				setQuery((String)newValue);
 				return;
 			case OrmPackage.NAMED_NATIVE_QUERY__HINTS:
 				getHints().clear();
 				getHints().addAll((Collection<? extends QueryHint>)newValue);
+				return;
+			case OrmPackage.NAMED_NATIVE_QUERY__RESULT_CLASS:
+				setResultClass((String)newValue);
+				return;
+			case OrmPackage.NAMED_NATIVE_QUERY__RESULT_SET_MAPPING:
+				setResultSetMapping((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -403,17 +398,17 @@ public class NamedNativeQuery extends JpaEObject implements IJpaEObject
 			case OrmPackage.NAMED_NATIVE_QUERY__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case OrmPackage.NAMED_NATIVE_QUERY__RESULT_CLASS:
-				setResultClass(RESULT_CLASS_EDEFAULT);
-				return;
-			case OrmPackage.NAMED_NATIVE_QUERY__RESULT_SET_MAPPING:
-				setResultSetMapping(RESULT_SET_MAPPING_EDEFAULT);
-				return;
 			case OrmPackage.NAMED_NATIVE_QUERY__QUERY:
 				setQuery(QUERY_EDEFAULT);
 				return;
 			case OrmPackage.NAMED_NATIVE_QUERY__HINTS:
 				getHints().clear();
+				return;
+			case OrmPackage.NAMED_NATIVE_QUERY__RESULT_CLASS:
+				setResultClass(RESULT_CLASS_EDEFAULT);
+				return;
+			case OrmPackage.NAMED_NATIVE_QUERY__RESULT_SET_MAPPING:
+				setResultSetMapping(RESULT_SET_MAPPING_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -431,14 +426,14 @@ public class NamedNativeQuery extends JpaEObject implements IJpaEObject
 		{
 			case OrmPackage.NAMED_NATIVE_QUERY__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case OrmPackage.NAMED_NATIVE_QUERY__RESULT_CLASS:
-				return RESULT_CLASS_EDEFAULT == null ? resultClass != null : !RESULT_CLASS_EDEFAULT.equals(resultClass);
-			case OrmPackage.NAMED_NATIVE_QUERY__RESULT_SET_MAPPING:
-				return RESULT_SET_MAPPING_EDEFAULT == null ? resultSetMapping != null : !RESULT_SET_MAPPING_EDEFAULT.equals(resultSetMapping);
 			case OrmPackage.NAMED_NATIVE_QUERY__QUERY:
 				return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
 			case OrmPackage.NAMED_NATIVE_QUERY__HINTS:
 				return hints != null && !hints.isEmpty();
+			case OrmPackage.NAMED_NATIVE_QUERY__RESULT_CLASS:
+				return RESULT_CLASS_EDEFAULT == null ? resultClass != null : !RESULT_CLASS_EDEFAULT.equals(resultClass);
+			case OrmPackage.NAMED_NATIVE_QUERY__RESULT_SET_MAPPING:
+				return RESULT_SET_MAPPING_EDEFAULT == null ? resultSetMapping != null : !RESULT_SET_MAPPING_EDEFAULT.equals(resultSetMapping);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -456,12 +451,12 @@ public class NamedNativeQuery extends JpaEObject implements IJpaEObject
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (name: ");
 		result.append(name);
+		result.append(", query: ");
+		result.append(query);
 		result.append(", resultClass: ");
 		result.append(resultClass);
 		result.append(", resultSetMapping: ");
 		result.append(resultSetMapping);
-		result.append(", query: ");
-		result.append(query);
 		result.append(')');
 		return result.toString();
 	}

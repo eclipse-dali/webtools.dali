@@ -163,7 +163,7 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	
 	IJavaNamedNativeQuery createJavaNamedNativeQuery(IJavaJpaContextNode parent);
 	
-	IJavaQueryHint createJavaQueryHint(IJavaQuery parent);
+	IJavaQueryHint createJavaQueryHint(IJavaQuery<?> parent);
 	
 	//TODO need an interface??
 	XmlPersistentType createXmlPersistentType(EntityMappings parent, String mappingKey);

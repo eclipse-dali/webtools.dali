@@ -2884,7 +2884,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAbstractTable()
 	 * @generated
 	 */
-	public static final int ABSTRACT_TABLE = 54;
+	public static final int ABSTRACT_TABLE = 55;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3022,14 +3022,14 @@ public class OrmPackage extends EPackageImpl
 	public static final int MAP_KEY_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery <em>Named Native Query</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.Query <em>Query</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery
-	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getNamedNativeQuery()
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Query
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getQuery()
 	 * @generated
 	 */
-	public static final int NAMED_NATIVE_QUERY = 43;
+	public static final int QUERY = 43;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3038,25 +3038,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int NAMED_NATIVE_QUERY__NAME = 0;
-
-	/**
-	 * The feature id for the '<em><b>Result Class</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int NAMED_NATIVE_QUERY__RESULT_CLASS = 1;
-
-	/**
-	 * The feature id for the '<em><b>Result Set Mapping</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int NAMED_NATIVE_QUERY__RESULT_SET_MAPPING = 2;
+	public static final int QUERY__NAME = 0;
 
 	/**
 	 * The feature id for the '<em><b>Query</b></em>' attribute.
@@ -3065,7 +3047,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int NAMED_NATIVE_QUERY__QUERY = 3;
+	public static final int QUERY__QUERY = 1;
 
 	/**
 	 * The feature id for the '<em><b>Hints</b></em>' containment reference list.
@@ -3074,7 +3056,71 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int NAMED_NATIVE_QUERY__HINTS = 4;
+	public static final int QUERY__HINTS = 2;
+
+	/**
+	 * The number of structural features of the '<em>Query</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int QUERY_FEATURE_COUNT = 3;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery <em>Named Native Query</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getNamedNativeQuery()
+	 * @generated
+	 */
+	public static final int NAMED_NATIVE_QUERY = 44;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int NAMED_NATIVE_QUERY__NAME = QUERY__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Query</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int NAMED_NATIVE_QUERY__QUERY = QUERY__QUERY;
+
+	/**
+	 * The feature id for the '<em><b>Hints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int NAMED_NATIVE_QUERY__HINTS = QUERY__HINTS;
+
+	/**
+	 * The feature id for the '<em><b>Result Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int NAMED_NATIVE_QUERY__RESULT_CLASS = QUERY_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Result Set Mapping</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int NAMED_NATIVE_QUERY__RESULT_SET_MAPPING = QUERY_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Named Native Query</em>' class.
@@ -3083,7 +3129,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int NAMED_NATIVE_QUERY_FEATURE_COUNT = 5;
+	public static final int NAMED_NATIVE_QUERY_FEATURE_COUNT = QUERY_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.NamedQuery <em>Named Query</em>}' class.
@@ -3093,7 +3139,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getNamedQuery()
 	 * @generated
 	 */
-	public static final int NAMED_QUERY = 44;
+	public static final int NAMED_QUERY = 45;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3102,7 +3148,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int NAMED_QUERY__NAME = 0;
+	public static final int NAMED_QUERY__NAME = QUERY__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Query</b></em>' attribute.
@@ -3111,7 +3157,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int NAMED_QUERY__QUERY = 1;
+	public static final int NAMED_QUERY__QUERY = QUERY__QUERY;
 
 	/**
 	 * The feature id for the '<em><b>Hints</b></em>' containment reference list.
@@ -3120,7 +3166,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int NAMED_QUERY__HINTS = 2;
+	public static final int NAMED_QUERY__HINTS = QUERY__HINTS;
 
 	/**
 	 * The number of structural features of the '<em>Named Query</em>' class.
@@ -3129,7 +3175,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int NAMED_QUERY_FEATURE_COUNT = 3;
+	public static final int NAMED_QUERY_FEATURE_COUNT = QUERY_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.PostLoad <em>Post Load</em>}' class.
@@ -3139,7 +3185,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getPostLoad()
 	 * @generated
 	 */
-	public static final int POST_LOAD = 45;
+	public static final int POST_LOAD = 46;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3167,7 +3213,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getPostPersist()
 	 * @generated
 	 */
-	public static final int POST_PERSIST = 46;
+	public static final int POST_PERSIST = 47;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3195,7 +3241,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getPostRemove()
 	 * @generated
 	 */
-	public static final int POST_REMOVE = 47;
+	public static final int POST_REMOVE = 48;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3223,7 +3269,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getPostUpdate()
 	 * @generated
 	 */
-	public static final int POST_UPDATE = 48;
+	public static final int POST_UPDATE = 49;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3251,7 +3297,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getPrePersist()
 	 * @generated
 	 */
-	public static final int PRE_PERSIST = 49;
+	public static final int PRE_PERSIST = 50;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3279,7 +3325,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getPreRemove()
 	 * @generated
 	 */
-	public static final int PRE_REMOVE = 50;
+	public static final int PRE_REMOVE = 51;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3307,7 +3353,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getPreUpdate()
 	 * @generated
 	 */
-	public static final int PRE_UPDATE = 51;
+	public static final int PRE_UPDATE = 52;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3335,7 +3381,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getQueryHint()
 	 * @generated
 	 */
-	public static final int QUERY_HINT = 53;
+	public static final int QUERY_HINT = 54;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.SqlResultSetMapping <em>Sql Result Set Mapping</em>}' class.
@@ -3345,7 +3391,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getSqlResultSetMapping()
 	 * @generated
 	 */
-	public static final int SQL_RESULT_SET_MAPPING = 59;
+	public static final int SQL_RESULT_SET_MAPPING = 60;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.PrimaryKeyJoinColumn <em>Primary Key Join Column</em>}' class.
@@ -3355,7 +3401,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getPrimaryKeyJoinColumn()
 	 * @generated
 	 */
-	public static final int PRIMARY_KEY_JOIN_COLUMN = 52;
+	public static final int PRIMARY_KEY_JOIN_COLUMN = 53;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -3428,7 +3474,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getSecondaryTable()
 	 * @generated
 	 */
-	public static final int SECONDARY_TABLE = 56;
+	public static final int SECONDARY_TABLE = 57;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator <em>Sequence Generator</em>}' class.
@@ -3438,7 +3484,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getSequenceGenerator()
 	 * @generated
 	 */
-	public static final int SEQUENCE_GENERATOR = 58;
+	public static final int SEQUENCE_GENERATOR = 59;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.Table <em>Table</em>}' class.
@@ -3448,7 +3494,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTable()
 	 * @generated
 	 */
-	public static final int TABLE = 55;
+	public static final int TABLE = 56;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3557,7 +3603,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getGenerator()
 	 * @generated
 	 */
-	public static final int GENERATOR = 57;
+	public static final int GENERATOR = 58;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3684,7 +3730,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTableGenerator()
 	 * @generated
 	 */
-	public static final int TABLE_GENERATOR = 60;
+	public static final int TABLE_GENERATOR = 61;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3793,7 +3839,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getUniqueConstraint()
 	 * @generated
 	 */
-	public static final int UNIQUE_CONSTRAINT = 61;
+	public static final int UNIQUE_CONSTRAINT = 62;
 
 	/**
 	 * The feature id for the '<em><b>Column Names</b></em>' attribute list.
@@ -3821,7 +3867,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getAccessType()
 	 * @generated
 	 */
-	public static final int ACCESS_TYPE = 62;
+	public static final int ACCESS_TYPE = 63;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.DiscriminatorType <em>Discriminator Type</em>}' enum.
@@ -3831,7 +3877,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorType()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_TYPE = 63;
+	public static final int DISCRIMINATOR_TYPE = 64;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.EnumType <em>Enum Type</em>}' enum.
@@ -3841,7 +3887,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEnumType()
 	 * @generated
 	 */
-	public static final int ENUM_TYPE = 64;
+	public static final int ENUM_TYPE = 65;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.FetchType <em>Fetch Type</em>}' enum.
@@ -3851,7 +3897,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getFetchType()
 	 * @generated
 	 */
-	public static final int FETCH_TYPE = 65;
+	public static final int FETCH_TYPE = 66;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.GenerationType <em>Generation Type</em>}' enum.
@@ -3861,7 +3907,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getGenerationType()
 	 * @generated
 	 */
-	public static final int GENERATION_TYPE = 66;
+	public static final int GENERATION_TYPE = 67;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.InheritanceType <em>Inheritance Type</em>}' enum.
@@ -3871,7 +3917,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getInheritanceType()
 	 * @generated
 	 */
-	public static final int INHERITANCE_TYPE = 67;
+	public static final int INHERITANCE_TYPE = 68;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.internal.resource.orm.TemporalType <em>Temporal Type</em>}' enum.
@@ -3881,7 +3927,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getTemporalType()
 	 * @generated
 	 */
-	public static final int TEMPORAL_TYPE = 68;
+	public static final int TEMPORAL_TYPE = 69;
 
 	/**
 	 * The meta object id for the '<em>Discriminator Value</em>' data type.
@@ -3891,7 +3937,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getDiscriminatorValue()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_VALUE = 69;
+	public static final int DISCRIMINATOR_VALUE = 70;
 
 	/**
 	 * The meta object id for the '<em>Enumerated</em>' data type.
@@ -3901,7 +3947,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getEnumerated()
 	 * @generated
 	 */
-	public static final int ENUMERATED = 70;
+	public static final int ENUMERATED = 71;
 
 	/**
 	 * The meta object id for the '<em>Order By</em>' data type.
@@ -3911,7 +3957,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getOrderBy()
 	 * @generated
 	 */
-	public static final int ORDER_BY = 71;
+	public static final int ORDER_BY = 72;
 
 	/**
 	 * The meta object id for the '<em>Version Type</em>' data type.
@@ -3921,7 +3967,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getVersionType()
 	 * @generated
 	 */
-	public static final int VERSION_TYPE = 72;
+	public static final int VERSION_TYPE = 73;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -4216,6 +4262,13 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass mapKeyEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass queryEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -7100,6 +7153,65 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.Query <em>Query</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Query</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Query
+	 * @generated
+	 */
+	public EClass getQuery()
+	{
+		return queryEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Query#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Query#getName()
+	 * @see #getQuery()
+	 * @generated
+	 */
+	public EAttribute getQuery_Name()
+	{
+		return (EAttribute)queryEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.Query#getQuery <em>Query</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Query</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Query#getQuery()
+	 * @see #getQuery()
+	 * @generated
+	 */
+	public EAttribute getQuery_Query()
+	{
+		return (EAttribute)queryEClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.Query#getHints <em>Hints</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Hints</em>'.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.Query#getHints()
+	 * @see #getQuery()
+	 * @generated
+	 */
+	public EReference getQuery_Hints()
+	{
+		return (EReference)queryEClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.internal.resource.orm.EventMethod <em>Event Method</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7142,20 +7254,6 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery#getName()
-	 * @see #getNamedNativeQuery()
-	 * @generated
-	 */
-	public EAttribute getNamedNativeQuery_Name()
-	{
-		return (EAttribute)namedNativeQueryEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery#getResultClass <em>Result Class</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7166,7 +7264,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getNamedNativeQuery_ResultClass()
 	{
-		return (EAttribute)namedNativeQueryEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)namedNativeQueryEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -7180,35 +7278,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getNamedNativeQuery_ResultSetMapping()
 	{
-		return (EAttribute)namedNativeQueryEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery#getQuery <em>Query</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Query</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery#getQuery()
-	 * @see #getNamedNativeQuery()
-	 * @generated
-	 */
-	public EAttribute getNamedNativeQuery_Query()
-	{
-		return (EAttribute)namedNativeQueryEClass.getEStructuralFeatures().get(3);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery#getHints <em>Hints</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Hints</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery#getHints()
-	 * @see #getNamedNativeQuery()
-	 * @generated
-	 */
-	public EReference getNamedNativeQuery_Hints()
-	{
-		return (EReference)namedNativeQueryEClass.getEStructuralFeatures().get(4);
+		return (EAttribute)namedNativeQueryEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -7222,48 +7292,6 @@ public class OrmPackage extends EPackageImpl
 	public EClass getNamedQuery()
 	{
 		return namedQueryEClass;
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.NamedQuery#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.NamedQuery#getName()
-	 * @see #getNamedQuery()
-	 * @generated
-	 */
-	public EAttribute getNamedQuery_Name()
-	{
-		return (EAttribute)namedQueryEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.internal.resource.orm.NamedQuery#getQuery <em>Query</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Query</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.NamedQuery#getQuery()
-	 * @see #getNamedQuery()
-	 * @generated
-	 */
-	public EAttribute getNamedQuery_Query()
-	{
-		return (EAttribute)namedQueryEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.internal.resource.orm.NamedQuery#getHints <em>Hints</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Hints</em>'.
-	 * @see org.eclipse.jpt.core.internal.resource.orm.NamedQuery#getHints()
-	 * @see #getNamedQuery()
-	 * @generated
-	 */
-	public EReference getNamedQuery_Hints()
-	{
-		return (EReference)namedQueryEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -8227,17 +8255,16 @@ public class OrmPackage extends EPackageImpl
 		mapKeyEClass = createEClass(MAP_KEY);
 		createEAttribute(mapKeyEClass, MAP_KEY__NAME);
 
+		queryEClass = createEClass(QUERY);
+		createEAttribute(queryEClass, QUERY__NAME);
+		createEAttribute(queryEClass, QUERY__QUERY);
+		createEReference(queryEClass, QUERY__HINTS);
+
 		namedNativeQueryEClass = createEClass(NAMED_NATIVE_QUERY);
-		createEAttribute(namedNativeQueryEClass, NAMED_NATIVE_QUERY__NAME);
 		createEAttribute(namedNativeQueryEClass, NAMED_NATIVE_QUERY__RESULT_CLASS);
 		createEAttribute(namedNativeQueryEClass, NAMED_NATIVE_QUERY__RESULT_SET_MAPPING);
-		createEAttribute(namedNativeQueryEClass, NAMED_NATIVE_QUERY__QUERY);
-		createEReference(namedNativeQueryEClass, NAMED_NATIVE_QUERY__HINTS);
 
 		namedQueryEClass = createEClass(NAMED_QUERY);
-		createEAttribute(namedQueryEClass, NAMED_QUERY__NAME);
-		createEAttribute(namedQueryEClass, NAMED_QUERY__QUERY);
-		createEReference(namedQueryEClass, NAMED_QUERY__HINTS);
 
 		postLoadEClass = createEClass(POST_LOAD);
 
@@ -8368,6 +8395,8 @@ public class OrmPackage extends EPackageImpl
 		discriminatorColumnEClass.getESuperTypes().add(this.getNamedColumn());
 		joinColumnEClass.getESuperTypes().add(this.getAbstractColumn());
 		joinTableEClass.getESuperTypes().add(this.getAbstractTable());
+		namedNativeQueryEClass.getESuperTypes().add(this.getQuery());
+		namedQueryEClass.getESuperTypes().add(this.getQuery());
 		postLoadEClass.getESuperTypes().add(this.getEventMethod());
 		postPersistEClass.getESuperTypes().add(this.getEventMethod());
 		postRemoveEClass.getESuperTypes().add(this.getEventMethod());
@@ -8612,17 +8641,16 @@ public class OrmPackage extends EPackageImpl
 		initEClass(mapKeyEClass, MapKey.class, "MapKey", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getMapKey_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, MapKey.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(queryEClass, Query.class, "Query", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getQuery_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, Query.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getQuery_Query(), theXMLTypePackage.getString(), "query", null, 1, 1, Query.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getQuery_Hints(), this.getQueryHint(), null, "hints", null, 0, -1, Query.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(namedNativeQueryEClass, NamedNativeQuery.class, "NamedNativeQuery", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getNamedNativeQuery_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, NamedNativeQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getNamedNativeQuery_ResultClass(), theXMLTypePackage.getString(), "resultClass", null, 0, 1, NamedNativeQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getNamedNativeQuery_ResultSetMapping(), theXMLTypePackage.getString(), "resultSetMapping", null, 0, 1, NamedNativeQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getNamedNativeQuery_Query(), theXMLTypePackage.getString(), "query", null, 1, 1, NamedNativeQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getNamedNativeQuery_Hints(), this.getQueryHint(), null, "hints", null, 0, -1, NamedNativeQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(namedQueryEClass, NamedQuery.class, "NamedQuery", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getNamedQuery_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, NamedQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getNamedQuery_Query(), theXMLTypePackage.getString(), "query", null, 1, 1, NamedQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getNamedQuery_Hints(), this.getQueryHint(), null, "hints", null, 0, -1, NamedQuery.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(postLoadEClass, PostLoad.class, "PostLoad", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -10304,6 +10332,40 @@ public class OrmPackage extends EPackageImpl
 		public static final EAttribute MAP_KEY__NAME = eINSTANCE.getMapKey_Name();
 
 		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.Query <em>Query</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.internal.resource.orm.Query
+		 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getQuery()
+		 * @generated
+		 */
+		public static final EClass QUERY = eINSTANCE.getQuery();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute QUERY__NAME = eINSTANCE.getQuery_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Query</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute QUERY__QUERY = eINSTANCE.getQuery_Query();
+
+		/**
+		 * The meta object literal for the '<em><b>Hints</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference QUERY__HINTS = eINSTANCE.getQuery_Hints();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.EventMethod <em>Event Method</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -10332,14 +10394,6 @@ public class OrmPackage extends EPackageImpl
 		public static final EClass NAMED_NATIVE_QUERY = eINSTANCE.getNamedNativeQuery();
 
 		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute NAMED_NATIVE_QUERY__NAME = eINSTANCE.getNamedNativeQuery_Name();
-
-		/**
 		 * The meta object literal for the '<em><b>Result Class</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -10356,22 +10410,6 @@ public class OrmPackage extends EPackageImpl
 		public static final EAttribute NAMED_NATIVE_QUERY__RESULT_SET_MAPPING = eINSTANCE.getNamedNativeQuery_ResultSetMapping();
 
 		/**
-		 * The meta object literal for the '<em><b>Query</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute NAMED_NATIVE_QUERY__QUERY = eINSTANCE.getNamedNativeQuery_Query();
-
-		/**
-		 * The meta object literal for the '<em><b>Hints</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference NAMED_NATIVE_QUERY__HINTS = eINSTANCE.getNamedNativeQuery_Hints();
-
-		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.NamedQuery <em>Named Query</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -10380,30 +10418,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass NAMED_QUERY = eINSTANCE.getNamedQuery();
-
-		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute NAMED_QUERY__NAME = eINSTANCE.getNamedQuery_Name();
-
-		/**
-		 * The meta object literal for the '<em><b>Query</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute NAMED_QUERY__QUERY = eINSTANCE.getNamedQuery_Query();
-
-		/**
-		 * The meta object literal for the '<em><b>Hints</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference NAMED_QUERY__HINTS = eINSTANCE.getNamedQuery_Hints();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.internal.resource.orm.PostLoad <em>Post Load</em>}' class.

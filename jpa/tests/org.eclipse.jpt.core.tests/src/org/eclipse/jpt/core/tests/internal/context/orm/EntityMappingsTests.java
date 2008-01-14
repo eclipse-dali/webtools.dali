@@ -16,6 +16,8 @@ import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
 import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
+import org.eclipse.jpt.core.internal.context.orm.XmlNamedNativeQuery;
+import org.eclipse.jpt.core.internal.context.orm.XmlNamedQuery;
 import org.eclipse.jpt.core.internal.resource.orm.Embeddable;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
@@ -813,4 +815,252 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals(2, entityMappings().sequenceGeneratorsSize());
 	}
 
+	
+	public void testAddNamedQuery() throws Exception {
+		XmlNamedQuery namedQuery = entityMappings().addNamedQuery(0);
+		namedQuery.setName("FOO");
+				
+		assertEquals("FOO", ormResource().getEntityMappings().getNamedQueries().get(0).getName());
+		
+		XmlNamedQuery namedQuery2 = entityMappings().addNamedQuery(0);
+		namedQuery2.setName("BAR");
+		
+		assertEquals("BAR", ormResource().getEntityMappings().getNamedQueries().get(0).getName());
+		assertEquals("FOO", ormResource().getEntityMappings().getNamedQueries().get(1).getName());
+		
+		XmlNamedQuery namedQuery3 = entityMappings().addNamedQuery(1);
+		namedQuery3.setName("BAZ");
+		
+		assertEquals("BAR", ormResource().getEntityMappings().getNamedQueries().get(0).getName());
+		assertEquals("BAZ", ormResource().getEntityMappings().getNamedQueries().get(1).getName());
+		assertEquals("FOO", ormResource().getEntityMappings().getNamedQueries().get(2).getName());
+		
+		ListIterator<XmlNamedQuery> namedQuerys = entityMappings().namedQueries();
+		assertEquals(namedQuery2, namedQuerys.next());
+		assertEquals(namedQuery3, namedQuerys.next());
+		assertEquals(namedQuery, namedQuerys.next());
+		
+		namedQuerys = entityMappings().namedQueries();
+		assertEquals("BAR", namedQuerys.next().getName());
+		assertEquals("BAZ", namedQuerys.next().getName());
+		assertEquals("FOO", namedQuerys.next().getName());
+	}
+	
+	public void testRemoveNamedQuery() throws Exception {
+		entityMappings().addNamedQuery(0).setName("FOO");
+		entityMappings().addNamedQuery(1).setName("BAR");
+		entityMappings().addNamedQuery(2).setName("BAZ");
+		
+		assertEquals(3, ormResource().getEntityMappings().getNamedQueries().size());
+		
+		entityMappings().removeNamedQuery(0);
+		assertEquals(2, ormResource().getEntityMappings().getNamedQueries().size());
+		assertEquals("BAR", ormResource().getEntityMappings().getNamedQueries().get(0).getName());
+		assertEquals("BAZ", ormResource().getEntityMappings().getNamedQueries().get(1).getName());
+
+		entityMappings().removeNamedQuery(0);
+		assertEquals(1, ormResource().getEntityMappings().getNamedQueries().size());
+		assertEquals("BAZ", ormResource().getEntityMappings().getNamedQueries().get(0).getName());
+		
+		entityMappings().removeNamedQuery(0);
+		assertEquals(0, ormResource().getEntityMappings().getNamedQueries().size());
+	}
+	
+	public void testMoveNamedQuery() throws Exception {
+		entityMappings().addNamedQuery(0).setName("FOO");
+		entityMappings().addNamedQuery(1).setName("BAR");
+		entityMappings().addNamedQuery(2).setName("BAZ");
+		
+		assertEquals(3, ormResource().getEntityMappings().getNamedQueries().size());
+		
+		
+		entityMappings().moveNamedQuery(2, 0);
+		ListIterator<XmlNamedQuery> namedQuerys = entityMappings().namedQueries();
+		assertEquals("BAR", namedQuerys.next().getName());
+		assertEquals("BAZ", namedQuerys.next().getName());
+		assertEquals("FOO", namedQuerys.next().getName());
+
+		assertEquals("BAR", ormResource().getEntityMappings().getNamedQueries().get(0).getName());
+		assertEquals("BAZ", ormResource().getEntityMappings().getNamedQueries().get(1).getName());
+		assertEquals("FOO", ormResource().getEntityMappings().getNamedQueries().get(2).getName());
+
+
+		entityMappings().moveNamedQuery(0, 1);
+		namedQuerys = entityMappings().namedQueries();
+		assertEquals("BAZ", namedQuerys.next().getName());
+		assertEquals("BAR", namedQuerys.next().getName());
+		assertEquals("FOO", namedQuerys.next().getName());
+
+		assertEquals("BAZ", ormResource().getEntityMappings().getNamedQueries().get(0).getName());
+		assertEquals("BAR", ormResource().getEntityMappings().getNamedQueries().get(1).getName());
+		assertEquals("FOO", ormResource().getEntityMappings().getNamedQueries().get(2).getName());
+	}
+	
+	public void testUpdateNamedQueries() throws Exception {		
+		ormResource().getEntityMappings().getNamedQueries().add(OrmFactory.eINSTANCE.createNamedQuery());
+		ormResource().getEntityMappings().getNamedQueries().add(OrmFactory.eINSTANCE.createNamedQuery());
+		ormResource().getEntityMappings().getNamedQueries().add(OrmFactory.eINSTANCE.createNamedQuery());
+		
+		ormResource().getEntityMappings().getNamedQueries().get(0).setName("FOO");
+		ormResource().getEntityMappings().getNamedQueries().get(1).setName("BAR");
+		ormResource().getEntityMappings().getNamedQueries().get(2).setName("BAZ");
+
+		ListIterator<XmlNamedQuery> namedQuerys = entityMappings().namedQueries();
+		assertEquals("FOO", namedQuerys.next().getName());
+		assertEquals("BAR", namedQuerys.next().getName());
+		assertEquals("BAZ", namedQuerys.next().getName());
+		assertFalse(namedQuerys.hasNext());
+		
+		ormResource().getEntityMappings().getNamedQueries().move(2, 0);
+		namedQuerys = entityMappings().namedQueries();
+		assertEquals("BAR", namedQuerys.next().getName());
+		assertEquals("BAZ", namedQuerys.next().getName());
+		assertEquals("FOO", namedQuerys.next().getName());
+		assertFalse(namedQuerys.hasNext());
+
+		ormResource().getEntityMappings().getNamedQueries().move(0, 1);
+		namedQuerys = entityMappings().namedQueries();
+		assertEquals("BAZ", namedQuerys.next().getName());
+		assertEquals("BAR", namedQuerys.next().getName());
+		assertEquals("FOO", namedQuerys.next().getName());
+		assertFalse(namedQuerys.hasNext());
+
+		ormResource().getEntityMappings().getNamedQueries().remove(1);
+		namedQuerys = entityMappings().namedQueries();
+		assertEquals("BAZ", namedQuerys.next().getName());
+		assertEquals("FOO", namedQuerys.next().getName());
+		assertFalse(namedQuerys.hasNext());
+
+		ormResource().getEntityMappings().getNamedQueries().remove(1);
+		namedQuerys = entityMappings().namedQueries();
+		assertEquals("BAZ", namedQuerys.next().getName());
+		assertFalse(namedQuerys.hasNext());
+		
+		ormResource().getEntityMappings().getNamedQueries().remove(0);
+		assertFalse(entityMappings().namedQueries().hasNext());
+	}
+	
+	public void testAddNamedNativeQuery() throws Exception {
+		XmlNamedNativeQuery namedNativeQuery = entityMappings().addNamedNativeQuery(0);
+		namedNativeQuery.setName("FOO");
+				
+		assertEquals("FOO", ormResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
+		
+		XmlNamedNativeQuery namedNativeQuery2 = entityMappings().addNamedNativeQuery(0);
+		namedNativeQuery2.setName("BAR");
+		
+		assertEquals("BAR", ormResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
+		assertEquals("FOO", ormResource().getEntityMappings().getNamedNativeQueries().get(1).getName());
+		
+		XmlNamedNativeQuery namedNativeQuery3 = entityMappings().addNamedNativeQuery(1);
+		namedNativeQuery3.setName("BAZ");
+		
+		assertEquals("BAR", ormResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
+		assertEquals("BAZ", ormResource().getEntityMappings().getNamedNativeQueries().get(1).getName());
+		assertEquals("FOO", ormResource().getEntityMappings().getNamedNativeQueries().get(2).getName());
+		
+		ListIterator<XmlNamedNativeQuery> namedNativeQuerys = entityMappings().namedNativeQueries();
+		assertEquals(namedNativeQuery2, namedNativeQuerys.next());
+		assertEquals(namedNativeQuery3, namedNativeQuerys.next());
+		assertEquals(namedNativeQuery, namedNativeQuerys.next());
+		
+		namedNativeQuerys = entityMappings().namedNativeQueries();
+		assertEquals("BAR", namedNativeQuerys.next().getName());
+		assertEquals("BAZ", namedNativeQuerys.next().getName());
+		assertEquals("FOO", namedNativeQuerys.next().getName());
+	}
+	
+	public void testRemoveNamedNativeQuery() throws Exception {
+		entityMappings().addNamedNativeQuery(0).setName("FOO");
+		entityMappings().addNamedNativeQuery(1).setName("BAR");
+		entityMappings().addNamedNativeQuery(2).setName("BAZ");
+		
+		assertEquals(3, ormResource().getEntityMappings().getNamedNativeQueries().size());
+		
+		entityMappings().removeNamedNativeQuery(0);
+		assertEquals(2, ormResource().getEntityMappings().getNamedNativeQueries().size());
+		assertEquals("BAR", ormResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
+		assertEquals("BAZ", ormResource().getEntityMappings().getNamedNativeQueries().get(1).getName());
+
+		entityMappings().removeNamedNativeQuery(0);
+		assertEquals(1, ormResource().getEntityMappings().getNamedNativeQueries().size());
+		assertEquals("BAZ", ormResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
+		
+		entityMappings().removeNamedNativeQuery(0);
+		assertEquals(0, ormResource().getEntityMappings().getNamedNativeQueries().size());
+	}
+	
+	public void testMoveNamedNativeQuery() throws Exception {
+		entityMappings().addNamedNativeQuery(0).setName("FOO");
+		entityMappings().addNamedNativeQuery(1).setName("BAR");
+		entityMappings().addNamedNativeQuery(2).setName("BAZ");
+		
+		assertEquals(3, ormResource().getEntityMappings().getNamedNativeQueries().size());
+		
+		
+		entityMappings().moveNamedNativeQuery(2, 0);
+		ListIterator<XmlNamedNativeQuery> namedNativeQuerys = entityMappings().namedNativeQueries();
+		assertEquals("BAR", namedNativeQuerys.next().getName());
+		assertEquals("BAZ", namedNativeQuerys.next().getName());
+		assertEquals("FOO", namedNativeQuerys.next().getName());
+
+		assertEquals("BAR", ormResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
+		assertEquals("BAZ", ormResource().getEntityMappings().getNamedNativeQueries().get(1).getName());
+		assertEquals("FOO", ormResource().getEntityMappings().getNamedNativeQueries().get(2).getName());
+
+
+		entityMappings().moveNamedNativeQuery(0, 1);
+		namedNativeQuerys = entityMappings().namedNativeQueries();
+		assertEquals("BAZ", namedNativeQuerys.next().getName());
+		assertEquals("BAR", namedNativeQuerys.next().getName());
+		assertEquals("FOO", namedNativeQuerys.next().getName());
+
+		assertEquals("BAZ", ormResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
+		assertEquals("BAR", ormResource().getEntityMappings().getNamedNativeQueries().get(1).getName());
+		assertEquals("FOO", ormResource().getEntityMappings().getNamedNativeQueries().get(2).getName());
+	}
+	
+	public void testUpdateNamedNativeQueries() throws Exception {
+		ormResource().getEntityMappings().getNamedNativeQueries().add(OrmFactory.eINSTANCE.createNamedNativeQuery());
+		ormResource().getEntityMappings().getNamedNativeQueries().add(OrmFactory.eINSTANCE.createNamedNativeQuery());
+		ormResource().getEntityMappings().getNamedNativeQueries().add(OrmFactory.eINSTANCE.createNamedNativeQuery());
+		
+		ormResource().getEntityMappings().getNamedNativeQueries().get(0).setName("FOO");
+		ormResource().getEntityMappings().getNamedNativeQueries().get(1).setName("BAR");
+		ormResource().getEntityMappings().getNamedNativeQueries().get(2).setName("BAZ");
+
+		ListIterator<XmlNamedNativeQuery> namedNativeQuerys = entityMappings().namedNativeQueries();
+		assertEquals("FOO", namedNativeQuerys.next().getName());
+		assertEquals("BAR", namedNativeQuerys.next().getName());
+		assertEquals("BAZ", namedNativeQuerys.next().getName());
+		assertFalse(namedNativeQuerys.hasNext());
+		
+		ormResource().getEntityMappings().getNamedNativeQueries().move(2, 0);
+		namedNativeQuerys = entityMappings().namedNativeQueries();
+		assertEquals("BAR", namedNativeQuerys.next().getName());
+		assertEquals("BAZ", namedNativeQuerys.next().getName());
+		assertEquals("FOO", namedNativeQuerys.next().getName());
+		assertFalse(namedNativeQuerys.hasNext());
+
+		ormResource().getEntityMappings().getNamedNativeQueries().move(0, 1);
+		namedNativeQuerys = entityMappings().namedNativeQueries();
+		assertEquals("BAZ", namedNativeQuerys.next().getName());
+		assertEquals("BAR", namedNativeQuerys.next().getName());
+		assertEquals("FOO", namedNativeQuerys.next().getName());
+		assertFalse(namedNativeQuerys.hasNext());
+
+		ormResource().getEntityMappings().getNamedNativeQueries().remove(1);
+		namedNativeQuerys = entityMappings().namedNativeQueries();
+		assertEquals("BAZ", namedNativeQuerys.next().getName());
+		assertEquals("FOO", namedNativeQuerys.next().getName());
+		assertFalse(namedNativeQuerys.hasNext());
+
+		ormResource().getEntityMappings().getNamedNativeQueries().remove(1);
+		namedNativeQuerys = entityMappings().namedNativeQueries();
+		assertEquals("BAZ", namedNativeQuerys.next().getName());
+		assertFalse(namedNativeQuerys.hasNext());
+		
+		ormResource().getEntityMappings().getNamedNativeQueries().remove(0);
+		assertFalse(entityMappings().namedNativeQueries().hasNext());
+	}
 }
