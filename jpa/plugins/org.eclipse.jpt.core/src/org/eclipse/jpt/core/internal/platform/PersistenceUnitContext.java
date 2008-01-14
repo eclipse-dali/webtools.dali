@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.content.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.internal.content.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.content.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.core.internal.content.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.content.orm.XmlRootContentNode;
 import org.eclipse.jpt.core.internal.content.persistence.JavaClassRef;
 import org.eclipse.jpt.core.internal.content.persistence.MappingFileRef;
@@ -382,6 +383,15 @@ public class PersistenceUnitContext extends BaseContext
 		);
 	}
 	
+	private Iterator mappingFilePersistentTypes() {
+		return new TransformationIterator(this.mappingFileTypeContexts()) {
+			protected Object transform(Object next) {
+				return ((XmlTypeContext) next).getPersistentType();
+			}
+		};
+	}
+	
+	
 	private Iterator javaTypeContexts() {
 		return this.javaPersistentTypeContexts.iterator();
 	}
@@ -521,7 +531,7 @@ public class PersistenceUnitContext extends BaseContext
 	protected void addClassMessages(List<IMessage> messages) {
 		addUnspecifiedClassMessages(messages);
 		addUnresolvedClassMessages(messages);
-		addInvalidClassContentMessages(messages);
+		addInvalidOrRedundantClassMessages(messages);
 		addDuplicateClassMessages(messages);
 		
 		for (JavaTypeContext persistentTypeContext : javaPersistentTypeContexts) {
@@ -558,22 +568,43 @@ public class PersistenceUnitContext extends BaseContext
 		}
 	}
 	
-	protected void addInvalidClassContentMessages(List<IMessage> messages) {
+	private boolean mappingFilesContainPersistentTypeFor(IType jdtType) {
+		for (Iterator stream = this.mappingFilePersistentTypes(); stream.hasNext(); ) {
+			IType otherJdtType = ((XmlPersistentType)stream.next()).findJdtType();
+			if (otherJdtType != null && otherJdtType.equals(jdtType)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	protected void addInvalidOrRedundantClassMessages(List<IMessage> messages) {
 		for (JavaClassRef javaClassRef : persistenceUnit.getClasses()) {
 			String javaClass = javaClassRef.getJavaClass();
-			if (! StringTools.stringIsEmpty(javaClass) && javaClassRef.findJdtType() != null 
-					&& (javaPersistentTypeFor(javaClassRef) == null
-							|| javaPersistentTypeFor(javaClassRef).getMappingKey() == IMappingKeys.NULL_TYPE_MAPPING_KEY)) {
-				messages.add(
-					JpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						IJpaValidationMessages.PERSISTENCE_UNIT_INVALID_CLASS,
-						new String[] {javaClassRef.getJavaClass()}, 
-						javaClassRef, javaClassRef.validationTextRange())
-				);
+			IType jdtType = javaClassRef.findJdtType();
+			//first test for a redundant entry in any of the mapping files
+			if (mappingFilesContainPersistentTypeFor(jdtType)){
+			//Uncomment below code to add info message about redundant entry.
+			//Need to determine whether or not to have this in or out for 1.0.2.
+			/*	messages.add(JpaValidationMessages.buildMessage(
+						IMessage.LOW_SEVERITY,
+						IJpaValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS,
+						new String[] { javaClassRef.getJavaClass() },
+						javaClassRef, javaClassRef.validationTextRange())); */
+			//if not redundant, check to see if it is an invalid entry
+			} else if (!StringTools.stringIsEmpty(javaClass)
+					&& jdtType != null
+					&& (javaPersistentTypeFor(javaClassRef) == null || javaPersistentTypeFor(
+							javaClassRef).getMappingKey() == IMappingKeys.NULL_TYPE_MAPPING_KEY)){
+								messages.add(JpaValidationMessages.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									IJpaValidationMessages.PERSISTENCE_UNIT_INVALID_CLASS,
+									new String[] { javaClassRef.getJavaClass() }, javaClassRef,
+									javaClassRef.validationTextRange()));
 			}
-		} 
+		}
 	}
+	
 	
 	protected void addDuplicateClassMessages(List<IMessage> messages) {
 		HashBag fileBag = new HashBag(

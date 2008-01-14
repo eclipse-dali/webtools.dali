@@ -150,6 +150,7 @@ public class SynchronizeClassesJob extends Job
 				if (jdtType == null) {
 					return false;
 				}
+				//TODO This doesn't work - need to go to the MappingContext to get inferred orm.xml files
 				for (MappingFileRef mappingFileRef : persistenceUnit.getMappingFiles()) {
 					if (containsType(mappingFileRef, jdtType)) {
 						return false;
