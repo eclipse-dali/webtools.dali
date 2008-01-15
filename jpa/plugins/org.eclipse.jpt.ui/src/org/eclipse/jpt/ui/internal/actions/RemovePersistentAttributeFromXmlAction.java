@@ -13,6 +13,8 @@ import java.util.Iterator;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.ui.actions.ActionDelegate;
 
 public class RemovePersistentAttributeFromXmlAction extends ActionDelegate
@@ -30,7 +32,7 @@ public class RemovePersistentAttributeFromXmlAction extends ActionDelegate
 		if (this.selection instanceof StructuredSelection) {
 			for (Iterator<XmlPersistentAttribute> i = ((StructuredSelection) selection).iterator(); i.hasNext(); ) {
 				XmlPersistentAttribute xmlPersistentAttribute = i.next();
-				XmlPersistentType xmlPersistentType = xmlPersistentAttribute.typeMapping().getPersistentType();
+				XmlPersistentType xmlPersistentType = xmlPersistentAttribute.persistentType();
 				xmlPersistentType.getSpecifiedAttributeMappings().remove(xmlPersistentAttribute.getMapping());
 			}
 		}

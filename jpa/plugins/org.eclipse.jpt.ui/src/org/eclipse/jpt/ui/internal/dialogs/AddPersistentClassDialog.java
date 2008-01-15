@@ -28,6 +28,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
@@ -55,7 +56,7 @@ import org.eclipse.ui.progress.IProgressService;
 
 public class AddPersistentClassDialog extends StatusDialog
 {
-	private EntityMappingsInternal entityMappings;
+	private EntityMappings entityMappings;
 	
 	private Text classText;
 	
@@ -64,12 +65,13 @@ public class AddPersistentClassDialog extends StatusDialog
 	private ComboViewer mappingCombo;
 		
 	
-	public AddPersistentClassDialog(Shell parentShell, EntityMappingsInternal entityMappings) {
+	public AddPersistentClassDialog(Shell parentShell, EntityMappings entityMappings) {
 		super(parentShell);
 		this.entityMappings = entityMappings;
 		setTitle(JptUiMessages.AddPersistentClassDialog_title);
 	}
 	
+	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite dialogArea = (Composite) super.createDialogArea(parent);
 		
@@ -180,7 +182,7 @@ public class AddPersistentClassDialog extends StatusDialog
 	}
 	
 	private IJpaProject getJpaProject() {
-		return entityMappings.getJpaProject();
+		return entityMappings.jpaProject();
 	}
 	
 	public String getClassName() {
