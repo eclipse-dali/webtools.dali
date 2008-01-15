@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.resource.orm.AbstractTable;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.utility.internal.NameTools;
 
 public abstract class AbstractXmlTable extends JpaContextNode implements ITable
 {
@@ -292,9 +293,18 @@ public abstract class AbstractXmlTable extends JpaContextNode implements ITable
 	
 	protected abstract String defaultCatalog();
 	
+	public String qualifiedName() {
+		return NameTools.buildQualifiedDatabaseObjectName(this.getCatalog(), this.getSchema(), this.getName());
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
-		sb.append(getName());
+		sb.append(qualifiedName());
+	}
+
+	@Override
+	public String displayString() {
+		return qualifiedName();
 	}
 }

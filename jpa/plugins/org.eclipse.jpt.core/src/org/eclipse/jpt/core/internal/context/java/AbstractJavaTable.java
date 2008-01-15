@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.resource.java.Table;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.NameTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -340,4 +341,18 @@ public abstract class AbstractJavaTable extends JavaContextModel
 		return StringTools.quote(this.candidateCatalogs(filter));
 	}
 
+	public String qualifiedName() {
+		return NameTools.buildQualifiedDatabaseObjectName(this.getCatalog(), this.getSchema(), this.getName());
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(qualifiedName());
+	}
+
+	@Override
+	public String displayString() {
+		return qualifiedName();
+	}
 }
