@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.java.details;
 
 import java.util.ListIterator;
-import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
@@ -20,9 +19,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
@@ -83,26 +80,31 @@ public class JavaPersistentAttributeDetailsPage
 	}
 
 	@Override
-	protected void initializeLayout(Composite composite) {
-		composite.setLayout(new GridLayout(2, false));
+	protected void initializeLayout(Composite container) {
 
-		Label mapAsLabel = buildMappingLabel(composite);
-		addAlignLeft(mapAsLabel);
+		buildLabeledComposite(
+			container,
+			buildMappingLabel(container),
+			buildMappingCombo(container).getControl()
+		);
+//		Label mapAsLabel = buildMappingLabel(container);
+//		addAlignLeft(mapAsLabel);
+//
+//		ComboViewer mappingCombo = buildMappingCombo(container);
+//		GridData gridData = new GridData();
+//		gridData.horizontalAlignment = SWT.FILL;
+//		gridData.verticalAlignment = SWT.BEGINNING;
+//		gridData.grabExcessHorizontalSpace = true;
+//		mappingCombo.getCCombo().setLayoutData(gridData);
 
-		ComboViewer mappingCombo = buildMappingCombo(composite);
+		PageBook mappingPane = buildMappingPageBook(container);
+
 		GridData gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
+		gridData.horizontalAlignment       = SWT.FILL;
+		gridData.verticalAlignment         = SWT.FILL;
 		gridData.grabExcessHorizontalSpace = true;
-		mappingCombo.getCCombo().setLayoutData(gridData);
+		gridData.grabExcessVerticalSpace   = true;
 
-		PageBook book = buildMappingPageBook(composite);
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalSpan = 2;
-		book.setLayoutData(gridData);
+		mappingPane.setLayoutData(gridData);
 	}
 }

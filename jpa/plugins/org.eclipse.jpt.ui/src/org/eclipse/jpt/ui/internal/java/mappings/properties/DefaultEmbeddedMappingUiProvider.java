@@ -16,6 +16,7 @@ import org.eclipse.jpt.ui.internal.details.IJpaComposite;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
@@ -44,7 +45,10 @@ public class DefaultEmbeddedMappingUiProvider
 	}
 
 	public String label() {
-		return "Default (" + JptUiMappingsMessages.PersistentAttributePage_EmbeddedLabel + ")";
+		return NLS.bind(
+			JptUiMappingsMessages.DefaultEmbeddedMappingUiProvider_Default,
+			JptUiMappingsMessages.PersistentAttributePage_EmbeddedLabel
+		);
 	}
 
 	public IJpaComposite<IEmbeddedMapping> buildAttributeMappingComposite(

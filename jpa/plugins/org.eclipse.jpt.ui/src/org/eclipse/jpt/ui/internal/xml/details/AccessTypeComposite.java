@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved. This
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved. This
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
@@ -8,7 +8,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
-import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -20,8 +19,10 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
+import org.eclipse.jpt.core.internal.context.base.IFetchable;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.details.EnumComboViewer;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
@@ -29,14 +30,28 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public final class AccessTypeComboViewer<T> extends BaseJpaController<AccessTypeComboViewer.AccessHolder<? extends T>> {
+/**
+ * Here the layout of this pane:
+ * <pre>
+ * ----------------------------------------------------------------------------â??
+ * |              -----------------------------------------------------------â?? |
+ * | Access Type: |                                                        |v| |
+ * |              ------------------------------------------------------------ |
+ * -----------------------------------------------------------------------------</pre>
+ *
+ * @see IFetchable
+ * @see BasicMappingComposite - A container of this widget
+ *
+ * @version 2.0
+ * @since 1.0
+ */
+public class AccessTypeComposite<T> extends BaseJpaController<AccessTypeComposite.AccessHolder<? extends T>> {
 
-	private Adapter accessHolderListener;
-	private ComboViewer comboViewer;
+	private EnumComboViewer<IFetchable, FetchType> comboViewer;
 
-	public AccessTypeComboViewer(PropertyValueModel<? extends AccessTypeComboViewer.AccessHolder<? extends T>> subjectHolder,
-	                             Composite parent,
-	                             TabbedPropertySheetWidgetFactory widgetFactory) {
+	public AccessTypeComposite(PropertyValueModel<? extends AccessTypeComposite.AccessHolder<? extends T>> subjectHolder,
+	                           Composite parent,
+	                           TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 		buildAccessHolderListener();
@@ -52,7 +67,7 @@ public final class AccessTypeComboViewer<T> extends BaseJpaController<AccessType
 	}
 
 	@Override
-	protected void buildWidget(Composite parent, int style) {
+	protected void buildWidgets(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent);
 		this.comboViewer = new ComboViewer(combo);
 		this.comboViewer.setLabelProvider(buildAccessTypeLabelProvider());
@@ -60,7 +75,7 @@ public final class AccessTypeComboViewer<T> extends BaseJpaController<AccessType
 
 		this.comboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
-				AccessTypeComboViewer.this.accessTypeSelectionChanged(event.getSelection());
+				AccessTypeComposite.this.accessTypeSelectionChanged(event.getSelection());
 			}
 		});
 	}

@@ -9,12 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IJoinTable;
-import org.eclipse.jpt.core.internal.context.base.IOneToManyMapping;
+import org.eclipse.jpt.core.internal.context.base.IManyToOneMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -22,28 +19,25 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
-import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class OneToManyComposite extends BaseJpaComposite<IOneToManyMapping>
+public class ManyToOneMappingComposite extends BaseJpaComposite<IManyToOneMapping>
 {
 	private CascadeComposite cascadeComposite;
 	private EnumComboViewer fetchTypeComboViewer;
-	private JoinTableComposite joinTableComposite;
-	private MappedByCombo mappedByCombo;
-	private OrderingComposite orderingComposite;
+	private JoinColumnComposite joinColumnComposite;
+	private EnumComboViewer optionalComboViewer;
 	private TargetEntityChooser targetEntityChooser;
 
-	public OneToManyComposite(PropertyValueModel<? extends IOneToManyMapping> subjectHolder,
+	public ManyToOneMappingComposite(PropertyValueModel<? extends IManyToOneMapping> subjectHolder,
 	                          Composite parent,
 	                          TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, SWT.NULL, widgetFactory);
 	}
 
-	private Control buildGeneralControl(Composite composite) {
+	private Control buildGeneralComposite(Composite composite) {
 		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
 
 		Composite generalComposite = getWidgetFactory().createComposite(composite);
@@ -51,15 +45,14 @@ public class OneToManyComposite extends BaseJpaComposite<IOneToManyMapping>
 		layout.marginWidth = 0;
 		generalComposite.setLayout(layout);
 
-		GridData gridData;
-
 		this.targetEntityChooser = CommonWidgets.buildTargetEntityChooser(generalComposite, getWidgetFactory());
-		gridData = new GridData();
+		GridData gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalSpan = 2;
 		this.targetEntityChooser.getControl().setLayoutData(gridData);
+		helpSystem.setHelp(targetEntityChooser.getControl(), IJpaHelpContextIds.MAPPING_TARGET_ENTITY);
 
 		CommonWidgets.buildFetchLabel(generalComposite, getWidgetFactory());
 		this.fetchTypeComboViewer = CommonWidgets.buildEnumComboViewer(generalComposite, getWidgetFactory());
@@ -68,16 +61,15 @@ public class OneToManyComposite extends BaseJpaComposite<IOneToManyMapping>
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
 		this.fetchTypeComboViewer.getControl().setLayoutData(gridData);
-		helpSystem.setHelp(this.fetchTypeComboViewer.getControl(), IJpaHelpContextIds.MAPPING_FETCH_TYPE);
+		helpSystem.setHelp(fetchTypeComboViewer.getControl(), IJpaHelpContextIds.MAPPING_FETCH_TYPE);
 
-		CommonWidgets.buildMappedByLabel(generalComposite, getWidgetFactory());
-		this.mappedByCombo = new MappedByCombo(getSubjectHolder(), generalComposite, getWidgetFactory());
+		CommonWidgets.buildOptionalLabel(generalComposite, getWidgetFactory());
+		this.optionalComboViewer = CommonWidgets.buildEnumComboViewer(generalComposite, getWidgetFactory());
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
 		gridData.grabExcessHorizontalSpace = true;
-		this.mappedByCombo.getControl().setLayoutData(gridData);
-		helpSystem.setHelp(this.mappedByCombo.getControl(), IJpaHelpContextIds.MAPPING_MAPPED_BY);
+		this.optionalComboViewer.getControl().setLayoutData(gridData);
 
 		this.cascadeComposite = new CascadeComposite(getSubjectHolder(), generalComposite, getWidgetFactory());
 		gridData = new GridData();
@@ -86,46 +78,16 @@ public class OneToManyComposite extends BaseJpaComposite<IOneToManyMapping>
 		gridData.grabExcessHorizontalSpace = true;
 		this.cascadeComposite.getControl().setLayoutData(gridData);
 
-		this.orderingComposite = new OrderingComposite(getSubjectHolder(), generalComposite, getWidgetFactory());
+		this.joinColumnComposite = new JoinColumnComposite(getSubjectHolder(), generalComposite, getWidgetFactory());
 		gridData = new GridData();
-		gridData.horizontalSpan = 3;
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		this.orderingComposite.getControl().setLayoutData(gridData);
-
-
-		return generalComposite;
-	}
-
-	private Control buildJoinTableControl(Composite composite) {
-	    Section section = getWidgetFactory().createSection(composite, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
-	    section.setText(JptUiMappingsMessages.MultiRelationshipMappingComposite_joinTable);
-
-		Composite joinTableClient = getWidgetFactory().createComposite(section);
-		section.setClient(joinTableClient);
-
-		GridLayout layout = new GridLayout();
-		layout.marginWidth = 0;
-		joinTableClient.setLayout(layout);
-
-		this.joinTableComposite = new JoinTableComposite(buildJointTableHolder(), joinTableClient, getWidgetFactory());
-		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
-		this.joinTableComposite.getControl().setLayoutData(gridData);
+		gridData.horizontalSpan = 2;
+		this.joinColumnComposite.getControl().setLayoutData(gridData);
 
-		return section;
-	}
-
-	private PropertyValueModel<? extends IJoinTable> buildJointTableHolder() {
-		return new PropertyAspectAdapter<IOneToManyMapping, IJoinTable>(getSubjectHolder(), "TODO") {
-			@Override
-			protected IJoinTable buildValue_() {
-				return subject.getJoinTable();
-			}
-		};
+		return generalComposite;
 	}
 
 	@Override
@@ -134,29 +96,21 @@ public class OneToManyComposite extends BaseJpaComposite<IOneToManyMapping>
 
 	@Override
 	public void dispose() {
-		this.fetchTypeComboViewer.dispose();
 		this.targetEntityChooser.dispose();
-		this.mappedByCombo.dispose();
+		this.fetchTypeComboViewer.dispose();
+		this.optionalComboViewer.dispose();
 		this.cascadeComposite.dispose();
-		this.joinTableComposite.dispose();
-		this.orderingComposite.dispose();
+		this.joinColumnComposite.dispose();
 		super.dispose();
 	}
 
 	@Override
 	protected void doPopulate() {
-		this.fetchTypeComboViewer.populate(CommonWidgets.buildMultiRelationshipMappingFetchEnumHolder(this.subject()));
-		this.targetEntityChooser.populate(this.subject());
-		this.mappedByCombo.populate(this.subject());
-		this.cascadeComposite.populate(this.subject());
-		if (this.subject() != null) {
-			this.joinTableComposite.populate(this.subject().getJoinTable());
-			this.orderingComposite.populate(this.subject());
-		}
-		else {
-			this.joinTableComposite.populate(null);
-			this.orderingComposite.populate(null);
-		}
+		this.targetEntityChooser.populate(subject());
+		this.fetchTypeComboViewer.populate(CommonWidgets.buildSingleRelationshipMappingFetchEnumHolder(subject()));
+		this.optionalComboViewer.populate(CommonWidgets.buildOptionalHolder(subject()));
+		this.cascadeComposite.populate(subject());
+		this.joinColumnComposite.populate(subject());
 	}
 
 	@Override
@@ -170,16 +124,10 @@ public class OneToManyComposite extends BaseJpaComposite<IOneToManyMapping>
 		layout.marginHeight = 0;
 		composite.setLayout(layout);
 
-		Control generalControl = buildGeneralControl(composite);
+		Control generalControl = buildGeneralComposite(composite);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		generalControl.setLayoutData(gridData);
-
-		Control joinTableControl = buildJoinTableControl(composite);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		joinTableControl.setLayoutData(gridData);
 	}
 }

@@ -16,12 +16,10 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 public interface IJpaDetailsProvider
 {
 	/**
-	 * Build a properties page given the parent Composite and the
-	 * content node id.
-	 * It is legal to set the layout for the given Composite.
+	 * Creates a new details page for.
 	 */
 	IJpaDetailsPage<? extends IJpaContextNode> buildDetailsPage(
-		PropertyValueModel<? extends IJpaContextNode> subjectHolder,
+		PropertyValueModel<IJpaContextNode> subjectHolder,
 		Composite parentComposite,
 		Object contentNodeId,
 		TabbedPropertySheetWidgetFactory widgetFactory);

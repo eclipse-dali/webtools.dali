@@ -73,7 +73,7 @@ public class XmlPackageChooser extends BaseJpaController
 	}
 
 	@Override
-	protected void buildWidget(Composite parent, int style) {
+	protected void buildWidgets(Composite parent) {
 		this.composite = getWidgetFactory().createComposite(parent);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.marginHeight = 0;

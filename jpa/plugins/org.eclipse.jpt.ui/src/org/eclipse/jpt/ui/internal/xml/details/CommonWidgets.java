@@ -51,12 +51,12 @@ public class CommonWidgets
 		return widgetFactory.createLabel(parent, JptUiXmlMessages.PersistentTypePage_AccessLabel);
 	}
 
-	public static <T> AccessTypeComboViewer<T> buildAccessTypeComboViewer(
-		PropertyValueModel<? extends AccessTypeComboViewer.AccessHolder<? extends T>> subjectHolder,
+	public static <T> AccessTypeComposite<T> buildAccessTypeComboViewer(
+		PropertyValueModel<? extends AccessTypeComposite.AccessHolder<? extends T>> subjectHolder,
 		Composite parent,
 		TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		return new AccessTypeComboViewer<T>(subjectHolder, parent, widgetFactory);
+		return new AccessTypeComposite<T>(subjectHolder, parent, widgetFactory);
 	}
 
 

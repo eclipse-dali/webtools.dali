@@ -77,7 +77,7 @@ public class XmlJavaClassChooser extends BaseJpaController<XmlPersistentType> {
 	}
 
 	@Override
-	protected void buildWidget(Composite parent, int style) {
+	protected void buildWidgets(Composite parent) {
 		this.composite = getWidgetFactory().createComposite(parent);
 	    GridLayout gridLayout = new GridLayout();
 	    gridLayout.marginHeight = 0;

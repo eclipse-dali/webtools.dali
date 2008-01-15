@@ -52,7 +52,7 @@ public class EntityNameCombo extends BaseJpaController<IEntity>
 	}
 
 	@Override
-	protected void buildWidget(Composite parent, int style) {
+	protected void buildWidgets(Composite parent) {
 		combo = this.widgetFactory.createCCombo(parent, SWT.FLAT);
 		combo.addModifyListener(
 			new ModifyListener() {

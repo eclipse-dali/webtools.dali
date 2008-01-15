@@ -30,6 +30,7 @@ import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
@@ -42,22 +43,16 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 {
 	private Map<String, IJpaComposite<ITypeMapping>> composites;
 	private String currentMappingKey;
-
-	private IPersistentType persistentType;
-
 	private Adapter persistentTypeListener;
-
 	private ComboViewer typeMappingCombo;
-
 	protected PageBook typeMappingPageBook;
-
 	private IJpaComposite<ITypeMapping> visibleMappingComposite;
 
 	public PersistentTypeDetailsPage(PropertyValueModel<? extends T> subjectHolder,
                                     Composite parent,
                                     TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, SWT.NONE, widgetFactory);
+		super(subjectHolder, parent, widgetFactory);
 		this.persistentTypeListener = buildPersistentTypeListener();
 		this.composites = new HashMap<String, IJpaComposite<ITypeMapping>>();
 	}
@@ -69,7 +64,7 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 			}
 
 			public Object[] getElements(Object inputElement) {
-				return (persistentType == null) ?
+				return (subject() == null) ?
 						new String[] {}:
 						CollectionTools.array(PersistentTypeDetailsPage.this.typeMappingUiProviders());
 			}
@@ -85,13 +80,32 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return ((ITypeMappingUiProvider) element).label();
+				return ((ITypeMappingUiProvider<?>) element).label();
 			}
 		};
 	}
 
-	protected IJpaComposite<ITypeMapping> buildMappingComposite(PageBook pageBook, String key)  {
-		return typeMappingUiProvider(key).buildPersistentTypeMappingComposite(pageBook, getWidgetFactory());
+	private PropertyValueModel<ITypeMapping> buildMappingHolder(final String key) {
+		return new TransformationPropertyValueModel<IPersistentType, ITypeMapping>(getSubjectHolder()) {
+			@Override
+			protected ITypeMapping transform_(IPersistentType value) {
+				return key.equals(value.mappingKey()) ? value.getMapping() : null;
+			}
+		};
+	}
+
+	@SuppressWarnings("unchecked")
+	protected IJpaComposite<ITypeMapping> buildMappingComposite(PageBook pageBook,
+	                                                            String key)  {
+
+		ITypeMappingUiProvider<ITypeMapping> uiProvider =
+			(ITypeMappingUiProvider<ITypeMapping>) typeMappingUiProvider(key);
+
+		return uiProvider.buildPersistentTypeMappingComposite(
+			buildMappingHolder(key),
+			pageBook,
+			getWidgetFactory()
+		);
 	}
 
 	private Adapter buildPersistentTypeListener() {
@@ -126,9 +140,10 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 	}
 	@Override
 	protected void disengageListeners() {
-		if (this.persistentType != null) {
-			this.persistentType.eAdapters().remove(this.persistentTypeListener);
-		}
+		super.disengageListeners();
+//		if (this.persistentType != null) {
+//			this.persistentType.eAdapters().remove(this.persistentTypeListener);
+//		}
 	}
 
 	@Override
@@ -148,13 +163,10 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 
 	@Override
 	protected void engageListeners() {
-		if (this.persistentType != null) {
-			this.persistentType.eAdapters().add(this.persistentTypeListener);
-		}
-	}
-
-	public IPersistentType getPersistentType() {
-		return this.persistentType;
+		super.engageListeners();
+//		if (this.persistentType != null) {
+//			this.persistentType.eAdapters().add(this.persistentTypeListener);
+//		}
 	}
 
 	private IJpaComposite<ITypeMapping> mappingCompositeFor(String key) {
@@ -186,20 +198,20 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 	}
 
 	private void populateMappingComboAndPage() {
-		if (this.persistentType == null) {
+		if (this.subject() == null) {
 			this.currentMappingKey = null;
 			this.typeMappingCombo.setInput(null);
 			this.typeMappingCombo.setSelection(StructuredSelection.EMPTY);
 
 			if (this.visibleMappingComposite != null) {
-				this.visibleMappingComposite.populate(null);
+				this.visibleMappingComposite.populate();
 				this.visibleMappingComposite = null;
 			}
 
 			return;
 		}
 
-		String mappingKey = this.persistentType.getMapping().getKey();
+		String mappingKey = this.subject().getMapping().getKey();
 		setComboData(mappingKey);
 
 		populateMappingPage(mappingKey);
@@ -229,8 +241,8 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 	}
 
 	private void setComboData(String mappingKey) {
-		if (this.persistentType != this.typeMappingCombo.getInput()) {
-			this.typeMappingCombo.setInput(this.persistentType);
+		if (this.subject() != this.typeMappingCombo.getInput()) {
+			this.typeMappingCombo.setInput(this.subject());
 		}
 
 		ITypeMappingUiProvider provider = typeMappingUiProvider(mappingKey);
@@ -242,7 +254,7 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 	private void typeMappingChanged(SelectionChangedEvent event) {
 		if (event.getSelection() instanceof StructuredSelection) {
 			ITypeMappingUiProvider provider = (ITypeMappingUiProvider) ((StructuredSelection) event.getSelection()).getFirstElement();
-			this.persistentType.setMappingKey(provider.mappingKey());
+			this.subject().setMappingKey(provider.mappingKey());
 		}
 	}
 
@@ -252,9 +264,9 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 //		return typeMappingCombo.getCombo().setFocus();
 //	}
 
-	private ITypeMappingUiProvider typeMappingUiProvider(String key) {
-		for (ListIterator<ITypeMappingUiProvider> i = this.typeMappingUiProviders(); i.hasNext();) {
-			ITypeMappingUiProvider provider = i.next();
+	private ITypeMappingUiProvider<? extends ITypeMapping> typeMappingUiProvider(String key) {
+		for (ListIterator<ITypeMappingUiProvider<? extends ITypeMapping>> iter = this.typeMappingUiProviders(); iter.hasNext();) {
+			ITypeMappingUiProvider<? extends ITypeMapping> provider = iter.next();
 			if (provider.mappingKey() == key) {
 				return provider;
 			}
@@ -262,6 +274,6 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 		throw new IllegalArgumentException("Unsupported type mapping UI provider key: " + key);
 	}
 
-	protected abstract ListIterator<ITypeMappingUiProvider> typeMappingUiProviders();
+	protected abstract ListIterator<ITypeMappingUiProvider<? extends ITypeMapping>> typeMappingUiProviders();
 
 }

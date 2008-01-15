@@ -19,10 +19,9 @@ import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser.StringHolder;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
-import org.eclipse.jpt.ui.internal.xml.details.AccessTypeComboViewer.AccessHolder;
+import org.eclipse.jpt.ui.internal.xml.details.AccessTypeComposite.AccessHolder;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -37,7 +36,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 public class PersistenceUnitMetadataSection extends BaseJpaController<PersistenceUnitMetadata>
 {
 
-	private AccessTypeComboViewer accessComboViewer;
+	private AccessTypeComposite accessComboViewer;
 	private CascadePersistCheckBox cascadePersistCheckBox;
 	private Section section;
 	private StringWithDefaultChooser xmlCatalogChooser;
@@ -56,8 +55,6 @@ public class PersistenceUnitMetadataSection extends BaseJpaController<Persistenc
 	}
 
 	private PropertyValueModel<? extends PersistenceUnitDefaults> buildPersistenceUnitDefaultsHolder() {
-		// TODO: Have TransformationPropertyValueModel and
-		// TransformationWritablePropertyValueModel
 		return new TransformationPropertyValueModel<PersistenceUnitMetadata, PersistenceUnitDefaults>(getSubjectHolder()) {
 			@Override
 			protected PersistenceUnitDefaults transform_(PersistenceUnitMetadata value) {
@@ -67,7 +64,7 @@ public class PersistenceUnitMetadataSection extends BaseJpaController<Persistenc
 	}
 
 	@Override
-	protected void buildWidget(Composite parent, int style) {
+	protected void buildWidgets(Composite parent) {
 		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
 	    this.section = getWidgetFactory().createSection(parent, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
 	    this.section.setText(JptUiXmlMessages.XMLEntityMappingsPage_PersistenceUnitSection);

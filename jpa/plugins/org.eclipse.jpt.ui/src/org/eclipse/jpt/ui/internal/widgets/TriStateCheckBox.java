@@ -1,0 +1,306 @@
+/*******************************************************************************
+ * Copyright (c) 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the terms of
+ * the Eclipse Public License v1.0, which accompanies this distribution and is available at
+ * http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
+package org.eclipse.jpt.ui.internal.widgets;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
+
+/**
+ * This <code>TriStateCheckBox</code> is responsible to handle three states:
+ * unchecked, checked and partially selected. Either from a mouse selection,
+ * keyboard selection or programmatically, the selection state is using a
+ * <code>Boolean</code> value where a <code>null</code> value means partially
+ * selected.
+ * <p>
+ * The order of state state is: unchecked -> partially selected -> checked.
+ *
+ * @version 2.0
+ * @since 2.0
+ */
+public final class TriStateCheckBox {
+
+	/**
+	 * Flag used to prevent the selection listener from changing the selection
+	 * state when the mouse is changing it since the selection state is called
+	 * after the mouse down event and before the mouse up event.
+	 */
+	private boolean handledByMouseEvent;
+
+	/**
+	 * The current selection state.
+	 */
+	private TriState state;
+
+	/**
+	 * A tri-state check box can only be used within a tree or table, we used
+	 * here the table widget.
+	 */
+	private Table table;
+
+	/**
+	 * Creates a new <code>TriStateCheckBox</code>.
+	 *
+	 * @param parent The parent composite
+	 */
+	public TriStateCheckBox(Composite parent) {
+		super();
+
+		this.state = TriState.UNCHECKED;
+		this.buildWidgets(parent);
+	}
+
+	/**
+	 * @see org.eclipse.swt.widgets.Widget#addDisposeListener(DisposeListener)
+	 */
+	public void addDisposeListener(DisposeListener disposeListener) {
+		this.table.addDisposeListener(disposeListener);
+	}
+
+	/**
+	 * @see Table#addSelectionListener(SelectionListener)
+	 */
+	public void addSelectionListener(SelectionListener selectionListener) {
+		this.table.addSelectionListener(selectionListener);
+	}
+
+	private MouseAdapter buildMouseListener() {
+
+		return new MouseAdapter() {
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+
+				handledByMouseEvent = true;
+
+				TriStateCheckBox.this.changeTriState();
+				TriStateCheckBox.this.updateCheckBox();
+			}
+
+			@Override
+			public void mouseUp(MouseEvent e) {
+
+				TriStateCheckBox.this.updateCheckBox();
+			}
+		};
+	}
+
+	private SelectionAdapter buildSelectionListener() {
+
+		return new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				if (handledByMouseEvent) {
+					handledByMouseEvent = false;
+				}
+				else {
+					TriStateCheckBox.this.changeTriState();
+					TriStateCheckBox.this.updateCheckBox();
+				}
+			}
+		};
+	}
+
+	private TriState buildState(Boolean selection) {
+
+		if (selection == null) {
+			return TriState.PARTIALLY_CHECKED;
+		}
+
+		return selection ? TriState.CHECKED : TriState.UNCHECKED;
+	}
+
+	private Layout buildTableLayout() {
+
+		return new Layout() {
+
+			@Override
+			protected Point computeSize(Composite composite, int wHint, int hHint, boolean flushCache) {
+				Rectangle bounds = TriStateCheckBox.this.getCheckBox().getBounds();
+				return new Point(bounds.x + bounds.width, bounds.y + bounds.height);
+			}
+
+			@Override
+			protected void layout(Composite composite, boolean flushCache) {
+
+				Rectangle bounds = TriStateCheckBox.this.getCheckBox().getBounds();
+
+				TriStateCheckBox.this.table.setBounds(
+					-6,
+					0,
+					bounds.x + bounds.width + 6,
+					bounds.y + bounds.height
+				);
+			}
+		};
+	}
+
+	private void buildWidgets(Composite parent) {
+
+		parent = new Composite(parent, SWT.NULL);
+		parent.setLayout(this.buildTableLayout());
+
+		this.table = new Table(parent, SWT.FLAT | SWT.CHECK | SWT.SINGLE);
+		this.table.addMouseListener(buildMouseListener());
+		this.table.addSelectionListener(buildSelectionListener());
+		this.table.getHorizontalBar().setVisible(false);
+		this.table.getVerticalBar().setVisible(false);
+
+		new TableItem(table, SWT.CHECK);
+	}
+
+	private void changeTriState() {
+
+		if (state == TriState.UNCHECKED) {
+			state = TriState.PARTIALLY_CHECKED;
+		}
+		else if (state == TriState.CHECKED) {
+			state = TriState.UNCHECKED;
+		}
+		else {
+			state = TriState.CHECKED;
+		}
+	}
+
+	/**
+	 * Returns the actual <code>TableItem</code> used to show a tri-state check
+	 * box.
+	 *
+	 * @return The unique item of the table that handles tri-state selection
+	 */
+	public TableItem getCheckBox() {
+		return table.getItem(0);
+	}
+
+	/**
+	 * Returns the main widget of the tri-state check box.
+	 *
+	 * @return The main composite used to display the tri-state check box
+	 */
+	public Control getControl() {
+		return table.getParent();
+	}
+
+	/**
+	 * Returns the check box's image.
+	 *
+	 * @return The image of the check box
+	 */
+	public Image getImage() {
+		return this.getCheckBox().getImage();
+	}
+
+	/**
+	 * Returns the selection state of the check box.
+	 *
+	 * @return Either <code>true</code> or <code>false</code> for checked and
+	 * unchecked; or <code>null</code> for partially selected
+	 */
+	public Boolean getSelection() {
+		return (state == TriState.PARTIALLY_CHECKED) ? null : (state == TriState.CHECKED);
+	}
+
+	/**
+	 * Returns the check box's text.
+	 *
+	 * @return The text of the check box
+	 */
+	public String getText() {
+		return this.getCheckBox().getText();
+	}
+
+	/**
+	 * @see org.eclipse.swt.widgets.Widget#removeDisposeListener(DisposeListener)
+	 */
+	public void removeDisposeListener(DisposeListener disposeListener) {
+		this.table.removeDisposeListener(disposeListener);
+	}
+
+	/**
+	 * @see Table#removeSelectionListener(SelectionListener)
+	 */
+	public void removeSelectionListener(SelectionListener selectionListener) {
+		this.table.removeSelectionListener(selectionListener);
+	}
+
+	/**
+	 * Sets the check box's image.
+	 *
+	 * @param image The new image of the check box
+	 */
+	public void setImage(Image image) {
+		// TODO: Not sure this will update the layout, if that is the case,
+		// then copy the code from LabeledTableItem.updateTableItem()
+		this.getCheckBox().setImage(image);
+	}
+
+	/**
+	 * Changes the selection state of the check box.
+	 *
+	 * @param selection Either <code>true</code> or <code>false</code> for
+	 * checked and unchecked; or <code>null</code> for partially selected
+	 */
+	public void setSelection(Boolean selection) {
+		this.state = this.buildState(selection);
+		this.updateCheckBox();
+	}
+
+	/**
+	 * Sets the check box's text.
+	 *
+	 * @param text The new text of the check box
+	 */
+	public void setText(String text) {
+		// TODO: Not sure this will update the layout, if that is the case,
+		// then copy the code from LabeledTableItem.updateTableItem()
+		this.getCheckBox().setText(text);
+	}
+
+	/**
+	 * Updates the selection state of the of the check box based on the tri-state
+	 * value.
+	 */
+	private void updateCheckBox() {
+
+		TableItem checkBox = this.getCheckBox();
+
+		if (state == TriState.PARTIALLY_CHECKED) {
+			checkBox.setChecked(true);
+			checkBox.setGrayed(true);
+		}
+		else {
+			checkBox.setGrayed(false);
+			checkBox.setChecked(state == TriState.CHECKED);
+		}
+	}
+
+	/**
+	 * An enum used to keep track of the current tri-state selected.
+	 */
+	public enum TriState {
+		CHECKED,
+		PARTIALLY_CHECKED,
+		UNCHECKED
+	}
+}

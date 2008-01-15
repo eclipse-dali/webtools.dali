@@ -140,7 +140,7 @@ public class TableCombo extends BaseJpaController<ITable>
 	}
 
 	@Override
-	protected void buildWidget(Composite parent, int style) {
+	protected void buildWidgets(Composite parent) {
 		this.combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
 		this.combo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
 		this.combo.addModifyListener(new ModifyListener() {

@@ -90,7 +90,7 @@ public class StringWithDefaultChooser extends BaseJpaController
 
 
 	@Override
-	protected void buildWidget(Composite parent, int style) {
+	protected void buildWidgets(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
 		this.comboViewer = new ComboViewer(combo);
 		this.comboViewer.setContentProvider(buildContentProvider());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2007 Oracle. All rights reserved. This
+ *  Copyright (c) 2006, 2008 Oracle. All rights reserved. This
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
@@ -8,115 +8,68 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
+import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.swt.BooleanButtonModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class LobCheckBox extends BaseJpaController<IBasicMapping>
+/**
+ * This composite simply shows the Lob check box.
+ *
+ * @see IBasicMapping
+ *
+ * @version 2.0
+ * @since 1.0
+ */
+public class LobCheckBox extends BaseJpaComposite<IBasicMapping>
 {
-	private Adapter basicMappingListener;
-	private Button button;
-
+	/**
+	 * Creates a new <code>LobCheckBox</code>.
+	 *
+	 * @param subjectHolder The holder of the subject <code>IBasicMapping</code>
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public LobCheckBox(PropertyValueModel<? extends IBasicMapping> subjectHolder,
 	                   Composite parent,
 	                   TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-		buildBasicMappingListener();
 	}
 
-	private void bsaicMappingChanged(Notification notification) {
-		//TODO commented this out so we didn't hit the compiler error while closing eclipse
-//		if (notification.getFeatureID(IBasicMapping.class) ==
-//				JpaCoreMappingsPackage.IBASIC__LOB) {
-//			Display.getDefault().asyncExec(
-//				new Runnable() {
-//					public void run() {
-//						populate();
-//					}
-//				});
-//		}
-	}
+	private PropertyAspectAdapter<IBasicMapping, Boolean> buildLobHolder() {
 
-	private void buildBasicMappingListener() {
-		this.basicMappingListener = new AdapterImpl() {
+		return new PropertyAspectAdapter<IBasicMapping, Boolean>(getSubjectHolder(), IBasicMapping.LOB_PROPERTY) {
+
 			@Override
-			public void notifyChanged(Notification notification) {
-				bsaicMappingChanged(notification);
+			protected Boolean buildValue_() {
+				return subject.isLob();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				subject.setLob(value);
 			}
 		};
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected void buildWidget(Composite parent, int style) {
-		this.button = getWidgetFactory().createButton(
-						parent,
-						JptUiMappingsMessages.BasicGeneralSection_lobLabel,
-						SWT.CHECK);
+	protected void initializeLayout(Composite container) {
 
-		this.button.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-				LobCheckBox.this.lobSelectionChanged();
-			}
+		Button button = getWidgetFactory().createButton(
+			container,
+			JptUiMappingsMessages.BasicGeneralSection_lobLabel,
+			SWT.CHECK);
 
-			public void widgetSelected(SelectionEvent event) {
-				LobCheckBox.this.lobSelectionChanged();
-			}
-		});
-	}
-
-	@Override
-	protected void disengageListeners() {
-		if (this.subject() != null) {
-			//TODO commented this out so we didn't hit the compiler error while closing eclipse
-			//this.subject().eAdapters().remove(this.basicMappingListener);
-		}
-	}
-
-	@Override
-	protected void doPopulate() {
-		populateButton();
-	}
-
-	@Override
-	protected void engageListeners() {
-		if (this.subject() != null) {
-			//TODO commented this out so we didn't hit the compiler error while closing eclipse
-			//this.subject().eAdapters().add(this.basicMappingListener);
-		}
-	}
-
-	@Override
-	public Control getControl() {
-		return this.button;
-	}
-
-	void lobSelectionChanged() {
-		boolean lob = this.button.getSelection();
-		if (this.subject().isLob() != lob) {
-			this.subject().setLob(lob);
-		}
-	}
-
-	private void populateButton() {
-		boolean lob = false;
-		if (this.subject() != null) {
-			lob  = this.subject().isLob();
-		}
-
-		if (this.button.getSelection() != lob) {
-			this.button.setSelection(lob);
-		}
+		BooleanButtonModelAdapter.adapt(buildLobHolder(), button);
 	}
 }

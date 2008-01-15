@@ -48,7 +48,7 @@ public class CascadePersistCheckBox extends BaseJpaController<PersistenceUnitDef
 	}
 
 	@Override
-	protected void buildWidget(Composite parent, int style) {
+	protected void buildWidgets(Composite parent) {
 		this.button = getWidgetFactory().createButton(
 						parent,
 						JptUiXmlMessages.XMLEntityMappingsPage_CascadePersistCheckBox,
@@ -109,6 +109,7 @@ public class CascadePersistCheckBox extends BaseJpaController<PersistenceUnitDef
 	 */
 	@Override
 	public void doPopulate() {
+		super.doPopulate();
 		populateButton();
 	}
 

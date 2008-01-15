@@ -84,15 +84,8 @@ public class NullAttributeMappingUiProvider
 		 * (non-Javadoc)
 		 */
 		@Override
-		protected void buildWidget(Composite parent, int style) {
-			container = getWidgetFactory().createComposite(parent, style);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 */
-		@Override
-		protected void doPopulate() {
+		protected void buildWidgets(Composite parent) {
+			container = getWidgetFactory().createComposite(parent);
 		}
 
 		/*

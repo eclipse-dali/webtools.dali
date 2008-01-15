@@ -52,7 +52,7 @@ public class MappedByCombo extends BaseJpaController<INonOwningMapping>
 		};
 	}
 	@Override
-	protected void buildWidget(Composite parent, int style) {
+	protected void buildWidgets(Composite parent) {
 		this.combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(combo,IJpaHelpContextIds.MAPPING_MAPPED_BY);
 		this.combo.addModifyListener(new ModifyListener() {

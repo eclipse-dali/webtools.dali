@@ -138,7 +138,7 @@ public class SchemaCombo extends BaseJpaController<ITable>
 	}
 
 	@Override
-	protected void buildWidget(Composite parent) {
+	protected void buildWidgets(Composite parent) {
 		this.combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
 		this.combo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
 		this.combo.addModifyListener(new ModifyListener() {

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
+import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
@@ -24,11 +25,10 @@ import org.eclipse.jpt.ui.internal.java.mappings.properties.EmbeddableUiProvider
 import org.eclipse.jpt.ui.internal.java.mappings.properties.EntityUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.MappedSuperclassUiProvider;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
-import org.eclipse.jpt.ui.internal.xml.details.AccessTypeComboViewer.AccessHolder;
+import org.eclipse.jpt.ui.internal.xml.details.AccessTypeComposite.AccessHolder;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -39,7 +39,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlPersistentType>
 {
-	private AccessTypeComboViewer accessComboViewer;
+	private AccessTypeComposite accessComboViewer;
 
 	private XmlJavaClassChooser javaClassChooser;
 
@@ -47,7 +47,7 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlP
 
 	//Storing these here instead of querying IJpaPlatformUI, because the orm.xml schema
 	//is not extensible.  We only need to support extensibility for java
-	private List<ITypeMappingUiProvider> xmlTypeMappingUiProviders;
+	private List<ITypeMappingUiProvider<? extends ITypeMapping>> xmlTypeMappingUiProviders;
 
 	public XmlPersistentTypeDetailsPage(PropertyValueModel<? extends XmlPersistentType> subjectHolder,
 	                                    Composite parent,
@@ -56,7 +56,7 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlP
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	protected void addXmlTypeMappingUiProvidersTo(Collection<ITypeMappingUiProvider> providers) {
+	protected void addXmlTypeMappingUiProvidersTo(Collection<ITypeMappingUiProvider<? extends ITypeMapping>> providers) {
 		providers.add(EntityUiProvider.instance());
 		providers.add(MappedSuperclassUiProvider.instance());
 		providers.add(EmbeddableUiProvider.instance());
@@ -133,8 +133,8 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlP
 		typeMappingPageBook.setLayoutData(gridData);
 	}
 
-	private PropertyValueModel<? extends AccessTypeComboViewer.AccessHolder<XmlTypeMapping<? extends TypeMapping>>> buildAccessTypeHolder() {
-		return new TransformationPropertyValueModel<XmlPersistentType, AccessTypeComboViewer.AccessHolder<XmlTypeMapping<? extends TypeMapping>>>(
+	private PropertyValueModel<? extends AccessTypeComposite.AccessHolder<XmlTypeMapping<? extends TypeMapping>>> buildAccessTypeHolder() {
+		return new TransformationPropertyValueModel<XmlPersistentType, AccessTypeComposite.AccessHolder<XmlTypeMapping<? extends TypeMapping>>>(
 			getSubjectHolder()) {
 
 			@Override
@@ -146,12 +146,12 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlP
 	}
 
 	@Override
-	public ListIterator<ITypeMappingUiProvider> typeMappingUiProviders() {
+	public ListIterator<ITypeMappingUiProvider<? extends ITypeMapping>> typeMappingUiProviders() {
 		if (this.xmlTypeMappingUiProviders == null) {
-			this.xmlTypeMappingUiProviders = new ArrayList<ITypeMappingUiProvider>();
+			this.xmlTypeMappingUiProviders = new ArrayList<ITypeMappingUiProvider<? extends ITypeMapping>>();
 			this.addXmlTypeMappingUiProvidersTo(this.xmlTypeMappingUiProviders);
 		}
-		return new CloneListIterator<ITypeMappingUiProvider>(this.xmlTypeMappingUiProviders);
+		return new CloneListIterator<ITypeMappingUiProvider<? extends ITypeMapping>>(this.xmlTypeMappingUiProviders);
 	}
 
 	private class MyAccessHolder implements AccessHolder<XmlTypeMapping<? extends TypeMapping>> {

@@ -33,7 +33,7 @@ public class TableComposite extends BaseJpaComposite<ITable>
 	                      Composite parent,
 	                      TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, SWT.NULL, widgetFactory);
+		super(subjectHolder, parent, widgetFactory);
 	}
 
 	@Override

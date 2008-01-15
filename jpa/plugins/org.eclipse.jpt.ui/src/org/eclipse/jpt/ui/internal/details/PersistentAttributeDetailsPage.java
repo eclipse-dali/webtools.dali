@@ -52,7 +52,7 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
                                          Composite parent,
                                          TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, SWT.NONE, widgetFactory);
+		super(subjectHolder, parent, widgetFactory);
 //		this.persistentAttributeListener = buildAttributeListener();
 		this.mappingComposites = new HashMap<String, IJpaComposite<IAttributeMapping>>();
 	}
@@ -130,7 +130,7 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 
 			public Object[] getElements(Object inputElement) {
 				if (inputElement == null) {
-					return new Object[]{};
+					return new Object[0];
 				}
 				return attributeMappingUiProvidersFor((IPersistentAttribute) inputElement);
 			}
@@ -158,8 +158,6 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 	}
 
 	private PropertyValueModel<IAttributeMapping> buildMappingHolder(final String key) {
-		// TODO: Have TransformationPropertyValueModel and
-		// TransformationWritablePropertyValueModel
 		return new TransformationPropertyValueModel<IPersistentAttribute, IAttributeMapping>(getSubjectHolder()) {
 			@Override
 			protected IAttributeMapping transform_(IPersistentAttribute value) {
@@ -201,23 +199,13 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void doPopulate() {
+		super.doPopulate();
 		populateMappingComboAndPage();
-	}
-
-	@Override
-	protected void engageListeners() {
-		if (this.subject() != null) {
-			//TODO this.subject().eAdapters().add(this.persistentAttributeListener);
-		}
-	}
-
-	@Override
-	protected void disengageListeners() {
-		if (this.subject() != null) {
-			//TODO this.subject().eAdapters().remove(this.persistentAttributeListener);
-		}
 	}
 
 	private void populateMappingComboAndPage() {
@@ -230,7 +218,7 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 //			this.currentMappingComposite = null;
 //		}
 
-		setComboData();
+		populateMapAsCombo();
 
 		IAttributeMapping mapping = this.subject().getMapping();
 		populateMappingPage(mapping == null ? null : mapping.getKey());
@@ -268,7 +256,7 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 		}
 	}
 
-	private void setComboData() {
+	private void populateMapAsCombo() {
 		if (this.subject() != this.mappingCombo.getInput()) {
 			this.mappingCombo.setInput(this.subject());
 		}

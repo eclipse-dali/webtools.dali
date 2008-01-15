@@ -144,9 +144,9 @@ public class EntityComposite extends BaseJpaComposite<IEntity>
 	}
 
 	private Control buildAttributeOverridesComposite(Composite composite) {
-	    Section section = getWidgetFactory().createSection(composite, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
-	    section.setText(JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides);
-	    //section.setExpanded(true); //not going to expand this for now, it causes the scroll bar not to appear
+		Section section = getWidgetFactory().createSection(composite, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
+		section.setText(JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides);
+		//section.setExpanded(true); //not going to expand this for now, it causes the scroll bar not to appear
 		Composite client = getWidgetFactory().createComposite(section);
 		section.setClient(client);
 
@@ -166,29 +166,21 @@ public class EntityComposite extends BaseJpaComposite<IEntity>
 	}
 
 	//TODO talk to JavaEditor people about what we can do to hook in TabbedProperties for the JavaEditor
-
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	public void doPopulate() {
-		this.entityNameCombo.populate(subject());
-		this.attributeOverridesComposite.populate(subject());
-		this.secondaryTablesComposite.populate(subject());
-		this.inheritanceComposite.populate(subject());
-		if (this.subject() != null) {
-			this.tableComposite.populate(this.subject().getTable());
-		}
-		else {
-			this.tableComposite.populate(null);
-		}
+		this.entityNameCombo.populate();
+		this.attributeOverridesComposite.populate();
+		this.secondaryTablesComposite.populate();
+		this.inheritanceComposite.populate();
+		this.tableComposite.populate();
 	}
 
-	@Override
-	protected void engageListeners() {
-	}
-
-	@Override
-	protected void disengageListeners() {
-	}
-
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	public void dispose() {
 		this.entityNameCombo.dispose();

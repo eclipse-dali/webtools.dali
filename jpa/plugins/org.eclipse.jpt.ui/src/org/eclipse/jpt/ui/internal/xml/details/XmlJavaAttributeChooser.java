@@ -52,7 +52,7 @@ public class XmlJavaAttributeChooser extends BaseJpaController<XmlAttributeMappi
 	}
 
 	@Override
-	protected void buildWidget(Composite parent, int style) {
+	protected void buildWidgets(Composite parent) {
 		text = getWidgetFactory().createText(parent, "");
 		text.addModifyListener(
 			new ModifyListener() {

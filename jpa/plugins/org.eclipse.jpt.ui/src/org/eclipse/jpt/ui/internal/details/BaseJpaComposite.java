@@ -9,7 +9,6 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -39,17 +38,17 @@ public abstract class BaseJpaComposite<T> extends BaseJpaController<T>
 	/**
 	 * Creates a new <code>BaseJpaComposite</code>.
 	 *
-	 * @param subjectHolder The holder of the subject <code>T</code>
+	 * @param parentController The parent container of this one
 	 * @param parent The parent container
-	 * @param style
-	 * @param widgetFactory The factory used to create various common widgets
+	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
+	 * this pane aligned with the widgets of the given parent controller;
+	 * <code>false</code> to not align them
 	 */
-	protected BaseJpaComposite(PropertyValueModel<? extends T> subjectHolder,
+	protected BaseJpaComposite(BaseJpaController<? extends T> parentController,
 	                           Composite parent,
-	                           int style,
-	                           TabbedPropertySheetWidgetFactory widgetFactory) {
+	                           boolean automaticallyAlignWidgets) {
 
-		super(subjectHolder, parent, style, widgetFactory);
+		super(parentController, parent, automaticallyAlignWidgets);
 	}
 
 	/**
@@ -63,28 +62,32 @@ public abstract class BaseJpaComposite<T> extends BaseJpaController<T>
 	                           Composite parent,
 	                           TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		this(subjectHolder, parent, SWT.NONE, widgetFactory);
+		super(subjectHolder, parent, widgetFactory);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void buildWidget(Composite parent, int style) {
-		this.composite = createComposite(parent, style);
-		initializeLayout(this.composite);
+	protected final void buildWidgets(Composite parent) {
+		this.composite = buildComposite(parent);
+		this.initializeLayout(this.composite);
 	}
 
-	protected Composite createComposite(Composite parent, int style) {
-		Composite container = this.widgetFactory.createComposite(parent, style);
+	protected Composite buildComposite(Composite parent) {
+		Composite container = this.buildPane(parent);
 
 		GridLayout layout = new GridLayout(1, false);
-		layout.marginWidth  = 0;
 		layout.marginHeight = 0;
+		layout.marginWidth  = 0;
+		layout.marginTop    = 0;
+		layout.marginLeft   = 0;
+		layout.marginBottom = 0;
+		layout.marginRight  = 0;
 		container.setLayout(layout);
 
 		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
+		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		container.setLayoutData(gridData);
 
@@ -102,7 +105,7 @@ public abstract class BaseJpaComposite<T> extends BaseJpaController<T>
 	/**
 	 * Initializes the layout of this pane.
 	 *
-	 * @param composite The parent container
+	 * @param container The parent container
 	 */
-	protected abstract void initializeLayout(Composite composite);
+	protected abstract void initializeLayout(Composite container);
 }

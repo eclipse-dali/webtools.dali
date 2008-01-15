@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,265 +9,320 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import java.util.Iterator;
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.IBaseLabelProvider;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.core.internal.context.base.GenerationType;
 import org.eclipse.jpt.core.internal.context.base.IGeneratedValue;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.help.IWorkbenchHelpSystem;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
+/**
+ * Here the layout of this pane:
+ * <pre>
+ * ----------------------------------------------------------------------------â??
+ * |                 --------------------------------------------------------â?? |
+ * | Strategy:       | I                                                   |v| |
+ * |                 --------------------------------------------------------- |
+ * |                 --------------------------------------------------------â?? |
+ * | Generator Name: | I                                                   |v| |
+ * |                 --------------------------------------------------------- |
+ * -----------------------------------------------------------------------------</pre>
+ *
+ * @see IIdMapping
+ * @see IGeneratedValue
+ * @see GenerationComposite - The parent container
+ *
+ * @version 2.0
+ * @since 1.0
+ */
+@SuppressWarnings("nls")
 public class GeneratedValueComposite extends BaseJpaComposite<IIdMapping>
 {
-	private IGeneratedValue generatedValue;
-	private Adapter generatedValueListener;
+	private PropertyChangeListener generatedValueChangeListener;
+	private PropertyChangeListener generatorNameChangeListener;
 	private CCombo generatorNameCombo;
-	private ComboViewer strategyComboViewer;
+	private PropertyChangeListener subjectChangeListener;
 
-	public GeneratedValueComposite(PropertyValueModel<? extends IIdMapping> subjectHolder,
-	                               Composite parent,
-	                               TabbedPropertySheetWidgetFactory widgetFactory) {
+	/**
+	 * Creates a new <code>GeneratedValueComposite</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param parent The parent container
+	 */
+	public GeneratedValueComposite(BaseJpaController<? extends IIdMapping> parentController,
+	 	                            Composite parent) {
 
-		super(subjectHolder, parent, SWT.NULL, widgetFactory);
-		this.generatedValueListener = buildGeneratedValueListener();
+		super(parentController, parent);
 	}
 
-	private Adapter buildGeneratedValueListener() {
-		return new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				generatedValueChanged(notification);
+	private PropertyChangeListener buildGeneratedValueChangeListener() {
+		return new PropertyChangeListener() {
+			public void propertyChanged(PropertyChangeEvent e) {
+
+				final IGeneratedValue oldValue = (IGeneratedValue) e.oldValue();
+				final IGeneratedValue newValue = (IGeneratedValue) e.newValue();
+
+				SWTUtil.asyncExec(new Runnable() {
+					public void run() {
+						uninstallGeneratedValueListeners(oldValue);
+						repopulate();
+						installGeneratedValueListeners(newValue);
+					}
+				});
 			}
 		};
 	}
 
-	protected CCombo buildGeneratorNameCombo(Composite parent) {
-		CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
-		combo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
-		combo.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				String generatorName = ((CCombo) e.getSource()).getText();
-
-				if (generatorName.equals("")) { //$NON-NLS-1$
-					if (generatedValue == null || generatedValue.getGenerator() == null || generatedValue.getGenerator().equals("")) {
-						return;
+	private PropertyChangeListener buildGeneratorNameChangeListener() {
+		return new PropertyChangeListener() {
+			public void propertyChanged(PropertyChangeEvent e) {
+				SWTUtil.asyncExec(new Runnable() {
+					public void run() {
+						populateGeneratorName();
 					}
-					generatorName = null;
-				}
-				if (generatedValue == null) {
-					createGeneratedValue();
-				}
-				generatedValue.setSpecifiedGenerator(generatorName);
+				});
 			}
-		});
+		};
+	}
+
+	private CCombo buildGeneratorNameCombo(Composite parent) {
+		CCombo combo = buildCombo(parent);
+		combo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
+		combo.addModifyListener(buildGeneratorNameModifyListener());
 		return combo;
 	}
 
-	private ComboViewer buildStrategyComboViewer(Composite parent) {
-		CCombo combo = getWidgetFactory().createCCombo(parent);
-		ComboViewer viewer = new ComboViewer(combo);
-		viewer.setLabelProvider(buildStrategyLabelProvider());
-		viewer.add(GenerationType.values());
-		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			public void selectionChanged(SelectionChangedEvent event) {
-				if (event.getSelection() instanceof StructuredSelection) {
-					StructuredSelection selection = (StructuredSelection) event.getSelection();
-					GenerationType selectedType = (GenerationType) selection.getFirstElement();
-					if (generatedValue == null) {
-						createGeneratedValue();
-					}
-					if (!generatedValue.getStrategy().equals(selectedType)) {
-						generatedValue.setSpecifiedStrategy(selectedType);
-					}
+	private ModifyListener buildGeneratorNameModifyListener() {
+		return new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				if (isPopulating()) {
+					return;
 				}
-			}
-		});
-		return viewer;
-	}
 
-	private IBaseLabelProvider buildStrategyLabelProvider() {
-		return new LabelProvider() {
-			@Override
-			public String getText(Object element) {
-				// TODO
-				if (element == GenerationType.AUTO) {// GenerationType.DEFAULT) {
-					//TODO need to move this to the model, don't want hardcoded String
-					return NLS.bind(JptUiMappingsMessages.GeneratedValueComposite_default, "Auto");
+				String generatorName = ((CCombo) e.getSource()).getText();
+				IGeneratedValue generatedValue = subject().getGeneratedValue();
+
+				if (StringTools.stringIsEmpty(generatorName)) {
+
+					if ((generatedValue == null) ||
+					    StringTools.stringIsEmpty(generatedValue.getGenerator()))
+					{
+						return;
+					}
+
+					generatorName = null;
 				}
-				return super.getText(element);
+
+				if (generatedValue == null) {
+					subject().addGeneratedValue();
+				}
+
+				generatedValue.setSpecifiedGenerator(generatorName);
 			}
 		};
 	}
 
-
-	private void createGeneratedValue() {
-		this.generatedValue = this.subject().createGeneratedValue();
-		this.subject().setGeneratedValue(this.generatedValue);
+	private PropertyValueModel<IGeneratedValue> buildGeneratorValueHolder() {
+		return new PropertyAspectAdapter<IIdMapping, IGeneratedValue>(getSubjectHolder(), IIdMapping.GENERATED_VALUE_PROPERTY) {
+			@Override
+			protected IGeneratedValue buildValue_() {
+				return subject().getGeneratedValue();
+			}
+		};
 	}
 
+	private EnumComboViewer<IGeneratedValue, GenerationType> buildStrategyComboViewer(Composite parent) {
+		return new EnumComboViewer<IGeneratedValue, GenerationType>(buildGeneratorValueHolder(), parent, getWidgetFactory()) {
+			@Override
+			protected GenerationType[] choices() {
+				return GenerationType.values();
+			}
+
+			@Override
+			protected GenerationType defaultValue() {
+				return subject().getDefaultStrategy();
+			}
+
+			@Override
+			protected String displayString(GenerationType value) {
+				return buildDisplayString(
+					JptUiMappingsMessages.class,
+					GeneratedValueComposite.this,
+					value
+				);
+			}
+
+			@Override
+			protected GenerationType getValue() {
+				return subject().getSpecifiedStrategy();
+			}
+
+			@Override
+			protected String propertyName() {
+				return IGeneratedValue.SPECIFIED_STRATEGY_PROPERTY;
+			}
+
+			@Override
+			protected void setValue(GenerationType value) {
+				IGeneratedValue generatedValue = subject();
+
+				if (generatedValue == null) {
+					generatedValue = GeneratedValueComposite.this.subject().addGeneratedValue();
+				}
+
+				subject().setSpecifiedStrategy(value);
+			}
+		};
+	}
+
+	private PropertyChangeListener buildSubjectChangeListener() {
+		return new PropertyChangeListener() {
+			public void propertyChanged(PropertyChangeEvent e) {
+				uninstallListeners((IIdMapping) e.oldValue());
+				installListeners((IIdMapping) e.newValue());
+			}
+		};
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void disengageListeners() {
 		super.disengageListeners();
-//		if (this.generatedValue != null) {
-//			this.generatedValue.eAdapters().remove(this.generatedValueListener);
-//		}
+		getSubjectHolder().removePropertyChangeListener(PropertyValueModel.VALUE, subjectChangeListener);
+		uninstallListeners(subject());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void doPopulate() {
-		if (this.subject() == null) {
-			this.generatedValue= null;
-		}
-		else {
-			this.generatedValue = this.subject().getGeneratedValue();
-		}
-		if (this.generatedValue == null) {
-			this.strategyComboViewer.getCCombo().setText("");
-			this.generatorNameCombo.setText("");
-			return;
-		}
-		populateStrategyCombo();
+		super.doPopulate();
 		populateGeneratorNameCombo();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void engageListeners() {
 		super.engageListeners();
-//		if (this.generatedValue != null) {
-//			this.generatedValue.eAdapters().add(this.generatedValueListener);
-//		}
+		getSubjectHolder().addPropertyChangeListener(PropertyValueModel.VALUE, subjectChangeListener);
+		installListeners(subject());
 	}
 
-	protected void generatedValueChanged(Notification notification) {
-		if (notification.getFeatureID(IGeneratedValue.class) == JpaCoreMappingsPackage.IGENERATED_VALUE__STRATEGY) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					if (selectedStrategy() != generatedValue.getStrategy()) {
-						strategyComboViewer.setSelection(new StructuredSelection(generatedValue.getStrategy()));
-					}
-				}
-			});
-		}
-		else if (notification.getFeatureID(IGeneratedValue.class) == JpaCoreMappingsPackage.IGENERATED_VALUE__GENERATOR) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					populateGeneratorName();
-				}
-			});
-		}
-	}
+//	private IGeneratorRepository getGeneratorRepository() {
+//		return NullGeneratorRepository.instance(); //this.id.getJpaProject().getPlatform().generatorRepository(this.id.typeMapping().getPersistentType());
+//	}
 
-	private IGeneratorRepository getGeneratorRepository() {
-		return NullGeneratorRepository.instance(); //this.id.getJpaProject().getPlatform().generatorRepository(this.id.typeMapping().getPersistentType());
-	}
-
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected void initializeLayout(Composite composite) {
-		GridLayout layout = new GridLayout(2, false);
-		composite.setLayout(layout);
+	protected void initialize() {
+		super.initialize();
 
-		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
+		subjectChangeListener        = buildSubjectChangeListener();
+		generatedValueChangeListener = buildGeneratedValueChangeListener();
+		generatorNameChangeListener  = buildGeneratorNameChangeListener();
+	}
 
-		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.GeneratedValueComposite_strategy);
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void initializeLayout(Composite container) {
 
-		this.strategyComboViewer = buildStrategyComboViewer(composite);
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		this.strategyComboViewer.getCCombo().setLayoutData(gridData);
-		helpSystem.setHelp(this.strategyComboViewer.getCCombo(), IJpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY);
+		// Strategy widgets
+		EnumComboViewer<IGeneratedValue, GenerationType> strategyComboViewer =
+			buildStrategyComboViewer(container);
 
-		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.GeneratedValueComposite_generatorName);
+		this.buildLabeledComposite(
+			container,
+			JptUiMappingsMessages.GeneratedValueComposite_strategy,
+			strategyComboViewer.getControl(),
+			IJpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
+		);
 
-		this.generatorNameCombo = buildGeneratorNameCombo(composite);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		this.generatorNameCombo.setLayoutData(gridData);
-		helpSystem.setHelp(this.generatorNameCombo, IJpaHelpContextIds.MAPPING_GENERATED_VALUE_GENERATOR_NAME);
+		this.registerSubPane(strategyComboViewer);
+
+		// Generator Name widgets
+		this.generatorNameCombo = buildGeneratorNameCombo(container);
+
+		this.buildLabeledComposite(
+			container,
+			JptUiMappingsMessages.GeneratedValueComposite_generatorName,
+			this.generatorNameCombo,
+			IJpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
+		);
 
 		// TODO
 		// buildGeneratorNameSelectionButton( this);
 	}
 
-	private void populateGeneratorName() {
-		String generatorName = this.generatedValue.getGenerator();
-		if (generatorName == null || generatorName.equals("")) {
-			this.generatorNameCombo.setText("");
-		}
-		else if (!this.generatorNameCombo.getText().equals(generatorName)) {
-			this.generatorNameCombo.setText(generatorName);
+	private void installGeneratedValueListeners(IGeneratedValue generatedValue) {
+		if (generatedValue != null) {
+			generatedValue.addPropertyChangeListener(IGeneratedValue.SPECIFIED_GENERATOR_PROPERTY, generatorNameChangeListener);
 		}
 	}
+
+	private void installListeners(IIdMapping idMapping) {
+		if (idMapping != null) {
+			idMapping.addPropertyChangeListener(IIdMapping.GENERATED_VALUE_PROPERTY, generatedValueChangeListener);
+			installGeneratedValueListeners(idMapping.getGeneratedValue());
+		}
+	}
+
+	private void populateGeneratorName() {
+		IGeneratedValue generatedValue = subject().getGeneratedValue();
+
+		if (generatedValue == null) {
+			this.generatorNameCombo.setText("");
+		}
+		else {
+			String generatorName = generatedValue.getGenerator();
+
+			if (StringTools.stringIsEmpty(generatorName)) {
+				this.generatorNameCombo.setText("");
+			}
+			else {
+				this.generatorNameCombo.setText(generatorName);
+			}
+		}
+	}
+
 	private void populateGeneratorNameCombo() {
 		this.generatorNameCombo.removeAll();
-		for (Iterator<String> i = getGeneratorRepository().generatorNames(); i.hasNext(); ){
-			this.generatorNameCombo.add(i.next());
-		}
+//		for (Iterator<String> i = getGeneratorRepository().generatorNames(); i.hasNext(); ){
+//			this.generatorNameCombo.add(i.next());
+//		}
 
 		populateGeneratorName();
 	}
 
-	private void populateStrategyCombo() {
-		GenerationType selectedType = selectedStrategy();
-		GenerationType strategy = this.generatedValue.getStrategy();
-		if (strategy == GenerationType.AUTO) {
-			if (selectedType != GenerationType.AUTO) {
-				this.strategyComboViewer.setSelection(new StructuredSelection(GenerationType.AUTO));
-			}
+	private void uninstallGeneratedValueListeners(IGeneratedValue generatedValue) {
+		if (generatedValue != null) {
+			generatedValue.removePropertyChangeListener(IGeneratedValue.SPECIFIED_GENERATOR_PROPERTY, generatorNameChangeListener);
 		}
-		else if (strategy == GenerationType.SEQUENCE) {
-			if (selectedType != GenerationType.SEQUENCE) {
-				this.strategyComboViewer.setSelection(new StructuredSelection(GenerationType.SEQUENCE));
-			}
-		}
-		else if (strategy == GenerationType.IDENTITY) {
-			if (selectedType != GenerationType.IDENTITY) {
-				this.strategyComboViewer.setSelection(new StructuredSelection(GenerationType.IDENTITY));
-			}
-		}
-		else if (strategy == GenerationType.TABLE) {
-			if (selectedType != GenerationType.TABLE) {
-				this.strategyComboViewer.setSelection(new StructuredSelection(GenerationType.TABLE));
-			}
-		}
-		else {
-			if (selectedType != GenerationType.DEFAULT) {
-				this.strategyComboViewer.setSelection(new StructuredSelection(GenerationType.DEFAULT));
-			}
-		}
-		// TODO first initialization
 	}
 
-	private GenerationType selectedStrategy() {
-		return (GenerationType) ((StructuredSelection) this.strategyComboViewer.getSelection()).getFirstElement();
+	private void uninstallListeners(IIdMapping idMapping) {
+		if (idMapping != null) {
+			idMapping.removePropertyChangeListener(IIdMapping.GENERATED_VALUE_PROPERTY, generatedValueChangeListener);
+			uninstallGeneratedValueListeners(idMapping.getGeneratedValue());
+		}
 	}
 }

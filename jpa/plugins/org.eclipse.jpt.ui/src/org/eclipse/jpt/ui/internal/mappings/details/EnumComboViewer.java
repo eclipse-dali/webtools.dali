@@ -28,18 +28,21 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * Here the layout of this pane:
  * <pre>
- * ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??
- * ï¿½?? ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½?ï¿½ï¿½??ï¿½?? ï¿½??
- * ï¿½?? ï¿½??                                                                     ï¿½??ï¿½?ï¿½ï¿½?? ï¿½??
- * ï¿½?? ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½?ï¿½ï¿½??ï¿½?? ï¿½??
- * ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??ï¿½??</pre>
+ * ----------------------------------------------------------------------------â??
+ * | ------------------------------------------------------------------------â?? |
+ * | | I                                                                   |v| |
+ * | ------------------------------------------------------------------------- |
+ * -----------------------------------------------------------------------------</pre>
  *
- * @see ColumnComposite - A container of this controller
+ * @see ColumnComposite
+ * @see EnumTypeComposite
+ * @see FetchTypeComposite
  *
  * @version 2.0
  * @since 1.0
@@ -99,16 +102,45 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 		};
 	}
 
+	/**
+	 * Retrieves the localized string from the given NLS class by creating the
+	 * key. That key is the concatenation of the composite's short class name
+	 * with the toString() of the given value separated by an underscore.
+	 *
+	 * @param nlsClass The NLS class used to retrieve the localized text
+	 * @param compositeClass The class used for creating the key, its short class
+	 * name is the beginning of the key
+	 * @param value The value used to append its toString() to the generated key
+	 * @return The localized text associated with the value
+	 */
 	protected final String buildDisplayString(Class<?> nlsClass,
-	                                          Object composite,
+	                                          Class<?> compositeClass,
 	                                          Object value) {
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(ClassTools.shortClassNameForObject(composite));
+		sb.append(ClassTools.shortNameFor(compositeClass));
 		sb.append("_");
 		sb.append(value.toString().toLowerCase());
 
 		return (String) ClassTools.getStaticFieldValue(nlsClass, sb.toString());
+	}
+
+	/**
+	 * Retrieves the localized string from the given NLS class by creating the
+	 * key. That key is the concatenation of the composite's short class name
+	 * with the toString() of the given value separated by an underscore.
+	 *
+	 * @param nlsClass The NLS class used to retrieve the localized text
+	 * @param composite The object used to retrieve the short class name that is
+	 * the beginning of the key
+	 * @param value The value used to append its toString() to the generated key
+	 * @return The localized text associated with the value
+	 */
+	protected final String buildDisplayString(Class<?> nlsClass,
+	                                          Object composite,
+	                                          Object value) {
+
+		return this.buildDisplayString(nlsClass, composite.getClass(), value);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -116,8 +148,10 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
+
 				if (element == NULL_VALUE) {
-					V defaultValue = defaultValue();
+					V defaultValue = (subject() != null) ? defaultValue() : null;
+
 					if (defaultValue != null) {
 						String displayString = displayString(defaultValue);
 						return NLS.bind(JptUiMappingsMessages.EnumComboViewer_defaultWithDefault, displayString);
@@ -126,13 +160,14 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 						return JptUiMappingsMessages.EnumComboViewer_default;
 					}
 				}
+
 				return displayString((V) element);
 			}
 		};
 	}
 
 	private ISelection buildSelection() {
-		Object value = getValue();
+		Object value = (subject() != null) ? getValue() : null;
 
 		if (value == null) {
 			value = NULL_VALUE;
@@ -145,6 +180,11 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 	private ISelectionChangedListener buildSelectionChangedListener() {
 		return new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent e) {
+
+				if (isPopulating()) {
+					return;
+				}
+
 				StructuredSelection selection = (StructuredSelection) e.getSelection();
 				Object value = selection.getFirstElement();
 
@@ -183,11 +223,8 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void buildWidget(Composite parent, int style) {
-		CCombo combo = getWidgetFactory().createCCombo(parent);
-
-		this.comboViewer = new ComboViewer(combo);
-		this.comboViewer.setLabelProvider(buildLabelProvider());
+	protected void buildWidgets(Composite parent) {
+		this.comboViewer = buildComboViewer(parent, buildLabelProvider());
 		this.comboViewer.addSelectionChangedListener(buildSelectionChangedListener());
 	}
 
@@ -199,7 +236,8 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 	protected abstract V[] choices();
 
 	/**
-	 * Returns the default value.
+	 * Returns the default value, this method is not called if the subject is
+	 * <code>null</code>.
 	 *
 	 * @return The value that is declared as being the default when it is not
 	 * defined or <code>null</code> if there is no default value
@@ -228,6 +266,7 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 	 */
 	@Override
 	protected void doPopulate() {
+		super.doPopulate();
 		populateCombo();
 	}
 
@@ -244,14 +283,23 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 		}
 	}
 
+	protected final CCombo getCombo() {
+		return this.comboViewer.getCCombo();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
-	public CCombo getControl() {
-		return this.comboViewer.getCCombo();
+	public Control getControl() {
+		return this.comboViewer.getControl();
 	}
 
+	/**
+	 * Retrieves the subject's value. The subject is never <code>null</code>.
+	 *
+	 * @return The subject' value, which can be <code>null</code>
+	 */
 	protected abstract V getValue();
 
 	/*
@@ -266,7 +314,7 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 	}
 
 	private void populateCombo() {
-		this.getControl().removeAll();
+		this.getCombo().removeAll();
 		this.comboViewer.add(this.buildChoices());
 		this.updateSelection();
 	}
@@ -293,8 +341,9 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 			oldSubject.removePropertyChangeListener(propertyName(), valueChangeListener);
 		}
 
+		this.repopulate();
+
 		if (newSubject != null) {
-			this.doPopulate();
 			newSubject.addPropertyChangeListener(propertyName(), valueChangeListener);
 		}
 	}

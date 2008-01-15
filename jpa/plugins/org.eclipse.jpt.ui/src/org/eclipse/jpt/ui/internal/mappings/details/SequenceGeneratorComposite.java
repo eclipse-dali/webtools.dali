@@ -9,152 +9,222 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
-import org.eclipse.jpt.db.internal.ConnectionProfile;
+import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.db.AbstractDatabaseObjectCombo;
+import org.eclipse.jpt.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.help.IWorkbenchHelpSystem;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
+import org.eclipse.swt.widgets.Text;
 
 /**
- * SequenceGeneratorComposite
+ * Here the layout of this pane:
+ * <pre>
+ * ----------------------------------------------------------------------------â??
+ * |                     ----------------------------------------------------â?? |
+ * | Name:               | I                                                 | |
+ * |                     ----------------------------------------------------- |
+ * |                     ----------------------------------------------------â?? |
+ * | Sequence Generator: | I                                               |v| |
+ * |                     ----------------------------------------------------- |
+ * -----------------------------------------------------------------------------</pre>
+ *
+ * @see IIdMapping
+ * @see ISequenceGenerator
+ * @see GenerationComposite - The parent container
+ *
+ * @version 2.0
+ * @since 1.0
  */
 public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGenerator>
 {
-	private ConnectionProfile connectionProfile;
-	private CCombo sequenceNameCombo;
-	private ModifyListener sequenceNameComboListener;
+	private AbstractDatabaseObjectCombo<IIdMapping> sequenceNameCombo;
+	private PropertyChangeListener sequenceNamePropertyChangeListener;
 
-	public SequenceGeneratorComposite(PropertyValueModel<? extends IIdMapping> subjectHolder,
-	                                  Composite parent,
-	                                  TabbedPropertySheetWidgetFactory widgetFactory) {
+	/**
+	 * Creates a new <code>SequenceGeneratorComposite</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param parent The parent container
+	 */
+	public SequenceGeneratorComposite(BaseJpaController<? extends IIdMapping> parentController,
+	                                  Composite parent) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(parentController, parent);
 	}
 
-	private CCombo buildSequenceNameCombo(Composite parent) {
-		CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
-		combo.add(""); //$NON-NLS-1$
-		combo.select(0);
-		combo.addModifyListener(getSequenceNameListener());
-		return combo;
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected ISequenceGenerator buildGenerator() {
+		return subject().addSequenceGenerator();
 	}
 
+	private AbstractDatabaseObjectCombo<IIdMapping> buildSequenceNameCombo(Composite parent) {
+		return new AbstractDatabaseObjectCombo<IIdMapping>(getSubjectHolder(), parent, getWidgetFactory()) {
+			@Override
+			protected void buildWidgets(Composite parent) {
+				super.buildWidgets(parent);
+				getCombo().add(JptUiMappingsMessages.SequenceGeneratorComposite_default);
+				getCombo().addModifyListener(buildSequenceNameListener());
+			}
+
+			@Override
+			protected void schemaChanged(Schema schema) {
+			}
+
+			@Override
+			protected void tableChanged(Table table) {
+			}
+
+			@Override
+			protected void valueChanged(String value) {
+			}
+		};
+	}
+
+	private ModifyListener buildSequenceNameListener() {
+		return new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				if (isPopulating()) {
+					return;
+				}
+
+				String text = ((CCombo) e.getSource()).getText();
+
+				if (text != null && getSequenceCombo().getItemCount() > 0 && text.equals(getSequenceCombo().getItem(0))) {
+					text = null;
+				}
+
+				ISequenceGenerator generator = getGenerator();
+
+				if (generator == null) {
+					generator = buildGenerator();
+				}
+
+				generator.setSpecifiedSequenceName(text);
+			}
+		};
+	}
+
+	private PropertyChangeListener buildSequenceNamePropertyChangeListener() {
+		return new PropertyChangeListener() {
+			public void propertyChanged(PropertyChangeEvent e) {
+				if (isPopulating()) {
+					return;
+				}
+
+				SWTUtil.asyncExec(new Runnable() {
+					public void run() {
+						setPopulating(true);
+						try {
+							SequenceGeneratorComposite.this.populateSequenceNameCombo();
+						}
+						finally {
+							setPopulating(false);
+						}
+					}
+				});
+			}
+		};
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void clear() {
 		super.clear();
-		this.sequenceNameCombo.select(0);
+		this.getSequenceCombo().select(0);
 	}
 
-	@Override
-	protected ISequenceGenerator createGenerator() {
-		ISequenceGenerator sequenceGenerator = idMapping().createSequenceGenerator();
-		idMapping().setSequenceGenerator(sequenceGenerator);
-		return sequenceGenerator;
-	}
-
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void doPopulate() {
-		populateSequenceNameCombo();
+		super.doPopulate();
+		this.populateSequenceNameCombo();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected ISequenceGenerator generator(IIdMapping idMapping) {
-		return idMapping.getSequenceGenerator();
+	protected ISequenceGenerator getGenerator() {
+		return subject().getSequenceGenerator();
 	}
 
+	private CCombo getSequenceCombo() {
+		return this.sequenceNameCombo.getCombo();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected void generatorChanged(Notification notification) {
-		super.generatorChanged(notification);
-		if (notification.getFeatureID(ISequenceGenerator.class) == JpaCoreMappingsPackage.ISEQUENCE_GENERATOR__SPECIFIED_SEQUENCE_NAME) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					String sequenceName = getGenerator().getSpecifiedSequenceName();
-					if (sequenceName == null) {
-						sequenceNameCombo.select(0);
-					}
-					else if (!sequenceNameCombo.getText().equals(sequenceName)) {
-						sequenceNameCombo.setText(sequenceName);
-					}
-				}
-			});
-		}
+	protected void initialize() {
+		super.initialize();
+
+		sequenceNamePropertyChangeListener = buildSequenceNamePropertyChangeListener();
 	}
 
-	private ConnectionProfile getConnectionProfile() {
-		if(this.connectionProfile == null) {
-			IJpaProject jpaProject = getGenerator().jpaProject();
-			this.connectionProfile = jpaProject.connectionProfile();
-		}
-		return this.connectionProfile;
-	}
-
-	private ModifyListener getSequenceNameListener() {
-		if (this.sequenceNameComboListener == null) {
-			this.sequenceNameComboListener = new ModifyListener() {
-				public void modifyText(ModifyEvent e) {
-					String text = ((CCombo) e.getSource()).getText();
-					if (text != null && sequenceNameCombo.getItemCount() > 0 && text.equals(sequenceNameCombo.getItem(0))) {
-						text = null;
-					}
-					ISequenceGenerator generator = getGenerator();
-					if (generator == null) {
-						generator = createGenerator();
-					}
-					generator.setSpecifiedSequenceName(text);
-				}
-			};
-		}
-		return this.sequenceNameComboListener;
-	}
-
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected void initializeLayout(Composite composite) {
-		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
+	protected void initializeLayout(Composite container) {
 
-		GridLayout layout = new GridLayout(2, false);
-		composite.setLayout(layout);
-		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.SequenceGeneratorComposite_name);
+		// Name widgets
+		Text nameText = this.buildNameText(container);
+		this.setNameText(nameText);
 
-		this.nameTextWidget = buildNameText(composite);
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		this.nameTextWidget.setLayoutData(gridData);
-		helpSystem.setHelp(this.nameTextWidget, IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_NAME);
+		this.buildLabeledComposite(
+			container,
+			JptUiMappingsMessages.SequenceGeneratorComposite_name,
+			nameText,
+			IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_NAME
+		);
 
-		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.SequenceGeneratorComposite_sequence);
+		// Sequence Generator widgets
+		this.sequenceNameCombo = this.buildSequenceNameCombo(container);
 
-		this.sequenceNameCombo = buildSequenceNameCombo(composite);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		this.sequenceNameCombo.setLayoutData(gridData);
-		helpSystem.setHelp(sequenceNameCombo, IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_SEQUENCE);
+		this.buildLabeledComposite(
+			container,
+			JptUiMappingsMessages.SequenceGeneratorComposite_sequence,
+			this.sequenceNameCombo.getControl(),
+			IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_SEQUENCE
+		);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void installListeners(ISequenceGenerator generator) {
+		super.installListeners(generator);
+
+		if (generator != null) {
+			generator.addPropertyChangeListener(PropertyValueModel.VALUE, sequenceNamePropertyChangeListener);;
+		}
 	}
 
 	private void populateSequenceNameCombo() {
-		if (this.getGenerator() == null) {
-			return;
-		}
-		this.sequenceNameCombo.setItem(0, JptUiMappingsMessages.SequenceGeneratorComposite_default);
-		if (this.getConnectionProfile().isConnected()) {
+
+		this.getSequenceCombo().removeAll();//(1, this.getSequenceCombo().getItemCount());
+
+//		if (this.getConnectionProfile().isConnected()) {
 //			this.sequenceNameCombo.remove(1, this.sequenceNameCombo.getItemCount() - 1);
 //			Schema schema = getConnectionProfile().getDatabase().schemaNamed(getGenerator().getJpaProject().getSchemaName());
 //			if (schema != null) {
@@ -162,15 +232,38 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 //					this.sequenceNameCombo.add((String) stream.next());
 //				}
 //			}
-		}
-		String sequenceName = this.getGenerator().getSpecifiedSequenceName();
-		if (sequenceName != null) {
-			if (!this.sequenceNameCombo.getText().equals(sequenceName)) {
-				this.sequenceNameCombo.setText(sequenceName);
+//		}
+		if (this.getGenerator() != null) {
+			String sequenceName = this.getGenerator().getSpecifiedSequenceName();
+
+			if (sequenceName != null) {
+				if (!this.getSequenceCombo().getText().equals(sequenceName)) {
+					this.getSequenceCombo().setText(sequenceName);
+				}
+			}
+			else {
+				this.getSequenceCombo().select(0);
 			}
 		}
-		else {
-			this.sequenceNameCombo.select(0);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected String propertyName() {
+		return IIdMapping.SEQUENCE_GENERATOR_PROPERTY;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void uninstallListeners(ISequenceGenerator generator) {
+		super.uninstallListeners(generator);
+
+		if (generator != null) {
+			generator.removePropertyChangeListener(PropertyValueModel.VALUE, sequenceNamePropertyChangeListener);;
 		}
 	}
 }

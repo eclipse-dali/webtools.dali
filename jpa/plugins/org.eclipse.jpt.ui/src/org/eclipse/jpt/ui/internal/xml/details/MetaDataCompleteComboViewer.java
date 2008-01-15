@@ -55,7 +55,7 @@ public class MetaDataCompleteComboViewer extends BaseJpaController<XmlTypeMappin
 	}
 
 	@Override
-	protected void buildWidget(Composite parent, int style) {
+	protected void buildWidgets(Composite parent) {
 		CCombo combo = getWidgetFactory().createCCombo(parent);
 		this.comboViewer = new ComboViewer(combo);
 		this.comboViewer.setLabelProvider(buildLabelProvider());

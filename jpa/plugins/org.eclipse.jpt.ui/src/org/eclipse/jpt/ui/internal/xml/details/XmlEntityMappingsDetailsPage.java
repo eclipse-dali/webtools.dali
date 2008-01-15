@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved. This
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved. This
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
@@ -18,7 +18,7 @@ import org.eclipse.jpt.ui.internal.details.BaseJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser.StringHolder;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
-import org.eclipse.jpt.ui.internal.xml.details.AccessTypeComboViewer.AccessHolder;
+import org.eclipse.jpt.ui.internal.xml.details.AccessTypeComposite.AccessHolder;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -31,13 +31,13 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappings>
 {
-	private AccessTypeComboViewer accessComboViewer;
+	private AccessTypeComposite accessComboViewer;
 	private PersistenceUnitMetadataSection persistenceUnitMetadataSection;
 	private StringWithDefaultChooser xmlCatalogChooser;
 	private XmlPackageChooser xmlPackageChooser;
 	private StringWithDefaultChooser xmlSchemaChooser;
 
-	public XmlEntityMappingsDetailsPage(PropertyValueModel<EntityMappings> subjectHolder,
+	public XmlEntityMappingsDetailsPage(PropertyValueModel<? extends EntityMappings> subjectHolder,
 	                                    Composite parent,
 	                                    TabbedPropertySheetWidgetFactory widgetFactory) {
 

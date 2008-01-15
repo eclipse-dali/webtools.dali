@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2007 Oracle. All rights reserved. This
+ *  Copyright (c) 2006, 2008 Oracle. All rights reserved. This
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
@@ -30,6 +31,9 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 public class XmlDetailsProvider
 	implements IJpaDetailsProvider
 {
+	/**
+	 * Creates a new <code>XmlDetailsProvider</code>.
+	 */
 	public XmlDetailsProvider() {
 		super();
 	}
@@ -37,9 +41,8 @@ public class XmlDetailsProvider
 	/*
 	 * (non-Javadoc)
 	 */
-	@SuppressWarnings("unchecked")
 	public IJpaDetailsPage<? extends IJpaContextNode> buildDetailsPage(
-		PropertyValueModel<? extends IJpaContextNode> subjectHolder,
+		PropertyValueModel<IJpaContextNode> subjectHolder,
 		Composite parentComposite,
 		Object contentNodeId,
 		TabbedPropertySheetWidgetFactory widgetFactory) {
@@ -48,7 +51,7 @@ public class XmlDetailsProvider
 		if (contentNodeId instanceof EntityMappings) {
 
 			return new XmlEntityMappingsDetailsPage(
-				(PropertyValueModel<EntityMappings>) subjectHolder,
+				buildEntityHolder(subjectHolder),
 				parentComposite,
 				widgetFactory
 			);
@@ -57,7 +60,7 @@ public class XmlDetailsProvider
 //		if (contentNodeId.equals(IXmlContentNodes.PERSISTENT_TYPE_ID)) {
 		if (contentNodeId instanceof XmlPersistentType) {
 			return new XmlPersistentTypeDetailsPage(
-				(PropertyValueModel<XmlPersistentType>) subjectHolder,
+				buildPersistenceTypeHolder(subjectHolder),
 				parentComposite,
 				widgetFactory);
 		}
@@ -65,12 +68,39 @@ public class XmlDetailsProvider
 //		if (contentNodeId.equals(IXmlContentNodes.PERSISTENT_ATTRIBUTE_ID)) {
 		if (contentNodeId instanceof IJavaPersistentAttribute) {
 			return new XmlPersistentAttributeDetailsPage(
-				(PropertyValueModel<IPersistentAttribute>) subjectHolder,
+				buildPersistenceAttributeHolder(subjectHolder),
 				parentComposite,
 				widgetFactory
 			);
 		}
 
 		return null;
+	}
+
+	private PropertyValueModel<EntityMappings> buildEntityHolder(PropertyValueModel<IJpaContextNode> subjectHolder) {
+		return new TransformationPropertyValueModel<IJpaContextNode, EntityMappings>(subjectHolder) {
+			@Override
+			protected EntityMappings transform_(IJpaContextNode value) {
+				return (value instanceof EntityMappings) ? (EntityMappings) value : null;
+			}
+		};
+	}
+
+	private PropertyValueModel<IPersistentAttribute> buildPersistenceAttributeHolder(PropertyValueModel<IJpaContextNode> subjectHolder) {
+		return new TransformationPropertyValueModel<IJpaContextNode, IPersistentAttribute>(subjectHolder) {
+			@Override
+			protected IPersistentAttribute transform_(IJpaContextNode value) {
+				return (value instanceof IPersistentAttribute) ? (IPersistentAttribute) value : null;
+			}
+		};
+	}
+
+	private PropertyValueModel<XmlPersistentType> buildPersistenceTypeHolder(PropertyValueModel<IJpaContextNode> subjectHolder) {
+		return new TransformationPropertyValueModel<IJpaContextNode, XmlPersistentType>(subjectHolder) {
+			@Override
+			protected XmlPersistentType transform_(IJpaContextNode value) {
+				return (value instanceof XmlPersistentType) ? (XmlPersistentType) value : null;
+			}
+		};
 	}
 }

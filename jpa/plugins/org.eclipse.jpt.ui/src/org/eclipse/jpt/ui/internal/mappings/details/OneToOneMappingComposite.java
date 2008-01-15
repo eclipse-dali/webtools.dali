@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class OneToOneComposite extends BaseJpaComposite<IOneToOneMapping>
+public class OneToOneMappingComposite extends BaseJpaComposite<IOneToOneMapping>
 {
 	private CascadeComposite cascadeComposite;
 	private EnumComboViewer fetchTypeComboViewer;
@@ -28,7 +28,7 @@ public class OneToOneComposite extends BaseJpaComposite<IOneToOneMapping>
 	private EnumComboViewer optionalComboViewer;
 	private TargetEntityChooser targetEntityChooser;
 
-	public OneToOneComposite(PropertyValueModel<? extends IOneToOneMapping> subjectHolder,
+	public OneToOneMappingComposite(PropertyValueModel<? extends IOneToOneMapping> subjectHolder,
 	                         Composite parent,
 	                         TabbedPropertySheetWidgetFactory widgetFactory) {
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,41 +9,35 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IEmbeddedIdMapping;
+import org.eclipse.jpt.core.internal.context.base.ITransientMapping;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class EmbeddedIdComposite extends BaseJpaComposite<IEmbeddedIdMapping>
+/**
+ * This pane does not have any widgets.
+ *
+ * @see ITransientMapping
+ * @see BaseJpaUiFactory
+ *
+ * @version 2.0
+ * @since 1.0
+ */
+public class TransientMappingComposite extends BaseJpaComposite<ITransientMapping>
 {
-	public EmbeddedIdComposite(PropertyValueModel<? extends IEmbeddedIdMapping> subjectHolder,
-	                           Composite parent,
-	                           TabbedPropertySheetWidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, SWT.NULL, widgetFactory);
-	}
-
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Creates a new <code>TransientComposite</code>.
+	 *
+	 * @param subjectHolder The holder of the subject <code>ITransientMapping</code>
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	@Override
-	protected void disengageListeners() {
-	}
+	public TransientMappingComposite(PropertyValueModel<? extends ITransientMapping> subjectHolder,
+	                          Composite parent,
+	                          TabbedPropertySheetWidgetFactory widgetFactory) {
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	public void doPopulate() {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void engageListeners() {
+		super(subjectHolder, parent, widgetFactory);
 	}
 
 	/*

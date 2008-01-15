@@ -16,20 +16,27 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
+/**
+ * The base class for the details view.
+ *
+ * @see IJpaContextNode
+ *
+ * @version 2.0
+ * @since 1.0
+ */
 public abstract class BaseJpaDetailsPage<T extends IJpaContextNode>
 	extends BaseJpaComposite<T>
 	implements IJpaDetailsPage<T>
 {
 	private Composite control;
 
-	public BaseJpaDetailsPage(PropertyValueModel<? extends T> subjectHolder,
-	                          Composite parent,
-	                          int style,
-	                          TabbedPropertySheetWidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, style, widgetFactory);
-	}
-
+	/**
+	 * Creates a new <code>BaseJpaDetailsPage</code>.
+	 *
+	 * @param subjectHolder The holder of the subject
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public BaseJpaDetailsPage(PropertyValueModel<? extends T> subjectHolder,
 	                          Composite parent,
 	                          TabbedPropertySheetWidgetFactory widgetFactory) {
@@ -41,12 +48,12 @@ public abstract class BaseJpaDetailsPage<T extends IJpaContextNode>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected Composite createComposite(Composite parent, int style) {
+	protected Composite buildComposite(Composite parent) {
 		//using this to get a Scroll bar on the JpaDetailsView
-		ScrolledForm scrolledForm = this.widgetFactory.createScrolledForm(parent);
+		ScrolledForm scrolledForm = getWidgetFactory().createScrolledForm(parent);
 		//Nesting another composite because combos on the ScrolledForm didn't have a border
 		scrolledForm.getBody().setLayout(new GridLayout());
-		Composite composite = super.createComposite(scrolledForm.getBody(), style);
+		Composite composite = super.buildComposite(scrolledForm.getBody());
 		this.control = scrolledForm;
 		return composite;
 	}

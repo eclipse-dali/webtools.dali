@@ -49,7 +49,7 @@ public class XmlMappingMetadataCompleteCheckBox extends BaseJpaController<Persis
 	}
 
 	@Override
-	protected void buildWidget(Composite parent, int style) {
+	protected void buildWidgets(Composite parent) {
 		this.button = getWidgetFactory().createButton(
 						parent,
 						JptUiXmlMessages.XMLEntityMappingsPage_XmlMappingMetadataCompleteCheckBox,
@@ -75,6 +75,7 @@ public class XmlMappingMetadataCompleteCheckBox extends BaseJpaController<Persis
 
 	@Override
 	public void doPopulate() {
+		super.doPopulate();
 		populateButton();
 	}
 

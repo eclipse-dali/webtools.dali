@@ -15,6 +15,9 @@ public class JptUiMappingsMessages extends NLS
 {
 	private static final String BUNDLE_NAME = "jpt_ui_mappings"; //$NON-NLS-1$
 
+	public static String Boolean_True;
+	public static String Boolean_False;
+
 	public static String PersistentTypePage_EntityLabel;
 	public static String PersistentTypePage_EmbeddableLabel;
 	public static String PersistentTypePage_MappedSuperclassLabel;
@@ -30,7 +33,6 @@ public class JptUiMappingsMessages extends NLS
 	public static String PersistentAttributePage_EmbeddedIdLabel;
 	public static String PersistentAttributePage_OneToOneLabel;
 
-
 	public static String EntityGeneralSection_nameDefaultWithOneParam;
 	public static String EntityGeneralSection_nameDefaultEmpty;
 	public static String EntityGeneralSection_name;
@@ -39,9 +41,13 @@ public class JptUiMappingsMessages extends NLS
 	public static String BasicGeneralSection_nameDefault;
 	public static String BasicGeneralSection_fetchLabel;
 	public static String BasicGeneralSection_optionalLabel;
+	public static String BasicGeneralSection_optionalLabelDefault;
 	public static String BasicGeneralSection_lobLabel;
 	public static String BasicGeneralSection_temporalLabel;
 	public static String BasicGeneralSection_enumeratedLabel;
+
+	public static String DefaultBasicMappingUiProvider_Default;
+	public static String DefaultEmbeddedMappingUiProvider_Default;
 
 	public static String EntityComposite_tableDefault;
 	public static String EntityComposite_tableNoDefaultSpecified;
@@ -92,7 +98,6 @@ public class JptUiMappingsMessages extends NLS
 	public static String InverseJoinColumnDialog_defaultWithOneParam;
 	public static String InverseJoinColumnDialog_editInverseJoinColumn;
 
-
 	public static String MultiRelationshipMappingComposite_cascadeType;
 	public static String MultiRelationshipMappingComposite_fetchType;
 	public static String MultiRelationshipMappingComposite_general;
@@ -136,7 +141,7 @@ public class JptUiMappingsMessages extends NLS
 	public static String PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsSecDefault;
 
 	public static String AttributeOverridesComposite_attributeOverrides;
-	public static String AttributeOverridesComposite_overridDefault;
+	public static String AttributeOverridesComposite_overrideDefault;
 	public static String OverridesComposite_joinColumn;
 
 	public static String InheritanceComposite_default;
@@ -194,7 +199,10 @@ public class JptUiMappingsMessages extends NLS
 	public static String MetaDataCompleteCombo_Default;
 	public static String JoinColumnDialog_defaultTrue;
 	public static String InheritanceComposite_defaultDiscriminatorType;
-	public static String GeneratedValueComposite_default;
+	public static String GeneratedValueComposite_auto;
+	public static String GeneratedValueComposite_identity;
+	public static String GeneratedValueComposite_sequence;
+	public static String GeneratedValueComposite_table;
 
 	public static String OptionalComposite_false;
 	public static String OptionalComposite_true;

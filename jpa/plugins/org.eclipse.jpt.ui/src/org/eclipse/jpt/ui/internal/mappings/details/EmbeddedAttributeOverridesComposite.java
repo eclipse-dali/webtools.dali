@@ -9,347 +9,277 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
-import java.util.List;
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.viewers.IContentProvider;
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.ListViewer;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
+import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.swt.SWT;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationWritablePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
+/**
+ * Here the layout of this pane:
+ * <pre>
+ * -----------------------------------------------------------------------------
+ * | -------------------------â??                                                |
+ * | | OverrideAttribute 1    |  x Override Default                            |
+ * | | ...                    |                                                |
+ * | | OverrideAttribute n    | ---------------------------------------------- |
+ * | |                        | |                                            | |
+ * | |                        | | ColumnComposite                            | |
+ * | |                        | |                                            | |
+ * | -------------------------- ---------------------------------------------- |
+ * -----------------------------------------------------------------------------</pre>
+ *
+ * @see IEmbeddedMapping
+ * @see BaseJpaUiFactory
+ * @see ColumnComposite
+ *
+ * @version 2.0
+ * @since 1.0
+ */
 public class EmbeddedAttributeOverridesComposite extends BaseJpaComposite<IEmbeddedMapping>
 {
-	private ListViewer listViewer;
+	private WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder;
+	private List list;
 
-	private IEmbeddedMapping embedded;
-	private Adapter embeddedListener;
+	/**
+	 * Creates a new <code>EmbeddedAttributeOverridesComposite</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param parent The parent container
+	 */
+	public EmbeddedAttributeOverridesComposite(BaseJpaController<? extends IEmbeddedMapping> parentController,
+	                                           Composite parent) {
 
-	private IAttributeOverride attributeOverride;
-	private Adapter attributeOverrideListener;
+		super(parentController, parent);
+	}
 
-	protected ColumnComposite columnComposite;
-
-	private Button overrideDefaultButton;
-
+	/**
+	 * Creates a new <code>EmbeddedAttributeOverridesComposite</code>.
+	 *
+	 * @param subjectHolder The holder of the subject <code>IEmbeddedMapping</code>
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public EmbeddedAttributeOverridesComposite(PropertyValueModel<? extends IEmbeddedMapping> subjectHolder,
-	                                           Composite parent,
-	                                           TabbedPropertySheetWidgetFactory widgetFactory) {
+	             	                            Composite parent,
+	            	                            TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, SWT.NULL, widgetFactory);
-		this.embeddedListener = buildEmbeddedListener();
-		this.attributeOverrideListener = buildAttributeOverrideListener();
+		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private Adapter buildEmbeddedListener() {
-		return new AdapterImpl() {
+	private WritablePropertyValueModel<IAttributeOverride> buildAttributeOverrideHolder() {
+		return new SimplePropertyValueModel<IAttributeOverride>();
+	}
+
+	// TODO: Find a way to listen to IEmbeddedMapping.DEFAULT_ATTRIBUTE_OVERRIDES_LIST
+	private CollectionValueModel/*<IAttributeOverride>*/ buildAttributeOverridesCollectionHolder() {
+		return new CollectionAspectAdapter/*<IAttributeOverride, IEmbeddedMapping>*/(this.getSubjectHolder(), IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST) {
 			@Override
-			public void notifyChanged(Notification notification) {
-				embeddedChanged(notification);
+			protected Iterator<IAttributeOverride> iterator_() {
+				return subject().attributeOverrides();
 			}
 		};
 	}
 
-	private Adapter buildAttributeOverrideListener() {
-		return new AdapterImpl() {
+	private List buildAttributeOverridesList(Composite parent,
+	                                         WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder) {
+
+		List list = this.buildList(
+			parent,
+			buildSelectedAttributeOverrideHolder(attributeOverrideHolder)
+		);
+
+		ListBoxModelAdapter.adapt(
+			buildAttributeOverridesStringListHolder(),
+			attributeOverrideHolder,
+			list
+		);
+
+		return list;
+	}
+
+	private ListValueModel/*<IAttributeOverride>*/ buildAttributeOverridesListHolder() {
+		return new SortedListValueModelAdapter/*<IAttributeOverride>*/(
+			this.buildAttributeOverridesCollectionHolder()
+		);
+	}
+
+	private ListValueModel/*<IAttributeOverride>*/ buildAttributeOverridesStringListHolder() {
+		return new TransformationListValueModelAdapter/*<String, IAttributeOverride>*/(this.buildAttributeOverridesListHolder()) {
 			@Override
-			public void notifyChanged(Notification notification) {
-				attributeOverrideChanged(notification);
+			protected String transformItem(Object/*IAttributeOverride*/ item) {
+				IAttributeOverride attributeOverride = (IAttributeOverride) item;
+				return attributeOverride.getName();
 			}
 		};
 	}
 
-
-	@Override
-	protected void initializeLayout(Composite composite) {
-		GridLayout layout = new GridLayout(2, false);
-		layout.marginWidth = 0;
-		composite.setLayout(layout);
-
-		Group attributeOverridesGroup = getWidgetFactory().createGroup(
-			composite, JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides);
-		attributeOverridesGroup.setLayout(new GridLayout(2, true));
-		GridData gridData =  new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace= true;
-		attributeOverridesGroup.setLayoutData(gridData);
-
-		this.listViewer = buildAttributeOverridesListViewer(attributeOverridesGroup);
-		gridData = new GridData();
-		gridData.verticalSpan = 2;
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace= true;
-		this.listViewer.getList().setLayoutData(gridData);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.listViewer.getList(), IJpaHelpContextIds.MAPPING_EMBEDDED_ATTRIBUTE_OVERRIDES);
-
-		this.overrideDefaultButton = getWidgetFactory().createButton(attributeOverridesGroup, "Override Default", SWT.CHECK);
-		this.overrideDefaultButton.addSelectionListener(buildOverrideDefaultSelectionListener());
-		gridData = new GridData();
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalAlignment = SWT.FILL;
-		this.overrideDefaultButton.setLayoutData(gridData);
-
-
-		this.columnComposite = new ColumnComposite(buildColumnHolder(), attributeOverridesGroup, getWidgetFactory());
-		gridData = new GridData();
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalAlignment = SWT.FILL;
-		this.columnComposite.getControl().setLayoutData(gridData);
-
+	private PropertyValueModel<IColumn> buildColumnHolder(WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder) {
+		return new TransformationPropertyValueModel<IAttributeOverride, IColumn>(attributeOverrideHolder) {
+			@Override
+			protected IColumn transform_(IAttributeOverride value) {
+				return value.getColumn();
+			}
+		};
 	}
 
-	private PropertyValueModel<? extends IColumn> buildColumnHolder() 	{
-		return new PropertyAspectAdapter<IEmbeddedMapping, IColumn>(getSubjectHolder(), "TODO") {
+	private WritablePropertyValueModel<Boolean> buildOverrideDefaultHolder(WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder) {
+		return new TransformationWritablePropertyValueModel<IAttributeOverride, Boolean>(attributeOverrideHolder) {
 			@Override
-			protected IColumn buildValue_() {
-				return null; // TODO
+			public void setValue(Boolean value) {
+				// Not done here
+			}
+
+			@Override
+			protected Boolean transform_(IAttributeOverride value) {
+				return value.isVirtual();
 			}
 		};
 	}
 
 	private SelectionListener buildOverrideDefaultSelectionListener() {
-		return new SelectionListener(){
-
-			public void widgetSelected(SelectionEvent e) {
-				overrideDefaultButtonSelected(e);
-			}
-
-			public void widgetDefaultSelected(SelectionEvent e) {
-				overrideDefaultButtonSelected(e);
-			}
-		};
-	}
-
-	private void overrideDefaultButtonSelected(SelectionEvent e) {
-		boolean selection = this.overrideDefaultButton.getSelection();
-		if (selection) {
-			int index = this.embedded.getSpecifiedAttributeOverrides().size();
-			IAttributeOverride attributeOverride = this.embedded.createAttributeOverride(index);
-			this.embedded.getSpecifiedAttributeOverrides().add(attributeOverride);
-			attributeOverride.setName(this.attributeOverride.getName());
-			attributeOverride.getColumn().setSpecifiedName(this.attributeOverride.getColumn().getName());
-		}
-		else {
-			this.embedded.getSpecifiedAttributeOverrides().remove(this.attributeOverride);
-		}
-	}
-
-
-	private ListViewer buildAttributeOverridesListViewer(Composite parent) {
-		ListViewer listViewer = new ListViewer(parent, SWT.SINGLE | SWT.BORDER);
-		listViewer.setLabelProvider(buildAttributeOverridesLabelProvider());
-		listViewer.setContentProvider(buildAttributeOverridesContentProvider());
-
-		listViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			public void selectionChanged(SelectionChangedEvent event) {
-				attributeOverridesListSelectionChanged(event);
-			}
-		});
-
-		return listViewer;
-	}
-
-	protected void attributeOverridesListSelectionChanged(SelectionChangedEvent event) {
-		if (((StructuredSelection) event.getSelection()).isEmpty()) {
-			this.columnComposite.populate(null);
-			this.columnComposite.enableWidgets(false);
-			this.overrideDefaultButton.setSelection(false);
-			this.overrideDefaultButton.setEnabled(false);
-		}
-		else {
-			this.attributeOverride = getSelectedAttributeOverride();
-			boolean specifiedOverride = this.embedded.getSpecifiedAttributeOverrides().contains(this.attributeOverride);
-			this.overrideDefaultButton.setSelection(specifiedOverride);
-			this.columnComposite.populate(this.attributeOverride.getColumn());
-			this.columnComposite.enableWidgets(specifiedOverride);
-			this.overrideDefaultButton.setEnabled(true);
-		}
-	}
-
-	private ILabelProvider buildAttributeOverridesLabelProvider() {
-		return new LabelProvider() {
+		return new SelectionAdapter(){
 			@Override
-			public String getText(Object element) {
-				//TODO also display column name somehow
-				return ((IAttributeOverride) element).getName();
+			public void widgetSelected(SelectionEvent e) {
+				Button button = (Button) e.widget;
+				overrideDefaultButtonSelected(button.getSelection());
 			}
 		};
 	}
 
+	private void buildPropertiesPane(Composite container,
+	                                 WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder) {
 
-	private IContentProvider buildAttributeOverridesContentProvider() {
-		return new IStructuredContentProvider() {
-			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+		// Override Default check box
+		Button overrideDefaultButton = buildCheckBox(
+			container,
+			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
+			this.buildOverrideDefaultHolder(attributeOverrideHolder)
+		);
+
+		overrideDefaultButton.addSelectionListener(
+			this.buildOverrideDefaultSelectionListener()
+		);
+
+		// Column widgets
+		ColumnComposite columnComposite = new ColumnComposite(
+			this.buildColumnHolder(attributeOverrideHolder),
+			container,
+			this.getWidgetFactory()
+		);
+
+		GridData data = new GridData();
+		data.grabExcessHorizontalSpace = true;
+		data.horizontalAlignment       = GridData.FILL;
+		columnComposite.getControl().setLayoutData(data);
+
+		this.registerSubPane(columnComposite);
+	}
+
+	private WritablePropertyValueModel<String> buildSelectedAttributeOverrideHolder(WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder) {
+		return new TransformationWritablePropertyValueModel<IAttributeOverride, String>(attributeOverrideHolder) {
+			@Override
+			protected IAttributeOverride reverseTransform_(String value) {
+				for (Iterator<IAttributeOverride> iter = subject().attributeOverrides(); iter.hasNext(); ) {
+					IAttributeOverride attributeOverride = iter.next();
+					if (attributeOverride.getName().equals(value)) {
+						return attributeOverride;
+					}
+				}
+				return null;
 			}
 
-			public void dispose() {
-			}
-
-			public Object[] getElements(Object inputElement) {
-				return ((IEmbeddedMapping) inputElement).getAttributeOverrides().toArray();
+			@Override
+			protected String transform_(IAttributeOverride value) {
+				return value.getName();
 			}
 		};
 	}
 
-	private IAttributeOverride getSelectedAttributeOverride() {
-		return (IAttributeOverride) ((StructuredSelection) this.listViewer.getSelection()).getFirstElement();
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void initialize() {
+		super.initialize();
+		this.attributeOverrideHolder = buildAttributeOverrideHolder();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void initializeLayout(Composite container) {
 
-	public void doPopulate(EObject obj) {
-		this.embedded = (IEmbeddedMapping) obj;
-		if (this.embedded == null) {
-			this.attributeOverride = null;
-			this.columnComposite.populate(null);
-			this.listViewer.setInput(null);
-			return;
-		}
+		WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder =
+			buildAttributeOverrideHolder();
 
-		if (this.listViewer.getInput() != this.embedded) {
-			this.listViewer.setInput(this.embedded);
-		}
-		if (!this.embedded.getAttributeOverrides().isEmpty()) {
-			if (this.listViewer.getSelection().isEmpty()) {
-				IAttributeOverride attributeOverride = this.embedded.getAttributeOverrides().get(0);
-				this.listViewer.setSelection(new StructuredSelection(attributeOverride));
-			}
-			else {
-				this.columnComposite.enableWidgets(true);
-				this.columnComposite.populate(((IAttributeOverride)((StructuredSelection) this.listViewer.getSelection()).getFirstElement()).getColumn());
-			}
+		// Attribute Overrides group box
+		Composite groupBox = buildTitledPane(
+			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides,
+			container
+		);
+
+		// Sub-pane to align the check box and ColumnComposite
+		// to the right of the list
+		container = buildSubPane(groupBox, 1, 5, 0, 0, 0);
+
+		// Attribute Overrides list
+		this.list = buildAttributeOverridesList(
+			container,
+			attributeOverrideHolder
+		);
+
+		GridData data = new GridData();
+		data.verticalSpan            = 2;
+		data.grabExcessVerticalSpace = true;
+		data.horizontalAlignment     = GridData.FILL;
+		data.verticalAlignment       = GridData.FILL;
+		this.list.setLayoutData(data);
+
+		this.helpSystem().setHelp(this.list, IJpaHelpContextIds.MAPPING_EMBEDDED_ATTRIBUTE_OVERRIDES);
+
+		// Properties for the selected attribute overrides
+		this.buildPropertiesPane(
+			this.buildSubPane(container, 0, 10),
+			attributeOverrideHolder
+		);
+	}
+
+	private void overrideDefaultButtonSelected(boolean overrideDefault) {
+
+		if (overrideDefault) {
+			int index = this.subject().specifiedAttributeOverridesSize();
+
+			IAttributeOverride defaultAttributeOverride = this.attributeOverrideHolder.value();
+			IAttributeOverride attributeOverride = this.subject().addSpecifiedAttributeOverride(index);
+
+			attributeOverride.setName(defaultAttributeOverride.getName());
+			attributeOverride.getColumn().setSpecifiedName(defaultAttributeOverride.getColumn().getName());
 		}
 		else {
-			this.columnComposite.populate(null);
-			this.columnComposite.enableWidgets(false);
+			this.subject().removeSpecifiedAttributeOverride(this.list.getSelectionIndex());
 		}
-	}
-
-	@Override
-	protected void doPopulate() {
-		this.columnComposite.doPopulate();
-	}
-
-	@Override
-	protected void engageListeners() {
-		if (this.embedded != null) {
-			this.embedded.eAdapters().add(this.embeddedListener);
-			for (IAttributeOverride attributeOverride : this.embedded.getAttributeOverrides()) {
-				attributeOverride.eAdapters().add(this.attributeOverrideListener);
-			}
-		}
-	}
-
-	@Override
-	protected void disengageListeners() {
-		if (this.embedded != null) {
-			this.embedded.eAdapters().remove(this.embeddedListener);
-			for (IAttributeOverride attributeOverride : this.embedded.getAttributeOverrides()) {
-				attributeOverride.eAdapters().remove(this.attributeOverrideListener);
-			}
-		}
-	}
-
-
-	protected void embeddedChanged(Notification notification) {
-		switch (notification.getFeatureID(IEmbeddedMapping.class)) {
-			case JpaCoreMappingsPackage.IEMBEDDED__SPECIFIED_ATTRIBUTE_OVERRIDES :
-			case JpaCoreMappingsPackage.IEMBEDDED__DEFAULT_ATTRIBUTE_OVERRIDES :
-				Display.getDefault().asyncExec(new Runnable() {
-					public void run() {
-						if (listViewer.getList().isDisposed()) {
-							return;
-						}
-						listViewer.refresh();
-						columnComposite.enableWidgets(!listViewer.getSelection().isEmpty());
-						if (listViewer.getSelection().isEmpty()) {
-							columnComposite.populate(null);
-						}
-					}
-				});
-				if (notification.getEventType() == Notification.ADD) {
-					((IAttributeOverride) notification.getNewValue()).eAdapters().add(this.attributeOverrideListener);
-					final Object newValue = notification.getNewValue();
-					Display.getDefault().asyncExec(new Runnable() {
-						public void run() {
-							if (listViewer.getList().isDisposed()) {
-								return;
-							}
-							listViewer.setSelection(new StructuredSelection(newValue));
-						}
-					});
-				}
-				else if (notification.getEventType() == Notification.ADD_MANY) {
-					List addedList = (List) notification.getNewValue();
-					for (Iterator<IAttributeOverride> i = addedList.iterator(); i.hasNext(); ) {
-						IAttributeOverride override = i.next();
-						override.eAdapters().add(this.attributeOverrideListener);
-					}
-				}
-				else if (notification.getEventType() == Notification.REMOVE) {
-					((IAttributeOverride) notification.getOldValue()).eAdapters().remove(this.attributeOverrideListener);
-				}
-				else if (notification.getEventType() == Notification.REMOVE_MANY) {
-					List removedList = (List) notification.getOldValue();
-					for (Iterator<IAttributeOverride> i = removedList.iterator(); i.hasNext(); ) {
-						IAttributeOverride override = i.next();
-						override.eAdapters().remove(this.attributeOverrideListener);
-					}
-				}
-				break;
-			default :
-				break;
-		}
-	}
-
-	protected void attributeOverrideChanged(Notification notification) {
-		switch (notification.getFeatureID(IAttributeOverride.class)) {
-			case JpaCoreMappingsPackage.IATTRIBUTE_OVERRIDE__NAME :
-				final IAttributeOverride attributeOverride = (IAttributeOverride) notification.getNotifier();
-				Display.getDefault().asyncExec(new Runnable() {
-					public void run() {
-						listViewer.refresh(attributeOverride);
-					}
-				});
-				break;
-			default :
-				break;
-		}
-	}
-
-	@Override
-	public void dispose() {
-		this.columnComposite.dispose();
-		super.dispose();
 	}
 }
