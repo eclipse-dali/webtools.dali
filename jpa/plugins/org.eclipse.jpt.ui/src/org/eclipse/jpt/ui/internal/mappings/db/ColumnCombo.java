@@ -103,9 +103,9 @@ public class ColumnCombo extends AbstractDatabaseObjectCombo<IColumn>
 	}
 
 	private void populateDefaultColumnName() {
-		String defaultTableName = subject().getDefaultName();
+		String defaultColumnName = subject().getDefaultName();
 		int selectionIndex = getCombo().getSelectionIndex();
-		getCombo().add(NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultTableName));
+		getCombo().add(NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultColumnName));
 
 		if (selectionIndex == 0) {
 			// Combo text does not update when switching between 2 mappings of the
