@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,6 +21,7 @@ public class PluggableValidator
 	implements Node.Validator
 {
 	private boolean pause;
+	private boolean validateOnResume;
 	private final Delegate delegate;
 
 
@@ -44,11 +45,14 @@ public class PluggableValidator
 	public PluggableValidator(Delegate delegate) {
 		super();
 		this.pause = false;
+		this.validateOnResume = false;
 		this.delegate = delegate;
 	}
 
 	public synchronized void validate() {
-		if ( ! this.pause) {
+		if (this.pause) {
+			this.validateOnResume = true;
+		} else {
 			this.delegate.validate();
 		}
 	}
@@ -65,8 +69,11 @@ public class PluggableValidator
 			throw new IllegalStateException("not paused");
 		}
 		this.pause = false;
-		// validate all the changes that occurred while the validation was paused
-		this.delegate.validate();
+		// validate any changes that occurred while the validation was paused
+		if (this.validateOnResume) {
+			this.validateOnResume = false;
+			this.delegate.validate();
+		}
 	}
 
 	@Override
@@ -92,9 +99,7 @@ public class PluggableValidator
 		 * This delegate does nothing.
 		 */
 		final class Null implements Delegate {
-			@SuppressWarnings("unchecked")
 			public static final Delegate INSTANCE = new Null();
-			@SuppressWarnings("unchecked")
 			public static Delegate instance() {
 				return INSTANCE;
 			}
