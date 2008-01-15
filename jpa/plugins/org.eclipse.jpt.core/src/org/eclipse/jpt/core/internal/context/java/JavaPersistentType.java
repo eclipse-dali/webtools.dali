@@ -28,6 +28,7 @@ import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
@@ -230,7 +231,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 				return values;
 			}
 		}
-		return null;
+		return EmptyIterator.instance();
 	}
 //
 //	public IJpaContentNode contentNodeAt(int offset) {
