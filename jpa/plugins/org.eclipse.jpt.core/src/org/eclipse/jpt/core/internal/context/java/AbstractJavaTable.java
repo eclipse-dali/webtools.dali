@@ -122,27 +122,27 @@ public abstract class AbstractJavaTable extends JavaContextModel
 	// ********** ITable implementation **********
 
 	public ITextRange nameTextRange(CompilationUnit astRoot) {
-		return tableResource() .nameTextRange(astRoot);
+		return tableResource().nameTextRange(astRoot);
 	}
 
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return tableResource() .nameTouches(pos, astRoot);
+		return tableResource().nameTouches(pos, astRoot);
 	}
 
 	public ITextRange schemaTextRange(CompilationUnit astRoot) {
-		return tableResource() .schemaTextRange(astRoot);
+		return tableResource().schemaTextRange(astRoot);
 	}
 
 	public boolean schemaTouches(int pos, CompilationUnit astRoot) {
-		return tableResource() .schemaTouches(pos, astRoot);
+		return tableResource().schemaTouches(pos, astRoot);
 	}
 
 	public ITextRange catalogTextRange(CompilationUnit astRoot) {
-		return tableResource() .catalogTextRange(astRoot);
+		return tableResource().catalogTextRange(astRoot);
 	}
 
 	public boolean catalogTouches(int pos, CompilationUnit astRoot) {
-		return tableResource() .catalogTouches(pos, astRoot);
+		return tableResource().catalogTouches(pos, astRoot);
 	}
 
 	protected void setDefaultName(String newDefaultName) {
