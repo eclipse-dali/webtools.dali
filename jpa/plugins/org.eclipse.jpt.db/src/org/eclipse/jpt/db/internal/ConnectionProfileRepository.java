@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
+
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.IProfileListener;
 import org.eclipse.datatools.connectivity.ProfileManager;
@@ -172,10 +172,10 @@ public class ConnectionProfileRepository {
 	// ********** member class **********
 	/**
 	 * Keep the repository in synch with the DTP profile manager
-	 * and forward events to the repositories listeners.
+	 * and forward events to the repository's listeners.
 	 */
 	private class LocalProfileListener implements IProfileListener {
-		private Collection<ProfileListener> listeners = new Vector<ProfileListener>();
+		private Vector<ProfileListener> listeners = new Vector<ProfileListener>();
 
 		LocalProfileListener() {
 			super();
