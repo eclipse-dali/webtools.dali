@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.INullable;
 import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.base.ISingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
@@ -105,7 +106,7 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 	public Boolean getDefaultOptional() {
 		return this.defaultOptional;
 	}
-	
+	//TODO default optional from java
 	public Boolean getSpecifiedOptional() {
 		return this.specifiedOptional;
 	}
@@ -114,7 +115,7 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 		Boolean oldSpecifiedOptional = this.specifiedOptional;
 		this.specifiedOptional = newSpecifiedOptional;
 		attributeMapping().setOptional(newSpecifiedOptional);
-		firePropertyChanged(SPECIFIED_OPTIONAL_PROPERTY, oldSpecifiedOptional, newSpecifiedOptional);
+		firePropertyChanged(INullable.SPECIFIED_OPTIONAL_PROPERTY, oldSpecifiedOptional, newSpecifiedOptional);
 	}
 //
 //	public boolean containsSpecifiedJoinColumns() {

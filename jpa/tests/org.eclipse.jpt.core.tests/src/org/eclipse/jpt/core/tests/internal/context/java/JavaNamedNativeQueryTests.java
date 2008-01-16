@@ -337,18 +337,18 @@ public class JavaNamedNativeQueryTests extends ContextModelTestCase
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		NamedNativeQuery javaNamedNativeQuery = (NamedNativeQuery) typeResource.annotation(NamedNativeQuery.ANNOTATION_NAME);
 		
-		assertEquals(QUERY_QUERY, javaNamedNativeQuery.getResultClass());
-		assertEquals(QUERY_QUERY, namedNativeQuery.getResultClass());
-				
-		//set name to null in the resource model
-		javaNamedNativeQuery.setResultClass(null);
-		assertNull(javaNamedNativeQuery.getResultClass());
-		assertNull(namedNativeQuery.getResultClass());
+		assertEquals(null, javaNamedNativeQuery.getResultClass());
+		assertEquals(null, namedNativeQuery.getResultClass());
 
 		//set name in the resource model, verify context model updated
 		javaNamedNativeQuery.setResultClass("foo");
 		assertEquals("foo", javaNamedNativeQuery.getResultClass());
 		assertEquals("foo", namedNativeQuery.getResultClass());
+		
+		//set name to null in the resource model
+		javaNamedNativeQuery.setResultClass(null);
+		assertNull(javaNamedNativeQuery.getResultClass());
+		assertNull(namedNativeQuery.getResultClass());
 	}
 	
 	public void testModifyResultClass() throws Exception {
@@ -360,18 +360,18 @@ public class JavaNamedNativeQueryTests extends ContextModelTestCase
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		NamedNativeQuery javaNamedNativeQuery = (NamedNativeQuery) typeResource.annotation(NamedNativeQuery.ANNOTATION_NAME);
 		
-		assertEquals(QUERY_QUERY, javaNamedNativeQuery.getResultClass());
-		assertEquals(QUERY_QUERY, namedNativeQuery.getResultClass());
+		assertEquals(null, javaNamedNativeQuery.getResultClass());
+		assertEquals(null, namedNativeQuery.getResultClass());
 				
-		//set name to null in the context model
-		namedNativeQuery.setResultClass(null);
-		assertNull(javaNamedNativeQuery.getResultClass());
-		assertNull(namedNativeQuery.getResultClass());
-
 		//set name in the context model, verify resource model updated
 		namedNativeQuery.setResultClass("foo");
 		assertEquals("foo", javaNamedNativeQuery.getResultClass());
 		assertEquals("foo", namedNativeQuery.getResultClass());
+
+		//set name to null in the context model
+		namedNativeQuery.setResultClass(null);
+		assertNull(javaNamedNativeQuery.getResultClass());
+		assertNull(namedNativeQuery.getResultClass());
 	}
 	
 	public void testUpdateResultSetMapping() throws Exception {
@@ -384,18 +384,18 @@ public class JavaNamedNativeQueryTests extends ContextModelTestCase
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		NamedNativeQuery javaNamedNativeQuery = (NamedNativeQuery) typeResource.annotation(NamedNativeQuery.ANNOTATION_NAME);
 		
-		assertEquals(QUERY_QUERY, javaNamedNativeQuery.getResultSetMapping());
-		assertEquals(QUERY_QUERY, namedNativeQuery.getResultSetMapping());
-				
-		//set name to null in the resource model
-		javaNamedNativeQuery.setResultSetMapping(null);
-		assertNull(javaNamedNativeQuery.getResultSetMapping());
-		assertNull(namedNativeQuery.getResultSetMapping());
+		assertEquals(null, javaNamedNativeQuery.getResultSetMapping());
+		assertEquals(null, namedNativeQuery.getResultSetMapping());
 
 		//set name in the resource model, verify context model updated
 		javaNamedNativeQuery.setResultSetMapping("foo");
 		assertEquals("foo", javaNamedNativeQuery.getResultSetMapping());
 		assertEquals("foo", namedNativeQuery.getResultSetMapping());
+		
+		//set name to null in the resource model
+		javaNamedNativeQuery.setResultSetMapping(null);
+		assertNull(javaNamedNativeQuery.getResultSetMapping());
+		assertNull(namedNativeQuery.getResultSetMapping());
 	}
 	
 	public void testModifyResultSetMapping() throws Exception {
@@ -407,18 +407,18 @@ public class JavaNamedNativeQueryTests extends ContextModelTestCase
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		NamedNativeQuery javaNamedNativeQuery = (NamedNativeQuery) typeResource.annotation(NamedNativeQuery.ANNOTATION_NAME);
 		
-		assertEquals(QUERY_QUERY, javaNamedNativeQuery.getResultSetMapping());
-		assertEquals(QUERY_QUERY, namedNativeQuery.getResultSetMapping());
-				
-		//set name to null in the context model
-		namedNativeQuery.setResultSetMapping(null);
-		assertNull(javaNamedNativeQuery.getResultSetMapping());
-		assertNull(namedNativeQuery.getResultSetMapping());
+		assertEquals(null, javaNamedNativeQuery.getResultSetMapping());
+		assertEquals(null, namedNativeQuery.getResultSetMapping());
 
 		//set name in the context model, verify resource model updated
 		namedNativeQuery.setResultSetMapping("foo");
 		assertEquals("foo", javaNamedNativeQuery.getResultSetMapping());
 		assertEquals("foo", namedNativeQuery.getResultSetMapping());
+		
+		//set name to null in the context model
+		namedNativeQuery.setResultSetMapping(null);
+		assertNull(javaNamedNativeQuery.getResultSetMapping());
+		assertNull(namedNativeQuery.getResultSetMapping());
 	}
 
 }

@@ -9,19 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
-public interface IBasicMapping extends IAttributeMapping, IColumnMapping, IFetchable
+public interface IBasicMapping extends IAttributeMapping, IColumnMapping, IFetchable, INullable
 {
 	FetchType DEFAULT_FETCH_TYPE = FetchType.EAGER;
-
-	Boolean getOptional();
-	
-	Boolean getDefaultOptional();
-		String DEFAULT_OPTIONAL_PROPERTY = "defaultOptionalProperty";
-		Boolean DEFAULT_OPTIONAL = Boolean.TRUE;
-	
-	Boolean getSpecifiedOptional();
-	void setSpecifiedOptional(Boolean newSpecifiedOptional);
-		String SPECIFIED_OPTIONAL_PROPERTY = "specifiedOptionalProperty";
 
 	boolean isLob();
 

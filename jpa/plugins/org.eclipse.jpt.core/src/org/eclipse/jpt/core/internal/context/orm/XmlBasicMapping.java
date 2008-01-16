@@ -15,7 +15,9 @@ import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.EnumType;
 import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
+import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IFetchable;
+import org.eclipse.jpt.core.internal.context.base.INullable;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.Basic;
@@ -87,7 +89,7 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 	protected void setDefaultOptional(Boolean newDefaultOptional) {
 		Boolean oldOptional = this.defaultOptional;
 		this.defaultOptional = newDefaultOptional;
-		firePropertyChanged(IBasicMapping.DEFAULT_OPTIONAL_PROPERTY, oldOptional, newDefaultOptional);
+		firePropertyChanged(INullable.DEFAULT_OPTIONAL_PROPERTY, oldOptional, newDefaultOptional);
 	}
 
 	public Boolean getSpecifiedOptional() {
@@ -98,7 +100,7 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 		Boolean oldOptional = this.specifiedOptional;
 		this.specifiedOptional = newSpecifiedOptional;
 		this.attributeMapping().setOptional(newSpecifiedOptional);
-		firePropertyChanged(IBasicMapping.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
+		firePropertyChanged(INullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
 	}
 
 	public boolean isLob() {
@@ -120,7 +122,7 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 		TemporalType oldTemporal = this.temporal;
 		this.temporal = newTemporal;
 		this.attributeMapping().setTemporal(TemporalType.toOrmResourceModel(newTemporal));
-		firePropertyChanged(IBasicMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+		firePropertyChanged(IColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 
 	

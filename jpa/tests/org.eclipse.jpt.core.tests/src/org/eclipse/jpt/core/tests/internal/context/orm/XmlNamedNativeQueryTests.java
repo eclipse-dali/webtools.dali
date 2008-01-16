@@ -270,4 +270,89 @@ public class XmlNamedNativeQueryTests extends ContextModelTestCase
 		namedNativeQueryResource.getHints().remove(0);
 		assertFalse(xmlNamedNativeQuery.hints().hasNext());
 	}
+	
+	
+	public void testUpdateResultSetMapping() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		XmlNamedNativeQuery xmlNamedNativeQuery = xmlEntity.addNamedNativeQuery(0);
+		
+		NamedNativeQuery namedNativeQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
+		
+		assertEquals(null, namedNativeQueryResource.getResultSetMapping());
+		assertEquals(null, xmlNamedNativeQuery.getResultSetMapping());
+
+		//set name in the resource model, verify context model updated
+		namedNativeQueryResource.setResultSetMapping("foo");
+		assertEquals("foo", namedNativeQueryResource.getResultSetMapping());
+		assertEquals("foo", xmlNamedNativeQuery.getResultSetMapping());
+		
+		//set name to null in the resource model
+		namedNativeQueryResource.setResultSetMapping(null);
+		assertNull(namedNativeQueryResource.getResultSetMapping());
+		assertNull(xmlNamedNativeQuery.getResultSetMapping());
+	}
+	
+	public void testModifyResultSetMapping() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		XmlNamedNativeQuery xmlNamedNativeQuery = xmlEntity.addNamedNativeQuery(0);
+		
+		NamedNativeQuery namedNativeQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
+		
+		assertEquals(null, namedNativeQueryResource.getResultSetMapping());
+		assertEquals(null, xmlNamedNativeQuery.getResultSetMapping());
+
+		//set name in the context model, verify resource model updated
+		xmlNamedNativeQuery.setResultSetMapping("foo");
+		assertEquals("foo", namedNativeQueryResource.getResultSetMapping());
+		assertEquals("foo", xmlNamedNativeQuery.getResultSetMapping());
+		
+		//set name to null in the context model
+		xmlNamedNativeQuery.setResultSetMapping(null);
+		assertNull(namedNativeQueryResource.getResultSetMapping());
+		assertNull(xmlNamedNativeQuery.getResultSetMapping());
+	}
+	
+	public void testUpdateResultClass() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		XmlNamedNativeQuery xmlNamedNativeQuery = xmlEntity.addNamedNativeQuery(0);
+		
+		NamedNativeQuery namedNativeQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
+		
+		assertEquals(null, namedNativeQueryResource.getResultClass());
+		assertEquals(null, xmlNamedNativeQuery.getResultClass());
+
+		//set name in the resource model, verify context model updated
+		namedNativeQueryResource.setResultClass("foo");
+		assertEquals("foo", namedNativeQueryResource.getResultClass());
+		assertEquals("foo", xmlNamedNativeQuery.getResultClass());
+		
+		//set name to null in the resource model
+		namedNativeQueryResource.setResultClass(null);
+		assertNull(namedNativeQueryResource.getResultClass());
+		assertNull(xmlNamedNativeQuery.getResultClass());
+	}
+	
+	public void testModifyResultClass() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+		XmlNamedNativeQuery xmlNamedNativeQuery = xmlEntity.addNamedNativeQuery(0);
+		
+		NamedNativeQuery namedNativeQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
+		
+		assertEquals(null, namedNativeQueryResource.getResultClass());
+		assertEquals(null, xmlNamedNativeQuery.getResultClass());
+
+		//set name in the context model, verify resource model updated
+		xmlNamedNativeQuery.setResultClass("foo");
+		assertEquals("foo", namedNativeQueryResource.getResultClass());
+		assertEquals("foo", xmlNamedNativeQuery.getResultClass());
+		
+		//set name to null in the context model
+		xmlNamedNativeQuery.setResultClass(null);
+		assertNull(namedNativeQueryResource.getResultClass());
+		assertNull(xmlNamedNativeQuery.getResultClass());
+	}
 }

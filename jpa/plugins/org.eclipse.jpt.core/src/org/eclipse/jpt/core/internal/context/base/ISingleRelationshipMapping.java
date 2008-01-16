@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.base;
 import java.util.ListIterator;
 
 
-public interface ISingleRelationshipMapping extends IRelationshipMapping
+public interface ISingleRelationshipMapping extends IRelationshipMapping, INullable
 {
 
 	FetchType DEFAULT_FETCH_TYPE = FetchType.EAGER;
@@ -28,17 +28,6 @@ public interface ISingleRelationshipMapping extends IRelationshipMapping
 		String DEFAULT_JOIN_COLUMNS_LIST = "defaultJoinColumnsList";
 
 	boolean containsSpecifiedJoinColumns();
-
-	Boolean getOptional();
-	
-	Boolean getDefaultOptional();
-		String DEFAULT_OPTIONAL_PROPERTY = "defaultOptionalProperty";
-		Boolean DEFAULT_OPTIONAL = Boolean.TRUE;
-	
-	Boolean getSpecifiedOptional();
-	void setSpecifiedOptional(Boolean newSpecifiedOptional);
-		String SPECIFIED_OPTIONAL_PROPERTY = "specifiedOptionalProperty";
-
 
 //	public class JoinColumnOwner implements IJoinColumn.Owner
 //	{

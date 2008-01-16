@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IManyToOneMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
@@ -58,5 +59,25 @@ public class XmlManyToOneMapping extends XmlSingleRelationshipMapping<ManyToOne>
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public ListIterator<XmlJoinColumn> joinColumns() {
+		return super.joinColumns();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public ListIterator<XmlJoinColumn> specifiedJoinColumns() {
+		// TODO Auto-generated method stub
+		return super.specifiedJoinColumns();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public ListIterator<XmlJoinColumn> defaultJoinColumns() {
+		// TODO Auto-generated method stub
+		return super.defaultJoinColumns();
 	}
 }

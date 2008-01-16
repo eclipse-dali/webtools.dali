@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IFetchable;
+import org.eclipse.jpt.core.internal.context.base.INullable;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.java.Basic;
 import org.eclipse.jpt.core.internal.resource.java.Column;
@@ -135,7 +136,7 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 	}
 	
 	public Boolean getDefaultOptional() {
-		return IBasicMapping.DEFAULT_OPTIONAL;
+		return INullable.DEFAULT_OPTIONAL;
 	}
 	
 	public Boolean getSpecifiedOptional() {
@@ -146,7 +147,7 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 		Boolean oldOptional = this.specifiedOptional;
 		this.specifiedOptional = newSpecifiedOptional;
 		this.basicResource().setOptional(newSpecifiedOptional);
-		firePropertyChanged(IBasicMapping.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
+		firePropertyChanged(INullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
 	}
 
 

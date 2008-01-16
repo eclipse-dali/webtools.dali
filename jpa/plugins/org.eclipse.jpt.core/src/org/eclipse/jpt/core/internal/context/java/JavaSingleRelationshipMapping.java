@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.INullable;
 import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.base.ISingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
@@ -108,7 +109,7 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 	}
 	
 	public Boolean getDefaultOptional() {
-		return DEFAULT_OPTIONAL;
+		return INullable.DEFAULT_OPTIONAL;
 	}
 	
 	public Boolean getSpecifiedOptional() {
@@ -119,7 +120,7 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 		Boolean oldSpecifiedOptional = this.specifiedOptional;
 		this.specifiedOptional = newSpecifiedOptional;
 		setOptionalOnResourceModel(newSpecifiedOptional);
-		firePropertyChanged(SPECIFIED_OPTIONAL_PROPERTY, oldSpecifiedOptional, newSpecifiedOptional);
+		firePropertyChanged(INullable.SPECIFIED_OPTIONAL_PROPERTY, oldSpecifiedOptional, newSpecifiedOptional);
 	}
 
 	protected abstract void setOptionalOnResourceModel(Boolean newOptional);
