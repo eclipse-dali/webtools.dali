@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,6 +42,8 @@ public final class ClassTools {
 	public static final char NESTED_CLASS_NAME_SEPARATOR = '$';
 
 	public static final char ARRAY_INDICATOR = '[';
+	public static final char TYPE_DECLARATION_ARRAY_OPEN = '[';
+	public static final char TYPE_DECLARATION_ARRAY_CLOSE = ']';
 
 	public static final char REFERENCE_CLASS_CODE = 'L';
 	public static final char REFERENCE_CLASS_NAME_DELIMITER = ';';
@@ -391,14 +393,14 @@ public final class ClassTools {
 		return field(object.getClass(), fieldName);
 	}
 	
-	/**
+	/*
 	 * Return a string representation of the specified constructor.
 	 */
 	private static String fullyQualifiedConstructorSignature(Class<?> javaClass, Class<?>[] parameterTypes) {
 		return fullyQualifiedMethodSignature(javaClass, null, parameterTypes);
 	}
 	
-	/**
+	/*
 	 * Return a string representation of the specified field.
 	 */
 	private static String fullyQualifiedFieldName(Class<?> javaClass, String fieldName) {
@@ -409,14 +411,14 @@ public final class ClassTools {
 		return sb.toString();
 	}
 	
-	/**
+	/*
 	 * Return a string representation of the specified field.
 	 */
 	private static String fullyQualifiedFieldName(Object object, String fieldName) {
 		return fullyQualifiedFieldName(object.getClass(), fieldName);
 	}
 	
-	/**
+	/*
 	 * Return a string representation of the specified method.
 	 */
 	private static String fullyQualifiedMethodSignature(Class<?> javaClass, String methodName, Class<?>[] parameterTypes) {
@@ -441,7 +443,7 @@ public final class ClassTools {
 		return sb.toString();
 	}
 	
-	/**
+	/*
 	 * Return a string representation of the specified method.
 	 */
 	private static String fullyQualifiedMethodSignature(Object receiver, String methodName, Class<?>[] parameterTypes) {
@@ -830,7 +832,7 @@ public final class ClassTools {
 		return newInstance(Class.forName(className, false, classLoader), parameterType, parameter);
 	}
 	
-	/**
+	/*
 	 * Push the declared fields for the specified class
 	 * onto the top of the stack.
 	 */
@@ -841,7 +843,7 @@ public final class ClassTools {
 		}
 	}
 	
-	/**
+	/*
 	 * Push the declared methods for the specified class
 	 * onto the top of the stack.
 	 */
@@ -1357,14 +1359,37 @@ public final class ClassTools {
 	}
 
 	/**
-	 * Return the class for specified "type declaration".
+	 * Return the class for the specified "type declaration".
+	 */
+	public static Class<?> classForTypeDeclaration(String typeDeclaration) throws ClassNotFoundException {
+		return classForTypeDeclaration(typeDeclaration, ClassTools.class.getClassLoader());
+	}
+	
+	/**
+	 * Return the class for the specified "type declaration",
+	 * using the specified class loader.
+	 */
+	public static Class<?> classForTypeDeclaration(String typeDeclaration, ClassLoader classLoader) throws ClassNotFoundException {
+		TypeDeclaration td = typeDeclaration(typeDeclaration);
+		return classForTypeDeclaration(td.elementTypeName, td.arrayDepth);
+	}
+
+	private static TypeDeclaration typeDeclaration(String typeDeclaration) {
+		typeDeclaration = StringTools.removeAllWhitespace(typeDeclaration);
+		int arrayDepth = arrayDepthForTypeDeclaration_(typeDeclaration);
+		String elementTypeName = typeDeclaration.substring(0, typeDeclaration.length() - (arrayDepth * 2));
+		return new TypeDeclaration(elementTypeName, arrayDepth);
+	}
+
+	/**
+	 * Return the class for the specified "type declaration".
 	 */
 	public static Class<?> classForTypeDeclaration(String elementTypeName, int arrayDepth) throws ClassNotFoundException {
 		return classForTypeDeclaration(elementTypeName, arrayDepth, null);
 	}
 	
 	/**
-	 * Return the class for specified "type declaration",
+	 * Return the class for the specified "type declaration",
 	 * using the specified class loader.
 	 */
 	// see the "Evaluation" of jdk bug 6446627 for a discussion of loading classes
@@ -1403,7 +1428,44 @@ public final class ClassTools {
 	}
 	
 	/**
-	 * Return the class name for specified "type declaration".
+	 * Return the class name for the specified "type declaration"; e.g.
+	 *     "int[]" -> "[I"
+	 * @see java.lang.Class.getName()
+	 */
+	public static String classNameForTypeDeclaration(String typeDeclaration) {
+		TypeDeclaration td = typeDeclaration(typeDeclaration);
+		return classNameForTypeDeclaration(td.elementTypeName, td.arrayDepth);
+	}
+
+	/**
+	 * Return the array depth for the specified "type declaration"; e.g.
+	 *     "int[]" -> 1
+	 */
+	public static int arrayDepthForTypeDeclaration(String typeDeclaration) {
+		return arrayDepthForTypeDeclaration_(StringTools.removeAllWhitespace(typeDeclaration));
+	}
+
+	/*
+	 * Assume no whitespace in the type declaration.
+	 */
+	private static int arrayDepthForTypeDeclaration_(String typeDeclaration) {
+		int last = typeDeclaration.length() - 1;
+		int depth = 0;
+		int close = last;
+		while (typeDeclaration.charAt(close) == TYPE_DECLARATION_ARRAY_CLOSE) {
+			if (typeDeclaration.charAt(close - 1) == TYPE_DECLARATION_ARRAY_OPEN) {
+				depth++;
+			} else {
+				throw new IllegalArgumentException("invalid type declaration: " + typeDeclaration);
+			}
+			close = last - (depth * 2);
+		}
+		return depth;
+	}
+	
+	/**
+	 * Return the class name for the specified "type declaration".
+	 * @see java.lang.Class.getName()
 	 */
 	public static String classNameForTypeDeclaration(String elementTypeName, int arrayDepth) {
 		// non-array
@@ -1492,15 +1554,23 @@ public final class ClassTools {
 	}
 
 
-	// ********** member class **********
+	// ********** member classes **********
 
 	private static class PrimitiveClassCode {
-		char code;
-		Class<?> javaClass;
+		final char code;
+		final Class<?> javaClass;
 		PrimitiveClassCode(char code, Class<?> javaClass) {
 			this.code = code;
 			this.javaClass = javaClass;
 		}
 	}
 
+	private static class TypeDeclaration {
+		final String elementTypeName;
+		final int arrayDepth;
+		TypeDeclaration(String elementTypeName, int arrayDepth) {
+			this.elementTypeName = elementTypeName;
+			this.arrayDepth = arrayDepth;
+		}
+	}
 }

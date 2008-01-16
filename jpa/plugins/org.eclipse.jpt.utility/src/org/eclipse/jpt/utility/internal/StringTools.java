@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -91,7 +91,7 @@ public final class StringTools {
 		if (stringLength == length) {
 			return string;
 		}
-		return padInternal(string, length, c);
+		return pad_(string, length, c);
 	}
 
 	/**
@@ -103,7 +103,15 @@ public final class StringTools {
 	 * String#padOn(int, char, Writer)
 	 */
 	public static void padOn(String string, int length, char c, Writer writer) {
-		padOn(string.toCharArray(), length, c, writer);
+		int stringLength = string.length();
+		if (stringLength > length) {
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+		}
+		if (stringLength == length) {
+			writeStringOn(string, writer);
+		} else {
+			padOn_(string, length, c, writer);
+		}
 	}
 
 	/**
@@ -115,7 +123,15 @@ public final class StringTools {
 	 * String#padOn(int, char, StringBuffer)
 	 */
 	public static void padOn(String string, int length, char c, StringBuffer sb) {
-		padOn(string.toCharArray(), length, c, sb);
+		int stringLength = string.length();
+		if (stringLength > length) {
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+		}
+		if (stringLength == length) {
+			sb.append(string);
+		} else {
+			padOn_(string, length, c, sb);
+		}
 	}
 
 	/**
@@ -127,7 +143,15 @@ public final class StringTools {
 	 * String#padOn(int, char, StringBuilder)
 	 */
 	public static void padOn(String string, int length, char c, StringBuilder sb) {
-		padOn(string.toCharArray(), length, c, sb);
+		int stringLength = string.length();
+		if (stringLength > length) {
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+		}
+		if (stringLength == length) {
+			sb.append(string);
+		} else {
+			padOn_(string, length, c, sb);
+		}
 	}
 
 	/**
@@ -190,7 +214,7 @@ public final class StringTools {
 		if (stringLength == length) {
 			return string;
 		}
-		return padInternal(string, length, c);
+		return pad_(string, length, c);
 	}
 
 	/**
@@ -209,7 +233,7 @@ public final class StringTools {
 		if (stringLength == length) {
 			writeStringOn(string, writer);
 		} else {
-			padOnInternal(string, length, c, writer);
+			padOn_(string, length, c, writer);
 		}
 	}
 
@@ -229,7 +253,7 @@ public final class StringTools {
 		if (stringLength == length) {
 			sb.append(string);
 		} else {
-			padOnInternal(string, length, c, sb);
+			padOn_(string, length, c, sb);
 		}
 	}
 
@@ -249,7 +273,7 @@ public final class StringTools {
 		if (stringLength == length) {
 			sb.append(string);
 		} else {
-			padOnInternal(string, length, c, sb);
+			padOn_(string, length, c, sb);
 		}
 	}
 
@@ -313,7 +337,7 @@ public final class StringTools {
 		if (stringLength > length) {
 			return string.substring(0, length);
 		}
-		return padInternal(string, length, c);
+		return pad_(string, length, c);
 	}
 
 	/**
@@ -325,7 +349,14 @@ public final class StringTools {
 	 * String#padOrTruncateOn(int, char, Writer)
 	 */
 	public static void padOrTruncateOn(String string, int length, char c, Writer writer) {
-		padOrTruncateOn(string.toCharArray(), length, c, writer);
+		int stringLength = string.length();
+		if (stringLength == length) {
+			writeStringOn(string, writer);
+		} else if (stringLength > length) {
+			writeStringOn(string.substring(0, length), writer);
+		} else {
+			padOn_(string, length, c, writer);
+		}
 	}
 
 	/**
@@ -337,7 +368,14 @@ public final class StringTools {
 	 * String#padOrTruncateOn(int, char, StringBuffer)
 	 */
 	public static void padOrTruncateOn(String string, int length, char c, StringBuffer sb) {
-		padOrTruncateOn(string.toCharArray(), length, c, sb);
+		int stringLength = string.length();
+		if (stringLength == length) {
+			sb.append(string);
+		} else if (stringLength > length) {
+			sb.append(string.substring(0, length));
+		} else {
+			padOn_(string, length, c, sb);
+		}
 	}
 
 	/**
@@ -349,7 +387,14 @@ public final class StringTools {
 	 * String#padOrTruncateOn(int, char, StringBuilder)
 	 */
 	public static void padOrTruncateOn(String string, int length, char c, StringBuilder sb) {
-		padOrTruncateOn(string.toCharArray(), length, c, sb);
+		int stringLength = string.length();
+		if (stringLength == length) {
+			sb.append(string);
+		} else if (stringLength > length) {
+			sb.append(string.substring(0, length));
+		} else {
+			padOn_(string, length, c, sb);
+		}
 	}
 
 	/**
@@ -414,7 +459,7 @@ public final class StringTools {
 			System.arraycopy(string, 0, result, 0, length);
 			return result;
 		}
-		return padInternal(string, length, c);
+		return pad_(string, length, c);
 	}
 
 	/**
@@ -432,7 +477,7 @@ public final class StringTools {
 		} else if (stringLength > length) {
 			writeStringOn(string, 0, length, writer);
 		} else {
-			padOnInternal(string, length, c, writer);
+			padOn_(string, length, c, writer);
 		}
 	}
 
@@ -451,7 +496,7 @@ public final class StringTools {
 		} else if (stringLength > length) {
 			sb.append(string, 0, length);
 		} else {
-			padOnInternal(string, length, c, sb);
+			padOn_(string, length, c, sb);
 		}
 	}
 
@@ -470,21 +515,117 @@ public final class StringTools {
 		} else if (stringLength > length) {
 			sb.append(string, 0, length);
 		} else {
-			padOnInternal(string, length, c, sb);
+			padOn_(string, length, c, sb);
 		}
 	}
 
-	/**
+	/*
 	 * Pad the specified string without validating the parms.
 	 */
-	private static String padInternal(String string, int length, char c) {
-		return new String(padInternal(string.toCharArray(), length, c));
+	private static String pad_(String string, int length, char c) {
+		return new String(pad_(string.toCharArray(), length, c));
 	}
 
-	/**
+	/*
 	 * Pad the specified string without validating the parms.
 	 */
-	private static char[] padInternal(char[] string, int length, char c) {
+	private static void padOn_(String string, int length, char c, Writer writer) {
+		writeStringOn(string, writer);
+		fill_(string, length, c, writer);
+	}
+
+	/*
+	 * Add enough characters to the specified writer to compensate for
+	 * the difference between the specified string and specified length.
+	 */
+	private static void fill_(String string, int length, char c, Writer writer) {
+		fill_(string.length(), length, c, writer);
+	}
+
+	/*
+	 * Add enough characters to the specified writer to compensate for
+	 * the difference between the specified string and specified length.
+	 */
+	private static void fill_(char[] string, int length, char c, Writer writer) {
+		fill_(string.length, length, c, writer);
+	}
+
+	/*
+	 * Add enough characters to the specified writer to compensate for
+	 * the difference between the specified string and specified length.
+	 */
+	private static void fill_(int stringLength, int length, char c, Writer writer) {
+		writeStringOn(CollectionTools.fill(new char[length - stringLength], c), writer);
+	}
+
+	/*
+	 * Pad the specified string without validating the parms.
+	 */
+	private static void padOn_(String string, int length, char c, StringBuffer sb) {
+		sb.append(string);
+		fill_(string, length, c, sb);
+	}
+
+	/*
+	 * Add enough characters to the specified string buffer to compensate for
+	 * the difference between the specified string and specified length.
+	 */
+	private static void fill_(String string, int length, char c, StringBuffer sb) {
+		fill_(string.length(), length, c, sb);
+	}
+
+	/*
+	 * Add enough characters to the specified string buffer to compensate for
+	 * the difference between the specified string and specified length.
+	 */
+	private static void fill_(char[] string, int length, char c, StringBuffer sb) {
+		fill_(string.length, length, c, sb);
+	}
+
+	/*
+	 * Add enough characters to the specified string buffer to compensate for
+	 * the difference between the specified string and specified length.
+	 */
+	private static void fill_(int stringLength, int length, char c, StringBuffer sb) {
+		sb.append(CollectionTools.fill(new char[length - stringLength], c));
+	}
+
+	/*
+	 * Pad the specified string without validating the parms.
+	 */
+	private static void padOn_(String string, int length, char c, StringBuilder sb) {
+		sb.append(string);
+		fill_(string, length, c, sb);
+	}
+
+	/*
+	 * Add enough characters to the specified string builder to compensate for
+	 * the difference between the specified string and specified length.
+	 */
+	private static void fill_(String string, int length, char c, StringBuilder sb) {
+		fill_(string.length(), length, c, sb);
+	}
+
+	/*
+	 * Add enough characters to the specified string builder to compensate for
+	 * the difference between the specified string and specified length.
+	 */
+	private static void fill_(char[] string, int length, char c, StringBuilder sb) {
+		fill_(string.length, length, c, sb);
+	}
+
+	/*
+	 * Add enough characters to the specified string builder to compensate for
+	 * the difference between the specified string and specified length.
+	 */
+	private static void fill_(int stringLength, int length, char c, StringBuilder sb) {
+		sb.append(CollectionTools.fill(new char[length - stringLength], c));
+	}
+
+	/*
+	 * Pad the specified string without validating the parms.
+	 */
+	private static char[] pad_(char[] string, int length, char c) {
 		char[] result = new char[length];
 		int stringLength = string.length;
 		System.arraycopy(string, 0, result, 0, stringLength);
@@ -492,28 +633,28 @@ public final class StringTools {
 		return result;
 	}
 
-	/**
+	/*
 	 * Pad the specified string without validating the parms.
 	 */
-	private static void padOnInternal(char[] string, int length, char c, Writer writer) {
+	private static void padOn_(char[] string, int length, char c, Writer writer) {
 		writeStringOn(string, writer);
-		writeStringOn(CollectionTools.fill(new char[length - string.length], c), writer);
+		fill_(string, length, c, writer);
 	}
 
-	/**
+	/*
 	 * Pad the specified string without validating the parms.
 	 */
-	private static void padOnInternal(char[] string, int length, char c, StringBuffer sb) {
+	private static void padOn_(char[] string, int length, char c, StringBuffer sb) {
 		sb.append(string);
-		sb.append(CollectionTools.fill(new char[length - string.length], c));
+		fill_(string, length, c, sb);
 	}
 
-	/**
+	/*
 	 * Pad the specified string without validating the parms.
 	 */
-	private static void padOnInternal(char[] string, int length, char c, StringBuilder sb) {
+	private static void padOn_(char[] string, int length, char c, StringBuilder sb) {
 		sb.append(string);
-		sb.append(CollectionTools.fill(new char[length - string.length], c));
+		fill_(string, length, c, sb);
 	}
 
 	/**
@@ -576,7 +717,7 @@ public final class StringTools {
 		if (stringLength == length) {
 			return string;
 		}
-		return frontPadInternal(string, length, c);
+		return frontPad_(string, length, c);
 	}
 
 	/**
@@ -588,7 +729,15 @@ public final class StringTools {
 	 * String#frontPadOn(int, char, Writer)
 	 */
 	public static void frontPadOn(String string, int length, char c, Writer writer) {
-		frontPadOn(string.toCharArray(), length, c, writer);
+		int stringLength = string.length();
+		if (stringLength > length) {
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+		}
+		if (stringLength == length) {
+			writeStringOn(string, writer);
+		} else {
+			frontPadOn_(string, length, c, writer);
+		}
 	}
 
 	/**
@@ -600,7 +749,15 @@ public final class StringTools {
 	 * String#frontPadOn(int, char, StringBuffer)
 	 */
 	public static void frontPadOn(String string, int length, char c, StringBuffer sb) {
-		frontPadOn(string.toCharArray(), length, c, sb);
+		int stringLength = string.length();
+		if (stringLength > length) {
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+		}
+		if (stringLength == length) {
+			sb.append(string);
+		} else {
+			frontPadOn_(string, length, c, sb);
+		}
 	}
 
 	/**
@@ -612,7 +769,15 @@ public final class StringTools {
 	 * String#frontPadOn(int, char, StringBuilder)
 	 */
 	public static void frontPadOn(String string, int length, char c, StringBuilder sb) {
-		frontPadOn(string.toCharArray(), length, c, sb);
+		int stringLength = string.length();
+		if (stringLength > length) {
+			throw new IllegalArgumentException("String is too long: " + stringLength + " > " + length);
+		}
+		if (stringLength == length) {
+			sb.append(string);
+		} else {
+			frontPadOn_(string, length, c, sb);
+		}
 	}
 
 	/**
@@ -675,7 +840,7 @@ public final class StringTools {
 		if (stringLength == length) {
 			return string;
 		}
-		return frontPadInternal(string, length, c);
+		return frontPad_(string, length, c);
 	}
 
 	/**
@@ -694,7 +859,7 @@ public final class StringTools {
 		if (stringLength == length) {
 			writeStringOn(string, writer);
 		} else {
-			frontPadOnInternal(string, length, c, writer);
+			frontPadOn_(string, length, c, writer);
 		}
 	}
 
@@ -714,7 +879,7 @@ public final class StringTools {
 		if (stringLength == length) {
 			sb.append(string);
 		} else {
-			frontPadOnInternal(string, length, c, sb);
+			frontPadOn_(string, length, c, sb);
 		}
 	}
 
@@ -734,7 +899,7 @@ public final class StringTools {
 		if (stringLength == length) {
 			sb.append(string);
 		} else {
-			frontPadOnInternal(string, length, c, sb);
+			frontPadOn_(string, length, c, sb);
 		}
 	}
 
@@ -798,7 +963,7 @@ public final class StringTools {
 		if (stringLength > length) {
 			return string.substring(stringLength - length);
 		}
-		return frontPadInternal(string, length, c);
+		return frontPad_(string, length, c);
 	}
 
 	/**
@@ -810,7 +975,14 @@ public final class StringTools {
 	 * String#frontPadOrTruncateOn(int, char, Writer)
 	 */
 	public static void frontPadOrTruncateOn(String string, int length, char c, Writer writer) {
-		frontPadOrTruncateOn(string.toCharArray(), length, c, writer);
+		int stringLength = string.length();
+		if (stringLength == length) {
+			writeStringOn(string, writer);
+		} else if (stringLength > length) {
+			writeStringOn(string.substring(stringLength - length), writer);
+		} else {
+			frontPadOn_(string, length, c, writer);
+		}
 	}
 
 	/**
@@ -822,7 +994,14 @@ public final class StringTools {
 	 * String#frontPadOrTruncateOn(int, char, StringBuffer)
 	 */
 	public static void frontPadOrTruncateOn(String string, int length, char c, StringBuffer sb) {
-		frontPadOrTruncateOn(string.toCharArray(), length, c, sb);
+		int stringLength = string.length();
+		if (stringLength == length) {
+			sb.append(string);
+		} else if (stringLength > length) {
+			sb.append(string.substring(stringLength - length));
+		} else {
+			frontPadOn_(string, length, c, sb);
+		}
 	}
 
 	/**
@@ -834,7 +1013,14 @@ public final class StringTools {
 	 * String#frontPadOrTruncateOn(int, char, StringBuilder)
 	 */
 	public static void frontPadOrTruncateOn(String string, int length, char c, StringBuilder sb) {
-		frontPadOrTruncateOn(string.toCharArray(), length, c, sb);
+		int stringLength = string.length();
+		if (stringLength == length) {
+			sb.append(string);
+		} else if (stringLength > length) {
+			sb.append(string.substring(stringLength - length));
+		} else {
+			frontPadOn_(string, length, c, sb);
+		}
 	}
 
 	/**
@@ -899,7 +1085,7 @@ public final class StringTools {
 			System.arraycopy(string, stringLength - length, result, 0, length);
 			return result;
 		}
-		return frontPadInternal(string, length, c);
+		return frontPad_(string, length, c);
 	}
 
 	/**
@@ -917,7 +1103,7 @@ public final class StringTools {
 		} else if (stringLength > length) {
 			writeStringOn(string, stringLength - length, length, writer);
 		} else {
-			frontPadOnInternal(string, length, c, writer);
+			frontPadOn_(string, length, c, writer);
 		}
 	}
 
@@ -936,7 +1122,7 @@ public final class StringTools {
 		} else if (stringLength > length) {
 			sb.append(string, stringLength - length, length);
 		} else {
-			frontPadOnInternal(string, length, c, sb);
+			frontPadOn_(string, length, c, sb);
 		}
 	}
 
@@ -955,21 +1141,21 @@ public final class StringTools {
 		} else if (stringLength > length) {
 			sb.append(string, stringLength - length, length);
 		} else {
-			frontPadOnInternal(string, length, c, sb);
+			frontPadOn_(string, length, c, sb);
 		}
 	}
 
-	/**
+	/*
 	 * Front-pad the specified string without validating the parms.
 	 */
-	private static String frontPadInternal(String string, int length, char c) {
-		return new String(frontPadInternal(string.toCharArray(), length, c));
+	private static String frontPad_(String string, int length, char c) {
+		return new String(frontPad_(string.toCharArray(), length, c));
 	}
 
-	/**
+	/*
 	 * Zero-pad the specified string without validating the parms.
 	 */
-	private static char[] frontPadInternal(char[] string, int length, char c) {
+	private static char[] frontPad_(char[] string, int length, char c) {
 		char[] result = new char[length];
 		int stringLength = string.length;
 		int padLength = length - stringLength;
@@ -978,27 +1164,51 @@ public final class StringTools {
 		return result;
 	}
 
-	/**
+	/*
 	 * Pad the specified string without validating the parms.
 	 */
-	private static void frontPadOnInternal(char[] string, int length, char c, Writer writer) {
-		writeStringOn(CollectionTools.fill(new char[length - string.length], c), writer);
+	private static void frontPadOn_(String string, int length, char c, Writer writer) {
+		fill_(string, length, c, writer);
 		writeStringOn(string, writer);
 	}
 
-	/**
+	/*
 	 * Pad the specified string without validating the parms.
 	 */
-	private static void frontPadOnInternal(char[] string, int length, char c, StringBuffer sb) {
-		sb.append(CollectionTools.fill(new char[length - string.length], c));
+	private static void frontPadOn_(char[] string, int length, char c, Writer writer) {
+		fill_(string, length, c, writer);
+		writeStringOn(string, writer);
+	}
+
+	/*
+	 * Pad the specified string without validating the parms.
+	 */
+	private static void frontPadOn_(String string, int length, char c, StringBuffer sb) {
+		fill_(string, length, c, sb);
 		sb.append(string);
 	}
 
-	/**
+	/*
 	 * Pad the specified string without validating the parms.
 	 */
-	private static void frontPadOnInternal(char[] string, int length, char c, StringBuilder sb) {
-		sb.append(CollectionTools.fill(new char[length - string.length], c));
+	private static void frontPadOn_(char[] string, int length, char c, StringBuffer sb) {
+		fill_(string, length, c, sb);
+		sb.append(string);
+	}
+
+	/*
+	 * Pad the specified string without validating the parms.
+	 */
+	private static void frontPadOn_(String string, int length, char c, StringBuilder sb) {
+		fill_(string, length, c, sb);
+		sb.append(string);
+	}
+
+	/*
+	 * Pad the specified string without validating the parms.
+	 */
+	private static void frontPadOn_(char[] string, int length, char c, StringBuilder sb) {
+		fill_(string, length, c, sb);
 		sb.append(string);
 	}
 
@@ -1058,7 +1268,9 @@ public final class StringTools {
 	 * the wrap at the front and back of the resulting string.
 	 */
 	public static void wrapOn(String string, char wrap, Writer writer) {
-		wrapOn(string.toCharArray(), wrap, writer);
+		writeCharOn(wrap, writer);
+		writeStringOn(string, writer);
+		writeCharOn(wrap, writer);
 	}
 
 	/**
@@ -1066,7 +1278,9 @@ public final class StringTools {
 	 * the wrap at the front and back of the resulting string.
 	 */
 	public static void wrapOn(String string, char wrap, StringBuffer sb) {
-		wrapOn(string.toCharArray(), wrap, sb);
+		sb.append(wrap);
+		sb.append(string);
+		sb.append(wrap);
 	}
 
 	/**
@@ -1074,7 +1288,9 @@ public final class StringTools {
 	 * the wrap at the front and back of the resulting string.
 	 */
 	public static void wrapOn(String string, char wrap, StringBuilder sb) {
-		wrapOn(string.toCharArray(), wrap, sb);
+		sb.append(wrap);
+		sb.append(string);
+		sb.append(wrap);
 	}
 
 	/**
@@ -1103,7 +1319,9 @@ public final class StringTools {
 	 * the wrap at the front and back of the resulting string.
 	 */
 	public static void wrapOn(String string, String wrap, Writer writer) {
-		wrapOn(string.toCharArray(), wrap.toCharArray(), writer);
+		writeStringOn(wrap, writer);
+		writeStringOn(string, writer);
+		writeStringOn(wrap, writer);
 	}
 
 	/**
@@ -1111,7 +1329,9 @@ public final class StringTools {
 	 * the wrap at the front and back of the resulting string.
 	 */
 	public static void wrapOn(String string, String wrap, StringBuffer sb) {
-		wrapOn(string.toCharArray(), wrap.toCharArray(), sb);
+		sb.append(wrap);
+		sb.append(string);
+		sb.append(wrap);
 	}
 
 	/**
@@ -1119,7 +1339,9 @@ public final class StringTools {
 	 * the wrap at the front and back of the resulting string.
 	 */
 	public static void wrapOn(String string, String wrap, StringBuilder sb) {
-		wrapOn(string.toCharArray(), wrap.toCharArray(), sb);
+		sb.append(wrap);
+		sb.append(string);
+		sb.append(wrap);
 	}
 
 	/**
@@ -1321,7 +1543,12 @@ public final class StringTools {
 	 * String#removeFirstOccurrenceOn(char, Writer)
 	 */
 	public static void removeFirstOccurrenceOn(String string, char c, Writer writer) {
-		removeFirstOccurrenceOn(string.toCharArray(), c, writer);
+		int index = string.indexOf(c);
+		if (index == -1) {
+			writeStringOn(string, writer);
+		} else {
+			removeFirstOccurrenceOn_(string.toCharArray(), c, writer, index);
+		}
 	}
 
 	/**
@@ -1330,7 +1557,12 @@ public final class StringTools {
 	 * String#removeFirstOccurrenceOn(char, StringBuffer)
 	 */
 	public static void removeFirstOccurrenceOn(String string, char c, StringBuffer sb) {
-		removeFirstOccurrenceOn(string.toCharArray(), c, sb);
+		int index = string.indexOf(c);
+		if (index == -1) {
+			sb.append(string);
+		} else {
+			removeFirstOccurrenceOn_(string.toCharArray(), c, sb, index);
+		}
 	}
 
 	/**
@@ -1339,7 +1571,12 @@ public final class StringTools {
 	 * String#removeFirstOccurrenceOn(char, StringBuilder)
 	 */
 	public static void removeFirstOccurrenceOn(String string, char c, StringBuilder sb) {
-		removeFirstOccurrenceOn(string.toCharArray(), c, sb);
+		int index = string.indexOf(c);
+		if (index == -1) {
+			sb.append(string);
+		} else {
+			removeFirstOccurrenceOn_(string.toCharArray(), c, sb, index);
+		}
 	}
 
 	/**
@@ -1353,19 +1590,18 @@ public final class StringTools {
 			// character not found
 			return string;
 		}
-
-		int len = string.length - 1;
-		char[] result = new char[len];
+		int last = string.length - 1;
+		char[] result = new char[last];
 		if (index == 0) {
 			// character found at the front of string
-			System.arraycopy(string, 1, result, 0, len);
-		} else if (index == len) {
+			System.arraycopy(string, 1, result, 0, last);
+		} else if (index == last) {
 			// character found at the end of string
-			System.arraycopy(string, 0, result, 0, len);
+			System.arraycopy(string, 0, result, 0, last);
 		} else {
 			// character found somewhere in the middle of the string
 			System.arraycopy(string, 0, result, 0, index);
-			System.arraycopy(string, index + 1, result, index, len - index);
+			System.arraycopy(string, index + 1, result, index, last - index);
 		}
 		return result;
 	}
@@ -1378,22 +1614,24 @@ public final class StringTools {
 	public static void removeFirstOccurrenceOn(char[] string, char c, Writer writer) {
 		int index = CollectionTools.indexOf(string, c);
 		if (index == -1) {
-			// character not found
 			writeStringOn(string, writer);
-			return;
+		} else {
+			removeFirstOccurrenceOn_(string, c, writer, index);
 		}
+	}
 
-		int len = string.length - 1;
+	private static void removeFirstOccurrenceOn_(char[] string, char c, Writer writer, int index) {
+		int last = string.length - 1;
 		if (index == 0) {
 			// character found at the front of string
-			writeStringOn(string, 1, len, writer);
-		} else if (index == len) {
+			writeStringOn(string, 1, last, writer);
+		} else if (index == last) {
 			// character found at the end of string
-			writeStringOn(string, 0, len, writer);
+			writeStringOn(string, 0, last, writer);
 		} else {
 			// character found somewhere in the middle of the string
 			writeStringOn(string, 0, index, writer);
-			writeStringOn(string, index + 1, len - index, writer);
+			writeStringOn(string, index + 1, last - index, writer);
 		}
 	}
 
@@ -1405,22 +1643,24 @@ public final class StringTools {
 	public static void removeFirstOccurrenceOn(char[] string, char c, StringBuffer sb) {
 		int index = CollectionTools.indexOf(string, c);
 		if (index == -1) {
-			// character not found
 			sb.append(string);
-			return;
+		} else {
+			removeFirstOccurrenceOn_(string, c, sb, index);
 		}
+	}
 
-		int len = string.length - 1;
+	private static void removeFirstOccurrenceOn_(char[] string, char c, StringBuffer sb, int index) {
+		int last = string.length - 1;
 		if (index == 0) {
 			// character found at the front of string
-			sb.append(string, 1, len);
-		} else if (index == len) {
+			sb.append(string, 1, last);
+		} else if (index == last) {
 			// character found at the end of string
-			sb.append(string, 0, len);
+			sb.append(string, 0, last);
 		} else {
 			// character found somewhere in the middle of the string
 			sb.append(string, 0, index);
-			sb.append(string, index + 1, len - index);
+			sb.append(string, index + 1, last - index);
 		}
 	}
 
@@ -1432,22 +1672,24 @@ public final class StringTools {
 	public static void removeFirstOccurrenceOn(char[] string, char c, StringBuilder sb) {
 		int index = CollectionTools.indexOf(string, c);
 		if (index == -1) {
-			// character not found
 			sb.append(string);
-			return;
+		} else {
+			removeFirstOccurrenceOn_(string, c, sb, index);
 		}
+	}
 
-		int len = string.length - 1;
+	private static void removeFirstOccurrenceOn_(char[] string, char c, StringBuilder sb, int index) {
+		int last = string.length - 1;
 		if (index == 0) {
 			// character found at the front of string
-			sb.append(string, 1, len);
-		} else if (index == len) {
+			sb.append(string, 1, last);
+		} else if (index == last) {
 			// character found at the end of string
-			sb.append(string, 0, len);
+			sb.append(string, 0, last);
 		} else {
 			// character found somewhere in the middle of the string
 			sb.append(string, 0, index);
-			sb.append(string, index + 1, len - index);
+			sb.append(string, index + 1, last - index);
 		}
 	}
 
@@ -1457,7 +1699,8 @@ public final class StringTools {
 	 * String#removeAllOccurrences(char)
 	 */
 	public static String removeAllOccurrences(String string, char c) {
-		return new String(removeAllOccurrences(string.toCharArray(), c));
+		int first = string.indexOf(c);
+		return (first == -1) ? string : new String(removeAllOccurrences_(string.toCharArray(), c, first));
 	}
 
 	/**
@@ -1466,7 +1709,12 @@ public final class StringTools {
 	 * String#removeAllOccurrencesOn(char, Writer)
 	 */
 	public static void removeAllOccurrencesOn(String string, char c, Writer writer) {
-		removeAllOccurrencesOn(string.toCharArray(), c, writer);
+		int first = string.indexOf(c);
+		if (first == -1) {
+			writeStringOn(string, writer);
+		} else {
+			removeAllOccurrencesOn_(string.toCharArray(), c, first, writer);
+		}
 	}
 
 	/**
@@ -1475,7 +1723,12 @@ public final class StringTools {
 	 * String#removeAllOccurrencesOn(char, StringBuffer)
 	 */
 	public static void removeAllOccurrencesOn(String string, char c, StringBuffer sb) {
-		removeAllOccurrencesOn(string.toCharArray(), c, sb);
+		int first = string.indexOf(c);
+		if (first == -1) {
+			sb.append(string);
+		} else {
+			removeAllOccurrencesOn_(string.toCharArray(), c, first, sb);
+		}
 	}
 
 	/**
@@ -1484,7 +1737,12 @@ public final class StringTools {
 	 * String#removeAllOccurrencesOn(char, StringBuilder)
 	 */
 	public static void removeAllOccurrencesOn(String string, char c, StringBuilder sb) {
-		removeAllOccurrencesOn(string.toCharArray(), c, sb);
+		int first = string.indexOf(c);
+		if (first == -1) {
+			sb.append(string);
+		} else {
+			removeAllOccurrencesOn_(string.toCharArray(), c, first, sb);
+		}
 	}
 
 	/**
@@ -1493,12 +1751,17 @@ public final class StringTools {
 	 * String#removeAllOccurrences(char)
 	 */
 	public static char[] removeAllOccurrences(char[] string, char c) {
+		int first = CollectionTools.indexOf(string, c);
+		return (first == -1) ? string : removeAllOccurrences_(string, c, first);
+	}
+
+	/*
+	 * The index of the first matching character is passed in.
+	 */
+	private static char[] removeAllOccurrences_(char[] string, char c, int first) {
 		StringBuilder sb = new StringBuilder(string.length);
-		removeAllOccurrencesOn(string, c, sb);
-		int len = sb.length();
-		char[] result = new char[len];
-		sb.getChars(0, len, result, 0);
-		return result;
+		removeAllOccurrencesOn_(string, c, first, sb);
+		return convertToCharArray(sb);
 	}
 
 	/**
@@ -1508,11 +1771,22 @@ public final class StringTools {
 	 * String#removeAllOccurrencesOn(char, Writer)
 	 */
 	public static void removeAllOccurrencesOn(char[] string, char c, Writer writer) {
-		removeAllOccurrencesOnInternal(string, c, writer);
+		int first = CollectionTools.indexOf(string, c);
+		if (first == -1) {
+			writeStringOn(string, writer);
+		} else {
+			removeAllOccurrencesOn_(string, c, first, writer);
+		}
 	}
 
-	private static void removeAllOccurrencesOnInternal(char[] string, char c, Writer writer) {
-		for (char d : string) {
+	/*
+	 * The index of the first matching character is passed in.
+	 */
+	private static void removeAllOccurrencesOn_(char[] string, char c, int first, Writer writer) {
+		writeStringOn(string, 0, first, writer);
+		int len = string.length;
+		for (int i = first; i < len; i++) {
+			char d = string[i];
 			if (d != c) {
 				writeCharOn(d, writer);
 			}
@@ -1526,7 +1800,22 @@ public final class StringTools {
 	 * String#removeAllOccurrencesOn(char, StringBuffer)
 	 */
 	public static void removeAllOccurrencesOn(char[] string, char c, StringBuffer sb) {
-		for (char d : string) {
+		int first = CollectionTools.indexOf(string, c);
+		if (first == -1) {
+			sb.append(string);
+		} else {
+			removeAllOccurrencesOn_(string, c, first, sb);
+		}
+	}
+
+	/*
+	 * The index of the first matching character is passed in.
+	 */
+	private static void removeAllOccurrencesOn_(char[] string, char c, int first, StringBuffer sb) {
+		sb.append(string, 0, first);
+		int len = string.length;
+		for (int i = first; i < len; i++) {
+			char d = string[i];
 			if (d != c) {
 				sb.append(d);
 			}
@@ -1536,11 +1825,26 @@ public final class StringTools {
 	/**
 	 * Remove all occurrences of the specified character
 	 * from the specified string and append the result to the
-	 * specified string buffer.
+	 * specified string builder.
 	 * String#removeAllOccurrencesOn(char, StringBuilder)
 	 */
 	public static void removeAllOccurrencesOn(char[] string, char c, StringBuilder sb) {
-		for (char d : string) {
+		int first = CollectionTools.indexOf(string, c);
+		if (first == -1) {
+			sb.append(string);
+		} else {
+			removeAllOccurrencesOn_(string, c, first, sb);
+		}
+	}
+
+	/*
+	 * The index of the first matching character is passed in.
+	 */
+	private static void removeAllOccurrencesOn_(char[] string, char c, int first, StringBuilder sb) {
+		sb.append(string, 0, first);
+		int len = string.length;
+		for (int i = first; i < len; i++) {
+			char d = string[i];
 			if (d != c) {
 				sb.append(d);
 			}
@@ -1553,6 +1857,246 @@ public final class StringTools {
 	 */
 	public static String removeAllSpaces(String string) {
 		return removeAllOccurrences(string, ' ');
+	}
+
+	/**
+	 * Remove all the spaces
+	 * from the specified string and write the result to the specified writer.
+	 * String#removeAllSpacesOn(Writer)
+	 */
+	public static void removeAllSpacesOn(String string, Writer writer) {
+		removeAllOccurrencesOn(string, ' ', writer);
+	}
+
+	/**
+	 * Remove all the spaces
+	 * from the specified string and write the result to the specified
+	 * string buffer.
+	 * String#removeAllSpacesOn(StringBuffer)
+	 */
+	public static void removeAllSpacesOn(String string, StringBuffer sb) {
+		removeAllOccurrencesOn(string, ' ', sb);
+	}
+
+	/**
+	 * Remove all the spaces
+	 * from the specified string and write the result to the specified
+	 * string builder.
+	 * String#removeAllSpacesOn(StringBuilder)
+	 */
+	public static void removeAllSpacesOn(String string, StringBuilder sb) {
+		removeAllOccurrencesOn(string, ' ', sb);
+	}
+
+	/**
+	 * Remove all the spaces from the specified string and return the result.
+	 * String#removeAllSpaces()
+	 */
+	public static char[] removeAllSpaces(char[] string) {
+		return removeAllOccurrences(string, ' ');
+	}
+
+	/**
+	 * Remove all the spaces
+	 * from the specified string and write the result to the
+	 * specified writer.
+	 * String#removeAllSpacesOn(Writer)
+	 */
+	public static void removeAllSpacesOn(char[] string, Writer writer) {
+		removeAllOccurrencesOn(string, ' ', writer);
+	}
+
+	/**
+	 * Remove all the spaces
+	 * from the specified string and append the result to the
+	 * specified string buffer.
+	 * String#removeAllSpacesOn(StringBuffer)
+	 */
+	public static void removeAllSpacesOn(char[] string, StringBuffer sb) {
+		removeAllOccurrencesOn(string, ' ', sb);
+	}
+
+	/**
+	 * Remove all the spaces
+	 * from the specified string and append the result to the
+	 * specified string builder.
+	 * String#removeAllSpacesOn(StringBuilder)
+	 */
+	public static void removeAllSpacesOn(char[] string, StringBuilder sb) {
+		removeAllOccurrencesOn(string, ' ', sb);
+	}
+
+	/**
+	 * Remove all the whitespace from the specified string and return the result.
+	 * String#removeAllWhitespace()
+	 */
+	public static String removeAllWhitespace(String string) {
+		char[] string2 = string.toCharArray();
+		int first = indexOfWhitespace_(string2);
+		return (first == -1) ? string : new String(removeAllWhitespace_(string2, first));
+	}
+
+	/**
+	 * Remove all the whitespace
+	 * from the specified string and append the result to the
+	 * specified writer.
+	 * String#removeAllWhitespaceOn(Writer)
+	 */
+	public static void removeAllWhitespaceOn(String string, Writer writer) {
+		char[] string2 = string.toCharArray();
+		int first = indexOfWhitespace_(string2);
+		if (first == -1) {
+			writeStringOn(string, writer);
+		} else {
+			removeAllWhitespaceOn_(string2, first, writer);
+		}
+	}
+
+	/**
+	 * Remove all the whitespace
+	 * from the specified string and append the result to the
+	 * specified string buffer.
+	 * String#removeAllWhitespaceOn(StringBuffer)
+	 */
+	public static void removeAllWhitespaceOn(String string, StringBuffer sb) {
+		char[] string2 = string.toCharArray();
+		int first = indexOfWhitespace_(string2);
+		if (first == -1) {
+			sb.append(string);
+		} else {
+			removeAllWhitespaceOn_(string2, first, sb);
+		}
+	}
+
+	/**
+	 * Remove all the whitespace
+	 * from the specified string and append the result to the
+	 * specified string builder.
+	 * String#removeAllWhitespaceOn(StringBuilder)
+	 */
+	public static void removeAllWhitespaceOn(String string, StringBuilder sb) {
+		char[] string2 = string.toCharArray();
+		int first = indexOfWhitespace_(string2);
+		if (first == -1) {
+			sb.append(string);
+		} else {
+			removeAllWhitespaceOn_(string2, first, sb);
+		}
+	}
+
+	/**
+	 * Remove all the whitespace from the specified string and return the result.
+	 * String#removeAllWhitespace()
+	 */
+	public static char[] removeAllWhitespace(char[] string) {
+		int first = indexOfWhitespace_(string);
+		return (first == -1) ? string : removeAllWhitespace_(string, first);
+	}
+
+	private static int indexOfWhitespace_(char[] string) {
+		int len = string.length;
+		for (int i = 0; i < len; i++) {
+			if (Character.isWhitespace(string[i])) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/*
+	 * The index of the first non-whitespace character is passed in.
+	 */
+	private static char[] removeAllWhitespace_(char[] string, int first) {
+		StringBuilder sb = new StringBuilder(string.length);
+		removeAllWhitespaceOn_(string, first, sb);
+		return convertToCharArray(sb);
+	}
+
+	/**
+	 * Remove all the whitespace
+	 * from the specified string and append the result to the
+	 * specified writer.
+	 * String#removeAllWhitespaceOn(Writer)
+	 */
+	public static void removeAllWhitespaceOn(char[] string, Writer writer) {
+		int first = indexOfWhitespace_(string);
+		if (first == -1) {
+			writeStringOn(string, writer);
+		} else {
+			removeAllWhitespaceOn_(string, first, writer);
+		}
+	}
+
+	/*
+	 * The index of the first non-whitespace character is passed in.
+	 */
+	private static void removeAllWhitespaceOn_(char[] string, int first, Writer writer) {
+		writeStringOn(string, 0, first, writer);
+		int len = string.length;
+		for (int i = first; i < len; i++) {
+			char c = string[i];
+			if ( ! Character.isWhitespace(c)) {
+				writeCharOn(c, writer);
+			}
+		}
+	}
+
+	/**
+	 * Remove all the whitespace
+	 * from the specified string and append the result to the
+	 * specified string buffer.
+	 * String#removeAllWhitespaceOn(StringBuffer)
+	 */
+	public static void removeAllWhitespaceOn(char[] string, StringBuffer sb) {
+		int first = indexOfWhitespace_(string);
+		if (first == -1) {
+			sb.append(string);
+		} else {
+			removeAllWhitespaceOn_(string, first, sb);
+		}
+	}
+
+	/*
+	 * The index of the first non-whitespace character is passed in.
+	 */
+	private static void removeAllWhitespaceOn_(char[] string, int first, StringBuffer sb) {
+		sb.append(string, 0, first);
+		int len = string.length;
+		for (int i = first; i < len; i++) {
+			char c = string[i];
+			if ( ! Character.isWhitespace(c)) {
+				sb.append(c);
+			}
+		}
+	}
+
+	/**
+	 * Remove all the whitespace
+	 * from the specified string and append the result to the
+	 * specified string builder.
+	 * String#removeAllWhitespaceOn(StringBuilder)
+	 */
+	public static void removeAllWhitespaceOn(char[] string, StringBuilder sb) {
+		int first = indexOfWhitespace_(string);
+		if (first == -1) {
+			sb.append(string);
+		} else {
+			removeAllWhitespaceOn_(string, first, sb);
+		}
+	}
+
+	/*
+	 * The index of the first non-whitespace character is passed in.
+	 */
+	private static void removeAllWhitespaceOn_(char[] string, int first, StringBuilder sb) {
+		sb.append(string, 0, first);
+		int len = string.length;
+		for (int i = first; i < len; i++) {
+			char c = string[i];
+			if ( ! Character.isWhitespace(c)) {
+				sb.append(c);
+			}
+		}
 	}
 
 
@@ -1570,7 +2114,7 @@ public final class StringTools {
 	 * Return the length of the common prefix shared by the specified strings.
 	 */
 	public static int commonPrefixLength(char[] s1, char[] s2) {
-		return commonPrefixLengthInternal(s1, s2, Math.min(s1.length, s2.length));
+		return commonPrefixLength_(s1, s2, Math.min(s1.length, s2.length));
 	}
 
 	/**
@@ -1587,15 +2131,15 @@ public final class StringTools {
 	 * but limit the length to the specified maximum.
 	 */
 	public static int commonPrefixLength(char[] s1, char[] s2, int max) {
-		return commonPrefixLengthInternal(s1, s2, Math.min(max, Math.min(s1.length, s2.length)));
+		return commonPrefixLength_(s1, s2, Math.min(max, Math.min(s1.length, s2.length)));
 	}
 
-	/**
+	/*
 	 * Return the length of the common prefix shared by the specified strings;
 	 * but limit the length to the specified maximum. Assume the specified
 	 * maximum is less than the lengths of the specified strings.
 	 */
-	private static int commonPrefixLengthInternal(char[] s1, char[] s2, int max) {
+	private static int commonPrefixLength_(char[] s1, char[] s2, int max) {
 		for (int i = 0; i < max; i++) {
 			if (s1[i] != s2[i]) {
 				return i;
@@ -1607,10 +2151,10 @@ public final class StringTools {
 
 	// ********** capitalization **********
 
-	/**
+	/*
 	 * no zero-length check or lower case check
 	 */
-	private static char[] capitalizeInternal(char[] string) {
+	private static char[] capitalize_(char[] string) {
 		string[0] = Character.toUpperCase(string[0]);
 		return string;
 	}
@@ -1623,7 +2167,7 @@ public final class StringTools {
 		if ((string.length == 0) || Character.isUpperCase(string[0])) {
 			return string;
 		}
-		return capitalizeInternal(string);
+		return capitalize_(string);
 	}
 
 	/**
@@ -1634,21 +2178,13 @@ public final class StringTools {
 		if ((string.length() == 0) || Character.isUpperCase(string.charAt(0))) {
 			return string;
 		}
-		return new String(capitalizeInternal(string.toCharArray()));
+		return new String(capitalize_(string.toCharArray()));
 	}
 
-	/**
+	/*
 	 * no zero-length check or upper case check
 	 */
-	private static void capitalizeOnInternal(char[] string, StringBuffer sb) {
-		sb.append(Character.toUpperCase(string[0]));
-		sb.append(string, 1, string.length - 1);
-	}
-
-	/**
-	 * no zero-length check or upper case check
-	 */
-	private static void capitalizeOnInternal(char[] string, StringBuilder sb) {
+	private static void capitalizeOn_(char[] string, StringBuffer sb) {
 		sb.append(Character.toUpperCase(string[0]));
 		sb.append(string, 1, string.length - 1);
 	}
@@ -1664,22 +2200,7 @@ public final class StringTools {
 		if (Character.isUpperCase(string[0])) {
 			sb.append(string);
 		} else {
-			capitalizeOnInternal(string, sb);
-		}
-	}
-
-	/**
-	 * Append the specified string to the specified string buffer
-	 * with its first letter capitalized.
-	 */
-	public static void capitalizeOn(char[] string, StringBuilder sb) {
-		if (string.length == 0) {
-			return;
-		}
-		if (Character.isUpperCase(string[0])) {
-			sb.append(string);
-		} else {
-			capitalizeOnInternal(string, sb);
+			capitalizeOn_(string, sb);
 		}
 	}
 
@@ -1695,14 +2216,37 @@ public final class StringTools {
 		if (Character.isUpperCase(string.charAt(0))) {
 			sb.append(string);
 		} else {
-			capitalizeOnInternal(string.toCharArray(), sb);
+			capitalizeOn_(string.toCharArray(), sb);
+		}
+	}
+
+	/*
+	 * no zero-length check or upper case check
+	 */
+	private static void capitalizeOn_(char[] string, StringBuilder sb) {
+		sb.append(Character.toUpperCase(string[0]));
+		sb.append(string, 1, string.length - 1);
+	}
+
+	/**
+	 * Append the specified string to the specified string builder
+	 * with its first letter capitalized.
+	 */
+	public static void capitalizeOn(char[] string, StringBuilder sb) {
+		if (string.length == 0) {
+			return;
+		}
+		if (Character.isUpperCase(string[0])) {
+			sb.append(string);
+		} else {
+			capitalizeOn_(string, sb);
 		}
 	}
 
 	/**
-	 * Append the specified string to the specified string buffer
+	 * Append the specified string to the specified string builder
 	 * with its first letter capitalized.
-	 * String#capitalizeOn(StringBuilder)
+	 * String#capitalizeOn(StringBuffer)
 	 */
 	public static void capitalizeOn(String string, StringBuilder sb) {
 		if (string.length() == 0) {
@@ -1711,14 +2255,14 @@ public final class StringTools {
 		if (Character.isUpperCase(string.charAt(0))) {
 			sb.append(string);
 		} else {
-			capitalizeOnInternal(string.toCharArray(), sb);
+			capitalizeOn_(string.toCharArray(), sb);
 		}
 	}
 
-	/**
+	/*
 	 * no zero-length check or upper case check
 	 */
-	private static void capitalizeOnInternal(char[] string, Writer writer) {
+	private static void capitalizeOn_(char[] string, Writer writer) {
 		writeCharOn(Character.toUpperCase(string[0]), writer);
 		writeStringOn(string, 1, string.length - 1, writer);
 	}
@@ -1734,7 +2278,7 @@ public final class StringTools {
 		if (Character.isUpperCase(string[0])) {
 			writeStringOn(string, writer);
 		} else {
-			capitalizeOnInternal(string, writer);
+			capitalizeOn_(string, writer);
 		}
 	}
 
@@ -1750,19 +2294,19 @@ public final class StringTools {
 		if (Character.isUpperCase(string.charAt(0))) {
 			writeStringOn(string, writer);
 		} else {
-			capitalizeOnInternal(string.toCharArray(), writer);
+			capitalizeOn_(string.toCharArray(), writer);
 		}
 	}
 
-	/**
+	/*
 	 * no zero-length check or lower case check
 	 */
-	private static char[] uncapitalizeInternal(char[] string) {
+	private static char[] uncapitalize_(char[] string) {
 		string[0] = Character.toLowerCase(string[0]);
 		return string;
 	}
 
-	private static boolean stringNeedNotBeUncapitalized(char[] string) {
+	private static boolean stringNeedNotBeUncapitalized_(char[] string) {
 		if (string.length == 0) {
 			return true;
 		}
@@ -1786,13 +2330,13 @@ public final class StringTools {
 	 * in which case the string is returned unchanged.)
 	 */
 	public static char[] uncapitalize(char[] string) {
-		if (stringNeedNotBeUncapitalized(string)) {
+		if (stringNeedNotBeUncapitalized_(string)) {
 			return string;
 		}
-		return uncapitalizeInternal(string);
+		return uncapitalize_(string);
 	}
 
-	private static boolean stringNeedNotBeUncapitalized(String string) {
+	private static boolean stringNeedNotBeUncapitalized_(String string) {
 		if (string.length() == 0) {
 			return true;
 		}
@@ -1816,24 +2360,16 @@ public final class StringTools {
 	 * String#uncapitalize()
 	 */
 	public static String uncapitalize(String string) {
-		if (stringNeedNotBeUncapitalized(string)) {
+		if (stringNeedNotBeUncapitalized_(string)) {
 			return string;
 		}
-		return new String(uncapitalizeInternal(string.toCharArray()));
+		return new String(uncapitalize_(string.toCharArray()));
 	}
 
-	/**
+	/*
 	 * no zero-length check or lower case check
 	 */
-	private static void uncapitalizeOnInternal(char[] string, StringBuffer sb) {
-		sb.append(Character.toLowerCase(string[0]));
-		sb.append(string, 1, string.length - 1);
-	}
-
-	/**
-	 * no zero-length check or lower case check
-	 */
-	private static void uncapitalizeOnInternal(char[] string, StringBuilder sb) {
+	private static void uncapitalizeOn_(char[] string, StringBuffer sb) {
 		sb.append(Character.toLowerCase(string[0]));
 		sb.append(string, 1, string.length - 1);
 	}
@@ -1845,24 +2381,10 @@ public final class StringTools {
 	 * in which case the string is returned unchanged.)
 	 */
 	public static void uncapitalizeOn(char[] string, StringBuffer sb) {
-		if (stringNeedNotBeUncapitalized(string)) {
+		if (stringNeedNotBeUncapitalized_(string)) {
 			sb.append(string);
 		} else {
-			uncapitalizeOnInternal(string, sb);
-		}
-	}
-
-	/**
-	 * Append the specified string to the specified string buffer
-	 * with its first letter converted to lower case.
-	 * (Unless both the first and second letters are upper case,
-	 * in which case the string is returned unchanged.)
-	 */
-	public static void uncapitalizeOn(char[] string, StringBuilder sb) {
-		if (stringNeedNotBeUncapitalized(string)) {
-			sb.append(string);
-		} else {
-			uncapitalizeOnInternal(string, sb);
+			uncapitalizeOn_(string, sb);
 		}
 	}
 
@@ -1874,32 +2396,54 @@ public final class StringTools {
 	 * String#uncapitalizeOn(StringBuffer)
 	 */
 	public static void uncapitalizeOn(String string, StringBuffer sb) {
-		if (stringNeedNotBeUncapitalized(string)) {
+		if (stringNeedNotBeUncapitalized_(string)) {
 			sb.append(string);
 		} else {
-			uncapitalizeOnInternal(string.toCharArray(), sb);
+			uncapitalizeOn_(string.toCharArray(), sb);
 		}
 	}
 
+	/*
+	 * no zero-length check or lower case check
+	 */
+	private static void uncapitalizeOn_(char[] string, StringBuilder sb) {
+		sb.append(Character.toLowerCase(string[0]));
+		sb.append(string, 1, string.length - 1);
+	}
+
 	/**
-	 * Append the specified string to the specified string buffer
+	 * Append the specified string to the specified string builder
 	 * with its first letter converted to lower case.
 	 * (Unless both the first and second letters are upper case,
 	 * in which case the string is returned unchanged.)
-	 * String#uncapitalizeOn(StringBuilder)
 	 */
-	public static void uncapitalizeOn(String string, StringBuilder sb) {
-		if (stringNeedNotBeUncapitalized(string)) {
+	public static void uncapitalizeOn(char[] string, StringBuilder sb) {
+		if (stringNeedNotBeUncapitalized_(string)) {
 			sb.append(string);
 		} else {
-			uncapitalizeOnInternal(string.toCharArray(), sb);
+			uncapitalizeOn_(string, sb);
 		}
 	}
 
 	/**
+	 * Append the specified string to the specified string builder
+	 * with its first letter converted to lower case.
+	 * (Unless both the first and second letters are upper case,
+	 * in which case the string is returned unchanged.)
+	 * String#uncapitalizeOn(StringBuffer)
+	 */
+	public static void uncapitalizeOn(String string, StringBuilder sb) {
+		if (stringNeedNotBeUncapitalized_(string)) {
+			sb.append(string);
+		} else {
+			uncapitalizeOn_(string.toCharArray(), sb);
+		}
+	}
+
+	/*
 	 * no zero-length check or upper case check
 	 */
-	private static void uncapitalizeOnInternal(char[] string, Writer writer) {
+	private static void uncapitalizeOn_(char[] string, Writer writer) {
 		writeCharOn(Character.toLowerCase(string[0]), writer);
 		writeStringOn(string, 1, string.length - 1, writer);
 	}
@@ -1911,10 +2455,10 @@ public final class StringTools {
 	 * in which case the string is returned unchanged.)
 	 */
 	public static void uncapitalizeOn(char[] string, Writer writer) {
-		if (stringNeedNotBeUncapitalized(string)) {
+		if (stringNeedNotBeUncapitalized_(string)) {
 			writeStringOn(string, writer);
 		} else {
-			uncapitalizeOnInternal(string, writer);
+			uncapitalizeOn_(string, writer);
 		}
 	}
 
@@ -1926,10 +2470,10 @@ public final class StringTools {
 	 * String#uncapitalizeOn(Writer)
 	 */
 	public static void uncapitalizeOn(String string, Writer writer) {
-		if (stringNeedNotBeUncapitalized(string)) {
+		if (stringNeedNotBeUncapitalized_(string)) {
 			writeStringOn(string, writer);
 		} else {
-			uncapitalizeOnInternal(string.toCharArray(), writer);
+			uncapitalizeOn_(string.toCharArray(), writer);
 		}
 	}
 
@@ -1997,7 +2541,7 @@ public final class StringTools {
 		if ((string == null) || (string.length() == 0)) {
 			return true;
 		}
-		return stringIsEmptyInternal(string.toCharArray());
+		return stringIsEmpty_(string.toCharArray());
 	}
 
 	/**
@@ -2008,10 +2552,10 @@ public final class StringTools {
 		if ((string == null) || (string.length == 0)) {
 			return true;
 		}
-		return stringIsEmptyInternal(string);
+		return stringIsEmpty_(string);
 	}
 
-	private static boolean stringIsEmptyInternal(char[] s) {
+	private static boolean stringIsEmpty_(char[] s) {
 		for (int i = s.length; i-- > 0; ) {
 			if ( ! Character.isWhitespace(s[i])) {
 				return false;
@@ -2098,7 +2642,11 @@ public final class StringTools {
 	 * "largeProject" -> "LARGE_PROJECT"
 	 */
 	public static String convertCamelCaseToAllCaps(String camelCaseString) {
-		return new String(convertCamelCaseToAllCaps(camelCaseString.toCharArray()));
+		int len = camelCaseString.length();
+		if (len == 0) {
+			return camelCaseString;
+		}
+		return new String(convertCamelCaseToAllCaps_(camelCaseString.toCharArray(), len));
 	}
 
 	/**
@@ -2110,8 +2658,12 @@ public final class StringTools {
 		if (len == 0) {
 			return camelCaseString;
 		}
+		return convertCamelCaseToAllCaps_(camelCaseString, len);
+	}
+
+	private static char[] convertCamelCaseToAllCaps_(char[] camelCaseString, int len) {
 		StringBuilder sb = new StringBuilder(len * 2);
-		convertCamelCaseToAllCapsOnInternal(camelCaseString, len, sb);
+		convertCamelCaseToAllCapsOn_(camelCaseString, len, sb);
 		return convertToCharArray(sb);
 	}
 
@@ -2120,15 +2672,10 @@ public final class StringTools {
 	 * "largeProject" -> "LARGE_PROJECT"
 	 */
 	public static void convertCamelCaseToAllCapsOn(String camelCaseString, StringBuffer sb) {
-		convertCamelCaseToAllCapsOn(camelCaseString.toCharArray(), sb);
-	}
-
-	/**
-	 * Convert the specified "camel case" string to an "all caps" string:
-	 * "largeProject" -> "LARGE_PROJECT"
-	 */
-	public static void convertCamelCaseToAllCapsOn(String camelCaseString, StringBuilder sb) {
-		convertCamelCaseToAllCapsOn(camelCaseString.toCharArray(), sb);
+		int len = camelCaseString.length();
+		if (len != 0) {
+			convertCamelCaseToAllCapsOn_(camelCaseString.toCharArray(), len, sb);
+		}
 	}
 
 	/**
@@ -2138,7 +2685,33 @@ public final class StringTools {
 	public static void convertCamelCaseToAllCapsOn(char[] camelCaseString, StringBuffer sb) {
 		int len = camelCaseString.length;
 		if (len != 0) {
-			convertCamelCaseToAllCapsOnInternal(camelCaseString, len, sb);
+			convertCamelCaseToAllCapsOn_(camelCaseString, len, sb);
+		}
+	}
+
+	private static void convertCamelCaseToAllCapsOn_(char[] camelCaseString, int len, StringBuffer sb) {
+		char prev = 0;	// assume 0 is not a valid char
+		char c = 0;
+		char next = camelCaseString[0];
+		for (int i = 1; i <= len; i++) {	// NB: start at 1 and end at len!
+			c = next;
+			next = ((i == len) ? 0 : camelCaseString[i]);
+			if (camelCaseWordBreak_(prev, c, next)) {
+				sb.append('_');
+			}
+			sb.append(Character.toUpperCase(c));
+			prev = c;
+		}
+	}
+
+	/**
+	 * Convert the specified "camel case" string to an "all caps" string:
+	 * "largeProject" -> "LARGE_PROJECT"
+	 */
+	public static void convertCamelCaseToAllCapsOn(String camelCaseString, StringBuilder sb) {
+		int len = camelCaseString.length();
+		if (len != 0) {
+			convertCamelCaseToAllCapsOn_(camelCaseString.toCharArray(), len, sb);
 		}
 	}
 
@@ -2149,33 +2722,18 @@ public final class StringTools {
 	public static void convertCamelCaseToAllCapsOn(char[] camelCaseString, StringBuilder sb) {
 		int len = camelCaseString.length;
 		if (len != 0) {
-			convertCamelCaseToAllCapsOnInternal(camelCaseString, len, sb);
+			convertCamelCaseToAllCapsOn_(camelCaseString, len, sb);
 		}
 	}
 
-	private static void convertCamelCaseToAllCapsOnInternal(char[] camelCaseString, int len, StringBuffer sb) {
+	private static void convertCamelCaseToAllCapsOn_(char[] camelCaseString, int len, StringBuilder sb) {
 		char prev = 0;	// assume 0 is not a valid char
 		char c = 0;
 		char next = camelCaseString[0];
 		for (int i = 1; i <= len; i++) {	// NB: start at 1 and end at len!
 			c = next;
 			next = ((i == len) ? 0 : camelCaseString[i]);
-			if (camelCaseWordBreak(prev, c, next)) {
-				sb.append('_');
-			}
-			sb.append(Character.toUpperCase(c));
-			prev = c;
-		}
-	}
-
-	private static void convertCamelCaseToAllCapsOnInternal(char[] camelCaseString, int len, StringBuilder sb) {
-		char prev = 0;	// assume 0 is not a valid char
-		char c = 0;
-		char next = camelCaseString[0];
-		for (int i = 1; i <= len; i++) {	// NB: start at 1 and end at len!
-			c = next;
-			next = ((i == len) ? 0 : camelCaseString[i]);
-			if (camelCaseWordBreak(prev, c, next)) {
+			if (camelCaseWordBreak_(prev, c, next)) {
 				sb.append('_');
 			}
 			sb.append(Character.toUpperCase(c));
@@ -2188,7 +2746,10 @@ public final class StringTools {
 	 * "largeProject" -> "LARGE_PROJECT"
 	 */
 	public static void convertCamelCaseToAllCapsOn(String camelCaseString, Writer writer) {
-		convertCamelCaseToAllCapsOn(camelCaseString.toCharArray(), writer);
+		int len = camelCaseString.length();
+		if (len != 0) {
+			convertCamelCaseToAllCapsOn_(camelCaseString.toCharArray(), len, writer);
+		}
 	}
 
 	/**
@@ -2198,18 +2759,18 @@ public final class StringTools {
 	public static void convertCamelCaseToAllCapsOn(char[] camelCaseString, Writer writer) {
 		int len = camelCaseString.length;
 		if (len != 0) {
-			convertCamelCaseToAllCapsOnInternal(camelCaseString, len, writer);
+			convertCamelCaseToAllCapsOn_(camelCaseString, len, writer);
 		}
 	}
 
-	private static void convertCamelCaseToAllCapsOnInternal(char[] camelCaseString, int len, Writer writer) {
+	private static void convertCamelCaseToAllCapsOn_(char[] camelCaseString, int len, Writer writer) {
 		char prev = 0;	// assume 0 is not a valid char
 		char c = 0;
 		char next = camelCaseString[0];
 		for (int i = 1; i <= len; i++) {	// NB: start at 1 and end at len!
 			c = next;
 			next = ((i == len) ? 0 : camelCaseString[i]);
-			if (camelCaseWordBreak(prev, c, next)) {
+			if (camelCaseWordBreak_(prev, c, next)) {
 				writeCharOn('_', writer);
 			}
 			writeCharOn(Character.toUpperCase(c), writer);
@@ -2223,7 +2784,11 @@ public final class StringTools {
 	 * Limit the resulting string to the specified maximum length.
 	 */
 	public static String convertCamelCaseToAllCaps(String camelCaseString, int maxLength) {
-		return new String(convertCamelCaseToAllCaps(camelCaseString.toCharArray(), maxLength));
+		int len = camelCaseString.length();
+		if ((len == 0) || (maxLength == 0)) {
+			return camelCaseString;
+		}
+		return new String(convertCamelCaseToAllCaps_(camelCaseString.toCharArray(), maxLength, len));
 	}
 
 	/**
@@ -2236,8 +2801,12 @@ public final class StringTools {
 		if ((len == 0) || (maxLength == 0)) {
 			return camelCaseString;
 		}
+		return convertCamelCaseToAllCaps_(camelCaseString, maxLength, len);
+	}
+
+	private static char[] convertCamelCaseToAllCaps_(char[] camelCaseString, int maxLength, int len) {
 		StringBuilder sb = new StringBuilder(maxLength);
-		convertCamelCaseToAllCapsOnInternal(camelCaseString, maxLength, len, sb);
+		convertCamelCaseToAllCapsOn_(camelCaseString, maxLength, len, sb);
 		return convertToCharArray(sb);
 	}
 
@@ -2247,16 +2816,10 @@ public final class StringTools {
 	 * Limit the resulting string to the specified maximum length.
 	 */
 	public static void convertCamelCaseToAllCapsOn(String camelCaseString, int maxLength, StringBuffer sb) {
-		convertCamelCaseToAllCapsOn(camelCaseString.toCharArray(), maxLength, sb);
-	}
-
-	/**
-	 * Convert the specified "camel case" string to an "all caps" string:
-	 * "largeProject" -> "LARGE_PROJECT"
-	 * Limit the resulting string to the specified maximum length.
-	 */
-	public static void convertCamelCaseToAllCapsOn(String camelCaseString, int maxLength, StringBuilder sb) {
-		convertCamelCaseToAllCapsOn(camelCaseString.toCharArray(), maxLength, sb);
+		int len = camelCaseString.length();
+		if ((len != 0) && (maxLength != 0)) {
+			convertCamelCaseToAllCapsOn_(camelCaseString.toCharArray(), maxLength, len, sb);
+		}
 	}
 
 	/**
@@ -2267,30 +2830,18 @@ public final class StringTools {
 	public static void convertCamelCaseToAllCapsOn(char[] camelCaseString, int maxLength, StringBuffer sb) {
 		int len = camelCaseString.length;
 		if ((len != 0) && (maxLength != 0)) {
-			convertCamelCaseToAllCapsOnInternal(camelCaseString, maxLength, len, sb);
+			convertCamelCaseToAllCapsOn_(camelCaseString, maxLength, len, sb);
 		}
 	}
 
-	/**
-	 * Convert the specified "camel case" string to an "all caps" string:
-	 * "largeProject" -> "LARGE_PROJECT"
-	 * Limit the resulting string to the specified maximum length.
-	 */
-	public static void convertCamelCaseToAllCapsOn(char[] camelCaseString, int maxLength, StringBuilder sb) {
-		int len = camelCaseString.length;
-		if ((len != 0) && (maxLength != 0)) {
-			convertCamelCaseToAllCapsOnInternal(camelCaseString, maxLength, len, sb);
-		}
-	}
-
-	private static void convertCamelCaseToAllCapsOnInternal(char[] camelCaseString, int maxLength, int len, StringBuffer sb) {
+	private static void convertCamelCaseToAllCapsOn_(char[] camelCaseString, int maxLength, int len, StringBuffer sb) {
 		char prev = 0;	// assume 0 is not a valid char
 		char c = 0;
 		char next = camelCaseString[0];
 		for (int i = 1; i <= len; i++) {	// NB: start at 1 and end at len!
 			c = next;
 			next = ((i == len) ? 0 : camelCaseString[i]);
-			if (camelCaseWordBreak(prev, c, next)) {
+			if (camelCaseWordBreak_(prev, c, next)) {
 				sb.append('_');
 				if (sb.length() == maxLength) {
 					return;
@@ -2304,14 +2855,38 @@ public final class StringTools {
 		}
 	}
 
-	private static void convertCamelCaseToAllCapsOnInternal(char[] camelCaseString, int maxLength, int len, StringBuilder sb) {
+	/**
+	 * Convert the specified "camel case" string to an "all caps" string:
+	 * "largeProject" -> "LARGE_PROJECT"
+	 * Limit the resulting string to the specified maximum length.
+	 */
+	public static void convertCamelCaseToAllCapsOn(String camelCaseString, int maxLength, StringBuilder sb) {
+		int len = camelCaseString.length();
+		if ((len != 0) && (maxLength != 0)) {
+			convertCamelCaseToAllCapsOn_(camelCaseString.toCharArray(), maxLength, len, sb);
+		}
+	}
+
+	/**
+	 * Convert the specified "camel case" string to an "all caps" string:
+	 * "largeProject" -> "LARGE_PROJECT"
+	 * Limit the resulting string to the specified maximum length.
+	 */
+	public static void convertCamelCaseToAllCapsOn(char[] camelCaseString, int maxLength, StringBuilder sb) {
+		int len = camelCaseString.length;
+		if ((len != 0) && (maxLength != 0)) {
+			convertCamelCaseToAllCapsOn_(camelCaseString, maxLength, len, sb);
+		}
+	}
+
+	private static void convertCamelCaseToAllCapsOn_(char[] camelCaseString, int maxLength, int len, StringBuilder sb) {
 		char prev = 0;	// assume 0 is not a valid char
 		char c = 0;
 		char next = camelCaseString[0];
 		for (int i = 1; i <= len; i++) {	// NB: start at 1 and end at len!
 			c = next;
 			next = ((i == len) ? 0 : camelCaseString[i]);
-			if (camelCaseWordBreak(prev, c, next)) {
+			if (camelCaseWordBreak_(prev, c, next)) {
 				sb.append('_');
 				if (sb.length() == maxLength) {
 					return;
@@ -2331,7 +2906,10 @@ public final class StringTools {
 	 * Limit the resulting string to the specified maximum length.
 	 */
 	public static void convertCamelCaseToAllCapsOn(String camelCaseString, int maxLength, Writer writer) {
-		convertCamelCaseToAllCapsOn(camelCaseString.toCharArray(), maxLength, writer);
+		int len = camelCaseString.length();
+		if ((len != 0) && (maxLength != 0)) {
+			convertCamelCaseToAllCapsOn_(camelCaseString.toCharArray(), maxLength, len, writer);
+		}
 	}
 
 	/**
@@ -2342,11 +2920,11 @@ public final class StringTools {
 	public static void convertCamelCaseToAllCapsOn(char[] camelCaseString, int maxLength, Writer writer) {
 		int len = camelCaseString.length;
 		if ((len != 0) && (maxLength != 0)) {
-			convertCamelCaseToAllCapsOnInternal(camelCaseString, maxLength, len, writer);
+			convertCamelCaseToAllCapsOn_(camelCaseString, maxLength, len, writer);
 		}
 	}
 
-	private static void convertCamelCaseToAllCapsOnInternal(char[] camelCaseString, int maxLength, int len, Writer writer) {
+	private static void convertCamelCaseToAllCapsOn_(char[] camelCaseString, int maxLength, int len, Writer writer) {
 		char prev = 0;	// assume 0 is not a valid char
 		char c = 0;
 		char next = camelCaseString[0];
@@ -2354,7 +2932,7 @@ public final class StringTools {
 		for (int i = 1; i <= len; i++) {	// NB: start at 1 and end at len!
 			c = next;
 			next = ((i == len) ? 0 : camelCaseString[i]);
-			if (camelCaseWordBreak(prev, c, next)) {
+			if (camelCaseWordBreak_(prev, c, next)) {
 				writeCharOn('_', writer);
 				if (++writerLength == maxLength) {
 					return;
@@ -2368,7 +2946,7 @@ public final class StringTools {
 		}
 	}
 
-	/**
+	/*
 	 * Return whether the specified series of characters occur at
 	 * a "camel case" work break:
 	 *     "*aa" -> false
@@ -2383,7 +2961,7 @@ public final class StringTools {
 	 *     "AAa" -> true
 	 * where '*' == any char
 	 */
-	private static boolean camelCaseWordBreak(char prev, char c, char next) {
+	private static boolean camelCaseWordBreak_(char prev, char c, char next) {
 		if (prev == 0) {	// start of string
 			return false;
 		}
@@ -2405,7 +2983,7 @@ public final class StringTools {
 	 * Capitalize the first letter.
 	 */
 	public static String convertUnderscoresToCamelCase(String underscoreString) {
-		return new String(convertUnderscoresToCamelCase(underscoreString.toCharArray()));
+		return convertUnderscoresToCamelCase(underscoreString, true);
 	}
 
 	/**
@@ -2423,7 +3001,11 @@ public final class StringTools {
 	 * Optionally capitalize the first letter.
 	 */
 	public static String convertUnderscoresToCamelCase(String underscoreString, boolean capitalizeFirstLetter) {
-		return new String(convertUnderscoresToCamelCase(underscoreString.toCharArray(), capitalizeFirstLetter));
+		int len = underscoreString.length();
+		if (len == 0) {
+			return underscoreString;
+		}
+		return new String(convertUnderscoresToCamelCase_(underscoreString.toCharArray(), capitalizeFirstLetter, len));
 	}
 
 	/**
@@ -2436,8 +3018,12 @@ public final class StringTools {
 		if (len == 0) {
 			return underscoreString;
 		}
+		return convertUnderscoresToCamelCase_(underscoreString, capitalizeFirstLetter, len);
+	}
+
+	private static char[] convertUnderscoresToCamelCase_(char[] underscoreString, boolean capitalizeFirstLetter, int len) {
 		StringBuilder sb = new StringBuilder(len);
-		convertUnderscoresToCamelCaseOnInternal(underscoreString, capitalizeFirstLetter, len, sb);
+		convertUnderscoresToCamelCaseOn_(underscoreString, capitalizeFirstLetter, len, sb);
 		return convertToCharArray(sb);
 	}
 
@@ -2447,16 +3033,10 @@ public final class StringTools {
 	 * Optionally capitalize the first letter.
 	 */
 	public static void convertUnderscoresToCamelCaseOn(String underscoreString, boolean capitalizeFirstLetter, StringBuffer sb) {
-		convertUnderscoresToCamelCaseOn(underscoreString.toCharArray(), capitalizeFirstLetter, sb);
-	}
-
-	/**
-	 * Convert the specified "underscore" string to a "camel case" string:
-	 * "LARGE_PROJECT" -> "largeProject"
-	 * Optionally capitalize the first letter.
-	 */
-	public static void convertUnderscoresToCamelCaseOn(String underscoreString, boolean capitalizeFirstLetter, StringBuilder sb) {
-		convertUnderscoresToCamelCaseOn(underscoreString.toCharArray(), capitalizeFirstLetter, sb);
+		int len = underscoreString.length();
+		if (len != 0) {
+			convertUnderscoresToCamelCaseOn_(underscoreString.toCharArray(), capitalizeFirstLetter, len, sb);
+		}
 	}
 
 	/**
@@ -2467,23 +3047,11 @@ public final class StringTools {
 	public static void convertUnderscoresToCamelCaseOn(char[] underscoreString, boolean capitalizeFirstLetter, StringBuffer sb) {
 		int len = underscoreString.length;
 		if (len != 0) {
-			convertUnderscoresToCamelCaseOnInternal(underscoreString, capitalizeFirstLetter, len, sb);
+			convertUnderscoresToCamelCaseOn_(underscoreString, capitalizeFirstLetter, len, sb);
 		}
 	}
 
-	/**
-	 * Convert the specified "underscore" string to a "camel case" string:
-	 * "LARGE_PROJECT" -> "largeProject"
-	 * Optionally capitalize the first letter.
-	 */
-	public static void convertUnderscoresToCamelCaseOn(char[] underscoreString, boolean capitalizeFirstLetter, StringBuilder sb) {
-		int len = underscoreString.length;
-		if (len != 0) {
-			convertUnderscoresToCamelCaseOnInternal(underscoreString, capitalizeFirstLetter, len, sb);
-		}
-	}
-
-	private static void convertUnderscoresToCamelCaseOnInternal(char[] underscoreString, boolean capitalizeFirstLetter, int len, StringBuffer sb) {
+	private static void convertUnderscoresToCamelCaseOn_(char[] underscoreString, boolean capitalizeFirstLetter, int len, StringBuffer sb) {
 		char prev = 0;
 		char c = 0;
 		boolean first = true;
@@ -2510,7 +3078,31 @@ public final class StringTools {
 		}
 	}
 
-	private static void convertUnderscoresToCamelCaseOnInternal(char[] underscoreString, boolean capitalizeFirstLetter, int len, StringBuilder sb) {
+	/**
+	 * Convert the specified "underscore" string to a "camel case" string:
+	 * "LARGE_PROJECT" -> "largeProject"
+	 * Optionally capitalize the first letter.
+	 */
+	public static void convertUnderscoresToCamelCaseOn(String underscoreString, boolean capitalizeFirstLetter, StringBuilder sb) {
+		int len = underscoreString.length();
+		if (len != 0) {
+			convertUnderscoresToCamelCaseOn_(underscoreString.toCharArray(), capitalizeFirstLetter, len, sb);
+		}
+	}
+
+	/**
+	 * Convert the specified "underscore" string to a "camel case" string:
+	 * "LARGE_PROJECT" -> "largeProject"
+	 * Optionally capitalize the first letter.
+	 */
+	public static void convertUnderscoresToCamelCaseOn(char[] underscoreString, boolean capitalizeFirstLetter, StringBuilder sb) {
+		int len = underscoreString.length;
+		if (len != 0) {
+			convertUnderscoresToCamelCaseOn_(underscoreString, capitalizeFirstLetter, len, sb);
+		}
+	}
+
+	private static void convertUnderscoresToCamelCaseOn_(char[] underscoreString, boolean capitalizeFirstLetter, int len, StringBuilder sb) {
 		char prev = 0;
 		char c = 0;
 		boolean first = true;
@@ -2543,7 +3135,10 @@ public final class StringTools {
 	 * Optionally capitalize the first letter.
 	 */
 	public static void convertUnderscoresToCamelCaseOn(String underscoreString, boolean capitalizeFirstLetter, Writer writer) {
-		convertUnderscoresToCamelCaseOn(underscoreString.toCharArray(), capitalizeFirstLetter, writer);
+		int len = underscoreString.length();
+		if (len != 0) {
+			convertUnderscoresToCamelCaseOn_(underscoreString.toCharArray(), capitalizeFirstLetter, len, writer);
+		}
 	}
 
 	/**
@@ -2554,11 +3149,11 @@ public final class StringTools {
 	public static void convertUnderscoresToCamelCaseOn(char[] underscoreString, boolean capitalizeFirstLetter, Writer writer) {
 		int len = underscoreString.length;
 		if (len != 0) {
-			convertUnderscoresToCamelCaseOnInternal(underscoreString, capitalizeFirstLetter, len, writer);
+			convertUnderscoresToCamelCaseOn_(underscoreString, capitalizeFirstLetter, len, writer);
 		}
 	}
 
-	private static void convertUnderscoresToCamelCaseOnInternal(char[] underscoreString, boolean capitalizeFirstLetter, int len, Writer writer) {
+	private static void convertUnderscoresToCamelCaseOn_(char[] underscoreString, boolean capitalizeFirstLetter, int len, Writer writer) {
 		char prev = 0;
 		char c = 0;
 		boolean first = true;
@@ -2602,9 +3197,6 @@ public final class StringTools {
 		return result;
 	}
 
-
-	// ********** wrap Writer IOExceptions **********
-
 	private static void writeStringOn(char[] string, Writer writer) {
 		try {
 			writer.write(string);
@@ -2640,7 +3232,7 @@ public final class StringTools {
 
 	// ********** constructor **********
 
-	/**
+	/*
 	 * Suppress default constructor, ensuring non-instantiability.
 	 */
 	private StringTools() {

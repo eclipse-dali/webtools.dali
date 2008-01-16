@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -493,7 +493,7 @@ public class ClassToolsTests extends TestCase {
 		assertEquals('B', ClassTools.codeForClassNamed("byte"));
 	}
 
-	public void testClassForTypeDeclaration() throws Exception {
+	public void testClassForTypeDeclarationStringInt() throws Exception {
 		assertEquals(int.class, ClassTools.classForTypeDeclaration("int", 0));
 		assertEquals(int[].class, ClassTools.classForTypeDeclaration("int", 1));
 		assertEquals(int[][][].class, ClassTools.classForTypeDeclaration("int", 3));
@@ -510,7 +510,31 @@ public class ClassToolsTests extends TestCase {
 		}
 	}
 
-	public void testClassNameForTypeDeclaration() throws Exception {
+	public void testClassNameForTypeDeclarationString() throws Exception {
+		assertEquals("int", ClassTools.classNameForTypeDeclaration("int"));
+		assertEquals("[I", ClassTools.classNameForTypeDeclaration("int[]"));
+		assertEquals("[[I", ClassTools.classNameForTypeDeclaration("int [ ] [ ]"));
+
+		assertEquals("java.lang.Object", ClassTools.classNameForTypeDeclaration("java.lang.Object"));
+		assertEquals("[Ljava.lang.Object;", ClassTools.classNameForTypeDeclaration("java.lang.Object\t[]"));
+		assertEquals("[[Ljava.lang.Object;", ClassTools.classNameForTypeDeclaration("java.lang.Object\t[]\t[]"));
+	}
+
+	public void testArrayDepthForTypeDeclarationString() throws Exception {
+		assertEquals(0, ClassTools.arrayDepthForTypeDeclaration("java.lang.Object"));
+		assertEquals(1, ClassTools.arrayDepthForTypeDeclaration("java.lang.Object[]"));
+		assertEquals(3, ClassTools.arrayDepthForTypeDeclaration("java.lang.Object[][][]"));
+
+		assertEquals(0, ClassTools.arrayDepthForTypeDeclaration("int"));
+		assertEquals(1, ClassTools.arrayDepthForTypeDeclaration("int[]"));
+		assertEquals(3, ClassTools.arrayDepthForTypeDeclaration("int[][][]"));
+
+		assertEquals(0, ClassTools.arrayDepthForTypeDeclaration("float"));
+		assertEquals(1, ClassTools.arrayDepthForTypeDeclaration("float [ ]"));
+		assertEquals(3, ClassTools.arrayDepthForTypeDeclaration("float[] [] []"));
+	}
+
+	public void testClassNameForTypeDeclarationStringInt() throws Exception {
 		assertEquals(int.class.getName(), ClassTools.classNameForTypeDeclaration("int", 0));
 		assertEquals(int[].class.getName(), ClassTools.classNameForTypeDeclaration("int", 1));
 		assertEquals(int[][][].class.getName(), ClassTools.classNameForTypeDeclaration("int", 3));

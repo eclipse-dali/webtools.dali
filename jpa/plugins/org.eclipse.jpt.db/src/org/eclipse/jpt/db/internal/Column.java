@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,8 +13,10 @@ import java.text.Collator;
 
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
+import org.eclipse.datatools.modelbase.dbdefinition.PredefinedDataTypeDefinition;
 import org.eclipse.datatools.modelbase.sql.datatypes.DataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.PredefinedDataType;
+import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.JavaType;
 import org.eclipse.jpt.utility.internal.NameTools;
 
@@ -122,9 +124,19 @@ public final class Column extends DTPWrapper implements Comparable<Column> {
 	public JavaType javaType() {
 		DataType dataType = this.dtpColumn.getDataType();
 		return (dataType instanceof PredefinedDataType) ?
-			this.jpaSpecCompliantJavaType(DTPTools.javaTypeFor(((PredefinedDataType) dataType).getPrimitiveType()))
+			this.jpaSpecCompliantJavaType(this.javaType((PredefinedDataType) dataType))
 		:
 			DEFAULT_JAVA_TYPE;
+	}
+
+	private JavaType javaType(PredefinedDataType dataType) {
+		// this is just a bit hacky: moving from a type declaration to a class name to a type declaration...
+		String dtpJavaClassName = this.predefinedDataTypeDefinition(dataType).getJavaClassName();
+		return new JavaType(ClassTools.classNameForTypeDeclaration(dtpJavaClassName));
+	}
+
+	private PredefinedDataTypeDefinition predefinedDataTypeDefinition(PredefinedDataType dataType) {
+		return this.database().dtpDefinition().getPredefinedDataTypeDefinition(dataType.getName());
 	}
 
 	/**
@@ -151,6 +163,10 @@ public final class Column extends DTPWrapper implements Comparable<Column> {
 
 	boolean wraps( org.eclipse.datatools.modelbase.sql.tables.Column column) {
 		return this.dtpColumn == column;
+	}
+
+	public Database database() {
+		return this.table.database();
 	}
 
 	// ********** Comparable implementation **********
