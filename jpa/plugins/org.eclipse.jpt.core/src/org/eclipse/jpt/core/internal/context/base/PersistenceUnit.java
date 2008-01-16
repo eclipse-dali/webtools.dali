@@ -13,6 +13,7 @@ package org.eclipse.jpt.core.internal.context.base;
 import static org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType.DEFAULT;
 import static org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType.JTA;
 import static org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType.RESOURCE_LOCAL;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -343,6 +344,10 @@ public class PersistenceUnit extends JpaContextNode
 		return new CloneListIterator<IProperty>(this.properties);
 	}
 
+	public int propertiesSize() {
+		return this.properties.size();
+	}
+
 	public IProperty getProperty(String name) {
 		for(IProperty property : this.properties) {
 			if(name.equals(property.getName())) {
@@ -350,6 +355,10 @@ public class PersistenceUnit extends JpaContextNode
 			}
 		}
 		return null;
+	}
+	
+	public IProperty getProperty(int index) {
+		return this.properties.get(index);
 	}
 
 	protected XmlProperty getXmlProperty(String name) {
@@ -365,16 +374,24 @@ public class PersistenceUnit extends JpaContextNode
 		return null;
 	}
 
+	/**
+	 * Adds a Property with the given key and value.
+	 * Allows duplicate keys.
+	 */
 	public void putProperty(String key, String value) {
-		if( ! this.containsProperty(key)) {
-			XmlProperty xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
-			xmlProperty.setName(key);
-			xmlProperty.setValue(value);
-			
-			this.addXmlProperty(xmlProperty);
-			return;
-		}
-		this.putXmlProperty(key, value);
+		XmlProperty xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
+		xmlProperty.setName(key);
+		xmlProperty.setValue(value);
+		
+		this.addXmlProperty(xmlProperty);
+		return;
+	}
+	
+	public void putProperty(int index, String value) {
+		
+		IProperty property = this.getProperty(index);
+		
+		this.putXmlProperty(property.getName(), value);
 	}
 	
 	protected void putXmlProperty(String key, String value) {
