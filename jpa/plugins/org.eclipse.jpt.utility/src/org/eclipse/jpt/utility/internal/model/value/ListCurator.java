@@ -27,8 +27,8 @@ import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
  * by adapting a subject's state change events to a minimum set
  * of list change events.
  */
-public abstract class ListCurator 
-	extends AspectAdapter
+public abstract class ListCurator<S extends Model>
+	extends AspectAdapter<S>
 	implements ListValueModel
 {
 	/** How the list looked before the last state change */
@@ -43,15 +43,15 @@ public abstract class ListCurator
 	/**
 	 * Construct a Curator for the specified subject.
 	 */
-	protected ListCurator(Model subject) {
-		this(new StaticPropertyValueModel(subject));
+	protected ListCurator(S subject) {
+		this(new StaticPropertyValueModel<S>(subject));
 	}
 
 	/**
 	 * Construct a curator for the specified subject holder.
 	 * The subject holder cannot be null.
 	 */
-	protected ListCurator(PropertyValueModel subjectHolder) {
+	protected ListCurator(PropertyValueModel<S> subjectHolder) {
 		super(subjectHolder);
 		this.record = new ArrayList();
 		this.stateChangeListener = this.buildStateChangeListener();

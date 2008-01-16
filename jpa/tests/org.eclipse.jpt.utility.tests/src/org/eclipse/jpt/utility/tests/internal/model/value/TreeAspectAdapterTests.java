@@ -96,13 +96,13 @@ public class TreeAspectAdapterTests extends TestCase {
 			// this is not a typical aspect adapter - the value is determined by the aspect name
 			@Override
 			protected Iterator nodes_() {
-				if (this.treeName == TestSubject.NAMES_TREE) {
+				if (this.treeNames[0] == TestSubject.NAMES_TREE) {
 					return ((TestSubject) this.subject).namePaths();
 				}
-				if (this.treeName == TestSubject.DESCRIPTIONS_TREE) {
+				if (this.treeNames[0] == TestSubject.DESCRIPTIONS_TREE) {
 					return ((TestSubject) this.subject).descriptionPaths();
 				}
-				throw new IllegalStateException("invalid aspect name: " + this.treeName);
+				throw new IllegalStateException("invalid aspect name: " + this.treeNames[0]);
 			}
 		};
 	}

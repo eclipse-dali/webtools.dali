@@ -54,7 +54,7 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 
 	/** The name of the subject's properties that we use for the value. */
 	protected final String[] propertyNames;
-		private static final String[] EMPTY_PROPERTY_NAMES = new String[0];
+		protected static final String[] EMPTY_PROPERTY_NAMES = new String[0];
 
 	/** A listener that listens to the appropriate properties of the subject. */
 	protected final PropertyChangeListener propertyChangeListener;
@@ -193,8 +193,8 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 
     @Override
 	protected void engageSubject_() {
-		for (int i = this.propertyNames.length; i-- > 0; ) {
-			((Model) this.subject).addPropertyChangeListener(this.propertyNames[i], this.propertyChangeListener);
+    	for (String propertyName : this.propertyNames) {
+			((Model) this.subject).addPropertyChangeListener(propertyName, this.propertyChangeListener);
 		}
 	}
 
@@ -207,8 +207,8 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 
     @Override
 	protected void disengageSubject_() {
-		for (int i = this.propertyNames.length; i-- > 0; ) {
-			((Model) this.subject).removePropertyChangeListener(this.propertyNames[i], this.propertyChangeListener);
+    	for (String propertyName : this.propertyNames) {
+			((Model) this.subject).removePropertyChangeListener(propertyName, this.propertyChangeListener);
 		}
 	}
 

@@ -323,22 +323,22 @@ public class CollectionAspectAdapterTests extends TestCase {
 
 		@Override
 		protected Iterator<String> iterator_() {
-			if (this.collectionName == TestSubject.NAMES_COLLECTION) {
+			if (this.collectionNames[0] == TestSubject.NAMES_COLLECTION) {
 				return ((TestSubject) this.subject).names();
 			}
-			if (this.collectionName == TestSubject.DESCRIPTIONS_COLLECTION) {
+			if (this.collectionNames[0] == TestSubject.DESCRIPTIONS_COLLECTION) {
 				return ((TestSubject) this.subject).descriptions();
 			}
-			throw new IllegalStateException("invalid aspect name: " + this.collectionName);
+			throw new IllegalStateException("invalid aspect name: " + this.collectionNames[0]);
 		}
 
 		public void add(Object item) {
-			if (this.collectionName == TestSubject.NAMES_COLLECTION) {
+			if (this.collectionNames[0] == TestSubject.NAMES_COLLECTION) {
 				((TestSubject) this.subject).addName((String) item);
-			} else if (this.collectionName == TestSubject.DESCRIPTIONS_COLLECTION) {
+			} else if (this.collectionNames[0] == TestSubject.DESCRIPTIONS_COLLECTION) {
 				((TestSubject) this.subject).addDescription((String) item);
 			} else {
-				throw new IllegalStateException("invalid aspect name: " + this.collectionName);
+				throw new IllegalStateException("invalid aspect name: " + this.collectionNames[0]);
 			}
 		}
 
@@ -349,12 +349,12 @@ public class CollectionAspectAdapterTests extends TestCase {
 		}
 
 		public void remove(Object item) {
-			if (this.collectionName == TestSubject.NAMES_COLLECTION) {
+			if (this.collectionNames[0] == TestSubject.NAMES_COLLECTION) {
 				((TestSubject) this.subject).removeName((String) item);
-			} else if (this.collectionName == TestSubject.DESCRIPTIONS_COLLECTION) {
+			} else if (this.collectionNames[0] == TestSubject.DESCRIPTIONS_COLLECTION) {
 				((TestSubject) this.subject).removeDescription((String) item);
 			} else {
-				throw new IllegalStateException("invalid aspect name: " + this.collectionName);
+				throw new IllegalStateException("invalid aspect name: " + this.collectionNames[0]);
 			}
 		}
 

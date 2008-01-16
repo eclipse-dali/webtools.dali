@@ -418,22 +418,22 @@ public class ListAspectAdapterTests extends TestCase {
 
 		@Override
 		protected ListIterator listIterator_() {
-			if (this.listName == TestSubject.NAMES_LIST) {
+			if (this.listNames[0] == TestSubject.NAMES_LIST) {
 				return ((TestSubject) this.subject).names();
-			} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
+			} else if (this.listNames[0] == TestSubject.DESCRIPTIONS_LIST) {
 				return ((TestSubject) this.subject).descriptions();
 			} else {
-				throw new IllegalStateException("invalid aspect name: " + this.listName);
+				throw new IllegalStateException("invalid aspect name: " + this.listNames[0]);
 			}
 		}
 
 		public void add(int index, Object item) {
-			if (this.listName == TestSubject.NAMES_LIST) {
+			if (this.listNames[0] == TestSubject.NAMES_LIST) {
 				((TestSubject) this.subject).addName(index, (String) item);
-			} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
+			} else if (this.listNames[0] == TestSubject.DESCRIPTIONS_LIST) {
 				((TestSubject) this.subject).addDescription(index, (String) item);
 			} else {
-				throw new IllegalStateException("invalid aspect name: " + this.listName);
+				throw new IllegalStateException("invalid aspect name: " + this.listNames[0]);
 			}
 		}
 
@@ -444,12 +444,12 @@ public class ListAspectAdapterTests extends TestCase {
 		}
 
 		public Object remove(int index) {
-			if (this.listName == TestSubject.NAMES_LIST) {
+			if (this.listNames[0] == TestSubject.NAMES_LIST) {
 				return ((TestSubject) this.subject).removeName(index);
-			} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
+			} else if (this.listNames[0] == TestSubject.DESCRIPTIONS_LIST) {
 				return ((TestSubject) this.subject).removeDescription(index);
 			} else {
-				throw new IllegalStateException("invalid aspect name: " + this.listName);
+				throw new IllegalStateException("invalid aspect name: " + this.listNames[0]);
 			}
 		}
 
@@ -462,12 +462,12 @@ public class ListAspectAdapterTests extends TestCase {
 		}
 
 		public Object replace(int index, Object item) {
-			if (this.listName == TestSubject.NAMES_LIST) {
+			if (this.listNames[0] == TestSubject.NAMES_LIST) {
 				return ((TestSubject) this.subject).setName(index, (String) item);
-			} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
+			} else if (this.listNames[0] == TestSubject.DESCRIPTIONS_LIST) {
 				return ((TestSubject) this.subject).setDescription(index, (String) item);
 			} else {
-				throw new IllegalStateException("invalid aspect name: " + this.listName);
+				throw new IllegalStateException("invalid aspect name: " + this.listNames[0]);
 			}
 		}
 	}

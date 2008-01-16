@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 
@@ -21,6 +23,8 @@ import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 
 /**
  * This extension of AspectAdapter provides ListChange support.
+ * This allows us to convert a set of one or more collections into
+ * a single collection, LIST_VALUES.
  * 
  * The typical subclass will override the following methods:
  * #listIterator_()
@@ -39,14 +43,15 @@ import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
  *     override this method only if returning a zero when the
  *     subject is null is unacceptable
  */
-public abstract class ListAspectAdapter
-	extends AspectAdapter
+public abstract class ListAspectAdapter<S extends Model>
+	extends AspectAdapter<S>
 	implements ListValueModel
 {
 	/**
-	 * The name of the subject's list that we use for the value.
+	 * The name of the subject's lists that we use for the value.
 	 */
-	protected final String listName;
+	protected final String[] listNames;
+		protected static final String[] EMPTY_LIST_NAMES = new String[0];
 
 	/** A listener that listens to the subject's list aspect. */
 	protected final ListChangeListener listChangeListener;
@@ -60,8 +65,34 @@ public abstract class ListAspectAdapter
 	 * Construct a ListAspectAdapter for the specified subject
 	 * and list.
 	 */
-	protected ListAspectAdapter(String listName, Model subject) {
-		this(new StaticPropertyValueModel(subject), listName);
+	protected ListAspectAdapter(String listName, S subject) {
+		this(new String[] {listName}, subject);
+	}
+
+	/**
+	 * Construct a ListAspectAdapter for the specified subject
+	 * and lists.
+	 */
+	protected ListAspectAdapter(String[] listNames, S subject) {
+		this(new StaticPropertyValueModel<S>(subject), listNames);
+	}
+
+	/**
+	 * Construct a ListAspectAdapter for the specified subject holder
+	 * and lists.
+	 */
+	protected ListAspectAdapter(PropertyValueModel<S> subjectHolder, String... listNames) {
+		super(subjectHolder);
+		this.listNames = listNames;
+		this.listChangeListener = this.buildListChangeListener();
+	}
+
+	/**
+	 * Construct a ListAspectAdapter for the specified subject holder
+	 * and lists.
+	 */
+	protected ListAspectAdapter(PropertyValueModel<S> subjectHolder, Collection<String> listNames) {
+		this(subjectHolder, listNames.toArray(new String[listNames.size()]));
 	}
 
 	/**
@@ -70,18 +101,8 @@ public abstract class ListAspectAdapter
 	 * change for a particular subject; but the subject will change, resulting in
 	 * a new list.
 	 */
-	protected ListAspectAdapter(PropertyValueModel subjectHolder) {
-		this(subjectHolder, null);
-	}
-
-	/**
-	 * Construct a ListAspectAdapter for the specified subject holder
-	 * and list.
-	 */
-	protected ListAspectAdapter(PropertyValueModel subjectHolder, String listName) {
-		super(subjectHolder);
-		this.listName = listName;
-		this.listChangeListener = this.buildListChangeListener();
+	protected ListAspectAdapter(PropertyValueModel<S> subjectHolder) {
+		this(subjectHolder, EMPTY_LIST_NAMES);
 	}
 
 
@@ -113,7 +134,7 @@ public abstract class ListAspectAdapter
 			}
 			@Override
 			public String toString() {
-				return "list change listener: " + ListAspectAdapter.this.listName;
+				return "list change listener: " + Arrays.asList(ListAspectAdapter.this.listNames);
 			}
 		};
 	}
@@ -213,21 +234,26 @@ public abstract class ListAspectAdapter
 
 	@Override
 	protected void engageSubject_() {
-		if (this.listName != null) {
-			((Model) this.subject).addListChangeListener(this.listName, this.listChangeListener);
+    	for (String listName : this.listNames) {
+			((Model) this.subject).addListChangeListener(listName, this.listChangeListener);
 		}
 	}
 
 	@Override
 	protected void disengageSubject_() {
-		if (this.listName != null) {
-			((Model) this.subject).removeListChangeListener(this.listName, this.listChangeListener);
+    	for (String listName : this.listNames) {
+			((Model) this.subject).removeListChangeListener(listName, this.listChangeListener);
 		}
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.listName);
+		for (int i = 0; i < this.listNames.length; i++) {
+			if (i != 0) {
+				sb.append(", ");
+			}
+			sb.append(this.listNames[i]);
+		}
 	}
 
 
