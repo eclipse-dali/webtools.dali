@@ -36,7 +36,7 @@ public class IdClassImpl extends AbstractAnnotationResource<Type> implements IdC
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return IdClass.ANNOTATION_NAME;
 	}
 
 	public String getValue() {
@@ -47,7 +47,7 @@ public class IdClassImpl extends AbstractAnnotationResource<Type> implements IdC
 		String oldValue = this.value;
 		this.value = newValue;
 		this.valueAdapter.setValue(newValue);
-		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
+		firePropertyChanged(IdClass.VALUE_PROPERTY, oldValue, newValue);
 	}
 
 	public String getFullyQualifiedClass() {
@@ -57,7 +57,7 @@ public class IdClassImpl extends AbstractAnnotationResource<Type> implements IdC
 	private void setFullyQualifiedClass(String newQualifiedClass) {
 		String oldQualifiedClass = this.fullyQualifiedValue;
 		this.fullyQualifiedValue = newQualifiedClass;
-		firePropertyChanged(FULLY_QUALIFIED_CLASS_PROPERTY, oldQualifiedClass, newQualifiedClass);
+		firePropertyChanged(IdClass.FULLY_QUALIFIED_CLASS_PROPERTY, oldQualifiedClass, newQualifiedClass);
 	}
 
 	public ITextRange valueTextRange(CompilationUnit astRoot) {

@@ -11,10 +11,12 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IMappedSuperclass;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.resource.orm.EntityMappings;
+import org.eclipse.jpt.core.internal.resource.orm.IdClass;
 import org.eclipse.jpt.core.internal.resource.orm.MappedSuperclass;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -25,74 +27,50 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 public class XmlMappedSuperclass extends XmlTypeMapping<MappedSuperclass>
 	implements IMappedSuperclass
 {
-//	protected String idClass;
-//
-//	protected XmlIdClass idClassForXml;
-	
+	protected String idClass;
 	
 	public XmlMappedSuperclass(XmlPersistentType parent) {
 		super(parent);
 	}
 
-//
-//	protected void notifyChanged(Notification notification) {
-//		switch (notification.getFeatureID(IMappedSuperclass.class)) {
-//			case JpaCoreMappingsPackage.IMAPPED_SUPERCLASS__ID_CLASS :
-//				idClassChanged();
-//				break;
-//			default :
-//				break;
-//		}
-//		switch (notification.getFeatureID(XmlMappedSuperclass.class)) {
-//			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS_FOR_XML :
-//				xmlIdClassChanged();
-//				break;
-//			default :
-//				break;
-//		}
-//	}
-//
-//	protected void idClassChanged() {
-//		if (getIdClass() == null) {
-//			setIdClassForXml(null);
-//		}
-//		else {
-//			if (getIdClassForXml() == null) {
-//				setIdClassForXml(OrmFactory.eINSTANCE.createXmlIdClass());
-//			}
-//			getIdClassForXml().setValue(getIdClass());
-//		}
-//	}
-//
-//	protected void xmlIdClassChanged() {
-//		if (getIdClassForXml() == null) {
-//			setIdClass(null);
-//		}
-//	}
-//
-//	public String getIdClass() {
-//		return idClass;
-//	}
-//
-//	public void setIdClass(String newIdClass) {
-//		String oldIdClass = idClass;
-//		idClass = newIdClass;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS, oldIdClass, idClass));
-//	}
-//
-//	public XmlIdClass getIdClassForXml() {
-//		return idClassForXml;
-//	}
-	
 	public String getIdClass() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.idClass;
 	}
 	
-	public void setIdClass(String value) {
-		// TODO Auto-generated method stub
-		
+	public void setIdClass(String newIdClass) {
+		String oldIdClass = this.idClass;
+		this.idClass = newIdClass;
+		if (oldIdClass != newIdClass) {
+			if (this.idClassResource() != null) {
+				this.idClassResource().setClassName(newIdClass);						
+				if (this.idClassResource().isAllFeaturesUnset()) {
+					removeIdClassResource();
+				}
+			}
+			else if (newIdClass != null) {
+				addIdClassResource();
+				idClassResource().setClassName(newIdClass);
+			}
+		}
+		firePropertyChanged(IEntity.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+	}
+	
+	protected void setIdClass_(String newIdClass) {
+		String oldIdClass = this.idClass;
+		this.idClass = newIdClass;
+		firePropertyChanged(IEntity.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+	}
+
+	protected IdClass idClassResource() {
+		return typeMappingResource().getIdClass();
+	}
+	
+	protected void addIdClassResource() {
+		typeMappingResource().setIdClass(OrmFactory.eINSTANCE.createIdClass());		
+	}
+	
+	protected void removeIdClassResource() {
+		typeMappingResource().setIdClass(null);
 	}
 
 	public String getKey() {
@@ -156,16 +134,6 @@ public class XmlMappedSuperclass extends XmlTypeMapping<MappedSuperclass>
 	public int xmlSequence() {
 		return 0;
 	}
-	
-	@Override
-	public void initialize(MappedSuperclass mappedSuperclass) {
-		super.initialize(mappedSuperclass);
-	}
-	
-	@Override
-	public void update(MappedSuperclass mappedSuperclass) {
-		super.update(mappedSuperclass);
-	}
 
 	protected Boolean metadataComplete(MappedSuperclass mappedSuperclass) {
 		return mappedSuperclass.getMetadataComplete();
@@ -182,6 +150,32 @@ public class XmlMappedSuperclass extends XmlTypeMapping<MappedSuperclass>
 		persistentType().initialize(mappedSuperclass);
 		entityMappings.getMappedSuperclasses().add(mappedSuperclass);
 		return mappedSuperclass;
+	}
+
+	
+	
+	@Override
+	public void initialize(MappedSuperclass mappedSuperclass) {
+		super.initialize(mappedSuperclass);
+		this.initializeIdClass(this.idClassResource());
+	}
+	
+	protected void initializeIdClass(IdClass idClassResource) {
+		this.idClass = this.idClass(idClassResource);	
+	}
+	
+	@Override
+	public void update(MappedSuperclass mappedSuperclass) {
+		super.update(mappedSuperclass);
+		this.updateIdClass(this.idClassResource());
+	}
+	
+	protected void updateIdClass(IdClass idClassResource) {
+		this.setIdClass_(this.idClass(idClassResource));
+	}
+
+	protected String idClass(IdClass idClassResource) {
+		return idClassResource == null ? null : idClassResource.getClassName();
 	}
 
 }

@@ -11,6 +11,8 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.context.base.IMappedSuperclass;
+import org.eclipse.jpt.core.internal.resource.java.IdClass;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.MappedSuperclass;
@@ -22,16 +24,10 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 	implements IJavaMappedSuperclass
 {
 
-//	protected String idClass;
+	protected String idClass;
 
 	public JavaMappedSuperclass(IJavaPersistentType parent) {
 		super(parent);
-	}
-
-	@Override
-	public void initializeFromResource(JavaPersistentTypeResource persistentTypeResource) {
-		super.initializeFromResource(persistentTypeResource);
-//		this.idClass;
 	}
 
 	public boolean isMapped() {
@@ -59,17 +55,45 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 			JPA.POST_UPDATE,
 			JPA.POST_LOAD);
 	}
+	
+	public String getIdClass() {
+		return this.idClass;
+	}
+	
+	public void setIdClass(String newIdClass) {
+		String oldIdClass = this.idClass;
+		this.idClass = newIdClass;
+		if (newIdClass != oldIdClass) {
+			if (newIdClass != null) {
+				if (idClassResource() == null) {
+					addIdClassResource();
+				}
+				idClassResource().setValue(newIdClass);
+			}
+			else {
+				removeIdClassResource();
+			}
+		}
+		firePropertyChanged(IMappedSuperclass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+	}
+	
+	protected void setIdClass_(String newIdClass) {
+		String oldIdClass = this.idClass;
+		this.idClass = newIdClass;
+		firePropertyChanged(IMappedSuperclass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+	}
 
-//	public String getIdClass() {
-//		return this.idClass;
-//	}
-//
-//	public void setIdClass(String newIdClass) {
-//		String oldIdClass = idClass;
-//		idClass = newIdClass;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_MAPPED_SUPERCLASS__ID_CLASS, oldIdClass, idClass));
-//	}
+	protected IdClass idClassResource() {
+		return (IdClass) this.persistentTypeResource.annotation(IdClass.ANNOTATION_NAME);
+	}
+	
+	protected void addIdClassResource() {
+		this.persistentTypeResource.addAnnotation(IdClass.ANNOTATION_NAME);
+	}
+	
+	protected void removeIdClassResource() {
+		this.persistentTypeResource.removeAnnotation(IdClass.ANNOTATION_NAME);
+	}
 	
 	@Override
 	public Iterator<String> overridableAttributeNames() {
@@ -107,31 +131,34 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 			}
 		};
 	}
-	
-	public String getIdClass() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void setIdClass(String value) {
-		// TODO Auto-generated method stub
-		
+
+	@Override
+	public void initializeFromResource(JavaPersistentTypeResource persistentTypeResource) {
+		super.initializeFromResource(persistentTypeResource);
+		this.initializeIdClass(persistentTypeResource);
 	}
 
+	protected void initializeIdClass(JavaPersistentTypeResource typeResource) {
+		IdClass idClassResource = (IdClass) typeResource.annotation(IdClass.ANNOTATION_NAME);
+		if (idClassResource != null) {
+			this.idClass = idClassResource.getValue();
+		}
+	}
 
 	@Override
 	public void update(JavaPersistentTypeResource persistentTypeResource) {
 		super.update(persistentTypeResource);
-		//this.updateIdClassFromJava(astRoot);
+		this.updateIdClass(persistentTypeResource);
 	}
-//
-//	private void updateIdClassFromJava(CompilationUnit astRoot) {
-//		if (this.idClassAnnotationAdapter.getAnnotation(astRoot) == null) {
-//			this.setIdClass(null);
-//		}
-//		else {
-//			this.setIdClass(this.idClassValueAdapter.getValue(astRoot));
-//		}
-//	}
+	
+	protected void updateIdClass(JavaPersistentTypeResource typeResource) {
+		IdClass idClass = (IdClass) typeResource.annotation(IdClass.ANNOTATION_NAME);
+		if (idClass != null) {
+			setIdClass_(idClass.getValue());
+		}
+		else {
+			setIdClass_(null);
+		}
+	}
 
 }

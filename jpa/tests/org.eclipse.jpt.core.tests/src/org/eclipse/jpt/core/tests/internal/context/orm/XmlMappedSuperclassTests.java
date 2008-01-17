@@ -305,4 +305,52 @@ public class XmlMappedSuperclassTests extends ContextModelTestCase
 		assertEquals(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, persistentTypes.next().mappingKey());
 		assertEquals(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, persistentTypes.next().mappingKey());
 	}
+	
+	public void testUpdateIdClass() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
+		XmlMappedSuperclass xmlMappedSuperclass = (XmlMappedSuperclass) xmlPersistentType.getMapping();
+		MappedSuperclass mappedSuperclassResource = ormResource().getEntityMappings().getMappedSuperclasses().get(0);		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
+
+		assertNull(xmlMappedSuperclass.getIdClass());
+		assertNull(mappedSuperclassResource.getIdClass());
+		
+		mappedSuperclassResource.setIdClass(OrmFactory.eINSTANCE.createIdClass());
+		
+		assertNull(xmlMappedSuperclass.getIdClass());
+		assertNotNull(mappedSuperclassResource.getIdClass());
+		
+		mappedSuperclassResource.getIdClass().setClassName("model.Foo");
+		assertEquals("model.Foo", xmlMappedSuperclass.getIdClass());
+		assertEquals("model.Foo", mappedSuperclassResource.getIdClass().getClassName());
+		
+		//test setting  @IdClass value to null, id-class tag is not removed
+		mappedSuperclassResource.getIdClass().setClassName(null);
+		assertNull(xmlMappedSuperclass.getIdClass());
+		assertNotNull(mappedSuperclassResource.getIdClass());
+		
+		//reset @IdClass value and then remove id-class tag
+		mappedSuperclassResource.setIdClass(OrmFactory.eINSTANCE.createIdClass());
+		mappedSuperclassResource.getIdClass().setClassName("model.Foo");
+		mappedSuperclassResource.setIdClass(null);
+		
+		assertNull(xmlMappedSuperclass.getIdClass());
+		assertNull(mappedSuperclassResource.getIdClass());
+	}
+	
+	public void testModifyIdClass() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
+		XmlMappedSuperclass xmlMappedSuperclass = (XmlMappedSuperclass) xmlPersistentType.getMapping();
+		MappedSuperclass mappedSuperclassResource = ormResource().getEntityMappings().getMappedSuperclasses().get(0);		assertNull(xmlMappedSuperclass.getSpecifiedMetadataComplete());
+
+		assertNull(xmlMappedSuperclass.getIdClass());
+		assertNull(mappedSuperclassResource.getIdClass());
+			
+		xmlMappedSuperclass.setIdClass("model.Foo");
+		assertEquals("model.Foo", mappedSuperclassResource.getIdClass().getClassName());
+		assertEquals("model.Foo", xmlMappedSuperclass.getIdClass());
+		
+		xmlMappedSuperclass.setIdClass(null);
+		assertNull(xmlMappedSuperclass.getIdClass());
+		assertNull(mappedSuperclassResource.getIdClass());
+	}
 }

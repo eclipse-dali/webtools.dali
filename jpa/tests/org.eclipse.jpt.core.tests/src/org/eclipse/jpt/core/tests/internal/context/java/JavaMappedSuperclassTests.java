@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.context.base.IEmbeddable;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IMappedSuperclass;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
+import org.eclipse.jpt.core.internal.resource.java.IdClass;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
@@ -186,6 +187,57 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY));
 		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY));
 		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY));
+	}
+
+	public void testUpdateIdClass() throws Exception {
+		createTestMappedSuperclass();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+	
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+
+		assertNull(mappedSuperclass.getIdClass());
+		assertNull(typeResource.annotation(IdClass.ANNOTATION_NAME));
+		
+		IdClass idClass = (IdClass) typeResource.addAnnotation(IdClass.ANNOTATION_NAME);	
+		assertNull(mappedSuperclass.getIdClass());
+		assertNotNull(typeResource.annotation(IdClass.ANNOTATION_NAME));
+		
+		idClass.setValue("model.Foo");
+		assertEquals("model.Foo", mappedSuperclass.getIdClass());
+		assertEquals("model.Foo", ((IdClass) typeResource.annotation(IdClass.ANNOTATION_NAME)).getValue());
+		
+		//test setting  @IdClass value to null, IdClass annotation is removed
+		idClass.setValue(null);
+		assertNull(mappedSuperclass.getIdClass());
+		assertNull(typeResource.annotation(IdClass.ANNOTATION_NAME));
+		
+		//reset @IdClass value and then remove @IdClass
+		idClass = (IdClass) typeResource.addAnnotation(IdClass.ANNOTATION_NAME);	
+		idClass.setValue("model.Foo");
+		typeResource.removeAnnotation(IdClass.ANNOTATION_NAME);
+		
+		assertNull(mappedSuperclass.getIdClass());
+		assertNull(typeResource.annotation(IdClass.ANNOTATION_NAME));		
+	}
+	
+	public void testModifyIdClass() throws Exception {
+		createTestMappedSuperclass();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+	
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+
+		assertNull(mappedSuperclass.getIdClass());
+		assertNull(typeResource.annotation(IdClass.ANNOTATION_NAME));
+			
+		mappedSuperclass.setIdClass("model.Foo");
+		assertEquals("model.Foo", ((IdClass) typeResource.annotation(IdClass.ANNOTATION_NAME)).getValue());
+		assertEquals("model.Foo", mappedSuperclass.getIdClass());
+		
+		mappedSuperclass.setIdClass(null);
+		assertNull(mappedSuperclass.getIdClass());
+		assertNull(typeResource.annotation(IdClass.ANNOTATION_NAME));
 	}
 
 }

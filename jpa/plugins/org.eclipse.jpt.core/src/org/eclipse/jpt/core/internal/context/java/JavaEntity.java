@@ -36,6 +36,7 @@ import org.eclipse.jpt.core.internal.resource.java.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverrides;
 import org.eclipse.jpt.core.internal.resource.java.DiscriminatorValue;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
+import org.eclipse.jpt.core.internal.resource.java.IdClass;
 import org.eclipse.jpt.core.internal.resource.java.Inheritance;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
@@ -109,7 +110,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 
 	protected final List<IJavaNamedNativeQuery> namedNativeQueries;
 
-//	protected String idClass;
+	protected String idClass;
 
 	
 	public JavaEntity(IJavaPersistentType parent) {
@@ -179,6 +180,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.initializeDefaultAssociationOverrides(persistentTypeResource);
 		this.initializeNamedQueries(persistentTypeResource);
 		this.initializeNamedNativeQueries(persistentTypeResource);
+		this.initializeIdClass(persistentTypeResource);
 	}
 	
 	protected void initializeSecondaryTables(JavaPersistentTypeResource persistentTypeResource) {
@@ -282,6 +284,13 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return (DiscriminatorValue) this.persistentTypeResource.nonNullAnnotation(DiscriminatorValue.ANNOTATION_NAME);
 	}
 
+	protected void initializeIdClass(JavaPersistentTypeResource typeResource) {
+		IdClass idClassResource = (IdClass) typeResource.annotation(IdClass.ANNOTATION_NAME);
+		if (idClassResource != null) {
+			this.idClass = idClassResource.getValue();
+		}
+	}
+	
 	//****************** IJavaTypeMapping implemenation *******************
 
 	public String annotationName() {
@@ -404,7 +413,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	public int secondaryTablesSize() {
 		return specifiedSecondaryTablesSize();
 	}
-	
+//TODO	
 //	public boolean containsSecondaryTable(String name) {
 //		return containsSecondaryTable(name, getSecondaryTables());
 //	}
@@ -816,18 +825,45 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return this.specifiedAssociationOverrides.size();
 	}
 
-//
-//	public String getIdClass() {
-//		return idClass;
-//	}
-//
-//	public void setIdClass(String newIdClass) {
-//		String oldIdClass = idClass;
-//		idClass = newIdClass;
-//		if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, JpaJavaMappingsPackage.JAVA_ENTITY__ID_CLASS, oldIdClass, idClass));
-//	}
-//
+	public String getIdClass() {
+		return this.idClass;
+	}
+	
+	public void setIdClass(String newIdClass) {
+		String oldIdClass = this.idClass;
+		this.idClass = newIdClass;
+		if (newIdClass != oldIdClass) {
+			if (newIdClass != null) {
+				if (idClassResource() == null) {
+					addIdClassResource();
+				}
+				idClassResource().setValue(newIdClass);
+			}
+			else {
+				removeIdClassResource();
+			}
+		}
+		firePropertyChanged(IEntity.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+	}
+	
+	protected void setIdClass_(String newIdClass) {
+		String oldIdClass = this.idClass;
+		this.idClass = newIdClass;
+		firePropertyChanged(IEntity.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+	}
+
+	protected IdClass idClassResource() {
+		return (IdClass) this.persistentTypeResource.annotation(IdClass.ANNOTATION_NAME);
+	}
+	
+	protected void addIdClassResource() {
+		this.persistentTypeResource.addAnnotation(IdClass.ANNOTATION_NAME);
+	}
+	
+	protected void removeIdClassResource() {
+		this.persistentTypeResource.removeAnnotation(IdClass.ANNOTATION_NAME);
+	}
+//TODO
 //	public boolean discriminatorValueIsAllowed() {
 //		return !getType().isAbstract();
 //	}
@@ -906,6 +942,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.updateDefaultAssociationOverrides(persistentTypeResource);
 		this.updateNamedQueries(persistentTypeResource);
 		this.updateNamedNativeQueries(persistentTypeResource);
+		this.updateIdClass(persistentTypeResource);
 	}
 		
 	protected String specifiedName(Entity entityResource) {
@@ -1196,35 +1233,15 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return namedNativeQuery;
 	}
 
-//	@Override
-//	public void updateFromJava(CompilationUnit astRoot) {
-//		this.setSpecifiedName(this.getType().annotationElementValue(NAME_ADAPTER, astRoot));
-//		this.setDefaultName(this.getType().getName());
-//		this.getJavaTable().updateFromJava(astRoot);
-//		this.updateSecondaryTablesFromJava(astRoot);
-//		this.updateNamedQueriesFromJava(astRoot);
-//		this.updateNamedNativeQueriesFromJava(astRoot);
-//		this.updateSpecifiedPrimaryKeyJoinColumnsFromJava(astRoot);
-//		this.updateAttributeOverridesFromJava(astRoot);
-//		this.updateAssociationOverridesFromJava(astRoot);
-//		this.setInheritanceStrategy(InheritanceType.fromJavaAnnotationValue(this.inheritanceStrategyAdapter.getValue(astRoot)));
-//		this.getJavaDiscriminatorColumn().updateFromJava(astRoot);
-//		this.setSpecifiedDiscriminatorValue(this.discriminatorValueAdapter.getValue(astRoot));
-//		this.setDefaultDiscriminatorValue(this.javaDefaultDiscriminatorValue());
-//		this.updateTableGeneratorFromJava(astRoot);
-//		this.updateSequenceGeneratorFromJava(astRoot);
-//		this.updateIdClassFromJava(astRoot);
-//	}
-//
-//	private void updateIdClassFromJava(CompilationUnit astRoot) {
-//		if (this.idClassAnnotationAdapter.getAnnotation(astRoot) == null) {
-//			this.setIdClass(null);
-//		}
-//		else {
-//			this.setIdClass(this.idClassValueAdapter.getValue(astRoot));
-//		}
-//	}
-//
+	protected void updateIdClass(JavaPersistentTypeResource typeResource) {
+		IdClass idClass = (IdClass) typeResource.annotation(IdClass.ANNOTATION_NAME);
+		if (idClass != null) {
+			setIdClass_(idClass.getValue());
+		}
+		else {
+			setIdClass_(null);
+		}
+	}
 
 	/**
 	 * From the Spec:
@@ -1266,7 +1283,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		// if we encounter only a single primary key column name, return it
 		return pkColumnName;
 	}
-
+//TODO
 //	public String primaryKeyAttributeName() {
 //		String pkColumnName = null;
 //		String pkAttributeName = null;
@@ -1370,31 +1387,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		});
 	}
 
-
-
-	public String getIdClass() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void setIdClass(String value) {
-		// TODO Auto-generated method stub
-		
-	}
-	// ********** misc **********
-//	private static void attributeChanged(Object value, AnnotationAdapter annotationAdapter) {
-//		Annotation annotation = annotationAdapter.getAnnotation();
-//		if (value == null) {
-//			if (annotation != null) {
-//				annotationAdapter.removeAnnotation();
-//			}
-//		}
-//		else {
-//			if (annotation == null) {
-//				annotationAdapter.newMarkerAnnotation();
-//			}
-//		}
-//	}
 
 	@Override
 	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {

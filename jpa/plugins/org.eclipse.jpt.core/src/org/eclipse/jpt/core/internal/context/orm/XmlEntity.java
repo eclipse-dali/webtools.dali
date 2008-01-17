@@ -33,6 +33,7 @@ import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
 import org.eclipse.jpt.core.internal.resource.orm.AssociationOverride;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
+import org.eclipse.jpt.core.internal.resource.orm.IdClass;
 import org.eclipse.jpt.core.internal.resource.orm.Inheritance;
 import org.eclipse.jpt.core.internal.resource.orm.NamedNativeQuery;
 import org.eclipse.jpt.core.internal.resource.orm.NamedQuery;
@@ -57,10 +58,8 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 
 	protected String defaultName;
 
-//	protected XmlIdClass idClassForXml;
-//
-//	protected XmlInheritance inheritanceForXml;
-//
+	protected String idClass;
+
 	protected final XmlTable table;
 
 	protected final List<XmlSecondaryTable> specifiedSecondaryTables;
@@ -696,38 +695,46 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return rootEntity;
 	}
 
-//	public XmlIdClass getIdClassForXml() {
-//		return idClassForXml;
-//	}
-//
-//	public NotificationChain basicSetIdClassForXml(XmlIdClass newIdClassForXml, NotificationChain msgs) {
-//		XmlIdClass oldIdClassForXml = idClassForXml;
-//		idClassForXml = newIdClassForXml;
-//		if (eNotificationRequired()) {
-//			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS_FOR_XML, oldIdClassForXml, newIdClassForXml);
-//			if (msgs == null)
-//				msgs = notification;
-//			else
-//				msgs.add(notification);
-//		}
-//		return msgs;
-//	}
-//
-//	public void setIdClassForXml(XmlIdClass newIdClassForXml) {
-//		if (newIdClassForXml != idClassForXml) {
-//			NotificationChain msgs = null;
-//			if (idClassForXml != null)
-//				msgs = ((InternalEObject) idClassForXml).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS_FOR_XML, null, msgs);
-//			if (newIdClassForXml != null)
-//				msgs = ((InternalEObject) newIdClassForXml).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS_FOR_XML, null, msgs);
-//			msgs = basicSetIdClassForXml(newIdClassForXml, msgs);
-//			if (msgs != null)
-//				msgs.dispatch();
-//		}
-//		else if (eNotificationRequired())
-//			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_INTERNAL__ID_CLASS_FOR_XML, newIdClassForXml, newIdClassForXml));
-//	}
-//
+	public String getIdClass() {
+		return this.idClass;
+	}
+	
+	public void setIdClass(String newIdClass) {
+		String oldIdClass = this.idClass;
+		this.idClass = newIdClass;
+		if (oldIdClass != newIdClass) {
+			if (this.idClassResource() != null) {
+				this.idClassResource().setClassName(newIdClass);						
+				if (this.idClassResource().isAllFeaturesUnset()) {
+					removeIdClassResource();
+				}
+			}
+			else if (newIdClass != null) {
+				addIdClassResource();
+				idClassResource().setClassName(newIdClass);
+			}
+		}
+		firePropertyChanged(IEntity.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+	}
+	
+	protected void setIdClass_(String newIdClass) {
+		String oldIdClass = this.idClass;
+		this.idClass = newIdClass;
+		firePropertyChanged(IEntity.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+	}
+
+	protected IdClass idClassResource() {
+		return typeMappingResource().getIdClass();
+	}
+	
+	protected void addIdClassResource() {
+		typeMappingResource().setIdClass(OrmFactory.eINSTANCE.createIdClass());		
+	}
+	
+	protected void removeIdClassResource() {
+		typeMappingResource().setIdClass(null);
+	}
+
 //	public String primaryKeyColumnName() {
 //		String pkColumnName = null;
 //		for (Iterator<IPersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext();) {
@@ -874,13 +881,14 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.initializeSpecifiedAssociationOverrides(entity);
 		this.initializeNamedQueries(entity);
 		this.initializeNamedNativeQueries(entity);
+		this.initializeIdClass(this.idClassResource());
 	}
 	
 	protected void initializeInheritance(Inheritance inheritanceResource) {
 		this.specifiedInheritanceStrategy = this.specifiedInheritanceStrategy(inheritanceResource);
 		this.defaultInheritanceStrategy = this.defaultInheritanceStrategy();
 	}
-	
+
 	protected void initializeSpecifiedSecondaryTables(Entity entity) {
 		for (SecondaryTable secondaryTable : entity.getSecondaryTables()) {
 			this.specifiedSecondaryTables.add(createSecondaryTable(secondaryTable));
@@ -951,6 +959,14 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 			this.namedNativeQueries.add(createNamedNativeQuery(namedNativeQuery));
 		}
 	}
+	
+	protected void initializeIdClass(IdClass idClassResource) {
+		this.idClass = this.idClass(idClassResource);	
+	}
+
+	protected String idClass(IdClass idClassResource) {
+		return idClassResource == null ? null : idClassResource.getClassName();
+	}
 
 	@Override
 	public void update(Entity entity) {
@@ -971,6 +987,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.updateSpecifiedAssociationOverrides(entity);
 		this.updateNamedQueries(entity);
 		this.updateNamedNativeQueries(entity);
+		this.updateIdClass(this.idClassResource());
 	}
 
 	protected String defaultName() {
@@ -1240,7 +1257,12 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		xmlNamedNativeQuery.initialize(namedQuery);
 		return xmlNamedNativeQuery;
 	}
+	
+	protected void updateIdClass(IdClass idClassResource) {
+		this.setIdClass_(this.idClass(idClassResource));
+	}
 
+	
 	public String primaryKeyColumnName() {
 		// TODO Auto-generated method stub
 		return null;
@@ -1319,17 +1341,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.typeMappingResource().getNamedNativeQueries().move(targetIndex, sourceIndex);
 		fireItemMoved(IEntity.NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
-	
-	public String getIdClass() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void setIdClass(String value) {
-		// TODO Auto-generated method stub
 		
-	}
-	
 	public IColumnMapping columnMapping(String attributeName) {
 		// TODO Auto-generated method stub
 		return null;
