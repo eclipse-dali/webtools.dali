@@ -78,8 +78,8 @@ public class SortedListValueModelAdapterTests extends TestCase {
 	}
 
 	public void testAddItem() {
-		List synchList = new SynchronizedList(this.adapter);
-		Bag synchCollection = new SynchronizedBag(this.wrappedCollectionHolder);
+		List synchList = new CoordinatedList(this.adapter);
+		Bag synchCollection = new CoordinatedBag(this.wrappedCollectionHolder);
 		this.wrappedCollectionHolder.add("foo");
 		assertTrue(this.wrappedCollection.contains("foo"));
 		this.wrappedCollectionHolder.add("bar");
@@ -95,8 +95,8 @@ public class SortedListValueModelAdapterTests extends TestCase {
 	}
 
 	public void testRemoveItem() {
-		List synchList = new SynchronizedList(this.adapter);
-		Bag synchCollection = new SynchronizedBag(this.wrappedCollectionHolder);
+		List synchList = new CoordinatedList(this.adapter);
+		Bag synchCollection = new CoordinatedBag(this.wrappedCollectionHolder);
 		this.wrappedCollectionHolder.add("foo");
 		this.wrappedCollectionHolder.add("bar");
 		this.wrappedCollectionHolder.add("baz");
@@ -136,8 +136,8 @@ public class SortedListValueModelAdapterTests extends TestCase {
 	}
 
 	public void testSetComparator() {
-		List synchList = new SynchronizedList(this.adapter);
-		Bag synchCollection = new SynchronizedBag(this.wrappedCollectionHolder);
+		List synchList = new CoordinatedList(this.adapter);
+		Bag synchCollection = new CoordinatedBag(this.wrappedCollectionHolder);
 		this.wrappedCollectionHolder.add("foo");
 		assertTrue(this.wrappedCollection.contains("foo"));
 		this.wrappedCollectionHolder.add("bar");
@@ -159,7 +159,7 @@ public class SortedListValueModelAdapterTests extends TestCase {
 
 	public void testHasListeners() {
 		assertFalse(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
-		SynchronizedList synchList = new SynchronizedList(this.adapter);
+		CoordinatedList synchList = new CoordinatedList(this.adapter);
 		assertTrue(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		this.adapter.removeListChangeListener(ListValueModel.LIST_VALUES, synchList);
 		assertFalse(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));

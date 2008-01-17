@@ -92,8 +92,8 @@ public class ListCollectionValueModelAdapterTests extends TestCase {
 	}
 
 	public void testAdd() {
-		Bag synchCollection = new SynchronizedBag(this.adapter);
-		List synchList = new SynchronizedList(this.wrappedListHolder);
+		Bag synchCollection = new CoordinatedBag(this.adapter);
+		List synchList = new CoordinatedList(this.wrappedListHolder);
 		this.wrappedListHolder.add(0, "foo");
 		assertTrue(this.wrappedList.contains("foo"));
 		this.wrappedListHolder.add(1, "bar");
@@ -110,8 +110,8 @@ public class ListCollectionValueModelAdapterTests extends TestCase {
 	}
 
 	public void testRemove() {
-		Bag synchCollection = new SynchronizedBag(this.adapter);
-		List synchList = new SynchronizedList(this.wrappedListHolder);
+		Bag synchCollection = new CoordinatedBag(this.adapter);
+		List synchList = new CoordinatedList(this.wrappedListHolder);
 		this.wrappedListHolder.add(0, "foo");
 		this.wrappedListHolder.add(1, "bar");
 		this.wrappedListHolder.add(2, "baz");
@@ -188,7 +188,7 @@ public class ListCollectionValueModelAdapterTests extends TestCase {
 
 	public void testHasListeners() {
 		assertFalse(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
-		SynchronizedBag synchCollection = new SynchronizedBag(this.adapter);
+		CoordinatedBag synchCollection = new CoordinatedBag(this.adapter);
 		assertTrue(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 		this.adapter.removeCollectionChangeListener(CollectionValueModel.VALUES, synchCollection);
 		assertFalse(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));

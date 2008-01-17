@@ -22,11 +22,11 @@ import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
  * Helper class that keeps an internal collection in synch with the
  * collection held by a collection value model.
  */
-class SynchronizedBag<E> implements Bag<E>, CollectionChangeListener {
+class CoordinatedBag<E> implements Bag<E>, CollectionChangeListener {
 
 	private Bag<E> synchBag = new HashBag<E>();
 
-	SynchronizedBag(CollectionValueModel cvm) {
+	CoordinatedBag(CollectionValueModel cvm) {
 		cvm.addCollectionChangeListener(CollectionValueModel.VALUES, this);
 	}
 

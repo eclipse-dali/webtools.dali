@@ -28,17 +28,17 @@ import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
  * Helper class that keeps an internal list in synch with the
  * list held by a list value model.
  */
-public class SynchronizedList<E> implements List<E>, ListChangeListener, ListDataListener {
+public class CoordinatedList<E> implements List<E>, ListChangeListener, ListDataListener {
 	private List<E> synchList = new ArrayList<E>();
 
-	public SynchronizedList(ListValueModel listValueModel) {
+	public CoordinatedList(ListValueModel listValueModel) {
 		listValueModel.addListChangeListener(ListValueModel.LIST_VALUES, this);
 		for (Iterator<E> stream = (Iterator<E>) listValueModel.iterator(); stream.hasNext(); ) {
 			this.add(stream.next());
 		}
 	}
 
-	public SynchronizedList(ListModel listModel) {
+	public CoordinatedList(ListModel listModel) {
 		listModel.addListDataListener(this);
 		for (int i = 0; i < listModel.getSize(); i++) {
 			this.add(i, (E) listModel.getElementAt(i));

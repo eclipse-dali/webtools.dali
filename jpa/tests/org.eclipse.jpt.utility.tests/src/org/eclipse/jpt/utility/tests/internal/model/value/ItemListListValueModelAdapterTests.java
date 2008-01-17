@@ -68,7 +68,7 @@ public class ItemListListValueModelAdapterTests extends TestCase {
 	public void testCollectionSynchronization() {
 		SimpleCollectionValueModel collectionHolder = this.buildCollectionHolder();
 		ListValueModel listValueModel = new ItemListListValueModelAdapter(collectionHolder, Junk.STUFF_LIST);
-		SynchronizedList synchList = new SynchronizedList(listValueModel);
+		CoordinatedList synchList = new CoordinatedList(listValueModel);
 		assertEquals(6, synchList.size());
 		this.compare(listValueModel, synchList);
 
@@ -88,7 +88,7 @@ public class ItemListListValueModelAdapterTests extends TestCase {
 	public void testListSynchronization() {
 		SimpleListValueModel listHolder = this.buildListHolder();
 		ListValueModel listValueModel = new ItemListListValueModelAdapter(listHolder, Junk.STUFF_LIST);
-		SynchronizedList synchList = new SynchronizedList(listValueModel);
+		CoordinatedList synchList = new CoordinatedList(listValueModel);
 		assertEquals(6, synchList.size());
 		this.compare(listValueModel, synchList);
 
@@ -125,7 +125,7 @@ public class ItemListListValueModelAdapterTests extends TestCase {
 		assertFalse(this.jaz.hasAnyListChangeListeners(Junk.STUFF_LIST));
 		this.verifyHasNoListeners(listValueModel);
 
-		SynchronizedList synchList = new SynchronizedList(listValueModel);
+		CoordinatedList synchList = new CoordinatedList(listValueModel);
 		assertTrue(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(this.foo.hasAnyListChangeListeners(Junk.STUFF_LIST));
 		assertTrue(this.jaz.hasAnyListChangeListeners(Junk.STUFF_LIST));
@@ -141,7 +141,7 @@ public class ItemListListValueModelAdapterTests extends TestCase {
 	public void testGetSize() throws Exception {
 		SimpleListValueModel listHolder = this.buildListHolder();
 		ListValueModel listValueModel = new ItemListListValueModelAdapter(listHolder, Junk.STUFF_LIST);
-		SynchronizedList synchList = new SynchronizedList(listValueModel);
+		CoordinatedList synchList = new CoordinatedList(listValueModel);
 		this.verifyHasListeners(listValueModel);
 		assertEquals(6, listValueModel.size());
 		assertEquals(6, synchList.size());
@@ -150,7 +150,7 @@ public class ItemListListValueModelAdapterTests extends TestCase {
 	public void testGet() throws Exception {
 		SimpleListValueModel listHolder = this.buildListHolder();
 		ListValueModel listValueModel = new SortedListValueModelAdapter(new ItemListListValueModelAdapter(listHolder, Junk.STUFF_LIST));
-		SynchronizedList synchList = new SynchronizedList(listValueModel);
+		CoordinatedList synchList = new CoordinatedList(listValueModel);
 		this.verifyHasListeners(listValueModel);
 		assertEquals(this.bar, listValueModel.get(0));
 		assertEquals(this.bar, synchList.get(0));

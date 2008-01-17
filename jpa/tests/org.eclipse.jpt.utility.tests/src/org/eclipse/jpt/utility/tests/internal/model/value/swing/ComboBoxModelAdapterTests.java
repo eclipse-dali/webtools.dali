@@ -26,7 +26,7 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ComboBoxModelAdapter;
 import org.eclipse.jpt.utility.internal.swing.Displayable;
 import org.eclipse.jpt.utility.internal.swing.SimpleDisplayable;
-import org.eclipse.jpt.utility.tests.internal.model.value.SynchronizedList;
+import org.eclipse.jpt.utility.tests.internal.model.value.CoordinatedList;
 
 import junit.framework.TestCase;
 
@@ -59,7 +59,7 @@ public class ComboBoxModelAdapterTests extends TestCase {
 		assertFalse(selectionHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(comboBoxModel);
 
-		SynchronizedList<Displayable> synchList = new SynchronizedList<Displayable>(comboBoxModel);
+		CoordinatedList<Displayable> synchList = new CoordinatedList<Displayable>(comboBoxModel);
 		PropertyChangeListener selectionListener = this.buildSelectionListener();
 		selectionHolder.addPropertyChangeListener(PropertyValueModel.VALUE, selectionListener);
 		assertTrue(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));

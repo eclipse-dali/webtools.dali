@@ -60,8 +60,8 @@ public class CompositeCollectionValueModelTests extends TestCase {
 
 	private void verifySynch(CollectionValueModel compositeCVM) {
 		assertEquals(0, CollectionTools.size((Iterator) compositeCVM.iterator()));
-		Bag familiesSynch = new SynchronizedBag(this.buildFamiliesAspectAdapter(this.neighborhoodHolder));
-		Bag membersSynch = new SynchronizedBag(compositeCVM);
+		Bag familiesSynch = new CoordinatedBag(this.buildFamiliesAspectAdapter(this.neighborhoodHolder));
+		Bag membersSynch = new CoordinatedBag(compositeCVM);
 		this.populateNeighborhood(this.neighborhood);
 
 		Family jetsons = this.neighborhood.familyNamed("Jetson");
@@ -126,7 +126,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 	}
 
 	public void testNoTransformer() {
-		Bag synchBag = new SynchronizedBag(this.buildBogusAllMembersComposite(this.neighborhoodHolder));
+		Bag synchBag = new CoordinatedBag(this.buildBogusAllMembersComposite(this.neighborhoodHolder));
 		boolean exCaught = false;
 		try {
 			this.populateNeighborhood(this.neighborhood);
@@ -143,7 +143,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 	}
 
 	public void testDuplicateItem() {
-		Bag synchBag = new SynchronizedBag(this.buildAllMembersComposite(this.neighborhoodHolder));
+		Bag synchBag = new CoordinatedBag(this.buildAllMembersComposite(this.neighborhoodHolder));
 		this.populateNeighborhood(this.neighborhood);
 		boolean exCaught = false;
 		try {
@@ -159,7 +159,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 
 	public void testHasListeners() {
 		CompositeCollectionValueModel compositeCVM = this.buildAllMembersComposite(this.neighborhoodHolder);
-		SynchronizedBag synchBag = new SynchronizedBag(compositeCVM);
+		CoordinatedBag synchBag = new CoordinatedBag(compositeCVM);
 		this.populateNeighborhood(this.neighborhood);
 		Family jetsons = this.neighborhood.familyNamed("Jetson");
 

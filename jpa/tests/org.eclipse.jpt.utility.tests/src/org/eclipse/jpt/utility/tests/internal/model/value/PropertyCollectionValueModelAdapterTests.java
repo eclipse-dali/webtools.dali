@@ -90,7 +90,7 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 
 	public void testHasListeners() {
 		assertFalse(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
-		SynchronizedBag synchCollection = new SynchronizedBag(this.adapter);
+		CoordinatedBag synchCollection = new CoordinatedBag(this.adapter);
 		assertTrue(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 		this.adapter.removeCollectionChangeListener(CollectionValueModel.VALUES, synchCollection);
 		assertFalse(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));

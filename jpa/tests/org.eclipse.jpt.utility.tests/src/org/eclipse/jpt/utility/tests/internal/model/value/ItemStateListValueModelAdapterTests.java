@@ -69,7 +69,7 @@ public class ItemStateListValueModelAdapterTests extends TestCase {
 	public void testCollectionSynchronization() {
 		SimpleCollectionValueModel collectionHolder = this.buildCollectionHolder();
 		ListValueModel listValueModel = new ItemStateListValueModelAdapter(collectionHolder);
-		SynchronizedList synchList = new SynchronizedList(listValueModel);
+		CoordinatedList synchList = new CoordinatedList(listValueModel);
 		assertEquals(6, synchList.size());
 		this.compare(listValueModel, synchList);
 
@@ -89,7 +89,7 @@ public class ItemStateListValueModelAdapterTests extends TestCase {
 	public void testListSynchronization() {
 		SimpleListValueModel listHolder = this.buildListHolder();
 		ListValueModel listValueModel = new ItemStateListValueModelAdapter(listHolder);
-		SynchronizedList synchList = new SynchronizedList(listValueModel);
+		CoordinatedList synchList = new CoordinatedList(listValueModel);
 		assertEquals(6, synchList.size());
 		this.compare(listValueModel, synchList);
 
@@ -141,7 +141,7 @@ public class ItemStateListValueModelAdapterTests extends TestCase {
 	private void verifyCollectionSort(Comparator comparator) {
 		SimpleCollectionValueModel collectionHolder = this.buildCollectionHolder();
 		ListValueModel listValueModel = new ItemStateListValueModelAdapter(new SortedListValueModelAdapter(collectionHolder, comparator));
-		SynchronizedList synchList = new SynchronizedList(listValueModel);
+		CoordinatedList synchList = new CoordinatedList(listValueModel);
 		assertEquals(6, synchList.size());
 		this.compareSort(listValueModel, synchList, comparator);
 
@@ -161,7 +161,7 @@ public class ItemStateListValueModelAdapterTests extends TestCase {
 	private void verifyListSort(Comparator comparator) {
 		SimpleListValueModel listHolder = this.buildListHolder();
 		ListValueModel listValueModel = new ItemStateListValueModelAdapter(new SortedListValueModelAdapter(listHolder, comparator));
-		SynchronizedList synchList = new SynchronizedList(listValueModel);
+		CoordinatedList synchList = new CoordinatedList(listValueModel);
 		assertEquals(6, synchList.size());
 		this.compareSort(listValueModel, synchList, comparator);
 
@@ -206,7 +206,7 @@ public class ItemStateListValueModelAdapterTests extends TestCase {
 		assertFalse(this.jaz.hasAnyStateChangeListeners());
 		this.verifyHasNoListeners(listValueModel);
 
-		SynchronizedList synchList = new SynchronizedList(listValueModel);
+		CoordinatedList synchList = new CoordinatedList(listValueModel);
 		assertTrue(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(this.foo.hasAnyStateChangeListeners());
 		assertTrue(this.foo.hasAnyStateChangeListeners());
@@ -226,7 +226,7 @@ public class ItemStateListValueModelAdapterTests extends TestCase {
 	public void testGetSize() throws Exception {
 		SimpleListValueModel listHolder = this.buildListHolder();
 		ListValueModel listValueModel = new ItemStateListValueModelAdapter(new SortedListValueModelAdapter(listHolder));
-		SynchronizedList synchList = new SynchronizedList(listValueModel);
+		CoordinatedList synchList = new CoordinatedList(listValueModel);
 		this.verifyHasListeners(listValueModel);
 		assertEquals(6, listValueModel.size());
 		assertEquals(6, synchList.size());
@@ -235,7 +235,7 @@ public class ItemStateListValueModelAdapterTests extends TestCase {
 	public void testGet() throws Exception {
 		SimpleListValueModel listHolder = this.buildListHolder();
 		ListValueModel listValueModel = new SortedListValueModelAdapter(new ItemStateListValueModelAdapter(listHolder));
-		SynchronizedList synchList = new SynchronizedList(listValueModel);
+		CoordinatedList synchList = new CoordinatedList(listValueModel);
 		this.verifyHasListeners(listValueModel);
 		assertEquals(this.bar, listValueModel.get(0));
 		assertEquals(this.bar, synchList.get(0));
