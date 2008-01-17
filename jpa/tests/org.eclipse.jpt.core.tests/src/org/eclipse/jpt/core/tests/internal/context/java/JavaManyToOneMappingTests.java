@@ -594,18 +594,83 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		manyToOneMapping.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
 		manyToOneMapping.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaPersistentAttributeResource attributeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME).attributes().next();
+		
+		ListIterator<JoinColumn> javaJoinColumns = attributeResource.annotations(JoinColumn.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
+		assertEquals(3, CollectionTools.size(javaJoinColumns));
+		
+		
+		manyToOneMapping.moveSpecifiedJoinColumn(2, 0);
+		ListIterator<IJoinColumn> primaryKeyJoinColumns = manyToOneMapping.specifiedJoinColumns();
+		assertEquals("BAR", primaryKeyJoinColumns.next().getSpecifiedName());
+		assertEquals("BAZ", primaryKeyJoinColumns.next().getSpecifiedName());
+		assertEquals("FOO", primaryKeyJoinColumns.next().getSpecifiedName());
+
+		javaJoinColumns = attributeResource.annotations(JoinColumn.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
+		assertEquals("BAR", javaJoinColumns.next().getName());
+		assertEquals("BAZ", javaJoinColumns.next().getName());
+		assertEquals("FOO", javaJoinColumns.next().getName());
+
+
+		manyToOneMapping.moveSpecifiedJoinColumn(0, 1);
+		primaryKeyJoinColumns = manyToOneMapping.specifiedJoinColumns();
+		assertEquals("BAZ", primaryKeyJoinColumns.next().getSpecifiedName());
+		assertEquals("BAR", primaryKeyJoinColumns.next().getSpecifiedName());
+		assertEquals("FOO", primaryKeyJoinColumns.next().getSpecifiedName());
+
+		javaJoinColumns = attributeResource.annotations(JoinColumn.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
+		assertEquals("BAZ", javaJoinColumns.next().getName());
+		assertEquals("BAR", javaJoinColumns.next().getName());
+		assertEquals("FOO", javaJoinColumns.next().getName());
+	}
+
+	public void testUpdateSpecifiedJoinColumns() throws Exception {
+		createTestEntityWithManyToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IManyToOneMapping manyToOneMapping = (IManyToOneMapping) persistentAttribute.getMapping();
+		JavaPersistentAttributeResource attributeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME).attributes().next();
+	
+		((JoinColumn) attributeResource.addAnnotation(0, JoinColumn.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME)).setName("FOO");
+		((JoinColumn) attributeResource.addAnnotation(1, JoinColumn.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME)).setName("BAR");
+		((JoinColumn) attributeResource.addAnnotation(2, JoinColumn.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME)).setName("BAZ");
+			
+		ListIterator<IJoinColumn> joinColumns = manyToOneMapping.specifiedJoinColumns();
+		assertEquals("FOO", joinColumns.next().getName());
+		assertEquals("BAR", joinColumns.next().getName());
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertFalse(joinColumns.hasNext());
 		
 		attributeResource.move(2, 0, JoinColumns.ANNOTATION_NAME);
-		
-		Iterator<JavaResource> joinColumns = attributeResource.annotations(JoinColumn.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
-
-		assertEquals("BAR", ((JoinColumn) joinColumns.next()).getName());
-		assertEquals("BAZ", ((JoinColumn) joinColumns.next()).getName());
-		assertEquals("FOO", ((JoinColumn) joinColumns.next()).getName());		
-	}
+		joinColumns = manyToOneMapping.specifiedJoinColumns();
+		assertEquals("BAR", joinColumns.next().getName());
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertEquals("FOO", joinColumns.next().getName());
+		assertFalse(joinColumns.hasNext());
 	
+		attributeResource.move(0, 1, JoinColumns.ANNOTATION_NAME);
+		joinColumns = manyToOneMapping.specifiedJoinColumns();
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertEquals("BAR", joinColumns.next().getName());
+		assertEquals("FOO", joinColumns.next().getName());
+		assertFalse(joinColumns.hasNext());
+	
+		attributeResource.removeAnnotation(1,  JoinColumn.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
+		joinColumns = manyToOneMapping.specifiedJoinColumns();
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertEquals("FOO", joinColumns.next().getName());
+		assertFalse(joinColumns.hasNext());
+	
+		attributeResource.removeAnnotation(1,  JoinColumn.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
+		joinColumns = manyToOneMapping.specifiedJoinColumns();
+		assertEquals("BAZ", joinColumns.next().getName());
+		assertFalse(joinColumns.hasNext());
+		
+		attributeResource.removeAnnotation(0,  JoinColumn.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
+		joinColumns = manyToOneMapping.specifiedJoinColumns();
+		assertFalse(joinColumns.hasNext());
+	}
 	public void testJoinColumnIsVirtual() throws Exception {
 		createTestEntityWithManyToOneMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);

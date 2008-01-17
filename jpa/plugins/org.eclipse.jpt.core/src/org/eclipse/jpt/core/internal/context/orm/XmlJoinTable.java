@@ -29,6 +29,7 @@ import org.eclipse.jpt.core.internal.resource.orm.JoinTable;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.RelationshipMapping;
 import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
@@ -166,8 +167,9 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 	}
 	
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.specifiedJoinColumns, targetIndex, sourceIndex);
 		this.table().getJoinColumns().move(targetIndex, sourceIndex);
-		moveItemInList(targetIndex, sourceIndex, this.specifiedJoinColumns, IJoinTable.SPECIFIED_JOIN_COLUMNS_LIST);		
+		fireItemMoved(IJoinTable.SPECIFIED_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 
 
@@ -221,8 +223,9 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 	}
 	
 	public void moveSpecifiedInverseJoinColumn(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.specifiedInverseJoinColumns, targetIndex, sourceIndex);
 		this.table().getInverseJoinColumns().move(targetIndex, sourceIndex);
-		moveItemInList(targetIndex, sourceIndex, this.specifiedInverseJoinColumns, IJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST);		
+		fireItemMoved(IJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 
 	@SuppressWarnings("unchecked")

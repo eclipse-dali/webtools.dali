@@ -736,46 +736,46 @@ public class XmlJoinTableTests extends ContextModelTestCase
 		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createJoinTable());
 		JoinTable joinTableResource = manyToMany.getJoinTable();
 	
-		joinTableResource.getInverseJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumn());
-		joinTableResource.getInverseJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumn());
-		joinTableResource.getInverseJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumn());
+		joinTableResource.getJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumn());
+		joinTableResource.getJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumn());
+		joinTableResource.getJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumn());
 		
-		joinTableResource.getInverseJoinColumns().get(0).setName("FOO");
-		joinTableResource.getInverseJoinColumns().get(1).setName("BAR");
-		joinTableResource.getInverseJoinColumns().get(2).setName("BAZ");
+		joinTableResource.getJoinColumns().get(0).setName("FOO");
+		joinTableResource.getJoinColumns().get(1).setName("BAR");
+		joinTableResource.getJoinColumns().get(2).setName("BAZ");
 
-		ListIterator<XmlJoinColumn> joinColumns = xmlJoinTable.specifiedInverseJoinColumns();
+		ListIterator<XmlJoinColumn> joinColumns = xmlJoinTable.specifiedJoinColumns();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 		
-		joinTableResource.getInverseJoinColumns().move(2, 0);
-		joinColumns = xmlJoinTable.specifiedInverseJoinColumns();
+		joinTableResource.getJoinColumns().move(2, 0);
+		joinColumns = xmlJoinTable.specifiedJoinColumns();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 
-		joinTableResource.getInverseJoinColumns().move(0, 1);
-		joinColumns = xmlJoinTable.specifiedInverseJoinColumns();
+		joinTableResource.getJoinColumns().move(0, 1);
+		joinColumns = xmlJoinTable.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 
-		joinTableResource.getInverseJoinColumns().remove(1);
-		joinColumns = xmlJoinTable.specifiedInverseJoinColumns();
+		joinTableResource.getJoinColumns().remove(1);
+		joinColumns = xmlJoinTable.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 
-		joinTableResource.getInverseJoinColumns().remove(1);
-		joinColumns = xmlJoinTable.specifiedInverseJoinColumns();
+		joinTableResource.getJoinColumns().remove(1);
+		joinColumns = xmlJoinTable.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 		
-		joinTableResource.getInverseJoinColumns().remove(0);
-		assertFalse(xmlJoinTable.specifiedInverseJoinColumns().hasNext());
+		joinTableResource.getJoinColumns().remove(0);
+		assertFalse(xmlJoinTable.specifiedJoinColumns().hasNext());
 	}
 }

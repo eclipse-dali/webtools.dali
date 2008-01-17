@@ -162,8 +162,9 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 	}
 
 	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.specifiedAttributeOverrides, targetIndex, sourceIndex);
 		this.persistentAttributeResource.move(targetIndex, sourceIndex, AttributeOverrides.ANNOTATION_NAME);
-		moveItemInList(targetIndex, sourceIndex, this.specifiedAttributeOverrides, IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
+		fireItemMoved(IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 	
 	protected void addDefaultAttributeOverride(IJavaAttributeOverride attributeOverride) {
@@ -268,36 +269,6 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 			}
 		}
 	}
-
-//
-//	public IAttributeOverride attributeOverrideNamed(String name) {
-//		return (IAttributeOverride) overrideNamed(name, getAttributeOverrides());
-//	}
-//
-//	public boolean containsAttributeOverride(String name) {
-//		return containsOverride(name, getAttributeOverrides());
-//	}
-//
-//	public boolean containsSpecifiedAttributeOverride(String name) {
-//		return containsOverride(name, getSpecifiedAttributeOverrides());
-//	}
-//
-//	private IOverride overrideNamed(String name, List<? extends IOverride> overrides) {
-//		for (IOverride override : overrides) {
-//			String overrideName = override.getName();
-//			if (overrideName == null && name == null) {
-//				return override;
-//			}
-//			if (overrideName != null && overrideName.equals(name)) {
-//				return override;
-//			}
-//		}
-//		return null;
-//	}
-//
-//	private boolean containsOverride(String name, List<? extends IOverride> overrides) {
-//		return overrideNamed(name, overrides) != null;
-//	}
 
 	public Iterator<String> allOverridableAttributeNames() {
 		return new TransformationIterator<IPersistentAttribute, String>(this.allOverridableAttributes()) {

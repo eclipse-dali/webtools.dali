@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.internal.resource.orm.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.orm.Embedded;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
@@ -104,8 +105,9 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 	}
 	
 	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.specifiedAttributeOverrides, targetIndex, sourceIndex);
 		this.attributeMapping().getAttributeOverrides().move(targetIndex, sourceIndex);
-		moveItemInList(targetIndex, sourceIndex, this.specifiedAttributeOverrides, IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);		
+		fireItemMoved(IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 
 	public boolean isVirtual(IOverride override) {

@@ -37,7 +37,7 @@ public class NamedNativeQueriesImpl extends AbstractAnnotationResource<Type> imp
 	}
 
 	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+		return NamedNativeQueries.ANNOTATION_NAME;
 	}
 
 	public String getNestableAnnotationName() {
@@ -69,15 +69,15 @@ public class NamedNativeQueriesImpl extends AbstractAnnotationResource<Type> imp
 	}
 	
 	protected void add(int index, NestableNamedNativeQuery query) {
-		addItemToList(index, query, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
+		addItemToList(index, query, this.namedNativeQueries, NamedNativeQueries.NAMED_NATIVE_QUERIES_LIST);
 	}
 
 	public void remove(NestableNamedNativeQuery query) {
-		removeItemFromList( query, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
+		removeItemFromList(query, this.namedNativeQueries, NamedNativeQueries.NAMED_NATIVE_QUERIES_LIST);
 	}
 	
 	public void remove(int index) {
-		this.namedNativeQueries.remove(index);
+		removeItemFromList(index, this.namedNativeQueries, NamedNativeQueries.NAMED_NATIVE_QUERIES_LIST);
 	}
 	
 	public int indexOf(NestableNamedNativeQuery query) {

@@ -100,8 +100,9 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 	}
 	
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.specifiedJoinColumns, targetIndex, sourceIndex);
 		this.persistentAttributeResource.move(targetIndex, sourceIndex, JoinColumns.ANNOTATION_NAME);
-		moveItemInList(targetIndex, sourceIndex, this.specifiedJoinColumns, ISingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST);		
+		fireItemMoved(ISingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 
 	public Boolean getOptional() {

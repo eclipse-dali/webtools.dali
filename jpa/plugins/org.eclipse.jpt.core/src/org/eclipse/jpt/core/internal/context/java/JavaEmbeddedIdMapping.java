@@ -139,8 +139,9 @@ public class JavaEmbeddedIdMapping extends JavaAttributeMapping
 	}
 
 	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.specifiedAttributeOverrides, targetIndex, sourceIndex);
 		this.persistentAttributeResource.move(targetIndex, sourceIndex, AttributeOverrides.ANNOTATION_NAME);
-		moveItemInList(targetIndex, sourceIndex, this.specifiedAttributeOverrides, IEmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
+		fireItemMoved(IEmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 	
 	protected void addDefaultAttributeOverride(IJavaAttributeOverride attributeOverride) {

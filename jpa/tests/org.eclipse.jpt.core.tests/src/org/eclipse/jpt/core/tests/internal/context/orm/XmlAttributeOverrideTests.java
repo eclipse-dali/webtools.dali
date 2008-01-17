@@ -10,21 +10,16 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
-import java.util.Iterator;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.internal.context.orm.XmlEntity;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
-import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class XmlAttributeOverrideTests extends ContextModelTestCase
 {
@@ -41,52 +36,6 @@ public class XmlAttributeOverrideTests extends ContextModelTestCase
 		persistenceResource().save(null);
 	}
 	
-	private void createEntityAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
-	}
-	
-	private void createIdAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Id", "");		
-	}
-	
-	private IType createTestEntity() throws Exception {
-		createEntityAnnotation();
-		createIdAnnotation();
-	
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Entity");
-			}
-			@Override
-			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@Id");
-			}
-		});
-	}
-	
-	private IType createTestSubType() throws Exception {
-		SourceWriter sourceWriter = new SourceWriter() {
-			public void appendSourceTo(StringBuilder sb) {
-				sb.append(CR);
-					sb.append("import ");
-					sb.append(JPA.ENTITY);
-					sb.append(";");
-					sb.append(CR);
-				sb.append("@Entity");
-				sb.append(CR);
-				sb.append("public class ").append("AnnotationTestTypeChild").append(" ");
-				sb.append("extends " + TYPE_NAME + " ");
-				sb.append("{}").append(CR);
-			}
-		};
-		return this.javaProject.createType(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
-	}
-	
 	public void testUpdateName() throws Exception {
 		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
@@ -97,6 +46,8 @@ public class XmlAttributeOverrideTests extends ContextModelTestCase
 		
 		assertNull(xmlAttributeOverride.getName());
 		assertNull(attributeOverrideResource.getName());
+		assertTrue(xmlEntity.attributeOverrides().hasNext());
+		assertFalse(entityResource.getAttributeOverrides().isEmpty());
 		
 		//set name in the resource model, verify context model updated
 		attributeOverrideResource.setName("FOO");
