@@ -17,12 +17,12 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.IAssociationOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
+import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.internal.context.base.InheritanceType;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
+import org.eclipse.jpt.core.internal.resource.orm.AssociationOverride;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.Inheritance;
@@ -44,6 +45,7 @@ import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
@@ -88,9 +90,9 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	
 	protected final List<XmlAttributeOverride> defaultAttributeOverrides;
 
-//	protected EList<IAssociationOverride> specifiedAssociationOverrides;
-//
-//	protected EList<IAssociationOverride> defaultAssociationOverrides;
+	protected final List<XmlAssociationOverride> specifiedAssociationOverrides;
+
+	protected final List<XmlAssociationOverride> defaultAssociationOverrides;
 
 	protected final List<XmlNamedQuery> namedQueries;
 
@@ -109,6 +111,8 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.defaultPrimaryKeyJoinColumns = new ArrayList<XmlPrimaryKeyJoinColumn>();
 		this.specifiedAttributeOverrides = new ArrayList<XmlAttributeOverride>();
 		this.defaultAttributeOverrides = new ArrayList<XmlAttributeOverride>();
+		this.specifiedAssociationOverrides = new ArrayList<XmlAssociationOverride>();
+		this.defaultAssociationOverrides = new ArrayList<XmlAssociationOverride>();
 		this.namedQueries = new ArrayList<XmlNamedQuery>();
 		this.namedNativeQueries = new ArrayList<XmlNamedNativeQuery>();
 	}
@@ -269,8 +273,9 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	}
 	
 	public void moveSpecifiedSecondaryTable(int targetIndex, int sourceIndex) {
-		typeMappingResource().getSecondaryTables().move(targetIndex, sourceIndex);
-		moveItemInList(targetIndex, sourceIndex, this.specifiedSecondaryTables, IEntity.SPECIFIED_SECONDARY_TABLES_LIST);
+		CollectionTools.move(this.specifiedSecondaryTables, targetIndex, sourceIndex);
+		this.typeMappingResource().getSecondaryTables().move(targetIndex, sourceIndex);
+		fireItemMoved(IEntity.SPECIFIED_SECONDARY_TABLES_LIST, targetIndex, sourceIndex);		
 	}
 	
 	public boolean containsSecondaryTable(String name) {
@@ -542,14 +547,14 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	}
 	
 	public void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.specifiedPrimaryKeyJoinColumns, targetIndex, sourceIndex);
 		this.typeMappingResource().getPrimaryKeyJoinColumns().move(targetIndex, sourceIndex);
-		moveItemInList(targetIndex, sourceIndex, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);		
+		fireItemMoved(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 	
 	@SuppressWarnings("unchecked")
 	public ListIterator<XmlAttributeOverride> attributeOverrides() {
-		//TODO
-		return EmptyListIterator.instance();
+		return new CompositeListIterator<XmlAttributeOverride>(specifiedAttributeOverrides(), defaultAttributeOverrides());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -567,7 +572,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	}
 
 	public XmlAttributeOverride addSpecifiedAttributeOverride(int index) {
-		XmlAttributeOverride attributeOverride = new XmlAttributeOverride(this, this);
+		XmlAttributeOverride attributeOverride = new XmlAttributeOverride(this, createAttributeOverrideOwner());
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
 		this.typeMappingResource().getAttributeOverrides().add(index, OrmFactory.eINSTANCE.createAttributeOverride());
 		this.fireItemAdded(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
@@ -589,46 +594,59 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	}
 	
 	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.specifiedAttributeOverrides, targetIndex, sourceIndex);
 		this.typeMappingResource().getAttributeOverrides().move(targetIndex, sourceIndex);
-		moveItemInList(targetIndex, sourceIndex, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);		
+		fireItemMoved(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 
-//
-//	public EList<IAssociationOverride> getAssociationOverrides() {
-//		EList<IAssociationOverride> list = new EObjectEList<IAssociationOverride>(IAssociationOverride.class, this, OrmPackage.XML_ENTITY_INTERNAL__ASSOCIATION_OVERRIDES);
-//		list.addAll(getSpecifiedAssociationOverrides());
-//		list.addAll(getDefaultAssociationOverrides());
-//		return list;
-//	}
-//
-//	public EList<IAssociationOverride> getSpecifiedAssociationOverrides() {
-//		if (specifiedAssociationOverrides == null) {
-//			specifiedAssociationOverrides = new EObjectContainmentEList<IAssociationOverride>(IAssociationOverride.class, this, OrmPackage.XML_ENTITY_INTERNAL__SPECIFIED_ASSOCIATION_OVERRIDES);
-//		}
-//		return specifiedAssociationOverrides;
-//	}
-//
-//	public EList<IAssociationOverride> getDefaultAssociationOverrides() {
-//		if (defaultAssociationOverrides == null) {
-//			defaultAssociationOverrides = new EObjectContainmentEList<IAssociationOverride>(IAssociationOverride.class, this, OrmPackage.XML_ENTITY_INTERNAL__DEFAULT_ASSOCIATION_OVERRIDES);
-//		}
-//		return defaultAssociationOverrides;
-//	}
-//
-//	public EList<INamedQuery> getNamedQueries() {
-//		if (namedQueries == null) {
-//			namedQueries = new EObjectContainmentEList<INamedQuery>(INamedQuery.class, this, OrmPackage.XML_ENTITY_INTERNAL__NAMED_QUERIES);
-//		}
-//		return namedQueries;
-//	}
-//
-//	public EList<INamedNativeQuery> getNamedNativeQueries() {
-//		if (namedNativeQueries == null) {
-//			namedNativeQueries = new EObjectContainmentEList<INamedNativeQuery>(INamedNativeQuery.class, this, OrmPackage.XML_ENTITY_INTERNAL__NAMED_NATIVE_QUERIES);
-//		}
-//		return namedNativeQueries;
-//	}
-//
+	@SuppressWarnings("unchecked")
+	public ListIterator<XmlAssociationOverride> associationOverrides() {
+		return new CompositeListIterator<XmlAssociationOverride>(specifiedAssociationOverrides(), defaultAssociationOverrides());
+	}
+
+	@SuppressWarnings("unchecked")
+	public ListIterator<XmlAssociationOverride> defaultAssociationOverrides() {
+		return new CloneListIterator<XmlAssociationOverride>(this.defaultAssociationOverrides);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ListIterator<XmlAssociationOverride> specifiedAssociationOverrides() {
+		return new CloneListIterator<XmlAssociationOverride>(this.specifiedAssociationOverrides);
+	}
+
+	public int specifiedAssociationOverridesSize() {
+		return this.specifiedAssociationOverrides.size();
+	}
+
+	public XmlAssociationOverride addSpecifiedAssociationOverride(int index) {
+		XmlAssociationOverride associationOverride = new XmlAssociationOverride(this, createAssociationOverrideOwner());
+		this.specifiedAssociationOverrides.add(index, associationOverride);
+		this.typeMappingResource().getAssociationOverrides().add(index, OrmFactory.eINSTANCE.createAssociationOverride());
+		this.fireItemAdded(IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
+		return associationOverride;
+	}
+
+	protected void addSpecifiedAssociationOverride(int index, XmlAssociationOverride associationOverride) {
+		addItemToList(index, associationOverride, this.specifiedAssociationOverrides, IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
+	}
+	
+	public void removeSpecifiedAssociationOverride(int index) {
+		XmlAssociationOverride removedAssociationOverride = this.specifiedAssociationOverrides.remove(index);
+		this.typeMappingResource().getAssociationOverrides().remove(index);
+		fireItemRemoved(IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, removedAssociationOverride);
+	}
+
+	protected void removeSpecifiedAssociationOverride(XmlAssociationOverride associationOverride) {
+		removeItemFromList(associationOverride, this.specifiedAssociationOverrides, IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
+	}
+	
+	public void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.specifiedAssociationOverrides, targetIndex, sourceIndex);
+		this.typeMappingResource().getAssociationOverrides().move(targetIndex, sourceIndex);
+		fireItemMoved(IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, targetIndex, sourceIndex);		
+	}
+
+
 //	public String getIdClass() {
 //		return idClass;
 //	}
@@ -832,36 +850,8 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 //		return overrideNamed(name, overrides) != null;
 //	}
 //
-//	public ISecondaryTable createSecondaryTable(int index) {
-//		return OrmFactory.eINSTANCE.createXmlSecondaryTable(buildSecondaryTableOwner());
-//	}
-//
-//	private ITable.Owner buildSecondaryTableOwner() {
-//		return new ITable.Owner() {
-//			public ITextRange validationTextRange() {
-//				return XmlEntityInternal.this.validationTextRange();
-//			}
-//
-//			public ITypeMapping getTypeMapping() {
-//				return XmlEntityInternal.this;
-//			}
-//		};
-//	}
-//
 //	public boolean containsSpecifiedPrimaryKeyJoinColumns() {
 //		return !this.getSpecifiedPrimaryKeyJoinColumns().isEmpty();
-//	}
-//
-//	public IPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(int index) {
-//		return OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn(new IEntity.PrimaryKeyJoinColumnOwner(this));
-//	}
-//
-//	public INamedQuery createNamedQuery(int index) {
-//		return OrmFactory.eINSTANCE.createXmlNamedQuery();
-//	}
-//
-//	public INamedNativeQuery createNamedNativeQuery(int index) {
-//		return OrmFactory.eINSTANCE.createXmlNamedNativeQuery();
 //	}
 	
 	
@@ -881,6 +871,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.initializeTableGenerator(entity);
 		this.initializeSpecifiedPrimaryKeyJoinColumns(entity);
 		this.initializeSpecifiedAttributeOverrides(entity);
+		this.initializeSpecifiedAssociationOverrides(entity);
 		this.initializeNamedQueries(entity);
 		this.initializeNamedNativeQueries(entity);
 	}
@@ -943,6 +934,12 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		}
 	}
 	
+	protected void initializeSpecifiedAssociationOverrides(Entity entity) {
+		for (AssociationOverride associationOverride : entity.getAssociationOverrides()) {
+			this.specifiedAssociationOverrides.add(createAssociationOverride(associationOverride));
+		}
+	}
+	
 	protected void initializeNamedQueries(Entity entity) {
 		for (NamedQuery namedQuery : entity.getNamedQueries()) {
 			this.namedQueries.add(createNamedQuery(namedQuery));
@@ -971,6 +968,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.updateTableGenerator(entity);
 		this.updateSpecifiedPrimaryKeyJoinColumns(entity);
 		this.updateSpecifiedAttributeOverrides(entity);
+		this.updateSpecifiedAssociationOverrides(entity);
 		this.updateNamedQueries(entity);
 		this.updateNamedNativeQueries(entity);
 	}
@@ -1155,11 +1153,44 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	}
 	
 	protected XmlAttributeOverride createAttributeOverride(AttributeOverride attributeOverride) {
-		XmlAttributeOverride xmlAttributeOverride = new XmlAttributeOverride(this, this);
+		XmlAttributeOverride xmlAttributeOverride = new XmlAttributeOverride(this, createAttributeOverrideOwner());
 		xmlAttributeOverride.initialize(attributeOverride);
 		return xmlAttributeOverride;
 	}
 
+	protected IOverride.Owner createAttributeOverrideOwner() {
+		return new AttributeOverrideOwner();
+	}
+
+	protected void updateSpecifiedAssociationOverrides(Entity entity) {
+		ListIterator<XmlAssociationOverride> associationOverrides = specifiedAssociationOverrides();
+		ListIterator<AssociationOverride> resourceAssociationOverrides = entity.getAssociationOverrides().listIterator();
+		
+		while (associationOverrides.hasNext()) {
+			XmlAssociationOverride associationOverride = associationOverrides.next();
+			if (resourceAssociationOverrides.hasNext()) {
+				associationOverride.update(resourceAssociationOverrides.next());
+			}
+			else {
+				removeSpecifiedAssociationOverride(associationOverride);
+			}
+		}
+		
+		while (resourceAssociationOverrides.hasNext()) {
+			addSpecifiedAssociationOverride(specifiedAssociationOverridesSize(), createAssociationOverride(resourceAssociationOverrides.next()));
+		}
+	}
+	
+	protected XmlAssociationOverride createAssociationOverride(AssociationOverride associationOverride) {
+		XmlAssociationOverride xmlAssociationOverride = new XmlAssociationOverride(this, createAssociationOverrideOwner());
+		xmlAssociationOverride.initialize(associationOverride);
+		return xmlAssociationOverride;
+	}
+
+	protected IOverride.Owner createAssociationOverrideOwner() {
+		return new AssociationOverrideOwner();
+	}
+	
 	protected void updateNamedQueries(Entity entity) {
 		ListIterator<XmlNamedQuery> namedQueries = namedQueries();
 		ListIterator<NamedQuery> resourceNamedQueries = entity.getNamedQueries().listIterator();
@@ -1215,42 +1246,6 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return null;
 	}
 
-
-
-	public <T extends IAssociationOverride> ListIterator<T> associationOverrides() {
-		return EmptyListIterator.instance();
-	}
-	
-	public <T extends IAssociationOverride> ListIterator<T> defaultAssociationOverrides() {
-		// TODO Auto-generated method stub
-		return EmptyListIterator.instance();
-	}
-	
-	public <T extends IAssociationOverride> ListIterator<T> specifiedAssociationOverrides() {
-		// TODO Auto-generated method stub
-		return EmptyListIterator.instance();
-	}
-	
-	public int specifiedAssociationOverridesSize() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	public IAssociationOverride addSpecifiedAssociationOverride(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void removeSpecifiedAssociationOverride(int index) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	@SuppressWarnings("unchecked")
 	public ListIterator<XmlNamedQuery> namedQueries() {
 		return new CloneListIterator<XmlNamedQuery>(this.namedQueries);
@@ -1283,8 +1278,9 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	}
 	
 	public void moveNamedQuery(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.namedQueries, targetIndex, sourceIndex);
 		this.typeMappingResource().getNamedQueries().move(targetIndex, sourceIndex);
-		moveItemInList(targetIndex, sourceIndex, this.namedQueries, IEntity.NAMED_QUERIES_LIST);		
+		fireItemMoved(IEntity.NAMED_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -1319,8 +1315,9 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	}
 	
 	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.namedNativeQueries, targetIndex, sourceIndex);
 		this.typeMappingResource().getNamedNativeQueries().move(targetIndex, sourceIndex);
-		moveItemInList(targetIndex, sourceIndex, this.namedNativeQueries, IEntity.NAMED_NATIVE_QUERIES_LIST);		
+		fireItemMoved(IEntity.NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
 	
 	public String getIdClass() {
@@ -1404,5 +1401,69 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 			}
 			return XmlEntity.this.parentEntity().primaryKeyColumnName();
 		}
+	}
+	
+	class AttributeOverrideOwner implements IOverride.Owner {
+
+		public IColumnMapping columnMapping(String attributeName) {
+			if (attributeName == null) {
+				return null;
+			}
+			for (Iterator<IPersistentAttribute> stream = persistentType().allAttributes(); stream.hasNext();) {
+				IPersistentAttribute persAttribute = stream.next();
+				if (attributeName.equals(persAttribute.getName())) {
+					if (persAttribute.getMapping() instanceof IColumnMapping) {
+						return (IColumnMapping) persAttribute.getMapping();
+					}
+				}
+			}
+			return null;
+		}
+
+		public boolean isVirtual(IOverride override) {
+			return XmlEntity.this.defaultAttributeOverrides.contains(override);
+		}
+
+		public ITypeMapping typeMapping() {
+			return XmlEntity.this;
+		}
+
+		public ITextRange validationTextRange(CompilationUnit astRoot) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+	}
+
+	class AssociationOverrideOwner implements IOverride.Owner {
+
+		public IColumnMapping columnMapping(String attributeName) {
+			if (attributeName == null) {
+				return null;
+			}
+			for (Iterator<IPersistentAttribute> stream = persistentType().allAttributes(); stream.hasNext();) {
+				IPersistentAttribute persAttribute = stream.next();
+				if (attributeName.equals(persAttribute.getName())) {
+					if (persAttribute.getMapping() instanceof IColumnMapping) {
+						return (IColumnMapping) persAttribute.getMapping();
+					}
+				}
+			}
+			return null;
+		}
+
+		public boolean isVirtual(IOverride override) {
+			return XmlEntity.this.defaultAssociationOverrides.contains(override);
+		}
+
+		public ITypeMapping typeMapping() {
+			return XmlEntity.this;
+		}
+
+		public ITextRange validationTextRange(CompilationUnit astRoot) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
 	}
 }

@@ -43,6 +43,7 @@ import org.eclipse.jpt.core.internal.context.base.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.PersistenceXml;
 import org.eclipse.jpt.core.internal.context.base.Property;
 import org.eclipse.jpt.core.internal.context.base.IOverride.Owner;
+import org.eclipse.jpt.core.internal.context.java.IJavaAssociationOverride;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeOverride;
 import org.eclipse.jpt.core.internal.context.java.IJavaBasicMapping;
@@ -77,6 +78,7 @@ import org.eclipse.jpt.core.internal.context.java.IJavaTableGenerator;
 import org.eclipse.jpt.core.internal.context.java.IJavaTransientMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaVersionMapping;
+import org.eclipse.jpt.core.internal.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.internal.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.internal.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaColumn;
@@ -382,6 +384,10 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	public IJavaAttributeOverride createJavaAttributeOverride(IJavaJpaContextNode parent, Owner owner) {
 		return new JavaAttributeOverride(parent, owner);
+	}
+	
+	public IJavaAssociationOverride createJavaAssociationOverride(IJavaJpaContextNode parent, Owner owner) {
+		return new JavaAssociationOverride(parent, owner);
 	}
 	
 	public IJavaNamedQuery createJavaNamedQuery(IJavaJpaContextNode parent) {

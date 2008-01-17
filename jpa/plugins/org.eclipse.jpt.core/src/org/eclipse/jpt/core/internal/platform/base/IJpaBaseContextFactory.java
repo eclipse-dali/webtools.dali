@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.internal.context.base.IPersistence;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
 import org.eclipse.jpt.core.internal.context.base.IProperty;
+import org.eclipse.jpt.core.internal.context.java.IJavaAssociationOverride;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeOverride;
 import org.eclipse.jpt.core.internal.context.java.IJavaBasicMapping;
@@ -159,6 +160,8 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	
 	IJavaAttributeOverride createJavaAttributeOverride(IJavaJpaContextNode parent, IOverride.Owner owner);
 	
+	IJavaAssociationOverride createJavaAssociationOverride(IJavaJpaContextNode parent, IOverride.Owner owner);
+
 	IJavaNamedQuery createJavaNamedQuery(IJavaJpaContextNode parent);
 	
 	IJavaNamedNativeQuery createJavaNamedNativeQuery(IJavaJpaContextNode parent);

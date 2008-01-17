@@ -30,6 +30,8 @@ import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
+import org.eclipse.jpt.core.internal.resource.java.AssociationOverride;
+import org.eclipse.jpt.core.internal.resource.java.AssociationOverrides;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverrides;
 import org.eclipse.jpt.core.internal.resource.java.DiscriminatorValue;
@@ -42,6 +44,7 @@ import org.eclipse.jpt.core.internal.resource.java.NamedNativeQueries;
 import org.eclipse.jpt.core.internal.resource.java.NamedNativeQuery;
 import org.eclipse.jpt.core.internal.resource.java.NamedQueries;
 import org.eclipse.jpt.core.internal.resource.java.NamedQuery;
+import org.eclipse.jpt.core.internal.resource.java.NullAssociationOverride;
 import org.eclipse.jpt.core.internal.resource.java.NullAttributeOverride;
 import org.eclipse.jpt.core.internal.resource.java.NullColumn;
 import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumn;
@@ -59,7 +62,6 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -99,9 +101,9 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 
 	protected final List<IJavaAttributeOverride> defaultAttributeOverrides;
 
-//	protected List<IAssociationOverride> specifiedAssociationOverrides;
-//
-//	protected List<IAssociationOverride> defaultAssociationOverrides;
+	protected final List<IJavaAssociationOverride> specifiedAssociationOverrides;
+
+	protected final List<IJavaAssociationOverride> defaultAssociationOverrides;
 
 	protected final List<IJavaNamedQuery> namedQueries;
 
@@ -121,6 +123,9 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.defaultAttributeOverrides = new ArrayList<IJavaAttributeOverride>();
 		this.namedQueries = new ArrayList<IJavaNamedQuery>();
 		this.namedNativeQueries = new ArrayList<IJavaNamedNativeQuery>();
+		this.specifiedAssociationOverrides = new ArrayList<IJavaAssociationOverride>();
+		this.defaultAssociationOverrides = new ArrayList<IJavaAssociationOverride>();
+		
 	}
 	
 	protected IAbstractJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
@@ -168,8 +173,10 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.initializeTableGenerator(persistentTypeResource);
 		this.initializeSequenceGenerator(persistentTypeResource);
 		this.initializePrimaryKeyJoinColumns(persistentTypeResource);
-		this.initializeAttributeOverrides(persistentTypeResource);
+		this.initializeSpecifiedAttributeOverrides(persistentTypeResource);
 		this.initializeDefaultAttributeOverrides(persistentTypeResource);
+		this.initializeSpecifiedAssociationOverrides(persistentTypeResource);
+		this.initializeDefaultAssociationOverrides(persistentTypeResource);
 		this.initializeNamedQueries(persistentTypeResource);
 		this.initializeNamedNativeQueries(persistentTypeResource);
 	}
@@ -206,7 +213,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		}
 	}
 	
-	protected void initializeAttributeOverrides(JavaPersistentTypeResource persistentTypeResource) {
+	protected void initializeSpecifiedAttributeOverrides(JavaPersistentTypeResource persistentTypeResource) {
 		ListIterator<JavaResource> annotations = persistentTypeResource.annotations(AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
@@ -226,6 +233,26 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		}
 	}
 	
+	protected void initializeSpecifiedAssociationOverrides(JavaPersistentTypeResource persistentTypeResource) {
+		ListIterator<JavaResource> annotations = persistentTypeResource.annotations(AssociationOverride.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
+		
+		while(annotations.hasNext()) {
+			this.specifiedAssociationOverrides.add(createAssociationOverride((AssociationOverride) annotations.next()));
+		}
+	}
+	
+	protected void initializeDefaultAssociationOverrides(JavaPersistentTypeResource persistentTypeResource) {
+		for (Iterator<String> i = allOverridableAssociationNames(); i.hasNext(); ) {
+			String associationName = i.next();
+			IJavaAssociationOverride associationOverride = associationOverrideNamed(associationName);
+			if (associationOverride == null) {
+				associationOverride = createAssociationOverride(new NullAssociationOverride(persistentTypeResource));
+				associationOverride.setName(associationName);
+				this.defaultAssociationOverrides.add(associationOverride);
+			}
+		}
+	}
+
 	protected void initializeNamedQueries(JavaPersistentTypeResource persistentTypeResource) {
 		ListIterator<JavaResource> annotations = persistentTypeResource.annotations(NamedQuery.ANNOTATION_NAME, NamedQueries.ANNOTATION_NAME);
 		
@@ -253,27 +280,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	
 	protected DiscriminatorValue discriminatorValueResource() {
 		return (DiscriminatorValue) this.persistentTypeResource.nonNullAnnotation(DiscriminatorValue.ANNOTATION_NAME);
-	}
-
-	
-	//****************** IOverride.Owner implemenation *******************
-	public IColumnMapping columnMapping(String attributeName) {
-		if (attributeName == null) {
-			return null;
-		}
-		for (Iterator<IPersistentAttribute> stream = persistentType().allAttributes(); stream.hasNext();) {
-			IPersistentAttribute persAttribute = stream.next();
-			if (attributeName.equals(persAttribute.getName())) {
-				if (persAttribute.getMapping() instanceof IColumnMapping) {
-					return (IColumnMapping) persAttribute.getMapping();
-				}
-			}
-		}
-		return null;
-	}
-
-	public boolean isVirtual(IOverride override) {
-		return this.defaultAttributeOverrides.contains(override);
 	}
 
 	//****************** IJavaTypeMapping implemenation *******************
@@ -386,8 +392,9 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	}
 	
 	public void moveSpecifiedSecondaryTable(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.specifiedSecondaryTables, targetIndex, sourceIndex);
 		this.persistentTypeResource.move(targetIndex, sourceIndex, SecondaryTables.ANNOTATION_NAME);
-		moveItemInList(targetIndex, sourceIndex, this.specifiedSecondaryTables, IEntity.SPECIFIED_SECONDARY_TABLES_LIST);
+		fireItemMoved(IEntity.SPECIFIED_SECONDARY_TABLES_LIST, targetIndex, sourceIndex);		
 	}
 	
 	public ListIterator<IJavaSecondaryTable> secondaryTables() {
@@ -564,7 +571,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		removeItemFromList(primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
-	public void moveSpecifiedPrimaryKeyJoinColumn(int sourceIndex, int targetIndex) {
+	public void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
 		this.persistentTypeResource.move(targetIndex, sourceIndex, PrimaryKeyJoinColumns.ANNOTATION_NAME);
 		moveItemInList(targetIndex, sourceIndex, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);		
 	}
@@ -592,11 +599,15 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	}
 
 	public IJavaAttributeOverride addSpecifiedAttributeOverride(int index) {
-		IJavaAttributeOverride attributeOverride = jpaFactory().createJavaAttributeOverride(this, this);
+		IJavaAttributeOverride attributeOverride = jpaFactory().createJavaAttributeOverride(this, createAttributeOverrideOwner());
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
 		this.persistentTypeResource.addAnnotation(index, AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		this.fireItemAdded(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
+	}
+	
+	protected IOverride.Owner createAttributeOverrideOwner() {
+		return new AttributeOverrideOwner();
 	}
 	
 	protected void addSpecifiedAttributeOverride(int index, IJavaAttributeOverride attributeOverride) {
@@ -613,9 +624,10 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 
-	public void moveSpecifiedAttributeOverride(int sourceIndex, int targetIndex) {
+	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.specifiedAttributeOverrides, targetIndex, sourceIndex);
 		this.persistentTypeResource.move(targetIndex, sourceIndex, AttributeOverrides.ANNOTATION_NAME);
-		moveItemInList(targetIndex, sourceIndex, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
+		fireItemMoved(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 	
 	protected void addDefaultAttributeOverride(IJavaAttributeOverride attributeOverride) {
@@ -641,19 +653,23 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	public boolean containsSpecifiedAttributeOverride(String name) {
 		return containsOverride(name, specifiedAttributeOverrides());
 	}
-//
-//	public boolean containsAssociationOverride(String name) {
-//		return containsOverride(name, getAssociationOverrides());
-//	}
-//
-//	public boolean containsSpecifiedAssociationOverride(String name) {
-//		return containsOverride(name, getSpecifiedAssociationOverrides());
-//	}
-//
-//	public boolean containsDefaultAssociationOverride(String name) {
-//		return containsOverride(name, getDefaultAssociationOverrides());
-//	}
-//
+
+	public IJavaAssociationOverride associationOverrideNamed(String name) {
+		return (IJavaAssociationOverride) overrideNamed(name, associationOverrides());
+	}
+
+	public boolean containsAssociationOverride(String name) {
+		return containsOverride(name, associationOverrides());
+	}
+
+	public boolean containsSpecifiedAssociationOverride(String name) {
+		return containsOverride(name, specifiedAssociationOverrides());
+	}
+
+	public boolean containsDefaultAssociationOverride(String name) {
+		return containsOverride(name, defaultAssociationOverrides());
+	}
+
 	private IOverride overrideNamed(String name, ListIterator<? extends IOverride> overrides) {
 		for (IOverride override : CollectionTools.iterable(overrides)) {
 			String overrideName = override.getName();
@@ -671,41 +687,46 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return overrideNamed(name, overrides) != null;
 	}
 
-//	public EList<IAttributeOverride> getSpecifiedAttributeOverrides() {
-//		if (specifiedAttributeOverrides == null) {
-//			specifiedAttributeOverrides = new EObjectContainmentEList<IAttributeOverride>(IAttributeOverride.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_ATTRIBUTE_OVERRIDES);
-//		}
-//		return specifiedAttributeOverrides;
-//	}
-//	
-//	public EList<IAttributeOverride> getDefaultAttributeOverrides() {
-//		if (defaultAttributeOverrides == null) {
-//			defaultAttributeOverrides = new EObjectContainmentEList<IAttributeOverride>(IAttributeOverride.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__DEFAULT_ATTRIBUTE_OVERRIDES);
-//		}
-//		return defaultAttributeOverrides;
-//	}
-//
-//	public EList<IAssociationOverride> getAssociationOverrides() {
-//		EList<IAssociationOverride> list = new EObjectEList<IAssociationOverride>(IAssociationOverride.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__ASSOCIATION_OVERRIDES);
-//		list.addAll(getSpecifiedAssociationOverrides());
-//		list.addAll(getDefaultAssociationOverrides());
-//		return list;
-//	}
-//
-//	public EList<IAssociationOverride> getSpecifiedAssociationOverrides() {
-//		if (specifiedAssociationOverrides == null) {
-//			specifiedAssociationOverrides = new EObjectContainmentEList<IAssociationOverride>(IAssociationOverride.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__SPECIFIED_ASSOCIATION_OVERRIDES);
-//		}
-//		return specifiedAssociationOverrides;
-//	}
-//
-//	public EList<IAssociationOverride> getDefaultAssociationOverrides() {
-//		if (defaultAssociationOverrides == null) {
-//			defaultAssociationOverrides = new EObjectContainmentEList<IAssociationOverride>(IAssociationOverride.class, this, JpaJavaMappingsPackage.JAVA_ENTITY__DEFAULT_ASSOCIATION_OVERRIDES);
-//		}
-//		return defaultAssociationOverrides;
-//	}
-//
+	public IJavaAssociationOverride addSpecifiedAssociationOverride(int index) {
+		IJavaAssociationOverride associationOverride = jpaFactory().createJavaAssociationOverride(this, createAssociationOverrideOwner());
+		this.specifiedAssociationOverrides.add(index, associationOverride);
+		this.persistentTypeResource.addAnnotation(index, AssociationOverride.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
+		this.fireItemAdded(IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
+		return associationOverride;
+	}
+	
+	protected IOverride.Owner createAssociationOverrideOwner() {
+		return new AssociationOverrideOwner();
+	}
+	
+	protected void addSpecifiedAssociationOverride(int index, IJavaAssociationOverride associationOverride) {
+		addItemToList(index, associationOverride, this.specifiedAssociationOverrides, IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
+	}
+	
+	public void removeSpecifiedAssociationOverride(int index) {
+		IJavaAssociationOverride removedAssociationOverride = this.specifiedAssociationOverrides.remove(index);
+		this.persistentTypeResource.removeAnnotation(index, AssociationOverride.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
+		fireItemRemoved(IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, removedAssociationOverride);
+	}
+	
+	protected void removeSpecifiedAssociationOverride(IJavaAssociationOverride associationOverride) {
+		removeItemFromList(associationOverride, this.specifiedAssociationOverrides, IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
+	}
+
+	public void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.specifiedAssociationOverrides, targetIndex, sourceIndex);
+		this.persistentTypeResource.move(targetIndex, sourceIndex, AssociationOverrides.ANNOTATION_NAME);
+		fireItemMoved(IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, targetIndex, sourceIndex);		
+	}
+	
+	protected void addDefaultAssociationOverride(IJavaAssociationOverride associationOverride) {
+		addItemToList(associationOverride, this.defaultAssociationOverrides, IEntity.DEFAULT_ASSOCIATION_OVERRIDES_LIST);
+	}
+	
+	protected void removeDefaultAssociationOverride(IJavaAssociationOverride associationOverride) {
+		removeItemFromList(associationOverride, this.defaultAssociationOverrides, IEntity.DEFAULT_ASSOCIATION_OVERRIDES_LIST);
+	}
+
 	public ListIterator<IJavaNamedQuery> namedQueries() {
 		return new CloneListIterator<IJavaNamedQuery>(this.namedQueries);
 	}
@@ -737,8 +758,9 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	}
 	
 	public void moveNamedQuery(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.namedQueries, targetIndex, sourceIndex);
 		this.persistentTypeResource.move(targetIndex, sourceIndex, NamedQueries.ANNOTATION_NAME);
-		moveItemInList(targetIndex, sourceIndex, this.namedQueries, IEntity.NAMED_QUERIES_LIST);
+		fireItemMoved(IEntity.NAMED_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
 	
 	public ListIterator<IJavaNamedNativeQuery> namedNativeQueries() {
@@ -772,8 +794,26 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	}
 	
 	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.namedNativeQueries, targetIndex, sourceIndex);
 		this.persistentTypeResource.move(targetIndex, sourceIndex, NamedNativeQueries.ANNOTATION_NAME);
-		moveItemInList(targetIndex, sourceIndex, this.namedNativeQueries, IEntity.NAMED_NATIVE_QUERIES_LIST);
+		fireItemMoved(IEntity.NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);		
+	}
+
+	@SuppressWarnings("unchecked")
+	public ListIterator<IJavaAssociationOverride> associationOverrides() {
+		return new CompositeListIterator<IJavaAssociationOverride>(specifiedAssociationOverrides(), defaultAssociationOverrides());
+	}
+	
+	public  ListIterator<IJavaAssociationOverride> defaultAssociationOverrides() {
+		return new CloneListIterator<IJavaAssociationOverride>(this.defaultAssociationOverrides);
+	}
+	
+	public ListIterator<IJavaAssociationOverride> specifiedAssociationOverrides() {
+		return new CloneListIterator<IJavaAssociationOverride>(this.specifiedAssociationOverrides);
+	}
+	
+	public int specifiedAssociationOverridesSize() {
+		return this.specifiedAssociationOverrides.size();
 	}
 
 //
@@ -862,6 +902,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.updateDefaultPrimaryKeyJoinColumns(persistentTypeResource);
 		this.updateSpecifiedAttributeOverrides(persistentTypeResource);
 		this.updateDefaultAttributeOverrides(persistentTypeResource);
+		this.updateSpecifiedAssociationOverrides(persistentTypeResource);
+		this.updateDefaultAssociationOverrides(persistentTypeResource);
 		this.updateNamedQueries(persistentTypeResource);
 		this.updateNamedNativeQueries(persistentTypeResource);
 	}
@@ -1001,8 +1043,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	protected void updateDefaultPrimaryKeyJoinColumns(JavaPersistentTypeResource persistentTypeResource) {
 		this.defaultPrimaryKeyJoinColumn.update(new NullPrimaryKeyJoinColumn(persistentTypeResource));
 	}
-	
-	
+		
 	protected void updateSpecifiedAttributeOverrides(JavaPersistentTypeResource persistentTypeResource) {
 		ListIterator<IJavaAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
 		ListIterator<JavaResource> resourceAttributeOverrides = persistentTypeResource.annotations(AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
@@ -1023,7 +1064,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	}
 	
 	protected IJavaAttributeOverride createAttributeOverride(AttributeOverride attributeOverrideResource) {
-		IJavaAttributeOverride attributeOverride = jpaFactory().createJavaAttributeOverride(this, this);
+		IJavaAttributeOverride attributeOverride = jpaFactory().createJavaAttributeOverride(this, createAttributeOverrideOwner());
 		attributeOverride.initializeFromResource(attributeOverrideResource);
 		return attributeOverride;
 	}
@@ -1049,6 +1090,57 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 			if (!attributeNames.contains(attributeOverride.getName())
 				|| containsSpecifiedAttributeOverride(attributeOverride.getName())) {
 				removeDefaultAttributeOverride(attributeOverride);
+			}
+		}
+	}
+
+	protected void updateSpecifiedAssociationOverrides(JavaPersistentTypeResource persistentTypeResource) {
+		ListIterator<IJavaAssociationOverride> associationOverrides = specifiedAssociationOverrides();
+		ListIterator<JavaResource> resourceAssociationOverrides = persistentTypeResource.annotations(AssociationOverride.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
+		
+		while (associationOverrides.hasNext()) {
+			IJavaAssociationOverride associationOverride = associationOverrides.next();
+			if (resourceAssociationOverrides.hasNext()) {
+				associationOverride.update((AssociationOverride) resourceAssociationOverrides.next());
+			}
+			else {
+				removeSpecifiedAssociationOverride(associationOverride);
+			}
+		}
+		
+		while (resourceAssociationOverrides.hasNext()) {
+			addSpecifiedAssociationOverride(specifiedAssociationOverridesSize(), createAssociationOverride((AssociationOverride) resourceAssociationOverrides.next()));
+		}	
+	}
+	
+	protected IJavaAssociationOverride createAssociationOverride(AssociationOverride associationOverrideResource) {
+		IJavaAssociationOverride associationOverride = jpaFactory().createJavaAssociationOverride(this, createAssociationOverrideOwner());
+		associationOverride.initializeFromResource(associationOverrideResource);
+		return associationOverride;
+	}
+	
+	protected void updateDefaultAssociationOverrides(JavaPersistentTypeResource persistentTypeResource) {
+		for (Iterator<String> i = allOverridableAssociationNames(); i.hasNext(); ) {
+			String associationName = i.next();
+			IJavaAssociationOverride associationOverride = associationOverrideNamed(associationName);
+			if (associationOverride == null) {
+				associationOverride = createAssociationOverride(new NullAssociationOverride(persistentTypeResource));
+				addDefaultAssociationOverride(associationOverride);
+				associationOverride.setName(associationName);
+			}
+			else if (associationOverride.isVirtual()) {
+				//TODO what is this about for attributeOverrides???
+				//associationOverride.getColumn().update(new NullColumn(persistentTypeResource));
+			}
+		}
+		
+		Collection<String> associationNames = CollectionTools.collection(allOverridableAssociationNames());
+	
+		//remove any default mappings that are not included in the associationNames collection
+		for (IJavaAssociationOverride associationOverride : CollectionTools.iterable(defaultAssociationOverrides())) {
+			if (!associationNames.contains(associationOverride.getName())
+				|| containsSpecifiedAssociationOverride(associationOverride.getName())) {
+				removeDefaultAssociationOverride(associationOverride);
 			}
 		}
 	}
@@ -1278,39 +1370,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		});
 	}
 
-	public ListIterator<IJavaAssociationOverride> associationOverrides() {
-		return EmptyListIterator.instance();
-	}
-	
-	public  ListIterator<IJavaAssociationOverride> defaultAssociationOverrides() {
-		// TODO Auto-generated method stub
-		return EmptyListIterator.instance();
-	}
-	
-	public ListIterator<IJavaAssociationOverride> specifiedAssociationOverrides() {
-		// TODO Auto-generated method stub
-		return EmptyListIterator.instance();
-	}
-	
-	public int specifiedAssociationOverridesSize() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	public IJavaAssociationOverride addSpecifiedAssociationOverride(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public void removeSpecifiedAssociationOverride(int index) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex) {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 	public String getIdClass() {
@@ -1426,5 +1485,69 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 			}
 			return JavaEntity.this.parentEntity().primaryKeyColumnName();
 		}
+	}
+	
+	class AttributeOverrideOwner implements IOverride.Owner {
+
+		public IColumnMapping columnMapping(String attributeName) {
+			if (attributeName == null) {
+				return null;
+			}
+			for (Iterator<IPersistentAttribute> stream = persistentType().allAttributes(); stream.hasNext();) {
+				IPersistentAttribute persAttribute = stream.next();
+				if (attributeName.equals(persAttribute.getName())) {
+					if (persAttribute.getMapping() instanceof IColumnMapping) {
+						return (IColumnMapping) persAttribute.getMapping();
+					}
+				}
+			}
+			return null;
+		}
+
+		public boolean isVirtual(IOverride override) {
+			return JavaEntity.this.defaultAttributeOverrides.contains(override);
+		}
+
+		public ITypeMapping typeMapping() {
+			return JavaEntity.this;
+		}
+
+		public ITextRange validationTextRange(CompilationUnit astRoot) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+	}
+
+	class AssociationOverrideOwner implements IOverride.Owner {
+
+		public IColumnMapping columnMapping(String attributeName) {
+			if (attributeName == null) {
+				return null;
+			}
+			for (Iterator<IPersistentAttribute> stream = persistentType().allAttributes(); stream.hasNext();) {
+				IPersistentAttribute persAttribute = stream.next();
+				if (attributeName.equals(persAttribute.getName())) {
+					if (persAttribute.getMapping() instanceof IColumnMapping) {
+						return (IColumnMapping) persAttribute.getMapping();
+					}
+				}
+			}
+			return null;
+		}
+
+		public boolean isVirtual(IOverride override) {
+			return JavaEntity.this.defaultAssociationOverrides.contains(override);
+		}
+
+		public ITypeMapping typeMapping() {
+			return JavaEntity.this;
+		}
+
+		public ITextRange validationTextRange(CompilationUnit astRoot) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
 	}
 }

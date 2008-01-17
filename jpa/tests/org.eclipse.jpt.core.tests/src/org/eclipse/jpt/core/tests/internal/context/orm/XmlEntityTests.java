@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
+import org.eclipse.jpt.core.internal.context.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.internal.context.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.internal.context.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.internal.context.orm.XmlEntity;
@@ -1425,6 +1426,147 @@ public class XmlEntityTests extends ContextModelTestCase
 		entityResource.getAttributeOverrides().remove(0);
 		assertFalse(xmlEntity.specifiedAttributeOverrides().hasNext());
 	}
+	
+	public void testAddSpecifiedAssociationOverride() throws Exception {
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+
+		XmlAssociationOverride associationOverride = xmlEntity.addSpecifiedAssociationOverride(0);
+		associationOverride.setName("FOO");
+				
+		assertEquals("FOO", entityResource.getAssociationOverrides().get(0).getName());
+		
+		XmlAssociationOverride associationOverride2 = xmlEntity.addSpecifiedAssociationOverride(0);
+		associationOverride2.setName("BAR");
+		
+		assertEquals("BAR", entityResource.getAssociationOverrides().get(0).getName());
+		assertEquals("FOO", entityResource.getAssociationOverrides().get(1).getName());
+		
+		XmlAssociationOverride associationOverride3 = xmlEntity.addSpecifiedAssociationOverride(1);
+		associationOverride3.setName("BAZ");
+		
+		assertEquals("BAR", entityResource.getAssociationOverrides().get(0).getName());
+		assertEquals("BAZ", entityResource.getAssociationOverrides().get(1).getName());
+		assertEquals("FOO", entityResource.getAssociationOverrides().get(2).getName());
+		
+		ListIterator<XmlAssociationOverride> associationOverrides = xmlEntity.specifiedAssociationOverrides();
+		assertEquals(associationOverride2, associationOverrides.next());
+		assertEquals(associationOverride3, associationOverrides.next());
+		assertEquals(associationOverride, associationOverrides.next());
+		
+		associationOverrides = xmlEntity.specifiedAssociationOverrides();
+		assertEquals("BAR", associationOverrides.next().getName());
+		assertEquals("BAZ", associationOverrides.next().getName());
+		assertEquals("FOO", associationOverrides.next().getName());
+	}
+	
+	public void testRemoveSpecifiedAssociationOverride() throws Exception {
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
+
+		xmlEntity.addSpecifiedAssociationOverride(0).setName("FOO");
+		xmlEntity.addSpecifiedAssociationOverride(1).setName("BAR");
+		xmlEntity.addSpecifiedAssociationOverride(2).setName("BAZ");
+		
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		assertEquals(3, entityResource.getAssociationOverrides().size());
+		
+		xmlEntity.removeSpecifiedAssociationOverride(0);
+		assertEquals(2, entityResource.getAssociationOverrides().size());
+		assertEquals("BAR", entityResource.getAssociationOverrides().get(0).getName());
+		assertEquals("BAZ", entityResource.getAssociationOverrides().get(1).getName());
+
+		xmlEntity.removeSpecifiedAssociationOverride(0);
+		assertEquals(1, entityResource.getAssociationOverrides().size());
+		assertEquals("BAZ", entityResource.getAssociationOverrides().get(0).getName());
+		
+		xmlEntity.removeSpecifiedAssociationOverride(0);
+		assertEquals(0, entityResource.getAssociationOverrides().size());
+	}
+	
+	public void testMoveSpecifiedAssociationOverride() throws Exception {
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
+
+		xmlEntity.addSpecifiedAssociationOverride(0).setName("FOO");
+		xmlEntity.addSpecifiedAssociationOverride(1).setName("BAR");
+		xmlEntity.addSpecifiedAssociationOverride(2).setName("BAZ");
+		
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		assertEquals(3, entityResource.getAssociationOverrides().size());
+		
+		
+		xmlEntity.moveSpecifiedAssociationOverride(2, 0);
+		ListIterator<XmlAssociationOverride> associationOverrides = xmlEntity.specifiedAssociationOverrides();
+		assertEquals("BAR", associationOverrides.next().getName());
+		assertEquals("BAZ", associationOverrides.next().getName());
+		assertEquals("FOO", associationOverrides.next().getName());
+
+		assertEquals("BAR", entityResource.getAssociationOverrides().get(0).getName());
+		assertEquals("BAZ", entityResource.getAssociationOverrides().get(1).getName());
+		assertEquals("FOO", entityResource.getAssociationOverrides().get(2).getName());
+
+
+		xmlEntity.moveSpecifiedAssociationOverride(0, 1);
+		associationOverrides = xmlEntity.specifiedAssociationOverrides();
+		assertEquals("BAZ", associationOverrides.next().getName());
+		assertEquals("BAR", associationOverrides.next().getName());
+		assertEquals("FOO", associationOverrides.next().getName());
+
+		assertEquals("BAZ", entityResource.getAssociationOverrides().get(0).getName());
+		assertEquals("BAR", entityResource.getAssociationOverrides().get(1).getName());
+		assertEquals("FOO", entityResource.getAssociationOverrides().get(2).getName());
+	}
+	
+	public void testUpdateAssociationOverrides() throws Exception {
+		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
+		
+		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createAssociationOverride());
+		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createAssociationOverride());
+		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createAssociationOverride());
+		
+		entityResource.getAssociationOverrides().get(0).setName("FOO");
+		entityResource.getAssociationOverrides().get(1).setName("BAR");
+		entityResource.getAssociationOverrides().get(2).setName("BAZ");
+
+		ListIterator<XmlAssociationOverride> associationOverrides = xmlEntity.specifiedAssociationOverrides();
+		assertEquals("FOO", associationOverrides.next().getName());
+		assertEquals("BAR", associationOverrides.next().getName());
+		assertEquals("BAZ", associationOverrides.next().getName());
+		assertFalse(associationOverrides.hasNext());
+		
+		entityResource.getAssociationOverrides().move(2, 0);
+		associationOverrides = xmlEntity.specifiedAssociationOverrides();
+		assertEquals("BAR", associationOverrides.next().getName());
+		assertEquals("BAZ", associationOverrides.next().getName());
+		assertEquals("FOO", associationOverrides.next().getName());
+		assertFalse(associationOverrides.hasNext());
+
+		entityResource.getAssociationOverrides().move(0, 1);
+		associationOverrides = xmlEntity.specifiedAssociationOverrides();
+		assertEquals("BAZ", associationOverrides.next().getName());
+		assertEquals("BAR", associationOverrides.next().getName());
+		assertEquals("FOO", associationOverrides.next().getName());
+		assertFalse(associationOverrides.hasNext());
+
+		entityResource.getAssociationOverrides().remove(1);
+		associationOverrides = xmlEntity.specifiedAssociationOverrides();
+		assertEquals("BAZ", associationOverrides.next().getName());
+		assertEquals("FOO", associationOverrides.next().getName());
+		assertFalse(associationOverrides.hasNext());
+
+		entityResource.getAssociationOverrides().remove(1);
+		associationOverrides = xmlEntity.specifiedAssociationOverrides();
+		assertEquals("BAZ", associationOverrides.next().getName());
+		assertFalse(associationOverrides.hasNext());
+		
+		entityResource.getAssociationOverrides().remove(0);
+		assertFalse(xmlEntity.specifiedAssociationOverrides().hasNext());
+	}
+
 	
 	public void testAddNamedQuery() throws Exception {
 		XmlPersistentType persistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);

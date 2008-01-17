@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.context.base;
 
 import java.util.ListIterator;
 
-public interface IEntity extends ITypeMapping, IOverride.Owner
+public interface IEntity extends ITypeMapping
 {
 	String getName();
 	String getSpecifiedName();
