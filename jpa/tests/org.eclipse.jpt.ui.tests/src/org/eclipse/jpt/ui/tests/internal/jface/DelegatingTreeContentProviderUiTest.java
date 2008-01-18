@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
+ *  Copyright (c) 2008 Oracle. 
  *  All rights reserved.  This program and the accompanying materials 
  *  are made available under the terms of the Eclipse Public License v1.0 
  *  which accompanies this distribution, and is available at 
@@ -58,8 +58,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-public class DelegatingTreeContentProviderUiTest
-	extends ApplicationWindow
+public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 {
 	private final Root root;
 	
@@ -325,7 +324,7 @@ public class DelegatingTreeContentProviderUiTest
 		
 		@Override
 		protected ListValueModel buildChildrenModel() {
-			return new ListAspectAdapter(TreeNode.CHILDREN_LIST, treeNode()) {
+			return new ListAspectAdapter<TreeNode>(TreeNode.CHILDREN_LIST, treeNode()) {
 				@Override
 				protected ListIterator<TreeNode> listIterator_() {
 					return treeNode().children();
@@ -358,7 +357,7 @@ public class DelegatingTreeContentProviderUiTest
 							if (value instanceof Nest) {
 								final Nest nest = (Nest) value;
 								return new ListCollectionValueModelAdapter(
-										new ListAspectAdapter(TreeNode.CHILDREN_LIST, nest) {
+										new ListAspectAdapter<TreeNode>(TreeNode.CHILDREN_LIST, nest) {
 											@Override
 											protected ListIterator<TreeNode> listIterator_() {
 												return nest.children();
