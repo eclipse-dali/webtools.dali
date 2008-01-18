@@ -2,17 +2,17 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = May 21, 2007 6:35:55 -->
+<!-- Run date = January 18, 2008 7:43:52 -->
 <meta name="OAC_IGNORE_SKIP_NAV" content="true" />
-<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <title>Many-to-one mapping</title>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta name="generator" content="Oracle DARB XHTML Converter - Version 4.5.3 Build 02" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
 <meta name="date" content="2005-07-10T12:57:20+08:00" />
-<meta name="robots" content="all" scheme="http://www.robotstxt.org/" />
+<meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Many-to-one mapping" />
-<meta name="relnum" content="Release 1.0.0" />
+<meta name="relnum" content="M5 - Release 2.0.0" />
 <meta name="partnum" content="" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
@@ -22,15 +22,9 @@
 <body>
 <p><a id="BABHFAFJ" name="BABHFAFJ"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
-<tr valign="bottom">
-<td align="left" width="86%">
 <h1>Many-to-one mapping</h1>
-</td>
-</tr>
-</table>
 <p><a id="sthref134" name="sthref134"></a><a id="sthref135" name="sthref135"></a><a id="sthref136" name="sthref136"></a><a id="sthref137" name="sthref137"></a>Use a <span class="bold">Many-to-One</span> mapping to defines a single-valued association to another entity class that has many-to-one multiplicity.</p>
-<ol type="1" start="1">
+<ol start="1">
 <li>
 <p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, select the field to map. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected.</p>
 </li>
@@ -60,10 +54,10 @@
 <td align="left" id="r3c1-t11" headers="r1c1-t11">Fetch Type</td>
 <td align="left" headers="r3c1-t11 r1c2-t11">Defines how data is loaded from the database. See <a href="ref_mapping_general.htm#CACGGGHB">"Fetch Type"</a> for details.
 <ul>
-<li type="disc">
+<li>
 <p>Eager</p>
 </li>
-<li type="disc">
+<li>
 <p>Lazy</p>
 </li>
 </ul>
@@ -75,7 +69,7 @@
 <br /></div>
 <!-- class="inftblruleinformal" --></li>
 <li>
-<p>Use this table to complete the fields on the <a href="reference007.htm#CACFCEJC">Join Columns Information</a> tab in the <span class="gui-object-title">JPA Details</span> view.</p>
+<p>Use this table to complete the fields on the <a href="reference008.htm#CACFCEJC">Join Columns Information</a> tab in the <span class="gui-object-title">JPA Details</span> view.</p>
 <div class="inftblruleinformal">
 <table class="RuleInformal" title="This table lists the fields in the Persistence Properties view for this mapping." summary="This table lists the fields in the Persistence Properties view for this mapping." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
 <thead>
@@ -104,7 +98,6 @@
     name = "<span class="italic">&lt;JOIN_TABLE_NAME&gt;</span>")
 @ManyToOne(targetEntity=<span class="italic">&lt;TARGET_ENTITY&gt;</span>, fetch=<span class="italic">&lt;FETCH_TYPE&gt;</span>, 
     cascade=<span class="italic">&lt;CASCADE_TYPE&gt;</span>)
-
 </pre>
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
@@ -125,7 +118,7 @@
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2007,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
+<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2008,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
 </tr>
 </table>
 </div>

@@ -2,17 +2,17 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = May 21, 2007 6:35:57 -->
+<!-- Run date = January 18, 2008 7:43:54 -->
 <meta name="OAC_IGNORE_SKIP_NAV" content="true" />
+<title>Persistence Unit information</title>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-<title>Preferences</title>
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta name="generator" content="Oracle DARB XHTML Converter - Version 4.5.3 Build 02" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
 <meta name="date" content="2005-07-10T12:57:20+08:00" />
-<meta name="robots" content="all" scheme="http://www.robotstxt.org/" />
-<meta name="doctitle" content="Preferences" />
-<meta name="relnum" content="Release 1.0.0" />
+<meta name="robots" content="noarchive" />
+<meta name="doctitle" content="Persistence Unit information" />
+<meta name="relnum" content="M5 - Release 2.0.0" />
 <meta name="partnum" content="" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
@@ -20,29 +20,84 @@
 <link rel="contents" href="toc.htm" title="Contents" type="text/html" />
 </head>
 <body>
-<p><a id="CACDEIEE" name="CACDEIEE"></a></p>
-<div class="sect1"><!-- infolevel="all" infotype="General" -->
-<table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
-<tr valign="bottom">
-<td align="left" width="86%">
-<h1>Preferences</h1>
-</td>
+<p><a id="CACEAGBG" name="CACEAGBG"></a></p>
+<div class="sect3"><!-- infolevel="all" infotype="General" -->
+<h1>Persistence Unit information</h1>
+<p>This table lists the Persistence Unit information fields available in the <span class="gui-object-title">JPA Details</span> view for each entity type. These fields are contained in the <code>&lt;persistence-unit-metadata&gt;</code> element in the <code>orm.xml</code> file.</p>
+<div class="inftblruleinformal">
+<table class="RuleInformal" title="This table describes the options on the Persistence Properties view, General tab." summary="This table describes the options on the Persistence Properties view, General tab." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
+<thead>
+<tr align="left" valign="top">
+<th align="left" valign="bottom" id="r1c1-t12">Property</th>
+<th align="left" valign="bottom" id="r1c2-t12">Description</th>
+<th align="left" valign="bottom" id="r1c3-t12">Default</th>
 </tr>
-</table>
-<p>This section includes information on the following preference pages:</p>
+</thead>
+<tbody>
+<tr align="left" valign="top">
+<td align="left" id="r2c1-t12" headers="r1c1-t12">XML Mapping Data Complete</td>
+<td align="left" headers="r2c1-t12 r1c2-t12">Specifies that the Java classes in this persistence unit are fully specified by their metadata. Any annotations will be ignored.
+<p>This field corresponds to the <code>&lt;xml-mapping-metadata-complete&gt;</code> element in the <code>orm.xml</code> file.</p>
+</td>
+<td align="left" headers="r2c1-t12 r1c3-t12"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t12" headers="r1c1-t12">Schema</td>
+<td align="left" headers="r3c1-t12 r1c2-t12">The database schema that contains the <span class="bold">Table</span>.
+<p>This field corresponds to the <code>&lt;schema&gt;</code> element in the <code>orm.xml</code> file.</p>
+</td>
+<td align="left" headers="r3c1-t12 r1c3-t12"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t12" headers="r1c1-t12">Catalog</td>
+<td align="left" headers="r4c1-t12 r1c2-t12">The database catalog that contains the <span class="bold">Table</span>.
+<p>This field corresponds to the <code>&lt;catalog&gt;</code> element in the <code>orm.xml</code> file.</p>
+</td>
+<td align="left" headers="r4c1-t12 r1c3-t12"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t12" headers="r1c1-t12">Access Type</td>
+<td align="left" headers="r5c1-t12 r1c2-t12">Specify how the entity its access instance variables.
 <ul>
-<li type="disc">
-<p><a href="ref_project_properties.htm#BABJHBCI">Project Properties page - JPA Options</a></p>
+<li>
+<p>Property &ndash; Persistent state accessed through the property accessor methods. The property accessor methods must be <span class="bold">public</span> or <span class="bold">private</span>.</p>
+</li>
+<li>
+<p>Field &ndash; Instance variables are accessed directly. All non-transient instance variables are persistent.</p>
 </li>
 </ul>
+</td>
+<td align="left" headers="r5c1-t12 r1c3-t12">Property</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t12" headers="r1c1-t12">Cascade Persist</td>
+<td align="left" headers="r6c1-t12 r1c2-t12">Adds cascade-persist to the set of cascade options in entity relationships of the persistence unit.
+<p>This field corresponds to the <code>&lt;cascade-persist&gt;</code> element in the <code>orm.xml</code> file.</p>
+</td>
+<td align="left" headers="r6c1-t12 r1c3-t12"><br /></td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblruleinformal" -->
+<p>&nbsp;</p>
+<img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
+<br />
+<a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a>
+<p>&nbsp;</p>
+<img src="img/ngrelr.png" alt="Related reference" title="Related reference" /><br />
+<br />
+<a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></div>
+<!-- class="sect3" -->
+<!-- class="sect2" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2007,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
+<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2008,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
 </tr>
 </table>
 </div>
-<!-- class="footer" --></div>
+<!-- class="footer" -->
 </body>
 </html>

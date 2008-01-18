@@ -2,17 +2,17 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = May 21, 2007 6:35:56 -->
+<!-- Run date = January 18, 2008 7:43:52 -->
 <meta name="OAC_IGNORE_SKIP_NAV" content="true" />
-<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <title>Version mapping</title>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta name="generator" content="Oracle DARB XHTML Converter - Version 4.5.3 Build 02" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
 <meta name="date" content="2005-07-10T12:57:20+08:00" />
-<meta name="robots" content="all" scheme="http://www.robotstxt.org/" />
+<meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Version mapping" />
-<meta name="relnum" content="Release 1.0.0" />
+<meta name="relnum" content="M5 - Release 2.0.0" />
 <meta name="partnum" content="" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
@@ -22,33 +22,27 @@
 <body>
 <p><a id="BABHIBII" name="BABHIBII"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
-<tr valign="bottom">
-<td align="left" width="86%">
 <h1>Version mapping</h1>
-</td>
-</tr>
-</table>
 <p><a id="sthref154" name="sthref154"></a><a id="sthref155" name="sthref155"></a><a id="sthref156" name="sthref156"></a><a id="sthref157" name="sthref157"></a>Use a <span class="bold">Version Mapping</span> to specify the field used for optimistic locking. If the entity is associated with multiple tables, you should use a version mapping only with the primary table. You should have only a single version mapping per persistent entity. Version mappings may be used only with the following attribute types:</p>
 <ul>
-<li type="disc">
+<li>
 <p><code>int</code></p>
 </li>
-<li type="disc">
+<li>
 <p><code>Integer</code></p>
 </li>
-<li type="disc">
+<li>
 <p><code>short, Short</code></p>
 </li>
-<li type="disc">
+<li>
 <p><code>long, Long</code></p>
 </li>
-<li type="disc">
+<li>
 <p><code>Timestamp</code></p>
 </li>
 </ul>
 <p>To create a version mapping:</p>
-<ol type="1" start="1">
+<ol start="1">
 <li>
 <p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, select the field to map. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected.</p>
 </li>
@@ -81,13 +75,13 @@
 <td align="left" id="r4c1-t17" headers="r1c1-t17">Temporal</td>
 <td align="left" headers="r4c1-t17 r1c2-t17">Specifies the type of data. See <a href="ref_mapping_general.htm#CACEAJGD">"Temporal"</a> for details.
 <ul>
-<li type="disc">
+<li>
 <p>Date</p>
 </li>
-<li type="disc">
+<li>
 <p>Time</p>
 </li>
-<li type="disc">
+<li>
 <p>Timestamp</p>
 </li>
 </ul>
@@ -103,7 +97,6 @@
 <pre xml:space="preserve" class="oac_no_warn">
 @Version
 @Column(table="<span class="italic">&lt;COLUMN_TABLE&gt;</span>", name="&lt;<span class="italic">COLUMN_NAME</span>&gt;")
-
 
 </pre>
 <p>&nbsp;</p>
@@ -126,7 +119,7 @@
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2007,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
+<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2008,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
 </tr>
 </table>
 </div>

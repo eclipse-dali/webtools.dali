@@ -2,17 +2,17 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = May 21, 2007 6:35:55 -->
+<!-- Run date = January 18, 2008 7:43:52 -->
 <meta name="OAC_IGNORE_SKIP_NAV" content="true" />
-<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <title>One-to-many mapping</title>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta name="generator" content="Oracle DARB XHTML Converter - Version 4.5.3 Build 02" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
 <meta name="date" content="2005-07-10T12:57:20+08:00" />
-<meta name="robots" content="all" scheme="http://www.robotstxt.org/" />
+<meta name="robots" content="noarchive" />
 <meta name="doctitle" content="One-to-many mapping" />
-<meta name="relnum" content="Release 1.0.0" />
+<meta name="relnum" content="M5 - Release 2.0.0" />
 <meta name="partnum" content="" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
@@ -22,15 +22,9 @@
 <body>
 <p><a id="BABHGEBD" name="BABHGEBD"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
-<tr valign="bottom">
-<td align="left" width="86%">
 <h1>One-to-many mapping</h1>
-</td>
-</tr>
-</table>
 <p><a id="sthref140" name="sthref140"></a><a id="sthref141" name="sthref141"></a><a id="sthref142" name="sthref142"></a><a id="sthref143" name="sthref143"></a>Use a <span class="bold">One-to-Many Mapping</span> to define a relationship with one-to-many multiplicity.</p>
-<ol type="1" start="1">
+<ol start="1">
 <li>
 <p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, select the field to map. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected.</p>
 </li>
@@ -58,10 +52,10 @@
 <td align="left" id="r3c1-t13" headers="r1c1-t13">Fetch Type</td>
 <td align="left" headers="r3c1-t13 r1c2-t13">Defines how data is loaded from the database. See <a href="ref_mapping_general.htm#CACGGGHB">"Fetch Type"</a> for details.
 <ul>
-<li type="disc">
+<li>
 <p>Eager</p>
 </li>
-<li type="disc">
+<li>
 <p>Lazy</p>
 </li>
 </ul>
@@ -77,13 +71,13 @@
 <td align="left" id="r5c1-t13" headers="r1c1-t13">Order By</td>
 <td align="left" headers="r5c1-t13 r1c2-t13">Specify the default order for objects returned from a query. See <a href="ref_mapping_general.htm#CACDADIH">"Order By"</a> for details.
 <ul>
-<li type="disc">
+<li>
 <p>No ordering</p>
 </li>
-<li type="disc">
+<li>
 <p>Primary key</p>
 </li>
-<li type="disc">
+<li>
 <p>Custom</p>
 </li>
 </ul>
@@ -95,7 +89,7 @@
 <br /></div>
 <!-- class="inftblruleinformal" --></li>
 <li>
-<p>Use this table to complete the <a href="reference006.htm#CACBAEBC">Join Table Information</a> fields in the JPA Details view.</p>
+<p>Use this table to complete the <a href="reference007.htm#CACBAEBC">Join Table Information</a> fields in the JPA Details view.</p>
 <div class="inftblruleinformal">
 <table class="RuleInformal" title="This table lists the fields in the Join Table tab of the Persistence Properties view for this mapping." summary="This table lists the fields in the Join Table tab of the Persistence Properties view for this mapping." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
 <thead>
@@ -139,7 +133,6 @@
     inverseJoinColumns=@JoinColumn(name="<span class="italic">&lt;INVERSE_JOIN_COLUMN_NAME&gt;</span>", 
     referencedColumnName="<span class="italic">&lt;INVERSE_JOIN_COLUMN_REFERENCED_COLUMN&gt;</span>"))
 
-
 </pre>
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
@@ -160,7 +153,7 @@
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2007,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
+<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2008,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
 </tr>
 </table>
 </div>

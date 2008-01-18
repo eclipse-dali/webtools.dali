@@ -2,17 +2,17 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = May 21, 2007 6:35:55 -->
+<!-- Run date = January 18, 2008 7:43:51 -->
 <meta name="OAC_IGNORE_SKIP_NAV" content="true" />
-<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <title>Basic mapping</title>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta name="generator" content="Oracle DARB XHTML Converter - Version 4.5.3 Build 02" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
 <meta name="date" content="2005-07-10T12:57:20+08:00" />
-<meta name="robots" content="all" scheme="http://www.robotstxt.org/" />
+<meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Basic mapping" />
-<meta name="relnum" content="Release 1.0.0" />
+<meta name="relnum" content="M5 - Release 2.0.0" />
 <meta name="partnum" content="" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
@@ -22,57 +22,51 @@
 <body>
 <p><a id="BABBABCE" name="BABBABCE"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
-<tr valign="bottom">
-<td align="left" width="86%">
 <h1>Basic mapping</h1>
-</td>
-</tr>
-</table>
 <p><a id="sthref114" name="sthref114"></a><a id="sthref115" name="sthref115"></a><a id="sthref116" name="sthref116"></a><a id="sthref117" name="sthref117"></a>Use a <span class="bold">Basic Mapping</span> to map an attribute directly to a database column. Basic mappings may be used only with the following attribute types:</p>
 <ul>
-<li type="disc">
+<li>
 <p>Java primitive types and wrappers of the primitive types</p>
 </li>
-<li type="disc">
+<li>
 <p><code>java.lang.String, java.math.BigInteger</code></p>
 </li>
-<li type="disc">
+<li>
 <p><code>java.math.BigDecimal</code></p>
 </li>
-<li type="disc">
+<li>
 <p><code>java.util.Date</code></p>
 </li>
-<li type="disc">
+<li>
 <p><code>java.util.Calendar, java.sql.Date</code></p>
 </li>
-<li type="disc">
+<li>
 <p><code>java.sql.Time</code></p>
 </li>
-<li type="disc">
+<li>
 <p><code>java.sql.Timestamp</code></p>
 </li>
-<li type="disc">
+<li>
 <p><code>byte[]</code></p>
 </li>
-<li type="disc">
+<li>
 <p><code>Byte[]</code></p>
 </li>
-<li type="disc">
+<li>
 <p><code>char[]</code></p>
 </li>
-<li type="disc">
+<li>
 <p><code>Character[]</code></p>
 </li>
-<li type="disc">
+<li>
 <p>enums</p>
 </li>
-<li type="disc">
+<li>
 <p>any other type that implements <code>Serializable</code></p>
 </li>
 </ul>
 <p>To create a basic mapping:</p>
-<ol type="1" start="1">
+<ol start="1">
 <li>
 <p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, select the field to map. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected field.</p>
 </li>
@@ -100,22 +94,7 @@
 </tr>
 <tr align="left" valign="top">
 <td align="left" id="r3c1-t4" headers="r1c1-t4">Column</td>
-<td align="left" headers="r3c1-t4 r1c2-t4">The database column mapped to the entity attribute. See <a href="ref_mapping_general.htm#CACGCBHB">"Column"</a> for details.
-<ul>
-<li type="disc">
-<p>Name - Name of the database column.</p>
-</li>
-<li type="disc">
-<p>Table - Name of the database table.</p>
-</li>
-<li type="disc">
-<p>Insertable - Specify if the column is always included in <code>SQL INSERT</code> statements.</p>
-</li>
-<li type="disc">
-<p>Updatable - Specify if the column is always included in <code>SQL UPDATE</code> statements.</p>
-</li>
-</ul>
-</td>
+<td align="left" headers="r3c1-t4 r1c2-t4">The database column mapped to the entity attribute. See <a href="ref_mapping_general.htm#CACGCBHB">"Column"</a> for details.</td>
 <td align="left" headers="r3c1-t4 r1c3-t4">By default, the Column is assumed to be named identically to the attribute and always included in the <code>INSERT</code> and <code>UPDATE</code> statements.</td>
 </tr>
 <tr align="left" valign="top">
@@ -127,10 +106,10 @@
 <td align="left" id="r5c1-t4" headers="r1c1-t4">Fetch</td>
 <td align="left" headers="r5c1-t4 r1c2-t4">Defines how data is loaded from the database. See <a href="ref_mapping_general.htm#CACGGGHB">"Fetch Type"</a> for details.
 <ul>
-<li type="disc">
+<li>
 <p>Eager</p>
 </li>
-<li type="disc">
+<li>
 <p>Lazy</p>
 </li>
 </ul>
@@ -151,13 +130,13 @@
 <td align="left" id="r8c1-t4" headers="r1c1-t4">Temporal</td>
 <td align="left" headers="r8c1-t4 r1c2-t4">Specifies the type of data. See <a href="ref_mapping_general.htm#CACEAJGD">"Temporal"</a> for details.
 <ul>
-<li type="disc">
+<li>
 <p>Date</p>
 </li>
-<li type="disc">
+<li>
 <p>Time</p>
 </li>
-<li type="disc">
+<li>
 <p>Timestamp</p>
 </li>
 </ul>
@@ -175,7 +154,6 @@
     insertable=<span class="italic">&lt;INSERTABLE&gt;</span>, updatable=<span class="italic">&lt;UPDATABLE&gt;</span>)
 @Basic(fetch=FetchType.<span class="italic">&lt;FETCH_TYPE&gt;</span>, optional = <span class="italic">&lt;OPTIONAL&gt;</span>)
 @Temporal(TemporalType.<span class="italic">&lt;TEMPORAL&gt;</span>)
-
 
 </pre>
 <p>&nbsp;</p>
@@ -197,7 +175,7 @@
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2007,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
+<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2008,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
 </tr>
 </table>
 </div>

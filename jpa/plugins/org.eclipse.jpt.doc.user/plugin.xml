@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
-<plugin>
+<plugin name="JPA Documentation Plug-in" id="org.eclipse.jpt.doc.user" version="2.0.0" provider-name="Oracle">
 	<!-- =========== -->
 	<!-- Define TOC  -->
 	<!-- =========== -->

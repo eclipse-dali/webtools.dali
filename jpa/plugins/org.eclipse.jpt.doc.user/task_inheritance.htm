@@ -2,17 +2,17 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = May 21, 2007 6:35:54 -->
+<!-- Run date = January 18, 2008 7:43:50 -->
 <meta name="OAC_IGNORE_SKIP_NAV" content="true" />
-<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <title>Specifying entity inheritance</title>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta name="generator" content="Oracle DARB XHTML Converter - Version 4.5.3 Build 02" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
 <meta name="date" content="2005-07-10T12:57:20+08:00" />
-<meta name="robots" content="all" scheme="http://www.robotstxt.org/" />
+<meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Specifying entity inheritance" />
-<meta name="relnum" content="Release 1.0.0" />
+<meta name="relnum" content="M5 - Release 2.0.0" />
 <meta name="partnum" content="" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
@@ -22,16 +22,10 @@
 <body>
 <p><a id="CIHCCCJD" name="CIHCCCJD"></a></p>
 <div class="sect1"><!-- infolevel="all" infotype="General" -->
-<table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
-<tr valign="bottom">
-<td align="left" width="86%">
 <h1>Specifying entity inheritance</h1>
-</td>
-</tr>
-</table>
 <p><a id="sthref100" name="sthref100"></a><a id="sthref101" name="sthref101"></a>An entity may inherit properties from other entities. You can specify a specific strategy to use for inheritance.</p>
 <p>Use this procedure to specify inheritance (<code>@Inheritance)</code> for an existing entity (<code>@Entity</code>):</p>
-<ol type="1" start="1">
+<ol start="1">
 <li>
 <p>Select the entity in the <span class="gui-object-title">Package Explorer</span>.</p>
 </li>
@@ -44,19 +38,19 @@
 <li>
 <p>In the <span class="bold">Strategy</span> list, select one of the following the inheritance strategies:</p>
 <ul>
-<li type="disc">
+<li>
 <p>A single table (default)</p>
 </li>
-<li type="disc">
+<li>
 <p>Joined table</p>
 </li>
-<li type="disc">
+<li>
 <p>One table per class</p>
 </li>
 </ul>
 </li>
 <li>
-<p>Use the following table to complete the remaining fields on the tab. See <a href="reference005.htm#CACFHGHE">"Inheritance information"</a> for additional details.</p>
+<p>Use the following table to complete the remaining fields on the tab. See <a href="reference006.htm#CACFHGHE">"Inheritance information"</a> for additional details.</p>
 <div class="inftblruleinformal">
 <table class="RuleInformal" title="This table describes the options on the Persistence Properties view, Inheritance tab." summary="This table describes the options on the Persistence Properties view, Inheritance tab." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
 <thead>
@@ -107,7 +101,6 @@
 @PrimaryKeyJoinColumn(name="<span class="italic">&lt;JOIN_COLUMN_NAME&gt;</span>", 
     referencedColumnName = "<span class="italic">&lt;REFERENCED_COLUMN_NAME&gt;</span>")
 
-
 </pre>
 <p><a id="sthref107" name="sthref107"></a><a id="sthref108" name="sthref108"></a><a id="sthref109" name="sthref109"></a>The following figures illustrates the different inheritance strategies.</p>
 <div class="figure"><a id="sthref110" name="sthref110"></a>
@@ -116,10 +109,8 @@
 <!-- class="figure" -->
 <div class="figure"><a id="sthref111" name="sthref111"></a>
 <p class="titleinfigure"><a id="sthref112" name="sthref112"></a><a id="sthref113" name="sthref113"></a>Joined Table Inheritance</p>
-<img src="img/inheritance_join.png" alt="This figure shows a sample joined inheritance table strategy." title="This figure shows a sample joined inheritance table strategy." /><br /></div>
+<img src="img/inheritance_join.png" alt="This figure illustrates a joined subclass inheritance strategy." title="This figure illustrates a joined subclass inheritance strategy." /><br /></div>
 <!-- class="figure" -->
-<p>&nbsp;</p>
-<img src="img/ngrelr.png" alt="Related reference" title="Related reference" /><br />
 <br />
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
@@ -134,7 +125,7 @@
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2007,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
+<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2008,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
 </tr>
 </table>
 </div>

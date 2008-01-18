@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='iso-8859-1'?>
 <!-- User Guide -->
-  <toc label="Dali Java Persistence Tools User Guide">
+  <toc label="Dali Java Persistence Tools User Guide"><topic label="Dali Java Persistence Tools User Guide">
     <topic href="getting_started.htm" label="Getting started">
       <topic href="getting_started001.htm#BABEFHCD" label="Requirements and installation" />
       <topic href="getting_started002.htm#BABIGCJA" label="Dali quick start">
@@ -64,11 +64,12 @@
         <topic href="tasks016.htm#BABHIBII" label="Version mapping" />
       </topic>
       <topic href="tasks017.htm#BABBAGFI" label="Generating entities from tables" />
-      <topic href="tasks018.htm#BABFAIBA" label="Validating mappings and reporting problems">
-        <topic href="tasks019.htm#CIHFEDEI" label="Error messages" />
-        <topic href="tasks020.htm#CIHGEAIJ" label="Warning messages" />
+      <topic href="tasks018.htm#CIHJIGBE" label="Generating DDL from Entities" />
+      <topic href="tasks019.htm#BABFAIBA" label="Validating mappings and reporting problems">
+        <topic href="tasks020.htm#CIHFEDEI" label="Error messages" />
+        <topic href="tasks021.htm#CIHGEAIJ" label="Warning messages" />
       </topic>
-      <topic href="tasks021.htm#BABDBCBI" label="Modifying persistent project properties" />
+      <topic href="tasks022.htm#BABDBCBI" label="Modifying persistent project properties" />
     </topic>
     <topic label=" Reference">
       <topic label="Wizards">
@@ -80,18 +81,19 @@
       <topic label="Property pages">
         <topic href="ref_persistence_prop_view.htm#BABFAEBB" label="JPA Details view (for entities)">
           <topic href="reference003.htm#CACCAGGC" label="General information" />
-          <topic href="reference004.htm#CACBHIDA" label="Secondary table information" />
-          <topic href="reference005.htm#CACFHGHE" label="Inheritance information" />
+          <topic href="reference004.htm#CACIJBGH" label="Attribute overrides" />
+          <topic href="reference005.htm#CACBHIDA" label="Secondary table information" />
+          <topic href="reference006.htm#CACFHGHE" label="Inheritance information" />
         </topic>
         <topic href="ref_persistence_map_view.htm#BABIFBAF" label="JPA Details view (for attributes)">
           <topic href="ref_mapping_general.htm#CACBHFIJ" label="General information" />
-          <topic href="reference006.htm#CACBAEBC" label="Join Table Information" />
-          <topic href="reference007.htm#CACFCEJC" label="Join Columns Information" />
+          <topic href="reference007.htm#CACBAEBC" label="Join Table Information" />
+          <topic href="reference008.htm#CACFCEJC" label="Join Columns Information" />
           <topic href="ref_primary_key.htm#CACFCCAB" label="Primary Key Generation information" />
         </topic>
         <topic href="ref_details_orm.htm#CACGDGHC" label="JPA Details view (for orm.xml)">
-          <topic href="reference008.htm#CACCACGH" label="General information" />
-          <topic href="reference009.htm#CACEAGBG" label="Persistence Unit information" />
+          <topic href="reference009.htm#CACCACGH" label="General information" />
+          <topic href="reference010.htm#CACEAGBG" label="Persistence Unit information" />
         </topic>
         <topic href="ref_persistence_outline.htm#BABEGGFE" label="JPA Structure view" />
       </topic>
@@ -100,17 +102,19 @@
       </topic>
       <topic label="Dialogs">
         <topic href="task_generate_entities.htm#CACDAFJD" label="Generate Entities from Tables dialog" />
-        <topic href="reference012.htm#CACCGEHC" label="Edit Join Columns Dialog" />
+        <topic href="reference013.htm#CACCGEHC" label="Edit Join Columns Dialog" />
       </topic>
       <topic href="ref_persistence_perspective.htm#BABIFBDB" label="JPA Development perspective" />
       <topic label="Icons and buttons">
-        <topic href="reference014.htm#CACGEACG" label="Icons" />
-        <topic href="reference015.htm#CACDJCEI" label="Buttons" />
+        <topic href="reference015.htm#CACGEACG" label="Icons" />
+        <topic href="reference016.htm#CACDJCEI" label="Buttons" />
       </topic>
-      <topic href="reference016.htm#sthref239" label="Javadoc" />
-      <topic href="reference017.htm#CACBBDIB" label="Dali Developer Documentation" />
+      <topic href="reference017.htm#sthref242" label="Javadoc" />
+      <topic href="reference018.htm#CACBBDIB" label="Dali Developer Documentation" />
     </topic>
     <topic href="tips_and_tricks.htm" label="Tips and tricks" />
-    <topic href="whats_new.htm" label=" What's new" />
-    <topic href="legal.htm" label=" Legal" />
+    <topic href="legal.htm" label=" Legal">
+      <topic href="about.htm#sthref249" label="About this content" />
+    </topic>
+  </topic>
 </toc>

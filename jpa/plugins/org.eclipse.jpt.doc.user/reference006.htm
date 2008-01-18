@@ -2,17 +2,17 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = May 21, 2007 6:35:57 -->
+<!-- Run date = January 18, 2008 7:43:53 -->
 <meta name="OAC_IGNORE_SKIP_NAV" content="true" />
+<title>Inheritance information</title>
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-<title>Join Table Information</title>
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta name="generator" content="Oracle DARB XHTML Converter - Version 4.5.3 Build 02" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
 <meta name="date" content="2005-07-10T12:57:20+08:00" />
-<meta name="robots" content="all" scheme="http://www.robotstxt.org/" />
-<meta name="doctitle" content="Join Table Information" />
-<meta name="relnum" content="Release 1.0.0" />
+<meta name="robots" content="noarchive" />
+<meta name="doctitle" content="Inheritance information" />
+<meta name="relnum" content="M5 - Release 2.0.0" />
 <meta name="partnum" content="" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
@@ -20,43 +20,58 @@
 <link rel="contents" href="toc.htm" title="Contents" type="text/html" />
 </head>
 <body>
-<p><a id="CACBAEBC" name="CACBAEBC"></a></p>
+<p><a id="CACFHGHE" name="CACFHGHE"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
-<tr valign="bottom">
-<td align="left" width="86%">
-<h1>Join Table Information</h1>
-</td>
-</tr>
-</table>
-<p>Use area to specify a mapped column for joining an entity association. By default, the mapping is assumed to have a single join.</p>
-<p>This table lists the fields available on the <span class="gui-object-title">Join Table</span> area in <span class="gui-object-title">the JPA Details</span> view for <a href="tasks013.htm#BABHGEBD">One-to-many mapping</a> and <a href="tasks011.htm#BABEIEGD">Many-to-many mapping</a> mapping types.</p>
+<h1>Inheritance information</h1>
+<p><a id="sthref196" name="sthref196"></a><a id="sthref197" name="sthref197"></a>This table lists the fields available on the <span class="gui-object-title">Inheritance</span> area in the <span class="gui-object-title">Java Details</span> view for each entity type.</p>
 <div class="inftblruleinformal">
-<table class="RuleInformal" title="This table describes the options on the Join Table tab." summary="This table describes the options on the Join Table tab." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
+<table class="RuleInformal" title="This table describes the options on the Persistence Properties view, Inheritance tab." summary="This table describes the options on the Persistence Properties view, Inheritance tab." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t7">Property</th>
-<th align="left" valign="bottom" id="r1c2-t7">Description</th>
-<th align="left" valign="bottom" id="r1c3-t7">Default</th>
+<th align="left" valign="bottom" id="r1c1-t6">Property</th>
+<th align="left" valign="bottom" id="r1c2-t6">Description</th>
+<th align="left" valign="bottom" id="r1c3-t6">Default</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t7" headers="r1c1-t7">Name</td>
-<td align="left" headers="r2c1-t7 r1c2-t7">Name of the join table that contains the foreign key column.</td>
-<td align="left" headers="r2c1-t7 r1c3-t7">By default, the name is assumed to be the primary tables associated with the entities concatenated with an underscore.</td>
-</tr>
-<tr align="left" valign="top">
-<td align="left" id="r3c1-t7" headers="r1c1-t7"><a id="CACBBDFG" name="CACBBDFG"></a>Join Columns</td>
-<td align="left" headers="r3c1-t7 r1c2-t7"><a id="sthref213" name="sthref213"></a><a id="sthref214" name="sthref214"></a>Specify a mapped column for joining an entity association. This field corresponds to the <code>@JoinColum</code> attribute.
-<p>Select <span class="bold">Override Default</span>, then Add, Edit, or Remove the join columns.</p>
+<td align="left" id="r2c1-t6" headers="r1c1-t6">Strategy</td>
+<td align="left" headers="r2c1-t6 r1c2-t6">Specify the strategy to use when mapping a class or class hierarchy:
+<ul>
+<li>
+<p>Single table &ndash; All classes in the hierarchy are mapped to a single table.</p>
+</li>
+<li>
+<p>Joined &ndash; The root of the hierarchy is mapped to a single table; each child maps to its own table.</p>
+</li>
+<li>
+<p>Table per class &ndash; Each class is mapped to a separate table.</p>
+</li>
+</ul>
 </td>
-<td align="left" headers="r3c1-t7 r1c3-t7">By default, the mapping is assumed to have a single join.</td>
+<td align="left" headers="r2c1-t6 r1c3-t6">Single table</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t7" headers="r1c1-t7">Inverse Join Columns</td>
-<td align="left" headers="r4c1-t7 r1c2-t7">Select <span class="bold">Override Default</span>, then Add, Edit, or Remove the join columns.</td>
-<td align="left" headers="r4c1-t7 r1c3-t7"><br /></td>
+<td align="left" id="r3c1-t6" headers="r1c1-t6">Discriminator Column</td>
+<td align="left" headers="r3c1-t6 r1c2-t6">Use to specify the name of the discriminator column when using a <span class="bold">Single</span> or <span class="bold">Joined</span> inheritance strategy.</td>
+<td align="left" headers="r3c1-t6 r1c3-t6"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t6" headers="r1c1-t6">Discriminator Type</td>
+<td align="left" headers="r4c1-t6 r1c2-t6">Set this field to set the discriminator type to <code>Char</code> or <code>Integer</code> (instead of its default: <code>String</code>). The <span class="bold">Discriminator Value</span> must conform to this type.</td>
+<td align="left" headers="r4c1-t6 r1c3-t6">String</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t6" headers="r1c1-t6">Discriminator Value</td>
+<td align="left" headers="r5c1-t6 r1c2-t6">Specify the discriminator value used to differentiate an entity in this inheritance hierarchy. The value must conform to the specified <span class="bold">Discriminator Type</span>.</td>
+<td align="left" headers="r5c1-t6 r1c3-t6"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t6" headers="r1c1-t6">Primary Key Join Columns</td>
+<td align="left" headers="r6c1-t6 r1c2-t6">Use to overrdie the default pimary key join columns. Select <span class="bold">Override Default</span>, then click <span class="bold">Add</span> to select new Join Column.
+<p>This field corresponds with @PrimaryKeyJoinColumn annotation.</p>
+</td>
+<td align="left" headers="r6c1-t6 r1c3-t6"><br /></td>
 </tr>
 </tbody>
 </table>
@@ -65,17 +80,19 @@
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
 <br />
-<a href="task_mapping.htm#BABDGBIJ">Mapping an entity</a>
+<a href="task_inheritance.htm#CIHCCCJD">Specifying entity inheritance</a><br />
+<a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a>
 <p>&nbsp;</p>
-<img src="img/ngrelr.png" alt="Related task" title="Related task" /><br />
+<img src="img/ngrelr.png" alt="Related reference" title="Related reference" /><br />
 <br />
-<a href="reference012.htm#CACCGEHC">Edit Join Columns Dialog</a></div>
+<a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></div>
 <!-- class="sect3" -->
+<!-- class="sect2" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
 <tr>
-<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2007,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
+<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2008,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
 </tr>
 </table>
 </div>
