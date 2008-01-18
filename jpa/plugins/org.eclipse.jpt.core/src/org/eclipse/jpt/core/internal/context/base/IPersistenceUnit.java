@@ -1,12 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
@@ -291,16 +290,16 @@ public interface IPersistenceUnit extends IJpaContextNode
 	 */
 	IProperty addProperty();
 	
-	IProperty getProperty(String name);
-
-	IProperty getProperty(int index);
+	IProperty getProperty(String key);
 	
-	void putProperty(String key, String value);
+	IProperty getProperty(String key, String value);
 	
-	void putProperty(int index, String value);
+	void putProperty(String key, String value, boolean allowDuplicates);
+	
+	void replacePropertyValue(String key, String oldValue, String newValue);
 	
 	boolean containsProperty(String key);
-	
+
 	/**
 	 * Remove the property from the persistence unit.
 	 */
@@ -312,9 +311,9 @@ public interface IPersistenceUnit extends IJpaContextNode
 	void removeProperty(String key);
 	
 	/**
-	 * Remove the property at the specified index from the persistence unit.
+	 * Remove the property with the given key and valuefrom the persistence unit.
 	 */
-	void removeProperty(int index);
+	void removeProperty(String key, String value);
 	
 	
 	// **************** PersistenceUnitDefaults ********************************

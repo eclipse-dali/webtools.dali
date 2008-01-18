@@ -1,12 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
@@ -18,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.internal.ITextRange;
@@ -348,26 +348,35 @@ public class PersistenceUnit extends JpaContextNode
 		return this.properties.size();
 	}
 
-	public IProperty getProperty(String name) {
+	public IProperty getProperty(String key) {
 		for(IProperty property : this.properties) {
-			if(name.equals(property.getName())) {
+			if(property.getName().equals(key)) {
+				return property;
+			}
+		}
+		return null;
+	}
+
+	public IProperty getProperty(String key, String value) {
+		for(IProperty property : this.properties) {
+			if(property.getName().equals(key) && property.getValue().equals(value)) {
 				return property;
 			}
 		}
 		return null;
 	}
 	
-	public IProperty getProperty(int index) {
+	protected IProperty getProperty(int index) {
 		return this.properties.get(index);
 	}
 
-	protected XmlProperty getXmlProperty(String name) {
+	protected XmlProperty getXmlProperty(String name, String value) {
 		if (this.xmlPersistenceUnit.getProperties() == null) {
 			XmlProperties xmlProperties = PersistenceFactory.eINSTANCE.createXmlProperties();
 			this.xmlPersistenceUnit.setProperties(xmlProperties);
 		}
 		for(XmlProperty xmlProperty : this.xmlPersistenceUnit.getProperties().getProperties()) {
-			if(name.equals(xmlProperty.getName())) {
+			if(name.equals(xmlProperty.getName()) && value.equals(xmlProperty.getValue())) {
 				return xmlProperty;
 			}
 		}
@@ -375,29 +384,39 @@ public class PersistenceUnit extends JpaContextNode
 	}
 
 	/**
-	 * Adds a Property with the given key and value.
-	 * Allows duplicate keys.
+	 * Adds or Changes Property with the given key and value.
 	 */
-	public void putProperty(String key, String value) {
-		XmlProperty xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
-		xmlProperty.setName(key);
-		xmlProperty.setValue(value);
-		
-		this.addXmlProperty(xmlProperty);
-		return;
+	public void putProperty(String key, String value, boolean allowDuplicates) {
+		if( ! allowDuplicates && this.containsProperty(key)) {
+			this.putXmlProperty(key, value, this.getProperty(key).getValue());
+			return;
+		}
+		if( value != null) {
+			XmlProperty xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
+			xmlProperty.setName(key);
+			xmlProperty.setValue(value);
+			
+			this.addXmlProperty(xmlProperty);
+			return;
+		}
 	}
 	
-	public void putProperty(int index, String value) {
+	public void replacePropertyValue(String key, String oldValue, String newValue) {
 		
-		IProperty property = this.getProperty(index);
-		
-		this.putXmlProperty(property.getName(), value);
+		this.putXmlProperty(key, newValue, oldValue);
 	}
 	
-	protected void putXmlProperty(String key, String value) {
+	protected void putXmlProperty(String key, String value, String oldValue) {
+		if( value == null) {
+			this.removeProperty(key);
+			return;
+		}
 		EList<XmlProperty> xmlProperties = this.xmlPersistenceUnit.getProperties().getProperties();
 
-		XmlProperty xmlProperty = this.getXmlProperty(key);
+		XmlProperty xmlProperty = this.getXmlProperty(key, oldValue);
+		if(xmlProperty == null) {
+			throw new NoSuchElementException("Missing Property name: " + key + ", value: " + oldValue);
+		}
 		xmlProperty.setValue(value);
 		this.setItemInList(xmlProperties.indexOf(xmlProperty), xmlProperty, xmlProperties, PROPERTIES_LIST);
 	}	
@@ -405,7 +424,7 @@ public class PersistenceUnit extends JpaContextNode
 	public boolean containsProperty(String key) {
 		return (this.getProperty(key) != null);
 	}
-	
+
 	public IProperty addProperty() {
 		XmlProperty xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
 		
@@ -432,13 +451,17 @@ public class PersistenceUnit extends JpaContextNode
 		this.removeProperty(this.getProperty(key));
 	}
 	
+	public void removeProperty(String key, String value) {
+		this.removeProperty(this.getProperty(key, value));
+	}
+	
 	public void removeProperty(IProperty property) {
 		if(property != null) {
 			this.removeProperty(this.properties.indexOf(property));
 		}
 	}
 	
-	public void removeProperty(int index) {
+	protected void removeProperty(int index) {
 		IProperty propertyRemoved = this.properties.remove(index);
 		this.xmlPersistenceUnit.getProperties().getProperties().remove(index);
 		

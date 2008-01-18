@@ -1,12 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.persistence;
 
@@ -718,12 +717,12 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(CollectionTools.size(persistenceUnit.properties()), 2);
 		
 		// remove property from context, test that it's removed from resource
-		persistenceUnit.removeProperty(0);
+		persistenceUnit.removeProperty("foo");
 		
 		assertEquals(xmlPersistenceUnit.getProperties().getProperties().size(), 1);
 		
 		// remove another one.  test that properties object is nulled
-		persistenceUnit.removeProperty(0);
+		persistenceUnit.removeProperty("FOO", "BAR");
 		
 		assertNull(xmlPersistenceUnit.getProperties());
 	}
@@ -733,19 +732,19 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		IPersistenceUnit persistenceUnit = persistenceUnit();
 		
 		// add two properties and test that there are two existing in xml and context
-		persistenceUnit.putProperty("foo", "bar");
-		persistenceUnit.putProperty("FOO", "BAR");
+		persistenceUnit.putProperty("foo", "bar", false);
+		persistenceUnit.putProperty("FOO", "BAR", false);
 		
 		assertEquals(xmlPersistenceUnit.getProperties().getProperties().size(), 2);
 		assertEquals(CollectionTools.size(persistenceUnit.properties()), 2);
 		
 		// remove property from context, test that it's removed from resource
-		persistenceUnit.removeProperty(0);
+		persistenceUnit.removeProperty("foo", "bar");
 		
 		assertEquals(xmlPersistenceUnit.getProperties().getProperties().size(), 1);
 		
 		// remove another one, test that properties object is nulled
-		persistenceUnit.removeProperty(0);
+		persistenceUnit.removeProperty("FOO");
 		
 		assertNull(xmlPersistenceUnit.getProperties());
 	}
@@ -755,43 +754,68 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		IPersistenceUnit persistenceUnit = persistenceUnit();
 		
 		// add two properties and test that there are two existing in xml and context
-		persistenceUnit.putProperty("foo", "bar");
-		persistenceUnit.putProperty("FOO", "BAR");
+		persistenceUnit.putProperty("foo", "bar", false);
+		persistenceUnit.putProperty("FOO", "BAR", false);
 		
 		assertEquals(xmlPersistenceUnit.getProperties().getProperties().size(), 2);
 		assertEquals(CollectionTools.size(persistenceUnit.properties()), 2);
 		
 		// modify a property, test its value
-		persistenceUnit.putProperty("FOO", null);
-		assertNull(persistenceUnit.getProperty("FOO").getValue());
-
-		persistenceUnit.putProperty("foo", "");
+		persistenceUnit.putProperty("foo", "", false);
 		assertEquals("", persistenceUnit.getProperty("foo").getValue());
 
-		persistenceUnit.putProperty("foo", "BAR");
+		persistenceUnit.putProperty("foo", "BAR", false);
 		assertEquals("BAR", persistenceUnit.getProperty("foo").getValue());
 		
 		// remove property that doesn't from context, test that the resource is unchanged
 		persistenceUnit.removeProperty("notExist");
-		assertEquals(xmlPersistenceUnit.getProperties().getProperties().size(), 2);
+		assertEquals(2, xmlPersistenceUnit.getProperties().getProperties().size());
 		
 		// remove property from context, test that it's removed from resource
 		persistenceUnit.removeProperty("FOO");
 		assertNull(persistenceUnit.getProperty("FOO"));
-		assertEquals(xmlPersistenceUnit.getProperties().getProperties().size(), 1);
+		assertEquals(1, xmlPersistenceUnit.getProperties().getProperties().size());
 
-		// remove another one, test that properties object is nulled
-		persistenceUnit.removeProperty("foo");
+		// remove by setting value to null, test that properties object is nulled
+		persistenceUnit.putProperty("notExist", null, false);
+		assertNull(persistenceUnit.getProperty("notExist"));
+
+		persistenceUnit.putProperty("foo", null, false);
 		assertNull(persistenceUnit.getProperty("foo"));
 		assertNull(xmlPersistenceUnit.getProperties());
+	}
+	
+	public void testModifyProperties5() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// testing duplicate keys, add four properties and test that there are four existing in xml and context
+		persistenceUnit.putProperty("FOO", "BAR", false);
+		persistenceUnit.putProperty("foo", "bar 3", true);
+		persistenceUnit.putProperty("foo", "bar 2", true);
+		persistenceUnit.putProperty("foo", "bar 1", true);
+		
+		assertEquals(xmlPersistenceUnit.getProperties().getProperties().size(), 4);
+		assertEquals(CollectionTools.size(persistenceUnit.properties()), 4);
+		
+		// modify a property, test its value
+		persistenceUnit.replacePropertyValue("foo", "bar 2", "bar two");
+		
+		IProperty property = persistenceUnit.getProperty("foo", "bar two");
+		assertEquals("bar two", property.getValue());
+
+		// remove a property, test that there are four existing in xml and context
+		persistenceUnit.removeProperty("foo", "bar 1");
+		assertEquals(xmlPersistenceUnit.getProperties().getProperties().size(), 3);
+		assertEquals(CollectionTools.size(persistenceUnit.properties()), 3);
 	}
 	
 	public void testAccessProperty() {
 		IPersistenceUnit persistenceUnit = persistenceUnit();
 		
 		// add two properties and try to access it.
-		persistenceUnit.putProperty("foo", "bar");
-		persistenceUnit.putProperty("FOO", "BAR");
+		persistenceUnit.putProperty("foo", "bar", false);
+		persistenceUnit.putProperty("FOO", "BAR", false);
 		
 		IProperty property = persistenceUnit.getProperty("foo");
 		assertNotNull(property);
