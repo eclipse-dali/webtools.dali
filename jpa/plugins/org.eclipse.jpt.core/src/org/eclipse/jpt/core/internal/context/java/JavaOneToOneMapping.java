@@ -107,7 +107,7 @@ public class JavaOneToOneMapping extends JavaSingleRelationshipMapping<OneToOne>
 
 	@Override
 	protected void update(OneToOne oneToOneResource) {
-		super.initialize(oneToOneResource);
+		super.update(oneToOneResource);
 		this.setMappedBy(oneToOneResource.getMappedBy());
 	}
 
