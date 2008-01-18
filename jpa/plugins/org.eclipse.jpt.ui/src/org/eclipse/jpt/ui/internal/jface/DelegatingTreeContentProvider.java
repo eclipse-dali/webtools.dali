@@ -65,14 +65,19 @@ public class DelegatingTreeContentProvider implements ITreeContentProvider
 		return treeItemContentProvider;
 	}
 	
+	/**
+	 * Disposes all elements
+	 */
 	public void dispose() {
+		// coded this way to allow some item providers to dispose of their child 
+		// elements without disrupting the entire process
 		while (! treeItemContentProviders.isEmpty()) {
 			dispose(treeItemContentProviders.keySet().iterator().next());
 		}
 	}
 	
 	/**
-	 * Disposes element and all descendents of element
+	 * Disposes element
 	 */
 	protected void dispose(Object element) {
 		if (treeItemContentProviders.containsKey(element)) {

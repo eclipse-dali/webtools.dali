@@ -12,24 +12,24 @@ package org.eclipse.jpt.ui.internal.jface;
 
 /**
  * Interface used in conjunction with DelegatingTreeContentProvider to return 
- * tree information for a particular node.
+ * tree information for a particular item.
  * @see DelegatingTreeContentProvider
  * @see ITreeItemContentProviderFactory
  */
 public interface ITreeItemContentProvider
 {
 	/**
-	 * Return the parent of the represented node
+	 * Return the parent of the represented item
 	 */
 	Object getParent();
 	
 	/**
-	 * Return whether the represented node has children
+	 * Return whether the represented item has children
 	 */
 	boolean hasChildren();
 	
 	/**
-	 * Return the children of the represented node
+	 * Return the children of the represented item
 	 */
 	Object[] getChildren();
 	
