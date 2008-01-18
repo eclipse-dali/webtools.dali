@@ -67,6 +67,7 @@ public class JptUiMappingsMessages extends NLS
 	public static String TargetEntityChooser_defaultEmpty;
 	public static String TargetEntityChooser_defaultWithOneParam;
 	public static String TargetEntityChooser_browse;
+	public static String TargetEntityChooser_selectTypeTitle;
 
 	public static String NonOwningMapping_mappedByLabel;
 
@@ -216,6 +217,13 @@ public class JptUiMappingsMessages extends NLS
 
 	public static String FetchTypeComposite_eager;
 	public static String FetchTypeComposite_lazy;
+
+	public static String CascadeComposite_all;
+	public static String CascadeComposite_cascadeTitle;
+	public static String CascadeComposite_merge;
+	public static String CascadeComposite_persist;
+	public static String CascadeComposite_refresh;
+	public static String CascadeComposite_remove;
 
 	static {
 		// initialize resource bundle

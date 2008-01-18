@@ -25,7 +25,7 @@ public class EmbeddableComposite extends BaseJpaComposite<IEmbeddable>
 	                           Composite parent,
 	                           TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, SWT.NULL, widgetFactory);
+		super(subjectHolder, parent, widgetFactory);
 		//this.mappedSuperclassListener = buildMappedSuperclassListener();
 	}
 

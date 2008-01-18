@@ -8,7 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
+import org.eclipse.jpt.core.internal.context.base.INullable;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Control;
  * @version 1.0
  * @since 2.0
  */
-public class OptionalComposite extends BaseJpaController<IBasicMapping>
+public class OptionalComposite extends BaseJpaController<INullable>
 {
 	private TriStateCheckBox optionalCheckBox;
 
@@ -44,21 +44,21 @@ public class OptionalComposite extends BaseJpaController<IBasicMapping>
 	 * @param parentController The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OptionalComposite(BaseJpaComposite<IBasicMapping> parentComposite,
+	public OptionalComposite(BaseJpaComposite<? extends INullable> parentComposite,
 	                         Composite parent)
 	{
 		super(parentComposite, parent);
 	}
 
 	private WritablePropertyValueModel<Boolean> buildOptionalHolder() {
-		return new PropertyAspectAdapter<IBasicMapping, Boolean>(getSubjectHolder(), IBasicMapping.SPECIFIED_OPTIONAL_PROPERTY) {
+		return new PropertyAspectAdapter<INullable, Boolean>(getSubjectHolder(), INullable.SPECIFIED_OPTIONAL_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return subject().getSpecifiedOptional();
+				return subject.getSpecifiedOptional();
 			}
 			@Override
 			protected void setValue_(Boolean value) {
-				subject().setSpecifiedOptional(value);
+				subject.setSpecifiedOptional(value);
 			}
 		};
 	}

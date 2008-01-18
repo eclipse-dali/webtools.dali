@@ -1,0 +1,7 @@
+# Debugging options for org.eclipse.jpt.ui plug-in
+
+# Turn on debugging for the org.eclipse.jpt.ui plugin.
+org.eclipse.jpt.ui/debug=false
+
+# Turn on debugging for events occurring in the UI panes
+org.eclipse.jpt.ui/debug/layout=false

@@ -3,15 +3,15 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.mappings.IJoinColumn;
-import org.eclipse.jpt.core.internal.mappings.IJoinTable;
-import org.eclipse.jpt.core.internal.mappings.IMultiRelationshipMapping;
+import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.IJoinTable;
+import org.eclipse.jpt.core.internal.context.base.IMultiRelationshipMapping;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.swt.widgets.Shell;
 
@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 public class JoinColumnInJoinTableDialog extends AbstractJoinColumnDialog<IJoinColumn> {
 
 	private IJoinTable joinTable;
-	
+
 	JoinColumnInJoinTableDialog(Shell parent, IJoinTable joinTable) {
 		super(parent);
 		this.joinTable = joinTable;
@@ -33,11 +33,13 @@ public class JoinColumnInJoinTableDialog extends AbstractJoinColumnDialog<IJoinC
 	protected IJoinTable getJoinTable() {
 		return this.joinTable;
 	}
-	
+
+	@Override
 	protected Table getNameTable() {
 		return getJoinTable().dbTable();
 	}
-	
+
+	@Override
 	protected Table getReferencedNameTable() {
 		IMultiRelationshipMapping multiRelationshipMapping = (IMultiRelationshipMapping) getJoinTable().eContainer();
 		return multiRelationshipMapping.typeMapping().primaryDbTable();

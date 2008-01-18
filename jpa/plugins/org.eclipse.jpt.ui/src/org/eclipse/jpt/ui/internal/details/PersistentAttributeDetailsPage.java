@@ -220,7 +220,7 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 
 		populateMapAsCombo();
 
-		IAttributeMapping mapping = this.subject().getMapping();
+		IAttributeMapping mapping = (this.subject() != null) ? this.subject().getMapping() : null;
 		populateMappingPage(mapping == null ? null : mapping.getKey());
 	}
 
@@ -260,13 +260,15 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 		if (this.subject() != this.mappingCombo.getInput()) {
 			this.mappingCombo.setInput(this.subject());
 		}
-		if (this.subject().getMapping() == null || this.subject().getMapping().isDefault()) {
-			this.mappingCombo.setSelection(new StructuredSelection(this.mappingCombo.getElementAt(0)));
-		}
-		else {
-			IAttributeMappingUiProvider<? extends IAttributeMapping> provider = attributeMappingUiProvider(this.subject().mappingKey());
-			if (provider != null && ! provider.equals(((StructuredSelection) this.mappingCombo.getSelection()).getFirstElement())) {
-				this.mappingCombo.setSelection(new StructuredSelection(provider));
+		if (this.subject() != null) {
+			if (this.subject().getMapping() == null || this.subject().getMapping().isDefault()) {
+				this.mappingCombo.setSelection(new StructuredSelection(this.mappingCombo.getElementAt(0)));
+			}
+			else {
+				IAttributeMappingUiProvider<? extends IAttributeMapping> provider = attributeMappingUiProvider(this.subject().mappingKey());
+				if (provider != null && ! provider.equals(((StructuredSelection) this.mappingCombo.getSelection()).getFirstElement())) {
+					this.mappingCombo.setSelection(new StructuredSelection(provider));
+				}
 			}
 		}
 	}

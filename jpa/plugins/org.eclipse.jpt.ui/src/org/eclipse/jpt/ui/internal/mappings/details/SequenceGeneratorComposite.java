@@ -30,11 +30,11 @@ import org.eclipse.swt.widgets.Text;
 /**
  * Here the layout of this pane:
  * <pre>
- * ----------------------------------------------------------------------------â??
- * |                     ----------------------------------------------------â?? |
+ * -----------------------------------------------------------------------------
+ * |                     ----------------------------------------------------- |
  * | Name:               | I                                                 | |
  * |                     ----------------------------------------------------- |
- * |                     ----------------------------------------------------â?? |
+ * |                     ----------------------------------------------------- |
  * | Sequence Generator: | I                                               |v| |
  * |                     ----------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
@@ -163,7 +163,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 	 */
 	@Override
 	protected ISequenceGenerator getGenerator() {
-		return subject().getSequenceGenerator();
+		return (subject() != null) ? subject().getSequenceGenerator() : null;
 	}
 
 	private CCombo getSequenceCombo() {

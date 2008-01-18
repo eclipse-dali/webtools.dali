@@ -27,15 +27,15 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 public class TransientMappingComposite extends BaseJpaComposite<ITransientMapping>
 {
 	/**
-	 * Creates a new <code>TransientComposite</code>.
+	 * Creates a new <code>TransientMappingComposite</code>.
 	 *
 	 * @param subjectHolder The holder of the subject <code>ITransientMapping</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public TransientMappingComposite(PropertyValueModel<? extends ITransientMapping> subjectHolder,
-	                          Composite parent,
-	                          TabbedPropertySheetWidgetFactory widgetFactory) {
+	                                 Composite parent,
+	                                 TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}

@@ -18,8 +18,8 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * Here the layout of this pane:
  * <pre>
- * ----------------------------------------------------------------------------â??
- * |           --------------------------------------------------------------â?? |
+ * -----------------------------------------------------------------------------
+ * |           --------------------------------------------------------------- |
  * | Temporal: |                                                           |v| |
  * |           --------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
@@ -48,7 +48,7 @@ public class TemporalTypeComposite extends BaseJpaComposite<IColumnMapping> {
 
 	private EnumComboViewer<IColumnMapping, TemporalType> buildTemporalCombo(Composite container) {
 
-		return new EnumComboViewer<IColumnMapping, TemporalType>(getSubjectHolder(), container, getWidgetFactory()) {
+		return new EnumComboViewer<IColumnMapping, TemporalType>(this, container) {
 			@Override
 			protected TemporalType[] choices() {
 				return TemporalType.values();
@@ -92,15 +92,13 @@ public class TemporalTypeComposite extends BaseJpaComposite<IColumnMapping> {
 	protected void initializeLayout(Composite container) {
 
 		EnumComboViewer<IColumnMapping, TemporalType> temporalCombo =
-			this.buildTemporalCombo(container);
+			buildTemporalCombo(container);
 
-		this.buildLabeledComposite(
+		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.BasicGeneralSection_temporalLabel,
 			temporalCombo.getControl(),
 			IJpaHelpContextIds.MAPPING_TEMPORAL
 		);
-
-		this.registerSubPane(temporalCombo);
 	}
 }

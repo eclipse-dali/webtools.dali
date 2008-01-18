@@ -9,13 +9,14 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public abstract class BaseJpaComposite<T> extends BaseJpaController<T>
+public abstract class BaseJpaComposite<T extends Node> extends BaseJpaController<T>
 	implements IJpaComposite<T>
 {
 	/**
@@ -54,7 +55,39 @@ public abstract class BaseJpaComposite<T> extends BaseJpaController<T>
 	/**
 	 * Creates a new <code>BaseJpaComposite</code>.
 	 *
-	 * @param subjectHolder The holder of the subject <code>T</code>
+	 * @param parentController The parent container of this one
+	 * @param subjectHolder The holder of the subject
+	 * @param parent The parent container
+	 */
+	protected BaseJpaComposite(BaseJpaController<?> parentController,
+	                           PropertyValueModel<? extends T> subjectHolder,
+	                           Composite parent) {
+
+		super(parentController, subjectHolder, parent);
+	}
+
+	/**
+	 * Creates a new <code>BaseJpaComposite</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param subjectHolder The holder of the subject
+	 * @param parent The parent container
+	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
+	 * this pane aligned with the widgets of the given parent controller;
+	 * <code>false</code> to not align them
+	 */
+	protected BaseJpaComposite(BaseJpaController<?> parentController,
+	                           PropertyValueModel<? extends T> subjectHolder,
+	                           Composite parent,
+	                           boolean automaticallyAlignWidgets) {
+
+		super(parentController, subjectHolder, parent, automaticallyAlignWidgets);
+	}
+
+	/**
+	 * Creates a new <code>BaseJpaComposite</code>.
+	 *
+	 * @param subjectHolder The holder of the subject
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
@@ -63,15 +96,6 @@ public abstract class BaseJpaComposite<T> extends BaseJpaController<T>
 	                           TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected final void buildWidgets(Composite parent) {
-		this.composite = buildComposite(parent);
-		this.initializeLayout(this.composite);
 	}
 
 	protected Composite buildComposite(Composite parent) {
@@ -92,6 +116,15 @@ public abstract class BaseJpaComposite<T> extends BaseJpaController<T>
 		container.setLayoutData(gridData);
 
 		return container;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected final void buildWidgets(Composite parent) {
+		this.composite = buildComposite(parent);
+		this.initializeLayout(this.composite);
 	}
 
 	/*

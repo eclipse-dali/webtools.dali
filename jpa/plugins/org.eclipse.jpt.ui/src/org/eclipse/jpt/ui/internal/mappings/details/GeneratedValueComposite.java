@@ -30,11 +30,11 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * Here the layout of this pane:
  * <pre>
- * ----------------------------------------------------------------------------â??
- * |                 --------------------------------------------------------â?? |
+ * -----------------------------------------------------------------------------
+ * |                 --------------------------------------------------------- |
  * | Strategy:       | I                                                   |v| |
  * |                 --------------------------------------------------------- |
- * |                 --------------------------------------------------------â?? |
+ * |                 --------------------------------------------------------- |
  * | Generator Name: | I                                                   |v| |
  * |                 --------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
@@ -287,19 +287,24 @@ public class GeneratedValueComposite extends BaseJpaComposite<IIdMapping>
 	}
 
 	private void populateGeneratorName() {
-		IGeneratedValue generatedValue = subject().getGeneratedValue();
-
-		if (generatedValue == null) {
+		if (subject() == null) {
 			this.generatorNameCombo.setText("");
 		}
 		else {
-			String generatorName = generatedValue.getGenerator();
+			IGeneratedValue generatedValue = subject().getGeneratedValue();
 
-			if (StringTools.stringIsEmpty(generatorName)) {
+			if (generatedValue == null) {
 				this.generatorNameCombo.setText("");
 			}
 			else {
-				this.generatorNameCombo.setText(generatorName);
+				String generatorName = generatedValue.getGenerator();
+
+				if (StringTools.stringIsEmpty(generatorName)) {
+					this.generatorNameCombo.setText("");
+				}
+				else {
+					this.generatorNameCombo.setText(generatorName);
+				}
 			}
 		}
 	}

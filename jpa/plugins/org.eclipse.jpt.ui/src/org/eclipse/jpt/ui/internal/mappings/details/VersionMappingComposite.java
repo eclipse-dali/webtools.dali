@@ -20,13 +20,13 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 /**
  * Here the layout of this pane:
  * <pre>
- * ----------------------------------------------------------------------------â??
- * | ------------------------------------------------------------------------â?? |
+ * -----------------------------------------------------------------------------
+ * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
  * | | ColumnComposite                                                       | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------â?? |
+ * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
  * | | TemporalTypeComposite                                                 | |
  * | |                                                                       | |
@@ -44,15 +44,15 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 public class VersionMappingComposite extends BaseJpaComposite<IVersionMapping> {
 
 	/**
-	 * Creates a new <code>VersionComposite</code>.
+	 * Creates a new <code>VersionMappingComposite</code>.
 	 *
 	 * @param subjectHolder The holder of the subject <code>IVersionMapping</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public VersionMappingComposite(PropertyValueModel<? extends IVersionMapping> subjectHolder,
-	                        Composite parent,
-	                        TabbedPropertySheetWidgetFactory widgetFactory) {
+	                               Composite parent,
+	                               TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
@@ -73,21 +73,9 @@ public class VersionMappingComposite extends BaseJpaComposite<IVersionMapping> {
 	protected void initializeLayout(Composite container) {
 
 		// Column widgets
-		ColumnComposite columnComposite = new ColumnComposite(
-			buildColumnHolder(),
-			container,
-			getWidgetFactory()
-		);
-
-		this.addPaneForAlignment(columnComposite);
-		this.registerSubPane(columnComposite);
+		new ColumnComposite(this, buildColumnHolder(), container);
 
 		// Temporal Type widgets
-		TemporalTypeComposite temporalTypeComposite = new TemporalTypeComposite(
-			this,
-			container
-		);
-
-		this.registerSubPane(temporalTypeComposite);
+		new TemporalTypeComposite(this, container);
 	}
 }

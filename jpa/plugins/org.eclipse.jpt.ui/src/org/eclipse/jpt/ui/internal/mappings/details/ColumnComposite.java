@@ -12,6 +12,7 @@ import org.eclipse.jpt.core.internal.context.base.IAbstractColumn;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
@@ -22,23 +23,23 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 /**
  * Here the layout of this pane:
  * <pre>
- * ----------------------------------------------------------------------------â??
- * | ------------------------------------------------------------------------â?? |
+ * -----------------------------------------------------------------------------
+ * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
  * | | ColumnCombo                                                           | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------â?? |
+ * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
  * | | TableCombo                                                            | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------â?? |
+ * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
  * | | EnumComboViewer                                                       | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------â?? |
+ * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
  * | | EnumComboViewer                                                       | |
  * | |                                                                       | |
@@ -61,15 +62,24 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  */
 public class ColumnComposite extends BaseJpaComposite<IColumn>
 {
-	private ColumnCombo columnCombo;
-	private EnumComboViewer<IColumn, Boolean> insertableCombo;
-	private TableCombo tableCombo;
-	private EnumComboViewer<IColumn, Boolean> updatableCombo;
+	/**
+	 * Creates a new <code>ColumnComposite</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param subjectHolder The holder of the subject <code>IColumn</code>
+	 * @param parent The parent container
+	 */
+	protected ColumnComposite(BaseJpaController<?> parentController,
+	                          PropertyValueModel<? extends IColumn> subjectHolder,
+	                          Composite parent) {
+
+		super(parentController, subjectHolder, parent);
+	}
 
 	/**
 	 * Creates a new <code>ColumnComposite</code>.
 	 *
-	 * @param subjectHolder The holder of the subject <code>T</code>
+	 * @param subjectHolder The holder of the subject <code>IColumn</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
@@ -164,73 +174,15 @@ public class ColumnComposite extends BaseJpaComposite<IColumn>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void disengageListeners() {
-		super.disengageListeners();
-
-		this.columnCombo.disengageListeners();
-		this.tableCombo.disengageListeners();
-		this.insertableCombo.disengageListeners();
-		this.updatableCombo.disengageListeners();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	public void dispose() {
-		this.columnCombo.dispose();
-		this.tableCombo.dispose();
-		this.insertableCombo.dispose();
-		this.updatableCombo.dispose();
-		super.dispose();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void doPopulate() {
-		super.doPopulate();
-
-		this.columnCombo.populate();
-		this.tableCombo.populate();
-		this.insertableCombo.populate();
-		this.updatableCombo.populate();
-	}
-
-	protected void enableWidgets(boolean enabled) {
-//		this.columnCombo.setEnabled(enabled);
-//		this.tableCombo.setEnabled(enabled);
-		this.insertableCombo.getControl().setEnabled(enabled);
-		this.updatableCombo.getControl().setEnabled(enabled);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void engageListeners() {
-		super.engageListeners();
-
-		this.columnCombo.engageListeners();
-		this.tableCombo.engageListeners();
-		this.insertableCombo.engageListeners();
-		this.updatableCombo.engageListeners();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
 	protected void initializeLayout(Composite container) {
 
 		container = buildTitledPane(
-			JptUiMappingsMessages.ColumnComposite_columnSection,
-			container
+			container,
+			JptUiMappingsMessages.ColumnComposite_columnSection
 		);
 
 		// Column widgets
-		columnCombo = new ColumnCombo(this, container);
+		ColumnCombo columnCombo = new ColumnCombo(this, container);
 
 		buildLabeledComposite(
 			container,
@@ -239,8 +191,10 @@ public class ColumnComposite extends BaseJpaComposite<IColumn>
 			IJpaHelpContextIds.MAPPING_COLUMN
 		);
 
+		registerSubPane(columnCombo);
+
 		// Table widgets
-		tableCombo = new TableCombo(this, container);
+		TableCombo tableCombo = new TableCombo(this, container);
 
 		buildLabeledComposite(
 			container,
@@ -249,8 +203,10 @@ public class ColumnComposite extends BaseJpaComposite<IColumn>
 			IJpaHelpContextIds.MAPPING_COLUMN_TABLE
 		);
 
+		registerSubPane(tableCombo);
+
 		// Insertable widgets
-		insertableCombo = buildInsertableCombo(container);
+		EnumComboViewer<IColumn, Boolean> insertableCombo = buildInsertableCombo(container);
 
 		buildLabeledComposite(
 			container,
@@ -259,8 +215,10 @@ public class ColumnComposite extends BaseJpaComposite<IColumn>
 			IJpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
 		);
 
+		registerSubPane(insertableCombo);
+
 		// Updatable widgets
-		updatableCombo = buildUpdatableCombo(container);
+		EnumComboViewer<IColumn, Boolean> updatableCombo = buildUpdatableCombo(container);
 
 		buildLabeledComposite(
 			container,
@@ -268,5 +226,7 @@ public class ColumnComposite extends BaseJpaComposite<IColumn>
 			updatableCombo.getControl(),
 			IJpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
 		);
+
+		registerSubPane(updatableCombo);
 	}
 }

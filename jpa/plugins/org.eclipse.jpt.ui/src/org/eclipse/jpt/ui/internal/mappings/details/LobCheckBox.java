@@ -9,14 +9,14 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.swt.BooleanButtonModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
@@ -27,8 +27,22 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class LobCheckBox extends BaseJpaComposite<IBasicMapping>
+public class LobCheckBox extends BaseJpaController<IBasicMapping>
 {
+	private Button button;
+
+	/**
+	 * Creates a new <code>LobCheckBox</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param parent The parent container
+	 */
+	public LobCheckBox(BaseJpaController<? extends IBasicMapping> parentController,
+	                   Composite parent) {
+
+		super(parentController, parent);
+	}
+
 	/**
 	 * Creates a new <code>LobCheckBox</code>.
 	 *
@@ -63,13 +77,21 @@ public class LobCheckBox extends BaseJpaComposite<IBasicMapping>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void initializeLayout(Composite container) {
+	protected void buildWidgets(Composite container) {
 
-		Button button = getWidgetFactory().createButton(
+		button = buildCheckBox(
 			container,
 			JptUiMappingsMessages.BasicGeneralSection_lobLabel,
-			SWT.CHECK);
+			buildLobHolder(),
+			IJpaHelpContextIds.MAPPING_LOB
+		);
+	}
 
-		BooleanButtonModelAdapter.adapt(buildLobHolder(), button);
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public Control getControl() {
+		return button;
 	}
 }

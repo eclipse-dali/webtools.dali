@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved. This
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved. This
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
@@ -9,10 +9,12 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IEntity;
+import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -36,7 +38,7 @@ public class EntityComposite extends BaseJpaComposite<IEntity>
 	                       Composite parent,
 	                       TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, SWT.NULL, widgetFactory);
+		super(subjectHolder, parent, widgetFactory);
 	}
 
 	@Override
@@ -80,8 +82,7 @@ public class EntityComposite extends BaseJpaComposite<IEntity>
 
 		CommonWidgets.buildEntityNameLabel(generalComposite, getWidgetFactory());
 
-		this.entityNameCombo =
-	    	CommonWidgets.buildEntityNameCombo(generalComposite, getWidgetFactory());
+		this.entityNameCombo = new EntityNameCombo(getSubjectHolder(), composite, getWidgetFactory());
 	    GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -89,7 +90,7 @@ public class EntityComposite extends BaseJpaComposite<IEntity>
 		helpSystem.setHelp(this.entityNameCombo.getCombo(), IJpaHelpContextIds.ENTITY_NAME);
 
 
-		this.tableComposite = new TableComposite(generalComposite, getWidgetFactory());
+		this.tableComposite = new TableComposite(buildTableHolder(), generalComposite, getWidgetFactory());
 	    gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
@@ -97,6 +98,15 @@ public class EntityComposite extends BaseJpaComposite<IEntity>
 		this.tableComposite.getControl().setLayoutData(gridData);
 
 		return generalComposite;
+	}
+
+	private PropertyValueModel<ITable> buildTableHolder() {
+		return new TransformationPropertyValueModel<IEntity, ITable>(getSubjectHolder()) {
+			@Override
+			protected ITable transform_(IEntity value) {
+				return value.getTable();
+			}
+		};
 	}
 
 	private Control buildSecondaryTablesComposite(Composite composite) {
@@ -110,7 +120,7 @@ public class EntityComposite extends BaseJpaComposite<IEntity>
 		layout.marginWidth = 0;
 		client.setLayout(layout);
 
-		this.secondaryTablesComposite = new SecondaryTablesComposite(client, getWidgetFactory());
+		this.secondaryTablesComposite = new SecondaryTablesComposite(getSubjectHolder(), client, getWidgetFactory());
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
@@ -132,7 +142,7 @@ public class EntityComposite extends BaseJpaComposite<IEntity>
 		layout.marginWidth = 0;
 		inheritanceClient.setLayout(layout);
 
-		this.inheritanceComposite = new InheritanceComposite(inheritanceClient, getWidgetFactory());
+		this.inheritanceComposite = new InheritanceComposite(getSubjectHolder(), inheritanceClient, getWidgetFactory());
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;
@@ -154,7 +164,7 @@ public class EntityComposite extends BaseJpaComposite<IEntity>
 		layout.marginWidth = 0;
 		client.setLayout(layout);
 
-		this.attributeOverridesComposite = new OverridesComposite(client, getWidgetFactory());
+		this.attributeOverridesComposite = new OverridesComposite(getSubjectHolder(), client, getWidgetFactory());
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.FILL;

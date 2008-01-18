@@ -20,18 +20,18 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 /**
  * Here the layout of this pane:
  * <pre>
- * ----------------------------------------------------------------------------â??
- * | ------------------------------------------------------------------------â?? |
+ * -----------------------------------------------------------------------------
+ * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
  * | | ColumnComposite                                                       | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------â?? |
+ * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
  * | | TemporalTypeComposite                                                 | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------â?? |
+ * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
  * | | GenerationComposite                                                   | |
  * | |                                                                       | |
@@ -72,6 +72,10 @@ public class IdMappingComposite extends BaseJpaComposite<IIdMapping>
 		};
 	}
 
+	private Composite buildPane(Composite container, int groupBoxMargin) {
+		return buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
@@ -81,29 +85,12 @@ public class IdMappingComposite extends BaseJpaComposite<IIdMapping>
 		int groupBoxMargin = groupBoxMargin();
 
 		// Column widgets
-		ColumnComposite columnComposite = new ColumnComposite(
-			this.buildColumnHolder(),
-			container,
-			this.getWidgetFactory()
-		);
-
-		this.addPaneForAlignment(columnComposite);
-		this.registerSubPane(columnComposite);
+		new ColumnComposite(this, buildColumnHolder(), container);
 
 		// Temporal Type widgets
-		TemporalTypeComposite temporalTypeComposite = new TemporalTypeComposite(
-			this,
-			this.buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin)
-		);
-
-		this.registerSubPane(temporalTypeComposite);
+		new TemporalTypeComposite(this, buildPane(container, groupBoxMargin));
 
 		// Generation pane
-		GenerationComposite generationComposite = new GenerationComposite(
-			this,
-			this.buildSubPane(container, 10)
-		);
-
-		this.registerSubPane(generationComposite);
+		new GenerationComposite(this, buildSubPane(container, 10));
 	}
 }

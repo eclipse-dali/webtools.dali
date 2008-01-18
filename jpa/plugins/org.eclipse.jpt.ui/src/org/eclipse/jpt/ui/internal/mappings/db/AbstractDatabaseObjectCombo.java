@@ -90,7 +90,6 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ba
 
 			public void databaseChanged(ConnectionProfile profile,
 			                            Database database) {
-				System.out.println("");
 			}
 
 			public void modified(ConnectionProfile profile) {
@@ -189,6 +188,18 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ba
 	public void disengageListeners() {
 		super.disengageListeners();
 		this.removeConnectionListener(this.subject());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public void enableWidgets(boolean enabled) {
+		super.enableWidgets(enabled);
+
+		if (!this.combo.isDisposed()) {
+			combo.setEnabled(enabled);
+		}
 	}
 
 	/*

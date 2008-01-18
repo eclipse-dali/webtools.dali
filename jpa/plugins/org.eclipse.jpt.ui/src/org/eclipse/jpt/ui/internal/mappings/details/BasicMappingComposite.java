@@ -11,40 +11,37 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * Here the layout of this pane:
  * <pre>
- * ----------------------------------------------------------------------------â??
- * | ------------------------------------------------------------------------â?? |
+ * -----------------------------------------------------------------------------
+ * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
  * | | ColumnComposite                                                       | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------â?? |
+ * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
  * | | FetchTypeComposite                                                    | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------â?? |
+ * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
  * | | TemporalTypeComposite                                                 | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------â?? |
+ * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
  * | | EnumTypeComposite                                                     | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------â?? |
+ * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
  * | | OptionalComposite                                                     | |
  * | |                                                                       | |
@@ -68,15 +65,15 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 public class BasicMappingComposite extends BaseJpaComposite<IBasicMapping>
 {
 	/**
-	 * Creates a new <code>BasicComposite</code>.
+	 * Creates a new <code>BasicMappingComposite</code>.
 	 *
 	 * @param subjectHolder The holder of the subject <code>IBasicMapping</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public BasicMappingComposite(PropertyValueModel<IBasicMapping> subjectHolder,
-	                      Composite parent,
-	                      TabbedPropertySheetWidgetFactory widgetFactory) {
+	                             Composite parent,
+	                             TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
@@ -90,6 +87,10 @@ public class BasicMappingComposite extends BaseJpaComposite<IBasicMapping>
 		};
 	}
 
+	private Composite buildPane(Composite container, int groupBoxMargin) {
+		return buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
@@ -99,60 +100,21 @@ public class BasicMappingComposite extends BaseJpaComposite<IBasicMapping>
 		int groupBoxMargin = groupBoxMargin();
 
 		// Column widgets
-		ColumnComposite columnComposite = new ColumnComposite(
-			this.buildColumnHolder(),
-			container,
-			this.getWidgetFactory()
-		);
-
-		this.addPaneForAlignment(columnComposite);
-		this.registerSubPane(columnComposite);
+		new ColumnComposite(this, buildColumnHolder(), container);
 
 		// Fetch Type widgets
-		FetchTypeComposite fetchTypeComposite = new FetchTypeComposite(
-			this,
-			this.buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin)
-		);
-
-		this.registerSubPane(fetchTypeComposite);
+		new FetchTypeComposite(this, buildPane(container, groupBoxMargin));
 
 		// Temporal Type widgets
-		TemporalTypeComposite temporalTypeComposite = new TemporalTypeComposite(
-			this,
-			this.buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin)
-		);
-
-		this.registerSubPane(temporalTypeComposite);
+		new TemporalTypeComposite(this, buildPane(container, groupBoxMargin));
 
 		// Enumerated widgets
-		EnumTypeComposite enumTypeComposite = new EnumTypeComposite(
-			this,
-			this.buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin)
-		);
-
-		this.registerSubPane(enumTypeComposite);
+		new EnumTypeComposite(this, buildPane(container, groupBoxMargin));
 
 		// Optional widgets
-		OptionalComposite optionalComposite = new OptionalComposite(
-			this,
-			this.buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin)
-		);
-
-		this.registerSubPane(optionalComposite);
+		new OptionalComposite(this, buildPane(container, groupBoxMargin));
 
 		// Lob check box
-		LobCheckBox lobCheckBox = new LobCheckBox(
-			this.getSubjectHolder(),
-			this.buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
-			this.getWidgetFactory()
-		);
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = SWT.FILL;
-		gridData.verticalAlignment         = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-
-		lobCheckBox.getControl().setLayoutData(gridData);
-		this.helpSystem().setHelp(lobCheckBox.getControl(), IJpaHelpContextIds.MAPPING_LOB);
+		new LobCheckBox(this, buildPane(container, groupBoxMargin));
 	}
 }

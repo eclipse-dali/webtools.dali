@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,7 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
-import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ISelection;
@@ -24,45 +22,60 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.internal.context.base.IAbstractColumn;
-import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.core.internal.context.base.ISingleRelationshipMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class JoinColumnComposite extends BaseJpaComposite<ISingleRelationshipMapping>
 {
-	private final Adapter joinColumnListener;
 	private Button joinColumnsEditButton;
 	private Group joinColumnsGroup;
 	private ListViewer joinColumnsListViewer;
 	private Button joinColumnsRemoveButton;
 	private Button overrideDefaultJoinColumnsCheckBox;
-	private final Adapter singleRelationshipMappingListener;
 
+	/**
+	 * Creates a new <code>JoinColumnComposite</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param parent The parent container
+	 */
+	protected JoinColumnComposite(BaseJpaController<? extends ISingleRelationshipMapping> parentController,
+	                              Composite parent) {
+
+		super(parentController, parent);
+	}
+
+	/**
+	 * Creates a new <code>OneToOneMappingComposite</code>.
+	 *
+	 * @param subjectHolder The holder of the subject <code>IOneToOneMapping</code>
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public JoinColumnComposite(PropertyValueModel<? extends ISingleRelationshipMapping> subjectHolder,
 	                           Composite parent,
 	                           TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, SWT.NULL, widgetFactory);
-		this.singleRelationshipMappingListener = buildSingleRelationshipMappingListener();
-		this.joinColumnListener = buildJoinColumnListener();
+		super(subjectHolder, parent, widgetFactory);
 	}
 
 	void addJoinColumn() {
@@ -106,23 +119,17 @@ public class JoinColumnComposite extends BaseJpaComposite<ISingleRelationshipMap
 		}
 	}
 
-	private Adapter buildJoinColumnListener() {
-		return new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				joinColumnChanged(notification);
-			}
-		};
-	}
-
 	private IContentProvider buildJoinColumnsListContentProvider() {
 		return new IStructuredContentProvider(){
 			public void dispose() {
 				// do nothing
 			}
+
 			public Object[] getElements(Object inputElement) {
-				return ((ISingleRelationshipMapping) inputElement).getJoinColumns().toArray();
+				ISingleRelationshipMapping mapping = (ISingleRelationshipMapping) inputElement;
+				return CollectionTools.array(mapping.joinColumns());
 			}
+
 			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 				// do nothing
 			}
@@ -134,35 +141,64 @@ public class JoinColumnComposite extends BaseJpaComposite<ISingleRelationshipMap
 			@Override
 			public String getText(Object element) {
 				IJoinColumn joinColumn = (IJoinColumn) element;
-				return (JoinColumnComposite.this.subject().getSpecifiedJoinColumns().size() == 0) ?
-					buildDefaultJoinColumnLabel(joinColumn)
-				:
+				return (JoinColumnComposite.this.subject().specifiedJoinColumnsSize() == 0) ?
+					buildDefaultJoinColumnLabel(joinColumn) :
 					buildJoinColumnLabel(joinColumn);
 			}
 		};
 	}
 
-	private Adapter buildSingleRelationshipMappingListener() {
-		return new AdapterImpl() {
+	private SelectionAdapter buildOverrideDefaultJoinColumnsSelectionListener() {
+		return new SelectionAdapter() {
 			@Override
-			public void notifyChanged(Notification notification) {
-				singleRelationshipMappingChanged(notification);
+			public void widgetSelected(SelectionEvent e) {
+
+				if (isPopulating()) {
+					return;
+				}
+
+				if (JoinColumnComposite.this.overrideDefaultJoinColumnsCheckBox.getSelection()) {
+					IJoinColumn defaultJoinColumn = JoinColumnComposite.this.subject().getDefaultJoinColumns().get(0);
+					String columnName = defaultJoinColumn.getDefaultName();
+					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
+
+					IJoinColumn joinColumn = JoinColumnComposite.this.subject().createJoinColumn(0);
+					JoinColumnComposite.this.subject().getSpecifiedJoinColumns().add(joinColumn);
+					joinColumn.setSpecifiedName(columnName);
+					joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+				} else {
+					JoinColumnComposite.this.subject().getSpecifiedJoinColumns().clear();
+				}
 			}
 		};
 	}
 
-	@Override
-	protected void disengageListeners() {
-		if (this.subject() != null) {
-			for (Iterator i = this.subject().getJoinColumns().iterator(); i.hasNext(); ) {
-				((IJoinColumn) i.next()).eAdapters().remove(this.joinColumnListener);
-			}
-			this.subject().eAdapters().remove(this.singleRelationshipMappingListener);
-		}
+	private WritablePropertyValueModel<Boolean> buildOverrideDefaultJoinsColumnHolder() {
+		// TODO
+		return new SimplePropertyValueModel<Boolean>();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void disengageListeners() {
+		super.disengageListeners();
+//		if (this.subject() != null) {
+//			for (Iterator i = this.subject().getJoinColumns().iterator(); i.hasNext(); ) {
+//				((IJoinColumn) i.next()).eAdapters().remove(this.joinColumnListener);
+//			}
+//			this.subject().eAdapters().remove(this.singleRelationshipMappingListener);
+//		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void doPopulate() {
+		super.doPopulate();
+
 		if (this.subject() == null) {
 			this.joinColumnsListViewer.setInput(null);
 			return;
@@ -238,57 +274,47 @@ public class JoinColumnComposite extends BaseJpaComposite<ISingleRelationshipMap
 
 	@Override
 	protected void engageListeners() {
-		if (this.subject() != null) {
-			this.subject().eAdapters().add(this.singleRelationshipMappingListener);
-			for (Iterator i = this.subject().getJoinColumns().iterator(); i.hasNext(); ) {
-				((IJoinColumn) i.next()).eAdapters().add(this.joinColumnListener);
-			}
-		}
+		super.engageListeners();
+//		if (this.subject() != null) {
+//			this.subject().eAdapters().add(this.singleRelationshipMappingListener);
+//			for (Iterator i = this.subject().getJoinColumns().iterator(); i.hasNext(); ) {
+//				((IJoinColumn) i.next()).eAdapters().add(this.joinColumnListener);
+//			}
+//		}
 	}
-
-
 
 	private IJoinColumn getSelectedJoinColumn() {
 		return (IJoinColumn) ((StructuredSelection) this.joinColumnsListViewer.getSelection()).getFirstElement();
 	}
 
+	private Composite buildPane(Composite container, int groupBoxMargin) {
+		return buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected void initializeLayout(Composite composite) {
-		GridLayout layout = new GridLayout(2, false);
-		layout.marginWidth = 0;
-		layout.marginHeight = 0;
-		composite.setLayout(layout);
+	protected void initializeLayout(Composite container) {
 
-		this.overrideDefaultJoinColumnsCheckBox =
-			getWidgetFactory().createButton(
-				composite,
-				JptUiMappingsMessages.JoinColumnComposite_overrideDefaultJoinColumns,
-				SWT.CHECK);
-		this.overrideDefaultJoinColumnsCheckBox.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// do nothing
-			}
+		int groupBoxMargin = groupBoxMargin();
 
-			public void widgetSelected(SelectionEvent e) {
-				if (JoinColumnComposite.this.overrideDefaultJoinColumnsCheckBox.getSelection()) {
-					IJoinColumn defaultJoinColumn = JoinColumnComposite.this.subject().getDefaultJoinColumns().get(0);
-					String columnName = defaultJoinColumn.getDefaultName();
-					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
+		// Override Default Join Columns check box
+		overrideDefaultJoinColumnsCheckBox = this.buildCheckBox(
+			buildPane(container, groupBoxMargin),
+			JptUiMappingsMessages.JoinColumnComposite_overrideDefaultJoinColumns,
+			buildOverrideDefaultJoinsColumnHolder()
+		);
 
-					IJoinColumn joinColumn = JoinColumnComposite.this.subject().createJoinColumn(0);
-					JoinColumnComposite.this.subject().getSpecifiedJoinColumns().add(joinColumn);
-					joinColumn.setSpecifiedName(columnName);
-					joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
-				} else {
-					JoinColumnComposite.this.subject().getSpecifiedJoinColumns().clear();
-				}
-			}
-		});
+//		this.overrideDefaultJoinColumnsCheckBox.addSelectionListener(
+//			this.buildOverrideDefaultJoinColumnsSelectionListener());
 
-		this.joinColumnsGroup =
-			getWidgetFactory().createGroup(
-				composite,
-				JptUiMappingsMessages.JoinColumnComposite_joinColumn);
+		// Join Columns group
+		joinColumnsGroup = buildTitledPane(
+			container,
+			JptUiMappingsMessages.JoinColumnComposite_joinColumn
+		);
+
 		this.joinColumnsGroup.setLayout(new GridLayout(2, false));
 		GridData gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -308,26 +334,23 @@ public class JoinColumnComposite extends BaseJpaComposite<ISingleRelationshipMap
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace = true;
 		this.joinColumnsListViewer.getList().setLayoutData(gridData);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.joinColumnsListViewer.getList(), IJpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS);
+		helpSystem().setHelp(this.joinColumnsListViewer.getList(), IJpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS);
 
 		Button addJoinColumnButton = getWidgetFactory().createButton(this.joinColumnsGroup, JptUiMappingsMessages.JoinColumnComposite_add, SWT.NONE);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		addJoinColumnButton.setLayoutData(gridData);
-		addJoinColumnButton.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
-
+		addAlignRight(addJoinColumnButton);
+		addJoinColumnButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addJoinColumn();
 			}
 		});
 
 		this.joinColumnsEditButton = getWidgetFactory().createButton(this.joinColumnsGroup, JptUiMappingsMessages.JoinColumnComposite_edit, SWT.NONE);
-		this.joinColumnsEditButton.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
-
+		this.joinColumnsEditButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				editJoinColumn();
 			}
@@ -335,16 +358,16 @@ public class JoinColumnComposite extends BaseJpaComposite<ISingleRelationshipMap
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		this.joinColumnsEditButton.setLayoutData(gridData);
+		addAlignRight(joinColumnsEditButton);
 
 		this.joinColumnsRemoveButton = getWidgetFactory().createButton(this.joinColumnsGroup, JptUiMappingsMessages.JoinColumnComposite_remove, SWT.NONE);
+		addAlignRight(joinColumnsRemoveButton);
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.verticalAlignment = GridData.BEGINNING;
 		this.joinColumnsRemoveButton.setLayoutData(gridData);
-		this.joinColumnsRemoveButton.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
-
+		this.joinColumnsRemoveButton.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				removeJoinColumn();
 			}
@@ -355,28 +378,9 @@ public class JoinColumnComposite extends BaseJpaComposite<ISingleRelationshipMap
 				updateEnablement();
 			}
 		});
-
 	}
 
-	protected void joinColumnChanged(Notification notification) {
-		if (notification.getFeatureID(INamedColumn.class) == JpaCoreMappingsPackage.INAMED_COLUMN__SPECIFIED_NAME
-			|| notification.getFeatureID(INamedColumn.class) == JpaCoreMappingsPackage.INAMED_COLUMN__DEFAULT_NAME
-			|| notification.getFeatureID(IAbstractColumn.class) == JpaCoreMappingsPackage.IABSTRACT_COLUMN__SPECIFIED_TABLE
-			|| notification.getFeatureID(IAbstractColumn.class) == JpaCoreMappingsPackage.IABSTRACT_COLUMN__DEFAULT_TABLE
-			|| notification.getFeatureID(IAbstractJoinColumn.class) == JpaCoreMappingsPackage.IABSTRACT_JOIN_COLUMN__SPECIFIED_REFERENCED_COLUMN_NAME
-			|| notification.getFeatureID(IAbstractJoinColumn.class) == JpaCoreMappingsPackage.IABSTRACT_JOIN_COLUMN__DEFAULT_REFERENCED_COLUMN_NAME) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					joinColumnsListViewer.refresh();
-				}
-			});
-		}
-	}
-
-	void removeJoinColumn() {
+	private void removeJoinColumn() {
 		ISelection selection = this.joinColumnsListViewer.getSelection();
 		if (selection instanceof StructuredSelection) {
 			for (Iterator stream = ((StructuredSelection) selection).iterator(); stream.hasNext(); ) {
@@ -385,7 +389,7 @@ public class JoinColumnComposite extends BaseJpaComposite<ISingleRelationshipMap
 		}
 	}
 
-	protected void singleRelationshipMappingChanged(Notification notification) {
+	private void singleRelationshipMappingChanged(Notification notification) {
 		if (notification.getFeatureID(ISingleRelationshipMapping.class) == JpaCoreMappingsPackage.ISINGLE_RELATIONSHIP_MAPPING__SPECIFIED_JOIN_COLUMNS) {
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
@@ -406,7 +410,7 @@ public class JoinColumnComposite extends BaseJpaComposite<ISingleRelationshipMap
 		}
 	}
 
-	void updateEnablement() {
+	private void updateEnablement() {
 		boolean groupEnabledState = this.subject().containsSpecifiedJoinColumns();
 		enableGroup(this.joinColumnsGroup, groupEnabledState);
 

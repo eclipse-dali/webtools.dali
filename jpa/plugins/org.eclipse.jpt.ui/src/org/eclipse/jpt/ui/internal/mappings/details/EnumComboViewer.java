@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved. This
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved. This
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
@@ -20,10 +20,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.core.internal.IJpaNode;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.utility.internal.ClassTools;
-import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
@@ -34,8 +31,8 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 /**
  * Here the layout of this pane:
  * <pre>
- * ----------------------------------------------------------------------------â??
- * | ------------------------------------------------------------------------â?? |
+ * -----------------------------------------------------------------------------
+ * | ------------------------------------------------------------------------- |
  * | | I                                                                   |v| |
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
@@ -51,8 +48,6 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaController<T>
 {
 	private ComboViewer comboViewer;
-	private PropertyChangeListener subjectChangeListener;
-	private PropertyChangeListener valueChangeListener;
 
 	/**
 	 * A constant used to represent the <code>null</code> value.
@@ -62,13 +57,26 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 	/**
 	 * Creates a new <code>EnumComboViewer</code>.
 	 *
+	 * @param parentController The parent container of this one
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various widgets
+	 */
+	protected EnumComboViewer(BaseJpaController<? extends T> parentController,
+	                          Composite parent) {
+
+		super(parentController, parent);
+	}
+
+	/**
+	 * Creates a new <code>EnumComboViewer</code>.
+	 *
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various widgets
 	 */
-	public EnumComboViewer(PropertyValueModel<? extends T> subjectHolder,
-	                       Composite parent,
-	                       TabbedPropertySheetWidgetFactory widgetFactory) {
+	protected EnumComboViewer(PropertyValueModel<? extends T> subjectHolder,
+	                          Composite parent,
+	                          TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
@@ -81,10 +89,16 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 	 */
 	private Object[] buildChoices() {
 		V[] choices = choices();
+		Object[] extendedChoices;
 
-		Object[] extendedChoices = new Object[choices.length + 1];
-		System.arraycopy(choices, 0, extendedChoices, 1, choices.length);
-		extendedChoices[0] = NULL_VALUE;
+		if (subject() != null) {
+			extendedChoices = new Object[choices.length + 1];
+			System.arraycopy(choices, 0, extendedChoices, 1, choices.length);
+			extendedChoices[0] = NULL_VALUE;
+		}
+		else {
+			extendedChoices = choices();
+		}
 
 		Arrays.sort(extendedChoices, buildComparator());
 		return extendedChoices;
@@ -198,27 +212,6 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 		};
 	}
 
-	@SuppressWarnings("unchecked")
-	private PropertyChangeListener buildSubjectChangeListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				EnumComboViewer.this.subjectChanged((T) e.oldValue(), (T) e.newValue());
-			}
-		};
-	}
-
-	private PropertyChangeListener buildValueChangeListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						EnumComboViewer.this.updateSelection();
-					}
-				});
-			}
-		};
-	}
-
 	/*
 	 * (non-Javadoc)
 	 */
@@ -244,15 +237,6 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 	 */
 	protected abstract V defaultValue();
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void disengageListeners() {
-		super.disengageListeners();
-		getSubjectHolder().removePropertyChangeListener(PropertyValueModel.VALUE, subjectChangeListener);
-	}
-
 	/**
 	 * Returns the displayable string for the given value.
 	 *
@@ -267,19 +251,18 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
-		populateCombo();
+		this.populateCombo();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void engageListeners() {
-		super.engageListeners();
-		getSubjectHolder().addPropertyChangeListener(PropertyValueModel.VALUE, subjectChangeListener);
+	public void enableWidgets(boolean enabled) {
+		super.enableWidgets(enabled);
 
-		if (subject() != null) {
-			subject().addPropertyChangeListener(propertyName(), valueChangeListener);
+		if (!this.comboViewer.getCCombo().isDisposed()) {
+			this.comboViewer.getCCombo().setEnabled(enabled);
 		}
 	}
 
@@ -302,21 +285,19 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 	 */
 	protected abstract V getValue();
 
+	private void populateCombo() {
+		this.getCombo().removeAll();
+		this.comboViewer.add(this.buildChoices());
+		this.comboViewer.setSelection(this.buildSelection());
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void initialize() {
-		super.initialize();
-
-		subjectChangeListener = buildSubjectChangeListener();
-		valueChangeListener   = buildValueChangeListener();
-	}
-
-	private void populateCombo() {
-		this.getCombo().removeAll();
-		this.comboViewer.add(this.buildChoices());
-		this.updateSelection();
+	protected void propertyChanged(String propertyName) {
+		super.propertyChanged(propertyName);
+		this.comboViewer.setSelection(this.buildSelection());
 	}
 
 	/**
@@ -328,27 +309,18 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 	 */
 	protected abstract String propertyName();
 
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected String[] propertyNames() {
+		return new String[] { this.propertyName() };
+	}
+
 	/**
 	 * Requests the given new value be set on the subject.
 	 *
 	 * @param value The new value to be set
 	 */
 	protected abstract void setValue(V value);
-
-	private void subjectChanged(T oldSubject, T newSubject) {
-
-		if (oldSubject != null) {
-			oldSubject.removePropertyChangeListener(propertyName(), valueChangeListener);
-		}
-
-		this.repopulate();
-
-		if (newSubject != null) {
-			newSubject.addPropertyChangeListener(propertyName(), valueChangeListener);
-		}
-	}
-
-	private void updateSelection() {
-		this.comboViewer.setSelection(this.buildSelection());
-	}
 }

@@ -281,7 +281,8 @@ public final class ControlAligner
 	{
 		if ((changeSupport != null) && (oldValue != newValue))
 		{
-			// Set a dummy widget otherwise EventObject will thrown a NPE for its source
+			// Set a dummy widget otherwise EventObject will
+			// throw a NPE for its source
 			Event event  = new Event();
 			event.widget = SWTUtil.getShell();
 

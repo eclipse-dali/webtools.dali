@@ -306,14 +306,14 @@ public class TableCombo extends BaseJpaController<ITable>
 	protected void disengageListeners() {
 		if (this.subject() != null) {
 			this.removeConnectionListener();
-			this.subject().eAdapters().remove(this.listener);
+//			this.subject().eAdapters().remove(this.listener);
 		}
 	}
 
 	@Override
 	protected void engageListeners() {
 		if (this.subject() != null) {
-			this.subject().eAdapters().add(this.listener);
+//			this.subject().eAdapters().add(this.listener);
 			this.addConnectionListener();
 		}
 	}

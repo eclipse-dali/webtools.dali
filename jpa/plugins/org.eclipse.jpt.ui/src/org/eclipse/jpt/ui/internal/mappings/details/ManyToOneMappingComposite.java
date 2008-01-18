@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -9,125 +9,106 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import org.eclipse.jpt.core.internal.context.base.ICascade;
 import org.eclipse.jpt.core.internal.context.base.IManyToOneMapping;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
+/**
+ * Here the layout of this pane:
+ * <pre>
+ * -----------------------------------------------------------------------------
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | TargetEntityComposite                                                 | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | FetchTypeComposite                                                    | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | OptionalComposite                                                     | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | CascadeComposite                                                      | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | JoinColumnComposite                                                   | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * -----------------------------------------------------------------------------</pre>
+ *
+ * @see IManyToOneMapping
+ * @see BaseJpaUiFactory
+ * @see CascadeComposite
+ * @see FetchTypeComposite
+ * @see JoinColumnComposite
+ * @see OptionalComposite
+ * @see TargetEntityComposite
+ *
+ * @version 2.0
+ * @since 1.0
+ */
 public class ManyToOneMappingComposite extends BaseJpaComposite<IManyToOneMapping>
 {
-	private CascadeComposite cascadeComposite;
-	private EnumComboViewer fetchTypeComboViewer;
-	private JoinColumnComposite joinColumnComposite;
-	private EnumComboViewer optionalComboViewer;
-	private TargetEntityChooser targetEntityChooser;
-
+	/**
+	 * Creates a new <code>ManyToOneMappingComposite</code>.
+	 *
+	 * @param subjectHolder The holder of the subject <code>IManyToOneMapping</code>
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public ManyToOneMappingComposite(PropertyValueModel<? extends IManyToOneMapping> subjectHolder,
-	                          Composite parent,
-	                          TabbedPropertySheetWidgetFactory widgetFactory) {
+	                                 Composite parent,
+	                                 TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, SWT.NULL, widgetFactory);
+		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private Control buildGeneralComposite(Composite composite) {
-		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
-
-		Composite generalComposite = getWidgetFactory().createComposite(composite);
-		GridLayout layout = new GridLayout(2, false);
-		layout.marginWidth = 0;
-		generalComposite.setLayout(layout);
-
-		this.targetEntityChooser = CommonWidgets.buildTargetEntityChooser(generalComposite, getWidgetFactory());
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalSpan = 2;
-		this.targetEntityChooser.getControl().setLayoutData(gridData);
-		helpSystem.setHelp(targetEntityChooser.getControl(), IJpaHelpContextIds.MAPPING_TARGET_ENTITY);
-
-		CommonWidgets.buildFetchLabel(generalComposite, getWidgetFactory());
-		this.fetchTypeComboViewer = CommonWidgets.buildEnumComboViewer(generalComposite, getWidgetFactory());
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		this.fetchTypeComboViewer.getControl().setLayoutData(gridData);
-		helpSystem.setHelp(fetchTypeComboViewer.getControl(), IJpaHelpContextIds.MAPPING_FETCH_TYPE);
-
-		CommonWidgets.buildOptionalLabel(generalComposite, getWidgetFactory());
-		this.optionalComboViewer = CommonWidgets.buildEnumComboViewer(generalComposite, getWidgetFactory());
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		this.optionalComboViewer.getControl().setLayoutData(gridData);
-
-		this.cascadeComposite = new CascadeComposite(getSubjectHolder(), generalComposite, getWidgetFactory());
-		gridData = new GridData();
-		gridData.horizontalSpan = 3;
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		this.cascadeComposite.getControl().setLayoutData(gridData);
-
-		this.joinColumnComposite = new JoinColumnComposite(getSubjectHolder(), generalComposite, getWidgetFactory());
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalSpan = 2;
-		this.joinColumnComposite.getControl().setLayoutData(gridData);
-
-		return generalComposite;
+	private PropertyValueModel<ICascade> buildCascadeHolder() {
+		return new TransformationPropertyValueModel<IManyToOneMapping, ICascade>(getSubjectHolder()) {
+			@Override
+			protected ICascade transform_(IManyToOneMapping value) {
+				return value.getCascade();
+			}
+		};
 	}
 
+	private Composite buildPane(Composite container, int groupBoxMargin) {
+		return buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected void disengageListeners() {
-	}
+	protected void initializeLayout(Composite container) {
 
-	@Override
-	public void dispose() {
-		this.targetEntityChooser.dispose();
-		this.fetchTypeComboViewer.dispose();
-		this.optionalComboViewer.dispose();
-		this.cascadeComposite.dispose();
-		this.joinColumnComposite.dispose();
-		super.dispose();
-	}
+		int groupBoxMargin = groupBoxMargin();
 
-	@Override
-	protected void doPopulate() {
-		this.targetEntityChooser.populate(subject());
-		this.fetchTypeComboViewer.populate(CommonWidgets.buildSingleRelationshipMappingFetchEnumHolder(subject()));
-		this.optionalComboViewer.populate(CommonWidgets.buildOptionalHolder(subject()));
-		this.cascadeComposite.populate(subject());
-		this.joinColumnComposite.populate(subject());
-	}
+		// Target Entity widgets
+		new TargetEntityComposite(this, buildPane(container, groupBoxMargin));
 
-	@Override
-	protected void engageListeners() {
-	}
+		// Fetch Type widgets
+		new FetchTypeComposite(this, buildPane(container, groupBoxMargin));
 
-	@Override
-	protected void initializeLayout(Composite composite) {
-		GridLayout layout = new GridLayout();
-		layout.marginWidth = 0;
-		layout.marginHeight = 0;
-		composite.setLayout(layout);
+		// Optional check box
+		new OptionalComposite(this, buildPane(container, groupBoxMargin));
 
-		Control generalControl = buildGeneralComposite(composite);
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		generalControl.setLayoutData(gridData);
+		// Cascade widgets
+		new CascadeComposite(this, buildCascadeHolder(), container);
+
+		// Join Column widgets
+		new JoinColumnComposite(this, container);
 	}
 }

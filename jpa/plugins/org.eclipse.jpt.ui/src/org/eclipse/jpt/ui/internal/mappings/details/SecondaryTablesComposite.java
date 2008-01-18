@@ -56,7 +56,7 @@ public class SecondaryTablesComposite extends BaseJpaComposite<IEntity>
 	                                Composite parent,
 	                                TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, SWT.NULL, widgetFactory);
+		super(subjectHolder, parent, widgetFactory);
 		this.entityListener = buildEntityListener();
 		this.secondaryTableListener = buildSecondaryTableListener();
 	}

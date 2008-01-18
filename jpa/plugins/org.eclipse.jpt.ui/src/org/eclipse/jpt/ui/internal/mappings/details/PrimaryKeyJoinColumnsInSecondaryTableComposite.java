@@ -60,7 +60,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaCompo
 	                                                      Composite parent,
 	                                                      TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, SWT.NULL, widgetFactory);
+		super(subjectHolder, parent, widgetFactory);
 		this.secondaryTableListener = buildSecondaryTableListener();
 		this.pkJoinColumnListener = buildPkJoinColumnListener();
 	}
@@ -400,6 +400,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaCompo
 		}
 	}
 
+	@Override
 	protected void enableWidgets(boolean enabled) {
 		this.pkJoinColumnsListViewer.getControl().setEnabled(enabled);
 		this.overrideDefaultJoinColumnsCheckBox.setEnabled(enabled);

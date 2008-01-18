@@ -13,12 +13,20 @@ import java.util.Collection;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.swt.BooleanButtonModelAdapter;
 import org.eclipse.jpt.ui.internal.util.ControlAligner;
+import org.eclipse.jpt.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -36,13 +44,25 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
+/**
+ * The abstract class used to create a pane. (TODO)
+ *
+ * @version 2.0
+ * @since 1.0
+ */
 @SuppressWarnings("nls")
-public abstract class BaseJpaController<T>
+public abstract class BaseJpaController<T extends Node>
 {
+	/**
+	 *
+	 */
+	private PropertyChangeListener aspectChangeListener;
+
 	/**
 	 * The aligner responsible to align the left controls.
 	 */
@@ -57,6 +77,11 @@ public abstract class BaseJpaController<T>
 	 * The aligner responsible to align the left controls.
 	 */
 	private ControlAligner rightControlAligner;
+
+	/**
+	 *
+	 */
+	private PropertyChangeListener subjectChangeListener;
 
 	/**
 	 * The subject of this controller.
@@ -78,9 +103,20 @@ public abstract class BaseJpaController<T>
 	/**
 	 * Creates a new <code>BaseJpaController</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @category Constructor
+	 */
+	@SuppressWarnings("unused")
+	private BaseJpaController() {
+		super();
+	}
+
+	/**
+	 * Creates a new <code>BaseJpaController</code>.
+	 *
+	 * @param parentController The parent controller of this one
 	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various widgets
+	 *
+	 * @category Constructor
 	 */
 	protected BaseJpaController(BaseJpaController<? extends T> parentController,
 	                            Composite parent) {
@@ -97,27 +133,68 @@ public abstract class BaseJpaController<T>
 	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
 	 * this pane aligned with the widgets of the given parent controller;
 	 * <code>false</code> to not align them
+	 *
+	 * @category Constructor
 	 */
 	protected BaseJpaController(BaseJpaController<? extends T> parentController,
 	                            Composite parent,
 	                            boolean automaticallyAlignWidgets) {
 
-		this(parentController.getSubjectHolder(),
+		this(parentController,
+		     parentController.getSubjectHolder(),
 		     parent,
-		     parentController.getWidgetFactory());
-
-		if (automaticallyAlignWidgets) {
-			parentController.leftControlAligner .add(leftControlAligner);
-			parentController.rightControlAligner.add(rightControlAligner);
-		}
+		     automaticallyAlignWidgets);
 	}
 
 	/**
 	 * Creates a new <code>BaseJpaController</code>.
 	 *
-	 * @param subjectHolder The holder of the <code>T</code>
+	 * @param parentController The parent container of this one
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
+	 *
+	 * @category Constructor
+	 */
+	protected BaseJpaController(BaseJpaController<?> parentController,
+	                            PropertyValueModel<? extends T> subjectHolder,
+	                            Composite parent) {
+
+		this(parentController, subjectHolder, parent, true);
+	}
+
+	/**
+	 * Creates a new <code>BaseJpaController</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various widgets
+	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
+	 * this pane aligned with the widgets of the given parent controller;
+	 * <code>false</code> to not align them
+	 *
+	 * @category Constructor
+	 */
+	protected BaseJpaController(BaseJpaController<?> parentController,
+	                            PropertyValueModel<? extends T> subjectHolder,
+	                            Composite parent,
+	                            boolean automaticallyAlignWidgets) {
+
+		this(subjectHolder,
+		     parent,
+		     parentController.getWidgetFactory());
+
+		initialize(parentController, automaticallyAlignWidgets);
+	}
+
+	/**
+	 * Creates a new <code>BaseJpaController</code>.
+	 *
+	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
+	 *
+	 * @category Constructor
 	 */
 	protected BaseJpaController(PropertyValueModel<? extends T> subjectHolder,
 	                            Composite parent,
@@ -126,7 +203,14 @@ public abstract class BaseJpaController<T>
 		super();
 
 		this.initialize(subjectHolder, widgetFactory);
-		this.buildWidgets(parent);
+
+		try {
+			this.populating = true;
+			this.buildWidgets(parent);
+		}
+		finally {
+			this.populating = false;
+		}
 	}
 
 	/**
@@ -136,6 +220,8 @@ public abstract class BaseJpaController<T>
 	 * the width of the widest widget.
 	 *
 	 * @param controller The controller containing the widgets to add
+	 *
+	 * @category Layout
 	 */
 	protected final void addAlignLeft(BaseJpaController<?> container) {
 		leftControlAligner.add(container.leftControlAligner);
@@ -147,6 +233,8 @@ public abstract class BaseJpaController<T>
 	 * used for labels.
 	 *
 	 * @param controller The controller to add
+	 *
+	 * @category Layout
 	 */
 	protected final void addAlignLeft(Control control) {
 		leftControlAligner.add(control);
@@ -159,6 +247,8 @@ public abstract class BaseJpaController<T>
 	 * the width of the widest widget.
 	 *
 	 * @param controller The controller containing the widgets to add
+	 *
+	 * @category Layout
 	 */
 	protected final void addAlignRight(BaseJpaController<?> container) {
 		rightControlAligner.add(container.rightControlAligner);
@@ -170,6 +260,8 @@ public abstract class BaseJpaController<T>
 	 * used for buttons.
 	 *
 	 * @param controller The controller to add
+	 *
+	 * @category Layout
 	 */
 	protected final void addAlignRight(Control control) {
 		rightControlAligner.add(control);
@@ -181,10 +273,79 @@ public abstract class BaseJpaController<T>
 	 *
 	 * @param controller The controller containing the widgets to add for
 	 * alignment
+	 *
+	 * @category Layout
 	 */
 	protected final void addPaneForAlignment(BaseJpaController<?> container) {
 		addAlignLeft(container);
 		addAlignRight(container);
+	}
+
+	private PropertyChangeListener buildAspectChangeListener() {
+		return new PropertyChangeListener() {
+			public void propertyChanged(PropertyChangeEvent e) {
+
+				if (getControl().isDisposed()) {
+					return;
+				}
+
+				final String propertyName = e.propertyName();
+
+				SWTUtil.asyncExec(new Runnable() {
+					public void run() {
+						BaseJpaController.this.propertyChanged(propertyName);
+					}
+				});
+			}
+		};
+	}
+
+	/**
+	 * Creates a new button using the given information.
+	 *
+	 * @param parent The parent container
+	 * @param buttonText The button's text
+	 * @param buttonAction The action to be invoked when the button is pressed
+	 * @return The newly created <code>Button</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Button buildButton(Composite container,
+	                                   String text,
+	                                   final Runnable buttonAction) {
+
+		return this.buildButton(container, text, null, buttonAction);
+	}
+
+	/**
+	 * Creates a new button using the given information.
+	 *
+	 * @param parent The parent container
+	 * @param buttonText The button's text
+	 * @param helpId The topic help ID to be registered for the new check box
+	 * @param buttonAction The action to be invoked when the button is pressed
+	 * @return The newly created <code>Button</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Button buildButton(Composite container,
+	                                   String text,
+	                                   String helpId,
+	                                   final Runnable buttonAction) {
+
+		Button button = this.widgetFactory.createButton(container, text, SWT.NULL);
+		button.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				SWTUtil.asyncExec(buttonAction);
+			}
+		});
+
+		if (helpId != null) {
+			helpSystem().setHelp(button, helpId);
+		}
+
+		return button;
 	}
 
 	/**
@@ -193,27 +354,49 @@ public abstract class BaseJpaController<T>
 	 * @param parent The parent container
 	 * @param buttonText The button's text
 	 * @param booleanHolder The holder of the selection state
+	 * @return The newly created <code>Button</code>
+	 *
+	 * @category Layout
 	 */
 	protected final Button buildCheckBox(Composite parent,
 	                                     String buttonText,
 	                                     WritablePropertyValueModel<Boolean> booleanHolder) {
 
-		Button button = getWidgetFactory().createButton(
+		return this.buildCheckBox(parent, buttonText, booleanHolder, null);
+	}
+
+	/**
+	 * Creates a new check box using the given information.
+	 *
+	 * @param parent The parent container
+	 * @param buttonText The button's text
+	 * @param booleanHolder The holder of the selection state
+	 * @param helpId The topic help ID to be registered for the new check box
+	 * @return The newly created <code>Button</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Button buildCheckBox(Composite parent,
+	                                     String buttonText,
+	                                     WritablePropertyValueModel<Boolean> booleanHolder,
+	                                     String helpId) {
+
+		return this.buildToggleButton(
 			parent,
 			buttonText,
+			booleanHolder,
+			helpId,
 			SWT.CHECK
 		);
-
-		button.setLayoutData(new GridData());
-		BooleanButtonModelAdapter.adapt(booleanHolder, button);
-		return button;
 	}
 
 	/**
 	 * Creates a new flat-style combo.
 	 *
 	 * @param container The parent container
-	 * @return A new combo
+	 * @return The newly created <code>Combo</code>
+	 *
+	 * @category Layout
 	 */
 	protected final CCombo buildCombo(Composite container) {
 		return this.widgetFactory.createCCombo(container, SWT.FLAT);
@@ -225,15 +408,127 @@ public abstract class BaseJpaController<T>
 	 * @param container The parent container
 	 * @param labelProvider The provider responsible to convert the combo's items
 	 * into human readable strings
-	 * @return A new <code>ComboViewer</code>
+	 * @return The newly created <code>ComboViewer</code>
+	 *
+	 * @category Layout
 	 */
 	protected final ComboViewer buildComboViewer(Composite container,
 	                                             IBaseLabelProvider labelProvider) {
 
-		CCombo combo = buildCombo(container);
+		CCombo combo = this.buildCombo(container);
 		ComboViewer viewer = new ComboViewer(combo);
 		viewer.setLabelProvider(labelProvider);
 		return viewer;
+	}
+
+	/**
+	 * Creates a new <code>Hyperlink</code> that will invoked the given
+	 * <code>Runnable</code> when selected. The given action is always invoked
+	 * from the UI thread.
+	 *
+	 * @param parent The parent container
+	 * @param text The hyperlink's text
+	 * @param hyperLinkAction The action to be invoked when the link was selected
+	 * return The newly created <code>Hyperlink</code>
+	 */
+	protected final Hyperlink buildHyperLink(Composite parent,
+	                                         String text,
+	                                         final Runnable hyperLinkAction) {
+
+		Hyperlink link = this.widgetFactory.createHyperlink(parent, text, SWT.FLAT);
+		link.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				SWTUtil.asyncExec(hyperLinkAction);
+			}
+		});
+		return link;
+	}
+
+	/**
+	 * Creates a new container that will have the given center control labeled
+	 * with the given label.
+	 *
+	 * @param container The parent container
+	 * @param leftControl The widget shown to the left of the main widget
+	 * @param centerControl The main widget
+	 * @param rightControl The control shown to the right of the main widget
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The container of the label and the given center control
+	 *
+	 * @category Layout
+	 */
+	protected final Composite buildLabeledComposite(Composite container,
+	                                                Control leftControl,
+	                                                Control centerControl,
+	                                                Control rightControl,
+	                                                String helpId) {
+
+		// Container for the label and main composite
+		container = this.buildPane(container);
+
+		GridLayout layout = new GridLayout(3, false);
+		layout.marginHeight = 0;
+		layout.marginWidth  = 0;
+		layout.marginTop    = 5;
+		layout.marginLeft   = 0;
+		layout.marginBottom = 1; // Weird, it seems the right and bottom borders
+		layout.marginRight  = 1; // are not painted if it's zero
+		container.setLayout(layout);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment       = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		container.setLayoutData(gridData);
+
+		// Left control
+		gridData = new GridData();
+		gridData.horizontalAlignment       = GridData.BEGINNING;
+		gridData.grabExcessHorizontalSpace = false;
+		leftControl.setLayoutData(gridData);
+
+		// Re-parent the left control to the new sub pane
+		leftControl.setParent(container);
+		leftControlAligner.add(leftControl);
+
+		// Center control
+		gridData = new GridData();
+		gridData.horizontalAlignment       = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		centerControl.setLayoutData(gridData);
+
+		// Re-parent the center control to the new sub pane
+		centerControl.setParent(container);
+
+		// Register the help id for the center control
+		if (helpId != null) {
+			helpSystem().setHelp(centerControl, helpId);
+		}
+
+		// Right control
+		if (rightControl == null) {
+			// TODO: Find a way to create a spacer that doesn't always
+			// have a size of (64, 64) (I tried with Composite and Canvas) ~PF
+		}
+		else {
+			gridData = new GridData();
+			gridData.horizontalAlignment       = GridData.FILL_HORIZONTAL;
+			gridData.grabExcessHorizontalSpace = false;
+
+			rightControl.setLayoutData(gridData);
+			rightControl.setParent(container);
+
+			// Re-parent the right control to the new sub pane
+			rightControlAligner.add(rightControl);
+
+			// Register the help id for the right control
+			if (helpId != null) {
+				helpSystem().setHelp(rightControl, helpId);
+			}
+		}
+
+		return container;
 	}
 
 	/**
@@ -244,6 +539,8 @@ public abstract class BaseJpaController<T>
 	 * @param label The label used to describe the center control
 	 * @param centerControl The main widget
 	 * @return The container of the label and the given center control
+	 *
+	 * @category Layout
 	 */
 	protected final Composite buildLabeledComposite(Composite container,
 	                                                Label label,
@@ -265,50 +562,23 @@ public abstract class BaseJpaController<T>
 	 * @param label The label used to describe the center control
 	 * @param centerControl The main widget
 	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
+	 * control
 	 * @return The container of the label and the given center control
+	 *
+	 * @category Layout
 	 */
 	protected final Composite buildLabeledComposite(Composite container,
 	                                                Label label,
 	                                                Control centerControl,
 	                                                String helpId) {
 
-		// Container for the label and main composite
-		container = this.buildPane(container);
-
-		GridLayout layout = new GridLayout(2, false);
-		layout.marginHeight = 0;
-		layout.marginWidth  = 0;
-		layout.marginTop    = 5;
-		layout.marginLeft   = 0;
-		layout.marginBottom = 1; // Weird, it seems the right and bottom borders
-		layout.marginRight  = 1; // are not painted if it's zero
-		container.setLayout(layout);
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		container.setLayoutData(gridData);
-
-		// Label
-		label.setParent(container);
-		leftControlAligner.add(label);
-
-		// Center composite
-		gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		centerControl.setLayoutData(gridData);
-
-		// Re-parent the center control to the new sub pane
-		centerControl.setParent(container);
-
-		// Register the help id for the center composite
-		if (helpId != null) {
-			helpSystem().setHelp(centerControl, helpId);
-		}
-
-		return container;
+		return this.buildLabeledComposite(
+			container,
+			label,
+			centerControl,
+			null,
+			helpId
+		);
 	}
 
 	/**
@@ -319,6 +589,8 @@ public abstract class BaseJpaController<T>
 	 * @param labelText The text to label the main composite
 	 * @param centerControl The main widget
 	 * @return The container of the label and the given center control
+	 *
+	 * @category Layout
 	 */
 	protected final Composite buildLabeledComposite(Composite container,
 	                                                String labelText,
@@ -329,7 +601,65 @@ public abstract class BaseJpaController<T>
 			container,
 			labelText,
 			centerControl,
+			null,
 			null
+		);
+	}
+
+	/**
+	 * Creates a new container that will have the given center composite labeled
+	 * with the given label text.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text to label the main composite
+	 * @param centerControl The main widget
+	 * @param rightControl The control shown to the right of the main widget
+	 * @return The container of the label and the given center control
+	 *
+	 * @category Layout
+	 */
+	protected final Composite buildLabeledComposite(Composite container,
+	                                                String labelText,
+	                                                Control centerControl,
+	                                                Control rightControl) {
+
+
+		return this.buildLabeledComposite(
+			container,
+			labelText,
+			centerControl,
+			rightControl
+		);
+	}
+
+	/**
+	 * Creates a new container that will have the given center composite labeled
+	 * with the given label text.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text to label the main composite
+	 * @param centerControl The main widget
+	 * @param rightControl The control shown to the right of the main widget
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The container of the label and the given center control
+	 *
+	 * @category Layout
+	 */
+	protected final Composite buildLabeledComposite(Composite container,
+	                                                String labelText,
+	                                                Control centerControl,
+	                                                Control rightCentrol,
+	                                                String helpId) {
+
+		Label label = this.widgetFactory.createLabel(container, labelText);
+
+		return this.buildLabeledComposite(
+			container,
+			label,
+			centerControl,
+			rightCentrol,
+			helpId
 		);
 	}
 
@@ -343,6 +673,8 @@ public abstract class BaseJpaController<T>
 	 * @param helpId The topic help ID to be registered for the given center
 	 * compositer
 	 * @return The container of the label and the given center control
+	 *
+	 * @category Layout
 	 */
 	protected final Composite buildLabeledComposite(Composite container,
 	                                                String labelText,
@@ -366,6 +698,8 @@ public abstract class BaseJpaController<T>
 	 * @param container The parent container
 	 * @param labelText The text to label the text field
 	 * @return The container of the label and the given center control
+	 *
+	 * @category Layout
 	 */
 	protected final Composite buildLabeledText(Composite container,
 	                                           String labelText) {
@@ -384,7 +718,9 @@ public abstract class BaseJpaController<T>
 	 *
 	 * @param container The parent container
 	 * @param selectionHolder The holder of the unique selected item
-	 * @return A new list widget
+	 * @return The newly created <code>List</code>
+	 *
+	 * @category Layout
 	 */
 	protected final List buildList(Composite container,
 	                               WritablePropertyValueModel<String> selectionHolder) {
@@ -409,7 +745,9 @@ public abstract class BaseJpaController<T>
 	 * Creates a new container without specifying any layout manager.
 	 *
 	 * @param container The parent of the new container
-	 * @return A new container
+	 * @return The newly created <code>Composite</code>
+	 *
+	 * @category Layout
 	 */
 	protected final Composite buildPane(Composite parent) {
 		return this.widgetFactory.createComposite(parent);
@@ -420,9 +758,12 @@ public abstract class BaseJpaController<T>
 	 *
 	 * @param parent The parent of the new container
 	 * @param layout The layout manager of the new container
-	 * @return A new container
+	 * @return The newly created container
+	 *
+	 * @category Layout
 	 */
 	protected final Composite buildPane(Composite parent, Layout layout) {
+
 		Composite container = this.widgetFactory.createComposite(parent);
 		container.setLayout(layout);
 
@@ -437,6 +778,103 @@ public abstract class BaseJpaController<T>
 	}
 
 	/**
+	 * Creates a new push button using the given information.
+	 *
+	 * @param parent The parent container
+	 * @param buttonText The button's text
+	 * @param buttonAction The action to be invoked when the button is pressed
+	 * @return The newly created <code>Button</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Button buildPushButton(Composite parent,
+	                                       String buttonText,
+	                                       final Runnable buttonAction) {
+
+		return this.buildPushButton(parent, buttonText, null, buttonAction);
+	}
+
+	/**
+	 * Creates a new push button using the given information.
+	 *
+	 * @param parent The parent container
+	 * @param buttonText The button's text
+	 * @param buttonAction The action to be invoked when the button is pressed
+	 * @param helpId The topic help ID to be registered for the new radio button
+	 * @return The newly created <code>Button</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Button buildPushButton(Composite parent,
+	                                       String buttonText,
+	                                       String helpId,
+	                                       final Runnable buttonAction) {
+
+		Button button = this.widgetFactory.createButton(
+			parent,
+			buttonText,
+			SWT.PUSH
+		);
+
+		button.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				SWTUtil.asyncExec(buttonAction);
+			}
+		});
+
+		button.setLayoutData(new GridData());
+
+		if (helpId != null) {
+			helpSystem().setHelp(button, helpId);
+		}
+
+		return button;
+	}
+
+	/**
+	 * Creates a new radio button using the given information.
+	 *
+	 * @param parent The parent container
+	 * @param buttonText The button's text
+	 * @param booleanHolder The holder of the selection state
+	 * @return The newly created <code>Button</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Button buildRadioButton(Composite parent,
+	                                        String buttonText,
+	                                        WritablePropertyValueModel<Boolean> booleanHolder) {
+
+		return this.buildRadioButton(parent, buttonText, booleanHolder, null);
+	}
+
+	/**
+	 * Creates a new check box using the given information.
+	 *
+	 * @param parent The parent container
+	 * @param buttonText The button's text
+	 * @param booleanHolder The holder of the selection state
+	 * @param helpId The topic help ID to be registered for the new radio button
+	 * @return The newly created <code>Button</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Button buildRadioButton(Composite parent,
+	                                        String buttonText,
+	                                        WritablePropertyValueModel<Boolean> booleanHolder,
+	                                        String helpId) {
+
+		return this.buildToggleButton(
+			parent,
+			buttonText,
+			booleanHolder,
+			helpId,
+			SWT.RADIO
+		);
+	}
+
+	/**
 	 * Creates a new <code>Section</code> with flat style. A sub-pane is
 	 * automatically added as its client which can be typed cast directly as a
 	 * <code>Composite</code>.
@@ -444,6 +882,8 @@ public abstract class BaseJpaController<T>
 	 * @param container The container of the new widget
 	 * @param sectionText The text of the new section
 	 * @return The newly created <code>Section</code>
+	 *
+	 * @category Layout
 	 */
 	protected final Section buildSection(Composite container,
 	                                     String sectionText) {
@@ -464,6 +904,10 @@ public abstract class BaseJpaController<T>
 	 * @param sectionText The text of the new section
 	 * @param type The type of section to create
 	 * @return The newly created <code>Section</code>
+	 *
+	 * @category Layout
+	 * TODO Should we simply return its client (Composite) since once the Section
+	 * is created, we no longer need it - PF
 	 */
 	private Section buildSection(Composite container,
 	                             String sectionText,
@@ -505,11 +949,21 @@ public abstract class BaseJpaController<T>
 		};
 	}
 
+	private PropertyChangeListener buildSubjectChangeListener() {
+		return new PropertyChangeListener() {
+			public void propertyChanged(PropertyChangeEvent e) {
+				BaseJpaController.this.subjectChanged(e);
+			}
+		};
+	}
+
 	/**
 	 * Creates a new <code>Composite</code> used as a sub-pane.
 	 *
 	 * @param container The parent container
-	 * @return A new <code>Composite</code> used as a sub-pane
+	 * @return The newly created <code>Composite</code> used as a sub-pane
+	 *
+	 * @category Layout
 	 */
 	protected final Composite buildSubPane(Composite container) {
 		return this.buildSubPane(container, 0);
@@ -520,7 +974,9 @@ public abstract class BaseJpaController<T>
 	 *
 	 * @param container The parent container
 	 * @param topMargin The extra spacing to add at the top of the pane
-	 * @return A new <code>Composite</code> used as a sub-pane
+	 * @return The newly created <code>Composite</code> used as a sub-pane
+	 *
+	 * @category Layout
 	 */
 	protected final Composite buildSubPane(Composite container, int topMargin) {
 		return this.buildSubPane(container, topMargin, 0);
@@ -532,7 +988,9 @@ public abstract class BaseJpaController<T>
 	 * @param container The parent container
 	 * @param topMargin The extra spacing to add at the top of the pane
 	 * @param leftMargin The extra spacing to add to the left of the pane
-	 * @return A new <code>Composite</code> used as a sub-pane
+	 * @return The newly created <code>Composite</code> used as a sub-pane
+	 *
+	 * @category Layout
 	 */
 	protected final Composite buildSubPane(Composite container,
 	                                       int topMargin,
@@ -551,7 +1009,9 @@ public abstract class BaseJpaController<T>
 	 * @param leftMargin The extra spacing to add to the left of the pane
 	 * @param bottomMargin The extra spacing to add at the bottom of the pane
 	 * @param rightMargin The extra spacing to add to the right of the pane
-	 * @return A new <code>Composite</code> used as a sub-pane
+	 * @return The newly created <code>Composite</code> used as a sub-pane
+	 *
+	 * @category Layout
 	 */
 	protected final Composite buildSubPane(Composite container,
 	                                       int topMargin,
@@ -578,7 +1038,9 @@ public abstract class BaseJpaController<T>
 	 * @param leftMargin The extra spacing to add to the left of the pane
 	 * @param bottomMargin The extra spacing to add at the bottom of the pane
 	 * @param rightMargin The extra spacing to add to the right of the pane
-	 * @return A new <code>Composite</code> used as a sub-pane
+	 * @return The newly created <code>Composite</code> used as a sub-pane
+	 *
+	 * @category Layout
 	 */
 	protected final Composite buildSubPane(Composite container,
 	                                       int columnCount,
@@ -614,6 +1076,8 @@ public abstract class BaseJpaController<T>
 	 * @param container The container of the new widget
 	 * @param sectionText The text of the new section
 	 * @return The newly created <code>Section</code>
+	 *
+	 * @category Layout
 	 */
 	protected final Section buildSubSection(Composite container,
 	                                        String sectionText) {
@@ -626,10 +1090,37 @@ public abstract class BaseJpaController<T>
 	 * flat-style look.
 	 *
 	 * @param container The parent container
-	 * @return A new <code>Text</code> widget
+	 * @return The newly created <code>Text</code> widget
+	 *
+	 * @category Layout
 	 */
 	protected final Text buildText(Composite container) {
 		return this.widgetFactory.createText(container, null);
+	}
+
+	/**
+	 * Creates a new <code>Text</code> widget, the widget is created with the
+	 * flat-style look.
+	 *
+	 * @param container The parent container
+	 * @param helpId The topic help ID to be registered for the new text
+	 * @return The newly created <code>Text</code> widget
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildText(Composite container, String helpId) {
+		Text text = this.widgetFactory.createText(container, null);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment       = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		text.setLayoutData(gridData);
+
+		if (helpId != null) {
+			helpSystem().setHelp(text, helpId);
+		}
+
+		return text;
 	}
 
 	/**
@@ -637,9 +1128,28 @@ public abstract class BaseJpaController<T>
 	 *
 	 * @param title The text of the titled border
 	 * @param container The parent container
-	 * @return A new <code>Composite</code> with a titled border
+	 * @return The newly created <code>Composite</code> with a titled border
+	 *
+	 * @category Layout
 	 */
-	protected final Group buildTitledPane(String title, Composite container) {
+	protected final Group buildTitledPane(Composite container, String title) {
+		return this.buildTitledPane(container, title, null);
+	}
+
+	/**
+	 * Creates a new container with a titled border.
+	 *
+	 * @param title The text of the titled border
+	 * @param container The parent container
+	 * @param helpId The topic help ID to be registered for the new group
+	 * @return The newly created <code>Composite</code> with a titled border
+	 *
+	 * @category Layout
+	 */
+	protected final Group buildTitledPane(Composite container,
+	                                      String title,
+	                                      String helpId) {
+
 		Group group = this.widgetFactory.createGroup(container, title);
 
 		GridLayout layout = new GridLayout(1, false);
@@ -654,31 +1164,106 @@ public abstract class BaseJpaController<T>
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment       = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
-		gridData.verticalIndent            = 10;
+		gridData.verticalIndent            = 0;
 		group.setLayoutData(gridData);
 
+		if (helpId != null) {
+			helpSystem().setHelp(group, helpId);
+		}
+
 		return group;
+	}
+
+	/**
+	 * Creates a new toggle button (radio button or check box) using the given
+	 * information.
+	 *
+	 * @param parent The parent container
+	 * @param buttonText The button's text
+	 * @param booleanHolder The holder of the selection state
+	 * @param helpId The topic help ID to be registered for the new button
+	 * @return The newly created <code>Button</code>
+	 *
+	 * @category Layout
+	 */
+	private Button buildToggleButton(Composite parent,
+	                                 String buttonText,
+	                                 WritablePropertyValueModel<Boolean> booleanHolder,
+	                                 String helpId,
+	                                 int toggleButtonType) {
+
+		Button button = this.widgetFactory.createButton(
+			parent,
+			buttonText,
+			toggleButtonType
+		);
+
+		button.setLayoutData(new GridData());
+		BooleanButtonModelAdapter.adapt(booleanHolder, button);
+
+		if (helpId != null) {
+			helpSystem().setHelp(button, helpId);
+		}
+
+		return button;
 	}
 
 	/**
 	 * Creates the widgets for this controller.
 	 *
 	 * @param parent The parent container
+	 *
+	 * @category Layout
 	 */
 	protected abstract void buildWidgets(Composite parent);
 
 	/**
 	 * Uninstalls any listeners from the subject in order to stop being notified
 	 * for changes made outside of this controllers.
+	 *
+	 * @category Populate
 	 */
 	protected void disengageListeners() {
+
+		this.log("   ->disengageListeners()");
+
+		this.subjectHolder.removePropertyChangeListener(
+			PropertyValueModel.VALUE,
+			this.subjectChangeListener
+		);
+
+		this.disengageListeners(this.subject());
+
+		for (BaseJpaController<?> subPane : this.subPanes) {
+			subPane.disengageListeners();
+		}
+	}
+
+	/**
+	 * Removes any property change listeners from the given subject.
+	 *
+	 * @param subject The old subject
+	 *
+	 * @category Populate
+	 */
+	protected void disengageListeners(T subject) {
+		if (subject != null) {
+			this.log("   ->disengageListeners() from " + subject.displayString());
+
+			for (String propertyName : this.propertyNames()) {
+				subject.removePropertyChangeListener(propertyName, this.aspectChangeListener);
+			}
+		}
 	}
 
 	/**
 	 * Notifies this controller is should dispose itself.
+	 *
+	 * @category Populate
 	 */
 	public void dispose() {
 		if (!this.getControl().isDisposed()) {
+			this.log("dispose()");
 			this.disengageListeners();
 
 			for (BaseJpaController<?> subPane : this.subPanes) {
@@ -689,17 +1274,64 @@ public abstract class BaseJpaController<T>
 
 	/**
 	 * Requests this controller to populate its widgets with the subject's values.
+	 *
+	 * @category Populate
 	 */
 	protected void doPopulate() {
+		this.log("   ->doPopulate()");
+	}
+
+	/**
+	 * Changes the enablement state of the widgets of this pane.
+	 *
+	 * @param enabled <code>true</code> to enable the widgets or <code>false</code>
+	 * to disable them
+	 *
+	 * @category Layout
+	 */
+	public void enableWidgets(boolean enabled) {
+		for (BaseJpaController<?> subPane : this.subPanes) {
+			subPane.enableWidgets(enabled);
+		}
 	}
 
 	/**
 	 * Installs the listeners on the subject in order to be notified from changes
 	 * made outside of this controllers.
+	 *
+	 * @category Populate
 	 */
 	protected void engageListeners() {
+
+		this.log("   ->engageListeners()");
+
+		this.subjectHolder.addPropertyChangeListener(
+			PropertyValueModel.VALUE,
+			this.subjectChangeListener
+		);
+
+		this.engageListeners(this.subject());
+
 		for (BaseJpaController<?> subPane : this.subPanes) {
 			subPane.engageListeners();
+		}
+	}
+
+	/**
+	 * TODO
+	 *
+	 * @param subject
+	 *
+	 * @category Populate
+	 */
+	protected void engageListeners(T subject) {
+		if (subject != null) {
+
+			this.log("   ->engageListeners() on " + subject.displayString());
+
+			for (String propertyName : this.propertyNames()) {
+				subject.addPropertyChangeListener(propertyName, this.aspectChangeListener);
+			}
 		}
 	}
 
@@ -707,6 +1339,8 @@ public abstract class BaseJpaController<T>
 	 * Returns this controller's widget.
 	 *
 	 * @return The main widget of this controller
+	 *
+	 * @category Layout
 	 */
 	public abstract Control getControl();
 
@@ -714,11 +1348,20 @@ public abstract class BaseJpaController<T>
 	 * Returns the subject holder used by this controller.
 	 *
 	 * @return The holder of the subject
+	 *
+	 * @category Populate
 	 */
 	protected final PropertyValueModel<T> getSubjectHolder() {
 		return subjectHolder;
 	}
 
+	/**
+	 * Returns
+	 *
+	 * @return
+	 *
+	 * @category Layout
+	 */
 	public TabbedPropertySheetWidgetFactory getWidgetFactory() {
 		return this.widgetFactory;
 	}
@@ -730,6 +1373,8 @@ public abstract class BaseJpaController<T>
 	 * have that extra 5 pixels.
 	 *
 	 * @return The width taken by the group box border with its margin
+	 *
+	 * @category Layout
 	 */
 	protected final int groupBoxMargin() {
 		Group group = this.widgetFactory.createGroup(Display.getCurrent().getActiveShell(), "");
@@ -738,14 +1383,49 @@ public abstract class BaseJpaController<T>
 		return clientArea.x + 5;
 	}
 
+	/**
+	 * Returns the helps system.
+	 *
+	 * @return The platform's help system
+	 *
+	 * @category Helper
+	 */
 	protected final IWorkbenchHelpSystem helpSystem() {
 		return PlatformUI.getWorkbench().getHelpSystem();
 	}
 
 	/**
 	 * Initializes this <code>BaseJpaController</code>.
+	 *
+	 * @category Initialization
 	 */
 	protected void initialize() {
+	}
+
+	/**
+	 * Registers this controller with the parent controller.
+	 *
+	 * @param parentController The parent controller
+	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
+	 * this pane aligned with the widgets of the given parent controller;
+	 * <code>false</code> to not align them
+	 *
+	 * @category Initialization
+	 */
+	private void initialize(BaseJpaController<?> parentController,
+	                        boolean automaticallyAlignWidgets) {
+
+		// Register this pane with the parent pane, it will call the methods
+		// automatically (engageListeners(), disengageListeners(), populate(),
+		// dispose(), etc)
+		parentController.registerSubPane(this);
+
+		// Align the left and right controls with the controls from the parent
+		// controller
+		if (automaticallyAlignWidgets) {
+			parentController.leftControlAligner .add(leftControlAligner);
+			parentController.rightControlAligner.add(rightControlAligner);
+		}
 	}
 
 	/**
@@ -753,6 +1433,8 @@ public abstract class BaseJpaController<T>
 	 *
 	 * @param subjectHolder The holder of this controller's subject
 	 * @param widgetFactory The factory used to create various widgets
+	 *
+	 * @category Initialization
 	 */
 	@SuppressWarnings("unchecked")
 	private void initialize(PropertyValueModel<? extends T> subjectHolder,
@@ -760,27 +1442,83 @@ public abstract class BaseJpaController<T>
 	{
 		Assert.isNotNull(subjectHolder, "The subject holder cannot be null");
 
-		this.subjectHolder       = (PropertyValueModel<T>) subjectHolder;
-		this.widgetFactory       = widgetFactory;
-		this.subPanes            = new ArrayList<BaseJpaController<?>>();
-		this.leftControlAligner  = new ControlAligner();
-		this.rightControlAligner = new ControlAligner();
+		this.subjectHolder         = (PropertyValueModel<T>) subjectHolder;
+		this.widgetFactory         = widgetFactory;
+		this.subPanes              = new ArrayList<BaseJpaController<?>>();
+		this.leftControlAligner    = new ControlAligner();
+		this.rightControlAligner   = new ControlAligner();
+		this.subjectChangeListener = this.buildSubjectChangeListener();
+		this.aspectChangeListener  = this.buildAspectChangeListener();
 
 		this.initialize();
 	}
 
+	/**
+	 * Determines whether
+	 *
+	 * @return
+	 *
+	 * @category Populate
+	 */
 	protected final boolean isPopulating() {
 		return this.populating;
 	}
 
 	/**
+	 * Logs the given message if the <code>Tracing.DEBUG_LAYOUT</code> is enabled.
+	 *
+	 * @param message The logging message
+	 */
+	private void log(String message) {
+
+		if (Tracing.booleanDebugOption(Tracing.DEBUG_LAYOUT)) {
+
+			Class<?> thisClass = getClass();
+			String className = ClassTools.shortNameFor(thisClass);
+
+			if (thisClass.isAnonymousClass()) {
+				className = className.substring(0, className.indexOf('$'));
+				className += "->" + ClassTools.shortNameFor(thisClass.getSuperclass());
+			}
+
+			Tracing.log(className + ": " + message);
+		}
+	}
+
+	/**
 	 * Notifies this pane to populate itself using the subject's information.
+	 *
+	 * @category Populate
 	 */
 	public final void populate() {
 		if (!getControl().isDisposed()) {
+			this.log("populate()");
 			this.repopulate();
 			this.engageListeners();
 		}
+	}
+
+	/**
+	 * Notifies the subject's property associated with the given property name
+	 * has changed.
+	 *
+	 * @param propertyName The property name associated with the property change
+	 *
+	 * @category Populate
+	 */
+	protected void propertyChanged(String propertyName) {
+	}
+
+	/**
+	 * Returns the list of names to listen for properties changing from the
+	 * subject.
+	 *
+	 * @return A non-<code>null</code> list of property names
+	 *
+	 * @category Populate
+	 */
+	protected String[] propertyNames() {
+		return new String[0];
 	}
 
 	/**
@@ -789,6 +1527,8 @@ public abstract class BaseJpaController<T>
 	 * disengaging the listeners, etc.
 	 *
 	 * @param subPane The sub-pane to register
+	 *
+	 * @category Controller
 	 */
 	protected final void registerSubPane(BaseJpaController<?> subPane) {
 		this.subPanes.add(subPane);
@@ -801,6 +1541,8 @@ public abstract class BaseJpaController<T>
 	 * with the width of the widest widget.
 	 *
 	 * @param controller The controller containing the widgets to remove
+	 *
+	 * @category Layout
 	 */
 	protected final void removeAlignLeft(BaseJpaController<?> controller) {
 		leftControlAligner.remove(controller.leftControlAligner);
@@ -813,6 +1555,8 @@ public abstract class BaseJpaController<T>
 	 *
 	 * @param controller The controller to remove, its width will no longer be
 	 * ajusted to be the width of the longest widget
+	 *
+	 * @category Layout
 	 */
 	protected final void removeAlignLeft(Control control) {
 		leftControlAligner.remove(control);
@@ -825,6 +1569,8 @@ public abstract class BaseJpaController<T>
 	 * with the width of the widest widget.
 	 *
 	 * @param controller The controller containing the widgets to remove
+	 *
+	 * @category Layout
 	 */
 	protected final void removeAlignRight(BaseJpaController<?> controller) {
 		rightControlAligner.remove(controller.rightControlAligner);
@@ -837,6 +1583,8 @@ public abstract class BaseJpaController<T>
 	 *
 	 * @param controller The controller to remove, its width will no longer be
 	 * ajusted to be the width of the longest widget
+	 *
+	 * @category Layout
 	 */
 	protected final void removeAlignRight(Control control) {
 		rightControlAligner.remove(control);
@@ -848,6 +1596,8 @@ public abstract class BaseJpaController<T>
 	 *
 	 * @param controller The controller containing the widgets that no longer
 	 * requires their width adjusted with the width of the longest widget
+	 *
+	 * @category Layout
 	 */
 	protected final void removePaneForAlignment(BaseJpaController<?> controller) {
 		removeAlignLeft(controller);
@@ -857,8 +1607,12 @@ public abstract class BaseJpaController<T>
 	/**
 	 * This method is called (perhaps internally) when this needs to repopulate
 	 * but the object of interest has not changed.
+	 *
+	 * @category Populate
 	 */
 	protected final void repopulate() {
+
+		this.log("   ->repopulate()");
 
 		// Populate this pane
 		try {
@@ -875,8 +1629,14 @@ public abstract class BaseJpaController<T>
 		}
 	}
 
-	protected final void setPopulating(boolean populating)
-	{
+	/**
+	 * Sets (TODO)
+	 *
+	 * @param populating
+	 *
+	 * @category Populate
+	 */
+	protected final void setPopulating(boolean populating) {
 		this.populating = populating;
 	}
 
@@ -885,9 +1645,26 @@ public abstract class BaseJpaController<T>
 	 *
 	 * @return The subject if this controller was not disposed; <code>null</code>
 	 * if it was
+	 *
+	 * @category Populate
 	 */
 	protected T subject() {
 		return subjectHolder.value();
+	}
+
+	/**
+	 * TODO
+	 *
+	 * @param e
+	 *
+	 * @category Populate
+	 */
+	@SuppressWarnings("unchecked")
+	private void subjectChanged(PropertyChangeEvent e) {
+		this.log("subjectChanged()");
+		this.disengageListeners((T) e.oldValue());
+		this.repopulate();
+		this.engageListeners((T) e.newValue());
 	}
 
 	/**
@@ -896,6 +1673,8 @@ public abstract class BaseJpaController<T>
 	 * engaging or disengaging the listeners, etc.
 	 *
 	 * @param subPane The sub-pane to unregister
+	 *
+	 * @category Controller
 	 */
 	protected final void unregisterSubPane(BaseJpaController<?> subPane) {
 		this.subPanes.remove(subPane);

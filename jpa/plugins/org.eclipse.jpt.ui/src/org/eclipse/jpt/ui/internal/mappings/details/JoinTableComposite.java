@@ -10,18 +10,10 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.List;
-import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IJoinTable;
-import org.eclipse.jpt.db.internal.ConnectionListener;
-import org.eclipse.jpt.db.internal.ConnectionProfile;
-import org.eclipse.jpt.db.internal.Database;
-import org.eclipse.jpt.db.internal.Schema;
-import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -32,7 +24,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
@@ -40,117 +31,28 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class JoinTableComposite extends BaseJpaComposite<IJoinTable>
 {
-	private final Adapter joinTableListener;
-	private TableCombo tableCombo;
-	private ConnectionProfile connectionProfile;
-	private ConnectionListener connectionListener;
-	private Button overrideDefaultJoinColumnsCheckBox;
-	private JoinColumnsComposite joinColumnsComposite;
-	private Button overrideDefaultInverseJoinColumnsCheckBox;
-	private JoinColumnsComposite inverseJoinColumnsComposite;
-
+	/**
+	 * Creates a new <code>JoinTableComposite</code>.
+	 *
+	 * @param subjectHolder The holder of the subject <code>IJoinTable</code>
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public JoinTableComposite(PropertyValueModel<? extends IJoinTable> subjectHolder,
 	                          Composite parent,
 	                          TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, SWT.NULL, widgetFactory);
-		this.joinTableListener = buildJoinTableListener();
-		this.connectionListener = buildConnectionListener();
+		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private Adapter buildJoinTableListener() {
-		return new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				joinTableChanged(notification);
-			}
-		};
-	}
-
-	private ConnectionListener buildConnectionListener() {
-		return new ConnectionListener() {
-
-			public void aboutToClose(ConnectionProfile profile) {
-				// not interested to this event.
-			}
-
-			public void closed(ConnectionProfile profile) {
-				getControl().getDisplay().asyncExec( new Runnable() {
-					public void run() {
-						JoinTableComposite.this.tableCombo.populate();
-					}
-				});
-			}
-
-			public void modified(ConnectionProfile profile) {
-				getControl().getDisplay().asyncExec( new Runnable() {
-					public void run() {
-						JoinTableComposite.this.tableCombo.populate();
-					}
-				});
-			}
-
-			public boolean okToClose(ConnectionProfile profile) {
-				// not interested to this event.
-				return true;
-			}
-
-			public void opened(ConnectionProfile profile) {
-				getControl().getDisplay().asyncExec( new Runnable() {
-					public void run() {
-						JoinTableComposite.this.tableCombo.populate();
-					}
-				});
-			}
-
-			public void databaseChanged(ConnectionProfile profile, final Database database) {
-				getControl().getDisplay().asyncExec( new Runnable() {
-					public void run() {
-						if(database == JoinTableComposite.this.tableCombo.getDatabase()) {
-							if (!getControl().isDisposed()) {
-								JoinTableComposite.this.tableCombo.populate();
-							}
-						}
-					}
-				});
-			}
-
-			public void schemaChanged(ConnectionProfile profile, final Schema schema) {
-				getControl().getDisplay().asyncExec( new Runnable() {
-					public void run() {
-						if(schema == JoinTableComposite.this.tableCombo.getTableSchema()) {
-							if (!getControl().isDisposed()) {
-								JoinTableComposite.this.tableCombo.populate();
-							}
-						}
-					}
-				});
-			}
-
-			public void tableChanged(ConnectionProfile profile, final Table table) {
-				// not interested to this event.
-			}
-		};
-    }
-
-	private ConnectionProfile getConnectionProfile() {
-		if(this.connectionProfile == null) {
-			IJpaProject jpaProject = this.subject().jpaProject();
-			this.connectionProfile = jpaProject.connectionProfile();
-		}
-		return this.connectionProfile;
-	}
-
-	private void addConnectionListener() {
-		this.getConnectionProfile().addConnectionListener(this.connectionListener);
-	}
-
-	private void removeConnectionListener() {
-		this.getConnectionProfile().removeConnectionListener(this.connectionListener);
-	}
-
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void initializeLayout(Composite composite) {
+		// FOR NOW
+		if (true) return;
+
 		GridLayout layout = new GridLayout(2, false);
 		layout.marginWidth = 0;
 		composite.setLayout(layout);
@@ -323,47 +225,6 @@ public class JoinTableComposite extends BaseJpaComposite<IJoinTable>
 				}
 			});
 		}
-	}
-
-	@Override
-	protected void engageListeners() {
-		if (this.subject() != null) {
-			this.subject().eAdapters().add(joinTableListener);
-			this.addConnectionListener();
-		}
-	}
-
-	@Override
-	protected void disengageListeners() {
-		if (this.subject() != null) {
-			this.subject().eAdapters().remove(joinTableListener);
-			this.removeConnectionListener();
-		}
-	}
-
-	@Override
-	protected void doPopulate() {
-		if (this.subject() == null) {
-			this.joinColumnsComposite.populate(null);
-			this.inverseJoinColumnsComposite.populate(null);
-			this.connectionProfile = null;
-			return;
-		}
-
-		this.tableCombo.populate(this.subject());
-		this.joinColumnsComposite.populate(new JoinColumnsOwner(this.subject()));
-		this.inverseJoinColumnsComposite.populate(new InverseJoinColumnsOwner(this.subject()));
-
-		this.overrideDefaultJoinColumnsCheckBox.setSelection(this.subject().containsSpecifiedJoinColumns());
-		this.overrideDefaultInverseJoinColumnsCheckBox.setSelection(this.subject().containsSpecifiedInverseJoinColumns());
-	}
-
-	@Override
-	public void dispose() {
-		this.tableCombo.dispose();
-		this.joinColumnsComposite.dispose();
-		this.inverseJoinColumnsComposite.dispose();
-		super.dispose();
 	}
 
 	private class JoinColumnsOwner implements Owner<IJoinTable> {

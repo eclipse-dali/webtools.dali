@@ -27,11 +27,11 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  * Here the layout of this pane:
  * <pre>
- * ----------------------------------------------------------------------------â??
+ * -----------------------------------------------------------------------------
  * | v Primary Key Generation                                                  |
  * |                                                                           |
  * |   x Primary Key Generation                                                |
- * |     --------------------------------------------------------------------â?? |
+ * |     --------------------------------------------------------------------- |
  * |     |                                                                   | |
  * |     | GeneratedValueComposite                                           | |
  * |     |                                                                   | |
@@ -40,7 +40,7 @@ import org.eclipse.ui.forms.widgets.Section;
  * |   v Table Generator                                                       |
  * |                                                                           |
  * |     x Table Generator                                                     |
- * |     --------------------------------------------------------------------â?? |
+ * |     --------------------------------------------------------------------- |
  * |     |                                                                   | |
  * |     | TableGeneratorComposite                                           | |
  * |     |                                                                   | |
@@ -49,7 +49,7 @@ import org.eclipse.ui.forms.widgets.Section;
  * |   v Sequence Generator                                                    |
  * |                                                                           |
  * |     x Sequence Generator                                                  |
- * |     --------------------------------------------------------------------â?? |
+ * |     --------------------------------------------------------------------- |
  * |     |                                                                   | |
  * |     | SequenceGeneratorComposite                                        | |
  * |     |                                                                   | |
@@ -220,19 +220,15 @@ public class GenerationComposite extends BaseJpaComposite<IIdMapping> {
 		this.sequenceGeneratorCheckBox = this.buildCheckBox(
 			sequenceGenClient,
 			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
-			buildSequenceGeneratorHolder()
+			buildSequenceGeneratorHolder(),
+			IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR
 		);
-
-		this.helpSystem().setHelp(sequenceGeneratorCheckBox, IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR);
 
 		// Sequence Generator pane
-		SequenceGeneratorComposite sequenceGeneratorComposite = new SequenceGeneratorComposite(
+		new SequenceGeneratorComposite(
 			this,
-			buildSubPane(sequenceGenClient, 0, this.sequenceGeneratorCheckBox.getBorderWidth() + 13)
+			buildSubPane(sequenceGenClient, 0, sequenceGeneratorCheckBox.getBorderWidth() + 13)
 		);
-
-		this.registerSubPane(sequenceGeneratorComposite);
-		this.addPaneForAlignment(sequenceGeneratorComposite);
 	}
 
 	private void initializeTableGeneratorPane(Composite container) {
@@ -248,29 +244,25 @@ public class GenerationComposite extends BaseJpaComposite<IIdMapping> {
 		this.tableGeneratorCheckBox = this.buildCheckBox(
 			tableGenClient,
 			JptUiMappingsMessages.IdMappingComposite_tableGenerator,
-			buildTableGeneratorHolder()
+			buildTableGeneratorHolder(),
+			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR
 		);
 
-		this.helpSystem().setHelp(tableGeneratorCheckBox, IJpaHelpContextIds.MAPPING_TABLE_GENERATOR);
-
-		TableGeneratorComposite tableGeneratorComposite = new TableGeneratorComposite(
+		new TableGeneratorComposite(
 			this,
 			buildSubPane(tableGenClient, 0, tableGeneratorCheckBox.getBorderWidth() + 13)
 		);
-
-		this.registerSubPane(tableGeneratorComposite);
-		this.addPaneForAlignment(tableGeneratorComposite);
 	}
 
 	private void updateSequenceGeneratorExpandedState() {
 		this.sequenceGenerationSection.setExpanded(
-			this.subject().getSequenceGenerator() != null
+			this.subject() != null && this.subject().getSequenceGenerator() != null
 		);
 	}
 
 	private void updateTableGeneratorExpandedState() {
 		this.tableGenerationSection.setExpanded(
-			this.subject().getTableGenerator() != null
+			this.subject() != null && this.subject().getTableGenerator() != null
 		);
 	}
 }

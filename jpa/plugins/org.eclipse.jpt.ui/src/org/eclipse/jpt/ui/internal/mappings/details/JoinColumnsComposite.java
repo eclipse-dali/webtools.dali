@@ -60,7 +60,7 @@ public class JoinColumnsComposite extends BaseJpaComposite<JoinColumnsComposite.
 	                            Composite parent,
 	                            TabbedPropertySheetWidgetFactory widgetFactory, String groupTitle) {
 
-		super(subjectHolder, parent, SWT.NULL, widgetFactory);
+		super(subjectHolder, parent, widgetFactory);
 		this.joinColumnsOwnerListener = buildJoinColumnsOwnerListener();
 		this.joinColumnListener = buildJoinColumnListener();
 		this.joinColumnsGroup.setText(groupTitle);
@@ -313,7 +313,9 @@ public class JoinColumnsComposite extends BaseJpaComposite<JoinColumnsComposite.
 		this.joinColumnsEditButton.setEnabled(groupEnabledState && ((StructuredSelection) this.joinColumnsListViewer.getSelection()).size() == 1);
 	}
 
-	protected void enableWidgets(boolean enabled) {
+	@Override
+	public void enableWidgets(boolean enabled) {
+		super.enableWidgets(enabled);
 		enableGroup(this.joinColumnsGroup, enabled);
 		this.joinColumnsAddButton.setEnabled(enabled);
 		this.joinColumnsEditButton.setEnabled(enabled);
