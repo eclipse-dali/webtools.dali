@@ -60,6 +60,7 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnno
 		this.fetchAdapter = buildAnnotationElementAdapter(this.fetchDeclarationAdapter);
 		this.cascadeDeclarationAdapter = cascadeAdapter();
 		this.cascadeAdapter = new ShortCircuitArrayAnnotationElementAdapter<String>(attribute, this.cascadeDeclarationAdapter);
+		this.cascadeTypes = new CascadeType[0];
 	}
 	
 	protected AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {

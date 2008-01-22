@@ -16,24 +16,36 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
+import org.eclipse.jpt.core.internal.context.base.IEmbeddedIdMapping;
+import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
+import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.IManyToManyMapping;
 import org.eclipse.jpt.core.internal.context.base.IManyToOneMapping;
+import org.eclipse.jpt.core.internal.context.base.IOneToManyMapping;
+import org.eclipse.jpt.core.internal.context.base.IOneToOneMapping;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.base.ITransientMapping;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
+import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaJoinColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
-import org.eclipse.jpt.core.internal.resource.java.Column;
-import org.eclipse.jpt.core.internal.resource.java.GeneratedValue;
+import org.eclipse.jpt.core.internal.resource.java.Basic;
+import org.eclipse.jpt.core.internal.resource.java.Embedded;
+import org.eclipse.jpt.core.internal.resource.java.EmbeddedId;
+import org.eclipse.jpt.core.internal.resource.java.Id;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.JoinColumn;
 import org.eclipse.jpt.core.internal.resource.java.JoinColumns;
+import org.eclipse.jpt.core.internal.resource.java.ManyToMany;
 import org.eclipse.jpt.core.internal.resource.java.ManyToOne;
-import org.eclipse.jpt.core.internal.resource.java.SequenceGenerator;
-import org.eclipse.jpt.core.internal.resource.java.TableGenerator;
-import org.eclipse.jpt.core.internal.resource.java.Temporal;
+import org.eclipse.jpt.core.internal.resource.java.OneToMany;
+import org.eclipse.jpt.core.internal.resource.java.OneToOne;
+import org.eclipse.jpt.core.internal.resource.java.Transient;
+import org.eclipse.jpt.core.internal.resource.java.Version;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -182,12 +194,13 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		super(name);
 	}
 	
-	public void testMorphToBasic() throws Exception {
+	public void testMorphToBasicMapping() throws Exception {
 		createTestEntityWithManyToOneMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		IManyToOneMapping manyToOneMapping = (IManyToOneMapping) persistentAttribute.getMapping();
+		manyToOneMapping.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
 		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
@@ -197,109 +210,188 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.mappingAnnotation(ManyToOne.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(Column.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(Temporal.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(TableGenerator.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(SequenceGenerator.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(GeneratedValue.ANNOTATION_NAME));
+		assertNotNull(attributeResource.mappingAnnotation(Basic.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(JoinColumn.ANNOTATION_NAME));
 	}
 	
-//	public void testMorphToDefault() throws Exception {
-//		createTestEntityWithEmbeddedMapping();
-//		createEmbeddableType();
-//		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-//		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
-//		
-//		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-//		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) persistentAttribute.getMapping();
-//		embeddedMapping.addSpecifiedAttributeOverride(0);
-//		assertFalse(embeddedMapping.isDefault());
-//		
-//		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
-//		assertTrue(((IEmbeddedMapping) persistentAttribute.getMapping()).attributeOverrides().hasNext());
-//		assertTrue(persistentAttribute.getMapping().isDefault());
-//	
-//		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-//		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
-//		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
-//		assertNotNull(attributeResource.annotation(AttributeOverride.ANNOTATION_NAME));
-//	}
-//	
-//	public void testDefaultEmbedded() throws Exception {
-//		createTestEntityWithEmbeddedMapping();
-//		createEmbeddableType();
-//		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-//		
-//		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-//		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) persistentAttribute.getMapping();
-//		assertFalse(embeddedMapping.isDefault());
-//		
-//		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
-//		assertTrue(persistentAttribute.getMapping() instanceof JavaNullAttributeMapping);
-//		assertTrue(persistentAttribute.getMapping().isDefault());
-//		
-//		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
-//		assertTrue(persistentAttribute.getMapping() instanceof IEmbeddedMapping);
-//		assertTrue(persistentAttribute.getMapping().isDefault());
-//	}
-//	
-//	public void testMorphToVersion() throws Exception {
-//		createTestEntityWithEmbeddedMapping();
-//		createEmbeddableType();
-//		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-//		
-//		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-//		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) persistentAttribute.getMapping();
-//		embeddedMapping.addSpecifiedAttributeOverride(0);
-//		assertFalse(embeddedMapping.isDefault());
-//		
-//		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
-//		assertTrue(persistentAttribute.getMapping() instanceof IVersionMapping);
-//	
-//		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-//		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
-//		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
-//		assertNull(attributeResource.annotation(AttributeOverride.ANNOTATION_NAME));
-//	}
-//	
-//	public void testMorphToTransient() throws Exception {
-//		createTestEntityWithEmbeddedMapping();
-//		createEmbeddableType();
-//		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-//		
-//		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-//		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) persistentAttribute.getMapping();
-//		embeddedMapping.addSpecifiedAttributeOverride(0);
-//		assertFalse(embeddedMapping.isDefault());
-//		
-//		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
-//		assertTrue(persistentAttribute.getMapping() instanceof ITransientMapping);
-//		
-//		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-//		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
-//		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
-//		assertNull(attributeResource.annotation(AttributeOverride.ANNOTATION_NAME));
-//	}
-//	
-//	public void testMorphToId() throws Exception {
-//		createTestEntityWithEmbeddedMapping();
-//		createEmbeddableType();
-//		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-//		
-//		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-//		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) persistentAttribute.getMapping();
-//		embeddedMapping.addSpecifiedAttributeOverride(0);
-//		assertFalse(embeddedMapping.isDefault());
-//		
-//		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
-//		assertTrue(persistentAttribute.getMapping() instanceof IIdMapping);
-//		
-//		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-//		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
-//		assertNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
-//		assertNull(attributeResource.annotation(AttributeOverride.ANNOTATION_NAME));
-//	}
-
+	public void testMorphToDefault() throws Exception {
+		createTestEntityWithManyToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IManyToOneMapping manyToOneMapping = (IManyToOneMapping) persistentAttribute.getMapping();
+		manyToOneMapping.addSpecifiedJoinColumn(0);
+		assertFalse(manyToOneMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
+		assertNull(persistentAttribute.getSpecifiedMapping());
+		assertTrue(persistentAttribute.getMapping().isDefault());
+	
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(ManyToOne.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(JoinColumn.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToVersionMapping() throws Exception {
+		createTestEntityWithManyToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IManyToOneMapping manyToOneMapping = (IManyToOneMapping) persistentAttribute.getMapping();
+		manyToOneMapping.addSpecifiedJoinColumn(0);
+		assertFalse(manyToOneMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof IVersionMapping);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(ManyToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.mappingAnnotation(Version.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(JoinColumn.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToIdMapping() throws Exception {
+		createTestEntityWithManyToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IManyToOneMapping manyToOneMapping = (IManyToOneMapping) persistentAttribute.getMapping();
+		manyToOneMapping.addSpecifiedJoinColumn(0);
+		assertFalse(manyToOneMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof IIdMapping);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(ManyToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.mappingAnnotation(Id.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(JoinColumn.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToEmbeddedMapping() throws Exception {
+		createTestEntityWithManyToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IManyToOneMapping manyToOneMapping = (IManyToOneMapping) persistentAttribute.getMapping();
+		manyToOneMapping.addSpecifiedJoinColumn(0);
+		assertFalse(manyToOneMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof IEmbeddedMapping);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(ManyToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(JoinColumn.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToEmbeddedIdMapping() throws Exception {
+		createTestEntityWithManyToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IManyToOneMapping manyToOneMapping = (IManyToOneMapping) persistentAttribute.getMapping();
+		manyToOneMapping.addSpecifiedJoinColumn(0);
+		assertFalse(manyToOneMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof IEmbeddedIdMapping);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(ManyToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.mappingAnnotation(EmbeddedId.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(JoinColumn.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToTransientMapping() throws Exception {
+		createTestEntityWithManyToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IManyToOneMapping manyToOneMapping = (IManyToOneMapping) persistentAttribute.getMapping();
+		manyToOneMapping.addSpecifiedJoinColumn(0);
+		assertFalse(manyToOneMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof ITransientMapping);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(ManyToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.mappingAnnotation(Transient.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(JoinColumn.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToOneToOneMapping() throws Exception {
+		createTestEntityWithManyToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IManyToOneMapping manyToOneMapping = (IManyToOneMapping) persistentAttribute.getMapping();
+		manyToOneMapping.addSpecifiedJoinColumn(0);
+		assertFalse(manyToOneMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof IOneToOneMapping);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(ManyToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.mappingAnnotation(OneToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.annotation(JoinColumn.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToOneToManyMapping() throws Exception {
+		createTestEntityWithManyToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IManyToOneMapping manyToOneMapping = (IManyToOneMapping) persistentAttribute.getMapping();
+		manyToOneMapping.addSpecifiedJoinColumn(0);
+		assertFalse(manyToOneMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof IOneToManyMapping);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(ManyToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.mappingAnnotation(OneToMany.ANNOTATION_NAME));
+		assertNotNull(attributeResource.annotation(JoinColumn.ANNOTATION_NAME));
+	}
+	
+	public void testMorphToManyToManyMapping() throws Exception {
+		createTestEntityWithManyToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IManyToOneMapping manyToOneMapping = (IManyToOneMapping) persistentAttribute.getMapping();
+		manyToOneMapping.addSpecifiedJoinColumn(0);
+		assertFalse(manyToOneMapping.isDefault());
+		
+		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof IManyToManyMapping);
+		assertFalse(persistentAttribute.getMapping().isDefault());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.mappingAnnotation(ManyToOne.ANNOTATION_NAME));
+		assertNotNull(attributeResource.mappingAnnotation(ManyToMany.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(JoinColumn.ANNOTATION_NAME));
+	}
 	
 	public void testUpdateSpecifiedTargetEntity() throws Exception {
 		createTestEntityWithManyToOneMapping();
