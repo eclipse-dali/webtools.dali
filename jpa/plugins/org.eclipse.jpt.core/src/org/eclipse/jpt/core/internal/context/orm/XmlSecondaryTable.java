@@ -15,7 +15,6 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AbstractTable;
@@ -70,7 +69,7 @@ public class XmlSecondaryTable extends AbstractXmlTable
 		XmlPrimaryKeyJoinColumn primaryKeyJoinColumn = new XmlPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
 		this.secondaryTable.getPrimaryKeyJoinColumns().add(index, OrmFactory.eINSTANCE.createPrimaryKeyJoinColumn());
-		this.fireItemAdded(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
+		this.fireItemAdded(ISecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
 		return primaryKeyJoinColumn;
 	}
 	
@@ -79,23 +78,23 @@ public class XmlSecondaryTable extends AbstractXmlTable
 	}
 
 	protected void addSpecifiedPrimaryKeyJoinColumn(int index, XmlPrimaryKeyJoinColumn primaryKeyJoinColumn) {
-		addItemToList(index, primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
+		addItemToList(index, primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, ISecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
 	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
 		XmlPrimaryKeyJoinColumn removedPrimaryKeyJoinColumn = this.specifiedPrimaryKeyJoinColumns.remove(index);
 		this.secondaryTable.getPrimaryKeyJoinColumns().remove(index);
-		fireItemRemoved(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
+		fireItemRemoved(ISecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
 	}
 
 	protected void removeSpecifiedPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn primaryKeyJoinColumn) {
-		removeItemFromList(primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
+		removeItemFromList(primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, ISecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
 	public void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedPrimaryKeyJoinColumns, targetIndex, sourceIndex);
 		this.secondaryTable.getPrimaryKeyJoinColumns().move(targetIndex, sourceIndex);
-		fireItemMoved(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
+		fireItemMoved(ISecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 
 	

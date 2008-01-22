@@ -23,7 +23,7 @@ public interface ISecondaryTable extends ITable
 	void removeSpecifiedPrimaryKeyJoinColumn(int index);
 	void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex);
 		String SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST = "specifiedPrimaryKeyJoinColumnsList";
-
+		String DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST = "defaultPrimaryKeyJoinColumnsList";
 	
 	
 //	ITypeMapping typeMapping();
