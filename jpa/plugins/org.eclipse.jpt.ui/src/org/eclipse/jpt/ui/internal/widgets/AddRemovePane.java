@@ -11,12 +11,12 @@ package org.eclipse.jpt.ui.internal.widgets;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
+import org.eclipse.jpt.utility.internal.model.Model;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ListModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
-import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 1.0
  * @since 2.0
  */
-public abstract class AddRemovePane<T extends Node> extends BaseJpaController<T>
+public abstract class AddRemovePane<T extends Model> extends BaseJpaController<T>
 {
 	private Adapter adapter;
 	private Button addButton;

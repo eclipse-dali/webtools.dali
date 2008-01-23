@@ -14,12 +14,12 @@ import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter.SelectionChangeEvent;
 import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter.SelectionChangeListener;
 import org.eclipse.jpt.utility.internal.StringConverter;
+import org.eclipse.jpt.utility.internal.model.Model;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
-import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
 
@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.List;
  * @version 2.0
  * @since 1.0
  */
-public class AddRemoveListPane<T extends Node> extends AddRemovePane<T>
+public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 {
 	/**
 	 * The main widget of this add/remove pane.
