@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -80,32 +80,35 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 
 	//build up a dummy JpaProject that does not have JpaFiles in it and does not update from java changes
 	protected IJpaProject buildJpaProject() throws CoreException {
-		return new JpaProject(buildJpaProjectConfig(this.javaProject.getProject())) {
-			@Override
-			protected IResourceProxyVisitor buildInitialResourceProxyVisitor() {
-				return new IResourceProxyVisitor() {
-					public boolean visit(IResourceProxy proxy) throws CoreException {
-						return false;
-					}
-				};
-			}
-			@Override
-			protected IContextModel buildContextModel() {
-				return null;
-			}
-
-			@Override
-			public void javaElementChanged(ElementChangedEvent event) {
-				//do nothing
-			}
-			
-			@Override
-			public void update() {
-				//do nothing
-			}
-		};
+		return new TestJpaProject(this.buildJpaProjectConfig(this.javaProject.getProject()));
 	}
-	
+
+	protected class TestJpaProject extends JpaProject {
+		protected TestJpaProject(IJpaProject.Config config) throws CoreException {
+			super(config);
+		}
+
+		@Override
+		protected IResourceProxyVisitor buildInitialResourceProxyVisitor() {
+			return new IResourceProxyVisitor() {
+				public boolean visit(IResourceProxy proxy) throws CoreException {
+					return false;  // ignore all the files in the Eclipse project
+				}
+			};
+		}
+
+		@Override
+		protected IContextModel buildContextModel() {
+			return null;  // no context model
+		}
+
+		@Override
+		public void update() {
+			// ignore all updates, since there is no context model
+		}
+
+	}
+
 	private IJpaProject.Config buildJpaProjectConfig(IProject project) {
 		SimpleJpaProjectConfig config = new SimpleJpaProjectConfig();
 		config.setProject(project);

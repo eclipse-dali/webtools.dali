@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -170,14 +170,78 @@ public interface IJpaProject extends IJpaNode {
 	CommandExecutorProvider modifySharedDocumentCommandExecutorProvider();
 
 
-	// ********** updating defaults etc. **********
+	// ********** project "update" **********
 
 	/**
-	 * Reconnect the model together, recalculating default values as needed
+	 * Return the implementation of the Updater
+	 * interface that will be used to "update" a JPA project.
+	 */
+	Updater updater();
+
+	/**
+	 * Set the implementation of the Updater
+	 * interface that will be used to "update" a JPA project.
+	 */
+	void setUpdater(Updater updater);
+
+	/**
+	 * Something in the JPA project has changed, "update" those parts of the
+	 * JPA project that are dependent on other parts of the JPA project.
+	 * This is called when
+	 * - the JPA project is first constructed
+	 * - anything in the JPA project changes
+	 * - the JPA project's database connection is changed, opened, or closed
 	 */
 	void update();
 
+	/**
+	 * This is the callback used by the updater to perform the actual
+	 * "update".
+	 */
 	IStatus update(IProgressMonitor monitor);
+
+
+	/**
+	 * Define a strategy that can be used to "update" a JPA project whenever
+	 * something changes.
+	 */
+	interface Updater {
+
+		/**
+		 * Update the JPA project.
+		 */
+		void update();
+
+		/**
+		 * The JPA project is disposed; dispose the updater.
+		 */
+		void dispose();
+
+		/**
+		 * This updater does nothing. Useful for testing.
+		 */
+		final class Null implements Updater {
+			public static final Updater INSTANCE = new Null();
+			public static Updater instance() {
+				return INSTANCE;
+			}
+			// ensure single instance
+			private Null() {
+				super();
+			}
+			public void update() {
+				// do nothing
+			}
+			public void dispose() {
+				// do nothing
+			}
+			@Override
+			public String toString() {
+				return "IJpaProject.Updater.Null";
+			}
+		}
+
+	}
 
 
 	// ********** config that can be used to construct a JPA project **********

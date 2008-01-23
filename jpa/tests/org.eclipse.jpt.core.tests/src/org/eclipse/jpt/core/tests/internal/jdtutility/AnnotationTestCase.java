@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,6 +37,7 @@ import org.eclipse.jpt.utility.internal.CommandExecutor;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
+import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 /**
  * Provide an easy(?) way to build an annotated source file.
@@ -68,7 +69,7 @@ public abstract class AnnotationTestCase extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		deleteAllProjects();
+		this.deleteAllProjects();
 		this.javaProject = this.buildJavaProject(false);  // false = no auto-build
 	}
 	
@@ -77,18 +78,18 @@ public abstract class AnnotationTestCase extends TestCase {
 	}
 	
 	protected TestJavaProject buildJavaProject(boolean autoBuild) throws Exception {
-		return buildJavaProject(PROJECT_NAME, autoBuild);
+		return this.buildJavaProject(PROJECT_NAME, autoBuild);
 	}
 	
 	protected TestJavaProject buildJavaProject(String projectName, boolean autoBuild) throws Exception {
-		return new TestJavaProject(projectName, autoBuild);  // false = no auto-build
+		return new TestJavaProject(projectName, autoBuild);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 //		this.dumpSource();
 //		this.javaProject.dispose();
-		this.javaProject = null;
+		TestTools.clear(this);
 		super.tearDown();
 	}
 

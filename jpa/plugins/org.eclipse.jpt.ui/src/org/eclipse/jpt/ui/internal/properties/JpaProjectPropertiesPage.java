@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -167,7 +167,7 @@ public class JpaProjectPropertiesPage
 		}
 
 		String connection = this.model.getStringProperty(IJpaFacetDataModelProperties.CONNECTION);
-		if ( ! connection.equals(jpaProject.dataSource().getConnectionProfileName())) {
+		if ( ! connection.equals(jpaProject.dataSource().connectionProfileName())) {
 			change = true;
 			jpaProject.dataSource().setConnectionProfileName(connection);
 			JptCorePlugin.setConnectionProfileName(project, connection);
@@ -338,7 +338,7 @@ public class JpaProjectPropertiesPage
 		}
 		
 		void performDefaults() {
-			String connectionName = getJpaProject().dataSource().getConnectionProfileName();
+			String connectionName = getJpaProject().dataSource().connectionProfileName();
 			model.setProperty(CONNECTION, connectionName);
 			if (connectionName == null) {
 				connectionCombo.clearSelection();

@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context;
 
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -41,7 +40,7 @@ import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
 public abstract class ContextModelTestCase extends AnnotationTestCase
 {
-	protected static final String PROJECT_NAME = "ContextModelTestProject";
+	protected static final String BASE_PROJECT_NAME = "ContextModelTestProject";
 		
 	protected PersistenceArtifactEdit persistenceArtifactEdit;
 	protected OrmArtifactEdit ormArtifactEdit;
@@ -81,12 +80,12 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	
 	@Override
 	protected TestJavaProject buildJavaProject(boolean autoBuild) throws Exception {
-		return buildJpaProject(PROJECT_NAME, autoBuild);
+		return buildJpaProject(BASE_PROJECT_NAME, autoBuild);
 	}
 	
 	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild) 
 			throws Exception {
-		return TestJpaProject.buildJpaProject(projectName, autoBuild);  // false = no auto-build
+		return TestJpaProject.buildJpaProject(projectName, autoBuild);
 	}
 	
 	protected IJpaProject jpaProject() {
@@ -103,14 +102,10 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 			};
 		waitJob.setRule(ResourcesPlugin.getWorkspace().getRoot());
 		waitJob.schedule();
-		
-		while (waitJob.getState() != Job.NONE) {
-			try {
-				Thread.sleep(50);
-			}
-			catch (InterruptedException ie) {
-				// do nothing
-			}
+		try {
+			waitJob.join();
+		} catch (InterruptedException ex) {
+			// the job thread was interrupted during a wait - ignore
 		}
 	}
 	

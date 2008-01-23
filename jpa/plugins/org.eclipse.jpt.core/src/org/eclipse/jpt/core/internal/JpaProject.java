@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,8 +26,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -97,10 +95,17 @@ public class JpaProject extends JpaNode implements IJpaProject {
 	protected final CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
 
 	/**
-	 * Scheduler that uses a job to update the JPA project when changes occur.
-	 * @see #update()
+	 * A pluggable updater that can be used to "update" the project either
+	 * synchronously or asynchronously (or not at all). An asynchronous
+	 * updater is the default and is used when the project is being manipulated
+	 * by the UI. A synchronous updater is used when the project is being
+	 * manipulated by a "batch" (or non-UI) client (e.g. when testing the
+	 * "update" behavior). A null updater is used during tests that
+	 * do not care whether "updates" occur. Clients will need to explicitly
+	 * configure the updater if they require something other than an
+	 * asynchronous updater.
 	 */
-	protected final UpdateJpaProjectJobScheduler updateJpaProjectJobScheduler;
+	protected Updater updater;
 
 	/**
 	 * Resource models notify this listener when they change. A project update
@@ -129,7 +134,8 @@ public class JpaProject extends JpaNode implements IJpaProject {
 		this.threadLocalModifySharedDocumentCommandExecutor = this.buildThreadLocalModifySharedDocumentCommandExecutor();
 		this.modifySharedDocumentCommandExecutorProvider = this.buildModifySharedDocumentCommandExecutorProvider();
 
-		this.updateJpaProjectJobScheduler = this.buildUpdateJpaProjectJobScheduler();
+		this.updater = this.buildUpdater();
+
 		this.resourceModelListener = this.buildResourceModelListener();
 		// build the JPA files corresponding to the Eclipse project's files
 		this.project.accept(this.buildInitialResourceProxyVisitor(), IResource.NONE);
@@ -162,8 +168,8 @@ public class JpaProject extends JpaNode implements IJpaProject {
 		return new ModifySharedDocumentCommandExecutorProvider();
 	}
 
-	protected UpdateJpaProjectJobScheduler buildUpdateJpaProjectJobScheduler() {
-		return new UpdateJpaProjectJobScheduler(this, this.project);
+	protected Updater buildUpdater() {
+		return new AsynchronousJpaProjectUpdater(this);
 	}
 
 	protected IResourceModelListener buildResourceModelListener() {
@@ -230,7 +236,7 @@ public class JpaProject extends JpaNode implements IJpaProject {
 
 	@Override
 	public ConnectionProfile connectionProfile() {
-		return this.dataSource.getConnectionProfile();
+		return this.dataSource.connectionProfile();
 	}
 
 	@Override
@@ -403,7 +409,7 @@ public class JpaProject extends JpaNode implements IJpaProject {
 	// ********** dispose **********
 
 	public void dispose() {
-		this.updateJpaProjectJobScheduler.dispose();
+		this.updater.dispose();
 		// use clone iterator while deleting JPA files
 		for (Iterator<IJpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
 			this.removeJpaFile(stream.next());
@@ -509,128 +515,41 @@ public class JpaProject extends JpaNode implements IJpaProject {
 	}
 
 
-	// ********** update project **********
+	// ********** project "update" **********
 
+	public Updater updater() {
+		return this.updater;
+	}
+
+	public void setUpdater(Updater updater) {
+		this.updater = updater;
+	}
+
+	/**
+	 * Delegate to the updater so clients can configure how updates occur.
+	 */
+	public void update() {
+		this.updater.update();
+	}
+
+	/**
+	 * Called by the updater.
+	 */
 	public IStatus update(IProgressMonitor monitor) {
-		if (monitor.isCanceled()) {
-			return Status.CANCEL_STATUS;
-		}
-
 		try {
 			this.contextModel.update(monitor);
 		} catch (OperationCanceledException ex) {
 			return Status.CANCEL_STATUS;
 		} catch (Throwable ex) {
-			//exceptions can occur when this thread is running and changes are
-			//made to the java source.  our model is not yet updated to the changed java source.
-			//log these exceptions and assume they won't happen when the resynch runs again
-			//as a result of the java source changes.
+			// Exceptions can occur when the update is running and changes are
+			// made concurrently to the Java source. When that happens, our
+			// model might be in an inconsistent state because it is not yet in
+			// sync with the changed Java source.
+			// Log these exceptions and assume they won't happen when the
+			// update runs again as a result of the concurrent Java source changes.
 			JptCorePlugin.log(ex);
 		}
 		return Status.OK_STATUS;
-	}
-
-	boolean isUpdating;
-	boolean needsToUpdate;
-
-	//yeah, yeah, these 2 boolean flags aren't the greatest solution, but 
-	//a stack full of update calls is really causing problems.
-	//putting this in until we have a better solution using a Job running synchronously for tests
-	//asynchronously for the UI.
-	public void update() {
-		if (this.isUpdating) {
-			this.needsToUpdate = true;
-		}
-		else {
-			this.isUpdating = true;
-			this.contextModel.update(null);
-			this.isUpdating = false;
-			if (this.needsToUpdate) {
-				this.needsToUpdate = false;
-				update();
-			}
-		}
-		// TODO this.updateJpaProjectJobScheduler.schedule();
-	}
-
-	protected static class UpdateJpaProjectJobScheduler {
-		/**
-		 * The job is built during construction and cleared out during dispose.
-		 * All the "public" methods check to make sure the job is not null,
-		 * doing nothing if it is (preventing anything from happening after
-		 * dispose).
-		 */
-		protected Job job;
-
-		protected UpdateJpaProjectJobScheduler(IJpaProject jpaProject, ISchedulingRule rule) {
-			super();
-			this.job = this.buildJob(jpaProject, rule);
-		}
-
-		protected Job buildJob(IJpaProject jpaProject, ISchedulingRule rule) {
-			Job j = new UpdateJpaProjectJob(jpaProject);
-			j.setRule(rule);
-			return j;
-		}
-
-		/**
-		 * Stop the job if it is currently running, reschedule it to
-		 * run again, and return without waiting.
-		 */
-		protected synchronized void schedule() {
-			if (this.job != null) {
-				this.job.cancel();
-				this.job.schedule();
-			}
-		}
-
-		/**
-		 * Stop the job if it is currently running, reschedule it to
-		 * run again, and wait until it is finished.
-		 */
-		protected synchronized void scheduleAndWait() {
-			if (this.job != null) {
-				this.job.cancel();
-				this.join();
-				this.job.schedule();
-				this.join();
-			}
-		}
-
-		/**
-		 * Stop the job if it is currently running, wait until
-		 * it is finished, then clear the job out so it cannot
-		 * be scheduled again.
-		 */
-		protected synchronized void dispose() {
-			if (this.job != null) {
-				this.job.cancel();
-				this.join();
-				this.job = null;
-			}
-		}
-
-		protected synchronized void join() {
-			try {
-				this.job.join();
-			} catch (InterruptedException ex) {
-				// the thread was interrupted while waiting, job must be finished
-			}
-		}
-
-		protected static class UpdateJpaProjectJob extends Job {
-			protected final IJpaProject jpaProject;
-
-			protected UpdateJpaProjectJob(IJpaProject jpaProject) {
-				super("Update JPA project");  // TODO i18n
-				this.jpaProject = jpaProject;
-			}
-
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				return this.jpaProject.update(monitor);
-			}
-		}
 	}
 
 }
