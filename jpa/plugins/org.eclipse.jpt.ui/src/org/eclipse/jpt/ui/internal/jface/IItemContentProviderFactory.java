@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
+ *  Copyright (c) 2008 Oracle. 
  *  All rights reserved.  This program and the accompanying materials 
  *  are made available under the terms of the Eclipse Public License v1.0 
  *  which accompanies this distribution, and is available at 
@@ -11,11 +11,11 @@
 package org.eclipse.jpt.ui.internal.jface;
 
 /**
- * Extension of {@link IItemContentProviderFactory} that extends functionality
- * for tree content
+ * Factory interface used to describe how to build {@link IItemContentProvider}s
+ * for a {@link DelegatingContentAndLabelProvider}
  */
-public interface ITreeItemContentProviderFactory extends IItemContentProviderFactory
+public interface IItemContentProviderFactory
 {
-	public ITreeItemContentProvider buildItemContentProvider(Object item, 
+	IItemContentProvider buildItemContentProvider(Object item, 
 			DelegatingContentAndLabelProvider contentAndLabelProvider);
 }

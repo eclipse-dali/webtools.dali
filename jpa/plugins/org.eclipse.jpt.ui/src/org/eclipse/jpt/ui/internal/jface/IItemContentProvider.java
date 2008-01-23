@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
+ *  Copyright (c) 2008 Oracle. 
  *  All rights reserved.  This program and the accompanying materials 
  *  are made available under the terms of the Eclipse Public License v1.0 
  *  which accompanies this distribution, and is available at 
@@ -11,25 +11,21 @@
 package org.eclipse.jpt.ui.internal.jface;
 
 /**
- * Interface used in conjunction with DelegatingTreeContentProvider to return 
- * tree information for a particular item.
- * @see DelegatingTreeContentProvider
- * @see ITreeItemContentProviderFactory
+ * Marker interface used in conjunction with DelegatingContentProvider to return 
+ * content information for a particular item.
+ * @see DelegatingContentProvider
+ * @see IItemContentProviderFactory
  */
-public interface ITreeItemContentProvider extends IItemContentProvider
+public interface IItemContentProvider
 {
 	/**
-	 * Return the parent of the represented item
+	 * Return the elements of the represented item.
+	 * Note that when this is called, the represented item is an input element.
 	 */
-	Object getParent();
+	Object[] getElements();
 	
 	/**
-	 * Return whether the represented item has children
+	 * Dispose of this content provider, cleaning up all references, listeners, etc.
 	 */
-	boolean hasChildren();
-	
-	/**
-	 * Return the children of the represented item
-	 */
-	Object[] getChildren();
+	void dispose();
 }

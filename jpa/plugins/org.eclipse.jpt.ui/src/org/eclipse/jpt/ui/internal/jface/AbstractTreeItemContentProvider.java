@@ -41,7 +41,7 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 public abstract class AbstractTreeItemContentProvider
 	implements ITreeItemContentProvider
 {
-	private DelegatingTreeContentProvider treeContentProvider;
+	private DelegatingTreeContentAndLabelProvider treeContentProvider;
 	
 	private Model model;
 	
@@ -50,7 +50,8 @@ public abstract class AbstractTreeItemContentProvider
 	private ListChangeListener childrenListener;
 	
 	
-	protected AbstractTreeItemContentProvider(Model model, DelegatingTreeContentProvider treeContentProvider) {
+	protected AbstractTreeItemContentProvider(
+			Model model, DelegatingTreeContentAndLabelProvider treeContentProvider) {
 		this.model = model;
 		this.treeContentProvider = treeContentProvider;
 		this.childrenListener = buildChildrenListener();
@@ -63,36 +64,36 @@ public abstract class AbstractTreeItemContentProvider
 	protected ListChangeListener buildChildrenListener() {
 		return new ListChangeListener() {
 			public void itemsAdded(ListChangeEvent event) {
-				treeContentProvider().refreshTree(model());
+				treeContentProvider().updateContent(model());
 			}
 			
 			public void itemsMoved(ListChangeEvent event) {
-				treeContentProvider().refreshTree(model());
+				treeContentProvider().updateContent(model());
 			}
 			
 			public void itemsRemoved(ListChangeEvent event) {
-				treeContentProvider().refreshTree(model());
+				treeContentProvider().updateContent(model());
 				for (Iterator<?> stream = event.items(); stream.hasNext(); ) {
 					treeContentProvider().dispose(stream.next());
 				}
 			}
 			
 			public void itemsReplaced(ListChangeEvent event) {
-				treeContentProvider().refreshTree(model());
+				treeContentProvider().updateContent(model());
 				for (Iterator<?> stream = event.replacedItems(); stream.hasNext(); ) {
 					treeContentProvider().dispose(stream.next());
 				}
 			}
 			
 			public void listChanged(ListChangeEvent event) {
-				treeContentProvider().refreshTree(model());
+				treeContentProvider().updateContent(model());
 				// in the case of a list changed event, we don't have 
 				// access to the removed objects, so we can't dispose them.
 				// keep a watch on this to see if this becomes a problem.
 			}
 			
 			public void listCleared(ListChangeEvent event) {
-				treeContentProvider().refreshTree(model());
+				treeContentProvider().updateContent(model());
 				// in the case of a list cleared event, we don't have 
 				// access to the removed objects, so we can't dispose them.
 				// keep a watch on this to see if this becomes a problem.
@@ -147,11 +148,15 @@ public abstract class AbstractTreeItemContentProvider
 	/**
 	 * Return the tree content provider that delegates to this node
 	 */
-	public DelegatingTreeContentProvider treeContentProvider() {
+	public DelegatingTreeContentAndLabelProvider treeContentProvider() {
 		return treeContentProvider;
 	}
 	
 	public abstract Object getParent();
+	
+	public Object[] getElements() {
+		return getChildren();
+	}
 	
 	public Object[] getChildren() {
 		return CollectionTools.array(childrenModel().listIterator());

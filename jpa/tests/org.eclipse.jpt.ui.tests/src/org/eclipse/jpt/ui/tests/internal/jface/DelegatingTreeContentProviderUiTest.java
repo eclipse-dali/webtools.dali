@@ -28,7 +28,9 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
-import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentProvider;
+import org.eclipse.jpt.ui.internal.jface.DelegatingContentAndLabelProvider;
+import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
+import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProviderFactory;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -108,7 +110,10 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	}
 	
 	private void buildControlTreePanel(Composite parent) {
-		controlTree = buildTreePanel(parent, "Control tree", new DelegatingTreeContentProvider(new ControlTreeItemContentProviderFactory()), new LabelProvider());
+		controlTree = buildTreePanel(
+				parent, "Control tree", 
+				new DelegatingTreeContentAndLabelProvider(new ControlTreeItemContentProviderFactory()), 
+				new LabelProvider());
 		controlTree.addSelectionChangedListener(buildTreeSelectionChangedListener());
 		selectedNode.addPropertyChangeListener(
 				PropertyValueModel.VALUE,
@@ -121,7 +126,10 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	}
 	
 	private void buildViewTreePanel(Composite parent) {
-		viewTree = buildTreePanel(parent, "View tree", new DelegatingTreeContentProvider(new ViewTreeItemContentProviderFactory()), new LabelProvider());
+		viewTree = buildTreePanel(
+				parent, "View tree", 
+				new DelegatingTreeContentAndLabelProvider(new ViewTreeItemContentProviderFactory()), 
+				new LabelProvider());
 	}
 	
 	private TreeViewer buildTreePanel(Composite parent, String labelText, ITreeContentProvider contentProvider, ILabelProvider labelProvider) {
@@ -282,8 +290,10 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	private static abstract class TreeItemContentProviderFactory
 		implements ITreeItemContentProviderFactory
 	{
-		public AbstractTreeItemContentProvider buildTreeItemContentProvider(Object element, DelegatingTreeContentProvider treeContentProvider) {
-			return new GenericTreeItemContentProvider((TreeNode) element, treeContentProvider);
+		public ITreeItemContentProvider buildItemContentProvider(
+			Object item, DelegatingContentAndLabelProvider contentAndLabelProvider) {
+			return new GenericTreeItemContentProvider(
+				(TreeNode) item, (DelegatingTreeContentAndLabelProvider) contentAndLabelProvider);
 		}
 	}
 	
@@ -298,19 +308,22 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		extends TreeItemContentProviderFactory
 	{
 		@Override
-		public AbstractTreeItemContentProvider buildTreeItemContentProvider(Object element, DelegatingTreeContentProvider treeContentProvider) {
-			if (element instanceof Parent) {
-				return new ViewTreeParentItemContentProvider((Parent) element, treeContentProvider);
+		public ITreeItemContentProvider buildItemContentProvider(
+				Object item, DelegatingContentAndLabelProvider contentAndLabelProvider) {
+			if (item instanceof Parent) {
+				return new ViewTreeParentItemContentProvider(
+						(Parent) item, (DelegatingTreeContentAndLabelProvider) contentAndLabelProvider);
 			}
-			return super.buildTreeItemContentProvider(element, treeContentProvider);
+			return super.buildItemContentProvider(item, contentAndLabelProvider);
 		}
 	}
 	
 	
 	private static class GenericTreeItemContentProvider extends AbstractTreeItemContentProvider
 	{
-		public GenericTreeItemContentProvider(TreeNode treeNode, DelegatingTreeContentProvider treeContentProvider) {
-			super(treeNode, treeContentProvider);
+		public GenericTreeItemContentProvider(
+				TreeNode treeNode, DelegatingTreeContentAndLabelProvider treeContentAndLabelProvider) {
+			super(treeNode, treeContentAndLabelProvider);
 		}
 		
 		protected TreeNode treeNode() {
@@ -335,8 +348,9 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	
 	private static class ViewTreeParentItemContentProvider extends GenericTreeItemContentProvider
 	{
-		public ViewTreeParentItemContentProvider(TreeNode treeNode, DelegatingTreeContentProvider treeContentProvider) {
-			super(treeNode, treeContentProvider);
+		public ViewTreeParentItemContentProvider(
+				TreeNode treeNode, DelegatingTreeContentAndLabelProvider treeContentAndLabelProvider) {
+			super(treeNode, treeContentAndLabelProvider);
 		}
 		
 		@Override

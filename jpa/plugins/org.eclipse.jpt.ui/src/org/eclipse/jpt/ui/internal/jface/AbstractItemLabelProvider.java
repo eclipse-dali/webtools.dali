@@ -23,7 +23,7 @@ import org.eclipse.swt.graphics.Image;
  */
 public abstract class AbstractItemLabelProvider implements IItemLabelProvider
 {
-	private DelegatingLabelProvider labelProvider;
+	private DelegatingContentAndLabelProvider labelProvider;
 	
 	private Model model;
 	
@@ -34,7 +34,8 @@ public abstract class AbstractItemLabelProvider implements IItemLabelProvider
 	private PropertyChangeListener labelChangeListener;
 	
 	
-	protected AbstractItemLabelProvider(Model model, DelegatingLabelProvider labelProvider) {
+	protected AbstractItemLabelProvider(
+			Model model, DelegatingContentAndLabelProvider labelProvider) {
 		this.model = model;
 		this.labelProvider = labelProvider;
 		this.labelChangeListener = buildLabelChangeListener();
@@ -133,7 +134,7 @@ public abstract class AbstractItemLabelProvider implements IItemLabelProvider
 	/**
 	 * Return the label provider that delegates to this item
 	 */
-	public DelegatingLabelProvider labelProvider() {
+	public DelegatingContentAndLabelProvider labelProvider() {
 		return labelProvider;
 	}
 	

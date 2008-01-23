@@ -12,9 +12,10 @@ package org.eclipse.jpt.ui.internal.jface;
 
 /**
  * Factory interface used to describe how to build IItemLabelProviders
- * for a DelegatingLabelProvider
+ * for a DelegatingContentAndLabelProvider
  */
 public interface IItemLabelProviderFactory
 {
-	IItemLabelProvider buildItemLabelProvider(Object element, DelegatingLabelProvider labelProvider);
+	IItemLabelProvider buildItemLabelProvider(Object element, 
+			DelegatingContentAndLabelProvider contentAndLabelProvider);
 }
