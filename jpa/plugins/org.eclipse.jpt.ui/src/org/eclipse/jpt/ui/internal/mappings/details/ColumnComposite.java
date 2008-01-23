@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.internal.context.base.IAbstractColumn;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
@@ -60,7 +59,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class ColumnComposite extends BaseJpaComposite<IColumn>
+public class ColumnComposite extends BaseJpaController<IColumn>
 {
 	/**
 	 * Creates a new <code>ColumnComposite</code>.

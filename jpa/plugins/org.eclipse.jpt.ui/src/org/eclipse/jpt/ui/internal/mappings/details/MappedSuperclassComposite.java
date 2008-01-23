@@ -9,14 +9,14 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IMappedSuperclass;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class MappedSuperclassComposite extends BaseJpaComposite<IMappedSuperclass>
+public class MappedSuperclassComposite extends BaseJpaController<IMappedSuperclass>
 {
 //	private IMappedSuperclass mappedSuperclass;
 //	private Adapter mappedSuperclassListener;

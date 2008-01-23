@@ -87,15 +87,6 @@ public class JavaPersistentAttributeDetailsPage
 			buildMappingLabel(container),
 			buildMappingCombo(container).getControl()
 		);
-//		Label mapAsLabel = buildMappingLabel(container);
-//		addAlignLeft(mapAsLabel);
-//
-//		ComboViewer mappingCombo = buildMappingCombo(container);
-//		GridData gridData = new GridData();
-//		gridData.horizontalAlignment = SWT.FILL;
-//		gridData.verticalAlignment = SWT.BEGINNING;
-//		gridData.grabExcessHorizontalSpace = true;
-//		mappingCombo.getCCombo().setLayoutData(gridData);
 
 		PageBook mappingPane = buildMappingPageBook(container);
 

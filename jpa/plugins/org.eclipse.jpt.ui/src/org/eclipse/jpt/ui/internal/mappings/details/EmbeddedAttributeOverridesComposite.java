@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter;
@@ -59,7 +58,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class EmbeddedAttributeOverridesComposite extends BaseJpaComposite<IEmbeddedMapping>
+public class EmbeddedAttributeOverridesComposite extends BaseJpaController<IEmbeddedMapping>
 {
 	private WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder;
 	private List list;
@@ -112,7 +111,8 @@ public class EmbeddedAttributeOverridesComposite extends BaseJpaComposite<IEmbed
 
 		List list = this.buildList(
 			parent,
-			buildSelectedAttributeOverrideHolder(attributeOverrideHolder)
+			buildSelectedAttributeOverrideHolder(attributeOverrideHolder),
+			IJpaHelpContextIds.MAPPING_EMBEDDED_ATTRIBUTE_OVERRIDES
 		);
 
 		ListBoxModelAdapter.adapt(
@@ -293,8 +293,6 @@ public class EmbeddedAttributeOverridesComposite extends BaseJpaComposite<IEmbed
 		data.horizontalAlignment     = GridData.FILL;
 		data.verticalAlignment       = GridData.FILL;
 		this.list.setLayoutData(data);
-
-		this.helpSystem().setHelp(this.list, IJpaHelpContextIds.MAPPING_EMBEDDED_ATTRIBUTE_OVERRIDES);
 
 		// Properties for the selected attribute overrides
 		this.buildPropertiesPane(

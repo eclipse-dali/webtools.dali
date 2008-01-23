@@ -9,14 +9,14 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IEmbeddable;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class EmbeddableComposite extends BaseJpaComposite<IEmbeddable>
+public class EmbeddableComposite extends BaseJpaController<IEmbeddable>
 {
 //	private IEmbeddable embeddable;
 //	private Adapter mappedSuperclassListener;

@@ -3,21 +3,20 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value.swing;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionListener;
-
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
@@ -71,7 +70,7 @@ public class ObjectListSelectionModel
 	 * Typically, the selection does not need to be cleared when the
 	 * contents of the list have changed. Most of the time this just
 	 * means an item has changed in a way that affects its display string
-	 * or icon. We typically only use the class for edits involving 
+	 * or icon. We typically only use the class for edits involving
 	 * single selection.
 	 * A subclass can override this method if the selection
 	 * should be cleared because a change could mean the selection is invalid.
@@ -108,7 +107,7 @@ public class ObjectListSelectionModel
 	protected boolean hasNoListSelectionListeners() {	// private-protected
 		return this.getListSelectionListeners().length == 0;
 	}
-	
+
 	/**
 	 * Return the list model referenced by the list selection model.
 	 */
@@ -180,6 +179,38 @@ public class ObjectListSelectionModel
 	}
 
 	/**
+	 * Return an array of the selected indices in ordered.
+	 */
+	public int[] getSelectedIndices() {
+		int min = this.getMinSelectionIndex();
+		int max = this.getMaxSelectionIndex();
+
+		if ((min < 0) || (max < 0)) {
+			return new int[0];
+		}
+
+		int maxSize = (max - min) + 1;
+		int[] temp = new int[maxSize];
+		int n = 0;
+		int count = this.getListModel().getSize();
+		for (int i = min; i <= max; i++) {
+			if (this.isSelectedIndex(i) && (i < count)) {
+				temp[n++] = i;
+			}
+		}
+		if (n == maxSize) {
+			// all the elements in the range were selected
+			Arrays.sort(temp);
+			return temp;
+		}
+		// only some of the elements in the range were selected
+		int[] result = new int[n];
+		System.arraycopy(temp, 0, result, 0, n);
+		Arrays.sort(result);
+		return result;
+	}
+
+	/**
 	 * Set the selected value.
 	 */
 	public void setSelectedValue(Object object) {
@@ -204,7 +235,7 @@ public class ObjectListSelectionModel
 	public void setSelectedValues(Collection objects) {
 		this.setSelectedValues(objects.iterator());
 	}
-	
+
 	/**
 	 * Set the current set of selected objects to the specified objects.
 	 * @see javax.swing.ListSelectionModel#setSelectionInterval(int, int)
@@ -230,7 +261,7 @@ public class ObjectListSelectionModel
 		this.addSelectedValuesInternal(objects);
 		this.setValueIsAdjusting(false);
 	}
-	
+
 	/**
 	 * Add the specified objects to the current set of selected objects.
 	 * @see javax.swing.ListSelectionModel#addSelectionInterval(int, int)
@@ -238,7 +269,7 @@ public class ObjectListSelectionModel
 	public void addSelectedValues(Collection objects) {
 		this.addSelectedValues(objects.iterator());
 	}
-	
+
 	/**
 	 * Add the specified objects to the current set of selected objects.
 	 * @see javax.swing.ListSelectionModel#addSelectionInterval(int, int)
@@ -246,7 +277,7 @@ public class ObjectListSelectionModel
 	public void addSelectedValues(Object[] objects) {
 		this.addSelectedValues(CollectionTools.iterator(objects));
 	}
-	
+
 	/**
 	 * Remove the specified object from the current set of selected objects.
 	 * @see javax.swing.ListSelectionModel#removeSelectionInterval(int, int)
@@ -269,7 +300,7 @@ public class ObjectListSelectionModel
 		}
 		this.setValueIsAdjusting(false);
 	}
-	
+
 	/**
 	 * Remove the specified objects from the current set of selected objects.
 	 * @see javax.swing.ListSelectionModel#removeSelectionInterval(int, int)
@@ -277,7 +308,7 @@ public class ObjectListSelectionModel
 	public void removeSelectedValues(Collection objects) {
 		this.removeSelectedValues(objects.iterator());
 	}
-	
+
 	/**
 	 * Remove the specified objects from the current set of selected objects.
 	 * @see javax.swing.ListSelectionModel#removeSelectionInterval(int, int)
@@ -285,7 +316,7 @@ public class ObjectListSelectionModel
 	public void removeSelectedValues(Object[] objects) {
 		this.removeSelectedValues(CollectionTools.iterator(objects));
 	}
-	
+
 	/**
 	 * @see javax.swing.ListSelectionModel#getAnchorSelectionIndex()
 	 * Return null if the anchor selection is empty.
@@ -297,14 +328,14 @@ public class ObjectListSelectionModel
 		}
 		return this.getListModel().getElementAt(index);
 	}
-	
+
 	/**
 	 * @see javax.swing.ListSelectionModel#setAnchorSelectionIndex(int)
 	 */
 	public void setAnchorSelectedValue(Object object) {
 		this.setAnchorSelectionIndex(this.indexOf(object));
 	}
-	
+
 	/**
 	 * @see javax.swing.ListSelectionModel#getLeadSelectionIndex()
 	 * Return null if the lead selection is empty.
@@ -316,14 +347,14 @@ public class ObjectListSelectionModel
 		}
 		return this.getListModel().getElementAt(index);
 	}
-	
+
 	/**
 	 * @see javax.swing.ListSelectionModel#setLeadSelectionIndex(int)
 	 */
 	public void setLeadSelectedValue(Object object) {
 		this.setLeadSelectionIndex(this.indexOf(object));
 	}
-	
+
 	/**
 	 * @see javax.swing.ListSelectionModel#getMaxSelectionIndex()
 	 * Return null if the max selection is empty.
@@ -335,7 +366,7 @@ public class ObjectListSelectionModel
 		}
 		return this.getListModel().getElementAt(index);
 	}
-	
+
 	/**
 	 * @see javax.swing.ListSelectionModel#getMinSelectionIndex()
 	 * Return null if the min selection is empty.

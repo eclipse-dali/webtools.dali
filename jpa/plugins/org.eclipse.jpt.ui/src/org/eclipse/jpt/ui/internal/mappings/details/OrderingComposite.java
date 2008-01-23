@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IMultiRelationshipMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
@@ -50,7 +49,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class OrderingComposite extends BaseJpaComposite<IMultiRelationshipMapping>
+public class OrderingComposite extends BaseJpaController<IMultiRelationshipMapping>
 {
 	private Text customOrderingText;
 

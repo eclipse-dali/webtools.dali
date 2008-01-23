@@ -74,8 +74,8 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 	private AbstractDatabaseObjectCombo<IIdMapping> buildSequenceNameCombo(Composite parent) {
 		return new AbstractDatabaseObjectCombo<IIdMapping>(getSubjectHolder(), parent, getWidgetFactory()) {
 			@Override
-			protected void buildWidgets(Composite parent) {
-				super.buildWidgets(parent);
+			protected void initializeLayout(Composite container) {
+				super.initializeLayout(container);
 				getCombo().add(JptUiMappingsMessages.SequenceGeneratorComposite_default);
 				getCombo().addModifyListener(buildSequenceNameListener());
 			}

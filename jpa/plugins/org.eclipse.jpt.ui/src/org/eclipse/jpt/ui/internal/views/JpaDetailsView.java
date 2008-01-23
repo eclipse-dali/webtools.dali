@@ -197,6 +197,7 @@ public class JpaDetailsView extends AbstractJpaView
 		// Populate new page
 		if (newPage != null) {
 			try {
+				// TODO: Tweak the IJpaDetailsPage to only listen to the subject change
 				IJpaDetailsPage<IJpaContextNode> page = (IJpaDetailsPage<IJpaContextNode>) newPage;
 				subjectHolder.setValue(currentSelection.getSelectedNode());
 				page.populate();

@@ -13,52 +13,54 @@ import java.util.Arrays;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-// TODO get Default updating appropriately based on Entity name default
-
+/**
+ * Here the layout of this pane:
+ * <pre>
+ * -----------------------------------------------------------------------------
+ * |              ------------------------------------------------------------ |
+ * | Entity Name: | I                                                      |v| |
+ * |              ------------------------------------------------------------ |
+ * -----------------------------------------------------------------------------</pre>
+ *
+ * @see IEntity
+ * @see EntityComposite - The parent container
+ *
+ * @version 2.0
+ * @since 1.0
+ */
 public class EntityNameCombo extends BaseJpaController<IEntity>
 {
-//	private Adapter entityListener;
 	private CCombo combo;
 
-	public EntityNameCombo(PropertyValueModel<? extends IEntity> subjectHolder,
-	                       Composite parent,
-	                       TabbedPropertySheetWidgetFactory widgetFactory) {
+	/**
+	 * Creates a new <code>EntityNameCombo</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param parent The parent container
+	 */
+	public EntityNameCombo(BaseJpaController<? extends IEntity> parentController,
+	                       Composite parent) {
 
-		super(subjectHolder, parent, widgetFactory);
-//		buildEntityListener();
+		super(parentController, parent);
 	}
 
-//	private void buildEntityListener() {
-//		entityListener = new AdapterImpl() {
-//			@Override
-//			public void notifyChanged(Notification notification) {
-//				entityChanged(notification);
-//			}
-//		};
-//	}
-
-	@Override
-	protected void buildWidgets(Composite parent) {
-		combo = buildCombo(parent);
-		combo.addModifyListener(
-			new ModifyListener() {
-				public void modifyText(ModifyEvent e) {
-					comboModified(e);
-				}
-			});
+	private ModifyListener buildComboModifyListener() {
+		return new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				comboModified(e);
+			}
+		};
 	}
 
 	private void comboModified(ModifyEvent e) {
 		String text = ((CCombo) e.getSource()).getText();
+
 		if (text.equals(combo.getItem(0))) {
 			text = null;
 		}
@@ -69,62 +71,65 @@ public class EntityNameCombo extends BaseJpaController<IEntity>
 		//this.editingDomain.getCommandStack().execute(SetCommand.create(this.editingDomain, this.entity, MappingsPackage.eINSTANCE.getEntity_SpecifiedName(), text));
 	}
 
-//	private void entityChanged(Notification notification) {
-//		switch (notification.getFeatureID(IEntity.class)) {
-//			case JpaCoreMappingsPackage.IENTITY__SPECIFIED_NAME :
-//				Display.getDefault().asyncExec(
-//					new Runnable() {
-//						public void run() {
-//							populate();
-//						}
-//					});
-//				break;
-//			case JpaCoreMappingsPackage.IENTITY__DEFAULT_NAME :
-//				Display.getDefault().asyncExec(
-//					new Runnable() {
-//						public void run() {
-//							populate();
-//						}
-//					});
-//				break;
-//		}
-//	}
-
-//	@Override
-//	protected void engageListeners() {
-//		if (subject() != null) {
-//			subject().eAdapters().add(entityListener);
-//		}
-//	}
-//
-//	@Override
-//	protected void disengageListeners() {
-//		if (subject() != null) {
-//			subject().eAdapters().remove(entityListener);
-//		}
-//	}
-
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void doPopulate() {
+		super.doPopulate();
 		populateCombo();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void initializeLayout(Composite container) {
+		combo = buildCombo(container);
+		combo.addModifyListener(buildComboModifyListener());
 	}
 
 	private void populateCombo() {
 		if (subject() == null) {
 			combo.clearSelection();
-			combo.setItems(new String[] {});
-			return;
-		}
-
-		String defaultItem = NLS.bind(JptUiMappingsMessages.EntityGeneralSection_nameDefaultWithOneParam, subject().getDefaultName());
-		String specifiedName = subject().getSpecifiedName();
-
-		if (specifiedName == null) {
-			setComboData(defaultItem, new String[] {defaultItem});
+			combo.setItems(new String[0]);
 		}
 		else {
-			setComboData(specifiedName, new String[] {defaultItem});
+			String defaultItem = NLS.bind(JptUiMappingsMessages.EntityGeneralSection_nameDefaultWithOneParam, subject().getDefaultName());
+			String specifiedName = subject().getSpecifiedName();
+
+			if (specifiedName == null) {
+				setComboData(defaultItem, new String[] { defaultItem });
+			}
+			else {
+				setComboData(specifiedName, new String[] { defaultItem });
+			}
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void propertyChanged(String propertyName) {
+		super.propertyChanged(propertyName);
+
+		if (propertyName == IEntity.DEFAULT_NAME_PROPERTY ||
+		    propertyName == IEntity.SPECIFIED_NAME_PROPERTY) {
+
+			populateCombo();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected String[] propertyNames() {
+		return new String[] {
+			IEntity.DEFAULT_NAME_PROPERTY,
+			IEntity.SPECIFIED_NAME_PROPERTY
+		};
 	}
 
 	private void setComboData(String text, String[] items) {
@@ -135,14 +140,5 @@ public class EntityNameCombo extends BaseJpaController<IEntity>
 		if (! text.equals(combo.getText())) {
 			combo.setText(text);
 		}
-	}
-
-	public CCombo getCombo() {
-		return combo;
-	}
-
-	@Override
-	public Control getControl() {
-		return getCombo();
 	}
 }

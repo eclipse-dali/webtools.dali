@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IFetchable;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.widgets.Composite;
 
@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class FetchTypeComposite extends BaseJpaComposite<IFetchable> {
+public class FetchTypeComposite extends BaseJpaController<IFetchable> {
 
 	/**
 	 * Creates a new <code>FetchTypeComposite</code>.
@@ -38,7 +38,7 @@ public class FetchTypeComposite extends BaseJpaComposite<IFetchable> {
 	 * @param parentController The parent container of this one
 	 * @param parent The parent container
 	 */
-	public FetchTypeComposite(BaseJpaComposite<? extends IFetchable> parentComposite,
+	public FetchTypeComposite(BaseJpaController<? extends IFetchable> parentComposite,
 	                          Composite parent) {
 
 		super(parentComposite, parent);

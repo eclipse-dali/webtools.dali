@@ -41,7 +41,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
@@ -77,8 +76,8 @@ public class XmlJavaClassChooser extends BaseJpaController<XmlPersistentType> {
 	}
 
 	@Override
-	protected void buildWidgets(Composite parent) {
-		this.composite = getWidgetFactory().createComposite(parent);
+	protected void initializeLayout(Composite container) {
+		this.composite = getWidgetFactory().createComposite(container);
 	    GridLayout gridLayout = new GridLayout();
 	    gridLayout.marginHeight = 0;
 	    gridLayout.marginWidth = 1;
@@ -163,7 +162,7 @@ public class XmlJavaClassChooser extends BaseJpaController<XmlPersistentType> {
 	}
 
 	private IPackageFragmentRoot getPackageFragmentRoot() {
-		IProject project = this.subject().getJpaProject().project();
+		IProject project = this.subject().jpaProject().project();
 		IJavaProject root = JavaCore.create(project);
 		try {
 			return root.getAllPackageFragmentRoots()[0];
@@ -188,16 +187,18 @@ public class XmlJavaClassChooser extends BaseJpaController<XmlPersistentType> {
 
 	@Override
 	protected void engageListeners() {
-		if (this.subject() != null) {
-			this.subject().eAdapters().add(persistentTypeListener);
-		}
+		super.engageListeners();
+//		if (this.subject() != null) {
+//			this.subject().eAdapters().add(persistentTypeListener);
+//		}
 	}
 
 	@Override
 	protected void disengageListeners() {
-		if (this.subject() != null) {
-			this.subject().eAdapters().remove(persistentTypeListener);
-		}
+		super.disengageListeners();
+//		if (this.subject() != null) {
+//			this.subject().eAdapters().remove(persistentTypeListener);
+//		}
 	}
 
 	@Override
@@ -230,10 +231,5 @@ public class XmlJavaClassChooser extends BaseJpaController<XmlPersistentType> {
 		if (! textData.equals(text.getText())) {
 			text.setText(textData);
 		}
-	}
-
-	@Override
-	public Control getControl() {
-		return this.composite;
 	}
 }

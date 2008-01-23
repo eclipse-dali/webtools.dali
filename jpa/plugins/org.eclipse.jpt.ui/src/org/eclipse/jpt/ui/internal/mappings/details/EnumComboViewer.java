@@ -17,15 +17,14 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jpt.core.internal.IJpaNode;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.model.Model;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
@@ -45,7 +44,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaController<T>
+public abstract class EnumComboViewer<T extends Model, V> extends BaseJpaController<T>
 {
 	private ComboViewer comboViewer;
 
@@ -212,15 +211,6 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void buildWidgets(Composite parent) {
-		this.comboViewer = buildComboViewer(parent, buildLabelProvider());
-		this.comboViewer.addSelectionChangedListener(buildSelectionChangedListener());
-	}
-
 	/**
 	 * Returns the possible choices to show in the viewer.
 	 *
@@ -270,20 +260,22 @@ public abstract class EnumComboViewer<T extends IJpaNode, V> extends BaseJpaCont
 		return this.comboViewer.getCCombo();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	public Control getControl() {
-		return this.comboViewer.getControl();
-	}
-
 	/**
 	 * Retrieves the subject's value. The subject is never <code>null</code>.
 	 *
 	 * @return The subject' value, which can be <code>null</code>
 	 */
 	protected abstract V getValue();
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void initializeLayout(Composite container) {
+
+		this.comboViewer = buildComboViewer(container, buildLabelProvider());
+		this.comboViewer.addSelectionChangedListener(buildSelectionChangedListener());
+	}
 
 	private void populateCombo() {
 		this.getCombo().removeAll();

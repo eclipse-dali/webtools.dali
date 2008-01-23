@@ -17,7 +17,6 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -50,7 +49,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class TargetEntityComposite extends BaseJpaComposite<IRelationshipMapping>
+public class TargetEntityComposite extends BaseJpaController<IRelationshipMapping>
 {
 	private CCombo targetEntityCombo;
 
@@ -108,6 +107,9 @@ public class TargetEntityComposite extends BaseJpaComposite<IRelationshipMapping
 				String targetEntityName = targetEntityCombo.getText();
 
 				if (StringTools.stringIsEmpty(targetEntityName)) {
+					targetEntityName = null;
+				}
+				else if (targetEntityName.equals(targetEntityCombo.getItem(0)) || targetEntityName.equals("")) { //$NON-NLS-1$
 					targetEntityName = null;
 				}
 				else if (!subject().targetEntityIsValid(targetEntityName)) {

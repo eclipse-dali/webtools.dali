@@ -55,8 +55,8 @@ public class MetaDataCompleteComboViewer extends BaseJpaController<XmlTypeMappin
 	}
 
 	@Override
-	protected void buildWidgets(Composite parent) {
-		CCombo combo = getWidgetFactory().createCCombo(parent);
+	protected void initializeLayout(Composite container) {
+		CCombo combo = getWidgetFactory().createCCombo(container);
 		this.comboViewer = new ComboViewer(combo);
 		this.comboViewer.setLabelProvider(buildLabelProvider());
 		this.comboViewer.add(DefaultFalseBoolean.VALUES.toArray());
@@ -110,16 +110,18 @@ public class MetaDataCompleteComboViewer extends BaseJpaController<XmlTypeMappin
 
 	@Override
 	protected void engageListeners() {
-		if (this.subject() != null) {
-			this.subject().eAdapters().add(this.typeMappingListener);
-		}
+		super.engageListeners();
+//		if (this.subject() != null) {
+//			this.subject().eAdapters().add(this.typeMappingListener);
+//		}
 	}
 
 	@Override
 	protected void disengageListeners() {
-		if (this.subject() != null) {
-			this.subject().eAdapters().remove(this.typeMappingListener);
-		}
+		super.disengageListeners();
+//		if (this.subject() != null) {
+//			this.subject().eAdapters().remove(this.typeMappingListener);
+//		}
 	}
 
 	@Override

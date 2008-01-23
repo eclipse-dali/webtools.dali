@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
 import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -65,7 +64,7 @@ import org.eclipse.ui.forms.widgets.Section;
  * @version 2.0
  * @since 1.0
  */
-public class GenerationComposite extends BaseJpaComposite<IIdMapping> {
+public class GenerationComposite extends BaseJpaController<IIdMapping> {
 
 	private Button primaryKeyGenerationCheckBox;
 	private Section primaryKeyGenerationSection;

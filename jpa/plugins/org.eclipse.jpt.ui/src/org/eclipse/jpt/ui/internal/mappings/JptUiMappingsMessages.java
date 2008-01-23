@@ -129,9 +129,7 @@ public class JptUiMappingsMessages extends NLS
 	public static String JoinColumnComposite_overrideDefaultJoinColumns;
 
 	public static String PrimaryKeyJoinColumnsComposite_overrideDefaultPrimaryKeyJoinColumns;
-	public static String PrimaryKeyJoinColumnsComposite_add;
 	public static String PrimaryKeyJoinColumnsComposite_edit;
-	public static String PrimaryKeyJoinColumnsComposite_remove;
 	public static String PrimaryKeyJoinColumnsComposite_defaultEmpty;
 	public static String PrimaryKeyJoinColumnsComposite_defaultWithOneParam;
 	public static String PrimaryKeyJoinColumnsComposite_primaryKeyJoinColumn;
@@ -183,9 +181,7 @@ public class JptUiMappingsMessages extends NLS
 	public static String OrderByComposite_orderByLabel;
 
 	public static String SecondaryTablesComposite_secondaryTables;
-	public static String SecondaryTablesComposite_add;
 	public static String SecondaryTablesComposite_edit;
-	public static String SecondaryTablesComposite_remove;
 
 	public static String SecondaryTableDialog_editSecondaryTable;
 	public static String SecondaryTableDialog_name;

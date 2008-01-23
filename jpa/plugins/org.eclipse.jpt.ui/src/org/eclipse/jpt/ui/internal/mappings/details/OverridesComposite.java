@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import java.util.List;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -30,25 +29,24 @@ import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.Owner;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class OverridesComposite extends BaseJpaComposite<IEntity>
+public class OverridesComposite extends BaseJpaController<IEntity>
 {
 	private ListViewer listViewer;
 	private Adapter entityListener;
@@ -59,83 +57,86 @@ public class OverridesComposite extends BaseJpaComposite<IEntity>
 	private JoinColumnsComposite joinColumnsComposite;
 	private Button overrideDefaultButton;
 
+	/**
+	 * Creates a new <code>OverridesComposite</code>.
+	 *
+	 * @param subjectHolder The holder of the subject <code>IEntity</code>
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
+	public OverridesComposite(BaseJpaController<? extends IEntity> parentController,
+	                          Composite parent) {
+
+		super(parentController, parent);
+	}
+
+	/**
+	 * Creates a new <code>OverridesComposite</code>.
+	 *
+	 * @param subjectHolder The holder of the subject <code>IEntity</code>
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public OverridesComposite(PropertyValueModel<? extends IEntity> subjectHolder,
 	                          Composite parent,
 	                          TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-		this.entityListener = buildEntityListener();
-		this.overrideListener = buildOverrideListener();
 	}
 
-	private Adapter buildEntityListener() {
-		return new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				entityChanged(notification);
-			}
-		};
-	}
-
-	private Adapter buildOverrideListener() {
-		return new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				overrideChanged(notification);
-			}
-		};
-	}
-
-
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected void initializeLayout(Composite composite) {
-		GridLayout layout = new GridLayout(2, false);
-		layout.marginWidth = 0;
-		composite.setLayout(layout);
+	protected void initializeLayout(Composite container) {
 
-		Group attributeOverridesGroup = getWidgetFactory().createGroup(
-			composite, JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides);
-		attributeOverridesGroup.setLayout(new GridLayout(2, true));
-		GridData gridData =  new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace= true;
-		attributeOverridesGroup.setLayoutData(gridData);
+		Group attributeOverridesGroup = buildTitledPane(
+			container,
+			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
+		);
 
 		this.listViewer = buildAttributeOverridesListViewer(attributeOverridesGroup);
-		gridData = new GridData();
-		gridData.verticalSpan = 2;
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace= true;
-		this.listViewer.getList().setLayoutData(gridData);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.listViewer.getList(), IJpaHelpContextIds.ENTITY_ATTRIBUTE_OVERRIDES);
+		helpSystem().setHelp(this.listViewer.getList(), IJpaHelpContextIds.ENTITY_ATTRIBUTE_OVERRIDES);
 
-		this.overrideDefaultButton =
-			getWidgetFactory().createButton(
-				attributeOverridesGroup,
-				JptUiMappingsMessages.AttributeOverridesComposite_overridDefault,
-				SWT.CHECK);
+		this.overrideDefaultButton = buildCheckBox(
+			attributeOverridesGroup,
+			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
+			buildOverrideDefaultHolder());
+
 		this.overrideDefaultButton.addSelectionListener(buildOverrideDefaultSelectionListener());
-		gridData = new GridData();
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalAlignment = SWT.FILL;
-		this.overrideDefaultButton.setLayoutData(gridData);
 
-
+		// Override page book
 		this.overridePageBook = buildOverridePageBook(attributeOverridesGroup);
-		gridData = new GridData();
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalAlignment = SWT.FILL;
-		this.overridePageBook.setLayoutData(gridData);
 
-		this.joinColumnsComposite = new JoinColumnsComposite(getSubjectHolder(), this.overridePageBook, getWidgetFactory(), JptUiMappingsMessages.OverridesComposite_joinColumn);
-		this.columnComposite = new ColumnComposite(getSubjectHolder(), this.overridePageBook, getWidgetFactory());
+		// Joins Column pane
+		this.joinColumnsComposite = new JoinColumnsComposite(
+			getSubjectHolder(),
+			this.overridePageBook,
+			getWidgetFactory(),
+			JptUiMappingsMessages.OverridesComposite_joinColumn
+		);
+
+		this.columnComposite = new ColumnComposite(
+			getSubjectHolder(),
+			this.overridePageBook,
+			getWidgetFactory()
+		);
+
 		this.overridePageBook.showPage(this.joinColumnsComposite.getControl());
+	}
+
+	private WritablePropertyValueModel<Boolean> buildOverrideDefaultHolder() {
+		return new PropertyAspectAdapter<IEntity, Boolean>(getSubjectHolder(), "") {
+			@Override
+			protected Boolean buildValue_() {
+				return true;
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				// Not done here
+			}
+		};
 	}
 
 	protected PageBook buildOverridePageBook(Composite parent) {
@@ -298,39 +299,6 @@ public class OverridesComposite extends BaseJpaComposite<IEntity>
 		}
 	}
 
-	@Override
-	protected void doPopulate() {
-		this.columnComposite.doPopulate();
-		this.joinColumnsComposite.doPopulate();
-	}
-
-	@Override
-	protected void engageListeners() {
-		if (this.subject() != null) {
-			this.subject().eAdapters().add(this.entityListener);
-			for (IOverride attributeOverride : this.subject().getAttributeOverrides()) {
-				attributeOverride.eAdapters().add(this.overrideListener);
-			}
-			for (IOverride attributeOverride : this.subject().getAssociationOverrides()) {
-				attributeOverride.eAdapters().add(this.overrideListener);
-			}
-		}
-	}
-
-	@Override
-	protected void disengageListeners() {
-		if (this.subject() != null) {
-			this.subject().eAdapters().remove(this.entityListener);
-			for (IOverride attributeOverride : this.subject().getAttributeOverrides()) {
-				attributeOverride.eAdapters().remove(this.overrideListener);
-			}
-			for (IOverride attributeOverride : this.subject().getAssociationOverrides()) {
-				attributeOverride.eAdapters().remove(this.overrideListener);
-			}
-		}
-	}
-
-
 	protected void entityChanged(Notification notification) {
 		switch (notification.getFeatureID(IEntity.class)) {
 			case JpaCoreMappingsPackage.IENTITY__SPECIFIED_ATTRIBUTE_OVERRIDES :
@@ -392,14 +360,6 @@ public class OverridesComposite extends BaseJpaComposite<IEntity>
 				break;
 		}
 	}
-
-	@Override
-	public void dispose() {
-		this.columnComposite.dispose();
-		this.joinColumnsComposite.dispose();
-		super.dispose();
-	}
-
 
 	void addJoinColumn() {
 		JoinColumnInAssociationOverrideDialog dialog = new JoinColumnInAssociationOverrideDialog(this.getControl().getShell(), (IAssociationOverride) getSelectedOverride());

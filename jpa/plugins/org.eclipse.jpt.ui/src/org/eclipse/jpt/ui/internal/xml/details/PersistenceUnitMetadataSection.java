@@ -10,10 +10,10 @@ package org.eclipse.jpt.ui.internal.xml.details;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
+import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
+import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
-import org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults;
-import org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser;
@@ -26,7 +26,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
@@ -64,10 +63,10 @@ public class PersistenceUnitMetadataSection extends BaseJpaController<Persistenc
 	}
 
 	@Override
-	protected void buildWidgets(Composite parent) {
+	protected void initializeLayout(Composite container) {
 		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
-	    this.section = getWidgetFactory().createSection(parent, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
-	    this.section.setText(JptUiXmlMessages.XMLEntityMappingsPage_PersistenceUnitSection);
+		this.section = getWidgetFactory().createSection(container, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
+		this.section.setText(JptUiXmlMessages.XMLEntityMappingsPage_PersistenceUnitSection);
 
 		Composite persistenceUnitComposite = getWidgetFactory().createComposite(this.section);
 		this.section.setClient(persistenceUnitComposite);
@@ -77,7 +76,7 @@ public class PersistenceUnitMetadataSection extends BaseJpaController<Persistenc
 		persistenceUnitComposite.setLayout(layout);
 
 
-	    this.xmlMappingMetadataCompleteCheckBox = buildXmlMappingMetadataCompleteCheckBox(persistenceUnitComposite);
+		this.xmlMappingMetadataCompleteCheckBox = buildXmlMappingMetadataCompleteCheckBox(persistenceUnitComposite);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
 		gridData.verticalAlignment = SWT.BEGINNING;
@@ -133,10 +132,6 @@ public class PersistenceUnitMetadataSection extends BaseJpaController<Persistenc
 	}
 
 	@Override
-	protected void disengageListeners() {
-	}
-
-	@Override
 	public void dispose() {
 		this.xmlMappingMetadataCompleteCheckBox.dispose();
 		this.xmlSchemaChooser.dispose();
@@ -148,27 +143,11 @@ public class PersistenceUnitMetadataSection extends BaseJpaController<Persistenc
 
 	@Override
 	protected void doPopulate() {
-		if (subject() != null) {
-			this.accessComboViewer.populate(new MyAccessHolder(subject().getPersistenceUnitDefaults()));
-			this.xmlSchemaChooser.populate(new SchemaHolder(subject().getPersistenceUnitDefaults()));
-			this.xmlCatalogChooser.populate(new CatalogHolder(subject().getPersistenceUnitDefaults()));
-			this.cascadePersistCheckBox.populate(subject().getPersistenceUnitDefaults());
-		}
-		else {
-			this.accessComboViewer.populate(new MyAccessHolder(null));
-			this.xmlSchemaChooser.populate(new SchemaHolder(null));
-			this.xmlCatalogChooser.populate(new CatalogHolder(null));
-			this.cascadePersistCheckBox.populate(null);
-		}
-	}
-
-	@Override
-	protected void engageListeners() {
-	}
-
-	@Override
-	public Control getControl() {
-		return getSection();
+		super.doPopulate();
+		this.accessComboViewer.populate();
+		this.xmlSchemaChooser.populate();
+		this.xmlCatalogChooser.populate();
+		this.cascadePersistCheckBox.populate();
 	}
 
 	public Section getSection() {

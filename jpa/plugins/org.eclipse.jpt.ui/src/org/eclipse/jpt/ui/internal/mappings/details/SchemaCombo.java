@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,14 +24,11 @@ import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class SchemaCombo extends BaseJpaController<ITable>
 {
@@ -48,10 +45,16 @@ public class SchemaCombo extends BaseJpaController<ITable>
 
 	private CCombo combo;
 
-	public SchemaCombo(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, widgetFactory);
-		this.listener = this.buildTableListener();
-		this.connectionListener = this.buildConnectionListener();
+	/**
+	 * Creates a new <code>SchemaCombo</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param parent The parent container
+	 */
+	public SchemaCombo(BaseJpaController<? extends ITable> parentController,
+                      Composite parent) {
+
+		super(parentController, parent);
 	}
 
 	private Adapter buildTableListener() {
@@ -138,8 +141,8 @@ public class SchemaCombo extends BaseJpaController<ITable>
 	}
 
 	@Override
-	protected void buildWidgets(Composite parent) {
-		this.combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
+	protected void initializeLayout(Composite container) {
+		this.combo = buildCombo(container);
 		this.combo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
 		this.combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
@@ -222,7 +225,7 @@ public class SchemaCombo extends BaseJpaController<ITable>
 
 	private ConnectionProfile getConnectionProfile() {
 		if (this.connectionProfile == null) {
-			this.connectionProfile = this.subject().getJpaProject().connectionProfile();
+			this.connectionProfile = this.subject().jpaProject().connectionProfile();
 		}
 		return this.connectionProfile;
 	}
@@ -280,29 +283,26 @@ public class SchemaCombo extends BaseJpaController<ITable>
 		return this.combo;
 	}
 
-	@Override
-	public Control getControl() {
-		return getCombo();
-	}
-
 	protected Schema getTableSchema() {
-		return this.getConnectionProfile().getDatabase().schemaNamed(table.getSchema());
+		return this.getConnectionProfile().getDatabase().schemaNamed(subject().getSchema());
 	}
 
 	@Override
 	protected void disengageListeners() {
-		if (this.subject() != null) {
-			this.removeConnectionListener();
-			this.subject().eAdapters().remove(this.listener);
-		}
+		super.disengageListeners();
+//		if (this.subject() != null) {
+//			this.removeConnectionListener();
+//			this.subject().eAdapters().remove(this.listener);
+//		}
 	}
 
 	@Override
 	protected void engageListeners() {
-		if (this.subject() != null) {
-			this.subject().eAdapters().add(this.listener);
-			this.addConnectionListener();
-		}
+		super.engageListeners();
+//		if (this.subject() != null) {
+//			this.subject().eAdapters().add(this.listener);
+//			this.addConnectionListener();
+//		}
 	}
 
 	private void addConnectionListener() {

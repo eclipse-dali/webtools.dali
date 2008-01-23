@@ -14,6 +14,7 @@ import org.eclipse.jpt.ui.internal.selection.SelectionManagerFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -129,7 +130,7 @@ public abstract class AbstractJpaView extends ViewPart
 	 *
 	 * @param page The new page to show, <code>null</code> can't be passed
 	 */
-	protected final void showPage(Composite page) {
+	protected final void showPage(Control page) {
 		pageBook.showPage(page);
 	}
 

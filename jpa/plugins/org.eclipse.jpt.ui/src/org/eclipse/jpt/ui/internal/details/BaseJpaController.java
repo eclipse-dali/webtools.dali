@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2007 Oracle. All rights reserved. This
+ *  Copyright (c) 2006, 2008 Oracle. All rights reserved. This
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
@@ -18,11 +18,11 @@ import org.eclipse.jpt.ui.internal.swt.BooleanButtonModelAdapter;
 import org.eclipse.jpt.ui.internal.util.ControlAligner;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.model.Model;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
-import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.MouseAdapter;
@@ -56,12 +56,19 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public abstract class BaseJpaController<T extends Node>
+public abstract class BaseJpaController<T extends Model> implements IJpaComposite<T>
 {
 	/**
-	 *
+	 * The listener registered with the subject in order to be notified when a
+	 * property has changed, the property names are determined by
+	 * {@link #propertyNames()}.
 	 */
 	private PropertyChangeListener aspectChangeListener;
+
+	/**
+	 * The container of this composite.
+	 */
+	private Composite container;
 
 	/**
 	 * The aligner responsible to align the left controls.
@@ -79,7 +86,8 @@ public abstract class BaseJpaController<T extends Node>
 	private ControlAligner rightControlAligner;
 
 	/**
-	 *
+	 * This listener is registered with the subject holder in order to
+	 * automatically repopulate this pane with the new subject.
 	 */
 	private PropertyChangeListener subjectChangeListener;
 
@@ -206,7 +214,9 @@ public abstract class BaseJpaController<T extends Node>
 
 		try {
 			this.populating = true;
-			this.buildWidgets(parent);
+
+			this.container = this.buildContainer(parent);
+			this.initializeLayout(this.container);
 		}
 		finally {
 			this.populating = false;
@@ -399,7 +409,16 @@ public abstract class BaseJpaController<T extends Node>
 	 * @category Layout
 	 */
 	protected final CCombo buildCombo(Composite container) {
-		return this.widgetFactory.createCCombo(container, SWT.FLAT);
+
+		container = this.fixBorderNotPainted(container);
+		CCombo combo = this.widgetFactory.createCCombo(container, SWT.FLAT);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		combo.setLayoutData(gridData);
+
+		return combo;
 	}
 
 	/**
@@ -415,10 +434,38 @@ public abstract class BaseJpaController<T extends Node>
 	protected final ComboViewer buildComboViewer(Composite container,
 	                                             IBaseLabelProvider labelProvider) {
 
-		CCombo combo = this.buildCombo(container);
+		container = this.fixBorderNotPainted(container);
+
+		CCombo combo = this.widgetFactory.createCCombo(container, SWT.FLAT);
 		ComboViewer viewer = new ComboViewer(combo);
 		viewer.setLabelProvider(labelProvider);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		combo.setLayoutData(gridData);
+
 		return viewer;
+	}
+
+	protected Composite buildContainer(Composite parent) {
+		Composite container = this.buildPane(parent);
+
+		GridLayout layout = new GridLayout(1, false);
+		layout.marginHeight = 0;
+		layout.marginWidth  = 0;
+		layout.marginTop    = 0;
+		layout.marginLeft   = 0;
+		layout.marginBottom = 0;
+		layout.marginRight  = 0;
+		container.setLayout(layout);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		container.setLayoutData(gridData);
+
+		return container;
 	}
 
 	/**
@@ -466,24 +513,10 @@ public abstract class BaseJpaController<T extends Node>
 	                                                String helpId) {
 
 		// Container for the label and main composite
-		container = this.buildPane(container);
-
-		GridLayout layout = new GridLayout(3, false);
-		layout.marginHeight = 0;
-		layout.marginWidth  = 0;
-		layout.marginTop    = 5;
-		layout.marginLeft   = 0;
-		layout.marginBottom = 1; // Weird, it seems the right and bottom borders
-		layout.marginRight  = 1; // are not painted if it's zero
-		container.setLayout(layout);
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		container.setLayoutData(gridData);
+		container = this.buildSubPane(container, 3, 5, 0, 0, 0);
 
 		// Left control
-		gridData = new GridData();
+		GridData gridData = new GridData();
 		gridData.horizontalAlignment       = GridData.BEGINNING;
 		gridData.grabExcessHorizontalSpace = false;
 		leftControl.setLayoutData(gridData);
@@ -725,18 +758,42 @@ public abstract class BaseJpaController<T extends Node>
 	protected final List buildList(Composite container,
 	                               WritablePropertyValueModel<String> selectionHolder) {
 
+		return this.buildList(container, selectionHolder, null);
+	}
+
+	/**
+	 * Creates a new list and notify the given selection holder when the
+	 * selection changes. If the selection count is different than one than the
+	 * holder will receive <code>null</code>.
+	 *
+	 * @param container The parent container
+	 * @param selectionHolder The holder of the unique selected item
+	 * @param helpId The topic help ID to be registered for the new radio button
+	 * @return The newly created <code>List</code>
+	 *
+	 * @category Layout
+	 */
+	protected final List buildList(Composite container,
+	                               WritablePropertyValueModel<String> selectionHolder,
+	                               String helpId) {
+
 		List list = this.widgetFactory.createList(
 			container,
-			SWT.FLAT | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL
+			SWT.FLAT | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI
 		);
 
 		list.addSelectionListener(buildSelectionListener(selectionHolder));
 
 		GridData gridData = new GridData();
-		gridData.horizontalAlignment     = GridData.FILL;
-		gridData.verticalAlignment       = GridData.FILL;
-		gridData.grabExcessVerticalSpace = true;
+		gridData.horizontalAlignment       = GridData.FILL;
+		gridData.verticalAlignment         = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace   = true;
 		list.setLayoutData(gridData);
+
+		if (helpId != null) {
+			helpSystem().setHelp(list, helpId);
+		}
 
 		return list;
 	}
@@ -927,7 +984,7 @@ public abstract class BaseJpaController<T extends Node>
 		gridData.grabExcessHorizontalSpace = true;
 		section.setLayoutData(gridData);
 
-		Composite subPane = buildSubPane(section, 5, 15);
+		Composite subPane = buildSubPane(section, 5, 0);
 		section.setClient(subPane);
 
 		return section;
@@ -1049,8 +1106,6 @@ public abstract class BaseJpaController<T extends Node>
 	                                       int bottomMargin,
 	                                       int rightMargin) {
 
-		Composite group = this.buildPane(container);
-
 		GridLayout layout = new GridLayout(columnCount, false);
 		layout.marginHeight = 0;
 		layout.marginWidth  = 0;
@@ -1058,14 +1113,15 @@ public abstract class BaseJpaController<T extends Node>
 		layout.marginLeft   = leftMargin;
 		layout.marginBottom = bottomMargin;
 		layout.marginRight  = rightMargin;
-		group.setLayout(layout);
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment       = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
-		group.setLayoutData(gridData);
 
-		return group;
+		container = this.buildPane(container, layout);
+		container.setLayoutData(gridData);
+
+		return container;
 	}
 
 	/**
@@ -1209,15 +1265,6 @@ public abstract class BaseJpaController<T extends Node>
 	}
 
 	/**
-	 * Creates the widgets for this controller.
-	 *
-	 * @param parent The parent container
-	 *
-	 * @category Layout
-	 */
-	protected abstract void buildWidgets(Composite parent);
-
-	/**
 	 * Uninstalls any listeners from the subject in order to stop being notified
 	 * for changes made outside of this controllers.
 	 *
@@ -1248,7 +1295,7 @@ public abstract class BaseJpaController<T extends Node>
 	 */
 	protected void disengageListeners(T subject) {
 		if (subject != null) {
-			this.log("   ->disengageListeners() from " + subject.displayString());
+			this.log("   ->disengageListeners() from " + subject);
 
 			for (String propertyName : this.propertyNames()) {
 				subject.removePropertyChangeListener(propertyName, this.aspectChangeListener);
@@ -1327,7 +1374,7 @@ public abstract class BaseJpaController<T extends Node>
 	protected void engageListeners(T subject) {
 		if (subject != null) {
 
-			this.log("   ->engageListeners() on " + subject.displayString());
+			this.log("   ->engageListeners() on " + subject);
 
 			for (String propertyName : this.propertyNames()) {
 				subject.addPropertyChangeListener(propertyName, this.aspectChangeListener);
@@ -1336,13 +1383,28 @@ public abstract class BaseJpaController<T extends Node>
 	}
 
 	/**
-	 * Returns this controller's widget.
+	 * Wraps the given <code>Composite</code> into a new <code>Composite</code>
+	 * in order to have the widgets' border painted. This must be a bug in the
+	 * <code>GridLayout</code> used in a form.
 	 *
-	 * @return The main widget of this controller
+	 * @param container The parent of the sub-pane with 1 pixel border
+	 * @return A new <code>Composite</code> that has the necessary space to paint
+	 * the border
+	 */
+	protected final Composite fixBorderNotPainted(Composite container) {
+		return buildSubPane(container, 1, 1, 1, 1, 1);
+	}
+
+	/**
+	 * Returns the main <code>Control</code> of this pane.
+	 *
+	 * @return The main container
 	 *
 	 * @category Layout
 	 */
-	public abstract Control getControl();
+	public Control getControl() {
+		return this.container;
+	}
 
 	/**
 	 * Returns the subject holder used by this controller.
@@ -1452,6 +1514,15 @@ public abstract class BaseJpaController<T extends Node>
 
 		this.initialize();
 	}
+
+	/**
+	 * Initializes the layout of this pane.
+	 *
+	 * @param container The parent container
+	 *
+	 * @category Layout
+	 */
+	protected abstract void initializeLayout(Composite container);
 
 	/**
 	 * Determines whether
@@ -1661,10 +1732,12 @@ public abstract class BaseJpaController<T extends Node>
 	 */
 	@SuppressWarnings("unchecked")
 	private void subjectChanged(PropertyChangeEvent e) {
-		this.log("subjectChanged()");
-		this.disengageListeners((T) e.oldValue());
-		this.repopulate();
-		this.engageListeners((T) e.newValue());
+		if (!container.isDisposed()) {
+			this.log("subjectChanged()");
+			this.disengageListeners((T) e.oldValue());
+			this.repopulate();
+			this.engageListeners((T) e.newValue());
+		}
 	}
 
 	/**

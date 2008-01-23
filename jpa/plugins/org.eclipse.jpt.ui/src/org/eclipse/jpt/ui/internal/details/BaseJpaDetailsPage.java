@@ -25,10 +25,10 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @since 1.0
  */
 public abstract class BaseJpaDetailsPage<T extends IJpaContextNode>
-	extends BaseJpaComposite<T>
+	extends BaseJpaController<T>
 	implements IJpaDetailsPage<T>
 {
-	private Composite control;
+	private ScrolledForm scrolledForm;
 
 	/**
 	 * Creates a new <code>BaseJpaDetailsPage</code>.
@@ -48,14 +48,21 @@ public abstract class BaseJpaDetailsPage<T extends IJpaContextNode>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected Composite buildComposite(Composite parent) {
-		//using this to get a Scroll bar on the JpaDetailsView
-		ScrolledForm scrolledForm = getWidgetFactory().createScrolledForm(parent);
-		//Nesting another composite because combos on the ScrolledForm didn't have a border
-		scrolledForm.getBody().setLayout(new GridLayout());
-		Composite composite = super.buildComposite(scrolledForm.getBody());
-		this.control = scrolledForm;
-		return composite;
+	protected Composite buildContainer(Composite container) {
+
+		scrolledForm = getWidgetFactory().createScrolledForm(container);
+		container = scrolledForm.getBody();
+
+		GridLayout layout = new GridLayout(1, false);
+		layout.marginHeight = 0;
+		layout.marginWidth  = 0;
+		layout.marginTop    = 5;
+		layout.marginLeft   = 5;
+		layout.marginBottom = 5;
+		layout.marginRight  = 5;
+		container.setLayout(layout);
+
+		return container;
 	}
 
 	/*
@@ -63,6 +70,6 @@ public abstract class BaseJpaDetailsPage<T extends IJpaContextNode>
 	 */
 	@Override
 	public Control getControl() {
-		return this.control;
+		return scrolledForm;
 	}
 }

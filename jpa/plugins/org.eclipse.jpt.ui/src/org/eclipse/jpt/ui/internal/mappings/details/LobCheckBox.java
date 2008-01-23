@@ -14,9 +14,7 @@ import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
@@ -29,8 +27,6 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  */
 public class LobCheckBox extends BaseJpaController<IBasicMapping>
 {
-	private Button button;
-
 	/**
 	 * Creates a new <code>LobCheckBox</code>.
 	 *
@@ -77,21 +73,13 @@ public class LobCheckBox extends BaseJpaController<IBasicMapping>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void buildWidgets(Composite container) {
+	protected void initializeLayout(Composite container) {
 
-		button = buildCheckBox(
+		buildCheckBox(
 			container,
 			JptUiMappingsMessages.BasicGeneralSection_lobLabel,
 			buildLobHolder(),
 			IJpaHelpContextIds.MAPPING_LOB
 		);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	public Control getControl() {
-		return button;
 	}
 }

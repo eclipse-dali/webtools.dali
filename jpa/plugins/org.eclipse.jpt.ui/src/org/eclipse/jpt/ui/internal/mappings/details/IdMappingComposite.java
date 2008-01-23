@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -47,7 +47,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class IdMappingComposite extends BaseJpaComposite<IIdMapping>
+public class IdMappingComposite extends BaseJpaController<IIdMapping>
 {
 	/**
 	 * Creates a new <code>IdComposite</code>.

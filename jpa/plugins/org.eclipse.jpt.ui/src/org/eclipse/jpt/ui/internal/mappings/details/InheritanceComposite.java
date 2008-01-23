@@ -32,6 +32,7 @@ import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -53,13 +54,32 @@ public class InheritanceComposite extends BaseJpaComposite<IEntity> {
 	private ConnectionListener connectionListener;
 	private ConnectionProfile connectionProfile;
 	private IDiscriminatorColumn discriminatorColumn;
-	private final Adapter discriminatorColumnListener;
+	private Adapter discriminatorColumnListener;
 	private ComboViewer discriminatorTypeViewer;
 	private CCombo discriminatorValueCombo;
-	private final Adapter entityListener;
+	private Adapter entityListener;
 	private PrimaryKeyJoinColumnsComposite pkJoinColumnsComposite;
 	private ComboViewer strategyViewer;
 
+	/**
+	 * Creates a new <code>InheritanceComposite</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param parent The parent container
+	 */
+	public InheritanceComposite(BaseJpaController<? extends IEntity> parentController,
+	                            Composite parent) {
+
+		super(parentController, parent);
+	}
+
+	/**
+	 * Creates a new <code>InheritanceComposite</code>.
+	 *
+	 * @param subjectHolder The holder of the subject <code>IEntity</code>
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public InheritanceComposite(PropertyValueModel<? extends IEntity> subjectHolder,
 	                            Composite parent,
 	                            TabbedPropertySheetWidgetFactory widgetFactory) {

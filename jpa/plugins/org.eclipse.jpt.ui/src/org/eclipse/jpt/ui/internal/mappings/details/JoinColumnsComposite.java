@@ -272,22 +272,24 @@ public class JoinColumnsComposite extends BaseJpaComposite<JoinColumnsComposite.
 
 	@Override
 	protected void engageListeners() {
-		if (this.subject() != null) {
-			this.subject().getEObject().eAdapters().add(this.joinColumnsOwnerListener);
-			for (IJoinColumn joinColumn : this.subject().getJoinColumns()) {
-				joinColumn.eAdapters().add(this.joinColumnListener);
-			}
-		}
+		super.engageListeners();
+//		if (this.subject() != null) {
+//			this.subject().getEObject().eAdapters().add(this.joinColumnsOwnerListener);
+//			for (IJoinColumn joinColumn : this.subject().getJoinColumns()) {
+//				joinColumn.eAdapters().add(this.joinColumnListener);
+//			}
+//		}
 	}
 
 	@Override
 	protected void disengageListeners() {
-		if (this.subject() != null) {
-			for (IJoinColumn joinColumn : this.subject().getJoinColumns()) {
-				joinColumn.eAdapters().remove(this.joinColumnListener);
-			}
-			this.subject().getEObject().eAdapters().remove(this.joinColumnsOwnerListener);
-		}
+		super.disengageListeners();
+//		if (this.subject() != null) {
+//			for (IJoinColumn joinColumn : this.subject().getJoinColumns()) {
+//				joinColumn.eAdapters().remove(this.joinColumnListener);
+//			}
+//			this.subject().getEObject().eAdapters().remove(this.joinColumnsOwnerListener);
+//		}
 	}
 
 	public void doPopulate(EObject obj) {

@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.widgets.Composite;
 
@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class TemporalTypeComposite extends BaseJpaComposite<IColumnMapping> {
+public class TemporalTypeComposite extends BaseJpaController<IColumnMapping> {
 
 	/**
 	 * Creates a new <code>TemporalTypeComposite</code>.
@@ -40,7 +40,7 @@ public class TemporalTypeComposite extends BaseJpaComposite<IColumnMapping> {
 	 * @param parentController The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TemporalTypeComposite(BaseJpaComposite<? extends IColumnMapping> parentComposite,
+	public TemporalTypeComposite(BaseJpaController<? extends IColumnMapping> parentComposite,
 	                             Composite parent) {
 
 		super(parentComposite, parent);

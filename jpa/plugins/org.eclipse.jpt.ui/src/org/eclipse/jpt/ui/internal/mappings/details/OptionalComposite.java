@@ -10,7 +10,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.INullable;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.swt.TriStateBooleanButtonModelAdapter;
@@ -23,7 +22,6 @@ import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueM
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 
 /**
  * This composite simply shows a tri-state check box for the Optional option.
@@ -44,7 +42,7 @@ public class OptionalComposite extends BaseJpaController<INullable>
 	 * @param parentController The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OptionalComposite(BaseJpaComposite<? extends INullable> parentComposite,
+	public OptionalComposite(BaseJpaController<? extends INullable> parentComposite,
 	                         Composite parent)
 	{
 		super(parentComposite, parent);
@@ -88,9 +86,9 @@ public class OptionalComposite extends BaseJpaController<INullable>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void buildWidgets(Composite parent) {
+	protected void initializeLayout(Composite container) {
 
-		optionalCheckBox = new TriStateCheckBox(parent);
+		optionalCheckBox = new TriStateCheckBox(container);
 		optionalCheckBox.setText(JptUiMappingsMessages.BasicGeneralSection_optionalLabel);
 
 		installLabeledControlUpdater(optionalCheckBox);
@@ -100,14 +98,6 @@ public class OptionalComposite extends BaseJpaController<INullable>
 			buildOptionalHolder(),
 			optionalCheckBox
 		);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	public Control getControl() {
-		return optionalCheckBox.getControl();
 	}
 
 	private void installLabeledControlUpdater(TriStateCheckBox optionalCheckBox) {

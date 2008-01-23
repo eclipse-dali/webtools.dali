@@ -11,8 +11,8 @@ package org.eclipse.jpt.ui.internal.xml.details;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
-import org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -21,7 +21,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
@@ -48,11 +47,11 @@ public class CascadePersistCheckBox extends BaseJpaController<PersistenceUnitDef
 	}
 
 	@Override
-	protected void buildWidgets(Composite parent) {
+	protected void initializeLayout(Composite container) {
 		this.button = getWidgetFactory().createButton(
-						parent,
-						JptUiXmlMessages.XMLEntityMappingsPage_CascadePersistCheckBox,
-						SWT.CHECK);
+			container,
+			JptUiXmlMessages.XMLEntityMappingsPage_CascadePersistCheckBox,
+			SWT.CHECK);
 
 		this.button.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent event) {
@@ -89,9 +88,10 @@ public class CascadePersistCheckBox extends BaseJpaController<PersistenceUnitDef
 	 */
 	@Override
 	protected void engageListeners() {
-		if (this.subject() != null) {
-			this.subject().eAdapters().add(this.persistenceUnitDefaultsListener);
-		}
+		super.engageListeners();
+//		if (this.subject() != null) {
+//			this.subject().eAdapters().add(this.persistenceUnitDefaultsListener);
+//		}
 	}
 
 	/*
@@ -99,9 +99,10 @@ public class CascadePersistCheckBox extends BaseJpaController<PersistenceUnitDef
 	 */
 	@Override
 	protected void disengageListeners() {
-		if (this.subject() != null) {
-			this.subject().eAdapters().remove(this.persistenceUnitDefaultsListener);
-		}
+		super.disengageListeners();
+//		if (this.subject() != null) {
+//			this.subject().eAdapters().remove(this.persistenceUnitDefaultsListener);
+//		}
 	}
 
 	/*
@@ -122,10 +123,5 @@ public class CascadePersistCheckBox extends BaseJpaController<PersistenceUnitDef
 		if (this.button.getSelection() != cascadePersist) {
 			this.button.setSelection(cascadePersist);
 		}
-	}
-
-	@Override
-	public Control getControl() {
-		return this.button;
 	}
 }

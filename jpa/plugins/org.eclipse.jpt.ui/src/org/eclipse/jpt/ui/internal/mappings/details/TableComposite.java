@@ -10,25 +10,48 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-//TODO repopulate this panel based on the Entity table changing
-public class TableComposite extends BaseJpaComposite<ITable>
+/**
+ * Here the layout of this pane:
+ * <pre>
+ * -----------------------------------------------------------------------------
+ * |          ---------------------------------------------------------------- |
+ * | Table:   | TableCombo                                                   | |
+ * |          ---------------------------------------------------------------- |
+ * |          ---------------------------------------------------------------- |
+ * | Catalog: | CatalogCombo                                                 | |
+ * |          ---------------------------------------------------------------- |
+ * |          ---------------------------------------------------------------- |
+ * | Schema:  | SchemaCombo                                                  | |
+ * |          ---------------------------------------------------------------- |
+ * -----------------------------------------------------------------------------</pre>
+ *
+ * @see IBasicMapping
+ * @see BaseJpaUiFactory
+ * @see TableCombo
+ * @see CatalogCombo
+ * @see SchemaCombo
+ *
+ * @TODO repopulate this panel based on the Entity table changing
+ *
+ * @version 2.0
+ * @since 1.0
+ */
+public class TableComposite extends BaseJpaController<ITable>
 {
-	private TableCombo tableCombo;
-	private CatalogCombo catalogCombo;
-	private SchemaCombo schemaCombo;
-
+	/**
+	 * Creates a new <code>TableComposite</code>.
+	 *
+	 * @param subjectHolder The holder of the subject <code>ITable</code>
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public TableComposite(PropertyValueModel<? extends ITable> subjectHolder,
 	                      Composite parent,
 	                      TabbedPropertySheetWidgetFactory widgetFactory) {
@@ -36,86 +59,65 @@ public class TableComposite extends BaseJpaComposite<ITable>
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	@Override
-	protected void initializeLayout(Composite composite) {
-		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
-		GridLayout layout = new GridLayout();
-		layout.marginWidth = 0;
-		composite.setLayout(layout);
+	/**
+	 * Creates a new <code>TableComposite</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param subjectHolder The holder of the subject
+	 * @param parent The parent container
+	 */
+	public TableComposite(BaseJpaController<?> parentController,
+	                      PropertyValueModel<? extends ITable> subjectHolder,
+	                      Composite parent) {
 
-		Group columnGroup = getWidgetFactory().createGroup(composite, JptUiMappingsMessages.TableComposite_tableSection);
-		layout = new GridLayout();
-		layout.marginHeight = 0;
-		columnGroup.setLayout(layout);
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace= true;
-		columnGroup.setLayoutData(gridData);
-
-		//created this composite because combos as direct children of a Group do not have a border, no clue why
-		Composite intermediaryComposite = getWidgetFactory().createComposite(columnGroup);
-		layout = new GridLayout(2, false);
-		layout.marginWidth = 0;
-		intermediaryComposite.setLayout(layout);
-
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace= true;
-		intermediaryComposite.setLayoutData(gridData);
-
-		CommonWidgets.buildTableLabel(intermediaryComposite, getWidgetFactory());
-
-		this.tableCombo = new TableCombo(getSubjectHolder(), intermediaryComposite, getWidgetFactory());
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		this.tableCombo.getCombo().setLayoutData(gridData);
-		helpSystem.setHelp(tableCombo.getCombo(), IJpaHelpContextIds.ENTITY_TABLE);
-
-		CommonWidgets.buildCatalogLabel(intermediaryComposite, getWidgetFactory());
-		this.catalogCombo = new CatalogCombo(getSubjectHolder(), intermediaryComposite, getWidgetFactory());
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		this.catalogCombo.getCombo().setLayoutData(gridData);
-		helpSystem.setHelp(catalogCombo.getCombo(), IJpaHelpContextIds.ENTITY_CATALOG);
-
-		CommonWidgets.buildSchemaLabel(intermediaryComposite, getWidgetFactory());
-		this.schemaCombo = new SchemaCombo(getSubjectHolder(), intermediaryComposite, getWidgetFactory());
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		this.schemaCombo.getCombo().setLayoutData(gridData);
-		helpSystem.setHelp(schemaCombo.getCombo(), IJpaHelpContextIds.ENTITY_SCHEMA);
+		super(parentController, subjectHolder, parent);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected void engageListeners() {
-	}
+	protected void initializeLayout(Composite container) {
 
-	@Override
-	protected void disengageListeners() {
-	}
+		Group columnGroup = buildTitledPane(
+			container,
+			JptUiMappingsMessages.TableComposite_tableSection
+		);
 
-	@Override
-	public void doPopulate() {
-		this.tableCombo.populate();
-		this.catalogCombo.populate();
-		this.schemaCombo.populate();
-	}
+		// Table widgets
+		TableCombo tableCombo = new TableCombo(this, columnGroup);
 
-	@Override
-	public void dispose() {
-		this.catalogCombo.dispose();
-		this.schemaCombo.dispose();
-		this.tableCombo.dispose();
-		super.dispose();
+		buildLabeledComposite(
+			columnGroup,
+			JptUiMappingsMessages.TableChooser_label,
+			tableCombo.getControl(),
+			IJpaHelpContextIds.ENTITY_TABLE
+		);
+
+		registerSubPane(tableCombo);
+
+		// Catalog widgets
+		CatalogCombo catalogCombo = new CatalogCombo(this, columnGroup);
+
+		buildLabeledComposite(
+			columnGroup,
+			JptUiMappingsMessages.CatalogChooser_label,
+			catalogCombo.getControl(),
+			IJpaHelpContextIds.ENTITY_CATALOG
+		);
+
+		registerSubPane(catalogCombo);
+
+		// Schema widgets
+		SchemaCombo schemaCombo = new SchemaCombo(this, columnGroup);
+
+		buildLabeledComposite(
+			columnGroup,
+			JptUiMappingsMessages.SchemaChooser_label,
+			schemaCombo.getControl(),
+			IJpaHelpContextIds.ENTITY_SCHEMA
+		);
+
+		registerSubPane(schemaCombo);
 	}
 }

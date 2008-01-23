@@ -3,14 +3,12 @@
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors: Versant. - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -23,30 +21,30 @@ import org.eclipse.ui.part.PageBook;
  */
 public class PageBookManager extends PageBook {
 
-	private Map pageRecords;
+	private Map<Object, Composite> pageRecords;
 	private Object active;
 	private PageBook pageBook;
 	private Composite defaultComposite;
-	
+
 	/**
 	 * A <code>PageBookManager<code> is a wrapper for a <code>PageBook</code>. It provides
 	 * convenience methods to add, remove, activate and inactive pages in the internal <code>PageBook</code>.
 	 * If a page gets deactivated, the manager activates a default page.
-	 * 
+	 *
 	 * @param parent The parent composite to this manager
 	 * @param aDefaultLabel The label on the the default page.
 	 */
 	public PageBookManager(Composite parent, String aDefaultLabel) {
 		super(parent, SWT.NULL);
 		this.setLayout(new FillLayout());
-		this.pageRecords = new HashMap();
+		this.pageRecords = new HashMap<Object, Composite>();
 		this.pageBook = new PageBook(this, SWT.NONE);
 		this.defaultComposite = new DefaultComposite(pageBook, aDefaultLabel);
 		this.pageBook.showPage(this.defaultComposite);
 	}
 
 	/**
-	 * @param anObj Activates (flips to top in the <code>PageBook</code>) the associated <code>Composite</code> 
+	 * @param anObj Activates (flips to top in the <code>PageBook</code>) the associated <code>Composite</code>
 	 * for the given <code>Object</code>. Activates the <code>DefaultComposite</code> if there is no association
 	 * for the given <code>Object</code>.
 	 * @return Return false if there is no <code>Composite</code> association to the given <code>Object</code> or
@@ -54,7 +52,7 @@ public class PageBookManager extends PageBook {
 	 */
 	public boolean activate(Object anObj) {
 		if(anObj != null && !anObj.equals(this.active) && this.pageRecords.containsKey(anObj)) {
-			Composite composite = (Composite) this.pageRecords.get(anObj);
+			Composite composite = this.pageRecords.get(anObj);
 			this.pageBook.showPage(composite);
 			this.active = anObj;
 			return true;
@@ -64,7 +62,7 @@ public class PageBookManager extends PageBook {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * @param anObj
 	 * @return Returns true if the associated <code>Composite</code> has been deactivated.
@@ -86,19 +84,19 @@ public class PageBookManager extends PageBook {
      * in this <code>PageBookManager</code>.
      * If this manager previously contained a mapping for the <code>Object</code>, the old
      * <code>Composite</code> is replaced by the specified <code>Composite</code>.
-     * 
+     *
 	 * @param anObj <code>Object</code> with which the specified <code>Composite</code> is to be associated.
 	 * @param aComposite <code>Composite</code> to be associated with the specified <code>Object</code>.
-	 * 
+	 *
      * @return previous <code>Composite</code> associated with specified <code>Object</code>,
      * 		   or <tt>null</tt> if there was no mapping for <code>Object</code>.
 	 */
 	public Composite put(Object anObj, Composite aComposite) {
-		Composite composite = (Composite) this.pageRecords.put(anObj, aComposite);
+		Composite composite = this.pageRecords.put(anObj, aComposite);
 		this.activate(anObj);
 		return composite;
 	}
-	
+
     /**
      * Removes the mapping for this <code>Object</code> from this pagebookmanager if it is present.
      *
@@ -109,8 +107,8 @@ public class PageBookManager extends PageBook {
 		if(anObj.equals(this.active)) {
 			this.active = null;
 			this.pageBook.showPage(this.defaultComposite);
-		}	
-		return (Composite) this.pageRecords.remove(anObj);
+		}
+		return this.pageRecords.remove(anObj);
 	}
 
 	/**
@@ -121,9 +119,9 @@ public class PageBookManager extends PageBook {
 	public boolean contains(Object anObj) {
 		return this.pageRecords.containsKey(anObj);
 	}
-	
+
 	public Composite get(Object key) {
-		return (Composite) pageRecords.get(key);
+		return pageRecords.get(key);
 	}
 
 	/**
@@ -133,12 +131,12 @@ public class PageBookManager extends PageBook {
 		if(this.active == null) {
 			return this.defaultComposite;
 		} else {
-			return (Composite) this.pageRecords.get(this.active);
+			return this.pageRecords.get(this.active);
 		}
 	}
 
 	/**
-	 * @return The internal <code>PageBook</code> of this <code>PageBookManager</code>. 
+	 * @return The internal <code>PageBook</code> of this <code>PageBookManager</code>.
 	 * <code>Composite</code>s which should work with this manager needs to be created
 	 * with this <code>Composite</code> as their parent composite.
 	 */
@@ -156,12 +154,12 @@ public class PageBookManager extends PageBook {
 			label.setText(aDefaultLabel);
 		}
 	}
-	
+
+	@Override
 	public void dispose() {
 		super.dispose();
-		Collection composites = this.pageRecords.values();
-		for (Iterator i = composites.iterator(); i.hasNext(); ) {
-			((Composite) i.next()).dispose();
+		for (Composite pane : this.pageRecords.values()) {
+			pane.dispose();
 		}
 	}
 }

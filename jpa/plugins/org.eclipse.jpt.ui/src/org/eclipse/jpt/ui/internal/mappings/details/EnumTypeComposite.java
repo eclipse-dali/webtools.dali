@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.internal.context.base.EnumType;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.swt.widgets.Composite;
 
@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class EnumTypeComposite extends BaseJpaComposite<IBasicMapping>
+public class EnumTypeComposite extends BaseJpaController<IBasicMapping>
 {
 	/**
 	 * Creates a new <code>FetchTypeComposite</code>.
@@ -38,7 +38,7 @@ public class EnumTypeComposite extends BaseJpaComposite<IBasicMapping>
 	 * @param parentController The parent container of this one
 	 * @param parent The parent container
 	 */
-	public EnumTypeComposite(BaseJpaComposite<? extends IBasicMapping> parentComposite,
+	public EnumTypeComposite(BaseJpaController<? extends IBasicMapping> parentComposite,
 	                         Composite parent) {
 
 		super(parentComposite, parent);

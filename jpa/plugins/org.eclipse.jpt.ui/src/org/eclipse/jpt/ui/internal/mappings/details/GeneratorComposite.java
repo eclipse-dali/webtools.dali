@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IGenerator;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -36,7 +35,7 @@ import org.eclipse.swt.widgets.Text;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public abstract class GeneratorComposite<T extends IGenerator> extends BaseJpaComposite<IIdMapping>
+public abstract class GeneratorComposite<T extends IGenerator> extends BaseJpaController<IIdMapping>
 {
 	private PropertyChangeListener generatorChangeListener;
 	private PropertyValueModel<T> generatorHolder;

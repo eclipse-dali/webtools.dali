@@ -53,7 +53,7 @@ public abstract class SchemaCombo extends AbstractDatabaseObjectCombo<IJpaNode>
 	 */
 	@Override
 	protected void schemaChanged(Schema schema) {
-		connectionProfile().getDatabase().schemaNamed();
+//		connectionProfile().getDatabase().schemaNamed();
 	}
 
 	/*

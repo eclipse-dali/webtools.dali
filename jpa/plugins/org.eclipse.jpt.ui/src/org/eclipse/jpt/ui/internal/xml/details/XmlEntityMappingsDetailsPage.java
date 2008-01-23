@@ -13,6 +13,7 @@ import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
+import org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser;
@@ -20,6 +21,7 @@ import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser.Str
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.ui.internal.xml.details.AccessTypeComposite.AccessHolder;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -60,16 +62,12 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 
 	@Override
 	protected void doPopulate() {
+		super.doPopulate();
 		this.xmlPackageChooser.populate();
-		this.xmlSchemaChooser.populate(new SchemaHolder(this.subject()));
-		this.xmlCatalogChooser.populate(new CatalogHolder(this.subject()));
-		this.accessComboViewer.populate(new MyAccessHolder(this.subject()));
-		if (this.subject() != null) {
-			this.persistenceUnitMetadataSection.populate(this.subject().getPersistenceUnitMetadata());
-		}
-		else {
-			this.persistenceUnitMetadataSection.populate(null);
-		}
+		this.xmlSchemaChooser.populate();
+		this.xmlCatalogChooser.populate();
+		this.accessComboViewer.populate();
+		this.persistenceUnitMetadataSection.populate();
 	}
 
 	@Override
@@ -128,7 +126,7 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 		this.accessComboViewer.getControl().setLayoutData(gridData);
 		helpSystem.setHelp(accessComboViewer.getControl(), IJpaHelpContextIds.ENTITY_ORM_ACCESS);
 
-		this.persistenceUnitMetadataSection = new PersistenceUnitMetadataSection(composite, getWidgetFactory());
+		this.persistenceUnitMetadataSection = new PersistenceUnitMetadataSection(buildPersistentUnitMetadaHolder(), composite, getWidgetFactory());
 
 		gridData = new GridData();
 		gridData.horizontalAlignment = SWT.FILL;
@@ -136,6 +134,16 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalSpan = 2;
 		this.persistenceUnitMetadataSection.getSection().setLayoutData(gridData);
+	}
+
+
+	private PropertyValueModel<PersistenceUnitMetadata> buildPersistentUnitMetadaHolder() {
+		return new TransformationPropertyValueModel<EntityMappings, PersistenceUnitMetadata>(getSubjectHolder()) {
+			@Override
+			protected PersistenceUnitMetadata transform_(EntityMappings value) {
+				return value.getPersistenceUnitMetadata();
+			}
+		};
 	}
 
 

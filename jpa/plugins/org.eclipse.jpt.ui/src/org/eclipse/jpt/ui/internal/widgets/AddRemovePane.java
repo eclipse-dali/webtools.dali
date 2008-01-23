@@ -8,18 +8,16 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
-import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
-import org.eclipse.jpt.utility.internal.model.listener.ListChangeAdapter;
-import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ListModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.utility.internal.node.Node;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -31,37 +29,85 @@ import org.eclipse.swt.widgets.Composite;
  * @version 1.0
  * @since 2.0
  */
-public abstract class AddRemovePane<T extends Node> extends BaseJpaComposite<T>
+public abstract class AddRemovePane<T extends Node> extends BaseJpaController<T>
 {
 	private Adapter adapter;
 	private Button addButton;
 	private Composite container;
+	private ILabelProvider labelProvider;
 	private ListValueModel listHolder;
 	private Button optionalButton;
 	private Button removeButton;
-	private ObjectListSelectionModel rowSelectionModel;
-	private PropertyValueModel<Object> selectedItemHolder;
-	private Object list;
+	private WritablePropertyValueModel<Object> selectedItemHolder;
+	private ObjectListSelectionModel selectionModel;
 
 	/**
 	 * Creates a new <code>AddRemovePane</code>.
 	 *
 	 * @param parentController The parent container of this one
 	 * @param parent The parent container
-	 * @param adapter
+	 * @param adapter This <code>Adapter</code> is used to dictacte the behavior
+	 * of this <code>AddRemovePane</code> and by delegating to it some of the
+	 * behavior
 	 * @param listHolder The <code>ListValueModel</code> containing the items
 	 * @param selectedItemHolder The holder of the selected item, if more than
 	 * one item or no items are selected, then <code>null</code> will be passed
+	 * @param labelProvider The renderer used to format the list holder's items
 	 */
 	protected AddRemovePane(BaseJpaController<? extends T> parentController,
 	                        Composite parent,
 	                        Adapter adapter,
 	                        ListValueModel/*<?>*/ listHolder,
-	                        PropertyValueModel<?> selectedItemHolder) {
+	                        WritablePropertyValueModel<?> selectedItemHolder,
+	                        ILabelProvider labelProvider) {
+
+		this(parentController,
+		     parent,
+		     adapter,
+		     listHolder,
+		     selectedItemHolder,
+		     labelProvider,
+		     null);
+	}
+
+	/**
+	 * Creates a new <code>AddRemovePane</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param parent The parent container
+	 * @param adapter This <code>Adapter</code> is used to dictacte the behavior
+	 * of this <code>AddRemovePane</code> and by delegating to it some of the
+	 * behavior
+	 * @param listHolder The <code>ListValueModel</code> containing the items
+	 * @param selectedItemHolder The holder of the selected item, if more than
+	 * one item or no items are selected, then <code>null</code> will be passed
+	 * @param labelProvider The renderer used to format the list holder's items
+	 * @param helpId The topic help ID to be registered with this pane
+	 */
+	protected AddRemovePane(BaseJpaController<? extends T> parentController,
+	                        Composite parent,
+	                        Adapter adapter,
+	                        ListValueModel/*<?>*/ listHolder,
+	                        WritablePropertyValueModel<?> selectedItemHolder,
+	                        ILabelProvider labelProvider,
+	                        String helpId) {
 
 		super(parentController, parent);
-		initialize(adapter, listHolder, selectedItemHolder);
-		postInitialize();
+
+		initialize(
+			adapter,
+			listHolder,
+			selectedItemHolder,
+			labelProvider
+		);
+
+		initializeLayout(
+			adapter,
+			listHolder,
+			selectedItemHolder,
+			labelProvider,
+			helpId
+		);
 	}
 
 	/**
@@ -69,50 +115,98 @@ public abstract class AddRemovePane<T extends Node> extends BaseJpaComposite<T>
 	 *
 	 * @param parentController The parent container of this one
 	 * @param subjectHolder The holder of the subject
-	 * @param adapter
+	 * @param adapter This <code>Adapter</code> is used to dictacte the behavior
+	 * of this <code>AddRemovePane</code> and by delegating to it some of the
+	 * behavior
 	 * @param parent The parent container
 	 * @param listHolder The <code>ListValueModel</code> containing the items
 	 * @param selectedItemHolder The holder of the selected item, if more than
 	 * one item or no items are selected, then <code>null</code> will be passed
+	 * @param labelProvider The renderer used to format the list holder's items
 	 */
 	protected AddRemovePane(BaseJpaController<?> parentController,
 	                        PropertyValueModel<? extends T> subjectHolder,
 	                        Composite parent,
 	                        Adapter adapter,
 	                        ListValueModel/*<?>*/ listHolder,
-	                        PropertyValueModel<?> selectedItemHolder) {
+	                        WritablePropertyValueModel<?> selectedItemHolder,
+	                        ILabelProvider labelProvider) {
 
-		super(parentController, subjectHolder, parent);
-		initialize(adapter, listHolder, selectedItemHolder);
-		postInitialize();
+		this(parentController,
+		     subjectHolder,
+		     parent,
+		     adapter,
+		     listHolder,
+		     selectedItemHolder,
+		     labelProvider,
+		     null);
 	}
 
 	/**
-	 * @category Add
+	 * Creates a new <code>AddRemovePane</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param subjectHolder The holder of the subject
+	 * @param adapter This <code>Adapter</code> is used to dictacte the behavior
+	 * of this <code>AddRemovePane</code> and by delegating to it some of the
+	 * behavior
+	 * @param parent The parent container
+	 * @param listHolder The <code>ListValueModel</code> containing the items
+	 * @param selectedItemHolder The holder of the selected item, if more than
+	 * one item or no items are selected, then <code>null</code> will be passed
+	 * @param labelProvider The renderer used to format the list holder's items
+	 * @param helpId The topic help ID to be registered with this pane
 	 */
-	protected String addButtonKey() {
-		return null;
+	protected AddRemovePane(BaseJpaController<?> parentController,
+	                        PropertyValueModel<? extends T> subjectHolder,
+	                        Composite parent,
+	                        Adapter adapter,
+	                        ListValueModel/*<?>*/ listHolder,
+	                        WritablePropertyValueModel<?> selectedItemHolder,
+	                        ILabelProvider labelProvider,
+	                        String helpId) {
+
+		super(parentController, subjectHolder, parent);
+
+		initialize(
+			adapter,
+			listHolder,
+			selectedItemHolder,
+			labelProvider
+		);
+
+		initializeLayout(
+			adapter,
+			listHolder,
+			selectedItemHolder,
+			labelProvider,
+			helpId
+		);
 	}
 
 	/**
 	 * @category Add
 	 */
 	protected void addItem() {
-		adapter.addNewItem(rowSelectionModel);
+		adapter.addNewItem(selectionModel);
 	}
 
 	/**
 	 * @category Initialize
 	 */
 	protected Adapter buildAdapter() {
-		return null;
+		return adapter;
 	}
 
 	/**
 	 * @category Add
 	 */
 	protected Button buildAddButton(Composite parent) {
-		return buildButton(parent, addButtonKey(), buildAddItemAction());
+		return buildButton(
+			parent,
+			adapter.addButtonText(),
+			buildAddItemAction()
+		);
 	}
 
 	/**
@@ -126,14 +220,14 @@ public abstract class AddRemovePane<T extends Node> extends BaseJpaComposite<T>
 		};
 	}
 
-	private ListChangeListener/*<Object>*/ buildListChangeListener() {
-		return new ListChangeAdapter/*<Object>*/() {
-			@Override
-			public void listChanged(ListChangeEvent/*<Object>*/ e) {
-				AddRemovePane.this.updateButtons();
-			}
-		};
-	}
+//	private ListChangeListener/*<Object>*/ buildListChangeListener() {
+//		return new ListChangeAdapter/*<Object>*/() {
+//			@Override
+//			public void listChanged(ListChangeEvent/*<Object>*/ e) {
+//				AddRemovePane.this.updateButtons();
+//			}
+//		};
+//	}
 
 	/**
 	 * @category Option
@@ -160,7 +254,11 @@ public abstract class AddRemovePane<T extends Node> extends BaseJpaComposite<T>
 	 * @category Add
 	 */
 	protected Button buildRemoveButton(Composite parent) {
-		return buildButton(parent, removeButtonKey(), buildRemoveItemsAction());
+		return buildButton(
+			parent,
+			adapter.removeButtonText(),
+			buildRemoveItemsAction()
+		);
 	}
 
 	/**
@@ -174,64 +272,112 @@ public abstract class AddRemovePane<T extends Node> extends BaseJpaComposite<T>
 		};
 	}
 
-	private ListSelectionListener buildRowSelectionListener() {
-		return new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-				if (!e.getValueIsAdjusting()) {
-					AddRemovePane.this.rowSelectionChanged(e);
-				}
-			}
-		};
-	}
-
 	protected ObjectListSelectionModel buildRowSelectionModel(ListValueModel/*<?>*/ listModel) {
 		return new ObjectListSelectionModel(new ListModelAdapter(listModel));
 	}
 
-	public ObjectListSelectionModel getSelectionModel() {
-		return rowSelectionModel;
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public void enableWidgets(boolean enabled) {
+		super.enableWidgets(enabled);
+		updateButtons();
+	}
+
+	protected final Composite getContainer() {
+		return container;
+	}
+
+	protected final ILabelProvider getLabelProvider() {
+		return labelProvider;
+	}
+
+	protected final ListValueModel/*<?>*/ getListHolder() {
+		return listHolder;
+	}
+
+	protected final WritablePropertyValueModel<Object> getSelectedItemHolder() {
+		return selectedItemHolder;
+	}
+
+	public final ObjectListSelectionModel getSelectionModel() {
+		return selectionModel;
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void initialize(Adapter adapter,
 	                          ListValueModel/*<?>*/ listHolder,
-	                          PropertyValueModel<?> selectedItemHolder)
+	                          WritablePropertyValueModel<?> selectedItemHolder,
+	                          ILabelProvider labelProvider)
 	{
+		this.listHolder         = listHolder;
+		this.labelProvider      = labelProvider;
 		this.adapter            = (adapter == null) ? buildAdapter() : adapter;
-		this.selectedItemHolder = (PropertyValueModel<Object>) selectedItemHolder;
-
-		initialize(listHolder);
+		this.selectedItemHolder = (WritablePropertyValueModel<Object>) selectedItemHolder;
+		this.selectionModel     = new ObjectListSelectionModel(new ListModelAdapter(listHolder));
 	}
 
-	protected void initialize(ListValueModel/*<?>*/ listHolder) {
+	protected void initializeButtonPane(Composite container, String helpId) {
 
-		this.listHolder = listHolder;
-		listHolder.addListChangeListener(buildListChangeListener());
+		container = buildPane(container);
 
-		rowSelectionModel = buildRowSelectionModel(listHolder);
-		rowSelectionModel.setSelectedValue(selectedItemHolder.value());
-		rowSelectionModel.addListSelectionListener(buildRowSelectionListener());
-	}
+		GridLayout layout = new GridLayout(1, false);
+		layout.marginHeight = 0;
+		layout.marginWidth  = 0;
+		layout.marginTop    = 0;
+		layout.marginLeft   = 0;
+		layout.marginBottom = 0;
+		layout.marginRight  = 0;
+		container.setLayout(layout);
+		container.setLayoutData(new GridData());
 
-	private void initializeButtonPane() {
+		// Add button
+		addButton = buildAddButton(container);
+		addAlignRight(addButton);
 
-		Composite buttonPane = buildSubPane(
-			container,
-			adapter.hasOptionalButton() ? 3 : 2,
-			0, 5, 0, 0
-		);
-
-		addButton      = buildAddButton(buttonPane);
-		removeButton   = buildRemoveButton(buttonPane);
-
+		// Optional button
 		if (adapter.hasOptionalButton()) {
-			optionalButton = buildOptionalButton(buttonPane);
+			optionalButton = buildOptionalButton(container);
+			addAlignRight(optionalButton);
 		}
 
-//		upButton       = buildUpButton      ((adapter instanceof UpDownAdapter) ? (UpDownAdapter) adapter : null);
-//		downButton     = buildDownButton    ((adapter instanceof UpDownAdapter) ? (UpDownAdapter) adapter : null);
+		// Remove button
+		removeButton = buildRemoveButton(container);
+		addAlignRight(removeButton);
+
+		// Update the help topic ID
+		if (helpId != null) {
+			helpSystem().setHelp(addButton, helpId);
+			helpSystem().setHelp(removeButton, helpId);
+
+			if (optionalButton != null) {
+				helpSystem().setHelp(optionalButton, helpId);
+			}
+		}
+
+//		upButton       = buildUpButton((adapter instanceof UpDownAdapter) ? (UpDownAdapter) adapter : null);
+//		downButton     = buildDownButton((adapter instanceof UpDownAdapter) ? (UpDownAdapter) adapter : null);
 //		gotoButton     = buildGotoButton();
 //		component      = buildComponent();
+	}
+
+	protected void initializeLayout(Adapter adapter,
+    	                             ListValueModel/*<?>*/ listHolder,
+   	                             WritablePropertyValueModel<?> selectedItemHolder,
+   	                             ILabelProvider labelProvider,
+   	                             String helpId) {
+
+		initializeMainComposite(
+			container,
+			adapter,
+			listHolder,
+			selectedItemHolder,
+			labelProvider,
+			helpId);
+
+		initializeButtonPane(container, helpId);
+		enableWidgets(subject() != null);
 	}
 
 	/*
@@ -239,50 +385,45 @@ public abstract class AddRemovePane<T extends Node> extends BaseJpaComposite<T>
 	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		GridLayout layout = new GridLayout(2, false);
-		layout.marginHeight = 0;
-		layout.marginWidth  = 0;
-		layout.marginTop    = 0;
-		layout.marginLeft   = 0;
-		layout.marginBottom = 0;
-		layout.marginRight  = 0;
-
-		container = buildPane(container, layout);
-	}
-
-	protected void postInitialize() {
-		initializeList();
-		initializeButtonPane();
-		enableWidgets(subject() != null);
-	}
-
-	private void initializeList() {
-//		list = buildList(container, selectedItemHolder);
+		this.container = buildSubPane(container, 2, 0, 0, 0, 0);
 	}
 
 	/**
-	 * @category Remove
+	 * Initializes the main widget of this add/remove pane.
+	 *
+	 * @param container The parent container
+	 * @param adapter This <code>Adapter</code> is used to dictacte the behavior
+	 * of this <code>AddRemovePane</code> and by delegating to it some of the
+	 * behavior
+	 * @param listHolder The <code>ListValueModel</code> containing the items
+	 * @param selectedItemHolder The holder of the selected item, if more than
+	 * one item or no items are selected, then <code>null</code> will be passed
+	 * @param labelProvider The renderer used to format the list holder's items
+	 * @param helpId The topic help ID to be registered with this pane or
+	 * <code>null</code> if it was not specified
 	 */
-	protected String removeButtonKey() {
-		return null;
-	}
+	protected abstract void initializeMainComposite(Composite container,
+	                                                Adapter adapter,
+	                   	                           ListValueModel/*<?>*/ listHolder,
+	                  	                           WritablePropertyValueModel<?> selectedItemHolder,
+	                  	                           ILabelProvider labelProvider,
+	                  	                           String helpId);
 
 	/**
 	 * @category Remove
 	 */
 	protected void removeItems() {
-		adapter.removeSelectedItems(rowSelectionModel);
-	}
-
-	protected void rowSelectionChanged(ListSelectionEvent e) {
+		adapter.removeSelectedItems(selectionModel);
 	}
 
 	/**
 	 * @category UpdateButtons
 	 */
 	protected void updateAddButton(Button addButton) {
-		addButton.setEnabled(getControl().isEnabled() && (subject() != null));
+		addButton.setEnabled(
+			getControl().isEnabled() &&
+			(subject() != null)
+		);
 	}
 
 	/**
@@ -294,7 +435,7 @@ public abstract class AddRemovePane<T extends Node> extends BaseJpaComposite<T>
 		}
 
 		updateAddButton(addButton);
-		updateRemoveButton(addButton);
+		updateRemoveButton(removeButton);
 		updateOptionalButton(optionalButton);
 	}
 
@@ -305,7 +446,7 @@ public abstract class AddRemovePane<T extends Node> extends BaseJpaComposite<T>
 		if (optionalButton != null) {
 			optionalButton.setEnabled(
 				getControl().isEnabled() &&
-				adapter.enableOptionOnSelectionChange(rowSelectionModel)
+				adapter.enableOptionOnSelectionChange(selectionModel)
 			);
 		}
 	}
@@ -316,7 +457,7 @@ public abstract class AddRemovePane<T extends Node> extends BaseJpaComposite<T>
 	protected void updateRemoveButton(Button removeButton) {
 		removeButton.setEnabled(
 			getControl().isEnabled() &&
-			rowSelectionModel.getSelectedValue() != null
+			selectionModel.getSelectedValue() != null
 		);
 	}
 
@@ -330,27 +471,32 @@ public abstract class AddRemovePane<T extends Node> extends BaseJpaComposite<T>
 		private String optionalButtonText;
 		private String removeButtonText;
 
-		AbstractAdapter(boolean hasOptionalButton) {
+		public AbstractAdapter() {
+			this(JptUiMessages.AddRemovePane_AddButtonText,
+			     JptUiMessages.AddRemovePane_RemoveButtonText);
+		}
+
+		public AbstractAdapter(boolean hasOptionalButton) {
 			super();
 			this.hasOptionalButton = hasOptionalButton;
 		}
 
-		AbstractAdapter(String optionalButtonText) {
+		public AbstractAdapter(String optionalButtonText) {
 			this(true);
 			this.optionalButtonText = optionalButtonText;
 		}
 
-		AbstractAdapter(String addButtonText,
-		                String removeButtonText) {
+		public AbstractAdapter(String addButtonText,
+		                       String removeButtonText) {
 
 			super();
 			this.addButtonText    = addButtonText;
 			this.removeButtonText = removeButtonText;
 		}
 
-		AbstractAdapter(String addButtonText,
-		                String removeButtonText,
-		                String optionalButtonText) {
+		public AbstractAdapter(String addButtonText,
+		                       String removeButtonText,
+		                       String optionalButtonText) {
 
 			this(optionalButtonText);
 			this.addButtonText    = addButtonText;
@@ -361,12 +507,19 @@ public abstract class AddRemovePane<T extends Node> extends BaseJpaComposite<T>
 			return addButtonText;
 		}
 
+		public boolean enableOptionOnSelectionChange(ObjectListSelectionModel listSelectionModel) {
+			return listSelectionModel.getSelectedValuesSize() == 1;
+		}
+
 		public boolean hasOptionalButton() {
 			return hasOptionalButton;
 		}
 
 		public String optionalButtonText() {
 			return optionalButtonText;
+		}
+
+		public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
 		}
 
 		public String removeButtonText() {

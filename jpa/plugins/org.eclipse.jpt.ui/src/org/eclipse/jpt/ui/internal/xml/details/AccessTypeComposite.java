@@ -26,7 +26,6 @@ import org.eclipse.jpt.ui.internal.mappings.details.EnumComboViewer;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
@@ -67,8 +66,8 @@ public class AccessTypeComposite<T> extends BaseJpaController<AccessTypeComposit
 	}
 
 	@Override
-	protected void buildWidgets(Composite parent) {
-		CCombo combo = getWidgetFactory().createCCombo(parent);
+	protected void initializeLayout(Composite container) {
+		CCombo combo = getWidgetFactory().createCCombo(container);
 		this.comboViewer = new ComboViewer(combo);
 		this.comboViewer.setLabelProvider(buildAccessTypeLabelProvider());
 		this.comboViewer.add(AccessType.values());
@@ -115,16 +114,18 @@ public class AccessTypeComposite<T> extends BaseJpaController<AccessTypeComposit
 
 	@Override
 	protected void engageListeners() {
-		if (this.subject() != null && this.subject().wrappedObject() != null) {
-			this.subject().wrappedObject().eAdapters().add(this.accessHolderListener);
-		}
+		super.engageListeners();
+//		if (this.subject() != null && this.subject().wrappedObject() != null) {
+//			this.subject().wrappedObject().eAdapters().add(this.accessHolderListener);
+//		}
 	}
 
 	@Override
 	protected void disengageListeners() {
-		if (this.subject() != null && this.subject().wrappedObject() != null) {
-			this.subject().wrappedObject().eAdapters().remove(this.accessHolderListener);
-		}
+		super.disengageListeners();
+//		if (this.subject() != null && this.subject().wrappedObject() != null) {
+//			this.subject().wrappedObject().eAdapters().remove(this.accessHolderListener);
+//		}
 	}
 
 	@Override
@@ -142,11 +143,6 @@ public class AccessTypeComposite<T> extends BaseJpaController<AccessTypeComposit
 		if (((IStructuredSelection) this.comboViewer.getSelection()).getFirstElement() != access) {
 			this.comboViewer.setSelection(new StructuredSelection(access));
 		}
-	}
-
-	@Override
-	public Control getControl() {
-		return this.comboViewer.getCombo();
 	}
 
 	/**

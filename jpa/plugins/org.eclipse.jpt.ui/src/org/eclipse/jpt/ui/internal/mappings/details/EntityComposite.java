@@ -11,93 +11,75 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class EntityComposite extends BaseJpaComposite<IEntity>
+/**
+ * Here the layout of this pane:
+ * <pre>
+ * -----------------------------------------------------------------------------
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | EntityNameCombo                                                       | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | TableComposite                                                        | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * |                                                                           |
+ * | - Attribute Overrides --------------------------------------------------- |
+ * | |                                                                       | |
+ * | | OverridesComposite                                                    | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * |                                                                           |
+ * | - Secondary Tables ------------------------------------------------------ |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | SecondaryTablesComposite                                              | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * |                                                                           |
+ * | - Inheritance ----------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | InheritanceComposite                                                  | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * -----------------------------------------------------------------------------</pre>
+ *
+ * @see IBasicMapping
+ * @see BaseJpaUiFactory
+ * @see EntityNameCombo
+ * @see InheritanceComposite
+ * @see OverridesComposite
+ * @see SecondaryTablesComposite
+ * @see TableComposite
+ *
+ * @TODO talk to JavaEditor people about what we can do to hook in TabbedProperties for the JavaEditor
+ * @version 2.0
+ * @since 1.0
+ */
+public class EntityComposite extends BaseJpaController<IEntity>
 {
-	private EntityNameCombo entityNameCombo;
-	private TableComposite tableComposite;
-	private InheritanceComposite inheritanceComposite;
-	private SecondaryTablesComposite secondaryTablesComposite;
-	private OverridesComposite attributeOverridesComposite;
-
+	/**
+	 * Creates a new <code>EntityComposite</code>.
+	 *
+	 * @param subjectHolder The holder of the subject <code>IEntity</code>
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public EntityComposite(PropertyValueModel<? extends IEntity> subjectHolder,
 	                       Composite parent,
 	                       TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-	}
-
-	@Override
-	protected void initializeLayout(Composite composite) {
-		GridLayout layout = new GridLayout();
-		layout.marginWidth = 0;
-		composite.setLayout(layout);
-
-		Control generalControl = buildGeneralComposite(composite);
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		generalControl.setLayoutData(gridData);
-
-		Control attributeOverridesControl = buildAttributeOverridesComposite(composite);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		attributeOverridesControl.setLayoutData(gridData);
-
-		Control secondaryTablesControl = buildSecondaryTablesComposite(composite);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		secondaryTablesControl.setLayoutData(gridData);
-
-		Control inheritanceControl = buildInheritanceComposite(composite);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		inheritanceControl.setLayoutData(gridData);
-	}
-
-	private Control buildGeneralComposite(Composite composite) {
-		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
-
-		Composite generalComposite = getWidgetFactory().createComposite(composite);
-		GridLayout layout = new GridLayout(2, false);
-		layout.marginWidth = 0;
-		generalComposite.setLayout(layout);
-
-		CommonWidgets.buildEntityNameLabel(generalComposite, getWidgetFactory());
-
-		this.entityNameCombo = new EntityNameCombo(getSubjectHolder(), composite, getWidgetFactory());
-	    GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		this.entityNameCombo.getCombo().setLayoutData(gridData);
-		helpSystem.setHelp(this.entityNameCombo.getCombo(), IJpaHelpContextIds.ENTITY_NAME);
-
-
-		this.tableComposite = new TableComposite(buildTableHolder(), generalComposite, getWidgetFactory());
-	    gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalSpan = 2;
-		this.tableComposite.getControl().setLayoutData(gridData);
-
-		return generalComposite;
 	}
 
 	private PropertyValueModel<ITable> buildTableHolder() {
@@ -109,95 +91,67 @@ public class EntityComposite extends BaseJpaComposite<IEntity>
 		};
 	}
 
-	private Control buildSecondaryTablesComposite(Composite composite) {
-	    Section section = getWidgetFactory().createSection(composite, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
-	    section.setText(JptUiMappingsMessages.SecondaryTablesComposite_secondaryTables);
+	private void initializeAttributeOverridesPane(Composite container) {
 
-		Composite client = getWidgetFactory().createComposite(section);
-		section.setClient(client);
+		Section section = buildSection(
+			container,
+			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
+		);
 
-		GridLayout layout = new GridLayout();
-		layout.marginWidth = 0;
-		client.setLayout(layout);
+		container = (Composite) section.getClient();
 
-		this.secondaryTablesComposite = new SecondaryTablesComposite(getSubjectHolder(), client, getWidgetFactory());
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		this.secondaryTablesComposite.getControl().setLayoutData(gridData);
-
-		return section;
+		new OverridesComposite(this, container);
 	}
 
-	private Control buildInheritanceComposite(Composite composite) {
-	    Section section = getWidgetFactory().createSection(composite, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
-	    section.setText(JptUiMappingsMessages.EntityComposite_inheritance);
+	private void initializeGeneralPane(Composite container) {
 
-		Composite inheritanceClient = getWidgetFactory().createComposite(section);
-		section.setClient(inheritanceClient);
+		int groupBoxMargin = groupBoxMargin();
+		EntityNameCombo entityNameCombo = new EntityNameCombo(this, container);
 
-		GridLayout layout = new GridLayout();
-		layout.marginWidth = 0;
-		inheritanceClient.setLayout(layout);
+		// Entity Name widgets
+		buildLabeledComposite(
+			buildSubPane(container, 1, 0, groupBoxMargin, 0, groupBoxMargin),
+			JptUiMappingsMessages.EntityGeneralSection_name,
+			entityNameCombo.getControl(),
+			IJpaHelpContextIds.ENTITY_NAME
+		);
 
-		this.inheritanceComposite = new InheritanceComposite(getSubjectHolder(), inheritanceClient, getWidgetFactory());
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		this.inheritanceComposite.getControl().setLayoutData(gridData);
+		registerSubPane(entityNameCombo);
+		addPaneForAlignment(entityNameCombo);
 
-		return section;
+		// Table widgets
+		new TableComposite(this, buildTableHolder(), container);
 	}
 
-	private Control buildAttributeOverridesComposite(Composite composite) {
-		Section section = getWidgetFactory().createSection(composite, SWT.FLAT | ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
-		section.setText(JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides);
-		//section.setExpanded(true); //not going to expand this for now, it causes the scroll bar not to appear
-		Composite client = getWidgetFactory().createComposite(section);
-		section.setClient(client);
+	private void initializeInheritancePane(Composite container) {
 
-		GridLayout layout = new GridLayout();
-		layout.marginWidth = 0;
-		client.setLayout(layout);
+		Section section = buildSection(
+			container,
+			JptUiMappingsMessages.EntityComposite_inheritance
+		);
 
-		this.attributeOverridesComposite = new OverridesComposite(getSubjectHolder(), client, getWidgetFactory());
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		this.attributeOverridesComposite.getControl().setLayoutData(gridData);
-
-		return section;
-	}
-
-	//TODO talk to JavaEditor people about what we can do to hook in TabbedProperties for the JavaEditor
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	public void doPopulate() {
-		this.entityNameCombo.populate();
-		this.attributeOverridesComposite.populate();
-		this.secondaryTablesComposite.populate();
-		this.inheritanceComposite.populate();
-		this.tableComposite.populate();
+		new InheritanceComposite(this, (Composite) section.getClient());
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
-	public void dispose() {
-		this.entityNameCombo.dispose();
-		this.tableComposite.dispose();
-		this.attributeOverridesComposite.dispose();
-		this.secondaryTablesComposite.dispose();
-		this.inheritanceComposite.dispose();
-		super.dispose();
+	protected void initializeLayout(Composite container) {
+
+		initializeGeneralPane(container);
+//		initializeAttributeOverridesPane(container);
+		initializeSecondaryTablesPane(container);
+//		initializeInheritancePane(container);
+	}
+
+	private void initializeSecondaryTablesPane(Composite container) {
+
+		Section section = buildSection(
+			container,
+			JptUiMappingsMessages.SecondaryTablesComposite_secondaryTables
+		);
+
+		new SecondaryTablesComposite(this, (Composite) section.getClient());
 	}
 }

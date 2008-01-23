@@ -46,6 +46,10 @@ public class JptUiMessages extends NLS
 
 	public static String AddPersistentClassDialog_noMappingKeyError;
 
+	public static String AddRemovePane_AddButtonText;
+
+	public static String AddRemovePane_RemoveButtonText;
+
 	public static String DatabaseReconnectWizardPage_database;
 
 	public static String DatabaseReconnectWizardPage_databaseConnection;
@@ -142,7 +146,6 @@ public class JptUiMessages extends NLS
 	public static String OverwriteConfirmerDialog_title;
 
 	public static String OverwriteConfirmerDialog_text;
-
 
 	private JptUiMessages() {
 		throw new UnsupportedOperationException();

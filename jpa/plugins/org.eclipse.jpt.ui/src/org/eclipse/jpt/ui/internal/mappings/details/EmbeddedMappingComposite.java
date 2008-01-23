@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -33,7 +33,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class EmbeddedMappingComposite extends BaseJpaComposite<IEmbeddedMapping>
+public class EmbeddedMappingComposite extends BaseJpaController<IEmbeddedMapping>
 {
 	/**
 	 * Creates a new <code>EmbeddedComposite</code>.

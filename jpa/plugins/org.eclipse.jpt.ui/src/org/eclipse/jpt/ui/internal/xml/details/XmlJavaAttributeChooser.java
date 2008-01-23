@@ -20,7 +20,6 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -52,8 +51,8 @@ public class XmlJavaAttributeChooser extends BaseJpaController<XmlAttributeMappi
 	}
 
 	@Override
-	protected void buildWidgets(Composite parent) {
-		text = getWidgetFactory().createText(parent, "");
+	protected void initializeLayout(Composite container) {
+		text = getWidgetFactory().createText(container, "");
 		text.addModifyListener(
 			new ModifyListener() {
 				public void modifyText(ModifyEvent e) {
@@ -84,16 +83,18 @@ public class XmlJavaAttributeChooser extends BaseJpaController<XmlAttributeMappi
 
 	@Override
 	protected void engageListeners() {
-		if (attribute() != null) {
-			attribute().eAdapters().add(persistentAttributeListener);
-		}
+		super.engageListeners();
+//		if (attribute() != null) {
+//			attribute().eAdapters().add(persistentAttributeListener);
+//		}
 	}
 
 	@Override
 	protected void disengageListeners() {
-		if (attribute() != null) {
-			attribute().eAdapters().remove(persistentAttributeListener);
-		}
+		super.disengageListeners();
+//		if (attribute() != null) {
+//			attribute().eAdapters().remove(persistentAttributeListener);
+//		}
 	}
 
 	@Override
@@ -102,7 +103,7 @@ public class XmlJavaAttributeChooser extends BaseJpaController<XmlAttributeMappi
 	}
 
 	private XmlPersistentAttribute attribute() {
-		return (subject() != null) ? subject().getPersistentAttribute() : null;
+		return (subject() != null) ? subject().persistentAttribute() : null;
 	}
 
 	private void populateText() {
@@ -123,10 +124,5 @@ public class XmlJavaAttributeChooser extends BaseJpaController<XmlAttributeMappi
 		if (! textData.equals(text.getText())) {
 			text.setText(textData);
 		}
-	}
-
-	@Override
-	public Control getControl() {
-		return text;
 	}
 }

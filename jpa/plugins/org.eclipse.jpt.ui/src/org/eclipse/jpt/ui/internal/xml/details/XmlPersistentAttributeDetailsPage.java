@@ -15,11 +15,9 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
@@ -163,33 +161,33 @@ public class XmlPersistentAttributeDetailsPage
 	@Override
 	protected void engageListeners() {
 		super.engageListeners();
-		if (getAttribute() != null) {
-			this.persistentType = getAttribute().typeMapping().getPersistentType();
-			this.persistentType.eAdapters().add(this.persistentTypeListener);
-		}
+//		if (getAttribute() != null) {
+//			this.persistentType = getAttribute().typeMapping().getPersistentType();
+//			this.persistentType.eAdapters().add(this.persistentTypeListener);
+//		}
 	}
 
 	@Override
 	protected void disengageListeners() {
-		if (this.persistentType != null) {
-			this.persistentType.eAdapters().remove(this.persistentTypeListener);
-			this.persistentType = null;
-		}
+//		if (this.persistentType != null) {
+//			this.persistentType.eAdapters().remove(this.persistentTypeListener);
+//			this.persistentType = null;
+//		}
 		super.disengageListeners();
 	}
 
-	@Override
-	protected void doPopulate(IJpaContentNode persistentAttributeNode) {
-		super.doPopulate(persistentAttributeNode);
-		if (persistentAttributeNode == null) {
-			this.javaAttributeChooser.populate(null);
-		}
-		else {
-			XmlAttributeMapping mapping = ((XmlPersistentAttribute) persistentAttributeNode).getMapping();
-			this.javaAttributeChooser.populate(mapping);
-			updateEnbabledState();
-		}
-	}
+//	@Override
+//	protected void doPopulate() {
+//		super.doPopulate();
+//		if (persistentAttributeNode == null) {
+//			this.javaAttributeChooser.populate(null);
+//		}
+//		else {
+//			XmlAttributeMapping mapping = ((XmlPersistentAttribute) persistentAttributeNode).getMapping();
+//			this.javaAttributeChooser.populate(mapping);
+//			updateEnbabledState();
+//		}
+//	}
 
 	@Override
 	protected void doPopulate() {

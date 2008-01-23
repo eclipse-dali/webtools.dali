@@ -25,7 +25,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
@@ -165,9 +164,11 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ba
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void buildWidgets(Composite parent) {
+	protected void initializeLayout(Composite container) {
 
-		this.combo = this.buildCombo(parent);
+		container = fixBorderNotPainted(container);
+
+		this.combo = this.buildCombo(container);
 		this.combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
 		this.combo.addModifyListener(this.buildModifyListener());
 
@@ -212,14 +213,6 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ba
 	}
 
 	public final CCombo getCombo() {
-		return this.combo;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	public Control getControl() {
 		return this.combo;
 	}
 

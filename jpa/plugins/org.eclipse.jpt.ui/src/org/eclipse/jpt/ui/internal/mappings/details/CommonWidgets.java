@@ -29,7 +29,7 @@ public class CommonWidgets
 			Composite parent,
 			TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		return new EntityNameCombo(subjectHolder, parent, widgetFactory);
+		return null;//new EntityNameCombo(subjectHolder, parent, widgetFactory);
 	}
 
 	public static Label buildTableLabel(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {

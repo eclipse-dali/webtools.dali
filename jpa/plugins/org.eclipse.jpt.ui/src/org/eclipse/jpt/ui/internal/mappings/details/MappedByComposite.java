@@ -13,7 +13,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.context.base.INonOwningMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -42,7 +41,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class MappedByComposite extends BaseJpaComposite<INonOwningMapping>
+public class MappedByComposite extends BaseJpaController<INonOwningMapping>
 {
 	private CCombo combo;
 

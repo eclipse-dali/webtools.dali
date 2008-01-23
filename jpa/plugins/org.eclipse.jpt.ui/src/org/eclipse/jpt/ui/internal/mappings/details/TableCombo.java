@@ -23,12 +23,10 @@ import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
@@ -52,8 +50,12 @@ public class TableCombo extends BaseJpaController<ITable>
 	                  TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-		this.listener = buildTableListener();
-		this.connectionListener = buildConnectionListener();
+	}
+
+	public TableCombo(BaseJpaController<? extends ITable> parentController,
+	                  Composite parent) {
+
+		super(parentController, parent);
 	}
 
 	private Adapter buildTableListener() {
@@ -140,8 +142,8 @@ public class TableCombo extends BaseJpaController<ITable>
 	}
 
 	@Override
-	protected void buildWidgets(Composite parent) {
-		this.combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
+	protected void initializeLayout(Composite container) {
+		this.combo = buildCombo(container);
 		this.combo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
 		this.combo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
@@ -295,11 +297,6 @@ public class TableCombo extends BaseJpaController<ITable>
 
 	public CCombo getCombo() {
 		return this.combo;
-	}
-
-	@Override
-	public Control getControl() {
-		return getCombo();
 	}
 
 	@Override

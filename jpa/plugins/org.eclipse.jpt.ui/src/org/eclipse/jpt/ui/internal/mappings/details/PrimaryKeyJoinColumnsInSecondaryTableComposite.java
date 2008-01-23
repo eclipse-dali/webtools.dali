@@ -9,210 +9,127 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import java.util.Iterator;
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.jface.viewers.IContentProvider;
+import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.ListViewer;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
+import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.util.BaseJpaControllerEnabler;
+import org.eclipse.jpt.ui.internal.util.ControlEnabler;
+import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
+import org.eclipse.jpt.ui.internal.widgets.AddRemovePane;
+import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaComposite<ISecondaryTable>
+/**
+ * Here the layout of this pane:
+ * <pre>
+ * -----------------------------------------------------------------------------
+ * |                                                                           |
+ * | x Override Default                                                        |
+ * |                                                                           |
+ * | - Primary Key Join Columns ---------------------------------------------- |
+ * | |                                                                       | |
+ * | | AddRemoveListPane                                                     | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * -----------------------------------------------------------------------------</pre>
+ *
+ * @see ISecondaryTable
+ * @see EntityComposite - The container of this pane
+ * @see AddRemoveListPane
+ *
+ * @version 2.0
+ * @since 1.0
+ */
+public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaController<ISecondaryTable>
 {
-	private final Adapter secondaryTableListener;
-	private final Adapter pkJoinColumnListener;
-	ListViewer pkJoinColumnsListViewer;
-	private Group pkJoinColumnsGroup;
-	Button overrideDefaultJoinColumnsCheckBox;
-	private Button pkJoinColumnsAddButton;
-	private Button pkJoinColumnsRemoveButton;
-	private Button pkJoinColumnsEditButton;
+	/**
+	 * Creates a new <code>PrimaryKeyJoinColumnsInSecondaryTableComposite</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
+	 */
+	public PrimaryKeyJoinColumnsInSecondaryTableComposite(BaseJpaController<?> parentController,
+	                                                      PropertyValueModel<? extends ISecondaryTable> subjectHolder,
+	                                                      Composite parent) {
 
+		super(parentController, subjectHolder, parent);
+	}
+
+	/**
+	 * Creates a new <code>PrimaryKeyJoinColumnsInSecondaryTableComposite</code>.
+	 *
+	 * @param subjectHolder The holder of the subject <code>ISecondaryTable</code>
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public PrimaryKeyJoinColumnsInSecondaryTableComposite(PropertyValueModel<? extends ISecondaryTable> subjectHolder,
 	                                                      Composite parent,
 	                                                      TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-		this.secondaryTableListener = buildSecondaryTableListener();
-		this.pkJoinColumnListener = buildPkJoinColumnListener();
 	}
 
-	private Adapter buildSecondaryTableListener() {
-		return new AdapterImpl() {
+	private void addJoinColumnFromDialog(PrimaryKeyJoinColumnInSecondaryTableDialog dialog) {
+		if (dialog.open() == Window.OK) {
+			int index = this.subject().specifiedPrimaryKeyJoinColumnsSize();
+			String name = dialog.getSelectedName();
+			String referencedColumnName = dialog.getReferencedColumnName();
+			IPrimaryKeyJoinColumn joinColumn = this.subject().addSpecifiedPrimaryKeyJoinColumn(index);
+			joinColumn.setSpecifiedName(name);
+			joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+		}
+	}
+
+	private void addPrimaryKeyJoinColumn() {
+		PrimaryKeyJoinColumnInSecondaryTableDialog dialog = new PrimaryKeyJoinColumnInSecondaryTableDialog(this.getControl().getShell(), this.subject());
+		addJoinColumnFromDialog(dialog);
+	}
+
+	private PropertyValueModel<Boolean> buildControlBooleanHolder() {
+		return new TransformationPropertyValueModel<ISecondaryTable, Boolean>(getSubjectHolder()) {
 			@Override
-			public void notifyChanged(Notification notification) {
-				secondaryTableChanged(notification);
+			protected Boolean transform(ISecondaryTable value) {
+				return (value != null);
 			}
 		};
 	}
 
-	private Adapter buildPkJoinColumnListener() {
-		return new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				pkJoinColumnChanged(notification);
-			}
-		};
+	private String buildDefaultJoinColumnLabel(IPrimaryKeyJoinColumn joinColumn) {
+		return NLS.bind(JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());
 	}
 
-	@Override
-	protected void initializeLayout(Composite composite) {
-		GridLayout layout = new GridLayout(2, false);
-		layout.marginWidth = 0;
-		composite.setLayout(layout);
-
-		GridData gridData =  new GridData();
-		this.overrideDefaultJoinColumnsCheckBox = getWidgetFactory().createButton(
-			composite,
-			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_overrideDefaultPrimaryKeyJoinColumns,
-			SWT.CHECK);
-		this.overrideDefaultJoinColumnsCheckBox.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// do nothing
+	private String buildJoinColumnLabel(IPrimaryKeyJoinColumn joinColumn) {
+		if (joinColumn.getSpecifiedName() == null) {
+			if (joinColumn.getSpecifiedReferencedColumnName() == null) {
+				return NLS.bind(JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsBothDefault, joinColumn.getName(),joinColumn.getReferencedColumnName());
 			}
+			return NLS.bind(JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsFirstDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());
+		}
 
-			public void widgetSelected(SelectionEvent e) {
-				if (PrimaryKeyJoinColumnsInSecondaryTableComposite.this.overrideDefaultJoinColumnsCheckBox.getSelection()) {
-					IPrimaryKeyJoinColumn defaultJoinColumn = PrimaryKeyJoinColumnsInSecondaryTableComposite.this.secondaryTable.getDefaultPrimaryKeyJoinColumns().get(0);
-					String columnName = defaultJoinColumn.getDefaultName();
-					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
+		if (joinColumn.getSpecifiedReferencedColumnName() == null) {
+			return NLS.bind(JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsSecDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());
+		}
 
-					IPrimaryKeyJoinColumn pkJoinColumn = PrimaryKeyJoinColumnsInSecondaryTableComposite.this.secondaryTable.createPrimaryKeyJoinColumn(0);
-					PrimaryKeyJoinColumnsInSecondaryTableComposite.this.subject().getSpecifiedPrimaryKeyJoinColumns().add(pkJoinColumn);
-					pkJoinColumn.setSpecifiedName(columnName);
-					pkJoinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
-				} else {
-					PrimaryKeyJoinColumnsInSecondaryTableComposite.this.subject().getSpecifiedPrimaryKeyJoinColumns().clear();
-				}
-			}
-		});
-
-		this.pkJoinColumnsGroup =
-			getWidgetFactory().createGroup(
-				composite,
-				JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_primaryKeyJoinColumn);
-		this.pkJoinColumnsGroup.setLayout(new GridLayout(2, false));
-		gridData =  new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalSpan = 2;
-		this.pkJoinColumnsGroup.setLayoutData(gridData);
-
-		this.pkJoinColumnsListViewer = new ListViewer(this.pkJoinColumnsGroup, SWT.BORDER | SWT.MULTI);
-		this.pkJoinColumnsListViewer.setContentProvider(buildJoinColumnsListContentProvider());
-		this.pkJoinColumnsListViewer.setLabelProvider(buildJoinColumnsListLabelProvider());
-		gridData =  new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.verticalSpan = 3;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		this.pkJoinColumnsListViewer.getList().setLayoutData(gridData);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.pkJoinColumnsListViewer.getList(), IJpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS);
-
-		this.pkJoinColumnsAddButton = getWidgetFactory().createButton(
-			this.pkJoinColumnsGroup,
-			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_add,
-			SWT.NONE);
-		gridData =  new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		this.pkJoinColumnsAddButton.setLayoutData(gridData);
-		this.pkJoinColumnsAddButton.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// do nothing
-			}
-
-			public void widgetSelected(SelectionEvent e) {
-				addPrimaryKeyJoinColumn();
-			}
-		});
-
-		this.pkJoinColumnsEditButton = getWidgetFactory().createButton(
-			this.pkJoinColumnsGroup,
-			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_edit,
-			SWT.NONE);
-		this.pkJoinColumnsEditButton.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// do nothing
-			}
-
-			public void widgetSelected(SelectionEvent e) {
-				editPrimaryKeyJoinColumn();
-			}
-		});
-		gridData =  new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		this.pkJoinColumnsEditButton.setLayoutData(gridData);
-
-		this.pkJoinColumnsRemoveButton = getWidgetFactory().createButton(
-			this.pkJoinColumnsGroup,
-			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_remove,
-			SWT.NONE);
-		gridData =  new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.verticalAlignment = GridData.BEGINNING;
-		this.pkJoinColumnsRemoveButton.setLayoutData(gridData);
-		this.pkJoinColumnsRemoveButton.addSelectionListener(new SelectionListener() {
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// do nothing
-			}
-
-			public void widgetSelected(SelectionEvent e) {
-				removePrimaryKeyJoinColumn();
-			}
-		});
-
-		this.pkJoinColumnsListViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			public void selectionChanged(SelectionChangedEvent event) {
-				updatePrimaryKeyJoinColumnsEnablement();
-			}
-		});
-	}
-
-	private IContentProvider buildJoinColumnsListContentProvider() {
-		return new IStructuredContentProvider(){
-			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-				// do nothing
-			}
-
-			public void dispose() {
-				// do nothing
-			}
-
-			public Object[] getElements(Object inputElement) {
-				return ((ISecondaryTable) inputElement).getPrimaryKeyJoinColumns().toArray();
-			}
-		};
+		return NLS.bind(JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParams, joinColumn.getName(), joinColumn.getReferencedColumnName());
 	}
 
 	private ILabelProvider buildJoinColumnsListLabelProvider() {
@@ -220,65 +137,65 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaCompo
 			@Override
 			public String getText(Object element) {
 				IPrimaryKeyJoinColumn joinColumn = (IPrimaryKeyJoinColumn) element;
-				return (PrimaryKeyJoinColumnsInSecondaryTableComposite.this.subject().containsSpecifiedPrimaryKeyJoinColumns()) ?
-					buildJoinColumnLabel(joinColumn)
-				:
+				return subject().specifiedPrimaryKeyJoinColumnsSize() > 0 ?
+					buildJoinColumnLabel(joinColumn) :
 					buildDefaultJoinColumnLabel(joinColumn);
 			}
 		};
 	}
 
-	String buildDefaultJoinColumnLabel(IPrimaryKeyJoinColumn joinColumn) {
-		return NLS.bind(JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());
+	private WritablePropertyValueModel<Boolean> buildOverrideDefaultHolder() {
+		return new OverrideDefaultValueModel(getSubjectHolder());
 	}
 
-	String buildJoinColumnLabel(IPrimaryKeyJoinColumn joinColumn) {
-		if (joinColumn.getSpecifiedName() == null) {
-			if (joinColumn.getSpecifiedReferencedColumnName() == null) {
-				return NLS.bind(JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsBothDefault, joinColumn.getName(),joinColumn.getReferencedColumnName());
+	private AddRemovePane.Adapter buildPrimaryKeyJoinColumnAdapter() {
+		return new AddRemovePane.AbstractAdapter() {
+			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
+				addPrimaryKeyJoinColumn();
 			}
-			return NLS.bind(JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsFirstDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());
-		}
-		else if (joinColumn.getSpecifiedReferencedColumnName() == null) {
-			return NLS.bind(JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsSecDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());
-		}
-		else {
-			return NLS.bind(JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParams, joinColumn.getName(), joinColumn.getReferencedColumnName());
-		}
+
+			@Override
+			public boolean hasOptionalButton() {
+				return true;
+			}
+
+			@Override
+			public String optionalButtonText() {
+				return JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_edit;
+			}
+
+			@Override
+			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
+				editPrimaryKeyJoinColumn(listSelectionModel);
+			}
+
+			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
+				removePrimaryKeyJoinColumn(listSelectionModel);
+			}
+		};
 	}
 
-
-	void addPrimaryKeyJoinColumn() {
-		PrimaryKeyJoinColumnInSecondaryTableDialog dialog = new PrimaryKeyJoinColumnInSecondaryTableDialog(this.getControl().getShell(), this.secondaryTable);
-		addJoinColumnFromDialog(dialog);
+	private WritablePropertyValueModel<IPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnHolder() {
+		return new SimplePropertyValueModel<IPrimaryKeyJoinColumn>();
 	}
 
-	private void addJoinColumnFromDialog(PrimaryKeyJoinColumnInSecondaryTableDialog dialog) {
-		if (dialog.open() == Window.OK) {
-			int index = this.subject().getSpecifiedPrimaryKeyJoinColumns().size();
-			String name = dialog.getSelectedName();
-			String referencedColumnName = dialog.getReferencedColumnName();
-			IPrimaryKeyJoinColumn joinColumn = this.secondaryTable.createPrimaryKeyJoinColumn(index);
-			this.subject().getSpecifiedPrimaryKeyJoinColumns().add(joinColumn);
-			joinColumn.setSpecifiedName(name);
-			joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
-		}
+	private ListValueModel/*<IPrimaryKeyJoinColumn>*/ buildPrimaryKeyJoinColumnListHolder() {
+		return new ListAspectAdapter<ISecondaryTable>/*<IPrimaryKeyJoinColumn, ISecondaryTable>*/(
+			getSubjectHolder(),
+			ISecondaryTable.DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST,
+			ISecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST)
+		{
+			@Override
+			protected ListIterator<IPrimaryKeyJoinColumn> listIterator_() {
+				return subject.primaryKeyJoinColumns();
+			}
+		};
 	}
 
-	private IPrimaryKeyJoinColumn getSelectedJoinColumn() {
-		return (IPrimaryKeyJoinColumn) ((StructuredSelection) this.pkJoinColumnsListViewer.getSelection()).getFirstElement();
-	}
-
-	void editPrimaryKeyJoinColumn() {
-		IPrimaryKeyJoinColumn joinColumn = getSelectedJoinColumn();
-		PrimaryKeyJoinColumnInSecondaryTableDialog dialog = new PrimaryKeyJoinColumnInSecondaryTableDialog(this.getControl().getShell(), joinColumn);
-		editJoinColumnFromDialog(dialog, joinColumn);
-	}
-
-	private void editJoinColumnFromDialog(PrimaryKeyJoinColumnInSecondaryTableDialog dialog, IPrimaryKeyJoinColumn joinColumn) {
-		if (dialog.open() == Window.OK) {
-			editJoinColumnDialogOkd(dialog, joinColumn);
-		}
+	private ListValueModel/*<IPrimaryKeyJoinColumn>*/ buildSortedPrimaryKeyJoinColumnListHolder() {
+		return new SortedListValueModelAdapter/*<IPrimaryKeyJoinColumn, ISecondaryTable>*/(
+			buildPrimaryKeyJoinColumnListHolder()
+		);
 	}
 
 	private void editJoinColumnDialogOkd(PrimaryKeyJoinColumnInSecondaryTableDialog dialog, IPrimaryKeyJoinColumn joinColumn) {
@@ -304,108 +221,168 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaCompo
 		}
 	}
 
-	void removePrimaryKeyJoinColumn() {
-		ISelection selection = this.pkJoinColumnsListViewer.getSelection();
-		if (selection instanceof StructuredSelection) {
-			for (Iterator i = ((StructuredSelection) selection).iterator(); i.hasNext(); ) {
-				this.subject().getPrimaryKeyJoinColumns().remove(i.next());
-			}
+	private void editJoinColumnFromDialog(PrimaryKeyJoinColumnInSecondaryTableDialog dialog, IPrimaryKeyJoinColumn joinColumn) {
+		if (dialog.open() == Window.OK) {
+			editJoinColumnDialogOkd(dialog, joinColumn);
 		}
 	}
 
-	void updatePrimaryKeyJoinColumnsEnablement() {
-		boolean groupEnabledState = this.subject().containsSpecifiedPrimaryKeyJoinColumns();
-		enableGroup(this.pkJoinColumnsGroup, groupEnabledState);
-
-		this.pkJoinColumnsRemoveButton.setEnabled(groupEnabledState && !((StructuredSelection) this.pkJoinColumnsListViewer.getSelection()).isEmpty());
-		this.pkJoinColumnsEditButton.setEnabled(groupEnabledState && ((StructuredSelection) this.pkJoinColumnsListViewer.getSelection()).size() == 1);
+	private void editPrimaryKeyJoinColumn(ObjectListSelectionModel listSelectionModel) {
+		IPrimaryKeyJoinColumn joinColumn = (IPrimaryKeyJoinColumn) listSelectionModel.getSelectedValue();
+		PrimaryKeyJoinColumnInSecondaryTableDialog dialog = new PrimaryKeyJoinColumnInSecondaryTableDialog(this.getControl().getShell(), joinColumn);
+		editJoinColumnFromDialog(dialog, joinColumn);
 	}
 
-	private void enableGroup(Group group, boolean enabled) {
-		group.setEnabled(enabled);
-		for (int i = 0; i < group.getChildren().length; i++) {
-			group.getChildren()[i].setEnabled(enabled);
-		}
-	}
-
-
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected void doPopulate() {
-		if (this.subject() == null) {
-			this.pkJoinColumnsListViewer.setInput(null);
-			return;
-		}
+	protected void initializeLayout(Composite container) {
 
-		this.pkJoinColumnsListViewer.setInput(this.subject());
+		int groupBoxMargin = groupBoxMargin();
 
+		// Override Default check box
+		Button overrideDefaultButton = buildCheckBox(
+			buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
+			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_overrideDefaultPrimaryKeyJoinColumns,
+			buildOverrideDefaultHolder()
+		);
 
-		updatePrimaryKeyJoinColumnsEnablement();
-		this.overrideDefaultJoinColumnsCheckBox.setSelection(this.subject().containsSpecifiedPrimaryKeyJoinColumns());
+		installOverrideDefaultButtonEnabler(overrideDefaultButton);
+
+		// Primary Key Join Columns group pane
+		container = buildTitledPane(
+			container,
+			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_primaryKeyJoinColumn
+		);
+
+		// Primary Key Join Columns add/remove list pane
+		AddRemoveListPane<ISecondaryTable> pkJoinColumnListPane = new AddRemoveListPane<ISecondaryTable>(
+			this,
+			container,
+			buildPrimaryKeyJoinColumnAdapter(),
+			buildSortedPrimaryKeyJoinColumnListHolder(),
+			buildPrimaryKeyJoinColumnHolder(),
+			buildJoinColumnsListLabelProvider()
+		);
+
+		helpSystem().setHelp(
+			pkJoinColumnListPane.getControl(),
+			IJpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
+		);
+
+		installPrimaryKeyJoinColumnListPaneEnabler(pkJoinColumnListPane);
 	}
 
-	@Override
-	protected void engageListeners() {
-		if (this.subject() != null) {
-			this.subject().eAdapters().add(this.secondaryTableListener);
-			for (IPrimaryKeyJoinColumn pkJoinColumn : this.subject().getPrimaryKeyJoinColumns()) {
-				pkJoinColumn.eAdapters().add(this.pkJoinColumnListener);
-			}
+	private void installOverrideDefaultButtonEnabler(Button overrideDefaultButton) {
+
+		new ControlEnabler(
+			buildControlBooleanHolder(),
+			overrideDefaultButton
+		);
+	}
+
+	private void installPrimaryKeyJoinColumnListPaneEnabler(AddRemoveListPane<ISecondaryTable> pkJoinColumnListPane) {
+
+		new BaseJpaControllerEnabler(
+			buildControlBooleanHolder(),
+			pkJoinColumnListPane
+		);
+	}
+
+	private void removePrimaryKeyJoinColumn(ObjectListSelectionModel listSelectionModel) {
+		int[] selectedIndices = listSelectionModel.getSelectedIndices();
+
+		for (int index = selectedIndices.length; --index > 0; ) {
+			subject().removeSpecifiedPrimaryKeyJoinColumn(selectedIndices[index]);
 		}
 	}
 
-	@Override
-	protected void disengageListeners() {
-		if (this.subject() != null) {
-			for (IPrimaryKeyJoinColumn pkJoinColumn : this.subject().getPrimaryKeyJoinColumns()) {
-				pkJoinColumn.eAdapters().remove(this.pkJoinColumnListener);
-			}
-			this.subject().eAdapters().remove(this.secondaryTableListener);
+	private class OverrideDefaultValueModel extends TransformationPropertyValueModel<ISecondaryTable, Boolean>
+	                                        implements WritablePropertyValueModel<Boolean>
+	{
+		OverrideDefaultValueModel(PropertyValueModel<ISecondaryTable> valueHolder) {
+			super(valueHolder);
+			engageListChangeListener(valueHolder);
 		}
-	}
 
-	protected void secondaryTableChanged(Notification notification) {
-		if (notification.getFeatureID(ISecondaryTable.class) == JpaCoreMappingsPackage.ISECONDARY_TABLE__SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS) {
-			if (notification.getEventType() == Notification.ADD) {
-				((IPrimaryKeyJoinColumn) notification.getNewValue()).eAdapters().add(this.pkJoinColumnListener);
-			}
-			else if (notification.getEventType() == Notification.REMOVE) {
-				((IPrimaryKeyJoinColumn) notification.getOldValue()).eAdapters().remove(this.pkJoinColumnListener);
-			}
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					pkJoinColumnsListViewer.refresh();
-					overrideDefaultJoinColumnsCheckBox.setSelection(subject().containsSpecifiedPrimaryKeyJoinColumns());
-					updatePrimaryKeyJoinColumnsEnablement();
+		private void engageListChangeListener(PropertyValueModel<ISecondaryTable> valueHolder) {
+			new ListAspectAdapter<ISecondaryTable>/*<IPrimaryKeyJoinColumn, ISecondaryTable>*/(valueHolder, ISecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST) {
+				@Override
+				protected void itemsAdded(ListChangeEvent e) {
+					super.itemsAdded(e);
+					valueChanged(e);
 				}
-			});
-		}
-	}
 
-	protected void pkJoinColumnChanged(Notification notification) {
-		if (notification.getFeatureID(INamedColumn.class) == JpaCoreMappingsPackage.INAMED_COLUMN__SPECIFIED_NAME
-			|| notification.getFeatureID(IAbstractJoinColumn.class) == JpaCoreMappingsPackage.IABSTRACT_JOIN_COLUMN__SPECIFIED_REFERENCED_COLUMN_NAME
-			|| notification.getFeatureID(INamedColumn.class) == JpaCoreMappingsPackage.INAMED_COLUMN__DEFAULT_NAME
-			|| notification.getFeatureID(IAbstractJoinColumn.class) == JpaCoreMappingsPackage.IABSTRACT_JOIN_COLUMN__DEFAULT_REFERENCED_COLUMN_NAME) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					pkJoinColumnsListViewer.refresh();
+				@Override
+				protected void itemsMoved(ListChangeEvent e) {
+					super.itemsMoved(e);
+					valueChanged(e);
 				}
-			});
-		}
-	}
 
-	@Override
-	protected void enableWidgets(boolean enabled) {
-		this.pkJoinColumnsListViewer.getControl().setEnabled(enabled);
-		this.overrideDefaultJoinColumnsCheckBox.setEnabled(enabled);
-		this.pkJoinColumnsEditButton.setEnabled(enabled);
-		this.pkJoinColumnsRemoveButton.setEnabled(enabled);
-		this.pkJoinColumnsAddButton.setEnabled(enabled);
+				@Override
+				protected void itemsRemoved(ListChangeEvent e) {
+					super.itemsRemoved(e);
+					valueChanged(e);
+				}
+
+				@Override
+				protected void itemsReplaced(ListChangeEvent e) {
+					super.itemsReplaced(e);
+					valueChanged(e);
+				}
+
+				@Override
+				protected void listChanged(ListChangeEvent e) {
+					super.listChanged(e);
+					valueChanged(e);
+				}
+
+				@Override
+				protected void listCleared(ListChangeEvent e) {
+					super.listCleared(e);
+					valueChanged(e);
+				}
+
+				@Override
+				protected ListIterator<IPrimaryKeyJoinColumn> listIterator_() {
+					return subject.specifiedPrimaryKeyJoinColumns();
+				}
+
+				@Override
+				protected int size_() {
+					return subject.specifiedPrimaryKeyJoinColumnsSize();
+				}
+
+				private void valueChanged(ListChangeEvent e) {
+					PropertyChangeEvent event = new PropertyChangeEvent(e.getSource(), e.aspectName(), null, subject);
+					OverrideDefaultValueModel.this.valueChanged(event);
+				}
+			};
+		}
+
+		public void setValue(Boolean value) {
+			ISecondaryTable secondaryTable = subject();
+
+			if (value) {
+				IPrimaryKeyJoinColumn defaultJoinColumn = secondaryTable.defaultPrimaryKeyJoinColumns().next();
+				String columnName = defaultJoinColumn.getDefaultName();
+				String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
+
+				IPrimaryKeyJoinColumn pkJoinColumn = secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
+				pkJoinColumn.setSpecifiedName(columnName);
+				pkJoinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+			}
+			else {
+				for (int index = secondaryTable.specifiedPrimaryKeyJoinColumnsSize(); --index >= 0; ) {
+					secondaryTable.removeSpecifiedPrimaryKeyJoinColumn(index);
+				}
+			}
+		}
+
+		@Override
+		protected Boolean transform_(ISecondaryTable value) {
+			return value.specifiedPrimaryKeyJoinColumnsSize() > 0;
+		}
 	}
 }

@@ -110,6 +110,8 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 	}
 
 	protected ComboViewer buildMappingCombo(Composite parent) {
+		parent = fixBorderNotPainted(parent);
+
 		CCombo combo = getWidgetFactory().createCCombo(parent);
 		this.mappingCombo = new ComboViewer(combo);
 		this.mappingCombo.setContentProvider(buildContentProvider());

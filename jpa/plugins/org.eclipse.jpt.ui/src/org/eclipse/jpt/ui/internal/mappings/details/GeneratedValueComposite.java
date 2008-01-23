@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.internal.context.base.GenerationType;
 import org.eclipse.jpt.core.internal.context.base.IGeneratedValue;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
@@ -47,7 +46,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class GeneratedValueComposite extends BaseJpaComposite<IIdMapping>
+public class GeneratedValueComposite extends BaseJpaController<IIdMapping>
 {
 	private PropertyChangeListener generatedValueChangeListener;
 	private PropertyChangeListener generatorNameChangeListener;
@@ -97,6 +96,7 @@ public class GeneratedValueComposite extends BaseJpaComposite<IIdMapping>
 	}
 
 	private CCombo buildGeneratorNameCombo(Composite parent) {
+
 		CCombo combo = buildCombo(parent);
 		combo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
 		combo.addModifyListener(buildGeneratorNameModifyListener());

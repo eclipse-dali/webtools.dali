@@ -11,8 +11,8 @@ package org.eclipse.jpt.ui.internal.xml.details;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
-import org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -21,7 +21,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
@@ -49,11 +48,11 @@ public class XmlMappingMetadataCompleteCheckBox extends BaseJpaController<Persis
 	}
 
 	@Override
-	protected void buildWidgets(Composite parent) {
+	protected void initializeLayout(Composite container) {
 		this.button = getWidgetFactory().createButton(
-						parent,
-						JptUiXmlMessages.XMLEntityMappingsPage_XmlMappingMetadataCompleteCheckBox,
-						SWT.CHECK);
+			container,
+			JptUiXmlMessages.XMLEntityMappingsPage_XmlMappingMetadataCompleteCheckBox,
+			SWT.CHECK);
 
 		this.button.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -68,9 +67,10 @@ public class XmlMappingMetadataCompleteCheckBox extends BaseJpaController<Persis
 
 	@Override
 	protected void disengageListeners() {
-		if (this.persistenceUnitMetadata != null) {
-			this.persistenceUnitMetadata.eAdapters().remove(this.persistenceUnitMetadataListener);
-		}
+		super.disengageListeners();
+//		if (this.persistenceUnitMetadata != null) {
+//			this.persistenceUnitMetadata.eAdapters().remove(this.persistenceUnitMetadataListener);
+//		}
 	}
 
 	@Override
@@ -81,14 +81,10 @@ public class XmlMappingMetadataCompleteCheckBox extends BaseJpaController<Persis
 
 	@Override
 	protected void engageListeners() {
-		if (this.persistenceUnitMetadata != null) {
-			this.persistenceUnitMetadata.eAdapters().add(this.persistenceUnitMetadataListener);
-		}
-	}
-
-	@Override
-	public Control getControl() {
-		return this.button;
+		super.engageListeners();
+//		if (this.persistenceUnitMetadata != null) {
+//			this.persistenceUnitMetadata.eAdapters().add(this.persistenceUnitMetadataListener);
+//		}
 	}
 
 	private void persistenceUnitMetadataChanged(Notification notification) {

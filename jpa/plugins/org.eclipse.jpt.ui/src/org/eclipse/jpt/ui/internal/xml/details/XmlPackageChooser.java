@@ -40,7 +40,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SelectionDialog;
@@ -73,8 +72,8 @@ public class XmlPackageChooser extends BaseJpaController
 	}
 
 	@Override
-	protected void buildWidgets(Composite parent) {
-		this.composite = getWidgetFactory().createComposite(parent);
+	protected void initializeLayout(Composite container) {
+		this.composite = getWidgetFactory().createComposite(container);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.marginHeight = 0;
 		gridLayout.marginWidth = 1;
@@ -137,16 +136,18 @@ public class XmlPackageChooser extends BaseJpaController
 
 	@Override
 	protected void engageListeners() {
-		if (this.subject() != null) {
-			subject().eAdapters().add(this.entityMappingsListener);
-		}
+		super.engageListeners();
+//		if (this.subject() != null) {
+//			subject().eAdapters().add(this.entityMappingsListener);
+//		}
 	}
 
 	@Override
 	protected void disengageListeners() {
-		if (this.subject() != null) {
-			this.subject().eAdapters().remove(this.entityMappingsListener);
-		}
+		super.disengageListeners();
+//		if (this.subject() != null) {
+//			this.subject().eAdapters().remove(this.entityMappingsListener);
+//		}
 	}
 
 	@Override
@@ -176,7 +177,7 @@ public class XmlPackageChooser extends BaseJpaController
 	}
 
 	private IPackageFragmentRoot getPackageFragmentRoot() {
-		IProject project = ((JpaEObject) this.subject()).getJpaProject().project();
+		IProject project = ((JpaEObject) this.subject()).jpaProject().project();
 		IJavaProject root = JavaCore.create(project);
 		try {
 			return root.getAllPackageFragmentRoots()[0];
@@ -191,11 +192,6 @@ public class XmlPackageChooser extends BaseJpaController
 		if (! textData.equals(text.getText())) {
 			text.setText(textData);
 		}
-	}
-
-	@Override
-	public Control getControl() {
-		return this.composite;
 	}
 
 	/**

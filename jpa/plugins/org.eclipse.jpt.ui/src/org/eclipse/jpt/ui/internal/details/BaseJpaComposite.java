@@ -10,20 +10,16 @@ package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.node.Node;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
+/**
+ * @deprecated Extend directly BaseJpaController, this pane will go away the
+ *             moment I have a sec. ~PF
+ */
+@Deprecated
 public abstract class BaseJpaComposite<T extends Node> extends BaseJpaController<T>
-	implements IJpaComposite<T>
 {
-	/**
-	 * The container of this composite.
-	 */
-	private Composite composite;
-
 	/**
 	 * Creates a new <code>BaseJpaComposite</code>.
 	 *
@@ -97,48 +93,4 @@ public abstract class BaseJpaComposite<T extends Node> extends BaseJpaController
 
 		super(subjectHolder, parent, widgetFactory);
 	}
-
-	protected Composite buildComposite(Composite parent) {
-		Composite container = this.buildPane(parent);
-
-		GridLayout layout = new GridLayout(1, false);
-		layout.marginHeight = 0;
-		layout.marginWidth  = 0;
-		layout.marginTop    = 0;
-		layout.marginLeft   = 0;
-		layout.marginBottom = 0;
-		layout.marginRight  = 0;
-		container.setLayout(layout);
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		container.setLayoutData(gridData);
-
-		return container;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected final void buildWidgets(Composite parent) {
-		this.composite = buildComposite(parent);
-		this.initializeLayout(this.composite);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	public Control getControl() {
-		return this.composite;
-	}
-
-	/**
-	 * Initializes the layout of this pane.
-	 *
-	 * @param container The parent container
-	 */
-	protected abstract void initializeLayout(Composite container);
 }

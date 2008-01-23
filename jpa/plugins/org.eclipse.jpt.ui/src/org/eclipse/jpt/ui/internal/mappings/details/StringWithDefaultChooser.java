@@ -29,7 +29,6 @@ import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
@@ -88,10 +87,9 @@ public class StringWithDefaultChooser extends BaseJpaController
 		};
 	}
 
-
 	@Override
-	protected void buildWidgets(Composite parent) {
-		CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
+	protected void initializeLayout(Composite container) {
+		CCombo combo = getWidgetFactory().createCCombo(container, SWT.FLAT);
 		this.comboViewer = new ComboViewer(combo);
 		this.comboViewer.setContentProvider(buildContentProvider());
 		this.comboViewer.setLabelProvider(buildLabelProvider());
@@ -124,31 +122,29 @@ public class StringWithDefaultChooser extends BaseJpaController
 
 	@Override
 	protected void disengageListeners() {
-		if (this.stringHolder != null && this.stringHolder.wrappedObject() != null) {
-			this.stringHolder.wrappedObject().eAdapters().remove(this.stringHolderListener);
-		}
+		super.disengageListeners();
+//		if (this.stringHolder != null && this.stringHolder.wrappedObject() != null) {
+//			this.stringHolder.wrappedObject().eAdapters().remove(this.stringHolderListener);
+//		}
 	}
 
 	@Override
 	protected void doPopulate() {
+		super.doPopulate();
 		this.comboViewer.setInput(this.stringHolder);
 		populateCombo();
 	}
 
 	@Override
 	protected void engageListeners() {
-		if (this.stringHolder != null && this.stringHolder.wrappedObject() != null) {
-			this.stringHolder.wrappedObject().eAdapters().add(this.stringHolderListener);
-		}
+		super.engageListeners();
+//		if (this.stringHolder != null && this.stringHolder.wrappedObject() != null) {
+//			this.stringHolder.wrappedObject().eAdapters().add(this.stringHolderListener);
+//		}
 	}
 
 	public CCombo getCombo() {
 		return this.comboViewer.getCCombo();
-	}
-
-	@Override
-	public Control getControl() {
-		return getCombo();
 	}
 
 	private void populateCombo() {
