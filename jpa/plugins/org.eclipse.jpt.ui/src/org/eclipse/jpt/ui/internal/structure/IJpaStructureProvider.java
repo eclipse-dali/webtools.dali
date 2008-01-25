@@ -8,8 +8,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
 
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jpt.ui.internal.jface.IItemLabelProvider;
+import org.eclipse.jpt.ui.internal.jface.IItemLabelProviderFactory;
+import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProvider;
+import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProviderFactory;
 
 public interface IJpaStructureProvider 
 {
@@ -17,14 +19,14 @@ public interface IJpaStructureProvider
 	Object getInput();
 	
 	/**
-	 * Build an outline content provider.
+	 * Build an factory to create {@link ITreeItemContentProvider}s
 	 */
-	ITreeContentProvider buildContentProvider();
+	ITreeItemContentProviderFactory treeItemContentProviderFactory();
 	
 	/**
-	 * Build an outline label provider.
+	 * Build a factory to create {@link IItemLabelProvider}s
 	 */
-	ILabelProvider buildLabelProvider();
+	IItemLabelProviderFactory itemLabelProviderFactory();
 	
 	void dispose();
 }

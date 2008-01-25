@@ -22,6 +22,7 @@ import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.NullLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.NullTreeContentProvider;
 import org.eclipse.jpt.ui.internal.selection.IJpaSelection;
@@ -65,8 +66,13 @@ public class JpaStructurePage extends Page
 		control.setLayout(new FillLayout());		
 		viewer = new TreeViewer(control, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setAutoExpandLevel(2);
-		viewer.setContentProvider(structureProvider.buildContentProvider());
-		viewer.setLabelProvider(structureProvider.buildLabelProvider());
+		DelegatingTreeContentAndLabelProvider contentAndLabelProvider
+			= new DelegatingTreeContentAndLabelProvider(
+				structureProvider.treeItemContentProviderFactory(),
+				structureProvider.itemLabelProviderFactory());
+		viewer.setContentProvider(contentAndLabelProvider);
+		// TODO Use problem decorator
+		viewer.setLabelProvider(contentAndLabelProvider);
 		viewer.setInput(structureProvider.getInput());
 		viewer.addSelectionChangedListener(this);
 		initContextMenu();

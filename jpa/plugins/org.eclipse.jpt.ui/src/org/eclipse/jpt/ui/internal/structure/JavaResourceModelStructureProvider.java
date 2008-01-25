@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
 
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
+import org.eclipse.jpt.ui.internal.jface.IItemLabelProviderFactory;
+import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProviderFactory;
 
 public class JavaResourceModelStructureProvider
 	extends ResourceModelStructureProvider
@@ -21,11 +21,11 @@ public class JavaResourceModelStructureProvider
 		super(resourceModel);
 	}
 	
-	public ITreeContentProvider buildContentProvider() {
-		return new JavaStructureContentProvider();
+	public ITreeItemContentProviderFactory treeItemContentProviderFactory() {
+		return new JavaItemContentProviderFactory();
 	}
 	
-	public ILabelProvider buildLabelProvider() {
-		return new JavaStructureLabelProvider();
+	public IItemLabelProviderFactory itemLabelProviderFactory() {
+		return new JavaItemLabelProviderFactory();
 	}
 }

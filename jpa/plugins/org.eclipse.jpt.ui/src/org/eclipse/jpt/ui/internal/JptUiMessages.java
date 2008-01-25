@@ -97,6 +97,7 @@ public class JptUiMessages extends NLS
 	public static String JpaPreferencePage_invalidJpaLib;
 
 	public static String JpaStructureView_structureNotAvailable;
+	
 	public static String JpaStructureView_linkWithEditorText;
 
 	public static String JpaStructureView_linkWithEditorDesc;
@@ -138,15 +139,20 @@ public class JptUiMessages extends NLS
 	public static String JpaFacetWizardPage_listClassesButton;
 
 	public static String JpaFacetWizardPage_createOrmXmlButton;
-
-	public static String PersistentAttributePage_mapAs;
-
-	public static String PersistentTypePage_mapAs;
+	
+	public static String OrmItemLabelProviderFactory_entityMappingsLabel;
 
 	public static String OverwriteConfirmerDialog_title;
-
+	
 	public static String OverwriteConfirmerDialog_text;
-
+	
+	public static String PersistenceItemLabelProviderFactory_persistenceLabel;
+	
+	public static String PersistentAttributePage_mapAs;
+	
+	public static String PersistentTypePage_mapAs;
+	
+	
 	private JptUiMessages() {
 		throw new UnsupportedOperationException();
 	}

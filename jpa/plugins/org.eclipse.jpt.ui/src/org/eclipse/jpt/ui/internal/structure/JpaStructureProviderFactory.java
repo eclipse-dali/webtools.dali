@@ -27,13 +27,16 @@ import org.eclipse.ui.IFileEditorInput;
 public class JpaStructureProviderFactory
 	implements IAdapterFactory
 {
+	@SuppressWarnings("unchecked")
 	private static final Class[] ADAPTER_LIST = 
 			new Class[] { JpaStructurePage.class };
 	
+	@SuppressWarnings("unchecked")
 	public Class[] getAdapterList() {
 		return ADAPTER_LIST;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
 		if (! (adaptableObject instanceof IEditorPart)) {
 			return null;
