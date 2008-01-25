@@ -10,11 +10,12 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
-import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.utility.internal.model.Model;
 
-public interface IResourceModel
+public interface IResourceModel extends Model
 {
 	/**
 	 * Constant representing a Java resource type
@@ -40,16 +41,29 @@ public interface IResourceModel
 	 */
 	String getResourceType();
 	
-	Iterator<IJpaContextNode> rootContextNodes();
 	
-	void dispose();
+	// **************** root context nodes *************************************
+	
+	/**
+	 * String constant associated with changes to the list of root context nodes
+	 */
+	final static String ROOT_CONTEXT_NODE_LIST = "rootContextNodes";
+	
+	/**
+	 * Return a list iterator of all root context nodes
+	 */
+	ListIterator<IJpaContextNode> rootContextNodes();
+	
 	
 	void handleJavaElementChangedEvent(ElementChangedEvent event);
 	
 	
 	void addResourceModelChangeListener(IResourceModelListener listener);
-
+	
 	void removeResourceModelChangeListener(IResourceModelListener listener);
+	
+	
+	void dispose();
 	
 	/**
 	 * Use to resolve type information that could be dependent on other files being added/removed

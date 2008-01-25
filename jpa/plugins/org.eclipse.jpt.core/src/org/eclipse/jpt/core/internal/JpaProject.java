@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -344,7 +343,7 @@ public class JpaProject extends JpaNode implements IJpaProject {
 		return new TransformationIterator<IJpaFile, JpaCompilationUnitResource>(this.javaJpaFiles()) {
 			@Override
 			protected JpaCompilationUnitResource transform(IJpaFile jpaFile) {
-				return ((JavaResourceModel) jpaFile.getResourceModel()).getCompilationUnitResource();
+				return ((JavaResourceModel) jpaFile.getResourceModel()).resource();
 			}
 		};
 	}

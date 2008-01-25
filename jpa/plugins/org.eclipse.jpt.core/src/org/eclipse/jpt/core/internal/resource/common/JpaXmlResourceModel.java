@@ -11,27 +11,20 @@
 package org.eclipse.jpt.core.internal.resource.common;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.ElementChangedEvent;
-import org.eclipse.jpt.core.internal.IResourceModel;
+import org.eclipse.jpt.core.internal.AbstractResourceModel;
 import org.eclipse.jpt.core.internal.IResourceModelListener;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
-import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.wst.common.internal.emfworkbench.integration.EditModelEvent;
 import org.eclipse.wst.common.internal.emfworkbench.integration.EditModelListener;
 
-public abstract class JpaXmlResourceModel implements IResourceModel
+public abstract class JpaXmlResourceModel extends AbstractResourceModel
 {
 	protected JpaArtifactEdit artifactEdit;
 	
 	protected JpaXmlResource resource;
-	
-	private final Collection<IJpaContextNode> rootContextNodes;
 	
 	
 	protected JpaXmlResourceModel(IFile file) {
@@ -40,7 +33,6 @@ public abstract class JpaXmlResourceModel implements IResourceModel
 		this.resource = this.artifactEdit.getResource(file);
 		this.resource.setResourceModel(this);
 		this.artifactEdit.addListener(buildReloadListener(this.resource));
-		this.rootContextNodes = new ArrayList<IJpaContextNode>();
 	}
 	
 	
@@ -54,24 +46,6 @@ public abstract class JpaXmlResourceModel implements IResourceModel
 		return this.resource;
 	}
 	
-	public void dispose() {
-		this.artifactEdit.dispose();
-	}
-	
-	public Iterator<IJpaContextNode> rootContextNodes() {
-		return new CloneIterator<IJpaContextNode>(this.rootContextNodes);
-	}
-	
-	public void addRootContextNode(IJpaContextNode contextNode) {
-		if (! this.rootContextNodes.contains(contextNode)) {
-			this.rootContextNodes.add(contextNode);
-		}
-	}
-	
-	public void removeRootContextNode(IJpaContextNode contextNode) {
-		this.rootContextNodes.remove(contextNode);
-	}
-
 	public void handleJavaElementChangedEvent(ElementChangedEvent event) {
 		resource().handleJavaElementChangedEvent(event);
 	}
@@ -82,6 +56,11 @@ public abstract class JpaXmlResourceModel implements IResourceModel
 	
 	public void removeResourceModelChangeListener(IResourceModelListener listener) {
 		resource().removeResourceModelChangeListener(listener);
+	}
+	
+	public void dispose() {
+		super.dispose();
+		this.artifactEdit.dispose();
 	}
 	
 	public void resolveTypes() {
