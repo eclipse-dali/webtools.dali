@@ -30,7 +30,6 @@ public class ReverseComparator<E extends Comparable<? super E>>
 		this.comparator = comparator;
 	}
 
-	@SuppressWarnings("unchecked")
 	public int compare(E e1, E e2) {
 		return (this.comparator == null) ?
 			e2.compareTo(e1)

@@ -32,7 +32,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 public class CloneIterator<E>
 	implements Iterator<E>
 {
-	private final Iterator<E> nestedIterator;
+	private final Iterator<Object> nestedIterator;
 	private E current;
 	private final Mutator<E> mutator;
 	private boolean removeAllowed;
@@ -56,15 +56,10 @@ public class CloneIterator<E>
 	 */
 	public CloneIterator(Collection<? extends E> c, Mutator<E> mutator) {
 		super();
-		this.nestedIterator = new ArrayIterator<E>(buildArray(c));
+		this.nestedIterator = new ArrayIterator<Object>(c.toArray());
 		this.current = null;
 		this.mutator = mutator;
 		this.removeAllowed = false;
-	}
-
-	@SuppressWarnings("unchecked")
-	private static <T> T[] buildArray(Collection<? extends T> c) {
-		return (T[]) c.toArray();
 	}
 
 
@@ -75,7 +70,7 @@ public class CloneIterator<E>
 	}
 
 	public E next() {
-		this.current = this.nestedIterator.next();
+		this.current = this.nestedNext();
 		this.removeAllowed = true;
 		return this.current;
 	}
@@ -90,6 +85,15 @@ public class CloneIterator<E>
 
 
 	// ********** internal methods **********
+
+	/**
+	 * The collection passed in during construction held Es,
+	 * so this cast is not a problem.
+	 */
+	@SuppressWarnings("unchecked")
+	protected E nestedNext() {
+		return (E) this.nestedIterator.next();
+	}
 
 	/**
 	 * Remove the specified element from the original collection.

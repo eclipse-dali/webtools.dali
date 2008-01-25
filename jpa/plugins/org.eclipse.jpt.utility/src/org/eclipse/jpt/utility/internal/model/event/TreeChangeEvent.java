@@ -59,7 +59,6 @@ public class TreeChangeEvent extends ChangeEvent {
 	 * @param source The object on which the event initially occurred.
 	 * @param treeName The programmatic name of the tree that was changed.
 	 */
-	@SuppressWarnings("unchecked")
 	public TreeChangeEvent(Model source, String treeName) {
 		this(source, treeName, EMPTY_PATH);
 	}

@@ -279,6 +279,14 @@ public class CollectionToolsTests extends TestCase {
 		assertTrue(Arrays.equals(new Object[] { "a", "b", "X", "X", "X", "c", "d" }, a));
 	}
 
+	public void testAddAllObjectArrayIntObjectArray4() {
+		Object[] a = new Object[] { "a", "b", "c", "d" };
+		a = CollectionTools.addAll(a, 4, new String[] { "X", "X", "X" });
+		assertEquals(7, a.length);
+		assertTrue(CollectionTools.contains(a, "X"));
+		assertTrue(Arrays.equals(new Object[] { "a", "b", "c", "d", "X", "X", "X" }, a));
+	}
+
 	public void testAddAllCharArrayCharArray() {
 		char[] a = CollectionTools.addAll(this.buildCharArray(), new char[] { 'd', 'e' });
 		assertEquals(5, a.length);

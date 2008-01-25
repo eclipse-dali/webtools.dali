@@ -72,7 +72,6 @@ public class CollectionChangeEvent extends ChangeEvent {
 	 * @param source The object on which the event initially occurred.
 	 * @param collectionName The programmatic name of the collection that was changed.
 	 */
-	@SuppressWarnings("unchecked")
 	public CollectionChangeEvent(Model source, String collectionName) {
 		this(source, collectionName, Collections.emptySet());
 	}
