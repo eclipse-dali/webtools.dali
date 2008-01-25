@@ -46,22 +46,12 @@ public class JptUiPlugin extends AbstractUIPlugin
 	}
 	
 	
-	public JptUiPlugin() {
-		super();
-		INSTANCE = this;
-	}
-	
-	/**
-	 * Return the JPA platform UI corresponding to the given JPA platform
-	 */
-	public IJpaPlatformUi jpaPlatformUi(IJpaPlatform jpaPlatform) {
-		return JpaPlatformUiRegistry.instance().jpaPlatform(jpaPlatform.getId());
-	}
+	// **************** Image API **********************************************
 	
 	/**
 	 * This gets a .gif from the icons folder.
 	 */
-	public ImageDescriptor getImageDescriptor(String key) {
+	public static ImageDescriptor getImageDescriptor(String key) {
 		if (! key.startsWith("icons/")) {
 			key = "icons/" + key;
 		}
@@ -74,8 +64,24 @@ public class JptUiPlugin extends AbstractUIPlugin
 	/**
 	 * This returns an image for a .gif from the icons folder
 	 */
-	public Image getImage(String key) {
+	public static Image getImage(String key) {
 		ImageDescriptor desc = getImageDescriptor(key);
 		return (desc == null) ? null : desc.createImage();
+	}
+	
+	
+	// **************** Construction *******************************************
+	
+	public JptUiPlugin() {
+		super();
+		INSTANCE = this;
+	}
+	
+	
+	/**
+	 * Return the JPA platform UI corresponding to the given JPA platform
+	 */
+	public IJpaPlatformUi jpaPlatformUi(IJpaPlatform jpaPlatform) {
+		return JpaPlatformUiRegistry.instance().jpaPlatform(jpaPlatform.getId());
 	}
 }
