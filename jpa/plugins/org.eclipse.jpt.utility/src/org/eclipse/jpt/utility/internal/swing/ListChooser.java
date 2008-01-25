@@ -113,12 +113,12 @@ public class ListChooser
         //These are used to workaround problems with Swing trying to 
         //determine the size of a comboBox with a large model
         setPrototypeDisplayValue(prototypeLabel);
-        getListBox().setPrototypeCellValue(prototypeLabel);
+        listBox().setPrototypeCellValue(prototypeLabel);
 	}
 	
     
-    private JList getListBox() {
-        return (JList) ClassTools.getFieldValue(this.ui, "listBox");
+    private JList listBox() {
+        return (JList) ClassTools.fieldValue(this.ui, "listBox");
     }
     
 	/** 
@@ -215,7 +215,7 @@ public class ListChooser
 	private void updateArrowButton() {
 		try {
 			BasicComboBoxUI comboBoxUi = (BasicComboBoxUI) ListChooser.this.getUI();
-			JButton arrowButton = (JButton) ClassTools.getFieldValue(comboBoxUi, "arrowButton");
+			JButton arrowButton = (JButton) ClassTools.fieldValue(comboBoxUi, "arrowButton");
 			arrowButton.setEnabled(this.isEnabled() && this.choosable);
 		}
 		catch (Exception e) {
@@ -241,7 +241,7 @@ public class ListChooser
     
 	// **************** Public ************************************************
 	
-	public int getLongListSize() {
+	public int longListSize() {
 		return this.longListSize;
 	}
 	
@@ -389,7 +389,7 @@ public class ListChooser
 		private void checkComboBoxButton() {
 			try {
 				BasicComboBoxUI comboBoxUi = (BasicComboBoxUI) ListChooser.this.getUI();
-				JButton arrowButton = (JButton) ClassTools.getFieldValue(comboBoxUi, "arrowButton");
+				JButton arrowButton = (JButton) ClassTools.fieldValue(comboBoxUi, "arrowButton");
 				arrowButton.getModel().setPressed(false);
 			}
 			catch (Exception e) {

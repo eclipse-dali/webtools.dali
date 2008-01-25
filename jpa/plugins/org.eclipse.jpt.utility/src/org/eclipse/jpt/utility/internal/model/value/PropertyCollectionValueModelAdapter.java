@@ -27,18 +27,18 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
  * If the property's value is null, an empty iterator is returned
  * (i.e. you can't have a collection with a null element).
  */
-public class PropertyCollectionValueModelAdapter
+public class PropertyCollectionValueModelAdapter<E>
 	extends AbstractModel
-	implements CollectionValueModel
+	implements CollectionValueModel<E>
 {
 	/** The wrapped property value model. */
-	protected final PropertyValueModel valueHolder;
+	protected final PropertyValueModel<E> valueHolder;
 
 	/** A listener that forwards any events fired by the value holder. */
 	protected final PropertyChangeListener propertyChangeListener;
 
 	/** Cache the value. */
-	protected Object value;
+	protected E value;
 
 
 	// ********** constructors/initialization **********
@@ -46,7 +46,7 @@ public class PropertyCollectionValueModelAdapter
 	/**
 	 * Wrap the specified ListValueModel.
 	 */
-	public PropertyCollectionValueModelAdapter(PropertyValueModel valueHolder) {
+	public PropertyCollectionValueModelAdapter(PropertyValueModel<E> valueHolder) {
 		super();
 		if (valueHolder == null) {
 			throw new NullPointerException();
@@ -68,8 +68,9 @@ public class PropertyCollectionValueModelAdapter
 	 */
 	protected PropertyChangeListener buildPropertyChangeListener() {
 		return new PropertyChangeListener() {
+			@SuppressWarnings("unchecked")
 			public void propertyChanged(PropertyChangeEvent e) {
-				PropertyCollectionValueModelAdapter.this.valueChanged(e.newValue());
+				PropertyCollectionValueModelAdapter.this.valueChanged((E) e.newValue());
 			}
 			@Override
 			public String toString() {
@@ -81,11 +82,11 @@ public class PropertyCollectionValueModelAdapter
 
 	// ********** CollectionValueModel implementation **********
 
-	public Iterator iterator() {
+	public Iterator<E> iterator() {
 		return (this.value == null) ?
-					EmptyIterator.instance()
+					EmptyIterator.<E>instance()
 				:
-					new SingleElementIterator(this.value);
+					new SingleElementIterator<E>(this.value);
 	}
 
 	public int size() {
@@ -170,10 +171,10 @@ public class PropertyCollectionValueModelAdapter
 	 * synchronize our internal value with the wrapped value
 	 * and fire the appropriate events
 	 */
-	protected void valueChanged(Object newValue) {
+	protected void valueChanged(E newValue) {
 		// put in "empty" check so we don't fire events unnecessarily
 		if (this.value != null) {
-			Object oldValue = this.value;
+			E oldValue = this.value;
 			this.value = null;
 			this.fireItemRemoved(VALUES, oldValue);
 		}

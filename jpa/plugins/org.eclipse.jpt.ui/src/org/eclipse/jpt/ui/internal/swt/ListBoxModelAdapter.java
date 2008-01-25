@@ -58,7 +58,7 @@ public class ListBoxModelAdapter<E> {
 	/**
 	 * A value model on the underlying model selections.
 	 */
-	protected final CollectionValueModel selectedItemsHolder;
+	protected final CollectionValueModel<E> selectedItemsHolder;
 
 	/**
 	 * A listener that allows us to synchronize the list box's selection with
@@ -111,7 +111,7 @@ public class ListBoxModelAdapter<E> {
 	 */
 	public static <T> ListBoxModelAdapter<T> adapt(
 			ListValueModel listHolder,
-			CollectionValueModel selectedItemsHolder,
+			CollectionValueModel<T> selectedItemsHolder,
 			List listBox)
 	{
 		return adapt(listHolder, selectedItemsHolder, listBox, StringConverter.Default.<T>instance());
@@ -124,7 +124,7 @@ public class ListBoxModelAdapter<E> {
 	 */
 	public static <T> ListBoxModelAdapter<T> adapt(
 			ListValueModel listHolder,
-			CollectionValueModel selectedItemsHolder,
+			CollectionValueModel<T> selectedItemsHolder,
 			List listBox,
 			StringConverter<T> stringConverter)
 	{
@@ -156,7 +156,7 @@ public class ListBoxModelAdapter<E> {
 			List listBox,
 			StringConverter<T> stringConverter)
 	{
-		return new ListBoxModelAdapter<T>(listHolder, new PropertyCollectionValueModelAdapter(selectedItemHolder), listBox, stringConverter);
+		return new ListBoxModelAdapter<T>(listHolder, new PropertyCollectionValueModelAdapter<T>(selectedItemHolder), listBox, stringConverter);
 	}
 
 
@@ -168,7 +168,7 @@ public class ListBoxModelAdapter<E> {
 	 */
 	protected ListBoxModelAdapter(
 			ListValueModel listHolder,
-			CollectionValueModel selectedItemsHolder,
+			CollectionValueModel<E> selectedItemsHolder,
 			List listBox,
 			StringConverter<E> stringConverter)
 	{

@@ -19,8 +19,8 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
  * Extend ItemAspectListValueModelAdapter to listen to one or more
  * properties of each item in the wrapped list model.
  */
-public class ItemPropertyListValueModelAdapter
-	extends ItemAspectListValueModelAdapter
+public class ItemPropertyListValueModelAdapter<E>
+	extends ItemAspectListValueModelAdapter<E>
 {
 
 	/** The names of the items' properties that we listen to. */
@@ -44,8 +44,8 @@ public class ItemPropertyListValueModelAdapter
 	/**
 	 * Construct an adapter for the specified item properties.
 	 */
-	public ItemPropertyListValueModelAdapter(CollectionValueModel collectionHolder, String... propertyNames) {
-		this(new CollectionListValueModelAdapter(collectionHolder), propertyNames);
+	public ItemPropertyListValueModelAdapter(CollectionValueModel<E> collectionHolder, String... propertyNames) {
+		this(new CollectionListValueModelAdapter<E>(collectionHolder), propertyNames);
 	}
 
 

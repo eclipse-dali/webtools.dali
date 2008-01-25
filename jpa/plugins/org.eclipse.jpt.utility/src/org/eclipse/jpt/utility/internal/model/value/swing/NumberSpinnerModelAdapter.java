@@ -43,7 +43,7 @@ public class NumberSpinnerModelAdapter
 	private final Number defaultValue;
 
 	/** A value model on the underlying number. */
-	private final WritablePropertyValueModel numberHolder;
+	private final WritablePropertyValueModel<Number> numberHolder;
 
 	/**
 	 * A listener that allows us to synchronize with
@@ -59,7 +59,7 @@ public class NumberSpinnerModelAdapter
 	 * The default spinner value is zero.
 	 * The step size is one.
 	 */
-	public NumberSpinnerModelAdapter(WritablePropertyValueModel numberHolder) {
+	public NumberSpinnerModelAdapter(WritablePropertyValueModel<Number> numberHolder) {
 		this(numberHolder, 0);
 	}
 
@@ -67,7 +67,7 @@ public class NumberSpinnerModelAdapter
 	 * Constructor - the number holder is required.
 	 * The step size is one.
 	 */
-	public NumberSpinnerModelAdapter(WritablePropertyValueModel numberHolder, int defaultValue) {
+	public NumberSpinnerModelAdapter(WritablePropertyValueModel<Number> numberHolder, int defaultValue) {
 		this(numberHolder, null, null, new Integer(1), new Integer(defaultValue));
 	}
 
@@ -75,14 +75,14 @@ public class NumberSpinnerModelAdapter
 	 * Constructor - the number holder is required.
 	 * Use the minimum value as the default spinner value.
 	 */
-	public NumberSpinnerModelAdapter(WritablePropertyValueModel numberHolder, int minimum, int maximum, int stepSize) {
+	public NumberSpinnerModelAdapter(WritablePropertyValueModel<Number> numberHolder, int minimum, int maximum, int stepSize) {
 		this(numberHolder, minimum, maximum, stepSize, minimum);
 	}
 
 	/**
 	 * Constructor - the number holder is required.
 	 */
-	public NumberSpinnerModelAdapter(WritablePropertyValueModel numberHolder, int minimum, int maximum, int stepSize, int defaultValue) {
+	public NumberSpinnerModelAdapter(WritablePropertyValueModel<Number> numberHolder, int minimum, int maximum, int stepSize, int defaultValue) {
 		this(numberHolder, new Integer(minimum), new Integer(maximum), new Integer(stepSize), new Integer(defaultValue));
 	}
 
@@ -90,21 +90,21 @@ public class NumberSpinnerModelAdapter
 	 * Constructor - the number holder is required.
 	 * Use the minimum value as the default spinner value.
 	 */
-	public NumberSpinnerModelAdapter(WritablePropertyValueModel numberHolder, double value, double minimum, double maximum, double stepSize) {
+	public NumberSpinnerModelAdapter(WritablePropertyValueModel<Number> numberHolder, double value, double minimum, double maximum, double stepSize) {
 		this(numberHolder, value, minimum, maximum, stepSize, minimum);
 	}
 
 	/**
 	 * Constructor - the number holder is required.
 	 */
-	public NumberSpinnerModelAdapter(WritablePropertyValueModel numberHolder, double value, double minimum, double maximum, double stepSize, double defaultValue) {
+	public NumberSpinnerModelAdapter(WritablePropertyValueModel<Number> numberHolder, double value, double minimum, double maximum, double stepSize, double defaultValue) {
 		this(numberHolder, new Double(minimum), new Double(maximum), new Double(stepSize), new Double(defaultValue));
 	}
 
 	/**
 	 * Constructor - the number holder is required.
 	 */
-	public NumberSpinnerModelAdapter(WritablePropertyValueModel numberHolder, Comparable minimum, Comparable maximum, Number stepSize, Number defaultValue) {
+	public NumberSpinnerModelAdapter(WritablePropertyValueModel<Number> numberHolder, Comparable<?> minimum, Comparable<?> maximum, Number stepSize, Number defaultValue) {
 		super(numberHolder.value() == null ? defaultValue : (Number) numberHolder.value(), minimum, maximum, stepSize);
 		this.numberHolder = numberHolder;
 		this.numberChangeListener = this.buildNumberChangeListener();
@@ -158,7 +158,7 @@ public class NumberSpinnerModelAdapter
     @Override
 	public void setValue(Object value) {
 		super.setValue(value);
-		this.numberHolder.setValue(value);
+		this.numberHolder.setValue((Number) value);
 	}
 
 	/**

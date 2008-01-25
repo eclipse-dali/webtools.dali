@@ -33,9 +33,9 @@ import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
  * we do not have any listeners. This should not be too painful since,
  * most likely, client objects will also be listeners.
  */
-public class ListCollectionValueModelAdapter
+public class ListCollectionValueModelAdapter<E>
 	extends AbstractModel
-	implements CollectionValueModel
+	implements CollectionValueModel<E>
 {
 	/** The wrapped list value model. */
 	protected final ListValueModel listHolder;
@@ -48,7 +48,7 @@ public class ListCollectionValueModelAdapter
 	 * the wrapped list.
 	 */
 	// we declare this an ArrayList so we can use #clone() and #ensureCapacity(int)
-	protected final ArrayList collection;
+	protected final ArrayList<E> collection;
 
 
 	// ********** constructors/initialization **********
@@ -63,7 +63,7 @@ public class ListCollectionValueModelAdapter
 		}
 		this.listHolder = listHolder;
 		this.listChangeListener = this.buildListChangeListener();
-		this.collection = new ArrayList();
+		this.collection = new ArrayList<E>();
 		// postpone building the collection and listening to the underlying list
 		// until we have listeners ourselves...
 	}
@@ -107,9 +107,9 @@ public class ListCollectionValueModelAdapter
 
 	// ********** CollectionValueModel implementation **********
 
-	public Iterator iterator() {
+	public Iterator<E> iterator() {
 		// try to prevent backdoor modification of the list
-		return new ReadOnlyIterator(this.collection);
+		return new ReadOnlyIterator<E>(this.collection);
 	}
 
 	public int size() {
@@ -199,7 +199,7 @@ public class ListCollectionValueModelAdapter
 	// ********** behavior **********
 
 	protected void buildCollection() {
-		Iterator stream = this.listHolder.iterator();
+		Iterator<E> stream = this.listHolder.iterator();
 		// if the new list is empty, do nothing
 		if (stream.hasNext()) {
 			this.collection.ensureCapacity(this.listHolder.size());
@@ -222,11 +222,12 @@ public class ListCollectionValueModelAdapter
 		this.collection.clear();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void itemsAdded(ListChangeEvent e) {
-		this.addItemsToCollection(e.items(), this.collection, VALUES);
+		this.addItemsToCollection((Iterator<E>) e.items(), this.collection, VALUES);
 	}
 
-	protected void removeInternalItems(Iterator items) {
+	protected void removeInternalItems(Iterator<E> items) {
 		// we have to remove the items individually,
 		// since they are probably not in sequence
 		while (items.hasNext()) {
@@ -237,13 +238,15 @@ public class ListCollectionValueModelAdapter
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void itemsRemoved(ListChangeEvent e) {
-		this.removeInternalItems(e.items());
+		this.removeInternalItems((Iterator<E>) e.items());
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void itemsReplaced(ListChangeEvent e) {
-		this.removeInternalItems(e.replacedItems());
-		this.addItemsToCollection(e.items(), this.collection, VALUES);
+		this.removeInternalItems((Iterator<E>) e.replacedItems());
+		this.addItemsToCollection((Iterator<E>) e.items(), this.collection, VALUES);
 	}
 
 	protected void itemsMoved(ListChangeEvent e) {
@@ -265,7 +268,8 @@ public class ListCollectionValueModelAdapter
 	protected void listChanged(ListChangeEvent e) {
 		// put in empty check so we don't fire events unnecessarily
 		if ( ! this.collection.isEmpty()) {
-			ArrayList removedItems = (ArrayList) this.collection.clone();
+			@SuppressWarnings("unchecked")
+			ArrayList<E> removedItems = (ArrayList<E>) this.collection.clone();
 			this.collection.clear();
 			this.fireItemsRemoved(VALUES, removedItems);
 		}

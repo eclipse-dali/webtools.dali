@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class RadioButtonModelAdapterTests extends TestCase {
-	private WritablePropertyValueModel<String> valueHolder;
+	private WritablePropertyValueModel<Object> valueHolder;
 
 	private ButtonModel redButtonModelAdapter;
 	private ChangeListener redListener;
@@ -52,7 +52,7 @@ public class RadioButtonModelAdapterTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.valueHolder = new SimplePropertyValueModel<String>(null);
+		this.valueHolder = new SimplePropertyValueModel<Object>(null);
 //		buttonGroup = new ButtonGroup();
 
 		this.redButtonModelAdapter = this.buildButtonModel(this.valueHolder, RED);
@@ -85,7 +85,7 @@ public class RadioButtonModelAdapterTests extends TestCase {
 		this.clearFlags();
 	}
 
-	private ButtonModel buildButtonModel(WritablePropertyValueModel<String> pvm, Object buttonValue) {
+	private ButtonModel buildButtonModel(WritablePropertyValueModel<Object> pvm, Object buttonValue) {
 		return new RadioButtonModelAdapter(pvm, buttonValue) {
 			@Override
 			protected PropertyChangeListener buildBooleanChangeListener() {
@@ -188,7 +188,7 @@ public class RadioButtonModelAdapterTests extends TestCase {
 	}
 
 	public void testHasListeners() throws Exception {
-		SimplePropertyValueModel<String> localValueHolder = (SimplePropertyValueModel<String>) this.valueHolder;
+		SimplePropertyValueModel<Object> localValueHolder = (SimplePropertyValueModel<Object>) this.valueHolder;
 		assertFalse(localValueHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.redButtonModelAdapter);
 		this.verifyHasNoListeners(this.greenButtonModelAdapter);
@@ -209,12 +209,12 @@ public class RadioButtonModelAdapterTests extends TestCase {
 	}
 
 	private void verifyHasNoListeners(Object model) throws Exception {
-		EventListenerList listenerList = (EventListenerList) ClassTools.getFieldValue(model, "listenerList");
+		EventListenerList listenerList = (EventListenerList) ClassTools.fieldValue(model, "listenerList");
 		assertEquals(0, listenerList.getListenerList().length);
 	}
 
 	private void verifyHasListeners(Object model) throws Exception {
-		EventListenerList listenerList = (EventListenerList) ClassTools.getFieldValue(model, "listenerList");
+		EventListenerList listenerList = (EventListenerList) ClassTools.fieldValue(model, "listenerList");
 		assertFalse(listenerList.getListenerList().length == 0);
 	}
 

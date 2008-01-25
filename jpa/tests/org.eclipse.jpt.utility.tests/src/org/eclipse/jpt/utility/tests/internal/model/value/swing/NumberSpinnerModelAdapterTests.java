@@ -23,7 +23,7 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class NumberSpinnerModelAdapterTests extends TestCase {
-	private WritablePropertyValueModel<Integer> valueHolder;
+	private WritablePropertyValueModel<Number> valueHolder;
 	private SpinnerModel spinnerModelAdapter;
 	boolean eventFired;
 
@@ -34,7 +34,7 @@ public class NumberSpinnerModelAdapterTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.valueHolder = new SimplePropertyValueModel<Integer>(new Integer(0));
+		this.valueHolder = new SimplePropertyValueModel<Number>(new Integer(0));
 		this.spinnerModelAdapter = new NumberSpinnerModelAdapter(this.valueHolder, -33, 33, 1) {
 			@Override
 			protected PropertyChangeListener buildNumberChangeListener() {
@@ -91,7 +91,7 @@ public class NumberSpinnerModelAdapterTests extends TestCase {
 	}
 
 	public void testHasListeners() throws Exception {
-		SimplePropertyValueModel<Integer> localValueHolder = (SimplePropertyValueModel<Integer>) this.valueHolder;
+		SimplePropertyValueModel<Number> localValueHolder = (SimplePropertyValueModel<Number>) this.valueHolder;
 		assertFalse(localValueHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.spinnerModelAdapter);
 
@@ -114,7 +114,7 @@ public class NumberSpinnerModelAdapterTests extends TestCase {
 	}
 
 	public void testNullInitialValue() {
-		this.valueHolder = new SimplePropertyValueModel<Integer>();
+		this.valueHolder = new SimplePropertyValueModel<Number>();
 		this.spinnerModelAdapter = new NumberSpinnerModelAdapter(this.valueHolder, new Integer(-33), new Integer(33), new Integer(1), new Integer(0)) {
 			@Override
 			protected PropertyChangeListener buildNumberChangeListener() {

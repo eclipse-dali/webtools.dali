@@ -447,10 +447,10 @@ public class TreeModelAdapterTests extends TestCase {
 		 * transform the test model children into nodes
 		 */
 		protected ListValueModel buildNodeAdapter(TestModel model) {
-			return new TransformationListValueModelAdapter(this.buildChildrenAdapter(model)) {
+			return new TransformationListValueModelAdapter<TestModel, TestNode>(this.buildChildrenAdapter(model)) {
 				@Override
-				protected Object transformItem(Object item) {
-					return TestNode.this.buildChildNode((TestModel) item);
+				protected TestNode transformItem(TestModel item) {
+					return TestNode.this.buildChildNode(item);
 				}
 			};
 		}
@@ -463,15 +463,15 @@ public class TreeModelAdapterTests extends TestCase {
 		/**
 		 * return a collection value model on the specified model's children
 		 */
-		protected CollectionValueModel buildChildrenAdapter(TestModel model) {
-			return new CollectionAspectAdapter(TestModel.CHILDREN_COLLECTION, model) {
+		protected CollectionValueModel<TestModel> buildChildrenAdapter(TestModel model) {
+			return new CollectionAspectAdapter<TestModel, TestModel>(TestModel.CHILDREN_COLLECTION, model) {
 				@Override
 				protected Iterator<TestModel> iterator_() {
-					return ((TestModel) this.subject).children();
+					return this.subject.children();
 				}
 				@Override
 				protected int size_() {
-					return ((TestModel) this.subject).childrenSize();
+					return this.subject.childrenSize();
 				}
 			};
 		}
@@ -611,11 +611,11 @@ public class TreeModelAdapterTests extends TestCase {
 		/** the list should be sorted */
 		@Override
 		protected ListValueModel buildChildrenModel(TestModel testModel) {
-			return new SortedListValueModelAdapter(this.buildDisplayStringAdapter(testModel));
+			return new SortedListValueModelAdapter<TestNode>(this.buildDisplayStringAdapter(testModel));
 		}
 		/** the display string (name) of each node can change */
 		protected ListValueModel buildDisplayStringAdapter(TestModel testModel) {
-			return new ItemPropertyListValueModelAdapter(this.buildNodeAdapter(testModel), DISPLAY_STRING_PROPERTY);
+			return new ItemPropertyListValueModelAdapter<TestNode>(this.buildNodeAdapter(testModel), DISPLAY_STRING_PROPERTY);
 		}
 		/** children are also sorted nodes */
 		@Override

@@ -67,7 +67,7 @@ public class ListModelAdapter
 	/**
 	 * Constructor - the collection holder is required.
 	 */
-	public ListModelAdapter(CollectionValueModel collectionHolder) {
+	public ListModelAdapter(CollectionValueModel<?> collectionHolder) {
 		this();
 		this.setModel(collectionHolder);
 	}
@@ -147,7 +147,7 @@ public class ListModelAdapter
 	/**
 	 * Return the underlying list model.
 	 */
-	public ListValueModel getModel() {
+	public ListValueModel model() {
 		return this.listHolder;
 	}
 	
@@ -172,7 +172,7 @@ public class ListModelAdapter
 	/**
 	 * Set the underlying collection model.
 	 */
-	public void setModel(CollectionValueModel collectionHolder) {
+	public void setModel(CollectionValueModel<?> collectionHolder) {
 		this.setModel(new CollectionListValueModelAdapter(collectionHolder));
 	}
 

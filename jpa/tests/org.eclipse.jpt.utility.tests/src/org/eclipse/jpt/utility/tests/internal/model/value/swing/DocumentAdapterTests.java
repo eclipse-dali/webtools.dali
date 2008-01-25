@@ -130,13 +130,13 @@ public class DocumentAdapterTests extends TestCase {
 	}
 
 	private void verifyHasNoListeners(Object document) throws Exception {
-		Object delegate = ClassTools.getFieldValue(document, "delegate");
+		Object delegate = ClassTools.fieldValue(document, "delegate");
 		Object[] listeners = (Object[]) ClassTools.executeMethod(delegate, "getDocumentListeners");
 		assertEquals(0, listeners.length);
 	}
 
 	private void verifyHasListeners(Object document) throws Exception {
-		Object delegate = ClassTools.getFieldValue(document, "delegate");
+		Object delegate = ClassTools.fieldValue(document, "delegate");
 		Object[] listeners = (Object[]) ClassTools.executeMethod(delegate, "getDocumentListeners");
 		assertFalse(listeners.length == 0);
 	}

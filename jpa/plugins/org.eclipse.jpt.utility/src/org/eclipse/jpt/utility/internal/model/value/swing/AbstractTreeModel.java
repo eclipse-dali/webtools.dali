@@ -55,7 +55,7 @@ public abstract class AbstractTreeModel
 	 * (There seems to be a pattern of making this type of method public;
 	 * although it should probably be protected....)
 	 */
-	public TreeModelListener[] getTreeModelListeners() {
+	public TreeModelListener[] treeModelListeners() {
  		return this.listenerList.getListeners(TreeModelListener.class);
 	}
 

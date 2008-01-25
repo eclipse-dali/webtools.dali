@@ -386,7 +386,7 @@ public class ComboBoxModelAdapterUITest {
 		}
 		@Override
 		protected ListBrowser buildBrowser() {
-			return new FilteringListBrowser();
+			return new FilteringListBrowser<String>();
 		}
 	}
 

@@ -39,6 +39,7 @@ import javax.swing.tree.TreeSelectionModel;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EnumerationIterator;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TreeNodeValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.TreeModelAdapter;
 import org.eclipse.jpt.utility.internal.swing.Displayable;
@@ -54,7 +55,7 @@ public class TreeModelAdapterUITest {
 
 	// hold the tree so we can restore its expansion state
 	private JTree tree;
-	private WritablePropertyValueModel rootNodeHolder;
+	private WritablePropertyValueModel<TreeNodeValueModel<Object>> rootNodeHolder;
 	private boolean sorted;
 	private TreeModel treeModel;
 	private TreeSelectionModel treeSelectionModel;
@@ -77,8 +78,8 @@ public class TreeModelAdapterUITest {
 		this.openWindow();
 	}
 
-	private WritablePropertyValueModel buildRootNodeHolder() {
-		return new SimplePropertyValueModel(this.buildSortedRootNode());
+	private WritablePropertyValueModel<TreeNodeValueModel<Object>> buildRootNodeHolder() {
+		return new SimplePropertyValueModel<TreeNodeValueModel<Object>>(this.buildSortedRootNode());
 	}
 
 	private TestNode buildSortedRootNode() {
@@ -115,7 +116,7 @@ public class TreeModelAdapterUITest {
 	}
 
 	private TreeModel buildTreeModel() {
-		return new TreeModelAdapter(this.rootNodeHolder);
+		return new TreeModelAdapter<Object>(this.rootNodeHolder);
 	}
 
 	private TreeSelectionModel buildTreeSelectionModel() {
@@ -225,7 +226,7 @@ public class TreeModelAdapterUITest {
 		if (this.treeSelectionModel.isSelectionEmpty()) {
 			return null;
 		}
-		return (TestModel) this.selectedNode().value();
+		return this.selectedNode().value();
 	}
 
 	private TestNode rootNode() {
@@ -233,7 +234,7 @@ public class TreeModelAdapterUITest {
 	}
 
 	private TestModel root() {
-		return (TestModel) this.rootNode().value();
+		return this.rootNode().value();
 	}
 
 	private Collection<TreePath> expandedPaths() {

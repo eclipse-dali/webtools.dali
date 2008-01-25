@@ -19,8 +19,8 @@ import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
  * Extend ItemAspectListValueModelAdapter to listen to one or more list
  * aspects of each item in the wrapped list model.
  */
-public class ItemListListValueModelAdapter
-	extends ItemAspectListValueModelAdapter
+public class ItemListListValueModelAdapter<E>
+	extends ItemAspectListValueModelAdapter<E>
 {
 
 	/** The names of the subject's lists that we listen to. */
@@ -44,8 +44,8 @@ public class ItemListListValueModelAdapter
 	/**
 	 * Construct an adapter for the specified item List aspects.
 	 */
-	public ItemListListValueModelAdapter(CollectionValueModel collectionHolder, String... listNames) {
-		this(new CollectionListValueModelAdapter(collectionHolder), listNames);
+	public ItemListListValueModelAdapter(CollectionValueModel<E> collectionHolder, String... listNames) {
+		this(new CollectionListValueModelAdapter<E>(collectionHolder), listNames);
 	}
 
 

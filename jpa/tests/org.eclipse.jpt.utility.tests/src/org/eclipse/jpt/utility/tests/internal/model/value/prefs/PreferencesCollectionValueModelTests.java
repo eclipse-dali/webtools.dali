@@ -31,9 +31,9 @@ import org.eclipse.jpt.utility.internal.model.value.prefs.PreferencePropertyValu
 import org.eclipse.jpt.utility.internal.model.value.prefs.PreferencesCollectionValueModel;
 
 public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
-	private Map expectedValues;
-	private WritablePropertyValueModel nodeHolder;
-	PreferencesCollectionValueModel preferencesAdapter;
+	private Map<String, String> expectedValues;
+	private WritablePropertyValueModel<Preferences> nodeHolder;
+	PreferencesCollectionValueModel<String> preferencesAdapter;
 	CollectionChangeEvent event;
 	CollectionChangeListener listener;
 	private PropertyChangeListener itemListener;
@@ -52,13 +52,13 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.expectedValues = new HashMap();
+		this.expectedValues = new HashMap<String, String>();
 		this.testNode.put(KEY_NAME_1, STRING_VALUE_1);	this.expectedValues.put(KEY_NAME_1, STRING_VALUE_1);
 		this.testNode.put(KEY_NAME_2, STRING_VALUE_2);	this.expectedValues.put(KEY_NAME_2, STRING_VALUE_2);
 		this.testNode.put(KEY_NAME_3, STRING_VALUE_3);	this.expectedValues.put(KEY_NAME_3, STRING_VALUE_3);
 
-		this.nodeHolder = new SimplePropertyValueModel(this.testNode);
-		this.preferencesAdapter = new PreferencesCollectionValueModel(this.nodeHolder);
+		this.nodeHolder = new SimplePropertyValueModel<Preferences>(this.testNode);
+		this.preferencesAdapter = new PreferencesCollectionValueModel<String>(this.nodeHolder);
 		this.listener = this.buildCollectionChangeListener();
 		this.itemListener = this.buildItemListener();
 		this.preferencesAdapter.addCollectionChangeListener(CollectionValueModel.VALUES, this.listener);
@@ -114,18 +114,18 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 
 		this.nodeHolder.setValue(anotherNode);
 		// collectionChanged does not pass any items in the this.event
-		this.verifyEvent(Collections.EMPTY_MAP);
+		this.verifyEvent(Collections.<String, String>emptyMap());
 		this.verifyAdapter(this.preferencesAdapter);
 		
 		this.event = null;
 		this.expectedValues.clear();
 		this.nodeHolder.setValue(null);
 		this.verifyEvent(this.expectedValues);
-		assertFalse(((Iterator) this.preferencesAdapter.iterator()).hasNext());
+		assertFalse(this.preferencesAdapter.iterator().hasNext());
 		
 		this.event = null;
 		this.nodeHolder.setValue(this.testNode);
-		this.verifyEvent(Collections.EMPTY_MAP);
+		this.verifyEvent(Collections.<String, String>emptyMap());
 		this.expectedValues.clear();
 		this.expectedValues.put(KEY_NAME_1, STRING_VALUE_1);
 		this.expectedValues.put(KEY_NAME_2, STRING_VALUE_2);
@@ -141,7 +141,7 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 		String ANOTHER_STRING_VALUE = "another string value";
 		this.testNode.put(ANOTHER_KEY_NAME, ANOTHER_STRING_VALUE);
 		this.waitForEventQueueToClear();
-		Map expectedItems = new HashMap();
+		Map<String, String> expectedItems = new HashMap<String, String>();
 		expectedItems.put(ANOTHER_KEY_NAME, ANOTHER_STRING_VALUE);
 		this.verifyEvent(expectedItems);
 		this.expectedValues.put(ANOTHER_KEY_NAME, ANOTHER_STRING_VALUE);
@@ -159,7 +159,9 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 		assertEquals(this.preferencesAdapter, this.event.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event.collectionName());
 		assertEquals(1, this.event.itemsSize());
-		assertEquals(KEY_NAME_2, ((PreferencePropertyValueModel) this.event.items().next()).getKey());
+		@SuppressWarnings("unchecked")
+		String key = ((PreferencePropertyValueModel<String>) this.event.items().next()).key();
+		assertEquals(KEY_NAME_2, key);
 
 		this.expectedValues.remove(KEY_NAME_2);
 		this.verifyAdapter(this.preferencesAdapter);
@@ -235,12 +237,14 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 		assertFalse(this.preferencesAdapter.hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 	}
 
-	private void verifyEvent(Map items) {
+	private void verifyEvent(Map<String, String> items) {
 		assertNotNull(this.event);
 		assertEquals(this.preferencesAdapter, this.event.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event.collectionName());
 		assertEquals(items.size(), this.event.itemsSize());
-		this.verifyItems(items, this.event.items());
+		@SuppressWarnings("unchecked")
+		Iterator<PreferencePropertyValueModel<String>> eventItems = (Iterator<PreferencePropertyValueModel<String>>) this.event.items();
+		this.verifyItems(items, eventItems);
 	}
 
 	private void verifyNode(Preferences node) throws Exception {
@@ -251,22 +255,22 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 		}
 	}
 
-	private void verifyAdapter(PreferencesCollectionValueModel cvm) {
+	private void verifyAdapter(PreferencesCollectionValueModel<String> cvm) {
 		assertEquals(this.expectedValues.size(), cvm.size());
-		this.verifyItems(this.expectedValues, (Iterator) cvm.iterator());
+		this.verifyItems(this.expectedValues, cvm.iterator());
 	}
 
-	private void verifyItems(Map expected, Iterator stream) {
+	private void verifyItems(Map<String, String> expected, Iterator<PreferencePropertyValueModel<String>> stream) {
 		while (stream.hasNext()) {
-			PreferencePropertyValueModel model = (PreferencePropertyValueModel) stream.next();
+			PreferencePropertyValueModel<String> model = stream.next();
 			model.addPropertyChangeListener(PropertyValueModel.VALUE, this.itemListener);
-			assertEquals(expected.get(model.getKey()), model.value());
+			assertEquals(expected.get(model.key()), model.value());
 			model.removePropertyChangeListener(PropertyValueModel.VALUE, this.itemListener);
 		}
 	}
 
 	private boolean nodeHasAnyPrefListeners(Preferences node) throws Exception {
-		PreferenceChangeListener[] prefListeners = (PreferenceChangeListener[]) ClassTools.getFieldValue(node, "prefListeners");
+		PreferenceChangeListener[] prefListeners = (PreferenceChangeListener[]) ClassTools.fieldValue(node, "prefListeners");
 		return prefListeners.length > 0;
 	}
 

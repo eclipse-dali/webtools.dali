@@ -34,7 +34,7 @@ public abstract class CollectionPropertyValueModelAdapter<T>
 	extends AspectPropertyValueModelAdapter<T>
 {
 	/** The wrapped collection value model. */
-	protected final CollectionValueModel collectionHolder;
+	protected final CollectionValueModel<?> collectionHolder;
 
 	/** A listener that allows us to synch with changes to the wrapped collection holder. */
 	protected final CollectionChangeListener collectionChangeListener;
@@ -46,7 +46,7 @@ public abstract class CollectionPropertyValueModelAdapter<T>
 	 * Construct a property value model with the specified wrapped
 	 * collection value model.
 	 */
-	protected CollectionPropertyValueModelAdapter(CollectionValueModel collectionHolder) {
+	protected CollectionPropertyValueModelAdapter(CollectionValueModel<?> collectionHolder) {
 		super();
 		this.collectionHolder = collectionHolder;
 		this.collectionChangeListener = this.buildCollectionChangeListener();

@@ -35,14 +35,14 @@ import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
  * we do not have any listeners. This should not be too painful since,
  * most likely, client objects will also be listeners.
  */
-public class SortedListValueModelAdapter
-	extends CollectionListValueModelAdapter
+public class SortedListValueModelAdapter<E>
+	extends CollectionListValueModelAdapter<E>
 {
 	/**
 	 * A comparator used for sorting the elements;
 	 * if it is null, we use "natural ordering".
 	 */
-	protected Comparator comparator;
+	protected Comparator<E> comparator;
 
 
 	// ********** constructors **********
@@ -51,7 +51,7 @@ public class SortedListValueModelAdapter
 	 * Wrap the specified collection value model and sort its contents
 	 * using the specified comparator.
 	 */
-	public SortedListValueModelAdapter(CollectionValueModel collectionHolder, Comparator comparator) {
+	public SortedListValueModelAdapter(CollectionValueModel<E> collectionHolder, Comparator<E> comparator) {
 		super(collectionHolder);
 		this.comparator = comparator;
 	}
@@ -60,7 +60,7 @@ public class SortedListValueModelAdapter
 	 * Wrap the specified collection value model and sort its contents
 	 * based on the elements' "natural ordering".
 	 */
-	public SortedListValueModelAdapter(CollectionValueModel collectionHolder) {
+	public SortedListValueModelAdapter(CollectionValueModel<E> collectionHolder) {
 		this(collectionHolder, null);
 	}
 
@@ -68,8 +68,8 @@ public class SortedListValueModelAdapter
 	 * Wrap the specified list value model and sort its contents
 	 * using the specified comparator.
 	 */
-	public SortedListValueModelAdapter(ListValueModel listHolder, Comparator comparator) {
-		this(new ListCollectionValueModelAdapter(listHolder), comparator);
+	public SortedListValueModelAdapter(ListValueModel listHolder, Comparator<E> comparator) {
+		this(new ListCollectionValueModelAdapter<E>(listHolder), comparator);
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class SortedListValueModelAdapter
 
 	// ********** accessors **********
 
-	public void setComparator(Comparator comparator) {
+	public void setComparator(Comparator<E> comparator) {
 		this.comparator = comparator;
 		this.sortList();
 	}
@@ -117,12 +117,13 @@ public class SortedListValueModelAdapter
 	 */
 	protected void sortList() {
 		// save the unsorted state of the sorted list so we can minimize the number of "replaced" items
-		ArrayList unsortedList = (ArrayList) this.list.clone();
+		@SuppressWarnings("unchecked")
+		ArrayList<E> unsortedList = (ArrayList<E>) this.list.clone();
 		Collections.sort(this.list, this.comparator);
 		Range diffRange = CollectionTools.identityDiffRange(unsortedList, this.list);
 		if (diffRange.size > 0) {
-			List unsortedItems = unsortedList.subList(diffRange.start, diffRange.end + 1);
-			List sortedItems = this.list.subList(diffRange.start, diffRange.end + 1);
+			List<E> unsortedItems = unsortedList.subList(diffRange.start, diffRange.end + 1);
+			List<E> sortedItems = this.list.subList(diffRange.start, diffRange.end + 1);
 			this.fireItemsReplaced(LIST_VALUES, diffRange.start, sortedItems, unsortedItems);
 		}
 	}

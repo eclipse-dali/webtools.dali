@@ -113,12 +113,12 @@ public class CheckBoxModelAdapterTests extends TestCase {
 	}
 
 	private void verifyHasNoListeners(Object model) throws Exception {
-		EventListenerList listenerList = (EventListenerList) ClassTools.getFieldValue(model, "listenerList");
+		EventListenerList listenerList = (EventListenerList) ClassTools.fieldValue(model, "listenerList");
 		assertEquals(0, listenerList.getListenerList().length);
 	}
 
 	private void verifyHasListeners(Object model) throws Exception {
-		EventListenerList listenerList = (EventListenerList) ClassTools.getFieldValue(model, "listenerList");
+		EventListenerList listenerList = (EventListenerList) ClassTools.fieldValue(model, "listenerList");
 		assertFalse(listenerList.getListenerList().length == 0);
 	}
 

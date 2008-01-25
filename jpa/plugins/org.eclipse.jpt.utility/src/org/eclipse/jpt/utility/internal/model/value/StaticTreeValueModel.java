@@ -20,12 +20,12 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
  * returning an iterator on a static tree, but still allows listeners to be added.
  * Listeners will NEVER be notified of any changes, because there should be none.
  */
-public class StaticTreeValueModel
+public class StaticTreeValueModel<E>
 	extends AbstractModel
 	implements TreeValueModel
 {
 	/** The tree's nodes. */
-	protected final Iterable nodes;
+	protected final Iterable<E> nodes;
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +33,7 @@ public class StaticTreeValueModel
 	/**
 	 * Construct a read-only TreeValueModel for the specified nodes.
 	 */
-	public StaticTreeValueModel(Iterable nodes) {
+	public StaticTreeValueModel(Iterable<E> nodes) {
 		super();
 		if (nodes == null) {
 			throw new NullPointerException();
@@ -43,7 +43,7 @@ public class StaticTreeValueModel
 
 	// ********** TreeValueModel implementation **********
 
-	public Iterator nodes() {
+	public Iterator<E> nodes() {
 		return this.nodes.iterator();
 	}
 

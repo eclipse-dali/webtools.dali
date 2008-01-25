@@ -10,6 +10,7 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -35,15 +36,16 @@ import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
  * we do not have any listeners. This should not be too painful since,
  * most likely, client objects will also be listeners.
  */
-public class TransformationListValueModelAdapter
-	extends ListValueModelWrapper
+public class TransformationListValueModelAdapter<E1, E2>
+	extends ListValueModelWrapper<E1>
+	implements ListValueModel
 {
 
 	/** This transforms the items, unless the subclass overrides #transformItem(Object). */
-	protected Transformer transformer;
+	protected Transformer<E1, E2> transformer;
 
 	/** The list of transformed items. */
-	protected final List transformedList;
+	protected final List<E2> transformedList;
 
 
 	// ********** constructors **********
@@ -51,52 +53,53 @@ public class TransformationListValueModelAdapter
 	/**
 	 * Constructor - the list holder is required.
 	 */
-	public TransformationListValueModelAdapter(ListValueModel listHolder, Transformer transformer) {
+	public TransformationListValueModelAdapter(ListValueModel listHolder, Transformer<E1, E2> transformer) {
 		super(listHolder);
 		this.transformer = transformer;
-		this.transformedList = new ArrayList();
+		this.transformedList = new ArrayList<E2>();
 	}
 
 	/**
 	 * Constructor - the list holder is required.
 	 */
 	public TransformationListValueModelAdapter(ListValueModel listHolder) {
-		this(listHolder, Transformer.Null.instance());
+		this(listHolder, Transformer.Null.<E1, E2>instance());
 	}
 
 	/**
 	 * Constructor - the collection holder is required.
 	 */
-	public TransformationListValueModelAdapter(CollectionValueModel collectionHolder, Transformer transformer) {
-		this(new CollectionListValueModelAdapter(collectionHolder), transformer);
+	public TransformationListValueModelAdapter(CollectionValueModel<E1> collectionHolder, Transformer<E1, E2> transformer) {
+		this(new CollectionListValueModelAdapter<E1>(collectionHolder), transformer);
 	}
 
 	/**
 	 * Constructor - the collection holder is required.
 	 */
-	public TransformationListValueModelAdapter(CollectionValueModel collectionHolder) {
-		this(new CollectionListValueModelAdapter(collectionHolder));
+	public TransformationListValueModelAdapter(CollectionValueModel<E1> collectionHolder) {
+		this(new CollectionListValueModelAdapter<E1>(collectionHolder));
 	}
 
 
 	// ********** ListValueModel implementation **********
 
-	public ListIterator listIterator() {
-		// try to prevent backdoor modification of the list
-		return new ReadOnlyListIterator(this.transformedList);
+	public Iterator<E2> iterator() {
+		return this.listIterator();
 	}
 
-	@Override
-	public Object get(int index) {
+	public ListIterator<E2> listIterator() {
+		// try to prevent backdoor modification of the list
+		return new ReadOnlyListIterator<E2>(this.transformedList);
+	}
+
+	public E2 get(int index) {
 		return this.transformedList.get(index);
 	}
 
-	@Override
 	public int size() {
 		return this.transformedList.size();
 	}
 
-	@Override
 	public Object[] toArray() {
 		return this.transformedList.toArray();
 	}
@@ -121,29 +124,29 @@ public class TransformationListValueModelAdapter
 	/**
 	 * Transform the items associated with the specified event.
 	 */
-	protected List transformItems(ListChangeEvent e) {
-		return this.transformItems(e.items(), e.itemsSize());
+	protected List<E2> transformItems(ListChangeEvent e) {
+		return this.transformItems(this.items(e), e.itemsSize());
 	}
 
 	/**
 	 * Transform the items in the specified list value model.
 	 */
-	protected List transformItems(ListValueModel lvm) {
+	protected List<E2> transformItems(ListValueModel lvm) {
 		return this.transformItems(lvm.listIterator(), lvm.size());
 	}
 
 	/**
 	 * Transform the replaced items associated with the specified event.
 	 */
-	protected List transformReplacedItems(ListChangeEvent e) {
-		return this.transformItems(e.replacedItems(), e.itemsSize());
+	protected List<E2> transformReplacedItems(ListChangeEvent e) {
+		return this.transformItems(this.replacedItems(e), e.itemsSize());
 	}
 
 	/**
 	 * Transform the specified items.
 	 */
-	protected List transformItems(ListIterator items, int size) {
-		List result = new ArrayList(size);
+	protected List<E2> transformItems(ListIterator<E1> items, int size) {
+		List<E2> result = new ArrayList<E2>(size);
 		while (items.hasNext()) {
 			result.add(this.transformItem(items.next()));
 		}
@@ -153,14 +156,14 @@ public class TransformationListValueModelAdapter
 	/**
 	 * Transform the specified item.
 	 */
-	protected Object transformItem(Object item) {
+	protected E2 transformItem(E1 item) {
 		return this.transformer.transform(item);
 	}
 
 	/**
 	 * Change the transformer and rebuild the collection.
 	 */
-	public void setTransformer(Transformer transformer) {
+	public void setTransformer(Transformer<E1, E2> transformer) {
 		this.transformer = transformer;
 		this.rebuildTransformedList();
 	}

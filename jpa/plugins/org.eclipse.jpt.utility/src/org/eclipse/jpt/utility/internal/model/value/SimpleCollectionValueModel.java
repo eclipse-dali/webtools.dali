@@ -26,7 +26,7 @@ import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
  */
 public class SimpleCollectionValueModel<E>
 	extends AbstractModel
-	implements CollectionValueModel, Collection<E>
+	implements CollectionValueModel<E>, Collection<E>
 {
 	/** The collection. */
 	protected Collection<E> collection;

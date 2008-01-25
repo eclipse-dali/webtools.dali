@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class DateSpinnerModelAdapterTests extends TestCase {
-	private WritablePropertyValueModel<Date> valueHolder;
+	private WritablePropertyValueModel<Object> valueHolder;
 	private SpinnerModel spinnerModelAdapter;
 	boolean eventFired;
 
@@ -36,7 +36,7 @@ public class DateSpinnerModelAdapterTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.valueHolder = new SimplePropertyValueModel<Date>(new Date());
+		this.valueHolder = new SimplePropertyValueModel<Object>(new Date());
 		this.spinnerModelAdapter = new DateSpinnerModelAdapter(this.valueHolder) {
 			@Override
 			protected PropertyChangeListener buildDateChangeListener() {
@@ -63,7 +63,7 @@ public class DateSpinnerModelAdapterTests extends TestCase {
 		newDate.setTime(777777);
 		this.spinnerModelAdapter.setValue(newDate);
 		assertTrue(this.eventFired);
-		assertEquals(777777, this.valueHolder.value().getTime());
+		assertEquals(777777, ((Date) this.valueHolder.value()).getTime());
 	}
 
 	public void testSetValueValueHolder() throws Exception {
@@ -99,7 +99,7 @@ public class DateSpinnerModelAdapterTests extends TestCase {
 	}
 
 	public void testHasListeners() throws Exception {
-		SimplePropertyValueModel<Date> localValueHolder = (SimplePropertyValueModel<Date>) this.valueHolder;
+		SimplePropertyValueModel<Object> localValueHolder = (SimplePropertyValueModel<Object>) this.valueHolder;
 		assertFalse(localValueHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.spinnerModelAdapter);
 
@@ -123,7 +123,7 @@ public class DateSpinnerModelAdapterTests extends TestCase {
 
 	public void testNullInitialValue() {
 		Date today = new Date();
-		this.valueHolder = new SimplePropertyValueModel<Date>();
+		this.valueHolder = new SimplePropertyValueModel<Object>();
 		this.spinnerModelAdapter = new DateSpinnerModelAdapter(this.valueHolder, today) {
 			@Override
 			protected PropertyChangeListener buildDateChangeListener() {

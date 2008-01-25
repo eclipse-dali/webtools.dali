@@ -23,7 +23,7 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class ListSpinnerModelAdapterTests extends TestCase {
-	private WritablePropertyValueModel<String> valueHolder;
+	private WritablePropertyValueModel<Object> valueHolder;
 	private SpinnerModel spinnerModelAdapter;
 	boolean eventFired;
 	private static final String[] VALUE_LIST = {"red", "green", "blue"};
@@ -36,7 +36,7 @@ public class ListSpinnerModelAdapterTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.valueHolder = new SimplePropertyValueModel<String>(DEFAULT_VALUE);
+		this.valueHolder = new SimplePropertyValueModel<Object>(DEFAULT_VALUE);
 		this.spinnerModelAdapter = new ListSpinnerModelAdapter(this.valueHolder, VALUE_LIST) {
 			@Override
 			protected PropertyChangeListener buildValueChangeListener() {
@@ -100,7 +100,7 @@ public class ListSpinnerModelAdapterTests extends TestCase {
 	}
 
 	public void testHasListeners() throws Exception {
-		SimplePropertyValueModel<String> localValueHolder = (SimplePropertyValueModel<String>) this.valueHolder;
+		SimplePropertyValueModel<Object> localValueHolder = (SimplePropertyValueModel<Object>) this.valueHolder;
 		assertFalse(localValueHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.spinnerModelAdapter);
 

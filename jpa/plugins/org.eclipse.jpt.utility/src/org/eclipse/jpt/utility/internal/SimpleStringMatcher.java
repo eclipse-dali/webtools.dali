@@ -37,12 +37,12 @@ import java.util.regex.Pattern;
  * object is compared to the pattern. By default the string returned
  * by the object's #toString() method is passed to the pattern matcher.
  */
-public class SimpleStringMatcher
-	implements StringMatcher, Filter, Serializable
+public class SimpleStringMatcher<T>
+	implements StringMatcher, Filter<T>, Serializable
 {
 
 	/** An adapter that converts the objects into strings to be matched with the pattern. */
-	private StringConverter stringConverter;
+	private StringConverter<T> stringConverter;
 
 	/** The string used to construct the regular expression pattern. */
 	private String patternString;
@@ -135,7 +135,7 @@ public class SimpleStringMatcher
 
 	// ********** Filter implementation **********
 
-	public synchronized boolean accept(Object o) {
+	public synchronized boolean accept(T o) {
 		return this.matches(this.stringConverter.convertToString(o));
 	}
 
@@ -146,7 +146,7 @@ public class SimpleStringMatcher
 	 * Return the string converter used to convert the objects
 	 * passed to the matcher into strings.
 	 */
-	public synchronized StringConverter getStringConverter() {
+	public synchronized StringConverter<T> stringConverter() {
 		return this.stringConverter;
 	}
 
@@ -154,14 +154,14 @@ public class SimpleStringMatcher
 	 * Set the string converter used to convert the objects
 	 * passed to the matcher into strings.
 	 */
-	public synchronized void setStringConverter(StringConverter stringConverter) {
+	public synchronized void setStringConverter(StringConverter<T> stringConverter) {
 		this.stringConverter = stringConverter;
 	}
 
 	/**
 	 * Return the original pattern string.
 	 */
-	public synchronized String getPatternString() {
+	public synchronized String patternString() {
 		return this.patternString;
 	}
 
@@ -183,7 +183,7 @@ public class SimpleStringMatcher
 	/**
 	 * Return the regular expression pattern.
 	 */
-	public synchronized Pattern getPattern() {
+	public synchronized Pattern pattern() {
 		return this.pattern;
 	}
 

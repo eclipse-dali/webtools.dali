@@ -21,12 +21,12 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
  * returning a list iterator on a static list, but still allows listeners to be added.
  * Listeners will NEVER be notified of any changes, because there should be none.
  */
-public class StaticListValueModel
+public class StaticListValueModel<E>
 	extends AbstractModel
 	implements ListValueModel
 {
 	/** The value. */
-	protected final List list;
+	protected final List<E> list;
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,7 +34,7 @@ public class StaticListValueModel
 	/**
 	 * Construct a static ListValueModel for the specified list.
 	 */
-	public StaticListValueModel(List list) {
+	public StaticListValueModel(List<E> list) {
 		super();
 		if (list == null) {
 			throw new NullPointerException();
@@ -45,11 +45,11 @@ public class StaticListValueModel
 
 	// ********** ListValueModel implementation **********
 
-	public Iterator iterator() {
+	public Iterator<E> iterator() {
 		return this.list.iterator();
 	}
 
-	public ListIterator listIterator() {
+	public ListIterator<E> listIterator() {
 		return this.list.listIterator();
 	}
 

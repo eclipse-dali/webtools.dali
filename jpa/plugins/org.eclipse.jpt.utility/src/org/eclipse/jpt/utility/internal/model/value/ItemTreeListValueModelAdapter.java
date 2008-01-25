@@ -19,8 +19,8 @@ import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
  * Extend ItemAspectListValueModelAdapter to listen to one or more tree
  * aspects of each item in the wrapped list model.
  */
-public class ItemTreeListValueModelAdapter
-	extends ItemAspectListValueModelAdapter
+public class ItemTreeListValueModelAdapter<E>
+	extends ItemAspectListValueModelAdapter<E>
 {
 
 	/** The names of the items' tree that we listen to. */
@@ -44,8 +44,8 @@ public class ItemTreeListValueModelAdapter
 	/**
 	 * Construct an adapter for the specified item trees.
 	 */
-	public ItemTreeListValueModelAdapter(CollectionValueModel collectionHolder, String... treeNames) {
-		this(new CollectionListValueModelAdapter(collectionHolder), treeNames);
+	public ItemTreeListValueModelAdapter(CollectionValueModel<E> collectionHolder, String... treeNames) {
+		this(new CollectionListValueModelAdapter<E>(collectionHolder), treeNames);
 	}
 
 

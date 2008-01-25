@@ -24,7 +24,7 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class SpinnerModelAdapterTests extends TestCase {
-	private WritablePropertyValueModel<Integer> valueHolder;
+	private WritablePropertyValueModel<Object> valueHolder;
 	SpinnerModel spinnerModelAdapter;
 	boolean eventFired;
 
@@ -35,7 +35,7 @@ public class SpinnerModelAdapterTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.valueHolder = new SimplePropertyValueModel<Integer>(new Integer(0));
+		this.valueHolder = new SimplePropertyValueModel<Object>(new Integer(0));
 		this.spinnerModelAdapter = new SpinnerModelAdapter(this.valueHolder) {
 			@Override
 			protected PropertyChangeListener buildValueListener() {
@@ -80,7 +80,7 @@ public class SpinnerModelAdapterTests extends TestCase {
 	}
 
 	public void testHasListeners() throws Exception {
-		SimplePropertyValueModel<Integer> localValueHolder = (SimplePropertyValueModel<Integer>) this.valueHolder;
+		SimplePropertyValueModel<Object> localValueHolder = (SimplePropertyValueModel<Object>) this.valueHolder;
 		assertFalse(localValueHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.spinnerModelAdapter);
 
@@ -95,13 +95,13 @@ public class SpinnerModelAdapterTests extends TestCase {
 	}
 
 	private void verifyHasNoListeners(Object adapter) throws Exception {
-		Object delegate = ClassTools.getFieldValue(adapter, "delegate");
+		Object delegate = ClassTools.fieldValue(adapter, "delegate");
 		Object[] listeners = (Object[]) ClassTools.executeMethod(delegate, "getChangeListeners");
 		assertEquals(0, listeners.length);
 	}
 
 	private void verifyHasListeners(Object adapter) throws Exception {
-		Object delegate = ClassTools.getFieldValue(adapter, "delegate");
+		Object delegate = ClassTools.fieldValue(adapter, "delegate");
 		Object[] listeners = (Object[]) ClassTools.executeMethod(delegate, "getChangeListeners");
 		assertFalse(listeners.length == 0);
 	}

@@ -46,7 +46,7 @@ public class SpinnerModelAdapter
 	protected final ChangeListener delegateListener;
 
 	/** A value model on the underlying value. */
-	protected final WritablePropertyValueModel valueHolder;
+	protected final WritablePropertyValueModel<Object> valueHolder;
 
 	/** A listener that allows us to synchronize with changes made to the underlying value. */
 	protected final PropertyChangeListener valueListener;
@@ -57,7 +57,7 @@ public class SpinnerModelAdapter
 	/**
 	 * Constructor - the value holder and delegate are required.
 	 */
-	public SpinnerModelAdapter(WritablePropertyValueModel valueHolder, SpinnerModel delegate) {
+	public SpinnerModelAdapter(WritablePropertyValueModel<Object> valueHolder, SpinnerModel delegate) {
 		super();
 		if (valueHolder == null || delegate == null) {
 			throw new NullPointerException();
@@ -74,7 +74,7 @@ public class SpinnerModelAdapter
 	 * Constructor - the value holder is required.
 	 * This will wrap a simple number spinner model.
 	 */
-	public SpinnerModelAdapter(WritablePropertyValueModel valueHolder) {
+	public SpinnerModelAdapter(WritablePropertyValueModel<Object> valueHolder) {
 		this(valueHolder, new SpinnerNumberModel());
 	}
 

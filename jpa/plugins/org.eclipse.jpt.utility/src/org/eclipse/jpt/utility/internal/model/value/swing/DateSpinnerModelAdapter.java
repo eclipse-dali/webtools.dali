@@ -46,7 +46,7 @@ public class DateSpinnerModelAdapter
 	private final Date defaultValue;
 
 	/** A value model on the underlying date. */
-	private final WritablePropertyValueModel dateHolder;
+	private final WritablePropertyValueModel<Object> dateHolder;
 
 	/** A listener that allows us to synchronize with changes made to the underlying date. */
 	private final PropertyChangeListener dateChangeListener;
@@ -58,14 +58,14 @@ public class DateSpinnerModelAdapter
 	 * Constructor - the date holder is required.
 	 * The default spinner value is the current date.
 	 */
-	public DateSpinnerModelAdapter(WritablePropertyValueModel dateHolder) {
+	public DateSpinnerModelAdapter(WritablePropertyValueModel<Object> dateHolder) {
 		this(dateHolder, new Date());
 	}
 
 	/**
 	 * Constructor - the date holder and default value are required.
 	 */
-	public DateSpinnerModelAdapter(WritablePropertyValueModel dateHolder, Date defaultValue) {
+	public DateSpinnerModelAdapter(WritablePropertyValueModel<Object> dateHolder, Date defaultValue) {
 		this(dateHolder, null, null, Calendar.DAY_OF_MONTH, defaultValue);
 	}
 
@@ -73,14 +73,14 @@ public class DateSpinnerModelAdapter
 	 * Constructor - the date holder is required.
 	 * The default spinner value is the current date.
 	 */
-	public DateSpinnerModelAdapter(WritablePropertyValueModel dateHolder, Comparable start, Comparable end, int calendarField) {
+	public DateSpinnerModelAdapter(WritablePropertyValueModel<Object> dateHolder, Comparable<?> start, Comparable<?> end, int calendarField) {
 		this(dateHolder, start, end, calendarField, new Date());
 	}
 
 	/**
 	 * Constructor - the date holder is required.
 	 */
-	public DateSpinnerModelAdapter(WritablePropertyValueModel dateHolder, Comparable start, Comparable end, int calendarField, Date defaultValue) {
+	public DateSpinnerModelAdapter(WritablePropertyValueModel<Object> dateHolder, Comparable<?> start, Comparable<?> end, int calendarField, Date defaultValue) {
 		super(dateHolder.value() == null ? defaultValue : (Date) dateHolder.value(), start, end, calendarField);
 		this.dateHolder = dateHolder;
 		this.dateChangeListener = this.buildDateChangeListener();

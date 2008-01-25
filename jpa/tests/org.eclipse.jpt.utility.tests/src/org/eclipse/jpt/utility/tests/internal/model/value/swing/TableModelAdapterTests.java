@@ -63,7 +63,7 @@ public class TableModelAdapterTests extends TestCase {
 	}
 
 	public void testGetRowCount() throws Exception {
-		TableModelAdapter tableModelAdapter =  this.buildTableModelAdapter();
+		TableModelAdapter<Person> tableModelAdapter =  this.buildTableModelAdapter();
 		assertEquals(0, tableModelAdapter.getRowCount());
 		// we need to add a listener to wake up the adapter
 		tableModelAdapter.addTableModelListener(this.buildTableModelListener());
@@ -71,12 +71,12 @@ public class TableModelAdapterTests extends TestCase {
 	}
 
 	public void testGetColumnCount() throws Exception {
-		TableModelAdapter tableModelAdapter =  this.buildTableModelAdapter();
+		TableModelAdapter<Person> tableModelAdapter =  this.buildTableModelAdapter();
 		assertEquals(PersonColumnAdapter.COLUMN_COUNT, tableModelAdapter.getColumnCount());
 	}
 
 	public void testGetValueAt() throws Exception {
-		TableModelAdapter tableModelAdapter =  this.buildTableModelAdapter();
+		TableModelAdapter<Person> tableModelAdapter =  this.buildTableModelAdapter();
 		tableModelAdapter.addTableModelListener(this.buildTableModelListener());
 
 		List<String> sortedNames = this.sortedNames();
@@ -86,7 +86,7 @@ public class TableModelAdapterTests extends TestCase {
 	}
 
 	public void testSetValueAt() throws Exception {
-		TableModelAdapter tableModelAdapter =  this.buildTableModelAdapter();
+		TableModelAdapter<Person> tableModelAdapter =  this.buildTableModelAdapter();
 		this.event = null;
 		tableModelAdapter.addTableModelListener(new TestTableModelListener() {
 			@Override
@@ -115,7 +115,7 @@ public class TableModelAdapterTests extends TestCase {
 	}
 
 	public void testAddRow() throws Exception {
-		TableModelAdapter tableModelAdapter =  this.buildTableModelAdapter();
+		TableModelAdapter<Person> tableModelAdapter =  this.buildTableModelAdapter();
 		this.event = null;
 		tableModelAdapter.addTableModelListener(this.buildSingleEventListener());
 		// add a person to the end of the list so we only trigger one event
@@ -126,7 +126,7 @@ public class TableModelAdapterTests extends TestCase {
 	}
 
 	public void testRemoveRow() throws Exception {
-		TableModelAdapter tableModelAdapter =  this.buildTableModelAdapter();
+		TableModelAdapter<Person> tableModelAdapter =  this.buildTableModelAdapter();
 		this.event = null;
 		tableModelAdapter.addTableModelListener(this.buildSingleEventListener());
 		// removing a person should only trigger one event, since a re-sort is not needed
@@ -137,7 +137,7 @@ public class TableModelAdapterTests extends TestCase {
 	}
 
 	public void testChangeCell() throws Exception {
-		TableModelAdapter tableModelAdapter =  this.buildTableModelAdapter();
+		TableModelAdapter<Person> tableModelAdapter =  this.buildTableModelAdapter();
 		this.event = null;
 		tableModelAdapter.addTableModelListener(this.buildSingleEventListener());
 		// add a person to the end of the list so we only trigger one event
@@ -149,7 +149,7 @@ public class TableModelAdapterTests extends TestCase {
 	}
 
 	public void testLazyListListener() throws Exception {
-		TableModelAdapter tableModelAdapter =  this.buildTableModelAdapter();
+		TableModelAdapter<Person> tableModelAdapter =  this.buildTableModelAdapter();
 		TableModelListener listener = this.buildTableModelListener();
 		assertTrue(this.crowd.hasNoCollectionChangeListeners(Crowd.PEOPLE_COLLECTION));
 		tableModelAdapter.addTableModelListener(listener);
@@ -159,7 +159,7 @@ public class TableModelAdapterTests extends TestCase {
 	}
 
 	public void testLazyCellListener() throws Exception {
-		TableModelAdapter tableModelAdapter =  this.buildTableModelAdapter();
+		TableModelAdapter<Person> tableModelAdapter =  this.buildTableModelAdapter();
 		TableModelListener listener = this.buildTableModelListener();
 		Person person = this.crowd.personNamed("Gollum");
 		assertTrue(person.hasNoPropertyChangeListeners(Person.NAME_PROPERTY));
@@ -183,8 +183,8 @@ public class TableModelAdapterTests extends TestCase {
 		assertTrue(person.hasNoPropertyChangeListeners(Person.RANK_PROPERTY));
 	}
 
-	private TableModelAdapter buildTableModelAdapter() {
-		return new TableModelAdapter(this.buildSortedPeopleAdapter(), this.buildColumnAdapter()) {
+	private TableModelAdapter<Person> buildTableModelAdapter() {
+		return new TableModelAdapter<Person>(this.buildSortedPeopleAdapter(), this.buildColumnAdapter()) {
 			@Override
 			protected PropertyChangeListener buildCellListener() {
 				return this.buildCellListener_();
@@ -197,18 +197,18 @@ public class TableModelAdapterTests extends TestCase {
 	}
 
 	private ListValueModel buildSortedPeopleAdapter() {
-		return new SortedListValueModelAdapter(this.buildPeopleAdapter());
+		return new SortedListValueModelAdapter<Person>(this.buildPeopleAdapter());
 	}
 
-	private CollectionValueModel buildPeopleAdapter() {
-		return new CollectionAspectAdapter(Crowd.PEOPLE_COLLECTION, this.crowd) {
+	private CollectionValueModel<Person> buildPeopleAdapter() {
+		return new CollectionAspectAdapter<Crowd, Person>(Crowd.PEOPLE_COLLECTION, this.crowd) {
 			@Override
 			protected Iterator<Person> iterator_() {
-				return ((Crowd) this.subject).people();
+				return this.subject.people();
 			}
 			@Override
 			protected int size_() {
-				return ((Crowd) this.subject).peopleSize();
+				return this.subject.peopleSize();
 			}
 		};
 	}
@@ -273,15 +273,15 @@ public class TableModelAdapterTests extends TestCase {
 		};
 	
 	
-		public int getColumnCount() {
+		public int columnCount() {
 			return COLUMN_COUNT;
 		}
 	
-		public String getColumnName(int index) {
+		public String columnName(int index) {
 			return COLUMN_NAMES[index];
 		}
 	
-		public Class<?> getColumnClass(int index) {
+		public Class<?> columnClass(int index) {
 			switch (index) {
 				case NAME_COLUMN:					return Object.class;
 				case BIRTH_DATE_COLUMN:			return Date.class;
@@ -294,112 +294,113 @@ public class TableModelAdapterTests extends TestCase {
 			}
 		}
 	
-		public boolean isColumnEditable(int index) {
+		public boolean columnIsEditable(int index) {
 			return index != NAME_COLUMN;
 		}
 	
-		public WritablePropertyValueModel[] cellModels(Object subject) {
+		public WritablePropertyValueModel<Object>[] cellModels(Object subject) {
 			Person person = (Person) subject;
-			WritablePropertyValueModel[] result = new WritablePropertyValueModel[COLUMN_COUNT];
+			@SuppressWarnings("unchecked")
+			WritablePropertyValueModel<Object>[] result = new WritablePropertyValueModel[COLUMN_COUNT];
 	
-			result[NAME_COLUMN]						= this.buildNameAdapter(person);
-			result[BIRTH_DATE_COLUMN]				= this.buildBirthDateAdapter(person);
-			result[GONE_WEST_DATE_COLUMN]	= this.buildGoneWestDateAdapter(person);
-			result[EYE_COLOR_COLUMN]				= this.buildEyeColorAdapter(person);
-			result[EVIL_COLUMN]						= this.buildEvilAdapter(person);
-			result[RANK_COLUMN]						= this.buildRankAdapter(person);
-			result[ADVENTURE_COUNT_COLUMN]	= this.buildAdventureCountAdapter(person);
+			result[NAME_COLUMN] = this.buildNameAdapter(person);
+			result[BIRTH_DATE_COLUMN] = this.buildBirthDateAdapter(person);
+			result[GONE_WEST_DATE_COLUMN] = this.buildGoneWestDateAdapter(person);
+			result[EYE_COLOR_COLUMN] = this.buildEyeColorAdapter(person);
+			result[EVIL_COLUMN] = this.buildEvilAdapter(person);
+			result[RANK_COLUMN] = this.buildRankAdapter(person);
+			result[ADVENTURE_COUNT_COLUMN] = this.buildAdventureCountAdapter(person);
 	
 			return result;
 		}
 	
-		private WritablePropertyValueModel buildNameAdapter(Person person) {
-			return new PropertyAspectAdapter(Person.NAME_PROPERTY, person) {
+		private WritablePropertyValueModel<Object> buildNameAdapter(Person person) {
+			return new PropertyAspectAdapter<Person, Object>(Person.NAME_PROPERTY, person) {
 				@Override
-				protected Object buildValue_() {
-					return ((Person) this.subject).getName();
+				protected String buildValue_() {
+					return this.subject.getName();
 				}
 				@Override
 				protected void setValue_(Object value) {
-					((Person) this.subject).setName((String) value);
+					this.subject.setName((String) value);
 				}
 			};
 		}
 	
-		private WritablePropertyValueModel buildBirthDateAdapter(Person person) {
-			return new PropertyAspectAdapter(Person.BIRTH_DATE_PROPERTY, person) {
+		private WritablePropertyValueModel<Object> buildBirthDateAdapter(Person person) {
+			return new PropertyAspectAdapter<Person, Object>(Person.BIRTH_DATE_PROPERTY, person) {
 				@Override
-				protected Object buildValue_() {
-					return ((Person) this.subject).getBirthDate();
+				protected Date buildValue_() {
+					return this.subject.getBirthDate();
 				}
 				@Override
 				protected void setValue_(Object value) {
-					((Person) this.subject).setBirthDate((Date) value);
+					this.subject.setBirthDate((Date) value);
 				}
 			};
 		}
 	
-		private WritablePropertyValueModel buildGoneWestDateAdapter(Person person) {
-			return new PropertyAspectAdapter(Person.GONE_WEST_DATE_PROPERTY, person) {
+		private WritablePropertyValueModel<Object> buildGoneWestDateAdapter(Person person) {
+			return new PropertyAspectAdapter<Person, Object>(Person.GONE_WEST_DATE_PROPERTY, person) {
 				@Override
-				protected Object buildValue_() {
-					return ((Person) this.subject).getGoneWestDate();
+				protected Date buildValue_() {
+					return this.subject.getGoneWestDate();
 				}
 				@Override
 				protected void setValue_(Object value) {
-					((Person) this.subject).setGoneWestDate((Date) value);
+					this.subject.setGoneWestDate((Date) value);
 				}
 			};
 		}
 	
-		private WritablePropertyValueModel buildEyeColorAdapter(Person person) {
-			return new PropertyAspectAdapter(Person.EYE_COLOR_PROPERTY, person) {
+		private WritablePropertyValueModel<Object> buildEyeColorAdapter(Person person) {
+			return new PropertyAspectAdapter<Person, Object>(Person.EYE_COLOR_PROPERTY, person) {
 				@Override
-				protected Object buildValue_() {
-					return ((Person) this.subject).getEyeColor();
+				protected String buildValue_() {
+					return this.subject.getEyeColor();
 				}
 				@Override
 				protected void setValue_(Object value) {
-					((Person) this.subject).setEyeColor((String) value);
+					this.subject.setEyeColor((String) value);
 				}
 			};
 		}
 	
-		private WritablePropertyValueModel buildEvilAdapter(Person person) {
-			return new PropertyAspectAdapter(Person.EVIL_PROPERTY, person) {
+		private WritablePropertyValueModel<Object> buildEvilAdapter(Person person) {
+			return new PropertyAspectAdapter<Person, Object>(Person.EVIL_PROPERTY, person) {
 				@Override
-				protected Object buildValue_() {
-					return Boolean.valueOf(((Person) this.subject).isEvil());
+				protected Boolean buildValue_() {
+					return Boolean.valueOf(this.subject.isEvil());
 				}
 				@Override
 				protected void setValue_(Object value) {
-					((Person) this.subject).setEvil(((Boolean) value).booleanValue());
+					this.subject.setEvil(((Boolean)value).booleanValue());
 				}
 			};
 		}
 	
-		private WritablePropertyValueModel buildRankAdapter(Person person) {
-			return new PropertyAspectAdapter(Person.RANK_PROPERTY, person) {
+		private WritablePropertyValueModel<Object> buildRankAdapter(Person person) {
+			return new PropertyAspectAdapter<Person, Object>(Person.RANK_PROPERTY, person) {
 				@Override
-				protected Object buildValue_() {
-					return new Integer(((Person) this.subject).getRank());
+				protected Integer buildValue_() {
+					return new Integer(this.subject.getRank());
 				}
 				@Override
 				protected void setValue_(Object value) {
-					((Person) this.subject).setRank(((Integer) value).intValue());
+					this.subject.setRank(((Integer) value).intValue());
 				}
 			};
 		}
 	
-		private WritablePropertyValueModel buildAdventureCountAdapter(Person person) {
-			return new PropertyAspectAdapter(Person.ADVENTURE_COUNT_PROPERTY, person) {
+		private WritablePropertyValueModel<Object> buildAdventureCountAdapter(Person person) {
+			return new PropertyAspectAdapter<Person, Object>(Person.ADVENTURE_COUNT_PROPERTY, person) {
 				@Override
-				protected Object buildValue_() {
-					return new Integer(((Person) this.subject).getAdventureCount());
+				protected Integer buildValue_() {
+					return new Integer(this.subject.getAdventureCount());
 				}
 				@Override
 				protected void setValue_(Object value) {
-					((Person) this.subject).setAdventureCount(((Integer) value).intValue());
+					this.subject.setAdventureCount(((Integer) value).intValue());
 				}
 			};
 		}

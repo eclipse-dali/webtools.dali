@@ -33,7 +33,7 @@ import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
  *     override this method only if returning an empty iterator when the
  *     subject is null is unacceptable
  */
-public abstract class TreeAspectAdapter<S extends Model>
+public abstract class TreeAspectAdapter<S extends Model, E>
 	extends AspectAdapter<S>
 	implements TreeValueModel
 {
@@ -127,8 +127,8 @@ public abstract class TreeAspectAdapter<S extends Model>
 	/**
 	 * Return the nodes of the subject's tree aspect.
 	 */
-	public Iterator nodes() {
-		return (this.subject == null) ? EmptyIterator.instance() : this.nodes_();
+	public Iterator<E> nodes() {
+		return (this.subject == null) ? EmptyIterator.<E>instance() : this.nodes_();
 	}
 
 	/**
@@ -136,7 +136,7 @@ public abstract class TreeAspectAdapter<S extends Model>
 	 * At this point we can be sure that the subject is not null.
 	 * @see #nodes()
 	 */
-	protected Iterator nodes_() {
+	protected Iterator<E> nodes_() {
 		throw new UnsupportedOperationException();
 	}
 

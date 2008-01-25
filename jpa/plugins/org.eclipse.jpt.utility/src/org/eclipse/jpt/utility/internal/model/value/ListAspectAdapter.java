@@ -43,7 +43,7 @@ import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
  *     override this method only if returning a zero when the
  *     subject is null is unacceptable
  */
-public abstract class ListAspectAdapter<S extends Model>
+public abstract class ListAspectAdapter<S extends Model, E>
 	extends AspectAdapter<S>
 	implements ListValueModel
 {
@@ -145,15 +145,15 @@ public abstract class ListAspectAdapter<S extends Model>
 	/**
 	 * Return the elements of the subject's list aspect.
 	 */
-	public Iterator iterator() {
+	public Iterator<E> iterator() {
 		return this.listIterator();
 	}
 
 	/**
 	 * Return the elements of the subject's list aspect.
 	 */
-	public ListIterator listIterator() {
-		return (this.subject == null) ? EmptyListIterator.instance() : this.listIterator_();
+	public ListIterator<E> listIterator() {
+		return (this.subject == null) ? EmptyListIterator.<E>instance() : this.listIterator_();
 	}
 
 	/**
@@ -161,7 +161,7 @@ public abstract class ListAspectAdapter<S extends Model>
 	 * At this point we can be sure that the subject is not null.
 	 * @see #listIterator()
 	 */
-	protected ListIterator listIterator_() {
+	protected ListIterator<E> listIterator_() {
 		throw new UnsupportedOperationException();
 	}
 

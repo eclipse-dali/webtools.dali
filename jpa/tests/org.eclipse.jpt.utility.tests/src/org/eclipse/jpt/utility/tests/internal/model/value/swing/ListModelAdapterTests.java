@@ -60,7 +60,7 @@ public class ListModelAdapterTests extends TestCase {
 		};
 	}
 
-	private ListModel buildListModel(CollectionValueModel collectionHolder) {
+	private ListModel buildListModel(CollectionValueModel<String> collectionHolder) {
 		return new ListModelAdapter(collectionHolder) {
 			@Override
 			protected ListChangeListener buildListChangeListener() {
@@ -70,9 +70,9 @@ public class ListModelAdapterTests extends TestCase {
 	}
 
 	public void testCollectionSynchronization() {
-		SimpleCollectionValueModel collectionHolder = this.buildCollectionHolder();
+		SimpleCollectionValueModel<String> collectionHolder = this.buildCollectionHolder();
 		ListModel listModel = this.buildListModel(collectionHolder);
-		CoordinatedList synchList = new CoordinatedList(listModel);
+		CoordinatedList<String> synchList = new CoordinatedList<String>(listModel);
 		assertEquals(6, synchList.size());
 		this.compare(listModel, synchList);
 
@@ -92,9 +92,9 @@ public class ListModelAdapterTests extends TestCase {
 	}
 
 	public void testListSynchronization() {
-		SimpleListValueModel listHolder = this.buildListHolder();
+		SimpleListValueModel<String> listHolder = this.buildListHolder();
 		ListModel listModel = this.buildListModel(listHolder);
-		CoordinatedList synchList = new CoordinatedList(listModel);
+		CoordinatedList<String> synchList = new CoordinatedList<String>(listModel);
 		assertEquals(6, synchList.size());
 		this.compare(listModel, synchList);
 
@@ -114,28 +114,28 @@ public class ListModelAdapterTests extends TestCase {
 	}
 
 	public void testSetModel() {
-		SimpleListValueModel listHolder1 = this.buildListHolder();
+		SimpleListValueModel<String> listHolder1 = this.buildListHolder();
 		ListModelAdapter listModel = this.buildListModel(listHolder1);
-		CoordinatedList synchList = new CoordinatedList(listModel);
+		CoordinatedList<String> synchList = new CoordinatedList<String>(listModel);
 		assertTrue(listHolder1.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertEquals(6, synchList.size());
 		this.compare(listModel, synchList);
 
-		SimpleListValueModel listHolder2 = this.buildListHolder2();
+		SimpleListValueModel<String> listHolder2 = this.buildListHolder2();
 		listModel.setModel(listHolder2);
 		assertEquals(3, synchList.size());
 		this.compare(listModel, synchList);
 		assertTrue(listHolder1.hasNoListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(listHolder2.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
-		listModel.setModel(new SimpleListValueModel());
+		listModel.setModel(new SimpleListValueModel<String>());
 		assertEquals(0, synchList.size());
 		this.compare(listModel, synchList);
 		assertTrue(listHolder1.hasNoListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(listHolder2.hasNoListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 
-	private void compare(ListModel listModel, List list) {
+	private void compare(ListModel listModel, List<String> list) {
 		assertEquals(listModel.getSize(), list.size());
 		for (int i = 0; i < listModel.getSize(); i++) {
 			assertEquals(listModel.getElementAt(i), list.get(i));
@@ -158,19 +158,19 @@ public class ListModelAdapterTests extends TestCase {
 		this.verifyListSort(this.buildCustomComparator());
 	}
 
-	private Comparator buildCustomComparator() {
+	private Comparator<String> buildCustomComparator() {
 		// sort with reverse order
-		return new Comparator() {
-			public int compare(Object o1, Object o2) {
-				return ((Comparable) o2).compareTo(o1);
+		return new Comparator<String>() {
+			public int compare(String s1, String s2) {
+				return s2.compareTo(s1);
 			}
 		};
 	}
 
-	private void verifyCollectionSort(Comparator comparator) {
-		SimpleCollectionValueModel collectionHolder = this.buildCollectionHolder();
-		ListModel listModel = this.buildListModel(new SortedListValueModelAdapter(collectionHolder, comparator));
-		CoordinatedList synchList = new CoordinatedList(listModel);
+	private void verifyCollectionSort(Comparator<String> comparator) {
+		SimpleCollectionValueModel<String> collectionHolder = this.buildCollectionHolder();
+		ListModel listModel = this.buildListModel(new SortedListValueModelAdapter<String>(collectionHolder, comparator));
+		CoordinatedList<String> synchList = new CoordinatedList<String>(listModel);
 		assertEquals(6, synchList.size());
 		this.compareSort(listModel, synchList, comparator);
 
@@ -187,10 +187,10 @@ public class ListModelAdapterTests extends TestCase {
 		this.compareSort(listModel, synchList, comparator);
 	}
 
-	private void verifyListSort(Comparator comparator) {
-		SimpleListValueModel listHolder = this.buildListHolder();
-		ListModel listModel = this.buildListModel(new SortedListValueModelAdapter(listHolder, comparator));
-		CoordinatedList synchList = new CoordinatedList(listModel);
+	private void verifyListSort(Comparator<String> comparator) {
+		SimpleListValueModel<String> listHolder = this.buildListHolder();
+		ListModel listModel = this.buildListModel(new SortedListValueModelAdapter<String>(listHolder, comparator));
+		CoordinatedList<String> synchList = new CoordinatedList<String>(listModel);
 		assertEquals(6, synchList.size());
 		this.compareSort(listModel, synchList, comparator);
 
@@ -208,26 +208,26 @@ public class ListModelAdapterTests extends TestCase {
 		this.compareSort(listModel, synchList, comparator);
 	}
 
-	private void compareSort(ListModel listModel, List list, Comparator comparator) {
-		SortedSet ss = new TreeSet(comparator);
+	private void compareSort(ListModel listModel, List<String> list, Comparator<String> comparator) {
+		SortedSet<String> ss = new TreeSet<String>(comparator);
 		for (int i = 0; i < listModel.getSize(); i++) {
-			ss.add(listModel.getElementAt(i));
+			ss.add((String) listModel.getElementAt(i));
 		}
 		assertEquals(ss.size(), list.size());
-		for (Iterator stream1 = ss.iterator(), stream2 = list.iterator(); stream1.hasNext(); ) {
+		for (Iterator<String> stream1 = ss.iterator(), stream2 = list.iterator(); stream1.hasNext(); ) {
 			assertEquals(stream1.next(), stream2.next());
 		}
 	}
 
 	public void testHasListeners() throws Exception {
-		SimpleListValueModel listHolder = this.buildListHolder();
+		SimpleListValueModel<String> listHolder = this.buildListHolder();
 		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
 		ListModel listModel = this.buildListModel(listHolder);
 		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		this.verifyHasNoListeners(listModel);
 
-		CoordinatedList synchList = new CoordinatedList(listModel);
+		CoordinatedList<String> synchList = new CoordinatedList<String>(listModel);
 		assertTrue(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		this.verifyHasListeners(listModel);
 
@@ -237,12 +237,12 @@ public class ListModelAdapterTests extends TestCase {
 	}
 
 	public void testGetSize() throws Exception {
-		SimpleListValueModel listHolder = this.buildListHolder();
+		SimpleListValueModel<String> listHolder = this.buildListHolder();
 		ListModel listModel = this.buildListModel(listHolder);
 		this.verifyHasNoListeners(listModel);
 		assertEquals(6, listModel.getSize());
 
-		CoordinatedList synchList = new CoordinatedList(listModel);
+		CoordinatedList<String> synchList = new CoordinatedList<String>(listModel);
 		this.verifyHasListeners(listModel);
 		assertEquals(6, listModel.getSize());
 
@@ -252,9 +252,9 @@ public class ListModelAdapterTests extends TestCase {
 	}
 
 	public void testGetElementAt() throws Exception {
-		SimpleListValueModel listHolder = this.buildListHolder();
-		ListModel listModel = this.buildListModel(new SortedListValueModelAdapter(listHolder));
-		CoordinatedList synchList = new CoordinatedList(listModel);
+		SimpleListValueModel<String> listHolder = this.buildListHolder();
+		ListModel listModel = this.buildListModel(new SortedListValueModelAdapter<String>(listHolder));
+		CoordinatedList<String> synchList = new CoordinatedList<String>(listModel);
 		this.verifyHasListeners(listModel);
 		assertEquals("bar", listModel.getElementAt(0));
 		assertEquals("bar", synchList.get(0));
@@ -270,8 +270,8 @@ public class ListModelAdapterTests extends TestCase {
 		assertTrue(hasListeners);
 	}
 
-	private SimpleCollectionValueModel buildCollectionHolder() {
-		return new SimpleCollectionValueModel(this.buildCollection());
+	private SimpleCollectionValueModel<String> buildCollectionHolder() {
+		return new SimpleCollectionValueModel<String>(this.buildCollection());
 	}
 
 	private Collection<String> buildCollection() {
@@ -280,8 +280,8 @@ public class ListModelAdapterTests extends TestCase {
 		return bag;
 	}
 
-	private SimpleListValueModel buildListHolder() {
-		return new SimpleListValueModel(this.buildList());
+	private SimpleListValueModel<String> buildListHolder() {
+		return new SimpleListValueModel<String>(this.buildList());
 	}
 
 	private List<String> buildList() {
@@ -299,8 +299,8 @@ public class ListModelAdapterTests extends TestCase {
 		c.add("jaz");
 	}
 
-	private SimpleListValueModel buildListHolder2() {
-		return new SimpleListValueModel(this.buildList2());
+	private SimpleListValueModel<String> buildListHolder2() {
+		return new SimpleListValueModel<String>(this.buildList2());
 	}
 
 	private List<String> buildList2() {

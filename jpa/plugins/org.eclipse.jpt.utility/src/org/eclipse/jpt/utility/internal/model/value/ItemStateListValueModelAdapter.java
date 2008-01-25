@@ -17,8 +17,8 @@ import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
  * Extend ItemAspectListValueModelAdapter to listen to the
  * "state" of each item in the wrapped list model.
  */
-public class ItemStateListValueModelAdapter
-	extends ItemAspectListValueModelAdapter
+public class ItemStateListValueModelAdapter<E>
+	extends ItemAspectListValueModelAdapter<E>
 {
 	/** Listener that listens to all the items in the list. */
 	protected final StateChangeListener itemStateListener;
@@ -37,8 +37,8 @@ public class ItemStateListValueModelAdapter
 	/**
 	 * Construct an adapter for the item state.
 	 */
-	public ItemStateListValueModelAdapter(CollectionValueModel collectionHolder) {
-		this(new CollectionListValueModelAdapter(collectionHolder));
+	public ItemStateListValueModelAdapter(CollectionValueModel<E> collectionHolder) {
+		this(new CollectionListValueModelAdapter<E>(collectionHolder));
 	}
 
 

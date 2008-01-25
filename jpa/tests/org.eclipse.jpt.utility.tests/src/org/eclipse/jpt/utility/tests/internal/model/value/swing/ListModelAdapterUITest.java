@@ -35,6 +35,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import javax.swing.WindowConstants;
 
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
@@ -143,11 +144,11 @@ public class ListModelAdapterUITest {
 	}
 
 	private ListModel buildStandardSortedPrimitiveListModel() {
-		return new ListModelAdapter(new SortedListValueModelAdapter(this.buildPrimitiveTaskListAdapter()));
+		return new ListModelAdapter(new SortedListValueModelAdapter<String>(this.buildPrimitiveTaskListAdapter()));
 	}
 
 	private ListModel buildCustomSortedPrimitiveListModel() {
-		return new ListModelAdapter(new SortedListValueModelAdapter(this.buildPrimitiveTaskListAdapter(), this.buildCustomStringComparator()));
+		return new ListModelAdapter(new SortedListValueModelAdapter<String>(this.buildPrimitiveTaskListAdapter(), this.buildCustomStringComparator()));
 	}
 
 	private ListModel buildUnsortedDisplayableListModel() {
@@ -155,11 +156,11 @@ public class ListModelAdapterUITest {
 	}
 
 	private ListModel buildStandardSortedDisplayableListModel() {
-		return new ListModelAdapter(new SortedListValueModelAdapter(this.buildDisplayableTaskListAdapter()));
+		return new ListModelAdapter(new SortedListValueModelAdapter<Task>(this.buildDisplayableTaskListAdapter()));
 	}
 
 	private ListModel buildCustomSortedDisplayableListModel() {
-		return new ListModelAdapter(new SortedListValueModelAdapter(this.buildDisplayableTaskListAdapter(), this.buildCustomTaskObjectComparator()));
+		return new ListModelAdapter(new SortedListValueModelAdapter<Task>(this.buildDisplayableTaskListAdapter(), this.buildCustomTaskObjectComparator()));
 	}
 
 	private Component buildListPanel(String label, ListModel listModel) {
@@ -183,28 +184,28 @@ public class ListModelAdapterUITest {
 		};
 	}
 
-	private Comparator<TaskObject> buildCustomTaskObjectComparator() {
-		return new Comparator<TaskObject>() {
-			public int compare(TaskObject to1, TaskObject to2) {
+	private Comparator<Task> buildCustomTaskObjectComparator() {
+		return new Comparator<Task>() {
+			public int compare(Task to1, Task to2) {
 				return to2.compareTo(to1);
 			}
 		};
 	}
 
 	private ListValueModel buildPrimitiveTaskListAdapter() {
-		return new ListAspectAdapter(TaskList.TASKS_LIST, this.taskList()) {
+		return new ListAspectAdapter<TaskList, String>(TaskList.TASK_NAMES_LIST, this.taskList()) {
 			@Override
 			protected ListIterator<String> listIterator_() {
-				return ((TaskList) this.subject).tasks();
+				return this.subject.taskNames();
 			}
 		};
 	}
 
 	private ListValueModel buildDisplayableTaskListAdapter() {
-		return new ListAspectAdapter(TaskList.TASK_OBJECTS_LIST, this.taskList()) {
+		return new ListAspectAdapter<TaskList, Task>(TaskList.TASKS_LIST, this.taskList()) {
 			@Override
-			protected ListIterator<TaskObject> listIterator_() {
-				return ((TaskList) this.subject).taskObjects();
+			protected ListIterator<Task> listIterator_() {
+				return this.subject.tasks();
 			}
 		};
 	}
@@ -298,50 +299,50 @@ public class ListModelAdapterUITest {
 	}
 
 	private class TaskList extends AbstractModel {
-		private List<String> tasks = new ArrayList<String>();
-		private List<TaskObject> taskObjects = new ArrayList<TaskObject>();
+		private List<String> taskNames = new ArrayList<String>();
+		private List<Task> taskObjects = new ArrayList<Task>();
+		public static final String TASK_NAMES_LIST = "taskNames";
 		public static final String TASKS_LIST = "tasks";
-		public static final String TASK_OBJECTS_LIST = "taskObjects";
 		TaskList() {
 			super();
 		}
-		public ListIterator<String> tasks() {
-			return this.tasks.listIterator();
+		public ListIterator<String> taskNames() {
+			return this.taskNames.listIterator();
 		}
-		public ListIterator<TaskObject> taskObjects() {
+		public ListIterator<Task> tasks() {
 			return this.taskObjects.listIterator();
 		}
-		public void addTask(String task) {
-			int index = this.tasks.size();
-			this.tasks.add(index, task);
-			this.fireItemAdded(TASKS_LIST, index, task);
+		public void addTask(String taskName) {
+			int index = this.taskNames.size();
+			this.taskNames.add(index, taskName);
+			this.fireItemAdded(TASK_NAMES_LIST, index, taskName);
 	
-			TaskObject taskObject = new TaskObject(task);
+			Task taskObject = new Task(taskName);
 			this.taskObjects.add(index, taskObject);
-			this.fireItemAdded(TASK_OBJECTS_LIST, index, taskObject);
+			this.fireItemAdded(TASKS_LIST, index, taskObject);
 		}		
-		public void removeTask(String task) {
-			int index = this.tasks.indexOf(task);
+		public void removeTask(String taskName) {
+			int index = this.taskNames.indexOf(taskName);
 			if (index != -1) {
-				Object removedTask = this.tasks.remove(index);
-				this.fireItemRemoved(TASKS_LIST, index, removedTask);
+				Object removedTask = this.taskNames.remove(index);
+				this.fireItemRemoved(TASK_NAMES_LIST, index, removedTask);
 				// assume the indexes match...
 				Object removedTaskObject = this.taskObjects.remove(index);
-				this.fireItemRemoved(TASK_OBJECTS_LIST, index, removedTaskObject);
+				this.fireItemRemoved(TASKS_LIST, index, removedTaskObject);
 			}
 		}
 		public void clearTasks() {
-			this.tasks.clear();
-			this.fireListChanged(TASKS_LIST);
+			this.taskNames.clear();
+			this.fireListChanged(TASK_NAMES_LIST);
 			this.taskObjects.clear();
-			this.fireListChanged(TASK_OBJECTS_LIST);
+			this.fireListChanged(TASKS_LIST);
 		}
 	}
 
-	private class TaskObject extends AbstractModel implements Displayable {
+	private class Task extends AbstractModel implements Displayable {
 		private String name;
 		private Date creationTimeStamp;
-		public TaskObject(String name) {
+		public Task(String name) {
 			this.name = name;
 			this.creationTimeStamp = new Date();
 		}
@@ -364,7 +365,7 @@ public class ListModelAdapterUITest {
 		}
 		@Override
 		public String toString() {
-			return "TaskObject(" + this.displayString() + ")";
+			return StringTools.buildToStringFor(this, this.displayString());
 		}
 	}
 

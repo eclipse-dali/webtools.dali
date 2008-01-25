@@ -42,7 +42,7 @@ public class RadioButtonModelAdapterUITest {
 
 	private TestModel testModel;
 	private WritablePropertyValueModel<TestModel> testModelHolder;
-	private WritablePropertyValueModel<String> colorHolder;
+	private WritablePropertyValueModel<Object> colorHolder;
 	private ButtonModel redButtonModel;
 	private ButtonModel greenButtonModel;
 	private ButtonModel blueButtonModel;
@@ -65,20 +65,20 @@ public class RadioButtonModelAdapterUITest {
 		this.openWindow();
 	}
 
-	private WritablePropertyValueModel<String> buildColorHolder(PropertyValueModel<TestModel> subjectHolder) {
-		return new PropertyAspectAdapter<TestModel, String>(subjectHolder, TestModel.COLOR_PROPERTY) {
+	private WritablePropertyValueModel<Object> buildColorHolder(PropertyValueModel<TestModel> subjectHolder) {
+		return new PropertyAspectAdapter<TestModel, Object>(subjectHolder, TestModel.COLOR_PROPERTY) {
 			@Override
-			protected String buildValue_() {
+			protected Object buildValue_() {
 				return this.subject.getColor();
 			}
 			@Override
-			protected void setValue_(String value) {
-				this.subject.setColor(value);
+			protected void setValue_(Object value) {
+				this.subject.setColor((String) value);
 			}
 		};
 	}
 
-	private ButtonModel buildRadioButtonModelAdapter(WritablePropertyValueModel<String> colorPVM, String color) {
+	private ButtonModel buildRadioButtonModelAdapter(WritablePropertyValueModel<Object> colorPVM, String color) {
 		return new RadioButtonModelAdapter(colorPVM, color);
 	}
 

@@ -40,9 +40,9 @@ import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
  *     override this method only if returning a zero when the
  *     subject is null is unacceptable
  */
-public abstract class CollectionAspectAdapter<S extends Model>
+public abstract class CollectionAspectAdapter<S extends Model, E>
 	extends AspectAdapter<S>
-	implements CollectionValueModel 
+	implements CollectionValueModel<E>
 {
 	/**
 	 * The name of the subject's collections that we use for the value.
@@ -134,8 +134,8 @@ public abstract class CollectionAspectAdapter<S extends Model>
 	/**
 	 * Return the elements of the subject's collection aspect.
 	 */
-	public Iterator iterator() {
-		return (this.subject == null) ? EmptyIterator.instance() : this.iterator_();
+	public Iterator<E> iterator() {
+		return (this.subject == null) ? EmptyIterator.<E>instance() : this.iterator_();
 	}
 
 	/**
@@ -143,7 +143,7 @@ public abstract class CollectionAspectAdapter<S extends Model>
 	 * At this point we can be sure that the subject is not null.
 	 * @see #iterator()
 	 */
-	protected Iterator iterator_() {
+	protected Iterator<E> iterator_() {
 		throw new UnsupportedOperationException();
 	}
 

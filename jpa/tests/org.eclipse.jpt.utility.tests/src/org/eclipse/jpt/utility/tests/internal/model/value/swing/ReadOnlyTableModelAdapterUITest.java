@@ -30,7 +30,7 @@ public class ReadOnlyTableModelAdapterUITest extends TableModelAdapterUITest {
 	protected ColumnAdapter buildColumnAdapter() {
 		return new PersonColumnAdapter() {
 			@Override
-			public boolean isColumnEditable(int index) {
+			public boolean columnIsEditable(int index) {
 				return false;
 			}
 		};

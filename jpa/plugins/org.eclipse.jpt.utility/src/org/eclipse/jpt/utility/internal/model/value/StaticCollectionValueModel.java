@@ -20,12 +20,12 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
  * returning an iterator on a static collection, but still allows listeners to be added.
  * Listeners will NEVER be notified of any changes, because there should be none.
  */
-public class StaticCollectionValueModel
+public class StaticCollectionValueModel<E>
 	extends AbstractModel
-	implements CollectionValueModel
+	implements CollectionValueModel<E>
 {
 	/** The collection. */
-	protected final Collection collection;
+	protected final Collection<E> collection;
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +33,7 @@ public class StaticCollectionValueModel
 	/**
 	 * Construct a static CollectionValueModel for the specified collection.
 	 */
-	public StaticCollectionValueModel(Collection collection) {
+	public StaticCollectionValueModel(Collection<E> collection) {
 		super();
 		if (collection == null) {
 			throw new NullPointerException();
@@ -47,7 +47,7 @@ public class StaticCollectionValueModel
 		return this.collection.size();
 	}
 
-	public Iterator iterator() {
+	public Iterator<E> iterator() {
 		return this.collection.iterator();
 	}
 

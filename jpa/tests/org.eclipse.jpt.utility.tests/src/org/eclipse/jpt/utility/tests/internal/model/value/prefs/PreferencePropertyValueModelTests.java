@@ -358,7 +358,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 	}
 
 	private boolean nodeHasAnyPrefListeners(Preferences node) throws Exception {
-		PreferenceChangeListener[] prefListeners = (PreferenceChangeListener[]) ClassTools.getFieldValue(node, "prefListeners");
+		PreferenceChangeListener[] prefListeners = (PreferenceChangeListener[]) ClassTools.fieldValue(node, "prefListeners");
 		return prefListeners.length > 0;
 	}
 

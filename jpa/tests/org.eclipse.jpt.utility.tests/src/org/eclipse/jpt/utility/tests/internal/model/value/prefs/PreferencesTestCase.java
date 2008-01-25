@@ -81,7 +81,7 @@ public abstract class PreferencesTestCase extends TestCase {
 
 	@SuppressWarnings("unchecked")
 	private List<EventObject> preferencesEventQueue() {
-		return (List<EventObject>) ClassTools.getStaticFieldValue(AbstractPreferences.class, "eventQueue");
+		return (List<EventObject>) ClassTools.staticFieldValue(AbstractPreferences.class, "eventQueue");
 	}
 
 }

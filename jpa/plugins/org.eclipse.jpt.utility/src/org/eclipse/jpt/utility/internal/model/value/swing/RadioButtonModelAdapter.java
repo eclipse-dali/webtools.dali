@@ -35,7 +35,7 @@ public class RadioButtonModelAdapter
 	/**
 	 * Constructor - the value holder is required.
 	 */
-	public RadioButtonModelAdapter(WritablePropertyValueModel valueHolder, Object buttonValue, boolean defaultValue) {
+	public RadioButtonModelAdapter(WritablePropertyValueModel<Object> valueHolder, Object buttonValue, boolean defaultValue) {
 		super(buildBooleanHolder(valueHolder, buttonValue), defaultValue);
 	}
 
@@ -43,7 +43,7 @@ public class RadioButtonModelAdapter
 	 * Constructor - the value holder is required.
 	 * The default value will be false.
 	 */
-	public RadioButtonModelAdapter(WritablePropertyValueModel valueHolder, Object buttonValue) {
+	public RadioButtonModelAdapter(WritablePropertyValueModel<Object> valueHolder, Object buttonValue) {
 		super(buildBooleanHolder(valueHolder, buttonValue));
 	}
 
@@ -59,9 +59,9 @@ public class RadioButtonModelAdapter
 	 * value is set to true, the wrapper will set the value holder's
 	 * value to the button value.
 	 */
-	public static WritablePropertyValueModel buildBooleanHolder(WritablePropertyValueModel valueHolder, Object buttonValue) {
-		WritablePropertyValueModel filteringPVM = new FilteringWritablePropertyValueModel(valueHolder, new RadioButtonFilter(buttonValue));
-		return new TransformationWritablePropertyValueModel(filteringPVM, new RadioButtonTransformer(buttonValue));
+	public static WritablePropertyValueModel<Boolean> buildBooleanHolder(WritablePropertyValueModel<Object> valueHolder, Object buttonValue) {
+		WritablePropertyValueModel<Object> filteringPVM = new FilteringWritablePropertyValueModel<Object>(valueHolder, new RadioButtonFilter(buttonValue));
+		return new TransformationWritablePropertyValueModel<Object, Boolean>(filteringPVM, new RadioButtonTransformer(buttonValue));
 	}
 
 
@@ -91,7 +91,7 @@ public class RadioButtonModelAdapter
 	 * This filter will only pass through a new value to the wrapped
 	 * value holder when it matches the configured button value.
 	 */
-	public static class RadioButtonFilter implements BidiFilter {
+	public static class RadioButtonFilter implements BidiFilter<Object> {
 		private Object buttonValue;
 
 		public RadioButtonFilter(Object buttonValue) {
@@ -120,7 +120,7 @@ public class RadioButtonModelAdapter
 	 * This transformer will convert the wrapped value to Boolean.TRUE
 	 * when it matches the configured button value.
 	 */
-	public static class RadioButtonTransformer implements BidiTransformer {
+	public static class RadioButtonTransformer implements BidiTransformer<Object, Boolean> {
 		private Object buttonValue;
 
 		public RadioButtonTransformer(Object buttonValue) {
@@ -134,7 +134,7 @@ public class RadioButtonModelAdapter
 		 * but if it is null simply pass it through because it will cause the
 		 * button model's default value to be used
 		 */
-		public Object transform(Object value) {
+		public Boolean transform(Object value) {
 			return (value == null) ? null : Boolean.valueOf(value == this.buttonValue);
 		}
 
@@ -142,8 +142,8 @@ public class RadioButtonModelAdapter
 		 * if the new value is true, pass through the our button value;
 		 * otherwise pass through null
 		 */
-		public Object reverseTransform(Object value) {
-			return (((Boolean) value).booleanValue()) ? this.buttonValue : null;
+		public Object reverseTransform(Boolean value) {
+			return (value.booleanValue()) ? this.buttonValue : null;
 		}
 
 	}

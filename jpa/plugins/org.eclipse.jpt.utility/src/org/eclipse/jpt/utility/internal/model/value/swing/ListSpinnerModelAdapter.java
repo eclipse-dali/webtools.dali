@@ -51,7 +51,7 @@ public class ListSpinnerModelAdapter
 	private final Object defaultValue;
 
 	/** A value model on the underlying value. */
-	private final WritablePropertyValueModel valueHolder;
+	private final WritablePropertyValueModel<Object> valueHolder;
 
 	/** A listener that allows us to synchronize with changes made to the underlying value. */
 	private final PropertyChangeListener valueChangeListener;
@@ -63,14 +63,14 @@ public class ListSpinnerModelAdapter
 	 * Constructor - the value holder is required.
 	 * Use the model value itself as the default spinner value.
 	 */
-	public ListSpinnerModelAdapter(WritablePropertyValueModel valueHolder) {
+	public ListSpinnerModelAdapter(WritablePropertyValueModel<Object> valueHolder) {
 		this(valueHolder, valueHolder.value());
 	}
 
 	/**
 	 * Constructor - the value holder is required.
 	 */
-	public ListSpinnerModelAdapter(WritablePropertyValueModel valueHolder, Object defaultValue) {
+	public ListSpinnerModelAdapter(WritablePropertyValueModel<Object> valueHolder, Object defaultValue) {
 		this(valueHolder, new Object[] {defaultValue}, defaultValue);
 	}
 
@@ -78,14 +78,14 @@ public class ListSpinnerModelAdapter
 	 * Constructor - the value holder is required.
 	 * Use the first item in the list of values as the default spinner value.
 	 */
-	public ListSpinnerModelAdapter(WritablePropertyValueModel valueHolder, Object[] values) {
+	public ListSpinnerModelAdapter(WritablePropertyValueModel<Object> valueHolder, Object[] values) {
 		this(valueHolder, values, values[0]);
 	}
 
 	/**
 	 * Constructor - the value holder is required.
 	 */
-	public ListSpinnerModelAdapter(WritablePropertyValueModel valueHolder, Object[] values, Object defaultValue) {
+	public ListSpinnerModelAdapter(WritablePropertyValueModel<Object> valueHolder, Object[] values, Object defaultValue) {
 		this(valueHolder, Arrays.asList(values), defaultValue);
 	}
 
@@ -93,14 +93,14 @@ public class ListSpinnerModelAdapter
 	 * Constructor - the value holder is required.
 	 * Use the first item in the list of values as the default spinner value.
 	 */
-	public ListSpinnerModelAdapter(WritablePropertyValueModel valueHolder, List values) {
+	public ListSpinnerModelAdapter(WritablePropertyValueModel<Object> valueHolder, List<Object> values) {
 		this(valueHolder, values, values.get(0));
 	}
 
 	/**
 	 * Constructor - the value holder is required.
 	 */
-	public ListSpinnerModelAdapter(WritablePropertyValueModel valueHolder, List values, Object defaultValue) {
+	public ListSpinnerModelAdapter(WritablePropertyValueModel<Object> valueHolder, List<Object> values, Object defaultValue) {
 		super(values);
 		this.valueHolder = valueHolder;
 		this.valueChangeListener = this.buildValueChangeListener();

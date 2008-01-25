@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
@@ -88,9 +89,9 @@ import org.eclipse.jpt.utility.tests.internal.model.value.swing.TableModelAdapte
  * list value model (the sorted people adapter)
  */
 public class TableModelAdapterUITest {
-	private SimpleCollectionValueModel eyeColorsHolder;
-	private WritablePropertyValueModel crowdHolder;
-	private WritablePropertyValueModel selectedPersonHolder;
+	private SimpleCollectionValueModel<Object> eyeColorsHolder;  // Object because it adapts to a combo-box
+	private WritablePropertyValueModel<Crowd> crowdHolder;
+	private WritablePropertyValueModel<Person> selectedPersonHolder;
 	private ListValueModel sortedPeopleAdapter;
 	private TableModel tableModel;
 	private ObjectListSelectionModel rowSelectionModel;
@@ -116,12 +117,12 @@ public class TableModelAdapterUITest {
 		this.openWindow();
 	}
 
-	private SimpleCollectionValueModel buildEyeColorCollectionHolder() {
-		return new SimpleCollectionValueModel(Person.getValidEyeColors());
+	private SimpleCollectionValueModel<Object> buildEyeColorCollectionHolder() {
+		return new SimpleCollectionValueModel<Object>(new ArrayList<Object>(Person.getValidEyeColors()));
 	}
 
-	private WritablePropertyValueModel buildCrowdHolder() {
-		return new SimplePropertyValueModel(this.buildCrowd());
+	private WritablePropertyValueModel<Crowd> buildCrowdHolder() {
+		return new SimplePropertyValueModel<Crowd>(this.buildCrowd());
 	}
 
 	private Crowd buildCrowd() {
@@ -151,34 +152,34 @@ public class TableModelAdapterUITest {
 		return crowd;
 	}
 
-	private WritablePropertyValueModel buildSelectedPersonHolder() {
-		return new SimplePropertyValueModel();
+	private WritablePropertyValueModel<Person> buildSelectedPersonHolder() {
+		return new SimplePropertyValueModel<Person>();
 	}
 
 	private ListValueModel buildSortedPeopleAdapter() {
-		return new SortedListValueModelAdapter(this.buildPeopleNameAdapter());
+		return new SortedListValueModelAdapter<Person>(this.buildPeopleNameAdapter());
 	}
 
 	// the list will need to be re-sorted if a name changes
 	private ListValueModel buildPeopleNameAdapter() {
-		return new ItemPropertyListValueModelAdapter(this.buildPeopleAdapter(), Person.NAME_PROPERTY);
+		return new ItemPropertyListValueModelAdapter<Person>(this.buildPeopleAdapter(), Person.NAME_PROPERTY);
 	}
 
-	private CollectionValueModel buildPeopleAdapter() {
-		return new CollectionAspectAdapter(this.crowdHolder, Crowd.PEOPLE_COLLECTION) {
+	private CollectionValueModel<Person> buildPeopleAdapter() {
+		return new CollectionAspectAdapter<Crowd, Person>(this.crowdHolder, Crowd.PEOPLE_COLLECTION) {
 			@Override
-			protected Iterator iterator_() {
-				return ((Crowd) this.subject).people();
+			protected Iterator<Person> iterator_() {
+				return this.subject.people();
 			}
 			@Override
 			protected int size_() {
-				return ((Crowd) this.subject).peopleSize();
+				return this.subject.peopleSize();
 			}
 		};
 	}
 
 	private TableModel buildTableModel() {
-		return new TableModelAdapter(this.sortedPeopleAdapter, this.buildColumnAdapter());
+		return new TableModelAdapter<Person>(this.sortedPeopleAdapter, this.buildColumnAdapter());
 	}
 
 	protected ColumnAdapter buildColumnAdapter() {
@@ -204,7 +205,7 @@ public class TableModelAdapterUITest {
 	}
 
 	void rowSelectionChanged(ListSelectionEvent e) {
-		Object selection = this.rowSelectionModel.getSelectedValue();
+		Person selection = (Person) this.rowSelectionModel.selectedValue();
 		this.selectedPersonHolder.setValue(selection);
 		boolean personSelected = (selection != null);
 		this.removeAction.setEnabled(personSelected);
@@ -255,7 +256,7 @@ public class TableModelAdapterUITest {
 		SpinnerTableCellRenderer spinnerRenderer = this.buildDateSpinnerRenderer();
 		column.setCellRenderer(spinnerRenderer);
 		column.setCellEditor(new TableCellEditorAdapter(this.buildDateSpinnerRenderer()));
-		rowHeight = Math.max(rowHeight, spinnerRenderer.getPreferredHeight());
+		rowHeight = Math.max(rowHeight, spinnerRenderer.preferredHeight());
 
 		// eye color column (combo-box)
 		// the jdk combo-box renderer looks like a text field
@@ -264,7 +265,7 @@ public class TableModelAdapterUITest {
 		ComboBoxTableCellRenderer eyeColorRenderer = this.buildEyeColorComboBoxRenderer();
 		column.setCellRenderer(eyeColorRenderer);
 		column.setCellEditor(new TableCellEditorAdapter(this.buildEyeColorComboBoxRenderer()));
-		rowHeight = Math.max(rowHeight, eyeColorRenderer.getPreferredHeight());
+		rowHeight = Math.max(rowHeight, eyeColorRenderer.preferredHeight());
 
 		// evil (check box)
 		// the jdk check box renderer and editor suck - use a custom ones
@@ -272,25 +273,25 @@ public class TableModelAdapterUITest {
 		CheckBoxTableCellRenderer evilRenderer = new CheckBoxTableCellRenderer();
 		column.setCellRenderer(evilRenderer);
 		column.setCellEditor(new TableCellEditorAdapter(new CheckBoxTableCellRenderer()));
-		rowHeight = Math.max(rowHeight, evilRenderer.getPreferredHeight());
+		rowHeight = Math.max(rowHeight, evilRenderer.preferredHeight());
 
 		// adventure count column (spinner)
 		column = table.getColumnModel().getColumn(PersonColumnAdapter.ADVENTURE_COUNT_COLUMN);
 		spinnerRenderer = this.buildNumberSpinnerRenderer();
 		column.setCellRenderer(spinnerRenderer);
 		column.setCellEditor(new TableCellEditorAdapter(this.buildNumberSpinnerRenderer()));
-		rowHeight = Math.max(rowHeight, spinnerRenderer.getPreferredHeight());
+		rowHeight = Math.max(rowHeight, spinnerRenderer.preferredHeight());
 
 		table.setRowHeight(rowHeight);
 		return table;
 	}
 
 	private SpinnerTableCellRenderer buildDateSpinnerRenderer() {
-		return new SpinnerTableCellRenderer(new DateSpinnerModelAdapter(new SimplePropertyValueModel()));
+		return new SpinnerTableCellRenderer(new DateSpinnerModelAdapter(new SimplePropertyValueModel<Object>()));
 	}
 
 	private SpinnerTableCellRenderer buildNumberSpinnerRenderer() {
-		return new SpinnerTableCellRenderer(new NumberSpinnerModelAdapter(new SimplePropertyValueModel()));
+		return new SpinnerTableCellRenderer(new NumberSpinnerModelAdapter(new SimplePropertyValueModel<Number>()));
 	}
 
 	private ComboBoxTableCellRenderer buildEyeColorComboBoxRenderer() {
@@ -298,7 +299,7 @@ public class TableModelAdapterUITest {
 	}
 
 	private ComboBoxModel buildReadOnlyEyeColorComboBoxModel() {
-		return new ComboBoxModelAdapter(this.eyeColorsHolder, new SimplePropertyValueModel());
+		return new ComboBoxModelAdapter(this.eyeColorsHolder, new SimplePropertyValueModel<Object>());
 	}
 
 	private ListCellRenderer buildEyeColorRenderer() {
@@ -443,7 +444,7 @@ public class TableModelAdapterUITest {
 			}
 			if ((eyeColor.length() == 0)) {
 				JOptionPane.showMessageDialog(null, "The eye color is required.", "Invalid Eye Color", JOptionPane.ERROR_MESSAGE);
-			} else if (CollectionTools.contains((Iterator) this.eyeColorsHolder.iterator(), eyeColor)) {
+			} else if (CollectionTools.contains(this.eyeColorsHolder.iterator(), eyeColor)) {
 				JOptionPane.showMessageDialog(null, "The eye color already exists.", "Invalid Eye Color", JOptionPane.ERROR_MESSAGE);
 			} else {
 				return eyeColor;
@@ -532,15 +533,15 @@ public class TableModelAdapterUITest {
 		return new DocumentAdapter(this.buildNameAdapter());
 	}
 
-	private WritablePropertyValueModel buildNameAdapter() {
-		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.NAME_PROPERTY) {
+	private WritablePropertyValueModel<String> buildNameAdapter() {
+		return new PropertyAspectAdapter<Person, String>(this.selectedPersonHolder, Person.NAME_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
-				return ((Person) this.subject).getName();
+			protected String buildValue_() {
+				return this.subject.getName();
 			}
 			@Override
-			protected void setValue_(Object value) {
-				((Person) this.subject).setName((String) value);
+			protected void setValue_(String value) {
+				this.subject.setName(value);
 			}
 		};
 	}
@@ -556,15 +557,15 @@ public class TableModelAdapterUITest {
 		return new DateSpinnerModelAdapter(this.buildBirthDateAdapter());
 	}
 
-	private WritablePropertyValueModel buildBirthDateAdapter() {
-		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.BIRTH_DATE_PROPERTY) {
+	private WritablePropertyValueModel<Object> buildBirthDateAdapter() {
+		return new PropertyAspectAdapter<Person, Object>(this.selectedPersonHolder, Person.BIRTH_DATE_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
-				return ((Person) this.subject).getBirthDate();
+			protected Date buildValue_() {
+				return this.subject.getBirthDate();
 			}
 			@Override
 			protected void setValue_(Object value) {
-				((Person) this.subject).setBirthDate((Date) value);
+				this.subject.setBirthDate((Date) value);
 			}
 		};
 	}
@@ -580,15 +581,15 @@ public class TableModelAdapterUITest {
 		return new DateSpinnerModelAdapter(this.buildGoneWestDateAdapter());
 	}
 
-	private WritablePropertyValueModel buildGoneWestDateAdapter() {
-		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.GONE_WEST_DATE_PROPERTY) {
+	private WritablePropertyValueModel<Object> buildGoneWestDateAdapter() {
+		return new PropertyAspectAdapter<Person, Object>(this.selectedPersonHolder, Person.GONE_WEST_DATE_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
-				return ((Person) this.subject).getGoneWestDate();
+			protected Date buildValue_() {
+				return this.subject.getGoneWestDate();
 			}
 			@Override
 			protected void setValue_(Object value) {
-				((Person) this.subject).setGoneWestDate((Date) value);
+				this.subject.setGoneWestDate((Date) value);
 			}
 		};
 	}
@@ -604,15 +605,15 @@ public class TableModelAdapterUITest {
 		return new ComboBoxModelAdapter(this.eyeColorsHolder, this.buildEyeColorAdapter());
 	}
 
-	private WritablePropertyValueModel buildEyeColorAdapter() {
-		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.EYE_COLOR_PROPERTY) {
+	private WritablePropertyValueModel<Object> buildEyeColorAdapter() {
+		return new PropertyAspectAdapter<Person, Object>(this.selectedPersonHolder, Person.EYE_COLOR_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
-				return ((Person) this.subject).getEyeColor();
+				return this.subject.getEyeColor();
 			}
 			@Override
 			protected void setValue_(Object value) {
-				((Person) this.subject).setEyeColor((String) value);
+				this.subject.setEyeColor((String) value);
 			}
 		};
 	}
@@ -631,15 +632,15 @@ public class TableModelAdapterUITest {
 		return new CheckBoxModelAdapter(this.buildEvilAdapter());
 	}
 
-	private WritablePropertyValueModel buildEvilAdapter() {
-		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.EVIL_PROPERTY) {
+	private WritablePropertyValueModel<Boolean> buildEvilAdapter() {
+		return new PropertyAspectAdapter<Person, Boolean>(this.selectedPersonHolder, Person.EVIL_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
-				return Boolean.valueOf(((Person) this.subject).isEvil());
+			protected Boolean buildValue_() {
+				return Boolean.valueOf(this.subject.isEvil());
 			}
 			@Override
-			protected void setValue_(Object value) {
-				((Person) this.subject).setEvil(((Boolean) value).booleanValue());
+			protected void setValue_(Boolean value) {
+				this.subject.setEvil(value.booleanValue());
 			}
 		};
 	}
@@ -655,15 +656,15 @@ public class TableModelAdapterUITest {
 		return new NumberSpinnerModelAdapter(this.buildRankAdapter());
 	}
 
-	private WritablePropertyValueModel buildRankAdapter() {
-		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.RANK_PROPERTY) {
+	private WritablePropertyValueModel<Number> buildRankAdapter() {
+		return new PropertyAspectAdapter<Person, Number>(this.selectedPersonHolder, Person.RANK_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
-				return new Integer(((Person) this.subject).getRank());
+			protected Number buildValue_() {
+				return new Integer(this.subject.getRank());
 			}
 			@Override
-			protected void setValue_(Object value) {
-				((Person) this.subject).setRank(((Integer) value).intValue());
+			protected void setValue_(Number value) {
+				this.subject.setRank(value.intValue());
 			}
 		};
 	}
@@ -679,15 +680,15 @@ public class TableModelAdapterUITest {
 		return new NumberSpinnerModelAdapter(this.buildAdventureCountAdapter());
 	}
 
-	private WritablePropertyValueModel buildAdventureCountAdapter() {
-		return new PropertyAspectAdapter(this.selectedPersonHolder, Person.ADVENTURE_COUNT_PROPERTY) {
+	private WritablePropertyValueModel<Number> buildAdventureCountAdapter() {
+		return new PropertyAspectAdapter<Person, Number>(this.selectedPersonHolder, Person.ADVENTURE_COUNT_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
-				return new Integer(((Person) this.subject).getAdventureCount());
+			protected Number buildValue_() {
+				return new Integer(this.subject.getAdventureCount());
 			}
 			@Override
-			protected void setValue_(Object value) {
-				((Person) this.subject).setAdventureCount(((Integer) value).intValue());
+			protected void setValue_(Number value) {
+				this.subject.setAdventureCount(value.intValue());
 			}
 		};
 	}
@@ -696,14 +697,14 @@ public class TableModelAdapterUITest {
 	// ********** queries **********
 
 	private Crowd crowd() {
-		return (Crowd) this.crowdHolder.value();
+		return this.crowdHolder.value();
 	}
 
 	private Person selectedPerson() {
 		if (this.rowSelectionModel.isSelectionEmpty()) {
 			return null;
 		}
-		return (Person) this.rowSelectionModel.getSelectedValue();
+		return (Person) this.rowSelectionModel.selectedValue();
 	}
 
 	private void setSelectedPerson(Person person) {

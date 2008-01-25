@@ -264,7 +264,7 @@ public class PreferencePropertyValueModel<P>
 	/**
 	 * Return the preference's key.
 	 */
-	public String getKey() {
+	public String key() {
 		return this.key;
 	}
 

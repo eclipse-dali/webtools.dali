@@ -23,9 +23,9 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
  * 
  * We don't use a singleton because we hold on to listeners.
  */
-public final class NullCollectionValueModel
+public final class NullCollectionValueModel<E>
 	extends AbstractModel
-	implements CollectionValueModel
+	implements CollectionValueModel<E>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -43,7 +43,7 @@ public final class NullCollectionValueModel
 		return 0;
 	}
 
-	public Iterator iterator() {
+	public Iterator<E> iterator() {
 		return EmptyIterator.instance();
 	}
 

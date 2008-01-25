@@ -22,28 +22,28 @@ public interface ColumnAdapter {
 	 * Return the number of columns in the table.
 	 * Typically this is static.
 	 */
-	int getColumnCount();
+	int columnCount();
 
 	/**
 	 * Return the name of the specified column.
 	 */
-	String getColumnName(int index);
+	String columnName(int index);
 
 	/**
 	 * Return the class of the specified column.
 	 */
-	Class<?> getColumnClass(int index);
+	Class<?> columnClass(int index);
 
 	/**
 	 * Return whether the specified column is editable.
 	 * Typically this is the same for every row.
 	 */
-	boolean isColumnEditable(int index);
+	boolean columnIsEditable(int index);
 
 	/**
 	 * Return the cell models for the specified subject
 	 * that corresponds to a single row in the table.
 	 */
-	WritablePropertyValueModel[] cellModels(Object subject);
+	WritablePropertyValueModel<Object>[] cellModels(Object subject);
 
 }

@@ -20,10 +20,10 @@ import javax.swing.ListModel;
  * is passed a FilteringListPanel to assist the user in making
  * a selection.
  */
-public class FilteringListBrowser 
+public class FilteringListBrowser<T> 
 	implements ListChooser.ListBrowser 
 {
-	private FilteringListPanel panel;
+	private FilteringListPanel<T> panel;
 
 	/**
 	 * Default constructor.
@@ -33,8 +33,8 @@ public class FilteringListBrowser
 		this.panel = this.buildPanel();
 	}
 
-	protected FilteringListPanel buildPanel() {
-		return new LocalFilteringListPanel();
+	protected FilteringListPanel<T> buildPanel() {
+		return new LocalFilteringListPanel<T>();
 	}
 
 	/**
@@ -57,16 +57,16 @@ public class FilteringListBrowser
 		);
 		
 		if (option == JOptionPane.OK_OPTION) {
-			chooser.getModel().setSelectedItem(this.panel.getSelection());
+			chooser.getModel().setSelectedItem(this.panel.selection());
 		}
 		
 		// clear the text field so the list box is re-filtered
-		this.panel.getTextField().setText("");
+		this.panel.textField().setText("");
 	}
 	
 	protected void initializeCellRenderer(JComboBox comboBox) {
 		// default behavior should be to use the cell renderer from the combobox.
-		this.panel.getListBox().setCellRenderer(comboBox.getRenderer());
+		this.panel.listBox().setCellRenderer(comboBox.getRenderer());
 	}
 
 	/**
@@ -118,10 +118,11 @@ public class FilteringListBrowser
 	
 	// ********** custom panel **********
 	
-	protected class LocalFilteringListPanel extends FilteringListPanel {
-	
+	protected static class LocalFilteringListPanel<S> extends FilteringListPanel<S> {
+		protected static final Object[] EMPTY_ARRAY = new Object[0];
+
 		protected LocalFilteringListPanel() {
-			super(new Object[0], null);
+			super(EMPTY_ARRAY, null);
 		}
 	
 		/**
@@ -129,9 +130,11 @@ public class FilteringListBrowser
 		 * will try open wide enough to disable the horizontal scroll bar;
 		 * and it looks a bit clumsy.
 		 */
+		@Override
 		protected String prototypeCellValue() {
 			return null;
 		}
 	
 	}
+
 }

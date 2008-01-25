@@ -64,7 +64,7 @@ public class ComboBoxModelAdapter
 	/**
 	 * Constructor - the collection holder and selection holder are required;
 	 */
-	public ComboBoxModelAdapter(CollectionValueModel collectionHolder, WritablePropertyValueModel<Object> selectionHolder) {
+	public ComboBoxModelAdapter(CollectionValueModel<?> collectionHolder, WritablePropertyValueModel<Object> selectionHolder) {
 		super(collectionHolder);
 		if (selectionHolder == null) {
 			throw new NullPointerException();

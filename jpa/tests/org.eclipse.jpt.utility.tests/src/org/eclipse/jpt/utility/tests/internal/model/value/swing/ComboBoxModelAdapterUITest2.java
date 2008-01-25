@@ -42,7 +42,7 @@ public class ComboBoxModelAdapterUITest2 extends ComboBoxModelAdapterUITest {
 	@Override
 	protected ListValueModel uiColorListHolder() {
 		// the default is to prepend the wrapped list with a null item
-		return new ExtendedListValueModelWrapper(super.uiColorListHolder());
+		return new ExtendedListValueModelWrapper<String>(super.uiColorListHolder());
 	}
 
 	/**
