@@ -145,14 +145,28 @@ public abstract class DelegatingContentAndLabelProvider extends BaseLabelProvide
 	/**
 	 * Update the content for the given item
 	 */
-	public void updateContent(Object item) {
-		viewer.refresh(item);
+	public void updateContent(final Object item) {
+		Runnable runnable = new Runnable() {
+			public void run() {
+				if (viewer != null && viewer.getControl() != null && !viewer.getControl().isDisposed()) {
+					viewer.refresh(item);
+				}
+			}
+		};
+		viewer.getControl().getDisplay().asyncExec(runnable);
 	}
 	
 	/**
 	 * Update the label for the given item
 	 */
-	public void updateLabel(Object item) {
-		fireLabelProviderChanged(new LabelProviderChangedEvent(this, item));
+	public void updateLabel(final Object item) {
+		Runnable runnable = new Runnable() {
+			public void run() {
+				if (viewer != null && viewer.getControl() != null && !viewer.getControl().isDisposed()) {
+					fireLabelProviderChanged(new LabelProviderChangedEvent(DelegatingContentAndLabelProvider.this, item));
+				}
+			}
+		};
+		viewer.getControl().getDisplay().asyncExec(runnable);
 	}
 }
