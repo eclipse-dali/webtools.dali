@@ -57,7 +57,7 @@ public final class JDBCType
 	/**
 	 * Return the name of the type, as defined in java.sql.Types.
 	 */
-	public String getName() {
+	public String name() {
 		return this.name;
 	}
 
@@ -65,7 +65,7 @@ public final class JDBCType
 	/**
 	 * Return the type code, as defined in java.sql.Types.
 	 */
-	public int getCode() {
+	public int code() {
 		return this.code;
 	}
 
@@ -122,7 +122,7 @@ public final class JDBCType
 	public static JDBCType type(int code) {
 		JDBCType[] types = types();
 		for (int i = types.length; i-- > 0; ) {
-			if (types[i].getCode() == code) {
+			if (types[i].code() == code) {
 				return types[i];
 			}
 		}
@@ -136,7 +136,7 @@ public final class JDBCType
 	public static JDBCType type(String name) {
 		JDBCType[] types = types();
 		for (int i = types.length; i-- > 0; ) {
-			if (types[i].getName().equals(name)) {
+			if (types[i].name().equals(name)) {
 				return types[i];
 			}
 		}

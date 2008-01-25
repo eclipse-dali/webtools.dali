@@ -76,49 +76,49 @@ public class JavaTypeTests extends TestCase {
 	public void testElementTypeName() throws Exception {
 		JavaType javaType;
 		javaType = new JavaType(java.lang.Object.class);
-		assertEquals("java.lang.Object", javaType.getElementTypeName());
+		assertEquals("java.lang.Object", javaType.elementTypeName());
 
 		javaType = new JavaType(java.lang.Object[].class);
-		assertEquals("java.lang.Object", javaType.getElementTypeName());
+		assertEquals("java.lang.Object", javaType.elementTypeName());
 
 		javaType = new JavaType(int.class);
-		assertEquals("int", javaType.getElementTypeName());
+		assertEquals("int", javaType.elementTypeName());
 
 		javaType = new JavaType(int[].class);
-		assertEquals("int", javaType.getElementTypeName());
+		assertEquals("int", javaType.elementTypeName());
 
 		javaType = new JavaType(void.class);
-		assertEquals("void", javaType.getElementTypeName());
+		assertEquals("void", javaType.elementTypeName());
 
 		javaType = new JavaType(java.util.Map.Entry.class);
-		assertEquals("java.util.Map$Entry", javaType.getElementTypeName());
+		assertEquals("java.util.Map$Entry", javaType.elementTypeName());
 
 		javaType = new JavaType(java.util.Map.Entry[][].class);
-		assertEquals("java.util.Map$Entry", javaType.getElementTypeName());
+		assertEquals("java.util.Map$Entry", javaType.elementTypeName());
 	}
 
 	public void testArrayDepth() throws Exception {
 		JavaType javaType;
 		javaType = new JavaType(java.lang.Object.class);
-		assertEquals(0, javaType.getArrayDepth());
+		assertEquals(0, javaType.arrayDepth());
 
 		javaType = new JavaType(java.lang.Object[].class);
-		assertEquals(1, javaType.getArrayDepth());
+		assertEquals(1, javaType.arrayDepth());
 
 		javaType = new JavaType(int.class);
-		assertEquals(0, javaType.getArrayDepth());
+		assertEquals(0, javaType.arrayDepth());
 
 		javaType = new JavaType(int[].class);
-		assertEquals(1, javaType.getArrayDepth());
+		assertEquals(1, javaType.arrayDepth());
 
 		javaType = new JavaType(void.class);
-		assertEquals(0, javaType.getArrayDepth());
+		assertEquals(0, javaType.arrayDepth());
 
 		javaType = new JavaType(java.util.Map.Entry.class);
-		assertEquals(0, javaType.getArrayDepth());
+		assertEquals(0, javaType.arrayDepth());
 
 		javaType = new JavaType(java.util.Map.Entry[][].class);
-		assertEquals(2, javaType.getArrayDepth());
+		assertEquals(2, javaType.arrayDepth());
 	}
 
 	public void testIsArray() throws Exception {

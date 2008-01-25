@@ -261,7 +261,7 @@ public class SynchronizedStack<E>
 	 * Return the object this object locks on while performing
 	 * its operations.
 	 */
-	public Object getMutex() {
+	public Object mutex() {
 		return this.mutex;
 	}
 

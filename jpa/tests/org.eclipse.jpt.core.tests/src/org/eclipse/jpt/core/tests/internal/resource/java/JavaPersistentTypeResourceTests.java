@@ -849,7 +849,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 		
 		assertEquals("only persistable types should be returned by nestedTypes()", 1, CollectionTools.size(persistentType.nestedTypes()));
 		
-		List<JavaPersistentTypeResource> nestedTypes = (List<JavaPersistentTypeResource>) ClassTools.getFieldValue(persistentType, "nestedTypes");
+		List<JavaPersistentTypeResource> nestedTypes = (List<JavaPersistentTypeResource>) ClassTools.fieldValue(persistentType, "nestedTypes");
 		
 		assertEquals(4, CollectionTools.size(nestedTypes));
 		

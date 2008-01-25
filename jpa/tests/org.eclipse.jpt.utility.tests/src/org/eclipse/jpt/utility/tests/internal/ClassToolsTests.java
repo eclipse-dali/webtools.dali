@@ -93,7 +93,7 @@ public class ClassToolsTests extends TestCase {
 		Vector<?> v = ClassTools.newInstance(java.util.Vector.class, int.class, new Integer(initialCapacity));
 		assertNotNull(v);
 		assertEquals(0, v.size());
-		Object[] elementData = (Object[]) ClassTools.getFieldValue(v, "elementData");
+		Object[] elementData = (Object[]) ClassTools.fieldValue(v, "elementData");
 		assertEquals(initialCapacity, elementData.length);
 	}
 
@@ -106,7 +106,7 @@ public class ClassToolsTests extends TestCase {
 		Vector<?> v = ClassTools.newInstance(java.util.Vector.class, parmTypes, parms);
 		assertNotNull(v);
 		assertEquals(0, v.size());
-		Object[] elementData = (Object[]) ClassTools.getFieldValue(v, "elementData");
+		Object[] elementData = (Object[]) ClassTools.fieldValue(v, "elementData");
 		assertEquals(initialCapacity, elementData.length);
 
 		parms[0] = new Integer(-1);
@@ -129,14 +129,14 @@ public class ClassToolsTests extends TestCase {
 		assertTrue("NoSuchMethodException not thrown", exCaught);
 	}
 
-	public void testGetFieldValue() {
+	public void testFieldValue() {
 		int initialCapacity = 200;
 		Vector<?> v = new Vector<Object>(initialCapacity);
-		Object[] elementData = (Object[]) ClassTools.getFieldValue(v, "elementData");
+		Object[] elementData = (Object[]) ClassTools.fieldValue(v, "elementData");
 		assertEquals(initialCapacity, elementData.length);
 
 		// test inherited field
-		Integer modCountInteger = (Integer) ClassTools.getFieldValue(v, "modCount");
+		Integer modCountInteger = (Integer) ClassTools.fieldValue(v, "modCount");
 		int modCount = modCountInteger.intValue();
 		assertEquals(0, modCount);
 

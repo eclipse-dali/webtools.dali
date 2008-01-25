@@ -133,14 +133,14 @@ public class SecondaryTablesComposite extends BaseJpaController<IEntity>
 
 			@Override
 			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
-				ISecondaryTable secondaryTable = (ISecondaryTable) listSelectionModel.getSelectedValue();
+				ISecondaryTable secondaryTable = (ISecondaryTable) listSelectionModel.selectedValue();
 				SecondaryTableDialog dialog = new SecondaryTableDialog(getControl().getShell(), secondaryTable, subject());
 				editSecondaryTableFromDialog(dialog, secondaryTable);
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				IEntity entity = subject();
-				int[] selectedIndices = listSelectionModel.getSelectedIndices();
+				int[] selectedIndices = listSelectionModel.selectedIndices();
 
 				for (int index = selectedIndices.length; --index >= 0; ) {
 					entity.removeSpecifiedSecondaryTable(selectedIndices[index]);

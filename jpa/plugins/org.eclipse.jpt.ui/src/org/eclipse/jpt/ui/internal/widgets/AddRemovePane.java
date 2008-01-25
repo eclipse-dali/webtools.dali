@@ -457,7 +457,7 @@ public abstract class AddRemovePane<T extends Model> extends BaseJpaController<T
 	protected void updateRemoveButton(Button removeButton) {
 		removeButton.setEnabled(
 			getControl().isEnabled() &&
-			selectionModel.getSelectedValue() != null
+			selectionModel.selectedValue() != null
 		);
 	}
 
@@ -508,7 +508,7 @@ public abstract class AddRemovePane<T extends Model> extends BaseJpaController<T
 		}
 
 		public boolean enableOptionOnSelectionChange(ObjectListSelectionModel listSelectionModel) {
-			return listSelectionModel.getSelectedValuesSize() == 1;
+			return listSelectionModel.selectedValuesSize() == 1;
 		}
 
 		public boolean hasOptionalButton() {

@@ -87,14 +87,14 @@ public final class JavaType
 	 * Return the name of the type's "element type".
 	 * A member type will have one or more '$' characters in its name.
 	 */
-	public String getElementTypeName() {
+	public String elementTypeName() {
 		return this.elementTypeName;
 	}
 
 	/**
 	 * Return the type's "array depth".
 	 */
-	public int getArrayDepth() {
+	public int arrayDepth() {
 		return this.arrayDepth;
 	}
 

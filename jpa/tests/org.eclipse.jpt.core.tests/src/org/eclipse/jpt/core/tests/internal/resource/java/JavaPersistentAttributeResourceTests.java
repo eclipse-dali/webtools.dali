@@ -749,7 +749,7 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	public void testIsPersistableField2() throws Exception {
 		IType jdtType = createTestEntityWithNonResolvingField();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		Collection<JavaPersistentAttributeResource> attributes = (Collection<JavaPersistentAttributeResource>) ClassTools.getFieldValue(typeResource, "attributes");
+		Collection<JavaPersistentAttributeResource> attributes = (Collection<JavaPersistentAttributeResource>) ClassTools.fieldValue(typeResource, "attributes");
 		JavaPersistentAttributeResource attributeResource = attributes.iterator().next();
 		
 		assertEquals("foo", attributeResource.getName());
@@ -765,7 +765,7 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	public void testGetQualifiedTypeName() throws Exception {
 		IType jdtType = createTestEntityWithNonResolvingField();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		Collection<JavaPersistentAttributeResource> attributes = (Collection<JavaPersistentAttributeResource>) ClassTools.getFieldValue(typeResource, "attributes");
+		Collection<JavaPersistentAttributeResource> attributes = (Collection<JavaPersistentAttributeResource>) ClassTools.fieldValue(typeResource, "attributes");
 		JavaPersistentAttributeResource attributeResource = attributes.iterator().next();
 		
 		assertEquals("foo", attributeResource.getName());
@@ -790,7 +790,7 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	public void testIsPersistableMethod2() throws Exception {
 		IType jdtType = createTestEntityWithNonResolvingMethod();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		Collection<JavaPersistentAttributeResource> attributes = (Collection<JavaPersistentAttributeResource>) ClassTools.getFieldValue(typeResource, "attributes");
+		Collection<JavaPersistentAttributeResource> attributes = (Collection<JavaPersistentAttributeResource>) ClassTools.fieldValue(typeResource, "attributes");
 		JavaPersistentAttributeResource attributeResource = (JavaPersistentAttributeResource) attributes.toArray()[3];
 		
 		assertEquals("foo", attributeResource.getName());

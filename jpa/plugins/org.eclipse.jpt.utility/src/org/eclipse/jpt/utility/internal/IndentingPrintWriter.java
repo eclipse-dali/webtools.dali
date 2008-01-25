@@ -132,7 +132,7 @@ public class IndentingPrintWriter extends PrintWriter {
 	/**
 	 * Return the current indent level.
 	 */
-	public int getIndentLevel() {
+	public int indentLevel() {
 		return this.indentLevel;
 	}
 	

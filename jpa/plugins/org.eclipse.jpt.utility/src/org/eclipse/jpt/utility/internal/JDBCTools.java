@@ -57,7 +57,7 @@ public final class JDBCTools {
 	 * @see java.sql.Types
 	 */
 	public static JavaType javaTypeFor(JDBCType jdbcType) {
-		return javaTypeForJDBCTypeNamed(jdbcType.getName());
+		return javaTypeForJDBCTypeNamed(jdbcType.name());
 	}
 
 	/**
@@ -141,9 +141,9 @@ public final class JDBCTools {
 	private static void addJDBCToJavaTypeMappingTo(int jdbcTypeCode, Class<?> javaClass, HashMap<String, JDBCToJavaTypeMapping> mappings) {
 		// check for duplicates
 		JDBCType jdbcType = JDBCType.type(jdbcTypeCode);
-		Object prev = mappings.put(jdbcType.getName(), buildJDBCToJavaTypeMapping(jdbcType, javaClass));
+		Object prev = mappings.put(jdbcType.name(), buildJDBCToJavaTypeMapping(jdbcType, javaClass));
 		if (prev != null) {
-			throw new IllegalArgumentException("duplicate JDBC type: " + jdbcType.getName());
+			throw new IllegalArgumentException("duplicate JDBC type: " + jdbcType.name());
 		}
 	}
 
@@ -267,11 +267,11 @@ public final class JDBCTools {
 		}
 
 		public boolean maps(int jdbcTypeCode) {
-			return this.jdbcType.getCode() == jdbcTypeCode;
+			return this.jdbcType.code() == jdbcTypeCode;
 		}
 
 		public boolean maps(String jdbcTypeName) {
-			return this.jdbcType.getName().equals(jdbcTypeName);
+			return this.jdbcType.name().equals(jdbcTypeName);
 		}
 
 		public boolean maps(JDBCType type) {

@@ -47,7 +47,7 @@ public class JpaModelTests extends TestCase {
 	}
 
 	private boolean debug() {
-		Boolean debug = (Boolean) ClassTools.getStaticFieldValue(JpaModelManager.class, "DEBUG");
+		Boolean debug = (Boolean) ClassTools.staticFieldValue(JpaModelManager.class, "DEBUG");
 		return debug.booleanValue();
 	}
 
@@ -224,7 +224,7 @@ public class JpaModelTests extends TestCase {
 
 	private void verifyDEBUG(Class<?> clazz) {
 		assertFalse("Recompile with \"DEBUG = false\": " + clazz.getName(),
-				((Boolean) ClassTools.getStaticFieldValue(clazz, "DEBUG")).booleanValue());
+				((Boolean) ClassTools.staticFieldValue(clazz, "DEBUG")).booleanValue());
 	}
 
 }

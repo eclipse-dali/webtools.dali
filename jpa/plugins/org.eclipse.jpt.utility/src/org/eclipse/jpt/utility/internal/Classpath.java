@@ -446,7 +446,7 @@ public class Classpath
 	private static Entry[] consolidateEntries(Classpath[] classpaths) {
 		List<Entry> entries = new ArrayList<Entry>();
 		for (Classpath classpath : classpaths) {
-			CollectionTools.addAll(entries, classpath.getEntries());
+			CollectionTools.addAll(entries, classpath.entries());
 		}
 		return entries.toArray(new Entry[entries.size()]);
 	}
@@ -457,7 +457,7 @@ public class Classpath
 	/**
 	 * Return the classpath's entries.
 	 */
-	public Entry[] getEntries() {
+	public Entry[] entries() {
 		return this.entries;
 	}
 

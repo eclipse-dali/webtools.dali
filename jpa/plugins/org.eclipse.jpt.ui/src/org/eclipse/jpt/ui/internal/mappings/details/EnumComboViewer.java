@@ -135,7 +135,7 @@ public abstract class EnumComboViewer<T extends Model, V> extends BaseJpaControl
 		sb.append("_");
 		sb.append(value.toString().toLowerCase());
 
-		return (String) ClassTools.getStaticFieldValue(nlsClass, sb.toString());
+		return (String) ClassTools.staticFieldValue(nlsClass, sb.toString());
 	}
 
 	/**

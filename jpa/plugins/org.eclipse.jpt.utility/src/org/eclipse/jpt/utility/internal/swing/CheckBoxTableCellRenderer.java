@@ -200,7 +200,7 @@ public class CheckBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	 * to set the table's row height to something the check box
 	 * will look good in....
 	 */
-	public int getPreferredHeight() {
+	public int preferredHeight() {
 		// add in space for the border top and bottom
 		return (int) this.checkBox.getPreferredSize().getHeight() + 2;
 	}

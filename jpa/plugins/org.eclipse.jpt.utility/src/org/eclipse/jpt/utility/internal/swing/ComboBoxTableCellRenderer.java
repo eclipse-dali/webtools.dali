@@ -178,7 +178,7 @@ public class ComboBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	
     
     private JList getListBox(JComboBox result) {
-        return (JList) ClassTools.getFieldValue(result.getUI(), "listBox");
+        return (JList) ClassTools.fieldValue(result.getUI(), "listBox");
     }
 
 	
@@ -323,7 +323,7 @@ public class ComboBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	 * Return the renderer's preferred height. This allows you
 	 * to set the row height to something the combo-box will look good in....
 	 */
-	public int getPreferredHeight() {
+	public int preferredHeight() {
 		return height;
 	}
 

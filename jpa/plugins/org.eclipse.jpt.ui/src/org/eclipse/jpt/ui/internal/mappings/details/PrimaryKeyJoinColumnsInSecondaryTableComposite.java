@@ -228,7 +228,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaContr
 	}
 
 	private void editPrimaryKeyJoinColumn(ObjectListSelectionModel listSelectionModel) {
-		IPrimaryKeyJoinColumn joinColumn = (IPrimaryKeyJoinColumn) listSelectionModel.getSelectedValue();
+		IPrimaryKeyJoinColumn joinColumn = (IPrimaryKeyJoinColumn) listSelectionModel.selectedValue();
 		PrimaryKeyJoinColumnInSecondaryTableDialog dialog = new PrimaryKeyJoinColumnInSecondaryTableDialog(this.getControl().getShell(), joinColumn);
 		editJoinColumnFromDialog(dialog, joinColumn);
 	}
@@ -291,7 +291,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaContr
 	}
 
 	private void removePrimaryKeyJoinColumn(ObjectListSelectionModel listSelectionModel) {
-		int[] selectedIndices = listSelectionModel.getSelectedIndices();
+		int[] selectedIndices = listSelectionModel.selectedIndices();
 
 		for (int index = selectedIndices.length; --index > 0; ) {
 			subject().removeSpecifiedPrimaryKeyJoinColumn(selectedIndices[index]);

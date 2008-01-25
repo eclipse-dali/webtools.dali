@@ -26,19 +26,19 @@ public class JDBCTypeTests extends TestCase {
 	public void testName() {
 		JDBCType jdbcType;
 		jdbcType = JDBCType.type(Types.VARCHAR);
-		assertEquals("VARCHAR", jdbcType.getName());
+		assertEquals("VARCHAR", jdbcType.name());
 
 		jdbcType = JDBCType.type(Types.INTEGER);
-		assertEquals("INTEGER", jdbcType.getName());
+		assertEquals("INTEGER", jdbcType.name());
 	}
 
 	public void testCode() {
 		JDBCType jdbcType;
 		jdbcType = JDBCType.type(Types.VARCHAR);
-		assertEquals(Types.VARCHAR, jdbcType.getCode());
+		assertEquals(Types.VARCHAR, jdbcType.code());
 
 		jdbcType = JDBCType.type(Types.INTEGER);
-		assertEquals(Types.INTEGER, jdbcType.getCode());
+		assertEquals(Types.INTEGER, jdbcType.code());
 	}
 
 	public void testInvalidTypeCode() throws Exception {

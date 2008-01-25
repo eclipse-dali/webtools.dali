@@ -456,7 +456,7 @@ public final class ClassTools {
 	 * Useful for accessing private, package, or protected fields.
 	 * Object#getFieldValue(String fieldName)
 	 */
-	public static Object getFieldValue(Object object, String fieldName) {
+	public static Object fieldValue(Object object, String fieldName) {
 		try {
 			return attemptToGetFieldValue(object, fieldName);
 		} catch (NoSuchFieldException nsfe) {
@@ -470,7 +470,7 @@ public final class ClassTools {
 	 * Useful for accessing private, package, or protected fields.
 	 * Class#getStaticFieldValue(String fieldName)
 	 */
-	public static Object getStaticFieldValue(Class<?> javaClass, String fieldName) {
+	public static Object staticFieldValue(Class<?> javaClass, String fieldName) {
 		try {
 			return attemptToGetStaticFieldValue(javaClass, fieldName);
 		} catch (NoSuchFieldException nsfe) {

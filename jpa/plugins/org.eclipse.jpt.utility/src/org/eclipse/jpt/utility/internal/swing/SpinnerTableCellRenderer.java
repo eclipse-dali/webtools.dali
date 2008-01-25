@@ -179,7 +179,7 @@ public class SpinnerTableCellRenderer implements TableCellEditorAdapter.Renderer
 	 * Return the renderer's preferred height. This allows you
 	 * to set the row height to something the spinner will look good in....
 	 */
-	public int getPreferredHeight() {
+	public int preferredHeight() {
 		// add in space for the border top and bottom
 		return (int) this.spinner.getPreferredSize().getHeight() + 2;
 	}
