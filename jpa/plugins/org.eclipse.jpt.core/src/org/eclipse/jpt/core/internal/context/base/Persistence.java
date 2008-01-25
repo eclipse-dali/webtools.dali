@@ -44,6 +44,7 @@ public class Persistence extends JpaContextNode
 		return addPersistenceUnit(persistenceUnits.size());
 	}
 	
+	// TODO - add better change support
 	public IPersistenceUnit addPersistenceUnit(int index) {
 		XmlPersistenceUnit xmlPersistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
 		IPersistenceUnit persistenceUnit = createPersistenceUnit(xmlPersistenceUnit);
