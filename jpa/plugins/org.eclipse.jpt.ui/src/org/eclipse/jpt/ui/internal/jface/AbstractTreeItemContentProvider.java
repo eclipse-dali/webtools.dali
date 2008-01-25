@@ -18,6 +18,7 @@ import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.NullListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 
@@ -27,13 +28,15 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
  * 
  * The typical subclass will override the following methods:
  * #getParent()
- *     this method is not implemented, as this should not be changing for a given
- *     node.  all such changes will be provided by the parent itself.
+ *     the default behavior for this method is to return null.  there is no 
+ *     property value model for this as this should not be changing for a given
+ *     node.  all such changes will be provided by the parent side of the relationship.
  * #buildChildrenModel()
  *     return a {@link ListValueModel} that represents the children for the represented
  *     model object.  #buildChildrenModel(CollectionValueModel) and 
  *     #buildChildrenModel(PropertyValueModel) are provided if the children are more
  *     easily represented as a collection or as a property (single child)
+ *     the default behavior is to return a {@link NullListValueModel}
  * 
  * Other methods may be overridden, but take care to preserve the logic provided 
  * by this class.
@@ -116,7 +119,9 @@ public abstract class AbstractTreeItemContentProvider
 	/**
 	 * Construct a children model
 	 */
-	protected abstract ListValueModel buildChildrenModel();
+	protected ListValueModel buildChildrenModel() {
+		return new NullListValueModel();
+	}
 	
 	/**
 	 * Utility method that can be used if the children model is better represented
@@ -152,7 +157,9 @@ public abstract class AbstractTreeItemContentProvider
 		return treeContentProvider;
 	}
 	
-	public abstract Object getParent();
+	public Object getParent() {
+		return null;
+	}
 	
 	public Object[] getElements() {
 		return getChildren();
