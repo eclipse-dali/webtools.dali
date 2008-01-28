@@ -123,10 +123,10 @@ public final class ForeignKey extends DTPWrapper implements Comparable<ForeignKe
 	 * the base table's primary key
 	 */
 	public Iterator<Column> nonPrimaryKeyBaseColumns() {
-		return new FilteringIterator<Column>(this.baseColumns()) {
+		return new FilteringIterator<Column, Column>(this.baseColumns()) {
 			@Override
-			protected boolean accept(Object o) {
-				return ! ForeignKey.this.getBaseTable().primaryKeyColumnsContains((Column) o);
+			protected boolean accept(Column o) {
+				return ! ForeignKey.this.getBaseTable().primaryKeyColumnsContains(o);
 			}
 		};
 	}

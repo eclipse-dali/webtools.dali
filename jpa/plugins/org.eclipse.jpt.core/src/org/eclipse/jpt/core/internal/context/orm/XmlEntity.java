@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -317,9 +317,9 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	}
 
 	protected Iterator<String> nonNullTableNames(Iterator<ITable> tables) {
-		return new FilteringIterator<String>(this.tableNames(tables)) {
+		return new FilteringIterator<String, String>(this.tableNames(tables)) {
 			@Override
-			protected boolean accept(Object o) {
+			protected boolean accept(String o) {
 				return o != null;
 			}
 		};
@@ -334,9 +334,9 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return new CompositeIterator<ITable>(new TransformationIterator<ITypeMapping, Iterator<ITable>>(this.inheritanceHierarchy()) {
 			@Override
 			protected Iterator<ITable> transform(ITypeMapping mapping) {
-				return new FilteringIterator<ITable>(mapping.associatedTables()) {
+				return new FilteringIterator<ITable, ITable>(mapping.associatedTables()) {
 					@Override
-					protected boolean accept(Object o) {
+					protected boolean accept(ITable o) {
 						return true;
 						//TODO
 						//filtering these out so as to avoid the duplicate table, root and children share the same table

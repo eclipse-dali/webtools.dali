@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -101,10 +101,10 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 	}
 
 	protected Iterator<IJavaPersistentAttribute> overridableAttributes() {
-		return new FilteringIterator<IJavaPersistentAttribute>(this.persistentType().attributes()) {
+		return new FilteringIterator<IJavaPersistentAttribute, IJavaPersistentAttribute>(this.persistentType().attributes()) {
 			@Override
-			protected boolean accept(Object o) {
-				return ((IJavaPersistentAttribute) o).isOverridableAttribute();
+			protected boolean accept(IJavaPersistentAttribute o) {
+				return o.isOverridableAttribute();
 			}
 		};
 	}
@@ -115,10 +115,10 @@ public class JavaMappedSuperclass extends JavaTypeMapping
 	}
 
 	protected Iterator<IJavaPersistentAttribute> overridableAssociations() {
-		return new FilteringIterator<IJavaPersistentAttribute>(this.persistentType().attributes()) {
+		return new FilteringIterator<IJavaPersistentAttribute, IJavaPersistentAttribute>(this.persistentType().attributes()) {
 			@Override
-			protected boolean accept(Object o) {
-				return ((IJavaPersistentAttribute) o).isOverridableAssociation();
+			protected boolean accept(IJavaPersistentAttribute o) {
+				return o.isOverridableAssociation();
 			}
 		};
 	}

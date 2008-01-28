@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -777,10 +777,10 @@ public class Classpath
 		 * under the entry's directory.
 		 */
 		private Iterator<File> classFilesForDirectory() {
-			return new FilteringIterator<File>(FileTools.filesInTree(this.canonicalFile)) {
+			return new FilteringIterator<File, File>(FileTools.filesInTree(this.canonicalFile)) {
 				@Override
-				protected boolean accept(Object next) {
-					return Entry.this.fileNameMightBeForClassFile(((File) next).getName());
+				protected boolean accept(File next) {
+					return Entry.this.fileNameMightBeForClassFile(next.getName());
 				}
 			};
 		}
@@ -857,7 +857,7 @@ public class Classpath
 		 * the specified filter.
 		 */
 		private Iterator<String> classNamesForDirectory(Filter<String> filter) {
-			return new FilteringIterator<String>(this.classNamesForDirectory(), filter);
+			return new FilteringIterator<String, String>(this.classNamesForDirectory(), filter);
 		}
 
 		/**

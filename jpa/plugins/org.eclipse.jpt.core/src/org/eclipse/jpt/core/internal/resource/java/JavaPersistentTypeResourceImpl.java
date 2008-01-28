@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -164,10 +164,10 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	public Iterator<JavaPersistentTypeResource> nestedTypes() {
 		//TODO since we are filtering how do we handle the case where a type becomes persistable?
 		//what kind of change notificiation for that case?
-		return new FilteringIterator<JavaPersistentTypeResource>(new CloneIterator<JavaPersistentTypeResource>(this.nestedTypes)) {
+		return new FilteringIterator<JavaPersistentTypeResource, JavaPersistentTypeResource>(new CloneIterator<JavaPersistentTypeResource>(this.nestedTypes)) {
 			@Override
-			protected boolean accept(Object o) {
-				return ((JavaPersistentTypeResource) o).isPersistable();
+			protected boolean accept(JavaPersistentTypeResource o) {
+				return o.isPersistable();
 			}
 		};
 	}
@@ -215,28 +215,28 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	public Iterator<JavaPersistentAttributeResource> attributes() {
 		//TODO since we are filtering how do we handle the case where an attribute becomes persistable?
 		//what kind of change notificiation for that case?
-		return new FilteringIterator<JavaPersistentAttributeResource>(new CloneIterator<JavaPersistentAttributeResource>(this.attributes)) {
+		return new FilteringIterator<JavaPersistentAttributeResource, JavaPersistentAttributeResource>(new CloneIterator<JavaPersistentAttributeResource>(this.attributes)) {
 			@Override
-			protected boolean accept(Object o) {
-				return ((JavaPersistentAttributeResource) o).isPersistable();
+			protected boolean accept(JavaPersistentAttributeResource o) {
+				return o.isPersistable();
 			}
 		};
 	}
 	
 	public Iterator<JavaPersistentAttributeResource> fields() {
-		return new FilteringIterator<JavaPersistentAttributeResource>(attributes()) {
+		return new FilteringIterator<JavaPersistentAttributeResource, JavaPersistentAttributeResource>(attributes()) {
 			@Override
-			protected boolean accept(Object o) {
-				return ((JavaPersistentAttributeResource) o).isForField();
+			protected boolean accept(JavaPersistentAttributeResource o) {
+				return o.isForField();
 			}
 		};
 	}
 	
 	public Iterator<JavaPersistentAttributeResource> properties() {
-		return new FilteringIterator<JavaPersistentAttributeResource>(attributes()) {
+		return new FilteringIterator<JavaPersistentAttributeResource, JavaPersistentAttributeResource>(attributes()) {
 			@Override
-			protected boolean accept(Object o) {
-				return ((JavaPersistentAttributeResource) o).isForProperty();
+			protected boolean accept(JavaPersistentAttributeResource o) {
+				return o.isForProperty();
 			}
 		};
 	}

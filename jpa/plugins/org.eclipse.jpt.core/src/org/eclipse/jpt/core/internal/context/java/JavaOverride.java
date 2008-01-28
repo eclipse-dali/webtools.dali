@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved. This
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved. This
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
@@ -79,7 +79,7 @@ public abstract class JavaOverride<T extends OverrideResource> extends JavaConte
 	protected abstract Iterator<String> candidateNames();
 
 	private Iterator<String> candidateNames(Filter<String> filter) {
-		return new FilteringIterator<String>(this.candidateNames(), filter);
+		return new FilteringIterator<String, String>(this.candidateNames(), filter);
 	}
 
 	private Iterator<String> quotedCandidateNames(Filter<String> filter) {

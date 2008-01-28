@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -310,7 +310,7 @@ public abstract class AbstractJavaTable extends JavaContextModel
 	}
 
 	private Iterator<String> candidateNames(Filter<String> filter) {
-		return new FilteringIterator<String>(this.candidateNames(), filter);
+		return new FilteringIterator<String, String>(this.candidateNames(), filter);
 	}
 
 	private Iterator<String> quotedCandidateNames(Filter<String> filter) {
@@ -322,7 +322,7 @@ public abstract class AbstractJavaTable extends JavaContextModel
 	}
 
 	private Iterator<String> candidateSchemas(Filter<String> filter) {
-		return new FilteringIterator<String>(this.candidateSchemas(), filter);
+		return new FilteringIterator<String, String>(this.candidateSchemas(), filter);
 	}
 
 	private Iterator<String> quotedCandidateSchemas(Filter<String> filter) {
@@ -334,7 +334,7 @@ public abstract class AbstractJavaTable extends JavaContextModel
 	}
 
 	private Iterator<String> candidateCatalogs(Filter<String> filter) {
-		return new FilteringIterator<String>(this.candidateCatalogs(), filter);
+		return new FilteringIterator<String, String>(this.candidateCatalogs(), filter);
 	}
 
 	private Iterator<String> quotedCandidateCatalogs(Filter<String> filter) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -187,10 +187,10 @@ public final class FileTools {
 	}
 	
 	private static Iterator<File> filesIn(File[] files) {
-		return new FilteringIterator<File>(new ArrayIterator<File>(files)) {
+		return new FilteringIterator<File, File>(new ArrayIterator<File>(files)) {
 			@Override
-			protected boolean accept(Object next) {
-				return ((File) next).isFile();
+			protected boolean accept(File next) {
+				return next.isFile();
 			}
 		};
 	}
@@ -214,10 +214,10 @@ public final class FileTools {
 	}
 	
 	private static Iterator<File> directoriesIn(File[] files) {
-		return new FilteringIterator<File>(new ArrayIterator<File>(files)) {
+		return new FilteringIterator<File, File>(new ArrayIterator<File>(files)) {
 			@Override
-			protected boolean accept(Object next) {
-				return ((File) next).isDirectory();
+			protected boolean accept(File next) {
+				return next.isDirectory();
 			}
 		};
 	}
@@ -816,10 +816,10 @@ public final class FileTools {
 	 * File#files(FileFilter fileFilter)
 	 */
 	public static Iterator<File> filter(Iterator<File> files, final FileFilter fileFilter) {
-		return new FilteringIterator<File>(files) {
+		return new FilteringIterator<File, File>(files) {
 			@Override
-			protected boolean accept(Object next) {
-				return fileFilter.accept((File) next);
+			protected boolean accept(File next) {
+				return fileFilter.accept(next);
 			}
 		};
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -99,10 +99,10 @@ public class XmlMappedSuperclass extends XmlTypeMapping<MappedSuperclass>
 	}
 
 	public Iterator<IPersistentAttribute> overridableAttributes() {
-		return new FilteringIterator<IPersistentAttribute>(this.persistentType().attributes()) {
+		return new FilteringIterator<XmlPersistentAttribute, IPersistentAttribute>(this.persistentType().attributes()) {
 			@Override
-			protected boolean accept(Object o) {
-				return ((IPersistentAttribute) o).isOverridableAttribute();
+			protected boolean accept(XmlPersistentAttribute o) {
+				return o.isOverridableAttribute();
 			}
 		};
 	}
@@ -113,10 +113,10 @@ public class XmlMappedSuperclass extends XmlTypeMapping<MappedSuperclass>
 	}
 
 	public Iterator<IPersistentAttribute> overridableAssociations() {
-		return new FilteringIterator<IPersistentAttribute>(this.persistentType().attributes()) {
+		return new FilteringIterator<XmlPersistentAttribute, IPersistentAttribute>(this.persistentType().attributes()) {
 			@Override
-			protected boolean accept(Object o) {
-				return ((IPersistentAttribute) o).isOverridableAssociation();
+			protected boolean accept(XmlPersistentAttribute o) {
+				return o.isOverridableAssociation();
 			}
 		};
 	}

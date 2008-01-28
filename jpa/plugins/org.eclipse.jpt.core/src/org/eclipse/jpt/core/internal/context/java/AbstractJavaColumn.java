@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -178,7 +178,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumn> extends JavaN
 	}
 
 	private Iterator<String> candidateTableNames(Filter<String> filter) {
-		return new FilteringIterator<String>(this.candidateTableNames(), filter);
+		return new FilteringIterator<String, String>(this.candidateTableNames(), filter);
 	}
 
 	private Iterator<String> quotedCandidateTableNames(Filter<String> filter) {

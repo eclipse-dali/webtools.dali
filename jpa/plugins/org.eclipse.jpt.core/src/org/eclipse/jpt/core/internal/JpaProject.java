@@ -271,10 +271,10 @@ public class JpaProject extends JpaNode implements IJpaProject {
 	}
 
 	public Iterator<IJpaFile> jpaFiles(final String resourceType) {
-		return new FilteringIterator<IJpaFile>(this.jpaFiles()) {
+		return new FilteringIterator<IJpaFile, IJpaFile>(this.jpaFiles()) {
 			@Override
-			protected boolean accept(Object o) {
-				return ((IJpaFile) o).getResourceType().equals(resourceType);
+			protected boolean accept(IJpaFile o) {
+				return o.getResourceType().equals(resourceType);
 			}
 		};
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1180,11 +1180,10 @@ public class EntityGenerator {
 		}
 
 		public Iterator<Map.Entry<String, String>> importEntries() {
-			return new FilteringIterator<Map.Entry<String, String>>(this.sortedImportEntries()) {
+			return new FilteringIterator<Map.Entry<String, String>, Map.Entry<String, String>>(this.sortedImportEntries()) {
 				@Override
-				protected boolean accept(Object next) {
-					@SuppressWarnings("unchecked")
-					String pkg = ((Map.Entry<String, String>) next).getValue();
+				protected boolean accept(Map.Entry<String, String> next) {
+					String pkg = next.getValue();
 					if (pkg.equals("")
 							|| pkg.equals("java.lang")
 							|| pkg.equals(EntitySourceWriter.this.packageName)) {

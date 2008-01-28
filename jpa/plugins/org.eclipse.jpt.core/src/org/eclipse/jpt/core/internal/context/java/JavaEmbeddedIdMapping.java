@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -291,10 +291,10 @@ public class JavaEmbeddedIdMapping extends JavaAttributeMapping
 		if (this.embeddable() == null) {
 			return EmptyIterator.instance();
 		}
-		return new FilteringIterator<IPersistentAttribute>(this.embeddable().persistentType().attributes()) {
+		return new FilteringIterator<IPersistentAttribute, IPersistentAttribute>(this.embeddable().persistentType().attributes()) {
 			@Override
-			protected boolean accept(Object o) {
-				return ((IPersistentAttribute) o).isOverridableAttribute();
+			protected boolean accept(IPersistentAttribute o) {
+				return o.isOverridableAttribute();
 			}
 		};
 	}
