@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -92,7 +92,7 @@ public class TableModelAdapterUITest {
 	private SimpleCollectionValueModel<Object> eyeColorsHolder;  // Object because it adapts to a combo-box
 	private WritablePropertyValueModel<Crowd> crowdHolder;
 	private WritablePropertyValueModel<Person> selectedPersonHolder;
-	private ListValueModel sortedPeopleAdapter;
+	private ListValueModel<Person> sortedPeopleAdapter;
 	private TableModel tableModel;
 	private ObjectListSelectionModel rowSelectionModel;
 	private Action removeAction;
@@ -156,12 +156,12 @@ public class TableModelAdapterUITest {
 		return new SimplePropertyValueModel<Person>();
 	}
 
-	private ListValueModel buildSortedPeopleAdapter() {
+	private ListValueModel<Person> buildSortedPeopleAdapter() {
 		return new SortedListValueModelAdapter<Person>(this.buildPeopleNameAdapter());
 	}
 
 	// the list will need to be re-sorted if a name changes
-	private ListValueModel buildPeopleNameAdapter() {
+	private ListValueModel<Person> buildPeopleNameAdapter() {
 		return new ItemPropertyListValueModelAdapter<Person>(this.buildPeopleAdapter(), Person.NAME_PROPERTY);
 	}
 

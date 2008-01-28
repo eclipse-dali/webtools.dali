@@ -23,7 +23,7 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
  */
 public class StaticListValueModel<E>
 	extends AbstractModel
-	implements ListValueModel
+	implements ListValueModel<E>
 {
 	/** The value. */
 	protected final List<E> list;
@@ -57,7 +57,7 @@ public class StaticListValueModel<E>
 		return this.list.size();
 	}
 
-	public Object get(int index) {
+	public E get(int index) {
 		return this.list.get(index);
 	}
 

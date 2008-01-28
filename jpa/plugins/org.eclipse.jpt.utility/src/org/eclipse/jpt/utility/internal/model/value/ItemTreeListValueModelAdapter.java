@@ -35,7 +35,7 @@ public class ItemTreeListValueModelAdapter<E>
 	/**
 	 * Construct an adapter for the specified item trees.
 	 */
-	public ItemTreeListValueModelAdapter(ListValueModel listHolder, String... treeNames) {
+	public ItemTreeListValueModelAdapter(ListValueModel<E> listHolder, String... treeNames) {
 		super(listHolder);
 		this.treeNames = treeNames;
 		this.itemTreeListener = this.buildItemTreeListener();

@@ -22,7 +22,7 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
  */
 public class StaticTreeValueModel<E>
 	extends AbstractModel
-	implements TreeValueModel
+	implements TreeValueModel<E>
 {
 	/** The tree's nodes. */
 	protected final Iterable<E> nodes;

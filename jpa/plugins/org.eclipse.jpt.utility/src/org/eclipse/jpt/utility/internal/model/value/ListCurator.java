@@ -29,7 +29,7 @@ import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
  */
 public abstract class ListCurator<S extends Model, E>
 	extends AspectAdapter<S>
-	implements ListValueModel
+	implements ListValueModel<E>
 {
 	/** How the list looked before the last state change */
 	private final ArrayList<E> record;
@@ -89,7 +89,7 @@ public abstract class ListCurator<S extends Model, E>
 	/**
 	 * Return the item at the specified index of the subject's list aspect.
 	 */
-	public Object get(int index) {
+	public E get(int index) {
 		return this.record.get(index);
 	}
 

@@ -36,7 +36,7 @@ public abstract class ListPropertyValueModelAdapter<T>
 	extends AspectPropertyValueModelAdapter<T>
 {
 	/** The wrapped list value model. */
-	protected final ListValueModel listHolder;
+	protected final ListValueModel<T> listHolder;
 
 	/** A listener that allows us to synch with changes to the wrapped list holder. */
 	protected final ListChangeListener listChangeListener;
@@ -48,7 +48,7 @@ public abstract class ListPropertyValueModelAdapter<T>
 	 * Construct a property value model with the specified wrapped
 	 * list value model.
 	 */
-	protected ListPropertyValueModelAdapter(ListValueModel listHolder) {
+	protected ListPropertyValueModelAdapter(ListValueModel<T> listHolder) {
 		super();
 		this.listHolder = listHolder;
 		this.listChangeListener = this.buildListChangeListener();

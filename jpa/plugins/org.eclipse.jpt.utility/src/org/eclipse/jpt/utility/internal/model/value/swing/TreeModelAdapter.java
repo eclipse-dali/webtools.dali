@@ -102,7 +102,7 @@ public class TreeModelAdapter<T>
 	 * list change events (the parent).
 	 * @see EventChangePolicy#parent()
 	 */
-	final IdentityHashMap<ListValueModel, TreeNodeValueModel<T>> parents;
+	final IdentityHashMap<ListValueModel<TreeNodeValueModel<T>>, TreeNodeValueModel<T>> parents;
 
 
 	// ********** constructors **********
@@ -121,7 +121,7 @@ public class TreeModelAdapter<T>
 		this.nodeValueListener = this.buildNodeValueListener();
 		this.childrenListener = this.buildChildrenListener();
 		this.childrenLists = new IdentityHashMap<TreeNodeValueModel<T>, List<TreeNodeValueModel<T>>>();
-		this.parents = new IdentityHashMap<ListValueModel, TreeNodeValueModel<T>>();
+		this.parents = new IdentityHashMap<ListValueModel<TreeNodeValueModel<T>>, TreeNodeValueModel<T>>();
 	}
 
 	/**
@@ -394,7 +394,7 @@ public class TreeModelAdapter<T>
 	/**
 	 * Add the specified node to our internal tree.
 	 */
-	private void addNodeToInternalTree(TreeNodeValueModel<T> parent, int index, TreeNodeValueModel<T> node, ListValueModel childrenModel) {
+	private void addNodeToInternalTree(TreeNodeValueModel<T> parent, int index, TreeNodeValueModel<T> node, ListValueModel<TreeNodeValueModel<T>> childrenModel) {
 		List<TreeNodeValueModel<T>> siblings = this.childrenLists.get(parent);
 		if (siblings == null) {
 			siblings = new ArrayList<TreeNodeValueModel<T>>();
@@ -436,7 +436,7 @@ public class TreeModelAdapter<T>
 	/**
 	 * Remove the specified node from our internal tree.
 	 */
-	private void removeNodeFromInternalTree(TreeNodeValueModel<T> parent, int index, TreeNodeValueModel<T> node, ListValueModel childrenModel) {
+	private void removeNodeFromInternalTree(TreeNodeValueModel<T> parent, int index, TreeNodeValueModel<T> node, ListValueModel<TreeNodeValueModel<T>> childrenModel) {
 		this.parents.remove(childrenModel);
 
 		List<TreeNodeValueModel<T>> siblings = this.childrenLists.get(parent);

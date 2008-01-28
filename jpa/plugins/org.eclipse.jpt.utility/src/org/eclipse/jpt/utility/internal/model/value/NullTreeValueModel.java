@@ -21,9 +21,9 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
  * 
  * We don't use a singleton because we hold on to listeners.
  */
-public class NullTreeValueModel
+public class NullTreeValueModel<E>
 	extends AbstractModel
-	implements TreeValueModel
+	implements TreeValueModel<E>
 {
 	private static final long serialVersionUID = 1L;
 
@@ -37,7 +37,7 @@ public class NullTreeValueModel
 
 	// ********** TreeValueModel implementation **********
 
-	public Iterator nodes() {
+	public Iterator<E> nodes() {
 		return EmptyIterator.instance();
 	}
 

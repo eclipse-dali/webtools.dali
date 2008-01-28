@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -66,7 +66,7 @@ public class TableModelAdapter<E>
 	 * a list of user objects that are converted to
 	 * rows via the column adapter
 	 */
-	private ListValueModel listHolder;
+	private ListValueModel<E> listHolder;
 	private final ListChangeListener listChangeListener;
 
 	/**
@@ -94,7 +94,7 @@ public class TableModelAdapter<E>
 	 * Construct a table model adapter for the specified objects
 	 * and adapter.
 	 */
-	public TableModelAdapter(ListValueModel listHolder, ColumnAdapter columnAdapter) {
+	public TableModelAdapter(ListValueModel<E> listHolder, ColumnAdapter columnAdapter) {
 		super();
 		if (listHolder == null) {
 			throw new NullPointerException();
@@ -238,14 +238,14 @@ public class TableModelAdapter<E>
 	/**
 	 * Return the underlying list model.
 	 */
-	public ListValueModel model() {
+	public ListValueModel<E> model() {
 		return this.listHolder;
 	}
 
 	/**
 	 * Set the underlying list model.
 	 */
-	public void setModel(ListValueModel listHolder) {
+	public void setModel(ListValueModel<E> listHolder) {
 		if (listHolder == null) {
 			throw new NullPointerException();
 		}

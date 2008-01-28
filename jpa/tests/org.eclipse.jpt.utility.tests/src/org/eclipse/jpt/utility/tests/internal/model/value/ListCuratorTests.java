@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,9 +32,9 @@ public final class ListCuratorTests
 	extends TestCase 
 {
 	private TestSubject subject1;
-	private WritablePropertyValueModel subjectHolder1;
+	private WritablePropertyValueModel<TestSubject> subjectHolder1;
 	
-	private ListCurator curator;
+	private ListCurator<TestSubject, String> curator;
 	private ListChangeListener listener1;
 	private ListChangeEvent event1;
 	
@@ -48,7 +48,7 @@ public final class ListCuratorTests
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.subject1 = new TestSubject(this.subject1Names());
-		this.subjectHolder1 = new SimplePropertyValueModel(this.subject1);
+		this.subjectHolder1 = new SimplePropertyValueModel<TestSubject>(this.subject1);
 		this.curator = this.buildListCurator(this.subjectHolder1);
 		this.listener1 = this.buildListChangeListener1();
 		this.curator.addListChangeListener(ListValueModel.LIST_VALUES, this.listener1);
@@ -57,8 +57,8 @@ public final class ListCuratorTests
 		this.subject2 = new TestSubject(this.subject2Names());
 	}
 	
-	private List subject1Names() {
-		ArrayList list = new ArrayList();
+	private List<String> subject1Names() {
+		ArrayList<String> list = new ArrayList<String>();
 		list.add("alpha");
 		list.add("bravo");
 		list.add("charlie");
@@ -66,8 +66,8 @@ public final class ListCuratorTests
 		return list;
 	}
 	
-	private List subject2Names() {
-		ArrayList list = new ArrayList();
+	private List<String> subject2Names() {
+		ArrayList<String> list = new ArrayList<String>();
 		list.add("echo");
 		list.add("foxtrot");
 		list.add("glove");
@@ -75,10 +75,11 @@ public final class ListCuratorTests
 		return list;
 	}
 	
-	private ListCurator buildListCurator(PropertyValueModel subjectHolder) {
-		return new ListCurator(subjectHolder) {
-			public Iterator iteratorForRecord() {
-				return ((TestSubject) this.subject).strings();
+	private ListCurator<TestSubject, String> buildListCurator(PropertyValueModel<TestSubject> subjectHolder) {
+		return new ListCurator<TestSubject, String>(subjectHolder) {
+			@Override
+			public Iterator<String> iteratorForRecord() {
+				return this.subject.strings();
 			}
 		};
 	}
@@ -157,7 +158,7 @@ public final class ListCuratorTests
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(this.subject1Names().size(), this.event1.index());
 		assertEquals("echo", this.event1.items().next());
-		List stringsPlus = this.subject1Names();
+		List<String> stringsPlus = this.subject1Names();
 		stringsPlus.add("echo");
 		assertEquals(stringsPlus, CollectionTools.list(this.curator.listIterator()));
 
@@ -182,7 +183,7 @@ public final class ListCuratorTests
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(0, this.event1.index());
 		assertEquals(removedString, this.event1.items().next());
-		List stringsMinus = this.subject1Names();
+		List<String> stringsMinus = this.subject1Names();
 		stringsMinus.remove(0);
 		assertEquals(stringsMinus, CollectionTools.list(this.curator.listIterator()));
 		
@@ -204,21 +205,21 @@ public final class ListCuratorTests
 		assertNotNull(this.event1);
 		assertEquals(this.curator, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
-		List newStrings = this.subject2Names();
+		List<String> newStrings = this.subject2Names();
 		assertEquals(newStrings, CollectionTools.list(this.curator.listIterator()));
 	}
 	
 	public void testPartialListChange() {
-		List startingList = CollectionTools.list(this.curator.listIterator());
+		List<String> startingList = CollectionTools.list(this.curator.listIterator());
 		assertEquals(this.subject1Names(), startingList);
 		assertNull(this.event1);
 		
-		String identicalString = (String) startingList.get(1);  // should be "bravo"
-		String nonidenticalString = (String) startingList.get(0); // should be "alpha"
-		List newStrings = CollectionTools.list(new String[] {new String("bravo"), new String("alpha"), "echo", "delta", "foxtrot"});
+		String identicalString = startingList.get(1);  // should be "bravo"
+		String nonidenticalString = startingList.get(0); // should be "alpha"
+		List<String> newStrings = CollectionTools.list(new String[] {new String("bravo"), new String("alpha"), "echo", "delta", "foxtrot"});
 		this.subject1.setStrings(newStrings);
 		
-		List finalList = CollectionTools.list(this.curator.listIterator());
+		List<String> finalList = CollectionTools.list(this.curator.listIterator());
 		assertNotNull(this.event1);
 		assertEquals(this.curator, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
@@ -262,26 +263,24 @@ public final class ListCuratorTests
 	
 	// **************** Inner Class *******************************************
 	
-	private class TestSubject 
-		extends AbstractModel
-	{
-		private List strings;
+	class TestSubject extends AbstractModel {
+		private List<String> strings;
 		
 		public TestSubject() {
-			this.strings = new ArrayList();
+			this.strings = new ArrayList<String>();
 		}
 		
-		public TestSubject(List strings) {
+		public TestSubject(List<String> strings) {
 			this();
 			this.setStrings(strings);
 		}
 		
 		public String getString(int index) {
-			return (String) this.strings.get(index);
+			return this.strings.get(index);
 		}
 		
-		public ListIterator strings() {
-			return new ReadOnlyListIterator(this.strings);
+		public ListIterator<String> strings() {
+			return new ReadOnlyListIterator<String>(this.strings);
 		}
 		
 		public void addString(int index, String string) {
@@ -294,7 +293,7 @@ public final class ListCuratorTests
 		}
 		
 		public String removeString(int index) {
-			String string = (String) this.strings.get(index);
+			String string = this.strings.get(index);
 			this.removeString(string);
 			return string;
 		}
@@ -304,8 +303,8 @@ public final class ListCuratorTests
 			this.fireStateChanged();
 		}
 		
-		public void setStrings(List strings) {
-			this.strings = new ArrayList(strings);
+		public void setStrings(List<String> strings) {
+			this.strings = new ArrayList<String>(strings);
 			this.fireStateChanged();
 		}
 		

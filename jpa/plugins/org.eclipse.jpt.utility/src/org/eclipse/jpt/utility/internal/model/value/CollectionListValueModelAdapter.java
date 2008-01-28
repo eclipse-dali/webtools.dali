@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,7 +38,7 @@ import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
  */
 public class CollectionListValueModelAdapter<E>
 	extends AbstractModel
-	implements ListValueModel
+	implements ListValueModel<E>
 {
 	/** The wrapped collection value model. */
 	protected final CollectionValueModel<E> collectionHolder;
@@ -116,7 +116,7 @@ public class CollectionListValueModelAdapter<E>
 		return new ReadOnlyListIterator<E>(this.list);
 	}
 
-	public Object get(int index) {
+	public E get(int index) {
 		return this.list.get(index);
 	}
 

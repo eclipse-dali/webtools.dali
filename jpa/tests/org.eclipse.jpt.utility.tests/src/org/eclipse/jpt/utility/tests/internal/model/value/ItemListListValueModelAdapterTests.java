@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -66,9 +66,9 @@ public class ItemListListValueModelAdapterTests extends TestCase {
 	}
 
 	public void testCollectionSynchronization() {
-		SimpleCollectionValueModel collectionHolder = this.buildCollectionHolder();
-		ListValueModel listValueModel = new ItemListListValueModelAdapter(collectionHolder, Junk.STUFF_LIST);
-		CoordinatedList synchList = new CoordinatedList(listValueModel);
+		SimpleCollectionValueModel<Junk> collectionHolder = this.buildCollectionHolder();
+		ListValueModel<Junk> listValueModel = new ItemListListValueModelAdapter<Junk>(collectionHolder, Junk.STUFF_LIST);
+		CoordinatedList<Junk> synchList = new CoordinatedList<Junk>(listValueModel);
 		assertEquals(6, synchList.size());
 		this.compare(listValueModel, synchList);
 
@@ -86,9 +86,9 @@ public class ItemListListValueModelAdapterTests extends TestCase {
 	}
 
 	public void testListSynchronization() {
-		SimpleListValueModel listHolder = this.buildListHolder();
-		ListValueModel listValueModel = new ItemListListValueModelAdapter(listHolder, Junk.STUFF_LIST);
-		CoordinatedList synchList = new CoordinatedList(listValueModel);
+		SimpleListValueModel<Junk> listHolder = this.buildListHolder();
+		ListValueModel<Junk> listValueModel = new ItemListListValueModelAdapter<Junk>(listHolder, Junk.STUFF_LIST);
+		CoordinatedList<Junk> synchList = new CoordinatedList<Junk>(listValueModel);
 		assertEquals(6, synchList.size());
 		this.compare(listValueModel, synchList);
 
@@ -105,7 +105,7 @@ public class ItemListListValueModelAdapterTests extends TestCase {
 		this.compare(listValueModel, synchList);
 	}
 
-	private void compare(ListValueModel listValueModel, List list) {
+	private void compare(ListValueModel<Junk> listValueModel, List<Junk> list) {
 		assertEquals(listValueModel.size(), list.size());
 		for (int i = 0; i < listValueModel.size(); i++) {
 			assertEquals(listValueModel.get(i), list.get(i));
@@ -114,18 +114,18 @@ public class ItemListListValueModelAdapterTests extends TestCase {
 
 
 	public void testHasListeners() throws Exception {
-		SimpleListValueModel listHolder = this.buildListHolder();
+		SimpleListValueModel<Junk> listHolder = this.buildListHolder();
 		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertFalse(this.foo.hasAnyListChangeListeners(Junk.STUFF_LIST));
 		assertFalse(this.jaz.hasAnyListChangeListeners(Junk.STUFF_LIST));
 
-		ListValueModel listValueModel = new ItemListListValueModelAdapter(listHolder, Junk.STUFF_LIST);
+		ListValueModel<Junk> listValueModel = new ItemListListValueModelAdapter<Junk>(listHolder, Junk.STUFF_LIST);
 		assertFalse(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertFalse(this.foo.hasAnyListChangeListeners(Junk.STUFF_LIST));
 		assertFalse(this.jaz.hasAnyListChangeListeners(Junk.STUFF_LIST));
 		this.verifyHasNoListeners(listValueModel);
 
-		CoordinatedList synchList = new CoordinatedList(listValueModel);
+		CoordinatedList<Junk> synchList = new CoordinatedList<Junk>(listValueModel);
 		assertTrue(listHolder.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(this.foo.hasAnyListChangeListeners(Junk.STUFF_LIST));
 		assertTrue(this.jaz.hasAnyListChangeListeners(Junk.STUFF_LIST));
@@ -139,18 +139,18 @@ public class ItemListListValueModelAdapterTests extends TestCase {
 	}
 
 	public void testGetSize() throws Exception {
-		SimpleListValueModel listHolder = this.buildListHolder();
-		ListValueModel listValueModel = new ItemListListValueModelAdapter(listHolder, Junk.STUFF_LIST);
-		CoordinatedList synchList = new CoordinatedList(listValueModel);
+		SimpleListValueModel<Junk> listHolder = this.buildListHolder();
+		ListValueModel<Junk> listValueModel = new ItemListListValueModelAdapter<Junk>(listHolder, Junk.STUFF_LIST);
+		CoordinatedList<Junk> synchList = new CoordinatedList<Junk>(listValueModel);
 		this.verifyHasListeners(listValueModel);
 		assertEquals(6, listValueModel.size());
 		assertEquals(6, synchList.size());
 	}
 
 	public void testGet() throws Exception {
-		SimpleListValueModel listHolder = this.buildListHolder();
-		ListValueModel listValueModel = new SortedListValueModelAdapter(new ItemListListValueModelAdapter(listHolder, Junk.STUFF_LIST));
-		CoordinatedList synchList = new CoordinatedList(listValueModel);
+		SimpleListValueModel<Junk> listHolder = this.buildListHolder();
+		ListValueModel<Junk> listValueModel = new SortedListValueModelAdapter<Junk>(new ItemListListValueModelAdapter<Junk>(listHolder, Junk.STUFF_LIST));
+		CoordinatedList<Junk> synchList = new CoordinatedList<Junk>(listValueModel);
 		this.verifyHasListeners(listValueModel);
 		assertEquals(this.bar, listValueModel.get(0));
 		assertEquals(this.bar, synchList.get(0));
@@ -162,35 +162,35 @@ public class ItemListListValueModelAdapterTests extends TestCase {
 		this.bar.removeStuff("zzz");
 	}
 
-	private void verifyHasNoListeners(ListValueModel listValueModel) throws Exception {
+	private void verifyHasNoListeners(ListValueModel<Junk> listValueModel) throws Exception {
 		assertTrue(((AbstractModel) listValueModel).hasNoListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 
-	private void verifyHasListeners(ListValueModel listValueModel) throws Exception {
+	private void verifyHasListeners(ListValueModel<Junk> listValueModel) throws Exception {
 		assertTrue(((AbstractModel) listValueModel).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 
-	private SimpleCollectionValueModel buildCollectionHolder() {
-		return new SimpleCollectionValueModel(this.buildCollection());
+	private SimpleCollectionValueModel<Junk> buildCollectionHolder() {
+		return new SimpleCollectionValueModel<Junk>(this.buildCollection());
 	}
 
-	private Collection buildCollection() {
-		Bag bag = new HashBag();
+	private Collection<Junk> buildCollection() {
+		Bag<Junk> bag = new HashBag<Junk>();
 		this.populateCollection(bag);
 		return bag;
 	}
 
-	private SimpleListValueModel buildListHolder() {
-		return new SimpleListValueModel(this.buildList());
+	private SimpleListValueModel<Junk> buildListHolder() {
+		return new SimpleListValueModel<Junk>(this.buildList());
 	}
 
-	private List buildList() {
-		List list = new ArrayList();
+	private List<Junk> buildList() {
+		List<Junk> list = new ArrayList<Junk>();
 		this.populateCollection(list);
 		return list;
 	}
 
-	private void populateCollection(Collection c) {
+	private void populateCollection(Collection<Junk> c) {
 		c.add(this.foo);
 		c.add(this.bar);
 		c.add(this.baz);
@@ -199,42 +199,45 @@ public class ItemListListValueModelAdapterTests extends TestCase {
 		c.add(this.jaz);
 	}
 
-private class Junk extends AbstractModel implements Displayable {
-	private List stuff;
-		public static final String STUFF_LIST = "stuff";
+
+	// ********** Junk class **********
+
+	private class Junk extends AbstractModel implements Displayable {
+		private List<String> stuff;
+			public static final String STUFF_LIST = "stuff";
+			
+	
+		public Junk(String stuffItem) {
+			this.stuff = new ArrayList<String>();
+			this.stuff.add(stuffItem);
+		}
+		public void addStuff(String stuffItem) {
+			this.stuff.add(stuffItem);
+			fireItemAdded(STUFF_LIST, this.stuff.indexOf(stuffItem), stuffItem);
+		}
 		
-
-	public Junk(String stuffItem) {
-		this.stuff = new ArrayList();
-		this.stuff.add(stuffItem);
-	}
-	public void addStuff(String stuffItem) {
-		this.stuff.add(stuffItem);
-		fireItemAdded(STUFF_LIST, this.stuff.indexOf(stuffItem), stuffItem);
-	}
+		public void removeStuff(String stuffItem) {
+			int index = this.stuff.indexOf(stuffItem);
+			this.stuff.remove(stuffItem);
+			fireItemRemoved(STUFF_LIST, index, stuffItem);
+		}
 	
-	public void removeStuff(String stuffItem) {
-		int index = this.stuff.indexOf(stuffItem);
-		this.stuff.remove(stuffItem);
-		fireItemRemoved(STUFF_LIST, index, stuffItem);
-	}
-
-	public String displayString() {
-		return toString();
-	}
-
-	public Icon icon() {
-		return null;
-	}
+		public String displayString() {
+			return toString();
+		}
 	
-	public int compareTo(Displayable o) {
-		return DEFAULT_COMPARATOR.compare(this, o);
+		public Icon icon() {
+			return null;
+		}
+		
+		public int compareTo(Displayable o) {
+			return DEFAULT_COMPARATOR.compare(this, o);
+		}
+	
+		@Override
+		public String toString() {
+			return "Junk(" + this.stuff + ")";
+		}
 	}
-
-	@Override
-	public String toString() {
-		return "Junk(" + this.stuff + ")";
-	}
-}
 
 }

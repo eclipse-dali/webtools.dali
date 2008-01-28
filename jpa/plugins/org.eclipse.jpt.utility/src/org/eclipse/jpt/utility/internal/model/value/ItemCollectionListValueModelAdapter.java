@@ -35,7 +35,7 @@ public class ItemCollectionListValueModelAdapter<E>
 	/**
 	 * Construct an adapter for the specified item Collections.
 	 */
-	public ItemCollectionListValueModelAdapter(ListValueModel listHolder, String... collectionNames) {
+	public ItemCollectionListValueModelAdapter(ListValueModel<E> listHolder, String... collectionNames) {
 		super(listHolder);
 		this.collectionNames = collectionNames;
 		this.itemCollectionListener = this.buildItemCollectionListener();

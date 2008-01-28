@@ -41,7 +41,7 @@ import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
  */
 public abstract class ItemAspectListValueModelAdapter<E>
 	extends ListValueModelWrapper<E>
-	implements ListValueModel
+	implements ListValueModel<E>
 {
 
 	/**
@@ -56,7 +56,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	/**
 	 * Constructor - the list holder is required.
 	 */
-	protected ItemAspectListValueModelAdapter(ListValueModel listHolder) {
+	protected ItemAspectListValueModelAdapter(ListValueModel<E> listHolder) {
 		super(listHolder);
 		this.counters = new IdentityHashMap<E, Counter>();
 	}
@@ -80,7 +80,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	}
 
 	public E get(int index) {
-		return (E) this.listHolder.get(index);
+		return this.listHolder.get(index);
 	}
 
 	public int size() {

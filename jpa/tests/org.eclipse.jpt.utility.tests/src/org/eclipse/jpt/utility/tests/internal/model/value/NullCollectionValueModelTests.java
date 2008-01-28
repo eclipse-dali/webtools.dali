@@ -16,7 +16,7 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class NullCollectionValueModelTests extends TestCase {
-	private CollectionValueModel collectionHolder;
+	private CollectionValueModel<Object> collectionHolder;
 
 	public NullCollectionValueModelTests(String name) {
 		super(name);
@@ -25,7 +25,7 @@ public class NullCollectionValueModelTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.collectionHolder = new NullCollectionValueModel();
+		this.collectionHolder = new NullCollectionValueModel<Object>();
 	}
 
 	@Override

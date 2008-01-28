@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -47,7 +47,7 @@ public class ListBoxModelAdapter<E> {
 	/**
 	 * A value model on the underlying model list.
 	 */
-	protected final ListValueModel listHolder;
+	protected final ListValueModel<E> listHolder;
 
 	/**
 	 * A listener that allows us to synchronize the list box's contents with
@@ -110,7 +110,7 @@ public class ListBoxModelAdapter<E> {
 	 * items in the model list.
 	 */
 	public static <T> ListBoxModelAdapter<T> adapt(
-			ListValueModel listHolder,
+			ListValueModel<T> listHolder,
 			CollectionValueModel<T> selectedItemsHolder,
 			List listBox)
 	{
@@ -123,7 +123,7 @@ public class ListBoxModelAdapter<E> {
 	 * to be displayed in the list box.
 	 */
 	public static <T> ListBoxModelAdapter<T> adapt(
-			ListValueModel listHolder,
+			ListValueModel<T> listHolder,
 			CollectionValueModel<T> selectedItemsHolder,
 			List listBox,
 			StringConverter<T> stringConverter)
@@ -138,7 +138,7 @@ public class ListBoxModelAdapter<E> {
 	 * items in the model list.
 	 */
 	public static <T> ListBoxModelAdapter<T> adapt(
-			ListValueModel listHolder,
+			ListValueModel<T> listHolder,
 			PropertyValueModel<T> selectedItemHolder,
 			List listBox)
 	{
@@ -151,7 +151,7 @@ public class ListBoxModelAdapter<E> {
 	 * to be displayed in the list box.
 	 */
 	public static <T> ListBoxModelAdapter<T> adapt(
-			ListValueModel listHolder,
+			ListValueModel<T> listHolder,
 			PropertyValueModel<T> selectedItemHolder,
 			List listBox,
 			StringConverter<T> stringConverter)
@@ -167,7 +167,7 @@ public class ListBoxModelAdapter<E> {
 	 * string converter are required.
 	 */
 	protected ListBoxModelAdapter(
-			ListValueModel listHolder,
+			ListValueModel<E> listHolder,
 			CollectionValueModel<E> selectedItemsHolder,
 			List listBox,
 			StringConverter<E> stringConverter)
@@ -329,7 +329,7 @@ public class ListBoxModelAdapter<E> {
 		int len = this.listHolder.size();
 		String[] items = new String[len];
 		for (int i = 0; i < len; i++) {
-			items[i] = this.convert((E) this.listHolder.get(i));
+			items[i] = this.convert(this.listHolder.get(i));
 		}
 		this.listBox.setItems(items);
 	}
@@ -472,7 +472,7 @@ public class ListBoxModelAdapter<E> {
 		@SuppressWarnings("unchecked")
 		ArrayList<E> selectedItems = new ArrayList(this.listBox.getSelectionCount());
 		for (int selectionIndex : this.listBox.getSelectionIndices()) {
-			selectedItems.add((E) this.listHolder.get(selectionIndex));
+			selectedItems.add(this.listHolder.get(selectionIndex));
 		}
 		return selectedItems;
 	}
@@ -480,7 +480,7 @@ public class ListBoxModelAdapter<E> {
 	protected void listBoxDoubleClicked(SelectionEvent event) {
 		if (this.doubleClickListeners.length > 0) {
 			// there should be only a single item selected during a double-click(?)
-			E selection = (E) this.listHolder.get(this.listBox.getSelectionIndex());
+			E selection = this.listHolder.get(this.listBox.getSelectionIndex());
 			@SuppressWarnings("unchecked")
 			DoubleClickEvent<E> dcEvent = new DoubleClickEvent(this, selection);
 			for (DoubleClickListener<E> doubleClickListener : this.doubleClickListeners) {

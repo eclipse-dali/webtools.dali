@@ -35,7 +35,7 @@ import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
  */
 public abstract class TreeAspectAdapter<S extends Model, E>
 	extends AspectAdapter<S>
-	implements TreeValueModel
+	implements TreeValueModel<E>
 {
 	/**
 	 * The name of the subject's trees that we use for the value.

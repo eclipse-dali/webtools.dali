@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,7 +38,7 @@ import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
  */
 public class TransformationListValueModelAdapter<E1, E2>
 	extends ListValueModelWrapper<E1>
-	implements ListValueModel
+	implements ListValueModel<E2>
 {
 
 	/** This transforms the items, unless the subclass overrides #transformItem(Object). */
@@ -53,7 +53,7 @@ public class TransformationListValueModelAdapter<E1, E2>
 	/**
 	 * Constructor - the list holder is required.
 	 */
-	public TransformationListValueModelAdapter(ListValueModel listHolder, Transformer<E1, E2> transformer) {
+	public TransformationListValueModelAdapter(ListValueModel<E1> listHolder, Transformer<E1, E2> transformer) {
 		super(listHolder);
 		this.transformer = transformer;
 		this.transformedList = new ArrayList<E2>();
@@ -62,7 +62,7 @@ public class TransformationListValueModelAdapter<E1, E2>
 	/**
 	 * Constructor - the list holder is required.
 	 */
-	public TransformationListValueModelAdapter(ListValueModel listHolder) {
+	public TransformationListValueModelAdapter(ListValueModel<E1> listHolder) {
 		this(listHolder, Transformer.Null.<E1, E2>instance());
 	}
 
@@ -131,7 +131,7 @@ public class TransformationListValueModelAdapter<E1, E2>
 	/**
 	 * Transform the items in the specified list value model.
 	 */
-	protected List<E2> transformItems(ListValueModel lvm) {
+	protected List<E2> transformItems(ListValueModel<E1> lvm) {
 		return this.transformItems(lvm.listIterator(), lvm.size());
 	}
 

@@ -31,7 +31,7 @@ public abstract class TreePropertyValueModelAdapter<T>
 	extends AspectPropertyValueModelAdapter<T>
 {
 	/** The wrapped tree value model. */
-	protected final TreeValueModel treeHolder;
+	protected final TreeValueModel<?> treeHolder;
 
 	/** A listener that allows us to synch with changes to the wrapped tree holder. */
 	protected final TreeChangeListener treeChangeListener;
@@ -43,7 +43,7 @@ public abstract class TreePropertyValueModelAdapter<T>
 	 * Construct a property value model with the specified wrapped
 	 * tree value model.
 	 */
-	protected TreePropertyValueModelAdapter(TreeValueModel treeHolder) {
+	protected TreePropertyValueModelAdapter(TreeValueModel<?> treeHolder) {
 		super();
 		this.treeHolder = treeHolder;
 		this.treeChangeListener = this.buildTreeChangeListener();

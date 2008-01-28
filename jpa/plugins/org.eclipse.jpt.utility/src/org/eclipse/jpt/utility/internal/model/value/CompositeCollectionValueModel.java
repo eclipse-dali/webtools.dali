@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -97,7 +97,7 @@ public class CompositeCollectionValueModel<T, E>
 	 * <code>transform(Object)</code> method instead of building a
 	 * <code>Transformer</code>.
 	 */
-	public CompositeCollectionValueModel(ListValueModel listHolder) {
+	public CompositeCollectionValueModel(ListValueModel<T> listHolder) {
 		this(new ListCollectionValueModelAdapter<T>(listHolder));
 	}
 
@@ -105,7 +105,7 @@ public class CompositeCollectionValueModel<T, E>
 	 * Construct a collection value model with the specified wrapped
 	 * list value model and transformer.
 	 */
-	public CompositeCollectionValueModel(ListValueModel listHolder, Transformer<T, CollectionValueModel<E>> transformer) {
+	public CompositeCollectionValueModel(ListValueModel<T> listHolder, Transformer<T, CollectionValueModel<E>> transformer) {
 		this(new ListCollectionValueModelAdapter<T>(listHolder), transformer);
 	}
 

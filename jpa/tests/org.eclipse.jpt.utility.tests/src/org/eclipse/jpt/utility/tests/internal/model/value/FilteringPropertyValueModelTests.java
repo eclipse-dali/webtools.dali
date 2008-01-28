@@ -22,10 +22,10 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class FilteringPropertyValueModelTests extends TestCase {
-	private WritablePropertyValueModel objectHolder;
+	private WritablePropertyValueModel<String> objectHolder;
 	PropertyChangeEvent event;
 
-	private WritablePropertyValueModel filteredObjectHolder;
+	private WritablePropertyValueModel<String> filteredObjectHolder;
 	PropertyChangeEvent filteredEvent;
 
 	public FilteringPropertyValueModelTests(String name) {
@@ -35,17 +35,17 @@ public class FilteringPropertyValueModelTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.objectHolder = new SimplePropertyValueModel("foo");
-		this.filteredObjectHolder = new FilteringWritablePropertyValueModel(this.objectHolder, this.buildFilter());
+		this.objectHolder = new SimplePropertyValueModel<String>("foo");
+		this.filteredObjectHolder = new FilteringWritablePropertyValueModel<String>(this.objectHolder, this.buildFilter());
 	}
 
-	private BidiFilter buildFilter() {
-		return new BidiFilter() {
-			public boolean accept(Object o) {
-				return (o != null) && ((String) o).startsWith("b");
+	private BidiFilter<String> buildFilter() {
+		return new BidiFilter<String>() {
+			public boolean accept(String s) {
+				return (s != null) && s.startsWith("b");
 			}
-			public boolean reverseAccept(Object o) {
-				return (o != null) && ((String) o).startsWith("b");
+			public boolean reverseAccept(String s) {
+				return (s != null) && s.startsWith("b");
 			}
 		};
 	}

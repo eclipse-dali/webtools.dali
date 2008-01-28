@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,13 +24,13 @@ import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 public class FilteringCollectionValueModelTests extends TestCase {
-	private SimpleCollectionValueModel collectionHolder;
+	private SimpleCollectionValueModel<String> collectionHolder;
 	CollectionChangeEvent addEvent;
 	CollectionChangeEvent removeEvent;
 	CollectionChangeEvent collectionClearedEvent;
 	CollectionChangeEvent collectionChangedEvent;
 
-	private CollectionValueModel filteredCollectionHolder;
+	private CollectionValueModel<String> filteredCollectionHolder;
 	CollectionChangeEvent filteredAddEvent;
 	CollectionChangeEvent filteredRemoveEvent;
 	CollectionChangeEvent filteredCollectionClearedEvent;
@@ -43,20 +43,20 @@ public class FilteringCollectionValueModelTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.collectionHolder = new SimpleCollectionValueModel(buildCollection());
-		this.filteredCollectionHolder = new FilteringCollectionValueModel(this.collectionHolder, this.buildFilter());
+		this.collectionHolder = new SimpleCollectionValueModel<String>(buildCollection());
+		this.filteredCollectionHolder = new FilteringCollectionValueModel<String>(this.collectionHolder, this.buildFilter());
 	}
 
-	private Collection buildCollection() {
-		Collection collection = new Vector();
+	private Collection<String> buildCollection() {
+		Collection<String> collection = new Vector<String>();
 		collection.add("foo");
 		return collection;
 	}
 
-	private Filter buildFilter() {
-		return new Filter() {
-			public boolean accept(Object o) {
-				return ((String) o).startsWith("b");
+	private Filter<String> buildFilter() {
+		return new Filter<String>() {
+			public boolean accept(String s) {
+				return s.startsWith("b");
 			}
 		};
 	}
@@ -71,43 +71,43 @@ public class FilteringCollectionValueModelTests extends TestCase {
 		// add a listener to "activate" the wrapper
 		this.filteredCollectionHolder.addCollectionChangeListener(CollectionValueModel.VALUES, this.buildFilteredListener());
 
-		assertEquals("foo", ((Iterator) this.collectionHolder.iterator()).next());
-		assertFalse(((Iterator) this.filteredCollectionHolder.iterator()).hasNext());
+		assertEquals("foo", this.collectionHolder.iterator().next());
+		assertFalse(this.filteredCollectionHolder.iterator().hasNext());
 
 		this.collectionHolder.add("bar");
-		Iterator collectionHolderValue = (Iterator) this.collectionHolder.iterator();
+		Iterator<String> collectionHolderValue = this.collectionHolder.iterator();
 		assertEquals("foo", collectionHolderValue.next());
 		assertEquals("bar", collectionHolderValue.next());
-		assertTrue(((Iterator) this.filteredCollectionHolder.iterator()).hasNext());
-		assertEquals("bar", ((Iterator) this.filteredCollectionHolder.iterator()).next());
+		assertTrue(this.filteredCollectionHolder.iterator().hasNext());
+		assertEquals("bar", this.filteredCollectionHolder.iterator().next());
 
 		this.collectionHolder.remove("bar");
-		assertEquals("foo", ((Iterator) this.collectionHolder.iterator()).next());
-		assertFalse(((Iterator) this.filteredCollectionHolder.iterator()).hasNext());
+		assertEquals("foo", this.collectionHolder.iterator().next());
+		assertFalse(this.filteredCollectionHolder.iterator().hasNext());
 
 		this.collectionHolder.remove("foo");
-		assertFalse(((Iterator) this.collectionHolder.iterator()).hasNext());
-		assertFalse(((Iterator) this.filteredCollectionHolder.iterator()).hasNext());
+		assertFalse(this.collectionHolder.iterator().hasNext());
+		assertFalse(this.filteredCollectionHolder.iterator().hasNext());
 
 		this.collectionHolder.add("foo");
-		assertEquals("foo", ((Iterator) this.collectionHolder.iterator()).next());
-		assertFalse(((Iterator) this.filteredCollectionHolder.iterator()).hasNext());
+		assertEquals("foo", this.collectionHolder.iterator().next());
+		assertFalse(this.filteredCollectionHolder.iterator().hasNext());
 	}
 
 	public void testSetValue() {
 		// add a listener to "activate" the wrapper
 		this.filteredCollectionHolder.addCollectionChangeListener(CollectionValueModel.VALUES, this.buildFilteredListener());
 
-		Collection newCollection = new Vector();
+		Collection<String> newCollection = new Vector<String>();
 		newCollection.add("fox");
 		newCollection.add("baz");
 		
-		((SimpleCollectionValueModel) this.collectionHolder).setCollection(newCollection);
+		this.collectionHolder.setCollection(newCollection);
 
-		Iterator collectionValues = (Iterator) this.collectionHolder.iterator();
+		Iterator<String> collectionValues = this.collectionHolder.iterator();
 		assertEquals("fox", collectionValues.next());
 		assertEquals("baz", collectionValues.next());
-		Iterator filteredCollectionValues = (Iterator) this.filteredCollectionHolder.iterator();
+		Iterator<String> filteredCollectionValues = this.filteredCollectionHolder.iterator();
 		assertEquals("baz", filteredCollectionValues.next());
 		assertFalse(filteredCollectionValues.hasNext());
 	}		
@@ -152,7 +152,7 @@ public class FilteringCollectionValueModelTests extends TestCase {
 	private void verifyCollectionChanges() {
 		clearEvents();
 		this.collectionHolder.add("bar");
-		Collection tempCollection = new Vector();
+		Collection<String> tempCollection = new Vector<String>();
 		tempCollection.add("bar");
 		this.verifyEvent(this.addEvent, this.collectionHolder, tempCollection);
 		this.verifyEvent(this.filteredAddEvent, this.filteredCollectionHolder, tempCollection);
@@ -182,17 +182,17 @@ public class FilteringCollectionValueModelTests extends TestCase {
 
 
 		clearEvents();
-		Collection newCollection = new Vector();
+		Collection<String> newCollection = new Vector<String>();
 		newCollection.add("fox");
 		newCollection.add("baz");
 		
-		((SimpleCollectionValueModel) this.collectionHolder).setCollection(newCollection);
+		this.collectionHolder.setCollection(newCollection);
 
-		this.verifyEvent(this.collectionChangedEvent, this.collectionHolder, new Vector());
+		this.verifyEvent(this.collectionChangedEvent, this.collectionHolder, new Vector<String>());
 		
 		tempCollection.remove("foo");
 		tempCollection.add("baz");
-		this.verifyEvent(this.filteredCollectionChangedEvent, this.filteredCollectionHolder, new Vector());
+		this.verifyEvent(this.filteredCollectionChangedEvent, this.filteredCollectionHolder, new Vector<String>());
 		
 	}
 
@@ -238,48 +238,50 @@ public class FilteringCollectionValueModelTests extends TestCase {
 
 	public void testRemoveFilteredItem() {
 		// build collection with TestItems
-		this.collectionHolder = new SimpleCollectionValueModel(this.buildCollection2());
-		this.filteredCollectionHolder = new FilteringCollectionValueModel(this.collectionHolder, this.buildFilter2());
+		SimpleCollectionValueModel<TestItem> tiHolder = new SimpleCollectionValueModel<TestItem>(this.buildCollection2());
+		CollectionValueModel<TestItem> filteredTIHolder = new FilteringCollectionValueModel<TestItem>(tiHolder, this.buildFilter2());
 		// add a listener to "activate" the wrapper
-		this.filteredCollectionHolder.addCollectionChangeListener(CollectionValueModel.VALUES, this.buildFilteredListener());
+		filteredTIHolder.addCollectionChangeListener(CollectionValueModel.VALUES, this.buildFilteredListener());
 
-		assertEquals(0, this.filteredCollectionHolder.size());
+		assertEquals(0, filteredTIHolder.size());
 
-		this.collectionHolder.add(new TestItem("bar"));
-		assertEquals(1, this.filteredCollectionHolder.size());
+		tiHolder.add(new TestItem("bar"));
+		assertEquals(1, filteredTIHolder.size());
 
 		TestItem baz = new TestItem("baz");
-		this.collectionHolder.add(baz);
-		assertEquals(2, this.filteredCollectionHolder.size());
+		tiHolder.add(baz);
+		assertEquals(2, filteredTIHolder.size());
 		// before removing it, change the item so that it is filtered
 		baz.name = "jaz";
-		this.collectionHolder.remove(baz);
+		tiHolder.remove(baz);
 		// this would fail because the item was not removed from
 		// the filtered collection cache... but we've fixed it now
-		assertEquals(1, this.filteredCollectionHolder.size());
+		assertEquals(1, filteredTIHolder.size());
 	}
 
-	private Collection buildCollection2() {
-		Collection collection = new Vector();
+	private Collection<TestItem> buildCollection2() {
+		Collection<TestItem> collection = new Vector<TestItem>();
 		collection.add(new TestItem("foo"));
 		return collection;
 	}
 
-	private Filter buildFilter2() {
-		return new Filter() {
-			public boolean accept(Object o) {
-				return ((TestItem) o).name.startsWith("b");
+	private Filter<TestItem> buildFilter2() {
+		return new Filter<TestItem>() {
+			public boolean accept(TestItem ti) {
+				return ti.name.startsWith("b");
 			}
 		};
 	}
 
 
-private class TestItem {
-	String name;
-	TestItem(String name) {
-		super();
-		this.name = name;
+	// ********** TestItem inner class **********
+
+	private class TestItem {
+		String name;
+		TestItem(String name) {
+			super();
+			this.name = name;
+		}
 	}
-}
 
 }

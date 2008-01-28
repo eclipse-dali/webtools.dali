@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,7 +33,7 @@ public class ListModelAdapter
 	extends AbstractListModel
 {
 	/** A value model on the underlying model list. */
-	protected ListValueModel listHolder;
+	protected ListValueModel<?> listHolder;
 
 	/**
 	 * Cache the size of the list for "dramatic" changes.
@@ -59,7 +59,7 @@ public class ListModelAdapter
 	/**
 	 * Constructor - the list holder is required.
 	 */
-	public ListModelAdapter(ListValueModel listHolder) {
+	public ListModelAdapter(ListValueModel<?> listHolder) {
 		this();
 		this.setModel(listHolder);
 	}
@@ -147,14 +147,14 @@ public class ListModelAdapter
 	/**
 	 * Return the underlying list model.
 	 */
-	public ListValueModel model() {
+	public ListValueModel<?> model() {
 		return this.listHolder;
 	}
 	
 	/**
 	 * Set the underlying list model.
 	 */
-	public void setModel(ListValueModel listHolder) {
+	public void setModel(ListValueModel<?> listHolder) {
 		if (listHolder == null) {
 			throw new NullPointerException();
 		}
@@ -172,6 +172,7 @@ public class ListModelAdapter
 	/**
 	 * Set the underlying collection model.
 	 */
+	@SuppressWarnings("unchecked")
 	public void setModel(CollectionValueModel<?> collectionHolder) {
 		this.setModel(new CollectionListValueModelAdapter(collectionHolder));
 	}

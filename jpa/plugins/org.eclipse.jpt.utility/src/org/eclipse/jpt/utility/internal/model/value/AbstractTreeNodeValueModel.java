@@ -132,7 +132,7 @@ public abstract class AbstractTreeNodeValueModel<T>
 	}
 
 	public TreeNodeValueModel<T> child(int index) {
-		return (TreeNodeValueModel<T>) this.childrenModel().get(index);
+		return this.childrenModel().get(index);
 	}
 
 	public int childrenSize() {
@@ -140,7 +140,7 @@ public abstract class AbstractTreeNodeValueModel<T>
 	}
 
 	public int indexOfChild(TreeNodeValueModel<T> child) {
-		ListValueModel children = this.childrenModel();
+		ListValueModel<TreeNodeValueModel<T>> children = this.childrenModel();
 		int size = children.size();
 		for (int i = 0; i < size; i++) {
 			if (children.get(i) == child) {

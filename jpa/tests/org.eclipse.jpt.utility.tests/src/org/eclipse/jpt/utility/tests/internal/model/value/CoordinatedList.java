@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,9 +31,9 @@ import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 public class CoordinatedList<E> implements List<E>, ListChangeListener, ListDataListener {
 	private List<E> synchList = new ArrayList<E>();
 
-	public CoordinatedList(ListValueModel listValueModel) {
+	public CoordinatedList(ListValueModel<E> listValueModel) {
 		listValueModel.addListChangeListener(ListValueModel.LIST_VALUES, this);
-		for (Iterator<E> stream = (Iterator<E>) listValueModel.iterator(); stream.hasNext(); ) {
+		for (Iterator<E> stream = listValueModel.iterator(); stream.hasNext(); ) {
 			this.add(stream.next());
 		}
 	}
@@ -41,7 +41,7 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 	public CoordinatedList(ListModel listModel) {
 		listModel.addListDataListener(this);
 		for (int i = 0; i < listModel.getSize(); i++) {
-			this.add(i, (E) listModel.getElementAt(i));
+			this.add(i, this.getElementAt(listModel, i));
 		}
 	}
 
@@ -145,14 +145,14 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 
 	public void itemsAdded(ListChangeEvent e) {
 		int i = e.index();
-		for (Iterator<E> stream = (Iterator<E>) e.items(); stream.hasNext(); ) {
+		for (Iterator<E> stream = this.items(e); stream.hasNext(); ) {
 			this.synchList.add(i++, stream.next());
 		}
 	}
 
 	public void itemsRemoved(ListChangeEvent e) {
 		int i = e.index();
-		for (Iterator<E> stream = (Iterator<E>) e.items(); stream.hasNext(); ) {
+		for (Iterator<E> stream = this.items(e); stream.hasNext(); ) {
 			stream.next();
 			this.synchList.remove(i);
 		}
@@ -160,7 +160,7 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 
 	public void itemsReplaced(ListChangeEvent e) {
 		int i = e.index();
-		for (ListIterator<E> stream = (ListIterator<E>) e.items(); stream.hasNext(); ) {
+		for (Iterator<E> stream = this.items(e); stream.hasNext(); ) {
 			this.synchList.set(i++, stream.next());
 		}
 	}
@@ -175,7 +175,7 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 
 	public void listChanged(ListChangeEvent e) {
 		this.synchList.clear();
-		CollectionTools.addAll(this.synchList, (Iterator) ((ListValueModel) e.getSource()).iterator());
+		CollectionTools.addAll(this.synchList, this.getSource(e).iterator());
 	}
 
 
@@ -186,7 +186,7 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 		ListModel lm = (ListModel) e.getSource();
 		int size = lm.getSize();
 		for (int i = 0; i < size; i++) {
-			this.synchList.add(i, (E) lm.getElementAt(i));
+			this.synchList.add(i, this.getElementAt(lm, i));
 		}
 	}
 
@@ -195,7 +195,7 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 		int start = Math.min(e.getIndex0(), e.getIndex1());
 		int end = Math.max(e.getIndex0(), e.getIndex1());
 		for (int i = start; i <= end; i++) {
-			this.synchList.add(i, (E) lm.getElementAt(i));
+			this.synchList.add(i, this.getElementAt(lm, i));
 		}
 	}
 
@@ -224,6 +224,33 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
     @Override
 	public String toString() {
 		return this.synchList.toString();
+	}
+
+
+	// ********** internal methods **********
+
+	/**
+	 * minimize the scope of the suppressed warnings.=
+	 */
+	@SuppressWarnings("unchecked")
+	private E getElementAt(ListModel listModel, int index) {
+		return (E) listModel.getElementAt(index);
+	}
+
+	/**
+	 * minimize the scope of the suppressed warnings.=
+	 */
+	@SuppressWarnings("unchecked")
+	private Iterator<E> items(ListChangeEvent event) {
+		return (Iterator<E>) event.items();
+	}
+
+	/**
+	 * minimize the scope of the suppressed warnings.=
+	 */
+	@SuppressWarnings("unchecked")
+	private ListValueModel<E> getSource(ListChangeEvent event) {
+		return (ListValueModel<E>) event.getSource();
 	}
 
 }

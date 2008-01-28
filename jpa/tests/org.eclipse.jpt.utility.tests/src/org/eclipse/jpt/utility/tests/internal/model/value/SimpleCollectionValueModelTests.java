@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,9 +11,8 @@ package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
-import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.Bag;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
@@ -23,12 +22,14 @@ import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+import junit.framework.TestCase;
+
 public class SimpleCollectionValueModelTests extends TestCase {
-	private SimpleCollectionValueModel bagHolder;
+	private SimpleCollectionValueModel<String> bagHolder;
 	CollectionChangeEvent bagEvent;
 	String bagEventType;
 
-	private SimpleCollectionValueModel setHolder;
+	private SimpleCollectionValueModel<String> setHolder;
 	CollectionChangeEvent setEvent;
 	String setEventType;
 
@@ -45,8 +46,8 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.bagHolder = new SimpleCollectionValueModel(this.buildBag());
-		this.setHolder = new SimpleCollectionValueModel(this.buildSet());
+		this.bagHolder = new SimpleCollectionValueModel<String>(this.buildBag());
+		this.setHolder = new SimpleCollectionValueModel<String>(this.buildSet());
 	}
 
 	private Bag<String> buildBag() {
@@ -94,28 +95,28 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	}
 
 	public void testSize() {
-		assertEquals(this.buildBag().size(), CollectionTools.size((Iterator) this.bagHolder.iterator()));
-		assertEquals(this.buildSet().size(), CollectionTools.size((Iterator) this.setHolder.iterator()));
+		assertEquals(this.buildBag().size(), CollectionTools.size(this.bagHolder.iterator()));
+		assertEquals(this.buildSet().size(), CollectionTools.size(this.setHolder.iterator()));
 	}
 
 	private boolean bagHolderContains(Object item) {
-		return CollectionTools.contains((Iterator) this.bagHolder.iterator(), item);
+		return CollectionTools.contains(this.bagHolder.iterator(), item);
 	}
 
 	private boolean setHolderContains(Object item) {
-		return CollectionTools.contains((Iterator) this.setHolder.iterator(), item);
+		return CollectionTools.contains(this.setHolder.iterator(), item);
 	}
 
 	private boolean bagHolderContainsAll(Collection<String> items) {
-		return CollectionTools.containsAll((Iterator) this.bagHolder.iterator(), items);
+		return CollectionTools.containsAll(this.bagHolder.iterator(), items);
 	}
 
 	private boolean setHolderContainsAll(Collection<String> items) {
-		return CollectionTools.containsAll((Iterator) this.setHolder.iterator(), items);
+		return CollectionTools.containsAll(this.setHolder.iterator(), items);
 	}
 
 	private boolean bagHolderContainsAny(Collection<String> items) {
-		Bag bag = CollectionTools.bag((Iterator) this.bagHolder.iterator());
+		Bag<String> bag = CollectionTools.bag(this.bagHolder.iterator());
 		for (String string : items) {
 			if (bag.contains(string)) {
 				return true;
@@ -125,7 +126,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	}
 
 	private boolean setHolderContainsAny(Collection<String> items) {
-		Set set = CollectionTools.set((Iterator) this.setHolder.iterator());
+		Set<String> set = CollectionTools.set(this.setHolder.iterator());
 		for (String string : items) {
 			if (set.contains(string)) {
 				return true;
@@ -195,7 +196,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	public void testSetCollection() {
 		assertTrue(this.bagHolderContains("bar"));
 		assertFalse(this.bagHolderContains("jar"));
-		((SimpleCollectionValueModel) this.bagHolder).setCollection(this.buildAddItems());
+		this.bagHolder.setCollection(this.buildAddItems());
 		assertFalse(this.bagHolderContains("bar"));
 		assertTrue(this.bagHolderContains("jar"));
 
@@ -204,12 +205,12 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		this.bagHolder.remove(null);
 		assertFalse(this.bagHolderContains(null));
 
-		((SimpleCollectionValueModel) this.bagHolder).setCollection(new HashBag());
+		this.bagHolder.setCollection(new HashBag<String>());
 		assertFalse(this.bagHolderContains("jar"));
 
 		assertTrue(this.setHolderContains("bar"));
 		assertFalse(this.setHolderContains("jar"));
-		((SimpleCollectionValueModel) this.setHolder).setCollection(this.buildAddItems());
+		this.setHolder.setCollection(this.buildAddItems());
 		assertFalse(this.setHolderContains("bar"));
 		assertTrue(this.setHolderContains("jar"));
 
@@ -218,7 +219,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		this.setHolder.remove(null);
 		assertFalse(this.setHolderContains(null));
 
-		((SimpleCollectionValueModel) this.setHolder).setCollection(new HashBag());
+		this.setHolder.setCollection(new HashBag<String>());
 		assertFalse(this.setHolderContains("jar"));
 	}
 
@@ -276,7 +277,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 
 		this.bagEvent = null;
 		this.bagEventType = null;
-		((SimpleCollectionValueModel) this.bagHolder).setCollection(this.buildBag());
+		this.bagHolder.setCollection(this.buildBag());
 		this.verifyBagEvent(CHANGE);
 
 		this.bagEvent = null;
@@ -333,7 +334,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 
 		this.setEvent = null;
 		this.setEventType = null;
-		((SimpleCollectionValueModel) this.setHolder).setCollection(this.buildSet());
+		this.setHolder.setCollection(this.buildSet());
 		this.verifySetEvent(CHANGE);
 
 		this.setEvent = null;

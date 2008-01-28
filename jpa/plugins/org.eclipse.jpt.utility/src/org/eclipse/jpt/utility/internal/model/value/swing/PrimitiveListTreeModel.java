@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -49,7 +49,7 @@ public abstract class PrimitiveListTreeModel
 	extends DefaultTreeModel
 {
 	/** a model on the list of primitives */
-	private final ListValueModel listHolder;
+	private final ListValueModel<?> listHolder;
 
 	/** a listener that handles the adding, removing, and replacing of the primitives */
 	private final ListChangeListener listChangeListener;
@@ -60,7 +60,7 @@ public abstract class PrimitiveListTreeModel
 	/**
 	 * Public constructor - the list holder is required
 	 */
-	public PrimitiveListTreeModel(ListValueModel listHolder) {
+	public PrimitiveListTreeModel(ListValueModel<?> listHolder) {
 		super(new DefaultMutableTreeNode(null, true));  // true = the root can have children
 		if (listHolder == null) {
 			throw new NullPointerException();
@@ -144,7 +144,7 @@ public abstract class PrimitiveListTreeModel
 	}
 		
 	private void buildList() {
-		for (Iterator stream = this.listHolder.iterator(); stream.hasNext(); ) {
+		for (Iterator<?> stream = this.listHolder.iterator(); stream.hasNext(); ) {
 			this.addPrimitive(stream.next());
 		}
 	}
@@ -193,7 +193,7 @@ public abstract class PrimitiveListTreeModel
 
 		public void itemsAdded(ListChangeEvent e) {
 			int i = e.index();
-			for (ListIterator stream = e.items(); stream.hasNext(); ) {
+			for (ListIterator<?> stream = e.items(); stream.hasNext(); ) {
 				PrimitiveListTreeModel.this.insertPrimitive(i++, stream.next());
 			}
 		}
@@ -206,7 +206,7 @@ public abstract class PrimitiveListTreeModel
 
 		public void itemsReplaced(ListChangeEvent e) {
 			int i = e.index();
-			for (ListIterator stream = e.items(); stream.hasNext(); ) {
+			for (ListIterator<?> stream = e.items(); stream.hasNext(); ) {
 				PrimitiveListTreeModel.this.replacePrimitive(i++, stream.next());
 			}
 		}

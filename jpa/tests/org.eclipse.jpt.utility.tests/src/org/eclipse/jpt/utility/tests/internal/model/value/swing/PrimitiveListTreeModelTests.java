@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -63,14 +63,14 @@ public class PrimitiveListTreeModelTests extends TestCase {
 		};
 	}
 
-	private ListValueModel buildListValueModel() {
+	private ListValueModel<?> buildListValueModel() {
 		return new ListAspectAdapter<TestModel, String>(TestModel.NAMES_LIST, this.testModel) {
 			@Override
 			protected ListIterator<String> listIterator_() {
 				return this.subject.names();
 			}
 			@Override
-			public Object get(int index) {
+			public String get(int index) {
 				return this.subject.getName(index);
 			}
 			@Override

@@ -29,7 +29,7 @@ public class StaticListValueModelTests extends TestCase {
 		return result;
 	}
 
-	private ListValueModel listHolder;
+	private ListValueModel<String> listHolder;
 
 
 	public StaticListValueModelTests(String name) {
@@ -39,7 +39,7 @@ public class StaticListValueModelTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.listHolder = new StaticListValueModel(LIST);
+		this.listHolder = new StaticListValueModel<String>(LIST);
 	}
 
 	@Override

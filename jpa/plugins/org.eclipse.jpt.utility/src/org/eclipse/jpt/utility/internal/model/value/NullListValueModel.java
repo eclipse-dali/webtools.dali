@@ -23,9 +23,9 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
  * 
  * We don't use a singleton because we hold on to listeners.
  */
-public final class NullListValueModel
+public final class NullListValueModel<E>
 	extends AbstractModel
-	implements ListValueModel
+	implements ListValueModel<E>
 {
 	private static final Object[] EMPTY_ARRAY = new Object[0];
 	private static final long serialVersionUID = 1L;
@@ -40,11 +40,11 @@ public final class NullListValueModel
 
 	// ********** ListValueModel implementation **********
 
-	public Iterator iterator() {
+	public Iterator<E> iterator() {
 		return EmptyIterator.instance();
 	}
 
-	public ListIterator listIterator() {
+	public ListIterator<E> listIterator() {
 		return EmptyListIterator.instance();
 	}
 
@@ -52,7 +52,7 @@ public final class NullListValueModel
 		return 0;
 	}
 
-	public Object get(int index) {
+	public E get(int index) {
 		throw new IndexOutOfBoundsException("Index: " + index + ", Size: 0");
 	}
 

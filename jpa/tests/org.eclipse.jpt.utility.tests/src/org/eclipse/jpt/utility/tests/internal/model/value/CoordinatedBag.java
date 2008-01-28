@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,7 +26,7 @@ class CoordinatedBag<E> implements Bag<E>, CollectionChangeListener {
 
 	private Bag<E> synchBag = new HashBag<E>();
 
-	CoordinatedBag(CollectionValueModel cvm) {
+	CoordinatedBag(CollectionValueModel<E> cvm) {
 		cvm.addCollectionChangeListener(CollectionValueModel.VALUES, this);
 	}
 
@@ -122,9 +122,10 @@ class CoordinatedBag<E> implements Bag<E>, CollectionChangeListener {
 		this.synchBag.clear();
 	}
 
+	@SuppressWarnings("unchecked")
 	public void collectionChanged(CollectionChangeEvent e) {
 		this.synchBag.clear();
-		CollectionTools.addAll(this.synchBag, (Iterator) ((CollectionValueModel) e.getSource()).iterator());
+		CollectionTools.addAll(this.synchBag, ((CollectionValueModel<E>) e.getSource()).iterator());
 	}
 
 

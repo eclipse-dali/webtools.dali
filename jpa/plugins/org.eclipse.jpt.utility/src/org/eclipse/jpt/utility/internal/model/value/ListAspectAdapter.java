@@ -45,7 +45,7 @@ import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
  */
 public abstract class ListAspectAdapter<S extends Model, E>
 	extends AspectAdapter<S>
-	implements ListValueModel
+	implements ListValueModel<E>
 {
 	/**
 	 * The name of the subject's lists that we use for the value.
@@ -168,7 +168,7 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	/**
 	 * Return the element at the specified index of the subject's list aspect.
 	 */
-	public Object get(int index) {
+	public E get(int index) {
 		return CollectionTools.get(this.listIterator(), index);
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,7 +29,7 @@ import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
  */
 public class ExtendedListValueModelWrapper<E>
 	extends ListValueModelWrapper<E>
-	implements ListValueModel
+	implements ListValueModel<E>
 {
 	/** the items "prepended" to the wrapped list */
 	protected List<E> prefix;
@@ -43,7 +43,7 @@ public class ExtendedListValueModelWrapper<E>
 	/**
 	 * Extend the specified list with a prefix and suffix.
 	 */
-	public ExtendedListValueModelWrapper(List<? extends E> prefix, ListValueModel listHolder, List<? extends E> suffix) {
+	public ExtendedListValueModelWrapper(List<? extends E> prefix, ListValueModel<E> listHolder, List<? extends E> suffix) {
 		super(listHolder);
 		this.prefix = new ArrayList<E>(prefix);
 		this.suffix = new ArrayList<E>(suffix);
@@ -52,7 +52,7 @@ public class ExtendedListValueModelWrapper<E>
 	/**
 	 * Extend the specified list with a prefix and suffix.
 	 */
-	public ExtendedListValueModelWrapper(E prefix, ListValueModel listHolder, E suffix) {
+	public ExtendedListValueModelWrapper(E prefix, ListValueModel<E> listHolder, E suffix) {
 		super(listHolder);
 		this.prefix = Collections.singletonList(prefix);
 		this.suffix = Collections.singletonList(suffix);
@@ -61,7 +61,7 @@ public class ExtendedListValueModelWrapper<E>
 	/**
 	 * Extend the specified list with a prefix.
 	 */
-	public ExtendedListValueModelWrapper(List<? extends E> prefix, ListValueModel listHolder) {
+	public ExtendedListValueModelWrapper(List<? extends E> prefix, ListValueModel<E> listHolder) {
 		super(listHolder);
 		this.prefix = new ArrayList<E>(prefix);
 		this.suffix = Collections.emptyList();
@@ -70,7 +70,7 @@ public class ExtendedListValueModelWrapper<E>
 	/**
 	 * Extend the specified list with a prefix.
 	 */
-	public ExtendedListValueModelWrapper(E prefix, ListValueModel listHolder) {
+	public ExtendedListValueModelWrapper(E prefix, ListValueModel<E> listHolder) {
 		super(listHolder);
 		this.prefix = Collections.singletonList(prefix);
 		this.suffix = Collections.emptyList();
@@ -79,7 +79,7 @@ public class ExtendedListValueModelWrapper<E>
 	/**
 	 * Extend the specified list with a suffix.
 	 */
-	public ExtendedListValueModelWrapper(ListValueModel listHolder, List<? extends E> suffix) {
+	public ExtendedListValueModelWrapper(ListValueModel<E> listHolder, List<? extends E> suffix) {
 		super(listHolder);
 		this.prefix = Collections.emptyList();
 		this.suffix = new ArrayList<E>(suffix);
@@ -88,7 +88,7 @@ public class ExtendedListValueModelWrapper<E>
 	/**
 	 * Extend the specified list with a suffix.
 	 */
-	public ExtendedListValueModelWrapper(ListValueModel listHolder, E suffix) {
+	public ExtendedListValueModelWrapper(ListValueModel<E> listHolder, E suffix) {
 		super(listHolder);
 		this.prefix = Collections.emptyList();
 		this.suffix = Collections.singletonList(suffix);
@@ -97,7 +97,7 @@ public class ExtendedListValueModelWrapper<E>
 	/**
 	 * Extend the specified list with a prefix containing a single null item.
 	 */
-	public ExtendedListValueModelWrapper(ListValueModel listHolder) {
+	public ExtendedListValueModelWrapper(ListValueModel<E> listHolder) {
 		super(listHolder);
 		this.prefix = Collections.singletonList(null);
 		this.suffix = Collections.emptyList();
@@ -131,7 +131,7 @@ public class ExtendedListValueModelWrapper<E>
 		} else if (index >= prefixSize + this.listHolder.size()) {
 			return this.suffix.get(index - (prefixSize + this.listHolder.size()));
 		} else {
-			return (E) this.listHolder.get(index - prefixSize);
+			return this.listHolder.get(index - prefixSize);
 		}
 	}
 

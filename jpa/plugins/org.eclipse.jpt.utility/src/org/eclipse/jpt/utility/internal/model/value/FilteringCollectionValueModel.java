@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -75,7 +75,7 @@ public class FilteringCollectionValueModel<E>
 	 * Construct a collection value model with the specified wrapped
 	 * list value model and a filter that simply accepts every object.
 	 */
-	public FilteringCollectionValueModel(ListValueModel listHolder) {
+	public FilteringCollectionValueModel(ListValueModel<E> listHolder) {
 		this(new ListCollectionValueModelAdapter<E>(listHolder));
 	}
 
@@ -83,7 +83,7 @@ public class FilteringCollectionValueModel<E>
 	 * Construct a collection value model with the specified wrapped
 	 * list value model and filter.
 	 */
-	public FilteringCollectionValueModel(ListValueModel listHolder, Filter<E> filter) {
+	public FilteringCollectionValueModel(ListValueModel<E> listHolder, Filter<E> filter) {
 		this(new ListCollectionValueModelAdapter<E>(listHolder), filter);
 	}
 
@@ -155,7 +155,7 @@ public class FilteringCollectionValueModel<E>
 	 * Return an iterator that filters the specified iterator.
 	 */
 	protected Iterator<E> filter(Iterator<E> items) {
-		return new FilteringIterator<E>(items, this.filter);
+		return new FilteringIterator<E, E>(items, this.filter);
 	}
 
 	/**

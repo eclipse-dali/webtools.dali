@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -68,7 +68,7 @@ public class SortedListValueModelAdapter<E>
 	 * Wrap the specified list value model and sort its contents
 	 * using the specified comparator.
 	 */
-	public SortedListValueModelAdapter(ListValueModel listHolder, Comparator<E> comparator) {
+	public SortedListValueModelAdapter(ListValueModel<E> listHolder, Comparator<E> comparator) {
 		this(new ListCollectionValueModelAdapter<E>(listHolder), comparator);
 	}
 
@@ -76,7 +76,7 @@ public class SortedListValueModelAdapter<E>
 	 * Wrap the specified list value model and sort its contents
 	 * based on the elements' "natural ordering".
 	 */
-	public SortedListValueModelAdapter(ListValueModel listHolder) {
+	public SortedListValueModelAdapter(ListValueModel<E> listHolder) {
 		this(listHolder, null);
 	}
 

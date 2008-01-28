@@ -29,7 +29,7 @@ public class StaticCollectionValueModelTests extends TestCase {
 		return result;
 	}
 
-	private CollectionValueModel collectionHolder;
+	private CollectionValueModel<String> collectionHolder;
 
 
 	public StaticCollectionValueModelTests(String name) {
@@ -42,8 +42,8 @@ public class StaticCollectionValueModelTests extends TestCase {
 		this.collectionHolder = this.buildCollectionHolder();
 	}
 
-	private CollectionValueModel buildCollectionHolder() {
-		return new StaticCollectionValueModel(COLLECTION);
+	private CollectionValueModel<String> buildCollectionHolder() {
+		return new StaticCollectionValueModel<String>(COLLECTION);
 	}
 
 	@Override

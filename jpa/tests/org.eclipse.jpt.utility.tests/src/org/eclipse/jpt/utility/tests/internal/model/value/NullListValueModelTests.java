@@ -16,7 +16,7 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class NullListValueModelTests extends TestCase {
-	private ListValueModel listHolder;
+	private ListValueModel<Object> listHolder;
 
 	public NullListValueModelTests(String name) {
 		super(name);
@@ -25,7 +25,7 @@ public class NullListValueModelTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.listHolder = new NullListValueModel();
+		this.listHolder = new NullListValueModel<Object>();
 	}
 
 	@Override

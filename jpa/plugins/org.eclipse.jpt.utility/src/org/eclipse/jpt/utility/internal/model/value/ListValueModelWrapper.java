@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,7 @@ public abstract class ListValueModelWrapper<E>
 {
 
 	/** The wrapped list value model. */
-	protected final ListValueModel listHolder;
+	protected final ListValueModel<E> listHolder;
 
 	/** A listener that allows us to synch with changes to the wrapped list holder. */
 	protected final ListChangeListener listChangeListener;
@@ -39,7 +39,7 @@ public abstract class ListValueModelWrapper<E>
 	 * Construct a list value model with the specified wrapped
 	 * list value model.
 	 */
-	protected ListValueModelWrapper(ListValueModel listHolder) {
+	protected ListValueModelWrapper(ListValueModel<E> listHolder) {
 		super();
 		if (listHolder == null) {
 			throw new NullPointerException();

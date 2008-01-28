@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -38,7 +39,7 @@ public class ListCollectionValueModelAdapter<E>
 	implements CollectionValueModel<E>
 {
 	/** The wrapped list value model. */
-	protected final ListValueModel listHolder;
+	protected final ListValueModel<E> listHolder;
 
 	/** A listener that forwards any events fired by the list holder. */
 	protected final ListChangeListener listChangeListener;
@@ -56,7 +57,7 @@ public class ListCollectionValueModelAdapter<E>
 	/**
 	 * Wrap the specified ListValueModel.
 	 */
-	public ListCollectionValueModelAdapter(ListValueModel listHolder) {
+	public ListCollectionValueModelAdapter(ListValueModel<E> listHolder) {
 		super();
 		if (listHolder == null) {
 			throw new NullPointerException();
@@ -222,9 +223,20 @@ public class ListCollectionValueModelAdapter<E>
 		this.collection.clear();
 	}
 
+	// minimize suppressed warnings
 	@SuppressWarnings("unchecked")
+	protected ListIterator<E> items(ListChangeEvent e) {
+		return (ListIterator<E>) e.items();
+	}
+
+	// minimize suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected ListIterator<E> replacedItems(ListChangeEvent e) {
+		return (ListIterator<E>) e.replacedItems();
+	}
+
 	protected void itemsAdded(ListChangeEvent e) {
-		this.addItemsToCollection((Iterator<E>) e.items(), this.collection, VALUES);
+		this.addItemsToCollection(this.items(e), this.collection, VALUES);
 	}
 
 	protected void removeInternalItems(Iterator<E> items) {
@@ -238,15 +250,13 @@ public class ListCollectionValueModelAdapter<E>
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void itemsRemoved(ListChangeEvent e) {
-		this.removeInternalItems((Iterator<E>) e.items());
+		this.removeInternalItems(this.items(e));
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void itemsReplaced(ListChangeEvent e) {
-		this.removeInternalItems((Iterator<E>) e.replacedItems());
-		this.addItemsToCollection((Iterator<E>) e.items(), this.collection, VALUES);
+		this.removeInternalItems(this.replacedItems(e));
+		this.addItemsToCollection(this.items(e), this.collection, VALUES);
 	}
 
 	protected void itemsMoved(ListChangeEvent e) {

@@ -29,7 +29,7 @@ public class ItemStateListValueModelAdapter<E>
 	/**
 	 * Construct an adapter for the item state.
 	 */
-	public ItemStateListValueModelAdapter(ListValueModel listHolder) {
+	public ItemStateListValueModelAdapter(ListValueModel<E> listHolder) {
 		super(listHolder);
 		this.itemStateListener = this.buildItemStateListener();
 	}
