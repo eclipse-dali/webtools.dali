@@ -326,6 +326,9 @@ public abstract class AnnotationTestCase extends TestCase {
 		return null;
 	}
 
+	/**
+	 * minimize the scope of the suppressed warnings
+	 */
 	@SuppressWarnings("unchecked")
 	protected List<MemberValuePair> values(NormalAnnotation na) {
 		return na.values();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -135,8 +135,10 @@ public class CloneListIterator<E>
 	// ********** internal methods **********
 
 	/**
-	 * The collection passed in during construction held Es,
-	 * so this cast is not a problem.
+	 * The list passed in during construction held Es,
+	 * so this cast is not a problem. We need this cast because
+	 * all the elements of the original collection were copied into
+	 * an object array (Object[]).
 	 */
 	@SuppressWarnings("unchecked")
 	protected E nestedNext() {
@@ -144,8 +146,10 @@ public class CloneListIterator<E>
 	}
 
 	/**
-	 * The collection passed in during construction held Es,
-	 * so this cast is not a problem.
+	 * The list passed in during construction held Es,
+	 * so this cast is not a problem. We need this cast because
+	 * all the elements of the original collection were copied into
+	 * an object array (Object[]).
 	 */
 	@SuppressWarnings("unchecked")
 	protected E nestedPrevious() {

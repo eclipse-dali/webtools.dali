@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1346,8 +1346,9 @@ public class AbstractModelTests
 //		assertEquals(Joo.class, listeners2[0].getClass());
 //	}
 
+// >>>>>>>>>>>>>>>>> these methods are called by #testSerialization(), commented out above...
 	private ChangeListener[] listeners(LocalModel model, Class<? extends ChangeListener> listenerClass) {
-		ChangeSupport changeSupport = (ChangeSupport) ClassTools.getFieldValue(model, "changeSupport");
+		ChangeSupport changeSupport = (ChangeSupport) ClassTools.fieldValue(model, "changeSupport");
 		return (ChangeListener[]) ClassTools.executeMethod(changeSupport, "listeners", Class.class, listenerClass);
 	}
 
