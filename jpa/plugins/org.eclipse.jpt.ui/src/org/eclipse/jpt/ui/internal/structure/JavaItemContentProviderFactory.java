@@ -24,7 +24,6 @@ import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 
 public class JavaItemContentProviderFactory extends GeneralJpaMappingItemContentProviderFactory
 {
-	@Override
 	public ITreeItemContentProvider buildItemContentProvider(
 			Object item, DelegatingContentAndLabelProvider contentProvider) {
 		DelegatingTreeContentAndLabelProvider treeContentProvider = (DelegatingTreeContentAndLabelProvider) contentProvider;
@@ -33,22 +32,22 @@ public class JavaItemContentProviderFactory extends GeneralJpaMappingItemContent
 		}
 		return super.buildItemContentProvider(item, treeContentProvider);
 	}
-
-
+	
+	
 	public static class JavaResourceModelItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public JavaResourceModelItemContentProvider(
 				JavaResourceModel javaResourceModel, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(javaResourceModel, contentProvider);
 		}
-
+		
 		@Override
 		public Object getParent() {
 			return null;
 		}
-
+		
 		@Override
-		protected ListValueModel buildChildrenModel() {
+		protected ListValueModel<IJpaContextNode> buildChildrenModel() {
 			return new ListAspectAdapter<JavaResourceModel, IJpaContextNode>(
 					IResourceModel.ROOT_CONTEXT_NODE_LIST, (JavaResourceModel) model()) {
 				@Override
@@ -56,6 +55,6 @@ public class JavaItemContentProviderFactory extends GeneralJpaMappingItemContent
 					return subject.rootContextNodes();
 				}
 			};
-		}
+		}	
 	}
 }

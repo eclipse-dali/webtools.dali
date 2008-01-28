@@ -35,22 +35,22 @@ public abstract class GeneralJpaMappingItemContentProviderFactory
 		}
 		return null;
 	}
-
-
+	
+	
 	public static class PersistentTypeItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public PersistentTypeItemContentProvider(
 				IPersistentType persistentType, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(persistentType, contentProvider);
 		}
-
+		
 		@Override
 		public Object getParent() {
 			return ((IPersistentType) model()).parent();
 		}
-
+		
 		@Override
-		protected ListValueModel buildChildrenModel() {
+		protected ListValueModel<IPersistentAttribute> buildChildrenModel() {
 			return new ListAspectAdapter<IPersistentType, IPersistentAttribute>(IPersistentType.ATTRIBUTES_LIST, (IPersistentType) model()) {
 				@Override
 				protected ListIterator<IPersistentAttribute> listIterator_() {
@@ -59,20 +59,20 @@ public abstract class GeneralJpaMappingItemContentProviderFactory
 			};
 		}
 	}
-
-
+	
+	
 	public static class PersistentAttributeItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public PersistentAttributeItemContentProvider(
 				IPersistentAttribute persistentAttribute, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(persistentAttribute, contentProvider);
 		}
-
+		
 		@Override
 		public Object getParent() {
 			return ((IPersistentType) model()).parentPersistentType();
 		}
-
+		
 		@Override
 		public boolean hasChildren() {
 			return false;

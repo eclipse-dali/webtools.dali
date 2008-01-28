@@ -1,11 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle.
- *  All rights reserved.  This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
+ *  Copyright (c) 2007 Oracle. 
+ *  All rights reserved.  This program and the accompanying materials 
+ *  are made available under the terms of the Eclipse Public License v1.0 
+ *  which accompanies this distribution, and is available at 
  *  http://www.eclipse.org/legal/epl-v10.html
- *
- *  Contributors:
+ *  
+ *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
@@ -41,33 +41,33 @@ public class PersistenceItemContentProviderFactory
 			return new PersistenceItemContentProvider((IPersistence) item, treeContentProvider);
 		}
 		else if (item instanceof IPersistenceUnit) {
-			return new PersistenceUnitItemContentProvider((IPersistenceUnit) item, treeContentProvider);
+			return new PersistenceUnitItemContentProvider((IPersistenceUnit) item, treeContentProvider);	
 		}
 		else if (item instanceof IMappingFileRef) {
-			return new MappingFileRefItemContentProvider((IMappingFileRef) item, treeContentProvider);
+			return new MappingFileRefItemContentProvider((IMappingFileRef) item, treeContentProvider);	
 		}
 		else if (item instanceof IClassRef) {
-			return new ClassRefItemContentProvider((IClassRef) item, treeContentProvider);
+			return new ClassRefItemContentProvider((IClassRef) item, treeContentProvider);	
 		}
 		return null;
 	}
-
-
+	
+	
 	public static class PersistenceResourceModelItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public PersistenceResourceModelItemContentProvider(
-				PersistenceResourceModel persistenceResourceModel,
+				PersistenceResourceModel persistenceResourceModel, 
 				DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(persistenceResourceModel, contentProvider);
 		}
-
+		
 		@Override
 		public Object getParent() {
 			return null;
 		}
-
+		
 		@Override
-		protected ListValueModel buildChildrenModel() {
+		protected ListValueModel<IJpaContextNode> buildChildrenModel() {
 			return new ListAspectAdapter<PersistenceResourceModel, IJpaContextNode>(
 					IResourceModel.ROOT_CONTEXT_NODE_LIST, (PersistenceResourceModel) model()) {
 				@Override
@@ -75,27 +75,27 @@ public class PersistenceItemContentProviderFactory
 					return subject.rootContextNodes();
 				}
 			};
-		}
+		}	
 	}
-
-
+	
+	
 	public static class PersistenceItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public PersistenceItemContentProvider(
 				IPersistence persistence, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(persistence, contentProvider);
 		}
-
-
+		
+		
 		@Override
 		public Object getParent() {
-			// I'd like to return the resource model here, but that involves a hefty
+			// I'd like to return the resource model here, but that involves a hefty 
 			// API change - we'll see what happens with this code first
 			return null;
 		}
-
+		
 		@Override
-		protected ListValueModel buildChildrenModel() {
+		protected ListValueModel<IPersistenceUnit> buildChildrenModel() {
 			return new ListAspectAdapter<IPersistence, IPersistenceUnit>(
 					IPersistence.PERSISTENCE_UNITS_LIST, (IPersistence) model()) {
 				@Override
@@ -105,68 +105,68 @@ public class PersistenceItemContentProviderFactory
 			};
 		}
 	}
-
-
+	
+	
 	public static class PersistenceUnitItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public PersistenceUnitItemContentProvider(
 				IPersistenceUnit persistenceUnit, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(persistenceUnit, contentProvider);
 		}
-
+		
 		@Override
 		public Object getParent() {
 			return ((IPersistenceUnit) model()).persistence();
 		}
-
+		
 		@Override
+		@SuppressWarnings("unchecked")
 		protected ListValueModel buildChildrenModel() {
-			return new ListAspectAdapter<IPersistenceUnit, Object>(
+			return new ListAspectAdapter(
 					new String[] {IPersistenceUnit.MAPPING_FILE_REF_LIST, IPersistenceUnit.CLASS_REF_LIST},
 					(IPersistenceUnit) model()) {
 				@Override
-				@SuppressWarnings("unchecked")
 				protected ListIterator listIterator_() {
 					// stupid generics (mumble, mumble ...)
 					return new CompositeListIterator(
-						CollectionTools.list(subject.mappingFileRefs(), subject.classRefs()));
+						CollectionTools.list(((IPersistenceUnit) subject).mappingFileRefs(), ((IPersistenceUnit) subject).classRefs()));
 				}
 			};
 		}
 	}
-
-
+	
+	
 	public static class MappingFileRefItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public MappingFileRefItemContentProvider(
 				IMappingFileRef mappingFileRef, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(mappingFileRef, contentProvider);
 		}
-
+		
 		@Override
 		public Object getParent() {
 			return ((IMappingFileRef) model()).persistenceUnit();
 		}
-
+		
 		@Override
 		public boolean hasChildren() {
 			return false;
 		}
 	}
-
-
+	
+	
 	public static class ClassRefItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public ClassRefItemContentProvider(
 				IClassRef classRef, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(classRef, contentProvider);
 		}
-
+		
 		@Override
 		public Object getParent() {
 			return ((IClassRef) model()).persistenceUnit();
 		}
-
+		
 		@Override
 		public boolean hasChildren() {
 			return false;

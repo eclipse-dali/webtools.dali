@@ -1,11 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle.
- *  All rights reserved.  This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
+ *  Copyright (c) 2007 Oracle. 
+ *  All rights reserved.  This program and the accompanying materials 
+ *  are made available under the terms of the Eclipse Public License v1.0 
+ *  which accompanies this distribution, and is available at 
  *  http://www.eclipse.org/legal/epl-v10.html
- *
- *  Contributors:
+ *  
+ *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
@@ -25,7 +25,6 @@ import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 
 public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentProviderFactory
 {
-	@Override
 	public ITreeItemContentProvider buildItemContentProvider(
 			Object item, DelegatingContentAndLabelProvider contentProvider) {
 		DelegatingTreeContentAndLabelProvider treeContentProvider = (DelegatingTreeContentAndLabelProvider) contentProvider;
@@ -37,22 +36,22 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 		}
 		else return super.buildItemContentProvider(item, treeContentProvider);
 	}
-
-
+	
+	
 	public static class OrmResourceModelItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public OrmResourceModelItemContentProvider(
 				OrmResourceModel ormResourceModel, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(ormResourceModel, contentProvider);
 		}
-
+		
 		@Override
 		public Object getParent() {
 			return null;
 		}
-
+		
 		@Override
-		protected ListValueModel buildChildrenModel() {
+		protected ListValueModel<IJpaContextNode> buildChildrenModel() {
 			return new ListAspectAdapter<OrmResourceModel, IJpaContextNode>(
 					IResourceModel.ROOT_CONTEXT_NODE_LIST, (OrmResourceModel) model()) {
 				@Override
@@ -60,27 +59,27 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 					return subject.rootContextNodes();
 				}
 			};
-		}
+		}	
 	}
-
-
+	
+	
 	public static class EntityMappingsItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public EntityMappingsItemContentProvider(
 				EntityMappings entityMappings, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(entityMappings, contentProvider);
 		}
-
-
+		
+		
 		@Override
 		public Object getParent() {
-			// I'd like to return the resource model here, but that involves a hefty
+			// I'd like to return the resource model here, but that involves a hefty 
 			// API change - we'll see what happens with this code first
 			return null;
 		}
-
+		
 		@Override
-		protected ListValueModel buildChildrenModel() {
+		protected ListValueModel<XmlPersistentType> buildChildrenModel() {
 			return new ListAspectAdapter<EntityMappings, XmlPersistentType>(
 					EntityMappings.PERSISTENT_TYPES_LIST, (EntityMappings) model()) {
 				@Override
