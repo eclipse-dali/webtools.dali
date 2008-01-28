@@ -42,6 +42,7 @@ public abstract class JpaXmlResourceModel extends AbstractResourceModel
 		return new ReloadListener(resource);
 	}
 	
+	@Override
 	public JpaXmlResource resource() {
 		return this.resource;
 	}
@@ -58,6 +59,7 @@ public abstract class JpaXmlResourceModel extends AbstractResourceModel
 		resource().removeResourceModelChangeListener(listener);
 	}
 	
+	@Override
 	public void dispose() {
 		super.dispose();
 		this.artifactEdit.dispose();

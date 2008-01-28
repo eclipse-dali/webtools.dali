@@ -45,6 +45,7 @@ public class JavaResourceModel extends AbstractResourceModel
 		return JAVA_RESOURCE_TYPE;
 	}
 	
+	@Override
 	public JpaCompilationUnitResource resource() {
 		return this.compilationUnitResource;
 	}

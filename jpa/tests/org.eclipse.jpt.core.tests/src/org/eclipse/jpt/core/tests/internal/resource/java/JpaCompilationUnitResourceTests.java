@@ -64,7 +64,7 @@ public class JpaCompilationUnitResourceTests extends AnnotationTestCase {
 		IJpaProject jpaProject = ((TestJpaProject) this.javaProject).getJpaProject();
 		IJpaFile jpaFile = jpaProject.jpaFile((IFile) testCompilationUnit.getResource());
 		JavaResourceModel javaResourceModel = (JavaResourceModel) jpaFile.getResourceModel();
-		return javaResourceModel.getCompilationUnitResource();
+		return javaResourceModel.resource();
 	}
 	
 	public void testGetPersistentType() throws Exception {
