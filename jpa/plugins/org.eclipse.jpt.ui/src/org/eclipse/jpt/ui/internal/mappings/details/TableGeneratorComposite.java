@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import java.util.Iterator;
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
 import org.eclipse.jpt.db.internal.ConnectionListener;
@@ -19,14 +17,12 @@ import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -67,13 +63,13 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	/**
 	 * Creates a new <code>TableGeneratorComposite</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TableGeneratorComposite(BaseJpaController<? extends IIdMapping> parentController,
+	public TableGeneratorComposite(AbstractFormPane<? extends IIdMapping> parentPane,
 	                               Composite parent) {
 
-		super(parentController, parent);
+		super(parentPane, parent);
 	}
 
 	private ConnectionListener buildConnectionListener() {
@@ -271,72 +267,6 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		super.engageListeners();
 	}
 
-	@Override
-	protected void generatorChanged(Notification notification) {
-		super.generatorChanged(notification);
-		if (notification.getFeatureID(ITableGenerator.class) == JpaCoreMappingsPackage.ITABLE_GENERATOR__SPECIFIED_TABLE) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					String tableName = getGenerator().getSpecifiedTable();
-					if (tableName == null) {
-						tableNameCombo.select(0);
-					}
-					else if (!tableNameCombo.getText().equals(tableName)) {
-						tableNameCombo.setText(tableName);
-					}
-					populatePkColumnNameCombo();
-					populateValueColumnNameCombo();
-				}
-			});
-		}
-		else if (notification.getFeatureID(ITableGenerator.class) == JpaCoreMappingsPackage.ITABLE_GENERATOR__SPECIFIED_PK_COLUMN_NAME) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					populatePkColumnName();
-
-				}
-			});
-		}
-		else if (notification.getFeatureID(ITableGenerator.class) == JpaCoreMappingsPackage.ITABLE_GENERATOR__SPECIFIED_VALUE_COLUMN_NAME) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					String columnName = getGenerator().getSpecifiedValueColumnName();
-					if (columnName == null) {
-						valueColumnNameCombo.select(0);
-					}
-					else if (!valueColumnNameCombo.getText().equals(columnName)) {
-						valueColumnNameCombo.setText(columnName);
-					}
-				}
-			});
-		}
-		else if (notification.getFeatureID(ITableGenerator.class) == JpaCoreMappingsPackage.ITABLE_GENERATOR__SPECIFIED_PK_COLUMN_VALUE) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					String columnValue = getGenerator().getSpecifiedPkColumnValue();
-					if (columnValue == null) {
-						pkColumnValueCombo.select(0);
-					}
-					else if (!pkColumnValueCombo.getText().equals(columnValue)) {
-						pkColumnValueCombo.setText(columnValue);
-					}
-				}
-			});
-		}
-	}
-
 	/*
 	 * (non-Javadoc)
 	 */
@@ -347,7 +277,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 
 	protected Schema getSchema() {
 		if (getGenerator() != null) {
-			return this.getConnectionProfile().getDatabase().schemaNamed(getGenerator().getSchema());
+			return null;// this.getConnectionProfile().getDatabase().schemaNamed(getGenerator().getSchema());
 		}
 		return null;
 	}
@@ -413,28 +343,21 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	private void populatePkColumnChoices() {
 		this.pkColumnNameCombo.remove(1, this.pkColumnNameCombo.getItemCount() - 1);
 
-		if (this.getConnectionProfile().isConnected()) {
-			if (!this.tableNameCombo.getText().equals(JptUiMappingsMessages.TableGeneratorComposite_default)) { // hmm,
-				// if
-				// they
-				// actually
-				// set
-				// the
-				// table
-				// to
-				// Default??
-				String tableName = this.tableNameCombo.getText();
-				Schema schema = getSchema();
-				if (schema != null) {
-					Table table = schema.tableNamed(tableName);
-					if (table != null) {
-						for (Iterator<String> stream = CollectionTools.sort(table.columnNames()); stream.hasNext();) {
-							this.pkColumnNameCombo.add(stream.next());
-						}
-					}
-				}
-			}
-		}
+//		if (this.getConnectionProfile().isConnected()) {
+//			if (!this.tableNameCombo.getText().equals(JptUiMappingsMessages.TableGeneratorComposite_default)) { // hmm,
+//				// if they actually set the table to Default??
+//				String tableName = this.tableNameCombo.getText();
+//				Schema schema = getSchema();
+//				if (schema != null) {
+//					Table table = schema.tableNamed(tableName);
+//					if (table != null) {
+//						for (Iterator<String> stream = CollectionTools.sort(table.columnNames()); stream.hasNext();) {
+//							this.pkColumnNameCombo.add(stream.next());
+//						}
+//					}
+//				}
+//			}
+//		}
 	}
 
 	private void populatePkColumnName() {

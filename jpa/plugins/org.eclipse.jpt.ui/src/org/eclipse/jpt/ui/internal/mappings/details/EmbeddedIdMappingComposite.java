@@ -10,7 +10,8 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IEmbeddedIdMapping;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
+import org.eclipse.jpt.ui.internal.details.IJpaComposite;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -18,47 +19,27 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 /**
  * This pane does not have any widgets.
  *
- * @see ITransientMapping
- * @see BaseJpaUiFactory
+ * @see IEmbeddedIdMapping
+ * @see BaseJpaUiFactory - The factory creating this pane
  *
  * @version 2.0
  * @since 1.0
  */
-public class EmbeddedIdMappingComposite extends BaseJpaController<IEmbeddedIdMapping>
+public class EmbeddedIdMappingComposite extends AbstractFormPane<IEmbeddedIdMapping>
+                                        implements IJpaComposite<IEmbeddedIdMapping>
 {
 	/**
-	 * Creates a new <code>EmbeddedIdComposite</code>.
+	 * Creates a new <code>EmbeddedIdMappingComposite</code>.
 	 *
 	 * @param subjectHolder The holder of the subject <code>IEmbeddedIdMapping</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public EmbeddedIdMappingComposite(PropertyValueModel<? extends IEmbeddedIdMapping> subjectHolder,
-	                           Composite parent,
-	                           TabbedPropertySheetWidgetFactory widgetFactory) {
+	                                  Composite parent,
+	                                  TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void disengageListeners() {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	public void doPopulate() {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void engageListeners() {
 	}
 
 	/*

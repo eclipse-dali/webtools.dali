@@ -1,18 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
-
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.ui.internal.util;
 
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jpt.ui.internal.widgets.NullPostExecution;
+import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -26,6 +28,7 @@ import org.eclipse.ui.PlatformUI;
  * @version 2.0
  * @since 1.0
  */
+@SuppressWarnings("nls")
 public class SWTUtil {
 
 	/**
@@ -43,6 +46,35 @@ public class SWTUtil {
 	 */
 	public static void asyncExec(Runnable runnable) {
 		getStandardDisplay().asyncExec(runnable);
+	}
+
+	/**
+	 * Creates the <code>Runnable</code> that will invoke the given
+	 * <code>PostExecution</code> in order to its execution to be done in the
+	 * UI thread.
+	 *
+	 * @param dialog The dialog that was just diposed
+	 * @param postExecution The post execution once the dialog is disposed
+	 * @return The <code>Runnable</code> that will invoke
+	 * {@link PostExecution#execute(Dialog)}
+	 */
+	@SuppressWarnings("unchecked")
+	private static <D1 extends Dialog, D2 extends D1>
+		Runnable buildPostExecutionRunnable(
+			final D1 dialog,
+			final PostExecution<D2> postExecution) {
+
+		return new Runnable() {
+			public void run() {
+				setUserInterfaceActive(false);
+				try {
+					postExecution.execute((D2) dialog);
+				}
+				finally {
+					setUserInterfaceActive(true);
+				}
+			}
+		};
 	}
 
 	/**
@@ -88,7 +120,7 @@ public class SWTUtil {
 		return display;
 	}
 
-	public static int getTableHeightHint(Table table, int rows) {
+   public static int getTableHeightHint(Table table, int rows) {
 		if (table.getFont().equals(JFaceResources.getDefaultFont()))
 			table.setFont(JFaceResources.getDialogFont());
 		int result= table.getItemHeight() * rows + table.getHeaderHeight();
@@ -97,13 +129,79 @@ public class SWTUtil {
 		return result;
 	}
 
-   /**
+	/**
 	 * Returns the Platform UI workbench.
 	 *
 	 * @return The workbench for this plug-in
 	 */
 	public static IWorkbench getWorkbench() {
 		return PlatformUI.getWorkbench();
+	}
+
+	/**
+	 * Sets whether the entire shell and its widgets should be enabled or
+	 * everything should be unaccessible.
+	 *
+	 * @param active <code>true</code> to make all the UI active otherwise
+	 * <code>false</code> to deactivate it
+	 */
+	public static void setUserInterfaceActive(boolean active) {
+		Shell[] shells = getStandardDisplay().getShells();
+
+		for (Shell shell : shells) {
+			shell.setEnabled(active);
+		}
+	}
+
+	/**
+	 * Asynchronously launches the specified dialog in the UI thread.
+	 *
+	 * @param dialog The dialog to show on screen
+	 */
+	public static void show(Dialog dialog) {
+		show(dialog, NullPostExecution.<Dialog>instance());
+	}
+
+	/**
+	 * Asynchronously launches the specified dialog in the UI thread.
+	 *
+	 * @param dialog The dialog to show on screen
+	 * @param postExecution This interface let the caller to invoke a piece of
+	 * code once the dialog is disposed
+	 */
+	public static <D1 extends Dialog, D2 extends D1>
+		void show(final D1 dialog, final PostExecution<D2> postExecution) {
+
+		Assert.isNotNull(dialog,        "The dialog cannot be null");
+		Assert.isNotNull(postExecution, "The PostExecution cannot be null");
+
+		new Thread() {
+			@Override
+			public void run() {
+				asyncExec(
+					new Runnable() { public void run() {
+						showImp(dialog, postExecution);
+					}
+				}
+			);
+		}}.start();
+	}
+
+	/**
+	 * Asynchronously launches the specified dialog in the UI thread.
+	 *
+	 * @param dialog The dialog to show on screen
+	 * @param postExecution This interface let the caller to invoke a piece of
+	 * code once the dialog is disposed
+	 */
+	private static <D1 extends Dialog, D2 extends D1>
+		void showImp(D1 dialog, PostExecution<D2> postExecution) {
+
+		dialog.open();
+
+		if (postExecution != NullPostExecution.<D2>instance()) {
+			asyncExec(buildPostExecutionRunnable(dialog, postExecution));
+		}
 	}
 
 	/**

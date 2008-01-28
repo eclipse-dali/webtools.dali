@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,6 @@
 package org.eclipse.jpt.ui.internal.xml.details;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -27,9 +24,8 @@ import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
-import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
@@ -41,7 +37,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
@@ -51,30 +46,41 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 //TODO possibly help the user and if they have chosen a package at the entity-mappings level
 //only insert the class name in the xml file if they choose a class from the package.
 //Not sure if this should be driven by the UI or by ui api in the model
-public class XmlJavaClassChooser extends BaseJpaController<XmlPersistentType> {
+public class XmlJavaClassChooser extends AbstractFormPane<XmlPersistentType> {
 
-	private Adapter persistentTypeListener;
 	private Composite composite;
 	private Text text;
 	private JavaTypeCompletionProcessor javaTypeCompletionProcessor;
 
+	/**
+	 * Creates a new <code>XmlJavaClassChooser</code>.
+	 *
+	 * @param parentPane The parent controller of this one
+	 * @param parent The parent container
+	 */
+	public XmlJavaClassChooser(AbstractFormPane<? extends XmlPersistentType> parentPane,
+	                           Composite parent) {
+
+		super(parentPane, parent);
+	}
+
+	/**
+	 * Creates a new <code>XmlJavaClassChooser</code>.
+	 *
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public XmlJavaClassChooser(PropertyValueModel<? extends XmlPersistentType> subjectHolder,
 	                           Composite parent,
 	                           TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-		buildPersistentTypeListener();
 	}
 
-	private void buildPersistentTypeListener() {
-		persistentTypeListener = new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				persistentTypeChanged(notification);
-			}
-		};
-	}
-
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 		this.composite = getWidgetFactory().createComposite(container);
@@ -84,7 +90,7 @@ public class XmlJavaClassChooser extends BaseJpaController<XmlPersistentType> {
 	    gridLayout.numColumns = 2;
 	    this.composite.setLayout(gridLayout);
 
-		text = getWidgetFactory().createText(this.composite, "");
+		text = getWidgetFactory().createText(this.composite);
 		GridData data = new GridData();
 	    data.grabExcessHorizontalSpace = true;
 	    data.horizontalAlignment = GridData.FILL;
@@ -173,36 +179,9 @@ public class XmlJavaClassChooser extends BaseJpaController<XmlPersistentType> {
 		return null;
 	}
 
-	private void persistentTypeChanged(Notification notification) {
-		if (notification.getFeatureID(XmlPersistentType.class) ==
-				OrmPackage.XML_PERSISTENT_TYPE__CLASS) {
-			Display.getDefault().asyncExec(
-				new Runnable() {
-					public void run() {
-						populate();
-					}
-				});
-		}
-	}
-
-	@Override
-	protected void engageListeners() {
-		super.engageListeners();
-//		if (this.subject() != null) {
-//			this.subject().eAdapters().add(persistentTypeListener);
-//		}
-	}
-
-	@Override
-	protected void disengageListeners() {
-		super.disengageListeners();
-//		if (this.subject() != null) {
-//			this.subject().eAdapters().remove(persistentTypeListener);
-//		}
-	}
-
 	@Override
 	protected void doPopulate() {
+		super.doPopulate();
 		populateText();
 	}
 

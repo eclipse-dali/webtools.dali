@@ -23,9 +23,24 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class JavaPersistentAttributeDetailsPage
-	extends PersistentAttributeDetailsPage
+/**
+ * The default implementation of the details page used for the Java persistent
+ * attribute.
+ *
+ * @see IPersistentAttribute
+ *
+ * @version 2.0
+ * @since 2.0
+ */
+public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetailsPage
 {
+	/**
+	 * Creates a new <code>JavaPersistentAttributeDetailsPage</code>.
+	 *
+	 * @param subjectHolder The holder of the subject
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public JavaPersistentAttributeDetailsPage(PropertyValueModel<? extends IPersistentAttribute> subjectHolder,
 	                                          Composite parent,
 	                                          TabbedPropertySheetWidgetFactory widgetFactory) {
@@ -33,21 +48,13 @@ public class JavaPersistentAttributeDetailsPage
 		super(subjectHolder, parent, widgetFactory);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> attributeMappingUiProviders() {
 		// TODO
 		return ((BaseJpaPlatformUi) jpaPlatformUi()).javaAttributeMappingUiProviders();
-	}
-
-	protected IAttributeMappingUiProvider<IAttributeMapping> nullAttributeMappingUiProvider() {
-		return NullAttributeMappingUiProvider.instance();
-	}
-
-	@Override
-	protected ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> defaultAttributeMappingUiProviders() {
-		// TODO
-//		return jpaPlatformUi().defaultJavaAttributeMappingUiProviders();
-		return ((BaseJpaPlatformUi) jpaPlatformUi()).defaultJavaAttributeMappingUiProviders();
 	}
 
 	/**
@@ -68,6 +75,9 @@ public class JavaPersistentAttributeDetailsPage
 		return providers;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected IAttributeMappingUiProvider<? extends IAttributeMapping> defaultAttributeMappingUiProvider(String key) {
 		for (ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> i = defaultAttributeMappingUiProviders(); i.hasNext(); ) {
@@ -79,6 +89,19 @@ public class JavaPersistentAttributeDetailsPage
 		return this.nullAttributeMappingUiProvider();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> defaultAttributeMappingUiProviders() {
+		// TODO
+//		return jpaPlatformUi().defaultJavaAttributeMappingUiProviders();
+		return ((BaseJpaPlatformUi) jpaPlatformUi()).defaultJavaAttributeMappingUiProviders();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -97,5 +120,9 @@ public class JavaPersistentAttributeDetailsPage
 		gridData.grabExcessVerticalSpace   = true;
 
 		mappingPane.setLayoutData(gridData);
+	}
+
+	protected IAttributeMappingUiProvider<IAttributeMapping> nullAttributeMappingUiProvider() {
+		return NullAttributeMappingUiProvider.instance();
 	}
 }

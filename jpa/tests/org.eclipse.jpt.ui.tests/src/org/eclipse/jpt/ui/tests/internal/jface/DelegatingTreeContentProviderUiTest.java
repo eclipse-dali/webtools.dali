@@ -1,11 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2008 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
+ *  Copyright (c) 2008 Oracle.
+ *  All rights reserved.  This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
  *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
+ *
+ *  Contributors:
  *  	Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.ui.tests.internal.jface;
@@ -63,16 +63,16 @@ import org.eclipse.swt.widgets.Text;
 public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 {
 	private final Root root;
-	
+
 	private WritablePropertyValueModel<TreeNode> selectedNode;
-	
+
 	private TreeViewer controlTree;
-	
+
 	private TreeViewer viewTree;
-	
+
 	private Text nodeNameText;
-	
-	
+
+
 	public static void main(String[] args) {
 		Window window = new DelegatingTreeContentProviderUiTest(args);
 		window.setBlockOnOpen(true);
@@ -80,14 +80,14 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		Display.getCurrent().dispose();
 		System.exit(0);
 	}
-	
+
 	private DelegatingTreeContentProviderUiTest(String[] args) {
 		super(null);
 		this.root = new Root();
 		this.root.addChild("Parent_1");
 		this.selectedNode = new SimplePropertyValueModel<TreeNode>(this.root);
 	}
-	
+
 	@Override
 	protected Control createContents(Composite parent) {
 		((Shell) parent).setText(ClassTools.shortClassNameForObject(this));
@@ -100,7 +100,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		buildControlPanel(mainPanel);
 		return mainPanel;
 	}
-	
+
 	private void buildTreePanel(Composite parent) {
 		Composite panel = new Composite(parent, SWT.NONE);
 		panel.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -108,11 +108,11 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		buildControlTreePanel(panel);
 		buildViewTreePanel(panel);
 	}
-	
+
 	private void buildControlTreePanel(Composite parent) {
 		controlTree = buildTreePanel(
-				parent, "Control tree", 
-				new DelegatingTreeContentAndLabelProvider(new ControlTreeItemContentProviderFactory()), 
+				parent, "Control tree",
+				new DelegatingTreeContentAndLabelProvider(new ControlTreeItemContentProviderFactory()),
 				new LabelProvider());
 		controlTree.addSelectionChangedListener(buildTreeSelectionChangedListener());
 		selectedNode.addPropertyChangeListener(
@@ -124,32 +124,32 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 				}
 			);
 	}
-	
+
 	private void buildViewTreePanel(Composite parent) {
 		viewTree = buildTreePanel(
-				parent, "View tree", 
-				new DelegatingTreeContentAndLabelProvider(new ViewTreeItemContentProviderFactory()), 
+				parent, "View tree",
+				new DelegatingTreeContentAndLabelProvider(new ViewTreeItemContentProviderFactory()),
 				new LabelProvider());
 	}
-	
+
 	private TreeViewer buildTreePanel(Composite parent, String labelText, ITreeContentProvider contentProvider, ILabelProvider labelProvider) {
 		Composite panel = new Composite(parent, SWT.NONE);
 		panel.setLayoutData(new GridData(GridData.FILL_BOTH));
 		panel.setLayout(new GridLayout());
-		
+
 		Label label = new Label(panel, SWT.LEFT);
 		label.setLayoutData(new GridData(GridData.BEGINNING, GridData.CENTER, false, false));
 		label.setText(labelText);
-		
+
 		final TreeViewer tree = new TreeViewer(panel, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		tree.getTree().setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 		tree.setContentProvider(contentProvider);
 		tree.setLabelProvider(labelProvider);
 		tree.setInput(root);
-		
+
 		return tree;
 	}
-	
+
 	private ISelectionChangedListener buildTreeSelectionChangedListener() {
 		return new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -158,7 +158,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 			}
 		};
 	}
-	
+
 	private void buildControlPanel(Composite parent) {
 		Composite panel = new Composite(parent, SWT.NONE);
 		panel.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
@@ -170,12 +170,12 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		buildClearModelACI().fill(panel);
 		buildRestoreModelACI().fill(panel);
 	}
-	
+
 	private void buildNodeNameText(Composite parent) {
 		nodeNameText = new Text(parent, SWT.SINGLE | SWT.BORDER);
 		nodeNameText.setLayoutData(new GridData(GridData.FILL, GridData.CENTER, true, false));
 	}
-	
+
 	private ActionContributionItem buildAddChildACI() {
 		final Action action = new Action("Add child", IAction.AS_PUSH_BUTTON) {
 			@Override
@@ -185,7 +185,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		};
 		action.setToolTipText("Add a child with the given name");
 		selectedNode.addPropertyChangeListener(
-				PropertyValueModel.VALUE, 
+				PropertyValueModel.VALUE,
 				new PropertyChangeListener() {
 					public void propertyChanged(PropertyChangeEvent event) {
 						action.setEnabled(((TreeNode) event.newValue()).canHaveChildren());
@@ -205,7 +205,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		action.setToolTipText("Add a nested child with the given name");
 		action.setEnabled(false);
 		selectedNode.addPropertyChangeListener(
-				PropertyValueModel.VALUE, 
+				PropertyValueModel.VALUE,
 				new PropertyChangeListener() {
 					public void propertyChanged(PropertyChangeEvent event) {
 						action.setEnabled(((TreeNode) event.newValue()).canHaveNestedChildren());
@@ -214,7 +214,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 			);
 		return new ActionContributionItem(action);
 	}
-	
+
 	private ActionContributionItem buildRemoveACI() {
 		final Action action = new Action("Remove", IAction.AS_PUSH_BUTTON) {
 			@Override
@@ -225,7 +225,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		action.setToolTipText("Remove the selected node");
 		action.setEnabled(false);
 		selectedNode.addPropertyChangeListener(
-				PropertyValueModel.VALUE, 
+				PropertyValueModel.VALUE,
 				new PropertyChangeListener() {
 					public void propertyChanged(PropertyChangeEvent event) {
 						action.setEnabled(event.newValue() != root);
@@ -234,7 +234,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 			);
 		return new ActionContributionItem(action);
 	}
-	
+
 	private ActionContributionItem buildClearModelACI() {
 		Action action = new Action("Clear model", IAction.AS_PUSH_BUTTON) {
 			@Override
@@ -245,7 +245,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		action.setToolTipText("Clear the model");
 		return new ActionContributionItem(action);
 	}
-	
+
 	private ActionContributionItem buildRestoreModelACI() {
 		Action action = new Action("Restore model", IAction.AS_PUSH_BUTTON) {
 			@Override
@@ -256,26 +256,26 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		action.setToolTipText("Restore the model");
 		return new ActionContributionItem(action);
 	}
-	
+
 	void addChild() {
 		String nodeName = nodeNameText.getText();
 		if (nodeName.length() != 0) {
 			selectedNode.value().addChild(nodeName);
 		}
 	}
-	
+
 	void addNestedChild() {
 		String nodeName = nodeNameText.getText();
 		if (nodeName.length() != 0) {
 			selectedNode.value().addNestedChild(nodeName);
 		}
 	}
-	
+
 	void remove() {
 		TreeNode node = selectedNode.value();
 		node.parent().removeChild(node);
 	}
-	
+
 	void clearModel() {
 		controlTree.setInput(null);
 		viewTree.setInput(null);
@@ -285,8 +285,8 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		controlTree.setInput(root);
 		viewTree.setInput(root);
 	}
-	
-	
+
+
 	private static abstract class TreeItemContentProviderFactory
 		implements ITreeItemContentProviderFactory
 	{
@@ -296,14 +296,14 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 				(TreeNode) item, (DelegatingTreeContentAndLabelProvider) contentAndLabelProvider);
 		}
 	}
-	
-	
+
+
 	private static class ControlTreeItemContentProviderFactory extends TreeItemContentProviderFactory
 	{
-		
+
 	}
-	
-	
+
+
 	private static class ViewTreeItemContentProviderFactory
 		extends TreeItemContentProviderFactory
 	{
@@ -317,27 +317,27 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 			return super.buildItemContentProvider(item, contentAndLabelProvider);
 		}
 	}
-	
-	
+
+
 	private static class GenericTreeItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public GenericTreeItemContentProvider(
 				TreeNode treeNode, DelegatingTreeContentAndLabelProvider treeContentAndLabelProvider) {
 			super(treeNode, treeContentAndLabelProvider);
 		}
-		
+
 		protected TreeNode treeNode() {
 			return (TreeNode) model();
 		}
-		
+
 		@Override
 		public TreeNode getParent() {
 			return treeNode().parent();
 		}
-		
+
 		@Override
 		protected ListValueModel buildChildrenModel() {
-			return new ListAspectAdapter<TreeNode>(TreeNode.CHILDREN_LIST, treeNode()) {
+			return new ListAspectAdapter<TreeNode, TreeNode>(TreeNode.CHILDREN_LIST, treeNode()) {
 				@Override
 				protected ListIterator<TreeNode> listIterator_() {
 					return treeNode().children();
@@ -345,14 +345,14 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 			};
 		}
 	}
-	
+
 	private static class ViewTreeParentItemContentProvider extends GenericTreeItemContentProvider
 	{
 		public ViewTreeParentItemContentProvider(
 				TreeNode treeNode, DelegatingTreeContentAndLabelProvider treeContentAndLabelProvider) {
 			super(treeNode, treeContentAndLabelProvider);
 		}
-		
+
 		@Override
 		public TreeNode getParent() {
 			TreeNode parent = super.getParent();
@@ -361,7 +361,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 			}
 			return parent;
 		}
-		
+
 		@Override
 		protected ListValueModel buildChildrenModel() {
 			return buildChildrenModel(
@@ -371,7 +371,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 							if (value instanceof Nest) {
 								final Nest nest = (Nest) value;
 								return new ListCollectionValueModelAdapter(
-										new ListAspectAdapter<TreeNode>(TreeNode.CHILDREN_LIST, nest) {
+										new ListAspectAdapter<TreeNode, TreeNode>(TreeNode.CHILDREN_LIST, nest) {
 											@Override
 											protected ListIterator<TreeNode> listIterator_() {
 												return nest.children();
@@ -387,137 +387,137 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 				);
 		}
 	}
-	
-	
+
+
 	private static class LabelProvider extends BaseLabelProvider
 		implements ILabelProvider
 	{
 		public Image getImage(Object element) {
 			return null;
 		}
-		
+
 		public String getText(Object element) {
 			return ((TreeNode) element).getName();
 		}
 	}
-	
-	
+
+
 	private static abstract class TreeNode extends AbstractModel
 	{
 		private TreeNode parent;
-		
+
 		protected final List<TreeNode> children;
 		public final static String CHILDREN_LIST = "children";
-		
+
 		protected String name;
 		public final static String NAME_PROPERTY = "name";
-		
-		
+
+
 		public TreeNode(TreeNode parent, String name) {
 			this.parent = parent;
 			this.children = new ArrayList<TreeNode>();
 			this.name = name;
 		}
-		
+
 		public TreeNode parent() {
 			return parent;
 		}
-		
+
 		public ListIterator<TreeNode> children() {
 			return new ReadOnlyListIterator<TreeNode>(children);
 		}
-		
+
 		protected void addChild(TreeNode child) {
 			addItemToList(child, children, CHILDREN_LIST);
 		}
-		
+
 		public void removeChild(TreeNode child) {
 			removeItemFromList(child, children, CHILDREN_LIST);
 		}
-		
+
 		public void removeChild(int index) {
 			removeItemFromList(index, children, CHILDREN_LIST);
 		}
-		
+
 		public String getName() {
 			return name;
 		}
-		
+
 		public void setName(String newName) {
 			String oldName = name;
 			name = newName;
 			firePropertyChanged(NAME_PROPERTY, oldName, newName);
 		}
-		
+
 		public boolean canHaveChildren() {
 			return false;
 		}
-		
+
 		public void addChild(String name) {
 			throw new UnsupportedOperationException();
 		}
-		
+
 		public boolean canHaveNestedChildren() {
 			return false;
 		}
-		
+
 		public void addNestedChild(String name) {
 			throw new UnsupportedOperationException();
 		}
-		
+
 		@Override
 		public void toString(StringBuilder sb) {
 			sb.append(getName());
 		}
 	}
-	
-	
+
+
 	private static class Root extends TreeNode
 	{
 		public Root() {
 			super(null, null);
 		}
-		
+
 		@Override
 		public boolean canHaveChildren() {
 			return true;
 		}
-		
+
 		@Override
 		public void addChild(String name) {
 			addChild(new Parent(this, name));
 		}
 	}
-	
-	
+
+
 	private static class Parent extends TreeNode
 	{
 		public Parent(TreeNode parent, String name) {
 			super(parent, name);
 		}
-		
+
 		@Override
 		public boolean canHaveChildren() {
 			return true;
 		}
-		
+
 		@Override
 		public void addChild(String name) {
 			addChild(new Child(this, name));
 		}
-		
+
 		@Override
 		public boolean canHaveNestedChildren() {
 			return true;
 		}
-		
+
 		@Override
 		public void addNestedChild(String name) {
 			TreeNode nest = new Nest(this);
 			addChild(nest);
 			nest.addChild(name);
 		}
-		
+
 		public Iterator<Child> nestlessChildren() {
 			return new FilteringIterator<Child>(
 					new TransformationIterator<TreeNode, Child>(children()) {
@@ -536,31 +536,31 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 			};
 		}
 	}
-	
-	
+
+
 	private static class Nest extends TreeNode
 	{
 		public Nest(TreeNode parent) {
 			super(parent, "nest");
 		}
-		
+
 		@Override
 		public boolean canHaveChildren() {
 			return children.size() == 0;
 		}
-		
+
 		@Override
 		public void addChild(String name) {
 			addChild(new Child(this, name));
 		}
-		
+
 		/* can only have one child */
 		public Child child() {
 			return (children.isEmpty()) ? null : (Child) children.get(0);
 		}
 	}
-	
-	
+
+
 	private static class Child extends TreeNode
 	{
 		public Child(TreeNode parent, String name) {

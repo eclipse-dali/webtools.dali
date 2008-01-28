@@ -11,8 +11,8 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Arrays;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
@@ -34,20 +34,30 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class EntityNameCombo extends BaseJpaController<IEntity>
+public class EntityNameCombo extends AbstractFormPane<IEntity>
 {
 	private CCombo combo;
 
 	/**
 	 * Creates a new <code>EntityNameCombo</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public EntityNameCombo(BaseJpaController<? extends IEntity> parentController,
+	public EntityNameCombo(AbstractFormPane<? extends IEntity> parentPane,
 	                       Composite parent) {
 
-		super(parentController, parent);
+		super(parentPane, parent);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void addPropertyNames(java.util.Collection<String> propertyNames) {
+		super.addPropertyNames(propertyNames);
+		propertyNames.add(IEntity.DEFAULT_NAME_PROPERTY);
+		propertyNames.add(IEntity.SPECIFIED_NAME_PROPERTY);
 	}
 
 	private ModifyListener buildComboModifyListener() {
@@ -119,17 +129,6 @@ public class EntityNameCombo extends BaseJpaController<IEntity>
 
 			populateCombo();
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected String[] propertyNames() {
-		return new String[] {
-			IEntity.DEFAULT_NAME_PROPERTY,
-			IEntity.SPECIFIED_NAME_PROPERTY
-		};
 	}
 
 	private void setComboData(String text, String[] items) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,7 @@
 package org.eclipse.jpt.ui.internal.xml.details;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -24,13 +22,11 @@ import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
-import org.eclipse.jpt.core.internal.resource.orm.EntityMappings;
+import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -43,34 +39,33 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SelectionDialog;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class XmlPackageChooser extends BaseJpaController
+/**
+ *
+ * @version 2.0
+ * @since 2.0
+ */
+public class XmlPackageChooser extends AbstractFormPane<EntityMappings>
 {
-	private EntityMappingsInternal entityMappings;
-	private Adapter entityMappingsListener;
 	private IContentAssistProcessor contentAssistProcessor;
 	private Composite composite;
 	private Text text;
 
-	public XmlPackageChooser(PropertyValueModel<?> subjectHolder,
-	                         Composite parent,
-	                         TabbedPropertySheetWidgetFactory widgetFactory) {
+	/**
+	 * Creates a new <code>XmlPackageChooser</code>.
+	 *
+	 * @param parentPane The parent controller of this one
+	 * @param parent The parent container
+	 */
+	public XmlPackageChooser(AbstractFormPane<? extends EntityMappings> parentPane,
+	                         Composite parent) {
 
-		super(subjectHolder, parent, widgetFactory);
-		buildSchemaHolderListener();
+		super(parentPane, parent);
 	}
 
-
-	private void buildSchemaHolderListener() {
-		this.entityMappingsListener = new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				entityMappingsChanged(notification);
-			}
-		};
-	}
-
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 		this.composite = getWidgetFactory().createComposite(container);
@@ -79,7 +74,7 @@ public class XmlPackageChooser extends BaseJpaController
 		gridLayout.marginWidth = 1;
 		gridLayout.numColumns = 2;
 		this.composite.setLayout(gridLayout);
-		this.text = getWidgetFactory().createText(this.composite, "");
+		this.text = getWidgetFactory().createText(this.composite);
 		GridData data = new GridData();
 		data.grabExcessHorizontalSpace = true;
 		data.horizontalAlignment = GridData.FILL;
@@ -177,7 +172,7 @@ public class XmlPackageChooser extends BaseJpaController
 	}
 
 	private IPackageFragmentRoot getPackageFragmentRoot() {
-		IProject project = ((JpaEObject) this.subject()).jpaProject().project();
+		IProject project = subject().jpaProject().project();
 		IJavaProject root = JavaCore.create(project);
 		try {
 			return root.getAllPackageFragmentRoots()[0];

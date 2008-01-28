@@ -14,9 +14,9 @@ import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -34,7 +34,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 2.0
  */
-public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends BaseJpaController<T>
+public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends AbstractFormPane<T>
 {
 	private CCombo combo;
 	private ConnectionListener connectionListener;
@@ -42,13 +42,13 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ba
 	/**
 	 * Creates a new <code>AbstractDatabaseObjectCombo</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	protected AbstractDatabaseObjectCombo(BaseJpaController<? extends T> parentController,
+	protected AbstractDatabaseObjectCombo(AbstractFormPane<? extends T> parentPane,
 	                                      Composite parent) {
 
-		super(parentController, parent);
+		super(parentPane, parent);
 	}
 
 	/**
@@ -166,8 +166,6 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ba
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		container = fixBorderNotPainted(container);
-
 		this.combo = this.buildCombo(container);
 		this.combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
 		this.combo.addModifyListener(this.buildModifyListener());
@@ -186,7 +184,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ba
 	 * (non-Javadoc)
 	 */
 	@Override
-	public void disengageListeners() {
+	protected void disengageListeners() {
 		super.disengageListeners();
 		this.removeConnectionListener(this.subject());
 	}
@@ -207,7 +205,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ba
 	 * (non-Javadoc)
 	 */
 	@Override
-	public void engageListeners() {
+	protected void engageListeners() {
 		super.engageListeners();
 		this.addConnectionListener(this.subject());
 	}

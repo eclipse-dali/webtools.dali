@@ -10,12 +10,11 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * Here the layout of this pane:
@@ -43,7 +42,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class TableComposite extends BaseJpaController<ITable>
+public class TableComposite extends AbstractFormPane<ITable>
 {
 	/**
 	 * Creates a new <code>TableComposite</code>.
@@ -54,7 +53,7 @@ public class TableComposite extends BaseJpaController<ITable>
 	 */
 	public TableComposite(PropertyValueModel<? extends ITable> subjectHolder,
 	                      Composite parent,
-	                      TabbedPropertySheetWidgetFactory widgetFactory) {
+	                      IWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
@@ -62,15 +61,15 @@ public class TableComposite extends BaseJpaController<ITable>
 	/**
 	 * Creates a new <code>TableComposite</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of the subject
 	 * @param parent The parent container
 	 */
-	public TableComposite(BaseJpaController<?> parentController,
+	public TableComposite(AbstractFormPane<?> parentPane,
 	                      PropertyValueModel<? extends ITable> subjectHolder,
 	                      Composite parent) {
 
-		super(parentController, subjectHolder, parent);
+		super(parentPane, subjectHolder, parent);
 	}
 
 	/*
@@ -94,8 +93,6 @@ public class TableComposite extends BaseJpaController<ITable>
 			IJpaHelpContextIds.ENTITY_TABLE
 		);
 
-		registerSubPane(tableCombo);
-
 		// Catalog widgets
 		CatalogCombo catalogCombo = new CatalogCombo(this, columnGroup);
 
@@ -106,8 +103,6 @@ public class TableComposite extends BaseJpaController<ITable>
 			IJpaHelpContextIds.ENTITY_CATALOG
 		);
 
-		registerSubPane(catalogCombo);
-
 		// Schema widgets
 		SchemaCombo schemaCombo = new SchemaCombo(this, columnGroup);
 
@@ -117,7 +112,5 @@ public class TableComposite extends BaseJpaController<ITable>
 			schemaCombo.getControl(),
 			IJpaHelpContextIds.ENTITY_SCHEMA
 		);
-
-		registerSubPane(schemaCombo);
 	}
 }

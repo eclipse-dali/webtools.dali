@@ -14,10 +14,10 @@ import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.AbstractDatabaseObjectCombo;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -54,13 +54,13 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 	/**
 	 * Creates a new <code>SequenceGeneratorComposite</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public SequenceGeneratorComposite(BaseJpaController<? extends IIdMapping> parentController,
+	public SequenceGeneratorComposite(AbstractFormPane<? extends IIdMapping> parentPane,
 	                                  Composite parent) {
 
-		super(parentController, parent);
+		super(parentPane, parent);
 	}
 
 	/*
@@ -72,7 +72,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 	}
 
 	private AbstractDatabaseObjectCombo<IIdMapping> buildSequenceNameCombo(Composite parent) {
-		return new AbstractDatabaseObjectCombo<IIdMapping>(getSubjectHolder(), parent, getWidgetFactory()) {
+		return new AbstractDatabaseObjectCombo<IIdMapping>(this, parent) {
 			@Override
 			protected void initializeLayout(Composite container) {
 				super.initializeLayout(container);

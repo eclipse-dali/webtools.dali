@@ -13,42 +13,50 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.XmlTypeMapping;
-import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.details.PersistentTypeDetailsPage;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.EmbeddableUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.EntityUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.MappedSuperclassUiProvider;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
-import org.eclipse.jpt.ui.internal.xml.details.AccessTypeComposite.AccessHolder;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
+/**
+ * The default implementation of the details page used for the XML persistent
+ * attribute.
+ *
+ * @see XmlPersistentType
+ *
+ * @version 2.0
+ * @since 2.0
+ */
 public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlPersistentType>
 {
-	private AccessTypeComposite accessComboViewer;
-
-	private XmlJavaClassChooser javaClassChooser;
-
-	private MetaDataCompleteComboViewer metadataCompleteComboViewer;
-
-	//Storing these here instead of querying IJpaPlatformUI, because the orm.xml schema
-	//is not extensible.  We only need to support extensibility for java
+	/**
+	 * Storing these here instead of querying IJpaPlatformUI, because the orm.xml
+	 * schema is not extensible. We only need to support extensibility for java.
+	 */
 	private List<ITypeMappingUiProvider<? extends ITypeMapping>> xmlTypeMappingUiProviders;
 
+	/**
+	 * Creates a new <code>XmlPersistentTypeDetailsPage</code>.
+	 *
+	 * @param subjectHolder The holder of the subject
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public XmlPersistentTypeDetailsPage(PropertyValueModel<? extends XmlPersistentType> subjectHolder,
 	                                    Composite parent,
 	                                    TabbedPropertySheetWidgetFactory widgetFactory) {
@@ -62,89 +70,68 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlP
 		providers.add(EmbeddableUiProvider.instance());
 	}
 
-	private Label buildMetadataCompleteLabel(Composite parent ) {
-		return getWidgetFactory().createLabel(parent, JptUiXmlMessages.PersistentTypePage_MetadataCompleteLabel);
-	}
-
-	@Override
-	public void dispose() {
-		this.javaClassChooser.dispose();
-		this.metadataCompleteComboViewer.dispose();
-		this.accessComboViewer.dispose();
-		super.dispose();
-	}
-
-	@Override
-	protected void doPopulate() {
-		super.doPopulate();
-
-		this.javaClassChooser.populate();
-		this.metadataCompleteComboViewer.populate();
-		this.accessComboViewer.populate();
-	}
-
-	@Override
-	protected void initializeLayout(Composite composite) {
-		composite.setLayout(new GridLayout(2, false));
-
-		GridData gridData;
-
-		CommonWidgets.buildJavaClassLabel(composite, getWidgetFactory());
-
-		this.javaClassChooser = CommonWidgets.buildJavaClassChooser(composite, getWidgetFactory());
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		this.javaClassChooser.getControl().setLayoutData(gridData);
-
-		buildTypeMappingLabel(composite);
-
-		ComboViewer typeMappingCombo = buildTypeMappingCombo(composite);
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		typeMappingCombo.getCombo().setLayoutData(gridData);
-
-		buildMetadataCompleteLabel(composite);
-		this.metadataCompleteComboViewer = new MetaDataCompleteComboViewer(composite, getWidgetFactory());
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		this.metadataCompleteComboViewer.getControl().setLayoutData(gridData);
-
-		CommonWidgets.buildAccessLabel(composite, getWidgetFactory());
-		this.accessComboViewer = CommonWidgets.buildAccessTypeComboViewer(buildAccessTypeHolder(), composite, getWidgetFactory());
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		this.accessComboViewer.getControl().setLayoutData(gridData);
-
-		PageBook typeMappingPageBook = buildTypeMappingPageBook(composite);
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalSpan = 2;
-		typeMappingPageBook.setLayoutData(gridData);
-	}
-
-	private PropertyValueModel<? extends AccessTypeComposite.AccessHolder<XmlTypeMapping<? extends TypeMapping>>> buildAccessTypeHolder() {
-		return new TransformationPropertyValueModel<XmlPersistentType, AccessTypeComposite.AccessHolder<XmlTypeMapping<? extends TypeMapping>>>(
-			getSubjectHolder()) {
-
+	private PropertyValueModel<XmlTypeMapping<? extends TypeMapping>> buildMappingHolder() {
+		return new TransformationPropertyValueModel<XmlPersistentType, XmlTypeMapping<? extends TypeMapping>>(getSubjectHolder()) {
 			@Override
-			protected AccessHolder<XmlTypeMapping<? extends TypeMapping>> transform(XmlPersistentType value) {
-				XmlTypeMapping<? extends TypeMapping> mapping = subject().getMapping();
-				return new MyAccessHolder(mapping);
+			protected XmlTypeMapping<? extends TypeMapping> transform_(XmlPersistentType value) {
+				return value.getMapping();
 			}
 		};
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void initializeLayout(Composite container) {
+
+		// Java class widgets
+		XmlJavaClassChooser xmlJavaClassChooser =
+			new XmlJavaClassChooser(this, container);
+
+		buildLabeledComposite(
+			container,
+			JptUiXmlMessages.PersistentTypePage_javaClassLabel,
+			xmlJavaClassChooser.getControl()
+		);
+
+		// Type Mapping widgets
+		ComboViewer typeMappingCombo = buildTypeMappingCombo(container);
+
+		buildLabeledComposite(
+			container,
+			JptUiMessages.PersistentTypePage_mapAs,
+			typeMappingCombo.getControl()
+		);
+
+		// Metadata complete widget
+		MetaDataCompleteComboViewer metadataCompleteComboViewer =
+			new MetaDataCompleteComboViewer(this, buildMappingHolder(), container);
+
+		buildLabeledComposite(
+			container,
+			JptUiXmlMessages.PersistentTypePage_MetadataCompleteLabel,
+			metadataCompleteComboViewer.getControl()
+		);
+
+		// Access widgets
+		new AccessTypeComposite(this, buildMappingHolder(), container);
+
+		// Type mapping pane
+		PageBook typeMappingPageBook = buildTypeMappingPageBook(container);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment       = SWT.FILL;
+		gridData.verticalAlignment         = SWT.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace   = true;
+
+		typeMappingPageBook.setLayoutData(gridData);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	public ListIterator<ITypeMappingUiProvider<? extends ITypeMapping>> typeMappingUiProviders() {
 		if (this.xmlTypeMappingUiProviders == null) {
@@ -152,33 +139,5 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlP
 			this.addXmlTypeMappingUiProvidersTo(this.xmlTypeMappingUiProviders);
 		}
 		return new CloneListIterator<ITypeMappingUiProvider<? extends ITypeMapping>>(this.xmlTypeMappingUiProviders);
-	}
-
-	private class MyAccessHolder implements AccessHolder<XmlTypeMapping<? extends TypeMapping>> {
-
-		private XmlTypeMapping<? extends TypeMapping> xmlTypeMapping;
-		MyAccessHolder(XmlTypeMapping<? extends TypeMapping> xmlTypeMapping) {
-			super();
-			this.xmlTypeMapping = xmlTypeMapping;
-		}
-		public Class<XmlTypeMapping> featureClass() {
-			return XmlTypeMapping.class;
-		}
-
-		public int featureId() {
-			return OrmPackage.XML_TYPE_MAPPING__SPECIFIED_ACCESS;
-		}
-
-		public AccessType getAccess() {
-			return xmlTypeMapping.getSpecifiedAccess();
-		}
-
-		public void setAccess(AccessType accessType) {
-			xmlTypeMapping.setSpecifiedAccess(accessType);
-		}
-
-		public XmlTypeMapping<? extends TypeMapping> wrappedObject() {
-			return this.xmlTypeMapping;
-		}
 	}
 }

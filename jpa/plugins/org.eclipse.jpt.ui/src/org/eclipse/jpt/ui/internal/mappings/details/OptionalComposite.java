@@ -10,12 +10,8 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.INullable;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.swt.TriStateBooleanButtonModelAdapter;
-import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
-import org.eclipse.jpt.ui.internal.util.LabeledTableItem;
-import org.eclipse.jpt.ui.internal.widgets.TriStateCheckBox;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -28,24 +24,24 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see IBasicMapping
  * @see BasicMappingComposite - A container of this pane
+ * @see ManyToOneMappingComposite - A container of this pane
+ * @see OneToOneMappingComposite - A container of this pane
  *
  * @version 1.0
  * @since 2.0
  */
-public class OptionalComposite extends BaseJpaController<INullable>
+public class OptionalComposite extends AbstractFormPane<INullable>
 {
-	private TriStateCheckBox optionalCheckBox;
-
 	/**
 	 * Creates a new <code>OptionalComposite</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OptionalComposite(BaseJpaController<? extends INullable> parentComposite,
+	public OptionalComposite(AbstractFormPane<? extends INullable> parentPane,
 	                         Composite parent)
 	{
-		super(parentComposite, parent);
+		super(parentPane, parent);
 	}
 
 	private WritablePropertyValueModel<Boolean> buildOptionalHolder() {
@@ -54,6 +50,7 @@ public class OptionalComposite extends BaseJpaController<INullable>
 			protected Boolean buildValue_() {
 				return subject.getSpecifiedOptional();
 			}
+
 			@Override
 			protected void setValue_(Boolean value) {
 				subject.setSpecifiedOptional(value);
@@ -63,17 +60,24 @@ public class OptionalComposite extends BaseJpaController<INullable>
 
 	private PropertyValueModel<String> buildOptionalStringHolder() {
 
-		return new TransformationPropertyValueModel<Boolean, String>(this.buildOptionalHolder()) {
+		return new TransformationPropertyValueModel<Boolean, String>(buildOptionalHolder()) {
 
 			@Override
 			protected String transform(Boolean value) {
 
 				if ((subject() != null) && (value == null)) {
+
 					Boolean defaultValue = subject().getDefaultOptional();
 
 					if (defaultValue != null) {
-						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
-						return NLS.bind(JptUiMappingsMessages.BasicGeneralSection_optionalLabelDefault, defaultStringValue);
+
+						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+						                                           JptUiMappingsMessages.Boolean_False;
+
+						return NLS.bind(
+							JptUiMappingsMessages.BasicGeneralSection_optionalLabelDefault,
+							defaultStringValue
+						);
 					}
 				}
 
@@ -88,22 +92,12 @@ public class OptionalComposite extends BaseJpaController<INullable>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		optionalCheckBox = new TriStateCheckBox(container);
-		optionalCheckBox.setText(JptUiMappingsMessages.BasicGeneralSection_optionalLabel);
-
-		installLabeledControlUpdater(optionalCheckBox);
-		helpSystem().setHelp(optionalCheckBox.getControl(), IJpaHelpContextIds.MAPPING_OPTIONAL);
-
-		TriStateBooleanButtonModelAdapter.adapt(
+		buildTriStateCheckBoxWithDefault(
+			container,
+			JptUiMappingsMessages.BasicGeneralSection_optionalLabel,
 			buildOptionalHolder(),
-			optionalCheckBox
-		);
-	}
-
-	private void installLabeledControlUpdater(TriStateCheckBox optionalCheckBox) {
-		new LabeledControlUpdater(
-			new LabeledTableItem(optionalCheckBox.getCheckBox()),
-			buildOptionalStringHolder()
+			buildOptionalStringHolder(),
+			IJpaHelpContextIds.MAPPING_OPTIONAL
 		);
 	}
 }

@@ -10,12 +10,11 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * This composite simply shows the Lob check box.
@@ -25,30 +24,30 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class LobCheckBox extends BaseJpaController<IBasicMapping>
+public class LobComposite extends AbstractFormPane<IBasicMapping>
 {
 	/**
-	 * Creates a new <code>LobCheckBox</code>.
+	 * Creates a new <code>LobComposite</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public LobCheckBox(BaseJpaController<? extends IBasicMapping> parentController,
-	                   Composite parent) {
+	public LobComposite(AbstractFormPane<? extends IBasicMapping> parentPane,
+	                    Composite parent) {
 
-		super(parentController, parent);
+		super(parentPane, parent);
 	}
 
 	/**
-	 * Creates a new <code>LobCheckBox</code>.
+	 * Creates a new <code>LobComposite</code>.
 	 *
 	 * @param subjectHolder The holder of the subject <code>IBasicMapping</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public LobCheckBox(PropertyValueModel<? extends IBasicMapping> subjectHolder,
-	                   Composite parent,
-	                   TabbedPropertySheetWidgetFactory widgetFactory) {
+	public LobComposite(PropertyValueModel<? extends IBasicMapping> subjectHolder,
+	                    Composite parent,
+	                    IWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}

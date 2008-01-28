@@ -12,16 +12,16 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.util.BaseJpaControllerEnabler;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
+import org.eclipse.jpt.ui.internal.util.PaneEnabler;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane;
+import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -58,20 +58,20 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaController<ISecondaryTable>
+public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractFormPane<ISecondaryTable>
 {
 	/**
 	 * Creates a new <code>PrimaryKeyJoinColumnsInSecondaryTableComposite</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public PrimaryKeyJoinColumnsInSecondaryTableComposite(BaseJpaController<?> parentController,
+	public PrimaryKeyJoinColumnsInSecondaryTableComposite(AbstractFormPane<?> parentPane,
 	                                                      PropertyValueModel<? extends ISecondaryTable> subjectHolder,
 	                                                      Composite parent) {
 
-		super(parentController, subjectHolder, parent);
+		super(parentPane, subjectHolder, parent);
 	}
 
 	/**
@@ -88,20 +88,32 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaContr
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private void addJoinColumnFromDialog(PrimaryKeyJoinColumnInSecondaryTableDialog dialog) {
-		if (dialog.open() == Window.OK) {
-			int index = this.subject().specifiedPrimaryKeyJoinColumnsSize();
-			String name = dialog.getSelectedName();
-			String referencedColumnName = dialog.getReferencedColumnName();
-			IPrimaryKeyJoinColumn joinColumn = this.subject().addSpecifiedPrimaryKeyJoinColumn(index);
-			joinColumn.setSpecifiedName(name);
-			joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
-		}
+	private void addJoinColumn(PrimaryKeyJoinColumnInSecondaryTableStateObject stateObject) {
+
+		ISecondaryTable secondaryTable = stateObject.getSecondaryTable();
+		int index = secondaryTable.specifiedPrimaryKeyJoinColumnsSize();
+
+		IPrimaryKeyJoinColumn joinColumn = secondaryTable.addSpecifiedPrimaryKeyJoinColumn(index);
+		joinColumn.setSpecifiedName(stateObject.getSelectedName());
+		joinColumn.setSpecifiedReferencedColumnName(stateObject.getSpecifiedReferencedColumnName());
 	}
 
 	private void addPrimaryKeyJoinColumn() {
-		PrimaryKeyJoinColumnInSecondaryTableDialog dialog = new PrimaryKeyJoinColumnInSecondaryTableDialog(this.getControl().getShell(), this.subject());
-		addJoinColumnFromDialog(dialog);
+
+		PrimaryKeyJoinColumnInSecondaryTableDialog dialog =
+			new PrimaryKeyJoinColumnInSecondaryTableDialog(shell(), subject());
+
+		dialog.openDialog(buildAddPrimaryKeyJoinColumnPostExecution());
+	}
+
+	private PostExecution<PrimaryKeyJoinColumnInSecondaryTableDialog> buildAddPrimaryKeyJoinColumnPostExecution() {
+		return new PostExecution<PrimaryKeyJoinColumnInSecondaryTableDialog>() {
+			public void execute(PrimaryKeyJoinColumnInSecondaryTableDialog dialog) {
+				if (dialog.wasConfirmed()) {
+					addJoinColumn(dialog.subject());
+				}
+			}
+		};
 	}
 
 	private PropertyValueModel<Boolean> buildControlBooleanHolder() {
@@ -115,6 +127,16 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaContr
 
 	private String buildDefaultJoinColumnLabel(IPrimaryKeyJoinColumn joinColumn) {
 		return NLS.bind(JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());
+	}
+
+	private PostExecution<PrimaryKeyJoinColumnInSecondaryTableDialog> buildEditPrimaryKeyJoinColumnPostExecution() {
+		return new PostExecution<PrimaryKeyJoinColumnInSecondaryTableDialog>() {
+			public void execute(PrimaryKeyJoinColumnInSecondaryTableDialog dialog) {
+				if (dialog.wasConfirmed()) {
+					editPrimaryKeyJoinColumn(dialog.subject());
+				}
+			}
+		};
 	}
 
 	private String buildJoinColumnLabel(IPrimaryKeyJoinColumn joinColumn) {
@@ -180,7 +202,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaContr
 	}
 
 	private ListValueModel/*<IPrimaryKeyJoinColumn>*/ buildPrimaryKeyJoinColumnListHolder() {
-		return new ListAspectAdapter<ISecondaryTable>/*<IPrimaryKeyJoinColumn, ISecondaryTable>*/(
+		return new ListAspectAdapter<ISecondaryTable, IPrimaryKeyJoinColumn>(
 			getSubjectHolder(),
 			ISecondaryTable.DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST,
 			ISecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST)
@@ -193,44 +215,49 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaContr
 	}
 
 	private ListValueModel/*<IPrimaryKeyJoinColumn>*/ buildSortedPrimaryKeyJoinColumnListHolder() {
-		return new SortedListValueModelAdapter/*<IPrimaryKeyJoinColumn, ISecondaryTable>*/(
+		return new SortedListValueModelAdapter<IPrimaryKeyJoinColumn>(
 			buildPrimaryKeyJoinColumnListHolder()
 		);
 	}
 
-	private void editJoinColumnDialogOkd(PrimaryKeyJoinColumnInSecondaryTableDialog dialog, IPrimaryKeyJoinColumn joinColumn) {
-		String name = dialog.getSelectedName();
-		String referencedColumnName = dialog.getReferencedColumnName();
+	private void editPrimaryKeyJoinColumn(ObjectListSelectionModel listSelectionModel) {
 
-		if (dialog.isDefaultNameSelected()) {
+		IPrimaryKeyJoinColumn joinColumn = (IPrimaryKeyJoinColumn) listSelectionModel.selectedValue();
+
+		PrimaryKeyJoinColumnInSecondaryTableDialog dialog =
+			new PrimaryKeyJoinColumnInSecondaryTableDialog(shell(), joinColumn);
+
+		dialog.openDialog(buildEditPrimaryKeyJoinColumnPostExecution());
+	}
+
+	private void editPrimaryKeyJoinColumn(PrimaryKeyJoinColumnInSecondaryTableStateObject stateObject) {
+		IPrimaryKeyJoinColumn joinColumn = stateObject.getJoinColumn();
+		String name = stateObject.getSelectedName();
+		String referencedColumnName = stateObject.getSpecifiedReferencedColumnName();
+
+		// Name
+		if (stateObject.isDefaultNameSelected()) {
 			if (joinColumn.getSpecifiedName() != null) {
 				joinColumn.setSpecifiedName(null);
 			}
 		}
-		else if (joinColumn.getSpecifiedName() == null || !joinColumn.getSpecifiedName().equals(name)){
+		else if (joinColumn.getSpecifiedName() == null ||
+		        !joinColumn.getSpecifiedName().equals(name)){
+
 			joinColumn.setSpecifiedName(name);
 		}
 
-		if (dialog.isDefaultReferencedColumnNameSelected()) {
+		// Referenced Column Name
+		if (stateObject.isDefaultReferencedColumnNameSelected()) {
 			if (joinColumn.getSpecifiedReferencedColumnName() != null) {
 				joinColumn.setSpecifiedReferencedColumnName(null);
 			}
 		}
-		else if (joinColumn.getSpecifiedReferencedColumnName() == null || !joinColumn.getSpecifiedReferencedColumnName().equals(referencedColumnName)){
+		else if (joinColumn.getSpecifiedReferencedColumnName() == null ||
+		        !joinColumn.getSpecifiedReferencedColumnName().equals(referencedColumnName)){
+
 			joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
 		}
-	}
-
-	private void editJoinColumnFromDialog(PrimaryKeyJoinColumnInSecondaryTableDialog dialog, IPrimaryKeyJoinColumn joinColumn) {
-		if (dialog.open() == Window.OK) {
-			editJoinColumnDialogOkd(dialog, joinColumn);
-		}
-	}
-
-	private void editPrimaryKeyJoinColumn(ObjectListSelectionModel listSelectionModel) {
-		IPrimaryKeyJoinColumn joinColumn = (IPrimaryKeyJoinColumn) listSelectionModel.selectedValue();
-		PrimaryKeyJoinColumnInSecondaryTableDialog dialog = new PrimaryKeyJoinColumnInSecondaryTableDialog(this.getControl().getShell(), joinColumn);
-		editJoinColumnFromDialog(dialog, joinColumn);
 	}
 
 	/*
@@ -284,7 +311,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaContr
 
 	private void installPrimaryKeyJoinColumnListPaneEnabler(AddRemoveListPane<ISecondaryTable> pkJoinColumnListPane) {
 
-		new BaseJpaControllerEnabler(
+		new PaneEnabler(
 			buildControlBooleanHolder(),
 			pkJoinColumnListPane
 		);
@@ -307,7 +334,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends BaseJpaContr
 		}
 
 		private void engageListChangeListener(PropertyValueModel<ISecondaryTable> valueHolder) {
-			new ListAspectAdapter<ISecondaryTable>/*<IPrimaryKeyJoinColumn, ISecondaryTable>*/(valueHolder, ISecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST) {
+			new ListAspectAdapter<ISecondaryTable, IPrimaryKeyJoinColumn>(valueHolder, ISecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST) {
 				@Override
 				protected void itemsAdded(ListChangeEvent e) {
 					super.itemsAdded(e);

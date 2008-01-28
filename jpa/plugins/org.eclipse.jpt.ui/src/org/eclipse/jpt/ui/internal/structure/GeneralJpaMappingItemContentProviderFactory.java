@@ -1,11 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2008 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
+ *  Copyright (c) 2008 Oracle.
+ *  All rights reserved.  This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  which accompanies this distribution, and is available at
  *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
+ *
+ *  Contributors:
  *  	Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
@@ -35,23 +35,23 @@ public abstract class GeneralJpaMappingItemContentProviderFactory
 		}
 		return null;
 	}
-	
-	
+
+
 	public static class PersistentTypeItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public PersistentTypeItemContentProvider(
 				IPersistentType persistentType, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(persistentType, contentProvider);
 		}
-		
+
 		@Override
 		public Object getParent() {
 			return ((IPersistentType) model()).parent();
 		}
-		
+
 		@Override
 		protected ListValueModel buildChildrenModel() {
-			return new ListAspectAdapter<IPersistentType>(IPersistentType.ATTRIBUTES_LIST, (IPersistentType) model()) {
+			return new ListAspectAdapter<IPersistentType, IPersistentAttribute>(IPersistentType.ATTRIBUTES_LIST, (IPersistentType) model()) {
 				@Override
 				protected ListIterator<IPersistentAttribute> listIterator_() {
 					return subject.attributes();
@@ -59,20 +59,20 @@ public abstract class GeneralJpaMappingItemContentProviderFactory
 			};
 		}
 	}
-	
-	
+
+
 	public static class PersistentAttributeItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public PersistentAttributeItemContentProvider(
 				IPersistentAttribute persistentAttribute, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(persistentAttribute, contentProvider);
 		}
-		
+
 		@Override
 		public Object getParent() {
 			return ((IPersistentType) model()).parentPersistentType();
 		}
-		
+
 		@Override
 		public boolean hasChildren() {
 			return false;

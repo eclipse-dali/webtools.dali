@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2007 Oracle. All rights reserved. This
+ *  Copyright (c) 2006, 2008 Oracle. All rights reserved. This
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
@@ -8,11 +8,13 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.Collection;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -32,23 +34,30 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class TemporalTypeComposite extends BaseJpaController<IColumnMapping> {
+public class TemporalTypeComposite extends AbstractFormPane<IColumnMapping> {
 
 	/**
 	 * Creates a new <code>TemporalTypeComposite</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TemporalTypeComposite(BaseJpaController<? extends IColumnMapping> parentComposite,
+	public TemporalTypeComposite(AbstractFormPane<? extends IColumnMapping> parentPane,
 	                             Composite parent) {
 
-		super(parentComposite, parent);
+		super(parentPane, parent);
 	}
 
 	private EnumComboViewer<IColumnMapping, TemporalType> buildTemporalCombo(Composite container) {
 
 		return new EnumComboViewer<IColumnMapping, TemporalType>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(IColumnMapping.TEMPORAL_PROPERTY);
+			}
+
 			@Override
 			protected TemporalType[] choices() {
 				return TemporalType.values();
@@ -71,11 +80,6 @@ public class TemporalTypeComposite extends BaseJpaController<IColumnMapping> {
 			@Override
 			protected TemporalType getValue() {
 				return subject().getTemporal();
-			}
-
-			@Override
-			protected String propertyName() {
-				return IColumnMapping.TEMPORAL_PROPERTY;
 			}
 
 			@Override

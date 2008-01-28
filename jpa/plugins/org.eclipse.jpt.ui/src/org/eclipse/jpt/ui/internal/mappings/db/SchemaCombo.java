@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.db;
 import org.eclipse.jpt.core.internal.IJpaNode;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -25,13 +25,13 @@ public abstract class SchemaCombo extends AbstractDatabaseObjectCombo<IJpaNode>
 	/**
 	 * Creates a new <code>SchemaCombo</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public SchemaCombo(BaseJpaController<? extends IJpaNode> parentController,
+	public SchemaCombo(AbstractFormPane<? extends IJpaNode> parentPane,
 	                   Composite parent)
 	{
-		super(parentController, parent);
+		super(parentPane, parent);
 	}
 
 	/**

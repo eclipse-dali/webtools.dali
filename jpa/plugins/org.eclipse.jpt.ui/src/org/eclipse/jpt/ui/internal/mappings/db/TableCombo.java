@@ -12,8 +12,8 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
@@ -29,13 +29,13 @@ public class TableCombo extends AbstractDatabaseObjectCombo<IColumn>
 	/**
 	 * Creates a new <code>TableCombo</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TableCombo(BaseJpaController<? extends IColumn> parentController,
+	public TableCombo(AbstractFormPane<? extends IColumn> parentPane,
 	                  Composite parent) {
 
-		super(parentController, parent);
+		super(parentPane, parent);
 	}
 
 	/**

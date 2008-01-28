@@ -8,11 +8,13 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.Collection;
 import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IFetchable;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -26,27 +28,39 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see IFetchable
  * @see BasicMappingComposite - A container of this widget
+ * @see ManyToManyMappingComposite - A container of this widget
+ * @see ManyToOneMappingComposite - A container of this widget
+ * @see OneToManyMappingComposite - A container of this widget
+ * @see OneToOneMappingComposite - A container of this widget
  *
  * @version 2.0
  * @since 1.0
  */
-public class FetchTypeComposite extends BaseJpaController<IFetchable> {
+public class FetchTypeComposite extends AbstractFormPane<IFetchable> {
 
 	/**
 	 * Creates a new <code>FetchTypeComposite</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public FetchTypeComposite(BaseJpaController<? extends IFetchable> parentComposite,
+	public FetchTypeComposite(AbstractFormPane<? extends IFetchable> parentPane,
 	                          Composite parent) {
 
-		super(parentComposite, parent);
+		super(parentPane, parent);
 	}
 
 	private EnumComboViewer<IFetchable, FetchType> buildFetchTypeCombo(Composite container) {
 
-		return new EnumComboViewer<IFetchable, FetchType>(getSubjectHolder(), container, getWidgetFactory()) {
+		return new EnumComboViewer<IFetchable, FetchType>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(IFetchable.DEFAULT_FETCH_PROPERTY);
+				propertyNames.add(IFetchable.SPECIFIED_FETCH_PROPERTY);
+			}
+
 			@Override
 			protected FetchType[] choices() {
 				return FetchType.values();
@@ -72,11 +86,6 @@ public class FetchTypeComposite extends BaseJpaController<IFetchable> {
 			}
 
 			@Override
-			protected String propertyName() {
-				return IFetchable.SPECIFIED_FETCH_PROPERTY;
-			}
-
-			@Override
 			protected void setValue(FetchType value) {
 				subject().setSpecifiedFetch(value);
 			}
@@ -90,15 +99,13 @@ public class FetchTypeComposite extends BaseJpaController<IFetchable> {
 	protected void initializeLayout(Composite container) {
 
 		EnumComboViewer<IFetchable, FetchType> fetchTypeCombo =
-			this.buildFetchTypeCombo(container);
+			buildFetchTypeCombo(container);
 
-		this.buildLabeledComposite(
+		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.BasicGeneralSection_fetchLabel,
 			fetchTypeCombo.getControl(),
 			IJpaHelpContextIds.MAPPING_FETCH_TYPE
 		);
-
-		this.registerSubPane(fetchTypeCombo);
 	}
 }

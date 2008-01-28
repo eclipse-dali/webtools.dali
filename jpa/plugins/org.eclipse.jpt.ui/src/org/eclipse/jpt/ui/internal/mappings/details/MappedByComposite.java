@@ -1,27 +1,26 @@
 /*******************************************************************************
- *  Copyright (c) 2007, 2008 Oracle.
- *  All rights reserved.  This program and the accompanying materials
- *  are made available under the terms of the Eclipse Public License v1.0
- *  which accompanies this distribution, and is available at
- *  http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
- *  Contributors:
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Contributors:
+ * 	 Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.context.base.INonOwningMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * Here the layout of this pane:
@@ -41,20 +40,20 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class MappedByComposite extends BaseJpaController<INonOwningMapping>
+public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 {
 	private CCombo combo;
 
 	/**
 	 * Creates a new <code>MappedByComposite</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	protected MappedByComposite(BaseJpaController<? extends INonOwningMapping> parentController,
+	protected MappedByComposite(AbstractFormPane<? extends INonOwningMapping> parentPane,
 	                            Composite parent) {
 
-		super(parentController, parent);
+		super(parentPane, parent);
 	}
 
 	/**
@@ -66,9 +65,18 @@ public class MappedByComposite extends BaseJpaController<INonOwningMapping>
 	 */
 	public MappedByComposite(PropertyValueModel<? extends INonOwningMapping> subjectHolder,
 	                         Composite parent,
-	                         TabbedPropertySheetWidgetFactory widgetFactory) {
+	                         IWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void addPropertyNames(Collection<String> propertyNames) {
+		super.addPropertyNames(propertyNames);
+		propertyNames.add(INonOwningMapping.MAPPED_BY_PROPERTY);
 	}
 
 	private ModifyListener buildComboModifyListener() {
@@ -165,13 +173,5 @@ public class MappedByComposite extends BaseJpaController<INonOwningMapping>
 		if (propertyName == INonOwningMapping.MAPPED_BY_PROPERTY) {
 			populateMappedByText();
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected String[] propertyNames() {
-		return new String[] { INonOwningMapping.MAPPED_BY_PROPERTY };
 	}
 }

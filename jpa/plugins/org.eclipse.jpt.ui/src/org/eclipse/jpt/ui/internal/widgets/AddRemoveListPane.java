@@ -9,7 +9,6 @@
 package org.eclipse.jpt.ui.internal.widgets;
 
 import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter.SelectionChangeEvent;
 import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter.SelectionChangeListener;
@@ -26,6 +25,21 @@ import org.eclipse.swt.widgets.List;
 /**
  * This implementation of the <code>AddRemovePane</code> uses a <code>List</code>
  * as its main widget.
+ * <p>
+ * Here the layot of this pane:
+ * <pre>
+ * -----------------------------------------------------------------------------
+ * | ------------------------------------------------------------- ----------- |
+ * | | Item 1                                                    | | Add...  | |
+ * | | ...                                                       | ----------- |
+ * | | Item n                                                    | ----------- |
+ * | |                                                           | | Edit... | |
+ * | |                                                           | ----------- |
+ * | |                                                           | ----------- |
+ * | |                                                           | | Remove  | |
+ * | |                                                           | ----------- |
+ * | -------------------------------------------------------------             |
+ * -----------------------------------------------------------------------------</pre>
  *
  * @version 2.0
  * @since 1.0
@@ -40,7 +54,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	/**
 	 * Creates a new <code>AddRemoveListPane</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 * @param adapter
 	 * @param listHolder The <code>ListValueModel</code> containing the items
@@ -48,14 +62,14 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * one item or no items are selected, then <code>null</code> will be passed
 	 * @param labelProvider The renderer used to format the list holder's items
 	 */
-	public AddRemoveListPane(BaseJpaController<? extends T> parentController,
+	public AddRemoveListPane(AbstractPane<? extends T> parentPane,
 	                         Composite parent,
 	                         Adapter adapter,
 	                         ListValueModel/*<?>*/ listHolder,
 	                         WritablePropertyValueModel<?> selectedItemHolder,
 	                         ILabelProvider labelProvider) {
 
-		super(parentController,
+		super(parentPane,
 		      parent,
 		      adapter,
 		      listHolder,
@@ -66,7 +80,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	/**
 	 * Creates a new <code>AddRemoveListPane</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 * @param adapter
 	 * @param listHolder The <code>ListValueModel</code> containing the items
@@ -75,7 +89,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * @param labelProvider The renderer used to format the list holder's items
 	 * @param helpId The topic help ID to be registered with this pane
 	 */
-	public AddRemoveListPane(BaseJpaController<? extends T> parentController,
+	public AddRemoveListPane(AbstractPane<? extends T> parentPane,
 	                         Composite parent,
 	                         Adapter adapter,
 	                         ListValueModel/*<?>*/ listHolder,
@@ -83,7 +97,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	                         ILabelProvider labelProvider,
 	                         String helpId) {
 
-		super(parentController,
+		super(parentPane,
 		      parent,
 		      adapter,
 		      listHolder,
@@ -95,7 +109,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	/**
 	 * Creates a new <code>AddRemoveListPane</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of the subject
 	 * @param adapter
 	 * @param parent The parent container
@@ -104,7 +118,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * one item or no items are selected, then <code>null</code> will be passed
 	 * @param labelProvider The renderer used to format the list holder's items
 	 */
-	public AddRemoveListPane(BaseJpaController<?> parentController,
+	public AddRemoveListPane(AbstractPane<?> parentPane,
 	                         PropertyValueModel<? extends T> subjectHolder,
 	                         Composite parent,
 	                         Adapter adapter,
@@ -112,7 +126,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	                         WritablePropertyValueModel<?> selectedItemHolder,
 	                         ILabelProvider labelProvider) {
 
-		super(parentController,
+		super(parentPane,
 		      subjectHolder,
 		      parent,
 		      adapter,
@@ -124,7 +138,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	/**
 	 * Creates a new <code>AddRemoveListPane</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of the subject
 	 * @param adapter
 	 * @param parent The parent container
@@ -134,7 +148,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * @param labelProvider The renderer used to format the list holder's items
 	 * @param helpId The topic help ID to be registered with this pane
 	 */
-	public AddRemoveListPane(BaseJpaController<?> parentController,
+	public AddRemoveListPane(AbstractPane<?> parentPane,
 	                         PropertyValueModel<? extends T> subjectHolder,
 	                         Composite parent,
 	                         Adapter adapter,
@@ -143,7 +157,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	                         ILabelProvider labelProvider,
 	                         String helpId) {
 
-		super(parentController,
+		super(parentPane,
 		      subjectHolder,
 		      parent,
 		      adapter,

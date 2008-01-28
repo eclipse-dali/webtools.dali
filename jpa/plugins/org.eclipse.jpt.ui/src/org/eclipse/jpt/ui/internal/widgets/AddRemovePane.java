@@ -10,7 +10,6 @@ package org.eclipse.jpt.ui.internal.widgets;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.utility.internal.model.Model;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -29,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 1.0
  * @since 2.0
  */
-public abstract class AddRemovePane<T extends Model> extends BaseJpaController<T>
+public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 {
 	private Adapter adapter;
 	private Button addButton;
@@ -44,7 +43,7 @@ public abstract class AddRemovePane<T extends Model> extends BaseJpaController<T
 	/**
 	 * Creates a new <code>AddRemovePane</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 * @param adapter This <code>Adapter</code> is used to dictacte the behavior
 	 * of this <code>AddRemovePane</code> and by delegating to it some of the
@@ -54,14 +53,14 @@ public abstract class AddRemovePane<T extends Model> extends BaseJpaController<T
 	 * one item or no items are selected, then <code>null</code> will be passed
 	 * @param labelProvider The renderer used to format the list holder's items
 	 */
-	protected AddRemovePane(BaseJpaController<? extends T> parentController,
+	protected AddRemovePane(AbstractPane<? extends T> parentPane,
 	                        Composite parent,
 	                        Adapter adapter,
 	                        ListValueModel/*<?>*/ listHolder,
 	                        WritablePropertyValueModel<?> selectedItemHolder,
 	                        ILabelProvider labelProvider) {
 
-		this(parentController,
+		this(parentPane,
 		     parent,
 		     adapter,
 		     listHolder,
@@ -73,7 +72,7 @@ public abstract class AddRemovePane<T extends Model> extends BaseJpaController<T
 	/**
 	 * Creates a new <code>AddRemovePane</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 * @param adapter This <code>Adapter</code> is used to dictacte the behavior
 	 * of this <code>AddRemovePane</code> and by delegating to it some of the
@@ -84,7 +83,7 @@ public abstract class AddRemovePane<T extends Model> extends BaseJpaController<T
 	 * @param labelProvider The renderer used to format the list holder's items
 	 * @param helpId The topic help ID to be registered with this pane
 	 */
-	protected AddRemovePane(BaseJpaController<? extends T> parentController,
+	protected AddRemovePane(AbstractPane<? extends T> parentPane,
 	                        Composite parent,
 	                        Adapter adapter,
 	                        ListValueModel/*<?>*/ listHolder,
@@ -92,7 +91,7 @@ public abstract class AddRemovePane<T extends Model> extends BaseJpaController<T
 	                        ILabelProvider labelProvider,
 	                        String helpId) {
 
-		super(parentController, parent);
+		super(parentPane, parent);
 
 		initialize(
 			adapter,
@@ -113,7 +112,7 @@ public abstract class AddRemovePane<T extends Model> extends BaseJpaController<T
 	/**
 	 * Creates a new <code>AddRemovePane</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of the subject
 	 * @param adapter This <code>Adapter</code> is used to dictacte the behavior
 	 * of this <code>AddRemovePane</code> and by delegating to it some of the
@@ -124,7 +123,7 @@ public abstract class AddRemovePane<T extends Model> extends BaseJpaController<T
 	 * one item or no items are selected, then <code>null</code> will be passed
 	 * @param labelProvider The renderer used to format the list holder's items
 	 */
-	protected AddRemovePane(BaseJpaController<?> parentController,
+	protected AddRemovePane(AbstractPane<?> parentPane,
 	                        PropertyValueModel<? extends T> subjectHolder,
 	                        Composite parent,
 	                        Adapter adapter,
@@ -132,7 +131,7 @@ public abstract class AddRemovePane<T extends Model> extends BaseJpaController<T
 	                        WritablePropertyValueModel<?> selectedItemHolder,
 	                        ILabelProvider labelProvider) {
 
-		this(parentController,
+		this(parentPane,
 		     subjectHolder,
 		     parent,
 		     adapter,
@@ -145,7 +144,7 @@ public abstract class AddRemovePane<T extends Model> extends BaseJpaController<T
 	/**
 	 * Creates a new <code>AddRemovePane</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of the subject
 	 * @param adapter This <code>Adapter</code> is used to dictacte the behavior
 	 * of this <code>AddRemovePane</code> and by delegating to it some of the
@@ -157,7 +156,7 @@ public abstract class AddRemovePane<T extends Model> extends BaseJpaController<T
 	 * @param labelProvider The renderer used to format the list holder's items
 	 * @param helpId The topic help ID to be registered with this pane
 	 */
-	protected AddRemovePane(BaseJpaController<?> parentController,
+	protected AddRemovePane(AbstractPane<?> parentPane,
 	                        PropertyValueModel<? extends T> subjectHolder,
 	                        Composite parent,
 	                        Adapter adapter,
@@ -166,7 +165,7 @@ public abstract class AddRemovePane<T extends Model> extends BaseJpaController<T
 	                        ILabelProvider labelProvider,
 	                        String helpId) {
 
-		super(parentController, subjectHolder, parent);
+		super(parentPane, subjectHolder, parent);
 
 		initialize(
 			adapter,

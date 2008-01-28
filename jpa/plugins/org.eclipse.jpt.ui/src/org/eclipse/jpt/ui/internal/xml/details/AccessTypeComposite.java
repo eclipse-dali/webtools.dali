@@ -8,26 +8,15 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.IBaseLabelProvider;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
+import java.util.Collection;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
-import org.eclipse.jpt.core.internal.context.base.IFetchable;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.mappings.details.EnumComboViewer;
+import org.eclipse.jpt.core.internal.context.orm.XmlTypeMapping;
+import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
+import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * Here the layout of this pane:
@@ -38,146 +27,83 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * |              ------------------------------------------------------------ |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IFetchable
- * @see BasicMappingComposite - A container of this widget
+ * @see XmlTypeMapping
+ * @see XmlPersistentTypeDetailsPage - A container of this pane
  *
  * @version 2.0
  * @since 1.0
  */
-public class AccessTypeComposite<T> extends BaseJpaController<AccessTypeComposite.AccessHolder<? extends T>> {
-
-	private EnumComboViewer<IFetchable, FetchType> comboViewer;
-
-	public AccessTypeComposite(PropertyValueModel<? extends AccessTypeComposite.AccessHolder<? extends T>> subjectHolder,
-	                           Composite parent,
-	                           TabbedPropertySheetWidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
-		buildAccessHolderListener();
-	}
-
-	private void buildAccessHolderListener() {
-		this.accessHolderListener = new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				accessHolderChanged(notification);
-			}
-		};
-	}
-
-	@Override
-	protected void initializeLayout(Composite container) {
-		CCombo combo = getWidgetFactory().createCCombo(container);
-		this.comboViewer = new ComboViewer(combo);
-		this.comboViewer.setLabelProvider(buildAccessTypeLabelProvider());
-		this.comboViewer.add(AccessType.values());
-
-		this.comboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			public void selectionChanged(SelectionChangedEvent event) {
-				AccessTypeComposite.this.accessTypeSelectionChanged(event.getSelection());
-			}
-		});
-	}
-
-	private IBaseLabelProvider buildAccessTypeLabelProvider() {
-		return new LabelProvider() {
-			@Override
-			public String getText(Object element) {
-				if (element == AccessType.DEFAULT) {
-					return JptUiMappingsMessages.AccessTypeCombo_default;
-				}
-				return super.getText(element);
-			}
-		};
-	}
-
-	void accessTypeSelectionChanged(ISelection selection) {
-		if (selection instanceof IStructuredSelection) {
-			AccessType access = (AccessType) ((IStructuredSelection) selection).getFirstElement();
-			if ( ! this.subject().getAccess().equals(access)) {
-				this.subject().setAccess(access);
-			}
-		}
-	}
-
-	private void accessHolderChanged(Notification notification) {
-		if (notification.getFeatureID(this.subject().featureClass()) ==
-				this.subject().featureId()) {
-			Display.getDefault().asyncExec(
-				new Runnable() {
-					public void run() {
-						populate();
-					}
-				});
-		}
-	}
-
-	@Override
-	protected void engageListeners() {
-		super.engageListeners();
-//		if (this.subject() != null && this.subject().wrappedObject() != null) {
-//			this.subject().wrappedObject().eAdapters().add(this.accessHolderListener);
-//		}
-	}
-
-	@Override
-	protected void disengageListeners() {
-		super.disengageListeners();
-//		if (this.subject() != null && this.subject().wrappedObject() != null) {
-//			this.subject().wrappedObject().eAdapters().remove(this.accessHolderListener);
-//		}
-	}
-
-	@Override
-	public void doPopulate() {
-		populateCombo();
-	}
-
-	private void populateCombo() {
-		if (this.subject().wrappedObject() == null) {
-			return;
-		}
-
-		AccessType access = this.subject().getAccess();
-
-		if (((IStructuredSelection) this.comboViewer.getSelection()).getFirstElement() != access) {
-			this.comboViewer.setSelection(new StructuredSelection(access));
-		}
-	}
+public class AccessTypeComposite extends AbstractFormPane<XmlTypeMapping<? extends TypeMapping>> {
 
 	/**
-	 * An interface to wrap an object that supports accessType
-	 * An object of this type must be passed in to populate(EObject)
+	 * Creates a new <code>AccessTypeComposite</code>.
+	 *
+	 * @param parentPane The parent container of this one
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
 	 */
-	public static interface AccessHolder<T> {
-		/**
-		 * Return the AccessType from the wrapped object
-		 * @return
-		 */
-		AccessType getAccess();
+	public AccessTypeComposite(AbstractFormPane<?> parentPane,
+	                           PropertyValueModel<? extends XmlTypeMapping<? extends TypeMapping>> subjectHolder,
+	                           Composite parent) {
 
-		/**
-		 * Set the AccessType on the wrapped object
-		 * @param accessType
-		 */
-		void setAccess(AccessType accessType);
+		super(parentPane, subjectHolder, parent);
+	}
 
-		/**
-		 * Return the Class of the wrapped object
-		 * @return
-		 */
-		Class<?> featureClass();
+	private EnumComboViewer<XmlTypeMapping<? extends TypeMapping>, AccessType> buildAccessTypeComboViewer(Composite container) {
 
-		/**
-		 * Return the feature id of accessType on the wrapped object
-		 * @return
-		 */
-		int featureId();
+		return new EnumComboViewer<XmlTypeMapping<? extends TypeMapping>, AccessType>(this, container) {
 
-		/**
-		 * The wrapped EObject that the accessType is stored on
-		 * @return
-		 */
-		T wrappedObject();
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(XmlTypeMapping.DEFAULT_ACCESS_PROPERTY);
+				propertyNames.add(XmlTypeMapping.SPECIFIED_ACCESS_PROPERTY);
+			}
+
+			@Override
+			protected AccessType[] choices() {
+				return AccessType.values();
+			}
+
+			@Override
+			protected AccessType defaultValue() {
+				return subject().getDefaultAccess();
+			}
+
+			@Override
+			protected String displayString(AccessType value) {
+				return buildDisplayString(
+					JptUiXmlMessages.class,
+					AccessTypeComposite.this,
+					value
+				);
+			}
+
+			@Override
+			protected AccessType getValue() {
+				return subject().getSpecifiedAccess();
+			}
+
+			@Override
+			protected void setValue(AccessType value) {
+				subject().setSpecifiedAccess(value);
+			}
+		};
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void initializeLayout(Composite container) {
+
+		EnumComboViewer<XmlTypeMapping<? extends TypeMapping>, AccessType> comboViewer =
+			buildAccessTypeComboViewer(container);
+
+		buildLabeledComposite(
+			container,
+			JptUiXmlMessages.PersistentTypePage_AccessLabel,
+			comboViewer.getControl()
+		);
 	}
 }

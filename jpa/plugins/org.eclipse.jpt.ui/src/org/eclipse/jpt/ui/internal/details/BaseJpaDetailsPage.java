@@ -9,10 +9,10 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
@@ -25,7 +25,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @since 1.0
  */
 public abstract class BaseJpaDetailsPage<T extends IJpaContextNode>
-	extends BaseJpaController<T>
+	extends AbstractFormPane<T>
 	implements IJpaDetailsPage<T>
 {
 	private ScrolledForm scrolledForm;
@@ -50,7 +50,7 @@ public abstract class BaseJpaDetailsPage<T extends IJpaContextNode>
 	@Override
 	protected Composite buildContainer(Composite container) {
 
-		scrolledForm = getWidgetFactory().createScrolledForm(container);
+		scrolledForm = getFormWidgetFactory().createScrolledForm(container);
 		container = scrolledForm.getBody();
 
 		GridLayout layout = new GridLayout(1, false);
@@ -69,7 +69,7 @@ public abstract class BaseJpaDetailsPage<T extends IJpaContextNode>
 	 * (non-Javadoc)
 	 */
 	@Override
-	public Control getControl() {
+	public Composite getControl() {
 		return scrolledForm;
 	}
 }

@@ -16,8 +16,8 @@ import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -28,7 +28,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class CatalogCombo extends BaseJpaController<ITable>
+public class CatalogCombo extends AbstractFormPane<ITable>
 {
 	private CCombo combo;
 
@@ -41,10 +41,10 @@ public class CatalogCombo extends BaseJpaController<ITable>
 	 */
 	private ConnectionProfile connectionProfile;
 
-	public CatalogCombo(BaseJpaController<? extends ITable> parentController,
+	public CatalogCombo(AbstractFormPane<? extends ITable> parentPane,
 	                    Composite parent) {
 
-		super(parentController, parent);
+		super(parentPane, parent);
 	}
 
 	public CatalogCombo(PropertyValueModel<? extends ITable> subjectHolder,

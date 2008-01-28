@@ -10,17 +10,14 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.osgi.util.NLS;
@@ -28,12 +25,9 @@ import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 
-public class SchemaCombo extends BaseJpaController<ITable>
+public class SchemaCombo extends AbstractFormPane<ITable>
 {
-	private Adapter listener;
-
 	/**
 	 * Caching the connectionProfile so we can remove the listener. If the
 	 * cached table object has been removed from the model then we no longer
@@ -48,22 +42,13 @@ public class SchemaCombo extends BaseJpaController<ITable>
 	/**
 	 * Creates a new <code>SchemaCombo</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public SchemaCombo(BaseJpaController<? extends ITable> parentController,
+	public SchemaCombo(AbstractFormPane<? extends ITable> parentPane,
                       Composite parent) {
 
-		super(parentController, parent);
-	}
-
-	private Adapter buildTableListener() {
-		return new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				SchemaCombo.this.schemaChanged(notification);
-			}
-		};
+		super(parentPane, parent);
 	}
 
 	private ConnectionListener buildConnectionListener() {
@@ -166,51 +151,9 @@ public class SchemaCombo extends BaseJpaController<ITable>
 		});
 	}
 
-	protected void schemaChanged(Notification notification) {
-		if (notification.getFeatureID(ITable.class) == JpaCoreMappingsPackage.ITABLE__SPECIFIED_SCHEMA) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					SchemaCombo.this.populateSchemaName();
-				}
-			});
-		}
-		else if (notification.getFeatureID(ITable.class) == JpaCoreMappingsPackage.ITABLE__DEFAULT_SCHEMA) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					SchemaCombo.this.populateDefaultSchemaName();
-				}
-			});
-		}
-		else if (notification.getFeatureID(ITable.class) == JpaCoreMappingsPackage.ITABLE__DEFAULT_CATALOG) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					SchemaCombo.this.populateShemaCombo();
-				}
-			});
-		}
-		else if (notification.getFeatureID(ITable.class) == JpaCoreMappingsPackage.ITABLE__SPECIFIED_CATALOG) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					SchemaCombo.this.populateShemaCombo();
-				}
-			});
-		}
-	}
-
 	@Override
 	public void doPopulate() {
+		super.doPopulate();
 		if (this.subject() != null) {
 			this.populateShemaCombo();
 		}

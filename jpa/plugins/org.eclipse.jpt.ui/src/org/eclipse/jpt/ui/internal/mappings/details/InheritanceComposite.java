@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,68 +9,75 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import java.util.Iterator;
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.IBaseLabelProvider;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
+import java.util.Collection;
+import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.INamedColumn;
+import org.eclipse.jpt.core.internal.context.base.InheritanceType;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class InheritanceComposite extends BaseJpaComposite<IEntity> {
+/**
+ * Here the layout of this pane:
+ * <pre>
+ * -----------------------------------------------------------------------------
+ * |                      ---------------------------------------------------- |
+ * | Strategy:            | EnumComboViewer                                  | |
+ * |                      ---------------------------------------------------- |
+ * |                      ---------------------------------------------------- |
+ * | Column:              | I                                              |v| |
+ * |                      ---------------------------------------------------- |
+ * |                      ---------------------------------------------------- |
+ * | Discriminator Type:  | EnumComboViewer                                |v| |
+ * |                      ---------------------------------------------------- |
+ * |                      ---------------------------------------------------- |
+ * | Discriminator Value: | I                                              |v| |
+ * |                      ---------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | PrimaryKeyJoinColumnsComposite                                        | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * -----------------------------------------------------------------------------</pre>
+ *
+ * @see IEntity
+ * @see EntityComposite - The parent container
+ * @see EnumComboViewer
+ * @see PrimaryKeyJoinColumnsComposite
+ *
+ * @version 2.0
+ * @since 2.0
+ */
+@SuppressWarnings("nls")
+public class InheritanceComposite extends AbstractFormPane<IEntity> {
 
 	private CCombo columnCombo;
-	private ConnectionListener connectionListener;
-	private ConnectionProfile connectionProfile;
-	private IDiscriminatorColumn discriminatorColumn;
-	private Adapter discriminatorColumnListener;
-	private ComboViewer discriminatorTypeViewer;
 	private CCombo discriminatorValueCombo;
-	private Adapter entityListener;
-	private PrimaryKeyJoinColumnsComposite pkJoinColumnsComposite;
-	private ComboViewer strategyViewer;
 
 	/**
 	 * Creates a new <code>InheritanceComposite</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public InheritanceComposite(BaseJpaController<? extends IEntity> parentController,
+	public InheritanceComposite(AbstractFormPane<? extends IEntity> parentPane,
 	                            Composite parent) {
 
-		super(parentController, parent);
+		super(parentPane, parent);
 	}
 
 	/**
@@ -82,27 +89,36 @@ public class InheritanceComposite extends BaseJpaComposite<IEntity> {
 	 */
 	public InheritanceComposite(PropertyValueModel<? extends IEntity> subjectHolder,
 	                            Composite parent,
-	                            TabbedPropertySheetWidgetFactory widgetFactory) {
+	                            IWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent,widgetFactory);
-		this.entityListener = buildEntityListener();
-		this.discriminatorColumnListener = buildDiscriminatorColumnListener();
-		this.connectionListener = buildConnectionListener();
 	}
 
 	private void addConnectionListener() {
-		this.getConnectionProfile().addConnectionListener(this.connectionListener);
+//		this.getConnectionProfile().addConnectionListener(this.connectionListener);
 	}
 
-	private CCombo buildColumnCombo(Composite parent) {
-		final CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
-  		combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
-		combo.addModifyListener(new ModifyListener() {
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void addPropertyNames(Collection<String> propertyNames) {
+		super.addPropertyNames(propertyNames);
+
+		propertyNames.add(IEntity.DEFAULT_DISCRIMINATOR_VALUE_PROPERTY);
+		propertyNames.add(IEntity.SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY);
+	}
+
+    private ModifyListener buildColumnComboSelectionListener() {
+		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				String tableText = ((CCombo) e.getSource()).getText();
-				if (tableText.equals("")) { //$NON-NLS-1$
+				CCombo combo = (CCombo) e.widget;
+				IDiscriminatorColumn discriminatorColumn = subject().getDiscriminatorColumn();
+				String tableText = combo.getText();
+
+				if (tableText.equals("")) {
 					tableText = null;
-					if (discriminatorColumn.getSpecifiedName() == null || discriminatorColumn.getSpecifiedName().equals("")) { //$NON-NLS-1$
+					if (discriminatorColumn.getSpecifiedName() == null || discriminatorColumn.getSpecifiedName().equals("")) {
 						return;
 					}
 				}
@@ -118,12 +134,10 @@ public class InheritanceComposite extends BaseJpaComposite<IEntity> {
 					discriminatorColumn.setSpecifiedName(tableText);
 				}
 			}
-		});
-		return combo;
-
+		};
 	}
 
-    private ConnectionListener buildConnectionListener() {
+	private ConnectionListener buildConnectionListener() {
 		return new ConnectionListener() {
 
 			public void aboutToClose(ConnectionProfile profile) {
@@ -190,52 +204,68 @@ public class InheritanceComposite extends BaseJpaComposite<IEntity> {
 		};
     }
 
-	private Adapter buildDiscriminatorColumnListener() {
-		return new AdapterImpl() {
+	private PropertyValueModel<IDiscriminatorColumn> buildDiscriminatorColumnHolder() {
+		return new TransformationPropertyValueModel<IEntity, IDiscriminatorColumn>(getSubjectHolder()) {
 			@Override
-			public void notifyChanged(Notification notification) {
-				discriminatorColumnChanged(notification);
+			protected IDiscriminatorColumn transform_(IEntity value) {
+				return value.getDiscriminatorColumn();
 			}
 		};
 	}
 
-	private ComboViewer buildDiscriminatorTypeCombo(Composite parent) {
-		CCombo combo = getWidgetFactory().createCCombo(parent);
-		ComboViewer discriminatorTypeViewer = new ComboViewer(combo);
-		discriminatorTypeViewer.setLabelProvider(buildDiscriminatorTypeLabelProvider());
-		discriminatorTypeViewer.add(DiscriminatorType.VALUES.toArray());
+	private EnumComboViewer<IDiscriminatorColumn, DiscriminatorType> buildDiscriminatorTypeCombo(Composite container) {
 
-		discriminatorTypeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			public void selectionChanged(SelectionChangedEvent event) {
-				InheritanceComposite.this.discriminatorTypeSelectionChanged(event.getSelection());
-			}
-		});
-
-		return discriminatorTypeViewer;
-	}
-
-	private IBaseLabelProvider buildDiscriminatorTypeLabelProvider() {
-		return new LabelProvider() {
+		return new EnumComboViewer<IDiscriminatorColumn, DiscriminatorType>(
+			this,
+			buildDiscriminatorColumnHolder(),
+			container)
+		{
 			@Override
-			public String getText(Object element) {
-				if (element == DiscriminatorType.DEFAULT) {
-					//TODO need to move this to the model, don't want hardcoded String
-					return NLS.bind(JptUiMappingsMessages.InheritanceComposite_defaultDiscriminatorType, "String");
-				}
-				return super.getText(element);
+			protected DiscriminatorType[] choices() {
+				return DiscriminatorType.values();
+			}
+
+			@Override
+			protected DiscriminatorType defaultValue() {
+				return subject().getDefaultDiscriminatorType();
+			}
+
+			@Override
+			protected String displayString(DiscriminatorType value) {
+				return buildDisplayString(
+					JptUiMappingsMessages.class,
+					InheritanceComposite.this,
+					value
+				);
+			}
+
+			@Override
+			protected DiscriminatorType getValue() {
+				return subject().getSpecifiedDiscriminatorType();
+			}
+
+			@Override
+			protected String propertyName() {
+				return IDiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY;
+			}
+
+			@Override
+			protected void setValue(DiscriminatorType value) {
+				subject().setSpecifiedDiscriminatorType(value);
 			}
 		};
 	}
 
-	private CCombo buildDiscriminatorValueCombo(Composite parent) {
-		final CCombo combo = getWidgetFactory().createCCombo(parent, SWT.FLAT);
-		combo.addModifyListener(new ModifyListener() {
+	private ModifyListener buildDiscriminatorValueComboSelectionListener() {
+		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				String discriminatorValue = subject.getSpecifiedDiscriminatorValue();
-				String value = ((CCombo) e.getSource()).getText();
-				if (value.equals("")) { //$NON-NLS-1$
+				CCombo combo = (CCombo) e.widget;
+				String value = combo.getText();
+				String discriminatorValue = subject().getSpecifiedDiscriminatorValue();
+
+				if (value.equals("")) {
 					value = null;
-					if (discriminatorValue == null || discriminatorValue.equals("")) { //$NON-NLS-1$
+					if (discriminatorValue == null || discriminatorValue.equals("")) {
 						return;
 					}
 				}
@@ -245,245 +275,121 @@ public class InheritanceComposite extends BaseJpaComposite<IEntity> {
 				}
 
 				if (discriminatorValue == null || !discriminatorValue.equals(value)) {
-					subject.setSpecifiedDiscriminatorValue(value);
+					subject().setSpecifiedDiscriminatorValue(value);
 				}
-			}
-		});
-		return combo;
-	}
-
-	private Adapter buildEntityListener() {
-		return new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				entityChanged(notification);
 			}
 		};
 	}
 
-	private ComboViewer buildStrategyCombo(Composite parent) {
-		CCombo combo = getWidgetFactory().createCCombo(parent);
-		ComboViewer strategyViewer = new ComboViewer(combo);
-		strategyViewer.setLabelProvider(buildStrategyLabelProvider());
-		strategyViewer.add(InheritanceType.VALUES.toArray());
-		strategyViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			public void selectionChanged(SelectionChangedEvent event) {
-				InheritanceComposite.this.strategySelectionChanged(event.getSelection());
-			}
-		});
+	private EnumComboViewer<IEntity, InheritanceType> buildStrategyCombo(Composite container) {
 
-		return strategyViewer;
-	}
-
-	private IBaseLabelProvider buildStrategyLabelProvider() {
-		return new LabelProvider() {
+		return new EnumComboViewer<IEntity, InheritanceType>(this, container) {
 			@Override
-			public String getText(Object element) {
-				if (element == InheritanceType.DEFAULT) {
-					//TODO need to move this to the model, don't want hardcoded String
-					return NLS.bind(JptUiMappingsMessages.InheritanceComposite_default, "Single Table");
-				}
-				return super.getText(element);
+			protected InheritanceType[] choices() {
+				return InheritanceType.values();
+			}
+
+			@Override
+			protected InheritanceType defaultValue() {
+				return subject().getDefaultInheritanceStrategy();
+			}
+
+			@Override
+			protected String displayString(InheritanceType value) {
+				return buildDisplayString(
+					JptUiMappingsMessages.class,
+					InheritanceComposite.this,
+					value
+				);
+			}
+
+			@Override
+			protected InheritanceType getValue() {
+				return subject().getSpecifiedInheritanceStrategy();
+			}
+
+			@Override
+			protected String propertyName() {
+				return IEntity.SPECIFIED_INHERITANCE_STRATEGY_PROPERTY;
+			}
+
+			@Override
+			protected void setValue(InheritanceType value) {
+				subject().setSpecifiedInheritanceStrategy(value);
 			}
 		};
 	}
 
-	protected void discriminatorColumnChanged(Notification notification) {
-		if (notification.getFeatureID(INamedColumn.class) == JpaCoreMappingsPackage.INAMED_COLUMN__SPECIFIED_NAME) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					populateColumnName();
-				}
-			});
-		}
-		else if (notification.getFeatureID(INamedColumn.class) == JpaCoreMappingsPackage.INAMED_COLUMN__DEFAULT_NAME) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					populateDefaultColumnName();
-				}
-			});
-		}
-
-		else if (notification.getFeatureID(IDiscriminatorColumn.class) == JpaCoreMappingsPackage.IDISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					DiscriminatorType discriminatorType = discriminatorColumn.getDiscriminatorType();
-					if (((StructuredSelection) discriminatorTypeViewer.getSelection()).getFirstElement() != discriminatorType) {
-						discriminatorTypeViewer.setSelection(new StructuredSelection(discriminatorType));
-					}
-				}
-			});
-		}
-	}
-
-	void discriminatorTypeSelectionChanged(ISelection selection) {
-		if (selection instanceof IStructuredSelection) {
-			DiscriminatorType discriminatorType = (DiscriminatorType) ((IStructuredSelection) selection).getFirstElement();
-			if ( ! this.discriminatorColumn.getDiscriminatorType().equals(discriminatorType)) {
-				this.discriminatorColumn.setDiscriminatorType(discriminatorType);
-			}
-		}
-	}
-
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected void disengageListeners() {
-		if (this.entity != null) {
-			this.subject().eAdapters().remove(this.entityListener);
-			this.removeConnectionListener();
-			this.discriminatorColumn.eAdapters().remove(this.discriminatorColumnListener);
-		}
-	}
-
-	@Override
-	public void dispose() {
-		this.pkJoinColumnsComposite.dispose();
-		super.dispose();
-	}
-
-	@Override
-	public void doPopulate() {
-		if (this.entity != null) {
-			populateColumnCombo();
-//			popuplateStrategyComboViewer();
-//			popuplateDiscriminatorValueCombo();
-		}
-	}
-
-	public void doPopulate(EObject obj) {
-		this.entity = (IEntity) obj;
-		if (this.entity != null) {
-			this.discriminatorColumn = this.subject().getDiscriminatorColumn();
-			populateColumnCombo();
-			popuplateDiscriminatorTypeComboViewer();
-			populateStrategyComboViewer();
-			populateDiscriminatorValueCombo();
-			this.pkJoinColumnsComposite.populate(this.entity);
-		}
-		else {
-			this.discriminatorColumn = null;
-			this.connectionProfile = null;
-		}
-	}
-
-	@Override
-	protected void engageListeners() {
-		if (this.entity != null) {
-			this.subject().eAdapters().add(this.entityListener);
-			this.discriminatorColumn.eAdapters().add(this.discriminatorColumnListener);
-			this.addConnectionListener();
-		}
-	}
-
-	private void entityChanged(Notification notification) {
-		if (notification.getFeatureID(IEntity.class) == JpaCoreMappingsPackage.IENTITY__INHERITANCE_STRATEGY) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					InheritanceType inheritanceType = subject.getInheritanceStrategy();
-					 if (((StructuredSelection) strategyViewer.getSelection()).getFirstElement() != inheritanceType) {
-						strategyViewer.setSelection(new StructuredSelection(inheritanceType));
-					}
-				}
-			});
-		}
-		else if (notification.getFeatureID(IEntity.class) == JpaCoreMappingsPackage.IENTITY__SPECIFIED_DISCRIMINATOR_VALUE) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					String discriminatorValue = subject.getSpecifiedDiscriminatorValue();
-					if (discriminatorValueCombo.getText() == null || !discriminatorValueCombo.getText().equals(discriminatorValue)) {
-						if (discriminatorValue == null) {
-							discriminatorValueCombo.select(0);
-						}
-						else {
-							discriminatorValueCombo.setText(discriminatorValue);
-						}
-					}
-				}
-			});
-		}
-		else if (notification.getFeatureID(IEntity.class) == JpaCoreMappingsPackage.IENTITY__DEFAULT_DISCRIMINATOR_VALUE) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					populateDiscriminatorValueCombo();
-				}
-			});
-		}
-	}
-
-	private ConnectionProfile getConnectionProfile() {
-		if(this.connectionProfile == null) {
-			this.connectionProfile = this.subject().getJpaProject().connectionProfile();
-		}
-		return this.connectionProfile;
+	protected void doPopulate() {
+		super.doPopulate();
+		populateColumnCombo();
+		populateDiscriminatorValueCombo();
 	}
 
 	private Table getDbTable() {
 		return this.subject().primaryDbTable();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected void initializeLayout(Composite composite) {
-		GridLayout layout = new GridLayout(2, false);
-		layout.marginWidth = 0;
-		composite.setLayout(layout);
+	protected void initializeLayout(Composite container) {
 
-		GridData gridData;
+		// Strategy widgets
+		EnumComboViewer<IEntity, InheritanceType> strategyViewer =
+			buildStrategyCombo(container);
 
-		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.InheritanceComposite_strategy);
+		buildLabeledComposite(
+			container,
+			JptUiMappingsMessages.InheritanceComposite_strategy,
+			strategyViewer.getControl(),
+			IJpaHelpContextIds.ENTITY_INHERITANCE_STRATEGY
+		);
 
-		this.strategyViewer = buildStrategyCombo(composite);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		this.strategyViewer.getCombo().setLayoutData(gridData);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.strategyViewer.getCombo(), IJpaHelpContextIds.ENTITY_INHERITANCE_STRATEGY);
+		// Column widgets
+		columnCombo = buildCombo(container);
+		columnCombo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
+		columnCombo.addModifyListener(buildColumnComboSelectionListener());
 
-		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.DiscriminatorColumnComposite_column);
+		buildLabeledComposite(
+			container,
+			JptUiMappingsMessages.DiscriminatorColumnComposite_column,
+			columnCombo,
+			IJpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_COLUMN
+		);
 
-		this.columnCombo = buildColumnCombo(composite);
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		this.columnCombo.setLayoutData(gridData);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.columnCombo, IJpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_COLUMN);
+		// Discriminator Type widgets
+		EnumComboViewer<IDiscriminatorColumn, DiscriminatorType> discriminatorTypeViewer =
+			buildDiscriminatorTypeCombo(container);
 
-		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.DiscriminatorColumnComposite_discriminatorType);
+		buildLabeledComposite(
+			container,
+			JptUiMappingsMessages.DiscriminatorColumnComposite_discriminatorType,
+			discriminatorTypeViewer.getControl(),
+			IJpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_TYPE
+		);
 
-		this.discriminatorTypeViewer = buildDiscriminatorTypeCombo(composite);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		this.discriminatorTypeViewer.getCombo().setLayoutData(gridData);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.discriminatorTypeViewer.getCombo(), IJpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_TYPE);
+		// Discrinator Value widgets
+		discriminatorValueCombo = buildCombo(container);
+		discriminatorValueCombo.addModifyListener(buildDiscriminatorValueComboSelectionListener());
 
+		buildLabeledComposite(
+			container,
+			JptUiMappingsMessages.InheritanceComposite_discriminatorValue,
+			discriminatorValueCombo,
+			IJpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_VALUE
+		);
 
-		getWidgetFactory().createLabel(composite, JptUiMappingsMessages.InheritanceComposite_discriminatorValue);
-
-		this.discriminatorValueCombo = buildDiscriminatorValueCombo(composite);
-		gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		this.discriminatorValueCombo.setLayoutData(gridData);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.discriminatorValueCombo, IJpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_VALUE);
-
-		this.pkJoinColumnsComposite = new PrimaryKeyJoinColumnsComposite(composite, getWidgetFactory());
-		gridData = new GridData();
-		gridData.horizontalSpan = 2;
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.verticalAlignment = GridData.FILL;
-		gridData.grabExcessVerticalSpace = true;
-		this.pkJoinColumnsComposite.getControl().setLayoutData(gridData);
+		// Primary Key Join Columns widgets
+		new PrimaryKeyJoinColumnsComposite(
+			this,
+			container
+		);
 	}
 
 	private void populateColumnCombo() {
@@ -491,24 +397,27 @@ public class InheritanceComposite extends BaseJpaComposite<IEntity> {
 		//this.tableCombo.setEnabled(!(this.table instanceof SingleTableInheritanceChildTableImpl));
 		populateDefaultColumnName();
 
-		if (this.getConnectionProfile().isConnected()) {
-			this.columnCombo.remove(1, this.columnCombo.getItemCount()-1);
-			Table table = getDbTable();
-			if (table != null) {
-				for (Iterator i = CollectionTools.sort(CollectionTools.list(table.columnNames())).iterator(); i.hasNext();) {
-					this.columnCombo.add((String) i.next());
-				}
-			}
-		}
-		else {
-			this.columnCombo.remove(1, this.columnCombo.getItemCount()-1);
-		}
+//		if (this.getConnectionProfile().isConnected()) {
+//			this.columnCombo.remove(1, this.columnCombo.getItemCount()-1);
+//			Table table = getDbTable();
+//			if (table != null) {
+//				for (Iterator i = CollectionTools.sort(CollectionTools.list(table.columnNames())).iterator(); i.hasNext();) {
+//					this.columnCombo.add((String) i.next());
+//				}
+//			}
+//		}
+//		else {
+//			this.columnCombo.remove(1, this.columnCombo.getItemCount()-1);
+//		}
+
 		populateColumnName();
 	}
 
-	protected void populateColumnName() {
-		String tableName = this.discriminatorColumn.getSpecifiedName();
-		String defaultName = this.discriminatorColumn.getDefaultName();
+	private void populateColumnName() {
+		IDiscriminatorColumn discriminatorColumn = subject().getDiscriminatorColumn();
+		String tableName = discriminatorColumn.getSpecifiedName();
+		String defaultName = discriminatorColumn.getDefaultName();
+
 		if (tableName != null) {
 			if (!this.columnCombo.getText().equals(tableName)) {
 				this.columnCombo.setText(tableName);
@@ -521,7 +430,8 @@ public class InheritanceComposite extends BaseJpaComposite<IEntity> {
 		}
 	}
 
-	protected void populateDefaultColumnName() {
+	private void populateDefaultColumnName() {
+		IDiscriminatorColumn discriminatorColumn = subject().getDiscriminatorColumn();
 		String defaultTableName = discriminatorColumn.getDefaultName();
 		int selectionIndex = columnCombo.getSelectionIndex();
 		columnCombo.setItem(0, NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultTableName));
@@ -537,7 +447,7 @@ public class InheritanceComposite extends BaseJpaComposite<IEntity> {
 		String specifiedValue = this.subject().getSpecifiedDiscriminatorValue();
 		String defaultValue = this.subject().getDefaultDiscriminatorValue();
 
-		if (this.subject().discriminatorValueIsAllowed()) {
+		if (true) { // TODO this.subject().discriminatorValueIsAllowed()) {
 			this.discriminatorValueCombo.setEnabled(true);
 			if (this.discriminatorValueCombo.getItemCount() == 0) {
 				this.discriminatorValueCombo.add(JptUiMappingsMessages.DiscriminatorColumnComposite_defaultEmpty);
@@ -570,62 +480,21 @@ public class InheritanceComposite extends BaseJpaComposite<IEntity> {
 		}
 	}
 
-	private void populateStrategyComboViewer() {
-		if (this.subject().getInheritanceStrategy() == InheritanceType.DEFAULT) {
-			if (((StructuredSelection) this.strategyViewer.getSelection()).getFirstElement() != InheritanceType.DEFAULT) {
-				this.strategyViewer.setSelection(new StructuredSelection(InheritanceType.DEFAULT));
-			}
-		}
-		else if (this.subject().getInheritanceStrategy() == InheritanceType.JOINED) {
-			if (((StructuredSelection) this.strategyViewer.getSelection()).getFirstElement() != InheritanceType.JOINED) {
-				this.strategyViewer.setSelection(new StructuredSelection(InheritanceType.JOINED));
-			}
-		}
-		else if (this.subject().getInheritanceStrategy() == InheritanceType.SINGLE_TABLE) {
-			if (((StructuredSelection) this.strategyViewer.getSelection()).getFirstElement() != InheritanceType.SINGLE_TABLE) {
-				this.strategyViewer.setSelection(new StructuredSelection(InheritanceType.SINGLE_TABLE));
-			}
-		}
-		else {
-			if (((StructuredSelection) this.strategyViewer.getSelection()).getFirstElement() != InheritanceType.TABLE_PER_CLASS) {
-				this.strategyViewer.setSelection(new StructuredSelection(InheritanceType.TABLE_PER_CLASS));
-			}
-		}
-	}
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void propertyChanged(String propertyName) {
+		super.propertyChanged(propertyName);
 
-	private void popuplateDiscriminatorTypeComboViewer() {
-		if (this.discriminatorColumn.getDiscriminatorType() == DiscriminatorType.DEFAULT) {
-			if (((StructuredSelection) this.discriminatorTypeViewer.getSelection()).getFirstElement() != DiscriminatorType.DEFAULT) {
-				this.discriminatorTypeViewer.setSelection(new StructuredSelection(DiscriminatorType.DEFAULT));
-			}
-		}
-		else if (this.discriminatorColumn.getDiscriminatorType() == DiscriminatorType.CHAR) {
-			if (((StructuredSelection) this.discriminatorTypeViewer.getSelection()).getFirstElement() != DiscriminatorType.CHAR) {
-				this.discriminatorTypeViewer.setSelection(new StructuredSelection(DiscriminatorType.CHAR));
-			}
-		}
-		else if (this.discriminatorColumn.getDiscriminatorType() == DiscriminatorType.INTEGER) {
-			if (((StructuredSelection) this.discriminatorTypeViewer.getSelection()).getFirstElement() != DiscriminatorType.INTEGER) {
-				this.discriminatorTypeViewer.setSelection(new StructuredSelection(DiscriminatorType.INTEGER));
-			}
-		}
-		else {
-			if (((StructuredSelection) this.discriminatorTypeViewer.getSelection()).getFirstElement() != DiscriminatorType.STRING) {
-				this.discriminatorTypeViewer.setSelection(new StructuredSelection(DiscriminatorType.STRING));
-			}
+		if (propertyName == IEntity.DEFAULT_DISCRIMINATOR_VALUE_PROPERTY ||
+		    propertyName == IEntity.SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY)
+		{
+			populateDiscriminatorValueCombo();
 		}
 	}
 
 	private void removeConnectionListener() {
-		this.getConnectionProfile().removeConnectionListener(this.connectionListener);
-	}
-
-	void strategySelectionChanged(ISelection selection) {
-		if (selection instanceof IStructuredSelection) {
-			InheritanceType inheritanceType = (InheritanceType) ((IStructuredSelection) selection).getFirstElement();
-			if ( ! this.subject().getInheritanceStrategy().equals(inheritanceType)) {
-				this.subject().setInheritanceStrategy(inheritanceType);
-			}
-		}
+//		this.getConnectionProfile().removeConnectionListener(this.connectionListener);
 	}
 }

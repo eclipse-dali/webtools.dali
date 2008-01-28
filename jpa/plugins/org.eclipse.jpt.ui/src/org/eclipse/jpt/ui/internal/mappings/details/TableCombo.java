@@ -10,16 +10,14 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
 import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
@@ -27,10 +25,8 @@ import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class TableCombo extends BaseJpaController<ITable>
+public class TableCombo extends AbstractFormPane<ITable>
 {
 	private Adapter listener;
 
@@ -47,24 +43,15 @@ public class TableCombo extends BaseJpaController<ITable>
 
 	public TableCombo(PropertyValueModel<? extends ITable> subjectHolder,
 	                  Composite parent,
-	                  TabbedPropertySheetWidgetFactory widgetFactory) {
+	                  IWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	public TableCombo(BaseJpaController<? extends ITable> parentController,
+	public TableCombo(AbstractFormPane<? extends ITable> parentPane,
 	                  Composite parent) {
 
-		super(parentController, parent);
-	}
-
-	private Adapter buildTableListener() {
-		return new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				tableChanged(notification);
-			}
-		};
+		super(parentPane, parent);
 	}
 
 	private ConnectionListener buildConnectionListener() {
@@ -165,49 +152,6 @@ public class TableCombo extends BaseJpaController<ITable>
 				}
 			}
 		});
-	}
-
-	protected void tableChanged(Notification notification) {
-		if (notification.getFeatureID(ITable.class) == JpaCoreMappingsPackage.ITABLE__SPECIFIED_NAME) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					populateTableName();
-				}
-			});
-		}
-		else if (notification.getFeatureID(ITable.class) == JpaCoreMappingsPackage.ITABLE__DEFAULT_NAME) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					populateDefaultTableName();
-				}
-			});
-		}
-		else if (notification.getFeatureID(ITable.class) == JpaCoreMappingsPackage.ITABLE__DEFAULT_SCHEMA) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					populateTableCombo();
-				}
-			});
-		}
-		else if (notification.getFeatureID(ITable.class) == JpaCoreMappingsPackage.ITABLE__SPECIFIED_SCHEMA) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					populateTableCombo();
-				}
-			});
-		}
 	}
 
 	@Override

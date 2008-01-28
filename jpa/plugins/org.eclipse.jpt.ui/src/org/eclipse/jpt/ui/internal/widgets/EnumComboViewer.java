@@ -6,10 +6,11 @@
  *
  * Contributors: Oracle. - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.ui.internal.mappings.details;
+package org.eclipse.jpt.ui.internal.widgets;
 
 import java.text.Collator;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
@@ -17,17 +18,18 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.Model;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
+ * This pane simply shows a combo where its data is populating through
+ * {@link #choices()} and a default value can also be added.
+ * <p>
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
@@ -36,16 +38,15 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see ColumnComposite
- * @see EnumTypeComposite
- * @see FetchTypeComposite
- *
  * @version 2.0
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public abstract class EnumComboViewer<T extends Model, V> extends BaseJpaController<T>
+public abstract class EnumComboViewer<T extends Model, V> extends AbstractPane<T>
 {
+	/**
+	 * The main widget of this pane.
+	 */
 	private ComboViewer comboViewer;
 
 	/**
@@ -56,14 +57,28 @@ public abstract class EnumComboViewer<T extends Model, V> extends BaseJpaControl
 	/**
 	 * Creates a new <code>EnumComboViewer</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various widgets
 	 */
-	protected EnumComboViewer(BaseJpaController<? extends T> parentController,
+	protected EnumComboViewer(AbstractPane<? extends T> parentPane,
 	                          Composite parent) {
 
-		super(parentController, parent);
+		super(parentPane, parent);
+	}
+
+	/**
+	 * Creates a new <code>EnumComboViewer</code>.
+	 *
+	 * @param parentPane The parent container of this one
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various widgets
+	 */
+	protected EnumComboViewer(AbstractPane<?> parentPane,
+	                          PropertyValueModel<? extends T> subjectHolder,
+	                          Composite parent) {
+
+		super(parentPane, subjectHolder, parent);
 	}
 
 	/**
@@ -75,9 +90,18 @@ public abstract class EnumComboViewer<T extends Model, V> extends BaseJpaControl
 	 */
 	protected EnumComboViewer(PropertyValueModel<? extends T> subjectHolder,
 	                          Composite parent,
-	                          TabbedPropertySheetWidgetFactory widgetFactory) {
+	                          IWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void addPropertyNames(Collection<String> propertyNames) {
+		super.addPropertyNames(propertyNames);
+		propertyNames.add(propertyName());
 	}
 
 	/**
@@ -156,25 +180,36 @@ public abstract class EnumComboViewer<T extends Model, V> extends BaseJpaControl
 		return this.buildDisplayString(nlsClass, composite.getClass(), value);
 	}
 
+	/**
+	 * Creates the display string for the given element. If the element is the
+	 * virtual <code>null</code> value then its display string will be "Default"
+	 * appended by the actual default value, if it exists.
+	 *
+	 * @param value The value to convert into a human readable string
+	 * @return The string representation of the given element
+	 */
 	@SuppressWarnings("unchecked")
+	private String buildDisplayString(Object value) {
+		if (value == NULL_VALUE) {
+			V defaultValue = (subject() != null) ? defaultValue() : null;
+
+			if (defaultValue != null) {
+				String displayString = displayString(defaultValue);
+				return NLS.bind(JptUiMessages.EnumComboViewer_defaultWithDefault, displayString);
+			}
+			else {
+				return JptUiMessages.EnumComboViewer_default;
+			}
+		}
+
+		return displayString((V) value);
+	}
+
 	private LabelProvider buildLabelProvider() {
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-
-				if (element == NULL_VALUE) {
-					V defaultValue = (subject() != null) ? defaultValue() : null;
-
-					if (defaultValue != null) {
-						String displayString = displayString(defaultValue);
-						return NLS.bind(JptUiMappingsMessages.EnumComboViewer_defaultWithDefault, displayString);
-					}
-					else {
-						return JptUiMappingsMessages.EnumComboViewer_default;
-					}
-				}
-
-				return displayString((V) element);
+				return buildDisplayString(element);
 			}
 		};
 	}
@@ -298,15 +333,11 @@ public abstract class EnumComboViewer<T extends Model, V> extends BaseJpaControl
 	 *
 	 * @return The property name associated with the value being shown by this
 	 * viewer
+	 * @deprecated Use {@link #addPropertyNames(Collection)}
 	 */
-	protected abstract String propertyName();
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected String[] propertyNames() {
-		return new String[] { this.propertyName() };
+	@Deprecated
+	protected String propertyName() {
+		return "";
 	}
 
 	/**

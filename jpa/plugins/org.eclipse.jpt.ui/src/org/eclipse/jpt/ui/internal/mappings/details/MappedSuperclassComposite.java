@@ -9,42 +9,36 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IMappedSuperclass;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
+import org.eclipse.jpt.ui.internal.details.IJpaComposite;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class MappedSuperclassComposite extends BaseJpaController<IMappedSuperclass>
+/**
+ * @see IMappedSuperclass
+ * @see BaseJpaUiFactory - The factory creating this pane
+ *
+ * @version 2.0
+ * @since 2.0
+ */
+public class MappedSuperclassComposite extends AbstractFormPane<IMappedSuperclass>
+                                       implements IJpaComposite<IMappedSuperclass>
 {
-//	private IMappedSuperclass mappedSuperclass;
-//	private Adapter mappedSuperclassListener;
-
+	/**
+	 * Creates a new <code>MappedSuperclassComposite</code>.
+	 *
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public MappedSuperclassComposite(PropertyValueModel<? extends IMappedSuperclass> subjectHolder,
 	                                 Composite parent,
 	                                 TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-//		this.mappedSuperclassListener = buildMappedSuperclassListener();
 	}
-//
-//	private Adapter buildMappedSuperclassListener() {
-//		return new AdapterImpl() {
-//			@Override
-//			public void notifyChanged(Notification notification) {
-//				mappedSuperclassChanged(notification);
-//			}
-//		};
-//	}
 
-	@Override
-	protected void disengageListeners() {
-//		if (this.persistentType != null){
-//			this.persistentType.eAdapters().remove(this.persistentTypeItemProvider);
-//			this.persistentTypeItemProvider.removeListener(getPersistentTypeListener());
-//		}
-	}
 
 //	private ComboViewer buildAccessTypeCombo(Composite parent) {
 //		ComboViewer viewer = new ComboViewer(parent, SWT.READ_ONLY);
@@ -63,19 +57,9 @@ public class MappedSuperclassComposite extends BaseJpaController<IMappedSupercla
 //		return viewer;
 //	}
 
-	@Override
-	protected void doPopulate() {
-	}
-
-	@Override
-	protected void engageListeners() {
-//		this.persistentTypeItemProvider.addListener(getPersistentTypeListener());
-//		this.persistentType.eAdapters().add(this.persistentTypeItemProvider);
-	}
 
 	@Override
 	protected void initializeLayout(Composite composite) {
-		composite.setLayout(new FillLayout(SWT.VERTICAL));
 
 //		Label accessTypeLabel = new Label(composite, SWT.LEFT);
 //		accessTypeLabel.setText(DaliUiMessages.MappedSuperclassComposite_accessType);
@@ -89,24 +73,4 @@ public class MappedSuperclassComposite extends BaseJpaController<IMappedSupercla
 //		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.accessTypeComboViewer.getCombo(), IDaliHelpContextIds.ENTITY_ACCESS_TYPE);
 
 	}
-
-//	private INotifyChangedListener getPersistentTypeListener() {
-//		if (this.persistentTypeListener == null) {
-//			this.persistentTypeListener = new INotifyChangedListener() {
-//				public void notifyChanged(Notification notification) {
-//					if (notification.getFeatureID(PersistentType.class) == OrmPackage.PERSISTENT_TYPE__ACCESS_TYPE) {
-//						final AccessType accessType = (AccessType) notification.getNewValue();
-//						Display.getDefault().syncExec(new Runnable() {
-//							public void run() {
-//								if (((StructuredSelection) accessTypeComboViewer.getSelection()).getFirstElement() != accessType) {
-//									accessTypeComboViewer.setSelection(new StructuredSelection(accessType));
-//								}
-//							}
-//						});
-//					}
-//				}
-//			};
-//		}
-//		return this.persistentTypeListener;
-//	}
 }

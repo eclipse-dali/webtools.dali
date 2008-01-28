@@ -11,7 +11,8 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
+import org.eclipse.jpt.ui.internal.details.IJpaComposite;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -46,23 +47,27 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * | | OptionalComposite                                                     | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * |  x Lob                                                                    |
- * |                                                                           |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | LobComposite                                                          | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see IBasicMapping
- * @see BaseJpaUiFactory
+ * @see BaseJpaUiFactory - The factory creating this pane
  * @see ColumnComposite
  * @see EnumTypeComposite
  * @see FetchTypeComposite
+ * @see LobComposite
  * @see OptionalComposite
  * @see TemporalTypeComposite
  *
  * @version 2.0
  * @since 1.0
  */
-public class BasicMappingComposite extends BaseJpaController<IBasicMapping>
+public class BasicMappingComposite extends AbstractFormPane<IBasicMapping>
+                                   implements IJpaComposite<IBasicMapping>
 {
 	/**
 	 * Creates a new <code>BasicMappingComposite</code>.
@@ -115,6 +120,6 @@ public class BasicMappingComposite extends BaseJpaController<IBasicMapping>
 		new OptionalComposite(this, buildPane(container, groupBoxMargin));
 
 		// Lob check box
-		new LobCheckBox(this, buildPane(container, groupBoxMargin));
+		new LobComposite(this, buildPane(container, groupBoxMargin));
 	}
 }

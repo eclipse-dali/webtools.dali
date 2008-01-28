@@ -35,14 +35,31 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
+/**
+ * The abstract definition of the details page responsible to show the
+ * information for an persistent type.
+ *
+ * @see IPersistentType
+ *
+ * @version 2.0
+ * @since 1.0
+ */
+@SuppressWarnings("nls")
 public abstract class PersistentTypeDetailsPage<T extends IPersistentType> extends BaseJpaDetailsPage<T>
 {
 	private Map<String, IJpaComposite<ITypeMapping>> composites;
 	private String currentMappingKey;
 	private ComboViewer typeMappingCombo;
-	protected PageBook typeMappingPageBook;
+	private PageBook typeMappingPageBook;
 	private IJpaComposite<ITypeMapping> visibleMappingComposite;
 
+	/**
+	 * Creates a new <code>PersistentTypeDetailsPage</code>.
+	 *
+	 * @param subjectHolder The holder of the subject
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public PersistentTypeDetailsPage(PropertyValueModel<? extends T> subjectHolder,
                                     Composite parent,
                                     TabbedPropertySheetWidgetFactory widgetFactory) {
@@ -98,12 +115,12 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 		return uiProvider.buildPersistentTypeMappingComposite(
 			buildMappingHolder(key),
 			pageBook,
-			getWidgetFactory()
+			getFormWidgetFactory()
 		);
 	}
 
 	protected ComboViewer buildTypeMappingCombo(Composite parent) {
-		CCombo combo = getWidgetFactory().createCCombo(parent);
+		CCombo combo = buildCombo(parent);
 		this.typeMappingCombo = new ComboViewer(combo);
 		this.typeMappingCombo.setContentProvider(buildContentProvider());
 		this.typeMappingCombo.setLabelProvider(buildLabelProvider());
@@ -116,21 +133,17 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 	}
 
 	protected Label buildTypeMappingLabel(Composite parent) {
-		return getWidgetFactory().createLabel(parent, JptUiMessages.PersistentTypePage_mapAs);
+		return buildLabel(parent, JptUiMessages.PersistentTypePage_mapAs);
 	}
 
 	protected PageBook buildTypeMappingPageBook(Composite parent) {
 		this.typeMappingPageBook = new PageBook(parent, SWT.NONE);
 		return this.typeMappingPageBook;
 	}
-	@Override
-	protected void disengageListeners() {
-		super.disengageListeners();
-//		if (this.persistentType != null) {
-//			this.persistentType.eAdapters().remove(this.persistentTypeListener);
-//		}
-	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	public void dispose() {
 		for (Iterator<IJpaComposite<ITypeMapping>> i = this.composites.values().iterator(); i.hasNext(); ) {
@@ -139,19 +152,13 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 		super.dispose();
 	}
 
-
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
 		populateMappingComboAndPage();
-	}
-
-	@Override
-	protected void engageListeners() {
-		super.engageListeners();
-//		if (this.persistentType != null) {
-//			this.persistentType.eAdapters().add(this.persistentTypeListener);
-//		}
 	}
 
 	private IJpaComposite<ITypeMapping> mappingCompositeFor(String key) {
@@ -247,5 +254,4 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 	}
 
 	protected abstract ListIterator<ITypeMappingUiProvider<? extends ITypeMapping>> typeMappingUiProviders();
-
 }

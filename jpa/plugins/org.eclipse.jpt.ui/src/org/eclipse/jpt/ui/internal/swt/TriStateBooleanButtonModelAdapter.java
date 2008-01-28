@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.swt;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -72,9 +73,10 @@ public class TriStateBooleanButtonModelAdapter {
 	 */
 	protected TriStateBooleanButtonModelAdapter(WritablePropertyValueModel<Boolean> booleanHolder, TriStateCheckBox button) {
 		super();
-		if ((booleanHolder == null) || (button == null)) {
-			throw new NullPointerException();
-		}
+
+		Assert.isNotNull(booleanHolder, "The boolean holder cannot be null");
+		Assert.isNotNull(button, "The check box cannot be null");
+
 		this.booleanHolder = booleanHolder;
 		this.button = button;
 

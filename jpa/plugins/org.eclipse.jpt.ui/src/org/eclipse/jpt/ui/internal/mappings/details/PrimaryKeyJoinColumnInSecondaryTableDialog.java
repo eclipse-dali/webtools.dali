@@ -10,30 +10,76 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
-import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
-public class PrimaryKeyJoinColumnInSecondaryTableDialog extends AbstractJoinColumnDialog<IPrimaryKeyJoinColumn> {
+/**
+ * TODO
+ *
+ * @see PrimaryKeyJoinColumnInSecondaryTableStateObject
+ * @see AbstractJoinColumnDialogPane
+ *
+ * @version 2.0
+ * @since 2.0
+ */
+public class PrimaryKeyJoinColumnInSecondaryTableDialog extends AbstractJoinColumnDialog<PrimaryKeyJoinColumnInSecondaryTableStateObject> {
 
 	private ISecondaryTable secondaryTable;
 
-	PrimaryKeyJoinColumnInSecondaryTableDialog(Shell parent, ISecondaryTable secondaryTable) {
+	/**
+	 * Creates a new <code>PrimaryKeyJoinColumnDialog</code>.
+	 *
+	 * @param parent The parent shell
+	 * @param joinColumn
+	 */
+	public PrimaryKeyJoinColumnInSecondaryTableDialog(Shell parent,
+	                                                  IPrimaryKeyJoinColumn joinColumn) {
+
+		super(parent, joinColumn);
+	}
+
+	/**
+	 * Creates a new <code>PrimaryKeyJoinColumnDialog</code>.
+	 *
+	 * @param parent The parent shell
+	 * @param secondaryTable
+	 */
+	public PrimaryKeyJoinColumnInSecondaryTableDialog(Shell parent,
+	                                                  ISecondaryTable secondaryTable) {
+
 		super(parent);
 		this.secondaryTable = secondaryTable;
 	}
 
-	PrimaryKeyJoinColumnInSecondaryTableDialog(Shell parent, IPrimaryKeyJoinColumn joinColumn) {
-		super(parent, joinColumn);
-		this.secondaryTable = (ISecondaryTable) joinColumn.eContainer();
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected PrimaryKeyJoinColumnInSecondaryTableStateObject buildStateObject() {
+
+		if (secondaryTable != null) {
+			return new PrimaryKeyJoinColumnInSecondaryTableStateObject(secondaryTable);
+		}
+
+		return new PrimaryKeyJoinColumnInSecondaryTableStateObject(getJoinColumn());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected Table getNameTable() {
-		return this.secondaryTable.dbTable();
+	public IPrimaryKeyJoinColumn getJoinColumn() {
+		return (IPrimaryKeyJoinColumn) super.getJoinColumn();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected Table getReferencedNameTable() {
-		return this.secondaryTable.typeMapping().primaryDbTable();
+	protected void initializeMainPane(Composite container) {
+		new AbstractJoinColumnDialogPane<PrimaryKeyJoinColumnInSecondaryTableStateObject>(
+			getSubjectHolder(),
+			container
+		);
 	}
 }

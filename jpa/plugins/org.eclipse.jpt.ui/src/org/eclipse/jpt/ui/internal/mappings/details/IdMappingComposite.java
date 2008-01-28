@@ -11,7 +11,8 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
+import org.eclipse.jpt.ui.internal.details.IJpaComposite;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -39,7 +40,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see IIdMapping
- * @see BaseJpaUiFactory
+ * @see BaseJpaUiFactory - The factory creating this pane
  * @see ColumnComposite
  * @see TemporalTypeComposite
  * @see GenerationComposite
@@ -47,18 +48,19 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class IdMappingComposite extends BaseJpaController<IIdMapping>
+public class IdMappingComposite extends AbstractFormPane<IIdMapping>
+                                implements IJpaComposite<IIdMapping>
 {
 	/**
-	 * Creates a new <code>IdComposite</code>.
+	 * Creates a new <code>IdMappingComposite</code>.
 	 *
 	 * @param subjectHolder The holder of the subject <code>IIdMapping</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public IdMappingComposite(PropertyValueModel<? extends IIdMapping> subjectHolder,
-	                   Composite parent,
-	                   TabbedPropertySheetWidgetFactory widgetFactory) {
+	                          Composite parent,
+	                          TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}

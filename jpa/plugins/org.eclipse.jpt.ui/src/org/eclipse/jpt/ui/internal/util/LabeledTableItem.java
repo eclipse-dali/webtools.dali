@@ -44,28 +44,38 @@ public final class LabeledTableItem implements LabeledControl
 	/*
 	 * (non-Javadoc)
 	 */
-	public void setIcon(Image image) {
-		this.updateTableItem(this.tableItem.getText(), image);
+	public void setIcon(final Image image) {
+
+		SWTUtil.asyncExec(new Runnable() {
+			public void run() {
+				updateTableItem(tableItem.getText(), image);
+			}
+		});
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
-	public void setText(String text) {
-		this.updateTableItem(text, this.tableItem.getImage());
+	public void setText(final String text) {
+
+		SWTUtil.asyncExec(new Runnable() {
+			public void run() {
+				updateTableItem(text, tableItem.getImage());
+			}
+		});
 	}
 
 	private void updateTableItem(String text, Image image) {
 
-		Table table = this.tableItem.getParent();
+		Table table = tableItem.getParent();
 		table.getParent().setRedraw(false);
 
-		int index = table.indexOf(this.tableItem);
+		int index = table.indexOf(tableItem);
 		table.remove(index);
 
-		this.tableItem = new TableItem(table, SWT.CHECK, index);
-		this.tableItem.setText(text);
-		this.tableItem.setImage(image);
+		tableItem = new TableItem(table, SWT.CHECK, index);
+		tableItem.setText(text);
+		tableItem.setImage(image);
 
 		table.getParent().pack(true);
 		table.getParent().setRedraw(true);

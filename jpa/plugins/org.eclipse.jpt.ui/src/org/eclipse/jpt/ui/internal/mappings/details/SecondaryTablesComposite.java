@@ -16,8 +16,8 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
@@ -54,18 +54,18 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class SecondaryTablesComposite extends BaseJpaController<IEntity>
+public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 {
 	/**
 	 * Creates a new <code>SecondaryTablesComposite</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public SecondaryTablesComposite(BaseJpaController<? extends IEntity> parentController,
+	public SecondaryTablesComposite(AbstractFormPane<? extends IEntity> parentPane,
 	                                Composite parent) {
 
-		super(parentController, parent);
+		super(parentPane, parent);
 	}
 
 	/**
@@ -150,7 +150,7 @@ public class SecondaryTablesComposite extends BaseJpaController<IEntity>
 	}
 
 	private ListValueModel/*<ISecondaryTable>*/ buildSecondaryTablesListHolder() {
-		return new ListAspectAdapter<IEntity>/*<ISecondaryTable, IEntity*/(getSubjectHolder(), IEntity.SPECIFIED_SECONDARY_TABLES_LIST) {
+		return new ListAspectAdapter<IEntity, ISecondaryTable>(getSubjectHolder(), IEntity.SPECIFIED_SECONDARY_TABLES_LIST) {
 			@Override
 			protected ListIterator<ISecondaryTable> listIterator_() {
 				return subject.secondaryTables();
@@ -164,7 +164,7 @@ public class SecondaryTablesComposite extends BaseJpaController<IEntity>
 	}
 
 	private ListValueModel/*<ISecondaryTable>*/ buildSortedSecondaryTablesListHolder() {
-		return new SortedListValueModelAdapter/*<IEntity, ISecondaryTable>*/(
+		return new SortedListValueModelAdapter<ISecondaryTable>(
 			buildSecondaryTablesListHolder()
 		);
 	}

@@ -23,9 +23,24 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class JavaPersistentTypeDetailsPage extends
-		PersistentTypeDetailsPage<IJavaPersistentType>
+/**
+ * The default implementation of the details page used for the Java persistent
+ * type.
+ *
+ * @see IJavaPersistentType
+ *
+ * @version 2.0
+ * @since 2.0
+ */
+public class JavaPersistentTypeDetailsPage extends PersistentTypeDetailsPage<IJavaPersistentType>
 {
+	/**
+	 * Creates a new <code>JavaPersistentTypeDetailsPage</code>.
+	 *
+	 * @param subjectHolder The holder of the subject
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public JavaPersistentTypeDetailsPage(PropertyValueModel<? extends IJavaPersistentType> subjectHolder,
 	                                     Composite parent,
 	                                     TabbedPropertySheetWidgetFactory widgetFactory) {
@@ -38,17 +53,20 @@ public class JavaPersistentTypeDetailsPage extends
 		return JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected ListIterator<ITypeMappingUiProvider<? extends ITypeMapping>> typeMappingUiProviders() {
 		// TODO
 		return ((BaseJpaPlatformUi) jpaPlatformUi()).javaTypeMappingUiProviders();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-//		GridLayout gridLayout = new GridLayout();
-//		gridLayout.numColumns = 2;
-//		composite.setLayout(gridLayout);
 
 		// Entity Type widgets
 		buildLabeledComposite(
@@ -56,22 +74,15 @@ public class JavaPersistentTypeDetailsPage extends
 			buildTypeMappingLabel(container),
 			buildTypeMappingCombo(container).getControl()
 		);
-//		buildTypeMappingLabel(container);
-//
-//		ComboViewer typeMappingCombo = buildTypeMappingCombo(container);
-//		GridData gridData = new GridData();
-//		gridData.horizontalAlignment = GridData.FILL;
-//		gridData.grabExcessHorizontalSpace = true;
-//		typeMappingCombo.getCCombo().setLayoutData(gridData);
 
 		PageBook typeMappingPageBook = buildTypeMappingPageBook(container);
 
 		GridData gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.FILL;
+		gridData.horizontalAlignment       = SWT.FILL;
+		gridData.verticalAlignment         = SWT.FILL;
 		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalSpan = 1;
+		gridData.grabExcessVerticalSpace   = true;
+
 		typeMappingPageBook.setLayoutData(gridData);
 	}
 }

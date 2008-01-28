@@ -8,37 +8,58 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
-import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
-import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
-import org.eclipse.jpt.core.internal.resource.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaDetailsPage;
-import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser;
-import org.eclipse.jpt.ui.internal.mappings.details.StringWithDefaultChooser.StringHolder;
+import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
-import org.eclipse.jpt.ui.internal.xml.details.AccessTypeComposite.AccessHolder;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
+/**
+ * Here the layout of this pane:
+ * <pre>
+ * -----------------------------------------------------------------------------
+ * |              ------------------------------------------------------------ |
+ * | Package:     |                                                        |v| |
+ * |              ------------------------------------------------------------ |
+ * |              ------------------------------------------------------------ |
+ * | Schema:      |                                                        |v| |
+ * |              ------------------------------------------------------------ |
+ * |              ------------------------------------------------------------ |
+ * | Catalog:     |                                                        |v| |
+ * |              ------------------------------------------------------------ |
+ * |              ------------------------------------------------------------ |
+ * | Access Type: |                                                        |v| |
+ * |              ------------------------------------------------------------ |
+ * |                                                                           |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | PersistenceUnitMetadataComposite                                      | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * -----------------------------------------------------------------------------</pre>
+ *
+ * @see EntityMappings
+ * @see XmlEntityMappingsDetailsPage - The parent container
+ * @see PersistenceUnitMetadataComposite
+ *
+ * @version 2.0
+ * @since 2.0
+ */
 public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappings>
 {
-	private AccessTypeComposite accessComboViewer;
-	private PersistenceUnitMetadataSection persistenceUnitMetadataSection;
-	private StringWithDefaultChooser xmlCatalogChooser;
-	private XmlPackageChooser xmlPackageChooser;
-	private StringWithDefaultChooser xmlSchemaChooser;
-
+	/**
+	 * Creates a new <code>XmlEntityMappingsDetailsPage</code>.
+	 *
+	 * @param subjectHolder The holder of the subject
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public XmlEntityMappingsDetailsPage(PropertyValueModel<? extends EntityMappings> subjectHolder,
 	                                    Composite parent,
 	                                    TabbedPropertySheetWidgetFactory widgetFactory) {
@@ -46,96 +67,79 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	@Override
-	protected void disengageListeners() {
+	private EnumComboViewer<EntityMappings, AccessType> buildAccessTypeCombo(Composite container) {
+
+		return new EnumComboViewer<EntityMappings, AccessType>(this, container) {
+			@Override
+			protected AccessType[] choices() {
+				return AccessType.values();
+			}
+
+			@Override
+			protected AccessType defaultValue() {
+				return subject().getDefaultAccess();
+			}
+
+			@Override
+			protected String displayString(AccessType value) {
+				return buildDisplayString(
+					JptUiXmlMessages.class,
+					XmlEntityMappingsDetailsPage.this,
+					value
+				);
+			}
+
+			@Override
+			protected AccessType getValue() {
+				return subject().getAccess();
+			}
+
+			@Override
+			protected String propertyName() {
+				return EntityMappings.SPECIFIED_ACCESS_PROPERTY;
+			}
+
+			@Override
+			protected void setValue(AccessType value) {
+				subject().setSpecifiedAccess(value);
+			}
+		};
 	}
 
-	@Override
-	public void dispose() {
-		this.xmlPackageChooser.dispose();
-		this.xmlSchemaChooser.dispose();
-		this.xmlCatalogChooser.dispose();
-		this.accessComboViewer.dispose();
-		this.persistenceUnitMetadataSection.dispose();
-		super.dispose();
+	private EnumComboViewer<EntityMappings, String> buildCatalogComboViewer(Composite container) {
+
+		return new EnumComboViewer<EntityMappings, String>(this, container) {
+			@Override
+			protected String[] choices() {
+				return new String[0];
+			}
+
+			@Override
+			protected String defaultValue() {
+				return subject().getDefaultCatalog();
+			}
+
+			@Override
+			protected String displayString(String value) {
+				return value;
+			}
+
+			@Override
+			protected String getValue() {
+				return subject().getSpecifiedCatalog();
+			}
+
+			@Override
+			protected String propertyName() {
+				return EntityMappings.SPECIFIED_CATALOG_PROPERTY;
+			}
+
+			@Override
+			protected void setValue(String value) {
+				subject().setSpecifiedCatalog(value);
+			}
+		};
 	}
-
-	@Override
-	protected void doPopulate() {
-		super.doPopulate();
-		this.xmlPackageChooser.populate();
-		this.xmlSchemaChooser.populate();
-		this.xmlCatalogChooser.populate();
-		this.accessComboViewer.populate();
-		this.persistenceUnitMetadataSection.populate();
-	}
-
-	@Override
-	protected void engageListeners() {
-	}
-
-	@Override
-	protected void initializeLayout(Composite composite) {
-		IWorkbenchHelpSystem helpSystem = PlatformUI.getWorkbench().getHelpSystem();
-		GridLayout layout = new GridLayout(2, false);
-		layout.horizontalSpacing = 6;
-		composite.setLayout(layout);
-
-		GridData gridData;
-
-		CommonWidgets.buildPackageLabel(composite, getWidgetFactory());
-
-		this.xmlPackageChooser = CommonWidgets.buildXmlPackageChooser(getSubjectHolder(), composite, getWidgetFactory());
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		this.xmlPackageChooser.getControl().setLayoutData(gridData);
-		helpSystem.setHelp(xmlPackageChooser.getControl(), IJpaHelpContextIds.ENTITY_ORM_PACKAGE);
-
-
-		CommonWidgets.buildSchemaLabel(composite, getWidgetFactory());
-
-		this.xmlSchemaChooser = CommonWidgets.buildSchemaChooser(getSubjectHolder(), composite, getWidgetFactory());
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		this.xmlSchemaChooser.getCombo().setLayoutData(gridData);
-		helpSystem.setHelp(xmlSchemaChooser.getControl(), IJpaHelpContextIds.ENTITY_ORM_SCHEMA);
-
-
-		CommonWidgets.buildCatalogLabel(composite, getWidgetFactory());
-
-		this.xmlCatalogChooser = CommonWidgets.buildCatalogChooser(getSubjectHolder(), composite, getWidgetFactory());
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		this.xmlCatalogChooser.getCombo().setLayoutData(gridData);
-		helpSystem.setHelp(xmlCatalogChooser.getControl(), IJpaHelpContextIds.ENTITY_ORM_CATALOG);
-
-
-		CommonWidgets.buildAccessLabel(composite, getWidgetFactory());
-
-		this.accessComboViewer = CommonWidgets.buildAccessTypeComboViewer(getSubjectHolder(), composite, getWidgetFactory());
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		this.accessComboViewer.getControl().setLayoutData(gridData);
-		helpSystem.setHelp(accessComboViewer.getControl(), IJpaHelpContextIds.ENTITY_ORM_ACCESS);
-
-		this.persistenceUnitMetadataSection = new PersistenceUnitMetadataSection(buildPersistentUnitMetadaHolder(), composite, getWidgetFactory());
-
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalSpan = 2;
-		this.persistenceUnitMetadataSection.getSection().setLayoutData(gridData);
-	}
-
 
 	private PropertyValueModel<PersistenceUnitMetadata> buildPersistentUnitMetadaHolder() {
 		return new TransformationPropertyValueModel<EntityMappings, PersistenceUnitMetadata>(getSubjectHolder()) {
@@ -146,121 +150,98 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 		};
 	}
 
+	private EnumComboViewer<EntityMappings, String> buildSchemaComboViewer(Composite container) {
 
-	private class CatalogHolder extends JpaEObject implements StringHolder {
-		private EntityMappingsInternal entityMappings;
-		CatalogHolder(EntityMappings entityMappings) {
-			super();
-			this.entityMappings = (EntityMappingsInternal) entityMappings;
-		}
-
-		public int defaultFeatureId() {
-			return OrmPackage.ENTITY_MAPPINGS_INTERNAL__DEFAULT_CATALOG;
-		}
-
-		public String defaultItem() {
-			String defaultCatalog = this.entityMappings.getDefaultCatalog();
-			if (defaultCatalog != null) {
-				return NLS.bind(JptUiXmlMessages.XMLEntityMappingsPage_CatalogDefault, defaultCatalog);
+		return new EnumComboViewer<EntityMappings, String>(this, container) {
+			@Override
+			protected String[] choices() {
+				return new String[0];
 			}
-			return JptUiXmlMessages.XMLEntityMappingsPage_CatalogNoDefaultSpecified;
-		}
 
-		public Class featureClass() {
-			return EntityMappingsInternal.class;
-		}
+			@Override
+			protected String defaultValue() {
+				return subject().getDefaultSchema();
+			}
 
-		public int featureId() {
-			return OrmPackage.ENTITY_MAPPINGS_INTERNAL__SPECIFIED_CATALOG;
-		}
+			@Override
+			protected String displayString(String value) {
+				return value;
+			}
 
-		public String getString() {
-			return this.entityMappings.getSpecifiedCatalog();
-		}
+			@Override
+			protected String getValue() {
+				return subject().getSpecifiedSchema();
+			}
 
-		public void setString(String newCatalog) {
-			this.entityMappings.setSpecifiedCatalog(newCatalog);
-		}
+			@Override
+			protected String propertyName() {
+				return EntityMappings.SPECIFIED_SCHEMA_PROPERTY;
+			}
 
-		public boolean supportsDefault() {
-			return true;
-		}
-
-		public EObject wrappedObject() {
-			return this.entityMappings;
-		}
+			@Override
+			protected void setValue(String value) {
+				subject().setSpecifiedSchema(value);
+			}
+		};
 	}
 
-	private class MyAccessHolder extends JpaEObject implements AccessHolder{
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void initializeLayout(Composite container) {
 
-		private EntityMappingsInternal entityMappings;
-		MyAccessHolder(EntityMappings entityMappings) {
-			super();
-			this.entityMappings = (EntityMappingsInternal) entityMappings;
-		}
-		public Class featureClass() {
-			return EntityMappingsInternal.class;
-		}
+		// Package widgets
+		XmlPackageChooser xmlCatalogChooser = new XmlPackageChooser(
+			this,
+			container
+		);
 
-		public int featureId() {
-			return OrmPackage.ENTITY_MAPPINGS_INTERNAL__SPECIFIED_ACCESS;
-		}
+		buildLabeledComposite(
+			container,
+			JptUiXmlMessages.XmlEntityMappingsDetailsPage_package,
+			xmlCatalogChooser.getControl(),
+			IJpaHelpContextIds.ENTITY_ORM_PACKAGE
+		);
 
-		public AccessType getAccess() {
-			return entityMappings.getSpecifiedAccess();
-		}
+		// Schema widgets
+		EnumComboViewer<EntityMappings, String> schemaComboViewer =
+			buildSchemaComboViewer(container);
 
-		public void setAccess(AccessType accessType) {
-			entityMappings.setSpecifiedAccess(accessType);
-		}
+		buildLabeledComposite(
+			container,
+			JptUiXmlMessages.XmlSchemaChooser_SchemaChooser,
+			schemaComboViewer.getControl(),
+			IJpaHelpContextIds.ENTITY_ORM_SCHEMA
+		);
 
-		public EObject wrappedObject() {
-			return this.entityMappings;
-		}
+		// Catalog widgets
+		EnumComboViewer<EntityMappings, String> catalogComboViewer =
+			buildCatalogComboViewer(container);
 
-	}
+		buildLabeledComposite(
+			container,
+			JptUiXmlMessages.XmlCatalogChooser_CatalogChooser,
+			catalogComboViewer.getControl(),
+			IJpaHelpContextIds.ENTITY_ORM_CATALOG
+		);
 
-	private class SchemaHolder extends JpaEObject implements StringHolder {
-		private EntityMappingsInternal entityMappings;
-		SchemaHolder(EntityMappings entityMappings) {
-			super();
-			this.entityMappings = (EntityMappingsInternal) entityMappings;
-		}
+		// Access Type widgets
+		EnumComboViewer<EntityMappings, AccessType> accessTypeComposite =
+			buildAccessTypeCombo(container);
 
-		public int defaultFeatureId() {
-			return OrmPackage.ENTITY_MAPPINGS_INTERNAL__DEFAULT_SCHEMA;
-		}
+		buildLabeledComposite(
+			container,
+			JptUiXmlMessages.PersistentTypePage_AccessLabel,
+			accessTypeComposite.getControl(),
+			IJpaHelpContextIds.ENTITY_ORM_ACCESS
+		);
 
-		public String defaultItem() {
-			String defaultSchema = this.entityMappings.getDefaultSchema();
-			if (defaultSchema != null) {
-				return NLS.bind(JptUiXmlMessages.XMLEntityMappingsPage_SchemaDefault, defaultSchema);
-			}
-			return JptUiXmlMessages.XMLEntityMappingsPage_SchemaNoDefaultSpecified;
-		}
-
-		public Class featureClass() {
-			return EntityMappingsInternal.class;
-		}
-
-		public int featureId() {
-			return OrmPackage.ENTITY_MAPPINGS_INTERNAL__SPECIFIED_SCHEMA;
-		}
-
-		public String getString() {
-			return this.entityMappings.getSpecifiedSchema();
-		}
-
-		public void setString(String newSchema) {
-			this.entityMappings.setSpecifiedSchema(newSchema);
-		}
-
-		public boolean supportsDefault() {
-			return true;
-		}
-
-		public EObject wrappedObject() {
-			return this.entityMappings;
-		}
+		// Persistence Unit Metadata widgets
+		new PersistenceUnitMetadataComposite(
+			this,
+			buildPersistentUnitMetadaHolder(),
+			container
+		);
 	}
 }

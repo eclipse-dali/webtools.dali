@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseAdapter;
@@ -37,6 +38,7 @@ import org.eclipse.swt.widgets.TableItem;
  * @version 2.0
  * @since 2.0
  */
+@SuppressWarnings("nls")
 public final class TriStateCheckBox {
 
 	/**
@@ -141,15 +143,35 @@ public final class TriStateCheckBox {
 				return new Point(bounds.x + bounds.width, bounds.y + bounds.height);
 			}
 
+			private int indentation() {
+				if (Platform.OS_WIN32.equals(Platform.getOS())) {
+					try {
+						String version = System.getProperty("os.version");
+
+						// Under Vista, the check box has to be indented by -6
+						// but under XP, it needs to remain 0
+						if (Double.parseDouble(version) >= 6) {
+							return 6;
+						}
+					}
+					catch (Exception e) {
+						// Ignore and return 0
+					}
+				}
+
+				return 0;
+			}
+
 			@Override
 			protected void layout(Composite composite, boolean flushCache) {
 
 				Rectangle bounds = TriStateCheckBox.this.getCheckBox().getBounds();
+				int indentation = indentation();
 
 				TriStateCheckBox.this.table.setBounds(
-					-6,
+					-indentation,
 					0,
-					bounds.x + bounds.width + 6,
+					bounds.x + bounds.width + indentation,
 					bounds.y + bounds.height
 				);
 			}

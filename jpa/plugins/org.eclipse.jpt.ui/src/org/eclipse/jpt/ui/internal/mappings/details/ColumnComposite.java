@@ -8,16 +8,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IAbstractColumn;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * Here the layout of this pane:
@@ -33,20 +35,14 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * | | TableCombo                                                            | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | EnumComboViewer                                                       | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | EnumComboViewer                                                       | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
+ * |                                                                           |
+ * | x Insertable                                                              |
+ * |                                                                           |
+ * | x Updatable                                                               |
+ * |                                                                           |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see IColumn
- * @see EnumComboViewer
  * @see ColumnCombo
  * @see TableCombo
  * @see BasicMappingComposite - A container of this pane
@@ -59,20 +55,20 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class ColumnComposite extends BaseJpaController<IColumn>
+public class ColumnComposite extends AbstractFormPane<IColumn>
 {
 	/**
 	 * Creates a new <code>ColumnComposite</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of the subject <code>IColumn</code>
 	 * @param parent The parent container
 	 */
-	protected ColumnComposite(BaseJpaController<?> parentController,
+	protected ColumnComposite(AbstractFormPane<?> parentPane,
 	                          PropertyValueModel<? extends IColumn> subjectHolder,
 	                          Composite parent) {
 
-		super(parentController, subjectHolder, parent);
+		super(parentPane, subjectHolder, parent);
 	}
 
 	/**
@@ -84,87 +80,99 @@ public class ColumnComposite extends BaseJpaController<IColumn>
 	 */
 	public ColumnComposite(PropertyValueModel<? extends IColumn> subjectHolder,
 	                       Composite parent,
-	                       TabbedPropertySheetWidgetFactory widgetFactory) {
+	                       IWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private EnumComboViewer<IColumn, Boolean> buildInsertableCombo(Composite container) {
-
-		return new EnumComboViewer<IColumn, Boolean>(getSubjectHolder(), container, getWidgetFactory()) {
-
+	private WritablePropertyValueModel<Boolean> buildInsertableHolder() {
+		return new PropertyAspectAdapter<IColumn, Boolean>(
+			getSubjectHolder(),
+			IColumn.DEFAULT_INSERTABLE_PROPERTY,
+			IColumn.SPECIFIED_INSERTABLE_PROPERTY)
+		{
 			@Override
-			protected Boolean[] choices() {
-				return new Boolean[] { Boolean.TRUE, Boolean.FALSE };
+			protected Boolean buildValue_() {
+				return subject.getSpecifiedInsertable();
 			}
 
 			@Override
-			protected Boolean defaultValue() {
-				return subject().getDefaultInsertable();
-			}
-
-			@Override
-			protected String displayString(Boolean value) {
-				return buildDisplayString(
-					JptUiMappingsMessages.class,
-					ColumnComposite.this,
-					value
-				);
-			}
-
-			@Override
-			protected Boolean getValue() {
-				return subject().getSpecifiedInsertable();
-			}
-
-			@Override
-			protected String propertyName() {
-				return IAbstractColumn.SPECIFIED_INSERTABLE_PROPERTY;
-			}
-
-			@Override
-			protected void setValue(Boolean value) {
-				subject().setSpecifiedInsertable(value);
+			protected void setValue_(Boolean value) {
+				subject.setSpecifiedInsertable(value);
 			}
 		};
 	}
 
-	private EnumComboViewer<IColumn, Boolean> buildUpdatableCombo(Composite container) {
+	private PropertyValueModel<String> buildInsertableStringHolder() {
 
-		return new EnumComboViewer<IColumn, Boolean>(getSubjectHolder(), container, getWidgetFactory()) {
+		return new TransformationPropertyValueModel<Boolean, String>(buildInsertableHolder()) {
 
 			@Override
-			protected Boolean[] choices() {
-				return new Boolean[] { Boolean.TRUE, Boolean.FALSE };
+			protected String transform(Boolean value) {
+
+				if ((subject() != null) && (value == null)) {
+
+					Boolean defaultValue = subject().getDefaultInsertable();
+
+					if (defaultValue != null) {
+
+						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+						                                           JptUiMappingsMessages.Boolean_False;
+
+						return NLS.bind(
+							JptUiMappingsMessages.ColumnComposite_insertableWithDefault,
+							defaultStringValue
+						);
+					}
+				}
+
+				return JptUiMappingsMessages.ColumnComposite_insertable;
+			}
+		};
+	}
+
+	private WritablePropertyValueModel<Boolean> buildUpdatableHolder() {
+		return new PropertyAspectAdapter<IColumn, Boolean>(
+			getSubjectHolder(),
+			IColumn.DEFAULT_UPDATABLE_PROPERTY,
+			IColumn.SPECIFIED_UPDATABLE_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				return subject.getSpecifiedUpdatable();
 			}
 
 			@Override
-			protected Boolean defaultValue() {
-				return subject().getDefaultUpdatable();
+			protected void setValue_(Boolean value) {
+				subject.setSpecifiedUpdatable(value);
 			}
+		};
+	}
+
+	private PropertyValueModel<String> buildUpdatableStringHolder() {
+
+		return new TransformationPropertyValueModel<Boolean, String>(buildUpdatableHolder()) {
 
 			@Override
-			protected String displayString(Boolean value) {
-				return buildDisplayString(
-					JptUiMappingsMessages.class,
-					ColumnComposite.this,
-					value
-				);
-			}
+			protected String transform(Boolean value) {
 
-			@Override
-			protected Boolean getValue() {
-				return subject().getSpecifiedUpdatable();
-			}
+				if ((subject() != null) && (value == null)) {
 
-			@Override
-			protected String propertyName() {
-				return IAbstractColumn.SPECIFIED_UPDATABLE_PROPERTY;
-			}
+					Boolean defaultValue = subject().getDefaultUpdatable();
 
-			@Override
-			protected void setValue(Boolean value) {
-				subject().setSpecifiedUpdatable(value);
+					if (defaultValue != null) {
+
+						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+						                                           JptUiMappingsMessages.Boolean_False;
+
+						return NLS.bind(
+							JptUiMappingsMessages.ColumnComposite_updatableWithDefault,
+							defaultStringValue
+						);
+					}
+				}
+
+				return JptUiMappingsMessages.ColumnComposite_updatable;
 			}
 		};
 	}
@@ -175,6 +183,7 @@ public class ColumnComposite extends BaseJpaController<IColumn>
 	@Override
 	protected void initializeLayout(Composite container) {
 
+		// Column group pane
 		container = buildTitledPane(
 			container,
 			JptUiMappingsMessages.ColumnComposite_columnSection
@@ -190,8 +199,6 @@ public class ColumnComposite extends BaseJpaController<IColumn>
 			IJpaHelpContextIds.MAPPING_COLUMN
 		);
 
-		registerSubPane(columnCombo);
-
 		// Table widgets
 		TableCombo tableCombo = new TableCombo(this, container);
 
@@ -202,30 +209,22 @@ public class ColumnComposite extends BaseJpaController<IColumn>
 			IJpaHelpContextIds.MAPPING_COLUMN_TABLE
 		);
 
-		registerSubPane(tableCombo);
-
 		// Insertable widgets
-		EnumComboViewer<IColumn, Boolean> insertableCombo = buildInsertableCombo(container);
-
-		buildLabeledComposite(
+		buildTriStateCheckBoxWithDefault(
 			container,
 			JptUiMappingsMessages.ColumnComposite_insertable,
-			insertableCombo.getControl(),
+			buildInsertableHolder(),
+			buildInsertableStringHolder(),
 			IJpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
 		);
 
-		registerSubPane(insertableCombo);
-
 		// Updatable widgets
-		EnumComboViewer<IColumn, Boolean> updatableCombo = buildUpdatableCombo(container);
-
-		buildLabeledComposite(
+		buildTriStateCheckBoxWithDefault(
 			container,
 			JptUiMappingsMessages.ColumnComposite_updatable,
-			updatableCombo.getControl(),
+			buildUpdatableHolder(),
+			buildUpdatableStringHolder(),
 			IJpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
 		);
-
-		registerSubPane(updatableCombo);
 	}
 }

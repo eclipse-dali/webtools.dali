@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2007 Oracle. All rights reserved. This
+ *  Copyright (c) 2006, 2008 Oracle. All rights reserved. This
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.Collection;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.SearchEngine;
@@ -17,8 +18,8 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
@@ -31,7 +32,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.forms.widgets.Hyperlink;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * Here the layout of this pane:
@@ -49,20 +49,20 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class TargetEntityComposite extends BaseJpaController<IRelationshipMapping>
+public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping>
 {
 	private CCombo targetEntityCombo;
 
 	/**
 	 * Creates a new <code>TargetEntityComposite</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	protected TargetEntityComposite(BaseJpaController<? extends IRelationshipMapping> parentController,
+	protected TargetEntityComposite(AbstractFormPane<? extends IRelationshipMapping> parentPane,
 	                                Composite parent) {
 
-		super(parentController, parent);
+		super(parentPane, parent);
 	}
 
 	/**
@@ -74,9 +74,19 @@ public class TargetEntityComposite extends BaseJpaController<IRelationshipMappin
 	 */
 	public TargetEntityComposite(PropertyValueModel<? extends IRelationshipMapping> subjectHolder,
 	                             Composite parent,
-	                             TabbedPropertySheetWidgetFactory widgetFactory) {
+	                             IWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void addPropertyNames(Collection<String> propertyNames) {
+		super.addPropertyNames(propertyNames);
+		propertyNames.add(IRelationshipMapping.DEFAULT_TARGET_ENTITY_PROPERTY);
+		propertyNames.add(IRelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY);
 	}
 
 	private Runnable buildOpenTargetEntityAction() {
@@ -86,7 +96,6 @@ public class TargetEntityComposite extends BaseJpaController<IRelationshipMappin
 			}
 		};
 	}
-
 
 	private Runnable buildOpenTypeAction() {
 		return new Runnable() {
@@ -142,8 +151,8 @@ public class TargetEntityComposite extends BaseJpaController<IRelationshipMappin
 				PlatformUI.getWorkbench().getProgressService(),
 				SearchEngine.createWorkspaceScope(),
 				IJavaElementSearchConstants.CONSIDER_ALL_TYPES,
-				false,
-				"");
+				false
+			);
 		}
 		catch (JavaModelException e) {
 			JptUiPlugin.log(e);
@@ -228,16 +237,5 @@ public class TargetEntityComposite extends BaseJpaController<IRelationshipMappin
 
 			populateCombo();
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected String[] propertyNames() {
-		return new String[] {
-			IRelationshipMapping.DEFAULT_TARGET_ENTITY_PROPERTY,
-			IRelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY
-		};
 	}
 }

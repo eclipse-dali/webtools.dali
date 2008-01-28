@@ -10,7 +10,8 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.ITransientMapping;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
+import org.eclipse.jpt.ui.internal.details.IJpaComposite;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -19,12 +20,13 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * This pane does not have any widgets.
  *
  * @see ITransientMapping
- * @see BaseJpaUiFactory
+ * @see BaseJpaUiFactory - The factory creating this pane
  *
  * @version 2.0
  * @since 1.0
  */
-public class TransientMappingComposite extends BaseJpaController<ITransientMapping>
+public class TransientMappingComposite extends AbstractFormPane<ITransientMapping>
+                                       implements IJpaComposite<ITransientMapping>
 {
 	/**
 	 * Creates a new <code>TransientMappingComposite</code>.

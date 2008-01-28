@@ -10,7 +10,8 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
+import org.eclipse.jpt.ui.internal.details.IJpaComposite;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -27,24 +28,25 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see IEmbeddedMapping
- * @see BaseJpaUiFactory
+ * @see BaseJpaUiFactory - The factory creating this pane
  * @see EmbeddedAttributeOverridesComposite
  *
  * @version 2.0
  * @since 1.0
  */
-public class EmbeddedMappingComposite extends BaseJpaController<IEmbeddedMapping>
+public class EmbeddedMappingComposite extends AbstractFormPane<IEmbeddedMapping>
+                                      implements IJpaComposite<IEmbeddedMapping>
 {
 	/**
-	 * Creates a new <code>EmbeddedComposite</code>.
+	 * Creates a new <code>EmbeddedMappingComposite</code>.
 	 *
-	 * @param subjectHolder The holder of the subject <code>ITransientMapping</code>
+	 * @param subjectHolder The holder of the subject <code>IEmbeddedMapping</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public EmbeddedMappingComposite(PropertyValueModel<? extends IEmbeddedMapping> subjectHolder,
-	                         Composite parent,
-	                         TabbedPropertySheetWidgetFactory widgetFactory) {
+	                                Composite parent,
+	                                TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}

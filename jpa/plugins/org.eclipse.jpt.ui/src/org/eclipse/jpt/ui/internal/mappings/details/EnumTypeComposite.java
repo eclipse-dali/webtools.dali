@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2007 Oracle. All rights reserved. This
+ *  Copyright (c) 2006, 2008 Oracle. All rights reserved. This
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
@@ -8,11 +8,13 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.Collection;
 import org.eclipse.jpt.core.internal.context.base.EnumType;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -30,23 +32,31 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class EnumTypeComposite extends BaseJpaController<IBasicMapping>
+public class EnumTypeComposite extends AbstractFormPane<IBasicMapping>
 {
 	/**
 	 * Creates a new <code>FetchTypeComposite</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public EnumTypeComposite(BaseJpaController<? extends IBasicMapping> parentComposite,
+	public EnumTypeComposite(AbstractFormPane<? extends IBasicMapping> parentPane,
 	                         Composite parent) {
 
-		super(parentComposite, parent);
+		super(parentPane, parent);
 	}
 
 	private EnumComboViewer<IBasicMapping, EnumType> buildEnumTypeCombo(Composite container) {
 
-		return new EnumComboViewer<IBasicMapping, EnumType>(getSubjectHolder(), container, getWidgetFactory()) {
+		return new EnumComboViewer<IBasicMapping, EnumType>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(IBasicMapping.DEFAULT_ENUMERATED_PROPERTY);
+				propertyNames.add(IBasicMapping.SPECIFIED_ENUMERATED_PROPERTY);
+			}
+
 			@Override
 			protected EnumType[] choices() {
 				return EnumType.values();
@@ -72,11 +82,6 @@ public class EnumTypeComposite extends BaseJpaController<IBasicMapping>
 			}
 
 			@Override
-			protected String propertyName() {
-				return IBasicMapping.SPECIFIED_ENUMERATED_PROPERTY;
-			}
-
-			@Override
 			protected void setValue(EnumType value) {
 				subject().setSpecifiedEnumerated(value);
 			}
@@ -90,15 +95,13 @@ public class EnumTypeComposite extends BaseJpaController<IBasicMapping>
 	protected void initializeLayout(Composite container) {
 
 		EnumComboViewer<IBasicMapping, EnumType> enumTypeCombo =
-			this.buildEnumTypeCombo(container);
+			buildEnumTypeCombo(container);
 
-		this.buildLabeledComposite(
+		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.BasicGeneralSection_enumeratedLabel,
 			enumTypeCombo.getControl(),
 			IJpaHelpContextIds.MAPPING_ENUMERATED
 		);
-
-		this.registerSubPane(enumTypeCombo);
 	}
 }

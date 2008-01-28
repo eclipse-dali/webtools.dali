@@ -9,11 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.Collection;
 import org.eclipse.jpt.core.internal.context.base.IMultiRelationshipMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
@@ -22,7 +23,6 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * Here the layout of this pane:
@@ -49,20 +49,20 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class OrderingComposite extends BaseJpaController<IMultiRelationshipMapping>
+public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMapping>
 {
 	private Text customOrderingText;
 
 	/**
 	 * Creates a new <code>OrderingComposite</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	protected OrderingComposite(BaseJpaController<? extends IMultiRelationshipMapping> parentController,
+	protected OrderingComposite(AbstractFormPane<? extends IMultiRelationshipMapping> parentPane,
 	                            Composite parent) {
 
-		super(parentController, parent);
+		super(parentPane, parent);
 	}
 
 	/**
@@ -74,9 +74,18 @@ public class OrderingComposite extends BaseJpaController<IMultiRelationshipMappi
 	 */
 	public OrderingComposite(PropertyValueModel<? extends IMultiRelationshipMapping> subjectHolder,
 	                         Composite parent,
-	                         TabbedPropertySheetWidgetFactory widgetFactory) {
+	                         IWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void addPropertyNames(Collection<String> propertyNames) {
+		super.addPropertyNames(propertyNames);
+		propertyNames.add(IMultiRelationshipMapping.ORDER_BY_PROPERTY);
 	}
 
 	private WritablePropertyValueModel<Boolean> buildCustomOrderingHolder() {
@@ -223,13 +232,5 @@ public class OrderingComposite extends BaseJpaController<IMultiRelationshipMappi
 		if (propertyName == IMultiRelationshipMapping.ORDER_BY_PROPERTY) {
 			populateCustomOrdering();
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected String[] propertyNames() {
-		return new String[] { IMultiRelationshipMapping.ORDER_BY_PROPERTY };
 	}
 }

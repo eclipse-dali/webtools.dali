@@ -11,8 +11,8 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.ICascade;
 import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
@@ -41,20 +41,20 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class CascadeComposite extends BaseJpaController<ICascade>
+public class CascadeComposite extends AbstractFormPane<ICascade>
 {
 	/**
 	 * Creates a new <code>CascadeComposite</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of the subject <code>ICascade</code>
 	 * @param parent The parent container
 	 */
-	public CascadeComposite(BaseJpaController<? extends IRelationshipMapping> parentController,
+	public CascadeComposite(AbstractFormPane<? extends IRelationshipMapping> parentPane,
 	                        PropertyValueModel<? extends ICascade> subjectHolder,
 		                     Composite parent) {
 
-		super(parentController, subjectHolder, parent, false);
+		super(parentPane, subjectHolder, parent, false);
 	}
 
 	/**

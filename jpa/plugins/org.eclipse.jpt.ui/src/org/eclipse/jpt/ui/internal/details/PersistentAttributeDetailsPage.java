@@ -33,27 +33,49 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
+/**
+ * The abstract definition of the details page responsible to show the
+ * information for an persistent attribute.
+ *
+ * @see IPersistentAttribute
+ *
+ * @version 2.0
+ * @since 1.0
+ */
+@SuppressWarnings("nls")
 public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<IPersistentAttribute>
 {
-//	private Adapter persistentAttributeListener;
 	private String currentMappingKey;
 	private ComboViewer mappingCombo;
 	private Map<String, IJpaComposite<IAttributeMapping>> mappingComposites;
 	protected PageBook mappingPageBook;
 	private IJpaComposite<IAttributeMapping> currentMappingComposite;
 
+	/**
+	 * Creates a new <code>PersistentAttributeDetailsPage</code>.
+	 *
+	 * @param subjectHolder The holder of the subject
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
 	public PersistentAttributeDetailsPage(PropertyValueModel<? extends IPersistentAttribute> subjectHolder,
                                          Composite parent,
                                          TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-//		this.persistentAttributeListener = buildAttributeListener();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void initialize() {
+		super.initialize();
 		this.mappingComposites = new HashMap<String, IJpaComposite<IAttributeMapping>>();
 	}
 
@@ -83,39 +105,14 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 
 	protected abstract IAttributeMappingUiProvider<? extends IAttributeMapping> defaultAttributeMappingUiProvider(String key);
 
-//	private Adapter buildAttributeListener() {
-//		return new AdapterImpl() {
-//			@Override
-//			public void notifyChanged(Notification notification) {
-//				persistentAttributeChanged(notification);
-//			}
-//		};
-//	}
-//
-//	protected void persistentAttributeChanged(Notification notification) {
-//		switch (notification.getFeatureID(IPersistentAttribute.class)) {
-//			case JpaCorePackage.IPERSISTENT_ATTRIBUTE__MAPPING:
-//				Display.getDefault().asyncExec(
-//					new Runnable() {
-//						public void run() {
-//							populate();
-//						}
-//					});
-//				break;
-//		}
-//	}
-
 	protected Label buildMappingLabel(Composite parent) {
-		return getWidgetFactory().createLabel(parent, JptUiMessages.PersistentAttributePage_mapAs);
+		return buildLabel(parent, JptUiMessages.PersistentAttributePage_mapAs);
 	}
 
 	protected ComboViewer buildMappingCombo(Composite parent) {
-		parent = fixBorderNotPainted(parent);
 
-		CCombo combo = getWidgetFactory().createCCombo(parent);
-		this.mappingCombo = new ComboViewer(combo);
+		this.mappingCombo = buildComboViewer(parent, buildLabelProvider());
 		this.mappingCombo.setContentProvider(buildContentProvider());
-		this.mappingCombo.setLabelProvider(buildLabelProvider());
 		this.mappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
 				mappingChanged(event);
@@ -178,7 +175,7 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 			jpaUiFactory(),
 			buildMappingHolder(key),
 			pageBook,
-			getWidgetFactory()
+			getFormWidgetFactory()
 		);
 	}
 
@@ -211,15 +208,6 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 	}
 
 	private void populateMappingComboAndPage() {
-//		this.currentMappingKey = null;
-//		this.mappingCombo.setInput(null);
-//		this.mappingCombo.setSelection(StructuredSelection.EMPTY);
-
-//		if (this.currentMappingComposite != null) {
-//			this.currentMappingComposite.populate();
-//			this.currentMappingComposite = null;
-//		}
-
 		populateMapAsCombo();
 
 		IAttributeMapping mapping = (this.subject() != null) ? this.subject().getMapping() : null;
@@ -234,21 +222,9 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 			return;
 		}
 
-		// TODO: Refactor to have a nice API for this or remove the Map As since
-		// it should be in the context menu and not in the UI. ~PF
-		if (this.currentMappingComposite instanceof BaseJpaController) {
-			this.removePaneForAlignment((BaseJpaController<?>) this.currentMappingComposite);
-		}
-
 		this.currentMappingKey = mappingKey;
 		this.currentMappingComposite = mappingCompositeFor(mappingKey);
 		this.mappingPageBook.showPage(this.currentMappingComposite.getControl());
-
-		// TODO: Refactor to have a nice API for this or remove the Map As since
-		// it should be in the context menu and not in the UI. ~PF
-		if (this.currentMappingComposite instanceof BaseJpaController) {
-			this.addPaneForAlignment((BaseJpaController<?>) this.currentMappingComposite);
-		}
 
 		try {
 			this.currentMappingComposite.populate();

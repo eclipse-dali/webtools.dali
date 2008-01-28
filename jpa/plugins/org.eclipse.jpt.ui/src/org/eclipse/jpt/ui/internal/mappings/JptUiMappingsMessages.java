@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -109,10 +109,10 @@ public class JptUiMappingsMessages extends NLS
 	public static String ColumnComposite_columnSection;
 	public static String ColumnComposite_defaultWithOneParam;
 	public static String ColumnComposite_defaultEmpty;
-	public static String ColumnComposite_false;
 	public static String ColumnComposite_insertable;
-	public static String ColumnComposite_true;
+	public static String ColumnComposite_insertableWithDefault;
 	public static String ColumnComposite_updatable;
+	public static String ColumnComposite_updatableWithDefault;
 
 	public static String JoinColumnComposite_defaultEmpty;
 	public static String JoinColumnComposite_defaultWithOneParam;
@@ -191,8 +191,6 @@ public class JptUiMappingsMessages extends NLS
 	public static String SecondaryTableDialog_defaultCatalog;
 
 	public static String AccessTypeCombo_default;
-	public static String EnumComboViewer_default;
-	public static String EnumComboViewer_defaultWithDefault;
 	public static String MetaDataCompleteCombo_Default;
 	public static String JoinColumnDialog_defaultTrue;
 	public static String InheritanceComposite_defaultDiscriminatorType;
@@ -221,6 +219,13 @@ public class JptUiMappingsMessages extends NLS
 	public static String CascadeComposite_refresh;
 	public static String CascadeComposite_remove;
 
+	public static String InheritanceComposite_single_table;
+	public static String InheritanceComposite_joined;
+	public static String InheritanceComposite_table_per_class;
+	public static String InheritanceComposite_string;
+	public static String InheritanceComposite_char;
+	public static String InheritanceComposite_integer;
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, JptUiMappingsMessages.class);
@@ -229,5 +234,4 @@ public class JptUiMappingsMessages extends NLS
 	private JptUiMappingsMessages() {
 		throw new UnsupportedOperationException();
 	}
-
 }

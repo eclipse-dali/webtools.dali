@@ -9,13 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.Collection;
 import org.eclipse.jpt.core.internal.context.base.GenerationType;
 import org.eclipse.jpt.core.internal.context.base.IGeneratedValue;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
@@ -46,7 +48,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class GeneratedValueComposite extends BaseJpaController<IIdMapping>
+public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 {
 	private PropertyChangeListener generatedValueChangeListener;
 	private PropertyChangeListener generatorNameChangeListener;
@@ -56,13 +58,22 @@ public class GeneratedValueComposite extends BaseJpaController<IIdMapping>
 	/**
 	 * Creates a new <code>GeneratedValueComposite</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public GeneratedValueComposite(BaseJpaController<? extends IIdMapping> parentController,
+	public GeneratedValueComposite(AbstractFormPane<? extends IIdMapping> parentPane,
 	 	                            Composite parent) {
 
-		super(parentController, parent);
+		super(parentPane, parent);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void addPropertyNames(Collection<String> propertyNames) {
+		super.addPropertyNames(propertyNames);
+		propertyNames.add(IGeneratedValue.SPECIFIED_GENERATOR_PROPERTY);
 	}
 
 	private PropertyChangeListener buildGeneratedValueChangeListener() {
@@ -143,7 +154,15 @@ public class GeneratedValueComposite extends BaseJpaController<IIdMapping>
 	}
 
 	private EnumComboViewer<IGeneratedValue, GenerationType> buildStrategyComboViewer(Composite parent) {
-		return new EnumComboViewer<IGeneratedValue, GenerationType>(buildGeneratorValueHolder(), parent, getWidgetFactory()) {
+		return new EnumComboViewer<IGeneratedValue, GenerationType>(this, buildGeneratorValueHolder(), parent) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(IGeneratedValue.DEFAULT_STRATEGY_PROPERTY);
+				propertyNames.add(IGeneratedValue.SPECIFIED_STRATEGY_PROPERTY);
+			}
+
 			@Override
 			protected GenerationType[] choices() {
 				return GenerationType.values();
@@ -166,11 +185,6 @@ public class GeneratedValueComposite extends BaseJpaController<IIdMapping>
 			@Override
 			protected GenerationType getValue() {
 				return subject().getSpecifiedStrategy();
-			}
-
-			@Override
-			protected String propertyName() {
-				return IGeneratedValue.SPECIFIED_STRATEGY_PROPERTY;
 			}
 
 			@Override
@@ -214,6 +228,10 @@ public class GeneratedValueComposite extends BaseJpaController<IIdMapping>
 		populateGeneratorNameCombo();
 	}
 
+//	private IGeneratorRepository getGeneratorRepository() {
+//		return NullGeneratorRepository.instance(); //this.id.getJpaProject().getPlatform().generatorRepository(this.id.typeMapping().getPersistentType());
+//	}
+
 	/*
 	 * (non-Javadoc)
 	 */
@@ -224,13 +242,6 @@ public class GeneratedValueComposite extends BaseJpaController<IIdMapping>
 		installListeners(subject());
 	}
 
-//	private IGeneratorRepository getGeneratorRepository() {
-//		return NullGeneratorRepository.instance(); //this.id.getJpaProject().getPlatform().generatorRepository(this.id.typeMapping().getPersistentType());
-//	}
-
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initialize() {
 		super.initialize();
@@ -250,22 +261,20 @@ public class GeneratedValueComposite extends BaseJpaController<IIdMapping>
 		EnumComboViewer<IGeneratedValue, GenerationType> strategyComboViewer =
 			buildStrategyComboViewer(container);
 
-		this.buildLabeledComposite(
+		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.GeneratedValueComposite_strategy,
 			strategyComboViewer.getControl(),
 			IJpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
 		);
 
-		this.registerSubPane(strategyComboViewer);
-
 		// Generator Name widgets
-		this.generatorNameCombo = buildGeneratorNameCombo(container);
+		generatorNameCombo = buildGeneratorNameCombo(container);
 
-		this.buildLabeledComposite(
+		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.GeneratedValueComposite_generatorName,
-			this.generatorNameCombo,
+			generatorNameCombo,
 			IJpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
 		);
 

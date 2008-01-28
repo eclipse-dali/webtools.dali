@@ -14,14 +14,13 @@ import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
 import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.BaseJpaController;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * Here the layout of this pane:
@@ -64,25 +63,18 @@ import org.eclipse.ui.forms.widgets.Section;
  * @version 2.0
  * @since 1.0
  */
-public class GenerationComposite extends BaseJpaController<IIdMapping> {
-
-	private Button primaryKeyGenerationCheckBox;
-	private Section primaryKeyGenerationSection;
-	private Section sequenceGenerationSection;
-	private Button sequenceGeneratorCheckBox;
-	private Section tableGenerationSection;
-	private Button tableGeneratorCheckBox;
-
+public class GenerationComposite extends AbstractFormPane<IIdMapping>
+{
 	/**
 	 * Creates a new <code>GenerationComposite</code>.
 	 *
-	 * @param parentController The parent container of this one
+	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public GenerationComposite(BaseJpaController<? extends IIdMapping> parentController,
+	public GenerationComposite(AbstractFormPane<? extends IIdMapping> parentPane,
 	                           Composite parent)
 	{
-		super(parentController, parent, false);
+		super(parentPane, parent, false);
 	}
 
  	private WritablePropertyValueModel<Boolean> buildPrimaryKeyGenerationHolder() {
@@ -91,6 +83,7 @@ public class GenerationComposite extends BaseJpaController<IIdMapping> {
 			protected Boolean buildValue_() {
 				return subject().getGeneratedValue() != null;
 			}
+
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value) {
@@ -103,19 +96,22 @@ public class GenerationComposite extends BaseJpaController<IIdMapping> {
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildSequenceGeneratorHolder() {
-		return new PropertyAspectAdapter<IIdMapping, Boolean>(getSubjectHolder(), IIdMapping.GENERATED_VALUE_PROPERTY) {
+	private WritablePropertyValueModel<Boolean> buildSequenceGeneratorBooleanHolder() {
+		return new PropertyAspectAdapter<IIdMapping, Boolean>(getSubjectHolder(), IIdMapping.SEQUENCE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return subject().getGeneratedValue() != null;
+				return subject().getSequenceGenerator() != null;
 			}
+
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value) {
 					ISequenceGenerator sequenceGenerator = subject().addSequenceGenerator();
 					IGeneratedValue generatedValue = subject().getGeneratedValue();
 
-					if ((generatedValue != null) && (generatedValue.getGenerator() != null)) {
+					if ((generatedValue != null) &&
+					    (generatedValue.getGenerator() != null))
+					{
 						sequenceGenerator.setName(generatedValue.getGenerator());
 					}
 				}
@@ -126,19 +122,22 @@ public class GenerationComposite extends BaseJpaController<IIdMapping> {
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildTableGeneratorHolder() {
-		return new PropertyAspectAdapter<IIdMapping, Boolean>(getSubjectHolder(), IIdMapping.GENERATED_VALUE_PROPERTY) {
+	private WritablePropertyValueModel<Boolean> buildTableGeneratorBooleanHolder() {
+		return new PropertyAspectAdapter<IIdMapping, Boolean>(getSubjectHolder(), IIdMapping.TABLE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return subject.getGeneratedValue() != null;
+				return subject.getTableGenerator() != null;
 			}
+
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value) {
 					ITableGenerator tableGenerator = subject().addTableGenerator();
 					IGeneratedValue generatedValue = subject().getGeneratedValue();
 
-					if ((generatedValue != null) && (generatedValue.getGenerator() != null)) {
+					if ((generatedValue != null) &&
+					    (generatedValue.getGenerator() != null))
+					{
 						tableGenerator.setName(generatedValue.getGenerator());
 					}
 				}
@@ -153,115 +152,91 @@ public class GenerationComposite extends BaseJpaController<IIdMapping> {
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void doPopulate() {
-		super.doPopulate();
-
-		this.primaryKeyGenerationSection.setExpanded(true);
-		this.updateSequenceGeneratorExpandedState();
-		this.updateTableGeneratorExpandedState();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
 	protected void initializeLayout(Composite container) {
 
 		// Primary Key Generation section
-		this.primaryKeyGenerationSection = buildSection(
+		container = buildSection(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration
 		);
 
-		Composite generationClient = (Composite) this.primaryKeyGenerationSection.getClient();
-
 		// Primary Key Generation check box
-		this.primaryKeyGenerationCheckBox = this.buildCheckBox(
-			generationClient,
+		Button primaryKeyGenerationCheckBox = buildCheckBox(
+			container,
 			JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration,
-			buildPrimaryKeyGenerationHolder()
+			buildPrimaryKeyGenerationHolder(),
+			IJpaHelpContextIds.MAPPING_PRIMARY_KEY_GENERATION
 		);
-
-		this.helpSystem().setHelp(primaryKeyGenerationCheckBox, IJpaHelpContextIds.MAPPING_PRIMARY_KEY_GENERATION);
 
 		// Generated Value widgets
 		GeneratedValueComposite generatedValueComposite = new GeneratedValueComposite(
 			this,
-			generationClient
+			container
 		);
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment       = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalIndent          = this.primaryKeyGenerationCheckBox.getBorderWidth() + 13;
+		gridData.horizontalIndent          = primaryKeyGenerationCheckBox.getBorderWidth() + 16;
 
 		generatedValueComposite.getControl().setLayoutData(gridData);
-		this.registerSubPane(generatedValueComposite);
 
 		// Table Generator pane
-		this.initializeTableGeneratorPane(generationClient);
+		initializeTableGeneratorPane(container);
 
 		// Sequence Generator pane
-		this.initializeSequenceGeneratorPane(generationClient);
+		initializeSequenceGeneratorPane(container);
 	}
 
 	private void initializeSequenceGeneratorPane(Composite container) {
 
+		WritablePropertyValueModel<Boolean> sequenceGeneratorBooleanHolder =
+			buildSequenceGeneratorBooleanHolder();
+
 		// Sequence Generator sub-section
-		this.sequenceGenerationSection = buildSubSection(
+		container = buildSubSection(
 			container,
-			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator
+			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
+			sequenceGeneratorBooleanHolder
 		);
 
-		Composite sequenceGenClient = (Composite) this.sequenceGenerationSection.getClient();
-
 		// Sequence Generator check box
-		this.sequenceGeneratorCheckBox = this.buildCheckBox(
-			sequenceGenClient,
+		Button sequenceGeneratorCheckBox = buildCheckBox(
+			container,
 			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
-			buildSequenceGeneratorHolder(),
+			sequenceGeneratorBooleanHolder,
 			IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR
 		);
 
 		// Sequence Generator pane
 		new SequenceGeneratorComposite(
 			this,
-			buildSubPane(sequenceGenClient, 0, sequenceGeneratorCheckBox.getBorderWidth() + 13)
+			buildSubPane(container, 0, sequenceGeneratorCheckBox.getBorderWidth() + 16)
 		);
 	}
 
 	private void initializeTableGeneratorPane(Composite container) {
 
+		WritablePropertyValueModel<Boolean> tableGeneratorBooleanHolder =
+			buildTableGeneratorBooleanHolder();
+
 		// Table Generator sub-section
-		this.tableGenerationSection = buildSubSection(
+		container = buildSubSection(
 			container,
-			JptUiMappingsMessages.IdMappingComposite_tableGenerator
+			JptUiMappingsMessages.IdMappingComposite_tableGenerator,
+			tableGeneratorBooleanHolder
 		);
 
-		Composite tableGenClient = (Composite) this.tableGenerationSection.getClient();
-
-		this.tableGeneratorCheckBox = this.buildCheckBox(
-			tableGenClient,
+		Button tableGeneratorCheckBox = buildCheckBox(
+			container,
 			JptUiMappingsMessages.IdMappingComposite_tableGenerator,
-			buildTableGeneratorHolder(),
+			tableGeneratorBooleanHolder,
 			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR
 		);
 
 		new TableGeneratorComposite(
 			this,
-			buildSubPane(tableGenClient, 0, tableGeneratorCheckBox.getBorderWidth() + 13)
-		);
-	}
-
-	private void updateSequenceGeneratorExpandedState() {
-		this.sequenceGenerationSection.setExpanded(
-			this.subject() != null && this.subject().getSequenceGenerator() != null
-		);
-	}
-
-	private void updateTableGeneratorExpandedState() {
-		this.tableGenerationSection.setExpanded(
-			this.subject() != null && this.subject().getTableGenerator() != null
+			buildSubPane(container, 0, tableGeneratorCheckBox.getBorderWidth() + 16)
 		);
 	}
 }
