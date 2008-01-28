@@ -12,13 +12,11 @@ package org.eclipse.jpt.core.internal.context.base;
 import static org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType.DEFAULT;
 import static org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType.JTA;
 import static org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType.RESOURCE_LOCAL;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
@@ -456,7 +454,7 @@ public class PersistenceUnit extends JpaContextNode
 	}
 	
 	public void removeProperty(IProperty property) {
-		if(property != null) {
+		if (property != null) {
 			this.removeProperty(this.properties.indexOf(property));
 		}
 	}
@@ -487,6 +485,7 @@ public class PersistenceUnit extends JpaContextNode
 	protected void removeProperty_(int index) {
 		removeItemFromList(index, this.properties, PROPERTIES_LIST);
 	}
+	
 	
 	// **************** Persistence Unit Defaults *********************************************
 	
@@ -544,8 +543,8 @@ public class PersistenceUnit extends JpaContextNode
 		firePropertyChanged(DEFAULT_CASCADE_PERSIST_PROPERTY, oldDefaultCascadePersist, newDefaultCascadePersist);
 	}
 	
-	// **************** updating ***********************************************
 	
+	// **************** updating ***********************************************
 	
 	public void initialize(XmlPersistenceUnit xmlPersistenceUnit) {
 		this.xmlPersistenceUnit = xmlPersistenceUnit;
