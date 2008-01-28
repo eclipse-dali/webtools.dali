@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,7 +43,7 @@ public class ASTNodeSearchUtil {
 		return (MethodDeclaration)ASTNodes.getParent(getNameNode(iMethod, cuNode), MethodDeclaration.class);
 	}
 	
-	public static ASTNode getParent(ASTNode node, Class parentClass) {
+	public static ASTNode getParent(ASTNode node, Class<?> parentClass) {
 		do {
 			node= node.getParent();
 		} while (node != null && !parentClass.isInstance(node));
@@ -94,11 +94,11 @@ public class ASTNodeSearchUtil {
 		return (ClassInstanceCreation) ASTNodes.getParent(getNameNode(iType, cuNode), ClassInstanceCreation.class);
 	}
 	
-	public static List getBodyDeclarationList(IType iType, CompilationUnit cuNode) throws JavaModelException {
+	@SuppressWarnings("unchecked")
+	public static List<BodyDeclaration> getBodyDeclarationList(IType iType, CompilationUnit cuNode) throws JavaModelException {
 		if (iType.isAnonymous())
 			return getClassInstanceCreationNode(iType, cuNode).getAnonymousClassDeclaration().bodyDeclarations();
-		else
-			return getAbstractTypeDeclarationNode(iType, cuNode).bodyDeclarations();
+		return getAbstractTypeDeclarationNode(iType, cuNode).bodyDeclarations();
 	}
 
 	private static ASTNode getNameNode(IMember iMember, CompilationUnit cuNode) throws JavaModelException {
