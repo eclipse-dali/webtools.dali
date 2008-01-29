@@ -374,7 +374,7 @@ public class BaseJpaProjectContext extends BaseContext
 			Persistence persistence = getPersistence(validPersistenceXml);
 			messages.add(
 					JpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+						IMessage.NORMAL_SEVERITY,
 						IJpaValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS,
 						persistence, persistence.validationTextRange())
 				);
