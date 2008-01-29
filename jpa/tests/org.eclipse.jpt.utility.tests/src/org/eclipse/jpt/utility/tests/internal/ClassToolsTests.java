@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -491,6 +491,67 @@ public class ClassToolsTests extends TestCase {
 		assertEquals('I', ClassTools.codeForClassNamed("int"));
 		assertEquals('B', ClassTools.codeForClassNamed(byte.class.getName()));
 		assertEquals('B', ClassTools.codeForClassNamed("byte"));
+	}
+
+	public void testClassIsPrimitiveWrapperClass() {
+		assertTrue(ClassTools.classIsPrimitiveWrapperClass(java.lang.Void.class));
+		assertTrue(ClassTools.classIsPrimitiveWrapperClass(java.lang.Boolean.class));
+		assertTrue(ClassTools.classIsPrimitiveWrapperClass(java.lang.Integer.class));
+		assertTrue(ClassTools.classIsPrimitiveWrapperClass(java.lang.Float.class));
+
+		assertFalse(ClassTools.classIsPrimitiveWrapperClass(java.lang.String.class));
+		assertFalse(ClassTools.classIsPrimitiveWrapperClass(void.class));
+		assertFalse(ClassTools.classIsPrimitiveWrapperClass(int.class));
+	}
+
+	public void testClassIsVariablePrimitiveWrapperClass() {
+		assertFalse(ClassTools.classIsVariablePrimitiveWrapperClass(java.lang.Void.class));
+
+		assertTrue(ClassTools.classIsVariablePrimitiveWrapperClass(java.lang.Boolean.class));
+		assertTrue(ClassTools.classIsVariablePrimitiveWrapperClass(java.lang.Integer.class));
+		assertTrue(ClassTools.classIsVariablePrimitiveWrapperClass(java.lang.Float.class));
+
+		assertFalse(ClassTools.classIsVariablePrimitiveWrapperClass(java.lang.String.class));
+		assertFalse(ClassTools.classIsVariablePrimitiveWrapperClass(void.class));
+		assertFalse(ClassTools.classIsVariablePrimitiveWrapperClass(int.class));
+	}
+
+	public void testClassNamedIsPrimitive() {
+		assertTrue(void.class.isPrimitive());
+
+		assertTrue(ClassTools.classNamedIsPrimitive(void.class.getName()));
+		assertTrue(ClassTools.classNamedIsPrimitive(int.class.getName()));
+		assertTrue(ClassTools.classNamedIsPrimitive(float.class.getName()));
+		assertTrue(ClassTools.classNamedIsPrimitive(boolean.class.getName()));
+
+		assertFalse(ClassTools.classNamedIsPrimitive(java.lang.Number.class.getName()));
+		assertFalse(ClassTools.classNamedIsPrimitive(java.lang.String.class.getName()));
+		assertFalse(ClassTools.classNamedIsPrimitive(java.lang.Boolean.class.getName()));
+		assertFalse(ClassTools.classNamedIsPrimitive(java.lang.Integer.class.getName()));
+	}
+
+	public void testClassNamedIsVariablePrimitive() {
+		assertFalse(ClassTools.classNamedIsVariablePrimitive(void.class.getName()));
+
+		assertTrue(ClassTools.classNamedIsVariablePrimitive(int.class.getName()));
+		assertTrue(ClassTools.classNamedIsVariablePrimitive(float.class.getName()));
+		assertTrue(ClassTools.classNamedIsVariablePrimitive(boolean.class.getName()));
+
+		assertFalse(ClassTools.classNamedIsVariablePrimitive(java.lang.Number.class.getName()));
+		assertFalse(ClassTools.classNamedIsVariablePrimitive(java.lang.String.class.getName()));
+		assertFalse(ClassTools.classNamedIsVariablePrimitive(java.lang.Boolean.class.getName()));
+	}
+
+	public void testClassNamedIsVariablePrimitiveWrapperClass() {
+		assertFalse(ClassTools.classNamedIsVariablePrimitiveWrapperClass(java.lang.Void.class.getName()));
+
+		assertTrue(ClassTools.classNamedIsVariablePrimitiveWrapperClass(java.lang.Integer.class.getName()));
+		assertTrue(ClassTools.classNamedIsVariablePrimitiveWrapperClass(java.lang.Float.class.getName()));
+		assertTrue(ClassTools.classNamedIsVariablePrimitiveWrapperClass(java.lang.Boolean.class.getName()));
+
+		assertFalse(ClassTools.classNamedIsVariablePrimitiveWrapperClass(java.lang.Number.class.getName()));
+		assertFalse(ClassTools.classNamedIsVariablePrimitiveWrapperClass(java.lang.String.class.getName()));
+		assertFalse(ClassTools.classNamedIsVariablePrimitiveWrapperClass(java.lang.Object.class.getName()));
 	}
 
 	public void testClassForTypeDeclaration() throws Exception {

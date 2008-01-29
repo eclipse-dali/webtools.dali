@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -241,6 +241,8 @@ public class EntityGenerator {
 		}
 	}
 
+	// TODO if the field's type is java.util.Date, it needs @Temporal(DATE)
+	// TODO if the primary key is auto-generated, the field must be an integral type
 	private void printReadOnlyPrimaryKeyFieldOn(Column column, EntitySourceWriter pw, boolean printIdAnnotation) {
 		String fieldName = this.genTable.fieldNameFor(column);
 		if (this.config.fieldAccessType()) {
@@ -255,7 +257,7 @@ public class EntityGenerator {
 			}
 		}
 		pw.printVisibility(this.config.fieldVisibility());
-		pw.printTypeDeclaration(column.javaTypeDeclaration());
+		pw.printTypeDeclaration(column.primaryKeyJavaTypeDeclaration());
 		pw.print(' ');
 		pw.print(fieldName);
 		pw.print(';');
@@ -287,6 +289,8 @@ public class EntityGenerator {
 		}
 	}
 
+	// TODO if the field's type is java.util.Date, it needs @Temporal(DATE)
+	// TODO if the primary key is auto-generated, the field must be an integral type
 	private void printWritablePrimaryKeyFieldOn(Column column, EntitySourceWriter pw, boolean printIdAnnotation) {
 		String fieldName = this.genTable.fieldNameFor(column);
 		if (this.config.fieldAccessType()) {
@@ -299,7 +303,7 @@ public class EntityGenerator {
 			}
 		}
 		pw.printVisibility(this.config.fieldVisibility());
-		pw.printTypeDeclaration(column.javaTypeDeclaration());
+		pw.printTypeDeclaration(column.primaryKeyJavaTypeDeclaration());
 		pw.print(' ');
 		pw.print(fieldName);
 		pw.print(';');
@@ -664,6 +668,8 @@ public class EntityGenerator {
 		}
 	}
 
+	// TODO if the property's type is java.util.Date, it needs @Temporal(DATE)
+	// TODO if the primary key is auto-generated, the property must be an integral type
 	private void printReadOnlyPrimaryKeyGetterAndSetterOn(Column column, EntitySourceWriter pw, boolean printIdAnnotation) {
 		String propertyName = this.genTable.fieldNameFor(column);
 		if (this.config.propertyAccessType()) {
@@ -678,7 +684,7 @@ public class EntityGenerator {
 			}
 		}
 
-		pw.printGetterAndSetter(propertyName, column.javaTypeDeclaration(), this.config.methodVisibility());
+		pw.printGetterAndSetter(propertyName, column.primaryKeyJavaTypeDeclaration(), this.config.methodVisibility());
 	}
 
 	private void printEntityWritablePrimaryKeyGettersAndSettersOn(EntitySourceWriter pw) {
@@ -691,6 +697,8 @@ public class EntityGenerator {
 		}
 	}
 
+	// TODO if the property's type is java.util.Date, it needs @Temporal(DATE)
+	// TODO if the primary key is auto-generated, the property must be an integral type
 	private void printWritablePrimaryKeyGetterAndSetterOn(Column column, EntitySourceWriter pw, boolean printIdAnnotation) {
 		String propertyName = this.genTable.fieldNameFor(column);
 		if (this.config.propertyAccessType()) {
@@ -703,7 +711,7 @@ public class EntityGenerator {
 			}
 		}
 
-		pw.printGetterAndSetter(propertyName, column.javaTypeDeclaration(), this.config.methodVisibility());
+		pw.printGetterAndSetter(propertyName, column.primaryKeyJavaTypeDeclaration(), this.config.methodVisibility());
 	}
 
 	private void printEntityNonPrimaryKeyBasicGettersAndSettersOn(EntitySourceWriter pw) {
@@ -844,7 +852,7 @@ public class EntityGenerator {
 	private void printIdFieldOn(Column column, EntitySourceWriter pw) {
 		String fieldName = this.genTable.fieldNameFor(column);
 		pw.printVisibility(this.config.fieldVisibility());
-		pw.printTypeDeclaration(column.javaTypeDeclaration());
+		pw.printTypeDeclaration(column.primaryKeyJavaTypeDeclaration());
 		pw.print(' ');
 		pw.print(fieldName);
 		pw.print(';');
@@ -867,7 +875,7 @@ public class EntityGenerator {
 
 	private void printIdGetterAndSetterOn(Column column, EntitySourceWriter pw) {
 		String propertyName = this.genTable.fieldNameFor(column);
-		pw.printGetterAndSetter(propertyName, column.javaTypeDeclaration(), this.config.methodVisibility());
+		pw.printGetterAndSetter(propertyName, column.primaryKeyJavaTypeDeclaration(), this.config.methodVisibility());
 	}
 
 	private void printEqualsMethodOn(String className, Iterator<Column> columns, EntitySourceWriter pw) {
