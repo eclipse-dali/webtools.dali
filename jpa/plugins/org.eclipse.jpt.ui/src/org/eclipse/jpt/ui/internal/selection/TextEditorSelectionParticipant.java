@@ -45,7 +45,11 @@ public class TextEditorSelectionParticipant
 		editorInputListener = new EditorInputListener();
 		editor.addPropertyListener(editorInputListener);
 		editorSelectionListener = new EditorSelectionListener();
-		((IPostSelectionProvider) editor.getSelectionProvider()).addPostSelectionChangedListener(editorSelectionListener);
+		//TODO We were assuming an IPostSelectionProvider, which didn't play well with others
+		//I put this hack in for maintenance 1.0.2 - see bug 207444
+		if (editor.getSelectionProvider() instanceof IPostSelectionProvider) {
+			((IPostSelectionProvider) editor.getSelectionProvider()).addPostSelectionChangedListener(editorSelectionListener);
+		}
 		currentSelection = calculateSelection();
 	}
 	
@@ -139,7 +143,11 @@ public class TextEditorSelectionParticipant
 	
 	public void dispose() {
 		this.editor.removePropertyListener(this.editorInputListener);
-		((IPostSelectionProvider) this.editor.getSelectionProvider()).removePostSelectionChangedListener(editorSelectionListener);
+		//TODO We were assuming an IPostSelectionProvider, which didn't play well with others
+		//I put this hack in for maintenance 1.0.2 - see bug 207444
+		if (editor.getSelectionProvider() instanceof IPostSelectionProvider) {
+			((IPostSelectionProvider) this.editor.getSelectionProvider()).removePostSelectionChangedListener(editorSelectionListener);
+		}
 	}
 	
 	
