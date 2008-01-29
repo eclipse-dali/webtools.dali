@@ -37,6 +37,14 @@ public final class Column extends DTPWrapper implements Comparable<Column> {
 	private static final JavaType CLOB_JAVA_TYPE = new JavaType(java.sql.Clob.class);
 	private static final JavaType STRING_JAVA_TYPE = new JavaType(java.lang.String.class);
 
+	private static final JavaType UTIL_DATE_JAVA_TYPE = new JavaType(java.util.Date.class);
+	private static final JavaType SQL_DATE_JAVA_TYPE = new JavaType(java.sql.Date.class);
+	private static final JavaType SQL_TIME_JAVA_TYPE = new JavaType(java.sql.Time.class);
+	private static final JavaType SQL_TIMESTAMP_JAVA_TYPE = new JavaType(java.sql.Timestamp.class);
+
+	private static final JavaType BIG_DECIMAL_JAVA_TYPE = new JavaType(java.math.BigDecimal.class);
+	private static final JavaType LONG_JAVA_TYPE = new JavaType(long.class);
+
 
 	// ********** constructors **********
 
@@ -107,6 +115,54 @@ public final class Column extends DTPWrapper implements Comparable<Column> {
 			this.getName().equals(javaFieldName)
 		:
 			this.getName().equalsIgnoreCase(javaFieldName);
+	}
+
+	/**
+	 * Return a Java type declaration that is reasonably
+	 * similar to the column's data type and suitable for use as a
+	 * primary key field.
+	 */
+	public String primaryKeyJavaTypeDeclaration() {
+		return this.primaryKeyJavaType().declaration();
+	}
+
+	/**
+	 * Return a Java type that is reasonably
+	 * similar to the column's data type and suitable for use as a
+	 * primary key field.
+	 */
+	public JavaType primaryKeyJavaType() {
+		return this.jpaSpecCompliantPrimaryKeyJavaType(this.javaType());
+	}
+
+	/**
+	 * The JPA spec [2.1.4] says only the following types are allowed in
+	 * primary key fields:
+	 *     [variable] primitives
+	 *     [variable] primitive wrappers
+	 *     java.lang.String
+	 *     java.util.Date
+	 *     java.sql.Date
+	 */
+	private JavaType jpaSpecCompliantPrimaryKeyJavaType(JavaType javaType) {
+		if (javaType.isVariablePrimitive()
+				|| javaType.isVariablePrimitiveWrapper()
+				|| javaType.equals(STRING_JAVA_TYPE)
+				|| javaType.equals(UTIL_DATE_JAVA_TYPE)
+				|| javaType.equals(SQL_DATE_JAVA_TYPE)) {
+			return javaType;
+		}
+		if (javaType.equals(BIG_DECIMAL_JAVA_TYPE)) {
+			return LONG_JAVA_TYPE;  // ??
+		}
+		if (javaType.equals(SQL_TIME_JAVA_TYPE)) {
+			return UTIL_DATE_JAVA_TYPE;  // ???
+		}
+		if (javaType.equals(SQL_TIMESTAMP_JAVA_TYPE)) {
+			return UTIL_DATE_JAVA_TYPE;  // ???
+		}
+		// all the other typical types are pretty much un-mappable - return String(?)
+		return STRING_JAVA_TYPE;
 	}
 
 	/**

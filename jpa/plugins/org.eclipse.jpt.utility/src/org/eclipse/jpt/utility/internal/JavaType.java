@@ -105,8 +105,32 @@ public final class JavaType
 		return this.arrayDepth > 0;
 	}
 
+	/**
+	 * NB: void.class.isPrimitive() == true
+	 */
 	public boolean isPrimitive() {
-		return (this.arrayDepth == 0) && ClassTools.classNamedIsNonReference(this.elementTypeName);
+		return (this.arrayDepth == 0) && ClassTools.classNamedIsPrimitive(this.elementTypeName);
+	}
+
+	/**
+	 * NB: void.class.isPrimitive() == true
+	 */
+	public boolean isPrimitiveWrapper() {
+		return (this.arrayDepth == 0) && ClassTools.classNamedIsPrimitiveWrapperClass(this.elementTypeName);
+	}
+
+	/**
+	 * NB: variables cannot be declared 'void'
+	 */
+	public boolean isVariablePrimitive() {
+		return (this.arrayDepth == 0) && ClassTools.classNamedIsVariablePrimitive(this.elementTypeName);
+	}
+
+	/**
+	 * NB: variables cannot be declared 'void'
+	 */
+	public boolean isVariablePrimitiveWrapper() {
+		return (this.arrayDepth == 0) && ClassTools.classNamedIsVariablePrimitiveWrapperClass(this.elementTypeName);
 	}
 
 	/**
