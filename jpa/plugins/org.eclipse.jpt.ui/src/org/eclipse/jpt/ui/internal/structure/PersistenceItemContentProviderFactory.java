@@ -23,8 +23,7 @@ import org.eclipse.jpt.ui.internal.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProviderFactory;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
+import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 
@@ -120,16 +119,15 @@ public class PersistenceItemContentProviderFactory
 		}
 		
 		@Override
-		@SuppressWarnings("unchecked")
-		protected ListValueModel buildChildrenModel() {
-			return new ListAspectAdapter(
+		protected ListValueModel<IJpaContextNode> buildChildrenModel() {
+			return new ListAspectAdapter<IPersistenceUnit, IJpaContextNode>(
 					new String[] {IPersistenceUnit.MAPPING_FILE_REF_LIST, IPersistenceUnit.CLASS_REF_LIST},
 					(IPersistenceUnit) model()) {
 				@Override
-				protected ListIterator listIterator_() {
-					// stupid generics (mumble, mumble ...)
-					return new CompositeListIterator(
-						CollectionTools.list(((IPersistenceUnit) subject).mappingFileRefs(), ((IPersistenceUnit) subject).classRefs()));
+				@SuppressWarnings("unchecked")
+				protected ListIterator<IJpaContextNode> listIterator_() {
+					return new ReadOnlyCompositeListIterator<IJpaContextNode>(
+						subject.mappingFileRefs(), subject.classRefs());
 				}
 			};
 		}
