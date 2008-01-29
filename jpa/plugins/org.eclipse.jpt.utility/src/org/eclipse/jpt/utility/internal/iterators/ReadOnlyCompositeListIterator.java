@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,73 +12,65 @@ package org.eclipse.jpt.utility.internal.iterators;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
- * A <code>CompositeListIterator</code> wraps a list
+ * A <code>ReadOnlyCompositeListIterator</code> wraps a list
  * of <code>ListIterator</code>s and makes them appear to be a single
- * <code>ListIterator</code>.
+ * read-only <code>ListIterator</code>. A read-only composite list
+ * iterator is more flexible than a normal composite when it comes to the element types of
+ * the nested iterators.
  */
-public class CompositeListIterator<E>
+public class ReadOnlyCompositeListIterator<E>
 	implements ListIterator<E>
 {
-	private final ListIterator<? extends ListIterator<E>> iterators;
-	private ListIterator<E> nextIterator;
+	private final ListIterator<? extends ListIterator<? extends E>> iterators;
+	private ListIterator<? extends E> nextIterator;
 	private int nextIndex;
- 	/**
- 	 * true if "next" was last returned; false if "previous" was last returned;
- 	 * this determines the effect of remove(Object) on nextIndex
- 	 */
-	private boolean nextReturned;
-	private ListIterator<E> lastIteratorToReturnElement;
 
 
 	/**
-	 * Construct a list iterator with the specified list of list iterators.
+	 * Construct a read-only list iterator with the specified list of
+	 * list iterators.
 	 */
-	public CompositeListIterator(List<? extends ListIterator<E>> iterators) {
+	public ReadOnlyCompositeListIterator(List<? extends ListIterator<? extends E>> iterators) {
 		this(iterators.listIterator());
 	}
 
 	/**
-	 * Construct a list iterator with the specified list of list iterators.
+	 * Construct a read-only list iterator with the specified list of
+	 * list iterators.
 	 */
-	public CompositeListIterator(ListIterator<? extends ListIterator<E>> iterators) {
+	public ReadOnlyCompositeListIterator(ListIterator<? extends ListIterator<? extends E>> iterators) {
 		super();
 		this.iterators = iterators;
 		this.nextIndex = 0;
-		this.nextReturned = false;
 	}
 
 	/**
-	 * Construct a list iterator with the specified object prepended
+	 * Construct a read-only list iterator with the specified object prepended
 	 * to the specified iterator.
 	 */
 	@SuppressWarnings("unchecked")
-	public CompositeListIterator(E object, ListIterator<E> iterator) {
+	public ReadOnlyCompositeListIterator(E object, ListIterator<E> iterator) {
 		this(new SingleElementListIterator<E>(object), iterator);
 	}
 
 	/**
-	 * Construct a list iterator with the specified object appended
+	 * Construct a read-only list iterator with the specified object appended
 	 * to the specified iterator.
 	 */
 	@SuppressWarnings("unchecked")
-	public CompositeListIterator(ListIterator<E> iterator, E object) {
+	public ReadOnlyCompositeListIterator(ListIterator<E> iterator, E object) {
 		this(iterator, new SingleElementListIterator<E>(object));
 	}
 
 	/**
-	 * Construct a list iterator with the specified list iterators.
+	 * Construct a read-only list iterator with the specified list iterators.
 	 */
-	public CompositeListIterator(ListIterator<E>... iterators) {
-		this(new ArrayListIterator<ListIterator<E>>(iterators));
-	}
-
-	public void add(E o) {
-		this.checkNextIterator();
-		this.nextIterator.add(o);
-		this.nextIndex++;
+	public ReadOnlyCompositeListIterator(ListIterator<? extends E>... iterators) {
+		this(new ArrayListIterator<ListIterator<? extends E>>(iterators));
 	}
 
 	public boolean hasNext() {
@@ -104,14 +96,12 @@ public class CompositeListIterator<E>
 	public E next() {
 		this.loadNextIterator();
 		E result = this.nextIterator.next();
-
+	
 		// the statement above will throw a NoSuchElementException
 		// if the current iterator is at the end of the line;
-		// so if we get here, we can set the 'lastIteratorToReturnElement'
-		this.lastIteratorToReturnElement = this.nextIterator;
+		// so if we get here, we can increment 'nextIndex'
 		this.nextIndex++;
-		this.nextReturned = true;
-
+	
 		return result;
 	}
 
@@ -122,14 +112,12 @@ public class CompositeListIterator<E>
 	public E previous() {
 		this.loadPreviousIterator();
 		E result = this.nextIterator.previous();
-
+	
 		// the statement above will throw a NoSuchElementException
 		// if the current iterator is at the end of the line;
-		// so if we get here, we can set the 'lastIteratorToReturnElement'
-		this.lastIteratorToReturnElement = this.nextIterator;
+		// so if we get here, we can decrement 'nextIndex'
 		this.nextIndex--;
-		this.nextReturned = false;
-
+	
 		return result;
 	}
 
@@ -137,26 +125,23 @@ public class CompositeListIterator<E>
 		return this.nextIndex  - 1;
 	}
 
+	public void add(E o) {
+		// the list iterator is read-only
+		throw new UnsupportedOperationException();
+	}
+
 	public void remove() {
-		if (this.lastIteratorToReturnElement == null) {
-			throw new IllegalStateException();
-		}
-		this.lastIteratorToReturnElement.remove();
-		if (this.nextReturned) {
-			// decrement the index because the "next" element has moved forward in the list
-			this.nextIndex--;
-		}
+		// the list iterator is read-only
+		throw new UnsupportedOperationException();
 	}
 
 	public void set(E e) {
-		if (this.lastIteratorToReturnElement == null) {
-			throw new IllegalStateException();
-		}
-		this.lastIteratorToReturnElement.set(e);
+		// the list iterator is read-only
+		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * Load 'nextIterator' with the first iterator that <code>hasNext()</code>
+	 * Load nextIterator with the first iterator that <code>hasNext()</code>
 	 * or the final iterator if all the elements have already been retrieved.
 	 */
 	private void loadNextIterator() {
@@ -167,7 +152,7 @@ public class CompositeListIterator<E>
 	}
 
 	/**
-	 * Load 'nextIterator' with the first iterator that <code>hasPrevious()</code>
+	 * Load nextIterator with the first iterator that <code>hasPrevious()</code>
 	 * or the first iterator if all the elements have already been retrieved.
 	 */
 	private void loadPreviousIterator() {

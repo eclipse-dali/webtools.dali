@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -73,6 +73,10 @@ public class CompositeIteratorTests extends TestCase {
 	}
 
 	public void testRemove() {
+		this.verifyRemove();
+	}
+
+	protected void verifyRemove() {
 		List<String> list1 = this.buildList1();
 		Object lastElement1 = list1.get(list1.size() - 1);
 		List<String> list2 = this.buildList2();
@@ -153,6 +157,10 @@ public class CompositeIteratorTests extends TestCase {
 	}
 
 	public void testIllegalStateException() {
+		this.verifyIllegalStateException();
+	}
+
+	void verifyIllegalStateException() {
 		this.verifyIllegalStateException(this.buildCompositeIterator());
 	}
 
@@ -184,6 +192,10 @@ public class CompositeIteratorTests extends TestCase {
 	}
 
 	public void testEmptyIllegalStateException1() {
+		this.verifyEmptyIllegalStateException1();
+	}
+
+	void verifyEmptyIllegalStateException1() {
 		this.verifyIllegalStateException(this.buildEmptyCompositeIterator1());
 	}
 
@@ -196,6 +208,10 @@ public class CompositeIteratorTests extends TestCase {
 	}
 
 	public void testEmptyIllegalStateException2() {
+		this.verifyEmptyIllegalStateException2();
+	}
+
+	void verifyEmptyIllegalStateException2() {
 		this.verifyIllegalStateException(this.buildEmptyCompositeIterator2());
 	}
 
