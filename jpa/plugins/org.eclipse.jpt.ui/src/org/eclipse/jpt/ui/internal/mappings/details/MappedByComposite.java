@@ -126,7 +126,7 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.NonOwningMapping_mappedByLabel,
-			combo,
+			combo.getParent(),
 			IJpaHelpContextIds.MAPPING_MAPPED_BY
 		);
 	}

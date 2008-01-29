@@ -34,7 +34,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	private Button addButton;
 	private Composite container;
 	private ILabelProvider labelProvider;
-	private ListValueModel listHolder;
+	private ListValueModel<?> listHolder;
 	private Button optionalButton;
 	private Button removeButton;
 	private WritablePropertyValueModel<Object> selectedItemHolder;
@@ -56,7 +56,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	protected AddRemovePane(AbstractPane<? extends T> parentPane,
 	                        Composite parent,
 	                        Adapter adapter,
-	                        ListValueModel/*<?>*/ listHolder,
+	                        ListValueModel<?> listHolder,
 	                        WritablePropertyValueModel<?> selectedItemHolder,
 	                        ILabelProvider labelProvider) {
 
@@ -86,7 +86,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	protected AddRemovePane(AbstractPane<? extends T> parentPane,
 	                        Composite parent,
 	                        Adapter adapter,
-	                        ListValueModel/*<?>*/ listHolder,
+	                        ListValueModel<?> listHolder,
 	                        WritablePropertyValueModel<?> selectedItemHolder,
 	                        ILabelProvider labelProvider,
 	                        String helpId) {
@@ -127,7 +127,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	                        PropertyValueModel<? extends T> subjectHolder,
 	                        Composite parent,
 	                        Adapter adapter,
-	                        ListValueModel/*<?>*/ listHolder,
+	                        ListValueModel<?> listHolder,
 	                        WritablePropertyValueModel<?> selectedItemHolder,
 	                        ILabelProvider labelProvider) {
 
@@ -160,7 +160,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	                        PropertyValueModel<? extends T> subjectHolder,
 	                        Composite parent,
 	                        Adapter adapter,
-	                        ListValueModel/*<?>*/ listHolder,
+	                        ListValueModel<?> listHolder,
 	                        WritablePropertyValueModel<?> selectedItemHolder,
 	                        ILabelProvider labelProvider,
 	                        String helpId) {
@@ -271,7 +271,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		};
 	}
 
-	protected ObjectListSelectionModel buildRowSelectionModel(ListValueModel/*<?>*/ listModel) {
+	protected ObjectListSelectionModel buildRowSelectionModel(ListValueModel<?> listModel) {
 		return new ObjectListSelectionModel(new ListModelAdapter(listModel));
 	}
 
@@ -292,7 +292,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		return labelProvider;
 	}
 
-	protected final ListValueModel/*<?>*/ getListHolder() {
+	protected final ListValueModel<?> getListHolder() {
 		return listHolder;
 	}
 
@@ -306,7 +306,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 
 	@SuppressWarnings("unchecked")
 	protected void initialize(Adapter adapter,
-	                          ListValueModel/*<?>*/ listHolder,
+	                          ListValueModel<?> listHolder,
 	                          WritablePropertyValueModel<?> selectedItemHolder,
 	                          ILabelProvider labelProvider)
 	{
@@ -362,7 +362,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	}
 
 	protected void initializeLayout(Adapter adapter,
-    	                             ListValueModel/*<?>*/ listHolder,
+    	                             ListValueModel<?> listHolder,
    	                             WritablePropertyValueModel<?> selectedItemHolder,
    	                             ILabelProvider labelProvider,
    	                             String helpId) {
@@ -403,7 +403,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	 */
 	protected abstract void initializeMainComposite(Composite container,
 	                                                Adapter adapter,
-	                   	                           ListValueModel/*<?>*/ listHolder,
+	                   	                           ListValueModel<?> listHolder,
 	                  	                           WritablePropertyValueModel<?> selectedItemHolder,
 	                  	                           ILabelProvider labelProvider,
 	                  	                           String helpId);

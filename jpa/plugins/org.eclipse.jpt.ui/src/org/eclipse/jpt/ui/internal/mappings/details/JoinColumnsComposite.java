@@ -177,7 +177,7 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 		};
 	}
 
-	private ListValueModel/*<IJoinColumn>*/ buildJoinColumnsListHolder() {
+	private ListValueModel<IJoinColumn> buildJoinColumnsListHolder() {
 		return new ListAspectAdapter<T, IJoinColumn>(getSubjectHolder(), joinColumnsEditor.propertyNames()) {
 			@Override
 			protected ListIterator<IJoinColumn> listIterator_() {
@@ -199,7 +199,7 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 		};
 	}
 
-	private ListValueModel/*<IJoinColumn>*/ buildSortedJoinColumnsListHolder() {
+	private ListValueModel<IJoinColumn> buildSortedJoinColumnsListHolder() {
 		return new SortedListValueModelAdapter<IJoinColumn>(
 			buildJoinColumnsListHolder()
 		);

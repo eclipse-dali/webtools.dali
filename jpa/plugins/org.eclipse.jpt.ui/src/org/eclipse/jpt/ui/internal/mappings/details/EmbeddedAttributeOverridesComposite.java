@@ -41,18 +41,23 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
- * | --------------------------                                                |
- * | | OverrideAttribute 1    |  x Override Default                            |
- * | | ...                    |                                                |
- * | | OverrideAttribute n    | ---------------------------------------------- |
- * | |                        | |                                            | |
- * | |                        | | ColumnComposite                            | |
- * | |                        | |                                            | |
- * | -------------------------- ---------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | AddRemoveListPane                                                     | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * |                                                                           |
+ * | x Override Default                                                        |
+ * |                                                                           |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | ColumnComposite                                                       | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see IEmbeddedMapping
- * @see BaseJpaUiFactory
+ * @see EmbeddedMappingComposite - The parent container
  * @see ColumnComposite
  *
  * @version 2.0
@@ -109,29 +114,32 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 	private List buildAttributeOverridesList(Composite parent,
 	                                         WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder) {
 
-		List list = this.buildList(
+		WritablePropertyValueModel<String> selectedItemHolder =
+			buildSelectedAttributeOverrideHolder(attributeOverrideHolder);
+
+		List list = buildList(
 			parent,
-			buildSelectedAttributeOverrideHolder(attributeOverrideHolder),
+			selectedItemHolder,
 			IJpaHelpContextIds.MAPPING_EMBEDDED_ATTRIBUTE_OVERRIDES
 		);
 
 		ListBoxModelAdapter.adapt(
 			buildAttributeOverridesStringListHolder(),
-			attributeOverrideHolder,
+			selectedItemHolder,
 			list
 		);
 
 		return list;
 	}
 
-	private ListValueModel/*<IAttributeOverride>*/ buildAttributeOverridesListHolder() {
+	private ListValueModel<IAttributeOverride> buildAttributeOverridesListHolder() {
 		return new SortedListValueModelAdapter<IAttributeOverride>(
-			this.buildAttributeOverridesCollectionHolder()
+			buildAttributeOverridesCollectionHolder()
 		);
 	}
 
-	private ListValueModel/*<IAttributeOverride>*/ buildAttributeOverridesStringListHolder() {
-		return new TransformationListValueModelAdapter<IAttributeOverride, String>(this.buildAttributeOverridesListHolder()) {
+	private ListValueModel<String> buildAttributeOverridesStringListHolder() {
+		return new TransformationListValueModelAdapter<IAttributeOverride, String>(buildAttributeOverridesListHolder()) {
 			@Override
 			protected String transformItem(IAttributeOverride item) {
 				return item.getName();

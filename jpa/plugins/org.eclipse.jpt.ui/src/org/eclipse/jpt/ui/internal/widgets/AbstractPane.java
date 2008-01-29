@@ -489,12 +489,16 @@ public abstract class AbstractPane<T extends Model>
 
 	private PropertyChangeListener buildExpandedStateChangeListener(final Section section) {
 		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				Boolean value = (Boolean) e.newValue();
-				if (value == null) {
-					value = Boolean.TRUE;
-				}
-				section.setExpanded(value);
+			public void propertyChanged(final PropertyChangeEvent e) {
+				SWTUtil.asyncExec(new Runnable() {
+					public void run() {
+						Boolean value = (Boolean) e.newValue();
+						if (value == null) {
+							value = Boolean.TRUE;
+						}
+						section.setExpanded(value);
+					}
+				});
 			}
 		};
 	}
@@ -759,7 +763,7 @@ public abstract class AbstractPane<T extends Model>
 	                                                Control centerControl,
 	                                                String helpId) {
 
-		Label label = this.buildLabel(container, labelText);
+		Label label = this.buildLabel(shell(), labelText);
 
 		return this.buildLabeledComposite(
 			container,
@@ -2006,9 +2010,10 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * TODO
+	 * The subject holder's value changed, disconnects any listeners from the
+	 * old subject and connects those listeners onto the new subject.
 	 *
-	 * @param e
+	 * @param e The property change containing the old and new subjects
 	 *
 	 * @category Populate
 	 */

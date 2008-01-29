@@ -15,7 +15,6 @@ import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
@@ -83,11 +82,11 @@ public class ColumnCombo extends AbstractDatabaseObjectCombo<IColumn>
 				}
 			}
 
-			populateColumnName();
+			populateCombo();
 		}
 	}
 
-	private void populateColumnName() {
+	private void populateCombo() {
 		String specifiedColumnName = this.subject().getSpecifiedName();
 		if (specifiedColumnName != null) {
 			if (!this.getCombo().getText().equals(specifiedColumnName)) {
@@ -123,6 +122,14 @@ public class ColumnCombo extends AbstractDatabaseObjectCombo<IColumn>
 	protected void schemaChanged(Schema schema) {
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void setValue(String value) {
+		subject().setSpecifiedName(value);
+	}
+
 	protected final Table table() {
 		return this.subject().dbTable();
 	}
@@ -141,38 +148,7 @@ public class ColumnCombo extends AbstractDatabaseObjectCombo<IColumn>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void valueChanged(String value) {
-
-		if (subject() == null) {
-			return;
-		}
-
-		if (StringTools.stringIsEmpty(value)) {
-
-			value = null;
-
-			if (StringTools.stringIsEmpty(subject().getSpecifiedName())) {
-				return;
-			}
-		}
-
-		if (value != null &&
-		    getCombo().getItemCount() > 0 &&
-		    value.equals(getCombo().getItem(0)))
-		{
-			value = null;
-		}
-
-		if (subject().getSpecifiedName() == null &&
-		    value != null)
-		{
-			subject().setSpecifiedName(value);
-		}
-
-		if (subject().getSpecifiedName() != null &&
-		    !subject().getSpecifiedName().equals(value))
-		{
-			subject().setSpecifiedName(value);
-		}
+	protected String value() {
+		return subject().getSpecifiedName();
 	}
 }

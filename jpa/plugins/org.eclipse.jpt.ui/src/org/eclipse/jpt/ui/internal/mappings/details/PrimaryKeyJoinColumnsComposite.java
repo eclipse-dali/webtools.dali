@@ -193,7 +193,7 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 		};
 	}
 
-	private ListValueModel/*<IPrimaryKeyJoinColumn>*/ buildJoinColumnsListHolder() {
+	private ListValueModel<IPrimaryKeyJoinColumn> buildJoinColumnsListHolder() {
 		return new ListAspectAdapter<IEntity, IPrimaryKeyJoinColumn>(
 			getSubjectHolder(),
 			IEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST,

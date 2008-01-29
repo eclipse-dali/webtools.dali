@@ -158,7 +158,7 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		return new JoinColumnsProvider();
 	}
 
-	private ListValueModel/*<IAssociationOverride>*/ buildOverrideAttributesListHolder() {
+	private ListValueModel<IAssociationOverride> buildOverrideAttributesListHolder() {
 		return new ListAspectAdapter<IEntity, IAssociationOverride>(
 			getSubjectHolder(),
 			IEntity.DEFAULT_ASSOCIATION_OVERRIDES_LIST,
@@ -207,7 +207,7 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		return new PageBook(parent, SWT.NONE);
 	}
 
-	private ListValueModel/*<IAssociationOverride>*/ buildSortedOverrideAttributesListHolder() {
+	private ListValueModel<IAssociationOverride> buildSortedOverrideAttributesListHolder() {
 		return new SortedListValueModelAdapter<IAssociationOverride>(
 			buildOverrideAttributesListHolder()
 		);

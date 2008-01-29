@@ -205,7 +205,7 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 		};
 	}
 
-	private ListValueModel/*<IJoinColumn>*/ buildJoinColumnsListHolder() {
+	private ListValueModel<IJoinColumn> buildJoinColumnsListHolder() {
 		return new ListAspectAdapter<ISingleRelationshipMapping, IJoinColumn>(
 			getSubjectHolder(),
 			ISingleRelationshipMapping.DEFAULT_JOIN_COLUMNS_LIST,
@@ -267,7 +267,7 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 		return buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 	}
 
-	private ListValueModel/*<IJoinColumn>*/ buildSortedJoinColumnsListHolder() {
+	private ListValueModel<IJoinColumn> buildSortedJoinColumnsListHolder() {
 		return new SortedListValueModelAdapter<IJoinColumn>(
 			buildJoinColumnsListHolder()
 		);
@@ -279,7 +279,7 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
-		overrideDefaultJoinColumnsCheckBox.setSelection(subject().containsSpecifiedJoinColumns());
+		overrideDefaultJoinColumnsCheckBox.setSelection(subject() != null && subject().containsSpecifiedJoinColumns());
 	}
 
 	private void editJoinColumn(ObjectListSelectionModel listSelectionModel) {

@@ -201,7 +201,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 		return new SimplePropertyValueModel<IPrimaryKeyJoinColumn>();
 	}
 
-	private ListValueModel/*<IPrimaryKeyJoinColumn>*/ buildPrimaryKeyJoinColumnListHolder() {
+	private ListValueModel<IPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnListHolder() {
 		return new ListAspectAdapter<ISecondaryTable, IPrimaryKeyJoinColumn>(
 			getSubjectHolder(),
 			ISecondaryTable.DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST,
@@ -214,7 +214,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 		};
 	}
 
-	private ListValueModel/*<IPrimaryKeyJoinColumn>*/ buildSortedPrimaryKeyJoinColumnListHolder() {
+	private ListValueModel<IPrimaryKeyJoinColumn> buildSortedPrimaryKeyJoinColumnListHolder() {
 		return new SortedListValueModelAdapter<IPrimaryKeyJoinColumn>(
 			buildPrimaryKeyJoinColumnListHolder()
 		);

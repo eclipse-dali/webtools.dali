@@ -305,7 +305,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		this.buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_table,
-			tableNameCombo,
+			tableNameCombo.getParent(),
 			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_TABLE
 		);
 
@@ -315,7 +315,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		this.buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_pkColumn,
-			pkColumnNameCombo,
+			pkColumnNameCombo.getParent(),
 			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN
 		);
 
@@ -325,7 +325,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		this.buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_valueColumn,
-			valueColumnNameCombo,
+			valueColumnNameCombo.getParent(),
 			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_VALUE_COLUMN
 		);
 
@@ -335,7 +335,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		this.buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_pkColumnValue,
-			pkColumnValueCombo,
+			pkColumnValueCombo.getParent(),
 			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN_VALUE
 		);
 	}

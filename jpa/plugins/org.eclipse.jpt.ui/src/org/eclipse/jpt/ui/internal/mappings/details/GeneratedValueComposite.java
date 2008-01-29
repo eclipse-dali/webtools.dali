@@ -97,6 +97,10 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 	private PropertyChangeListener buildGeneratorNameChangeListener() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
+				if (isPopulating()) {
+					return;
+				}
+
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
 						populateGeneratorName();
@@ -271,10 +275,12 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 		// Generator Name widgets
 		generatorNameCombo = buildGeneratorNameCombo(container);
 
+		// Note: The combo's parent is a container fixing the issue with the
+		// border not being painted
 		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.GeneratedValueComposite_generatorName,
-			generatorNameCombo,
+			generatorNameCombo.getParent(),
 			IJpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
 		);
 
@@ -284,6 +290,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 
 	private void installGeneratedValueListeners(IGeneratedValue generatedValue) {
 		if (generatedValue != null) {
+			generatedValue.addPropertyChangeListener(IGeneratedValue.DEFAULT_GENERATOR_PROPERTY,   generatorNameChangeListener);
 			generatedValue.addPropertyChangeListener(IGeneratedValue.SPECIFIED_GENERATOR_PROPERTY, generatorNameChangeListener);
 		}
 	}
@@ -320,6 +327,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 
 	private void populateGeneratorNameCombo() {
 		this.generatorNameCombo.removeAll();
+		//TODO
 //		for (Iterator<String> i = getGeneratorRepository().generatorNames(); i.hasNext(); ){
 //			this.generatorNameCombo.add(i.next());
 //		}
@@ -329,6 +337,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 
 	private void uninstallGeneratedValueListeners(IGeneratedValue generatedValue) {
 		if (generatedValue != null) {
+			generatedValue.removePropertyChangeListener(IGeneratedValue.DEFAULT_GENERATOR_PROPERTY,   generatorNameChangeListener);
 			generatedValue.removePropertyChangeListener(IGeneratedValue.SPECIFIED_GENERATOR_PROPERTY, generatorNameChangeListener);
 		}
 	}

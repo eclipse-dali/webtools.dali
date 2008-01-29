@@ -17,13 +17,11 @@ import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
@@ -144,36 +142,10 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	private ModifyListener buildModifyListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				AbstractDatabaseObjectCombo.this.valueChanged((String) e.data);
+				CCombo combo = (CCombo) e.widget;
+				AbstractDatabaseObjectCombo.this.valueChanged(combo.getText());
 			}
 		};
-	}
-
-	@SuppressWarnings("unchecked")
-	private PropertyChangeListener buildSubjectPropertyListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				AbstractDatabaseObjectCombo.this.removeConnectionListener((T) e.oldValue());
-				AbstractDatabaseObjectCombo.this.repopulate();
-				AbstractDatabaseObjectCombo.this.addConnectionListener((T) e.newValue());
-			}
-		};
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		this.combo = this.buildCombo(container);
-		this.combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
-		this.combo.addModifyListener(this.buildModifyListener());
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		combo.setLayoutData(gridData);
 	}
 
 	protected final ConnectionProfile connectionProfile() {
@@ -184,9 +156,9 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void disengageListeners() {
-		super.disengageListeners();
-		this.removeConnectionListener(this.subject());
+	protected void disengageListeners(T subject) {
+		super.disengageListeners(subject);
+		removeConnectionListener(subject);
 	}
 
 	/*
@@ -205,9 +177,9 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void engageListeners() {
-		super.engageListeners();
-		this.addConnectionListener(this.subject());
+	protected void engageListeners(T subject) {
+		super.engageListeners(subject);
+		addConnectionListener(subject);
 	}
 
 	public final CCombo getCombo() {
@@ -220,13 +192,18 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	@Override
 	protected void initialize() {
 		super.initialize();
-
-		this.getSubjectHolder().addPropertyChangeListener(
-			PropertyValueModel.VALUE,
-			buildSubjectPropertyListener()
-		);
-
 		this.connectionListener = this.buildConnectionListener();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void initializeLayout(Composite container) {
+
+		this.combo = this.buildCombo(container);
+		this.combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
+		this.combo.addModifyListener(this.buildModifyListener());
 	}
 
 	private void removeConnectionListener(T value) {
@@ -237,7 +214,60 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 
 	protected abstract void schemaChanged(Schema schema);
 
+	/**
+	 * Sets the given value as the new value.
+	 *
+	 * @param value The new value to send to the model object
+	 */
+	protected abstract void setValue(String value);
+
 	protected abstract void tableChanged(Table table);
 
-	protected abstract void valueChanged(String value);
+	/**
+	 * Requests the current value from the model object.
+	 *
+	 * @return The current value
+	 */
+	protected abstract String value();
+
+	/**
+	 * The selection has changed, update the model if required.
+	 *
+	 * @param value The new value
+	 */
+	protected void valueChanged(String value) {
+
+		IJpaNode subject = subject();
+
+		if (subject == null) {
+			return;
+		}
+
+		String oldValue = value();
+
+		// Check for null value
+		if (StringTools.stringIsEmpty(value)) {
+			value = null;
+
+			if (StringTools.stringIsEmpty(oldValue)) {
+				return;
+			}
+		}
+
+		// The default value
+		if (value != null &&
+		    getCombo().getItemCount() > 0 &&
+		    value.equals(getCombo().getItem(0)))
+		{
+			value = null;
+		}
+
+		// Set the new value
+		if ((value != null) && (oldValue == null)) {
+			setValue(value);
+		}
+		else if ((oldValue != null) && !oldValue.equals(value)) {
+			setValue(value);
+		}
+	}
 }

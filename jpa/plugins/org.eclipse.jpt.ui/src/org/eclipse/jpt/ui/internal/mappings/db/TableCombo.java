@@ -14,13 +14,16 @@ import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
+ * This composite handles the display of database tables.
+ *
+ * @see IColumn
+ *
  * @version 2.0
  * @since 2.0
  */
@@ -68,11 +71,11 @@ public class TableCombo extends AbstractDatabaseObjectCombo<IColumn>
 				}
 			}
 
-			this.populateColumnTable();
+			this.populateCombo();
 		}
 	}
 
-	private void populateColumnTable() {
+	private void populateCombo() {
 		String tableName = this.subject().getSpecifiedTable();
 		String defaultTableName = this.subject().getDefaultTable();
 		if (tableName != null) {
@@ -108,6 +111,14 @@ public class TableCombo extends AbstractDatabaseObjectCombo<IColumn>
 	protected void schemaChanged(Schema schema) {
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void setValue(String value) {
+		subject().setSpecifiedTable(value);
+	}
+
 	protected final Table table() {
 		return this.subject().dbTable();
 	}
@@ -126,29 +137,7 @@ public class TableCombo extends AbstractDatabaseObjectCombo<IColumn>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void valueChanged(String value) {
-
-		if (this.subject() == null) {
-			return;
-		}
-
-		if (StringTools.stringIsEmpty(value)) {
-			value = null;
-
-			if (subject().getSpecifiedTable() == null || subject().getSpecifiedTable().equals("")) {
-				return;
-			}
-		}
-
-		if (value != null && getCombo().getItemCount() > 0 && value.equals(getCombo().getItem(0))) {
-			value = null;
-		}
-
-		if (subject().getSpecifiedTable() == null && value != null) {
-			subject().setSpecifiedTable(value);
-		}
-		if (subject().getSpecifiedTable() != null && !subject().getSpecifiedTable().equals(value)) {
-			subject().setSpecifiedTable(value);
-		}
+	protected String value() {
+		return subject().getSpecifiedTable();
 	}
 }

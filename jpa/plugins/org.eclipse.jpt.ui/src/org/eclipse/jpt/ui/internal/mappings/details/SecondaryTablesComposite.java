@@ -149,7 +149,7 @@ public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 		};
 	}
 
-	private ListValueModel/*<ISecondaryTable>*/ buildSecondaryTablesListHolder() {
+	private ListValueModel<ISecondaryTable> buildSecondaryTablesListHolder() {
 		return new ListAspectAdapter<IEntity, ISecondaryTable>(getSubjectHolder(), IEntity.SPECIFIED_SECONDARY_TABLES_LIST) {
 			@Override
 			protected ListIterator<ISecondaryTable> listIterator_() {
@@ -163,7 +163,7 @@ public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 		};
 	}
 
-	private ListValueModel/*<ISecondaryTable>*/ buildSortedSecondaryTablesListHolder() {
+	private ListValueModel<ISecondaryTable> buildSortedSecondaryTablesListHolder() {
 		return new SortedListValueModelAdapter<ISecondaryTable>(
 			buildSecondaryTablesListHolder()
 		);

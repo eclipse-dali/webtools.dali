@@ -85,11 +85,17 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 			}
 
 			@Override
+			protected void setValue(String value) {
+				// TODO
+			}
+
+			@Override
 			protected void tableChanged(Table table) {
 			}
 
 			@Override
-			protected void valueChanged(String value) {
+			protected String value() {
+				return ""; // TODO
 			}
 		};
 	}
@@ -187,7 +193,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 	protected void initializeLayout(Composite container) {
 
 		// Name widgets
-		Text nameText = this.buildNameText(container);
+		Text nameText = this.buildNameText(shell());
 		this.setNameText(nameText);
 
 		this.buildLabeledComposite(
@@ -198,12 +204,12 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 		);
 
 		// Sequence Generator widgets
-		this.sequenceNameCombo = this.buildSequenceNameCombo(container);
+		this.sequenceNameCombo = this.buildSequenceNameCombo(shell());
 
 		this.buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.SequenceGeneratorComposite_sequence,
-			this.sequenceNameCombo.getControl(),
+			this.sequenceNameCombo.getCombo().getParent(),
 			IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_SEQUENCE
 		);
 	}

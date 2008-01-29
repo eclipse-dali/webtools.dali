@@ -65,7 +65,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	public AddRemoveListPane(AbstractPane<? extends T> parentPane,
 	                         Composite parent,
 	                         Adapter adapter,
-	                         ListValueModel/*<?>*/ listHolder,
+	                         ListValueModel<?> listHolder,
 	                         WritablePropertyValueModel<?> selectedItemHolder,
 	                         ILabelProvider labelProvider) {
 
@@ -92,7 +92,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	public AddRemoveListPane(AbstractPane<? extends T> parentPane,
 	                         Composite parent,
 	                         Adapter adapter,
-	                         ListValueModel/*<?>*/ listHolder,
+	                         ListValueModel<?> listHolder,
 	                         WritablePropertyValueModel<?> selectedItemHolder,
 	                         ILabelProvider labelProvider,
 	                         String helpId) {
@@ -122,7 +122,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	                         PropertyValueModel<? extends T> subjectHolder,
 	                         Composite parent,
 	                         Adapter adapter,
-	                         ListValueModel/*<?>*/ listHolder,
+	                         ListValueModel<?> listHolder,
 	                         WritablePropertyValueModel<?> selectedItemHolder,
 	                         ILabelProvider labelProvider) {
 
@@ -152,7 +152,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	                         PropertyValueModel<? extends T> subjectHolder,
 	                         Composite parent,
 	                         Adapter adapter,
-	                         ListValueModel/*<?>*/ listHolder,
+	                         ListValueModel<?> listHolder,
 	                         WritablePropertyValueModel<?> selectedItemHolder,
 	                         ILabelProvider labelProvider,
 	                         String helpId) {
@@ -191,9 +191,10 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * (non-Javadoc)
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	protected void initializeMainComposite(Composite container,
 	                                       Adapter adapter,
-	                                       ListValueModel/*<?>*/ listHolder,
+	                                       ListValueModel<?> listHolder,
 	                                       WritablePropertyValueModel<?> selectedItemHolder,
 	                                       ILabelProvider labelProvider,
 	                                       String helpId) {
@@ -205,7 +206,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		}
 
 		ListBoxModelAdapter<Object> listModel = ListBoxModelAdapter.adapt(
-			listHolder,
+			(ListValueModel<Object>) listHolder,
 			new SimplePropertyValueModel<Object>(),
 			list,
 			buildStringConverter(labelProvider)

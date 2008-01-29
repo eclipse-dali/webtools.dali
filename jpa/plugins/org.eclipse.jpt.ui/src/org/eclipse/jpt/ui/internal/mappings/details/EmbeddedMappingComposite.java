@@ -57,12 +57,9 @@ public class EmbeddedMappingComposite extends AbstractFormPane<IEmbeddedMapping>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		EmbeddedAttributeOverridesComposite attributeOverridesComposite = new EmbeddedAttributeOverridesComposite(
+		new EmbeddedAttributeOverridesComposite(
 			this,
 			container
 		);
-
-		this.addPaneForAlignment(attributeOverridesComposite);
-		this.registerSubPane(attributeOverridesComposite);
 	}
 }

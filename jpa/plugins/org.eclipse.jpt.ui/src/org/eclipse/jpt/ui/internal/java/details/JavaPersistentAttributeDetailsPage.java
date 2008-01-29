@@ -105,10 +105,12 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 	@Override
 	protected void initializeLayout(Composite container) {
 
+		// Note: The combo's parent is a container fixing the issue with the
+		// border not being painted
 		buildLabeledComposite(
 			container,
 			buildMappingLabel(container),
-			buildMappingCombo(container).getControl()
+			buildMappingCombo(container).getControl().getParent()
 		);
 
 		PageBook mappingPane = buildMappingPageBook(container);

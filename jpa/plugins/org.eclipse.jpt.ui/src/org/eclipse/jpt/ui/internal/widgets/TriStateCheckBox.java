@@ -253,6 +253,16 @@ public final class TriStateCheckBox {
 	}
 
 	/**
+	 * Determines whether the check box is enabled or not.
+	 *
+	 * @return <code>true</code> if the check box is enabled; <code>false</code>
+	 * otherwise
+	 */
+	public boolean isEnabled() {
+		return this.table.isEnabled();
+	}
+
+	/**
 	 * @see org.eclipse.swt.widgets.Widget#removeDisposeListener(DisposeListener)
 	 */
 	public void removeDisposeListener(DisposeListener disposeListener) {
@@ -264,6 +274,16 @@ public final class TriStateCheckBox {
 	 */
 	public void removeSelectionListener(SelectionListener selectionListener) {
 		this.table.removeSelectionListener(selectionListener);
+	}
+
+	/**
+	 * Changes the enablement state of the widgets of this pane.
+	 *
+	 * @param enabled <code>true</code> to enable the widgets or <code>false</code>
+	 * to disable them
+	 */
+	public void setEnabled(boolean enabled) {
+		this.table.setEnabled(enabled);
 	}
 
 	/**

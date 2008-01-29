@@ -17,6 +17,7 @@ import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -65,6 +66,9 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class GenerationComposite extends AbstractFormPane<IIdMapping>
 {
+	private WritablePropertyValueModel<Boolean> sequenceGeneratorExpansionStateHolder;
+	private WritablePropertyValueModel<Boolean> tableGeneratorExpansionStateHolder;
+
 	/**
 	 * Creates a new <code>GenerationComposite</code>.
 	 *
@@ -77,7 +81,7 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 		super(parentPane, parent, false);
 	}
 
- 	private WritablePropertyValueModel<Boolean> buildPrimaryKeyGenerationHolder() {
+	private WritablePropertyValueModel<Boolean> buildPrimaryKeyGenerationHolder() {
 		return new PropertyAspectAdapter<IIdMapping, Boolean>(getSubjectHolder(), IIdMapping.GENERATED_VALUE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -86,11 +90,12 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 
 			@Override
 			protected void setValue_(Boolean value) {
-				if (value) {
-					subject().addGeneratedValue();
+
+				if (value && (subject.getGeneratedValue() == null)) {
+					subject.addGeneratedValue();
 				}
-				else {
-					subject().removeGeneratedValue();
+				else if (!value && (subject.getGeneratedValue() != null)) {
+					subject.removeGeneratedValue();
 				}
 			}
 		};
@@ -105,9 +110,11 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 
 			@Override
 			protected void setValue_(Boolean value) {
-				if (value) {
-					ISequenceGenerator sequenceGenerator = subject().addSequenceGenerator();
-					IGeneratedValue generatedValue = subject().getGeneratedValue();
+
+				if (value && (subject.getSequenceGenerator() == null)) {
+
+					ISequenceGenerator sequenceGenerator = subject.addSequenceGenerator();
+					IGeneratedValue generatedValue = subject.getGeneratedValue();
 
 					if ((generatedValue != null) &&
 					    (generatedValue.getGenerator() != null))
@@ -115,14 +122,14 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 						sequenceGenerator.setName(generatedValue.getGenerator());
 					}
 				}
-				else {
-					subject().removeSequenceGenerator();
+				else if (!value && (subject.getSequenceGenerator() != null)) {
+					subject.removeSequenceGenerator();
 				}
 			}
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildTableGeneratorBooleanHolder() {
+ 	private WritablePropertyValueModel<Boolean> buildTableGeneratorBooleanHolder() {
 		return new PropertyAspectAdapter<IIdMapping, Boolean>(getSubjectHolder(), IIdMapping.TABLE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -131,9 +138,11 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 
 			@Override
 			protected void setValue_(Boolean value) {
-				if (value) {
-					ITableGenerator tableGenerator = subject().addTableGenerator();
-					IGeneratedValue generatedValue = subject().getGeneratedValue();
+
+				if (value && (subject.getTableGenerator() == null)) {
+
+					ITableGenerator tableGenerator = subject.addTableGenerator();
+					IGeneratedValue generatedValue = subject.getGeneratedValue();
 
 					if ((generatedValue != null) &&
 					    (generatedValue.getGenerator() != null))
@@ -141,11 +150,34 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 						tableGenerator.setName(generatedValue.getGenerator());
 					}
 				}
-				else {
-					subject().removeTableGenerator();
+				else if (!value && (subject.getTableGenerator() != null)) {
+					subject.removeTableGenerator();
 				}
 			}
 		};
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void doPopulate()
+	{
+		super.doPopulate();
+
+		sequenceGeneratorExpansionStateHolder.setValue(subject() != null && subject().getSequenceGenerator() != null);
+		tableGeneratorExpansionStateHolder   .setValue(subject() != null && subject().getTableGenerator() != null);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void initialize() {
+		super.initialize();
+
+		sequenceGeneratorExpansionStateHolder = new SimplePropertyValueModel<Boolean>(false);
+		tableGeneratorExpansionStateHolder    = new SimplePropertyValueModel<Boolean>(false);
 	}
 
 	/*
@@ -190,21 +222,18 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 
 	private void initializeSequenceGeneratorPane(Composite container) {
 
-		WritablePropertyValueModel<Boolean> sequenceGeneratorBooleanHolder =
-			buildSequenceGeneratorBooleanHolder();
-
 		// Sequence Generator sub-section
 		container = buildSubSection(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
-			sequenceGeneratorBooleanHolder
+			buildSequenceGeneratorBooleanHolder()
 		);
 
 		// Sequence Generator check box
 		Button sequenceGeneratorCheckBox = buildCheckBox(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
-			sequenceGeneratorBooleanHolder,
+			sequenceGeneratorExpansionStateHolder,
 			IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR
 		);
 
@@ -217,20 +246,17 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 
 	private void initializeTableGeneratorPane(Composite container) {
 
-		WritablePropertyValueModel<Boolean> tableGeneratorBooleanHolder =
-			buildTableGeneratorBooleanHolder();
-
 		// Table Generator sub-section
 		container = buildSubSection(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_tableGenerator,
-			tableGeneratorBooleanHolder
+			buildTableGeneratorBooleanHolder()
 		);
 
 		Button tableGeneratorCheckBox = buildCheckBox(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_tableGenerator,
-			tableGeneratorBooleanHolder,
+			tableGeneratorExpansionStateHolder,
 			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR
 		);
 

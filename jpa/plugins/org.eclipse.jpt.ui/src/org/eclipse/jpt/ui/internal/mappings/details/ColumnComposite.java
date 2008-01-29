@@ -14,6 +14,7 @@ import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -57,6 +58,9 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class ColumnComposite extends AbstractFormPane<IColumn>
 {
+	private TriStateCheckBox insertableCheckBox;
+	private TriStateCheckBox updatableCheckBox;
+
 	/**
 	 * Creates a new <code>ColumnComposite</code>.
 	 *
@@ -64,9 +68,9 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 	 * @param subjectHolder The holder of the subject <code>IColumn</code>
 	 * @param parent The parent container
 	 */
-	protected ColumnComposite(AbstractFormPane<?> parentPane,
-	                          PropertyValueModel<? extends IColumn> subjectHolder,
-	                          Composite parent) {
+	public ColumnComposite(AbstractFormPane<?> parentPane,
+	                       PropertyValueModel<? extends IColumn> subjectHolder,
+	                       Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
 	}
@@ -181,6 +185,16 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 	 * (non-Javadoc)
 	 */
 	@Override
+	public void enableWidgets(boolean enabled) {
+		super.enableWidgets(enabled);
+		insertableCheckBox.setEnabled(enabled);
+		updatableCheckBox.setEnabled(enabled);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
 	protected void initializeLayout(Composite container) {
 
 		// Column group pane
@@ -210,7 +224,7 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 		);
 
 		// Insertable widgets
-		buildTriStateCheckBoxWithDefault(
+		insertableCheckBox = buildTriStateCheckBoxWithDefault(
 			container,
 			JptUiMappingsMessages.ColumnComposite_insertable,
 			buildInsertableHolder(),
@@ -219,7 +233,7 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 		);
 
 		// Updatable widgets
-		buildTriStateCheckBoxWithDefault(
+		updatableCheckBox = buildTriStateCheckBoxWithDefault(
 			container,
 			JptUiMappingsMessages.ColumnComposite_updatable,
 			buildUpdatableHolder(),
