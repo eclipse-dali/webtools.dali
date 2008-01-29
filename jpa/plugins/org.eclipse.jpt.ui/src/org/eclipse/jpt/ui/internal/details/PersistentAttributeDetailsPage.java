@@ -215,23 +215,32 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 	}
 
 	private void populateMappingPage(String mappingKey) {
-		if (this.currentMappingComposite != null &&
-		    this.currentMappingKey == mappingKey) {
+		 if (this.currentMappingComposite != null && 
+             this.currentMappingKey == mappingKey) { 
 
-			this.currentMappingComposite.populate();
-			return;
-		}
+              this.currentMappingComposite.populate(); 
+              return; 
+         } 
 
-		this.currentMappingKey = mappingKey;
-		this.currentMappingComposite = mappingCompositeFor(mappingKey);
-		this.mappingPageBook.showPage(this.currentMappingComposite.getControl());
+         this.currentMappingKey = mappingKey; 
 
-		try {
-			this.currentMappingComposite.populate();
-		}
-		finally {
-			// Log or show error
-		}
+         if (this.currentMappingKey != null) { 
+              this.currentMappingComposite = mappingCompositeFor(mappingKey); 
+
+              try { 
+                   this.currentMappingComposite.populate(); 
+              } 
+              finally { 
+                   // Log or show error 
+              } 
+
+              this.mappingPageBook.showPage(this.currentMappingComposite.getControl()); 
+              this.mappingPageBook.layout(true); 
+         } 
+         else { 
+              this.currentMappingComposite = null; 
+              this.mappingPageBook.showPage(new Label(this.mappingPageBook, SWT.NULL)); 
+         } 
 	}
 
 	private void populateMapAsCombo() {
