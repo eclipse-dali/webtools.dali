@@ -112,19 +112,21 @@ public class JpaDetailsView extends AbstractJpaView
 	}
 
 	private IJpaDetailsPage<? extends IJpaContextNode> getDetailsPage(IJpaContextNode contextNode) {
-		String id = contextNode.jpaProject().jpaPlatform().getId();
-
-		if (detailsPages.containsKey(id)) {
-			IJpaDetailsPage<? extends IJpaContextNode> page = detailsPages.get(id);
-
-			if ((page != null) && page.getControl().isDisposed()) {
-				detailsPages.remove(id);
-			}
-			else {
-				return page;
-			}
-		}
-
+		//TODO commented out the caching of the details provider for the time being, 
+		//someone should probably revist the possibility of caching
+//		String id = contextNode.jpaProject().jpaPlatform().getId();
+//
+//		if (detailsPages.containsKey(id)) {
+//			IJpaDetailsPage<? extends IJpaContextNode> page = detailsPages.get(id);
+//
+//			if ((page != null) && page.getControl().isDisposed()) {
+//				detailsPages.remove(id);
+//			}
+//			else {
+//				return page;
+//			}
+//		}
+//
 		return buildDetailsPage(contextNode);
 	}
 
