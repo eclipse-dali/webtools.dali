@@ -98,10 +98,10 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
 				sb.append(CR);
-					sb.append("import ");
-					sb.append(JPA.EMBEDDABLE);
-					sb.append(";");
-					sb.append(CR);
+				sb.append("import ");
+				sb.append(JPA.EMBEDDABLE);
+				sb.append(";");
+				sb.append(CR);
 				sb.append("@Embeddable");
 				sb.append(CR);
 				sb.append("public class ").append(EMBEDDABLE_TYPE_NAME).append(" {");
@@ -412,6 +412,11 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		
 		IEmbeddedIdMapping embeddedIdMapping = (IEmbeddedIdMapping) javaPersistentType().attributeNamed("myEmbeddedId").getMapping();
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertEquals("myEmbeddedId", attributeResource.getName());
+		assertNull(attributeResource.annotation(AttributeOverride.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(AttributeOverrides.ANNOTATION_NAME));
 	
 		assertEquals(2, CollectionTools.size(embeddedIdMapping.defaultAttributeOverrides()));
 		IAttributeOverride defaultAttributeOverride = embeddedIdMapping.defaultAttributeOverrides().next();

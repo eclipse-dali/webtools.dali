@@ -17,8 +17,11 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 public class NullAssociationOverride extends AbstractResource implements AssociationOverride, Annotation
 {	
-	public NullAssociationOverride(JavaResource parent) {
+	private String name;
+
+	public NullAssociationOverride(JavaResource parent, String name) {
 		super(parent);
+		this.name = name;
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -42,7 +45,7 @@ public class NullAssociationOverride extends AbstractResource implements Associa
 	}
 
 	public String getName() {
-		return null;
+		return this.name;
 	}
 	
 	public void setName(String name) {

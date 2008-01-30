@@ -30,7 +30,6 @@ import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.NullAttributeOverride;
-import org.eclipse.jpt.core.internal.resource.java.NullColumn;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -58,9 +57,9 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 	@Override
 	public void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.initializeFromResource(persistentAttributeResource);
+		this.embeddable = embeddableFor(persistentAttribute());
 		this.initializeAttributeOverrides(persistentAttributeResource);
 		this.initializeDefaultAttributeOverrides(persistentAttributeResource);
-		this.embeddable = embeddableFor(persistentAttribute());
 	}
 	
 	protected void initializeAttributeOverrides(JavaPersistentAttributeResource persistentAttributeResource) {
@@ -78,8 +77,7 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 			String attributeName = i.next();
 			IJavaAttributeOverride attributeOverride = attributeOverrideNamed(attributeName);
 			if (attributeOverride == null) {
-				attributeOverride = createAttributeOverride(new NullAttributeOverride(persistentAttributeResource));
-				attributeOverride.setName(attributeName);
+				attributeOverride = createAttributeOverride(new NullAttributeOverride(persistentAttributeResource, attributeName));
 				this.defaultAttributeOverrides.add(attributeOverride);
 			}
 		}
@@ -250,12 +248,11 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 			String attributeName = i.next();
 			IJavaAttributeOverride attributeOverride = attributeOverrideNamed(attributeName);
 			if (attributeOverride == null) {
-				attributeOverride = createAttributeOverride(new NullAttributeOverride(persistentAttributeResource));
+				attributeOverride = createAttributeOverride(new NullAttributeOverride(persistentAttributeResource, attributeName));
 				addDefaultAttributeOverride(attributeOverride);
-				attributeOverride.setName(attributeName);
 			}
 			else if (attributeOverride.isVirtual()) {
-				attributeOverride.getColumn().update(new NullColumn(persistentAttributeResource));
+				attributeOverride.update(new NullAttributeOverride(persistentAttributeResource, attributeName));
 			}
 		}
 		

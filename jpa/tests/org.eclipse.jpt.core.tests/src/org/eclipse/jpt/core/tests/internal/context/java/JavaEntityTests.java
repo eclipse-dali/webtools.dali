@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IAssociationOverride;
 import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
+import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddable;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
@@ -32,6 +33,7 @@ import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeOverride;
+import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
@@ -74,6 +76,9 @@ public class JavaEntityTests extends ContextModelTestCase
 	private static final String ENTITY_NAME = "entityName";
 	private static final String TABLE_NAME = "MY_TABLE";
 	private static final String DISCRIMINATOR_VALUE = "MY_DISCRIMINATOR_VALUE";
+	protected static final String SUB_TYPE_NAME = "AnnotationTestTypeChild";
+	protected static final String FULLY_QUALIFIED_SUB_TYPE_NAME = PACKAGE_NAME + "." + SUB_TYPE_NAME;
+	
 	
 	public JavaEntityTests(String name) {
 		super(name);
@@ -186,7 +191,7 @@ public class JavaEntityTests extends ContextModelTestCase
 			
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("    @OneToOne");
+				sb.append("@OneToOne");
 				sb.append(CR);
 				sb.append("    private int address;").append(CR);
 				sb.append(CR);
@@ -1559,7 +1564,57 @@ public class JavaEntityTests extends ContextModelTestCase
 	}
 
 	public void testDefaultAttributeOverrides() throws Exception {
-		//TODO
+		createTestMappedSuperclass();
+		createTestSubType();
+			
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		
+		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		classRefs.next();
+		IJavaEntity javaEntity = (IJavaEntity) classRefs.next().getJavaPersistentType().getMapping();
+
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		assertEquals(SUB_TYPE_NAME, typeResource.getName());
+		assertNull(typeResource.annotation(AttributeOverride.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(AttributeOverrides.ANNOTATION_NAME));
+		
+		assertEquals(2, CollectionTools.size(javaEntity.defaultAttributeOverrides()));
+		IAttributeOverride defaultAttributeOverride = javaEntity.defaultAttributeOverrides().next();
+		assertEquals("id", defaultAttributeOverride.getName());
+		assertEquals("id", defaultAttributeOverride.getColumn().getName());
+		assertEquals(SUB_TYPE_NAME, defaultAttributeOverride.getColumn().getTable());
+		
+
+		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+		
+		IBasicMapping idMapping = (IBasicMapping) mappedSuperclass.persistentType().attributeNamed("id").getMapping();
+		idMapping.getColumn().setSpecifiedName("FOO");
+		idMapping.getColumn().setSpecifiedTable("BAR");
+		
+		assertEquals(SUB_TYPE_NAME, typeResource.getName());
+		assertNull(typeResource.annotation(AttributeOverride.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(AttributeOverrides.ANNOTATION_NAME));
+
+		assertEquals(2, CollectionTools.size(javaEntity.defaultAttributeOverrides()));
+		defaultAttributeOverride = javaEntity.defaultAttributeOverrides().next();
+		assertEquals("id", defaultAttributeOverride.getName());
+		assertEquals("FOO", defaultAttributeOverride.getColumn().getName());
+		assertEquals("BAR", defaultAttributeOverride.getColumn().getTable());
+
+		idMapping.getColumn().setSpecifiedName(null);
+		idMapping.getColumn().setSpecifiedTable(null);
+		assertEquals(SUB_TYPE_NAME, typeResource.getName());
+		assertNull(typeResource.annotation(AttributeOverride.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(AttributeOverrides.ANNOTATION_NAME));
+
+		defaultAttributeOverride = javaEntity.defaultAttributeOverrides().next();
+		assertEquals("id", defaultAttributeOverride.getName());
+		assertEquals("id", defaultAttributeOverride.getColumn().getName());
+		assertEquals(SUB_TYPE_NAME, defaultAttributeOverride.getColumn().getTable());
+		
+		javaEntity.addSpecifiedAttributeOverride(0).setName("id");
+		assertEquals(1, CollectionTools.size(javaEntity.defaultAttributeOverrides()));
 	}
 	
 	public void testSpecifiedAttributeOverridesSize() throws Exception {
@@ -2085,7 +2140,6 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertFalse(namedQueries.hasNext());
 	}	
 
-
 	public void testAddSpecifiedAssociationOverride() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
@@ -2263,6 +2317,71 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertFalse(defaultAssociationOverrides.hasNext());
 	}
 
+	public void testDefaultAssociationOverrides() throws Exception {
+		createTestMappedSuperclass();
+		createTestSubType();
+			
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		
+		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		classRefs.next();
+		IJavaEntity javaEntity = (IJavaEntity) classRefs.next().getJavaPersistentType().getMapping();
+
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		assertEquals(SUB_TYPE_NAME, typeResource.getName());
+		assertNull(typeResource.annotation(AssociationOverride.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(AssociationOverrides.ANNOTATION_NAME));
+		
+		assertEquals(1, CollectionTools.size(javaEntity.defaultAssociationOverrides()));
+		IAssociationOverride defaultAssociationOverride = javaEntity.defaultAssociationOverrides().next();
+		assertEquals("address", defaultAssociationOverride.getName());
+		//TODO joinColumns for default association overrides
+//		IJoinColumn defaultJoinColumn = defaultAssociationOverride.joinColumns().next();
+//		assertEquals("address", defaultJoinColumn.getName());
+//		assertEquals("address", defaultJoinColumn.getReferencedColumnName());
+//		assertEquals(SUB_TYPE_NAME, defaultJoinColumn.getTable());
+//		
+//
+//		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+//		
+//		IOneToOneMapping addressMapping = (IOneToOneMapping) mappedSuperclass.persistentType().attributeNamed("address").getMapping();
+//		IJoinColumn joinColumn = addressMapping.addSpecifiedJoinColumn(0);
+//		joinColumn.setSpecifiedName("FOO");
+//		joinColumn.setSpecifiedReferencedColumnName("BAR");
+//		joinColumn.setSpecifiedTable("BAZ");
+//		
+//		assertEquals(SUB_TYPE_NAME, typeResource.getName());
+//		assertNull(typeResource.annotation(AssociationOverride.ANNOTATION_NAME));
+//		assertNull(typeResource.annotation(AssociationOverrides.ANNOTATION_NAME));
+//
+//		assertEquals(1, CollectionTools.size(javaEntity.defaultAssociationOverrides()));
+//		defaultAssociationOverride = javaEntity.defaultAssociationOverrides().next();
+//		assertEquals("address", defaultAssociationOverride.getName());
+//		assertEquals("FOO", defaultJoinColumn.getName());
+//		assertEquals("BAR", defaultJoinColumn.getReferencedColumnName());
+//		assertEquals("BAZ", defaultJoinColumn.getTable());
+//
+//		joinColumn.setSpecifiedName(null);
+//		joinColumn.setSpecifiedReferencedColumnName(null);
+//		joinColumn.setSpecifiedTable(null);
+//		assertEquals(SUB_TYPE_NAME, typeResource.getName());
+//		assertNull(typeResource.annotation(AssociationOverride.ANNOTATION_NAME));
+//		assertNull(typeResource.annotation(AssociationOverrides.ANNOTATION_NAME));
+//
+//		defaultAssociationOverride = javaEntity.defaultAssociationOverrides().next();
+//		assertEquals("address", defaultJoinColumn.getName());
+//		assertEquals("address", defaultJoinColumn.getReferencedColumnName());
+//		assertEquals(SUB_TYPE_NAME, defaultJoinColumn.getTable());
+//		
+//		javaEntity.addSpecifiedAssociationOverride(0).setName("address");
+//		assertEquals(0, CollectionTools.size(javaEntity.defaultAssociationOverrides()));
+	}
+	
+	public void testSpecifiedAssociationOverrides() {
+		//TODO 
+	}
+	
 	public void testUpdateIdClass() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);

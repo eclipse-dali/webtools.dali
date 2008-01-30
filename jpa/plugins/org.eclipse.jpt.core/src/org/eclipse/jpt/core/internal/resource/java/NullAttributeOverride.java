@@ -15,8 +15,18 @@ import org.eclipse.jpt.core.internal.ITextRange;
 
 public class NullAttributeOverride extends AbstractResource implements AttributeOverride, Annotation
 {	
-	public NullAttributeOverride(JavaResource parent) {
+	//TODO should I hold on to the IColumnMapping that this attribute override is built from?
+	//this would make it more similar to the Virtual mappings concept in xml
+	
+	
+	private final NullColumn column;
+	
+	private String name;
+	
+	public NullAttributeOverride(JavaResource parent, String name) {
 		super(parent);
+		this.name = name;
+		this.column = new NullColumn(this);
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -40,7 +50,7 @@ public class NullAttributeOverride extends AbstractResource implements Attribute
 	}
 
 	public String getName() {
-		return null;
+		return this.name;
 	}
 	
 	public void setName(String name) {
@@ -54,7 +64,7 @@ public class NullAttributeOverride extends AbstractResource implements Attribute
 	}
 	
 	public Column getColumn() {
-		return new NullColumn(this);
+		return this.column;
 	}
 	
 	public Column addColumn() {

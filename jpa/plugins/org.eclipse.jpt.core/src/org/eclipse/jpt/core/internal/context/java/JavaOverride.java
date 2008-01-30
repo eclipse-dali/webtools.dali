@@ -48,15 +48,19 @@ public abstract class JavaOverride<T extends OverrideResource> extends JavaConte
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		if (!this.isVirtual()) {
-			this.overrideResource.setName(newName);
-		}
+		this.overrideResource.setName(newName);
+		firePropertyChanged(NAME_PROPERTY, oldName, newName);
+	}
+	
+	protected void setName_(String newName) {
+		String oldName = this.name;
+		this.name = newName;
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 
 	public void update(T overrideResource) {
 		this.overrideResource = overrideResource;
-		this.setName(this.name(overrideResource));
+		this.setName_(this.name(overrideResource));
 	}
 
 	protected String name(OverrideResource overrideResource) {

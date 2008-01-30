@@ -86,8 +86,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Embedded").append(CR);
-				sb.append(CR);
-				sb.append("    private " + EMBEDDABLE_TYPE_NAME +" myEmbedded;").append(CR);
+				sb.append("    private " + EMBEDDABLE_TYPE_NAME + " myEmbedded;").append(CR);
 				sb.append(CR);
 			}
 		});
@@ -411,7 +410,13 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		
 		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) javaPersistentType().attributeNamed("myEmbedded").getMapping();
-	
+
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertEquals("myEmbedded", attributeResource.getName());
+		assertNull(attributeResource.annotation(AttributeOverride.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(AttributeOverrides.ANNOTATION_NAME));
+		
 		assertEquals(2, CollectionTools.size(embeddedMapping.defaultAttributeOverrides()));
 		IAttributeOverride defaultAttributeOverride = embeddedMapping.defaultAttributeOverrides().next();
 		assertEquals("city", defaultAttributeOverride.getName());
@@ -427,6 +432,10 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		cityMapping.getColumn().setSpecifiedName("FOO");
 		cityMapping.getColumn().setSpecifiedTable("BAR");
 		
+		assertEquals("myEmbedded", attributeResource.getName());
+		assertNull(attributeResource.annotation(AttributeOverride.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(AttributeOverrides.ANNOTATION_NAME));
+
 		assertEquals(2, CollectionTools.size(embeddedMapping.defaultAttributeOverrides()));
 		defaultAttributeOverride = embeddedMapping.defaultAttributeOverrides().next();
 		assertEquals("city", defaultAttributeOverride.getName());

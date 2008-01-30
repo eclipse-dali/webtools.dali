@@ -214,8 +214,7 @@ public class JavaEmbeddedIdMapping extends JavaAttributeMapping
 			String attributeName = i.next();
 			IJavaAttributeOverride attributeOverride = attributeOverrideNamed(attributeName);
 			if (attributeOverride == null) {
-				attributeOverride = createAttributeOverride(new NullAttributeOverride(persistentAttributeResource));
-				attributeOverride.setName(attributeName);
+				attributeOverride = createAttributeOverride(new NullAttributeOverride(persistentAttributeResource, attributeName));
 				this.defaultAttributeOverrides.add(attributeOverride);
 			}
 		}
@@ -257,9 +256,8 @@ public class JavaEmbeddedIdMapping extends JavaAttributeMapping
 			String attributeName = i.next();
 			IJavaAttributeOverride attributeOverride = attributeOverrideNamed(attributeName);
 			if (attributeOverride == null) {
-				attributeOverride = createAttributeOverride(new NullAttributeOverride(persistentAttributeResource));
+				attributeOverride = createAttributeOverride(new NullAttributeOverride(persistentAttributeResource, attributeName));
 				addDefaultAttributeOverride(attributeOverride);
-				attributeOverride.setName(attributeName);
 			}
 			else if (attributeOverride.isVirtual()) {
 				attributeOverride.getColumn().update(new NullColumn(persistentAttributeResource));

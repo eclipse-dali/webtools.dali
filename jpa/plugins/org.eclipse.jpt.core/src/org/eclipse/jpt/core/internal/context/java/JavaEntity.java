@@ -228,8 +228,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 			String attributeName = i.next();
 			IJavaAttributeOverride attributeOverride = attributeOverrideNamed(attributeName);
 			if (attributeOverride == null) {
-				attributeOverride = createAttributeOverride(new NullAttributeOverride(persistentTypeResource));
-				attributeOverride.setName(attributeName);
+				attributeOverride = createAttributeOverride(new NullAttributeOverride(persistentTypeResource, attributeName));
 				this.defaultAttributeOverrides.add(attributeOverride);
 			}
 		}
@@ -248,8 +247,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 			String associationName = i.next();
 			IJavaAssociationOverride associationOverride = associationOverrideNamed(associationName);
 			if (associationOverride == null) {
-				associationOverride = createAssociationOverride(new NullAssociationOverride(persistentTypeResource));
-				associationOverride.setName(associationName);
+				associationOverride = createAssociationOverride(new NullAssociationOverride(persistentTypeResource, associationName));
 				this.defaultAssociationOverrides.add(associationOverride);
 			}
 		}
@@ -1111,9 +1109,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 			String attributeName = i.next();
 			IJavaAttributeOverride attributeOverride = attributeOverrideNamed(attributeName);
 			if (attributeOverride == null) {
-				attributeOverride = createAttributeOverride(new NullAttributeOverride(persistentTypeResource));
+				attributeOverride = createAttributeOverride(new NullAttributeOverride(persistentTypeResource, attributeName));
 				addDefaultAttributeOverride(attributeOverride);
-				attributeOverride.setName(attributeName);
 			}
 			else if (attributeOverride.isVirtual()) {
 				attributeOverride.getColumn().update(new NullColumn(persistentTypeResource));
@@ -1161,9 +1158,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 			String associationName = i.next();
 			IJavaAssociationOverride associationOverride = associationOverrideNamed(associationName);
 			if (associationOverride == null) {
-				associationOverride = createAssociationOverride(new NullAssociationOverride(persistentTypeResource));
+				associationOverride = createAssociationOverride(new NullAssociationOverride(persistentTypeResource, associationName));
 				addDefaultAssociationOverride(associationOverride);
-				associationOverride.setName(associationName);
 			}
 			else if (associationOverride.isVirtual()) {
 				//TODO what is this about for attributeOverrides???
