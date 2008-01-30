@@ -10,8 +10,8 @@ package org.eclipse.jpt.ui.internal.xml.details;
 
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
@@ -66,7 +66,7 @@ public class XmlDetailsProvider
 		}
 
 //		if (contentNodeId.equals(IXmlContentNodes.PERSISTENT_ATTRIBUTE_ID)) {
-		if (contentNodeId instanceof IJavaPersistentAttribute) {
+		if (contentNodeId instanceof XmlPersistentAttribute) {
 			return new XmlPersistentAttributeDetailsPage(
 				buildPersistenceAttributeHolder(subjectHolder),
 				parentComposite,
