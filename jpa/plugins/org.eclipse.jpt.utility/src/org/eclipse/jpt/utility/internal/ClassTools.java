@@ -1505,7 +1505,7 @@ public final class ClassTools {
 	/**
 	 * Return the class name for the specified "type declaration"; e.g.
 	 *     "int[]" -> "[I"
-	 * @see java.lang.Class.getName()
+	 * @see java.lang.Class#getName()
 	 */
 	public static String classNameForTypeDeclaration(String typeDeclaration) {
 		TypeDeclaration td = typeDeclaration(typeDeclaration);
@@ -1540,7 +1540,7 @@ public final class ClassTools {
 	
 	/**
 	 * Return the class name for the specified "type declaration".
-	 * @see java.lang.Class.getName()
+	 * @see java.lang.Class#getName()
 	 */
 	public static String classNameForTypeDeclaration(String elementTypeName, int arrayDepth) {
 		// non-array
@@ -1657,10 +1657,12 @@ public final class ClassTools {
 		final char code;
 		final Class<?> javaClass;
 		final Class<?> wrapperClass;
+		private static final String WRAPPER_CLASS_TYPE_FIELD_NAME = "TYPE";
+		// e.g. java.lang.Boolean.TYPE => boolean.class
 		Primitive(char code, Class<?> wrapperClass) {
 			this.code = code;
 			this.wrapperClass = wrapperClass;
-			this.javaClass = (Class<?>) staticFieldValue(wrapperClass, "TYPE");
+			this.javaClass = (Class<?>) staticFieldValue(wrapperClass, WRAPPER_CLASS_TYPE_FIELD_NAME);
 		}
 	}
 
