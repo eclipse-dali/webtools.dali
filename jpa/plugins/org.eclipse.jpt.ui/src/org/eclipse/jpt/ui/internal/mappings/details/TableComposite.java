@@ -8,10 +8,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.Collection;
+import java.util.Iterator;
 import org.eclipse.jpt.core.internal.context.base.ITable;
+import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
+import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
+import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -20,15 +28,18 @@ import org.eclipse.swt.widgets.Group;
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
- * |          ---------------------------------------------------------------- |
- * | Table:   | TableCombo                                                   | |
- * |          ---------------------------------------------------------------- |
- * |          ---------------------------------------------------------------- |
- * | Catalog: | CatalogCombo                                                 | |
- * |          ---------------------------------------------------------------- |
- * |          ---------------------------------------------------------------- |
- * | Schema:  | SchemaCombo                                                  | |
- * |          ---------------------------------------------------------------- |
+ * |                                                                           |
+ * | - Table ----------------------------------------------------------------- |
+ * | |          ------------------------------------------------------------ | |
+ * | | Table:   | TableCombo                                               | | |
+ * | |          ------------------------------------------------------------ | |
+ * | |          ------------------------------------------------------------ | |
+ * | | Catalog: | CatalogCombo                                             | | |
+ * | |          ------------------------------------------------------------ | |
+ * | |          ------------------------------------------------------------ | |
+ * | | Schema:  | SchemaCombo                                              | | |
+ * | |          ------------------------------------------------------------ | |
+ * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see IBasicMapping
@@ -47,20 +58,6 @@ public class TableComposite extends AbstractFormPane<ITable>
 	/**
 	 * Creates a new <code>TableComposite</code>.
 	 *
-	 * @param subjectHolder The holder of the subject <code>ITable</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public TableComposite(PropertyValueModel<? extends ITable> subjectHolder,
-	                      Composite parent,
-	                      IWidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
-	}
-
-	/**
-	 * Creates a new <code>TableComposite</code>.
-	 *
 	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of the subject
 	 * @param parent The parent container
@@ -72,42 +69,161 @@ public class TableComposite extends AbstractFormPane<ITable>
 		super(parentPane, subjectHolder, parent);
 	}
 
+	/**
+	 * Creates a new <code>TableComposite</code>.
+	 *
+	 * @param subjectHolder The holder of the subject <code>ITable</code>
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
+	public TableComposite(PropertyValueModel<? extends ITable> subjectHolder,
+	                      Composite parent,
+	                      IWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
+	}
+
+	private CatalogCombo<ITable> buildCatalogCombo(Composite container) {
+
+		return new CatalogCombo<ITable>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(ITable.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(ITable.SPECIFIED_CATALOG_PROPERTY);
+			}
+
+			@Override
+			protected String defaultValue() {
+				return subject().getDefaultCatalog();
+			}
+
+			@Override
+			protected void setValue(String value) {
+				subject().setSpecifiedCatalog(value);
+			}
+
+			@Override
+			protected String value() {
+				return subject().getSpecifiedCatalog();
+			}
+		};
+	}
+
+	private SchemaCombo<ITable> buildSchemaCombo(Composite container) {
+
+		return new SchemaCombo<ITable>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(ITable.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(ITable.SPECIFIED_SCHEMA_PROPERTY);
+			}
+
+			@Override
+			protected String defaultValue() {
+				return subject().getDefaultSchema();
+			}
+
+			@Override
+			protected void setValue(String value) {
+				subject().setSpecifiedSchema(value);
+			}
+
+			@Override
+			protected String value() {
+				return subject().getSpecifiedSchema();
+			}
+		};
+	}
+
+	private TableCombo<ITable> buildTableCombo(Composite container) {
+
+		return new TableCombo<ITable>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(ITable.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(ITable.SPECIFIED_NAME_PROPERTY);
+			}
+
+			@Override
+			protected String defaultValue() {
+				return subject().getDefaultName();
+			}
+
+			@Override
+			protected void setValue(String value) {
+				subject().setSpecifiedName(value);
+			}
+
+			@Override
+			protected Table table() {
+				return subject().dbTable();
+			}
+
+			private Schema tableSchema() {
+				return database().schemaNamed(subject().getSchema());
+			}
+
+			@Override
+			protected String value() {
+				return subject().getSpecifiedName();
+			}
+
+			@Override
+			protected Iterator<String> values() {
+				Schema schema = tableSchema();
+
+				if (schema != null) {
+					return schema.tableNames();
+				}
+
+				return EmptyIterator.instance();
+			}
+		};
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		Group columnGroup = buildTitledPane(
+		// Table group pane
+		Group tableGroupPane = buildTitledPane(
 			container,
 			JptUiMappingsMessages.TableComposite_tableSection
 		);
 
 		// Table widgets
-		TableCombo tableCombo = new TableCombo(this, columnGroup);
+		TableCombo<ITable> tableCombo = buildTableCombo(tableGroupPane);
 
 		buildLabeledComposite(
-			columnGroup,
+			tableGroupPane,
 			JptUiMappingsMessages.TableChooser_label,
 			tableCombo.getControl(),
 			IJpaHelpContextIds.ENTITY_TABLE
 		);
 
 		// Catalog widgets
-		CatalogCombo catalogCombo = new CatalogCombo(this, columnGroup);
+		CatalogCombo<ITable> catalogCombo = buildCatalogCombo(tableGroupPane);
 
 		buildLabeledComposite(
-			columnGroup,
+			tableGroupPane,
 			JptUiMappingsMessages.CatalogChooser_label,
 			catalogCombo.getControl(),
 			IJpaHelpContextIds.ENTITY_CATALOG
 		);
 
 		// Schema widgets
-		SchemaCombo schemaCombo = new SchemaCombo(this, columnGroup);
+		SchemaCombo<ITable> schemaCombo = buildSchemaCombo(tableGroupPane);
 
 		buildLabeledComposite(
-			columnGroup,
+			tableGroupPane,
 			JptUiMappingsMessages.SchemaChooser_label,
 			schemaCombo.getControl(),
 			IJpaHelpContextIds.ENTITY_SCHEMA

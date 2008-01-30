@@ -183,7 +183,7 @@ public final class TriStateCheckBox {
 		parent = new Composite(parent, SWT.NULL);
 		parent.setLayout(this.buildTableLayout());
 
-		this.table = new Table(parent, SWT.FLAT | SWT.CHECK | SWT.SINGLE);
+		this.table = new Table(parent, SWT.FLAT | SWT.CHECK | SWT.SINGLE | SWT.NO_BACKGROUND);
 		this.table.addMouseListener(buildMouseListener());
 		this.table.addSelectionListener(buildSelectionListener());
 		this.table.getHorizontalBar().setVisible(false);
@@ -304,8 +304,12 @@ public final class TriStateCheckBox {
 	 * checked and unchecked; or <code>null</code> for partially selected
 	 */
 	public void setSelection(Boolean selection) {
+		TriState oldState = this.state;
 		this.state = this.buildState(selection);
-		this.updateCheckBox();
+
+		if (oldState != state) {
+			this.updateCheckBox();
+		}
 	}
 
 	/**
@@ -324,7 +328,6 @@ public final class TriStateCheckBox {
 	 * value.
 	 */
 	private void updateCheckBox() {
-
 		TableItem checkBox = this.getCheckBox();
 
 		if (state == TriState.PARTIALLY_CHECKED) {
@@ -338,7 +341,7 @@ public final class TriStateCheckBox {
 	}
 
 	/**
-	 * An enum used to keep track of the current tri-state selected.
+	 * An enum containing the possible selection.
 	 */
 	public enum TriState {
 		CHECKED,

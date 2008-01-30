@@ -11,11 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
-import org.eclipse.jpt.db.internal.ConnectionListener;
-import org.eclipse.jpt.db.internal.ConnectionProfile;
-import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.db.internal.Schema;
-import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
@@ -70,56 +66,6 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	                               Composite parent) {
 
 		super(parentPane, parent);
-	}
-
-	private ConnectionListener buildConnectionListener() {
-		return new ConnectionListener() {
-			public void aboutToClose(ConnectionProfile profile) {
-				// not interested to this event.
-			}
-
-			public void closed(ConnectionProfile profile) {
-				populate();
-			}
-
-			public void databaseChanged(ConnectionProfile profile, final Database database) {
-				populate();
-			}
-
-			public void modified(ConnectionProfile profile) {
-				populate();
-			}
-
-			public boolean okToClose(ConnectionProfile profile) {
-				// not interested to this event.
-				return true;
-			}
-
-			public void opened(ConnectionProfile profile) {
-				populate();
-			}
-
-			private void populate() {
-				getControl().getDisplay().asyncExec( new Runnable() {
-					public void run() {
-						if (getControl().isDisposed()) {
-							return;
-						}
-						populateTableNameCombo();
-						populatePkColumnChoices();
-						populateValueColumnNameCombo();
-					}
-				});
-			}
-
-			public void schemaChanged(ConnectionProfile profile, final Schema schema) {
-				populate();
-			}
-
-			public void tableChanged(ConnectionProfile profile, final Table table) {
-				// not interested to this event.
-			}
-		};
 	}
 
 	/*
@@ -224,18 +170,6 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 				generator.setSpecifiedValueColumnName(text);
 			}
 		};
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void clear() {
-		super.clear();
-		this.tableNameCombo.select(0);
-		this.pkColumnNameCombo.select(0);
-		this.pkColumnValueCombo.select(0);
-		this.valueColumnNameCombo.select(0);
 	}
 
 	/*

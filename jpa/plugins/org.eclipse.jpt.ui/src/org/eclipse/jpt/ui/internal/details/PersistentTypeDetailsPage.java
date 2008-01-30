@@ -48,10 +48,10 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 public abstract class PersistentTypeDetailsPage<T extends IPersistentType> extends BaseJpaDetailsPage<T>
 {
 	private Map<String, IJpaComposite<ITypeMapping>> composites;
+	private IJpaComposite<ITypeMapping> currentMappingComposite;
 	private String currentMappingKey;
 	private ComboViewer typeMappingCombo;
 	private PageBook typeMappingPageBook;
-	private IJpaComposite<ITypeMapping> visibleMappingComposite;
 
 	/**
 	 * Creates a new <code>PersistentTypeDetailsPage</code>.
@@ -96,15 +96,6 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 		};
 	}
 
-	private PropertyValueModel<ITypeMapping> buildMappingHolder(final String key) {
-		return new TransformationPropertyValueModel<T, ITypeMapping>(getSubjectHolder()) {
-			@Override
-			protected ITypeMapping transform_(T value) {
-				return key.equals(value.mappingKey()) ? value.getMapping() : null;
-			}
-		};
-	}
-
 	@SuppressWarnings("unchecked")
 	protected IJpaComposite<ITypeMapping> buildMappingComposite(PageBook pageBook,
 	                                                            String key)  {
@@ -119,9 +110,19 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 		);
 	}
 
+	private PropertyValueModel<ITypeMapping> buildMappingHolder(final String key) {
+		return new TransformationPropertyValueModel<T, ITypeMapping>(getSubjectHolder()) {
+			@Override
+			protected ITypeMapping transform_(T value) {
+				return key.equals(value.mappingKey()) ? value.getMapping() : null;
+			}
+		};
+	}
+
 	protected ComboViewer buildTypeMappingCombo(Composite parent) {
 		CCombo combo = buildCombo(parent);
 		this.typeMappingCombo = new ComboViewer(combo);
+		this.typeMappingCombo.getCCombo().setVisibleItemCount(Integer.MAX_VALUE);
 		this.typeMappingCombo.setContentProvider(buildContentProvider());
 		this.typeMappingCombo.setLabelProvider(buildLabelProvider());
 		this.typeMappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -145,11 +146,13 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 	 * (non-Javadoc)
 	 */
 	@Override
-	public void dispose() {
-		for (Iterator<IJpaComposite<ITypeMapping>> i = this.composites.values().iterator(); i.hasNext(); ) {
-			i.next().dispose();
+	protected void doDispose() {
+
+		for (Iterator<IJpaComposite<ITypeMapping>> iter = this.composites.values().iterator(); iter.hasNext(); ) {
+			iter.next().dispose();
 		}
-		super.dispose();
+
+		super.doDispose();
 	}
 
 	/*
@@ -182,9 +185,9 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 			this.typeMappingCombo.setInput(null);
 			this.typeMappingCombo.setSelection(StructuredSelection.EMPTY);
 
-			if (this.visibleMappingComposite != null) {
-				this.visibleMappingComposite.populate();
-				this.visibleMappingComposite = null;
+			if (this.currentMappingComposite != null) {
+				this.currentMappingComposite.populate();
+				this.currentMappingComposite = null;
 			}
 
 			return;
@@ -197,26 +200,32 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 	}
 
 	private void populateMappingPage(String mappingKey) {
-		if (this.visibleMappingComposite != null) {
-			if (mappingKey  == this.currentMappingKey) {
-				if (this.visibleMappingComposite != null) {
-					this.visibleMappingComposite.populate();
-					return;
-				}
-			}
-			else {
-				this.visibleMappingComposite.populate();
-				// don't return
-			}
+		if (this.currentMappingComposite != null &&
+		    this.currentMappingKey == mappingKey) {
+
+			this.currentMappingComposite.populate();
+			return;
 		}
 
 		this.currentMappingKey = mappingKey;
 
-		IJpaComposite<ITypeMapping> mappingComposite = mappingCompositeFor(mappingKey);
-		this.typeMappingPageBook.showPage(mappingComposite.getControl());
+		if (this.currentMappingKey != null) {
+			this.currentMappingComposite = mappingCompositeFor(mappingKey);
 
-		this.visibleMappingComposite = mappingComposite;
-		this.visibleMappingComposite.populate();
+			try {
+				this.currentMappingComposite.populate();
+			}
+			finally {
+				// Log or show error
+			}
+
+			this.typeMappingPageBook.showPage(this.currentMappingComposite.getControl());
+			this.typeMappingPageBook.layout(true);
+		}
+		else {
+			this.currentMappingComposite = null;
+			this.typeMappingPageBook.showPage(new Label(this.typeMappingPageBook, SWT.NULL));
+		}
 	}
 
 	private void setComboData(String mappingKey) {

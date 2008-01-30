@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.TableItem;
 public final class LabeledTableItem implements LabeledControl
 {
 	/**
-	 * The label to be updated with a different icon and text.
+	 * The table cell to be updated with a different icon and text.
 	 */
 	private TableItem tableItem;
 
@@ -37,6 +37,7 @@ public final class LabeledTableItem implements LabeledControl
 	 */
 	public LabeledTableItem(TableItem tableItem) {
 		super();
+
 		Assert.isNotNull(tableItem, "The TableItem cannot be null");
 		this.tableItem = tableItem;
 	}
@@ -45,6 +46,10 @@ public final class LabeledTableItem implements LabeledControl
 	 * (non-Javadoc)
 	 */
 	public void setIcon(final Image image) {
+
+		if (tableItem.isDisposed()) {
+			return;
+		}
 
 		SWTUtil.asyncExec(new Runnable() {
 			public void run() {
@@ -58,6 +63,10 @@ public final class LabeledTableItem implements LabeledControl
 	 */
 	public void setText(final String text) {
 
+		if (tableItem.isDisposed()) {
+			return;
+		}
+
 		SWTUtil.asyncExec(new Runnable() {
 			public void run() {
 				updateTableItem(text, tableItem.getImage());
@@ -67,8 +76,16 @@ public final class LabeledTableItem implements LabeledControl
 
 	private void updateTableItem(String text, Image image) {
 
+		if (text == null) {
+			text = "";
+		}
+
 		Table table = tableItem.getParent();
-		table.getParent().setRedraw(false);
+		table.setRedraw(false);
+
+		boolean checked  = tableItem.getChecked();
+		boolean grayed   = tableItem.getGrayed();
+		boolean hasFocus = table.isFocusControl();
 
 		int index = table.indexOf(tableItem);
 		table.remove(index);
@@ -76,8 +93,15 @@ public final class LabeledTableItem implements LabeledControl
 		tableItem = new TableItem(table, SWT.CHECK, index);
 		tableItem.setText(text);
 		tableItem.setImage(image);
+		tableItem.setChecked(checked);
+		tableItem.setGrayed(grayed);
 
-		table.getParent().pack(true);
-		table.getParent().setRedraw(true);
+		table.layout(true, true);
+		table.getParent().getParent().layout(true, true);
+		table.setRedraw(true);
+
+		if (hasFocus) {
+			table.forceFocus();
+		}
 	}
 }

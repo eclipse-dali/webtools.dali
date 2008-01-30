@@ -101,7 +101,7 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlP
 		buildLabeledComposite(
 			container,
 			JptUiMessages.PersistentTypePage_mapAs,
-			typeMappingCombo.getControl()
+			typeMappingCombo.getControl().getParent()
 		);
 
 		// Metadata complete widget

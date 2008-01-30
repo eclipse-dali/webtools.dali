@@ -9,14 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IJoinTable;
+import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.IJoinColumnsEditor;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
@@ -229,6 +235,54 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 	}
 
 
+	private TableCombo<IJoinTable> buildTableCombo(Composite container) {
+
+		return new TableCombo<IJoinTable>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(IJoinTable.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(IJoinTable.SPECIFIED_NAME_PROPERTY);
+			}
+
+			@Override
+			protected String defaultValue() {
+				return subject().getDefaultName();
+			}
+
+			@Override
+			protected void setValue(String value) {
+				subject().setSpecifiedName(value);
+			}
+
+			@Override
+			protected Table table() {
+				return subject().dbTable();
+			}
+
+			private Schema tableSchema() {
+				return database().schemaNamed(subject().getSchema());
+			}
+
+			@Override
+			protected String value() {
+				return subject().getSpecifiedName();
+			}
+
+			@Override
+			protected Iterator<String> values() {
+				Schema schema = tableSchema();
+
+				if (schema != null) {
+					return schema.tableNames();
+				}
+
+				return EmptyIterator.instance();
+			}
+		};
+	}
+
 	private void editInverseJoinColumn(IJoinColumn joinColumn) {
 
 		InverseJoinColumnDialog dialog =
@@ -283,7 +337,7 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 		int groupBoxMargin = groupBoxMargin();
 
 		// Name widgets
-		TableCombo tableCombo = new TableCombo(this, container);
+		TableCombo<IJoinTable> tableCombo = buildTableCombo(container);
 
 		buildLabeledComposite(
 			buildPane(container, groupBoxMargin),

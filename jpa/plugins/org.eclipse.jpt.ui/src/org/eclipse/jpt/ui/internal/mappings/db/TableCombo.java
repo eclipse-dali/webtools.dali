@@ -8,26 +8,19 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.db;
 
-import java.util.Iterator;
-import org.eclipse.jpt.core.internal.context.base.IColumn;
-import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.core.internal.IJpaNode;
 import org.eclipse.jpt.db.internal.Table;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
- * This composite handles the display of database tables.
- *
- * @see IColumn
+ * This database object combo handles showing the database's tables.
  *
  * @version 2.0
  * @since 2.0
  */
-public class TableCombo extends AbstractDatabaseObjectCombo<IColumn>
+public abstract class TableCombo<T extends IJpaNode> extends AbstractDatabaseObjectCombo<T>
 {
 	/**
 	 * Creates a new <code>TableCombo</code>.
@@ -35,7 +28,7 @@ public class TableCombo extends AbstractDatabaseObjectCombo<IColumn>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TableCombo(AbstractFormPane<? extends IColumn> parentPane,
+	public TableCombo(AbstractFormPane<? extends T> parentPane,
 	                  Composite parent) {
 
 		super(parentPane, parent);
@@ -48,80 +41,14 @@ public class TableCombo extends AbstractDatabaseObjectCombo<IColumn>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public TableCombo(PropertyValueModel<? extends IColumn> subjectHolder,
+	public TableCombo(PropertyValueModel<? extends T> subjectHolder,
 	                  Composite parent,
-	                  TabbedPropertySheetWidgetFactory widgetFactory)
+	                  IWidgetFactory widgetFactory)
 	{
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void doPopulate() {
-		this.getCombo().removeAll();
-
-		if (this.subject() != null) {
-			this.populateDefaultColumnTable();
-
-			if (this.subject() != null) {
-				for (Iterator<String> iter = this.subject().owner().typeMapping().associatedTableNamesIncludingInherited(); iter.hasNext(); ) {
-					this.getCombo().add(iter.next());
-				}
-			}
-
-			this.populateCombo();
-		}
-	}
-
-	private void populateCombo() {
-		String tableName = this.subject().getSpecifiedTable();
-		String defaultTableName = this.subject().getDefaultTable();
-		if (tableName != null) {
-			if (!this.getCombo().getText().equals(tableName)) {
-				this.getCombo().setText(tableName);
-			}
-		}
-		else {
-			if (!this.getCombo().getText().equals(NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultTableName))) {
-				this.getCombo().select(0);
-			}
-		}
-	}
-
-	private void populateDefaultColumnTable() {
-		String defaultTableName = subject().getDefaultTable();
-		int selectionIndex = getCombo().getSelectionIndex();
-		getCombo().add(NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultTableName));
-
-		if (selectionIndex == 0) {
-			// Combo text does not update when switching between 2 mappings of the
-			// same type that both have a default subject() name. clear the
-			// selection and then set it again
-			getCombo().clearSelection();
-			getCombo().select(0);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void schemaChanged(Schema schema) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void setValue(String value) {
-		subject().setSpecifiedTable(value);
-	}
-
-	protected final Table table() {
-		return this.subject().dbTable();
-	}
+	protected abstract Table table();
 
 	/*
 	 * (non-Javadoc)
@@ -131,13 +58,5 @@ public class TableCombo extends AbstractDatabaseObjectCombo<IColumn>
 		if (table == table()) {
 			this.doPopulate();
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected String value() {
-		return subject().getSpecifiedTable();
 	}
 }

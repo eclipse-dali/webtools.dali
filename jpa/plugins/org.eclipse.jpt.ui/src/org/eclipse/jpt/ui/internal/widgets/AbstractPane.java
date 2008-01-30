@@ -109,7 +109,7 @@ public abstract class AbstractPane<T extends Model>
 	private PropertyChangeListener subjectChangeListener;
 
 	/**
-	 * The subject of this controller.
+	 * The subject of this pane.
 	 */
 	private PropertyValueModel<T> subjectHolder;
 
@@ -138,7 +138,7 @@ public abstract class AbstractPane<T extends Model>
 	/**
 	 * Creates a new <code>AbstractSubjectPane</code>.
 	 *
-	 * @param parentPane The parent controller of this one
+	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 *
 	 * @category Constructor
@@ -156,7 +156,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various widgets
 	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
-	 * this pane aligned with the widgets of the given parent controller;
+	 * this pane aligned with the widgets of the given parent pane;
 	 * <code>false</code> to not align them
 	 *
 	 * @category Constructor
@@ -195,7 +195,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various widgets
 	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
-	 * this pane aligned with the widgets of the given parent controller;
+	 * this pane aligned with the widgets of the given parent pane;
 	 * <code>false</code> to not align them
 	 *
 	 * @category Constructor
@@ -241,12 +241,12 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Adds the given controller's widgets (those that were registered with its
-	 * left <code>ControlAligner</code>) to this controller's left
+	 * Adds the given pane's widgets (those that were registered with its
+	 * left <code>ControlAligner</code>) to this pane's left
 	 * <code>ControlAligner</code> so that their width can be adjusted to have
 	 * the width of the widest widget.
 	 *
-	 * @param controller The controller containing the widgets to add
+	 * @param pane The pane containing the widgets to add
 	 *
 	 * @category Layout
 	 */
@@ -259,7 +259,7 @@ public abstract class AbstractPane<T extends Model>
 	 * adjust with the width of the widest widget. The left alignment is usually
 	 * used for labels.
 	 *
-	 * @param controller The controller to add
+	 * @param pane The pane to add
 	 *
 	 * @category Layout
 	 */
@@ -268,12 +268,12 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Adds the given controller's widgets (those that were registered with its
-	 * right <code>ControlAligner</code>) to this controller's right
+	 * Adds the given pane's widgets (those that were registered with its
+	 * right <code>ControlAligner</code>) to this pane's right
 	 * <code>ControlAligner</code> so that their width can be adjusted to have
 	 * the width of the widest widget.
 	 *
-	 * @param controller The controller containing the widgets to add
+	 * @param pane The pane containing the widgets to add
 	 *
 	 * @category Layout
 	 */
@@ -286,7 +286,7 @@ public abstract class AbstractPane<T extends Model>
 	 * adjust with the width of the widest widget. The left alignment is usually
 	 * used for buttons.
 	 *
-	 * @param controller The controller to add
+	 * @param pane The pane to add
 	 *
 	 * @category Layout
 	 */
@@ -295,10 +295,10 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Adds the given controller's controls (those that were registered for
-	 * alignment) from this controller.
+	 * Adds the given pane's controls (those that were registered for
+	 * alignment) from this pane.
 	 *
-	 * @param controller The controller containing the widgets to add for
+	 * @param pane The pane containing the widgets to add for
 	 * alignment
 	 *
 	 * @category Layout
@@ -322,7 +322,7 @@ public abstract class AbstractPane<T extends Model>
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
 
-				if (getControl().isDisposed()) {
+				if (container.isDisposed()) {
 					return;
 				}
 
@@ -1540,7 +1540,7 @@ public abstract class AbstractPane<T extends Model>
 
 	/**
 	 * Uninstalls any listeners from the subject in order to stop being notified
-	 * for changes made outside of this controllers.
+	 * for changes made outside of this panes.
 	 *
 	 * @category Populate
 	 */
@@ -1578,23 +1578,29 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Notifies this controller is should dispose itself.
+	 * Notifies this pane is should dispose itself.
 	 *
 	 * @category Populate
 	 */
-	public void dispose() {
-		if (!this.getControl().isDisposed()) {
+	public final void dispose() {
+		if (!container.isDisposed()) {
 			this.log("dispose()");
+			this.performDispose();
 			this.disengageListeners();
-
-			for (AbstractPane<?> subPane : this.subPanes) {
-				subPane.dispose();
-			}
 		}
 	}
 
 	/**
-	 * Requests this controller to populate its widgets with the subject's values.
+	 * Requests this pane to dispose itself.
+	 *
+	 * @category Populate
+	 */
+	protected void doDispose() {
+		this.log("   ->doDispose()");
+	}
+
+	/**
+	 * Requests this pane to populate its widgets with the subject's values.
 	 *
 	 * @category Populate
 	 */
@@ -1618,7 +1624,7 @@ public abstract class AbstractPane<T extends Model>
 
 	/**
 	 * Installs the listeners on the subject in order to be notified from changes
-	 * made outside of this controllers.
+	 * made outside of this panes.
 	 *
 	 * @category Populate
 	 */
@@ -1681,7 +1687,7 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Returns the subject holder used by this controller.
+	 * Returns the subject holder used by this pane.
 	 *
 	 * @return The holder of the subject
 	 *
@@ -1739,11 +1745,11 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Registers this controller with the parent controller.
+	 * Registers this pane with the parent pane.
 	 *
-	 * @param parentPane The parent controller
+	 * @param parentPane The parent pane
 	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
-	 * this pane aligned with the widgets of the given parent controller;
+	 * this pane aligned with the widgets of the given parent pane;
 	 * <code>false</code> to not align them
 	 *
 	 * @category Initialization
@@ -1757,7 +1763,7 @@ public abstract class AbstractPane<T extends Model>
 		parentPane.registerSubPane(this);
 
 		// Align the left and right controls with the controls from the parent
-		// controller
+		// pane
 		if (automaticallyAlignWidgets) {
 			parentPane.leftControlAligner .add(leftControlAligner);
 			parentPane.rightControlAligner.add(rightControlAligner);
@@ -1767,7 +1773,7 @@ public abstract class AbstractPane<T extends Model>
 	/**
 	 * Initializes this <code>AbstractSubjectPane</code>.
 	 *
-	 * @param subjectHolder The holder of this controller's subject
+	 * @param subjectHolder The holder of this pane's subject
 	 * @param widgetFactory The factory used to create various widgets
 	 *
 	 * @category Initialization
@@ -1816,7 +1822,7 @@ public abstract class AbstractPane<T extends Model>
 	 */
 	private void log(String message) {
 
-		if (Tracing.booleanDebugOption(Tracing.DEBUG_LAYOUT)) {
+		if (Tracing.booleanDebugOption(Tracing.UI_LAYOUT)) {
 
 			Class<?> thisClass = getClass();
 			String className = ClassTools.shortNameFor(thisClass);
@@ -1831,12 +1837,29 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
+	 * Notifies this pane is should dispose itself.
+	 *
+	 * @category Populate
+	 */
+	protected void performDispose() {
+		this.log("   ->performDispose()");
+
+		// Dispose this pane
+		doDispose();
+
+		// Ask the sub-panes to perform the dispose themselves
+		for (AbstractPane<?> subPane : this.subPanes) {
+			subPane.performDispose();
+		}
+	}
+
+	/**
 	 * Notifies this pane to populate itself using the subject's information.
 	 *
 	 * @category Populate
 	 */
 	public final void populate() {
-		if (!getControl().isDisposed()) {
+		if (!container.isDisposed()) {
 			this.log("populate()");
 			this.repopulate();
 			this.engageListeners();
@@ -1882,17 +1905,17 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Removes the given controller's widgets (those that were registered with
-	 * its left <code>ControlAligner</code>) from this controller's left
+	 * Removes the given pane's widgets (those that were registered with
+	 * its left <code>ControlAligner</code>) from this pane's left
 	 * <code>ControlAligner</code> so that their width will no longer be adjusted
 	 * with the width of the widest widget.
 	 *
-	 * @param controller The controller containing the widgets to remove
+	 * @param pane The pane containing the widgets to remove
 	 *
 	 * @category Layout
 	 */
-	protected final void removeAlignLeft(AbstractPane<?> controller) {
-		leftControlAligner.remove(controller.leftControlAligner);
+	protected final void removeAlignLeft(AbstractPane<?> pane) {
+		leftControlAligner.remove(pane.leftControlAligner);
 	}
 
 	/**
@@ -1900,7 +1923,7 @@ public abstract class AbstractPane<T extends Model>
 	 * to have the same width when they are shown to the left side of the 3
 	 * widget colums.
 	 *
-	 * @param controller The controller to remove, its width will no longer be
+	 * @param pane The pane to remove, its width will no longer be
 	 * ajusted to be the width of the longest widget
 	 *
 	 * @category Layout
@@ -1910,17 +1933,17 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Removes the given controller's widgets (those that were registered with
-	 * its right <code>ControlAligner</code>) from this controller's right
+	 * Removes the given pane's widgets (those that were registered with
+	 * its right <code>ControlAligner</code>) from this pane's right
 	 * <code>ControlAligner</code> so that their width will no longer be adjusted
 	 * with the width of the widest widget.
 	 *
-	 * @param controller The controller containing the widgets to remove
+	 * @param pane The pane containing the widgets to remove
 	 *
 	 * @category Layout
 	 */
-	protected final void removeAlignRight(AbstractPane<?> controller) {
-		rightControlAligner.remove(controller.rightControlAligner);
+	protected final void removeAlignRight(AbstractPane<?> pane) {
+		rightControlAligner.remove(pane.rightControlAligner);
 	}
 
 	/**
@@ -1928,7 +1951,7 @@ public abstract class AbstractPane<T extends Model>
 	 * to have the same width when they are shown to the right side of the 3
 	 * widget colums.
 	 *
-	 * @param controller The controller to remove, its width will no longer be
+	 * @param pane The pane to remove, its width will no longer be
 	 * ajusted to be the width of the longest widget
 	 *
 	 * @category Layout
@@ -1938,17 +1961,17 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Removes the given controller's controls (those that were registered for
-	 * alignment) from this controller.
+	 * Removes the given pane's controls (those that were registered for
+	 * alignment) from this pane.
 	 *
-	 * @param controller The controller containing the widgets that no longer
+	 * @param pane The pane containing the widgets that no longer
 	 * requires their width adjusted with the width of the longest widget
 	 *
 	 * @category Layout
 	 */
-	protected final void removePaneForAlignment(AbstractPane<?> controller) {
-		removeAlignLeft(controller);
-		removeAlignRight(controller);
+	protected final void removePaneForAlignment(AbstractPane<?> pane) {
+		removeAlignLeft(pane);
+		removeAlignRight(pane);
 	}
 
 	/**
@@ -1970,9 +1993,9 @@ public abstract class AbstractPane<T extends Model>
 			setPopulating(false);
 		}
 
-		// Ask the sub-panes to populate themselves
+		// Ask the sub-panes to repopulate themselves
 		for (AbstractPane<?> subPane : this.subPanes) {
-			subPane.populate();
+			subPane.repopulate();
 		}
 	}
 
@@ -1998,9 +2021,9 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Returns the subject of this controller.
+	 * Returns the subject of this pane.
 	 *
-	 * @return The subject if this controller was not disposed; <code>null</code>
+	 * @return The subject if this pane was not disposed; <code>null</code>
 	 * if it was
 	 *
 	 * @category Populate

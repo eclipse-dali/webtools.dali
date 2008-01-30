@@ -8,7 +8,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.Collection;
+import java.util.Iterator;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
+import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
@@ -89,6 +92,39 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 		super(subjectHolder, parent, widgetFactory);
 	}
 
+	private ColumnCombo<IColumn> buildColumnCombo(Composite container) {
+
+		return new ColumnCombo<IColumn>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(IColumn.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(IColumn.SPECIFIED_NAME_PROPERTY);
+			}
+
+			@Override
+			protected String defaultValue() {
+				return subject().getDefaultName();
+			}
+
+			@Override
+			protected void setValue(String value) {
+				subject().setSpecifiedName(value);
+			}
+
+			@Override
+			protected Table table() {
+				return subject().dbTable();
+			}
+
+			@Override
+			protected String value() {
+				return subject().getSpecifiedName();
+			}
+		};
+	}
+
 	private WritablePropertyValueModel<Boolean> buildInsertableHolder() {
 		return new PropertyAspectAdapter<IColumn, Boolean>(
 			getSubjectHolder(),
@@ -131,6 +167,44 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 				}
 
 				return JptUiMappingsMessages.ColumnComposite_insertable;
+			}
+		};
+	}
+
+	private TableCombo<IColumn> buildTableCombo(Composite container) {
+
+		return new TableCombo<IColumn>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(IColumn.DEFAULT_TABLE_PROPERTY);
+				propertyNames.add(IColumn.SPECIFIED_TABLE_PROPERTY);
+			}
+
+			@Override
+			protected String defaultValue() {
+				return subject().getDefaultTable();
+			}
+
+			@Override
+			protected void setValue(String value) {
+				subject().setSpecifiedTable(value);
+			}
+
+			@Override
+			protected Table table() {
+				return subject().dbTable();
+			}
+
+			@Override
+			protected String value() {
+				return subject().getSpecifiedTable();
+			}
+
+			@Override
+			protected Iterator<String> values() {
+				return subject().owner().typeMapping().associatedTableNamesIncludingInherited();
 			}
 		};
 	}
@@ -204,7 +278,7 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 		);
 
 		// Column widgets
-		ColumnCombo columnCombo = new ColumnCombo(this, container);
+		ColumnCombo<IColumn> columnCombo = buildColumnCombo(container);
 
 		buildLabeledComposite(
 			container,
@@ -214,7 +288,7 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 		);
 
 		// Table widgets
-		TableCombo tableCombo = new TableCombo(this, container);
+		TableCombo<IColumn> tableCombo = buildTableCombo(container);
 
 		buildLabeledComposite(
 			container,

@@ -28,9 +28,14 @@ public final class Tracing
 	public static final String DEBUG = "/debug";
 
 	/**
-	 * A constant used to retrieve the value associated with "/debug/layout".
+	 * A constant used to retrieve the value associated with "/debug/ui/db".
 	 */
-	public static final String DEBUG_LAYOUT = "/debug/layout";
+	public static final String UI_DB = "/debug/ui/db";
+
+	/**
+	 * A constant used to retrieve the value associated with "/debug/ui/layout".
+	 */
+	public static final String UI_LAYOUT = "/debug/ui/layout";
 
 	/**
 	 * A constant used to retrieve the value associated with "/unit-tests".

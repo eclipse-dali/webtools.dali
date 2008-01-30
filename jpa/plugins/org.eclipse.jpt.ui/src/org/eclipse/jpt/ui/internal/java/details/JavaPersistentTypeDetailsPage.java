@@ -72,7 +72,7 @@ public class JavaPersistentTypeDetailsPage extends PersistentTypeDetailsPage<IJa
 		buildLabeledComposite(
 			container,
 			buildTypeMappingLabel(container),
-			buildTypeMappingCombo(container).getControl()
+			buildTypeMappingCombo(container).getControl().getParent()
 		);
 
 		PageBook typeMappingPageBook = buildTypeMappingPageBook(container);

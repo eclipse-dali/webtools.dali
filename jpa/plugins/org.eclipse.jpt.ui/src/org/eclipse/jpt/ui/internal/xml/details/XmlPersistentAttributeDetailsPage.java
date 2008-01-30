@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
+import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.BasicMappingUiProvider;
@@ -34,6 +36,7 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -53,8 +56,8 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 @SuppressWarnings("nls")
 public class XmlPersistentAttributeDetailsPage extends PersistentAttributeDetailsPage
 {
-	private XmlJavaAttributeChooser javaAttributeChooser;
 	private List<IAttributeMappingUiProvider<? extends IAttributeMapping>> attributeMappingUiProviders;
+	private XmlJavaAttributeChooser javaAttributeChooser;
 
 	/**
 	 * Creates a new <code>XmlPersistentAttributeDetailsPage</code>.
@@ -68,21 +71,6 @@ public class XmlPersistentAttributeDetailsPage extends PersistentAttributeDetail
 	                                         TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	public ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> attributeMappingUiProviders() {
-		if (this.attributeMappingUiProviders == null) {
-			this.attributeMappingUiProviders = new ArrayList<IAttributeMappingUiProvider<? extends IAttributeMapping>>();
-			this.addAttributeMappingUiProvidersTo(this.attributeMappingUiProviders);
-		}
-
-		return new CloneListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>>(
-			this.attributeMappingUiProviders
-		);
 	}
 
 	protected void addAttributeMappingUiProvidersTo(List<IAttributeMappingUiProvider<? extends IAttributeMapping>> providers) {
@@ -102,16 +90,15 @@ public class XmlPersistentAttributeDetailsPage extends PersistentAttributeDetail
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> defaultAttributeMappingUiProviders() {
-		return EmptyListIterator.instance();
-	}
+	public ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> attributeMappingUiProviders() {
+		if (this.attributeMappingUiProviders == null) {
+			this.attributeMappingUiProviders = new ArrayList<IAttributeMappingUiProvider<? extends IAttributeMapping>>();
+			this.addAttributeMappingUiProvidersTo(this.attributeMappingUiProviders);
+		}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected IAttributeMappingUiProvider<IAttributeMapping> defaultAttributeMappingUiProvider(String key) {
-		throw new UnsupportedOperationException("Xml attributeMappings should not be default");
+		return new CloneListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>>(
+			this.attributeMappingUiProviders
+		);
 	}
 
 	/*
@@ -128,23 +115,25 @@ public class XmlPersistentAttributeDetailsPage extends PersistentAttributeDetail
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void initializeLayout(Composite container) {
+	protected IAttributeMappingUiProvider<IAttributeMapping> defaultAttributeMappingUiProvider(String key) {
+		throw new UnsupportedOperationException("Xml attributeMappings should not be default");
+	}
 
-		buildLabeledComposite(
-			container,
-			JptUiXmlMessages.PersistentAttributePage_javaAttributeLabel,
-			buildMappingCombo(container).getControl()
-		);
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> defaultAttributeMappingUiProviders() {
+		return EmptyListIterator.instance();
+	}
 
-		PageBook attributePane = buildMappingPageBook(container);
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = SWT.FILL;
-		gridData.verticalAlignment         = SWT.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace   = true;
-
-		attributePane.setLayoutData(gridData);
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public void doDispose() {
+		this.javaAttributeChooser.dispose();
+		super.doDispose();
 	}
 
 	/*
@@ -157,21 +146,45 @@ public class XmlPersistentAttributeDetailsPage extends PersistentAttributeDetail
 		updateEnbabledState();
 	}
 
+	private PropertyValueModel<XmlAttributeMapping<? extends AttributeMapping>> getMappingHolder() {
+		return new TransformationPropertyValueModel<IPersistentAttribute, XmlAttributeMapping<? extends AttributeMapping>>(getSubjectHolder()) {
+			@Override
+			@SuppressWarnings("unchecked")
+			protected XmlAttributeMapping<? extends AttributeMapping> transform_(IPersistentAttribute value) {
+				return (XmlAttributeMapping<? extends AttributeMapping>) value.getMapping();
+			}
+		};
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
-	public void dispose() {
-		this.javaAttributeChooser.dispose();
-		super.dispose();
-	}
+	protected void initializeLayout(Composite container) {
 
-	public void updateEnbabledState() {
-		if (subject() == null || subject().parent() == null) {
-			return;
-		}
-		boolean enabled = !((XmlPersistentAttribute) subject()).isVirtual();
-		updateEnabledState(enabled, getControl());
+		javaAttributeChooser = new XmlJavaAttributeChooser(
+			this,
+			getMappingHolder(),
+			container
+		);
+
+		// Entity type widgets
+		buildLabeledComposite(
+			container,
+			JptUiXmlMessages.PersistentAttributePage_javaAttributeLabel,
+			buildMappingCombo(container).getControl()
+		);
+
+		// Properties pane
+		PageBook attributePane = buildMappingPageBook(container);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment       = SWT.FILL;
+		gridData.verticalAlignment         = SWT.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace   = true;
+
+		attributePane.setLayoutData(gridData);
 	}
 
 	public void updateEnabledState(boolean enabled, Control control) {
@@ -181,5 +194,13 @@ public class XmlPersistentAttributeDetailsPage extends PersistentAttributeDetail
 				updateEnabledState(enabled, i.next());
 			}
 		}
+	}
+
+	public void updateEnbabledState() {
+		if (subject() == null || subject().parent() == null) {
+			return;
+		}
+		boolean enabled = !((XmlPersistentAttribute) subject()).isVirtual();
+		updateEnabledState(enabled, getControl());
 	}
 }

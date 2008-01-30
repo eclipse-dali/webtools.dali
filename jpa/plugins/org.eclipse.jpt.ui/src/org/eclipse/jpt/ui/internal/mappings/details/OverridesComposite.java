@@ -47,24 +47,21 @@ import org.eclipse.ui.part.PageBook;
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
- * |         ---------------------------------------------------------------   |
- * |   Name: |                                                           |v|   |
- * |         ---------------------------------------------------------------   |
  * |                                                                           |
- * |   x Override Default Join Columns                                         |
- * |                                                                           |
- * | ------------------------------------------------------------------------- |
+ * | - Attribute Overrides --------------------------------------------------- |
+ * | | --------------------------------------------------------------------- | |
+ * | | |                                                                   | | |
+ * | | |                                                                   | | |
+ * | | |                                                                   | | |
+ * | | --------------------------------------------------------------------- | |
  * | |                                                                       | |
- * | | JoinColumnsComposite                                                  | |
+ * | |   x Override Default                                                  | |
  * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * |   x Override Default Inverse Join Columns                                 |
- * |                                                                           |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | JoinColumnsComposite                                                  | |
- * | |                                                                       | |
+ * | | --------------------------------------------------------------------- | |
+ * | | |                                                                   | | |
+ * | | | JoinColumnsComposite                                              | | |
+ * | | |                                                                   | | |
+ * | | --------------------------------------------------------------------- | |
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
@@ -319,7 +316,7 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 
 		// Override Default check box
 		Button overrideDefaultButton = buildCheckBox(
-		container,
+			container,
 			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
 			buildOverrideDefaultHolder()
 		);
@@ -329,13 +326,15 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		);
 
 		// Override sub-pane
-		PageBook overridePane = buildOverridePageBook(container);
+//		PageBook overridePane = buildOverridePageBook(container);
 
 		// Join Columns widgets
 		Group joinColumnGroupPane = buildTitledPane(
-			overridePane,
+			container,
 			JptUiMappingsMessages.OverridesComposite_joinColumn
 		);
+
+//		overridePane.showPage(joinColumnGroupPane);
 
 		JoinColumnsComposite<IAssociationOverride> joinColumnsComposite =
 			new JoinColumnsComposite<IAssociationOverride>(
@@ -349,10 +348,10 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		new ColumnComposite(
 			this,
 			buildColumnHolder(),
-			overridePane
+			joinColumnGroupPane
 		);
 
-		overridePane.showPage(joinColumnsComposite.getControl());
+//		overridePane.showPage(joinColumnsComposite.getControl());
 	}
 
 	private void overrideDefaultButtonSelected(boolean selected) {

@@ -8,27 +8,21 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.db;
 
-import java.util.List;
-import org.eclipse.jpt.core.internal.context.base.IColumn;
-import org.eclipse.jpt.db.internal.Schema;
+import java.util.Iterator;
+import org.eclipse.jpt.core.internal.IJpaNode;
 import org.eclipse.jpt.db.internal.Table;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
- * This combo manages a table's columns.
- *
- * @see IColumn
+ * This database object combo handles showing a table's columns.
  *
  * @version 2.0
  * @since 2.0
  */
-public class ColumnCombo extends AbstractDatabaseObjectCombo<IColumn>
+public abstract class ColumnCombo<T extends IJpaNode> extends AbstractDatabaseObjectCombo<T>
 {
 	/**
 	 * Creates a new <code>ColumnCombo</code>.
@@ -36,7 +30,7 @@ public class ColumnCombo extends AbstractDatabaseObjectCombo<IColumn>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public ColumnCombo(AbstractFormPane<? extends IColumn> parentPane,
+	public ColumnCombo(AbstractFormPane<? extends T> parentPane,
 	                   Composite parent) {
 
 		super(parentPane, parent);
@@ -49,96 +43,22 @@ public class ColumnCombo extends AbstractDatabaseObjectCombo<IColumn>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public ColumnCombo(PropertyValueModel<IColumn> subjectHolder,
+	public ColumnCombo(PropertyValueModel<? extends T> subjectHolder,
 	                   Composite parent,
-	                   TabbedPropertySheetWidgetFactory widgetFactory)
-	{
+	                   IWidgetFactory widgetFactory) {
+
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void doPopulate() {
-
-		this.getCombo().removeAll();
-
-		if (subject() != null) {
-
-			this.populateDefaultColumnName();
-
-			if (this.connectionProfile().isConnected()) {
-
-				Table table = table();
-
-				if (table != null) {
-
-					List<String> columnNames = CollectionTools.sort(CollectionTools.list(table.columnNames()));
-
-					for (String columnName : columnNames) {
-						this.getCombo().add(columnName);
-					}
-				}
-			}
-
-			populateCombo();
-		}
-	}
-
-	private void populateCombo() {
-		String specifiedColumnName = this.subject().getSpecifiedName();
-		if (specifiedColumnName != null) {
-			if (!this.getCombo().getText().equals(specifiedColumnName)) {
-				this.getCombo().setText(specifiedColumnName);
-			}
-		}
-		else {
-			String defaultColumnName = this.subject().getDefaultName();
-			if (!this.getCombo().getText().equals(NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultColumnName))) {
-				this.getCombo().select(0);
-			}
-		}
-	}
-
-	private void populateDefaultColumnName() {
-		String defaultColumnName = subject().getDefaultName();
-		int selectionIndex = getCombo().getSelectionIndex();
-		getCombo().add(NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultColumnName));
-
-		if (selectionIndex == 0) {
-			// Combo text does not update when switching between 2 mappings of the
-			// same type that both have a default subject() name. clear the
-			// selection and then set it again
-			getCombo().clearSelection();
-			getCombo().select(0);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void schemaChanged(Schema schema) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void setValue(String value) {
-		subject().setSpecifiedName(value);
-	}
-
-	protected final Table table() {
-		return this.subject().dbTable();
-	}
+	protected abstract Table table();
 
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
 	protected void tableChanged(Table table) {
+		super.tableChanged(table);
+
 		if (table == table()) {
 			this.doPopulate();
 		}
@@ -148,7 +68,14 @@ public class ColumnCombo extends AbstractDatabaseObjectCombo<IColumn>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected String value() {
-		return subject().getSpecifiedName();
+	protected Iterator<String> values() {
+
+		Table table = table();
+
+		if (table != null) {
+			return table.columnNames();
+		}
+
+		return EmptyIterator.instance();
 	}
 }

@@ -8,33 +8,51 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.db;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IJpaNode;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
- * This is the abstract implementation that keeps a combo in sync with the
- * database objects when a connection is active.
+ * This abstract implementation keeps a combo in sync with the database objects
+ * when a connection is active.
+ *
+ * @see CatalogCombo
+ * @see ColumnCombo
+ * @see SchemaCombo
+ * @see TableCombo
  *
  * @version 2.0
  * @since 2.0
  */
+@SuppressWarnings("nls")
 public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends AbstractFormPane<T>
 {
+	/**
+	 * The main widget of this pane.
+	 */
 	private CCombo combo;
+
+	/**
+	 * The listener added to the <code>ConnectionProfile</code> responsible to
+	 * keep the combo in sync with the database metadata.
+	 */
 	private ConnectionListener connectionListener;
 
 	/**
@@ -58,27 +76,32 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	 */
 	protected AbstractDatabaseObjectCombo(PropertyValueModel<? extends T> subjectHolder,
 	                                      Composite parent,
-	                                      TabbedPropertySheetWidgetFactory widgetFactory)
+	                                      IWidgetFactory widgetFactory)
 	{
 		super(subjectHolder, parent, widgetFactory);
 	}
 
 	private void addConnectionListener(T column) {
 		if (column != null) {
-			column.jpaProject().connectionProfile().addConnectionListener(this.connectionListener);
+			column.jpaProject().connectionProfile().addConnectionListener(connectionListener);
 		}
 	}
 
 	private ConnectionListener buildConnectionListener() {
+
 		return new ConnectionListener() {
 
 			public void aboutToClose(ConnectionProfile profile) {
+				log("aboutToClose");
 			}
 
 			public void closed(ConnectionProfile profile) {
+
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
-						if (!getControl().isDisposed()) {
+						log("closed");
+
+						if (!combo.isDisposed()) {
 							AbstractDatabaseObjectCombo.this.repopulate();
 						}
 					}
@@ -87,12 +110,16 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 
 			public void databaseChanged(ConnectionProfile profile,
 			                            Database database) {
+
+				log("databaseChanged");
 			}
 
 			public void modified(ConnectionProfile profile) {
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
-						if (!getControl().isDisposed()) {
+						log("modified");
+
+						if (!combo.isDisposed()) {
 							AbstractDatabaseObjectCombo.this.repopulate();
 						}
 					}
@@ -100,13 +127,17 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 			}
 
 			public boolean okToClose(ConnectionProfile profile) {
+				log("okToClose");
 				return true;
 			}
 
 			public void opened(ConnectionProfile profile) {
+
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
-						if (!getControl().isDisposed()) {
+						log("opened");
+
+						if (!combo.isDisposed()) {
 							AbstractDatabaseObjectCombo.this.repopulate();
 						}
 					}
@@ -118,7 +149,9 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
-						if (!getControl().isDisposed()) {
+						log("schemaChanged: " + schema.getName());
+
+						if (!combo.isDisposed()) {
 							AbstractDatabaseObjectCombo.this.schemaChanged(schema);
 						}
 					}
@@ -130,7 +163,9 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
-						if (!getControl().isDisposed()) {
+						log("tableChanged: " + table.getName());
+
+						if (!combo.isDisposed()) {
 							AbstractDatabaseObjectCombo.this.tableChanged(table);
 						}
 					}
@@ -142,15 +177,42 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	private ModifyListener buildModifyListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				CCombo combo = (CCombo) e.widget;
-				AbstractDatabaseObjectCombo.this.valueChanged(combo.getText());
+				if (!isPopulating()) {
+					CCombo combo = (CCombo) e.widget;
+					valueChanged(combo.getText());
+				}
 			}
 		};
 	}
 
+	/**
+	 * Returns the JPA project's connection profile, which is never
+	 * <code>null</code>.
+	 *
+	 * @return The connection set in the project's properties or a <code>null</code>
+	 * connection
+	 */
 	protected final ConnectionProfile connectionProfile() {
-		return this.subject().jpaProject().connectionProfile();
+		return subject().jpaProject().connectionProfile();
 	}
+
+	/**
+	 * Returns the database associated with the active connection profile.
+	 *
+	 * @return The online database or a <code>null</code> instance if no
+	 * connection profile was set or the
+	 */
+	protected final Database database() {
+		return connectionProfile().getDatabase();
+	}
+
+	/**
+	 * Returns the default value, or <code>null</code> if no default is
+	 * specified.
+	 *
+	 * @return The value that represents the default when no value was specified
+	 */
+	protected abstract String defaultValue();
 
 	/*
 	 * (non-Javadoc)
@@ -165,10 +227,24 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	 * (non-Javadoc)
 	 */
 	@Override
+	protected void doPopulate() {
+
+		combo.removeAll();
+
+		if (subject() != null) {
+			populateCombo();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
 	public void enableWidgets(boolean enabled) {
+
 		super.enableWidgets(enabled);
 
-		if (!this.combo.isDisposed()) {
+		if (!combo.isDisposed()) {
 			combo.setEnabled(enabled);
 		}
 	}
@@ -183,7 +259,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	}
 
 	public final CCombo getCombo() {
-		return this.combo;
+		return combo;
 	}
 
 	/*
@@ -192,7 +268,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.connectionListener = this.buildConnectionListener();
+		connectionListener = buildConnectionListener();
 	}
 
 	/*
@@ -201,18 +277,74 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		this.combo = this.buildCombo(container);
-		this.combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
-		this.combo.addModifyListener(this.buildModifyListener());
+		combo = buildCombo(container);
+		combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
+		combo.addModifyListener(buildModifyListener());
+	}
+
+	private void log(String message) {
+		if (Tracing.booleanDebugOption(Tracing.UI_DB)) {
+			Class<?> thisClass = getClass();
+			String className = ClassTools.shortNameFor(thisClass);
+
+			if (thisClass.isAnonymousClass()) {
+				className = className.substring(0, className.indexOf('$'));
+				className += "->" + ClassTools.shortNameFor(thisClass.getSuperclass());
+			}
+
+			Tracing.log(className + ": " + message);
+		}
+	}
+
+	/**
+	 * Populates the combo's list by adding first the default value is available
+	 * and then the possible choices.
+	 */
+	private void populateCombo() {
+
+		populateDefaultValue();
+
+		if (connectionProfile().isConnected()) {
+
+			for (Iterator<String> iter = CollectionTools.sort(values()); iter.hasNext(); ) {
+				combo.add(iter.next());
+			}
+		}
+
+		updateSelectedItem();
+	}
+
+	/**
+	 * Adds the default value to the combo if one exists.
+	 */
+	private void populateDefaultValue() {
+
+		String defaultValue = defaultValue();
+
+		if (defaultValue != null) {
+			combo.add(NLS.bind(
+				JptUiMappingsMessages.ColumnComposite_defaultWithOneParam,
+				defaultValue
+			));
+		}
+		else {
+			combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
+		}
 	}
 
 	private void removeConnectionListener(T value) {
 		if (value != null) {
-			value.jpaProject().connectionProfile().removeConnectionListener(this.connectionListener);
+			value.jpaProject().connectionProfile().removeConnectionListener(connectionListener);
 		}
 	}
 
-	protected abstract void schemaChanged(Schema schema);
+	/**
+	 * The
+	 *
+	 * @param schema
+	 */
+	protected void schemaChanged(Schema schema) {
+	}
 
 	/**
 	 * Sets the given value as the new value.
@@ -221,7 +353,36 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	 */
 	protected abstract void setValue(String value);
 
-	protected abstract void tableChanged(Table table);
+	/**
+	 * The
+	 *
+	 * @param catalog
+	 */
+	protected void tableChanged(Table table) {
+	}
+
+	/**
+	 * Updates the selected item by selected the current value, if not
+	 * <code>null</code>, or select the default value if one is available,
+	 * otherwise remove the selection.
+	 */
+	private void updateSelectedItem() {
+		String value = value();
+
+		if (value != null) {
+			combo.setText(value);
+		}
+		else {
+			String defaultValue = defaultValue();
+
+			if (!combo.getText().equals(NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultValue))) {
+				combo.select(0);
+			}
+			else {
+				combo.select(-1);
+			}
+		}
+	}
 
 	/**
 	 * Requests the current value from the model object.
@@ -270,4 +431,13 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 			setValue(value);
 		}
 	}
+
+	/**
+	 * Retrieves the possible values, which will be added to the combo during
+	 * population.
+	 *
+	 * @return A non-<code>null</code> <code>Iterator</code> of the possible
+	 * choices to be added to the combo
+	 */
+	protected abstract Iterator<String> values();
 }

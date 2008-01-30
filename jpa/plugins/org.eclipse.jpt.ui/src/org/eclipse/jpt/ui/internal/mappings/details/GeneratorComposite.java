@@ -144,9 +144,6 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 		return text;
 	}
 
-	protected void clear() {
-	}
-
 	protected void clearNameViewer() {
 		this.nameText.setText("");
 	}

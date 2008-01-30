@@ -17,13 +17,13 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  *
  * @version 2.0
  * @since 2.0
  */
+@SuppressWarnings("nls")
 public class XmlJavaAttributeChooser extends AbstractFormPane<XmlAttributeMapping<? extends AttributeMapping>>
 {
 	private Text text;
@@ -31,15 +31,15 @@ public class XmlJavaAttributeChooser extends AbstractFormPane<XmlAttributeMappin
 	/**
 	 * Creates a new <code>XmlJavaAttributeChooser</code>.
 	 *
+	 * @param parentPane The parent container of this one
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public XmlJavaAttributeChooser(PropertyValueModel<? extends XmlAttributeMapping<? extends AttributeMapping>> subjectHolder,
-	                               Composite parent,
-	                               TabbedPropertySheetWidgetFactory widgetFactory) {
+	public XmlJavaAttributeChooser(AbstractFormPane<?> parentPane,
+	                               PropertyValueModel<? extends XmlAttributeMapping<? extends AttributeMapping>> subjectHolder,
+	                               Composite parent) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(parentPane, subjectHolder, parent);
 	}
 
 
