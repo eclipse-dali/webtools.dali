@@ -152,8 +152,9 @@ public abstract class ValueAspectAdapter<T>
 	}
 
 	/**
-	 * Our constructors accept only a writable property value model.
+	 * Our constructors accept only a WritablePropertyValueModel<T1>.
 	 */
+	@SuppressWarnings("unchecked")
 	protected WritablePropertyValueModel<T> valueHolder() {
 		return (WritablePropertyValueModel<T>) this.valueHolder;
 	}

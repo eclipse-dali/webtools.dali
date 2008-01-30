@@ -36,7 +36,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 public class FilteringIterator<E1, E2>
 	implements Iterator<E2>
 {
-	private final Iterator<E1> nestedIterator;
+	private final Iterator<? extends E1> nestedIterator;
 	private final Filter<E1> filter;
 	private E2 next;
 	private boolean done;
@@ -49,7 +49,7 @@ public class FilteringIterator<E1, E2>
 	 * <code>accept(Object)</code> method instead of building
 	 * a <code>Filter</code>.
 	 */
-	public FilteringIterator(Iterator<E1> nestedIterator) {
+	public FilteringIterator(Iterator<? extends E1> nestedIterator) {
 		this(nestedIterator, Filter.Disabled.<E1>instance());
 	}
 
@@ -57,7 +57,7 @@ public class FilteringIterator<E1, E2>
 	 * Construct an iterator with the specified nested
 	 * iterator and filter.
 	 */
-	public FilteringIterator(Iterator<E1> nestedIterator, Filter<E1> filter) {
+	public FilteringIterator(Iterator<? extends E1> nestedIterator, Filter<E1> filter) {
 		super();
 		this.nestedIterator = nestedIterator;
 		this.filter = filter;
@@ -96,7 +96,7 @@ public class FilteringIterator<E1, E2>
 			E1 temp = this.nestedIterator.next();
 			if (this.accept(temp)) {
 				// assume that if the object was accepted it is of type E
-				this.next = this.downcast(temp);
+				this.next = this.cast(temp);
 				this.done = false;
 			} else {
 				this.next = null;
@@ -110,7 +110,7 @@ public class FilteringIterator<E1, E2>
 	 * be cast to E2.
 	 */
 	@SuppressWarnings("unchecked")
-	private E2 downcast(E1 o) {
+	private E2 cast(E1 o) {
 		return (E2) o;
 	}
 

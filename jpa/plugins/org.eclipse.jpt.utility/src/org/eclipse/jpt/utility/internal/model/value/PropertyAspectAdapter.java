@@ -82,7 +82,7 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	 * Construct a PropertyAspectAdapter for the specified subject holder
 	 * and properties.
 	 */
-	protected PropertyAspectAdapter(PropertyValueModel<S> subjectHolder, String... propertyNames) {
+	protected PropertyAspectAdapter(PropertyValueModel<? extends S> subjectHolder, String... propertyNames) {
 		super(subjectHolder);
 		this.propertyNames = propertyNames;
 		this.propertyChangeListener = this.buildPropertyChangeListener();
@@ -94,7 +94,7 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	 * Construct a PropertyAspectAdapter for the specified subject holder
 	 * and properties.
 	 */
-	protected PropertyAspectAdapter(PropertyValueModel<S> subjectHolder, Collection<String> propertyNames) {
+	protected PropertyAspectAdapter(PropertyValueModel<? extends S> subjectHolder, Collection<String> propertyNames) {
 		this(subjectHolder, propertyNames.toArray(new String[propertyNames.size()]));
 	}
 
@@ -105,7 +105,7 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	 * a new property. (A TransformationPropertyValueModel could also be
 	 * used in this situation.)
 	 */
-	protected PropertyAspectAdapter(PropertyValueModel<S> subjectHolder) {
+	protected PropertyAspectAdapter(PropertyValueModel<? extends S> subjectHolder) {
 		this(subjectHolder, EMPTY_PROPERTY_NAMES);
 	}
 

@@ -81,7 +81,7 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	 * Construct a ListAspectAdapter for the specified subject holder
 	 * and lists.
 	 */
-	protected ListAspectAdapter(PropertyValueModel<S> subjectHolder, String... listNames) {
+	protected ListAspectAdapter(PropertyValueModel<? extends S> subjectHolder, String... listNames) {
 		super(subjectHolder);
 		this.listNames = listNames;
 		this.listChangeListener = this.buildListChangeListener();
@@ -91,7 +91,7 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	 * Construct a ListAspectAdapter for the specified subject holder
 	 * and lists.
 	 */
-	protected ListAspectAdapter(PropertyValueModel<S> subjectHolder, Collection<String> listNames) {
+	protected ListAspectAdapter(PropertyValueModel<? extends S> subjectHolder, Collection<String> listNames) {
 		this(subjectHolder, listNames.toArray(new String[listNames.size()]));
 	}
 
@@ -101,7 +101,7 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	 * change for a particular subject; but the subject will change, resulting in
 	 * a new list.
 	 */
-	protected ListAspectAdapter(PropertyValueModel<S> subjectHolder) {
+	protected ListAspectAdapter(PropertyValueModel<? extends S> subjectHolder) {
 		this(subjectHolder, EMPTY_LIST_NAMES);
 	}
 

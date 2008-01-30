@@ -128,7 +128,7 @@ public class PreferencePropertyValueModel<P>
 	 * Construct an adapter for the specified preference.
 	 * The default value of the preference will be null.
 	 */
-	public PreferencePropertyValueModel(PropertyValueModel<Preferences> preferencesHolder, String key) {
+	public PreferencePropertyValueModel(PropertyValueModel<? extends Preferences> preferencesHolder, String key) {
 		this(preferencesHolder, key, null);
 	}
 
@@ -136,7 +136,7 @@ public class PreferencePropertyValueModel<P>
 	 * Construct an adapter for the specified preference with
 	 * the specified default value for the preference.
 	 */
-	public PreferencePropertyValueModel(PropertyValueModel<Preferences> preferencesHolder, String key, P defaultValue) {
+	public PreferencePropertyValueModel(PropertyValueModel<? extends Preferences> preferencesHolder, String key, P defaultValue) {
 		this(preferencesHolder, key, defaultValue, BidiStringConverter.Default.<P>instance());
 	}
 
@@ -144,7 +144,7 @@ public class PreferencePropertyValueModel<P>
 	 * Construct an adapter for the specified preference with
 	 * the specified default value for the preference.
 	 */
-	public PreferencePropertyValueModel(PropertyValueModel<Preferences> preferencesHolder, String key, P defaultValue, BidiStringConverter<P> converter) {
+	public PreferencePropertyValueModel(PropertyValueModel<? extends Preferences> preferencesHolder, String key, P defaultValue, BidiStringConverter<P> converter) {
 		super(preferencesHolder);
 		this.key = key;
 		this.defaultValue = defaultValue;

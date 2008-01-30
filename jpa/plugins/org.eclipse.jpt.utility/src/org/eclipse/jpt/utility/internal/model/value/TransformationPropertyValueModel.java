@@ -39,7 +39,7 @@ public class TransformationPropertyValueModel<T1, T2>
 	 * <code>transform_(Object)</code> or <code>transform(Object)</code>
 	 * method instead of building a <code>Transformer</code>.
 	 */
-	public TransformationPropertyValueModel(PropertyValueModel<T1> valueHolder) {
+	public TransformationPropertyValueModel(PropertyValueModel<? extends T1> valueHolder) {
 		super(valueHolder);
 		this.transformer = this.buildTransformer();
 	}
@@ -48,7 +48,7 @@ public class TransformationPropertyValueModel<T1, T2>
 	 * Construct an property value model with the specified nested
 	 * property value model and transformer.
 	 */
-	public TransformationPropertyValueModel(PropertyValueModel<T1> valueHolder, Transformer<T1, T2> transformer) {
+	public TransformationPropertyValueModel(PropertyValueModel<? extends T1> valueHolder, Transformer<T1, T2> transformer) {
 		super(valueHolder);
 		this.transformer = transformer;
 	}

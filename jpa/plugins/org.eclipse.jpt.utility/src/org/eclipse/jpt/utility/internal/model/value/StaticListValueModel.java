@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
+import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 
 /**
@@ -26,7 +28,7 @@ public class StaticListValueModel<E>
 	implements ListValueModel<E>
 {
 	/** The value. */
-	protected final List<E> list;
+	protected final List<? extends E> list;
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,7 +36,7 @@ public class StaticListValueModel<E>
 	/**
 	 * Construct a static ListValueModel for the specified list.
 	 */
-	public StaticListValueModel(List<E> list) {
+	public StaticListValueModel(List<? extends E> list) {
 		super();
 		if (list == null) {
 			throw new NullPointerException();
@@ -46,11 +48,11 @@ public class StaticListValueModel<E>
 	// ********** ListValueModel implementation **********
 
 	public Iterator<E> iterator() {
-		return this.list.iterator();
+		return new ReadOnlyIterator<E>(this.list.iterator());
 	}
 
 	public ListIterator<E> listIterator() {
-		return this.list.listIterator();
+		return new ReadOnlyListIterator<E>(this.list.listIterator());
 	}
 
 	public int size() {

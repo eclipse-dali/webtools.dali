@@ -27,7 +27,7 @@ public abstract class ListValueModelWrapper<E>
 {
 
 	/** The wrapped list value model. */
-	protected final ListValueModel<E> listHolder;
+	protected final ListValueModel<? extends E> listHolder;
 
 	/** A listener that allows us to synch with changes to the wrapped list holder. */
 	protected final ListChangeListener listChangeListener;
@@ -39,7 +39,7 @@ public abstract class ListValueModelWrapper<E>
 	 * Construct a list value model with the specified wrapped
 	 * list value model.
 	 */
-	protected ListValueModelWrapper(ListValueModel<E> listHolder) {
+	protected ListValueModelWrapper(ListValueModel<? extends E> listHolder) {
 		super();
 		if (listHolder == null) {
 			throw new NullPointerException();

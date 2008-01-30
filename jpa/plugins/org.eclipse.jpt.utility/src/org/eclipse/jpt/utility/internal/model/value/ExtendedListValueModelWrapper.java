@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
+import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 
@@ -43,7 +43,7 @@ public class ExtendedListValueModelWrapper<E>
 	/**
 	 * Extend the specified list with a prefix and suffix.
 	 */
-	public ExtendedListValueModelWrapper(List<? extends E> prefix, ListValueModel<E> listHolder, List<? extends E> suffix) {
+	public ExtendedListValueModelWrapper(List<? extends E> prefix, ListValueModel<? extends E> listHolder, List<? extends E> suffix) {
 		super(listHolder);
 		this.prefix = new ArrayList<E>(prefix);
 		this.suffix = new ArrayList<E>(suffix);
@@ -52,7 +52,7 @@ public class ExtendedListValueModelWrapper<E>
 	/**
 	 * Extend the specified list with a prefix and suffix.
 	 */
-	public ExtendedListValueModelWrapper(E prefix, ListValueModel<E> listHolder, E suffix) {
+	public ExtendedListValueModelWrapper(E prefix, ListValueModel<? extends E> listHolder, E suffix) {
 		super(listHolder);
 		this.prefix = Collections.singletonList(prefix);
 		this.suffix = Collections.singletonList(suffix);
@@ -61,7 +61,7 @@ public class ExtendedListValueModelWrapper<E>
 	/**
 	 * Extend the specified list with a prefix.
 	 */
-	public ExtendedListValueModelWrapper(List<? extends E> prefix, ListValueModel<E> listHolder) {
+	public ExtendedListValueModelWrapper(List<? extends E> prefix, ListValueModel<? extends E> listHolder) {
 		super(listHolder);
 		this.prefix = new ArrayList<E>(prefix);
 		this.suffix = Collections.emptyList();
@@ -70,7 +70,7 @@ public class ExtendedListValueModelWrapper<E>
 	/**
 	 * Extend the specified list with a prefix.
 	 */
-	public ExtendedListValueModelWrapper(E prefix, ListValueModel<E> listHolder) {
+	public ExtendedListValueModelWrapper(E prefix, ListValueModel<? extends E> listHolder) {
 		super(listHolder);
 		this.prefix = Collections.singletonList(prefix);
 		this.suffix = Collections.emptyList();
@@ -79,7 +79,7 @@ public class ExtendedListValueModelWrapper<E>
 	/**
 	 * Extend the specified list with a suffix.
 	 */
-	public ExtendedListValueModelWrapper(ListValueModel<E> listHolder, List<? extends E> suffix) {
+	public ExtendedListValueModelWrapper(ListValueModel<? extends E> listHolder, List<? extends E> suffix) {
 		super(listHolder);
 		this.prefix = Collections.emptyList();
 		this.suffix = new ArrayList<E>(suffix);
@@ -88,7 +88,7 @@ public class ExtendedListValueModelWrapper<E>
 	/**
 	 * Extend the specified list with a suffix.
 	 */
-	public ExtendedListValueModelWrapper(ListValueModel<E> listHolder, E suffix) {
+	public ExtendedListValueModelWrapper(ListValueModel<? extends E> listHolder, E suffix) {
 		super(listHolder);
 		this.prefix = Collections.emptyList();
 		this.suffix = Collections.singletonList(suffix);
@@ -97,7 +97,7 @@ public class ExtendedListValueModelWrapper<E>
 	/**
 	 * Extend the specified list with a prefix containing a single null item.
 	 */
-	public ExtendedListValueModelWrapper(ListValueModel<E> listHolder) {
+	public ExtendedListValueModelWrapper(ListValueModel<? extends E> listHolder) {
 		super(listHolder);
 		this.prefix = Collections.singletonList(null);
 		this.suffix = Collections.emptyList();
@@ -111,13 +111,12 @@ public class ExtendedListValueModelWrapper<E>
 	}
 
 	public ListIterator<E> listIterator() {
-		// try to prevent backdoor modification of the lists
 		return new ReadOnlyListIterator<E>(this.listIterator_());
 	}
 
 	@SuppressWarnings("unchecked")
 	protected ListIterator<E> listIterator_() {
-		return new CompositeListIterator<E>(
+		return new ReadOnlyCompositeListIterator<E>(
 			this.prefix.listIterator(),
 			this.listHolder.listIterator(),
 			this.suffix.listIterator()

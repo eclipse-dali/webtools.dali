@@ -234,8 +234,9 @@ public class BufferedWritablePropertyValueModel<T>
 	}
 
 	/**
-	 * Our constructor accepts only a writable property value model.
+	 * Our constructor accepts only a WritablePropertyValueModel<T>.
 	 */
+	@SuppressWarnings("unchecked")
 	protected WritablePropertyValueModel<T> valueHolder() {
 		return (WritablePropertyValueModel<T>) this.valueHolder;
 	}

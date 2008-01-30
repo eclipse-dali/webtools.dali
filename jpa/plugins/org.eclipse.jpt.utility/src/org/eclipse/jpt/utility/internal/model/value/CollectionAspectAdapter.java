@@ -76,7 +76,7 @@ public abstract class CollectionAspectAdapter<S extends Model, E>
 	 * Construct a CollectionAspectAdapter for the specified subject holder
 	 * and collections.
 	 */
-	protected CollectionAspectAdapter(PropertyValueModel<S> subjectHolder, String... collectionNames) {
+	protected CollectionAspectAdapter(PropertyValueModel<? extends S> subjectHolder, String... collectionNames) {
 		super(subjectHolder);
 		this.collectionNames = collectionNames;
 		this.collectionChangeListener = this.buildCollectionChangeListener();
@@ -86,7 +86,7 @@ public abstract class CollectionAspectAdapter<S extends Model, E>
 	 * Construct a CollectionAspectAdapter for the specified subject holder
 	 * and collections.
 	 */
-	protected CollectionAspectAdapter(PropertyValueModel<S> subjectHolder, Collection<String> collectionNames) {
+	protected CollectionAspectAdapter(PropertyValueModel<? extends S> subjectHolder, Collection<String> collectionNames) {
 		this(subjectHolder, collectionNames.toArray(new String[collectionNames.size()]));
 	}
 
@@ -96,7 +96,7 @@ public abstract class CollectionAspectAdapter<S extends Model, E>
 	 * change for a particular subject; but the subject will change, resulting in
 	 * a new collection.
 	 */
-	protected CollectionAspectAdapter(PropertyValueModel<S> subjectHolder) {
+	protected CollectionAspectAdapter(PropertyValueModel<? extends S> subjectHolder) {
 		this(subjectHolder, EMPTY_COLLECTION_NAMES);
 	}
 

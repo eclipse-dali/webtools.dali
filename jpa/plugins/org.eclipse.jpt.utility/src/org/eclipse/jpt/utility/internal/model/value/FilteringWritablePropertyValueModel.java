@@ -107,8 +107,9 @@ public class FilteringWritablePropertyValueModel<T>
 	}
 
 	/**
-	 * Our constructors accept only a writable property value model.
+	 * Our constructors accept only a WritablePropertyValueModel<T>.
 	 */
+	@SuppressWarnings("unchecked")
 	protected WritablePropertyValueModel<T> valueHolder() {
 		return (WritablePropertyValueModel<T>) this.valueHolder;
 	}

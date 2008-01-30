@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 
 /**
@@ -25,7 +26,7 @@ public class StaticCollectionValueModel<E>
 	implements CollectionValueModel<E>
 {
 	/** The collection. */
-	protected final Collection<E> collection;
+	protected final Collection<? extends E> collection;
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +34,7 @@ public class StaticCollectionValueModel<E>
 	/**
 	 * Construct a static CollectionValueModel for the specified collection.
 	 */
-	public StaticCollectionValueModel(Collection<E> collection) {
+	public StaticCollectionValueModel(Collection<? extends E> collection) {
 		super();
 		if (collection == null) {
 			throw new NullPointerException();
@@ -48,7 +49,7 @@ public class StaticCollectionValueModel<E>
 	}
 
 	public Iterator<E> iterator() {
-		return this.collection.iterator();
+		return new ReadOnlyIterator<E>(this.collection.iterator());
 	}
 
 

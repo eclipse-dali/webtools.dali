@@ -13,6 +13,7 @@ import java.util.Iterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 
 /**
@@ -25,7 +26,7 @@ public class StaticTreeValueModel<E>
 	implements TreeValueModel<E>
 {
 	/** The tree's nodes. */
-	protected final Iterable<E> nodes;
+	protected final Iterable<? extends E> nodes;
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +34,7 @@ public class StaticTreeValueModel<E>
 	/**
 	 * Construct a read-only TreeValueModel for the specified nodes.
 	 */
-	public StaticTreeValueModel(Iterable<E> nodes) {
+	public StaticTreeValueModel(Iterable<? extends E> nodes) {
 		super();
 		if (nodes == null) {
 			throw new NullPointerException();
@@ -44,7 +45,7 @@ public class StaticTreeValueModel<E>
 	// ********** TreeValueModel implementation **********
 
 	public Iterator<E> nodes() {
-		return this.nodes.iterator();
+		return new ReadOnlyIterator<E>(this.nodes.iterator());
 	}
 
 

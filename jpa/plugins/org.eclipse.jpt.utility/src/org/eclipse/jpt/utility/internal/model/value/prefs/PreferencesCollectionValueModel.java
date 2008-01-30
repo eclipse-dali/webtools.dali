@@ -54,7 +54,7 @@ public class PreferencesCollectionValueModel<P>
 	/**
 	 * Construct an adapter for the specified preferences node.
 	 */
-	public PreferencesCollectionValueModel(PropertyValueModel<Preferences> preferencesHolder) {
+	public PreferencesCollectionValueModel(PropertyValueModel<? extends Preferences> preferencesHolder) {
 		super(preferencesHolder);
 		this.preferences = new HashMap<String, PreferencePropertyValueModel<P>>();
 		this.preferenceChangeListener = this.buildPreferenceChangeListener();

@@ -66,7 +66,7 @@ public class TableModelAdapter<E>
 	 * a list of user objects that are converted to
 	 * rows via the column adapter
 	 */
-	private ListValueModel<E> listHolder;
+	private ListValueModel<? extends E> listHolder;
 	private final ListChangeListener listChangeListener;
 
 	/**
@@ -94,7 +94,7 @@ public class TableModelAdapter<E>
 	 * Construct a table model adapter for the specified objects
 	 * and adapter.
 	 */
-	public TableModelAdapter(ListValueModel<E> listHolder, ColumnAdapter columnAdapter) {
+	public TableModelAdapter(ListValueModel<? extends E> listHolder, ColumnAdapter columnAdapter) {
 		super();
 		if (listHolder == null) {
 			throw new NullPointerException();
@@ -110,7 +110,7 @@ public class TableModelAdapter<E>
 	 * Construct a table model adapter for the specified objects
 	 * and adapter.
 	 */
-	public TableModelAdapter(CollectionValueModel<E> collectionHolder, ColumnAdapter columnAdapter) {
+	public TableModelAdapter(CollectionValueModel<? extends E> collectionHolder, ColumnAdapter columnAdapter) {
 		this(new CollectionListValueModelAdapter<E>(collectionHolder), columnAdapter);
 	}
 
@@ -238,7 +238,7 @@ public class TableModelAdapter<E>
 	/**
 	 * Return the underlying list model.
 	 */
-	public ListValueModel<E> model() {
+	public ListValueModel<? extends E> model() {
 		return this.listHolder;
 	}
 
@@ -301,7 +301,7 @@ public class TableModelAdapter<E>
 	 */
 	private void engageAllCells() {
 		this.rows.ensureCapacity(this.listHolder.size());
-		for (Iterator<E> stream = this.listHolder.iterator(); stream.hasNext(); ) {
+		for (Iterator<? extends E> stream = this.listHolder.iterator(); stream.hasNext(); ) {
 			WritablePropertyValueModel<Object>[] row = this.columnAdapter.cellModels(stream.next());
 			this.engageRow(row);
 			this.rows.add(row);

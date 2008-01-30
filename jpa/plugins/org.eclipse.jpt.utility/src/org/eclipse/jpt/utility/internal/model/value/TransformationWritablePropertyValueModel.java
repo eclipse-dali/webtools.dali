@@ -89,8 +89,9 @@ public class TransformationWritablePropertyValueModel<T1, T2>
 	// ********** queries **********
 
 	/**
-	 * Our constructors accept only a writable property value model.
+	 * Our constructors accept only a WritablePropertyValueModel<T1>.
 	 */
+	@SuppressWarnings("unchecked")
 	protected WritablePropertyValueModel<T1> valueHolder() {
 		return (WritablePropertyValueModel<T1>) this.valueHolder;
 	}

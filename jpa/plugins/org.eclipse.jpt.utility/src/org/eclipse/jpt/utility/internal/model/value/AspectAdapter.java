@@ -46,7 +46,7 @@ public abstract class AspectAdapter<S>
 	 * For now, this is can only be set upon construction and is
 	 * immutable.
 	 */
-	protected final PropertyValueModel<S> subjectHolder;
+	protected final PropertyValueModel<? extends S> subjectHolder;
 
 	/** A listener that keeps us in synch with the subjectHolder. */
 	protected final PropertyChangeListener subjectChangeListener;
@@ -65,7 +65,7 @@ public abstract class AspectAdapter<S>
 	 * Construct an AspectAdapter for the specified subject holder.
 	 * The subject holder cannot be null.
 	 */
-	protected AspectAdapter(PropertyValueModel<S> subjectHolder) {
+	protected AspectAdapter(PropertyValueModel<? extends S> subjectHolder) {
 		super();
 		if (subjectHolder == null) {
 			throw new NullPointerException();

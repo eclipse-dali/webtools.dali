@@ -45,7 +45,7 @@ public class FilteringPropertyValueModel<T>
 	 * method instead of building a <code>Filter</code>.
 	 * The default value will be <code>null</code>.
 	 */
-	public FilteringPropertyValueModel(PropertyValueModel<T> valueHolder) {
+	public FilteringPropertyValueModel(PropertyValueModel<? extends T> valueHolder) {
 		this(valueHolder, Filter.Disabled.<T>instance(), null);
 	}
 
@@ -58,7 +58,7 @@ public class FilteringPropertyValueModel<T>
 	 * <em>and</em> you need to specify
 	 * a default value other than <code>null</code>.
 	 */
-	public FilteringPropertyValueModel(PropertyValueModel<T> valueHolder, T defaultValue) {
+	public FilteringPropertyValueModel(PropertyValueModel<? extends T> valueHolder, T defaultValue) {
 		this(valueHolder, Filter.Disabled.<T>instance(), defaultValue);
 	}
 
@@ -67,7 +67,7 @@ public class FilteringPropertyValueModel<T>
 	 * property value model and filter.
 	 * The default value will be <code>null</code>.
 	 */
-	public FilteringPropertyValueModel(PropertyValueModel<T> valueHolder, Filter<T> filter) {
+	public FilteringPropertyValueModel(PropertyValueModel<? extends T> valueHolder, Filter<T> filter) {
 		this(valueHolder, filter, null);
 	}
 
@@ -75,7 +75,7 @@ public class FilteringPropertyValueModel<T>
 	 * Construct an property value model with the specified nested
 	 * property value model, filter, and default value.
 	 */
-	public FilteringPropertyValueModel(PropertyValueModel<T> valueHolder, Filter<T> filter, T defaultValue) {
+	public FilteringPropertyValueModel(PropertyValueModel<? extends T> valueHolder, Filter<T> filter, T defaultValue) {
 		super(valueHolder);
 		this.filter = filter;
 		this.defaultValue = defaultValue;

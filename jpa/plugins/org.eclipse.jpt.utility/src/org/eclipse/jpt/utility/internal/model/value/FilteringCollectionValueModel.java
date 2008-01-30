@@ -57,7 +57,7 @@ public class FilteringCollectionValueModel<E>
 	 * Construct a collection value model with the specified wrapped
 	 * collection value model and a filter that simply accepts every object.
 	 */
-	public FilteringCollectionValueModel(CollectionValueModel<E> collectionHolder) {
+	public FilteringCollectionValueModel(CollectionValueModel<? extends E> collectionHolder) {
 		this(collectionHolder, Filter.Null.<E>instance());
 	}
 
@@ -65,7 +65,7 @@ public class FilteringCollectionValueModel<E>
 	 * Construct a collection value model with the specified wrapped
 	 * collection value model and filter.
 	 */
-	public FilteringCollectionValueModel(CollectionValueModel<E> collectionHolder, Filter<E> filter) {
+	public FilteringCollectionValueModel(CollectionValueModel<? extends E> collectionHolder, Filter<E> filter) {
 		super(collectionHolder);
 		this.filter = filter;
 		this.filteredItems = new ArrayList<E>();
@@ -154,7 +154,7 @@ public class FilteringCollectionValueModel<E>
 	/**
 	 * Return an iterator that filters the specified iterator.
 	 */
-	protected Iterator<E> filter(Iterator<E> items) {
+	protected Iterator<E> filter(Iterator<? extends E> items) {
 		return new FilteringIterator<E, E>(items, this.filter);
 	}
 

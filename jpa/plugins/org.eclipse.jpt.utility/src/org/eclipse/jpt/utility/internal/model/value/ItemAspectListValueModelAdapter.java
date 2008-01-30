@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.Counter;
+import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.internal.model.Model;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 
@@ -56,7 +57,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	/**
 	 * Constructor - the list holder is required.
 	 */
-	protected ItemAspectListValueModelAdapter(ListValueModel<E> listHolder) {
+	protected ItemAspectListValueModelAdapter(ListValueModel<? extends E> listHolder) {
 		super(listHolder);
 		this.counters = new IdentityHashMap<E, Counter>();
 	}
@@ -64,7 +65,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	/**
 	 * Constructor - the collection holder is required.
 	 */
-	protected ItemAspectListValueModelAdapter(CollectionValueModel<E> collectionHolder) {
+	protected ItemAspectListValueModelAdapter(CollectionValueModel<? extends E> collectionHolder) {
 		this(new CollectionListValueModelAdapter<E>(collectionHolder));
 	}
 
@@ -76,7 +77,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	}
 
 	public ListIterator<E> listIterator() {
-		return this.listHolder.listIterator();
+		return new ReadOnlyListIterator<E>(this.listHolder.listIterator());
 	}
 
 	public E get(int index) {
@@ -107,7 +108,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 		this.engageItems(this.listHolder.iterator());
 	}
 
-	protected void engageItems(Iterator<E> stream) {
+	protected void engageItems(Iterator<? extends E> stream) {
 		while (stream.hasNext()) {
 			this.engageItem(stream.next());
 		}
@@ -142,7 +143,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 		this.disengageItems(this.listHolder.iterator());
 	}
 
-	protected void disengageItems(Iterator<E> stream) {
+	protected void disengageItems(Iterator<? extends E> stream) {
 		while (stream.hasNext()) {
 			this.disengageItem(stream.next());
 		}

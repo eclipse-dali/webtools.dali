@@ -51,7 +51,7 @@ public class SortedListValueModelAdapter<E>
 	 * Wrap the specified collection value model and sort its contents
 	 * using the specified comparator.
 	 */
-	public SortedListValueModelAdapter(CollectionValueModel<E> collectionHolder, Comparator<E> comparator) {
+	public SortedListValueModelAdapter(CollectionValueModel<? extends E> collectionHolder, Comparator<E> comparator) {
 		super(collectionHolder);
 		this.comparator = comparator;
 	}
@@ -60,7 +60,7 @@ public class SortedListValueModelAdapter<E>
 	 * Wrap the specified collection value model and sort its contents
 	 * based on the elements' "natural ordering".
 	 */
-	public SortedListValueModelAdapter(CollectionValueModel<E> collectionHolder) {
+	public SortedListValueModelAdapter(CollectionValueModel<? extends E> collectionHolder) {
 		this(collectionHolder, null);
 	}
 
@@ -68,7 +68,7 @@ public class SortedListValueModelAdapter<E>
 	 * Wrap the specified list value model and sort its contents
 	 * using the specified comparator.
 	 */
-	public SortedListValueModelAdapter(ListValueModel<E> listHolder, Comparator<E> comparator) {
+	public SortedListValueModelAdapter(ListValueModel<? extends E> listHolder, Comparator<E> comparator) {
 		this(new ListCollectionValueModelAdapter<E>(listHolder), comparator);
 	}
 
@@ -76,7 +76,7 @@ public class SortedListValueModelAdapter<E>
 	 * Wrap the specified list value model and sort its contents
 	 * based on the elements' "natural ordering".
 	 */
-	public SortedListValueModelAdapter(ListValueModel<E> listHolder) {
+	public SortedListValueModelAdapter(ListValueModel<? extends E> listHolder) {
 		this(listHolder, null);
 	}
 

@@ -53,7 +53,7 @@ public class ReadOnlyCompositeListIterator<E>
 	 * to the specified iterator.
 	 */
 	@SuppressWarnings("unchecked")
-	public ReadOnlyCompositeListIterator(E object, ListIterator<E> iterator) {
+	public ReadOnlyCompositeListIterator(E object, ListIterator<? extends E> iterator) {
 		this(new SingleElementListIterator<E>(object), iterator);
 	}
 
@@ -62,7 +62,7 @@ public class ReadOnlyCompositeListIterator<E>
 	 * to the specified iterator.
 	 */
 	@SuppressWarnings("unchecked")
-	public ReadOnlyCompositeListIterator(ListIterator<E> iterator, E object) {
+	public ReadOnlyCompositeListIterator(ListIterator<? extends E> iterator, E object) {
 		this(iterator, new SingleElementListIterator<E>(object));
 	}
 

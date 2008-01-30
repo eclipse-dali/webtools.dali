@@ -32,7 +32,7 @@ public class PropertyCollectionValueModelAdapter<E>
 	implements CollectionValueModel<E>
 {
 	/** The wrapped property value model. */
-	protected final PropertyValueModel<E> valueHolder;
+	protected final PropertyValueModel<? extends E> valueHolder;
 
 	/** A listener that forwards any events fired by the value holder. */
 	protected final PropertyChangeListener propertyChangeListener;
@@ -46,7 +46,7 @@ public class PropertyCollectionValueModelAdapter<E>
 	/**
 	 * Wrap the specified ListValueModel.
 	 */
-	public PropertyCollectionValueModelAdapter(PropertyValueModel<E> valueHolder) {
+	public PropertyCollectionValueModelAdapter(PropertyValueModel<? extends E> valueHolder) {
 		super();
 		if (valueHolder == null) {
 			throw new NullPointerException();

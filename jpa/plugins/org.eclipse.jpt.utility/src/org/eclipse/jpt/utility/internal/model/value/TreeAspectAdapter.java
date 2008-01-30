@@ -69,7 +69,7 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 	 * Construct a TreeAspectAdapter for the specified subject holder
 	 * and trees.
 	 */
-	protected TreeAspectAdapter(PropertyValueModel<S> subjectHolder, String... treeNames) {
+	protected TreeAspectAdapter(PropertyValueModel<? extends S> subjectHolder, String... treeNames) {
 		super(subjectHolder);
 		this.treeNames = treeNames;
 		this.treeChangeListener = this.buildTreeChangeListener();
@@ -79,7 +79,7 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 	 * Construct a TreeAspectAdapter for the specified subject holder
 	 * and trees.
 	 */
-	protected TreeAspectAdapter(PropertyValueModel<S> subjectHolder, Collection<String> treeNames) {
+	protected TreeAspectAdapter(PropertyValueModel<? extends S> subjectHolder, Collection<String> treeNames) {
 		this(subjectHolder, treeNames.toArray(new String[treeNames.size()]));
 	}
 
@@ -89,7 +89,7 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 	 * change for a particular subject; but the subject will change, resulting in
 	 * a new tree.
 	 */
-	protected TreeAspectAdapter(PropertyValueModel<S> subjectHolder) {
+	protected TreeAspectAdapter(PropertyValueModel<? extends S> subjectHolder) {
 		this(subjectHolder, EMPTY_TREE_NAMES);
 	}
 

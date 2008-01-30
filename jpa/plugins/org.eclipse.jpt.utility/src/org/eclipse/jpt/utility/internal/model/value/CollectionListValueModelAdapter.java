@@ -41,7 +41,7 @@ public class CollectionListValueModelAdapter<E>
 	implements ListValueModel<E>
 {
 	/** The wrapped collection value model. */
-	protected final CollectionValueModel<E> collectionHolder;
+	protected final CollectionValueModel<? extends E> collectionHolder;
 
 	/** A listener that forwards any events fired by the collection holder. */
 	protected final CollectionChangeListener collectionChangeListener;
@@ -59,7 +59,7 @@ public class CollectionListValueModelAdapter<E>
 	/**
 	 * Wrap the specified CollectionValueModel.
 	 */
-	public CollectionListValueModelAdapter(CollectionValueModel<E> collectionHolder) {
+	public CollectionListValueModelAdapter(CollectionValueModel<? extends E> collectionHolder) {
 		super();
 		if (collectionHolder == null) {
 			throw new NullPointerException();
@@ -112,7 +112,6 @@ public class CollectionListValueModelAdapter<E>
 	}
 
 	public ListIterator<E> listIterator() {
-		// try to prevent backdoor modification of the list
 		return new ReadOnlyListIterator<E>(this.list);
 	}
 
@@ -211,7 +210,7 @@ public class CollectionListValueModelAdapter<E>
 	// ********** behavior **********
 
 	protected void buildList() {
-		Iterator<E> stream = this.collectionHolder.iterator();
+		Iterator<? extends E> stream = this.collectionHolder.iterator();
 		// if the new collection is empty, do nothing
 		if (stream.hasNext()) {
 			this.list.ensureCapacity(this.collectionHolder.size());

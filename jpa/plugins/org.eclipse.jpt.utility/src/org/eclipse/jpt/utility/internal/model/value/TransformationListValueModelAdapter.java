@@ -53,7 +53,7 @@ public class TransformationListValueModelAdapter<E1, E2>
 	/**
 	 * Constructor - the list holder is required.
 	 */
-	public TransformationListValueModelAdapter(ListValueModel<E1> listHolder, Transformer<E1, E2> transformer) {
+	public TransformationListValueModelAdapter(ListValueModel<? extends E1> listHolder, Transformer<E1, E2> transformer) {
 		super(listHolder);
 		this.transformer = transformer;
 		this.transformedList = new ArrayList<E2>();
@@ -62,21 +62,21 @@ public class TransformationListValueModelAdapter<E1, E2>
 	/**
 	 * Constructor - the list holder is required.
 	 */
-	public TransformationListValueModelAdapter(ListValueModel<E1> listHolder) {
+	public TransformationListValueModelAdapter(ListValueModel<? extends E1> listHolder) {
 		this(listHolder, Transformer.Null.<E1, E2>instance());
 	}
 
 	/**
 	 * Constructor - the collection holder is required.
 	 */
-	public TransformationListValueModelAdapter(CollectionValueModel<E1> collectionHolder, Transformer<E1, E2> transformer) {
+	public TransformationListValueModelAdapter(CollectionValueModel<? extends E1> collectionHolder, Transformer<E1, E2> transformer) {
 		this(new CollectionListValueModelAdapter<E1>(collectionHolder), transformer);
 	}
 
 	/**
 	 * Constructor - the collection holder is required.
 	 */
-	public TransformationListValueModelAdapter(CollectionValueModel<E1> collectionHolder) {
+	public TransformationListValueModelAdapter(CollectionValueModel<? extends E1> collectionHolder) {
 		this(new CollectionListValueModelAdapter<E1>(collectionHolder));
 	}
 
@@ -88,7 +88,6 @@ public class TransformationListValueModelAdapter<E1, E2>
 	}
 
 	public ListIterator<E2> listIterator() {
-		// try to prevent backdoor modification of the list
 		return new ReadOnlyListIterator<E2>(this.transformedList);
 	}
 
@@ -131,7 +130,7 @@ public class TransformationListValueModelAdapter<E1, E2>
 	/**
 	 * Transform the items in the specified list value model.
 	 */
-	protected List<E2> transformItems(ListValueModel<E1> lvm) {
+	protected List<E2> transformItems(ListValueModel<? extends E1> lvm) {
 		return this.transformItems(lvm.listIterator(), lvm.size());
 	}
 
@@ -145,7 +144,7 @@ public class TransformationListValueModelAdapter<E1, E2>
 	/**
 	 * Transform the specified items.
 	 */
-	protected List<E2> transformItems(ListIterator<E1> items, int size) {
+	protected List<E2> transformItems(ListIterator<? extends E1> items, int size) {
 		List<E2> result = new ArrayList<E2>(size);
 		while (items.hasNext()) {
 			result.add(this.transformItem(items.next()));

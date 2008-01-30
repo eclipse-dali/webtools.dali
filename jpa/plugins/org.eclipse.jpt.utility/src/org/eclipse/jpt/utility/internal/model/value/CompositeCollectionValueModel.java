@@ -74,7 +74,7 @@ public class CompositeCollectionValueModel<T, E>
 	 * <code>transform(Object)</code> method instead of building a
 	 * <code>Transformer</code>.
 	 */
-	public CompositeCollectionValueModel(CollectionValueModel<T> collectionHolder) {
+	public CompositeCollectionValueModel(CollectionValueModel<? extends T> collectionHolder) {
 		this(collectionHolder, Transformer.Disabled.<T, CollectionValueModel<E>>instance());
 	}
 
@@ -82,7 +82,7 @@ public class CompositeCollectionValueModel<T, E>
 	 * Construct a collection value model with the specified wrapped
 	 * collection value model and transformer.
 	 */
-	public CompositeCollectionValueModel(CollectionValueModel<T> collectionHolder, Transformer<T, CollectionValueModel<E>> transformer) {
+	public CompositeCollectionValueModel(CollectionValueModel<? extends T> collectionHolder, Transformer<T, CollectionValueModel<E>> transformer) {
 		super(collectionHolder);
 		this.transformer = transformer;
 		this.components = new IdentityHashMap<T, CollectionValueModel<E>>();
@@ -97,7 +97,7 @@ public class CompositeCollectionValueModel<T, E>
 	 * <code>transform(Object)</code> method instead of building a
 	 * <code>Transformer</code>.
 	 */
-	public CompositeCollectionValueModel(ListValueModel<T> listHolder) {
+	public CompositeCollectionValueModel(ListValueModel<? extends T> listHolder) {
 		this(new ListCollectionValueModelAdapter<T>(listHolder));
 	}
 
@@ -105,7 +105,7 @@ public class CompositeCollectionValueModel<T, E>
 	 * Construct a collection value model with the specified wrapped
 	 * list value model and transformer.
 	 */
-	public CompositeCollectionValueModel(ListValueModel<T> listHolder, Transformer<T, CollectionValueModel<E>> transformer) {
+	public CompositeCollectionValueModel(ListValueModel<? extends T> listHolder, Transformer<T, CollectionValueModel<E>> transformer) {
 		this(new ListCollectionValueModelAdapter<T>(listHolder), transformer);
 	}
 
@@ -193,7 +193,7 @@ public class CompositeCollectionValueModel<T, E>
 	 * Transform the specified sources to collection value models
 	 * and add their items to our cache.
 	 */
-	protected void addComponentSources(Iterator<T> sources) {
+	protected void addComponentSources(Iterator<? extends T> sources) {
 		while (sources.hasNext()) {
 			this.addComponentSource(sources.next());
 		}

@@ -25,7 +25,7 @@ public abstract class PropertyValueModelWrapper<T>
 {
 
 	/** The wrapped property value model. */
-	protected final PropertyValueModel<T> valueHolder;
+	protected final PropertyValueModel<? extends T> valueHolder;
 
 	/** A listener that allows us to synch with changes to the wrapped value holder. */
 	protected final PropertyChangeListener valueChangeListener;
@@ -37,7 +37,7 @@ public abstract class PropertyValueModelWrapper<T>
 	 * Construct a property value model with the specified wrapped
 	 * property value model. The value holder is required.
 	 */
-	protected PropertyValueModelWrapper(PropertyValueModel<T> valueHolder) {
+	protected PropertyValueModelWrapper(PropertyValueModel<? extends T> valueHolder) {
 		super();
 		if (valueHolder == null) {
 			throw new NullPointerException();
