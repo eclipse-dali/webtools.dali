@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.iterators;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
@@ -176,6 +178,28 @@ public class ReadOnlyCompositeListIteratorTests extends CompositeIteratorTests {
 
 	ListIterator<String> buildCompositeListIterator(String string, ListIterator<String> iterator) {
 		return new ReadOnlyCompositeListIterator<String>(string, iterator);
+	}
+
+	public void testVariedNestedIterators() {
+		List<Integer> integerList = new ArrayList<Integer>();
+		integerList.add(42);
+		integerList.add(22);
+		integerList.add(111);
+		integerList.add(77);
+
+		List<Float> floatList = new ArrayList<Float>();
+		floatList.add(42.42f);
+		floatList.add(22.22f);
+		floatList.add(111.111f);
+		floatList.add(77.77f);
+
+		List<ListIterator<? extends Number>> list = new ArrayList<ListIterator<? extends Number>>();
+		list.add(integerList.listIterator());
+		list.add(floatList.listIterator());
+		ListIterator<Number> li = new ReadOnlyCompositeListIterator<Number>(list);
+		while (li.hasNext()) {
+			assertTrue(li.next().intValue() > 0);
+		}
 	}
 
 }
