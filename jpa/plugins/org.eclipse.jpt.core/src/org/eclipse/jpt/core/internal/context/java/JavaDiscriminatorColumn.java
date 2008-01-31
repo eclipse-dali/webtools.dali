@@ -70,6 +70,18 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn<DiscriminatorColumn
 		columnResource().setDiscriminatorType(DiscriminatorType.toJavaResourceModel(newSpecifiedDiscriminatorType));
 		firePropertyChanged(IDiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY, oldDiscriminatorType, newSpecifiedDiscriminatorType);
 	}
+	
+	/**
+	 * internal setter used only for updating from the resource model.
+	 * There were problems with InvalidThreadAccess exceptions in the UI
+	 * when you set a value from the UI and the annotation doesn't exist yet.
+	 * Adding the annotation causes an update to occur and then the exception.
+	 */
+	protected void setSpecifiedDiscriminatorType_(DiscriminatorType newSpecifiedDiscriminatorType) {
+		DiscriminatorType oldDiscriminatorType = this.specifiedDiscriminatorType;
+		this.specifiedDiscriminatorType = newSpecifiedDiscriminatorType;
+		firePropertyChanged(IDiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY, oldDiscriminatorType, newSpecifiedDiscriminatorType);
+	}
 		
 	public Integer getLength() {
 		return (this.getSpecifiedLength() == null) ? this.getDefaultLength() : this.getSpecifiedLength();
@@ -87,6 +99,18 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn<DiscriminatorColumn
 		Integer oldSpecifiedLength = this.specifiedLength;
 		this.specifiedLength = newSpecifiedLength;
 		columnResource().setLength(newSpecifiedLength);
+		firePropertyChanged(IDiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
+	}
+
+	/**
+	 * internal setter used only for updating from the resource model.
+	 * There were problems with InvalidThreadAccess exceptions in the UI
+	 * when you set a value from the UI and the annotation doesn't exist yet.
+	 * Adding the annotation causes an update to occur and then the exception.
+	 */
+	protected void setSpecifiedLength_(Integer newSpecifiedLength) {
+		Integer oldSpecifiedLength = this.specifiedLength;
+		this.specifiedLength = newSpecifiedLength;
 		firePropertyChanged(IDiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
 	}
 
@@ -111,8 +135,8 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn<DiscriminatorColumn
 	@Override
 	public void update(DiscriminatorColumn discriminatorColumn) {
 		super.update(discriminatorColumn);
-		this.setSpecifiedDiscriminatorType(this.discriminatorType(discriminatorColumn));
-		this.setSpecifiedLength(this.length(discriminatorColumn));
+		this.setSpecifiedDiscriminatorType_(this.discriminatorType(discriminatorColumn));
+		this.setSpecifiedLength_(this.length(discriminatorColumn));
 	}
 	
 	protected DiscriminatorType discriminatorType(DiscriminatorColumn discriminatorColumn) {

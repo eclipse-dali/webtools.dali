@@ -133,6 +133,18 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 		firePropertyChanged(IColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 	
+	/**
+	 * internal setter used only for updating from the resource model.
+	 * There were problems with InvalidThreadAccess exceptions in the UI
+	 * when you set a value from the UI and the annotation doesn't exist yet.
+	 * Adding the annotation causes an update to occur and then the exception.
+	 */
+	protected void setTemporal_(TemporalType newTemporal) {
+		TemporalType oldTemporal = this.temporal;
+		this.temporal = newTemporal;
+		firePropertyChanged(IColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+	}
+	
 	public IJavaGeneratedValue addGeneratedValue() {
 		if (getGeneratedValue() != null) {
 			throw new IllegalStateException("gemeratedValue already exists");
@@ -228,7 +240,7 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.update(persistentAttributeResource);
 		this.column.update(this.columnResource());
-		this.setTemporal(this.temporal(this.temporalResource()));
+		this.setTemporal_(this.temporal(this.temporalResource()));
 		this.updateTableGenerator(persistentAttributeResource);
 		this.updateSequenceGenerator(persistentAttributeResource);
 		this.updateGeneratedValue(persistentAttributeResource);

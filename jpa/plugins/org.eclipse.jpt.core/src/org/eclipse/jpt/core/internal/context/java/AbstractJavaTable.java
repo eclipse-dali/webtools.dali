@@ -67,6 +67,18 @@ public abstract class AbstractJavaTable extends JavaContextModel
 		tableResource().setName(newSpecifiedName);
 		firePropertyChanged(ITable.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
 	}
+	
+	/**
+	 * internal setter used only for updating from the resource model.
+	 * There were problems with InvalidThreadAccess exceptions in the UI
+	 * when you set a value from the UI and the annotation doesn't exist yet.
+	 * Adding the annotation causes an update to occur and then the exception.
+	 */
+	protected void setSpecifiedName_(String newSpecifiedName) {
+		String oldSpecifiedName = this.specifiedName;
+		this.specifiedName = newSpecifiedName;
+		firePropertyChanged(ITable.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
+	}
 
 	public String getDefaultName() {
 		return this.defaultName;
@@ -87,6 +99,18 @@ public abstract class AbstractJavaTable extends JavaContextModel
 		firePropertyChanged(ITable.SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
 	}
 
+	/**
+	 * internal setter used only for updating from the resource model.
+	 * There were problems with InvalidThreadAccess exceptions in the UI
+	 * when you set a value from the UI and the annotation doesn't exist yet.
+	 * Adding the annotation causes an update to occur and then the exception.
+	 */
+	protected void setSpecifiedCatalog_(String newSpecifiedCatalog) {
+		String oldSpecifiedCatalog = this.specifiedCatalog;
+		this.specifiedCatalog = newSpecifiedCatalog;
+		firePropertyChanged(ITable.SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
+	}
+
 	public String getDefaultCatalog() {
 		return this.defaultCatalog;
 	}
@@ -103,6 +127,18 @@ public abstract class AbstractJavaTable extends JavaContextModel
 		String oldSpecifiedSchema = this.specifiedSchema;
 		this.specifiedSchema = newSpecifiedSchema;
 		tableResource().setSchema(newSpecifiedSchema);
+		firePropertyChanged(ITable.SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
+	}
+	
+	/**
+	 * internal setter used only for updating from the resource model.
+	 * There were problems with InvalidThreadAccess exceptions in the UI
+	 * when you set a value from the UI and the annotation doesn't exist yet.
+	 * Adding the annotation causes an update to occur and then the exception.
+	 */
+	protected void setSpecifiedSchema_(String newSpecifiedSchema) {
+		String oldSpecifiedSchema = this.specifiedSchema;
+		this.specifiedSchema = newSpecifiedSchema;
 		firePropertyChanged(ITable.SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
 	}
 
@@ -172,9 +208,9 @@ public abstract class AbstractJavaTable extends JavaContextModel
 
 	
 	protected void update(Table table) {
-		this.setSpecifiedName(table.getName());
-		this.setSpecifiedSchema(table.getSchema());
-		this.setSpecifiedCatalog(table.getCatalog());
+		this.setSpecifiedName_(table.getName());
+		this.setSpecifiedSchema_(table.getSchema());
+		this.setSpecifiedCatalog_(table.getCatalog());
 		this.setDefaultName(this.defaultName());
 		this.setDefaultSchema(this.defaultSchema());
 		this.setDefaultCatalog(this.defaultCatalog());

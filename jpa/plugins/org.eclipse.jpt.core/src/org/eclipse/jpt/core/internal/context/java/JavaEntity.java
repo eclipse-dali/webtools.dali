@@ -454,6 +454,18 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		inheritanceResource().setStrategy(InheritanceType.toJavaResourceModel(newInheritanceType));
 		firePropertyChanged(SPECIFIED_INHERITANCE_STRATEGY_PROPERTY, oldInheritanceType, newInheritanceType);
 	}
+	
+	/**
+	 * internal setter used only for updating from the resource model.
+	 * There were problems with InvalidThreadAccess exceptions in the UI
+	 * when you set a value from the UI and the annotation doesn't exist yet.
+	 * Adding the annotation causes an update to occur and then the exception.
+	 */
+	protected void setSpecifiedInheritanceStrategy_(InheritanceType newInheritanceType) {
+		InheritanceType oldInheritanceType = this.specifiedInheritanceStrategy;
+		this.specifiedInheritanceStrategy = newInheritanceType;
+		firePropertyChanged(SPECIFIED_INHERITANCE_STRATEGY_PROPERTY, oldInheritanceType, newInheritanceType);
+	}
 
 	public IJavaDiscriminatorColumn getDiscriminatorColumn() {
 		return this.discriminatorColumn;
@@ -477,6 +489,18 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		String oldSpecifiedDiscriminatorValue = this.specifiedDiscriminatorValue;
 		this.specifiedDiscriminatorValue = newSpecifiedDiscriminatorValue;
 		discriminatorValueResource().setValue(newSpecifiedDiscriminatorValue);
+		firePropertyChanged(SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY, oldSpecifiedDiscriminatorValue, newSpecifiedDiscriminatorValue);
+	}
+
+	/**
+	 * internal setter used only for updating from the resource model.
+	 * There were problems with InvalidThreadAccess exceptions in the UI
+	 * when you set a value from the UI and the annotation doesn't exist yet.
+	 * Adding the annotation causes an update to occur and then the exception.
+	 */
+	protected void setSpecifiedDiscriminatorValue_(String newSpecifiedDiscriminatorValue) {
+		String oldSpecifiedDiscriminatorValue = this.specifiedDiscriminatorValue;
+		this.specifiedDiscriminatorValue = newSpecifiedDiscriminatorValue;
 		firePropertyChanged(SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY, oldSpecifiedDiscriminatorValue, newSpecifiedDiscriminatorValue);
 	}
 
@@ -956,7 +980,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	}
 	
 	protected void updateInheritance(Inheritance inheritanceResource) {
-		this.setSpecifiedInheritanceStrategy(this.specifiedInheritanceStrategy(inheritanceResource));
+		this.setSpecifiedInheritanceStrategy_(this.specifiedInheritanceStrategy(inheritanceResource));
 		this.setDefaultInheritanceStrategy(this.defaultInheritanceStrategy());
 	}
 	
@@ -976,7 +1000,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	}
 	
 	protected void updateDiscriminatorValue(DiscriminatorValue discriminatorValueResource) {
-		this.setSpecifiedDiscriminatorValue(discriminatorValueResource.getValue());
+		this.setSpecifiedDiscriminatorValue_(discriminatorValueResource.getValue());
 		this.setDefaultDiscriminatorValue(this.javaDefaultDiscriminatorValue());
 	}
 	

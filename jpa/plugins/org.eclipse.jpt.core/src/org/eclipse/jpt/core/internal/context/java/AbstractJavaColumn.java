@@ -72,6 +72,18 @@ public abstract class AbstractJavaColumn<T extends AbstractColumn> extends JavaN
 		columnResource().setTable(newSpecifiedTable);
 		firePropertyChanged(IAbstractColumn.SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
 	}
+	
+	/**
+	 * internal setter used only for updating from the resource model.
+	 * There were problems with InvalidThreadAccess exceptions in the UI
+	 * when you set a value from the UI and the annotation doesn't exist yet.
+	 * Adding the annotation causes an update to occur and then the exception.
+	 */
+	protected void setSpecifiedTable_(String newSpecifiedTable) {
+		String oldSpecifiedTable = this.specifiedTable;
+		this.specifiedTable = newSpecifiedTable;
+		firePropertyChanged(IAbstractColumn.SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
+	}
 
 	public String getDefaultTable() {
 		return this.defaultTable;
@@ -102,6 +114,18 @@ public abstract class AbstractJavaColumn<T extends AbstractColumn> extends JavaN
 		firePropertyChanged(IAbstractColumn.SPECIFIED_UNIQUE_PROPERTY, oldSpecifiedUnique, newSpecifiedUnique);
 	}
 	
+	/**
+	 * internal setter used only for updating from the resource model.
+	 * There were problems with InvalidThreadAccess exceptions in the UI
+	 * when you set a value from the UI and the annotation doesn't exist yet.
+	 * Adding the annotation causes an update to occur and then the exception.
+	 */
+	protected void setSpecifiedUnique_(Boolean newSpecifiedUnique) {
+		Boolean oldSpecifiedUnique = this.specifiedUnique;
+		this.specifiedUnique = newSpecifiedUnique;
+		firePropertyChanged(IAbstractColumn.SPECIFIED_UNIQUE_PROPERTY, oldSpecifiedUnique, newSpecifiedUnique);
+	}
+	
 	public Boolean getNullable() {
 		return (this.getSpecifiedNullable() == null) ? this.getDefaultNullable() : this.getSpecifiedNullable();
 	}
@@ -118,6 +142,18 @@ public abstract class AbstractJavaColumn<T extends AbstractColumn> extends JavaN
 		Boolean oldSpecifiedNullable = this.specifiedNullable;
 		this.specifiedNullable = newSpecifiedNullable;
 		this.columnResource().setNullable(newSpecifiedNullable);
+		firePropertyChanged(IAbstractColumn.SPECIFIED_NULLABLE_PROPERTY, oldSpecifiedNullable, newSpecifiedNullable);
+	}
+	
+	/**
+	 * internal setter used only for updating from the resource model.
+	 * There were problems with InvalidThreadAccess exceptions in the UI
+	 * when you set a value from the UI and the annotation doesn't exist yet.
+	 * Adding the annotation causes an update to occur and then the exception.
+	 */
+	protected void setSpecifiedNullable_(Boolean newSpecifiedNullable) {
+		Boolean oldSpecifiedNullable = this.specifiedNullable;
+		this.specifiedNullable = newSpecifiedNullable;
 		firePropertyChanged(IAbstractColumn.SPECIFIED_NULLABLE_PROPERTY, oldSpecifiedNullable, newSpecifiedNullable);
 	}
 	
@@ -140,6 +176,18 @@ public abstract class AbstractJavaColumn<T extends AbstractColumn> extends JavaN
 		firePropertyChanged(IAbstractColumn.SPECIFIED_INSERTABLE_PROPERTY, oldSpecifiedInsertable, newSpecifiedInsertable);
 	}
 	
+	/**
+	 * internal setter used only for updating from the resource model.
+	 * There were problems with InvalidThreadAccess exceptions in the UI
+	 * when you set a value from the UI and the annotation doesn't exist yet.
+	 * Adding the annotation causes an update to occur and then the exception.
+	 */
+	protected void setSpecifiedInsertable_(Boolean newSpecifiedInsertable) {
+		Boolean oldSpecifiedInsertable = this.specifiedInsertable;
+		this.specifiedInsertable = newSpecifiedInsertable;
+		firePropertyChanged(IAbstractColumn.SPECIFIED_INSERTABLE_PROPERTY, oldSpecifiedInsertable, newSpecifiedInsertable);
+	}
+	
 	public Boolean getUpdatable() {
 		return (this.getSpecifiedUpdatable() == null) ? this.getDefaultUpdatable() : this.getSpecifiedUpdatable();
 	}
@@ -159,6 +207,17 @@ public abstract class AbstractJavaColumn<T extends AbstractColumn> extends JavaN
 		firePropertyChanged(IAbstractColumn.SPECIFIED_UPDATABLE_PROPERTY, oldSpecifiedUpdatable, newSpecifiedUpdatable);
 	}
 
+	/**
+	 * internal setter used only for updating from the resource model.
+	 * There were problems with InvalidThreadAccess exceptions in the UI
+	 * when you set a value from the UI and the annotation doesn't exist yet.
+	 * Adding the annotation causes an update to occur and then the exception.
+	 */
+	protected void setSpecifiedUpdatable_(Boolean newSpecifiedUpdatable) {
+		Boolean oldSpecifiedUpdatable = this.specifiedUpdatable;
+		this.specifiedUpdatable = newSpecifiedUpdatable;
+		firePropertyChanged(IAbstractColumn.SPECIFIED_UPDATABLE_PROPERTY, oldSpecifiedUpdatable, newSpecifiedUpdatable);
+	}
 
 	@Override
 	protected String tableName() {
@@ -207,11 +266,11 @@ public abstract class AbstractJavaColumn<T extends AbstractColumn> extends JavaN
 	protected void update(T column) {
 		super.update(column);
 		this.setDefaultTable(this.defaultTable());
-		this.setSpecifiedTable(this.specifiedTable(column));
-		this.setSpecifiedUnique(this.specifiedUnique(column));
-		this.setSpecifiedNullable(this.specifiedNullable(column));
-		this.setSpecifiedInsertable(this.specifiedInsertable(column));
-		this.setSpecifiedUpdatable(this.specifiedUpdatable(column));
+		this.setSpecifiedTable_(this.specifiedTable(column));
+		this.setSpecifiedUnique_(this.specifiedUnique(column));
+		this.setSpecifiedNullable_(this.specifiedNullable(column));
+		this.setSpecifiedInsertable_(this.specifiedInsertable(column));
+		this.setSpecifiedUpdatable_(this.specifiedUpdatable(column));
 	}
 
 	protected String defaultTable() {

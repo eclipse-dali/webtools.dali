@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.core.internal.resource.java.NamedColumn;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
@@ -63,7 +64,19 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 		String oldSpecifiedName = this.specifiedName;
 		this.specifiedName = newSpecifiedName;
 		columnResource().setName(newSpecifiedName);
-		firePropertyChanged(SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
+		firePropertyChanged(INamedColumn.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
+	}
+	
+	/**
+	 * internal setter used only for updating from the resource model.
+	 * There were problems with InvalidThreadAccess exceptions in the UI
+	 * when you set a value from the UI and the annotation doesn't exist yet.
+	 * Adding the annotation causes an update to occur and then the exception.
+	 */
+	protected void setSpecifiedName_(String newSpecifiedName) {
+		String oldSpecifiedName = this.specifiedName;
+		this.specifiedName = newSpecifiedName;
+		firePropertyChanged(INamedColumn.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
 	}
 
 	public String getDefaultName() {
@@ -73,7 +86,7 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 	protected void setDefaultName(String newDefaultName) {
 		String oldDefaultName = this.defaultName;
 		this.defaultName = newDefaultName;
-		firePropertyChanged(DEFAULT_NAME_PROPERTY, oldDefaultName, newDefaultName);
+		firePropertyChanged(INamedColumn.DEFAULT_NAME_PROPERTY, oldDefaultName, newDefaultName);
 	}
 
 	public String getColumnDefinition() {
@@ -84,7 +97,19 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 		String oldColumnDefinition = this.columnDefinition;
 		this.columnDefinition = newColumnDefinition;
 		columnResource().setColumnDefinition(newColumnDefinition);
-		firePropertyChanged(COLUMN_DEFINITION_PROPERTY, oldColumnDefinition, newColumnDefinition);
+		firePropertyChanged(INamedColumn.COLUMN_DEFINITION_PROPERTY, oldColumnDefinition, newColumnDefinition);
+	}
+	
+	/**
+	 * internal setter used only for updating from the resource model.
+	 * There were problems with InvalidThreadAccess exceptions in the UI
+	 * when you set a value from the UI and the annotation doesn't exist yet.
+	 * Adding the annotation causes an update to occur and then the exception.
+	 */
+	protected void setColumnDefinition_(String newColumnDefinition) {
+		String oldColumnDefinition = this.columnDefinition;
+		this.columnDefinition = newColumnDefinition;
+		firePropertyChanged(INamedColumn.COLUMN_DEFINITION_PROPERTY, oldColumnDefinition, newColumnDefinition);
 	}
 
 	public Owner owner() {
@@ -146,9 +171,9 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 	// ******************* update from java resource model ********************
 
 	protected void update(T column) {
-		this.setSpecifiedName(column.getName());
+		this.setSpecifiedName_(column.getName());
 		this.setDefaultName(this.defaultName());
-		this.setColumnDefinition(column.getColumnDefinition());
+		this.setColumnDefinition_(column.getColumnDefinition());
 	}
 	
 	/**

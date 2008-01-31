@@ -130,6 +130,18 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 		this.basicResource().setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
 		firePropertyChanged(IFetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
+	
+	/**
+	 * internal setter used only for updating from the resource model.
+	 * There were problems with InvalidThreadAccess exceptions in the UI
+	 * when you set a value from the UI and the annotation doesn't exist yet.
+	 * Adding the annotation causes an update to occur and then the exception.
+	 */
+	protected void setSpecifiedFetch_(FetchType newSpecifiedFetch) {
+		FetchType oldFetch = this.specifiedFetch;
+		this.specifiedFetch = newSpecifiedFetch;
+		firePropertyChanged(IFetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
+	}
 
 	public Boolean getOptional() {
 		return (this.getSpecifiedOptional() == null) ? this.getDefaultOptional() : this.getSpecifiedOptional();
@@ -182,6 +194,18 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 		firePropertyChanged(IColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 	
+	/**
+	 * internal setter used only for updating from the resource model.
+	 * There were problems with InvalidThreadAccess exceptions in the UI
+	 * when you set a value from the UI and the annotation doesn't exist yet.
+	 * Adding the annotation causes an update to occur and then the exception.
+	 */
+	protected void setTemporal_(TemporalType newTemporal) {
+		TemporalType oldTemporal = this.temporal;
+		this.temporal = newTemporal;
+		firePropertyChanged(IColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+	}
+	
 	public EnumType getEnumerated() {
 		return (this.getSpecifiedEnumerated() == null) ? this.getDefaultEnumerated() : this.getSpecifiedEnumerated();
 	}
@@ -200,17 +224,29 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 		this.enumeratedResource().setValue(EnumType.toJavaResourceModel(newSpecifiedEnumerated));
 		firePropertyChanged(IBasicMapping.SPECIFIED_ENUMERATED_PROPERTY, oldEnumerated, newSpecifiedEnumerated);
 	}
+	
+	/**
+	 * internal setter used only for updating from the resource model.
+	 * There were problems with InvalidThreadAccess exceptions in the UI
+	 * when you set a value from the UI and the annotation doesn't exist yet.
+	 * Adding the annotation causes an update to occur and then the exception.
+	 */
+	protected void setSpecifiedEnumerated_(EnumType newSpecifiedEnumerated) {
+		EnumType oldEnumerated = this.specifiedEnumerated;
+		this.specifiedEnumerated = newSpecifiedEnumerated;
+		firePropertyChanged(IBasicMapping.SPECIFIED_ENUMERATED_PROPERTY, oldEnumerated, newSpecifiedEnumerated);
+	}
 
 	@Override
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.update(persistentAttributeResource);
 		this.column.update(this.columnResource());
 		Basic basicResource = this.basicResource();
-		this.setSpecifiedFetch(this.specifiedFetchType(basicResource));
+		this.setSpecifiedFetch_(this.specifiedFetchType(basicResource));
 		this.setSpecifiedOptional(this.specifiedOptional(basicResource));
-		this.setSpecifiedEnumerated(this.specifiedEnumerated(this.enumeratedResource()));
+		this.setSpecifiedEnumerated_(this.specifiedEnumerated(this.enumeratedResource()));
 		this.setLob(this.lob(persistentAttributeResource));
-		this.setTemporal(this.temporal(this.temporalResource()));
+		this.setTemporal_(this.temporal(this.temporalResource()));
 	}
 	
 	
