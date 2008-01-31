@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.persistence;
 
+import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IProperty;
 import org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType;
@@ -894,4 +896,29 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		assertEquals(xmlProperty.getValue(), property.getValue());
 	}
+	
+	
+	public void testGetDefaultAccess() throws Exception {
+		createOrmXmlFile();		
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);		
+		assertEquals(AccessType.PROPERTY, persistenceUnit.getDefaultAccess());
+		
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);	
+		assertEquals(AccessType.FIELD, persistenceUnit.getDefaultAccess());
+	}
+
+	protected void createOrmXmlFile() throws Exception {
+		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
+		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+		persistenceResource().save(null);
+	}	
+//TODO
+//	String getDefaultSchema();
+//	String getDefaultCatalog();
+//	AccessType getDefaultAccess();
+//	boolean getDefaultCascadePersist();
+
 }

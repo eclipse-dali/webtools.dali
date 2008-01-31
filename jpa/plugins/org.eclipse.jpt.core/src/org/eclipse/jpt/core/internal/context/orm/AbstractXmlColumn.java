@@ -295,7 +295,7 @@ public abstract class AbstractXmlColumn<T extends AbstractColumn> extends Abstra
 	}
 	
 	protected String defaultTable() {
-		return null;
+		return owner().defaultTableName();
 	}
 
 }

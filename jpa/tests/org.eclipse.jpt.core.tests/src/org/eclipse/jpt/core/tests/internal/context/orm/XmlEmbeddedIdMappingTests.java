@@ -186,9 +186,9 @@ public class XmlEmbeddedIdMappingTests extends ContextModelTestCase
 		XmlEmbeddedIdMapping xmlEmbeddedIdMapping = (XmlEmbeddedIdMapping) xmlPersistentAttribute.getMapping();
 		EmbeddedId embeddedIdResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		
-		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverride());
-		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverride());
-		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverride());
+		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverrideImpl());
+		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverrideImpl());
+		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverrideImpl());
 		
 		embeddedIdResource.getAttributeOverrides().get(0).setName("FOO");
 		embeddedIdResource.getAttributeOverrides().get(1).setName("BAR");

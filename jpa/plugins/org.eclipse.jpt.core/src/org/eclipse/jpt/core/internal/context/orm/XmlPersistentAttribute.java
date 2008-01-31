@@ -64,7 +64,7 @@ public class XmlPersistentAttribute extends JpaContextNode
 				return provider;
 			}
 		}
-		throw new IllegalArgumentException();
+		return XmlNullAttributeMappingProvider.instance();
 	}
 
 	protected XmlAttributeMapping<? extends AttributeMapping> buildAttributeMapping(String key) {
@@ -130,28 +130,14 @@ public class XmlPersistentAttribute extends JpaContextNode
 	public XmlTypeMapping<?> typeMapping() {
 		return persistentType().getMapping();
 	}
-//
-//	public boolean isVirtual() {
-//		return getMapping().isVirtual();
-//	}
-//
-//	public void setVirtual(boolean virtual) {
-//		getMapping().setVirtual(virtual);
-//	}
-//
-//	public Attribute getAttribute() {
-//		JavaPersistentType javaPersistentType = typeMapping().getPersistentType().findJavaPersistentType();
-//		if (javaPersistentType == null) {
-//			return null;
-//		}
-//		for (Iterator<JavaPersistentAttribute> i = javaPersistentType.attributes(); i.hasNext();) {
-//			JavaPersistentAttribute persistentAttribute = i.next();
-//			if (persistentAttribute.getName().equals(getName())) {
-//				return persistentAttribute.getAttribute();
-//			}
-//		}
-//		return null;
-//	}
+
+	public boolean isVirtual() {
+		return persistentType().containsVirtualPersistentAttribute(this);
+	}
+
+	public void setVirtual(boolean virtual) {
+		xmlPersistentType().setPersistentAttributeVirtual(this, virtual);
+	}
 
 	public String primaryKeyColumnName() {
 		return getMapping().primaryKeyColumnName();
@@ -325,5 +311,11 @@ public class XmlPersistentAttribute extends JpaContextNode
 			setSpecifiedMappingKey_(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
 			((XmlTransientMapping) getMapping()).initialize(transientResource);				
 		}
+	}
+	
+	@Override
+	public void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(getName());
 	}
 }

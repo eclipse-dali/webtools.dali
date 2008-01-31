@@ -187,7 +187,7 @@ public class XmlCascade extends JpaContextNode implements ICascade
 	}
 	
 	protected void addCascadeResource() {
-		this.relationshipMapping.setCascade(OrmFactory.eINSTANCE.createCascadeType());			
+		this.relationshipMapping.setCascade(OrmFactory.eINSTANCE.createCascadeTypeImpl());			
 	}
 
 	public void initialize(RelationshipMapping relationshipMapping) {

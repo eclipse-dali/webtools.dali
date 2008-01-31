@@ -11,6 +11,8 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
+import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.MultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.orm.RelationshipMapping;
@@ -25,10 +27,24 @@ public abstract class XmlAttributeMapping<T extends AttributeMapping> extends Jp
 	
 	protected T attributeMapping;
 
+	protected IJavaPersistentAttribute javaPersistentAttribute;
+		public static final String JAVA_PERSISTENT_ATTRIBUTE_PROPERTY = "javaPersistentAttributeProperty";
+	
 	protected XmlAttributeMapping(XmlPersistentAttribute parent) {
 		super(parent);
 	}
-//
+	
+	public IJavaPersistentAttribute getJavaPersistentAttribute() {
+		return this.javaPersistentAttribute;
+	}
+	
+	protected void setJavaPersistentAttribute(IJavaPersistentAttribute newJavaPersistentAttribute) {
+		IJavaPersistentAttribute oldJavaPersistentAttribute = this.javaPersistentAttribute;
+		this.javaPersistentAttribute = newJavaPersistentAttribute;
+		firePropertyChanged(JAVA_PERSISTENT_ATTRIBUTE_PROPERTY, oldJavaPersistentAttribute, newJavaPersistentAttribute);
+		
+	}
+
 //	protected INamedColumn.Owner buildOwner() {
 //		return new ColumnOwner();
 //	}
@@ -51,13 +67,23 @@ public abstract class XmlAttributeMapping<T extends AttributeMapping> extends Jp
 		String oldName = this.name;
 		this.name = newName;
 		this.attributeMapping.setName(newName);
-		firePropertyChanged(NAME_PROPERTY, oldName, oldName);
-		persistentAttribute().nameChanged(oldName, oldName);
+		firePropertyChanged(NAME_PROPERTY, oldName, newName);
+		persistentAttribute().nameChanged(oldName, newName);
 	}
 
+	protected void setName_(String newName) {
+		String oldName = this.name;
+		this.name = newName;
+		firePropertyChanged(NAME_PROPERTY, oldName, newName);
+		persistentAttribute().nameChanged(oldName, newName);
+	}
 	
 	public XmlPersistentAttribute persistentAttribute() {
 		return (XmlPersistentAttribute) parent();
+	}
+
+	public String attributeName() {
+		return this.persistentAttribute().getName();
 	}
 
 	public boolean isDefault() {
@@ -153,15 +179,7 @@ public abstract class XmlAttributeMapping<T extends AttributeMapping> extends Jp
 	public XmlTypeMapping<?> typeMapping() {
 		return this.persistentAttribute().typeMapping();
 	}
-//
-//	public boolean isVirtual() {
-//		return getPersistentType().getVirtualAttributeMappings().contains(this);
-//	}
-//
-//	public void setVirtual(boolean virtual) {
-//		getPersistentType().setMappingVirtual(this, virtual);
-//	}
-//
+
 //	@Override
 //	public ITextRange validationTextRange() {
 //		return (this.isVirtual()) ? this.getPersistentType().attributesTextRange() : super.validationTextRange();
@@ -194,10 +212,20 @@ public abstract class XmlAttributeMapping<T extends AttributeMapping> extends Jp
 	public void initialize(T attributeMapping) {
 		this.attributeMapping = attributeMapping;
 		this.name = attributeMapping.getName();
+		this.javaPersistentAttribute = javaPersistentAttribute();
 	}
 	
 	public void update(T attributeMapping) {
 		this.attributeMapping = attributeMapping;
-		this.setName(attributeMapping.getName());
+		this.setName_(attributeMapping.getName());
+		this.setJavaPersistentAttribute(javaPersistentAttribute());
+	}
+	
+	protected IJavaPersistentAttribute javaPersistentAttribute() {
+		IJavaPersistentType javaPersistentType = persistentAttribute().persistentType().javaPersistentType();
+		if (javaPersistentType != null && getName() != null) {
+			return javaPersistentType.attributeNamed(getName());
+		}
+		return null;
 	}
 }

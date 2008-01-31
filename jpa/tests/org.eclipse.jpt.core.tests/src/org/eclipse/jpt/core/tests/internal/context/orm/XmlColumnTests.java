@@ -102,7 +102,7 @@ public class XmlColumnTests extends ContextModelTestCase
 		assertNull(basic.getColumn());
 		
 		//set name in the resource model, verify context model updated
-		basic.setColumn(OrmFactory.eINSTANCE.createColumn());
+		basic.setColumn(OrmFactory.eINSTANCE.createColumnImpl());
 		basic.getColumn().setName("FOO");
 		ormResource().save(null);
 		assertEquals("FOO", xmlColumn.getSpecifiedName());
@@ -158,7 +158,7 @@ public class XmlColumnTests extends ContextModelTestCase
 		assertNull(basic.getColumn());
 		
 		//set name in the resource model, verify context model updated
-		basic.setColumn(OrmFactory.eINSTANCE.createColumn());
+		basic.setColumn(OrmFactory.eINSTANCE.createColumnImpl());
 		basic.getColumn().setColumnDefinition("FOO");
 		ormResource().save(null);
 		assertEquals("FOO", xmlColumn.getColumnDefinition());
@@ -269,7 +269,7 @@ public class XmlColumnTests extends ContextModelTestCase
 		assertNull(basic.getColumn());
 		
 		//set name in the resource model, verify context model updated
-		basic.setColumn(OrmFactory.eINSTANCE.createColumn());
+		basic.setColumn(OrmFactory.eINSTANCE.createColumnImpl());
 		basic.getColumn().setTable("FOO");
 		assertEquals("FOO", xmlColumn.getSpecifiedTable());
 		assertEquals("FOO", basic.getColumn().getTable());
@@ -324,7 +324,7 @@ public class XmlColumnTests extends ContextModelTestCase
 		assertNull(basic.getColumn());
 		
 		//set name in the resource model, verify context model updated
-		basic.setColumn(OrmFactory.eINSTANCE.createColumn());
+		basic.setColumn(OrmFactory.eINSTANCE.createColumnImpl());
 		basic.getColumn().setNullable(Boolean.TRUE);
 		assertEquals(Boolean.TRUE, xmlColumn.getSpecifiedNullable());
 		assertEquals(Boolean.TRUE, basic.getColumn().getNullable());
@@ -379,7 +379,7 @@ public class XmlColumnTests extends ContextModelTestCase
 		assertNull(basic.getColumn());
 		
 		//set name in the resource model, verify context model updated
-		basic.setColumn(OrmFactory.eINSTANCE.createColumn());
+		basic.setColumn(OrmFactory.eINSTANCE.createColumnImpl());
 		basic.getColumn().setUpdatable(Boolean.TRUE);
 		assertEquals(Boolean.TRUE, xmlColumn.getSpecifiedUpdatable());
 		assertEquals(Boolean.TRUE, basic.getColumn().getUpdatable());
@@ -434,7 +434,7 @@ public class XmlColumnTests extends ContextModelTestCase
 		assertNull(basic.getColumn());
 		
 		//set name in the resource model, verify context model updated
-		basic.setColumn(OrmFactory.eINSTANCE.createColumn());
+		basic.setColumn(OrmFactory.eINSTANCE.createColumnImpl());
 		basic.getColumn().setInsertable(Boolean.TRUE);
 		assertEquals(Boolean.TRUE, xmlColumn.getSpecifiedInsertable());
 		assertEquals(Boolean.TRUE, basic.getColumn().getInsertable());
@@ -489,7 +489,7 @@ public class XmlColumnTests extends ContextModelTestCase
 		assertNull(basic.getColumn());
 		
 		//set name in the resource model, verify context model updated
-		basic.setColumn(OrmFactory.eINSTANCE.createColumn());
+		basic.setColumn(OrmFactory.eINSTANCE.createColumnImpl());
 		basic.getColumn().setUnique(Boolean.TRUE);
 		assertEquals(Boolean.TRUE, xmlColumn.getSpecifiedUnique());
 		assertEquals(Boolean.TRUE, basic.getColumn().getUnique());
@@ -544,7 +544,7 @@ public class XmlColumnTests extends ContextModelTestCase
 		assertNull(basic.getColumn());
 		
 		//set name in the resource model, verify context model updated
-		basic.setColumn(OrmFactory.eINSTANCE.createColumn());
+		basic.setColumn(OrmFactory.eINSTANCE.createColumnImpl());
 		basic.getColumn().setLength(Integer.valueOf(8));
 		assertEquals(Integer.valueOf(8), xmlColumn.getSpecifiedLength());
 		assertEquals(Integer.valueOf(8), basic.getColumn().getLength());
@@ -599,7 +599,7 @@ public class XmlColumnTests extends ContextModelTestCase
 		assertNull(basic.getColumn());
 		
 		//set name in the resource model, verify context model updated
-		basic.setColumn(OrmFactory.eINSTANCE.createColumn());
+		basic.setColumn(OrmFactory.eINSTANCE.createColumnImpl());
 		basic.getColumn().setPrecision(Integer.valueOf(8));
 		assertEquals(Integer.valueOf(8), xmlColumn.getSpecifiedPrecision());
 		assertEquals(Integer.valueOf(8), basic.getColumn().getPrecision());
@@ -654,7 +654,7 @@ public class XmlColumnTests extends ContextModelTestCase
 		assertNull(basic.getColumn());
 		
 		//set name in the resource model, verify context model updated
-		basic.setColumn(OrmFactory.eINSTANCE.createColumn());
+		basic.setColumn(OrmFactory.eINSTANCE.createColumnImpl());
 		basic.getColumn().setScale(Integer.valueOf(8));
 		assertEquals(Integer.valueOf(8), xmlColumn.getSpecifiedScale());
 		assertEquals(Integer.valueOf(8), basic.getColumn().getScale());

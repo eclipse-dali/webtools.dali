@@ -10,25 +10,30 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
+import java.util.Iterator;
 import java.util.ListIterator;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.FetchType;
+import org.eclipse.jpt.core.internal.context.orm.XmlCascade;
 import org.eclipse.jpt.core.internal.context.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.internal.context.orm.XmlOneToOneMapping;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
+import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.orm.OneToOne;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
+import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class XmlOneToOneMappingTests extends ContextModelTestCase
 {
 	public XmlOneToOneMappingTests(String name) {
 		super(name);
 	}
-	
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -39,6 +44,91 @@ public class XmlOneToOneMappingTests extends ContextModelTestCase
 		persistenceResource().save(null);
 	}
 	
+	private void createEntityAnnotation() throws Exception {
+		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
+	}
+	
+	private void createOneToOneAnnotation() throws Exception{
+		this.createAnnotationAndMembers("OneToOne", 
+			"Class targetEntity() default void.class;" +
+			"CascadeType[] cascade() default {};" +
+			"FetchType fetch() default EAGER;" +
+			"boolean optional() default true;" +		
+			"String mappedBy() default \"\";");		
+	}
+	
+	private void createJoinColumnAnnotation() throws Exception{
+		this.createAnnotationAndMembers("JoinColumn", 
+			"String name() default \"\";" +
+			"String referencedColumnName() default \"\";" +
+			"boolean unique() default false;" +
+			"boolean nullable() default true;" +
+			"boolean insertable() default true;" +
+			"boolean updatable() default true;" +
+			"String columnDefinition() default \"\";" +
+			"String table() default \"\";");		
+	}
+	
+	private IType createTestEntityOneToOneMapping() throws Exception {
+		createEntityAnnotation();
+		createOneToOneAnnotation();
+		createJoinColumnAnnotation();
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_ONE, JPA.JOIN_COLUMN, JPA.FETCH_TYPE, JPA.CASCADE_TYPE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @OneToOne(fetch=FetchType.LAZY, optional=false, targetEntity=Address.class, cascade={CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH}, mappedBy=\"foo\")");
+				sb.append(CR);
+				sb.append("    @JoinColumn(name=\"MY_COLUMN\", referencedColumnName=\"MY_REFERENCED_COLUMN\", unique=true, nullable=false, insertable=false, updatable=false, columnDefinition=\"COLUMN_DEFINITION\", table=\"MY_TABLE\")");
+				sb.append(CR);
+				sb.append("    private Address address;").append(CR);
+				sb.append(CR);
+				sb.append("    @Id");				
+			}
+		});
+	}	
+	
+	private IType createTestTargetEntityAddress() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ENTITY);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ID);
+					sb.append(";");
+					sb.append(CR);
+				sb.append(CR);
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class ").append("Address").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private int id;").append(CR);
+				sb.append(CR);
+				sb.append("    private String city;").append(CR);
+				sb.append(CR);
+				sb.append("    private String state;").append(CR);
+				sb.append(CR);
+				sb.append("    private int zip;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		return this.javaProject.createType(PACKAGE_NAME, "Address.java", sourceWriter);
+	}	
 	public void testUpdateName() throws Exception {
 		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
@@ -356,4 +446,165 @@ public class XmlOneToOneMappingTests extends ContextModelTestCase
 		assertEquals("BAR", oneToOneResource.getJoinColumns().get(1).getName());
 		assertEquals("FOO", oneToOneResource.getJoinColumns().get(2).getName());
 	}
+	
+	public void testOneToOneMappingNoUnderylingJavaAttribute() throws Exception {
+		createTestEntityOneToOneMapping();
+		createTestTargetEntityAddress();
+
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "foo");
+		assertEquals(3, xmlPersistentType.virtualAttributesSize());
+		
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.specifiedAttributes().next();
+		XmlOneToOneMapping xmlOneToOneMapping = (XmlOneToOneMapping) xmlPersistentAttribute.getMapping();
+		
+		assertEquals("foo", xmlOneToOneMapping.getName());
+
+		assertNull(xmlOneToOneMapping.getSpecifiedFetch());
+		assertNull(xmlOneToOneMapping.getSpecifiedOptional());
+		assertNull(xmlOneToOneMapping.getSpecifiedTargetEntity());
+		assertEquals(FetchType.EAGER, xmlOneToOneMapping.getFetch());
+		assertEquals(Boolean.TRUE, xmlOneToOneMapping.getOptional());
+		assertNull(xmlOneToOneMapping.getTargetEntity());
+
+		
+		assertFalse(xmlOneToOneMapping.specifiedJoinColumns().hasNext());
+		//TODO default joinColumns
+		//assertTrue(xmlOneToOneMapping.defaultJoinColumns().hasNext());
+	
+	
+		XmlCascade xmlCascade = xmlOneToOneMapping.getCascade();
+		assertFalse(xmlCascade.isAll());
+		assertFalse(xmlCascade.isMerge());
+		assertFalse(xmlCascade.isPersist());
+		assertFalse(xmlCascade.isRemove());
+		assertFalse(xmlCascade.isRefresh());
+	}
+	
+	
+	public void testVirtualMappingMetadataCompleteFalse() throws Exception {
+		createTestEntityOneToOneMapping();
+		createTestTargetEntityAddress();
+
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		assertEquals(3, xmlPersistentType.virtualAttributesSize());		
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.virtualAttributes().next();
+		
+		XmlOneToOneMapping xmlOneToOneMapping = (XmlOneToOneMapping) xmlPersistentAttribute.getMapping();	
+		assertEquals("address", xmlOneToOneMapping.getName());
+		assertEquals(FetchType.LAZY, xmlOneToOneMapping.getSpecifiedFetch());
+		assertEquals(Boolean.FALSE, xmlOneToOneMapping.getSpecifiedOptional());
+		assertEquals("Address", xmlOneToOneMapping.getSpecifiedTargetEntity());
+		assertEquals("foo", xmlOneToOneMapping.getMappedBy());
+
+		XmlJoinColumn xmlJoinColumn = xmlOneToOneMapping.specifiedJoinColumns().next();
+		assertEquals("MY_COLUMN", xmlJoinColumn.getSpecifiedName());
+		assertEquals("MY_REFERENCED_COLUMN", xmlJoinColumn.getSpecifiedReferencedColumnName());
+		assertEquals(Boolean.TRUE, xmlJoinColumn.getSpecifiedUnique());
+		assertEquals(Boolean.FALSE, xmlJoinColumn.getSpecifiedNullable());
+		assertEquals(Boolean.FALSE, xmlJoinColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.FALSE, xmlJoinColumn.getSpecifiedUpdatable());
+		assertEquals("COLUMN_DEFINITION", xmlJoinColumn.getColumnDefinition());
+		assertEquals("MY_TABLE", xmlJoinColumn.getSpecifiedTable());
+
+		XmlCascade xmlCascade = xmlOneToOneMapping.getCascade();
+		assertTrue(xmlCascade.isAll());
+		assertTrue(xmlCascade.isMerge());
+		assertTrue(xmlCascade.isPersist());
+		assertTrue(xmlCascade.isRemove());
+		assertTrue(xmlCascade.isRefresh());
+	}
+	
+	public void testVirtualMappingMetadataCompleteTrue() throws Exception {
+		createTestEntityOneToOneMapping();
+		createTestTargetEntityAddress();
+
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		xmlPersistentType.getMapping().setSpecifiedMetadataComplete(true);
+		assertEquals(3, xmlPersistentType.virtualAttributesSize());		
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.virtualAttributes().next();
+		
+		XmlOneToOneMapping xmlOneToOneMapping = (XmlOneToOneMapping) xmlPersistentAttribute.getMapping();	
+		assertEquals("address", xmlOneToOneMapping.getName());
+		assertEquals(FetchType.EAGER, xmlOneToOneMapping.getSpecifiedFetch());
+		assertEquals(Boolean.TRUE, xmlOneToOneMapping.getSpecifiedOptional());
+		//TODO hmm, is this correct?
+		assertEquals("test.Address", xmlOneToOneMapping.getSpecifiedTargetEntity());
+		assertNull(xmlOneToOneMapping.getMappedBy());
+	
+		XmlJoinColumn xmlJoinColumn = xmlOneToOneMapping.specifiedJoinColumns().next();
+		//TODO java default columns name in JavaSingleRelationshipMapping.JoinColumnOwner
+		//assertEquals("address", xmlJoinColumn.getSpecifiedName());
+		//assertEquals("address", xmlJoinColumn.getSpecifiedReferencedColumnName());
+		assertEquals(Boolean.FALSE, xmlJoinColumn.getSpecifiedUnique());
+		assertEquals(Boolean.TRUE, xmlJoinColumn.getSpecifiedNullable());
+		assertEquals(Boolean.TRUE, xmlJoinColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.TRUE, xmlJoinColumn.getSpecifiedUpdatable());
+		assertNull(xmlJoinColumn.getColumnDefinition());
+		assertEquals(TYPE_NAME, xmlJoinColumn.getSpecifiedTable());
+
+		XmlCascade xmlCascade = xmlOneToOneMapping.getCascade();
+		assertFalse(xmlCascade.isAll());
+		assertFalse(xmlCascade.isMerge());
+		assertFalse(xmlCascade.isPersist());
+		assertFalse(xmlCascade.isRemove());
+		assertFalse(xmlCascade.isRefresh());
+	}
+	
+	public void testSpecifiedMapping() throws Exception {
+		createTestEntityOneToOneMapping();
+		createTestTargetEntityAddress();
+
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+
+		xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "address");
+		assertEquals(2, xmlPersistentType.virtualAttributesSize());
+		
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.specifiedAttributes().next();
+		XmlOneToOneMapping xmlOneToOneMapping = (XmlOneToOneMapping) xmlPersistentAttribute.getMapping();
+		
+		assertEquals("address", xmlOneToOneMapping.getName());
+		assertNull(xmlOneToOneMapping.getSpecifiedFetch());
+		assertNull(xmlOneToOneMapping.getSpecifiedOptional());
+		assertNull(xmlOneToOneMapping.getSpecifiedTargetEntity());
+		assertNull(xmlOneToOneMapping.getMappedBy());
+		assertEquals(FetchType.EAGER, xmlOneToOneMapping.getFetch());
+		assertEquals(Boolean.TRUE, xmlOneToOneMapping.getOptional());
+		//TODO default target entity in xml
+		//assertEquals("test.Address", xmlOneToOneMapping.getDefaultTargetEntity());
+		
+		assertFalse(xmlOneToOneMapping.specifiedJoinColumns().hasNext());
+		
+		//TODO default join columns for specified xmlOneToOne mapping
+//		XmlJoinColumn xmlJoinColumn = xmlOneToOneMapping.defaultJoinColumns().next();
+//		assertNull(xmlJoinColumn.getSpecifiedName());
+//		assertNull(xmlJoinColumn.getSpecifiedReferencedColumnName());
+//		assertNull(xmlJoinColumn.getSpecifiedUnique());
+//		assertNull(xmlJoinColumn.getSpecifiedNullable());
+//		assertNull(xmlJoinColumn.getSpecifiedInsertable());
+//		assertNull(xmlJoinColumn.getSpecifiedUpdatable());
+//		assertNull(xmlJoinColumn.getColumnDefinition());
+//		assertNull(xmlJoinColumn.getSpecifiedTable());
+//		
+//		assertEquals("address", xmlJoinColumn.getDefaultName());
+//		assertEquals("address", xmlJoinColumn.getDefaultReferencedColumnName());
+//		assertEquals(Boolean.FALSE, xmlJoinColumn.getDefaultUnique());
+//		assertEquals(Boolean.TRUE, xmlJoinColumn.getDefaultNullable());
+//		assertEquals(Boolean.TRUE, xmlJoinColumn.getDefaultInsertable());
+//		assertEquals(Boolean.TRUE, xmlJoinColumn.getDefaultUpdatable());
+//		assertEquals(null, xmlJoinColumn.getColumnDefinition());
+//		assertEquals(TYPE_NAME, xmlJoinColumn.getDefaultTable());
+
+		XmlCascade xmlCascade = xmlOneToOneMapping.getCascade();
+		assertFalse(xmlCascade.isAll());
+		assertFalse(xmlCascade.isMerge());
+		assertFalse(xmlCascade.isPersist());
+		assertFalse(xmlCascade.isRemove());
+		assertFalse(xmlCascade.isRefresh());
+	}
+
 }

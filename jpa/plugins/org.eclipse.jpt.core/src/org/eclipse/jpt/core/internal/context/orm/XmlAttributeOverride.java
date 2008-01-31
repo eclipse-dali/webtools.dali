@@ -50,6 +50,11 @@ public class XmlAttributeOverride extends JpaContextNode
 		firePropertyChanged(IOverride.NAME_PROPERTY, oldName, newName);
 	}
 
+	protected void setName_(String newName) {
+		String oldName = this.name;
+		this.name = newName;
+		firePropertyChanged(IOverride.NAME_PROPERTY, oldName, newName);
+	}
 
 	public XmlColumn getColumn() {
 		return this.column;
@@ -97,10 +102,12 @@ public class XmlAttributeOverride extends JpaContextNode
 	public void initialize(AttributeOverride attributeOverride) {
 		this.attributeOverride = attributeOverride;
 		this.name = attributeOverride.getName();
+		this.column.initialize(attributeOverride.getColumn());
 	}
 	
 	public void update(AttributeOverride attributeOverride) {
 		this.attributeOverride = attributeOverride;
-		this.setName(attributeOverride.getName());
+		this.setName_(attributeOverride.getName());
+		this.column.update(attributeOverride.getColumn());
 	}
 }

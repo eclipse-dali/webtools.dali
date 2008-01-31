@@ -15,6 +15,11 @@ import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 
+/**
+ * This is the context model object which corresponds to the 
+ * persistence resource model object XmlJavaClassRef.
+ * XmlJavaClassRef corresponds to the class tag in the persistence.xml
+ */
 public class ClassRef extends JpaContextNode implements IClassRef
 {
 	protected XmlJavaClassRef xmlJavaClassRef;
@@ -30,6 +35,9 @@ public class ClassRef extends JpaContextNode implements IClassRef
 	
 	
 	public boolean isFor(String fullyQualifiedTypeName) {
+		if (getClassName() == null) {
+			return false;
+		}
 		return getClassName().equals(fullyQualifiedTypeName);
 	}
 	

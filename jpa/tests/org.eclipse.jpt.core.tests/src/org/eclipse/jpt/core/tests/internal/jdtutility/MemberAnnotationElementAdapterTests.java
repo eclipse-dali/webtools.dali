@@ -339,7 +339,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		ITextRange textRange = new ASTNodeTextRange(aea.astNode());
 		assertEquals(this.source().indexOf(value), textRange.getOffset());
 		assertEquals(value.length(), textRange.getLength());
-		assertEquals(7, textRange.getLineNumber());
+		assertEquals(8, textRange.getLineNumber());
 	}
 
 	public void testASTNode2() throws Exception {

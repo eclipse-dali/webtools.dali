@@ -78,18 +78,7 @@ public class JavaEmbeddedIdMapping extends JavaAttributeMapping
 	
 	//****************** IOverride.Owner implemenation *******************
 	public IColumnMapping columnMapping(String attributeName) {
-		if (attributeName == null || embeddable() == null) {
-			return null;
-		}
-		for (Iterator<IPersistentAttribute> stream = embeddable().persistentType().allAttributes(); stream.hasNext();) {
-			IPersistentAttribute persAttribute = stream.next();
-			if (attributeName.equals(persAttribute.getName())) {
-				if (persAttribute.getMapping() instanceof IColumnMapping) {
-					return (IColumnMapping) persAttribute.getMapping();
-				}
-			}
-		}
-		return null;
+		return JavaEmbeddedMapping.columnMapping(attributeName, embeddable());
 	}
 
 	public boolean isVirtual(IOverride override) {

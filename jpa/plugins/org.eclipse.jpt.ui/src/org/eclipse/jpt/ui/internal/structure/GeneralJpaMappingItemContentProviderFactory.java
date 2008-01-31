@@ -51,7 +51,7 @@ public abstract class GeneralJpaMappingItemContentProviderFactory
 		
 		@Override
 		protected ListValueModel<IPersistentAttribute> buildChildrenModel() {
-			return new ListAspectAdapter<IPersistentType, IPersistentAttribute>(IPersistentType.ATTRIBUTES_LIST, (IPersistentType) model()) {
+			return new ListAspectAdapter<IPersistentType, IPersistentAttribute>(new String[]{IPersistentType.SPECIFIED_ATTRIBUTES_LIST, IPersistentType.VIRTUAL_ATTRIBUTES_LIST}, (IPersistentType) model()) {
 				@Override
 				protected ListIterator<IPersistentAttribute> listIterator_() {
 					return subject.attributes();
@@ -70,7 +70,7 @@ public abstract class GeneralJpaMappingItemContentProviderFactory
 		
 		@Override
 		public Object getParent() {
-			return ((IPersistentType) model()).parentPersistentType();
+			return ((IPersistentAttribute) model()).parent();
 		}
 		
 		@Override

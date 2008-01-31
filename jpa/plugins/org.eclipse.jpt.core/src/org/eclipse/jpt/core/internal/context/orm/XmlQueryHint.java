@@ -23,7 +23,7 @@ public class XmlQueryHint extends JpaContextNode implements IQueryHint
 
 	protected QueryHint queryHint;
 	
-	public XmlQueryHint(AbstractXmlQuery parent) {
+	public XmlQueryHint(AbstractXmlQuery<?> parent) {
 		super(parent);
 	}
 

@@ -86,7 +86,7 @@ public class XmlAssociationOverride extends JpaContextNode
 	public XmlJoinColumn addSpecifiedJoinColumn(int index) {
 		XmlJoinColumn joinColumn = new XmlJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
-		this.associationOverride.getJoinColumns().add(index, OrmFactory.eINSTANCE.createJoinColumn());
+		this.associationOverride.getJoinColumns().add(index, OrmFactory.eINSTANCE.createJoinColumnImpl());
 		this.fireItemAdded(IAssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		return joinColumn;
 	}

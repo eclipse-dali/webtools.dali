@@ -12,7 +12,9 @@ package org.eclipse.jpt.ui.internal.views.structure;
 
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.SafeRunner;
+import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.jface.viewers.ISelection;
@@ -32,7 +34,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 
@@ -47,9 +51,10 @@ public class JpaStructurePage extends Page
 	
 	private TreeViewer viewer;
 	
+	private IWorkbenchPart workbenchPart;
 	
-	
-	public JpaStructurePage(IJpaStructureProvider structureProvider) {
+	public JpaStructurePage(IWorkbenchPart part, IJpaStructureProvider structureProvider) {
+		this.workbenchPart = part;
 		this.structureProvider = structureProvider;
 		this.selectionChangedListeners = new ListenerList();
 	}
@@ -85,22 +90,20 @@ public class JpaStructurePage extends Page
 		super.dispose();
 	}
 	
-	protected void initContextMenu() {
-		// TODO
-//        // Create dynamic menu mgr.  Dynamic is currently required to
-//        // support action contributions.
-//        MenuManager mgr = new MenuManager();
-//        mgr.setRemoveAllWhenShown(true);
-//        mgr.addMenuListener(new IMenuListener() {
-//            public void menuAboutToShow(IMenuManager mgr) {
-//                fillContextMenu(mgr);
-//            }
-//        });
-//        Menu menu = mgr.createContextMenu(viewer.getControl());
-//        viewer.getControl().setMenu(menu);
-//        // TODO - what is the ID??
-//        getSite().registerContextMenu("id", mgr, viewer);
-//       	        
+	//TODO this isn't really working.  our jpa actions appear, but along with a bunch of other actions!!
+    protected void initContextMenu() {
+        // Create dynamic menu mgr.  Dynamic is currently required to
+        // support action contributions.
+        MenuManager mgr = new MenuManager();
+        mgr.setRemoveAllWhenShown(true);
+        mgr.addMenuListener(new IMenuListener() {
+            public void menuAboutToShow(IMenuManager mgr) {
+                fillContextMenu(mgr);
+            }
+        });
+        Menu menu = mgr.createContextMenu(viewer.getControl());
+        viewer.getControl().setMenu(menu);
+        workbenchPart.getSite().registerContextMenu(mgr, viewer);
     }	
 	
     /**

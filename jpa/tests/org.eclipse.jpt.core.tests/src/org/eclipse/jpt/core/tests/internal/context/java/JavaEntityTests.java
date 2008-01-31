@@ -509,9 +509,11 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(AccessType.FIELD, xmlPersistentType.javaPersistentType().access());
 		
 		((XmlEntity) xmlPersistentType.getMapping()).setSpecifiedAccess(AccessType.PROPERTY);
-		//accessType still FIELD because the xmlEntity setting should not affect the java access type
-		assertEquals(AccessType.FIELD, xmlPersistentType.javaPersistentType().access());
+		
+		//accessType should be PROPERTY now, java gets the access from xml entity if it is specified
+		assertEquals(AccessType.PROPERTY, xmlPersistentType.javaPersistentType().access());
 	}	
+	
 	public void testGetSpecifiedNameNull() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);

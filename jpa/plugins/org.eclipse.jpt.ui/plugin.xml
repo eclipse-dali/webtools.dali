@@ -24,14 +24,14 @@
 		</factory>
 		
 		<factory
-			adaptableType="org.eclipse.jpt.core.internal.IPersistentAttribute"
+			adaptableType="org.eclipse.jpt.core.internal.context.base.IPersistentAttribute"
 			class="org.eclipse.jpt.ui.internal.actions.PersistentAttributeActionFilter$Factory">
 			<adapter
 				type="org.eclipse.ui.IActionFilter"/>
 		</factory>
 		
 		<factory
-			adaptableType="org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute"
+			adaptableType="org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute"
 			class="org.eclipse.jpt.ui.internal.actions.XmlPersistentAttributeActionFilter$Factory">
 			<adapter
 				type="org.eclipse.ui.IActionFilter"/>
@@ -194,7 +194,7 @@
 		
 		<objectContribution
 			id="org.eclipse.jpt.ui.entityMappingsActions"
-			objectClass="org.eclipse.jpt.core.internal.content.orm.EntityMappings">
+			objectClass="org.eclipse.jpt.core.internal.context.orm.EntityMappings">
 			<action
 				id="org.eclipse.jpt.ui.addPersistentClass"
 				class="org.eclipse.jpt.ui.internal.actions.AddPersistentClassAction"
@@ -204,7 +204,7 @@
 		
 		<objectContribution
 			id="org.eclipse.jpt.ui.xmlPersistentTypeActions"
-			objectClass="org.eclipse.jpt.core.internal.content.orm.XmlPersistentType">
+			objectClass="org.eclipse.jpt.core.internal.context.orm.XmlPersistentType">
 			<action
 				id="org.eclipse.jpt.ui.removePersistentClass"
 				class="org.eclipse.jpt.ui.internal.actions.RemovePersistentClassAction"
@@ -213,7 +213,7 @@
 		</objectContribution>
 				<objectContribution
 			id="org.eclipse.jpt.ui.xmlPersistentAttributeActions1"
-			objectClass="org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute">
+			objectClass="org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute">
 			
 			<action
 				id="org.eclipse.jpt.ui.addPersistentAttributeToXml"
@@ -235,7 +235,7 @@
 		
 		<objectContribution
 			id="org.eclipse.jpt.ui.xmlPersistentAttributeActions2"
-			objectClass="org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute">
+			objectClass="org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute">
 			
 			<action
 				id="org.eclipse.jpt.ui.addPersistentAttributeToXmlAndMap"
@@ -258,7 +258,7 @@
 		
 		<objectContribution
 			id="org.eclipse.jpt.ui.xmlPersistentAttributeActions3"
-			objectClass="org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute">
+			objectClass="org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute">
 			
 			<action
 				id="org.eclipse.jpt.ui.removePersistentAttributeFromXml"

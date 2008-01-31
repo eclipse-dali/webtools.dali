@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
@@ -38,8 +39,6 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 	protected final List<XmlJoinColumn> defaultJoinColumns;
 
 	protected Boolean specifiedOptional;
-	
-	protected Boolean defaultOptional;
 
 	protected XmlSingleRelationshipMapping(XmlPersistentAttribute parent) {
 		super(parent);
@@ -47,6 +46,10 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 		this.defaultJoinColumns = new ArrayList<XmlJoinColumn>();
 
 		//this.getDefaultJoinColumns().add(this.createJoinColumn(new JoinColumnOwner(this)));
+	}
+	
+	public FetchType getDefaultFetch() {
+		return ISingleRelationshipMapping.DEFAULT_FETCH_TYPE;
 	}
 
 	//***************** ISingleRelationshipMapping implementation *****************
@@ -76,7 +79,7 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 	public XmlJoinColumn addSpecifiedJoinColumn(int index) {
 		XmlJoinColumn joinColumn = new XmlJoinColumn(this, new JoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
-		this.attributeMapping().getJoinColumns().add(index, OrmFactory.eINSTANCE.createJoinColumn());
+		this.attributeMapping().getJoinColumns().add(index, OrmFactory.eINSTANCE.createJoinColumnImpl());
 		this.fireItemAdded(ISingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		return joinColumn;
 	}
@@ -106,9 +109,9 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 	}
 	
 	public Boolean getDefaultOptional() {
-		return this.defaultOptional;
+		return INullable.DEFAULT_OPTIONAL;
 	}
-	//TODO default optional from java
+
 	public Boolean getSpecifiedOptional() {
 		return this.specifiedOptional;
 	}
@@ -117,6 +120,12 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 		Boolean oldSpecifiedOptional = this.specifiedOptional;
 		this.specifiedOptional = newSpecifiedOptional;
 		attributeMapping().setOptional(newSpecifiedOptional);
+		firePropertyChanged(INullable.SPECIFIED_OPTIONAL_PROPERTY, oldSpecifiedOptional, newSpecifiedOptional);
+	}
+	
+	protected void setSpecifiedOptional_(Boolean newSpecifiedOptional) {
+		Boolean oldSpecifiedOptional = this.specifiedOptional;
+		this.specifiedOptional = newSpecifiedOptional;
 		firePropertyChanged(INullable.SPECIFIED_OPTIONAL_PROPERTY, oldSpecifiedOptional, newSpecifiedOptional);
 	}
 //
@@ -150,7 +159,7 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 	@Override
 	public void update(T singleRelationshipMapping) {
 		super.update(singleRelationshipMapping);
-		this.setSpecifiedOptional(singleRelationshipMapping.getOptional());
+		this.setSpecifiedOptional_(singleRelationshipMapping.getOptional());
 		this.updateSpecifiedJoinColumns(singleRelationshipMapping);
 	}
 	

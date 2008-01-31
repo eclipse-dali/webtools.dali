@@ -86,20 +86,20 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.ENTITY: return (EObject)createEntity();
 			case OrmPackage.EMBEDDABLE: return (EObject)createEmbeddable();
 			case OrmPackage.ATTRIBUTES: return (EObject)createAttributes();
-			case OrmPackage.ID: return (EObject)createId();
-			case OrmPackage.EMBEDDED_ID: return (EObject)createEmbeddedId();
-			case OrmPackage.BASIC: return (EObject)createBasic();
-			case OrmPackage.VERSION: return (EObject)createVersion();
-			case OrmPackage.MANY_TO_ONE: return (EObject)createManyToOne();
-			case OrmPackage.ONE_TO_MANY: return (EObject)createOneToMany();
-			case OrmPackage.ONE_TO_ONE: return (EObject)createOneToOne();
-			case OrmPackage.MANY_TO_MANY: return (EObject)createManyToMany();
-			case OrmPackage.EMBEDDED: return (EObject)createEmbedded();
-			case OrmPackage.TRANSIENT: return (EObject)createTransient();
+			case OrmPackage.ID_IMPL: return (EObject)createIdImpl();
+			case OrmPackage.EMBEDDED_ID_IMPL: return (EObject)createEmbeddedIdImpl();
+			case OrmPackage.BASIC_IMPL: return (EObject)createBasicImpl();
+			case OrmPackage.VERSION_IMPL: return (EObject)createVersionImpl();
+			case OrmPackage.MANY_TO_ONE_IMPL: return (EObject)createManyToOneImpl();
+			case OrmPackage.ONE_TO_MANY_IMPL: return (EObject)createOneToManyImpl();
+			case OrmPackage.ONE_TO_ONE_IMPL: return (EObject)createOneToOneImpl();
+			case OrmPackage.MANY_TO_MANY_IMPL: return (EObject)createManyToManyImpl();
+			case OrmPackage.EMBEDDED_IMPL: return (EObject)createEmbeddedImpl();
+			case OrmPackage.TRANSIENT_IMPL: return (EObject)createTransientImpl();
 			case OrmPackage.ASSOCIATION_OVERRIDE: return (EObject)createAssociationOverride();
-			case OrmPackage.ATTRIBUTE_OVERRIDE: return (EObject)createAttributeOverride();
-			case OrmPackage.CASCADE_TYPE: return (EObject)createCascadeType();
-			case OrmPackage.COLUMN: return (EObject)createColumn();
+			case OrmPackage.ATTRIBUTE_OVERRIDE_IMPL: return (EObject)createAttributeOverrideImpl();
+			case OrmPackage.CASCADE_TYPE_IMPL: return (EObject)createCascadeTypeImpl();
+			case OrmPackage.COLUMN_IMPL: return (EObject)createColumnImpl();
 			case OrmPackage.COLUMN_RESULT: return (EObject)createColumnResult();
 			case OrmPackage.DISCRIMINATOR_COLUMN: return (EObject)createDiscriminatorColumn();
 			case OrmPackage.ENTITY_LISTENERS: return (EObject)createEntityListeners();
@@ -107,13 +107,13 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.ENTITY_RESULT: return (EObject)createEntityResult();
 			case OrmPackage.EVENT_METHOD: return (EObject)createEventMethod();
 			case OrmPackage.FIELD_RESULT: return (EObject)createFieldResult();
-			case OrmPackage.GENERATED_VALUE: return (EObject)createGeneratedValue();
+			case OrmPackage.GENERATED_VALUE_IMPL: return (EObject)createGeneratedValueImpl();
 			case OrmPackage.ID_CLASS: return (EObject)createIdClass();
 			case OrmPackage.INHERITANCE: return (EObject)createInheritance();
-			case OrmPackage.JOIN_COLUMN: return (EObject)createJoinColumn();
-			case OrmPackage.JOIN_TABLE: return (EObject)createJoinTable();
+			case OrmPackage.JOIN_COLUMN_IMPL: return (EObject)createJoinColumnImpl();
+			case OrmPackage.JOIN_TABLE_IMPL: return (EObject)createJoinTableImpl();
 			case OrmPackage.LOB: return (EObject)createLob();
-			case OrmPackage.MAP_KEY: return (EObject)createMapKey();
+			case OrmPackage.MAP_KEY_IMPL: return (EObject)createMapKeyImpl();
 			case OrmPackage.NAMED_NATIVE_QUERY: return (EObject)createNamedNativeQuery();
 			case OrmPackage.NAMED_QUERY: return (EObject)createNamedQuery();
 			case OrmPackage.POST_LOAD: return (EObject)createPostLoad();
@@ -127,9 +127,9 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.QUERY_HINT: return (EObject)createQueryHint();
 			case OrmPackage.TABLE: return (EObject)createTable();
 			case OrmPackage.SECONDARY_TABLE: return (EObject)createSecondaryTable();
-			case OrmPackage.SEQUENCE_GENERATOR: return (EObject)createSequenceGenerator();
+			case OrmPackage.SEQUENCE_GENERATOR_IMPL: return (EObject)createSequenceGeneratorImpl();
 			case OrmPackage.SQL_RESULT_SET_MAPPING: return (EObject)createSqlResultSetMapping();
-			case OrmPackage.TABLE_GENERATOR: return (EObject)createTableGenerator();
+			case OrmPackage.TABLE_GENERATOR_IMPL: return (EObject)createTableGeneratorImpl();
 			case OrmPackage.UNIQUE_CONSTRAINT: return (EObject)createUniqueConstraint();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -292,10 +292,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Id createId()
+	public IdImpl createIdImpl()
 	{
-		Id id = new Id();
-		return id;
+		IdImpl idImpl = new IdImpl();
+		return idImpl;
 	}
 
 	/**
@@ -303,10 +303,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EmbeddedId createEmbeddedId()
+	public EmbeddedIdImpl createEmbeddedIdImpl()
 	{
-		EmbeddedId embeddedId = new EmbeddedId();
-		return embeddedId;
+		EmbeddedIdImpl embeddedIdImpl = new EmbeddedIdImpl();
+		return embeddedIdImpl;
 	}
 
 	/**
@@ -314,10 +314,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Basic createBasic()
+	public BasicImpl createBasicImpl()
 	{
-		Basic basic = new Basic();
-		return basic;
+		BasicImpl basicImpl = new BasicImpl();
+		return basicImpl;
 	}
 
 	/**
@@ -325,10 +325,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Version createVersion()
+	public VersionImpl createVersionImpl()
 	{
-		Version version = new Version();
-		return version;
+		VersionImpl versionImpl = new VersionImpl();
+		return versionImpl;
 	}
 
 	/**
@@ -336,10 +336,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ManyToOne createManyToOne()
+	public ManyToOneImpl createManyToOneImpl()
 	{
-		ManyToOne manyToOne = new ManyToOne();
-		return manyToOne;
+		ManyToOneImpl manyToOneImpl = new ManyToOneImpl();
+		return manyToOneImpl;
 	}
 
 	/**
@@ -347,10 +347,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public OneToMany createOneToMany()
+	public OneToManyImpl createOneToManyImpl()
 	{
-		OneToMany oneToMany = new OneToMany();
-		return oneToMany;
+		OneToManyImpl oneToManyImpl = new OneToManyImpl();
+		return oneToManyImpl;
 	}
 
 	/**
@@ -358,10 +358,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public OneToOne createOneToOne()
+	public OneToOneImpl createOneToOneImpl()
 	{
-		OneToOne oneToOne = new OneToOne();
-		return oneToOne;
+		OneToOneImpl oneToOneImpl = new OneToOneImpl();
+		return oneToOneImpl;
 	}
 
 	/**
@@ -369,10 +369,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ManyToMany createManyToMany()
+	public ManyToManyImpl createManyToManyImpl()
 	{
-		ManyToMany manyToMany = new ManyToMany();
-		return manyToMany;
+		ManyToManyImpl manyToManyImpl = new ManyToManyImpl();
+		return manyToManyImpl;
 	}
 
 	/**
@@ -380,10 +380,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Embedded createEmbedded()
+	public EmbeddedImpl createEmbeddedImpl()
 	{
-		Embedded embedded = new Embedded();
-		return embedded;
+		EmbeddedImpl embeddedImpl = new EmbeddedImpl();
+		return embeddedImpl;
 	}
 
 	/**
@@ -391,10 +391,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Transient createTransient()
+	public TransientImpl createTransientImpl()
 	{
-		Transient transient_ = new Transient();
-		return transient_;
+		TransientImpl transientImpl = new TransientImpl();
+		return transientImpl;
 	}
 
 	/**
@@ -413,10 +413,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public AttributeOverride createAttributeOverride()
+	public AttributeOverrideImpl createAttributeOverrideImpl()
 	{
-		AttributeOverride attributeOverride = new AttributeOverride();
-		return attributeOverride;
+		AttributeOverrideImpl attributeOverrideImpl = new AttributeOverrideImpl();
+		return attributeOverrideImpl;
 	}
 
 	/**
@@ -424,10 +424,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public CascadeType createCascadeType()
+	public CascadeTypeImpl createCascadeTypeImpl()
 	{
-		CascadeType cascadeType = new CascadeType();
-		return cascadeType;
+		CascadeTypeImpl cascadeTypeImpl = new CascadeTypeImpl();
+		return cascadeTypeImpl;
 	}
 
 	/**
@@ -435,10 +435,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Column createColumn()
+	public ColumnImpl createColumnImpl()
 	{
-		Column column = new Column();
-		return column;
+		ColumnImpl columnImpl = new ColumnImpl();
+		return columnImpl;
 	}
 
 	/**
@@ -512,10 +512,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public GeneratedValue createGeneratedValue()
+	public GeneratedValueImpl createGeneratedValueImpl()
 	{
-		GeneratedValue generatedValue = new GeneratedValue();
-		return generatedValue;
+		GeneratedValueImpl generatedValueImpl = new GeneratedValueImpl();
+		return generatedValueImpl;
 	}
 
 	/**
@@ -545,10 +545,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public JoinColumn createJoinColumn()
+	public JoinColumnImpl createJoinColumnImpl()
 	{
-		JoinColumn joinColumn = new JoinColumn();
-		return joinColumn;
+		JoinColumnImpl joinColumnImpl = new JoinColumnImpl();
+		return joinColumnImpl;
 	}
 
 	/**
@@ -556,10 +556,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public JoinTable createJoinTable()
+	public JoinTableImpl createJoinTableImpl()
 	{
-		JoinTable joinTable = new JoinTable();
-		return joinTable;
+		JoinTableImpl joinTableImpl = new JoinTableImpl();
+		return joinTableImpl;
 	}
 
 	/**
@@ -578,10 +578,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public MapKey createMapKey()
+	public MapKeyImpl createMapKeyImpl()
 	{
-		MapKey mapKey = new MapKey();
-		return mapKey;
+		MapKeyImpl mapKeyImpl = new MapKeyImpl();
+		return mapKeyImpl;
 	}
 
 	/**
@@ -721,6 +721,17 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public TableGeneratorImpl createTableGeneratorImpl()
+	{
+		TableGeneratorImpl tableGeneratorImpl = new TableGeneratorImpl();
+		return tableGeneratorImpl;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public PrimaryKeyJoinColumn createPrimaryKeyJoinColumn()
 	{
 		PrimaryKeyJoinColumn primaryKeyJoinColumn = new PrimaryKeyJoinColumn();
@@ -743,10 +754,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public SequenceGenerator createSequenceGenerator()
+	public SequenceGeneratorImpl createSequenceGeneratorImpl()
 	{
-		SequenceGenerator sequenceGenerator = new SequenceGenerator();
-		return sequenceGenerator;
+		SequenceGeneratorImpl sequenceGeneratorImpl = new SequenceGeneratorImpl();
+		return sequenceGeneratorImpl;
 	}
 
 	/**
@@ -758,17 +769,6 @@ public class OrmFactory extends EFactoryImpl
 	{
 		Table table = new Table();
 		return table;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public TableGenerator createTableGenerator()
-	{
-		TableGenerator tableGenerator = new TableGenerator();
-		return tableGenerator;
 	}
 
 	/**

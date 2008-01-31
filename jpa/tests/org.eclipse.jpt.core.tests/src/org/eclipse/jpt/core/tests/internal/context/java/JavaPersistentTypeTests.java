@@ -14,25 +14,53 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.Embeddable;
 import org.eclipse.jpt.core.internal.resource.java.Entity;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JavaPersistentTypeTests extends ContextModelTestCase
 {
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
+		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+		persistenceResource().save(null);
+	}
+
+	
 	private void createEntityAnnotation() throws Exception{
 		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
 	}
 		
+	private IType createTestEntity() throws Exception {
+		createEntityAnnotation();
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+		});
+	}
 
 	private IType createTestEntityAnnotatedField() throws Exception {
 		createEntityAnnotation();
@@ -212,28 +240,28 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		assertEquals(AccessType.FIELD, javaPersistentType().access());
 	}
 
-	public void testGetAccessField() throws Exception {
+	public void testAccessField() throws Exception {
 		createTestEntityAnnotatedField();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		assertEquals(AccessType.FIELD, javaPersistentType().access());
 	}
 	
-	public void testGetAccessProperty() throws Exception {
+	public void testAccessProperty() throws Exception {
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		assertEquals(AccessType.PROPERTY, javaPersistentType().access());
 	}
 	
-	public void testGetAccessFieldAndMethodAnnotated() throws Exception {
+	public void testAccessFieldAndMethodAnnotated() throws Exception {
 		createTestEntityAnnotatedFieldAndMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		assertEquals(AccessType.FIELD, javaPersistentType().access());
 	}
 
-	public void testGetAccessInheritance() throws Exception {
+	public void testAccessInheritance() throws Exception {
 		createTestEntityAnnotatedMethod();
 		createTestSubType();
 		
@@ -250,7 +278,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		assertEquals(AccessType.PROPERTY, javaPersistentType.access());
 	}
 		
-	public void testGetAccessInheritance2() throws Exception {
+	public void testAccessInheritance2() throws Exception {
 		createTestEntityAnnotatedField();
 		createTestSubType();
 		
@@ -267,7 +295,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		assertEquals(AccessType.FIELD, javaPersistentType.access());
 	}	
 		
-	public void testGetAccessInheritance3() throws Exception {
+	public void testAccessInheritance3() throws Exception {
 		createTestEntityAnnotatedField();
 		createTestSubTypeWithMethodAnnotation();
 		
@@ -284,7 +312,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		assertEquals(AccessType.PROPERTY, javaPersistentType.access());
 	}	
 		
-	public void testGetAccessInheritance4() throws Exception {
+	public void testAccessInheritance4() throws Exception {
 		createTestEntityAnnotatedMethod();
 		createTestSubTypeWithFieldAnnotation();
 		
@@ -298,6 +326,124 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		
 		assertEquals(PACKAGE_NAME + ".AnnotationTestTypeChild", javaPersistentType.getName());
 		
+		assertEquals(AccessType.FIELD, javaPersistentType.access());
+	}
+	
+	//inherited class having annotations set wins over the default access set on persistence-unit-defaults
+	public void testAccessInheritancePersistenceUnitDefaultAccess() throws Exception {
+		createTestEntityAnnotatedMethod();
+		createTestSubType();
+		
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);
+
+		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		classRefs.next();
+		IClassRef classRef = classRefs.next();
+		IJavaPersistentType javaPersistentType = classRef.getJavaPersistentType();
+		
+		assertEquals(PACKAGE_NAME + ".AnnotationTestTypeChild", javaPersistentType.getName());
+		
+		assertEquals(AccessType.PROPERTY, javaPersistentType.access());
+	}
+
+	public void testAccessXmlNoAccessNoAnnotations() throws Exception {
+		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		createTestEntity();
+
+		IJavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
+		assertEquals(AccessType.FIELD, javaPersistentType.access());
+	}
+	
+	public void testAccessXmlEntityAccessNoAnnotations() throws Exception {
+		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		createTestEntity();
+		IJavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
+
+		entityPersistentType.getMapping().setSpecifiedAccess(AccessType.FIELD);
+		assertEquals(AccessType.FIELD, javaPersistentType.access());
+
+		entityPersistentType.getMapping().setSpecifiedAccess(AccessType.PROPERTY);
+		assertEquals(AccessType.PROPERTY, javaPersistentType.access());
+	}
+	
+	public void testAccessXmlPersistentUnitDefaultsAccessNoAnnotations()  throws Exception {
+		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		createTestEntity();
+		IJavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
+
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);
+		assertEquals(AccessType.FIELD, javaPersistentType.access());
+
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
+		assertEquals(AccessType.PROPERTY, javaPersistentType.access());
+	}
+	
+	public void testAccessXmlEntityPropertyAccessAndFieldAnnotations() throws Exception {
+		//xml access set to property, field annotations, JavaPersistentType access is property
+		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		createTestEntityAnnotatedField();
+		IJavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
+
+		entityPersistentType.getMapping().setSpecifiedAccess(AccessType.PROPERTY);
+		assertEquals(AccessType.PROPERTY, javaPersistentType.access());
+	}
+	
+	public void testAccessXmlEntityFieldAccessAndPropertyAnnotations() throws Exception {
+		//xml access set to field, property annotations, JavaPersistentType access is field
+		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		createTestEntityAnnotatedMethod();
+		IJavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
+
+		entityPersistentType.getMapping().setSpecifiedAccess(AccessType.FIELD);
+		assertEquals(AccessType.FIELD, javaPersistentType.access());
+	}
+	
+	public void testAccessXmlPersistentUnitDefaultsAccessFieldAnnotations() throws Exception {
+		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		createTestEntityAnnotatedField();
+		IJavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
+
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
+		assertEquals(AccessType.FIELD, javaPersistentType.access());
+	}
+
+	//inheritance wins over entity-mappings specified access
+	public void testAccessXmlEntityMappingsAccessWithInheritance() throws Exception {
+		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentType childEntityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
+		
+		createTestEntityAnnotatedMethod();
+		createTestSubType();
+		IJavaPersistentType childJavaPersistentType = childEntityPersistentType.javaPersistentType(); 
+
+		entityMappings().setSpecifiedAccess(AccessType.FIELD);
+		assertEquals(AccessType.PROPERTY, entityPersistentType.javaPersistentType().access());
+		assertEquals(AccessType.PROPERTY, childJavaPersistentType.access());
+	}
+
+	public void testAccessXmlMetadataCompleteFieldAnnotations() throws Exception {
+		//xml access set to property, so even though there are field annotations, JavaPersistentType
+		//access should be property
+		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		createTestEntityAnnotatedField();
+		IJavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
+
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
+		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		assertEquals(AccessType.PROPERTY, javaPersistentType.access());
+		
+	}
+	
+	public void testAccessNoXmlAccessXmlMetdataCompletePropertyAnnotations() throws Exception {
+		//xml access not set, metadata complete set.  JavaPersistentType access
+		//is field??
+		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		createTestEntityAnnotatedMethod();
+		IJavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
+
+		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		assertEquals(AccessType.FIELD, javaPersistentType.access());
 	}
 	

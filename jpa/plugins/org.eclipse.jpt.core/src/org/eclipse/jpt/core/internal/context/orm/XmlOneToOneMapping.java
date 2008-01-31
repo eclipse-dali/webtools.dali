@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.context.base.IOneToOneMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.OneToOne;
+import org.eclipse.jpt.core.internal.resource.orm.OneToOneImpl;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 
@@ -47,6 +48,12 @@ public class XmlOneToOneMapping extends XmlSingleRelationshipMapping<OneToOne>
 		String oldMappedBy = this.mappedBy;
 		this.mappedBy = newMappedBy;
 		attributeMapping().setMappedBy(newMappedBy);
+		firePropertyChanged(MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
+	}
+	
+	protected void setMappedBy_(String newMappedBy) {
+		String oldMappedBy = this.mappedBy;
+		this.mappedBy = newMappedBy;
 		firePropertyChanged(MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
 	}	
 	
@@ -80,7 +87,7 @@ public class XmlOneToOneMapping extends XmlSingleRelationshipMapping<OneToOne>
 	
 	@Override
 	public OneToOne addToResourceModel(TypeMapping typeMapping) {
-		OneToOne oneToOne = OrmFactory.eINSTANCE.createOneToOne();
+		OneToOneImpl oneToOne = OrmFactory.eINSTANCE.createOneToOneImpl();
 		typeMapping.getAttributes().getOneToOnes().add(oneToOne);
 		return oneToOne;
 	}
@@ -108,7 +115,7 @@ public class XmlOneToOneMapping extends XmlSingleRelationshipMapping<OneToOne>
 	@Override
 	public void update(OneToOne oneToOne) {
 		super.update(oneToOne);
-		this.setMappedBy(oneToOne.getMappedBy());
+		this.setMappedBy_(oneToOne.getMappedBy());
 	}
 	
 	@SuppressWarnings("unchecked")

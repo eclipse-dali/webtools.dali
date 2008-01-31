@@ -164,9 +164,11 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Id/tableGenerator"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Id/sequenceGenerator"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//IdImpl"/>
     <genClasses ecoreClass="orm.ecore#//EmbeddedId">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//EmbeddedId/attributeOverrides"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//EmbeddedIdImpl"/>
     <genClasses ecoreClass="orm.ecore#//Basic">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Basic/fetch"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Basic/optional"/>
@@ -174,22 +176,30 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Basic/temporal"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Basic/enumerated"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//BasicImpl"/>
     <genClasses ecoreClass="orm.ecore#//Version">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Version/temporal"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//VersionImpl"/>
     <genClasses ecoreClass="orm.ecore#//ManyToOne"/>
+    <genClasses ecoreClass="orm.ecore#//ManyToOneImpl"/>
     <genClasses ecoreClass="orm.ecore#//OneToMany">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//OneToMany/joinColumns"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//OneToManyImpl"/>
     <genClasses ecoreClass="orm.ecore#//OneToOne">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//OneToOne/mappedBy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//OneToOne/primaryKeyJoinColumns"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//OneToOneImpl"/>
     <genClasses ecoreClass="orm.ecore#//ManyToMany"/>
+    <genClasses ecoreClass="orm.ecore#//ManyToManyImpl"/>
     <genClasses ecoreClass="orm.ecore#//Embedded">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Embedded/attributeOverrides"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//EmbeddedImpl"/>
     <genClasses ecoreClass="orm.ecore#//Transient"/>
+    <genClasses ecoreClass="orm.ecore#//TransientImpl"/>
     <genClasses ecoreClass="orm.ecore#//AssociationOverride">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//AssociationOverride/joinColumns"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AssociationOverride/name"/>
@@ -198,6 +208,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//AttributeOverride/column"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AttributeOverride/name"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//AttributeOverrideImpl"/>
     <genClasses ecoreClass="orm.ecore#//CascadeType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//CascadeType/cascadeAll"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//CascadeType/cascadePersist"/>
@@ -205,6 +216,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//CascadeType/cascadeRemove"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//CascadeType/cascadeRefresh"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//CascadeTypeImpl"/>
     <genClasses image="false" ecoreClass="orm.ecore#//NamedColumn">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//NamedColumn/columnDefinition"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//NamedColumn/name"/>
@@ -221,6 +233,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Column/precision"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Column/scale"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//ColumnImpl"/>
     <genClasses ecoreClass="orm.ecore#//ColumnResult">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ColumnResult/name"/>
     </genClasses>
@@ -257,6 +270,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//GeneratedValue/generator"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//GeneratedValue/strategy"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//GeneratedValueImpl"/>
     <genClasses ecoreClass="orm.ecore#//IdClass">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//IdClass/className"/>
     </genClasses>
@@ -266,14 +280,17 @@
     <genClasses ecoreClass="orm.ecore#//JoinColumn">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//JoinColumn/referencedColumnName"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//JoinColumnImpl"/>
     <genClasses ecoreClass="orm.ecore#//JoinTable">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//JoinTable/joinColumns"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//JoinTable/inverseJoinColumns"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//JoinTableImpl"/>
     <genClasses ecoreClass="orm.ecore#//Lob"/>
     <genClasses ecoreClass="orm.ecore#//MapKey">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//MapKey/name"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//MapKeyImpl"/>
     <genClasses image="false" ecoreClass="orm.ecore#//Query">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Query/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Query/query"/>
@@ -316,6 +333,7 @@
     <genClasses ecoreClass="orm.ecore#//SequenceGenerator">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//SequenceGenerator/sequenceName"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//SequenceGeneratorImpl"/>
     <genClasses ecoreClass="orm.ecore#//SqlResultSetMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//SqlResultSetMapping/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//SqlResultSetMapping/entityResults"/>
@@ -330,6 +348,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//TableGenerator/pkColumnValue"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//TableGenerator/uniqueConstraints"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//TableGeneratorImpl"/>
     <genClasses ecoreClass="orm.ecore#//UniqueConstraint">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//UniqueConstraint/columnNames"/>
     </genClasses>

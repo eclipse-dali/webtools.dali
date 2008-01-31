@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.GenerationType;
+import org.eclipse.jpt.core.internal.context.base.IGeneratedValue;
 import org.eclipse.jpt.core.internal.resource.java.GeneratedValue;
 
 
@@ -40,7 +41,7 @@ public class JavaGeneratedValue extends JavaContextModel implements IJavaGenerat
 	}
 
 	public GenerationType getDefaultStrategy() {
-		return DEFAULT_STRATEGY;
+		return IGeneratedValue.DEFAULT_STRATEGY;
 	}
 	
 	public GenerationType getSpecifiedStrategy() {
@@ -51,7 +52,7 @@ public class JavaGeneratedValue extends JavaContextModel implements IJavaGenerat
 		GenerationType oldStrategy = this.strategy;
 		this.strategy = newStrategy;
 		this.generatedValueResource.setStrategy(GenerationType.toJavaResourceModel(newStrategy));
-		firePropertyChanged(SPECIFIED_STRATEGY_PROPERTY, oldStrategy, newStrategy);
+		firePropertyChanged(IGeneratedValue.SPECIFIED_STRATEGY_PROPERTY, oldStrategy, newStrategy);
 	}
 
 	public String getGenerator() {
@@ -70,7 +71,7 @@ public class JavaGeneratedValue extends JavaContextModel implements IJavaGenerat
 		String oldGenerator = this.generator;
 		this.generator = newGenerator;
 		this.generatedValueResource.setGenerator(newGenerator);
-		firePropertyChanged(SPECIFIED_GENERATOR_PROPERTY, oldGenerator, newGenerator);
+		firePropertyChanged(IGeneratedValue.SPECIFIED_GENERATOR_PROPERTY, oldGenerator, newGenerator);
 	}
 
 	

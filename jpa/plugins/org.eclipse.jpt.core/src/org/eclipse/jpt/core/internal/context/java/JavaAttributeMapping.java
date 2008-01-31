@@ -60,7 +60,7 @@ public abstract class JavaAttributeMapping extends JavaContextModel
 	}
 
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
-		// do nothing - override as appropriate
+		this.persistentAttributeResource = persistentAttributeResource;
 	}
 
 	public String primaryKeyColumnName() {

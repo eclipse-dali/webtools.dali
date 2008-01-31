@@ -91,6 +91,9 @@ public class XmlJavaAttributeChooser extends AbstractFormPane<XmlAttributeMappin
 	}
 
 	private void textModified(ModifyEvent e) {
+		if (isPopulating()) {
+			return;
+		}
 		String text = ((Text) e.getSource()).getText();
 		subject().setName(text);
 

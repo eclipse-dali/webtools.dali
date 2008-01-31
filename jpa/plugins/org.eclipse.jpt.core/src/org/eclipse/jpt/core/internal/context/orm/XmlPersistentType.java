@@ -20,7 +20,18 @@ import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
+import org.eclipse.jpt.core.internal.context.java.IJavaBasicMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddedIdMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddedMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaIdMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaManyToManyMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaManyToOneMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaOneToManyMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaOneToOneMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
+import org.eclipse.jpt.core.internal.context.java.IJavaTransientMapping;
+import org.eclipse.jpt.core.internal.context.java.IJavaVersionMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.Attributes;
 import org.eclipse.jpt.core.internal.resource.orm.Basic;
@@ -38,11 +49,22 @@ import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.Transient;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.Version;
+import org.eclipse.jpt.core.internal.resource.orm.VirtualBasic;
+import org.eclipse.jpt.core.internal.resource.orm.VirtualEmbedded;
+import org.eclipse.jpt.core.internal.resource.orm.VirtualEmbeddedId;
+import org.eclipse.jpt.core.internal.resource.orm.VirtualId;
+import org.eclipse.jpt.core.internal.resource.orm.VirtualManyToMany;
+import org.eclipse.jpt.core.internal.resource.orm.VirtualManyToOne;
+import org.eclipse.jpt.core.internal.resource.orm.VirtualOneToMany;
+import org.eclipse.jpt.core.internal.resource.orm.VirtualOneToOne;
+import org.eclipse.jpt.core.internal.resource.orm.VirtualTransient;
+import org.eclipse.jpt.core.internal.resource.orm.VirtualVersion;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
@@ -173,21 +195,25 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 //			insertAttributeMapping(newAttributeMapping, getSpecifiedAttributeMappings());
 //		}
 //	}
-//
-//	protected void setMappingVirtual(XmlAttributeMapping attributeMapping, boolean virtual) {
-//		boolean oldVirtual = attributeMapping.isVirtual();
-//		if (oldVirtual == virtual) {
-//			return;
-//		}
-//		if (virtual) {
-//			getSpecifiedAttributeMappings().remove(attributeMapping);
-//			insertAttributeMapping(attributeMapping, getVirtualAttributeMappings());
-//		}
-//		else {
-//			getVirtualAttributeMappings().remove(attributeMapping);
-//			insertAttributeMapping(attributeMapping, getSpecifiedAttributeMappings());
-//		}
-//	}
+
+	protected void setPersistentAttributeVirtual(XmlPersistentAttribute xmlPersistentAttribute, boolean virtual) {
+		boolean oldVirtual = xmlPersistentAttribute.isVirtual();
+		if (oldVirtual == virtual) {
+			return;
+		}
+		if (virtual) {	
+			XmlPersistentAttribute virtualPersistentAttribute = createVirtualPersistentAttribute(xmlPersistentAttribute.getMapping().javaPersistentAttribute());
+			this.virtualPersistentAttributes.add(virtualPersistentAttribute);
+			this.removeSpecifiedXmlPersistentAttribute(xmlPersistentAttribute);
+			fireItemAdded(VIRTUAL_ATTRIBUTES_LIST, virtualAttributesSize(), virtualPersistentAttribute);
+		}
+		else {
+			int index = this.virtualPersistentAttributes.indexOf(xmlPersistentAttribute);
+			this.virtualPersistentAttributes.remove(xmlPersistentAttribute);
+			addSpecifiedPersistentAttribute(xmlPersistentAttribute.mappingKey(), xmlPersistentAttribute.getName());
+			fireItemRemoved(VIRTUAL_ATTRIBUTES_LIST, index, xmlPersistentAttribute);
+		}
+	}
 
 
 
@@ -231,6 +257,21 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		};
 	}
 
+	protected XmlPersistentAttribute specifiedAttributeNamed(String attributeName) {
+		Iterator<XmlPersistentAttribute> stream = specifiedAttributesNamed(attributeName);
+		return (stream.hasNext()) ? stream.next() : null;
+		
+	}
+	
+	protected Iterator<XmlPersistentAttribute> specifiedAttributesNamed(final String attributeName) {
+		return new FilteringIterator<XmlPersistentAttribute, XmlPersistentAttribute>(specifiedAttributes()) {
+			@Override
+			protected boolean accept(XmlPersistentAttribute xmlPersistentAttribute) {
+				return attributeName.equals(xmlPersistentAttribute.getName());
+			}
+		};
+	}
+
 	@SuppressWarnings("unchecked")
 	public ListIterator<XmlPersistentAttribute> attributes() {
 		return new CompositeListIterator<XmlPersistentAttribute>(specifiedAttributes(), virtualAttributes());
@@ -248,6 +289,22 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		return new CloneListIterator<XmlPersistentAttribute>(this.virtualPersistentAttributes);		
 	}
 	
+	public int virtualAttributesSize() {
+		return this.virtualPersistentAttributes.size();
+	}
+	
+	protected void addVirtualPersistentAttribute(XmlPersistentAttribute xmlPersistentAttribute) {
+		addItemToList(xmlPersistentAttribute, this.virtualPersistentAttributes, IPersistentType.VIRTUAL_ATTRIBUTES_LIST);
+	}
+
+	protected void removeVirtualPersistentAttribute(XmlPersistentAttribute xmlPersistentAttribute) {
+		removeItemFromList(xmlPersistentAttribute, this.virtualPersistentAttributes, IPersistentType.VIRTUAL_ATTRIBUTES_LIST);
+	}
+	
+	protected boolean containsVirtualPersistentAttribute(XmlPersistentAttribute xmlPersistentAttribute) {
+		return this.virtualPersistentAttributes.contains(xmlPersistentAttribute);
+	}
+	
 	public XmlPersistentAttribute addSpecifiedPersistentAttribute(String mappingKey, String attributeName) {
 		XmlPersistentAttribute persistentAttribute = jpaFactory().createXmlPersistentAttribute(this, mappingKey);
 		int index = insertionIndex(persistentAttribute);
@@ -258,7 +315,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		AttributeMapping attributeMapping = persistentAttribute.getMapping().addToResourceModel(getMapping().typeMappingResource());
 		
 		attributeMapping.setName(attributeName);
-		fireItemAdded(ATTRIBUTES_LIST, index, persistentAttribute);
+		fireItemAdded(IPersistentType.SPECIFIED_ATTRIBUTES_LIST, index, persistentAttribute);
 		return persistentAttribute;
 	}
 
@@ -284,19 +341,18 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 
 	
 	protected void addSpecifiedPersistentAttribute_(XmlPersistentAttribute xmlPersistentAttribute) {
-		//TODO SPECIFIED_ATTRIBUTES_LIST and VIRTUAL_ATTRIBUTES_LIST ???
-		addItemToList(xmlPersistentAttribute, this.specifiedPersistentAttributes, ATTRIBUTES_LIST);
+		addItemToList(xmlPersistentAttribute, this.specifiedPersistentAttributes, IPersistentType.SPECIFIED_ATTRIBUTES_LIST);
 	}
 
 	protected void removeSpecifiedPersistentAttribute_(XmlPersistentAttribute xmlPersistentAttribute) {
-		removeItemFromList(xmlPersistentAttribute, this.specifiedPersistentAttributes, ATTRIBUTES_LIST);
+		removeItemFromList(xmlPersistentAttribute, this.specifiedPersistentAttributes, IPersistentType.SPECIFIED_ATTRIBUTES_LIST);
 	}
 
 	public void removeSpecifiedXmlPersistentAttribute(XmlPersistentAttribute xmlPersistentAttribute) {
 		int index = this.specifiedPersistentAttributes.indexOf(xmlPersistentAttribute);
 		this.specifiedPersistentAttributes.remove(xmlPersistentAttribute);
 		xmlPersistentAttribute.getMapping().removeFromResourceModel(this.xmlTypeMapping.typeMappingResource());
-		fireItemRemoved(ATTRIBUTES_LIST, index, xmlPersistentAttribute);		
+		fireItemRemoved(IPersistentType.SPECIFIED_ATTRIBUTES_LIST, index, xmlPersistentAttribute);		
 	}
 
 	public String getName() {
@@ -326,27 +382,27 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 	public void initialize(Entity entity) {
 		((XmlEntity) getMapping()).initialize(entity);
 		this.initializeParentPersistentType();	
-		this.initializeSpecifiedPersistentAttributes(entity);
+		this.initializePersistentAttributes(entity);
 	}
 	
 	public void initialize(MappedSuperclass mappedSuperclass) {
 		((XmlMappedSuperclass) getMapping()).initialize(mappedSuperclass);
 		this.initializeParentPersistentType();
-		this.initializeSpecifiedPersistentAttributes(mappedSuperclass);
+		this.initializePersistentAttributes(mappedSuperclass);
 	}
 		
 	public void initialize(Embeddable embeddable) {
 		((XmlEmbeddable) getMapping()).initialize(embeddable);
 		this.initializeParentPersistentType();		
-		this.initializeSpecifiedPersistentAttributes(embeddable);
+		this.initializePersistentAttributes(embeddable);
 	}
 	
-	protected void initializeSpecifiedPersistentAttributes(TypeMapping typeMapping) {
+	protected void initializePersistentAttributes(TypeMapping typeMapping) {
 		Attributes attributes = typeMapping.getAttributes();
-		if (attributes == null) {
-			return;
+		if (attributes != null) {
+			this.initializeSpecifiedPersistentAttributes(attributes);
 		}
-		initializeSpecifiedPersistentAttributes(attributes);
+		this.initializeVirtualPersistentAttributes();
 	}
 	
 	protected void initializeSpecifiedPersistentAttributes(Attributes attributes) {
@@ -402,6 +458,26 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		}
 	}
 	
+	protected void initializeVirtualPersistentAttributes() {
+		ListIterator<IJavaPersistentAttribute> javaAttributes = javaPersistentAttributes();
+		
+		while (javaAttributes.hasNext()) {
+			IJavaPersistentAttribute javaPersistentAttribute = javaAttributes.next();
+			if (specifiedAttributeNamed(javaPersistentAttribute.getName()) == null) {
+				XmlPersistentAttribute xmlPersistentAttribute = createVirtualPersistentAttribute(javaPersistentAttribute);
+				this.virtualPersistentAttributes.add(xmlPersistentAttribute);
+			}
+		}
+	}
+	
+	protected ListIterator<IJavaPersistentAttribute> javaPersistentAttributes() {
+		IJavaPersistentType javaPersistentType = javaPersistentType();
+		if (javaPersistentType != null) {
+			return javaPersistentType.attributes();
+		}
+		return EmptyListIterator.instance();
+	}
+
 	protected void initializeParentPersistentType() {
 		IJavaPersistentType javaPersistentType = javaPersistentType();
 		if (javaPersistentType != null) {
@@ -471,9 +547,103 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		}
 		while (xmlPersistentAttributes.hasNext()) {
 			this.removeSpecifiedPersistentAttribute_(xmlPersistentAttributes.next());
+		}	
+		this.updateVirtualPersistentAttributes();
+	}
+	
+	protected void updateVirtualAttribute(XmlPersistentAttribute xmlAttribute, IJavaPersistentAttribute javaAttribute) {
+		if (javaAttribute.mappingKey() == IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
+			xmlAttribute.update(new VirtualBasic((IJavaBasicMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaAttribute.mappingKey() == IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY) {
+			xmlAttribute.update(new VirtualEmbedded((IJavaEmbeddedMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaAttribute.mappingKey() == IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
+			xmlAttribute.update(new VirtualEmbeddedId((IJavaEmbeddedIdMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaAttribute.mappingKey() == IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
+			xmlAttribute.update(new VirtualId((IJavaIdMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaAttribute.mappingKey() == IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
+			xmlAttribute.update(new VirtualManyToMany((IJavaManyToManyMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaAttribute.mappingKey() == IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
+			xmlAttribute.update(new VirtualManyToOne((IJavaManyToOneMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaAttribute.mappingKey() == IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
+			xmlAttribute.update(new VirtualOneToMany((IJavaOneToManyMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaAttribute.mappingKey() == IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
+			xmlAttribute.update(new VirtualOneToOne((IJavaOneToOneMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaAttribute.mappingKey() == IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
+			xmlAttribute.update(new VirtualTransient((IJavaTransientMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaAttribute.mappingKey() == IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY) {
+			xmlAttribute.update(new VirtualVersion((IJavaVersionMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
 		}		
 	}
 	
+	protected void updateVirtualPersistentAttributes() {
+		ListIterator<IJavaPersistentAttribute> javaAttributes = this.javaPersistentAttributes();
+		ListIterator<XmlPersistentAttribute> xmlVirtualAttributes = this.virtualAttributes();
+		for (IJavaPersistentAttribute javaAttribute : CollectionTools.iterable(javaAttributes)) {
+			if (specifiedAttributeNamed(javaAttribute.getName()) == null) {
+				if (xmlVirtualAttributes.hasNext()) {
+					updateVirtualAttribute(xmlVirtualAttributes.next(), javaAttribute);
+				}
+				else {
+					XmlPersistentAttribute xmlPersistentAttribute = createVirtualPersistentAttribute(javaAttribute);
+					addVirtualPersistentAttribute(xmlPersistentAttribute);
+				}
+			}
+		}
+		
+		while (xmlVirtualAttributes.hasNext()) {
+			this.removeVirtualPersistentAttribute(xmlVirtualAttributes.next());
+		}	
+
+	}
+
+	protected void addVirtualPersistentAttribute(IJavaPersistentAttribute javaAttribute) {
+		addVirtualPersistentAttribute(createVirtualPersistentAttribute(javaAttribute));
+	}
+	
+	protected XmlPersistentAttribute createVirtualPersistentAttribute(IJavaPersistentAttribute javaAttribute) {
+		XmlPersistentAttribute xmlPersistentAttribute = new XmlPersistentAttribute(this, javaAttribute.mappingKey());
+		if (javaAttribute.mappingKey() == IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
+			xmlPersistentAttribute.initialize(new VirtualBasic((IJavaBasicMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaAttribute.mappingKey() == IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
+			xmlPersistentAttribute.initialize(new VirtualEmbeddedId((IJavaEmbeddedIdMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaAttribute.mappingKey() == IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY) {
+			xmlPersistentAttribute.initialize(new VirtualEmbedded((IJavaEmbeddedMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaAttribute.mappingKey() == IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
+			xmlPersistentAttribute.initialize(new VirtualId((IJavaIdMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaAttribute.mappingKey() == IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
+			xmlPersistentAttribute.initialize(new VirtualManyToMany((IJavaManyToManyMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaAttribute.mappingKey() == IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
+			xmlPersistentAttribute.initialize(new VirtualManyToOne((IJavaManyToOneMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaAttribute.mappingKey() == IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
+			xmlPersistentAttribute.initialize(new VirtualOneToMany((IJavaOneToManyMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaAttribute.mappingKey() == IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
+			xmlPersistentAttribute.initialize(new VirtualOneToOne((IJavaOneToOneMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaAttribute.mappingKey() == IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
+			xmlPersistentAttribute.initialize(new VirtualTransient((IJavaTransientMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		else if (javaAttribute.mappingKey() == IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY) {
+			xmlPersistentAttribute.initialize(new VirtualVersion((IJavaVersionMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
+		}
+		return xmlPersistentAttribute;
+	}
+
 	protected void updateIds(org.eclipse.jpt.core.internal.resource.orm.Attributes attributes, ListIterator<XmlPersistentAttribute> xmlPersistentAttributes) {
 		for (Id id : attributes.getIds()) {
 			if (xmlPersistentAttributes.hasNext()) {
@@ -640,4 +810,9 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 //	public ITextRange attributesTextRange() {
 //		return getMapping().attributesTextRange();
 //	}
+	
+	@Override
+	public XmlPersistentType xmlPersistentType() {
+		return this;
+	}
 }

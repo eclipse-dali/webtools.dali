@@ -41,7 +41,8 @@ public interface IPersistentType extends IJpaContextNode
 	 */
 	<T extends IPersistentAttribute> ListIterator<T> attributes();
 	int attributesSize();
-		String ATTRIBUTES_LIST = "attributesList";
+		String SPECIFIED_ATTRIBUTES_LIST = "specifiedAttributesList";
+		String VIRTUAL_ATTRIBUTES_LIST = "virtualAttributesList";
 	
 	Iterator<String> attributeNames();
 

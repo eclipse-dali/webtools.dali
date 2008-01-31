@@ -10,22 +10,31 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
+import org.eclipse.jpt.core.internal.context.base.IEmbeddable;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
+import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.orm.Embedded;
+import org.eclipse.jpt.core.internal.resource.orm.EmbeddedImpl;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 
 public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements IEmbeddedMapping
@@ -34,19 +43,13 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 	
 	protected final List<XmlAttributeOverride> defaultAttributeOverrides;
 
-//	private IEmbeddable embeddable;
+	private IEmbeddable embeddable;
 	
 	protected XmlEmbeddedMapping(XmlPersistentAttribute parent) {
 		super(parent);
 		this.specifiedAttributeOverrides = new ArrayList<XmlAttributeOverride>();
 		this.defaultAttributeOverrides = new ArrayList<XmlAttributeOverride>();
 	}
-
-//	@Override
-//	protected void addInsignificantFeatureIdsTo(Set<Integer> insignificantFeatureIds) {
-//		super.addInsignificantFeatureIdsTo(insignificantFeatureIds);
-//		insignificantFeatureIds.add(OrmPackage.XML_EMBEDDED__ATTRIBUTE_OVERRIDES);
-//	}
 
 	@Override
 	protected void initializeOn(XmlAttributeMapping<? extends AttributeMapping> newMapping) {
@@ -64,8 +67,7 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 
 	@SuppressWarnings("unchecked")
 	public ListIterator<XmlAttributeOverride> attributeOverrides() {
-		//TODO
-		return EmptyListIterator.instance();
+		return new CompositeListIterator<XmlAttributeOverride>(specifiedAttributeOverrides(), defaultAttributeOverrides());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -85,7 +87,7 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 	public XmlAttributeOverride addSpecifiedAttributeOverride(int index) {
 		XmlAttributeOverride attributeOverride = new XmlAttributeOverride(this, this);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
-		this.attributeMapping().getAttributeOverrides().add(index, OrmFactory.eINSTANCE.createAttributeOverride());
+		this.attributeMapping().getAttributeOverrides().add(index, OrmFactory.eINSTANCE.createAttributeOverrideImpl());
 		this.fireItemAdded(IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
 	}
@@ -115,8 +117,7 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 	}
 
 	public IColumnMapping columnMapping(String attributeName) {
-		// TODO Auto-generated method stub
-		return null;
+		return JavaEmbeddedMapping.columnMapping(attributeName, embeddable());
 	}
 
 	public ITextRange validationTextRange(CompilationUnit astRoot) {
@@ -203,28 +204,37 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 //	public IAttributeOverride createAttributeOverride(int index) {
 //		return OrmFactory.eINSTANCE.createXmlAttributeOverride(new AttributeOverrideOwner(this));
 //	}
-//
-//	@Override
-//	public void refreshDefaults(DefaultsContext defaultsContext) {
-//		super.refreshDefaults(defaultsContext);
-//		refreshEmbeddable(defaultsContext);
-//	}
-//
-//	private void refreshEmbeddable(DefaultsContext defaultsContext) {
-//		this.embeddable = embeddableFor(getPersistentAttribute().getAttribute(), defaultsContext);
-//	}
-//
-//	//******* static methods *********
-//	public static IEmbeddable embeddableFor(Attribute attribute, DefaultsContext defaultsContext) {
-//		if (attribute == null) {
-//			return null;
-//		}
-//		return JavaEmbedded.embeddableFor(attribute, defaultsContext);
-//	}
+
+
+	public IEmbeddable embeddable() {
+		return this.embeddable;
+	}
 	
+	public Iterator<String> allOverridableAttributeNames() {
+		return new TransformationIterator<IPersistentAttribute, String>(this.allOverridableAttributes()) {
+			@Override
+			protected String transform(IPersistentAttribute attribute) {
+				return attribute.getName();
+			}
+		};
+	}
+
+	public Iterator<IPersistentAttribute> allOverridableAttributes() {
+		if (this.embeddable() == null) {
+			return EmptyIterator.instance();
+		}
+		return new FilteringIterator<IPersistentAttribute, IPersistentAttribute>(this.embeddable().persistentType().attributes()) {
+			@Override
+			protected boolean accept(IPersistentAttribute o) {
+				return o.isOverridableAttribute();
+			}
+		};
+	}
+
 	@Override
 	public void initialize(Embedded embedded) {
 		super.initialize(embedded);
+		this.embeddable = embeddableFor(javaPersistentAttribute());
 		this.initializeSpecifiedAttributeOverrides(embedded);
 	}
 	
@@ -233,6 +243,18 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 			this.specifiedAttributeOverrides.add(createAttributeOverride(attributeOverride));
 		}
 	}
+//	
+//	protected void initializeDefaultAttributeOverrides(JavaPersistentAttributeResource persistentAttributeResource) {
+//		for (Iterator<String> i = allOverridableAttributeNames(); i.hasNext(); ) {
+//			String attributeName = i.next();
+//			XmlAttributeOverride attributeOverride = attributeOverrideNamed(attributeName);
+//			if (attributeOverride == null) {
+//				attributeOverride = createAttributeOverride(new NullAttributeOverride(persistentAttributeResource));
+//				attributeOverride.setName(attributeName);
+//				this.defaultAttributeOverrides.add(attributeOverride);
+//			}
+//		}
+//	}
 
 	protected XmlAttributeOverride createAttributeOverride(AttributeOverride attributeOverride) {
 		XmlAttributeOverride xmlAttributeOverride = new XmlAttributeOverride(this, this);
@@ -244,6 +266,7 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 	@Override
 	public void update(Embedded embedded) {
 		super.update(embedded);
+		this.embeddable = embeddableFor(javaPersistentAttribute());
 		this.updateSpecifiedAttributeOverrides(embedded);
 	}
 	
@@ -268,7 +291,7 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 
 	@Override
 	public Embedded addToResourceModel(TypeMapping typeMapping) {
-		Embedded embedded = OrmFactory.eINSTANCE.createEmbedded();
+		EmbeddedImpl embedded = OrmFactory.eINSTANCE.createEmbeddedImpl();
 		typeMapping.getAttributes().getEmbeddeds().add(embedded);
 		return embedded;
 	}
@@ -280,4 +303,13 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 			typeMapping.setAttributes(null);
 		}
 	}
+	
+	//******* static methods *********
+	public static IEmbeddable embeddableFor(IJavaPersistentAttribute javaPersistentAttribute) {
+		if (javaPersistentAttribute == null) {
+			return null;
+		}
+		return JavaEmbeddedMapping.embeddableFor(javaPersistentAttribute);
+	}
+
 }

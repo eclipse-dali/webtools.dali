@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.context.base.IManyToManyMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.ManyToMany;
+import org.eclipse.jpt.core.internal.resource.orm.ManyToManyImpl;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 
@@ -48,7 +49,7 @@ public class XmlManyToManyMapping extends XmlMultiRelationshipMapping<ManyToMany
 	
 	@Override
 	public ManyToMany addToResourceModel(TypeMapping typeMapping) {
-		ManyToMany manyToMany = OrmFactory.eINSTANCE.createManyToMany();
+		ManyToManyImpl manyToMany = OrmFactory.eINSTANCE.createManyToManyImpl();
 		typeMapping.getAttributes().getManyToManys().add(manyToMany);
 		return manyToMany;
 	}

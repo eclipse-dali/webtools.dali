@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.context.base.IMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.orm.MapKey;
@@ -37,6 +38,10 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 		this.joinTable = new XmlJoinTable(this);
 	}
 
+	public FetchType getDefaultFetch() {
+		return IMultiRelationshipMapping.DEFAULT_FETCH_TYPE;
+	}
+	
 	public String getMappedBy() {
 		return this.mappedBy;
 	}
@@ -45,6 +50,12 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 		String oldMappedBy = this.mappedBy;
 		this.mappedBy = newMappedBy;
 		attributeMapping().setMappedBy(newMappedBy);
+		firePropertyChanged(MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
+	}
+	
+	protected void setMappedBy_(String newMappedBy) {
+		String oldMappedBy = this.mappedBy;
+		this.mappedBy = newMappedBy;
 		firePropertyChanged(MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
 	}
 
@@ -56,6 +67,12 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 		String oldOrderBy = this.orderBy;
 		this.orderBy = newOrderBy;
 		attributeMapping().setOrderBy(newOrderBy);
+		firePropertyChanged(ORDER_BY_PROPERTY, oldOrderBy, newOrderBy);
+	}
+	
+	protected void setOrderBy_(String newOrderBy) {
+		String oldOrderBy = this.orderBy;
+		this.orderBy = newOrderBy;
 		firePropertyChanged(ORDER_BY_PROPERTY, oldOrderBy, newOrderBy);
 	}
 
@@ -133,7 +150,7 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 	}
 	
 	protected void addMapKeyResource() {
-		attributeMapping().setMapKey(OrmFactory.eINSTANCE.createMapKey());
+		attributeMapping().setMapKey(OrmFactory.eINSTANCE.createMapKeyImpl());
 	}
 
 	public Iterator<String> candidateMapKeyNames() {
@@ -195,9 +212,9 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 	@Override
 	public void update(T multiRelationshipMapping) {
 		super.update(multiRelationshipMapping);
-		this.setMappedBy(multiRelationshipMapping.getMappedBy());
+		this.setMappedBy_(multiRelationshipMapping.getMappedBy());
 		this.setMapKey_(this.mapKey(multiRelationshipMapping));
-		this.setOrderBy(this.orderBy(multiRelationshipMapping));
+		this.setOrderBy_(this.orderBy(multiRelationshipMapping));
 		this.joinTable.update(multiRelationshipMapping);
 	}
 	

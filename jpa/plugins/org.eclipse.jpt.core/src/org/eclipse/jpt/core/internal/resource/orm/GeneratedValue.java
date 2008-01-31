@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,11 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.orm;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
-import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,69 +25,12 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * </p>
  *
  * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getGeneratedValue()
- * @model kind="class"
+ * @model kind="class" interface="true" abstract="true"
  * @extends IJpaEObject
  * @generated
  */
-public class GeneratedValue extends JpaEObject implements IJpaEObject
+public interface GeneratedValue extends IJpaEObject
 {
-	/**
-	 * The default value of the '{@link #getGenerator() <em>Generator</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getGenerator()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String GENERATOR_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getGenerator() <em>Generator</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getGenerator()
-	 * @generated
-	 * @ordered
-	 */
-	protected String generator = GENERATOR_EDEFAULT;
-
-	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
-	 */
-	protected static final GenerationType STRATEGY_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getStrategy() <em>Strategy</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getStrategy()
-	 * @generated
-	 * @ordered
-	 */
-	protected GenerationType strategy = STRATEGY_EDEFAULT;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected GeneratedValue()
-	{
-		super();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EClass eStaticClass()
-	{
-		return OrmPackage.Literals.GENERATED_VALUE;
-	}
-
 	/**
 	 * Returns the value of the '<em><b>Generator</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -106,10 +45,7 @@ public class GeneratedValue extends JpaEObject implements IJpaEObject
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
-	public String getGenerator()
-	{
-		return generator;
-	}
+	String getGenerator();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.GeneratedValue#getGenerator <em>Generator</em>}' attribute.
@@ -119,13 +55,7 @@ public class GeneratedValue extends JpaEObject implements IJpaEObject
 	 * @see #getGenerator()
 	 * @generated
 	 */
-	public void setGenerator(String newGenerator)
-	{
-		String oldGenerator = generator;
-		generator = newGenerator;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.GENERATED_VALUE__GENERATOR, oldGenerator, generator));
-	}
+	void setGenerator(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Strategy</b></em>' attribute.
@@ -144,10 +74,7 @@ public class GeneratedValue extends JpaEObject implements IJpaEObject
 	 * @model default="TABLE"
 	 * @generated
 	 */
-	public GenerationType getStrategy()
-	{
-		return strategy;
-	}
+	GenerationType getStrategy();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.GeneratedValue#getStrategy <em>Strategy</em>}' attribute.
@@ -158,107 +85,6 @@ public class GeneratedValue extends JpaEObject implements IJpaEObject
 	 * @see #getStrategy()
 	 * @generated
 	 */
-	public void setStrategy(GenerationType newStrategy)
-	{
-		GenerationType oldStrategy = strategy;
-		strategy = newStrategy == null ? STRATEGY_EDEFAULT : newStrategy;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.GENERATED_VALUE__STRATEGY, oldStrategy, strategy));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object eGet(int featureID, boolean resolve, boolean coreType)
-	{
-		switch (featureID)
-		{
-			case OrmPackage.GENERATED_VALUE__GENERATOR:
-				return getGenerator();
-			case OrmPackage.GENERATED_VALUE__STRATEGY:
-				return getStrategy();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eSet(int featureID, Object newValue)
-	{
-		switch (featureID)
-		{
-			case OrmPackage.GENERATED_VALUE__GENERATOR:
-				setGenerator((String)newValue);
-				return;
-			case OrmPackage.GENERATED_VALUE__STRATEGY:
-				setStrategy((GenerationType)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eUnset(int featureID)
-	{
-		switch (featureID)
-		{
-			case OrmPackage.GENERATED_VALUE__GENERATOR:
-				setGenerator(GENERATOR_EDEFAULT);
-				return;
-			case OrmPackage.GENERATED_VALUE__STRATEGY:
-				setStrategy(STRATEGY_EDEFAULT);
-				return;
-		}
-		super.eUnset(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public boolean eIsSet(int featureID)
-	{
-		switch (featureID)
-		{
-			case OrmPackage.GENERATED_VALUE__GENERATOR:
-				return GENERATOR_EDEFAULT == null ? generator != null : !GENERATOR_EDEFAULT.equals(generator);
-			case OrmPackage.GENERATED_VALUE__STRATEGY:
-				return strategy != STRATEGY_EDEFAULT;
-		}
-		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString()
-	{
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (generator: ");
-		result.append(generator);
-		result.append(", strategy: ");
-		result.append(strategy);
-		result.append(')');
-		return result.toString();
-	}
+	void setStrategy(GenerationType value);
 
 } // GeneratedValue

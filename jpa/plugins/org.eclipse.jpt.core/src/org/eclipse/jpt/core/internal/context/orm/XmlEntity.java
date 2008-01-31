@@ -420,7 +420,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 			throw new IllegalStateException("sequenceGenerator already exists");
 		}
 		this.sequenceGenerator = new XmlSequenceGenerator(this);
-		typeMappingResource().setSequenceGenerator(OrmFactory.eINSTANCE.createSequenceGenerator());
+		typeMappingResource().setSequenceGenerator(OrmFactory.eINSTANCE.createSequenceGeneratorImpl());
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
 		return this.sequenceGenerator;
 	}
@@ -450,7 +450,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 			throw new IllegalStateException("tableGenerator already exists");
 		}
 		this.tableGenerator = new XmlTableGenerator(this);
-		typeMappingResource().setTableGenerator(OrmFactory.eINSTANCE.createTableGenerator());
+		typeMappingResource().setTableGenerator(OrmFactory.eINSTANCE.createTableGeneratorImpl());
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
 		return this.tableGenerator;
 	}
@@ -573,7 +573,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	public XmlAttributeOverride addSpecifiedAttributeOverride(int index) {
 		XmlAttributeOverride attributeOverride = new XmlAttributeOverride(this, createAttributeOverrideOwner());
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
-		this.typeMappingResource().getAttributeOverrides().add(index, OrmFactory.eINSTANCE.createAttributeOverride());
+		this.typeMappingResource().getAttributeOverrides().add(index, OrmFactory.eINSTANCE.createAttributeOverrideImpl());
 		this.fireItemAdded(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
 	}

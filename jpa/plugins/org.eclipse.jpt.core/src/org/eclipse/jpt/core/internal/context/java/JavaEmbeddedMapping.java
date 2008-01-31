@@ -58,11 +58,11 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 	public void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.initializeFromResource(persistentAttributeResource);
 		this.embeddable = embeddableFor(persistentAttribute());
-		this.initializeAttributeOverrides(persistentAttributeResource);
+		this.initializeSpecifiedAttributeOverrides(persistentAttributeResource);
 		this.initializeDefaultAttributeOverrides(persistentAttributeResource);
 	}
 	
-	protected void initializeAttributeOverrides(JavaPersistentAttributeResource persistentAttributeResource) {
+	protected void initializeSpecifiedAttributeOverrides(JavaPersistentAttributeResource persistentAttributeResource) {
 		ListIterator<JavaResource> annotations = persistentAttributeResource.annotations(AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
@@ -84,18 +84,7 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 	}
 	//****************** IOverride.Owner implemenation *******************
 	public IColumnMapping columnMapping(String attributeName) {
-		if (attributeName == null || embeddable() == null) {
-			return null;
-		}
-		for (Iterator<IPersistentAttribute> stream = embeddable().persistentType().allAttributes(); stream.hasNext();) {
-			IPersistentAttribute persAttribute = stream.next();
-			if (attributeName.equals(persAttribute.getName())) {
-				if (persAttribute.getMapping() instanceof IColumnMapping) {
-					return (IColumnMapping) persAttribute.getMapping();
-				}
-			}
-		}
-		return null;
+		return columnMapping(attributeName, embeddable());
 	}
 
 	public boolean isVirtual(IOverride override) {
@@ -317,6 +306,21 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 			}
 		}
 		return null;
+	}
+	
+	public static IColumnMapping columnMapping(String attributeName, IEmbeddable embeddable) {
+		if (attributeName == null || embeddable == null) {
+			return null;
+		}
+		for (Iterator<IPersistentAttribute> stream = embeddable.persistentType().allAttributes(); stream.hasNext();) {
+			IPersistentAttribute persAttribute = stream.next();
+			if (attributeName.equals(persAttribute.getName())) {
+				if (persAttribute.getMapping() instanceof IColumnMapping) {
+					return (IColumnMapping) persAttribute.getMapping();
+				}
+			}
+		}
+		return null;		
 	}
 
 }

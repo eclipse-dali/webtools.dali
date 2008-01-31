@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IManyToOneMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.ManyToOne;
+import org.eclipse.jpt.core.internal.resource.orm.ManyToOneImpl;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 
@@ -48,7 +49,7 @@ public class XmlManyToOneMapping extends XmlSingleRelationshipMapping<ManyToOne>
 	
 	@Override
 	public ManyToOne addToResourceModel(TypeMapping typeMapping) {
-		ManyToOne manyToOne = OrmFactory.eINSTANCE.createManyToOne();
+		ManyToOneImpl manyToOne = OrmFactory.eINSTANCE.createManyToOneImpl();
 		typeMapping.getAttributes().getManyToOnes().add(manyToOne);
 		return manyToOne;
 	}

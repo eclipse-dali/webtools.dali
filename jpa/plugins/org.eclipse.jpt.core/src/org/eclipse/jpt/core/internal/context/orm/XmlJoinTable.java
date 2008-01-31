@@ -106,7 +106,7 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 	
 	@Override
 	protected void addTableResource() {
-		this.relationshipMappingResource.setJoinTable(OrmFactory.eINSTANCE.createJoinTable());
+		this.relationshipMappingResource.setJoinTable(OrmFactory.eINSTANCE.createJoinTableImpl());
 		
 	}
 
@@ -147,7 +147,7 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 		}
 		XmlJoinColumn joinColumn = new XmlJoinColumn(this, new JoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
-		this.table().getJoinColumns().add(index, OrmFactory.eINSTANCE.createJoinColumn());
+		this.table().getJoinColumns().add(index, OrmFactory.eINSTANCE.createJoinColumnImpl());
 		this.fireItemAdded(IJoinTable.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		return joinColumn;
 	}
@@ -202,7 +202,7 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 		}
 		XmlJoinColumn joinColumn = new XmlJoinColumn(this, new InverseJoinColumnOwner());
 		this.specifiedInverseJoinColumns.add(index, joinColumn);
-		this.table().getInverseJoinColumns().add(index, OrmFactory.eINSTANCE.createJoinColumn());
+		this.table().getInverseJoinColumns().add(index, OrmFactory.eINSTANCE.createJoinColumnImpl());
 		this.fireItemAdded(IJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, index, joinColumn);
 		return joinColumn;
 	}

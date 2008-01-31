@@ -13,6 +13,8 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.EnumType;
 import org.eclipse.jpt.core.internal.context.base.FetchType;
 import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
@@ -42,6 +44,8 @@ import org.eclipse.jpt.core.internal.resource.java.OneToOne;
 import org.eclipse.jpt.core.internal.resource.java.Temporal;
 import org.eclipse.jpt.core.internal.resource.java.Transient;
 import org.eclipse.jpt.core.internal.resource.java.Version;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -273,6 +277,8 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
+		createOrmXmlFile();
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
 		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		IBasicMapping basicMapping = (IBasicMapping) persistentAttribute.getMapping();
 		assertNull(basicMapping.getSpecifiedFetch());
@@ -281,7 +287,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		basicMapping.setSpecifiedFetch(FetchType.LAZY);
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaPersistentAttributeResource attributeResource = typeResource.properties().next();
 		Basic basic = (Basic) attributeResource.mappingAnnotation(JPA.BASIC);
 		
 		assertEquals(org.eclipse.jpt.core.internal.resource.java.FetchType.LAZY, basic.getFetch());
@@ -297,6 +303,13 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		assertFalse(basicMapping.isDefault());
 	}
 	
+	protected void createOrmXmlFile() throws Exception {
+		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
+		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+		persistenceResource().save(null);
+	}
+
 	public void testSetBasicRemovedFromResourceModel() throws Exception {
 		createTestEntityWithBasicMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);

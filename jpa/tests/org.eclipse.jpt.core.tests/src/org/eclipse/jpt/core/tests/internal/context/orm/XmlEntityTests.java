@@ -1010,7 +1010,7 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertNull(xmlEntity.getSequenceGenerator());
 		assertNull(entityResource.getSequenceGenerator());
 		
-		entityResource.setSequenceGenerator(OrmFactory.eINSTANCE.createSequenceGenerator());
+		entityResource.setSequenceGenerator(OrmFactory.eINSTANCE.createSequenceGeneratorImpl());
 				
 		assertNotNull(xmlEntity.getSequenceGenerator());
 		assertNotNull(entityResource.getSequenceGenerator());
@@ -1076,7 +1076,7 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertNull(xmlEntity.getTableGenerator());
 		assertNull(entityResource.getTableGenerator());
 		
-		entityResource.setTableGenerator(OrmFactory.eINSTANCE.createTableGenerator());
+		entityResource.setTableGenerator(OrmFactory.eINSTANCE.createTableGeneratorImpl());
 				
 		assertNotNull(xmlEntity.getTableGenerator());
 		assertNotNull(entityResource.getTableGenerator());
@@ -1384,9 +1384,9 @@ public class XmlEntityTests extends ContextModelTestCase
 		XmlEntity xmlEntity = (XmlEntity) persistentType.getMapping();
 		
 		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverride());
-		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverride());
-		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverride());
+		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverrideImpl());
+		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverrideImpl());
+		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverrideImpl());
 		
 		entityResource.getAttributeOverrides().get(0).setName("FOO");
 		entityResource.getAttributeOverrides().get(1).setName("BAR");

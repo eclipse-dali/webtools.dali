@@ -44,6 +44,12 @@ public class XmlJoinColumn extends AbstractXmlColumn<JoinColumn> implements IJoi
 		columnResource().setReferencedColumnName(newSpecifiedReferencedColumnName);
 		firePropertyChanged(SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
 	}
+	
+	public void setSpecifiedReferencedColumnName_(String newSpecifiedReferencedColumnName) {
+		String oldSpecifiedReferencedColumnName = this.specifiedReferencedColumnName;
+		this.specifiedReferencedColumnName = newSpecifiedReferencedColumnName;
+		firePropertyChanged(SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
+	}
 
 	public String getDefaultReferencedColumnName() {
 		return this.defaultReferencedColumnName;
@@ -126,7 +132,7 @@ public class XmlJoinColumn extends AbstractXmlColumn<JoinColumn> implements IJoi
 	protected void update(JoinColumn column) {
 		this.joinColumn = column;
 		super.update(column);
-		this.setSpecifiedReferencedColumnName(column.getReferencedColumnName());
+		this.setSpecifiedReferencedColumnName_(column.getReferencedColumnName());
 		this.setDefaultReferencedColumnName(defaultReferencedColumnName());
 	}
 	

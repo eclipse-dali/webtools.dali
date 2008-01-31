@@ -220,7 +220,7 @@ public class XmlOneToManyMappingTests extends ContextModelTestCase
 		assertNull(oneToMany.getMapKey());
 		
 		//set mapKey in the resource model, verify context model does not change
-		oneToMany.setMapKey(OrmFactory.eINSTANCE.createMapKey());
+		oneToMany.setMapKey(OrmFactory.eINSTANCE.createMapKeyImpl());
 		assertNull(xmlOneToManyMapping.getMapKey());
 		assertNotNull(oneToMany.getMapKey());
 				

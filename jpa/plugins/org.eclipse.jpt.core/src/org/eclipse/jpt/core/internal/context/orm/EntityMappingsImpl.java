@@ -248,7 +248,11 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		fireItemRemoved(PERSISTENT_TYPES_LIST, index, xmlPersistentType);		
 	}
 	
-	protected void removeXmlPersistentType(XmlPersistentType xmlPersistentType) {
+	public void removeXmlPersistentType(XmlPersistentType xmlPersistentType) {
+		removeXmlPersistentType(this.persistentTypes.indexOf(xmlPersistentType));	
+	}
+	
+	protected void removeXmlPersistentType_(XmlPersistentType xmlPersistentType) {
 		removeItemFromList(xmlPersistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
 	}
 
@@ -277,7 +281,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	public ISequenceGenerator addSequenceGenerator(int index) {
 		XmlSequenceGenerator xmlSequenceGenerator = new XmlSequenceGenerator(this);
 		this.sequenceGenerators.add(index, xmlSequenceGenerator);
-		SequenceGenerator sequenceGenerator = OrmFactory.eINSTANCE.createSequenceGenerator();
+		SequenceGenerator sequenceGenerator = OrmFactory.eINSTANCE.createSequenceGeneratorImpl();
 		xmlSequenceGenerator.initialize(sequenceGenerator);
 		this.entityMappings.getSequenceGenerators().add(index, sequenceGenerator);
 		fireItemAdded(SEQUENCE_GENERATORS_LIST, index, xmlSequenceGenerator);
@@ -317,7 +321,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	public ITableGenerator addTableGenerator(int index) {
 		XmlTableGenerator xmlTableGenerator = new XmlTableGenerator(this);
 		this.tableGenerators.add(index, xmlTableGenerator);
-		TableGenerator tableGenerator = OrmFactory.eINSTANCE.createTableGenerator();
+		TableGenerator tableGenerator = OrmFactory.eINSTANCE.createTableGeneratorImpl();
 		xmlTableGenerator.initialize(tableGenerator);
 		this.entityMappings.getTableGenerators().add(index, tableGenerator);
 		fireItemAdded(TABLE_GENERATORS_LIST, index, xmlTableGenerator);

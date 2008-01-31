@@ -21,7 +21,6 @@ public class XmlGeneratedValue extends JpaContextNode implements IGeneratedValue
 {
 
 	protected GenerationType specifiedStrategy;
-	protected GenerationType defaultStrategy;
 
 	protected String specifiedGenerator;
 	protected String defaultGenerator;
@@ -38,13 +37,7 @@ public class XmlGeneratedValue extends JpaContextNode implements IGeneratedValue
 	}
 
 	public GenerationType getDefaultStrategy() {
-		return this.defaultStrategy;
-	}
-	
-	protected void setDefaultStrategy(GenerationType newDefaultStrategy) {
-		GenerationType oldStrategy = this.defaultStrategy;
-		this.defaultStrategy = newDefaultStrategy;
-		firePropertyChanged(DEFAULT_STRATEGY_PROPERTY, oldStrategy, newDefaultStrategy);
+		return IGeneratedValue.DEFAULT_STRATEGY;
 	}
 	
 	public GenerationType getSpecifiedStrategy() {
@@ -102,7 +95,6 @@ public class XmlGeneratedValue extends JpaContextNode implements IGeneratedValue
 		this.specifiedStrategy = this.strategy(generatedValue);
 		this.specifiedGenerator = this.generator(generatedValue);
 		//TODO
-		this.defaultStrategy = null;
 		this.defaultGenerator = null;
 	}
 
@@ -111,7 +103,6 @@ public class XmlGeneratedValue extends JpaContextNode implements IGeneratedValue
 		this.setSpecifiedStrategy(this.strategy(generatedValue));
 		this.setSpecifiedGenerator(this.generator(generatedValue));
 		//TODO
-		this.setDefaultStrategy(null);
 		this.setDefaultGenerator(null);
 	}
 
@@ -122,4 +113,4 @@ public class XmlGeneratedValue extends JpaContextNode implements IGeneratedValue
 	protected String generator(GeneratedValue generatedValue) {
 		return generatedValue.getGenerator();
 	}
-} // XmlGeneratedValue
+}

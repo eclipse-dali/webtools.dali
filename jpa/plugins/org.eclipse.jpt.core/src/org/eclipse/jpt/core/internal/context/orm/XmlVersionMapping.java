@@ -12,13 +12,14 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
+import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.Version;
+import org.eclipse.jpt.core.internal.resource.orm.VersionImpl;
 import org.eclipse.jpt.db.internal.Table;
 
 
@@ -59,12 +60,18 @@ public class XmlVersionMapping extends XmlAttributeMapping<Version>
 		TemporalType oldTemporal = this.temporal;
 		this.temporal = newTemporal;
 		this.attributeMapping().setTemporal(TemporalType.toOrmResourceModel(newTemporal));
-		firePropertyChanged(IBasicMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+		firePropertyChanged(IColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+	}
+	
+	protected void setTemporal_(TemporalType newTemporal) {
+		TemporalType oldTemporal = this.temporal;
+		this.temporal = newTemporal;
+		firePropertyChanged(IColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 
 	@Override
 	public Version addToResourceModel(TypeMapping typeMapping) {
-		Version version = OrmFactory.eINSTANCE.createVersion();
+		VersionImpl version = OrmFactory.eINSTANCE.createVersionImpl();
 		typeMapping.getAttributes().getVersions().add(version);
 		return version;
 	}
@@ -77,18 +84,16 @@ public class XmlVersionMapping extends XmlAttributeMapping<Version>
 		}
 	}
 
+	public String defaultColumnName() {		
+		return attributeName();
+	}
+
 	public String defaultTableName() {
-		// TODO Auto-generated method stub
-		return null;
+		return typeMapping().getTableName();
 	}
 
 	public Table dbTable(String tableName) {
 		return typeMapping().dbTable(tableName);
-	}
-
-	public String defaultColumnName() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public ITextRange validationTextRange(CompilationUnit astRoot) {
@@ -106,7 +111,7 @@ public class XmlVersionMapping extends XmlAttributeMapping<Version>
 	@Override
 	public void update(Version version) {
 		super.update(version);
-		this.setTemporal(this.specifiedTemporal(version));
+		this.setTemporal_(this.specifiedTemporal(version));
 		this.column.update(version);
 	}
 	

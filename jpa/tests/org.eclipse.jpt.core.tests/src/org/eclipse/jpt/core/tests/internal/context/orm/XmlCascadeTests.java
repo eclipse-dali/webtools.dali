@@ -49,7 +49,7 @@ public class XmlCascadeTests extends ContextModelTestCase
 		assertNull(oneToOne.getCascade());
 		
 		//set cascade in the resource model, verify context model does not change
-		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeType());
+		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeTypeImpl());
 		assertEquals(false, xmlCascade.isAll());
 		assertNotNull(oneToOne.getCascade());
 				
@@ -97,7 +97,7 @@ public class XmlCascadeTests extends ContextModelTestCase
 		assertNull(oneToOne.getCascade());
 		
 		//set cascade in the resource model, verify context model does not change
-		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeType());
+		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeTypeImpl());
 		assertEquals(false, xmlCascade.isPersist());
 		assertNotNull(oneToOne.getCascade());
 				
@@ -145,7 +145,7 @@ public class XmlCascadeTests extends ContextModelTestCase
 		assertNull(oneToOne.getCascade());
 		
 		//set cascade in the resource model, verify context model does not change
-		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeType());
+		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeTypeImpl());
 		assertEquals(false, xmlCascade.isMerge());
 		assertNotNull(oneToOne.getCascade());
 				
@@ -193,7 +193,7 @@ public class XmlCascadeTests extends ContextModelTestCase
 		assertNull(oneToOne.getCascade());
 		
 		//set cascade in the resource model, verify context model does not change
-		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeType());
+		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeTypeImpl());
 		assertEquals(false, xmlCascade.isRemove());
 		assertNotNull(oneToOne.getCascade());
 				
@@ -241,7 +241,7 @@ public class XmlCascadeTests extends ContextModelTestCase
 		assertNull(oneToOne.getCascade());
 		
 		//set cascade in the resource model, verify context model does not change
-		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeType());
+		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeTypeImpl());
 		assertEquals(false, xmlCascade.isRefresh());
 		assertNotNull(oneToOne.getCascade());
 				

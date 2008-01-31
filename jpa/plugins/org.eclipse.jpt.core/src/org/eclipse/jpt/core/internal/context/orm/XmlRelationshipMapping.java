@@ -27,12 +27,9 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 	protected String defaultTargetEntity;
 
 	protected IEntity resolvedTargetEntity;
-
 	
 	protected FetchType specifiedFetch;
 	
-	protected FetchType defaultFetch;	
-
 	protected final XmlCascade cascade;
 
 	
@@ -56,6 +53,12 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 		firePropertyChanged(SPECIFIED_TARGET_ENTITY_PROPERTY, oldSpecifiedTargetEntity, newSpecifiedTargetEntity);
 	}
 
+	protected void setSpecifiedTargetEntity_(String newSpecifiedTargetEntity) {
+		String oldSpecifiedTargetEntity = this.specifiedTargetEntity;
+		this.specifiedTargetEntity = newSpecifiedTargetEntity;
+		firePropertyChanged(SPECIFIED_TARGET_ENTITY_PROPERTY, oldSpecifiedTargetEntity, newSpecifiedTargetEntity);
+	}
+
 	public String getDefaultTargetEntity() {
 		return this.defaultTargetEntity;
 	}
@@ -76,19 +79,8 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 		firePropertyChanged(RESOLVED_TARGET_ENTITY_PROPERTY, oldResolvedTargetEntity, newResolvedTargetEntity);
 	}
 
-
 	public FetchType getFetch() {
 		return (this.getSpecifiedFetch() == null) ? this.getDefaultFetch() : this.getSpecifiedFetch();
-	}
-
-	public FetchType getDefaultFetch() {
-		return this.defaultFetch;
-	}
-	
-	protected void setDefaultFetch(FetchType newDefaultFetch) {
-		FetchType oldFetch = this.defaultFetch;
-		this.defaultFetch = newDefaultFetch;
-		firePropertyChanged(IFetchable.DEFAULT_FETCH_PROPERTY, oldFetch, newDefaultFetch);
 	}
 
 	public FetchType getSpecifiedFetch() {
@@ -102,6 +94,11 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 		firePropertyChanged(IFetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
 
+	protected void setSpecifiedFetch_(FetchType newSpecifiedFetch) {
+		FetchType oldFetch = this.specifiedFetch;
+		this.specifiedFetch = newSpecifiedFetch;
+		firePropertyChanged(IFetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
+	}
 
 	public XmlCascade getCascade() {
 		return this.cascade;
@@ -220,9 +217,9 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 	@Override
 	public void update(T relationshipMapping) {
 		super.update(relationshipMapping);
-		this.setSpecifiedTargetEntity(relationshipMapping.getTargetEntity());
+		this.setSpecifiedTargetEntity_(relationshipMapping.getTargetEntity());
 		this.setDefaultTargetEntity(null);//TODO default target entity
-		this.setSpecifiedFetch(this.specifiedFetch(relationshipMapping));
+		this.setSpecifiedFetch_(this.specifiedFetch(relationshipMapping));
 		this.cascade.update(relationshipMapping);
 	}
 	

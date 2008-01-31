@@ -12,11 +12,12 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
+import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.Id;
+import org.eclipse.jpt.core.internal.resource.orm.IdImpl;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.db.internal.Table;
@@ -52,7 +53,13 @@ public class XmlIdMapping extends XmlAttributeMapping<Id>
 		TemporalType oldTemporal = this.temporal;
 		this.temporal = newTemporal;
 		this.attributeMapping().setTemporal(TemporalType.toOrmResourceModel(newTemporal));
-		firePropertyChanged(IBasicMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+		firePropertyChanged(IColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+	}
+	
+	protected void setTemporal_(TemporalType newTemporal) {
+		TemporalType oldTemporal = this.temporal;
+		this.temporal = newTemporal;
+		firePropertyChanged(IColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 
 	public XmlGeneratedValue addGeneratedValue() {
@@ -60,7 +67,7 @@ public class XmlIdMapping extends XmlAttributeMapping<Id>
 			throw new IllegalStateException("gemeratedValue already exists");
 		}
 		this.generatedValue = new XmlGeneratedValue(this);
-		this.attributeMapping().setGeneratedValue(OrmFactory.eINSTANCE.createGeneratedValue());
+		this.attributeMapping().setGeneratedValue(OrmFactory.eINSTANCE.createGeneratedValueImpl());
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, null, this.generatedValue);
 		return this.generatedValue;
 	}
@@ -90,7 +97,7 @@ public class XmlIdMapping extends XmlAttributeMapping<Id>
 			throw new IllegalStateException("sequenceGenerator already exists");
 		}
 		this.sequenceGenerator = new XmlSequenceGenerator(this);
-		this.attributeMapping().setSequenceGenerator(OrmFactory.eINSTANCE.createSequenceGenerator());
+		this.attributeMapping().setSequenceGenerator(OrmFactory.eINSTANCE.createSequenceGeneratorImpl());
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
 		return this.sequenceGenerator;
 	}
@@ -120,7 +127,7 @@ public class XmlIdMapping extends XmlAttributeMapping<Id>
 			throw new IllegalStateException("tableGenerator already exists");
 		}
 		this.tableGenerator = new XmlTableGenerator(this);
-		this.attributeMapping().setTableGenerator(OrmFactory.eINSTANCE.createTableGenerator());
+		this.attributeMapping().setTableGenerator(OrmFactory.eINSTANCE.createTableGeneratorImpl());
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
 		return this.tableGenerator;
 	}
@@ -143,7 +150,7 @@ public class XmlIdMapping extends XmlAttributeMapping<Id>
 		XmlTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = newTableGenerator;
 		if (newTableGenerator != null) {
-			this.attributeMapping().setTableGenerator(OrmFactory.eINSTANCE.createTableGenerator());
+			this.attributeMapping().setTableGenerator(OrmFactory.eINSTANCE.createTableGeneratorImpl());
 		}
 		else {
 			this.attributeMapping().setTableGenerator(null);
@@ -201,7 +208,7 @@ public class XmlIdMapping extends XmlAttributeMapping<Id>
 	
 	@Override
 	public Id addToResourceModel(TypeMapping typeMapping) {
-		Id id = OrmFactory.eINSTANCE.createId();
+		IdImpl id = OrmFactory.eINSTANCE.createIdImpl();
 		typeMapping.getAttributes().getIds().add(id);
 		return id;
 	}
@@ -214,18 +221,16 @@ public class XmlIdMapping extends XmlAttributeMapping<Id>
 		}
 	}
 
-	public String defaultTableName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Table dbTable(String tableName) {
 		return typeMapping().dbTable(tableName);
 	}
 
-	public String defaultColumnName() {
-		// TODO Auto-generated method stub
-		return null;
+	public String defaultColumnName() {		
+		return attributeName();
+	}
+
+	public String defaultTableName() {
+		return typeMapping().getTableName();
 	}
 
 	public ITextRange validationTextRange(CompilationUnit astRoot) {
@@ -267,7 +272,7 @@ public class XmlIdMapping extends XmlAttributeMapping<Id>
 	@Override
 	public void update(Id id) {
 		super.update(id);
-		this.setTemporal(this.specifiedTemporal(id));
+		this.setTemporal_(this.specifiedTemporal(id));
 		this.column.update(id);
 		this.updateSequenceGenerator(id);
 		this.updateTableGenerator(id);

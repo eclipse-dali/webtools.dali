@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.base;
 
 import org.eclipse.jpt.core.internal.IJpaNode;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 
 public interface IJpaContextNode extends IJpaNode
 {
@@ -23,4 +24,6 @@ public interface IJpaContextNode extends IJpaNode
 	 */
 	EntityMappings entityMappings();
 
+	//TODO interface for this
+	XmlPersistentType xmlPersistentType();
 }

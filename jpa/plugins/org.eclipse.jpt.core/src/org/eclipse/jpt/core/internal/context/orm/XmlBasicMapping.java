@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.internal.context.base.INullable;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.Basic;
+import org.eclipse.jpt.core.internal.resource.orm.BasicImpl;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.db.internal.Table;
@@ -32,17 +33,11 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 	protected final XmlColumn column;
 	
 	protected FetchType specifiedFetch;
-	
-	protected FetchType defaultFetch;	
-	
-	protected Boolean defaultOptional;
 
 	protected Boolean specifiedOptional;
 	
 	protected EnumType specifiedEnumerated;
-	
-	protected EnumType defaultEnumerated;
-	
+		
 	protected TemporalType temporal;
 	
 	protected boolean lob;
@@ -57,13 +52,7 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 	}
 
 	public FetchType getDefaultFetch() {
-		return this.defaultFetch;
-	}
-	
-	protected void setDefaultFetch(FetchType newDefaultFetch) {
-		FetchType oldFetch = this.defaultFetch;
-		this.defaultFetch = newDefaultFetch;
-		firePropertyChanged(IFetchable.DEFAULT_FETCH_PROPERTY, oldFetch, newDefaultFetch);
+		return IBasicMapping.DEFAULT_FETCH_TYPE;
 	}
 
 	public FetchType getSpecifiedFetch() {
@@ -77,19 +66,18 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 		firePropertyChanged(IFetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
 
+	protected void setSpecifiedFetch_(FetchType newSpecifiedFetch) {
+		FetchType oldFetch = this.specifiedFetch;
+		this.specifiedFetch = newSpecifiedFetch;
+		firePropertyChanged(IFetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
+	}
 
 	public Boolean getOptional() {
 		return (this.getSpecifiedOptional() == null) ? this.getDefaultOptional() : this.getSpecifiedOptional();
 	}
 	
 	public Boolean getDefaultOptional() {
-		return this.defaultOptional;
-	}
-	
-	protected void setDefaultOptional(Boolean newDefaultOptional) {
-		Boolean oldOptional = this.defaultOptional;
-		this.defaultOptional = newDefaultOptional;
-		firePropertyChanged(INullable.DEFAULT_OPTIONAL_PROPERTY, oldOptional, newDefaultOptional);
+		return INullable.DEFAULT_OPTIONAL;
 	}
 
 	public Boolean getSpecifiedOptional() {
@@ -102,6 +90,12 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 		this.attributeMapping().setOptional(newSpecifiedOptional);
 		firePropertyChanged(INullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
 	}
+	
+	protected void setSpecifiedOptional_(Boolean newSpecifiedOptional) {
+		Boolean oldOptional = this.specifiedOptional;
+		this.specifiedOptional = newSpecifiedOptional;
+		firePropertyChanged(INullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
+	}
 
 	public boolean isLob() {
 		return this.lob;
@@ -111,6 +105,12 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 		boolean oldLob = this.lob;
 		this.lob = newLob;
 		this.attributeMapping().setLob(newLob);
+		firePropertyChanged(IBasicMapping.LOB_PROPERTY, oldLob, newLob);
+	}
+	
+	protected void setLob_(boolean newLob) {
+		boolean oldLob = this.lob;
+		this.lob = newLob;
 		firePropertyChanged(IBasicMapping.LOB_PROPERTY, oldLob, newLob);
 	}
 
@@ -125,6 +125,11 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 		firePropertyChanged(IColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 
+	protected void setTemporal_(TemporalType newTemporal) {
+		TemporalType oldTemporal = this.temporal;
+		this.temporal = newTemporal;
+		firePropertyChanged(IColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
+	}
 	
 	public EnumType getEnumerated() {
 		return (this.getSpecifiedEnumerated() == null) ? this.getDefaultEnumerated() : this.getSpecifiedEnumerated();
@@ -144,11 +149,11 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 		this.attributeMapping().setEnumerated(EnumType.toOrmResourceModel(newSpecifiedEnumerated));
 		firePropertyChanged(IBasicMapping.SPECIFIED_ENUMERATED_PROPERTY, oldEnumerated, newSpecifiedEnumerated);
 	}
-
-	protected void setDefaultEnumerated(EnumType newDefaultEnumerated) {
-		EnumType oldEnumerated = this.defaultEnumerated;
-		this.defaultEnumerated = newDefaultEnumerated;
-		firePropertyChanged(IBasicMapping.DEFAULT_ENUMERATED_PROPERTY, oldEnumerated, newDefaultEnumerated);
+	
+	protected void setSpecifiedEnumerated_(EnumType newSpecifiedEnumerated) {
+		EnumType oldEnumerated = this.specifiedEnumerated;
+		this.specifiedEnumerated = newSpecifiedEnumerated;
+		firePropertyChanged(IBasicMapping.SPECIFIED_ENUMERATED_PROPERTY, oldEnumerated, newSpecifiedEnumerated);
 	}
 
 	public String getKey() {
@@ -180,17 +185,11 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 		return this.column;
 	}
 
-	public String attributeName() {
-		return this.persistentAttribute().getName();
-	}
-
 	public String defaultColumnName() {		
-		//TODO check java column for the case where this is a virtual mapping
 		return attributeName();
 	}
 
 	public String defaultTableName() {
-		//TODO check java column for the case where this is a virtual mapping
 		return typeMapping().getTableName();
 	}
 
@@ -217,11 +216,11 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 	@Override
 	public void update(Basic basic) {
 		super.update(basic);
-		this.setSpecifiedFetch(this.specifiedFetch(basic));
-		this.setSpecifiedOptional(this.specifiedOptional(basic));
-		this.setSpecifiedEnumerated(this.specifiedEnumerated(basic));
-		this.setTemporal(this.specifiedTemporal(basic));
-		this.setLob(this.specifiedLob(basic));
+		this.setSpecifiedFetch_(this.specifiedFetch(basic));
+		this.setSpecifiedOptional_(this.specifiedOptional(basic));
+		this.setSpecifiedEnumerated_(this.specifiedEnumerated(basic));
+		this.setTemporal_(this.specifiedTemporal(basic));
+		this.setLob_(this.specifiedLob(basic));
 		this.column.update(basic);
 	}
 	
@@ -247,7 +246,7 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 	
 	@Override
 	public Basic addToResourceModel(TypeMapping typeMapping) {
-		Basic basic = OrmFactory.eINSTANCE.createBasic();
+		BasicImpl basic = OrmFactory.eINSTANCE.createBasicImpl();
 		typeMapping.getAttributes().getBasics().add(basic);
 		return basic;
 	}

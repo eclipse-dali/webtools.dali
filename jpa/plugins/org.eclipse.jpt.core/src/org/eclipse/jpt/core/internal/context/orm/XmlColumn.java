@@ -19,13 +19,10 @@ import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 public class XmlColumn extends AbstractXmlColumn<Column> implements IColumn
 {
 	protected Integer specifiedLength;
-	protected Integer defaultLength;
 
 	protected Integer specifiedPrecision;
-	protected Integer defaultPrecision;
 
 	protected Integer specifiedScale;
-	protected Integer defaultScale;
 
 	protected ColumnMapping columnMapping;
 	
@@ -47,13 +44,7 @@ public class XmlColumn extends AbstractXmlColumn<Column> implements IColumn
 	}
 
 	public Integer getDefaultLength() {
-		return this.defaultLength;
-	}
-	
-	protected void setDefaultLength(Integer newDefaultLength) {
-		Integer oldDefaultLength = this.defaultLength;
-		this.defaultLength = newDefaultLength;
-		firePropertyChanged(DEFAULT_LENGTH_PROPERTY, oldDefaultLength, newDefaultLength);
+		return IColumn.DEFAULT_LENGTH;
 	}
 
 	public Integer getSpecifiedLength() {
@@ -89,7 +80,7 @@ public class XmlColumn extends AbstractXmlColumn<Column> implements IColumn
 	}
 
 	public Integer getDefaultPrecision() {
-		return this.defaultPrecision;
+		return IColumn.DEFAULT_PRECISION;
 	}
 	
 	public Integer getSpecifiedPrecision() {
@@ -125,7 +116,7 @@ public class XmlColumn extends AbstractXmlColumn<Column> implements IColumn
 	}
 
 	public Integer getDefaultScale() {
-		return this.defaultScale;
+		return IColumn.DEFAULT_SCALE;
 	}
 	
 	public Integer getSpecifiedScale() {
@@ -163,8 +154,7 @@ public class XmlColumn extends AbstractXmlColumn<Column> implements IColumn
 	
 	@Override
 	protected void addColumnResource() {
-		this.columnMapping.setColumn(OrmFactory.eINSTANCE.createColumn());
-		
+		this.columnMapping.setColumn(OrmFactory.eINSTANCE.createColumnImpl());
 	}
 	
 	@Override
@@ -189,7 +179,6 @@ public class XmlColumn extends AbstractXmlColumn<Column> implements IColumn
 		this.specifiedLength = this.specifiedLength(column);
 		this.specifiedPrecision = this.specifiedPrecision(column);
 		this.specifiedScale = this.specifiedScale(column);
-		//TODO defaultLength, scale, precision from java column
 	}
 	
 	@Override
@@ -198,7 +187,6 @@ public class XmlColumn extends AbstractXmlColumn<Column> implements IColumn
 		this.setSpecifiedLength_(this.specifiedLength(column));
 		this.setSpecifiedPrecision_(this.specifiedPrecision(column));
 		this.setSpecifiedScale_(this.specifiedScale(column));
-		//TODO defaultLength, scale, precision from java column
 	}
 
 	protected Integer specifiedLength(Column column) {
@@ -212,9 +200,4 @@ public class XmlColumn extends AbstractXmlColumn<Column> implements IColumn
 	protected Integer specifiedScale(Column column) {
 		return column == null ? null : column.getScale();
 	}
-	
-//	public void refreshDefaults(DefaultsContext defaultsContext) {
-//		setDefaultTable((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_COLUMN_TABLE_KEY));
-//		setDefaultName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_COLUMN_NAME_KEY));
-//	}
 }

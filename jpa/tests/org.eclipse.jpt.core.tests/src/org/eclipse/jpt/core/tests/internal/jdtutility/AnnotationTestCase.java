@@ -160,6 +160,7 @@ public abstract class AnnotationTestCase extends TestCase {
 			sb.append(";");
 			sb.append(CR);
 		}
+		sb.append(CR);
 		annotationWriter.appendTypeAnnotationTo(sb);
 		sb.append(CR);
 		sb.append("public class ").append(typeName).append(" ");

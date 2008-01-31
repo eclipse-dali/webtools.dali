@@ -13,6 +13,7 @@ package org.eclipse.jpt.core.internal.context.base;
 import org.eclipse.jpt.core.internal.IJpaNode;
 import org.eclipse.jpt.core.internal.JpaNode;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
 
 public abstract class JpaContextNode extends JpaNode
@@ -47,5 +48,13 @@ public abstract class JpaContextNode extends JpaNode
 	 */
 	public EntityMappings entityMappings() {
 		return ((IJpaContextNode) parent()).entityMappings();
+	}
+	
+	/**
+	 * Overidden in BaseJpaContext to return null
+	 * Overidden in XmlPersistentType to return it.
+	 */
+	public XmlPersistentType xmlPersistentType() {
+		return ((IJpaContextNode) parent()).xmlPersistentType();
 	}
 }

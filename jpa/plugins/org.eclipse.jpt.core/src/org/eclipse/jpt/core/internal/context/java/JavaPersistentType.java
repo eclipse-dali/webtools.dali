@@ -182,11 +182,11 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	}
 	
 	private void addAttribute(IJavaPersistentAttribute attribute) {
-		addItemToList(attribute, this.attributes, IPersistentType.ATTRIBUTES_LIST);
+		addItemToList(attribute, this.attributes, IPersistentType.SPECIFIED_ATTRIBUTES_LIST);
 	}
 
 	private void removeAttribute(IJavaPersistentAttribute attribute) {
-		removeItemFromList(attribute, this.attributes, IPersistentType.ATTRIBUTES_LIST);
+		removeItemFromList(attribute, this.attributes, IPersistentType.SPECIFIED_ATTRIBUTES_LIST);
 	}
 	
 	public Iterator<String> attributeNames() {
@@ -306,31 +306,42 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 
 	/**
 	 * Check the access "specified" by the java resource model.
-	 * 		If this is not null then use that as the access. (validation will handle where this doesn't match inheritance)
-	 * 		If null then set to parentPersistentType access.
-	 * 		If still null check entity-mappings if this persistent-type is listed in an orm.xml file
+	 * 		Check xml mapping specified access first
+	 * 		If still null check java annotations if the xml is not metadata-complete = true
+	 *		If still null then set to parentPersistentType access.
+	 * 		If still null check entity-mappings specified access setting if this persistent-type is listed in an orm.xml file
 	 * 		If still null check the persistence-unit default Access
 	 * 		Default to FIELD if all else fails.
 	 */
 	protected AccessType access(JavaPersistentTypeResource persistentTypeResource) {
-		AccessType javaAccess = AccessType.fromJavaResourceModel(persistentTypeResource.getAccess());
+		AccessType javaAccess = null;
+		boolean metadataComplete = false;
+		if (xmlPersistentType() != null) {
+			javaAccess = xmlPersistentType().getMapping().getSpecifiedAccess();
+			metadataComplete = xmlPersistentType().getMapping().isMetadataComplete();
+		}
+		if (javaAccess == null && !metadataComplete) {
+			javaAccess = AccessType.fromJavaResourceModel(persistentTypeResource.getAccess());
+		}
 		if (javaAccess == null) {
 			if (parentPersistentType() != null) {
 				javaAccess = parentPersistentType().access();
 			}
-			if (javaAccess == null) {
-				if (entityMappings() != null) {
-					javaAccess = entityMappings().getAccess();
-				}
+		}
+		if (javaAccess == null) {
+			if (entityMappings() != null) {
+				javaAccess = entityMappings().getAccess();
 			}
-			if (javaAccess == null) {
-				if (persistenceUnit() != null) {
-					javaAccess = persistenceUnit().getDefaultAccess();
-				}
+		}
+		if (javaAccess == null) {
+			//have to check persistence-unit separately in the case where it is not listed directly in an orm.xml
+			//if it is listed in an orm.xml then the entityMappings().getAccess() check will cover persistence-unit.defaultAccess
+			if (persistenceUnit() != null) {
+				javaAccess = persistenceUnit().getDefaultAccess();
 			}
-			if (javaAccess == null) {
-				javaAccess = AccessType.FIELD;
-			}
+		}
+		if (javaAccess == null) {
+			javaAccess = AccessType.FIELD;
 		}
 		return javaAccess;
 	}

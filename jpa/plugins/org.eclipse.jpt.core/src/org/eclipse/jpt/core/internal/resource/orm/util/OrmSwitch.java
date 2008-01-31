@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmSwitch.java,v 1.1.2.11 2008/01/14 22:30:00 kmoore Exp $
+ * $Id: OrmSwitch.java,v 1.1.2.12 2008/01/31 00:02:16 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
@@ -261,11 +261,30 @@ public class OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.ID_IMPL:
+			{
+				IdImpl idImpl = (IdImpl)theEObject;
+				T result = caseIdImpl(idImpl);
+				if (result == null) result = caseId(idImpl);
+				if (result == null) result = caseAttributeMapping(idImpl);
+				if (result == null) result = caseColumnMapping(idImpl);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case OrmPackage.EMBEDDED_ID:
 			{
 				EmbeddedId embeddedId = (EmbeddedId)theEObject;
 				T result = caseEmbeddedId(embeddedId);
 				if (result == null) result = caseAttributeMapping(embeddedId);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case OrmPackage.EMBEDDED_ID_IMPL:
+			{
+				EmbeddedIdImpl embeddedIdImpl = (EmbeddedIdImpl)theEObject;
+				T result = caseEmbeddedIdImpl(embeddedIdImpl);
+				if (result == null) result = caseEmbeddedId(embeddedIdImpl);
+				if (result == null) result = caseAttributeMapping(embeddedIdImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -278,12 +297,32 @@ public class OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.BASIC_IMPL:
+			{
+				BasicImpl basicImpl = (BasicImpl)theEObject;
+				T result = caseBasicImpl(basicImpl);
+				if (result == null) result = caseBasic(basicImpl);
+				if (result == null) result = caseAttributeMapping(basicImpl);
+				if (result == null) result = caseColumnMapping(basicImpl);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case OrmPackage.VERSION:
 			{
 				Version version = (Version)theEObject;
 				T result = caseVersion(version);
 				if (result == null) result = caseAttributeMapping(version);
 				if (result == null) result = caseColumnMapping(version);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case OrmPackage.VERSION_IMPL:
+			{
+				VersionImpl versionImpl = (VersionImpl)theEObject;
+				T result = caseVersionImpl(versionImpl);
+				if (result == null) result = caseVersion(versionImpl);
+				if (result == null) result = caseAttributeMapping(versionImpl);
+				if (result == null) result = caseColumnMapping(versionImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -297,6 +336,17 @@ public class OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.MANY_TO_ONE_IMPL:
+			{
+				ManyToOneImpl manyToOneImpl = (ManyToOneImpl)theEObject;
+				T result = caseManyToOneImpl(manyToOneImpl);
+				if (result == null) result = caseManyToOne(manyToOneImpl);
+				if (result == null) result = caseSingleRelationshipMapping(manyToOneImpl);
+				if (result == null) result = caseRelationshipMapping(manyToOneImpl);
+				if (result == null) result = caseAttributeMapping(manyToOneImpl);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case OrmPackage.ONE_TO_MANY:
 			{
 				OneToMany oneToMany = (OneToMany)theEObject;
@@ -304,6 +354,17 @@ public class OrmSwitch<T>
 				if (result == null) result = caseMultiRelationshipMapping(oneToMany);
 				if (result == null) result = caseRelationshipMapping(oneToMany);
 				if (result == null) result = caseAttributeMapping(oneToMany);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case OrmPackage.ONE_TO_MANY_IMPL:
+			{
+				OneToManyImpl oneToManyImpl = (OneToManyImpl)theEObject;
+				T result = caseOneToManyImpl(oneToManyImpl);
+				if (result == null) result = caseOneToMany(oneToManyImpl);
+				if (result == null) result = caseMultiRelationshipMapping(oneToManyImpl);
+				if (result == null) result = caseRelationshipMapping(oneToManyImpl);
+				if (result == null) result = caseAttributeMapping(oneToManyImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -317,6 +378,17 @@ public class OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.ONE_TO_ONE_IMPL:
+			{
+				OneToOneImpl oneToOneImpl = (OneToOneImpl)theEObject;
+				T result = caseOneToOneImpl(oneToOneImpl);
+				if (result == null) result = caseOneToOne(oneToOneImpl);
+				if (result == null) result = caseSingleRelationshipMapping(oneToOneImpl);
+				if (result == null) result = caseRelationshipMapping(oneToOneImpl);
+				if (result == null) result = caseAttributeMapping(oneToOneImpl);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case OrmPackage.MANY_TO_MANY:
 			{
 				ManyToMany manyToMany = (ManyToMany)theEObject;
@@ -324,6 +396,17 @@ public class OrmSwitch<T>
 				if (result == null) result = caseMultiRelationshipMapping(manyToMany);
 				if (result == null) result = caseRelationshipMapping(manyToMany);
 				if (result == null) result = caseAttributeMapping(manyToMany);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case OrmPackage.MANY_TO_MANY_IMPL:
+			{
+				ManyToManyImpl manyToManyImpl = (ManyToManyImpl)theEObject;
+				T result = caseManyToManyImpl(manyToManyImpl);
+				if (result == null) result = caseManyToMany(manyToManyImpl);
+				if (result == null) result = caseMultiRelationshipMapping(manyToManyImpl);
+				if (result == null) result = caseRelationshipMapping(manyToManyImpl);
+				if (result == null) result = caseAttributeMapping(manyToManyImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -335,11 +418,29 @@ public class OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.EMBEDDED_IMPL:
+			{
+				EmbeddedImpl embeddedImpl = (EmbeddedImpl)theEObject;
+				T result = caseEmbeddedImpl(embeddedImpl);
+				if (result == null) result = caseEmbedded(embeddedImpl);
+				if (result == null) result = caseAttributeMapping(embeddedImpl);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case OrmPackage.TRANSIENT:
 			{
 				Transient transient_ = (Transient)theEObject;
 				T result = caseTransient(transient_);
 				if (result == null) result = caseAttributeMapping(transient_);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case OrmPackage.TRANSIENT_IMPL:
+			{
+				TransientImpl transientImpl = (TransientImpl)theEObject;
+				T result = caseTransientImpl(transientImpl);
+				if (result == null) result = caseTransient(transientImpl);
+				if (result == null) result = caseAttributeMapping(transientImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -357,10 +458,26 @@ public class OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.ATTRIBUTE_OVERRIDE_IMPL:
+			{
+				AttributeOverrideImpl attributeOverrideImpl = (AttributeOverrideImpl)theEObject;
+				T result = caseAttributeOverrideImpl(attributeOverrideImpl);
+				if (result == null) result = caseAttributeOverride(attributeOverrideImpl);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case OrmPackage.CASCADE_TYPE:
 			{
 				CascadeType cascadeType = (CascadeType)theEObject;
 				T result = caseCascadeType(cascadeType);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case OrmPackage.CASCADE_TYPE_IMPL:
+			{
+				CascadeTypeImpl cascadeTypeImpl = (CascadeTypeImpl)theEObject;
+				T result = caseCascadeTypeImpl(cascadeTypeImpl);
+				if (result == null) result = caseCascadeType(cascadeTypeImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -385,6 +502,16 @@ public class OrmSwitch<T>
 				T result = caseColumn(column);
 				if (result == null) result = caseAbstractColumn(column);
 				if (result == null) result = caseNamedColumn(column);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case OrmPackage.COLUMN_IMPL:
+			{
+				ColumnImpl columnImpl = (ColumnImpl)theEObject;
+				T result = caseColumnImpl(columnImpl);
+				if (result == null) result = caseColumn(columnImpl);
+				if (result == null) result = caseAbstractColumn(columnImpl);
+				if (result == null) result = caseNamedColumn(columnImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -445,6 +572,14 @@ public class OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.GENERATED_VALUE_IMPL:
+			{
+				GeneratedValueImpl generatedValueImpl = (GeneratedValueImpl)theEObject;
+				T result = caseGeneratedValueImpl(generatedValueImpl);
+				if (result == null) result = caseGeneratedValue(generatedValueImpl);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case OrmPackage.ID_CLASS:
 			{
 				IdClass idClass = (IdClass)theEObject;
@@ -468,11 +603,30 @@ public class OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.JOIN_COLUMN_IMPL:
+			{
+				JoinColumnImpl joinColumnImpl = (JoinColumnImpl)theEObject;
+				T result = caseJoinColumnImpl(joinColumnImpl);
+				if (result == null) result = caseJoinColumn(joinColumnImpl);
+				if (result == null) result = caseAbstractColumn(joinColumnImpl);
+				if (result == null) result = caseNamedColumn(joinColumnImpl);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case OrmPackage.JOIN_TABLE:
 			{
 				JoinTable joinTable = (JoinTable)theEObject;
 				T result = caseJoinTable(joinTable);
 				if (result == null) result = caseAbstractTable(joinTable);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case OrmPackage.JOIN_TABLE_IMPL:
+			{
+				JoinTableImpl joinTableImpl = (JoinTableImpl)theEObject;
+				T result = caseJoinTableImpl(joinTableImpl);
+				if (result == null) result = caseJoinTable(joinTableImpl);
+				if (result == null) result = caseAbstractTable(joinTableImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -487,6 +641,14 @@ public class OrmSwitch<T>
 			{
 				MapKey mapKey = (MapKey)theEObject;
 				T result = caseMapKey(mapKey);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case OrmPackage.MAP_KEY_IMPL:
+			{
+				MapKeyImpl mapKeyImpl = (MapKeyImpl)theEObject;
+				T result = caseMapKeyImpl(mapKeyImpl);
+				if (result == null) result = caseMapKey(mapKeyImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -622,6 +784,15 @@ public class OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case OrmPackage.SEQUENCE_GENERATOR_IMPL:
+			{
+				SequenceGeneratorImpl sequenceGeneratorImpl = (SequenceGeneratorImpl)theEObject;
+				T result = caseSequenceGeneratorImpl(sequenceGeneratorImpl);
+				if (result == null) result = caseSequenceGenerator(sequenceGeneratorImpl);
+				if (result == null) result = caseGenerator(sequenceGeneratorImpl);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			case OrmPackage.SQL_RESULT_SET_MAPPING:
 			{
 				SqlResultSetMapping sqlResultSetMapping = (SqlResultSetMapping)theEObject;
@@ -634,6 +805,15 @@ public class OrmSwitch<T>
 				TableGenerator tableGenerator = (TableGenerator)theEObject;
 				T result = caseTableGenerator(tableGenerator);
 				if (result == null) result = caseGenerator(tableGenerator);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case OrmPackage.TABLE_GENERATOR_IMPL:
+			{
+				TableGeneratorImpl tableGeneratorImpl = (TableGeneratorImpl)theEObject;
+				T result = caseTableGeneratorImpl(tableGeneratorImpl);
+				if (result == null) result = caseTableGenerator(tableGeneratorImpl);
+				if (result == null) result = caseGenerator(tableGeneratorImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -873,6 +1053,22 @@ public class OrmSwitch<T>
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Id Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Id Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIdImpl(IdImpl object)
+	{
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Embedded Id</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -884,6 +1080,22 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseEmbeddedId(EmbeddedId object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Embedded Id Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Embedded Id Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseEmbeddedIdImpl(EmbeddedIdImpl object)
 	{
 		return null;
 	}
@@ -905,6 +1117,22 @@ public class OrmSwitch<T>
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Basic Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Basic Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseBasicImpl(BasicImpl object)
+	{
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Version</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -916,6 +1144,22 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseVersion(Version object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Version Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Version Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseVersionImpl(VersionImpl object)
 	{
 		return null;
 	}
@@ -937,6 +1181,22 @@ public class OrmSwitch<T>
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Many To One Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Many To One Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseManyToOneImpl(ManyToOneImpl object)
+	{
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>One To Many</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -948,6 +1208,22 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseOneToMany(OneToMany object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>One To Many Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>One To Many Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseOneToManyImpl(OneToManyImpl object)
 	{
 		return null;
 	}
@@ -969,6 +1245,22 @@ public class OrmSwitch<T>
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>One To One Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>One To One Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseOneToOneImpl(OneToOneImpl object)
+	{
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Many To Many</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -980,6 +1272,22 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseManyToMany(ManyToMany object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Many To Many Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Many To Many Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseManyToManyImpl(ManyToManyImpl object)
 	{
 		return null;
 	}
@@ -1001,6 +1309,22 @@ public class OrmSwitch<T>
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Embedded Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Embedded Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseEmbeddedImpl(EmbeddedImpl object)
+	{
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Transient</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -1012,6 +1336,22 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseTransient(Transient object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Transient Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Transient Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseTransientImpl(TransientImpl object)
 	{
 		return null;
 	}
@@ -1049,6 +1389,22 @@ public class OrmSwitch<T>
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Attribute Override Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Attribute Override Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseAttributeOverrideImpl(AttributeOverrideImpl object)
+	{
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Cascade Type</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -1060,6 +1416,22 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseCascadeType(CascadeType object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Cascade Type Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Cascade Type Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseCascadeTypeImpl(CascadeTypeImpl object)
 	{
 		return null;
 	}
@@ -1108,6 +1480,22 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseColumn(Column object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Column Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Column Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseColumnImpl(ColumnImpl object)
 	{
 		return null;
 	}
@@ -1225,6 +1613,22 @@ public class OrmSwitch<T>
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Generated Value Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Generated Value Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGeneratedValueImpl(GeneratedValueImpl object)
+	{
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Id Class</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -1273,6 +1677,22 @@ public class OrmSwitch<T>
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Join Column Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Join Column Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseJoinColumnImpl(JoinColumnImpl object)
+	{
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Join Table</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -1284,6 +1704,22 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseJoinTable(JoinTable object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Join Table Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Join Table Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseJoinTableImpl(JoinTableImpl object)
 	{
 		return null;
 	}
@@ -1316,6 +1752,22 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseMapKey(MapKey object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Map Key Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Map Key Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseMapKeyImpl(MapKeyImpl object)
 	{
 		return null;
 	}
@@ -1609,6 +2061,22 @@ public class OrmSwitch<T>
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Sequence Generator Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Sequence Generator Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseSequenceGeneratorImpl(SequenceGeneratorImpl object)
+	{
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Table</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -1636,6 +2104,22 @@ public class OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseTableGenerator(TableGenerator object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Table Generator Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Table Generator Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseTableGeneratorImpl(TableGeneratorImpl object)
 	{
 		return null;
 	}

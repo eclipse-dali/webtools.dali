@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: OrmAdapterFactory.java,v 1.1.2.11 2008/01/14 22:30:00 kmoore Exp $
+ * $Id: OrmAdapterFactory.java,v 1.1.2.12 2008/01/31 00:02:16 kmoore Exp $
  */
 package org.eclipse.jpt.core.internal.resource.orm.util;
 
@@ -205,9 +205,19 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 				return createIdAdapter();
 			}
 			@Override
+			public Adapter caseIdImpl(IdImpl object)
+			{
+				return createIdImplAdapter();
+			}
+			@Override
 			public Adapter caseEmbeddedId(EmbeddedId object)
 			{
 				return createEmbeddedIdAdapter();
+			}
+			@Override
+			public Adapter caseEmbeddedIdImpl(EmbeddedIdImpl object)
+			{
+				return createEmbeddedIdImplAdapter();
 			}
 			@Override
 			public Adapter caseBasic(Basic object)
@@ -215,9 +225,19 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 				return createBasicAdapter();
 			}
 			@Override
+			public Adapter caseBasicImpl(BasicImpl object)
+			{
+				return createBasicImplAdapter();
+			}
+			@Override
 			public Adapter caseVersion(Version object)
 			{
 				return createVersionAdapter();
+			}
+			@Override
+			public Adapter caseVersionImpl(VersionImpl object)
+			{
+				return createVersionImplAdapter();
 			}
 			@Override
 			public Adapter caseManyToOne(ManyToOne object)
@@ -225,9 +245,19 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 				return createManyToOneAdapter();
 			}
 			@Override
+			public Adapter caseManyToOneImpl(ManyToOneImpl object)
+			{
+				return createManyToOneImplAdapter();
+			}
+			@Override
 			public Adapter caseOneToMany(OneToMany object)
 			{
 				return createOneToManyAdapter();
+			}
+			@Override
+			public Adapter caseOneToManyImpl(OneToManyImpl object)
+			{
+				return createOneToManyImplAdapter();
 			}
 			@Override
 			public Adapter caseOneToOne(OneToOne object)
@@ -235,9 +265,19 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 				return createOneToOneAdapter();
 			}
 			@Override
+			public Adapter caseOneToOneImpl(OneToOneImpl object)
+			{
+				return createOneToOneImplAdapter();
+			}
+			@Override
 			public Adapter caseManyToMany(ManyToMany object)
 			{
 				return createManyToManyAdapter();
+			}
+			@Override
+			public Adapter caseManyToManyImpl(ManyToManyImpl object)
+			{
+				return createManyToManyImplAdapter();
 			}
 			@Override
 			public Adapter caseEmbedded(Embedded object)
@@ -245,9 +285,19 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 				return createEmbeddedAdapter();
 			}
 			@Override
+			public Adapter caseEmbeddedImpl(EmbeddedImpl object)
+			{
+				return createEmbeddedImplAdapter();
+			}
+			@Override
 			public Adapter caseTransient(Transient object)
 			{
 				return createTransientAdapter();
+			}
+			@Override
+			public Adapter caseTransientImpl(TransientImpl object)
+			{
+				return createTransientImplAdapter();
 			}
 			@Override
 			public Adapter caseAssociationOverride(AssociationOverride object)
@@ -260,9 +310,19 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 				return createAttributeOverrideAdapter();
 			}
 			@Override
+			public Adapter caseAttributeOverrideImpl(AttributeOverrideImpl object)
+			{
+				return createAttributeOverrideImplAdapter();
+			}
+			@Override
 			public Adapter caseCascadeType(CascadeType object)
 			{
 				return createCascadeTypeAdapter();
+			}
+			@Override
+			public Adapter caseCascadeTypeImpl(CascadeTypeImpl object)
+			{
+				return createCascadeTypeImplAdapter();
 			}
 			@Override
 			public Adapter caseNamedColumn(NamedColumn object)
@@ -278,6 +338,11 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 			public Adapter caseColumn(Column object)
 			{
 				return createColumnAdapter();
+			}
+			@Override
+			public Adapter caseColumnImpl(ColumnImpl object)
+			{
+				return createColumnImplAdapter();
 			}
 			@Override
 			public Adapter caseColumnResult(ColumnResult object)
@@ -320,6 +385,11 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 				return createGeneratedValueAdapter();
 			}
 			@Override
+			public Adapter caseGeneratedValueImpl(GeneratedValueImpl object)
+			{
+				return createGeneratedValueImplAdapter();
+			}
+			@Override
 			public Adapter caseIdClass(IdClass object)
 			{
 				return createIdClassAdapter();
@@ -335,9 +405,19 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 				return createJoinColumnAdapter();
 			}
 			@Override
+			public Adapter caseJoinColumnImpl(JoinColumnImpl object)
+			{
+				return createJoinColumnImplAdapter();
+			}
+			@Override
 			public Adapter caseJoinTable(JoinTable object)
 			{
 				return createJoinTableAdapter();
+			}
+			@Override
+			public Adapter caseJoinTableImpl(JoinTableImpl object)
+			{
+				return createJoinTableImplAdapter();
 			}
 			@Override
 			public Adapter caseLob(Lob object)
@@ -348,6 +428,11 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 			public Adapter caseMapKey(MapKey object)
 			{
 				return createMapKeyAdapter();
+			}
+			@Override
+			public Adapter caseMapKeyImpl(MapKeyImpl object)
+			{
+				return createMapKeyImplAdapter();
 			}
 			@Override
 			public Adapter caseQuery(Query object)
@@ -435,6 +520,11 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 				return createSequenceGeneratorAdapter();
 			}
 			@Override
+			public Adapter caseSequenceGeneratorImpl(SequenceGeneratorImpl object)
+			{
+				return createSequenceGeneratorImplAdapter();
+			}
+			@Override
 			public Adapter caseSqlResultSetMapping(SqlResultSetMapping object)
 			{
 				return createSqlResultSetMappingAdapter();
@@ -443,6 +533,11 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 			public Adapter caseTableGenerator(TableGenerator object)
 			{
 				return createTableGeneratorAdapter();
+			}
+			@Override
+			public Adapter caseTableGeneratorImpl(TableGeneratorImpl object)
+			{
+				return createTableGeneratorImplAdapter();
 			}
 			@Override
 			public Adapter caseUniqueConstraint(UniqueConstraint object)
@@ -682,6 +777,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.IdImpl <em>Id Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.IdImpl
+	 * @generated
+	 */
+	public Adapter createIdImplAdapter()
+	{
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.EmbeddedId <em>Embedded Id</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -692,6 +802,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createEmbeddedIdAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.EmbeddedIdImpl <em>Embedded Id Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.EmbeddedIdImpl
+	 * @generated
+	 */
+	public Adapter createEmbeddedIdImplAdapter()
 	{
 		return null;
 	}
@@ -712,6 +837,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.BasicImpl <em>Basic Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.BasicImpl
+	 * @generated
+	 */
+	public Adapter createBasicImplAdapter()
+	{
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.Version <em>Version</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -722,6 +862,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createVersionAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.VersionImpl <em>Version Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.VersionImpl
+	 * @generated
+	 */
+	public Adapter createVersionImplAdapter()
 	{
 		return null;
 	}
@@ -742,6 +897,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.ManyToOneImpl <em>Many To One Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.ManyToOneImpl
+	 * @generated
+	 */
+	public Adapter createManyToOneImplAdapter()
+	{
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.OneToMany <em>One To Many</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -752,6 +922,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createOneToManyAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.OneToManyImpl <em>One To Many Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OneToManyImpl
+	 * @generated
+	 */
+	public Adapter createOneToManyImplAdapter()
 	{
 		return null;
 	}
@@ -772,6 +957,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.OneToOneImpl <em>One To One Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OneToOneImpl
+	 * @generated
+	 */
+	public Adapter createOneToOneImplAdapter()
+	{
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.ManyToMany <em>Many To Many</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -782,6 +982,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createManyToManyAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.ManyToManyImpl <em>Many To Many Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.ManyToManyImpl
+	 * @generated
+	 */
+	public Adapter createManyToManyImplAdapter()
 	{
 		return null;
 	}
@@ -802,6 +1017,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.EmbeddedImpl <em>Embedded Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.EmbeddedImpl
+	 * @generated
+	 */
+	public Adapter createEmbeddedImplAdapter()
+	{
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.Transient <em>Transient</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -812,6 +1042,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createTransientAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.TransientImpl <em>Transient Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.TransientImpl
+	 * @generated
+	 */
+	public Adapter createTransientImplAdapter()
 	{
 		return null;
 	}
@@ -847,6 +1092,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.AttributeOverrideImpl <em>Attribute Override Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.AttributeOverrideImpl
+	 * @generated
+	 */
+	public Adapter createAttributeOverrideImplAdapter()
+	{
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeType <em>Cascade Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -857,6 +1117,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createCascadeTypeAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.CascadeTypeImpl <em>Cascade Type Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.CascadeTypeImpl
+	 * @generated
+	 */
+	public Adapter createCascadeTypeImplAdapter()
 	{
 		return null;
 	}
@@ -902,6 +1177,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createColumnAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.ColumnImpl <em>Column Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.ColumnImpl
+	 * @generated
+	 */
+	public Adapter createColumnImplAdapter()
 	{
 		return null;
 	}
@@ -1012,6 +1302,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.GeneratedValueImpl <em>Generated Value Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.GeneratedValueImpl
+	 * @generated
+	 */
+	public Adapter createGeneratedValueImplAdapter()
+	{
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.IdClass <em>Id Class</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -1057,6 +1362,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.JoinColumnImpl <em>Join Column Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.JoinColumnImpl
+	 * @generated
+	 */
+	public Adapter createJoinColumnImplAdapter()
+	{
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.JoinTable <em>Join Table</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -1067,6 +1387,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createJoinTableAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.JoinTableImpl <em>Join Table Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.JoinTableImpl
+	 * @generated
+	 */
+	public Adapter createJoinTableImplAdapter()
 	{
 		return null;
 	}
@@ -1097,6 +1432,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createMapKeyAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.MapKeyImpl <em>Map Key Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.MapKeyImpl
+	 * @generated
+	 */
+	public Adapter createMapKeyImplAdapter()
 	{
 		return null;
 	}
@@ -1372,6 +1722,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.SequenceGeneratorImpl <em>Sequence Generator Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.SequenceGeneratorImpl
+	 * @generated
+	 */
+	public Adapter createSequenceGeneratorImplAdapter()
+	{
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.Table <em>Table</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -1397,6 +1762,21 @@ public class OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createTableGeneratorAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.internal.resource.orm.TableGeneratorImpl <em>Table Generator Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.TableGeneratorImpl
+	 * @generated
+	 */
+	public Adapter createTableGeneratorImplAdapter()
 	{
 		return null;
 	}

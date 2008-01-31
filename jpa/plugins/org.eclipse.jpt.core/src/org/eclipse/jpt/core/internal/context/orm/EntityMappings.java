@@ -51,7 +51,7 @@ public interface EntityMappings extends IJpaContextNode
 		String SPECIFIED_CATALOG_PROPERTY = "specifiedCatalogProperty";
 
 	/**
-	 * Return the specifiedAccess if not null, otherwise return the defaultCatalog.
+	 * Return the specifiedAccess if not null, otherwise return the defaultAccess.
 	 */
 	AccessType getAccess();
 	AccessType getDefaultAccess();
@@ -68,6 +68,7 @@ public interface EntityMappings extends IJpaContextNode
 	int xmlPersistentTypesSize();
 	XmlPersistentType addXmlPersistentType(String mappingKey, String className);
 	void removeXmlPersistentType(int index);
+	void removeXmlPersistentType(XmlPersistentType xmlPersistentType);
 	//void moveXmlPersistentType(int targetIndex, int sourceIndex);
 		String PERSISTENT_TYPES_LIST = "persistentTypes";
 	
