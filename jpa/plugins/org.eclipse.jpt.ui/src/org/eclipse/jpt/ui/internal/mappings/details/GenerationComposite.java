@@ -226,14 +226,14 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 		container = buildSubSection(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
-			buildSequenceGeneratorBooleanHolder()
+			sequenceGeneratorExpansionStateHolder
 		);
 
 		// Sequence Generator check box
 		Button sequenceGeneratorCheckBox = buildCheckBox(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
-			sequenceGeneratorExpansionStateHolder,
+			buildSequenceGeneratorBooleanHolder(),
 			IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR
 		);
 
@@ -250,13 +250,13 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 		container = buildSubSection(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_tableGenerator,
-			buildTableGeneratorBooleanHolder()
+			tableGeneratorExpansionStateHolder
 		);
 
 		Button tableGeneratorCheckBox = buildCheckBox(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_tableGenerator,
-			tableGeneratorExpansionStateHolder,
+			buildTableGeneratorBooleanHolder(),
 			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR
 		);
 

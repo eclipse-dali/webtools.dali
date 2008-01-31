@@ -140,7 +140,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 				}
 
 				if (generatedValue == null) {
-					subject().addGeneratedValue();
+					generatedValue = subject().addGeneratedValue();
 				}
 
 				generatedValue.setSpecifiedGenerator(generatorName);
