@@ -224,7 +224,7 @@ public class JavaPersistentAttributeResourceImpl
 	}
 
 	public static String buildReferenceEntityTypeName(ITypeBinding typeBinding) {
-		if (!typeBinding.isArray()) { // arrays cannot be entities
+		if (typeBinding != null && !typeBinding.isArray()) { // arrays cannot be entities
 			return typeBinding.getTypeDeclaration().getQualifiedName();
 		}
 		return null;
@@ -248,7 +248,7 @@ public class JavaPersistentAttributeResourceImpl
 	
 	protected boolean typeIsContainer(CompilationUnit astRoot) {
 		String typeName = buildReferenceEntityTypeName(getMember().typeBinding(astRoot));
-		return typeName == null ? null : typeNamedIsContainer(typeName);
+		return typeName == null ? false : typeNamedIsContainer(typeName);
 	}
 	
 	/**

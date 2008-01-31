@@ -121,6 +121,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	protected JavaPersistentTypeResource buildJavaTypeResource(IType testType) 
 		throws CoreException {
 		this.javaResourceModel = buildJavaResourceModel(testType);
+		this.javaResourceModel.resolveTypes();
 		return this.javaResourceModel.resource().getPersistentType();
 	}	
 	
