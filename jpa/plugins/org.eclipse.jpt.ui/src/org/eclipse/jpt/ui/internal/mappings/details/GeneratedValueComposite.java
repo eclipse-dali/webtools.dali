@@ -14,8 +14,8 @@ import org.eclipse.jpt.core.internal.context.base.GenerationType;
 import org.eclipse.jpt.core.internal.context.base.IGeneratedValue;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -77,35 +77,35 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 	}
 
 	private PropertyChangeListener buildGeneratedValueChangeListener() {
+		return new SWTPropertyChangeListenerWrapper(buildGeneratedValueChangeListener_());
+	}
+	
+	private PropertyChangeListener buildGeneratedValueChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
 
-				final IGeneratedValue oldValue = (IGeneratedValue) e.oldValue();
-				final IGeneratedValue newValue = (IGeneratedValue) e.newValue();
+				IGeneratedValue oldValue = (IGeneratedValue) e.oldValue();
+				IGeneratedValue newValue = (IGeneratedValue) e.newValue();
 
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						uninstallGeneratedValueListeners(oldValue);
-						repopulate();
-						installGeneratedValueListeners(newValue);
-					}
-				});
+				uninstallGeneratedValueListeners(oldValue);
+				repopulate();
+				installGeneratedValueListeners(newValue);
 			}
 		};
 	}
 
 	private PropertyChangeListener buildGeneratorNameChangeListener() {
+		return new SWTPropertyChangeListenerWrapper(buildGeneratorNameChangeListener_());
+	}
+	
+	private PropertyChangeListener buildGeneratorNameChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
 				if (isPopulating()) {
 					return;
 				}
 
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						populateGeneratorName();
-					}
-				});
+				populateGeneratorName();
 			}
 		};
 	}
@@ -318,7 +318,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 				if (StringTools.stringIsEmpty(generatorName)) {
 					this.generatorNameCombo.setText("");
 				}
-				else {
+				else if (!this.generatorNameCombo.getText().equals(generatorName)) {
 					this.generatorNameCombo.setText(generatorName);
 				}
 			}

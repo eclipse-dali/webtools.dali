@@ -51,11 +51,7 @@ public final class LabeledTableItem implements LabeledControl
 			return;
 		}
 
-		SWTUtil.asyncExec(new Runnable() {
-			public void run() {
-				updateTableItem(tableItem.getText(), image);
-			}
-		});
+		updateTableItem(tableItem.getText(), image);
 	}
 
 	/*
@@ -67,11 +63,7 @@ public final class LabeledTableItem implements LabeledControl
 			return;
 		}
 
-		SWTUtil.asyncExec(new Runnable() {
-			public void run() {
-				updateTableItem(text, tableItem.getImage());
-			}
-		});
+		updateTableItem(text, tableItem.getImage());
 	}
 
 	private void updateTableItem(String text, Image image) {

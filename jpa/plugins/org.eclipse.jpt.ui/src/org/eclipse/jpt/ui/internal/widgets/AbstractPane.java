@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jpt.ui.internal.Tracing;
+import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.swt.BooleanButtonModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.TriStateBooleanButtonModelAdapter;
 import org.eclipse.jpt.ui.internal.util.ControlAligner;
@@ -319,20 +320,16 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	private PropertyChangeListener buildAspectChangeListener() {
+		return new SWTPropertyChangeListenerWrapper(buildAspectChangeListener_());
+	}
+	
+	private PropertyChangeListener buildAspectChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-
 				if (container.isDisposed()) {
 					return;
 				}
-
-				final String propertyName = e.propertyName();
-
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						AbstractPane.this.propertyChanged(propertyName);
-					}
-				});
+				AbstractPane.this.propertyChanged(e.propertyName());
 			}
 		};
 	}
@@ -488,17 +485,17 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	private PropertyChangeListener buildExpandedStateChangeListener(final Section section) {
+		return new SWTPropertyChangeListenerWrapper(buildExpandedStateChangeListener_(section));
+	}
+	
+	private PropertyChangeListener buildExpandedStateChangeListener_(final Section section) {
 		return new PropertyChangeListener() {
 			public void propertyChanged(final PropertyChangeEvent e) {
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						Boolean value = (Boolean) e.newValue();
-						if (value == null) {
-							value = Boolean.TRUE;
-						}
-						section.setExpanded(value);
-					}
-				});
+				Boolean value = (Boolean) e.newValue();
+				if (value == null) {
+					value = Boolean.TRUE;
+				}
+				section.setExpanded(value);
 			}
 		};
 	}
@@ -1144,6 +1141,10 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	private PropertyChangeListener buildSubjectChangeListener() {
+		return new SWTPropertyChangeListenerWrapper(this.buildSubjectChangeListener_());
+	}
+	
+	private PropertyChangeListener buildSubjectChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
 				AbstractPane.this.subjectChanged(e);

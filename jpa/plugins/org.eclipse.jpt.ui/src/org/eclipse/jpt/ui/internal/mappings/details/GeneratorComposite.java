@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IGenerator;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
-import org.eclipse.jpt.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
@@ -61,8 +61,12 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 	 */
 	protected abstract T buildGenerator();
 
-	@SuppressWarnings("unchecked")
 	private PropertyChangeListener buildGeneratorChangeListener() {
+		return new SWTPropertyChangeListenerWrapper(this.buildGeneratorChangeListener_());
+	}
+
+	@SuppressWarnings("unchecked")
+	private PropertyChangeListener buildGeneratorChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
 				GeneratorComposite.this.uninstallListeners((T) e.oldValue());
@@ -111,23 +115,23 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 	}
 
 	private PropertyChangeListener buildNamePropertyChangeListener() {
+		return new SWTPropertyChangeListenerWrapper(buildNamePropertyChangeListener_());
+	}
+	
+	private PropertyChangeListener buildNamePropertyChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
 				if (isPopulating()) {
 					return;
 				}
 
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						GeneratorComposite.this.setPopulating(true);
-						try {
-							GeneratorComposite.this.populateNameViewer();
-						}
-						finally {
-							GeneratorComposite.this.setPopulating(false);
-						}
-					}
-				});
+				GeneratorComposite.this.setPopulating(true);
+				try {
+					GeneratorComposite.this.populateNameViewer();
+				}
+				finally {
+					GeneratorComposite.this.setPopulating(false);
+				}
 			}
 		};
 	}
@@ -199,7 +203,7 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 
 	protected void installListeners(T generator) {
 		if (generator != null) {
-			generator.addPropertyChangeListener(IGenerator.NAME_PROPERTY, namePropertyChangeListener);
+			generator.addPropertyChangeListener(IGenerator.NAME_PROPERTY, this.namePropertyChangeListener);
 		}
 	}
 
@@ -237,7 +241,7 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 
 	protected void uninstallListeners(T generator) {
 		if (generator != null) {
-			generator.removePropertyChangeListener(IGenerator.NAME_PROPERTY, namePropertyChangeListener);
+			generator.removePropertyChangeListener(IGenerator.NAME_PROPERTY, this.namePropertyChangeListener);
 		}
 	}
 }

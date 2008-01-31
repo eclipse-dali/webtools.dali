@@ -9,6 +9,7 @@
 package org.eclipse.jpt.ui.internal.util;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -59,6 +60,10 @@ public final class LabeledControlUpdater {
 	}
 
 	private PropertyChangeListener buildIconListener() {
+		return new SWTPropertyChangeListenerWrapper(buildIconListener_());
+	}
+	
+	private PropertyChangeListener buildIconListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
 				LabeledControlUpdater.this.setImage((Image) e.newValue());
@@ -72,6 +77,10 @@ public final class LabeledControlUpdater {
 	}
 
 	private PropertyChangeListener buildTextListener() {
+		return new SWTPropertyChangeListenerWrapper(buildTextListener_());
+	}
+	
+	private PropertyChangeListener buildTextListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
 				LabeledControlUpdater.this.setText((String) e.newValue());
