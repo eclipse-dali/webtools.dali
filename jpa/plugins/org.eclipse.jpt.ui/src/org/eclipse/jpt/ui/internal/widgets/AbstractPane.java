@@ -235,6 +235,10 @@ public abstract class AbstractPane<T extends Model>
 
 			this.container = this.buildContainer(parent);
 			this.initializeLayout(this.container);
+
+			if (subject() != null) {
+				this.populate();
+			}
 		}
 		finally {
 			this.populating = false;
@@ -252,7 +256,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Layout
 	 */
 	protected final void addAlignLeft(AbstractPane<?> container) {
-		leftControlAligner.add(container.leftControlAligner);
+		this.leftControlAligner.add(container.leftControlAligner);
 	}
 
 	/**
@@ -265,7 +269,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Layout
 	 */
 	protected final void addAlignLeft(Control control) {
-		leftControlAligner.add(control);
+		this.leftControlAligner.add(control);
 	}
 
 	/**
@@ -279,7 +283,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Layout
 	 */
 	protected final void addAlignRight(AbstractPane<?> container) {
-		rightControlAligner.add(container.rightControlAligner);
+		this.rightControlAligner.add(container.rightControlAligner);
 	}
 
 	/**
@@ -292,7 +296,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Layout
 	 */
 	protected final void addAlignRight(Control control) {
-		rightControlAligner.add(control);
+		this.rightControlAligner.add(control);
 	}
 
 	/**
@@ -322,7 +326,7 @@ public abstract class AbstractPane<T extends Model>
 	private PropertyChangeListener buildAspectChangeListener() {
 		return new SWTPropertyChangeListenerWrapper(buildAspectChangeListener_());
 	}
-	
+
 	private PropertyChangeListener buildAspectChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
@@ -487,7 +491,7 @@ public abstract class AbstractPane<T extends Model>
 	private PropertyChangeListener buildExpandedStateChangeListener(final Section section) {
 		return new SWTPropertyChangeListenerWrapper(buildExpandedStateChangeListener_(section));
 	}
-	
+
 	private PropertyChangeListener buildExpandedStateChangeListener_(final Section section) {
 		return new PropertyChangeListener() {
 			public void propertyChanged(final PropertyChangeEvent e) {
@@ -569,7 +573,7 @@ public abstract class AbstractPane<T extends Model>
 
 		// Re-parent the left control to the new sub pane
 		leftControl.setParent(container);
-		leftControlAligner.add(leftControl);
+		this.leftControlAligner.add(leftControl);
 
 		// Center control
 		gridData = new GridData();
@@ -599,7 +603,7 @@ public abstract class AbstractPane<T extends Model>
 			rightControl.setParent(container);
 
 			// Re-parent the right control to the new sub pane
-			rightControlAligner.add(rightControl);
+			this.rightControlAligner.add(rightControl);
 
 			// Register the help id for the right control
 			if (helpId != null) {
@@ -707,7 +711,8 @@ public abstract class AbstractPane<T extends Model>
 			container,
 			labelText,
 			centerControl,
-			rightControl
+			rightControl,
+			null
 		);
 	}
 
@@ -760,7 +765,7 @@ public abstract class AbstractPane<T extends Model>
 	                                                Control centerControl,
 	                                                String helpId) {
 
-		Label label = this.buildLabel(shell(), labelText);
+		Label label = this.buildLabel(container, labelText);
 
 		return this.buildLabeledComposite(
 			container,
@@ -1051,7 +1056,7 @@ public abstract class AbstractPane<T extends Model>
 			container,
 			sectionText,
 			type,
-			new SimplePropertyValueModel<Boolean>(true)
+			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
 		);
 	}
 
@@ -1143,7 +1148,7 @@ public abstract class AbstractPane<T extends Model>
 	private PropertyChangeListener buildSubjectChangeListener() {
 		return new SWTPropertyChangeListenerWrapper(this.buildSubjectChangeListener_());
 	}
-	
+
 	private PropertyChangeListener buildSubjectChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
@@ -1279,7 +1284,7 @@ public abstract class AbstractPane<T extends Model>
 		return this.buildSubSection(
 			container,
 			sectionText,
-			new SimplePropertyValueModel<Boolean>(true)
+			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
 		);
 	}
 
@@ -1445,7 +1450,7 @@ public abstract class AbstractPane<T extends Model>
 	                                                       String text,
 	                                                       WritablePropertyValueModel<Boolean> booleanHolder) {
 
-		return this.buildTriStateCheckBox(container, text, booleanHolder, null);
+		return this.buildTriStateCheckBox(parent, text, booleanHolder, null);
 	}
 
 	/**
@@ -1497,7 +1502,7 @@ public abstract class AbstractPane<T extends Model>
 	                                                                  PropertyValueModel<String> stringHolder) {
 
 		return this.buildTriStateCheckBoxWithDefault(
-			container,
+			parent,
 			text,
 			booleanHolder,
 			stringHolder,
@@ -1570,7 +1575,7 @@ public abstract class AbstractPane<T extends Model>
 	 */
 	protected void disengageListeners(T subject) {
 		if (subject != null) {
-			this.log("   ->disengageListeners() from " + subject);
+//			this.log("   ->disengageListeners() from " + subject);
 
 			for (String propertyName : this.propertyNames()) {
 				subject.removePropertyChangeListener(propertyName, this.aspectChangeListener);
@@ -1584,7 +1589,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Populate
 	 */
 	public final void dispose() {
-		if (!container.isDisposed()) {
+		if (!this.container.isDisposed()) {
 			this.log("dispose()");
 			this.performDispose();
 			this.disengageListeners();
@@ -1655,7 +1660,7 @@ public abstract class AbstractPane<T extends Model>
 	protected void engageListeners(T subject) {
 		if (subject != null) {
 
-			this.log("   ->engageListeners() on " + subject);
+//			this.log("   ->engageListeners() on " + subject);
 
 			for (String propertyName : this.propertyNames()) {
 				subject.addPropertyChangeListener(propertyName, this.aspectChangeListener);
@@ -1695,7 +1700,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Populate
 	 */
 	protected final PropertyValueModel<T> getSubjectHolder() {
-		return subjectHolder;
+		return this.subjectHolder;
 	}
 
 	/**
@@ -1766,8 +1771,8 @@ public abstract class AbstractPane<T extends Model>
 		// Align the left and right controls with the controls from the parent
 		// pane
 		if (automaticallyAlignWidgets) {
-			parentPane.leftControlAligner .add(leftControlAligner);
-			parentPane.rightControlAligner.add(rightControlAligner);
+			parentPane.leftControlAligner .add(this.leftControlAligner);
+			parentPane.rightControlAligner.add(this.rightControlAligner);
 		}
 	}
 
@@ -1860,7 +1865,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Populate
 	 */
 	public final void populate() {
-		if (!container.isDisposed()) {
+		if (!this.container.isDisposed()) {
 			this.log("populate()");
 			this.repopulate();
 			this.engageListeners();
@@ -1916,7 +1921,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Layout
 	 */
 	protected final void removeAlignLeft(AbstractPane<?> pane) {
-		leftControlAligner.remove(pane.leftControlAligner);
+		this.leftControlAligner.remove(pane.leftControlAligner);
 	}
 
 	/**
@@ -1930,7 +1935,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Layout
 	 */
 	protected final void removeAlignLeft(Control control) {
-		leftControlAligner.remove(control);
+		this.leftControlAligner.remove(control);
 	}
 
 	/**
@@ -1944,7 +1949,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Layout
 	 */
 	protected final void removeAlignRight(AbstractPane<?> pane) {
-		rightControlAligner.remove(pane.rightControlAligner);
+		this.rightControlAligner.remove(pane.rightControlAligner);
 	}
 
 	/**
@@ -1958,7 +1963,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Layout
 	 */
 	protected final void removeAlignRight(Control control) {
-		rightControlAligner.remove(control);
+		this.rightControlAligner.remove(control);
 	}
 
 	/**
@@ -2018,7 +2023,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @return The nearest window displaying this pane
 	 */
 	protected final Shell shell() {
-		return container.getShell();
+		return this.container.getShell();
 	}
 
 	/**
@@ -2030,7 +2035,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Populate
 	 */
 	protected T subject() {
-		return subjectHolder.value();
+		return this.subjectHolder.value();
 	}
 
 	/**
@@ -2043,7 +2048,7 @@ public abstract class AbstractPane<T extends Model>
 	 */
 	@SuppressWarnings("unchecked")
 	private void subjectChanged(PropertyChangeEvent e) {
-		if (!container.isDisposed()) {
+		if (!this.container.isDisposed()) {
 			this.log("subjectChanged()");
 			this.disengageListeners((T) e.oldValue());
 			this.repopulate();

@@ -55,6 +55,8 @@ public abstract class TableCombo<T extends IJpaNode> extends AbstractDatabaseObj
 	 */
 	@Override
 	protected void tableChanged(Table table) {
+		super.tableChanged(table);
+
 		if (table == table()) {
 			this.doPopulate();
 		}

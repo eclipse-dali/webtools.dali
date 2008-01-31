@@ -27,6 +27,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -83,7 +84,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 
 	private void addConnectionListener(T column) {
 		if (column != null) {
-			column.jpaProject().connectionProfile().addConnectionListener(connectionListener);
+			column.jpaProject().connectionProfile().addConnectionListener(this.connectionListener);
 		}
 	}
 
@@ -101,7 +102,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 					public void run() {
 						log("closed");
 
-						if (!combo.isDisposed()) {
+						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.repopulate();
 						}
 					}
@@ -119,7 +120,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 					public void run() {
 						log("modified");
 
-						if (!combo.isDisposed()) {
+						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.repopulate();
 						}
 					}
@@ -137,7 +138,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 					public void run() {
 						log("opened");
 
-						if (!combo.isDisposed()) {
+						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.repopulate();
 						}
 					}
@@ -151,7 +152,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 					public void run() {
 						log("schemaChanged: " + schema.getName());
 
-						if (!combo.isDisposed()) {
+						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.schemaChanged(schema);
 						}
 					}
@@ -165,7 +166,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 					public void run() {
 						log("tableChanged: " + table.getName());
 
-						if (!combo.isDisposed()) {
+						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.tableChanged(table);
 						}
 					}
@@ -229,7 +230,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	@Override
 	protected void doPopulate() {
 
-		combo.removeAll();
+		this.combo.removeAll();
 
 		if (subject() != null) {
 			populateCombo();
@@ -244,8 +245,8 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 
 		super.enableWidgets(enabled);
 
-		if (!combo.isDisposed()) {
-			combo.setEnabled(enabled);
+		if (!this.combo.isDisposed()) {
+			this.combo.setEnabled(enabled);
 		}
 	}
 
@@ -259,7 +260,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	}
 
 	public final CCombo getCombo() {
-		return combo;
+		return this.combo;
 	}
 
 	/*
@@ -268,7 +269,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	@Override
 	protected void initialize() {
 		super.initialize();
-		connectionListener = buildConnectionListener();
+		this.connectionListener = buildConnectionListener();
 	}
 
 	/*
@@ -277,9 +278,9 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		combo = buildCombo(container);
-		combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
-		combo.addModifyListener(buildModifyListener());
+		this.combo = buildCombo(container);
+		this.combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
+		this.combo.addModifyListener(buildModifyListener());
 	}
 
 	private void log(String message) {
@@ -307,7 +308,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 		if (connectionProfile().isConnected()) {
 
 			for (Iterator<String> iter = CollectionTools.sort(values()); iter.hasNext(); ) {
-				combo.add(iter.next());
+				this.combo.add(iter.next());
 			}
 		}
 
@@ -322,19 +323,31 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 		String defaultValue = defaultValue();
 
 		if (defaultValue != null) {
-			combo.add(NLS.bind(
+			this.combo.add(NLS.bind(
 				JptUiMappingsMessages.ColumnComposite_defaultWithOneParam,
 				defaultValue
 			));
 		}
 		else {
-			combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
+			this.combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void propertyChanged(String propertyName) {
+		super.propertyChanged(propertyName);
+
+		if (CollectionTools.contains(propertyNames(), propertyName)) {
+			updateSelectedItem();
 		}
 	}
 
 	private void removeConnectionListener(T value) {
 		if (value != null) {
-			value.jpaProject().connectionProfile().removeConnectionListener(connectionListener);
+			value.jpaProject().connectionProfile().removeConnectionListener(this.connectionListener);
 		}
 	}
 
@@ -365,21 +378,27 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	 * Updates the selected item by selected the current value, if not
 	 * <code>null</code>, or select the default value if one is available,
 	 * otherwise remove the selection.
+	 * <p>
+	 * <b>Note:</b> It seems the text can be shown as truncated, changing the
+	 * selection to (0, 0) makes the entire text visible.
 	 */
 	private void updateSelectedItem() {
 		String value = value();
 
 		if (value != null) {
-			combo.setText(value);
+			this.combo.setText(value);
+			this.combo.setSelection(new Point(0, 0));
 		}
 		else {
 			String defaultValue = defaultValue();
+			String displayString = NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultValue);
 
-			if (!combo.getText().equals(NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultValue))) {
-				combo.select(0);
+			if (!this.combo.getText().equals(displayString)) {
+				this.combo.setText(displayString);
+				this.combo.setSelection(new Point(0, 0));
 			}
 			else {
-				combo.select(-1);
+				this.combo.select(-1);
 			}
 		}
 	}

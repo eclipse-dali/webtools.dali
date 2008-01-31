@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.util;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.AssertionFailedException;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.Viewer;
@@ -172,8 +173,15 @@ public class SWTUtil {
 	public static <D1 extends Dialog, D2 extends D1>
 		void show(final D1 dialog, final PostExecution<D2> postExecution) {
 
-		Assert.isNotNull(dialog,        "The dialog cannot be null");
-		Assert.isNotNull(postExecution, "The PostExecution cannot be null");
+		try {
+			Assert.isNotNull(dialog,        "The dialog cannot be null");
+			Assert.isNotNull(postExecution, "The PostExecution cannot be null");
+		}
+		catch (AssertionFailedException e) {
+			// Make sure the UI is interactive
+			setUserInterfaceActive(true);
+			throw e;
+		}
 
 		new Thread() {
 			@Override
@@ -197,6 +205,7 @@ public class SWTUtil {
 	private static <D1 extends Dialog, D2 extends D1>
 		void showImp(D1 dialog, PostExecution<D2> postExecution) {
 
+		setUserInterfaceActive(true);
 		dialog.open();
 
 		if (postExecution != NullPostExecution.<D2>instance()) {

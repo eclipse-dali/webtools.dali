@@ -26,6 +26,7 @@ public abstract class AbstractJoinColumnStateObject extends AbstractNode
 	private IAbstractJoinColumn joinColumn;
 	private String selectedName;
 	private String selectedReferencedColumnName;
+	private Validator validator;
 
 	static final String DEFAULT_NAME_SELECTED_PROPERTY = "defaultNameSelected";
 	static final String DEFAULT_REFERENCE_COLUMN_NAME_SELECTED_PROPERTY = "defaultReferencedColumnNameSelected";
@@ -54,6 +55,7 @@ public abstract class AbstractJoinColumnStateObject extends AbstractNode
 	 */
 	@Override
 	protected void checkParent(Node parentNode) {
+		// This is the root of the Join Column state object
 	}
 
 	/*
@@ -64,23 +66,23 @@ public abstract class AbstractJoinColumnStateObject extends AbstractNode
 	}
 
 	public String getDefaultName() {
-		if (joinColumn == null) {
+		if (this.joinColumn == null) {
 			return null;
 		}
 
-		return joinColumn.getDefaultName();
+		return this.joinColumn.getDefaultName();
 	}
 
 	public String getDefaultReferencedColumnName() {
-		if (joinColumn == null) {
+		if (this.joinColumn == null) {
 			return null;
 		}
 
-		return joinColumn.getDefaultReferencedColumnName();
+		return this.joinColumn.getDefaultReferencedColumnName();
 	}
 
 	public IAbstractJoinColumn getJoinColumn() {
-		return joinColumn;
+		return this.joinColumn;
 	}
 
 	public abstract Table getNameTable();
@@ -88,35 +90,35 @@ public abstract class AbstractJoinColumnStateObject extends AbstractNode
 	public abstract Table getReferencedNameTable();
 
 	public String getSelectedName() {
-		return selectedName;
+		return this.selectedName;
 	}
 
 	public String getSelectedReferencedColumnName() {
-		return selectedReferencedColumnName;
+		return this.selectedReferencedColumnName;
 	}
 
 	public String getSpecifiedName() {
-		if (joinColumn == null) {
+		if (this.joinColumn == null) {
 			return null;
 		}
 
-		return joinColumn.getSpecifiedName();
+		return this.joinColumn.getSpecifiedName();
 	}
 
 	public String getSpecifiedReferencedColumnName() {
-		if (joinColumn == null) {
+		if (this.joinColumn == null) {
 			return null;
 		}
 
-		return joinColumn.getSpecifiedReferencedColumnName();
+		return this.joinColumn.getSpecifiedReferencedColumnName();
 	}
 
 	public boolean isDefaultNameSelected() {
-		return defaultNameSelected;
+		return this.defaultNameSelected;
 	}
 
 	public boolean isDefaultReferencedColumnNameSelected() {
-		return defaultReferencedColumnNameSelected;
+		return this.defaultReferencedColumnNameSelected;
 	}
 
 	public void setDefaultNameSelected(boolean defaultNameSelected) {
@@ -141,5 +143,21 @@ public abstract class AbstractJoinColumnStateObject extends AbstractNode
 		String oldSelectedReferencedColumnName = this.selectedReferencedColumnName;
 		this.selectedReferencedColumnName = selectedReferencedColumnName;
 		firePropertyChanged(SELECTED_REFERENCED_COLUMN_NAME_PROPERTY, oldSelectedReferencedColumnName, selectedReferencedColumnName);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public void setValidator(Validator validator) {
+		this.validator = validator;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public Validator validator() {
+		return this.validator;
 	}
 }

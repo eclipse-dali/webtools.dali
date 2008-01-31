@@ -130,7 +130,7 @@ public final class TriStateCheckBox {
 			return TriState.PARTIALLY_CHECKED;
 		}
 
-		return selection ? TriState.CHECKED : TriState.UNCHECKED;
+		return selection.booleanValue() ? TriState.CHECKED : TriState.UNCHECKED;
 	}
 
 	private Layout buildTableLayout() {
@@ -183,25 +183,25 @@ public final class TriStateCheckBox {
 		parent = new Composite(parent, SWT.NULL);
 		parent.setLayout(this.buildTableLayout());
 
-		this.table = new Table(parent, SWT.FLAT | SWT.CHECK | SWT.SINGLE | SWT.NO_BACKGROUND);
+		this.table = new Table(parent, SWT.CHECK | SWT.SINGLE | SWT.TRANSPARENT);
 		this.table.addMouseListener(buildMouseListener());
 		this.table.addSelectionListener(buildSelectionListener());
 		this.table.getHorizontalBar().setVisible(false);
 		this.table.getVerticalBar().setVisible(false);
 
-		new TableItem(table, SWT.CHECK);
+		new TableItem(this.table, SWT.CHECK);
 	}
 
 	private void changeTriState() {
 
-		if (state == TriState.UNCHECKED) {
-			state = TriState.PARTIALLY_CHECKED;
+		if (this.state == TriState.UNCHECKED) {
+			this.state = TriState.PARTIALLY_CHECKED;
 		}
-		else if (state == TriState.CHECKED) {
-			state = TriState.UNCHECKED;
+		else if (this.state == TriState.CHECKED) {
+			this.state = TriState.UNCHECKED;
 		}
 		else {
-			state = TriState.CHECKED;
+			this.state = TriState.CHECKED;
 		}
 	}
 
@@ -212,7 +212,7 @@ public final class TriStateCheckBox {
 	 * @return The unique item of the table that handles tri-state selection
 	 */
 	public TableItem getCheckBox() {
-		return table.getItem(0);
+		return this.table.getItem(0);
 	}
 
 	/**
@@ -221,7 +221,7 @@ public final class TriStateCheckBox {
 	 * @return The main composite used to display the tri-state check box
 	 */
 	public Control getControl() {
-		return table.getParent();
+		return this.table.getParent();
 	}
 
 	/**
@@ -240,7 +240,7 @@ public final class TriStateCheckBox {
 	 * unchecked; or <code>null</code> for partially selected
 	 */
 	public Boolean getSelection() {
-		return (state == TriState.PARTIALLY_CHECKED) ? null : (state == TriState.CHECKED);
+		return (this.state == TriState.PARTIALLY_CHECKED) ? null : (this.state == TriState.CHECKED);
 	}
 
 	/**
@@ -307,7 +307,7 @@ public final class TriStateCheckBox {
 		TriState oldState = this.state;
 		this.state = this.buildState(selection);
 
-		if (oldState != state) {
+		if (oldState != this.state) {
 			this.updateCheckBox();
 		}
 	}
@@ -330,13 +330,13 @@ public final class TriStateCheckBox {
 	private void updateCheckBox() {
 		TableItem checkBox = this.getCheckBox();
 
-		if (state == TriState.PARTIALLY_CHECKED) {
+		if (this.state == TriState.PARTIALLY_CHECKED) {
 			checkBox.setChecked(true);
 			checkBox.setGrayed(true);
 		}
 		else {
 			checkBox.setGrayed(false);
-			checkBox.setChecked(state == TriState.CHECKED);
+			checkBox.setChecked(this.state == TriState.CHECKED);
 		}
 	}
 

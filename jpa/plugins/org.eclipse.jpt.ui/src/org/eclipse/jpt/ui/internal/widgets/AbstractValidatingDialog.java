@@ -29,10 +29,21 @@ import org.eclipse.swt.widgets.Shell;
  */
 public abstract class AbstractValidatingDialog<T extends Node> extends AbstractDialog<T> {
 
+	/**
+	 * Creates a new <code>AbstractValidatingDialog</code>.
+	 *
+	 * @param parent The parent shell
+	 */
 	public AbstractValidatingDialog(Shell parent) {
 		super(parent);
 	}
 
+	/**
+	 * Creates a new <code>AbstractValidatingDialog</code>.
+	 *
+	 * @param parent The parent shell
+	 * @param title The dialog's title
+	 */
 	public AbstractValidatingDialog(Shell parent, String title) {
 		super(parent, title);
 	}

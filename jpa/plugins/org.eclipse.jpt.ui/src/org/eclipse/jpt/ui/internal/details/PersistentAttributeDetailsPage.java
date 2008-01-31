@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Map;
@@ -26,12 +27,15 @@ import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.IJpaUiFactory;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.model.value.FilteringPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -48,7 +52,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<IPersistentAttribute>
+public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttribute> extends BaseJpaDetailsPage<T>
 {
 	private IJpaComposite<IAttributeMapping> currentMappingComposite;
 	private String currentMappingKey;
@@ -63,11 +67,21 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public PersistentAttributeDetailsPage(PropertyValueModel<? extends IPersistentAttribute> subjectHolder,
+	public PersistentAttributeDetailsPage(PropertyValueModel<? extends T> subjectHolder,
                                          Composite parent,
                                          TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void addPropertyNames(Collection<String> propertyNames) {
+		super.addPropertyNames(propertyNames);
+		propertyNames.add(IPersistentAttribute.DEFAULT_MAPPING_PROPERTY);
+		propertyNames.add(IPersistentAttribute.SPECIFIED_MAPPING_PROPERTY);
 	}
 
 	protected IAttributeMappingUiProvider<? extends IAttributeMapping> attributeMappingUiProvider(String key) {
@@ -101,6 +115,19 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 
 			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 				// do nothing
+			}
+		};
+	}
+
+	private PropertyAspectAdapter<IPersistentAttribute, IAttributeMapping> buildGenericMappingHolder() {
+		return new PropertyAspectAdapter<IPersistentAttribute, IAttributeMapping>(
+			getSubjectHolder(),
+			IPersistentAttribute.DEFAULT_MAPPING_PROPERTY,
+			IPersistentAttribute.SPECIFIED_MAPPING_PROPERTY)
+		{
+			@Override
+			protected IAttributeMapping buildValue_() {
+				return subject.getMapping();
 			}
 		};
 	}
@@ -145,13 +172,19 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 		);
 	}
 
-	private PropertyValueModel<IAttributeMapping> buildMappingHolder(final String key) {
-		return new TransformationPropertyValueModel<IPersistentAttribute, IAttributeMapping>(getSubjectHolder()) {
-			@Override
-			protected IAttributeMapping transform_(IPersistentAttribute value) {
-				return key.equals(value.mappingKey()) ? value.getMapping() : null;
+	private Filter<IAttributeMapping> buildMappingFilter(final String key) {
+		return new Filter<IAttributeMapping>() {
+			public boolean accept(IAttributeMapping value) {
+				return (value == null) || key.equals(value.getKey());
 			}
 		};
+	}
+
+	private PropertyValueModel<IAttributeMapping> buildMappingHolder(final String key) {
+		return new FilteringPropertyValueModel<IAttributeMapping>(
+			buildGenericMappingHolder(),
+			buildMappingFilter(key)
+		);
 	}
 
 	protected Label buildMappingLabel(Composite parent) {
@@ -177,9 +210,15 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 		this.currentMappingComposite = null;
 
 		for (IJpaComposite<IAttributeMapping> composite : this.mappingComposites.values()) {
-			composite.dispose();
+			try {
+				composite.dispose();
+			}
+			catch (Exception e) {
+				JptUiPlugin.log(e);
+			}
 		}
 
+		this.mappingComposites.clear();
 		super.doDispose();
 	}
 
@@ -264,23 +303,17 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 
 	private void populateMappingComboAndPage() {
 		populateMapAsCombo();
-
-		IAttributeMapping mapping = (this.subject() != null) ? this.subject().getMapping() : null;
-		populateMappingPage(mapping == null ? null : mapping.getKey());
+		updateMappingPage();
 	}
-
-//TODO focus??
-//	public boolean setFocus() {
-//		super.setFocus();
-//		return mappingCombo.getCombo().setFocus();
-//	}
 
 	private void populateMappingPage(String mappingKey) {
 
 		if (this.currentMappingComposite != null) {
-			this.currentMappingComposite.dispose();
 
-			if (this.currentMappingKey == mappingKey) {
+			if (this.currentMappingKey != mappingKey) {
+				this.currentMappingComposite.dispose();
+			}
+			else {
 				return;
 			}
 		}
@@ -292,17 +325,44 @@ public abstract class PersistentAttributeDetailsPage extends BaseJpaDetailsPage<
 
 			try {
 				this.currentMappingComposite.populate();
+				this.mappingPageBook.showPage(this.currentMappingComposite.getControl());
+				this.mappingPageBook.layout(true);
 			}
-			finally {
-				// Log or show error
+			catch (Exception e) {
+				this.mappingComposites.remove(this.currentMappingComposite);
+				this.currentMappingComposite = null;
+				this.mappingPageBook.showPage(new Label(this.mappingPageBook, SWT.NULL));
+				JptUiPlugin.log(e);
 			}
-
-			this.mappingPageBook.showPage(this.currentMappingComposite.getControl());
-			this.mappingPageBook.layout(true);
 		}
 		else {
 			this.currentMappingComposite = null;
 			this.mappingPageBook.showPage(new Label(this.mappingPageBook, SWT.NULL));
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void propertyChanged(String propertyName) {
+		super.propertyChanged(propertyName);
+
+		if (propertyName == IPersistentAttribute.DEFAULT_MAPPING_PROPERTY ||
+		    propertyName == IPersistentAttribute.SPECIFIED_MAPPING_PROPERTY) {
+
+			populateMappingComboAndPage();
+		}
+	}
+
+//TODO focus??
+//	public boolean setFocus() {
+//		super.setFocus();
+//		return mappingCombo.getCombo().setFocus();
+//	}
+
+	private void updateMappingPage() {
+		IAttributeMapping mapping = (this.subject() != null) ? this.subject().getMapping() : null;
+		populateMappingPage(mapping == null ? null : mapping.getKey());
 	}
 }

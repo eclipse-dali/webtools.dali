@@ -112,7 +112,7 @@ public class JpaDetailsView extends AbstractJpaView
 	}
 
 	private IJpaDetailsPage<? extends IJpaContextNode> getDetailsPage(IJpaContextNode contextNode) {
-		//TODO commented out the caching of the details provider for the time being, 
+		//TODO commented out the caching of the details provider for the time being,
 		//someone should probably revist the possibility of caching
 //		String id = contextNode.jpaProject().jpaPlatform().getId();
 //

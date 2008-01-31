@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.java.details;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.NullAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
@@ -32,7 +33,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 2.0
  */
-public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetailsPage
+public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetailsPage<IJavaPersistentAttribute>
 {
 	/**
 	 * Creates a new <code>JavaPersistentAttributeDetailsPage</code>.
@@ -41,7 +42,7 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public JavaPersistentAttributeDetailsPage(PropertyValueModel<? extends IPersistentAttribute> subjectHolder,
+	public JavaPersistentAttributeDetailsPage(PropertyValueModel<? extends IJavaPersistentAttribute> subjectHolder,
 	                                          Composite parent,
 	                                          TabbedPropertySheetWidgetFactory widgetFactory) {
 

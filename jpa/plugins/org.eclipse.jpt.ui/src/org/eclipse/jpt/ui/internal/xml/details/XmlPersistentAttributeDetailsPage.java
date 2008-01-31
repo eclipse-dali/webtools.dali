@@ -54,7 +54,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public class XmlPersistentAttributeDetailsPage extends PersistentAttributeDetailsPage
+public class XmlPersistentAttributeDetailsPage extends PersistentAttributeDetailsPage<XmlPersistentAttribute>
 {
 	private List<IAttributeMappingUiProvider<? extends IAttributeMapping>> attributeMappingUiProviders;
 	private XmlJavaAttributeChooser javaAttributeChooser;
@@ -66,7 +66,7 @@ public class XmlPersistentAttributeDetailsPage extends PersistentAttributeDetail
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public XmlPersistentAttributeDetailsPage(PropertyValueModel<? extends IPersistentAttribute> subjectHolder,
+	public XmlPersistentAttributeDetailsPage(PropertyValueModel<? extends XmlPersistentAttribute> subjectHolder,
 	                                         Composite parent,
 	                                         TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -162,7 +162,7 @@ public class XmlPersistentAttributeDetailsPage extends PersistentAttributeDetail
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		javaAttributeChooser = new XmlJavaAttributeChooser(
+		this.javaAttributeChooser = new XmlJavaAttributeChooser(
 			this,
 			getMappingHolder(),
 			container
@@ -200,7 +200,7 @@ public class XmlPersistentAttributeDetailsPage extends PersistentAttributeDetail
 		if (subject() == null || subject().parent() == null) {
 			return;
 		}
-		boolean enabled = !((XmlPersistentAttribute) subject()).isVirtual();
+		boolean enabled = !subject().isVirtual();
 		updateEnabledState(enabled, getControl());
 	}
 }

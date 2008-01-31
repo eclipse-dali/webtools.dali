@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.java.details;
 
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
-import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsPage;
@@ -49,7 +48,7 @@ public class JavaDetailsProvider
 //		if (contentNodeId.equals(IJavaContentNodes.PERSISTENT_TYPE_ID)) {
 		if (contentNodeId instanceof IJavaPersistentType) {
 			return new JavaPersistentTypeDetailsPage(
-				buildPersistenceTypeHolder(subjectHolder),
+				buildPersistentTypeHolder(subjectHolder),
 				parentComposite,
 				widgetFactory);
 		}
@@ -57,7 +56,7 @@ public class JavaDetailsProvider
 //		if (contentNodeId.equals(IJavaContentNodes.PERSISTENT_ATTRIBUTE_ID)) {
 		if (contentNodeId instanceof IJavaPersistentAttribute) {
 			return new JavaPersistentAttributeDetailsPage(
-				buildPersistenceAttributeHolder(subjectHolder),
+				buildPersistentAttributeHolder(subjectHolder),
 				parentComposite,
 				widgetFactory
 			);
@@ -66,16 +65,16 @@ public class JavaDetailsProvider
 		return null;
 	}
 
-	private PropertyValueModel<IPersistentAttribute> buildPersistenceAttributeHolder(PropertyValueModel<IJpaContextNode> subjectHolder) {
-		return new TransformationPropertyValueModel<IJpaContextNode, IPersistentAttribute>(subjectHolder) {
+	private PropertyValueModel<IJavaPersistentAttribute> buildPersistentAttributeHolder(PropertyValueModel<IJpaContextNode> subjectHolder) {
+		return new TransformationPropertyValueModel<IJpaContextNode, IJavaPersistentAttribute>(subjectHolder) {
 			@Override
-			protected IPersistentAttribute transform_(IJpaContextNode value) {
-				return (value instanceof IPersistentAttribute) ? (IPersistentAttribute) value : null;
+			protected IJavaPersistentAttribute transform_(IJpaContextNode value) {
+				return (value instanceof IJavaPersistentAttribute) ? (IJavaPersistentAttribute) value : null;
 			}
 		};
 	}
 
-	private PropertyValueModel<IJavaPersistentType> buildPersistenceTypeHolder(PropertyValueModel<IJpaContextNode> subjectHolder) {
+	private PropertyValueModel<IJavaPersistentType> buildPersistentTypeHolder(PropertyValueModel<IJpaContextNode> subjectHolder) {
 		return new TransformationPropertyValueModel<IJpaContextNode, IJavaPersistentType>(subjectHolder) {
 			@Override
 			protected IJavaPersistentType transform_(IJpaContextNode value) {

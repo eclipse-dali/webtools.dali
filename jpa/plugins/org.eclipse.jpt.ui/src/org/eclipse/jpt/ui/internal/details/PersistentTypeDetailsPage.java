@@ -8,6 +8,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -26,8 +27,10 @@ import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.internal.model.value.FilteringPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
@@ -66,6 +69,15 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 
 		super(subjectHolder, parent, widgetFactory);
 		this.composites = new HashMap<String, IJpaComposite<ITypeMapping>>();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void addPropertyNames(Collection<String> propertyNames) {
+		super.addPropertyNames(propertyNames);
+		propertyNames.add(IPersistentType.MAPPING_PROPERTY);
 	}
 
 	private IContentProvider buildContentProvider() {
@@ -110,11 +122,26 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 		);
 	}
 
-	private PropertyValueModel<ITypeMapping> buildMappingHolder(final String key) {
-		return new TransformationPropertyValueModel<T, ITypeMapping>(getSubjectHolder()) {
+	private PropertyValueModel<ITypeMapping> buildMappingHolder(String key) {
+		return new FilteringPropertyValueModel<ITypeMapping>(
+			buildGenericMappingHolder(),
+			buildMappingFilter(key)
+		);
+	}
+
+	private PropertyAspectAdapter<IPersistentType, ITypeMapping> buildGenericMappingHolder() {
+		return new PropertyAspectAdapter<IPersistentType, ITypeMapping>(getSubjectHolder(), IPersistentType.MAPPING_PROPERTY) {
 			@Override
-			protected ITypeMapping transform_(T value) {
-				return key.equals(value.mappingKey()) ? value.getMapping() : null;
+			protected ITypeMapping buildValue_() {
+				return subject.getMapping();
+			}
+		};
+	}
+
+	private Filter<ITypeMapping> buildMappingFilter(final String key) {
+		return new Filter<ITypeMapping>() {
+			public boolean accept(ITypeMapping value) {
+				return key.equals(value.getKey());
 			}
 		};
 	}
@@ -225,6 +252,18 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 		else {
 			this.currentMappingComposite = null;
 			this.typeMappingPageBook.showPage(new Label(this.typeMappingPageBook, SWT.NULL));
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void propertyChanged(String propertyName) {
+		super.propertyChanged(propertyName);
+
+		if (propertyName == IPersistentType.MAPPING_PROPERTY) {
+			populateMappingComboAndPage();
 		}
 	}
 

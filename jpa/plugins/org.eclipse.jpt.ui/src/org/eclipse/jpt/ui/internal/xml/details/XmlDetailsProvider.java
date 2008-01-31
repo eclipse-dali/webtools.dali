@@ -9,7 +9,6 @@
 package org.eclipse.jpt.ui.internal.xml.details;
 
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
-import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
@@ -51,7 +50,7 @@ public class XmlDetailsProvider
 		if (contentNodeId instanceof EntityMappings) {
 
 			return new XmlEntityMappingsDetailsPage(
-				buildEntityHolder(subjectHolder),
+				buildEntityMappingsHolder(subjectHolder),
 				parentComposite,
 				widgetFactory
 			);
@@ -60,7 +59,7 @@ public class XmlDetailsProvider
 //		if (contentNodeId.equals(IXmlContentNodes.PERSISTENT_TYPE_ID)) {
 		if (contentNodeId instanceof XmlPersistentType) {
 			return new XmlPersistentTypeDetailsPage(
-				buildPersistenceTypeHolder(subjectHolder),
+				buildPersistentTypeHolder(subjectHolder),
 				parentComposite,
 				widgetFactory);
 		}
@@ -68,7 +67,7 @@ public class XmlDetailsProvider
 //		if (contentNodeId.equals(IXmlContentNodes.PERSISTENT_ATTRIBUTE_ID)) {
 		if (contentNodeId instanceof XmlPersistentAttribute) {
 			return new XmlPersistentAttributeDetailsPage(
-				buildPersistenceAttributeHolder(subjectHolder),
+				buildPersistentAttributeHolder(subjectHolder),
 				parentComposite,
 				widgetFactory
 			);
@@ -77,7 +76,7 @@ public class XmlDetailsProvider
 		return null;
 	}
 
-	private PropertyValueModel<EntityMappings> buildEntityHolder(PropertyValueModel<IJpaContextNode> subjectHolder) {
+	private PropertyValueModel<EntityMappings> buildEntityMappingsHolder(PropertyValueModel<IJpaContextNode> subjectHolder) {
 		return new TransformationPropertyValueModel<IJpaContextNode, EntityMappings>(subjectHolder) {
 			@Override
 			protected EntityMappings transform_(IJpaContextNode value) {
@@ -86,16 +85,16 @@ public class XmlDetailsProvider
 		};
 	}
 
-	private PropertyValueModel<IPersistentAttribute> buildPersistenceAttributeHolder(PropertyValueModel<IJpaContextNode> subjectHolder) {
-		return new TransformationPropertyValueModel<IJpaContextNode, IPersistentAttribute>(subjectHolder) {
+	private PropertyValueModel<XmlPersistentAttribute> buildPersistentAttributeHolder(PropertyValueModel<IJpaContextNode> subjectHolder) {
+		return new TransformationPropertyValueModel<IJpaContextNode, XmlPersistentAttribute>(subjectHolder) {
 			@Override
-			protected IPersistentAttribute transform_(IJpaContextNode value) {
-				return (value instanceof IPersistentAttribute) ? (IPersistentAttribute) value : null;
+			protected XmlPersistentAttribute transform_(IJpaContextNode value) {
+				return (value instanceof XmlPersistentAttribute) ? (XmlPersistentAttribute) value : null;
 			}
 		};
 	}
 
-	private PropertyValueModel<XmlPersistentType> buildPersistenceTypeHolder(PropertyValueModel<IJpaContextNode> subjectHolder) {
+	private PropertyValueModel<XmlPersistentType> buildPersistentTypeHolder(PropertyValueModel<IJpaContextNode> subjectHolder) {
 		return new TransformationPropertyValueModel<IJpaContextNode, XmlPersistentType>(subjectHolder) {
 			@Override
 			protected XmlPersistentType transform_(IJpaContextNode value) {

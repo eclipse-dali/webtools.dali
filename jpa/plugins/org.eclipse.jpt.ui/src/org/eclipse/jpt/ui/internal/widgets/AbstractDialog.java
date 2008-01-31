@@ -14,6 +14,7 @@ import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.node.Node;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -25,6 +26,13 @@ import org.eclipse.ui.help.IWorkbenchHelpSystem;
 /**
  * The abstract implementation of a dialog using a "state object" (model object)
  * for behavior.
+ * <p>
+ * The main pane of this dialog should be extending <code>AbstractDialogPane</code>
+ * for creating the right type of widgets and it has the "state object" (subject)
+ * behavior built-in.
+ *
+ * @see Node
+ * @see AbstractDialogPane
  *
  * @version 2.0
  * @since 2.0
@@ -32,7 +40,15 @@ import org.eclipse.ui.help.IWorkbenchHelpSystem;
 @SuppressWarnings("nls")
 public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 {
+	/**
+	 * The holder of the "state object" used by this dialog.
+	 */
 	private WritablePropertyValueModel<T> subjectHolder;
+
+	/**
+	 * Caches the title text until the dialog is created and the dialog's shell
+	 * needs to be configured.
+	 */
 	private String title;
 
 	/**
@@ -53,6 +69,7 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 	protected AbstractDialog(Shell parent, String title) {
 		super(parent);
 		this.title = title;
+		initialize();
 	}
 
 	protected T buildStateObject() {
@@ -107,14 +124,37 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 
 		applyDialogFont(composite);
 		initializeDialogUnits(composite);
-		dialogArea = createDialogArea(composite);
-		buttonBar  = createButtonBar(composite);
+		this.dialogArea = createDialogArea(composite);
+		this.buttonBar  = createButtonBar(composite);
 
 		return composite;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected Composite createDialogArea(Composite parent) {
+
+		parent = (Composite) super.createDialogArea(parent);
+
+		GridLayout layout = new GridLayout(1, false);
+		layout.marginHeight = 0;
+		layout.marginWidth  = 0;
+		layout.marginTop    = 0;
+		layout.marginLeft   = 0;
+		layout.marginBottom = 0;
+		layout.marginRight  = 0;
+
+		Composite dialogPane = new Composite(parent, SWT.NULL);
+		dialogPane.setLayout(layout);
+		initializeMainPane(dialogPane);
+
+		return parent;
+	}
+
 	protected final WritablePropertyValueModel<T> getSubjectHolder() {
-		return subjectHolder;
+		return this.subjectHolder;
 	}
 
 	boolean hasTitleArea() {
@@ -183,11 +223,11 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 	 * used
 	 */
 	public T subject() {
-		return subjectHolder.value();
+		return this.subjectHolder.value();
 	}
 
 	protected String title() {
-		return title;
+		return this.title;
 	}
 
 	public boolean wasCancelled() {
