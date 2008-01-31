@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
+import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -99,8 +100,8 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(IColumn.DEFAULT_NAME_PROPERTY);
-				propertyNames.add(IColumn.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(INamedColumn.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(INamedColumn.SPECIFIED_NAME_PROPERTY);
 			}
 
 			@Override
