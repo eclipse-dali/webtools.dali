@@ -183,7 +183,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 
 			@Override
 			protected Boolean transform_(IAttributeOverride value) {
-				return value.isVirtual();
+				return !value.isVirtual();
 			}
 		};
 	}
