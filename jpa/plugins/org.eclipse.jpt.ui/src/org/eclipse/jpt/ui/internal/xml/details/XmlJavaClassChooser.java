@@ -23,7 +23,8 @@ import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaTypeCompletionP
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
+import org.eclipse.jpt.core.internal.context.orm.XmlTypeMapping;
+import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
@@ -46,7 +47,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 //TODO possibly help the user and if they have chosen a package at the entity-mappings level
 //only insert the class name in the xml file if they choose a class from the package.
 //Not sure if this should be driven by the UI or by ui api in the model
-public class XmlJavaClassChooser extends AbstractFormPane<XmlPersistentType> {
+public class XmlJavaClassChooser extends AbstractFormPane<XmlTypeMapping<?>> {
 
 	private Composite composite;
 	private Text text;
@@ -56,12 +57,14 @@ public class XmlJavaClassChooser extends AbstractFormPane<XmlPersistentType> {
 	 * Creates a new <code>XmlJavaClassChooser</code>.
 	 *
 	 * @param parentPane The parent controller of this one
+	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public XmlJavaClassChooser(AbstractFormPane<? extends XmlPersistentType> parentPane,
-	                           Composite parent) {
+	public XmlJavaClassChooser(AbstractFormPane<?> parentPane,
+        PropertyValueModel<? extends XmlTypeMapping<? extends TypeMapping>> subjectHolder,
+        Composite parent) {
 
-		super(parentPane, parent);
+		super(parentPane, subjectHolder, parent);
 	}
 
 	/**
@@ -71,9 +74,9 @@ public class XmlJavaClassChooser extends AbstractFormPane<XmlPersistentType> {
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public XmlJavaClassChooser(PropertyValueModel<? extends XmlPersistentType> subjectHolder,
-	                           Composite parent,
-	                           TabbedPropertySheetWidgetFactory widgetFactory) {
+	public XmlJavaClassChooser(PropertyValueModel<? extends XmlTypeMapping<? extends TypeMapping>> subjectHolder,
+	                                   Composite parent,
+	                                   TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}

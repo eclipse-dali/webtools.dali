@@ -42,7 +42,8 @@ public class JptUiXmlMessages
 	public static String XmlPackageChooser_PackageDialog_title;
 	public static String XmlPackageChooser_PackageDialog_message;
 
-
+	public static String AccessTypeComposite_field;
+	public static String AccessTypeComposite_property;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, JptUiXmlMessages.class);

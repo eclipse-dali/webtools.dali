@@ -226,6 +226,9 @@ public class JptUiMappingsMessages extends NLS
 	public static String InheritanceComposite_char;
 	public static String InheritanceComposite_integer;
 
+	public static String MetaDataCompleteComboViewer_true;
+	public static String MetaDataCompleteComboViewer_false;
+	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, JptUiMappingsMessages.class);
