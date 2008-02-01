@@ -31,6 +31,7 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnitTransactionType;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlProperties;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlProperty;
+import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -821,21 +822,54 @@ public class PersistenceUnit extends JpaContextNode
 		
 	protected void updatePersistenceUnitDefaults() {
 		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
-		if (persistenceUnitDefaults != null) {
-			setDefaultSchema(persistenceUnitDefaults.getSchema());
-			setDefaultCatalog(persistenceUnitDefaults.getCatalog());
-			setDefaultAccess(persistenceUnitDefaults.getAccess());
-			setDefaultCascadePersist(persistenceUnitDefaults.isCascadePersist());
-		}
-		else {
-			setDefaultSchema(null);
-			setDefaultCatalog(null);
-			setDefaultAccess(null);
-			setDefaultCascadePersist(false);		
-		}
+		this.setDefaultSchema(this.schema(persistenceUnitDefaults));
+		this.setDefaultCatalog(this.catalog(persistenceUnitDefaults));
+		this.setDefaultAccess(this.access(persistenceUnitDefaults));
+		this.setDefaultCascadePersist(this.cascadePersist(persistenceUnitDefaults));
 	}
 
+	protected String schema(PersistenceUnitDefaults persistenceUnitDefaults) {
+		if (persistenceUnitDefaults == null) {
+			return null;
+		}
+		if (persistenceUnitDefaults.getSchema() != null) {
+			return persistenceUnitDefaults.getSchema();
+		}
+		Schema projectDefaultSchema = projectDefaultSchema();
+		return projectDefaultSchema == null ? null : projectDefaultSchema.getName();
+	}
+	
+	protected Schema projectDefaultSchema() {
+		return jpaProject().defaultSchema();
+	}
 
+	protected String catalog(PersistenceUnitDefaults persistenceUnitDefaults) {
+		if (persistenceUnitDefaults == null) {
+			return null;
+		}
+		if (persistenceUnitDefaults.getCatalog() != null) {
+			return persistenceUnitDefaults.getCatalog();
+		}
+		String catalog = projectDefaultCatalog();
+		//the context model uses nulls for defaults that don't exist. currently
+		//the DB model is using "" to represent no catalog, changing this here
+		if (catalog == "") {
+			catalog = null;
+		}
+		return catalog;
+	}
+
+	protected String projectDefaultCatalog() {
+		return jpaProject().connectionProfile().getCatalogName();
+	}
+	
+	protected AccessType access(PersistenceUnitDefaults persistenceUnitDefaults) {
+		return persistenceUnitDefaults == null ? null : persistenceUnitDefaults.getAccess();
+	}
+	
+	protected boolean cascadePersist(PersistenceUnitDefaults persistenceUnitDefaults) {
+		return persistenceUnitDefaults == null ? false : persistenceUnitDefaults.isCascadePersist();
+	}
 	// *************************************************************************
 	
 	public IPersistentType persistentType(String fullyQualifiedTypeName) {

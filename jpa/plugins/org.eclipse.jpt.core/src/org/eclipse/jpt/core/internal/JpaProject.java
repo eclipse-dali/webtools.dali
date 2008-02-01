@@ -32,6 +32,7 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitResource;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
+import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.CommandExecutor;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
@@ -238,6 +239,10 @@ public class JpaProject extends JpaNode implements IJpaProject {
 		return this.dataSource.connectionProfile();
 	}
 
+	public Schema defaultSchema() {
+		return connectionProfile().defaultSchema();
+	}
+	
 	@Override
 	public Validator validator() {
 		return NULL_VALIDATOR;

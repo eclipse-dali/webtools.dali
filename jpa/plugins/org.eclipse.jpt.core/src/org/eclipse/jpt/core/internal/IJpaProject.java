@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
+import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.utility.internal.CommandExecutor;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -60,6 +61,11 @@ public interface IJpaProject extends IJpaNode {
 	 */
 	IJpaDataSource dataSource();
 
+	/**
+	 * Return the project's default schema, taken from the ConnectionProfile
+	 */
+	Schema defaultSchema();
+	
 	/**
 	 * Return the JPA project's JPA files.
 	 */

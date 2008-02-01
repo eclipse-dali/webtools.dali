@@ -169,10 +169,9 @@ public class JavaTableTests extends ContextModelTestCase
 
 		entityMappings().removeXmlPersistentType(0);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		//default schema taken from persistence-unite-defaults not entity-mappings since the entity is not in an orm.xml file
+		//default schema taken from persistence-unit-defaults not entity-mappings since the entity is not in an orm.xml file
 		assertEquals("FOO", javaEntity().getTable().getDefaultSchema());
 	}
-
 	
 	public void testGetNameSpecifiedNameNull() throws Exception {
 		createTestEntity();

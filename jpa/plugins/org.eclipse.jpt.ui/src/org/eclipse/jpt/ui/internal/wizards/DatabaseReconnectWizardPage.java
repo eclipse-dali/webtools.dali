@@ -121,6 +121,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 		generateEntitiesWizard.updatePossibleTables( CollectionTools.collection( schema.tables()));
 	}
 
+	@Override
 	public void dispose() {
 		this.removeConnectionListener();
 		super.dispose();
@@ -142,8 +143,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 	}
 
 	Schema getDefaultSchema() {
-		ConnectionProfile profile = getProjectConnectionProfile();
-		return profile.getDatabase().schemaNamed( profile.getDefaultSchema());
+		return getProjectConnectionProfile().defaultSchema();
 	}
 
 	// ********** member classes **********
@@ -168,10 +168,12 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 			createLabel( this.group, 1, JptUiMessages.DatabaseReconnectWizardPage_connection);
 			this.connectionCombo = createCombo( this.group, true);
 			this.connectionCombo.addSelectionListener( new SelectionAdapter() {
+				@Override
 				public void widgetDefaultSelected( SelectionEvent e) {
 					widgetSelected( e);
 				}
 
+				@Override
 				public void widgetSelected( SelectionEvent e) {
 					handleConnectionChange();
 				}
@@ -179,10 +181,12 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 			createLabel( this.group, 1, JptUiMessages.DatabaseReconnectWizardPage_schema);
 			this.schemaCombo = createCombo( this.group, true);
 			this.schemaCombo.addSelectionListener( new SelectionAdapter() {
+				@Override
 				public void widgetDefaultSelected( SelectionEvent e) {
 					widgetSelected( e);
 				}
 
+				@Override
 				public void widgetSelected( SelectionEvent e) {
 					handleSchemaChange();
 				}
@@ -194,6 +198,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 			this.addConnectionLink.setLayoutData( data);
 			this.addConnectionLink.setText( JptUiMessages.DatabaseReconnectWizardPage_addConnectionLink);
 			this.addConnectionLink.addSelectionListener( new SelectionAdapter() {
+				@Override
 				public void widgetSelected( SelectionEvent e) {
 					openNewConnectionWizard();
 				}
@@ -205,6 +210,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 			this.reconnectLink.setText( JptUiMessages.DatabaseReconnectWizardPage_reconnectLink);
 			this.reconnectLink.setEnabled( false);
 			this.reconnectLink.addSelectionListener( new SelectionAdapter() {
+				@Override
 				public void widgetSelected( SelectionEvent e) {
 					openConnectionProfileNamed( connectionCombo.getText());
 				}
@@ -226,8 +232,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 		}
 		
 		Schema getDefaultSchema() {
-			ConnectionProfile profile = getProjectConnectionProfile();
-			return profile.getDatabase().schemaNamed( profile.getDefaultSchema());
+			return getProjectConnectionProfile().defaultSchema();
 		}
 
 		private void openConnectionProfileNamed( String connectionProfileName) {
