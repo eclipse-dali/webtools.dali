@@ -17,6 +17,13 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 
 public interface IMappingFileRef extends IJpaContextNode
 {
+	/**
+	 * Return whether this mapping file ref is represented by an entry in the
+	 * persistence.xml (false) or if it is instead virtual
+	 */
+	boolean isVirtual();
+	
+	
 	// **************** file name **********************************************
 	
 	/**
@@ -34,8 +41,22 @@ public interface IMappingFileRef extends IJpaContextNode
 	 */
 	void setFileName(String fileName);
 	
+	
+	// **************** orm xml ************************************************
+	
+	String ORM_XML_PROPERTY = "ormXmlProperty";
+	
 	OrmXml getOrmXml();	
-		String ORM_XML_PROPERTY = "ormXmlProperty";
+	
+	
+	// **************** udpating ***********************************************
+	
+	void initialize(XmlMappingFileRef mappingFileRef);
+	
+	void update(XmlMappingFileRef mappingFileRef);
+	
+	
+	// *************************************************************************
 	
 	PersistenceUnitDefaults persistenceUnitDefaults();
 	
@@ -44,10 +65,4 @@ public interface IMappingFileRef extends IJpaContextNode
 	 * with the given fullyQualifiedTypeName.  Return null if non exists.
 	 */
 	XmlPersistentType persistentTypeFor(String fullyQualifiedTypeName);
-	
-	// **************** udpating ***********************************************
-	
-	void initialize(XmlMappingFileRef mappingFileRef);
-	
-	void update(XmlMappingFileRef mappingFileRef);
 }

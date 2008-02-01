@@ -19,8 +19,11 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
+import org.eclipse.jpt.core.internal.resource.orm.OrmArtifactEdit;
+import org.eclipse.jpt.core.internal.resource.orm.OrmResource;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
@@ -31,6 +34,7 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlProperty;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 
 public class PersistenceUnit extends JpaContextNode
 	implements IPersistenceUnit
@@ -51,7 +55,9 @@ public class PersistenceUnit extends JpaContextNode
 	
 	protected String nonJtaDataSource;
 	
-	protected final List<IMappingFileRef> mappingFileRefs;
+	protected IMappingFileRef defaultMappingFileRef;
+	
+	protected final List<IMappingFileRef> specifiedMappingFileRefs;
 	
 	protected final List<IClassRef> classRefs;
 	
@@ -69,7 +75,7 @@ public class PersistenceUnit extends JpaContextNode
 	public PersistenceUnit(IPersistence parent) {
 		super(parent);
 		this.transactionType = PersistenceUnitTransactionType.DEFAULT;
-		this.mappingFileRefs = new ArrayList<IMappingFileRef>();
+		this.specifiedMappingFileRefs = new ArrayList<IMappingFileRef>();
 		this.classRefs = new ArrayList<IClassRef>();
 		this.properties = new ArrayList<IProperty>();
 	}
@@ -207,46 +213,85 @@ public class PersistenceUnit extends JpaContextNode
 	// **************** mapping file refs **************************************
 	
 	public ListIterator<IMappingFileRef> mappingFileRefs() {
-		return new CloneListIterator<IMappingFileRef>(this.mappingFileRefs);
+		if (defaultMappingFileRef == null) {
+			return specifiedMappingFileRefs();
+		}
+		else {
+			return new ReadOnlyCompositeListIterator<IMappingFileRef>(
+				defaultMappingFileRef, specifiedMappingFileRefs());
+		}
 	}
 	
-	public IMappingFileRef addMappingFileRef() {
-		return addMappingFileRef(this.mappingFileRefs.size());
+	
+	// **************** default mapping file ref *******************************
+	
+	public IMappingFileRef getDefaultMappingFileRef() {
+		return defaultMappingFileRef;
 	}
 	
-	public IMappingFileRef addMappingFileRef(int index) {
-		XmlMappingFileRef xmlMappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
-		IMappingFileRef mappingFileRef = createMappingFileRef(xmlMappingFileRef);
-		this.mappingFileRefs.add(index, mappingFileRef);
-		this.xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
-		fireItemAdded(MAPPING_FILE_REF_LIST, index, mappingFileRef);
+	public IMappingFileRef setDefaultMappingFileRef() {
+		if (defaultMappingFileRef != null) {
+			throw new IllegalStateException("The default mapping file ref is already set.");
+		}
+		IMappingFileRef mappingFileRef = createMappingFileRef(null);
+		defaultMappingFileRef = mappingFileRef;
+		firePropertyChanged(DEFAULT_MAPPING_FILE_REF_PROPERTY, null, mappingFileRef);
 		return mappingFileRef;
 	}
 	
-	public void removeMappingFileRef(IMappingFileRef mappingFileRef) {
-		removeMappingFileRef(this.mappingFileRefs.indexOf(mappingFileRef));
+	public void unsetDefaultMappingFileRef() {
+		if (defaultMappingFileRef == null) {
+			throw new IllegalStateException("The default mapping file ref is already unset.");
+		}
+		IMappingFileRef mappingFileRef = defaultMappingFileRef;
+		defaultMappingFileRef = null;
+		firePropertyChanged(DEFAULT_MAPPING_FILE_REF_PROPERTY, mappingFileRef, null);
 	}
 	
-	public void removeMappingFileRef(int index) {
-		IMappingFileRef mappingFileRefRemoved = this.mappingFileRefs.remove(index);
+	
+	// **************** specified mapping file refs ****************************
+	
+	public ListIterator<IMappingFileRef> specifiedMappingFileRefs() {
+		return new CloneListIterator<IMappingFileRef>(specifiedMappingFileRefs);
+	}
+	
+	public IMappingFileRef addSpecifiedMappingFileRef() {
+		return addSpecifiedMappingFileRef(specifiedMappingFileRefs.size());
+	}
+	
+	public IMappingFileRef addSpecifiedMappingFileRef(int index) {
+		XmlMappingFileRef xmlMappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
+		IMappingFileRef mappingFileRef = createMappingFileRef(xmlMappingFileRef);
+		specifiedMappingFileRefs.add(index, mappingFileRef);
+		this.xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
+		fireItemAdded(SPECIFIED_MAPPING_FILE_REF_LIST, index, mappingFileRef);
+		return mappingFileRef;
+	}
+	
+	public void removeSpecifiedMappingFileRef(IMappingFileRef mappingFileRef) {
+		removeSpecifiedMappingFileRef(specifiedMappingFileRefs.indexOf(mappingFileRef));
+	}
+	
+	public void removeSpecifiedMappingFileRef(int index) {
+		IMappingFileRef mappingFileRefRemoved = specifiedMappingFileRefs.remove(index);
 		this.xmlPersistenceUnit.getMappingFiles().remove(index);
-		fireItemRemoved(MAPPING_FILE_REF_LIST, index, mappingFileRefRemoved);
+		fireItemRemoved(SPECIFIED_MAPPING_FILE_REF_LIST, index, mappingFileRefRemoved);
 	}
 	
-	protected void addMappingFileRef_(IMappingFileRef mappingFileRef) {
-		addMappingFileRef_(this.mappingFileRefs.size(), mappingFileRef);
+	protected void addSpecifiedMappingFileRef_(IMappingFileRef mappingFileRef) {
+		addSpecifiedMappingFileRef_(specifiedMappingFileRefs.size(), mappingFileRef);
 	}
 	
-	protected void addMappingFileRef_(int index, IMappingFileRef mappingFileRef) {
-		addItemToList(index, mappingFileRef, this.mappingFileRefs, MAPPING_FILE_REF_LIST);
+	protected void addSpecifiedMappingFileRef_(int index, IMappingFileRef mappingFileRef) {
+		addItemToList(index, mappingFileRef, specifiedMappingFileRefs, SPECIFIED_MAPPING_FILE_REF_LIST);
 	}
 	
-	protected void removeMappingFileRef_(IMappingFileRef mappingFileRef) {
-		removeMappingFileRef_(this.mappingFileRefs.indexOf(mappingFileRef));
+	protected void removeSpecifiedMappingFileRef_(IMappingFileRef mappingFileRef) {
+		removeSpecifiedMappingFileRef_(specifiedMappingFileRefs.indexOf(mappingFileRef));
 	}
 	
-	protected void removeMappingFileRef_(int index) {
-		removeItemFromList(index, this.mappingFileRefs, MAPPING_FILE_REF_LIST);
+	protected void removeSpecifiedMappingFileRef_(int index) {
+		removeItemFromList(index, specifiedMappingFileRefs, SPECIFIED_MAPPING_FILE_REF_LIST);
 	}
 	
 	
@@ -556,7 +601,10 @@ public class PersistenceUnit extends JpaContextNode
 	
 	protected void initializeMappingFileRefs(XmlPersistenceUnit xmlPersistenceUnit) {
 		for (XmlMappingFileRef xmlMappingFileRef : xmlPersistenceUnit.getMappingFiles()) {
-			this.mappingFileRefs.add(createMappingFileRef(xmlMappingFileRef));
+			specifiedMappingFileRefs.add(createMappingFileRef(xmlMappingFileRef));
+		}
+		if (! defaultMappingFileIsSpecified() && defaultMappingFileExists()) {
+			defaultMappingFileRef = createMappingFileRef(null);
 		}
 	}
 	
@@ -643,7 +691,7 @@ public class PersistenceUnit extends JpaContextNode
 	}
 	
 	protected void updateMappingFileRefs(XmlPersistenceUnit persistenceUnit) {
-		Iterator<IMappingFileRef> stream = mappingFileRefs();
+		Iterator<IMappingFileRef> stream = specifiedMappingFileRefs();
 		Iterator<XmlMappingFileRef> stream2 = persistenceUnit.getMappingFiles().iterator();
 		
 		while (stream.hasNext()) {
@@ -652,13 +700,49 @@ public class PersistenceUnit extends JpaContextNode
 				mappingFileRef.update(stream2.next());
 			}
 			else {
-				removeMappingFileRef_(mappingFileRef);
+				removeSpecifiedMappingFileRef_(mappingFileRef);
 			}
 		}
 		
 		while (stream2.hasNext()) {
-			addMappingFileRef_(createMappingFileRef(stream2.next()));
+			addSpecifiedMappingFileRef_(createMappingFileRef(stream2.next()));
 		}
+		
+		if (defaultMappingFileIsSpecified()) {
+			if (defaultMappingFileRef != null) {
+				unsetDefaultMappingFileRef();
+			}
+		}
+		else {
+			if (defaultMappingFileExists()) {
+				if (defaultMappingFileRef == null) {
+					setDefaultMappingFileRef();
+				}
+			}
+			else {
+				if (defaultMappingFileRef != null) {
+					unsetDefaultMappingFileRef();
+				}
+			}
+		}
+	}
+	
+	protected boolean defaultMappingFileIsSpecified() {
+		String defaultMappingFile = JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH;
+		for (IMappingFileRef each : specifiedMappingFileRefs) {
+			if (defaultMappingFile.equals(each.getFileName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	protected boolean defaultMappingFileExists() {
+		OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForRead(jpaProject().project());
+		OrmResource or = oae.getResource(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		boolean exists =  or != null && or.exists();
+		oae.dispose();
+		return exists;
 	}
 	
 	protected IMappingFileRef createMappingFileRef(XmlMappingFileRef xmlMappingFileRef) {

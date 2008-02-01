@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 
 public interface IPersistenceUnit extends IJpaContextNode
@@ -157,37 +156,71 @@ public interface IPersistenceUnit extends IJpaContextNode
 	// **************** mapping file refs **************************************
 	
 	/**
-	 * String constant associated with changes to the mapping file refs list
-	 */
-	final static String MAPPING_FILE_REF_LIST = "mappingFileRefs";
-	
-	/**
-	 * Return an iterator on the list of mapping file refs.
+	 * Return an iterator on the list of mapping file refs, whether specified or
+	 * not.
 	 * This will not be null.
 	 */
 	ListIterator<IMappingFileRef> mappingFileRefs();
 	
+	
+	// **************** default mapping file ref *******************************
+	
 	/**
-	 * Add a mapping file ref to the persistence unit and return the object 
+	 * String constant associated with changes to the default mapping file ref
+	 */
+	final static String DEFAULT_MAPPING_FILE_REF_PROPERTY = "defaultMappingFileRef";
+	
+	/**
+	 * Return the current default mapping file ref.
+	 * This may be null.
+	 */
+	IMappingFileRef getDefaultMappingFileRef();
+	
+	/**
+	 * Adds the default mapping file ref
+	 */
+	IMappingFileRef setDefaultMappingFileRef();
+	
+	/**
+	 * Removes the default mapping file ref
+	 */
+	void unsetDefaultMappingFileRef();
+	
+	
+	// **************** specified mapping file refs ****************************
+	
+	/**
+	 * String constant associated with changes to the specified mapping file refs list
+	 */
+	final static String SPECIFIED_MAPPING_FILE_REF_LIST = "specifiedMappingFileRefs";
+	
+	/**
+	 * Return an iterator on the list of specified mapping file refs.
+	 * This will not be null.
+	 */
+	ListIterator<IMappingFileRef> specifiedMappingFileRefs();
+	
+	/**
+	 * Add a specified mapping file ref to the persistence unit and return the object 
 	 * representing it.
 	 */
-	IMappingFileRef addMappingFileRef();
+	IMappingFileRef addSpecifiedMappingFileRef();
 	
 	/**
-	 * Add a mapping file ref to the persistence unit at the specified index and 
+	 * Add a specified mapping file ref to the persistence unit at the specified index and 
 	 * return the object representing it.
 	 */
-	IMappingFileRef addMappingFileRef(int index);
+	IMappingFileRef addSpecifiedMappingFileRef(int index);
 	
 	/**
-	 * Remove the mapping file ref from the persistence unit.
+	 * Remove the specified mapping file ref from the persistence unit.
 	 */
-	void removeMappingFileRef(IMappingFileRef mappingFileRef);
+	void removeSpecifiedMappingFileRef(IMappingFileRef mappingFileRef);
 	
 	/**
-	 * Remove the mapping file ref at the specified index from the persistence unit.
+	 * Remove the specified mapping file ref at the specified index from the persistence unit.
 	 */
-	void removeMappingFileRef(int index);
+	void removeSpecifiedMappingFileRef(int index);
 	
 	
 	// **************** class refs *********************************************

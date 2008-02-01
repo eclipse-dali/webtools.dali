@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.orm.OrmXml;
 import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
@@ -31,12 +32,11 @@ public class MappingFileRef extends JpaContextNode
 		super(parent);
 	}
 	
-	public XmlPersistentType persistentTypeFor(String fullyQualifiedTypeName) {
-		if (getOrmXml() != null) {
-			return getOrmXml().persistentTypeFor(fullyQualifiedTypeName);
-		}
-		return null;
+	
+	public boolean isVirtual() {
+		return xmlMappingFileRef == null;
 	}
+	
 	
 	// **************** file name **********************************************
 	
@@ -60,40 +60,61 @@ public class MappingFileRef extends JpaContextNode
 		this.ormXml = newOrmXml;
 		firePropertyChanged(ORM_XML_PROPERTY, oldOrmXml, newOrmXml);
 	}
-
-	public PersistenceUnitDefaults persistenceUnitDefaults() {
-		if (getOrmXml() != null) {
-			return getOrmXml().persistenceUnitDefaults();
-		}
-		return null;
-	}
+	
 	
 	// **************** updating ***********************************************
 	
 	public void initialize(XmlMappingFileRef mappingFileRef) {
-		this.xmlMappingFileRef = mappingFileRef;
-		this.fileName = mappingFileRef.getFileName();
+		xmlMappingFileRef = mappingFileRef;
+		initializeFileName();
+		initializeOrmXml();
 		
-		if (this.fileName != null) {
+	}
+	
+	protected void initializeFileName() {
+		if (isVirtual()) {
+			fileName = JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH;
+		}
+		else {
+			fileName = xmlMappingFileRef.getFileName();
+		}
+	}
+	
+	protected void initializeOrmXml() {
+		if (fileName != null) {
 			OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForRead(jpaProject().project());
-			OrmResource ormResource = oae.getResource(this.fileName);
+			OrmResource ormResource = oae.getResource(fileName);
 			
 			if (ormResource != null && ormResource.exists()) {
-				this.ormXml = createOrmXml(ormResource);
+				ormXml = createOrmXml(ormResource);
 			}
 			oae.dispose();
 		}
 	}
 	
 	public void update(XmlMappingFileRef mappingFileRef) {
-		this.xmlMappingFileRef = mappingFileRef;
-		setFileName(mappingFileRef.getFileName());
-		if (this.fileName != null) {
+		xmlMappingFileRef = mappingFileRef;
+		updateFileName();
+		updateOrmXml();
+		
+	}
+	
+	protected void updateFileName() {
+		if (isVirtual()) {
+			setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		}
+		else {
+			setFileName(xmlMappingFileRef.getFileName());
+		}
+	}
+	
+	protected void updateOrmXml() {
+		if (fileName != null) {
 			OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForRead(jpaProject().project());
-			OrmResource ormResource = oae.getResource(this.fileName);
+			OrmResource ormResource = oae.getResource(fileName);
 			if (ormResource != null && ormResource.exists()) {
-				if (this.ormXml != null) {
-					this.ormXml.update(ormResource);
+				if (ormXml != null) {
+					ormXml.update(ormResource);
 				}
 				else {
 					setOrmXml(createOrmXml(ormResource));
@@ -114,9 +135,24 @@ public class MappingFileRef extends JpaContextNode
 		ormXml.initialize(ormResource);
 		return ormXml;
 	}
-
+	
+	
 	// *************************************************************************
 	
+	public PersistenceUnitDefaults persistenceUnitDefaults() {
+		if (getOrmXml() != null) {
+			return getOrmXml().persistenceUnitDefaults();
+		}
+		return null;
+	}
+	
+	public XmlPersistentType persistentTypeFor(String fullyQualifiedTypeName) {
+		if (getOrmXml() != null) {
+			return getOrmXml().persistentTypeFor(fullyQualifiedTypeName);
+		}
+		return null;
+	}
+
 	public ITextRange validationTextRange() {
 		return this.xmlMappingFileRef.validationTextRange();
 	}

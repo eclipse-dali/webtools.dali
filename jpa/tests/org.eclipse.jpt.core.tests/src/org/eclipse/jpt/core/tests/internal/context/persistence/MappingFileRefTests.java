@@ -35,7 +35,7 @@ public class MappingFileRefTests extends ContextModelTestCase
 		XmlMappingFileRef xmlFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		xmlFileRef.setFileName("foo.xml");
 		xmlPersistenceUnit.getMappingFiles().add(xmlFileRef);
-		IMappingFileRef fileRef = persistenceUnit.mappingFileRefs().next();
+		IMappingFileRef fileRef = persistenceUnit.specifiedMappingFileRefs().next();
 		
 		// test that file names are initially equal
 		assertEquals(fileRef.getFileName(), xmlFileRef.getFileName());
@@ -69,7 +69,7 @@ public class MappingFileRefTests extends ContextModelTestCase
 		XmlMappingFileRef xmlFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		xmlFileRef.setFileName("foo.xml");
 		xmlPersistenceUnit.getMappingFiles().add(xmlFileRef);
-		IMappingFileRef fileRef = persistenceUnit.mappingFileRefs().next();
+		IMappingFileRef fileRef = persistenceUnit.specifiedMappingFileRefs().next();
 		
 		// test that file names are initially equal
 		assertEquals(fileRef.getFileName(), xmlFileRef.getFileName());

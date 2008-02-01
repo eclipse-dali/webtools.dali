@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IProperty;
 import org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType;
+import org.eclipse.jpt.core.internal.resource.orm.OrmResource;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
@@ -365,30 +366,65 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		// TODO
 	}
 	
-	public void testUpdateMappingFileRefs1() {
+	public void testUpdateDefaultMappingFileRef1() throws Exception {
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// test that there is one initially
+		OrmResource ormResource = ormResource();
+		assertTrue(ormResource.exists());
+		assertNotNull(persistenceUnit.getDefaultMappingFileRef());
+		
+		// remove orm.xml
+		deleteResource(ormResource);
+		
+		assertFalse(ormResource.exists());
+		assertNull(persistenceUnit.getDefaultMappingFileRef());
+	}
+	
+	public void testUpdateDefaultMappingFileRef2() {
+		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		
+		// test that there is one initially
+		OrmResource ormResource = ormResource();
+		assertTrue(ormResource.exists());
+		assertNotNull(persistenceUnit.getDefaultMappingFileRef());
+		
+		// add specified orm.xml
+		XmlMappingFileRef xmlMappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
+		xmlMappingFileRef.setFileName("META-INF/orm.xml");
+		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
+		
+		assertEquals(CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()), 1);
+		
+		assertTrue(ormResource.exists());
+		assertNull(persistenceUnit.getDefaultMappingFileRef());
+	}
+	
+	public void testUpdateSpecifiedMappingFileRefs1() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
 		IPersistenceUnit persistenceUnit = persistenceUnit();
 		
 		// test there are none initially
 		assertEquals(xmlPersistenceUnit.getMappingFiles().size(), 0);
-		assertEquals(CollectionTools.size(persistenceUnit.mappingFileRefs()), 0);
+		assertEquals(CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()), 0);
 		
 		// add mapping file ref, test that it's added to context
 		XmlMappingFileRef xmlMappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		xmlMappingFileRef.setFileName("orm.xml");
 		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
 		
-		assertEquals(CollectionTools.size(persistenceUnit.mappingFileRefs()), 1);
+		assertEquals(CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()), 1);
 		
 		// add another ...
 		xmlMappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		xmlMappingFileRef.setFileName("orm2.xml");
 		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
 		
-		assertEquals(CollectionTools.size(persistenceUnit.mappingFileRefs()), 2);
+		assertEquals(CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()), 2);
 	}
 	
-	public void testUpdateMappingFileRefs2() {
+	public void testUpdateSpecifiedMappingFileRefs2() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
 		IPersistenceUnit persistenceUnit = persistenceUnit();
 		
@@ -401,41 +437,41 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
 		
 		assertEquals(xmlPersistenceUnit.getMappingFiles().size(), 2);
-		assertEquals(CollectionTools.size(persistenceUnit.mappingFileRefs()), 2);
+		assertEquals(CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()), 2);
 		
 		// remove mapping file ref from xml, test that it's removed from context
 		xmlMappingFileRef = xmlPersistenceUnit.getMappingFiles().get(0);
 		xmlPersistenceUnit.getMappingFiles().remove(xmlMappingFileRef);
 		
-		assertEquals(CollectionTools.size(persistenceUnit.mappingFileRefs()), 1);
+		assertEquals(CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()), 1);
 		
 		// remove another one ...
 		xmlMappingFileRef = xmlPersistenceUnit.getMappingFiles().get(0);
 		xmlPersistenceUnit.getMappingFiles().remove(xmlMappingFileRef);
 		
-		assertEquals(CollectionTools.size(persistenceUnit.mappingFileRefs()), 0);
+		assertEquals(CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()), 0);
 	}
 	
-	public void testModifyMappingFileRefs1() {
+	public void testModifySpecifiedMappingFileRefs1() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
 		IPersistenceUnit persistenceUnit = persistenceUnit();
 		
 		// test there are none initially
 		assertEquals(xmlPersistenceUnit.getMappingFiles().size(), 0);
-		assertEquals(CollectionTools.size(persistenceUnit.mappingFileRefs()), 0);
+		assertEquals(CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()), 0);
 		
 		// add mapping file ref, test that it's added to resource
-		persistenceUnit.addMappingFileRef();
+		persistenceUnit.addSpecifiedMappingFileRef();
 		
 		assertEquals(xmlPersistenceUnit.getMappingFiles().size(), 1);
 		
 		// add another ...
-		persistenceUnit.addMappingFileRef();
+		persistenceUnit.addSpecifiedMappingFileRef();
 		
 		assertEquals(xmlPersistenceUnit.getMappingFiles().size(), 2);
 	}
 	
-	public void testModifyMappingFileRefs2() {
+	public void testModifySpecifiedMappingFileRefs2() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
 		IPersistenceUnit persistenceUnit = persistenceUnit();
 		
@@ -448,15 +484,15 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
 		
 		assertEquals(xmlPersistenceUnit.getMappingFiles().size(), 2);
-		assertEquals(CollectionTools.size(persistenceUnit.mappingFileRefs()), 2);
+		assertEquals(CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()), 2);
 		
 		// remove mapping file ref from context, test that it's removed from xml
-		persistenceUnit.removeMappingFileRef(0);
+		persistenceUnit.removeSpecifiedMappingFileRef(0);
 		
 		assertEquals(xmlPersistenceUnit.getMappingFiles().size(), 1);
 			
 		// remove another one ...
-		persistenceUnit.removeMappingFileRef(0);
+		persistenceUnit.removeSpecifiedMappingFileRef(0);
 		
 		assertEquals(xmlPersistenceUnit.getMappingFiles().size(), 0);
 	}
