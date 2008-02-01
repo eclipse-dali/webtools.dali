@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.platform.base;
 
 import java.util.Collection;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
@@ -22,9 +23,11 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
+import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
 import org.eclipse.jpt.core.internal.synch.SynchronizeClassesJob;
+import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.gen.internal.EntityGenerator;
 import org.eclipse.jpt.gen.internal.PackageGenerator;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -80,7 +83,7 @@ public class EntitiesGenerator
 					wizard.getEntityGeneratorConfig(),
 					wizard.getSelectedTables(),
 					wizard.synchronizePersistenceXml(),
-					project,
+					this.project,
 					new OverwriteConfirmer(this.getCurrentShell())
 			);
 			
@@ -97,7 +100,7 @@ public class EntitiesGenerator
 	static class GenerateEntitiesRunnable extends WorkspaceJob {
 		private final PackageGenerator.Config packageConfig;
 		private final EntityGenerator.Config entityConfig;
-		private final Collection selectedTables;
+		private final Collection<Table> selectedTables;
 		private final boolean synchronizePersistenceXml;
 		private final EntityGenerator.OverwriteConfirmer overwriteConfirmer;
 		private final IJpaProject project;
@@ -105,7 +108,7 @@ public class EntitiesGenerator
 		GenerateEntitiesRunnable(
 				PackageGenerator.Config packageConfig,
 				EntityGenerator.Config entityConfig,
-				Collection selectedTables,
+				Collection<Table> selectedTables,
 				boolean synchronizePersistenceXml,
 				IJpaProject project,
 				EntityGenerator.OverwriteConfirmer overwriteConfirmer
@@ -125,11 +128,14 @@ public class EntitiesGenerator
 			PackageGenerator.generateEntities(this.packageConfig, this.entityConfig, this.selectedTables, this.overwriteConfirmer, monitor);
 			//force resourceChangeEvents to be posted before synchronizing persistence.xml
 			ResourcesPlugin.getWorkspace().checkpoint(false);
-			if (synchronizePersistenceXml) {
+			if (this.synchronizePersistenceXml) {
 				// we currently only support *one* persistence.xml file per project
-				IJpaFile resource = project.jpaPlatform().validPersistenceXmlFiles().next();
-				if (resource != null) {
-					SynchronizeClassesJob job = new SynchronizeClassesJob(resource.getFile());
+				//TODO casting to IBaseJpaContent, IContextModel doesn't seem useful to me 
+				//just trying to get rid of all compiler errors for now KFB
+				IPersistenceXml persistenceXml = ((IBaseJpaContent) this.project.contextModel()).getPersistenceXml();
+				if (persistenceXml != null) {
+					//TODO casting to IFile - just trying to get rid of all compiler errors for now
+					SynchronizeClassesJob job = new SynchronizeClassesJob((IFile) persistenceXml.resource());
 					job.schedule();
 				}
 			}
@@ -165,7 +171,7 @@ public class EntitiesGenerator
 			
 			final OverwriteConfirmerDialog dialog = new OverwriteConfirmerDialog(this.shell, className);
 			//get on the UI thread synchronously, need feedback before continuing
-			shell.getDisplay().syncExec(new Runnable() {
+			this.shell.getDisplay().syncExec(new Runnable() {
 				public void run() {
 					dialog.open();
 				}
@@ -203,11 +209,13 @@ public class EntitiesGenerator
 			this.className = className;
 		}
 
+		@Override
 		protected void configureShell(Shell shell) {
 			super.configureShell(shell);
 			shell.setText(JptUiMessages.OverwriteConfirmerDialog_title);
 		}
 
+		@Override
 		protected Control createDialogArea(Composite parent) {
 			Composite composite = (Composite) super.createDialogArea(parent);
 			GridLayout gridLayout = (GridLayout) composite.getLayout();
@@ -220,6 +228,7 @@ public class EntitiesGenerator
 			return composite;
 		}
 
+		@Override
 		protected void createButtonsForButtonBar(Composite parent) {
 			this.createButton(parent, IDialogConstants.YES_ID, IDialogConstants.YES_LABEL, false);
 			this.createButton(parent, IDialogConstants.YES_TO_ALL_ID, IDialogConstants.YES_TO_ALL_LABEL, false);
@@ -228,6 +237,7 @@ public class EntitiesGenerator
 			this.createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
 		}
 
+		@Override
 		protected void buttonPressed(int buttonId) {
 			switch (buttonId) {
 				case IDialogConstants.YES_ID :
