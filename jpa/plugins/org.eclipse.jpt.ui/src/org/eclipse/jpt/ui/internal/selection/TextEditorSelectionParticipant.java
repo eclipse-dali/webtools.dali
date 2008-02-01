@@ -14,10 +14,10 @@ import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.ui.internal.views.AbstractJpaView;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -97,7 +97,7 @@ public class TextEditorSelectionParticipant
 			return IJpaSelection.NULL_SELECTION;
 		}
 
-		IJpaContentNode selectedNode = jpaFile.getContentNode(((ITextSelection) selection).getOffset());
+		IJpaContextNode selectedNode = jpaFile.contextNode(((ITextSelection) selection).getOffset());
 		if (selectedNode == null) {
 			return IJpaSelection.NULL_SELECTION;
 		}
