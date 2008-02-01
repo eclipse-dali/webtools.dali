@@ -46,7 +46,6 @@ public class BaseJpaContentTests extends ContextModelTestCase
 	}
 	
 	public void testModifyRemovePersistenceXml() throws Exception {
-		PersistenceResource prm = persistenceResource();
 		IBaseJpaContent baseJpaContent = (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
 		
 		assertNotNull(baseJpaContent.getPersistenceXml());
@@ -67,6 +66,7 @@ public class BaseJpaContentTests extends ContextModelTestCase
 		assertTrue(exceptionThrown);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void testUpdateAddPersistenceXml() throws Exception {
 		PersistenceResource pr = persistenceResource();
 		deleteResource(pr);

@@ -84,13 +84,13 @@ public class BaseJpaContent extends JpaContextNode
 		}
 		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForWrite(jpaProject().project());
 		PersistenceResource pr = pae.getResource();
+		pae.dispose();
 		try {
 			WorkbenchResourceHelper.deleteResource(pr);
 		}
 		catch (CoreException ce) {
 			JptCorePlugin.log(ce);
 		}
-		pae.dispose();
 		
 		if (! pr.exists()) {
 			this.setPersistenceXml(null);
