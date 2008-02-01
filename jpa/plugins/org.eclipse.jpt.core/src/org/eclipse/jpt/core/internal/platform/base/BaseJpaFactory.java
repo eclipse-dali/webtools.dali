@@ -398,7 +398,7 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 		return new JavaNamedNativeQuery(parent);
 	}
 	
-	public IJavaQueryHint createJavaQueryHint(IJavaQuery parent) {
+	public IJavaQueryHint createJavaQueryHint(IJavaQuery<?> parent) {
 		return new JavaQueryHint(parent);
 	}
 	

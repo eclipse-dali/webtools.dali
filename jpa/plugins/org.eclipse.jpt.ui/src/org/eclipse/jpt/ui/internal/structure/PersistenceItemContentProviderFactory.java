@@ -52,7 +52,7 @@ public class PersistenceItemContentProviderFactory
 	}
 	
 	
-	public static class PersistenceResourceModelItemContentProvider extends AbstractTreeItemContentProvider
+	public static class PersistenceResourceModelItemContentProvider extends AbstractTreeItemContentProvider<IJpaContextNode>
 	{
 		public PersistenceResourceModelItemContentProvider(
 				PersistenceResourceModel persistenceResourceModel, 
@@ -78,7 +78,7 @@ public class PersistenceItemContentProviderFactory
 	}
 	
 	
-	public static class PersistenceItemContentProvider extends AbstractTreeItemContentProvider
+	public static class PersistenceItemContentProvider extends AbstractTreeItemContentProvider<IPersistenceUnit>
 	{
 		public PersistenceItemContentProvider(
 				IPersistence persistence, DelegatingTreeContentAndLabelProvider contentProvider) {
@@ -106,7 +106,7 @@ public class PersistenceItemContentProviderFactory
 	}
 	
 	
-	public static class PersistenceUnitItemContentProvider extends AbstractTreeItemContentProvider
+	public static class PersistenceUnitItemContentProvider extends AbstractTreeItemContentProvider<IJpaContextNode>
 	{
 		public PersistenceUnitItemContentProvider(
 				IPersistenceUnit persistenceUnit, DelegatingTreeContentAndLabelProvider contentProvider) {
@@ -121,7 +121,7 @@ public class PersistenceItemContentProviderFactory
 		@Override
 		protected ListValueModel<IJpaContextNode> buildChildrenModel() {
 			return new ListAspectAdapter<IPersistenceUnit, IJpaContextNode>(
-					new String[] {IPersistenceUnit.MAPPING_FILE_REF_LIST, IPersistenceUnit.CLASS_REF_LIST},
+					new String[] {IPersistenceUnit.SPECIFIED_MAPPING_FILE_REF_LIST, IPersistenceUnit.CLASS_REF_LIST},
 					(IPersistenceUnit) model()) {
 				@Override
 				@SuppressWarnings("unchecked")
@@ -134,6 +134,7 @@ public class PersistenceItemContentProviderFactory
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	public static class MappingFileRefItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public MappingFileRefItemContentProvider(
@@ -153,6 +154,7 @@ public class PersistenceItemContentProviderFactory
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	public static class ClassRefItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public ClassRefItemContentProvider(

@@ -321,7 +321,7 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 	}
 	
 	
-	private static class RootContentProvider extends AbstractTreeItemContentProvider
+	private static class RootContentProvider extends AbstractTreeItemContentProvider<Vehicle>
 	{
 		public RootContentProvider(Root item, DelegatingTreeContentAndLabelProvider contentAndLabelProvider) {
 			super(item, contentAndLabelProvider);
@@ -333,12 +333,12 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 		}
 		
 		@Override
-		protected ListValueModel buildChildrenModel() {
-			return new StaticListValueModel(CollectionTools.list(((Root) model()).vehicles()));
+		protected ListValueModel<Vehicle> buildChildrenModel() {
+			return new StaticListValueModel<Vehicle>(CollectionTools.list(((Root) model()).vehicles()));
 		}
 	}
 	
-	
+	@SuppressWarnings("unchecked")
 	private static class VehicleContentProvider extends AbstractTreeItemContentProvider
 	{
 		public VehicleContentProvider(Vehicle item, DelegatingTreeContentAndLabelProvider contentAndLabelProvider) {

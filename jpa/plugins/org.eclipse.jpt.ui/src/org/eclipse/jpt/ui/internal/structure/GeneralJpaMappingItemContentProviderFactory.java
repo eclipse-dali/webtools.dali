@@ -37,7 +37,7 @@ public abstract class GeneralJpaMappingItemContentProviderFactory
 	}
 	
 	
-	public static class PersistentTypeItemContentProvider extends AbstractTreeItemContentProvider
+	public static class PersistentTypeItemContentProvider extends AbstractTreeItemContentProvider<IPersistentAttribute>
 	{
 		public PersistentTypeItemContentProvider(
 				IPersistentType persistentType, DelegatingTreeContentAndLabelProvider contentProvider) {
@@ -61,6 +61,7 @@ public abstract class GeneralJpaMappingItemContentProviderFactory
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	public static class PersistentAttributeItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public PersistentAttributeItemContentProvider(

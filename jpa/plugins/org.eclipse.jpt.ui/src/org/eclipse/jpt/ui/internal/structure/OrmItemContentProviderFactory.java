@@ -38,7 +38,7 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 	}
 	
 	
-	public static class OrmResourceModelItemContentProvider extends AbstractTreeItemContentProvider
+	public static class OrmResourceModelItemContentProvider extends AbstractTreeItemContentProvider<IJpaContextNode>
 	{
 		public OrmResourceModelItemContentProvider(
 				OrmResourceModel ormResourceModel, DelegatingTreeContentAndLabelProvider contentProvider) {
@@ -63,7 +63,7 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 	}
 	
 	
-	public static class EntityMappingsItemContentProvider extends AbstractTreeItemContentProvider
+	public static class EntityMappingsItemContentProvider extends AbstractTreeItemContentProvider<XmlPersistentType>
 	{
 		public EntityMappingsItemContentProvider(
 				EntityMappings entityMappings, DelegatingTreeContentAndLabelProvider contentProvider) {

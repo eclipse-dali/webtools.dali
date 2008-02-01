@@ -34,7 +34,7 @@ public class JavaItemContentProviderFactory extends GeneralJpaMappingItemContent
 	}
 	
 	
-	public static class JavaResourceModelItemContentProvider extends AbstractTreeItemContentProvider
+	public static class JavaResourceModelItemContentProvider extends AbstractTreeItemContentProvider<IJpaContextNode>
 	{
 		public JavaResourceModelItemContentProvider(
 				JavaResourceModel javaResourceModel, DelegatingTreeContentAndLabelProvider contentProvider) {

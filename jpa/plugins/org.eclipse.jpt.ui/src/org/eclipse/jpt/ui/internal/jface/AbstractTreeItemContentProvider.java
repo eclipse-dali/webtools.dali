@@ -41,14 +41,14 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
  * Other methods may be overridden, but take care to preserve the logic provided 
  * by this class.
  */
-public abstract class AbstractTreeItemContentProvider
+public abstract class AbstractTreeItemContentProvider<E>
 	implements ITreeItemContentProvider
 {
 	private DelegatingTreeContentAndLabelProvider treeContentProvider;
 	
 	private Model model;
 	
-	private ListValueModel childrenModel;
+	private ListValueModel<E> childrenModel;
 	
 	private ListChangeListener childrenListener;
 	
@@ -108,7 +108,7 @@ public abstract class AbstractTreeItemContentProvider
 	 * Return the children model
 	 * (lazy and just-in-time initialized)
 	 */
-	protected ListValueModel childrenModel() {
+	protected ListValueModel<E> childrenModel() {
 		if (childrenModel == null) {
 			childrenModel = buildChildrenModel();
 			engageChildren();
@@ -119,7 +119,8 @@ public abstract class AbstractTreeItemContentProvider
 	/**
 	 * Construct a children model
 	 */
-	protected ListValueModel buildChildrenModel() {
+	@SuppressWarnings("unchecked")
+	protected ListValueModel<E> buildChildrenModel() {
 		return new NullListValueModel();
 	}
 	
@@ -129,8 +130,8 @@ public abstract class AbstractTreeItemContentProvider
 	 * This wraps the children collection model and uses it internally as a list
 	 * model.
 	 */
-	protected ListValueModel buildChildrenModel(CollectionValueModel childrenModel) {
-		return new CollectionListValueModelAdapter(childrenModel);
+	protected ListValueModel<E> buildChildrenModel(CollectionValueModel<E> childrenModel) {
+		return new CollectionListValueModelAdapter<E>(childrenModel);
 	}
 	
 	/**
@@ -139,8 +140,8 @@ public abstract class AbstractTreeItemContentProvider
 	 * This wraps the children (child) property model and uses it internally as a list
 	 * model.
 	 */
-	protected ListValueModel buildChildrenModel(PropertyValueModel<?> childrenModel) {
-		return buildChildrenModel(new PropertyCollectionValueModelAdapter(childrenModel));
+	protected ListValueModel<E> buildChildrenModel(PropertyValueModel<E> childrenModel) {
+		return buildChildrenModel(new PropertyCollectionValueModelAdapter<E>(childrenModel));
 	}
 	
 	/**

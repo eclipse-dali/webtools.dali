@@ -319,7 +319,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	}
 
 
-	private static class GenericTreeItemContentProvider extends AbstractTreeItemContentProvider
+	private static class GenericTreeItemContentProvider extends AbstractTreeItemContentProvider<TreeNode>
 	{
 		public GenericTreeItemContentProvider(
 				TreeNode treeNode, DelegatingTreeContentAndLabelProvider treeContentAndLabelProvider) {
@@ -336,7 +336,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		}
 
 		@Override
-		protected ListValueModel buildChildrenModel() {
+		protected ListValueModel<TreeNode> buildChildrenModel() {
 			return new ListAspectAdapter<TreeNode, TreeNode>(TreeNode.CHILDREN_LIST, treeNode()) {
 				@Override
 				protected ListIterator<TreeNode> listIterator_() {
@@ -363,14 +363,14 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		}
 
 		@Override
-		protected ListValueModel buildChildrenModel() {
+		protected ListValueModel<TreeNode> buildChildrenModel() {
 			return buildChildrenModel(
-					new CompositeCollectionValueModel(super.buildChildrenModel()) {
+					new CompositeCollectionValueModel<TreeNode, TreeNode>(super.buildChildrenModel()) {
 						@Override
-						protected CollectionValueModel transform(Object value) {
+						protected CollectionValueModel<TreeNode> transform(TreeNode value) {
 							if (value instanceof Nest) {
 								final Nest nest = (Nest) value;
-								return new ListCollectionValueModelAdapter(
+								return new ListCollectionValueModelAdapter<TreeNode>(
 										new ListAspectAdapter<TreeNode, TreeNode>(TreeNode.CHILDREN_LIST, nest) {
 											@Override
 											protected ListIterator<TreeNode> listIterator_() {
@@ -380,7 +380,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 									);
 							}
 							else {
-								return new StaticCollectionValueModel(CollectionTools.collection(value));
+								return new StaticCollectionValueModel<TreeNode>(CollectionTools.collection(value));
 							}
 						}
 					}
@@ -519,7 +519,7 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		}
 
 		public Iterator<Child> nestlessChildren() {
-			return new FilteringIterator<Child>(
+			return new FilteringIterator<Child, Child>(
 					new TransformationIterator<TreeNode, Child>(children()) {
 						@Override
 						protected Child transform(TreeNode next) {
@@ -530,8 +530,8 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 						}
 					}) {
 				@Override
-				protected boolean accept(Object o) {
-					return o != null;
+				protected boolean accept(Child c) {
+					return c != null;
 				}
 			};
 		}
