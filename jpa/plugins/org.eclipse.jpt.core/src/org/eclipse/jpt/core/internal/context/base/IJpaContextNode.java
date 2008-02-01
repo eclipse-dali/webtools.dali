@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 import org.eclipse.jpt.core.internal.IJpaNode;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 
@@ -26,4 +27,6 @@ public interface IJpaContextNode extends IJpaNode
 
 	//TODO interface for this
 	XmlPersistentType xmlPersistentType();
+	
+	ITextRange selectionTextRange();
 }

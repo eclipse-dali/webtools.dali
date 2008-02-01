@@ -11,7 +11,9 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 import org.eclipse.jpt.core.internal.IJpaNode;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JpaNode;
+import org.eclipse.jpt.core.internal.SimpleTextRange;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
@@ -19,14 +21,14 @@ import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
 public abstract class JpaContextNode extends JpaNode
 	implements IJpaContextNode
 {
-	// **************** constructor *******************************************
+	// **************** constructor ********************************************
 	
 	protected JpaContextNode(IJpaNode parent) {
 		super(parent);
 	}
 	
 	
-	// **************** IJpaContextNodeModel impl *****************************
+	// **************** IJpaContextNode impl ***********************************
 	
 	@Override
 	protected IJpaBaseContextFactory jpaFactory() {
@@ -56,5 +58,9 @@ public abstract class JpaContextNode extends JpaNode
 	 */
 	public XmlPersistentType xmlPersistentType() {
 		return ((IJpaContextNode) parent()).xmlPersistentType();
+	}
+	
+	public ITextRange selectionTextRange() {
+		return new SimpleTextRange(0, 0, 0);
 	}
 }
