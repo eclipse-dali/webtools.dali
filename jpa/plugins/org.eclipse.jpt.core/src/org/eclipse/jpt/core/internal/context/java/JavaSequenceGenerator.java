@@ -40,11 +40,16 @@ public class JavaSequenceGenerator extends JavaGenerator<SequenceGenerator>
 		return this.specifiedSequenceName;
 	}
 
-
 	public void setSpecifiedSequenceName(String newSpecifiedSequenceName) {
 		String oldSpecifiedSequenceName = newSpecifiedSequenceName;
 		this.specifiedSequenceName = newSpecifiedSequenceName;
 		generatorResource().setSequenceName(newSpecifiedSequenceName);
+		firePropertyChanged(SPECIFIED_SEQUENCE_NAME_PROPERTY, oldSpecifiedSequenceName, newSpecifiedSequenceName);
+	}
+
+	protected void setSpecifiedSequenceName_(String newSpecifiedSequenceName) {
+		String oldSpecifiedSequenceName = newSpecifiedSequenceName;
+		this.specifiedSequenceName = newSpecifiedSequenceName;
 		firePropertyChanged(SPECIFIED_SEQUENCE_NAME_PROPERTY, oldSpecifiedSequenceName, newSpecifiedSequenceName);
 	}
 
@@ -55,7 +60,7 @@ public class JavaSequenceGenerator extends JavaGenerator<SequenceGenerator>
 	@Override
 	public void update(SequenceGenerator sequenceGenerator) {
 		super.update(sequenceGenerator);
-		this.setSpecifiedSequenceName(this.specifiedSequenceName(sequenceGenerator)); 
+		this.setSpecifiedSequenceName_(this.specifiedSequenceName(sequenceGenerator)); 
 	}
 	
 	protected String specifiedSequenceName(SequenceGenerator generatorResource) {

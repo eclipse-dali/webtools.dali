@@ -80,6 +80,12 @@ public class JavaTableGenerator extends JavaGenerator<TableGenerator>
 		firePropertyChanged(SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
 	}
 
+	protected void setSpecifiedTable_(String newSpecifiedTable) {
+		String oldSpecifiedTable = this.specifiedTable;
+		this.specifiedTable = newSpecifiedTable;
+		firePropertyChanged(SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
+	}
+
 	public String getDefaultTable() {
 		return this.defaultTable;
 	}
@@ -98,7 +104,12 @@ public class JavaTableGenerator extends JavaGenerator<TableGenerator>
 		generatorResource().setCatalog(newSpecifiedCatalog);
 		firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
 	}
-
+	
+	protected void setSpecifiedCatalog_(String newSpecifiedCatalog) {
+		String oldSpecifiedCatalog = this.specifiedCatalog;
+		this.specifiedCatalog = newSpecifiedCatalog;
+		firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
+	}
 
 	public String getDefaultCatalog() {
 		return this.defaultCatalog;
@@ -112,11 +123,16 @@ public class JavaTableGenerator extends JavaGenerator<TableGenerator>
 		return this.specifiedSchema;
 	}
 
-
 	public void setSpecifiedSchema(String newSpecifiedSchema) {
 		String oldSpecifiedSchema = this.specifiedSchema;
 		this.specifiedSchema = newSpecifiedSchema;
 		generatorResource().setSchema(newSpecifiedSchema);
+		firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
+	}
+
+	protected void setSpecifiedSchema_(String newSpecifiedSchema) {
+		String oldSpecifiedSchema = this.specifiedSchema;
+		this.specifiedSchema = newSpecifiedSchema;
 		firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
 	}
 
@@ -145,6 +161,12 @@ public class JavaTableGenerator extends JavaGenerator<TableGenerator>
 		firePropertyChanged(SPECIFIED_PK_COLUMN_NAME_PROPERTY, oldSpecifiedPkColumnName, newSpecifiedPkColumnName);
 	}
 
+	protected void setSpecifiedPkColumnName_(String newSpecifiedPkColumnName) {
+		String oldSpecifiedPkColumnName = this.specifiedPkColumnName;
+		this.specifiedPkColumnName = newSpecifiedPkColumnName;
+		firePropertyChanged(SPECIFIED_PK_COLUMN_NAME_PROPERTY, oldSpecifiedPkColumnName, newSpecifiedPkColumnName);
+	}
+
 	public String getDefaultPkColumnName() {
 		return this.defaultPkColumnName;
 	}
@@ -161,6 +183,12 @@ public class JavaTableGenerator extends JavaGenerator<TableGenerator>
 		String oldSpecifiedValueColumnName = this.specifiedValueColumnName;
 		this.specifiedValueColumnName = newSpecifiedValueColumnName;
 		generatorResource().setValueColumnName(newSpecifiedValueColumnName);
+		firePropertyChanged(SPECIFIED_VALUE_COLUMN_NAME_PROPERTY, oldSpecifiedValueColumnName, newSpecifiedValueColumnName);
+	}
+
+	protected void setSpecifiedValueColumnName_(String newSpecifiedValueColumnName) {
+		String oldSpecifiedValueColumnName = this.specifiedValueColumnName;
+		this.specifiedValueColumnName = newSpecifiedValueColumnName;
 		firePropertyChanged(SPECIFIED_VALUE_COLUMN_NAME_PROPERTY, oldSpecifiedValueColumnName, newSpecifiedValueColumnName);
 	}
 
@@ -183,6 +211,12 @@ public class JavaTableGenerator extends JavaGenerator<TableGenerator>
 		firePropertyChanged(SPECIFIED_PK_COLUMN_VALUE_PROPERTY, oldSpecifiedPkColumnValue, newSpecifiedPkColumnValue);
 	}
 
+	public void setSpecifiedPkColumnValue_(String newSpecifiedPkColumnValue) {
+		String oldSpecifiedPkColumnValue = this.specifiedPkColumnValue;
+		this.specifiedPkColumnValue = newSpecifiedPkColumnValue;
+		firePropertyChanged(SPECIFIED_PK_COLUMN_VALUE_PROPERTY, oldSpecifiedPkColumnValue, newSpecifiedPkColumnValue);
+	}
+
 	public String getDefaultPkColumnValue() {
 		return this.defaultPkColumnValue;
 	}
@@ -201,12 +235,12 @@ public class JavaTableGenerator extends JavaGenerator<TableGenerator>
 	@Override
 	public void update(TableGenerator tableGenerator) {
 		super.update(tableGenerator);
-		this.setSpecifiedTable(this.specifiedTable(tableGenerator));
-		this.setSpecifiedCatalog(this.specifiedCatalog(tableGenerator));
-		this.setSpecifiedSchema(this.specifiedSchema(tableGenerator));
-		this.setSpecifiedPkColumnName(this.specifiedPkColumnName(tableGenerator));
-		this.setSpecifiedValueColumnName(this.specifiedValueColumnName(tableGenerator));
-		this.setSpecifiedPkColumnValue(this.specifiedPkColumnValue(tableGenerator));
+		this.setSpecifiedTable_(this.specifiedTable(tableGenerator));
+		this.setSpecifiedCatalog_(this.specifiedCatalog(tableGenerator));
+		this.setSpecifiedSchema_(this.specifiedSchema(tableGenerator));
+		this.setSpecifiedPkColumnName_(this.specifiedPkColumnName(tableGenerator));
+		this.setSpecifiedValueColumnName_(this.specifiedValueColumnName(tableGenerator));
+		this.setSpecifiedPkColumnValue_(this.specifiedPkColumnValue(tableGenerator));
 		//this.updateUniqueConstraintsFromJava(astRoot);
 	}
 	
