@@ -70,6 +70,7 @@ public interface EntityMappings extends IJpaContextNode
 	void removeXmlPersistentType(int index);
 	void removeXmlPersistentType(XmlPersistentType xmlPersistentType);
 	//void moveXmlPersistentType(int targetIndex, int sourceIndex);
+	boolean containsPersistentType(String className);
 		String PERSISTENT_TYPES_LIST = "persistentTypes";
 	
 

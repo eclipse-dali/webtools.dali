@@ -81,8 +81,8 @@ public class AddPersistentClassDialog extends StatusDialog
 		
 		createLabel(composite, 2, JptUiMessages.AddPersistentClassDialog_classLabel);
 			
-		classText = createText(composite, 1);
-		classText.addModifyListener(
+		this.classText = createText(composite, 1);
+		this.classText.addModifyListener(
 				new ModifyListener() {
 					public void modifyText(ModifyEvent e) {
 						validate();
@@ -90,8 +90,8 @@ public class AddPersistentClassDialog extends StatusDialog
 				}
 			);
 		
-		classBrowseButton = createButton(composite, 1, JptUiMessages.General_browse);
-		classBrowseButton.addSelectionListener(new SelectionListener() {
+		this.classBrowseButton = createButton(composite, 1, JptUiMessages.General_browse);
+		this.classBrowseButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				IType type = chooseType();
 				if (type != null) {
@@ -105,8 +105,8 @@ public class AddPersistentClassDialog extends StatusDialog
 		
 		createLabel(composite, 2, JptUiMessages.AddPersistentClassDialog_mappingLabel);
 		
-		mappingCombo = new ComboViewer(createCombo(composite, 2));
-		mappingCombo.setContentProvider(
+		this.mappingCombo = new ComboViewer(createCombo(composite, 2));
+		this.mappingCombo.setContentProvider(
 			new IStructuredContentProvider() {
 				public void dispose() {}
 				
@@ -120,20 +120,20 @@ public class AddPersistentClassDialog extends StatusDialog
 				
 				public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}
 			});
-		mappingCombo.setLabelProvider(
+		this.mappingCombo.setLabelProvider(
 			new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					return ((ITypeMappingUiProvider) element).label();
+					return ((ITypeMappingUiProvider<?>) element).label();
 				}
 			});
-		mappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
+		this.mappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
 				validate();
 			}
 		});
-		mappingCombo.setInput("FOO");
-		mappingCombo.getCombo().select(1);  // select Entity to begin
+		this.mappingCombo.setInput("FOO");
+		this.mappingCombo.getCombo().select(1);  // select Entity to begin
 		
 		// TODO - F1 Help
 		// PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IDaliHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
@@ -182,16 +182,16 @@ public class AddPersistentClassDialog extends StatusDialog
 	}
 	
 	private IJpaProject getJpaProject() {
-		return entityMappings.jpaProject();
+		return this.entityMappings.jpaProject();
 	}
 	
 	public String getClassName() {
-		return classText.getText();
+		return this.classText.getText();
 	}
 	
 	public String getMappingKey() {
-		StructuredSelection selection = (StructuredSelection) mappingCombo.getSelection();
-		return (selection.isEmpty()) ? null : ((ITypeMappingUiProvider) selection.getFirstElement()).mappingKey();
+		StructuredSelection selection = (StructuredSelection) this.mappingCombo.getSelection();
+		return (selection.isEmpty()) ? null : ((ITypeMappingUiProvider<?>) selection.getFirstElement()).mappingKey();
 	}
 	
 	protected IType chooseType() {
@@ -247,7 +247,7 @@ public class AddPersistentClassDialog extends StatusDialog
 			return;
 		}
 		
-		if (entityMappings.containsPersistentType(type)) {
+		if (this.entityMappings.containsPersistentType(className)) {
 			updateStatus(
 				new Status(
 					IStatus.WARNING, JptUiPlugin.PLUGIN_ID, 
@@ -269,7 +269,7 @@ public class AddPersistentClassDialog extends StatusDialog
 	
 	@Override
 	protected void okPressed() {
-		entityMappings.addMapping(getClassName(), getMappingKey());
+		this.entityMappings.addXmlPersistentType(getMappingKey(), getClassName());
 		super.okPressed();
 	}
 }

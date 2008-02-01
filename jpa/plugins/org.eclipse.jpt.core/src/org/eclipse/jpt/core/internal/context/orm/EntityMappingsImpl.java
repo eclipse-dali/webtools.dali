@@ -418,18 +418,18 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		moveItemInList(targetIndex, sourceIndex, this.namedNativeQueries, EntityMappings.NAMED_NATIVE_QUERIES_LIST);		
 	}
 
-//	public boolean containsPersistentType(IType type) {
-//		if (type == null) {
-//			return false;
-//		}
-//		for (XmlPersistentType each : getPersistentTypes()) {
-//			if (type.equals(each.findJdtType())) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-//
+	//TODO what about qualified name?  package + class
+	//this needs to be handled both for className and persistentType.getName().
+	//moving on for now since I am just trying to get the ui compiled!  just a warning that this isn't good api
+	public boolean containsPersistentType(String className) {
+		for (XmlPersistentType persistentType : CollectionTools.iterable(xmlPersistentTypes())) {
+			if (persistentType.getName().equals(className)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 //	/* @see IJpaContentNode#getId() */
 //	public Object getId() {
 //		return IXmlContentNodes.ENTITY_MAPPINGS_ID;
