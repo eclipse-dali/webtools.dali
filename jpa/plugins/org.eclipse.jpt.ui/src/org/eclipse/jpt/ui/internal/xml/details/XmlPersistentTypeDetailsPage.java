@@ -85,7 +85,7 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlP
 
 		// Java class widgets
 		XmlJavaClassChooser xmlJavaClassChooser =
-			new XmlJavaClassChooser(this, container);
+			new XmlJavaClassChooser(this, buildMappingHolder(), container);
 
 		buildLabeledComposite(
 			container,
