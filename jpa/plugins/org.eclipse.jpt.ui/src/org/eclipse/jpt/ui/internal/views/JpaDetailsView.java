@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved. This
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved. This
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
@@ -9,36 +9,35 @@
 package org.eclipse.jpt.ui.internal.views;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.JptUiPlugin;
+import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.jpt.ui.internal.selection.IJpaSelection;
 import org.eclipse.jpt.ui.internal.selection.JpaSelection;
-import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
-import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * The JPA view that shows the details of ... TODO
+ * The JPA view that shows the details a mapping (either type or attribute).
  *
  * @version 2.0
  * @since 1.0
  */
+@SuppressWarnings("nls")
 public class JpaDetailsView extends AbstractJpaView
 {
 	/**
 	 * The current <code>IJpaDetailsPage</code> that was retrieve based on the
 	 * current selection.
 	 */
-	private IJpaDetailsPage<? extends IJpaContextNode> currentPage;
+	private IJpaDetailsPage<IJpaContextNode> currentPage;
 
 	/**
 	 * The current selection used to show the right <code>IJpaDetailsPage</code>.
@@ -49,12 +48,6 @@ public class JpaDetailsView extends AbstractJpaView
 	 * key: Object content node id,  value: Composite page.
 	 */
 	private Map<Object, IJpaDetailsPage<? extends IJpaContextNode>> detailsPages;
-
-	/**
-	 * The holder of the current selection, which is the
-	 * <code>IJpaDetailsPage</code>'s subject.
-	 */
-	private WritablePropertyValueModel<IJpaContextNode> subjectHolder;
 
 	/**
 	 * Creates a new <code>JpaDetailsView</code>.
@@ -72,12 +65,11 @@ public class JpaDetailsView extends AbstractJpaView
 
 		String id = contextNode.jpaProject().jpaPlatform().getId();
 
-		Composite parentComposite = getWidgetFactory().createComposite(getPageBook());
-		parentComposite.setLayout(new FillLayout(SWT.HORIZONTAL));
+		Composite container = getWidgetFactory().createComposite(getPageBook());
+		container.setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		IJpaDetailsPage<? extends IJpaContextNode> page = detailsProvider.buildDetailsPage(
-			subjectHolder,
-			parentComposite,
+			container,
 			contextNode,
 			getWidgetFactory()
 		);
@@ -89,21 +81,13 @@ public class JpaDetailsView extends AbstractJpaView
 		return page;
 	}
 
-	private WritablePropertyValueModel<IJpaContextNode> buildSubjectHolder() {
-		return new SimplePropertyValueModel<IJpaContextNode>();
-	}
-
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
 	public void dispose() {
 
-		for (Iterator<Object> stream = new CloneIterator<Object>(detailsPages.keySet()); stream.hasNext(); ) {
-			Object key = stream.next();
-			IJpaDetailsPage<? extends IJpaContextNode> detailsPage = detailsPages.remove(key);
-			detailsPage.dispose();
-		}
+		detailsPages.clear();
 
 		currentSelection = JpaSelection.NULL_SELECTION;
 		currentPage = null;
@@ -153,7 +137,12 @@ public class JpaDetailsView extends AbstractJpaView
 
 		this.currentSelection = IJpaSelection.NULL_SELECTION;
 		this.detailsPages     = new HashMap<Object, IJpaDetailsPage<? extends IJpaContextNode>>();
-		this.subjectHolder    = buildSubjectHolder();
+	}
+
+	private void log(String message) {
+		if (Tracing.booleanDebugOption(Tracing.UI_DETAILS_VIEW)) {
+			Tracing.log(message);
+		}
 	}
 
 	/*
@@ -183,40 +172,46 @@ public class JpaDetailsView extends AbstractJpaView
 	 * @param newPage The new page to display
 	 */
 	@SuppressWarnings("unchecked")
-	private void setCurrentPage(IJpaDetailsPage<? extends IJpaContextNode> newPage) {
+	private void setCurrentPage(IJpaDetailsPage<? extends IJpaContextNode> page) {
 
-		// Depopulate old page
-		if ((currentPage != null) && (currentPage != newPage)) {
+		// Unpopulate old page
+		if (currentPage != null) {
 			try {
-				currentPage.dispose();
-				subjectHolder.setValue(null);
+				log("JpaDetailsView.setCurrentPage() : disposing of current page");
+
+				currentPage.setSubject(null);
 			}
-			finally {
-				// Log the exception
+			catch (Exception e) {
+				JptUiPlugin.log(e);
 			}
 		}
 
+		IJpaDetailsPage<IJpaContextNode> newPage = (IJpaDetailsPage<IJpaContextNode>) page;
+
 		// Populate new page
-		if (newPage != null) {
+		if (page != null) {
 			try {
-				// TODO: Tweak the IJpaDetailsPage to only listen to the subject change
-				IJpaDetailsPage<IJpaContextNode> page = (IJpaDetailsPage<IJpaContextNode>) newPage;
-				subjectHolder.setValue(currentSelection.getSelectedNode());
-				page.populate();
+				log("JpaDetailsView.setCurrentPage() : populating new page");
+				newPage.setSubject(currentSelection.getSelectedNode());
 			}
-			finally {
+			catch (Exception e) {
 				// Show error page
+				page = null;
+				JptUiPlugin.log(e);
 			}
+		}
+		else {
+			log("JpaDetailsView.setCurrentPage() : No page to populate");
 		}
 
 		currentPage = newPage;
 
 		// Show new page
-		if (newPage == null) {
+		if (page == null) {
 			showDefaultPage();
 		}
 		else {
-			showPage(newPage.getControl().getParent());
+			showPage(page.getControl());
 		}
 	}
 }

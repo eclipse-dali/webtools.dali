@@ -33,6 +33,11 @@ public final class Tracing
 	public static final String UI_DB = "/debug/ui/db";
 
 	/**
+	 * A constant used to retrieve the value associated with "/debug/ui/detailsView".
+	 */
+	public static final String UI_DETAILS_VIEW = "/debug/ui/detailsView";
+
+	/**
 	 * A constant used to retrieve the value associated with "/debug/ui/layout".
 	 */
 	public static final String UI_LAYOUT = "/debug/ui/layout";

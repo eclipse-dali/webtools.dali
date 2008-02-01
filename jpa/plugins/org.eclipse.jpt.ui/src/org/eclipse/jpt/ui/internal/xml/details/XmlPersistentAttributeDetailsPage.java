@@ -62,15 +62,13 @@ public class XmlPersistentAttributeDetailsPage extends PersistentAttributeDetail
 	/**
 	 * Creates a new <code>XmlPersistentAttributeDetailsPage</code>.
 	 *
-	 * @param subjectHolder The holder of the subject
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public XmlPersistentAttributeDetailsPage(PropertyValueModel<? extends XmlPersistentAttribute> subjectHolder,
-	                                         Composite parent,
+	public XmlPersistentAttributeDetailsPage(Composite parent,
 	                                         TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(parent, widgetFactory);
 	}
 
 	protected void addAttributeMappingUiProvidersTo(List<IAttributeMappingUiProvider<? extends IAttributeMapping>> providers) {

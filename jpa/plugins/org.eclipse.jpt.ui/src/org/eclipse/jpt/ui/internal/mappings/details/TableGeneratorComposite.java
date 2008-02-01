@@ -91,10 +91,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 				if (text != null && pkColumnNameCombo.getItemCount() > 0 && text.equals(pkColumnNameCombo.getItem(0))) {
 					text = null;
 				}
-				ITableGenerator generator = getGenerator();
-				if (generator == null) {
-					generator = buildGenerator();
-				}
+				ITableGenerator generator = retrieveTableGenerator();
 				generator.setSpecifiedPkColumnName(text);
 			}
 		};
@@ -115,10 +112,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 				if (text != null && pkColumnValueCombo.getItemCount() > 0 && text.equals(pkColumnValueCombo.getItem(0))) {
 					text = null;
 				}
-				ITableGenerator generator = getGenerator();
-				if (generator == null) {
-					generator = buildGenerator();
-				}
+				ITableGenerator generator = retrieveTableGenerator();
 				generator.setSpecifiedPkColumnValue(text);
 			}
 		};
@@ -139,10 +133,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 				if (text != null && tableNameCombo.getItemCount() > 0 && text.equals(tableNameCombo.getItem(0))) {
 					text = null;
 				}
-				ITableGenerator generator = getGenerator();
-				if (generator == null) {
-					generator = buildGenerator();
-				}
+				ITableGenerator generator = retrieveTableGenerator();
 				generator.setSpecifiedTable(text);
 			}
 		};
@@ -163,21 +154,10 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 				if (text != null && valueColumnNameCombo.getItemCount() > 0 && text.equals(valueColumnNameCombo.getItem(0))) {
 					text = null;
 				}
-				ITableGenerator generator = getGenerator();
-				if (generator == null) {
-					generator = buildGenerator();
-				}
+				ITableGenerator generator = retrieveTableGenerator();
 				generator.setSpecifiedValueColumnName(text);
 			}
 		};
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void disengageListeners() {
-		super.disengageListeners();
 	}
 
 	/*
@@ -197,20 +177,12 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void engageListeners() {
-		super.engageListeners();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected ITableGenerator getGenerator() {
-		return (subject() != null) ? subject().getTableGenerator() : null;
+	protected ITableGenerator getGenerator(IIdMapping subject) {
+		return (subject != null) ? subject.getTableGenerator() : null;
 	}
 
 	protected Schema getSchema() {
-		if (getGenerator() != null) {
+		if (getGenerator(subject()) != null) {
 			return null;// this.getConnectionProfile().getDatabase().schemaNamed(getGenerator().getSchema());
 		}
 		return null;
@@ -295,7 +267,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	}
 
 	private void populatePkColumnName() {
-		String pkColumnName = this.getGenerator().getSpecifiedPkColumnName();
+		String pkColumnName = this.tableGenerator().getSpecifiedPkColumnName();
 		if (pkColumnName != null) {
 			if (!this.pkColumnNameCombo.getText().equals(pkColumnName)) {
 				this.pkColumnNameCombo.setText(pkColumnName);
@@ -307,7 +279,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	}
 
 	private void populatePkColumnNameCombo() {
-		if (this.getGenerator() == null) {
+		if (this.tableGenerator() == null) {
 			return;
 		}
 		populatePkColumnChoices();
@@ -315,10 +287,10 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	}
 
 	private void populatePkColumnValueCombo() {
-		if (this.getGenerator() == null) {
+		if (this.tableGenerator() == null) {
 			return;
 		}
-		String pkColumnValue = this.getGenerator().getSpecifiedPkColumnValue();
+		String pkColumnValue = this.tableGenerator().getSpecifiedPkColumnValue();
 		if (pkColumnValue != null) {
 			if (!this.pkColumnValueCombo.getText().equals(pkColumnValue)) {
 				this.pkColumnValueCombo.setText(pkColumnValue);
@@ -330,7 +302,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	}
 
 	private void populateTableNameCombo() {
-		if (this.getGenerator() == null) {
+		if (this.tableGenerator() == null) {
 			return;
 		}
 //		if (this.getConnectionProfile().isConnected()) {
@@ -343,7 +315,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 //				}
 //			}
 //		}
-		String tableName = this.getGenerator().getSpecifiedTable();
+		String tableName = this.tableGenerator().getSpecifiedTable();
 		if (tableName != null) {
 			if (!this.tableNameCombo.getText().equals(tableName)) {
 				this.tableNameCombo.setText(tableName);
@@ -355,7 +327,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	}
 
 	private void populateValueColumnNameCombo() {
-		if (this.getGenerator() == null) {
+		if (this.tableGenerator() == null) {
 			return;
 		}
 //		if (this.getConnectionProfile().isConnected()) {
@@ -374,7 +346,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 //				}
 //			}
 //		}
-		String valueColumnName = this.getGenerator().getSpecifiedValueColumnName();
+		String valueColumnName = this.tableGenerator().getSpecifiedValueColumnName();
 		if (valueColumnName != null) {
 			if (!this.valueColumnNameCombo.getText().equals(valueColumnName)) {
 				this.valueColumnNameCombo.setText(valueColumnName);
@@ -391,5 +363,26 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	@Override
 	protected String propertyName() {
 		return IIdMapping.TABLE_GENERATOR_PROPERTY;
+	}
+
+	private ITableGenerator retrieveTableGenerator() {
+		ITableGenerator generator = tableGenerator();
+
+		if (generator == null) {
+			setPopulating(true);
+
+			try {
+				generator = buildGenerator();
+			}
+			finally {
+				setPopulating(false);
+			}
+		}
+
+		return generator;
+	}
+
+	private ITableGenerator tableGenerator() {
+		return (subject() != null) ? subject().getTableGenerator() : null;
 	}
 }

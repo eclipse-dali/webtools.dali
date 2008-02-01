@@ -28,6 +28,7 @@ import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.IJpaUiFactory;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
+import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
@@ -58,20 +59,18 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 	private String currentMappingKey;
 	private ComboViewer mappingCombo;
 	private Map<String, IJpaComposite<IAttributeMapping>> mappingComposites;
-	protected PageBook mappingPageBook;
+	private PageBook mappingPageBook;
 
 	/**
 	 * Creates a new <code>PersistentAttributeDetailsPage</code>.
 	 *
-	 * @param subjectHolder The holder of the subject
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public PersistentAttributeDetailsPage(PropertyValueModel<? extends T> subjectHolder,
-                                         Composite parent,
-                                         TabbedPropertySheetWidgetFactory widgetFactory) {
+	protected PersistentAttributeDetailsPage(Composite parent,
+                                            TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(parent, widgetFactory);
 	}
 
 	/*
@@ -207,6 +206,8 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 	 */
 	@Override
 	protected void doDispose() {
+		log("PersistentAttributeDetailsPage.doDispose()");
+
 		this.currentMappingComposite = null;
 
 		for (IJpaComposite<IAttributeMapping> composite : this.mappingComposites.values()) {
@@ -250,7 +251,13 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 		return ((BaseJpaPlatformUi) jpaPlatformUi()).getJpaUiFactory();
 	}
 
-	void mappingChanged(SelectionChangedEvent event) {
+	private void log(String message) {
+		if (Tracing.booleanDebugOption(Tracing.UI_DETAILS_VIEW)) {
+			Tracing.log(message);
+		}
+	}
+
+	private void mappingChanged(SelectionChangedEvent event) {
 		if (event.getSelection() instanceof StructuredSelection) {
 			IAttributeMappingUiProvider<?> provider = (IAttributeMappingUiProvider<?>) ((StructuredSelection) event.getSelection()).getFirstElement();
 			String key = (CollectionTools.contains(defaultAttributeMappingUiProviders(), provider) ? null : provider.attributeMappingKey());
@@ -308,14 +315,13 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 
 	private void populateMappingPage(String mappingKey) {
 
-		if (this.currentMappingComposite != null) {
-
-			if (this.currentMappingKey != mappingKey) {
-				this.currentMappingComposite.dispose();
-			}
-			else {
-				return;
-			}
+		// Nothing to update
+		if (this.currentMappingKey == mappingKey) {
+			return;
+		}
+		else if (this.currentMappingComposite != null) {
+			this.log("PersistentAttributeDetailsPage.populateMappingPage() disposing of current page: " + this.currentMappingKey);
+			this.currentMappingComposite.dispose();
 		}
 
 		this.currentMappingKey = mappingKey;
@@ -324,11 +330,14 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 			this.currentMappingComposite = mappingCompositeFor(mappingKey);
 
 			try {
+				this.log("PersistentAttributeDetailsPage.populateMappingPage() populating new page: " + this.currentMappingKey);
+
 				this.currentMappingComposite.populate();
 				this.mappingPageBook.showPage(this.currentMappingComposite.getControl());
-				this.mappingPageBook.layout(true);
+//				this.mappingPageBook.getParent().layout(true);
 			}
 			catch (Exception e) {
+				this.log("PersistentAttributeDetailsPage.populateMappingPage() error encountered");
 				this.mappingComposites.remove(this.currentMappingComposite);
 				this.currentMappingComposite = null;
 				this.mappingPageBook.showPage(new Label(this.mappingPageBook, SWT.NULL));
@@ -336,6 +345,7 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 			}
 		}
 		else {
+			this.log("PersistentAttributeDetailsPage.populateMappingPage() no page to show");
 			this.currentMappingComposite = null;
 			this.mappingPageBook.showPage(new Label(this.mappingPageBook, SWT.NULL));
 		}
@@ -353,6 +363,14 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 
 			populateMappingComboAndPage();
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected boolean repopulateWithNullSubject() {
+		return false;
 	}
 
 //TODO focus??

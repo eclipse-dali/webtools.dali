@@ -235,10 +235,6 @@ public abstract class AbstractPane<T extends Model>
 
 			this.container = this.buildContainer(parent);
 			this.initializeLayout(this.container);
-
-			if (subject() != null) {
-				this.populate();
-			}
 		}
 		finally {
 			this.populating = false;
@@ -330,10 +326,7 @@ public abstract class AbstractPane<T extends Model>
 	private PropertyChangeListener buildAspectChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-				if (container.isDisposed()) {
-					return;
-				}
-				AbstractPane.this.propertyChanged(e.propertyName());
+				updatePane(e.propertyName());
 			}
 		};
 	}
@@ -2006,6 +1999,16 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
+	 * Determines whether this pane should be repopulate even if the subject if
+	 * <code>null</code>.
+	 *
+	 * @return <code>true</code> is returned by default
+	 */
+	protected boolean repopulateWithNullSubject() {
+		return true;
+	}
+
+	/**
 	 * Sets (TODO)
 	 *
 	 * @param populating
@@ -2049,10 +2052,20 @@ public abstract class AbstractPane<T extends Model>
 	@SuppressWarnings("unchecked")
 	private void subjectChanged(PropertyChangeEvent e) {
 		if (!this.container.isDisposed()) {
+			T oldSubject = (T) e.oldValue();
+			T newSubject = (T) e.newValue();
+
 			this.log("subjectChanged()");
-			this.disengageListeners((T) e.oldValue());
-			this.repopulate();
-			this.engageListeners((T) e.newValue());
+			this.disengageListeners(oldSubject);
+
+			// Only repopulate if it is allowed when the subject is null
+			if (newSubject != null ||
+			   (newSubject == null && repopulateWithNullSubject()))
+			{
+				this.repopulate();
+			}
+
+			this.engageListeners(newSubject);
 		}
 	}
 
@@ -2067,6 +2080,18 @@ public abstract class AbstractPane<T extends Model>
 	 */
 	protected final void unregisterSubPane(AbstractPane<?> subPane) {
 		this.subPanes.remove(subPane);
+	}
+
+	private void updatePane(String propertyName) {
+		if (!container.isDisposed()) {
+			populating = true;
+			try {
+				propertyChanged(propertyName);
+			}
+			finally {
+				populating = false;
+			}
+		}
 	}
 
 	public static interface IWidgetFactory {

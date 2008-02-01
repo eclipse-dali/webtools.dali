@@ -56,15 +56,13 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 	/**
 	 * Creates a new <code>XmlEntityMappingsDetailsPage</code>.
 	 *
-	 * @param subjectHolder The holder of the subject
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public XmlEntityMappingsDetailsPage(PropertyValueModel<? extends EntityMappings> subjectHolder,
-	                                    Composite parent,
+	public XmlEntityMappingsDetailsPage(Composite parent,
 	                                    TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(parent, widgetFactory);
 	}
 
 	private EnumComboViewer<EntityMappings, AccessType> buildAccessTypeCombo(Composite container) {

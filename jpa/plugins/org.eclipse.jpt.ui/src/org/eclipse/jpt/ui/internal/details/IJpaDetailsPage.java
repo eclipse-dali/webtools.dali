@@ -11,13 +11,17 @@ package org.eclipse.jpt.ui.internal.details;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.swt.widgets.Control;
 
+/**
+ * A details page is used to show the propery pane for a given context node. The
+ * <code>IJpaDetailsProvider</code> is responsible for creating the pane.
+ *
+ * @see IJpaDetailsProvider
+ *
+ * @version 2.0
+ * @since 2.0
+ */
 public interface IJpaDetailsPage<T extends IJpaContextNode>
 {
-	/**
-	 * Perform any other disposal needed
-	 */
-	void dispose();
-
 	/**
 	 * Returns this details' page's widget.
 	 *
@@ -26,7 +30,10 @@ public interface IJpaDetailsPage<T extends IJpaContextNode>
 	Control getControl();
 
 	/**
-	 * Set the content for the page and populate widgets
+	 * Sets the subject for this details page.
+	 *
+	 * @param subject Either the new subject or <code>null</code> if the subject
+	 * needs to be removed
 	 */
-	void populate();
+	void setSubject(T subject);
 }

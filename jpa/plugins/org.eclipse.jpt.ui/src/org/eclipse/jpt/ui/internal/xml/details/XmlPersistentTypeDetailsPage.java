@@ -53,15 +53,13 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlP
 	/**
 	 * Creates a new <code>XmlPersistentTypeDetailsPage</code>.
 	 *
-	 * @param subjectHolder The holder of the subject
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public XmlPersistentTypeDetailsPage(PropertyValueModel<? extends XmlPersistentType> subjectHolder,
-	                                    Composite parent,
+	public XmlPersistentTypeDetailsPage(Composite parent,
 	                                    TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(parent, widgetFactory);
 	}
 
 	protected void addXmlTypeMappingUiProvidersTo(Collection<ITypeMappingUiProvider<? extends ITypeMapping>> providers) {

@@ -59,15 +59,13 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 	/**
 	 * Creates a new <code>PersistentTypeDetailsPage</code>.
 	 *
-	 * @param subjectHolder The holder of the subject
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public PersistentTypeDetailsPage(PropertyValueModel<? extends T> subjectHolder,
-                                    Composite parent,
+	public PersistentTypeDetailsPage(Composite parent,
                                     TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(parent, widgetFactory);
 		this.composites = new HashMap<String, IJpaComposite<ITypeMapping>>();
 	}
 
@@ -141,7 +139,7 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 	private Filter<ITypeMapping> buildMappingFilter(final String key) {
 		return new Filter<ITypeMapping>() {
 			public boolean accept(ITypeMapping value) {
-				return key.equals(value.getKey());
+				return (value == null) || key.equals(value.getKey());
 			}
 		};
 	}

@@ -24,6 +24,7 @@ import org.eclipse.jpt.utility.internal.model.Model;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -312,10 +313,13 @@ public abstract class EnumComboViewer<T extends Model, V> extends AbstractPane<T
 		this.comboViewer.addSelectionChangedListener(buildSelectionChangedListener());
 	}
 
+	/**
+	 * Populates
+	 */
 	private void populateCombo() {
 		this.getCombo().removeAll();
 		this.comboViewer.add(this.buildChoices());
-		this.comboViewer.setSelection(this.buildSelection());
+		this.updateSelection();
 	}
 
 	/*
@@ -324,7 +328,7 @@ public abstract class EnumComboViewer<T extends Model, V> extends AbstractPane<T
 	@Override
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
-		this.comboViewer.setSelection(this.buildSelection());
+		this.updateSelection();
 	}
 
 	/**
@@ -346,4 +350,12 @@ public abstract class EnumComboViewer<T extends Model, V> extends AbstractPane<T
 	 * @param value The new value to be set
 	 */
 	protected abstract void setValue(V value);
+
+	/**
+	 * Updates the combo's selected item.
+	 */
+	private void updateSelection() {
+		this.comboViewer.setSelection(this.buildSelection());
+		this.comboViewer.getCCombo().setSelection(new Point(0, 0));
+	}
 }

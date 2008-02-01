@@ -80,7 +80,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 
 			@Override
 			protected void setValue(String value) {
-				ISequenceGenerator generator = getGenerator();
+				ISequenceGenerator generator = getGenerator((IIdMapping) super.subject());
 
 				if (generator == null) {
 					generator = buildGenerator();
@@ -102,7 +102,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 
 			@Override
 			protected String value() {
-				ISequenceGenerator generator = getGenerator();
+				ISequenceGenerator generator = getGenerator((IIdMapping) super.subject());
 
 				if (generator != null) {
 					return generator.getSpecifiedSequenceName();
@@ -117,8 +117,8 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected ISequenceGenerator getGenerator() {
-		return (subject() != null) ? subject().getSequenceGenerator() : null;
+	protected ISequenceGenerator getGenerator(IIdMapping subject) {
+		return (subject != null) ? subject.getSequenceGenerator() : null;
 	}
 
 	/*
@@ -128,7 +128,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 	protected void initializeLayout(Composite container) {
 
 		// Name widgets
-		Text nameText = buildNameText(shell());
+		Text nameText = buildNameText(container);
 		setNameText(nameText);
 
 		buildLabeledComposite(
@@ -145,7 +145,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.SequenceGeneratorComposite_sequence,
-			sequenceNameCombo.getCombo().getParent(),
+			sequenceNameCombo.getControl(),
 			IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_SEQUENCE
 		);
 	}

@@ -16,7 +16,6 @@ import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.details.PersistentTypeDetailsPage;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -37,15 +36,13 @@ public class JavaPersistentTypeDetailsPage extends PersistentTypeDetailsPage<IJa
 	/**
 	 * Creates a new <code>JavaPersistentTypeDetailsPage</code>.
 	 *
-	 * @param subjectHolder The holder of the subject
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public JavaPersistentTypeDetailsPage(PropertyValueModel<? extends IJavaPersistentType> subjectHolder,
-	                                     Composite parent,
+	public JavaPersistentTypeDetailsPage(Composite parent,
 	                                     TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(parent, widgetFactory);
 	}
 
 	protected IJpaPlatformUi jpaPlatformUi() {

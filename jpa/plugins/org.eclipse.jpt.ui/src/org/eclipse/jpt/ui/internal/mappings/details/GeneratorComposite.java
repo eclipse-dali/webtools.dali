@@ -69,8 +69,13 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 	private PropertyChangeListener buildGeneratorChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
+
 				GeneratorComposite.this.uninstallListeners((T) e.oldValue());
-				GeneratorComposite.this.repopulate();
+
+				if (!isPopulating()) {
+					GeneratorComposite.this.repopulate();
+				}
+
 				GeneratorComposite.this.installListeners((T) e.newValue());
 			}
 		};
@@ -80,7 +85,7 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 		return new PropertyAspectAdapter<IIdMapping, T>(getSubjectHolder(), propertyName()) {
 			@Override
 			protected T buildValue_() {
-				return GeneratorComposite.this.getGenerator();
+				return GeneratorComposite.this.getGenerator(subject);
 			}
 		};
 	}
@@ -88,28 +93,10 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 	private ModifyListener buildGeneratorNameModifyListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (isPopulating()) {
-					return;
+				if (!isPopulating()) {
+					String name = ((Text) e.getSource()).getText();
+					updateGeneratorName(name);
 				}
-
-				String name = ((Text) e.getSource()).getText();
-
-				if (StringTools.stringIsEmpty(name)) {
-
-					if (getGenerator().getName() == null) {
-						return;
-					}
-
-					name = null;
-				}
-
-				IGenerator generator = getGenerator();
-
-				if (generator == null) {
-					generator = buildGenerator();
-				}
-
-				generator.setName(name);
 			}
 		};
 	}
@@ -117,7 +104,7 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 	private PropertyChangeListener buildNamePropertyChangeListener() {
 		return new SWTPropertyChangeListenerWrapper(buildNamePropertyChangeListener_());
 	}
-	
+
 	private PropertyChangeListener buildNamePropertyChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
@@ -158,8 +145,13 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 	@Override
 	protected void disengageListeners() {
 		super.disengageListeners();
-		this.generatorHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.generatorChangeListener);
-		this.uninstallListeners(this.getGenerator());
+
+		this.generatorHolder.removePropertyChangeListener(
+			PropertyValueModel.VALUE,
+			this.generatorChangeListener
+		);
+
+		this.uninstallListeners(this.getGenerator(this.subject()));
 	}
 
 	/*
@@ -177,17 +169,23 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 	@Override
 	protected void engageListeners() {
 		super.engageListeners();
-		this.generatorHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.generatorChangeListener);
-		this.installListeners(this.getGenerator());
+
+		this.generatorHolder.addPropertyChangeListener(
+			PropertyValueModel.VALUE,
+			this.generatorChangeListener
+		);
+
+		this.installListeners(this.getGenerator(this.subject()));
 	}
 
 	/**
 	 * Retrieves without creating the <code>IGenerator</code> from the subject.
 	 *
+	 * @param subject The subject used to retrieve the generator
 	 * @return The <code>IGenerator</code> or <code>null</code> if it doesn't
 	 * exists
 	 */
-	protected abstract T getGenerator();
+	protected abstract T getGenerator(IIdMapping subject);
 
 	/*
 	 * (non-Javadoc)
@@ -208,7 +206,7 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 	}
 
 	private void populateNameViewer() {
-		IGenerator generator = this.getGenerator();
+		IGenerator generator = this.getGenerator(this.subject());
 
 		if (generator != null) {
 			String name = generator.getName();
@@ -216,6 +214,7 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 			if (name != null) {
 				if (!this.nameText.getText().equals(name)) {
 					this.nameText.setText(name);
+					this.nameText.setSelection(0, 0);
 				}
 			}
 			else {
@@ -243,5 +242,32 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 		if (generator != null) {
 			generator.removePropertyChangeListener(IGenerator.NAME_PROPERTY, this.namePropertyChangeListener);
 		}
+	}
+
+	private void updateGeneratorName(String name) {
+
+		if (StringTools.stringIsEmpty(name)) {
+
+			if (getGenerator(subject()).getName() == null) {
+				return;
+			}
+
+			name = null;
+		}
+
+		IGenerator generator = getGenerator(subject());
+
+		if (generator == null) {
+			setPopulating(true);
+
+			try {
+				generator = buildGenerator();
+			}
+			finally {
+				setPopulating(false);
+			}
+		}
+
+		generator.setName(name);
 	}
 }

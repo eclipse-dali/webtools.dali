@@ -17,7 +17,6 @@ import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.NullAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -38,15 +37,13 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 	/**
 	 * Creates a new <code>JavaPersistentAttributeDetailsPage</code>.
 	 *
-	 * @param subjectHolder The holder of the subject
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public JavaPersistentAttributeDetailsPage(PropertyValueModel<? extends IJavaPersistentAttribute> subjectHolder,
-	                                          Composite parent,
+	public JavaPersistentAttributeDetailsPage(Composite parent,
 	                                          TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(parent, widgetFactory);
 	}
 
 	/*

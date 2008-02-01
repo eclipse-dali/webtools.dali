@@ -13,8 +13,10 @@ import org.eclipse.jpt.ui.internal.selection.IJpaSelectionManager;
 import org.eclipse.jpt.ui.internal.selection.SelectionManagerFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -58,7 +60,7 @@ public abstract class AbstractJpaView extends ViewPart
 	public AbstractJpaView(String defaultLabel) {
 		super();
 		this.defaultLabel = defaultLabel;
-		initialize();
+		this.initialize();
 	}
 
 	private Composite buildDefaultComposite() {
@@ -131,7 +133,21 @@ public abstract class AbstractJpaView extends ViewPart
 	 * @param page The new page to show, <code>null</code> can't be passed
 	 */
 	protected final void showPage(Control page) {
-		pageBook.showPage(page);
+		pageBook.getParent().setRedraw(false);
+		try {
+			// It seems the scroll pane has to be installed right before showing
+			// the page, if it is installed during the creation of the pane then
+			// its layout will not always revalidate correctly, i.e. will not show
+			// all the time the vertical scroll bar
+			ScrolledForm scrolledForm = widgetFactory.createScrolledForm(pageBook);
+			scrolledForm.getBody().setLayout(new GridLayout(1, false));
+			page.setParent(scrolledForm.getBody());
+
+			pageBook.showPage(scrolledForm);
+		}
+		finally {
+			pageBook.getParent().setRedraw(true);
+		}
 	}
 
 	protected void subcreatePartControl(Composite parent) {
