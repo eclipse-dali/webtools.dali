@@ -60,12 +60,14 @@ public interface IPersistentType extends IJpaContextNode
 	 */
 	IPersistentAttribute attributeNamed(String attributeName);
 
-//	/**
-//	 * Resolve and return the attribute named <code>attributeName</code> if it
-//	 * is distinct and exists within the context of this type
-//	 */
-//	IPersistentAttribute resolveAttribute(String attributeName);
+	/**
+	 * Resolve and return the attribute named <code>attributeName</code> if it
+	 * is distinct and exists within the context of this type
+	 */
+	IPersistentAttribute resolveAttribute(String attributeName);
 
 	Iterator<IPersistentType> inheritanceHierarchy();
+	
+	
 
 }

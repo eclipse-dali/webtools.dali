@@ -10,8 +10,12 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+import java.util.List;
+
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public class JavaNullTypeMapping extends JavaTypeMapping
@@ -34,5 +38,9 @@ public class JavaNullTypeMapping extends JavaTypeMapping
 	
 	public Iterator<String> correspondingAnnotationNames() {
 		return EmptyIterator.instance();
+	}
+	
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		// no-op, nothing to really add
 	}
 }

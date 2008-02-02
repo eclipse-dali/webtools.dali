@@ -9,11 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.List;
+
+import org.eclipse.jdt.core.Flags;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
+import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public abstract class JavaAttributeMapping extends JavaContextModel
@@ -42,6 +50,14 @@ public abstract class JavaAttributeMapping extends JavaContextModel
 		return this.persistentAttribute().mappingIsDefault();
 	}
 
+	protected boolean embeddableOwned() {
+		return this.typeMapping().getKey() == IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
+	}
+	
+	protected boolean entityOwned() {
+		return this.typeMapping().getKey() == IMappingKeys.ENTITY_TYPE_MAPPING_KEY;
+	}
+	
 	public ITypeMapping typeMapping() {
 		return this.persistentAttribute().typeMapping();
 	}
@@ -78,4 +94,64 @@ public abstract class JavaAttributeMapping extends JavaContextModel
 	public boolean isIdMapping() {
 		return false;
 	}
+	
+	//************ Validation *************************
+	
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		
+		addModifierMessages(messages, astRoot);
+		addInvalidMappingMessage(messages, astRoot);
+		
+	}
+	
+	protected void addModifierMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		JavaPersistentAttribute attribute = this.persistentAttribute();
+		if (attribute.getMapping().getKey() != IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY
+				&& persistentAttributeResource.isForField()) {
+			int flags;
+			
+			try {
+				flags = persistentAttributeResource.getMember().getJdtMember().getFlags();
+			} catch (JavaModelException jme) { 
+				/* no error to log, in that case */ 
+				return;
+			}
+			
+			if (Flags.isFinal(flags)) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD,
+						new String[] {attribute.getName()},
+						attribute, attribute.validationTextRange(astRoot))
+				);
+			}
+			
+			if (Flags.isPublic(flags)) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD,
+						new String[] {attribute.getName()},
+						attribute, attribute.validationTextRange(astRoot))
+				);
+				
+			}
+		}
+	}
+	
+	protected void addInvalidMappingMessage(List<IMessage> messages, CompilationUnit astRoot) {
+		if (! typeMapping().attributeMappingKeyAllowed(this.getKey())) {
+			messages.add(
+				JpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					IJpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
+					new String[] {this.persistentAttribute().getName()},
+					this, this.validationTextRange(astRoot))
+			);
+		}
+	}
+	
 }

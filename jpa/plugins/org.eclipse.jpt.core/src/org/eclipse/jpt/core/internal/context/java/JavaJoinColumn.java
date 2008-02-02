@@ -125,7 +125,8 @@ public class JavaJoinColumn extends AbstractJavaColumn<JoinColumn> implements IJ
 	}
 
 	public ITextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
-		return columnResource().referencedColumnNameTextRange(astRoot);
+		ITextRange textRange = columnResource().referencedColumnNameTextRange(astRoot);
+		return (textRange != null) ? textRange : owner().validationTextRange(astRoot);
 	}
 
 	public ITextRange validationTextRange(CompilationUnit astRoot) {

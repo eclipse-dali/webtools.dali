@@ -158,7 +158,8 @@ public abstract class AbstractJavaTable extends JavaContextModel
 	// ********** ITable implementation **********
 
 	public ITextRange nameTextRange(CompilationUnit astRoot) {
-		return tableResource().nameTextRange(astRoot);
+		ITextRange textRange = tableResource().nameTextRange(astRoot);
+		return (textRange != null) ? textRange : this.parent().validationTextRange(astRoot);
 	}
 
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {
@@ -166,7 +167,8 @@ public abstract class AbstractJavaTable extends JavaContextModel
 	}
 
 	public ITextRange schemaTextRange(CompilationUnit astRoot) {
-		return tableResource().schemaTextRange(astRoot);
+		ITextRange textRange = tableResource().schemaTextRange(astRoot);
+		return (textRange != null) ? textRange : this.parent().validationTextRange(astRoot);
 	}
 
 	public boolean schemaTouches(int pos, CompilationUnit astRoot) {

@@ -28,9 +28,12 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitResource;
+import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -150,6 +153,11 @@ public class JpaProject extends JpaNode implements IJpaProject {
 		if (parentNode != null) {
 			throw new IllegalArgumentException("The parent node must be null");
 		}
+	}
+	
+	@Override
+	public IResource resource() {
+		return project();
 	}
 
 	protected Vector<IJpaFile> buildEmptyJpaFiles() {
@@ -374,14 +382,85 @@ public class JpaProject extends JpaNode implements IJpaProject {
 
 
 	// ********** validation **********
-
+	
+	
 	public Iterator<IMessage> validationMessages() {
 		List<IMessage> messages = new ArrayList<IMessage>();
-		this.jpaPlatform.addToMessages(messages);
+		this.jpaPlatform.addToMessages(this, messages);
 		return messages.iterator();
 	}
+	
+	/* If this is true, it may be assumed that all the requirements are valid 
+	 * for further validation.  For example, if this is true at the point we
+	 * are validating persistence units, it may be assumed that there is a 
+	 * single persistence.xml and that it has valid content down to the 
+	 * persistence unit level.  */
+	private boolean okToContinueValidation = true;
+	
+	
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		//start with the project - then down
+		//project validation
+		addProjectLevelMessages(messages);
+		
+		//context model validation
+		contextModel().addToMessages(messages, astRoot);
+	}
 
+	protected void addProjectLevelMessages(List<IMessage> messages) {
+		addConnectionMessages(messages);
+		addMultiplePersistenceXmlMessage(messages);
+	}
+	
+	protected void addConnectionMessages(List<IMessage> messages) {
+		addNoConnectionMessage(messages);
+		addInactiveConnectionMessage(messages);
+	}
+	
+	protected boolean okToProceedForConnectionValidation = true;
+	
+	protected void addNoConnectionMessage(List<IMessage> messages) {
+		if (! this.dataSource().hasAConnection()) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.NORMAL_SEVERITY,
+						IJpaValidationMessages.PROJECT_NO_CONNECTION,
+						this)
+				);
+			okToProceedForConnectionValidation = false;
+		}
+	}
+	
+	protected void addInactiveConnectionMessage(List<IMessage> messages) {
+		if (okToProceedForConnectionValidation && ! this.dataSource().isConnected()) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.NORMAL_SEVERITY,
+						IJpaValidationMessages.PROJECT_INACTIVE_CONNECTION,
+						new String[] {this.dataSource().connectionProfileName()},
+						this)
+				);
+		}
+		okToProceedForConnectionValidation = true;
+	}
+	
+	protected void addMultiplePersistenceXmlMessage(List<IMessage> messages) {
+//		if (validPersistenceXmlFiles.size() > 1) {
+//			messages.add(
+//					JpaValidationMessages.buildMessage(
+//						IMessage.HIGH_SEVERITY,
+//						IJpaValidationMessages.PROJECT_MULTIPLE_PERSISTENCE_XML,
+//						jpaProject)
+//				);
+//			okToContinueValidation = false;
+//		}
+	}
 
+	
+	
+	
 	// ********** root deploy location **********
 
 	protected static final String WEB_PROJECT_ROOT_DEPLOY_LOCATION = J2EEConstants.WEB_INF_CLASSES;

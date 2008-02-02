@@ -16,6 +16,8 @@ public interface IJavaJoinColumn extends IJoinColumn, IJavaNamedColumn
 {
 	void initializeFromResource(JoinColumn joinColumn);
 	
+	boolean isConnected();
+	
 	void update(JoinColumn joinColumn);
 
 }

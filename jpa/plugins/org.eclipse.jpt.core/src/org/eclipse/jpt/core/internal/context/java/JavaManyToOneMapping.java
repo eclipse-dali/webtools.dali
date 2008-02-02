@@ -10,11 +10,15 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
+
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.ManyToOne;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class JavaManyToOneMapping extends JavaSingleRelationshipMapping<ManyToOne>
 	implements IJavaManyToOneMapping
@@ -59,6 +63,14 @@ public class JavaManyToOneMapping extends JavaSingleRelationshipMapping<ManyToOn
 		return relationshipMapping.getOptional();
 	}
 	
+	//ManyToOne mapping is always the owning side
+	protected boolean isOwningSide() {
+		return true;
+	}
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+	}
 	
 	//***************** ISingleRelationshipMapping implementation *****************
 	@Override

@@ -10,16 +10,22 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
+import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.INonOwningMapping;
+import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.OneToOne;
+import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class JavaOneToOneMapping extends JavaSingleRelationshipMapping<OneToOne>
 	implements IJavaOneToOneMapping
@@ -114,6 +120,72 @@ public class JavaOneToOneMapping extends JavaSingleRelationshipMapping<OneToOne>
 	@Override
 	protected Boolean specifiedOptional(OneToOne relationshipMapping) {
 		return relationshipMapping.getOptional();
+	}
+	
+	@Override
+	protected boolean isOwningSide() {
+		return this.getMappedBy() == null;
+	}
+	
+	//***************** Validation ***********************************
+	
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		
+		if (this.getMappedBy() != null) {
+			addMappedByMessages(messages ,astRoot);
+		}
+	}
+	
+	protected void addMappedByMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		String mappedBy = this.getMappedBy();
+		IEntity targetEntity = this.getResolvedTargetEntity();
+		
+		if (targetEntity == null) {
+			// already have validation messages for that
+			return;
+		}
+		
+		IPersistentAttribute attribute = targetEntity.persistentType().resolveAttribute(mappedBy);
+		
+		if (attribute == null) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
+						new String[] {mappedBy}, 
+						this, this.mappedByTextRange(astRoot))
+				);
+			return;
+		}
+		
+		if (! this.mappedByIsValid(attribute.getMapping())) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
+						new String[] {mappedBy}, 
+						this, this.mappedByTextRange(astRoot))
+				);
+			return;
+		}
+		
+		INonOwningMapping mappedByMapping;
+		try {
+			mappedByMapping = (INonOwningMapping) attribute.getMapping();
+		} catch (ClassCastException cce) {
+			// there is no error then
+			return;
+		}
+		
+		if (mappedByMapping.getMappedBy() != null) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
+						this, this.mappedByTextRange(astRoot))
+				);
+		}
 	}
 	
 	//***************** ISingleRelationshipMapping implementation *****************

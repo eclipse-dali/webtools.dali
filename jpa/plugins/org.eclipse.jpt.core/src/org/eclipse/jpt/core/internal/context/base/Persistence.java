@@ -14,11 +14,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class Persistence extends JpaContextNode
 	implements IPersistence
@@ -132,5 +137,43 @@ public class Persistence extends JpaContextNode
 	
 	public ITextRange validationTextRange() {
 		return this.xmlPersistence.validationTextRange();
+	}
+
+
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		
+		//persistence root validation
+		addNoPersistenceUnitMessage(messages);
+		addMultiplePersistenceUnitMessage(messages);
+		
+		
+		//persistence unit validation
+		for (IPersistenceUnit pu : persistenceUnits){
+			pu.addToMessages(messages, astRoot);
+		}
+	}
+	
+	protected void addNoPersistenceUnitMessage(List<IMessage> messages) {
+		if (persistenceUnits.size() == 0) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.PERSISTENCE_NO_PERSISTENCE_UNIT,
+						this, this.validationTextRange())
+				);
+		}
+	}
+	
+	protected void addMultiplePersistenceUnitMessage(List<IMessage> messages) {
+		if (persistenceUnits.size() > 1) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS,
+						this, this.validationTextRange())
+				);
+		}
 	}
 }

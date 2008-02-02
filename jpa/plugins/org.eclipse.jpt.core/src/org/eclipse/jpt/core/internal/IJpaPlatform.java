@@ -91,9 +91,9 @@ public interface IJpaPlatform
 	// *************************************************************************
 	
 	/**
-	 * Adds validation messages to the growing list of messages
+	 * Adds validation messages to the growing list of messages for a given project
 	 */
-	void addToMessages(List<IMessage> messages);
+	void addToMessages(IJpaProject project, List<IMessage> messages);
 		
 		
 	// ********** XmlPersistence Unit ********************************************

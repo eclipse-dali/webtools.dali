@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
@@ -27,6 +28,7 @@ import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
@@ -55,6 +57,8 @@ import org.eclipse.jpt.core.internal.resource.java.SecondaryTable;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTables;
 import org.eclipse.jpt.core.internal.resource.java.SequenceGenerator;
 import org.eclipse.jpt.core.internal.resource.java.TableGenerator;
+import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -66,6 +70,8 @@ import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.utility.internal.node.Node;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public class JavaEntity extends JavaTypeMapping implements IJavaEntity
@@ -1464,6 +1470,85 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	}
 	
 	
+	//********** Validation ********************************************
+	
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		
+		addTableMessages(messages, astRoot);
+		addIdMessages(messages, astRoot);
+		
+		for (IJavaSecondaryTable context : specifiedSecondaryTables) {
+			context.addToMessages(messages, astRoot);
+		}
+
+		for (Iterator<IJavaAttributeOverride> stream = this.attributeOverrides(); stream.hasNext();) {
+			stream.next().addToMessages(messages, astRoot);
+		}
+		
+		for (Iterator<IJavaAssociationOverride> stream = this.associationOverrides(); stream.hasNext();) {
+			stream.next().addToMessages(messages, astRoot);
+		}
+		
+	}
+	
+	protected void addTableMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		boolean doContinue = table.isConnected();
+		String schema = table.getSchema();
+		
+		if (doContinue && ! table.hasResolvedSchema()) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
+						new String[] {schema, table.getName()}, 
+						table, table.schemaTextRange(astRoot))
+				);
+			doContinue = false;
+		}
+		
+		if (doContinue && ! table.isResolved()) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.TABLE_UNRESOLVED_NAME,
+						new String[] {table.getName()}, 
+						table, table.nameTextRange(astRoot))
+				);
+		}
+	}
+	
+	
+	protected void addIdMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		addNoIdMessage(messages, astRoot);
+		
+	}
+	
+	protected void addNoIdMessage(List<IMessage> messages, CompilationUnit astRoot) {
+		if (entityHasNoId()) {
+			messages.add(
+				JpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					IJpaValidationMessages.ENTITY_NO_ID,
+					new String[] {this.getName()},
+					this, this.validationTextRange(astRoot))
+			);
+		}
+	}
+	
+	private boolean entityHasNoId() {
+		return ! this.entityHasId();
+	}
+
+	private boolean entityHasId() {
+		for (Iterator<IPersistentAttribute> stream = persistentType().allAttributes(); stream.hasNext(); ) {
+			if (stream.next().isIdAttribute()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	class PrimaryKeyJoinColumnOwner implements IAbstractJoinColumn.Owner
 	{
 		public ITextRange validationTextRange(CompilationUnit astRoot) {
@@ -1560,6 +1645,5 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 			// TODO Auto-generated method stub
 			return null;
 		}
-		
 	}
 }

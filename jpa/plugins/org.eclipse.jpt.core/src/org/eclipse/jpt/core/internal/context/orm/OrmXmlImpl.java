@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
@@ -33,6 +34,11 @@ public class OrmXmlImpl extends JpaContextNode
 			return getEntityMappings().persistentTypeFor(fullyQualifiedTypeName);
 		}
 		return null;
+	}
+	
+	@Override
+	public IResource resource() {
+		return ormResource.getFile();
 	}
 	
 	// **************** persistence ********************************************

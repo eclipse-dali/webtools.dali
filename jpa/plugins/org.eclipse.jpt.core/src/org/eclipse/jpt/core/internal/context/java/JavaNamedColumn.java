@@ -117,7 +117,8 @@ public abstract class JavaNamedColumn<T extends NamedColumn> extends JavaContext
 	}
 
 	public ITextRange nameTextRange(CompilationUnit astRoot) {
-		return this.columnResource().nameTextRange(astRoot);
+		ITextRange textRange = this.columnResource().nameTextRange(astRoot);
+		return (textRange != null) ? textRange : this.owner().validationTextRange(astRoot);
 	}
 
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {

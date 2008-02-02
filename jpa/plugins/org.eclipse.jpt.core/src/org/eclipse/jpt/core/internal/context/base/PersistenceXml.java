@@ -10,10 +10,15 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
+import java.util.List;
+
+import org.eclipse.core.resources.IResource;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class PersistenceXml extends JpaContextNode
 	implements IPersistenceXml
@@ -27,6 +32,10 @@ public class PersistenceXml extends JpaContextNode
 		super(baseJpaContent);
 	}
 	
+	@Override
+	public IResource resource() {
+		return persistenceResource.getFile();
+	}
 	
 	// **************** persistence ********************************************
 	
@@ -109,5 +118,16 @@ public class PersistenceXml extends JpaContextNode
 	
 	public ITextRange validationTextRange() {
 		return ITextRange.Empty.instance();
+	}
+
+
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		
+//		addInvalidPersistenceXmlContentMessage(messages);
+		
+		getPersistence().addToMessages(messages, astRoot);
+		
 	}
 }

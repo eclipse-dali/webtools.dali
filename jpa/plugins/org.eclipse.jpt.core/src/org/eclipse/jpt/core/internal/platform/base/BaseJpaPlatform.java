@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IResourceModel;
+import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
 import org.eclipse.jpt.core.internal.context.java.IDefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMappingProvider;
@@ -268,8 +269,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 
 	// **************** Validation *********************************************
 	
-	public void addToMessages(List<IMessage> messages) {
-		// TODO Auto-generated method stub
-		
+	public void addToMessages(IJpaProject project, List<IMessage> messages) {
+		project.addToMessages(messages, null);
 	}
 }

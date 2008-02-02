@@ -19,6 +19,8 @@ public interface IJavaColumn extends IJavaNamedColumn, IColumn
 	
 	void update(Column columnResource);
 	
+	boolean isConnected();
+	
 	Owner owner();
 	/**
 	 * interface allowing columns to be used in multiple places

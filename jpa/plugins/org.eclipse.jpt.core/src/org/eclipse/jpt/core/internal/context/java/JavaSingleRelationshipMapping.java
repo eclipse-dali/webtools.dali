@@ -29,11 +29,14 @@ import org.eclipse.jpt.core.internal.resource.java.JoinColumn;
 import org.eclipse.jpt.core.internal.resource.java.JoinColumns;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinColumn;
 import org.eclipse.jpt.core.internal.resource.java.RelationshipMapping;
+import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public abstract class JavaSingleRelationshipMapping<T extends RelationshipMapping>
@@ -218,6 +221,64 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 		}
 		return null;
 	}
+	
+	//************* Validation  **********************************
+	
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		
+		//bug 192287 - do not want joinColumn validation errors on the non-owning side
+		//of a bidirectional relationship.  This is a low risk fix for RC3, but a better
+		//solution would be to not have the default joinColumns on the non-owning side.
+		//This would fix another bug that we show default joinColumns in this situation.
+		if (entityOwned() && isOwningSide()) {
+			addJoinColumnMessages(messages, astRoot);
+		}
+	}
+	
+	protected abstract boolean isOwningSide();
+	
+	protected void addJoinColumnMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		
+		for (Iterator<IJavaJoinColumn> stream = this.joinColumns(); stream.hasNext();) {
+			IJavaJoinColumn joinColumn = stream.next();
+			String table = joinColumn.getTable();
+			boolean doContinue = joinColumn.isConnected();
+			
+			if (doContinue && this.typeMapping().tableNameIsInvalid(table)) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.JOIN_COLUMN_UNRESOLVED_TABLE,
+						new String[] {table, joinColumn.getName()}, 
+						joinColumn, joinColumn.tableTextRange(astRoot))
+				);
+				doContinue = false;
+			}
+			
+			if (doContinue && ! joinColumn.isResolved()) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
+						new String[] {joinColumn.getName()}, 
+						joinColumn, joinColumn.nameTextRange(astRoot))
+				);
+			}
+			
+			if (doContinue && ! joinColumn.isReferencedColumnResolved()) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
+						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
+						joinColumn, joinColumn.referencedColumnNameTextRange(astRoot))
+				);
+			}
+		}
+	}
+	
 
 	public class JoinColumnOwner implements IJoinColumn.Owner
 	{
@@ -280,7 +341,10 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 		
 		public ITextRange validationTextRange(CompilationUnit astRoot) {
 			// TODO Auto-generated method stub
-			return null;
+			return JavaSingleRelationshipMapping.this.validationTextRange(astRoot);
 		}
+		
+		
+		
 	}
 }

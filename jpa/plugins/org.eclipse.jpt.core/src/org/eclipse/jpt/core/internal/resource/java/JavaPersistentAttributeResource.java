@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jpt.core.internal.jdtutility.Member;
+
 
 //TODO how do we handle:
 //  @Basic
@@ -17,6 +19,8 @@ package org.eclipse.jpt.core.internal.resource.java;
 public interface JavaPersistentAttributeResource extends JavaPersistentResource
 {
 	String getName();
+	
+	Member getMember();
 	
 	boolean isForField();
 	

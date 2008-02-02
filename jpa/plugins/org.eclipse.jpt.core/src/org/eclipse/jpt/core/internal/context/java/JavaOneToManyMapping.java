@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
@@ -17,6 +19,7 @@ import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.OneToMany;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public class JavaOneToManyMapping extends JavaMultiRelationshipMapping<OneToMany>
@@ -77,4 +80,9 @@ public class JavaOneToManyMapping extends JavaMultiRelationshipMapping<OneToMany
 	public ITextRange mappedByTextRange(CompilationUnit astRoot) {
 		return this.relationshipMapping().mappedByTextRange(astRoot);
 	}
+	
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+	}
+	
 }

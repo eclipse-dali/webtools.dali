@@ -9,9 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
+import java.util.List;
+
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jpt.utility.internal.node.Node;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * Tweak the node interface with JPA-specific protocol.
@@ -29,7 +33,14 @@ public interface IJpaNode extends Node, IAdaptable
 	 * This is used by JpaHelper.
 	 */
 	IResource resource();
-
+	
+	
+	// ********** validation **********
+	
+	/**
+	 * Adds to the list of current messages
+	 */
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot);
 
 	// ********** covariant overrides **********
 

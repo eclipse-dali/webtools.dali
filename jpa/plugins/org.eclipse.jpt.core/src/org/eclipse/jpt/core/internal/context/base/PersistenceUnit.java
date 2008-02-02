@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
@@ -32,10 +33,15 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnitTran
 import org.eclipse.jpt.core.internal.resource.persistence.XmlProperties;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlProperty;
 import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.xml.core.internal.catalog.NextCatalog;
 
 public class PersistenceUnit extends JpaContextNode
 	implements IPersistenceUnit
@@ -871,6 +877,78 @@ public class PersistenceUnit extends JpaContextNode
 		return persistenceUnitDefaults == null ? false : persistenceUnitDefaults.isCascadePersist();
 	}
 	// *************************************************************************
+
+	// ********** Validation ***********************************************
+	
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		
+		addMappingFileMessages(messages, astRoot);	
+		addClassMessages(messages, astRoot);	
+	}
+	
+	protected void addMappingFileMessages(List<IMessage> messages, CompilationUnit astRoot) {
+//		addMultipleMetadataMessages(messages);
+//		addUnspecifiedMappingFileMessages(messages);
+//		addUnresolvedMappingFileMessages(messages);
+//		addInvalidMappingFileContentMessage(messages);
+//		addDuplicateMappingFileMessages(messages);
+		
+		for (Iterator<IMappingFileRef> stream =  mappingFileRefs(); stream.hasNext();) {
+			stream.next().addToMessages(messages, astRoot);
+		}
+	}
+	
+	protected void addClassMessages(List<IMessage> messages, CompilationUnit astRoot) {
+//		addUnspecifiedClassMessages(messages);
+		addUnresolvedClassMessages(messages);
+//		addInvalidClassContentMessages(messages);
+//		addDuplicateClassMessages(messages);
+	
+		//need to have support for non-annotated mode
+		//can't just go down the class-ref list
+		//also need to think about 
+		
+		for (IClassRef classRef : classRefs) {
+				//temporary 
+				classRef.addToMessages(messages, astRoot);
+		}
+	}
+	
+	protected void addUnresolvedClassMessages(List<IMessage> messages) {
+		for (IClassRef javaClassRef : this.classRefs) {
+			String javaClass = javaClassRef.getClassName();
+			if (! StringTools.stringIsEmpty(javaClass) && javaClassRef.getJavaPersistentType() == null) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,
+						new String[] {javaClass}, 
+						javaClassRef, javaClassRef.validationTextRange())
+				);
+			}
+		}
+	}
+	
+//	protected void addDuplicateClassMessages(List<IMessage> messages) {
+//		HashBag<String> classNameBag = this.classNameBag();
+//		for (JavaClassRef javaClassRef : persistenceUnit.getClasses()) {
+//			if (javaClassRef.getJavaClass() != null
+//					&& classNameBag.count(javaClassRef.getJavaClass()) > 1) {
+//				messages.add(
+//					JpaValidationMessages.buildMessage(
+//						IMessage.HIGH_SEVERITY,
+//						IJpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
+//						new String[] {javaClassRef.getJavaClass()}, 
+//						javaClassRef, javaClassRef.validationTextRange())
+//				);
+//			}
+//		}
+//	}
+	
+	
+	//*************************************
 	
 	public IPersistentType persistentType(String fullyQualifiedTypeName) {
 		for (IMappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
@@ -896,4 +974,5 @@ public class PersistenceUnit extends JpaContextNode
 		super.toString(sb);
 		sb.append(getName());
 	}
+
 }

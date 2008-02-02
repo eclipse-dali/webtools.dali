@@ -10,17 +10,24 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.context.base.FetchType;
+import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.base.INonOwningMapping;
+import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.MapKey;
 import org.eclipse.jpt.core.internal.resource.java.OrderBy;
 import org.eclipse.jpt.core.internal.resource.java.RelationshipMapping;
+import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public abstract class JavaMultiRelationshipMapping<T extends RelationshipMapping>
@@ -350,4 +357,157 @@ public abstract class JavaMultiRelationshipMapping<T extends RelationshipMapping
 	
 	protected abstract String mappedBy(T relationshipMapping);
 
+	//******** Validation ***********************************
+	
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		
+		if (this.isJoinTableSpecified()) {
+			addJoinTableMessages(messages, astRoot);
+		}
+		if (this.getMappedBy() != null) {
+			addMappedByMessages(messages, astRoot);
+		}
+	}
+	
+	protected void addJoinTableMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		IJavaJoinTable joinTable = this.getJoinTable();
+		
+		boolean doContinue = joinTable.isConnected();
+		String schema = joinTable.getSchema();
+		
+		if (doContinue && ! joinTable.hasResolvedSchema()) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
+						new String[] {schema, joinTable.getName()}, 
+						joinTable, joinTable.schemaTextRange(astRoot))
+				);
+			doContinue = false;
+		}
+		
+		if (doContinue && ! joinTable.isResolved()) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
+						new String[] {joinTable.getName()}, 
+						joinTable, joinTable.nameTextRange(astRoot))
+				);
+			doContinue = false;
+		}
+		
+		for (Iterator<IJavaJoinColumn> stream = joinTable.joinColumns(); stream.hasNext(); ) {
+			IJavaJoinColumn joinColumn = stream.next();
+			
+			if (doContinue && ! joinColumn.isResolved()) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
+						new String[] {joinColumn.getName()}, 
+						joinColumn, joinColumn.nameTextRange(astRoot))
+				);
+			}
+			
+			if (doContinue && ! joinColumn.isReferencedColumnResolved()) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
+						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
+						joinColumn, joinColumn.referencedColumnNameTextRange(astRoot))
+				);
+			}
+		}
+		
+		for (Iterator<IJavaJoinColumn> stream = joinTable.inverseJoinColumns(); stream.hasNext(); ) {
+			IJavaJoinColumn joinColumn = stream.next();
+			
+			if (doContinue && ! joinColumn.isResolved()) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
+						new String[] {joinColumn.getName()}, 
+						joinColumn, joinColumn.nameTextRange(astRoot))
+				);
+			}
+			
+			if (doContinue && ! joinColumn.isReferencedColumnResolved()) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
+						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
+						joinColumn, joinColumn.referencedColumnNameTextRange(astRoot))
+				);
+			}
+		}
+	}
+	
+	protected void addMappedByMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		String mappedBy = this.getMappedBy();
+		
+		if (this.isJoinTableSpecified()) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE,
+						this.getJoinTable(), this.getJoinTable().validationTextRange(astRoot))
+				);
+						
+		}
+		
+		IEntity targetEntity = this.getResolvedTargetEntity();
+		
+		if (targetEntity == null) {
+			// already have validation messages for that
+			return;
+		}
+		
+		IPersistentAttribute attribute = targetEntity.persistentType().resolveAttribute(mappedBy);
+		
+		if (attribute == null) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
+						new String[] {mappedBy}, 
+						this, this.mappedByTextRange(astRoot))
+				);
+			return;
+		}
+		
+		if (! this.mappedByIsValid(attribute.getMapping())) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
+						new String[] {mappedBy}, 
+						this, this.mappedByTextRange(astRoot))
+				);
+			return;
+		}
+		
+		INonOwningMapping mappedByMapping;
+		try {
+			mappedByMapping = (INonOwningMapping) attribute.getMapping();
+		} catch (ClassCastException cce) {
+			// there is no error then
+			return;
+		}
+		
+		if (mappedByMapping.getMappedBy() != null) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
+						this, this.mappedByTextRange(astRoot))
+				);
+		}
+	}
+	
+	
 }

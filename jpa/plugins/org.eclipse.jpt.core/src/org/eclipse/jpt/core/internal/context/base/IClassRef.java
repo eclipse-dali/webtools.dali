@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 
@@ -59,4 +60,9 @@ public interface IClassRef extends IJpaContextNode
 	void initialize(XmlJavaClassRef classRef);
 	
 	void update(XmlJavaClassRef classRef);
+	
+	// *************************************************************************
+	
+	ITextRange validationTextRange(); 
+	
 }

@@ -10,10 +10,14 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
+import java.util.List;
+
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * This is the context model object which corresponds to the 
@@ -113,6 +117,16 @@ public class ClassRef extends JpaContextNode implements IClassRef
 	
 	
 	// *************************************************************************
+
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		
+		//classRef might have been empty
+		if(javaPersistentType != null){
+			javaPersistentType.addToMessages(messages, astRoot);
+		}
+	}
 	
 	public ITextRange validationTextRange() {
 		return this.xmlJavaClassRef.validationTextRange();

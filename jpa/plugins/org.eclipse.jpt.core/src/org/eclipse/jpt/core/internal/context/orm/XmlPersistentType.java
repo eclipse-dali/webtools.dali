@@ -15,6 +15,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
@@ -779,19 +781,19 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 //		return this;
 //	}
 //
-//	public IPersistentAttribute resolveAttribute(String attributeName) {
-//		Iterator<XmlPersistentAttribute> attributes = attributesNamed(attributeName);
-//		if (attributes.hasNext()) {
-//			XmlPersistentAttribute attribute = attributes.next();
-//			return attributes.hasNext() ? null /* more than one */: attribute;
-//		}
-//		else if (parentPersistentType() != null) {
-//			return parentPersistentType().resolveAttribute(attributeName);
-//		}
-//		else {
-//			return null;
-//		}
-//	}
+	public IPersistentAttribute resolveAttribute(String attributeName) {
+		Iterator<XmlPersistentAttribute> attributes = attributesNamed(attributeName);
+		if (attributes.hasNext()) {
+			XmlPersistentAttribute attribute = attributes.next();
+			return attributes.hasNext() ? null /* more than one */: attribute;
+		}
+		else if (parentPersistentType() != null) {
+			return parentPersistentType().resolveAttribute(attributeName);
+		}
+		else {
+			return null;
+		}
+	}
 //
 //	@Override
 //	public ITextRange validationTextRange() {

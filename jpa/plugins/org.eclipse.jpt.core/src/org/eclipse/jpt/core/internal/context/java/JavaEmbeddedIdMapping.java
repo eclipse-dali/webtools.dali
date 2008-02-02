@@ -38,6 +38,7 @@ import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public class JavaEmbeddedIdMapping extends JavaAttributeMapping
@@ -301,6 +302,12 @@ public class JavaEmbeddedIdMapping extends JavaAttributeMapping
 		return null;
 	}
 
+	//******** Validation ******************
+	
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+	}
+	
 	//******* static methods *********
 	
 	protected static IEmbeddable embeddableFor(IJavaPersistentAttribute persistentAttribute) {

@@ -14,6 +14,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
@@ -31,6 +33,7 @@ import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class JavaPersistentType extends JavaContextModel implements IJavaPersistentType
 {
@@ -89,6 +92,11 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		while (resourceAttributes.hasNext()) {
 			this.attributes.add(createAttribute(resourceAttributes.next()));
 		}
+	}
+	
+	@Override
+	public IResource resource() {
+		return this.persistentTypeResource.resourceModel().resource().getCompilationUnit().getResource();
 	}
 
 	public String getName() {
@@ -164,14 +172,14 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		return (stream.hasNext()) ? stream.next() : null;
 	}
 
-//	public IPersistentAttribute resolveAttribute(String attributeName) {
-//		Iterator<JavaPersistentAttribute> stream = attributesNamed(attributeName);
-//		if (stream.hasNext()) {
-//			JavaPersistentAttribute attribute = stream.next();
-//			return (stream.hasNext()) ? null /*more than one*/: attribute;
-//		}
-//		return (parentPersistentType() == null) ? null : parentPersistentType().resolveAttribute(attributeName);
-//	}
+	public IPersistentAttribute resolveAttribute(String attributeName) {
+		Iterator<JavaPersistentAttribute> stream = attributesNamed(attributeName);
+		if (stream.hasNext()) {
+			JavaPersistentAttribute attribute = stream.next();
+			return (stream.hasNext()) ? null /*more than one*/: attribute;
+		}
+		return (parentPersistentType() == null) ? null : parentPersistentType().resolveAttribute(attributeName);
+	}
 	
 	public ListIterator<IJavaPersistentAttribute> attributes() {
 		return new CloneListIterator<IJavaPersistentAttribute>(this.attributes);
@@ -450,11 +458,32 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	protected IPersistentType persistentType(String fullyQualifiedTypeName) {
 		return persistenceUnit().persistentType(fullyQualifiedTypeName);
 	}
+
+	//*************** Validation ******************************************
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+	
+		//get astRoot here to pass down
+		astRoot = persistentTypeResource.getMember().astRoot();
+		mapping.addToMessages(messages, astRoot);
+		
+		addAttributeMessages(messages, astRoot);
+		
+	}
+	
+	protected void addAttributeMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		for (IJavaPersistentAttribute attributeContext : this.attributes) {
+			attributeContext.addToMessages(messages, astRoot);
+		}
+	}
 	
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
 		sb.append(getName());
 	}
+
+
 
 }

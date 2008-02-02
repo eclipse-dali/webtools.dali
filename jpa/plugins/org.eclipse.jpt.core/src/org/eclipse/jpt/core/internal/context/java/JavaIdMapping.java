@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
@@ -22,8 +24,11 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResour
 import org.eclipse.jpt.core.internal.resource.java.SequenceGenerator;
 import org.eclipse.jpt.core.internal.resource.java.TableGenerator;
 import org.eclipse.jpt.core.internal.resource.java.Temporal;
+import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMapping
@@ -360,4 +365,66 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 		return true;
 	}
 
+	//*********** Validation ************
+	
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		
+		addColumnMessages(messages, astRoot);
+	
+		//TODO njh there is no generator repos yet
+//		addGeneratorMessages(messages);
+	}
+		
+	protected void addColumnMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		IJavaColumn column = this.getColumn();
+		String table = column.getTable();
+		boolean doContinue = entityOwned() && column.isConnected();
+		
+		if (doContinue && this.typeMapping().tableNameIsInvalid(table)) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
+						new String[] {table, column.getName()}, 
+						column, column.tableTextRange(astRoot))
+				);
+			doContinue = false;
+		}
+		
+		if (doContinue && ! column.isResolved()) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.COLUMN_UNRESOLVED_NAME,
+						new String[] {column.getName()}, 
+						column, column.nameTextRange(astRoot))
+				);
+		}
+	}
+	
+	protected void addGeneratorMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		IJavaGeneratedValue generatedValue = this.getGeneratedValue();
+		if (generatedValue == null) {
+			return;
+		}
+		String generatorName = generatedValue.getGenerator();
+		if (generatorName == null) {
+			return;
+		}
+//		IGeneratorRepository generatorRepository = persistenceUnit().getGeneratorRepository();		
+//		IJavaGenerator generator = generatorRepository.generator(generatorName);
+//		
+//		if (generator == null) {
+//			messages.add(
+//				JpaValidationMessages.buildMessage(
+//					IMessage.HIGH_SEVERITY,
+//					IJpaValidationMessages.GENERATED_VALUE_UNRESOLVED_GENERATOR,
+//					new String[] {generatorName}, 
+//					generatedValue, generatedValue.generatorTextRange())
+//			);
+//		}
+	}
+	
+	
 }

@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.List;
+
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
@@ -16,6 +19,9 @@ import org.eclipse.jpt.core.internal.context.java.IJavaTable;
 import org.eclipse.jpt.core.internal.resource.orm.AbstractTable;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class XmlTable extends AbstractXmlTable
 {
@@ -117,5 +123,36 @@ public class XmlTable extends AbstractXmlTable
 			}
 		}
 		return entityMappings().getCatalog();
+	}
+	
+	//******* Validation *******************************
+	
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		
+		boolean doContinue = isConnected();
+		String schema = this.getSchema();
+		
+		if (doContinue && ! this.hasResolvedSchema()) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
+						new String[] {schema, this.getName()}, 
+						this, this.schemaTextRange(astRoot))
+				);
+			doContinue = false;
+		}
+		
+		if (doContinue && ! this.isResolved()) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.TABLE_UNRESOLVED_NAME,
+						new String[] {this.getName()}, 
+						this, this.nameTextRange(astRoot))
+				);
+		}
 	}
 }

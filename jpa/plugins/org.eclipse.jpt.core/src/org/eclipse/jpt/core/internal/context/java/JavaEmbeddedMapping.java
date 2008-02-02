@@ -38,6 +38,7 @@ import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEmbeddedMapping
@@ -290,6 +291,17 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 			}
 		}
 		return null;
+	}
+	
+	
+	//******** Validation ******************
+	
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		
+		for (Iterator<IJavaAttributeOverride> stream = attributeOverrides(); stream.hasNext();) {
+			stream.next().addToMessages(messages, astRoot);
+		}
 	}
 
 	//******* static methods *********

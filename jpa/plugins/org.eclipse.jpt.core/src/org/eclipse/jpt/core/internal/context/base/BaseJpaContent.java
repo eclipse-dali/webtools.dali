@@ -10,16 +10,27 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.IJpaFile;
+import org.eclipse.jpt.core.internal.IJpaNode;
 import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.JpaNode;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class BaseJpaContent extends JpaContextNode 
 	implements IBaseJpaContent
@@ -132,4 +143,56 @@ public class BaseJpaContent extends JpaContextNode
 	public IPersistenceUnit persistenceUnit() {
 		throw new UnsupportedOperationException("No PersistenceUnit in this context");
 	}
+
+	
+	//******** Validation *************************************************
+	
+	/* If this is true, it may be assumed that all the requirements are valid 
+	 * for further validation.  For example, if this is true at the point we
+	 * are validating persistence units, it may be assumed that there is a 
+	 * single persistence.xml and that it has valid content down to the 
+	 * persistence unit level.  */
+	private boolean okToContinueValidation = true;
+	
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		addNoPersistenceXmlMessage(messages);
+		addOrphanedJavaClassMessages(messages);
+		
+		if(okToContinueValidation) {
+			getPersistenceXml().addToMessages(messages, astRoot);
+		}
+		
+	}
+	
+	protected void addNoPersistenceXmlMessage(List<IMessage> messages) {
+		if (persistenceXml == null) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY, 
+						IJpaValidationMessages.PROJECT_NO_PERSISTENCE_XML,
+						this)
+				);
+			okToContinueValidation = false;
+		}
+	}
+	
+	
+
+	
+	protected void addOrphanedJavaClassMessages(List<IMessage> messages) {
+//		for (Iterator<JavaPersistentType> stream = jpaProject.javaPersistentTypes(); stream.hasNext(); ) {
+//			JavaPersistentType jpType = stream.next();
+//			if (jpType.getMappingKey() != IMappingKeys.NULL_TYPE_MAPPING_KEY && ! contains(jpType)) {
+//				messages.add(
+//						JpaValidationMessages.buildMessage(
+//							IMessage.HIGH_SEVERITY,
+//							IJpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CONTEXT,
+//							jpType.getMapping(), jpType.getMapping().validationTextRange())
+//					);
+//			}
+//		}
+	}
+	
 }

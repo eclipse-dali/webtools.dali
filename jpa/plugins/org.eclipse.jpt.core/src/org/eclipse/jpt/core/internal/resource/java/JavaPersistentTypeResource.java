@@ -11,6 +11,8 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Iterator;
 
+import org.eclipse.jpt.core.internal.jdtutility.Member;
+
 public interface JavaPersistentTypeResource extends JavaPersistentResource
 {	
 	/**
@@ -65,7 +67,9 @@ public interface JavaPersistentTypeResource extends JavaPersistentResource
 		String ACCESS_PROPERTY = "accessProperty";
 		
 	boolean isAbstract();
-		String ABSTRACT_PROPERTY = "abstractProperty";
+		String ABSTRACT_PROPERTY = "abstractProperty";	
+		
+	Member getMember();
 	
 	/**
 	 * Return whether any attributes in this persistentType have

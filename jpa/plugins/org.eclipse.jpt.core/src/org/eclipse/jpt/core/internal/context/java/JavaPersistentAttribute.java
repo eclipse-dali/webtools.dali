@@ -11,6 +11,8 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
@@ -19,6 +21,7 @@ import org.eclipse.jpt.core.internal.resource.java.Annotation;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class JavaPersistentAttribute extends JavaContextModel
 	implements IJavaPersistentAttribute
@@ -276,5 +279,22 @@ public class JavaPersistentAttribute extends JavaContextModel
 		}
 		return this.getMapping().candidateValuesFor(pos, filter, astRoot);
 	}
+	
+	//************* Validation ******************************
+	
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		
+		if (this.specifiedMapping != null) {
+			this.specifiedMapping.addToMessages(messages, astRoot);
+		}
+		else if (this.defaultMapping != null) {
+			this.defaultMapping.addToMessages(messages, astRoot);
+		}
+		
+	}
+	
+	
 
 }

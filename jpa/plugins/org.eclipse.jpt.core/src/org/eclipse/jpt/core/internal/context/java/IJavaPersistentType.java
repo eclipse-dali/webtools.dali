@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.ListIterator;
+
+import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 
@@ -21,6 +23,12 @@ public interface IJavaPersistentType extends IPersistentType, IJavaJpaContextNod
 	ListIterator<IJavaPersistentAttribute> attributes();
 	
 	IJavaPersistentAttribute attributeNamed(String attributeName);
+
+	/**
+	 * Resolve and return the attribute named <code>attributeName</code> if it
+	 * is distinct and exists within the context of this type
+	 */
+	IPersistentAttribute resolveAttribute(String attributeName);
 	
 	void initializeFromResource(JavaPersistentTypeResource persistentTypeResource);
 

@@ -10,17 +10,24 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
+import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.Temporal;
 import org.eclipse.jpt.core.internal.resource.java.Version;
+import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public class JavaVersionMapping extends JavaAttributeMapping implements IJavaVersionMapping
@@ -119,4 +126,41 @@ public class JavaVersionMapping extends JavaAttributeMapping implements IJavaVer
 		}
 		return null;
 	}
+	
+	//***********  Validation  ******************************
+	
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		
+		addColumnMessages(messages, astRoot);
+	}
+	
+	protected void addColumnMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		ITypeMapping typeMapping = this.typeMapping();
+		IJavaColumn column = this.getColumn();
+		String table = column.getTable();
+		boolean doContinue = entityOwned() && column.isConnected();
+		
+		if (doContinue && this.typeMapping().tableNameIsInvalid(table)) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
+						new String[] {table, column.getName()}, 
+						column, column.tableTextRange(astRoot))
+				);
+			doContinue = false;
+		}
+		
+		if (doContinue && ! column.isResolved()) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.COLUMN_UNRESOLVED_NAME,
+						new String[] {column.getName()}, 
+						column, column.nameTextRange(astRoot))
+				);
+		}
+	}
+	
 }

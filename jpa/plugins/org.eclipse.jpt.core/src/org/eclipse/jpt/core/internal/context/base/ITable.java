@@ -50,6 +50,11 @@ public interface ITable extends IJpaContextNode
 	org.eclipse.jpt.db.internal.Table dbTable();
 
 	Schema dbSchema();
+	
+	/**
+	 * Return true if this table is connected to a datasource
+	 */
+	boolean isConnected();
 
 	/** 
 	 * Return true if this table's schema can be resolved to a schema on the active connection

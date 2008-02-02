@@ -9,7 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
+import java.util.List;
+
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public interface IContextModel
 {
@@ -17,4 +21,12 @@ public interface IContextModel
 	 * Update the context model with the content of the JPA project
 	 */
 	void update(IProgressMonitor monitor);
+	
+	// ********** validation **********
+	
+	/**
+	 * All subclass implementations {@link #addToMessages(List<IMessage>, CompilationUnit astRoot)} 
+	 * should be preceded by a "super" call to this method
+	 */
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot);
 }

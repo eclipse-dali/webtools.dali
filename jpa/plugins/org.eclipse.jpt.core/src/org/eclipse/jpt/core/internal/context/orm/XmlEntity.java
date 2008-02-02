@@ -17,6 +17,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
@@ -24,9 +25,12 @@ import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
+import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
+import org.eclipse.jpt.core.internal.context.java.IJavaAssociationOverride;
+import org.eclipse.jpt.core.internal.context.java.IJavaAttributeOverride;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
@@ -40,6 +44,8 @@ import org.eclipse.jpt.core.internal.resource.orm.NamedQuery;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.resource.orm.SecondaryTable;
+import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.ClassTools;
@@ -51,6 +57,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 {
@@ -1352,6 +1359,60 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return false;
 	}
 
+	//**********  Validation **************************
+	
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		table.addToMessages(messages, astRoot);	
+		addIdMessages(messages, astRoot);
+		
+		
+		for (XmlSecondaryTable context : specifiedSecondaryTables) {
+			context.addToMessages(messages, astRoot);
+		}
+
+		for (Iterator<XmlAttributeOverride> stream = this.attributeOverrides(); stream.hasNext();) {
+			stream.next().addToMessages(messages, astRoot);
+		}
+		
+		for (Iterator<XmlAssociationOverride> stream = this.associationOverrides(); stream.hasNext();) {
+			stream.next().addToMessages(messages, astRoot);
+		}
+	
+	}
+	
+	protected void addIdMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		addNoIdMessage(messages, astRoot);
+		
+	}
+	
+	protected void addNoIdMessage(List<IMessage> messages, CompilationUnit astRoot) {
+		if (entityHasNoId()) {
+			messages.add(
+				JpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					IJpaValidationMessages.ENTITY_NO_ID,
+					new String[] {this.getName()},
+					this, this.validationTextRange(astRoot))
+			);
+		}
+	}
+	
+	private boolean entityHasNoId() {
+		return ! this.entityHasId();
+	}
+
+	private boolean entityHasId() {
+		for (Iterator<IPersistentAttribute> stream = this.persistentType().allAttributes(); stream.hasNext(); ) {
+			if (stream.next().isIdAttribute()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 	public ITextRange validationTextRange(CompilationUnit astRoot) {
 		// TODO Auto-generated method stub
 		return null;
