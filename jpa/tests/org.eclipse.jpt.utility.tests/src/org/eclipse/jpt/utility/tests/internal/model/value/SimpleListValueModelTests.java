@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
@@ -25,7 +24,7 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class SimpleListValueModelTests extends TestCase {
-	private SimpleListValueModel listHolder;
+	private SimpleListValueModel<String> listHolder;
 	ListChangeEvent event;
 	String eventType;
 
@@ -44,32 +43,32 @@ public class SimpleListValueModelTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.listHolder = new SimpleListValueModel(this.buildList());
+		this.listHolder = new SimpleListValueModel<String>(this.buildList());
 	}
 
-	private List buildList() {
-		List result = new ArrayList();
+	private List<String> buildList() {
+		List<String> result = new ArrayList<String>();
 		result.add("foo");
 		result.add("bar");
 		result.add("baz");
 		return result;
 	}
 
-	private List buildAddList() {
-		List result = new ArrayList();
+	private List<String> buildAddList() {
+		List<String> result = new ArrayList<String>();
 		result.add("joo");
 		result.add("jar");
 		result.add("jaz");
 		return result;
 	}
 
-	private List buildRemoveList() {
-		List result = new ArrayList();
-		result.add("foo");
-		result.add("bar");
-		return result;
-	}
-
+//	private List<String> buildRemoveList() {
+//		List<String> result = new ArrayList<String>();
+//		result.add("foo");
+//		result.add("bar");
+//		return result;
+//	}
+//
 	@Override
 	protected void tearDown() throws Exception {
 		TestTools.clear(this);
@@ -88,13 +87,13 @@ public class SimpleListValueModelTests extends TestCase {
 		return CollectionTools.contains(this.listHolder.listIterator(), item);
 	}
 
-	private boolean listContainsAll(Collection items) {
+	private boolean listContainsAll(Collection<String> items) {
 		return CollectionTools.containsAll(this.listHolder.listIterator(), items);
 	}
 
-	private boolean listContainsAny(Collection items) {
-		List list = CollectionTools.list(this.listHolder.iterator());
-		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
+	private boolean listContainsAny(Collection<String> items) {
+		List<String> list = CollectionTools.list(this.listHolder.iterator());
+		for (Iterator<String> stream = items.iterator(); stream.hasNext(); ) {
 			if (list.contains(stream.next())) {
 				return true;
 			}
@@ -130,14 +129,14 @@ public class SimpleListValueModelTests extends TestCase {
 	}
 
 	public void testSetValues() {
-		List newList = new ArrayList();
+		List<String> newList = new ArrayList<String>();
 		newList.add("joo");
 		newList.add("jar");
 		newList.add("jaz");
 
 		assertTrue(this.listContains("bar"));
 		assertFalse(this.listContains("jar"));
-		((SimpleListValueModel) this.listHolder).setList(newList);
+		this.listHolder.setList(newList);
 		assertFalse(this.listContains("bar"));
 		assertTrue(this.listContains("jar"));
 
@@ -146,7 +145,7 @@ public class SimpleListValueModelTests extends TestCase {
 		this.listHolder.remove(1);
 		assertFalse(this.listContains(null));
 
-		((SimpleListValueModel) this.listHolder).setList(new ArrayList());
+		this.listHolder.setList(new ArrayList<String>());
 		assertFalse(this.listContains("jar"));
 	}
 
@@ -183,7 +182,7 @@ public class SimpleListValueModelTests extends TestCase {
 
 		this.event = null;
 		this.eventType = null;
-		((SimpleListValueModel) this.listHolder).setList(this.buildList());
+		this.listHolder.setList(this.buildList());
 		this.verifyEvent(CHANGE);
 
 		this.event = null;

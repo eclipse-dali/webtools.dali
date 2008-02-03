@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -63,31 +63,19 @@ public class PrimitiveListTreeModelTests extends TestCase {
 		};
 	}
 
-	private ListValueModel buildListValueModel() {
-		return new ListAspectAdapter(TestModel.NAMES_LIST, this.testModel) {
+	private ListValueModel<?> buildListValueModel() {
+		return new ListAspectAdapter<TestModel, String>(TestModel.NAMES_LIST, this.testModel) {
 			@Override
-			protected ListIterator listIterator_() {
-				return ((TestModel) this.subject).names();
+			protected ListIterator<String> listIterator_() {
+				return this.subject.names();
 			}
 			@Override
-			public Object get(int index) {
-				return ((TestModel) this.subject).getName(index);
+			public String get(int index) {
+				return this.subject.getName(index);
 			}
 			@Override
 			public int size() {
-				return ((TestModel) this.subject).namesSize();
-			}
-			public void add(int index, Object item) {
-				((TestModel) this.subject).addName(index, (String) item);
-			}
-			public void addAll(int index, List items) {
-				((TestModel) this.subject).addNames(index, items);
-			}
-			public Object remove(int index) {
-				return ((TestModel) this.subject).removeName(index);
-			}
-			public List remove(int index, int length) {
-				return ((TestModel) this.subject).removeNames(index, length);
+				return this.subject.namesSize();
 			}
 		};
 	}
@@ -176,16 +164,16 @@ public class PrimitiveListTreeModelTests extends TestCase {
 		public void addName(String name) {
 			this.addName(this.namesSize(), name);
 		}
-		public void addNames(int index, List list) {
+		public void addNames(int index, List<String> list) {
 			this.addItemsToList(index, this.names, list, NAMES_LIST);
 		}
-		public void addNames(List list) {
+		public void addNames(List<String> list) {
 			this.addNames(this.namesSize(), list);
 		}
 		public String removeName(int index) {
-			return (String) this.removeItemFromList(index, this.names, NAMES_LIST);
+			return this.removeItemFromList(index, this.names, NAMES_LIST);
 		}
-		public List removeNames(int index, int length) {
+		public List<String> removeNames(int index, int length) {
 			return this.removeItemsFromList(index, length, this.names, NAMES_LIST);
 		}
 		public String replaceName(int index, String newName) {

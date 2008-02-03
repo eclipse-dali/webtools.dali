@@ -11,63 +11,48 @@ package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaBasic;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddable;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbedded;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEmbeddedId;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEntity;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaId;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToMany;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaManyToOne;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaMappedSuperclass;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToMany;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaOneToOne;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaTransient;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaVersion;
-import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.core.internal.platform.BaseJpaFactory;
+import org.eclipse.jpt.core.internal.platform.base.BaseJpaFactory;
 
 /**
- * Use IJpaFactory to create any IJavaTypeMapping or IJavaAttributeMappings.  This is necessary
- * so that platforms can extend the java model with their own annotations. 
- * IJavaTypeMappingProvider and IJavaAttributeMappingProvider use this factory.
- * See IJpaPlatform.javaTypeMappingProviders() and IJpaPlatform.javaAttributeMappingProviders()
- * for creating new mappings types.
+ * Use IJpaFactory to create any core (e.g. IJpaProject), resource 
+ * (e.g. PersistenceResource), or context (e.g. IAttributeMapping) model objects.  
  * @see BaseJpaFactory
  */
-public interface IJpaFactory {
-
+public interface IJpaFactory 
+{
+	/**
+	 * Construct an IJpaProject for the specified config, to be
+	 * added to the specified JPA project. Return null if unable to create
+	 * the JPA file (e.g. the content type is unrecognized).
+	 */
 	IJpaProject createJpaProject(IJpaProject.Config config) throws CoreException;
-
-	IJpaDataSource createDataSource(IJpaProject jpaProject, String connectionProfileName);
-
-	IJpaFile createJpaFile(IJpaProject jpaProject, IFile file, IJpaFileContentProvider provider);
-
-	IJavaEntity createJavaEntity(Type type);
 	
-	IJavaEmbeddable createJavaEmbeddable(Type type);
+	IJpaDataSource createJpaDataSource(IJpaProject jpaProject, String connectionProfileName);
 	
-	IJavaMappedSuperclass createJavaMappedSuperclass(Type type);
-		
-	IJavaBasic createJavaBasic(Attribute attribute);
+	/**
+	 * Construct a JPA file for the specified file and with the specified resource
+	 * model, to be added to the specified JPA project.
+	 * This should be non-null iff (if and only if) {@link #hasRelevantContent(IFile)}
+	 * returns true.
+	 */
+	IJpaFile createJpaFile(IJpaProject jpaProject, IFile file, IResourceModel resourceModel);
 	
-	IJavaEmbedded createJavaEmbedded(Attribute attribute);
+	/**
+	 * Return true if a resource model will be provided for the given file
+	 */
+	boolean hasRelevantContent(IFile file);
 	
-	IJavaEmbeddedId createJavaEmbeddedId(Attribute attribute);
+	/**
+	 * Build a resource model to be associated with the given file.
+	 * This should be non-null iff (if and only if) {@link #hasRelevantContent(IFile)}
+	 * returns true. 
+	 */
+	IResourceModel buildResourceModel(IJpaProject jpaProject, IFile file);
 	
-	IJavaId createJavaId(Attribute attribute);
-	
-	IJavaManyToMany createJavaManyToMany(Attribute attribute);
-	
-	IJavaManyToOne createJavaManyToOne(Attribute attribute);
-	
-	IJavaOneToMany createJavaOneToMany(Attribute attribute);
-	
-	IJavaOneToOne createJavaOneToOne(Attribute attribute);
-	
-	IJavaTransient createJavaTransient(Attribute attribute);
-	
-	IJavaVersion createJavaVersion(Attribute attribute);
-
+	/**
+	 * Build a (updated) context model to be associated with the given JPA project.
+	 * The context model will be built once, but updated many times.
+	 * @see update(IJpaProject, IContextModel, IProgressMonitor)
+	 */
+	IContextModel buildContextModel(IJpaProject jpaProject);
 }

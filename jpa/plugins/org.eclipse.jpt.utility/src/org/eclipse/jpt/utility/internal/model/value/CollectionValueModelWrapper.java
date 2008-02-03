@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
-import java.util.Collection;
 import java.util.Iterator;
 
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -23,13 +22,12 @@ import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
  * another collection value model, "lazily" listen to it, and propagate
  * its change notifications.
  */
-public abstract class CollectionValueModelWrapper
+public abstract class CollectionValueModelWrapper<E>
 	extends AbstractModel
-	implements CollectionValueModel
 {
 
 	/** The wrapped collection value model. */
-	protected final CollectionValueModel collectionHolder;
+	protected final CollectionValueModel<? extends E> collectionHolder;
 
 	/** A listener that allows us to synch with changes to the wrapped collection holder. */
 	protected final CollectionChangeListener collectionChangeListener;
@@ -41,7 +39,7 @@ public abstract class CollectionValueModelWrapper
 	 * Construct a collection value model with the specified wrapped
 	 * collection value model.
 	 */
-	protected CollectionValueModelWrapper(CollectionValueModel collectionHolder) {
+	protected CollectionValueModelWrapper(CollectionValueModel<? extends E> collectionHolder) {
 		super();
 		this.collectionHolder = collectionHolder;
 		this.collectionChangeListener = this.buildCollectionChangeListener();
@@ -52,22 +50,22 @@ public abstract class CollectionValueModelWrapper
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, CollectionChangeListener.class, VALUES);
+		return new SingleAspectChangeSupport(this, CollectionChangeListener.class, CollectionValueModel.VALUES);
 	}
 
 	protected CollectionChangeListener buildCollectionChangeListener() {
 		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionChangeEvent e) {
-				CollectionValueModelWrapper.this.itemsAdded(e);
+			public void itemsAdded(CollectionChangeEvent event) {
+				CollectionValueModelWrapper.this.itemsAdded(event);
 			}		
-			public void itemsRemoved(CollectionChangeEvent e) {
-				CollectionValueModelWrapper.this.itemsRemoved(e);
+			public void itemsRemoved(CollectionChangeEvent event) {
+				CollectionValueModelWrapper.this.itemsRemoved(event);
 			}
-			public void collectionCleared(CollectionChangeEvent e) {
-				CollectionValueModelWrapper.this.collectionCleared(e);
+			public void collectionCleared(CollectionChangeEvent event) {
+				CollectionValueModelWrapper.this.collectionCleared(event);
 			}
-			public void collectionChanged(CollectionChangeEvent e) {
-				CollectionValueModelWrapper.this.collectionChanged(e);
+			public void collectionChanged(CollectionChangeEvent event) {
+				CollectionValueModelWrapper.this.collectionChanged(event);
 			}
 			@Override
 			public String toString() {
@@ -84,7 +82,7 @@ public abstract class CollectionValueModelWrapper
 	 */
 	@Override
 	public synchronized void addCollectionChangeListener(CollectionChangeListener listener) {
-		if (this.hasNoCollectionChangeListeners(VALUES)) {
+		if (this.hasNoCollectionChangeListeners(CollectionValueModel.VALUES)) {
 			this.engageModel();
 		}
 		super.addCollectionChangeListener(listener);
@@ -95,7 +93,7 @@ public abstract class CollectionValueModelWrapper
 	 */
 	@Override
 	public synchronized void addCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
-		if (collectionName == VALUES && this.hasNoCollectionChangeListeners(VALUES)) {
+		if (collectionName == CollectionValueModel.VALUES && this.hasNoCollectionChangeListeners(CollectionValueModel.VALUES)) {
 			this.engageModel();
 		}
 		super.addCollectionChangeListener(collectionName, listener);
@@ -107,7 +105,7 @@ public abstract class CollectionValueModelWrapper
 	@Override
 	public synchronized void removeCollectionChangeListener(CollectionChangeListener listener) {
 		super.removeCollectionChangeListener(listener);
-		if (this.hasNoCollectionChangeListeners(VALUES)) {
+		if (this.hasNoCollectionChangeListeners(CollectionValueModel.VALUES)) {
 			this.disengageModel();
 		}
 	}
@@ -118,7 +116,7 @@ public abstract class CollectionValueModelWrapper
 	@Override
 	public synchronized void removeCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
 		super.removeCollectionChangeListener(collectionName, listener);
-		if (collectionName == VALUES && this.hasNoCollectionChangeListeners(VALUES)) {
+		if (collectionName == CollectionValueModel.VALUES && this.hasNoCollectionChangeListeners(CollectionValueModel.VALUES)) {
 			this.disengageModel();
 		}
 	}
@@ -130,14 +128,20 @@ public abstract class CollectionValueModelWrapper
 	 * Start listening to the collection holder.
 	 */
 	protected void engageModel() {
-		this.collectionHolder.addCollectionChangeListener(VALUES, this.collectionChangeListener);
+		this.collectionHolder.addCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
 	}
 
 	/**
 	 * Stop listening to the collection holder.
 	 */
 	protected void disengageModel() {
-		this.collectionHolder.removeCollectionChangeListener(VALUES, this.collectionChangeListener);
+		this.collectionHolder.removeCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
+	}
+
+	// minimize suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected Iterator<E> items(CollectionChangeEvent event) {
+		return (Iterator<E>) event.items();
 	}
 
 	@Override
@@ -152,24 +156,24 @@ public abstract class CollectionValueModelWrapper
 	 * Items were added to the wrapped collection holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void itemsAdded(CollectionChangeEvent e);
+	protected abstract void itemsAdded(CollectionChangeEvent event);
 
 	/**
 	 * Items were removed from the wrapped collection holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void itemsRemoved(CollectionChangeEvent e);
+	protected abstract void itemsRemoved(CollectionChangeEvent event);
 
 	/**
 	 * The wrapped collection holder was cleared;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void collectionCleared(CollectionChangeEvent e);
+	protected abstract void collectionCleared(CollectionChangeEvent event);
 
 	/**
 	 * The value of the wrapped collection holder has changed;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void collectionChanged(CollectionChangeEvent e);
+	protected abstract void collectionChanged(CollectionChangeEvent event);
 
 }

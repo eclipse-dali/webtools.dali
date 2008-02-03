@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2007 Oracle. All rights reserved.
+* Copyright (c) 2007, 2008 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -44,6 +44,7 @@ public class DTPUiTools {
 		// Filter datasource category
 	  	ViewerFilter viewerFilter = new ViewerFilter() {
 
+			@Override
 			public boolean select( Viewer viewer, Object parentElement, Object element) {
 				
 				CPWizardNode wizardNode = ( CPWizardNode) element;
@@ -55,8 +56,7 @@ public class DTPUiTools {
 					while( cat != null) {
 						if( cat.getId().equals( ConnectionProfileRepository.DATABASE_CATEGORY_ID))
 							return true;
-						else
-							cat = cat.getParent();
+						cat = cat.getParent();
 					}
 				}
 				return false;
@@ -80,7 +80,7 @@ public class DTPUiTools {
 		return addedProfile.getName();
 	}
 
-	private static class LocalProfileListener implements IProfileListener {
+	static class LocalProfileListener implements IProfileListener {
 		IConnectionProfile addedProfile;
 		
 		public void profileAdded( IConnectionProfile profile) {

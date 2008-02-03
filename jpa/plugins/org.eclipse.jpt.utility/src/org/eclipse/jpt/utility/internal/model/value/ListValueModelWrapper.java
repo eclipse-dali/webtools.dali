@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
-import java.util.Iterator;
+import java.util.ListIterator;
 
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
@@ -23,13 +22,12 @@ import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
  * another list value model, "lazily" listen to it, and propagate
  * its change notifications.
  */
-public abstract class ListValueModelWrapper
+public abstract class ListValueModelWrapper<E>
 	extends AbstractModel
-	implements ListValueModel
 {
 
 	/** The wrapped list value model. */
-	protected final ListValueModel listHolder;
+	protected final ListValueModel<? extends E> listHolder;
 
 	/** A listener that allows us to synch with changes to the wrapped list holder. */
 	protected final ListChangeListener listChangeListener;
@@ -41,7 +39,7 @@ public abstract class ListValueModelWrapper
 	 * Construct a list value model with the specified wrapped
 	 * list value model.
 	 */
-	protected ListValueModelWrapper(ListValueModel listHolder) {
+	protected ListValueModelWrapper(ListValueModel<? extends E> listHolder) {
 		super();
 		if (listHolder == null) {
 			throw new NullPointerException();
@@ -55,7 +53,7 @@ public abstract class ListValueModelWrapper
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new SingleAspectChangeSupport(this, ListChangeListener.class, LIST_VALUES);
+		return new SingleAspectChangeSupport(this, ListChangeListener.class, ListValueModel.LIST_VALUES);
 	}
 
 	protected ListChangeListener buildListChangeListener() {
@@ -86,25 +84,6 @@ public abstract class ListValueModelWrapper
 	}
 
 
-	// ********** ListValueModel implementation **********
-
-	public Iterator iterator() {
-		return this.listIterator();
-	}
-
-	public Object get(int index) {
-		return CollectionTools.get(this.listIterator(), index);
-	}
-
-	public int size() {
-		return CollectionTools.size(this.listIterator());
-	}
-
-	public Object[] toArray() {
-		return CollectionTools.array(this.listIterator());
-	}
-
-
 	// ********** extend change support **********
 
 	/**
@@ -112,7 +91,7 @@ public abstract class ListValueModelWrapper
 	 */
 	@Override
 	public synchronized void addListChangeListener(ListChangeListener listener) {
-		if (this.hasNoListChangeListeners(LIST_VALUES)) {
+		if (this.hasNoListChangeListeners(ListValueModel.LIST_VALUES)) {
 			this.engageModel();
 		}
 		super.addListChangeListener(listener);
@@ -123,7 +102,7 @@ public abstract class ListValueModelWrapper
 	 */
 	@Override
 	public synchronized void addListChangeListener(String listName, ListChangeListener listener) {
-		if (listName == LIST_VALUES && this.hasNoListChangeListeners(LIST_VALUES)) {
+		if (listName == ListValueModel.LIST_VALUES && this.hasNoListChangeListeners(ListValueModel.LIST_VALUES)) {
 			this.engageModel();
 		}
 		super.addListChangeListener(listName, listener);
@@ -135,7 +114,7 @@ public abstract class ListValueModelWrapper
 	@Override
 	public synchronized void removeListChangeListener(ListChangeListener listener) {
 		super.removeListChangeListener(listener);
-		if (this.hasNoListChangeListeners(LIST_VALUES)) {
+		if (this.hasNoListChangeListeners(ListValueModel.LIST_VALUES)) {
 			this.disengageModel();
 		}
 	}
@@ -146,7 +125,7 @@ public abstract class ListValueModelWrapper
 	@Override
 	public synchronized void removeListChangeListener(String listName, ListChangeListener listener) {
 		super.removeListChangeListener(listName, listener);
-		if (listName == LIST_VALUES && this.hasNoListChangeListeners(LIST_VALUES)) {
+		if (listName == ListValueModel.LIST_VALUES && this.hasNoListChangeListeners(ListValueModel.LIST_VALUES)) {
 			this.disengageModel();
 		}
 	}
@@ -158,19 +137,31 @@ public abstract class ListValueModelWrapper
 	 * Start listening to the list holder.
 	 */
 	protected void engageModel() {
-		this.listHolder.addListChangeListener(LIST_VALUES, this.listChangeListener);
+		this.listHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
 	}
 
 	/**
 	 * Stop listening to the list holder.
 	 */
 	protected void disengageModel() {
-		this.listHolder.removeListChangeListener(LIST_VALUES, this.listChangeListener);
+		this.listHolder.removeListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.listHolder);
+	}
+
+	// minimize suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected ListIterator<E> items(ListChangeEvent e) {
+		return (ListIterator<E>) e.items();
+	}
+
+	// minimize suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected ListIterator<E> replacedItems(ListChangeEvent e) {
+		return (ListIterator<E>) e.replacedItems();
 	}
 
 

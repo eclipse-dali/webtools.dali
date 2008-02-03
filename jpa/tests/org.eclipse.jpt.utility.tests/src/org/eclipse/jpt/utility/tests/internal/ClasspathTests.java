@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -106,7 +106,7 @@ public class ClasspathTests extends TestCase {
 
 	public void testEntries() {
 		Classpath cp = new Classpath(this.morph("C:\\jdk\\rt.jar;;.;C:\\jdk\\i18n.jar;;;C:\\jdk\\jaws.jar;;C:\\foo\\classes;C:\\bar\\bar.jar;C:\\bar\\bar.jar;"));
-		Classpath.Entry[] entries = cp.getEntries();
+		Classpath.Entry[] entries = cp.entries();
 		int i = 0;
 		assertEquals(this.morph("C:\\jdk\\rt.jar"), entries[i++].fileName());
 		assertEquals(this.morph("."), entries[i++].fileName());
@@ -118,7 +118,7 @@ public class ClasspathTests extends TestCase {
 		assertEquals(i, entries.length);
 
 		cp = cp.compressed();
-		entries = cp.getEntries();
+		entries = cp.entries();
 		i = 0;
 		assertEquals(this.morph("C:\\jdk\\rt.jar"), entries[i++].fileName());
 		assertEquals(this.morph("."), entries[i++].fileName());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,21 +15,21 @@ import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 
 /**
- * Implementation of PropertyValueModel that simply holds on to an
+ * Implementation of WritablePropertyValueModel that simply holds on to an
  * object and uses it as the value.
  */
-public class SimplePropertyValueModel
+public class SimplePropertyValueModel<T>
 	extends AbstractModel
-	implements PropertyValueModel
+	implements WritablePropertyValueModel<T>
 {
 	/** The value. */
-	protected Object value;
+	protected T value;
 
 
 	/**
 	 * Construct a PropertyValueModel for the specified value.
 	 */
-	public SimplePropertyValueModel(Object value) {
+	public SimplePropertyValueModel(T value) {
 		super();
 		this.value = value;
 	}
@@ -47,12 +47,12 @@ public class SimplePropertyValueModel
 	}
 
 
-	public Object value() {
+	public T value() {
 		return this.value;
 	}
 
-	public void setValue(Object value) {
-		Object old = this.value;
+	public void setValue(T value) {
+		T old = this.value;
 		this.value = value;
 		this.firePropertyChanged(VALUE, old, value);
 	}

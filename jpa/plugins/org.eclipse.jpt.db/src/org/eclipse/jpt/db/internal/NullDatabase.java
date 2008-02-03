@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.db.internal;
 
 import java.util.Collections;
 import java.util.Set;
+import org.eclipse.datatools.connectivity.sqm.core.definition.DatabaseDefinition;
 import org.eclipse.jpt.utility.internal.ClassTools;
 
 /**
@@ -78,6 +79,11 @@ public final class NullDatabase extends Database {
 	@Override
 	public String getVersion() {
 		return "";
+	}
+
+	@Override
+	public DatabaseDefinition dtpDefinition() {
+		return null;
 	}
 
 	// ***** catalogs

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,6 +31,11 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 
 public final class CollectionTools {
 
+	@SuppressWarnings("unchecked")
+	private static <E> E[] newArray(E[] array, int length) {
+		return (E[]) Array.newInstance(array.getClass().getComponentType(), length);
+	}
+
 	/**
 	 * Return a new array that contains the elements in the
 	 * specified array followed by the specified object to be added.
@@ -38,8 +43,7 @@ public final class CollectionTools {
 	 */
 	public static <E> E[] add(E[] array, E value) {
 		int len = array.length;
-		@SuppressWarnings("unchecked")
-		E[] result = (E[]) Array.newInstance(array.getClass().getComponentType(), len + 1);
+		E[] result = newArray(array, len + 1);
 		System.arraycopy(array, 0, result, 0, len);
 		result[len] = value;
 		return result;
@@ -52,8 +56,7 @@ public final class CollectionTools {
 	 */
 	public static <E> E[] add(E[] array, int index, E value) {
 		int len = array.length;
-		@SuppressWarnings("unchecked")
-		E[] result = (E[]) Array.newInstance(array.getClass().getComponentType(), len + 1);
+		E[] result = newArray(array, len + 1);
 		if (index > 0) {
 			System.arraycopy(array, 0, result, 0, index);
 		}
@@ -163,9 +166,23 @@ public final class CollectionTools {
 	 * java.util.Arrays#addAll(Object[] array, java.util.Collection c)
 	 */
 	public static <E> E[] addAll(E[] array, Collection<? extends E> collection) {
+		int size = collection.size();
+		return (size == 0) ? array : addAll(array, collection, size);
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static <E> E[] addAll_(E[] array, Collection<? extends E> collection) {
+		return addAll(array, collection, collection.size());
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static <E> E[] addAll(E[] array, Collection<? extends E> collection, int collectionSize) {
 		int len = array.length;
-		@SuppressWarnings("unchecked")
-		E[] result = (E[]) Array.newInstance(array.getClass().getComponentType(), array.length + collection.size());
+		E[] result = newArray(array, array.length + collectionSize);
 		System.arraycopy(array, 0, result, 0, len);
 		int i = len;
 		for (E item : collection) {
@@ -191,7 +208,7 @@ public final class CollectionTools {
 	 * java.util.Arrays#addAll(Object[] array, java.util.Iterator iterator)
 	 */
 	public static <E> E[] addAll(E[] array, Iterator<? extends E> iterator) {
-		return addAll(array, list(iterator));
+		return (iterator.hasNext()) ? addAll_(array, list(iterator)) : array;
 	}
 
 	/**
@@ -201,12 +218,24 @@ public final class CollectionTools {
 	 * java.util.Arrays#addAll(Object[] array1, Object[] array2)
 	 */
 	public static <E> E[] addAll(E[] array1, E[] array2) {
-		int len1 = array1.length;
-		int len2 = array2.length;
-		@SuppressWarnings("unchecked")
-		E[] result = (E[]) Array.newInstance(array1.getClass().getComponentType(), len1 + len2);
-		System.arraycopy(array1, 0, result, 0, len1);
-		System.arraycopy(array2, 0, result, len1, len2);
+		int array2Length = array2.length;
+		return (array2Length == 0) ? array1 : addAll(array1, array2, array2Length);
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static <E> E[] addAll(E[] array1, E[] array2, int array2Length) {
+		return addAll(array1, array2, array1.length, array2Length);
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static <E> E[] addAll(E[] array1, E[] array2, int array1Length, int array2Length) {
+		E[] result = newArray(array1, array1Length + array2Length);
+		System.arraycopy(array1, 0, result, 0, array1Length);
+		System.arraycopy(array2, 0, result, array1Length, array2Length);
 		return result;
 	}
 
@@ -217,13 +246,29 @@ public final class CollectionTools {
 	 * java.util.Arrays#add(Object[] array1, int index, Object[] array2)
 	 */
 	public static <E> E[] addAll(E[] array1, int index, E[] array2) {
-		int len1 = array1.length;
-		int len2 = array2.length;
-		@SuppressWarnings("unchecked")
-		E[] result = (E[]) Array.newInstance(array1.getClass().getComponentType(), len1 + len2);
+		int array2Length = array2.length;
+		return (array2Length == 0) ? array1 : addAll(array1, index, array2, array2Length);
+	}
+
+	/**
+	 * no array2 length-checking
+	 */
+	private static <E> E[] addAll(E[] array1, int index, E[] array2, int array2Length) {
+		int array1Length = array1.length;
+		return (index == array1Length) ?
+				addAll(array1, array2, array1Length, array2Length)
+			:
+				addAll(array1, index, array2, array1Length, array2Length);
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static <E> E[] addAll(E[] array1, int index, E[] array2, int array1Length, int array2Length) {
+		E[] result = newArray(array1, array1Length + array2Length);
 		System.arraycopy(array1, 0, result, 0, index);
-		System.arraycopy(array2, 0, result, index, len2);
-		System.arraycopy(array1, index, result, index + len2, len1 - index);
+		System.arraycopy(array2, 0, result, index, array2Length);
+		System.arraycopy(array1, index, result, index + array2Length, array1Length - index);
 		return result;
 	}
 
@@ -234,11 +279,24 @@ public final class CollectionTools {
 	 * java.util.Arrays#addAll(char[] array1, char[] array2)
 	 */
 	public static char[] addAll(char[] array1, char[] array2) {
-		int len1 = array1.length;
-		int len2 = array2.length;
-		char[] result = new char[len1 + len2];
-		System.arraycopy(array1, 0, result, 0, len1);
-		System.arraycopy(array2, 0, result, len1, len2);
+		int array2Length = array2.length;
+		return (array2Length == 0) ? array1 : addAll(array1, array2, array2Length);
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static char[] addAll(char[] array1, char[] array2, int array2Length) {
+		return addAll(array1, array2, array1.length, array2Length);
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static char[] addAll(char[] array1, char[] array2, int array1Length, int array2Length) {
+		char[] result = new char[array1Length + array2Length];
+		System.arraycopy(array1, 0, result, 0, array1Length);
+		System.arraycopy(array2, 0, result, array1Length, array2Length);
 		return result;
 	}
 
@@ -249,12 +307,29 @@ public final class CollectionTools {
 	 * java.util.Arrays#add(char[] array1, int index, char[] array2)
 	 */
 	public static char[] addAll(char[] array1, int index, char[] array2) {
-		int len1 = array1.length;
-		int len2 = array2.length;
-		char[] result = new char[len1 + len2];
+		int array2Length = array2.length;
+		return (array2Length == 0) ? array1 : addAll(array1, index, array2, array2Length);
+	}
+
+	/**
+	 * no array2 length-checking
+	 */
+	private static char[] addAll(char[] array1, int index, char[] array2, int array2Length) {
+		int array1Length = array1.length;
+		return (index == array1Length) ?
+				addAll(array1, array2, array1Length, array2Length)
+			:
+				addAll(array1, index, array2, array1Length, array2Length);
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static char[] addAll(char[] array1, int index, char[] array2, int array1Length, int array2Length) {
+		char[] result = new char[array1Length + array2Length];
 		System.arraycopy(array1, 0, result, 0, index);
-		System.arraycopy(array2, 0, result, index, len2);
-		System.arraycopy(array1, index, result, index + len2, len1 - index);
+		System.arraycopy(array2, 0, result, index, array2Length);
+		System.arraycopy(array1, index, result, index + array2Length, array1Length - index);
 		return result;
 	}
 
@@ -265,11 +340,24 @@ public final class CollectionTools {
 	 * java.util.Arrays#addAll(int[] array1, int[] array2)
 	 */
 	public static int[] addAll(int[] array1, int[] array2) {
-		int len1 = array1.length;
-		int len2 = array2.length;
-		int[] result = new int[len1 + len2];
-		System.arraycopy(array1, 0, result, 0, len1);
-		System.arraycopy(array2, 0, result, len1, len2);
+		int array2Length = array2.length;
+		return (array2Length == 0) ? array1 : addAll(array1, array2, array2Length);
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static int[] addAll(int[] array1, int[] array2, int array2Length) {
+		return addAll(array1, array2, array1.length, array2Length);
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static int[] addAll(int[] array1, int[] array2, int array1Length, int array2Length) {
+		int[] result = new int[array1Length + array2Length];
+		System.arraycopy(array1, 0, result, 0, array1Length);
+		System.arraycopy(array2, 0, result, array1Length, array2Length);
 		return result;
 	}
 
@@ -280,12 +368,29 @@ public final class CollectionTools {
 	 * java.util.Arrays#add(int[] array1, int index, int[] array2)
 	 */
 	public static int[] addAll(int[] array1, int index, int[] array2) {
-		int len1 = array1.length;
-		int len2 = array2.length;
-		int[] result = new int[len1 + len2];
+		int array2Length = array2.length;
+		return (array2Length == 0) ? array1 : addAll(array1, index, array2, array2Length);
+	}
+
+	/**
+	 * no array2 length-checking
+	 */
+	private static int[] addAll(int[] array1, int index, int[] array2, int array2Length) {
+		int array1Length = array1.length;
+		return (index == array1Length) ?
+				addAll(array1, array2, array1Length, array2Length)
+			:
+				addAll(array1, index, array2, array1Length, array2Length);
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static int[] addAll(int[] array1, int index, int[] array2, int array1Length, int array2Length) {
+		int[] result = new int[array1Length + array2Length];
 		System.arraycopy(array1, 0, result, 0, index);
-		System.arraycopy(array2, 0, result, index, len2);
-		System.arraycopy(array1, index, result, index + len2, len1 - index);
+		System.arraycopy(array2, 0, result, index, array2Length);
+		System.arraycopy(array1, index, result, index + array2Length, array1Length - index);
 		return result;
 	}
 
@@ -339,8 +444,9 @@ public final class CollectionTools {
 	 * java.util.Iterator#toArray()
 	 */
 	public static Object[] array(Iterator<?> iterator) {
-		return list(iterator).toArray();
+		return (iterator.hasNext()) ? list(iterator).toArray() : EMPTY_OBJECT_ARRAY;
 	}
+	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 
 	/**
 	 * Return an array corresponding to the specified iterator.
@@ -348,7 +454,7 @@ public final class CollectionTools {
 	 * java.util.Iterator#toArray()
 	 */
 	public static Object[] array(Iterator<?> iterator, int size) {
-		return list(iterator, size).toArray();
+		return (iterator.hasNext()) ? list(iterator, size).toArray() : EMPTY_OBJECT_ARRAY;
 	}
 
 	/**
@@ -361,7 +467,7 @@ public final class CollectionTools {
 	 * java.util.Iterator#toArray(Object[])
 	 */
 	public static <E> E[] array(Iterator<? extends E> iterator, E[] array) {
-		return list(iterator).toArray(array);
+		return (iterator.hasNext()) ? list(iterator).toArray(array) : newArray(array, 0);
 	}
 
 	/**
@@ -374,7 +480,7 @@ public final class CollectionTools {
 	 * java.util.Iterator#toArray(Object[])
 	 */
 	public static <E> E[] array(Iterator<? extends E> iterator, int size, E[] array) {
-		return list(iterator, size).toArray(array);
+		return (iterator.hasNext()) ? list(iterator, size).toArray(array) : newArray(array, 0);
 	}
 
 	/**
@@ -1230,17 +1336,40 @@ public final class CollectionTools {
 	 * a "for" loop.
 	 */
 	public static <E> Iterable<E> iterable(final Iterator<E> iterator) {
-		return new Iterable<E>() {
-			private boolean used = false;
-			
-			public Iterator<E> iterator() {
-				if (used) {
-					throw new IllegalStateException("This method has already been called");
-				}
-				used = true;
-				return iterator;
+		return new SingleUseIterable<E>(iterator);
+	}
+
+	/**
+	 * This is a one-time use iterable that can return a single iterator.
+	 * Once the iterator is returned the iterable is no longer valid.
+	 * As such, this utility should only be used in one-time use situations,
+	 * such as a 'for-each' loop.
+	 */
+	public static class SingleUseIterable<E> implements Iterable<E> {
+		private Iterator<E> iterator;
+
+		public SingleUseIterable(Iterator<E> iterator) {
+			super();
+			if (iterator == null) {
+				throw new NullPointerException();
 			}
-		};
+			this.iterator = iterator;
+		}
+
+		public Iterator<E> iterator() {
+			if (this.iterator == null) {
+				throw new IllegalStateException("This method has already been called.");
+			}
+			Iterator<E> result = this.iterator;
+			this.iterator = null;
+			return result;
+		}
+
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, this.iterator);
+		}
+
 	}
 
 	/**
@@ -1266,7 +1395,7 @@ public final class CollectionTools {
 	 * java.util.ListIterator#lastIndexOf(Object o)
 	 */
 	public static int lastIndexOf(ListIterator<?> iterator, Object value) {
-		return list(iterator).lastIndexOf(value);
+		return (iterator.hasNext()) ? list(iterator).lastIndexOf(value) : -1;
 	}
 
 	/**
@@ -1478,9 +1607,13 @@ public final class CollectionTools {
 	 * java.util.Arrays#move(Object[] array, int targetIndex, int sourceIndex)
 	 */
 	public static <E> E[] move(E[] array, int targetIndex, int sourceIndex) {
-		if (targetIndex == sourceIndex) {
-			return array;
-		}
+		return (targetIndex == sourceIndex) ? array : move_(array, targetIndex, sourceIndex);
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static <E> E[] move_(E[] array, int targetIndex, int sourceIndex) {
 		E temp = array[sourceIndex];
 		if (targetIndex < sourceIndex) {
 			System.arraycopy(array, targetIndex, array, targetIndex + 1, sourceIndex - targetIndex);
@@ -1497,11 +1630,13 @@ public final class CollectionTools {
 	 * java.util.Arrays#move(Object[] array, int targetIndex, int sourceIndex, int length)
 	 */
 	public static <E> E[] move(E[] array, int targetIndex, int sourceIndex, int length) {
-		if (targetIndex == sourceIndex) {
+		if ((targetIndex == sourceIndex) || (length == 0)) {
 			return array;
 		}
-		@SuppressWarnings("unchecked")
-		E[] temp = (E[]) Array.newInstance(array.getClass().getComponentType(), length);
+		if (length == 1) {
+			return move_(array, targetIndex, sourceIndex);
+		}
+		E[] temp = newArray(array, length);
 		System.arraycopy(array, sourceIndex, temp, 0, length);
 		if (targetIndex < sourceIndex) {
 			System.arraycopy(array, targetIndex, array, targetIndex + length, sourceIndex - targetIndex);
@@ -1518,9 +1653,13 @@ public final class CollectionTools {
 	 * java.util.Arrays#move(int[] array, int targetIndex, int sourceIndex)
 	 */
 	public static int[] move(int[] array, int targetIndex, int sourceIndex) {
-		if (targetIndex == sourceIndex) {
-			return array;
-		}
+		return (targetIndex == sourceIndex) ? array : move_(array, targetIndex, sourceIndex);
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static int[] move_(int[] array, int targetIndex, int sourceIndex) {
 		int temp = array[sourceIndex];
 		if (targetIndex < sourceIndex) {
 			System.arraycopy(array, targetIndex, array, targetIndex + 1, sourceIndex - targetIndex);
@@ -1537,8 +1676,11 @@ public final class CollectionTools {
 	 * java.util.Arrays#move(int[] array, int targetIndex, int sourceIndex, int length)
 	 */
 	public static int[] move(int[] array, int targetIndex, int sourceIndex, int length) {
-		if (targetIndex == sourceIndex) {
+		if ((targetIndex == sourceIndex) || (length == 0)) {
 			return array;
+		}
+		if (length == 1) {
+			return move_(array, targetIndex, sourceIndex);
 		}
 		int[] temp = new int[length];
 		System.arraycopy(array, sourceIndex, temp, 0, length);
@@ -1557,9 +1699,13 @@ public final class CollectionTools {
 	 * java.util.Arrays#move(char[] array, int targetIndex, int sourceIndex)
 	 */
 	public static char[] move(char[] array, int targetIndex, int sourceIndex) {
-		if (targetIndex == sourceIndex) {
-			return array;
-		}
+		return (targetIndex == sourceIndex) ? array : move_(array, targetIndex, sourceIndex);
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static char[] move_(char[] array, int targetIndex, int sourceIndex) {
 		char temp = array[sourceIndex];
 		if (targetIndex < sourceIndex) {
 			System.arraycopy(array, targetIndex, array, targetIndex + 1, sourceIndex - targetIndex);
@@ -1576,8 +1722,11 @@ public final class CollectionTools {
 	 * java.util.Arrays#move(char[] array, int targetIndex, int sourceIndex, int length)
 	 */
 	public static char[] move(char[] array, int targetIndex, int sourceIndex, int length) {
-		if (targetIndex == sourceIndex) {
+		if ((targetIndex == sourceIndex) || (length == 0)) {
 			return array;
+		}
+		if (length == 1) {
+			return move_(array, targetIndex, sourceIndex);
 		}
 		char[] temp = new char[length];
 		System.arraycopy(array, sourceIndex, temp, 0, length);
@@ -1596,9 +1745,13 @@ public final class CollectionTools {
 	 * java.util.List#move(int targetIndex, int sourceIndex)
 	 */
 	public static <E> List<E> move(List<E> list, int targetIndex, int sourceIndex) {
-		if (targetIndex == sourceIndex) {
-			return list;
-		}
+		return (targetIndex == sourceIndex) ? list : move_(list, targetIndex, sourceIndex);
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static <E> List<E> move_(List<E> list, int targetIndex, int sourceIndex) {
 		if (list instanceof RandomAccess) {
 			// move elements, leaving the list in place
 			E temp = list.get(sourceIndex);
@@ -1625,8 +1778,11 @@ public final class CollectionTools {
 	 * java.util.List#move(int targetIndex, int sourceIndex, int length)
 	 */
 	public static <E> List<E> move(List<E> list, int targetIndex, int sourceIndex, int length) {
-		if (targetIndex == sourceIndex) {
+		if ((targetIndex == sourceIndex) || (length == 0)) {
 			return list;
+		}
+		if (length == 1) {
+			return move_(list, targetIndex, sourceIndex);
 		}
 		if (list instanceof RandomAccess) {
 			// move elements, leaving the list in place
@@ -1771,14 +1927,21 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeAll(Object[] array, Collection collection)
 	 */
 	public static <E> E[] removeAll(E[] array, Collection<?> collection) {
-		E[] result = array;
-		// go backwards since we will be pulling elements
-		// out of 'result' and it will get shorter as we go
-		for (int i = array.length; i-- > 0; ) {
-			E item = array[i];
-			if (collection.contains(item)) {
-				result = removeElementAtIndex(result, i);
+		if (collection.isEmpty()) {
+			return array;
+		}
+		int arrayLength = array.length;
+		int[] indices = new int[arrayLength];
+		int j = 0;
+		for (int i = 0; i < arrayLength; i++) {
+			if ( ! collection.contains(array[i])) {
+				indices[j++] = i;
 			}
+		}
+		E[] result = newArray(array, j);
+		int resultLength = result.length;
+		for (int i = 0; i < resultLength; i++) {
+			result[i] = array[indices[i]];
 		}
 		return result;
 	}
@@ -1790,7 +1953,7 @@ public final class CollectionTools {
 	 */
 	public static <E> E[] removeAll(E[] array1, Object[] array2) {
 		// convert to a bag to take advantage of hashed look-up
-		return removeAll(array1, bag(array2));
+		return (array2.length == 0) ? array1 : removeAll(array1, bag(array2));
 	}
 
 	/**
@@ -1799,16 +1962,23 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeAll(char[] array1, char[] array2)
 	 */
 	public static char[] removeAll(char[] array1, char[] array2) {
-		char[] result1 = array1;
-		// go backwards since we will be pulling elements
-		// out of 'result1' and it will get shorter as we go
-		for (int i = array1.length; i-- > 0; ) {
-			char item = array1[i];
-			if (contains(array2, item)) {
-				result1 = removeElementAtIndex(result1, i);
+		if (array2.length == 0) {
+			return array1;
+		}
+		int array1Length = array1.length;
+		int[] indices = new int[array1Length];
+		int j = 0;
+		for (int i = 0; i < array1Length; i++) {
+			if ( ! contains(array2, array1[i])) {
+				indices[j++] = i;
 			}
 		}
-		return result1;
+		char[] result = new char[j];
+		int resultLength = result.length;
+		for (int i = 0; i < resultLength; i++) {
+			result[i] = array1[indices[i]];
+		}
+		return result;
 	}
 
 	/**
@@ -1817,16 +1987,23 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeAll(int[] array1, int[] array2)
 	 */
 	public static int[] removeAll(int[] array1, int[] array2) {
-		int[] result1 = array1;
-		// go backwards since we will be pulling elements
-		// out of 'result1' and it will get shorter as we go
-		for (int i = array1.length; i-- > 0; ) {
-			int item = array1[i];
-			if (contains(array2, item)) {
-				result1 = removeElementAtIndex(result1, i);
+		if (array2.length == 0) {
+			return array1;
+		}
+		int array1Length = array1.length;
+		int[] indices = new int[array1Length];
+		int j = 0;
+		for (int i = 0; i < array1Length; i++) {
+			if ( ! contains(array2, array1[i])) {
+				indices[j++] = i;
 			}
 		}
-		return result1;
+		int[] result = new int[j];
+		int resultLength = result.length;
+		for (int i = 0; i < resultLength; i++) {
+			result[i] = array1[indices[i]];
+		}
+		return result;
 	}
 
 	/**
@@ -1862,23 +2039,26 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeAllOccurrences(Object[] array, Object value)
 	 */
 	public static <E> E[] removeAllOccurrences(E[] array, Object value) {
-		E[] result = array;
+		int arrayLength = array.length;
+		int[] indices = new int[arrayLength];
+		int j = 0;
 		if (value == null) {
-			// go backwards since we will be pulling elements
-			// out of 'result' and it will get shorter as we go
-			for (int i = array.length; i-- > 0; ) {
-				if (array[i] == null) {
-					result = removeElementAtIndex(result, i);
+			for (int i = arrayLength; i-- > 0; ) {
+				if (array[i] != null) {
+					indices[j++] = i;
 				}
 			}
 		} else {
-			// go backwards since we will be pulling elements
-			// out of 'result' and it will get shorter as we go
 			for (int i = array.length; i-- > 0; ) {
-				if (value.equals(array[i])) {
-					result = removeElementAtIndex(result, i);
+				if ( ! value.equals(array[i])) {
+					indices[j++] = i;
 				}
 			}
+		}
+		E[] result = newArray(array, j);
+		int resultLength = result.length;
+		for (int i = 0; i < resultLength; i++) {
+			result[i] = array[indices[i]];
 		}
 		return result;
 	}
@@ -1889,13 +2069,18 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeAllOccurrences(char[] array, char value)
 	 */
 	public static char[] removeAllOccurrences(char[] array, char value) {
-		char[] result = array;
-		// go backwards since we will be pulling elements
-		// out of 'result' and it will get shorter as we go
-		for (int i = array.length; i-- > 0; ) {
-			if (array[i] == value) {
-				result = removeElementAtIndex(result, i);
+		int arrayLength = array.length;
+		int[] indices = new int[arrayLength];
+		int j = 0;
+		for (int i = arrayLength; i-- > 0; ) {
+			if (array[i] != value) {
+				indices[j++] = i;
 			}
+		}
+		char[] result = new char[j];
+		int resultLength = result.length;
+		for (int i = 0; i < resultLength; i++) {
+			result[i] = array[indices[i]];
 		}
 		return result;
 	}
@@ -1906,13 +2091,18 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeAllOccurrences(int[] array, int value)
 	 */
 	public static int[] removeAllOccurrences(int[] array, int value) {
-		int[] result = array;
-		// go backwards since we will be pulling elements
-		// out of 'result' and it will get shorter as we go
-		for (int i = array.length; i-- > 0; ) {
-			if (array[i] == value) {
-				result = removeElementAtIndex(result, i);
+		int arrayLength = array.length;
+		int[] indices = new int[arrayLength];
+		int j = 0;
+		for (int i = arrayLength; i-- > 0; ) {
+			if (array[i] != value) {
+				indices[j++] = i;
 			}
+		}
+		int[] result = new int[j];
+		int resultLength = result.length;
+		for (int i = 0; i < resultLength; i++) {
+			result[i] = array[indices[i]];
 		}
 		return result;
 	}
@@ -1963,11 +2153,14 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeElementsAtIndex(Object[] array, int index, int length)
 	 */
 	public static <E> E[] removeElementsAtIndex(E[] array, int index, int length) {
-		int len = array.length;
-		@SuppressWarnings("unchecked")
-		E[] result = (E[]) Array.newInstance(array.getClass().getComponentType(), len - length);
+		int arrayLength = array.length;
+		int newLength = arrayLength - length;
+		E[] result = newArray(array, newLength);
+		if ((newLength == 0) && (index == 0)) {
+			return result;  // performance tweak
+		}
 		System.arraycopy(array, 0, result, 0, index);
-		System.arraycopy(array, index + length, result, index, len - index - length);
+		System.arraycopy(array, index + length, result, index, newLength - index);
 		return result;
 	}
 
@@ -1977,12 +2170,17 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeElementAtIndex(char[] array, int index, int length)
 	 */
 	public static char[] removeElementsAtIndex(char[] array, int index, int length) {
-		int len = array.length;
-		char[] result = new char[len - length];
+		int arrayLength = array.length;
+		int newLength = arrayLength - length;
+		if ((newLength == 0) && (index == 0)) {
+			return EMPTY_CHAR_ARRAY;  // performance tweak
+		}
+		char[] result = new char[newLength];
 		System.arraycopy(array, 0, result, 0, index);
-		System.arraycopy(array, index + length, result, index, len - index - length);
+		System.arraycopy(array, index + length, result, index, newLength - index);
 		return result;
 	}
+	private static final char[] EMPTY_CHAR_ARRAY = new char[0];
 
 	/**
 	 * Return a new array that contains the elements in the
@@ -1990,22 +2188,29 @@ public final class CollectionTools {
 	 * java.util.Arrays#removeElementAtIndex(int[] array, int index, int length)
 	 */
 	public static int[] removeElementsAtIndex(int[] array, int index, int length) {
-		int len = array.length;
-		int[] result = new int[len - length];
+		int arrayLength = array.length;
+		int newLength = arrayLength - length;
+		if ((newLength == 0) && (index == 0)) {
+			return EMPTY_INT_ARRAY;  // performance tweak
+		}
+		int[] result = new int[newLength];
 		System.arraycopy(array, 0, result, 0, index);
-		System.arraycopy(array, index + length, result, index, len - index - length);
+		System.arraycopy(array, index + length, result, index, newLength - index);
 		return result;
 	}
+	private static final int[] EMPTY_INT_ARRAY = new int[0];
 
 	/**
 	 * Remove any duplicate elements from the specified array,
 	 * while maintaining the order.
 	 */
 	public static <E> E[] removeDuplicateElements(E... array) {
-		List<E> list = removeDuplicateElements(Arrays.asList(array));
-		@SuppressWarnings("unchecked")
-		E[] resultArray = (E[]) Array.newInstance(array.getClass().getComponentType(), list.size());
-		return list.toArray(resultArray);
+		int len = array.length;
+		if ((len == 0) || (len == 1)) {
+			return array;
+		}
+		List<E> list = removeDuplicateElements(Arrays.asList(array), len);
+		return list.toArray(newArray(array, list.size()));
 	}
 
 	/**
@@ -2013,8 +2218,19 @@ public final class CollectionTools {
 	 * while maintaining the order.
 	 */
 	public static <E> List<E> removeDuplicateElements(List<E> list) {
-		List<E> result = new ArrayList<E>(list.size());
-		Set<E> set = new HashSet<E>(list.size());		// take advantage of hashed look-up
+		int size = list.size();
+		if ((size == 0) || (size == 1)) {
+			return list;
+		}
+		return removeDuplicateElements(list, size);
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static <E> List<E> removeDuplicateElements(List<E> list, int size) {
+		List<E> result = new ArrayList<E>(size);
+		Set<E> set = new HashSet<E>(size);		// take advantage of hashed look-up
 		for (E item : list) {
 			if (set.add(item)) {
 				result.add(item);
@@ -2040,7 +2256,14 @@ public final class CollectionTools {
 	 * java.util.Collection#retainAll(java.util.Iterator iterator)
 	 */
 	public static boolean retainAll(Collection<?> collection, Iterator<?> iterator) {
-		return collection.retainAll(collection(iterator));
+		if (iterator.hasNext()) {
+			return collection.retainAll(set(iterator));
+		}
+		if (collection.isEmpty()) {
+			return false;
+		}
+		collection.clear();
+		return true;
 	}
 
 	/**
@@ -2050,7 +2273,14 @@ public final class CollectionTools {
 	 * java.util.Collection#retainAll(Object[] array)
 	 */
 	public static boolean retainAll(Collection<?> collection, Object[] array) {
-		return collection.retainAll(set(array));
+		if (array.length > 0) {
+			return collection.retainAll(set(array));
+		}
+		if (collection.isEmpty()) {
+			return false;
+		}
+		collection.clear();
+		return true;
 	}
 
 	/**
@@ -2059,13 +2289,28 @@ public final class CollectionTools {
 	 * java.util.Arrays#retainAll(Object[] array, Collection collection)
 	 */
 	public static <E> E[] retainAll(E[] array, Collection<?> collection) {
-		E[] result = array;
-		// go backwards since we will be pulling elements
-		// out of 'result' and it will get shorter as we go
-		for (int i = array.length; i-- > 0; ) {
-			if ( ! collection.contains(array[i])) {
-				result = removeElementAtIndex(result, i);
+		int arrayLength = array.length;
+		return (collection.isEmpty()) ?
+				(arrayLength == 0) ? array : newArray(array, 0)
+			:
+				retainAll(array, collection, arrayLength);
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static <E> E[] retainAll(E[] array, Collection<?> collection, int arrayLength) {
+		int[] indices = new int[arrayLength];
+		int j = 0;
+		for (int i = 0; i < arrayLength; i++) {
+			if (collection.contains(array[i])) {
+				indices[j++] = i;
 			}
+		}
+		E[] result = newArray(array, j);
+		int resultLength = result.length;
+		for (int i = 0; i < resultLength; i++) {
+			result[i] = array[indices[i]];
 		}
 		return result;
 	}
@@ -2076,8 +2321,11 @@ public final class CollectionTools {
 	 * java.util.Arrays#retainAll(Object[] array1, Object[] array2)
 	 */
 	public static <E> E[] retainAll(E[] array1, Object[] array2) {
-		// convert to a bag to take advantage of hashed look-up
-		return retainAll(array1, bag(array2));
+		int array1Length = array1.length;
+		return (array2.length == 0) ?
+				(array1Length == 0) ? array1 : newArray(array1, 0)
+			:
+				retainAll(array1, set(array2), array1Length);
 	}
 
 	/**
@@ -2086,34 +2334,64 @@ public final class CollectionTools {
 	 * java.util.Arrays#retainAll(char[] array1, char[] array2)
 	 */
 	public static char[] retainAll(char[] array1, char[] array2) {
-		char[] result1 = array1;
-		// go backwards since we will be pulling elements
-		// out of 'result1' and it will get shorter as we go
-		for (int i = array1.length; i-- > 0; ) {
-			char item = array1[i];
-			if ( ! contains(array2, item)) {
-				result1 = removeElementAtIndex(result1, i);
+		int array1Length = array1.length;
+		int array2Length = array2.length;
+		return (array2Length == 0) ?
+				(array1Length == 0) ? array1 : EMPTY_CHAR_ARRAY
+			:
+				retainAll(array1, array2, array1Length, array2Length);
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static char[] retainAll(char[] array1, char[] array2, int array1Length, int array2Length) {
+		int[] indices = new int[array1Length];
+		int j = 0;
+		for (int i = 0; i < array1Length; i++) {
+			if (contains(array2, array1[i])) {
+				indices[j++] = i;
 			}
 		}
-		return result1;
+		char[] result = new char[j];
+		int resultLength = result.length;
+		for (int i = 0; i < resultLength; i++) {
+			result[i] = array1[indices[i]];
+		}
+		return result;
 	}
 
 	/**
 	 * Remove from the first specified array all the elements in
 	 * the second specified array and return the result.
-	 * java.util.Arrays#removeAll(int[] array1, int[] array2)
+	 * java.util.Arrays#retainAll(int[] array1, int[] array2)
 	 */
 	public static int[] retainAll(int[] array1, int[] array2) {
-		int[] result1 = array1;
-		// go backwards since we will be pulling elements
-		// out of 'result1' and it will get shorter as we go
-		for (int i = array1.length; i-- > 0; ) {
-			int item = array1[i];
-			if ( ! contains(array2, item)) {
-				result1 = removeElementAtIndex(result1, i);
+		int array1Length = array1.length;
+		int array2Length = array2.length;
+		return (array2Length == 0) ?
+				(array1Length == 0) ? array1 : EMPTY_INT_ARRAY
+			:
+				retainAll(array1, array2, array1Length, array2Length);
+	}
+
+	/**
+	 * no parm-checking
+	 */
+	private static int[] retainAll(int[] array1, int[] array2, int array1Length, int array2Length) {
+		int[] indices = new int[array1Length];
+		int j = 0;
+		for (int i = 0; i < array1Length; i++) {
+			if (contains(array2, array1[i])) {
+				indices[j++] = i;
 			}
 		}
-		return result1;
+		int[] result = new int[j];
+		int resultLength = result.length;
+		for (int i = 0; i < resultLength; i++) {
+			result[i] = array1[indices[i]];
+		}
+		return result;
 	}
 
 	/**
@@ -2182,7 +2460,7 @@ public final class CollectionTools {
 	 */
 	public static <E> E[] rotate(E[] array, int distance) {
 		int len = array.length;
-		if (len == 0) {
+		if ((len == 0) || (len == 1)) {
 			return array;
 		}
 		distance = distance % len;
@@ -2223,7 +2501,7 @@ public final class CollectionTools {
 	 */
 	public static char[] rotate(char[] array, int distance) {
 		int len = array.length;
-		if (len == 0) {
+		if ((len == 0) || (len == 1)) {
 			return array;
 		}
 		distance = distance % len;
@@ -2264,7 +2542,7 @@ public final class CollectionTools {
 	 */
 	public static int[] rotate(int[] array, int distance) {
 		int len = array.length;
-		if (len == 0) {
+		if ((len == 0) || (len == 1)) {
 			return array;
 		}
 		distance = distance % len;
@@ -2358,6 +2636,9 @@ public final class CollectionTools {
 	 */
 	public static <E> E[] shuffle(E[] array, Random random) {
 		int len = array.length;
+		if ((len == 0) || (len == 1)) {
+			return array;
+		}
 		for (int i = len; i-- > 0; ) {
 			swap(array, i, random.nextInt(len));
 		}
@@ -2378,6 +2659,9 @@ public final class CollectionTools {
 	 */
 	public static char[] shuffle(char[] array, Random random) {
 		int len = array.length;
+		if ((len == 0) || (len == 1)) {
+			return array;
+		}
 		for (int i = len; i-- > 0; ) {
 			swap(array, i, random.nextInt(len));
 		}
@@ -2398,6 +2682,9 @@ public final class CollectionTools {
 	 */
 	public static int[] shuffle(int[] array, Random random) {
 		int len = array.length;
+		if ((len == 0) || (len == 1)) {
+			return array;
+		}
 		for (int i = len; i-- > 0; ) {
 			swap(array, i, random.nextInt(len));
 		}
@@ -2533,9 +2820,10 @@ public final class CollectionTools {
 	 * java.util.Arrays#subArray(E[] array, int start, int length)
 	 */
 	public static <E> E[] subArray(E[] array, int start, int length) {
-		@SuppressWarnings("unchecked")
-		E[] result = (E[]) Array.newInstance(array.getClass().getComponentType(), length);
-		System.arraycopy(array, start, result, 0, length);
+		E[] result = newArray(array, length);
+		if (length > 0) {
+			System.arraycopy(array, start, result, 0, length);
+		}
 		return result;
 	}
 
@@ -2546,7 +2834,9 @@ public final class CollectionTools {
 	 */
 	public static int[] subArray(int[] array, int start, int length) {
 		int[] result = new int[length];
-		System.arraycopy(array, start, result, 0, length);
+		if (length > 0) {
+			System.arraycopy(array, start, result, 0, length);
+		}
 		return result;
 	}
 
@@ -2557,7 +2847,9 @@ public final class CollectionTools {
 	 */
 	public static char[] subArray(char[] array, int start, int length) {
 		char[] result = new char[length];
-		System.arraycopy(array, start, result, 0, length);
+		if (length > 0) {
+			System.arraycopy(array, start, result, 0, length);
+		}
 		return result;
 	}
 

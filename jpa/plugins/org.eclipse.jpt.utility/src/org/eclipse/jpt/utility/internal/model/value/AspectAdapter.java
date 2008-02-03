@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,7 +26,7 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
  * adapter itself actually has listeners. This will allow the adapter to be
  * garbage collected when appropriate
  */
-public abstract class AspectAdapter 
+public abstract class AspectAdapter<S>
 	extends AbstractModel
 {
 	/**
@@ -35,7 +35,7 @@ public abstract class AspectAdapter
 	 * We need to hold on to this directly so we can
 	 * disengage it when it changes.
 	 */
-	protected Object subject;
+	protected S subject;
 
 	/**
 	 * A value model that holds the subject
@@ -46,7 +46,7 @@ public abstract class AspectAdapter
 	 * For now, this is can only be set upon construction and is
 	 * immutable.
 	 */
-	protected final ValueModel subjectHolder;
+	protected final PropertyValueModel<? extends S> subjectHolder;
 
 	/** A listener that keeps us in synch with the subjectHolder. */
 	protected final PropertyChangeListener subjectChangeListener;
@@ -57,15 +57,15 @@ public abstract class AspectAdapter
 	/**
 	 * Construct an AspectAdapter for the specified subject.
 	 */
-	protected AspectAdapter(Object subject) {
-		this(new ReadOnlyPropertyValueModel(subject));
+	protected AspectAdapter(S subject) {
+		this(new StaticPropertyValueModel<S>(subject));
 	}
 
 	/**
 	 * Construct an AspectAdapter for the specified subject holder.
 	 * The subject holder cannot be null.
 	 */
-	protected AspectAdapter(ValueModel subjectHolder) {
+	protected AspectAdapter(PropertyValueModel<? extends S> subjectHolder) {
 		super();
 		if (subjectHolder == null) {
 			throw new NullPointerException();
@@ -154,39 +154,39 @@ public abstract class AspectAdapter
 	 */
 	protected abstract void fireAspectChange(Object oldValue, Object newValue);
 
-	/**
-	 * The subject is not null - add our listener.
-	 */
-	protected abstract void engageNonNullSubject();
-
 	protected void engageSubject() {
 		// check for nothing to listen to
 		if (this.subject != null) {
-			this.engageNonNullSubject();
+			this.engageSubject_();
+		}
+	}
+
+	/**
+	 * The subject is not null - add our listener.
+	 */
+	protected abstract void engageSubject_();
+
+	protected void disengageSubject() {
+		// check for nothing to listen to
+		if (this.subject != null) {
+			this.disengageSubject_();
 		}
 	}
 
 	/**
 	 * The subject is not null - remove our listener.
 	 */
-	protected abstract void disengageNonNullSubject();
-
-	protected void disengageSubject() {
-		// check for nothing to listen to
-		if (this.subject != null) {
-			this.disengageNonNullSubject();
-		}
-	}
+	protected abstract void disengageSubject_();
 
 	protected void engageSubjectHolder() {
-		this.subjectHolder.addPropertyChangeListener(ValueModel.VALUE, this.subjectChangeListener);
+		this.subjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
 		// synch our subject *after* we start listening to the subject holder,
 		// since its value might change when a listener is added
 		this.subject = this.subjectHolder.value();
 	}
 
 	protected void disengageSubjectHolder() {
-		this.subjectHolder.removePropertyChangeListener(ValueModel.VALUE, this.subjectChangeListener);
+		this.subjectHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
 		// clear out the subject when we are not listening to its holder
 		this.subject = null;
 	}
@@ -215,7 +215,7 @@ public abstract class AspectAdapter
 	protected class LocalChangeSupport extends SingleAspectChangeSupport {
 		private static final long serialVersionUID = 1L;
 
-		public LocalChangeSupport(AspectAdapter source, Class<? extends ChangeListener> listenerClass, String aspectName) {
+		public LocalChangeSupport(AspectAdapter<S> source, Class<? extends ChangeListener> listenerClass, String aspectName) {
 			super(source, listenerClass, aspectName);
 		}
 

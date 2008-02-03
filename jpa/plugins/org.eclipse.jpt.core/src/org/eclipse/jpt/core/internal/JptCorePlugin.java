@@ -19,7 +19,10 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
-import org.eclipse.jpt.core.internal.platform.generic.GenericPlatform;
+import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
+import org.eclipse.jpt.core.internal.platform.generic.GenericJpaPlatform;
+import org.eclipse.jst.j2ee.internal.J2EEConstants;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.prefs.BackingStoreException;
@@ -91,14 +94,12 @@ public class JptCorePlugin extends Plugin {
 	/**
 	 * Web projects have some special exceptions.
 	 */
-	@SuppressWarnings("restriction")
-	public static final String WEB_PROJECT_FACET_ID = org.eclipse.wst.common.componentcore.internal.util.IModuleConstants.JST_WEB_MODULE;
+	public static final String WEB_PROJECT_FACET_ID = IModuleConstants.JST_WEB_MODULE;
 
 	/**
 	 * Web projects have some special exceptions.
 	 */
-	@SuppressWarnings("restriction")
-	public static final String WEB_PROJECT_DEPLOY_PREFIX = org.eclipse.jst.j2ee.internal.J2EEConstants.WEB_INF_CLASSES;
+	public static final String WEB_PROJECT_DEPLOY_PREFIX = J2EEConstants.WEB_INF_CLASSES;
 
 	public static final String DEFAULT_PERSISTENCE_XML_FILE_PATH = "META-INF/persistence.xml";
 
@@ -223,7 +224,7 @@ public class JptCorePlugin extends Plugin {
 	 * Return the JPA platform ID associated with the specified Eclipse project.
 	 */
 	public static String jpaPlatformId(IProject project) {
-		return preferences(project).get(JPA_PLATFORM, GenericPlatform.ID);
+		return preferences(project).get(JPA_PLATFORM, GenericJpaPlatform.ID);
 	}
 
 	/**

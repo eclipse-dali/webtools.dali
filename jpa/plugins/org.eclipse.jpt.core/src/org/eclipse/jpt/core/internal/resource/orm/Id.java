@@ -1,0 +1,141 @@
+/*******************************************************************************
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
+package org.eclipse.jpt.core.internal.resource.orm;
+
+
+/**
+ * <!-- begin-user-doc -->
+ * A representation of the model object '<em><b>Id</b></em>'.
+ * <!-- end-user-doc -->
+ *
+ * <p>
+ * The following features are supported:
+ * <ul>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Id#getGeneratedValue <em>Generated Value</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Id#getTemporal <em>Temporal</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Id#getTableGenerator <em>Table Generator</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.internal.resource.orm.Id#getSequenceGenerator <em>Sequence Generator</em>}</li>
+ * </ul>
+ * </p>
+ *
+ * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getId()
+ * @model kind="class" interface="true" abstract="true"
+ * @generated
+ */
+public interface Id extends AttributeMapping, ColumnMapping
+{
+	/**
+	 * Returns the value of the '<em><b>Generated Value</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Generated Value</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Generated Value</em>' containment reference.
+	 * @see #setGeneratedValue(GeneratedValue)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getId_GeneratedValue()
+	 * @model containment="true"
+	 * @generated
+	 */
+	GeneratedValue getGeneratedValue();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Id#getGeneratedValue <em>Generated Value</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Generated Value</em>' containment reference.
+	 * @see #getGeneratedValue()
+	 * @generated
+	 */
+	void setGeneratedValue(GeneratedValue value);
+
+	/**
+	 * Returns the value of the '<em><b>Temporal</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.core.internal.resource.orm.TemporalType}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Temporal</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Temporal</em>' attribute.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.TemporalType
+	 * @see #setTemporal(TemporalType)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getId_Temporal()
+	 * @model
+	 * @generated
+	 */
+	TemporalType getTemporal();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Id#getTemporal <em>Temporal</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Temporal</em>' attribute.
+	 * @see org.eclipse.jpt.core.internal.resource.orm.TemporalType
+	 * @see #getTemporal()
+	 * @generated
+	 */
+	void setTemporal(TemporalType value);
+
+	/**
+	 * Returns the value of the '<em><b>Table Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Table Generator</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Table Generator</em>' containment reference.
+	 * @see #setTableGenerator(TableGenerator)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getId_TableGenerator()
+	 * @model containment="true"
+	 * @generated
+	 */
+	TableGenerator getTableGenerator();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Id#getTableGenerator <em>Table Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Table Generator</em>' containment reference.
+	 * @see #getTableGenerator()
+	 * @generated
+	 */
+	void setTableGenerator(TableGenerator value);
+
+	/**
+	 * Returns the value of the '<em><b>Sequence Generator</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Sequence Generator</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Sequence Generator</em>' containment reference.
+	 * @see #setSequenceGenerator(SequenceGenerator)
+	 * @see org.eclipse.jpt.core.internal.resource.orm.OrmPackage#getId_SequenceGenerator()
+	 * @model containment="true"
+	 * @generated
+	 */
+	SequenceGenerator getSequenceGenerator();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.resource.orm.Id#getSequenceGenerator <em>Sequence Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Sequence Generator</em>' containment reference.
+	 * @see #getSequenceGenerator()
+	 * @generated
+	 */
+	void setSequenceGenerator(SequenceGenerator value);
+
+} // Id

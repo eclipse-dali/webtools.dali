@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,6 @@ import java.awt.event.WindowListener;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Iterator;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -39,8 +38,9 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EnumerationIterator;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TreeNodeValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.TreeModelAdapter;
 import org.eclipse.jpt.utility.internal.swing.Displayable;
 import org.eclipse.jpt.utility.tests.internal.model.value.swing.TreeModelAdapterTests.SortedTestNode;
@@ -55,7 +55,7 @@ public class TreeModelAdapterUITest {
 
 	// hold the tree so we can restore its expansion state
 	private JTree tree;
-	private PropertyValueModel rootNodeHolder;
+	private WritablePropertyValueModel<TreeNodeValueModel<Object>> rootNodeHolder;
 	private boolean sorted;
 	private TreeModel treeModel;
 	private TreeSelectionModel treeSelectionModel;
@@ -78,8 +78,8 @@ public class TreeModelAdapterUITest {
 		this.openWindow();
 	}
 
-	private PropertyValueModel buildRootNodeHolder() {
-		return new SimplePropertyValueModel(this.buildSortedRootNode());
+	private WritablePropertyValueModel<TreeNodeValueModel<Object>> buildRootNodeHolder() {
+		return new SimplePropertyValueModel<TreeNodeValueModel<Object>>(this.buildSortedRootNode());
 	}
 
 	private TestNode buildSortedRootNode() {
@@ -116,7 +116,7 @@ public class TreeModelAdapterUITest {
 	}
 
 	private TreeModel buildTreeModel() {
-		return new TreeModelAdapter(this.rootNodeHolder);
+		return new TreeModelAdapter<Object>(this.rootNodeHolder);
 	}
 
 	private TreeSelectionModel buildTreeSelectionModel() {
@@ -226,7 +226,7 @@ public class TreeModelAdapterUITest {
 		if (this.treeSelectionModel.isSelectionEmpty()) {
 			return null;
 		}
-		return (TestModel) this.selectedNode().value();
+		return this.selectedNode().value();
 	}
 
 	private TestNode rootNode() {
@@ -234,15 +234,15 @@ public class TreeModelAdapterUITest {
 	}
 
 	private TestModel root() {
-		return (TestModel) this.rootNode().value();
+		return this.rootNode().value();
 	}
 
-	private Collection expandedPaths() {
-		Enumeration stream = this.tree.getExpandedDescendants(new TreePath(this.rootNode()));
+	private Collection<TreePath> expandedPaths() {
+		Enumeration<TreePath> stream = this.tree.getExpandedDescendants(new TreePath(this.rootNode()));
 		if (stream == null) {
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
-		return CollectionTools.list(new EnumerationIterator(stream));
+		return CollectionTools.list(new EnumerationIterator<TreePath>(stream));
 	}
 
 	// ********** behavior **********
@@ -250,9 +250,9 @@ public class TreeModelAdapterUITest {
 		this.treeSelectionModel.setSelectionPath(new TreePath(selectedNode.path()));
 	}
 
-	private void expandPaths(Collection paths) {
-		for (Iterator stream = paths.iterator(); stream.hasNext(); ) {
-			this.tree.expandPath((TreePath) stream.next());
+	private void expandPaths(Collection<TreePath> paths) {
+		for (TreePath path : paths) {
+			this.tree.expandPath(path);
 		}
 	}
 
@@ -280,7 +280,7 @@ public class TreeModelAdapterUITest {
 		if (selectedTestModel != null) {
 			String name = this.getName();
 			// save the expansion state and restore it after the add
-			Collection paths = this.expandedPaths();
+			Collection<TreePath> paths = this.expandedPaths();
 
 			selectedTestModel.addChild(name);
 
@@ -360,7 +360,7 @@ public class TreeModelAdapterUITest {
 			// save the node and re-select it after the rename
 			TestNode selectedNode = this.selectedNode();
 			// save the expansion state and restore it after the rename
-			Collection paths = this.expandedPaths();
+			Collection<TreePath> paths = this.expandedPaths();
 
 			selectedTestModel.setName(this.getName());
 

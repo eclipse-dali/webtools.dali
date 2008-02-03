@@ -30,18 +30,16 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 public interface IJpaRootContentNode extends IJpaContentNode
 {
 	/**
-	 * Returns the value of the '<em><b>Jpa File</b></em>' container reference.
-	 * It is bidirectional and its opposite is '{@link org.eclipse.jpt.core.internal.JpaFile#getContent <em>Content</em>}'.
+	 * Returns the value of the '<em><b>Jpa File</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Jpa File</em>' container reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Jpa File</em>' container reference.
+	 * @return the value of the '<em>Jpa File</em>' reference.
 	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIJpaRootContentNode_JpaFile()
-	 * @see org.eclipse.jpt.core.internal.JpaFile#getContent
-	 * @model opposite="content" transient="false" changeable="false"
+	 * @model changeable="false"
 	 * @generated
 	 */
 	IJpaFile getJpaFile();

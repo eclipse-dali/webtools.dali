@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,14 +33,12 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * This also prevents a filtered iterator from supporting the optional
  * <code>remove()</code> method.
  */
-public class FilteringIterator<E>
-	implements Iterator<E>
+public class FilteringIterator<E1, E2>
+	implements Iterator<E2>
 {
-	private final Iterator<?> nestedIterator;
-	// trust that the filter is correct - i.e. it will only accept elements of type E
-	@SuppressWarnings("unchecked")
-	private final Filter filter;
-	private E next;
+	private final Iterator<? extends E1> nestedIterator;
+	private final Filter<E1> filter;
+	private E2 next;
 	private boolean done;
 
 
@@ -51,15 +49,15 @@ public class FilteringIterator<E>
 	 * <code>accept(Object)</code> method instead of building
 	 * a <code>Filter</code>.
 	 */
-	public FilteringIterator(Iterator<?> nestedIterator) {
-		this(nestedIterator, Filter.Disabled.instance());
+	public FilteringIterator(Iterator<? extends E1> nestedIterator) {
+		this(nestedIterator, Filter.Disabled.<E1>instance());
 	}
 
 	/**
 	 * Construct an iterator with the specified nested
 	 * iterator and filter.
 	 */
-	public FilteringIterator(Iterator<?> nestedIterator, @SuppressWarnings("unchecked") Filter filter) {
+	public FilteringIterator(Iterator<? extends E1> nestedIterator, Filter<E1> filter) {
 		super();
 		this.nestedIterator = nestedIterator;
 		this.filter = filter;
@@ -70,11 +68,11 @@ public class FilteringIterator<E>
 		return ! this.done;
 	}
 
-	public E next() {
+	public E2 next() {
 		if (this.done) {
 			throw new NoSuchElementException();
 		}
-		E result = this.next;
+		E2 result = this.next;
 		this.loadNext();
 		return result;
 	}
@@ -95,10 +93,10 @@ public class FilteringIterator<E>
 	private void loadNext() {
 		this.done = true;
 		while (this.nestedIterator.hasNext() && (this.done)) {
-			Object o = this.nestedIterator.next();
-			if (this.accept(o)) {
+			E1 temp = this.nestedIterator.next();
+			if (this.accept(temp)) {
 				// assume that if the object was accepted it is of type E
-				this.next = this.downcast(o);
+				this.next = this.cast(temp);
 				this.done = false;
 			} else {
 				this.next = null;
@@ -107,9 +105,13 @@ public class FilteringIterator<E>
 		}
 	}
 
+	/**
+	 * We have to assume the filter will only "accept" objects that can
+	 * be cast to E2.
+	 */
 	@SuppressWarnings("unchecked")
-	private E downcast(Object o) {
-		return (E) o;
+	private E2 cast(E1 o) {
+		return (E2) o;
 	}
 
 	/**
@@ -120,8 +122,7 @@ public class FilteringIterator<E>
 	 * This method can be overridden by a subclass as an
 	 * alternative to building a <code>Filter</code>.
 	 */
-	@SuppressWarnings("unchecked")
-	protected boolean accept(Object o) {
+	protected boolean accept(E1 o) {
 		return this.filter.accept(o);
 	}
 

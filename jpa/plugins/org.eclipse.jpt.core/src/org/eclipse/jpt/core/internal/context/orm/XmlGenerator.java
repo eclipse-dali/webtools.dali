@@ -1,0 +1,130 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
+package org.eclipse.jpt.core.internal.context.orm;
+
+import org.eclipse.jpt.core.internal.context.base.IGenerator;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
+import org.eclipse.jpt.core.internal.resource.orm.Generator;
+
+
+public abstract class XmlGenerator<T extends Generator> extends JpaContextNode implements IGenerator
+{
+
+	protected String name;
+
+	protected Integer specifiedInitialValue;
+	protected Integer defaultInitialValue;
+
+	protected Integer specifiedAllocationSize;
+	protected Integer defaultAllocationSize;
+
+	protected T generatorResource;
+
+	protected XmlGenerator(IJpaContextNode parent) {
+		super(parent);
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String newName) {
+		String oldName = this.name;
+		this.name = newName;
+		generatorResource().setName(newName);
+		firePropertyChanged(NAME_PROPERTY, oldName, newName);
+	}
+
+	public Integer getInitialValue() {
+		return (this.getSpecifiedInitialValue() == null) ? this.getDefaultInitialValue() : this.getSpecifiedInitialValue();
+	}
+
+	public Integer getSpecifiedInitialValue() {
+		return this.specifiedInitialValue;
+	}
+
+	public void setSpecifiedInitialValue(Integer newSpecifiedInitialValue) {
+		Integer oldSpecifiedInitialValue = this.specifiedInitialValue;
+		this.specifiedInitialValue = newSpecifiedInitialValue;
+		generatorResource().setInitialValue(newSpecifiedInitialValue);
+		firePropertyChanged(SPECIFIED_INITIAL_VALUE_PROPERTY, oldSpecifiedInitialValue, newSpecifiedInitialValue);
+	}
+	
+	public Integer getDefaultInitialValue() {
+		return this.defaultInitialValue;
+	}
+	
+	protected void setDefaultInitialValue(Integer newDefaultInitialValue) {
+		Integer oldSpecifiedInitialValue = this.defaultInitialValue;
+		this.defaultInitialValue = newDefaultInitialValue;
+		firePropertyChanged(DEFAULT_INITIAL_VALUE_PROPERTY, oldSpecifiedInitialValue, newDefaultInitialValue);
+	}
+	
+	public Integer getAllocationSize() {
+		return (this.getSpecifiedAllocationSize() == null) ? this.getDefaultAllocationSize() : this.getSpecifiedAllocationSize();
+	}
+
+	public Integer getSpecifiedAllocationSize() {
+		return this.specifiedAllocationSize;
+	}
+
+	public void setSpecifiedAllocationSize(Integer newSpecifiedAllocationSize) {
+		Integer oldSpecifiedAllocationSize = this.specifiedAllocationSize;
+		this.specifiedAllocationSize = newSpecifiedAllocationSize;
+		generatorResource().setAllocationSize(newSpecifiedAllocationSize);
+		firePropertyChanged(SPECIFIED_ALLOCATION_SIZE_PROPERTY, oldSpecifiedAllocationSize, newSpecifiedAllocationSize);
+	}
+
+	public Integer getDefaultAllocationSize() {
+		return this.defaultAllocationSize;
+	}
+	
+	protected void setDefaultAllocationSize(Integer newDefaultAllocationSize) {
+		Integer oldSpecifiedAllocationSize = this.defaultAllocationSize;
+		this.defaultAllocationSize = newDefaultAllocationSize;
+		firePropertyChanged(DEFAULT_ALLOCATION_SIZE_PROPERTY, oldSpecifiedAllocationSize, newDefaultAllocationSize);
+	}
+
+	
+	public void initialize(T generatorResource) {
+		this.generatorResource = generatorResource;
+		this.name = this.name(generatorResource);
+		this.specifiedInitialValue = this.specifiedInitialValue(generatorResource);
+		this.specifiedAllocationSize = this.specifiedAllocationSize(generatorResource);
+		//TODO defaults
+	}
+	
+	public void update(T generatorResource) {
+		this.generatorResource = generatorResource;
+		this.setName(this.name(generatorResource));
+		this.setSpecifiedInitialValue(this.specifiedInitialValue(generatorResource));
+		this.setSpecifiedAllocationSize(this.specifiedAllocationSize(generatorResource));
+		//TODO defaults
+	}
+
+	protected T generatorResource() {
+		return this.generatorResource;
+	}
+	
+	protected String name(Generator generatorResource) {
+		return generatorResource.getName();
+	}
+	
+	protected Integer specifiedInitialValue(Generator generatorResource) {
+		return generatorResource.getInitialValue();
+	}
+	
+	protected Integer specifiedAllocationSize(Generator generatorResource) {
+		return generatorResource.getAllocationSize();
+	}
+
+
+}

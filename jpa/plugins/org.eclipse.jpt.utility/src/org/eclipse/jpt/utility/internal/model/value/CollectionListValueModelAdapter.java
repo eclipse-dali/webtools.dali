@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -37,12 +36,12 @@ import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
  * we do not have any listeners. This should not be too painful since,
  * most likely, client objects will also be listeners.
  */
-public class CollectionListValueModelAdapter
+public class CollectionListValueModelAdapter<E>
 	extends AbstractModel
-	implements ListValueModel
+	implements ListValueModel<E>
 {
 	/** The wrapped collection value model. */
-	protected final CollectionValueModel collectionHolder;
+	protected final CollectionValueModel<? extends E> collectionHolder;
 
 	/** A listener that forwards any events fired by the collection holder. */
 	protected final CollectionChangeListener collectionChangeListener;
@@ -52,7 +51,7 @@ public class CollectionListValueModelAdapter
 	 * the wrapped collection, but keeps them in order.
 	 */
 	// we declare this an ArrayList so we can use #clone() and #ensureCapacity(int)
-	protected final ArrayList list;
+	protected final ArrayList<E> list;
 
 
 	// ********** constructors **********
@@ -60,14 +59,14 @@ public class CollectionListValueModelAdapter
 	/**
 	 * Wrap the specified CollectionValueModel.
 	 */
-	public CollectionListValueModelAdapter(CollectionValueModel collectionHolder) {
+	public CollectionListValueModelAdapter(CollectionValueModel<? extends E> collectionHolder) {
 		super();
 		if (collectionHolder == null) {
 			throw new NullPointerException();
 		}
 		this.collectionHolder = collectionHolder;
 		this.collectionChangeListener = this.buildCollectionChangeListener();
-		this.list = new ArrayList();
+		this.list = new ArrayList<E>();
 		// postpone building the list and listening to the underlying collection
 		// until we have listeners ourselves...
 	}
@@ -108,16 +107,15 @@ public class CollectionListValueModelAdapter
 
 	// ********** ListValueModel implementation **********
 
-	public Iterator iterator() {
+	public Iterator<E> iterator() {
 		return this.listIterator();
 	}
 
-	public ListIterator listIterator() {
-		// try to prevent backdoor modification of the list
-		return new ReadOnlyListIterator(this.list);
+	public ListIterator<E> listIterator() {
+		return new ReadOnlyListIterator<E>(this.list);
 	}
 
-	public Object get(int index) {
+	public E get(int index) {
 		return this.list.get(index);
 	}
 
@@ -212,7 +210,7 @@ public class CollectionListValueModelAdapter
 	// ********** behavior **********
 
 	protected void buildList() {
-		Iterator stream = (Iterator) this.collectionHolder.iterator();
+		Iterator<? extends E> stream = this.collectionHolder.iterator();
 		// if the new collection is empty, do nothing
 		if (stream.hasNext()) {
 			this.list.ensureCapacity(this.collectionHolder.size());
@@ -245,17 +243,22 @@ public class CollectionListValueModelAdapter
 	}
 
 	protected void itemsAdded(CollectionChangeEvent e) {
-		this.addItemsToList(this.indexToAddItems(), CollectionTools.list(e.items()), this.list, LIST_VALUES);
+		this.addItemsToList(this.indexToAddItems(), CollectionTools.list(this.items(e)), this.list, LIST_VALUES);
 	}
 	
-    protected int indexToAddItems() {
-        return this.list.size();
-    }
-    
+	protected int indexToAddItems() {
+		return this.list.size();
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Iterator<E> items(CollectionChangeEvent e) {
+		return (Iterator<E>) e.items();
+	}
+
 	protected void itemsRemoved(CollectionChangeEvent e) {
 		// we have to remove the items individually,
 		// since they are probably not in sequence
-		for (Iterator stream = e.items(); stream.hasNext(); ) {
+		for (Iterator<E> stream = this.items(e); stream.hasNext(); ) {
 			this.removeItemFromList(this.lastIdentityIndexOf(stream.next()), this.list, LIST_VALUES);
 		}
 	}
@@ -271,7 +274,8 @@ public class CollectionListValueModelAdapter
 	protected void collectionChanged(CollectionChangeEvent e) {
 		// put in empty check so we don't fire events unnecessarily
 		if ( ! this.list.isEmpty()) {
-			ArrayList removedItems = (ArrayList) this.list.clone();
+			@SuppressWarnings("unchecked")
+			ArrayList<E> removedItems = (ArrayList<E>) this.list.clone();
 			this.list.clear();
 			this.fireItemsRemoved(LIST_VALUES, 0, removedItems);
 		}

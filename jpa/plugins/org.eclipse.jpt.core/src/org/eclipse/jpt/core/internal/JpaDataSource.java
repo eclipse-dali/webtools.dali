@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
@@ -21,67 +18,46 @@ import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Jpa Data Source</b></em>'.
- * <!-- end-user-doc -->
- *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.core.internal.JpaDataSource#getConnectionProfileName <em>Connection Profile Name</em>}</li>
- * </ul>
- * </p>
- *
- * @see org.eclipse.jpt.core.internal.JpaCorePackage#getJpaDataSource()
- * @model kind="class"
- * @generated
+ * 
  */
-public class JpaDataSource extends JpaEObject implements IJpaDataSource
+public class JpaDataSource
+	extends JpaNode
+	implements IJpaDataSource
 {
-	// temporary bridge until we remove EMF stuff
-	private IJpaProject jpaProject;
+	/**
+	 * cache the connection profile name so we can detect when
+	 * it changes and notify listeners
+	 */
+	protected String connectionProfileName;
 
 	/**
-	 * The default value of the '{@link #getConnectionProfileName() <em>Connection Profile Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConnectionProfileName()
-	 * @generated
-	 * @ordered
+	 * this should never be null; if we do not have a connection, this will be
+	 * a "null" connection profile
 	 */
-	protected static final String CONNECTION_PROFILE_NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getConnectionProfileName() <em>Connection Profile Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getConnectionProfileName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String connectionProfileName = CONNECTION_PROFILE_NAME_EDEFAULT;
-	// cache the connection profile name so we can detect when it changes and fire events
-
-	// this should never be null
 	protected transient ConnectionProfile connectionProfile;
 
+	/**
+	 * listen for the connection to be added or removed or its name changed
+	 */
 	protected final ProfileListener profileListener;
 
+	/**
+	 * listen for the connection to be opened or closed
+	 */
 	protected final ConnectionListener connectionListener;
 
+
 	// ********** constructor/initialization **********
-	protected JpaDataSource() {
-		super();
+
+	public JpaDataSource(IJpaProject jpaProject, String connectionProfileName) {
+		super(jpaProject);
+
 		this.profileListener = this.buildProfileListener();
 		ConnectionProfileRepository.instance().addProfileListener(this.profileListener);
-		this.connectionListener = this.buildConnectionListener();
-	}
 
-	protected JpaDataSource(IJpaProject jpaProject, String connectionProfileName) {
-		this();
-		this.jpaProject = jpaProject;
+		this.connectionListener = this.buildConnectionListener();
 		this.connectionProfileName = connectionProfileName;
-		this.connectionProfile = this.profileNamed(connectionProfileName);
+		this.connectionProfile = this.connectionProfileNamed(connectionProfileName);
 		this.connectionProfile.addConnectionListener(this.connectionListener);
 	}
 
@@ -93,163 +69,28 @@ public class JpaDataSource extends JpaEObject implements IJpaDataSource
 		return new LocalConnectionListener();
 	}
 
-	// ********** EMF stuff **********
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EClass eStaticClass() {
-		return JpaCorePackage.Literals.JPA_DATA_SOURCE;
+
+	// ********** IJpaDataSource implementation **********
+
+	public String connectionProfileName() {
+		return this.connectionProfileName;
 	}
 
-	/**
-	 * Returns the value of the '<em><b>Connection Profile Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Connection Profile Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Connection Profile Name</em>' attribute.
-	 * @see #setConnectionProfileName(String)
-	 * @see org.eclipse.jpt.core.internal.JpaCorePackage#getJpaDataSource_ConnectionProfileName()
-	 * @model unique="false" required="true" ordered="false"
-	 * @generated
-	 */
-	public String getConnectionProfileName() {
-		return connectionProfileName;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.internal.JpaDataSource#getConnectionProfileName <em>Connection Profile Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Connection Profile Name</em>' attribute.
-	 * @see #getConnectionProfileName()
-	 * @generated
-	 */
-	public void setConnectionProfileNameGen(String newConnectionProfileName) {
-		String oldConnectionProfileName = connectionProfileName;
-		connectionProfileName = newConnectionProfileName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, JpaCorePackage.JPA_DATA_SOURCE__CONNECTION_PROFILE_NAME, oldConnectionProfileName, connectionProfileName));
-	}
-
-	/**
-	 * set the connection profile when the name changes
-	 */
 	public void setConnectionProfileName(String connectionProfileName) {
-		if (!connectionProfileName.equals(this.connectionProfileName)) {
-			this.setConnectionProfileNameGen(connectionProfileName);
-			this.setConnectionProfile(this.profileNamed(connectionProfileName));
-		}
+		String old = this.connectionProfileName;
+		this.connectionProfileName = connectionProfileName;
+		this.firePropertyChanged(CONNECTION_PROFILE_NAME_PROPERTY, old, connectionProfileName);
+		 // synch the connection profile when the name changes
+		this.setConnectionProfile(this.connectionProfileNamed(connectionProfileName));
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
-	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-		switch (featureID) {
-			case JpaCorePackage.JPA_DATA_SOURCE__CONNECTION_PROFILE_NAME :
-				return getConnectionProfileName();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eSet(int featureID, Object newValue) {
-		switch (featureID) {
-			case JpaCorePackage.JPA_DATA_SOURCE__CONNECTION_PROFILE_NAME :
-				setConnectionProfileName((String) newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eUnset(int featureID) {
-		switch (featureID) {
-			case JpaCorePackage.JPA_DATA_SOURCE__CONNECTION_PROFILE_NAME :
-				setConnectionProfileName(CONNECTION_PROFILE_NAME_EDEFAULT);
-				return;
-		}
-		super.eUnset(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public boolean eIsSet(int featureID) {
-		switch (featureID) {
-			case JpaCorePackage.JPA_DATA_SOURCE__CONNECTION_PROFILE_NAME :
-				return CONNECTION_PROFILE_NAME_EDEFAULT == null ? connectionProfileName != null : !CONNECTION_PROFILE_NAME_EDEFAULT.equals(connectionProfileName);
-		}
-		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy())
-			return super.toString();
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (connectionProfileName: ");
-		result.append(connectionProfileName);
-		result.append(')');
-		return result.toString();
-	}
-
-	// ********** non-EMF stuff **********
-	public IJpaProject getProject() {
-		return this.jpaProject;
-	}
-
-	public ConnectionProfile getConnectionProfile() {
+	public ConnectionProfile connectionProfile() {
 		return this.connectionProfile;
 	}
 
-	private ConnectionProfile profileNamed(String name) {
-		return ConnectionProfileRepository.instance().profileNamed(name);
-	}
-
-	void setConnectionProfile(ConnectionProfile profile) {
-		if (this.connectionProfile != profile) {
-			this.connectionProfile.removeConnectionListener(this.connectionListener);
-			this.connectionProfile = profile;
-			this.connectionProfile.addConnectionListener(this.connectionListener);
-			this.getProject().update();
-		}
-	}
-
-	@Override
-	public boolean isConnected() {
-		return this.connectionProfile.isConnected();
-	}
-
 	public boolean hasAConnection() {
-		return this.connectionProfile.isNull();
+		return ! this.connectionProfile.isNull();
 	}
 
 	public void dispose() {
@@ -257,24 +98,54 @@ public class JpaDataSource extends JpaEObject implements IJpaDataSource
 		ConnectionProfileRepository.instance().removeProfileListener(this.profileListener);
 	}
 
-	// ********** member class **********
+
+	// ********** internal methods **********
+
+	private ConnectionProfile connectionProfileNamed(String name) {
+		return ConnectionProfileRepository.instance().profileNamed(name);
+	}
+
+	protected void setConnectionProfile(ConnectionProfile connectionProfile) {
+		ConnectionProfile old = this.connectionProfile;
+		this.connectionProfile.removeConnectionListener(this.connectionListener);
+		this.connectionProfile = connectionProfile;
+		this.connectionProfile.addConnectionListener(this.connectionListener);
+		this.firePropertyChanged(CONNECTION_PROFILE_PROPERTY, old, connectionProfile);
+	}
+
+
+	// ********** overrides **********
+
+	@Override
+	public boolean isConnected() {
+		return this.connectionProfile.isConnected();
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.connectionProfileName);
+	}
+
+
+	// ********** member classes **********
 
 	/**
 	 * Listen for a connection profile with our name being added or removed.
-	 * Also listen for our connection's name begin changed.
+	 * Also listen for our connection's name being changed.
 	 */
 	protected class LocalProfileListener implements ProfileListener {
-
 		protected LocalProfileListener() {
 			super();
 		}
 
+		// possible name change
 		public void profileChanged(ConnectionProfile profile) {
 			if (profile == JpaDataSource.this.connectionProfile) {
 				JpaDataSource.this.setConnectionProfileName(profile.getName());
 			}
 		}
 
+		// profile added or removed
 		public void profileReplaced(ConnectionProfile oldProfile, ConnectionProfile newProfile) {
 			if (oldProfile == JpaDataSource.this.connectionProfile) {
 				JpaDataSource.this.setConnectionProfile(newProfile);
@@ -282,6 +153,7 @@ public class JpaDataSource extends JpaEObject implements IJpaDataSource
 		}
 
 	}
+
 
 	/**
 	 * Whenever the connection is opened or closed trigger a project update.
@@ -293,7 +165,7 @@ public class JpaDataSource extends JpaEObject implements IJpaDataSource
 		}
 
 		public void opened(ConnectionProfile profile) {
-			JpaDataSource.this.getProject().update();
+			JpaDataSource.this.jpaProject().update();
 		}
 
 		public void aboutToClose(ConnectionProfile profile) {
@@ -305,7 +177,7 @@ public class JpaDataSource extends JpaEObject implements IJpaDataSource
 		}
 
 		public void closed(ConnectionProfile profile) {
-			JpaDataSource.this.getProject().update();
+			JpaDataSource.this.jpaProject().update();
 		}
 
 		public void modified(ConnectionProfile profile) {

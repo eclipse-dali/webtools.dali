@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -41,31 +41,31 @@ public class IndentingPrintWriterTests extends TestCase {
 	}
 
 	public void testIndent() {
-		assertEquals("wrong indent level", 0, this.ipw1.getIndentLevel());
+		assertEquals("wrong indent level", 0, this.ipw1.indentLevel());
 		this.ipw1.indent();
-		assertEquals("wrong indent level", 1, this.ipw1.getIndentLevel());
+		assertEquals("wrong indent level", 1, this.ipw1.indentLevel());
 	}
 
 	public void testUndent() {
-		assertEquals("wrong indent level", 0, this.ipw1.getIndentLevel());
+		assertEquals("wrong indent level", 0, this.ipw1.indentLevel());
 		this.ipw1.indent();
-		assertEquals("wrong indent level", 1, this.ipw1.getIndentLevel());
+		assertEquals("wrong indent level", 1, this.ipw1.indentLevel());
 		this.ipw1.undent();
-		assertEquals("wrong indent level", 0, this.ipw1.getIndentLevel());
+		assertEquals("wrong indent level", 0, this.ipw1.indentLevel());
 	}
 
 	public void testIncrementIndentLevel() {
-		assertEquals("wrong indent level", 0, this.ipw1.getIndentLevel());
+		assertEquals("wrong indent level", 0, this.ipw1.indentLevel());
 		this.ipw1.incrementIndentLevel();
-		assertEquals("wrong indent level", 1, this.ipw1.getIndentLevel());
+		assertEquals("wrong indent level", 1, this.ipw1.indentLevel());
 	}
 
 	public void testDecrementIndentLevel() {
-		assertEquals("wrong indent level", 0, this.ipw1.getIndentLevel());
+		assertEquals("wrong indent level", 0, this.ipw1.indentLevel());
 		this.ipw1.incrementIndentLevel();
-		assertEquals("wrong indent level", 1, this.ipw1.getIndentLevel());
+		assertEquals("wrong indent level", 1, this.ipw1.indentLevel());
 		this.ipw1.decrementIndentLevel();
-		assertEquals("wrong indent level", 0, this.ipw1.getIndentLevel());
+		assertEquals("wrong indent level", 0, this.ipw1.indentLevel());
 	}
 
 	public void testPrintTab() {

@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.jdtutility;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 
 /**
@@ -21,6 +22,10 @@ public abstract class Attribute extends Member {
 
 	Attribute(IMember jdtMember, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
 		super(jdtMember, modifySharedDocumentCommandExecutorProvider);
+	}
+	
+	Attribute(IMember jdtMember, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider, AnnotationEditFormatter annotationEditFormatter) {
+		super(jdtMember, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
 	}
 
 	public boolean isField() {
@@ -32,10 +37,6 @@ public abstract class Attribute extends Member {
 	}
 
 	public abstract String attributeName();
-
-	public boolean typeIs(String fullyQualifiedTypeName, CompilationUnit astRoot) {
-		return fullyQualifiedTypeName.equals(this.resolvedTypeName(astRoot));
-	}
 
 	/**
 	 * Resolve the attribute.
@@ -50,6 +51,18 @@ public abstract class Attribute extends Member {
 		return null;
 	}
 
+	/**
+	 * this will throw a NPE for a top-level type
+	 */
+	TypeDeclaration declaringTypeDeclaration(CompilationUnit astRoot) {
+		//assume no enums or annotation types since they have no field or method declarations
+		return (TypeDeclaration) this.getDeclaringType().bodyDeclaration(astRoot);
+	}
 
+	/**
+	 * Return the ITypeBinding for the attribute's type, not it's declaring type
+	 * @param astRoot
+	 * @return
+	 */
 	public abstract ITypeBinding typeBinding(CompilationUnit astRoot);
 }

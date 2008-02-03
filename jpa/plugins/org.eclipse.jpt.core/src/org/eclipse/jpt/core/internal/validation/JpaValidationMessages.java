@@ -16,28 +16,28 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public class JpaValidationMessages
 	implements IJpaValidationMessages
 {	
-	private static String[] DEFAULT_PARAMS = new String[0];
+	private static String[] DEFAULT_PARMS = new String[0];
 	
 	private static ITextRange DEFAULT_TEXT_RANGE = ITextRange.Empty.instance();
 	
 	public static IMessage buildMessage(
 			int severity, String messageId, Object targetObject) {
-		return buildMessage(severity, messageId, DEFAULT_PARAMS, targetObject);
+		return buildMessage(severity, messageId, DEFAULT_PARMS, targetObject);
 	}
 	
 	public static IMessage buildMessage(
-			int severity, String messageId, String[] params, Object targetObject) {
-		return buildMessage(severity, messageId, params, targetObject, DEFAULT_TEXT_RANGE);
+			int severity, String messageId, String[] parms, Object targetObject) {
+		return buildMessage(severity, messageId, parms, targetObject, DEFAULT_TEXT_RANGE);
 	}
 	
 	public static IMessage buildMessage(
 			int severity, String messageId, Object targetObject, ITextRange textRange) {
-		return buildMessage(severity, messageId, DEFAULT_PARAMS, targetObject, textRange);
+		return buildMessage(severity, messageId, DEFAULT_PARMS, targetObject, textRange);
 	}
 	
 	public static IMessage buildMessage(
-			int severity, String messageId, String[] params, Object targetObject, ITextRange textRange) {
-		IMessage message = new Message(BUNDLE, severity, messageId, params, targetObject);
+			int severity, String messageId, String[] parms, Object targetObject, ITextRange textRange) {
+		IMessage message = new Message(BUNDLE, severity, messageId, parms, targetObject);
 		message.setLineNo(textRange.getLineNumber());
 		message.setOffset(textRange.getOffset());
 		message.setLength(textRange.getLength());

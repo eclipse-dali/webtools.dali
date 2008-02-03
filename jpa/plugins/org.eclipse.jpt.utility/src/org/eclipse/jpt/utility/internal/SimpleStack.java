@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.utility.internal;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.EmptyStackException;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
@@ -33,6 +34,18 @@ public class SimpleStack<E>
 	public SimpleStack() {
 		super();
 		this.elements = new LinkedList<E>();
+	}
+
+	/**
+	 * Construct a stack containing the elements of the specified
+	 * collection. The stack will pop its elements in reverse of the
+	 * order they are returned by the collection's iterator (i.e. the
+	 * last element returned by the collection's iterator will be the
+	 * first element returned by #pop()).
+	 */
+	public SimpleStack(Collection<? extends E> c) {
+		super();
+		this.elements = new LinkedList<E>(c);
 	}
 
 

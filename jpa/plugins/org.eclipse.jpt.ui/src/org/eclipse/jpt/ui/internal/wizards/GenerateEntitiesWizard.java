@@ -53,6 +53,7 @@ public class GenerateEntitiesWizard extends Wizard {
 		this.setWindowTitle( JptUiMessages.GenerateEntitiesWizard_generateEntities);
 	}
 	
+	@Override
 	public void addPages() {
 		super.addPages();
 		this.dbSettingsPage = new DatabaseReconnectWizardPage( this.jpaProject);
@@ -62,6 +63,7 @@ public class GenerateEntitiesWizard extends Wizard {
 		this.generateEntitiesPage.init( this.selection);
 	}
 	
+	@Override
 	public boolean performFinish() {
 		this.packageGeneratorConfig.setPackageFragment( this.buildPackageFragment());
 
@@ -119,8 +121,7 @@ public class GenerateEntitiesWizard extends Wizard {
 	}
 
 	Schema getDefaultSchema() {
-		ConnectionProfile profile = getProjectConnectionProfile();
-		return profile.getDatabase().schemaNamed( profile.getDefaultSchema());
+		return getProjectConnectionProfile().defaultSchema();
 	}
 	
 	public PackageGenerator.Config getPackageGeneratorConfig() {
@@ -139,7 +140,8 @@ public class GenerateEntitiesWizard extends Wizard {
 		return this.synchronizePersistenceXml;
 	}
 	
-    public boolean canFinish() {
+    @Override
+	public boolean canFinish() {
         boolean canFinish = true;
         if ( ! this.generateEntitiesPage.isPageComplete()) {
         	canFinish = false;

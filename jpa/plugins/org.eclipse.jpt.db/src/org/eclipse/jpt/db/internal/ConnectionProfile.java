@@ -114,6 +114,11 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 	
 	public abstract String getUserPassword();
 	
+	/**
+	 * protected, use defaultSchema() : Schema instead
+	 */
+	protected abstract String getDefaultSchemaName();
+	
 	public abstract String getDefaultSchema();
 	
 	public abstract String getInstanceId();
@@ -140,6 +145,13 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 	 */
 	public abstract boolean canWorkOffline();
 
+	/**
+	 * Return the default Schema for this connection.  Can be null.
+	 */
+	public Schema defaultSchema() {
+		return getDatabase().schemaNamed(getDefaultSchemaName());
+	}
+	
 	@Override
 	protected boolean connectionIsOnline() {
 

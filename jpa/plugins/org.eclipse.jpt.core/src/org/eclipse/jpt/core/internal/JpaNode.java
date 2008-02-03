@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,14 +12,17 @@ package org.eclipse.jpt.core.internal;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
-
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.utility.internal.node.Node;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * 
@@ -35,12 +38,20 @@ public abstract class JpaNode
 	protected JpaNode(IJpaNode parent) {
 		super(parent);
 	}
+	
+	
+	// ********** IAdaptable implementation **********
+	
+	@SuppressWarnings("unchecked")
+	public Object getAdapter(Class adapter) {
+		return Platform.getAdapterManager().getAdapter(this, adapter);
+	}
 
 
 	// ********** IJpaNodeModel implementation **********
 
 	public IResource resource() {
-		return this.jpaProject().project();
+		return parent().resource();
 	}
 
 	public IJpaProject jpaProject() {
@@ -64,7 +75,6 @@ public abstract class JpaNode
 		return (IJpaProject) super.root();
 	}
 
-
 	// ********** convenience methods **********
 
 	public Iterator<IJpaNode> jpaChildren() {
@@ -81,7 +91,7 @@ public abstract class JpaNode
 	}
 
 	protected IJpaFactory jpaFactory() {
-		return this.jpaPlatform().getJpaFactory();
+		return this.jpaPlatform().jpaFactory();
 	}
 
 	protected ConnectionProfile connectionProfile() {
@@ -92,52 +102,59 @@ public abstract class JpaNode
 		return this.connectionProfile().getDatabase();
 	}
 
-	protected boolean isConnected() {
+	public boolean isConnected() {
 		return this.connectionProfile().isConnected();
 	}
 
+	// ********** update model **********
 
-	// TODO this stuff should go away when we rework "defaults"
-	// ********** recalculate defaults **********
-
-	private static final HashMap<Class<? extends AbstractNode>, HashSet<String>> nonDefaultAspectNameSets = new HashMap<Class<? extends AbstractNode>, HashSet<String>>();
+	private static final HashMap<Class<? extends AbstractNode>, HashSet<String>> nonUpdateAspectNameSets = new HashMap<Class<? extends AbstractNode>, HashSet<String>>();
 
 	@Override
 	protected void aspectChanged(String aspectName) {
 		super.aspectChanged(aspectName);
-		if (this.aspectAffectsDefaults(aspectName)) {
-			// System.out.println(Thread.currentThread() + " defaults change: " + this + ": " + aspectName);
+		if (this.aspectTriggersUpdate(aspectName)) {
+			// System.out.println(Thread.currentThread() + " \"update\" change: " + this + ": " + aspectName);
 			this.jpaProject().update();
 		}
 	}
 
-	private boolean aspectAffectsDefaults(String aspectName) {
-		return ! this.aspectDoesNotAffectDefaults(aspectName);
+	private boolean aspectTriggersUpdate(String aspectName) {
+		return ! this.aspectDoesNotTriggerUpdate(aspectName);
 	}
 
-	private boolean aspectDoesNotAffectDefaults(String aspectName) {
-		return this.nonDefaultAspectNames().contains(aspectName);
+	private boolean aspectDoesNotTriggerUpdate(String aspectName) {
+		return this.nonUpdateAspectNames().contains(aspectName);
 	}
 
-	protected final Set<String> nonDefaultAspectNames() {
-		synchronized (nonDefaultAspectNameSets) {
-			HashSet<String> nonDefaultAspectNames = nonDefaultAspectNameSets.get(this.getClass());
-			if (nonDefaultAspectNames == null) {
-				nonDefaultAspectNames = new HashSet<String>();
-				this.addNonDefaultAspectNamesTo(nonDefaultAspectNames);
-				nonDefaultAspectNameSets.put(this.getClass(), nonDefaultAspectNames);
+	protected final Set<String> nonUpdateAspectNames() {
+		synchronized (nonUpdateAspectNameSets) {
+			HashSet<String> nonUpdateAspectNames = nonUpdateAspectNameSets.get(this.getClass());
+			if (nonUpdateAspectNames == null) {
+				nonUpdateAspectNames = new HashSet<String>();
+				this.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
+				nonUpdateAspectNameSets.put(this.getClass(), nonUpdateAspectNames);
 			}
-			return nonDefaultAspectNames;
+			return nonUpdateAspectNames;
 		}
 	}
 
-	protected void addNonDefaultAspectNamesTo(Set<String> nonDefaultAspectNames) {
-		nonDefaultAspectNames.add(COMMENT_PROPERTY);
-		nonDefaultAspectNames.add(DIRTY_BRANCH_PROPERTY);
-		nonDefaultAspectNames.add(BRANCH_PROBLEMS_LIST);
-		nonDefaultAspectNames.add(HAS_BRANCH_PROBLEMS_PROPERTY);
+	protected void addNonUpdateAspectNamesTo(Set<String> nonUpdateAspectNames) {
+		nonUpdateAspectNames.add(COMMENT_PROPERTY);
+		nonUpdateAspectNames.add(DIRTY_BRANCH_PROPERTY);
+		nonUpdateAspectNames.add(BRANCH_PROBLEMS_LIST);
+		nonUpdateAspectNames.add(HAS_BRANCH_PROBLEMS_PROPERTY);
 	// when you override this method, don't forget to include:
-	//	super.addNonDefaultAspectNamesTo(nonDefaultAspectNames);
+	//	super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
+	}
+	
+	// ********** validation **********
+	
+	/**
+	 * All subclass implementations {@link #addToMessages(List<IMessage>)} 
+	 * should be preceded by a "super" call to this method
+	 */
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 	}
 
 }

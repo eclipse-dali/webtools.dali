@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.actions;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.IPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.ui.IActionFilter;
 
 public class PersistentAttributeActionFilter 

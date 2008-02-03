@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -40,14 +40,15 @@ import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
  * changes. The event will cause this wrapper to re-filter the changed
  * item and add or remove it from the "filtered" collection as appropriate.
  */
-public class FilteringCollectionValueModel
-	extends CollectionValueModelWrapper
+public class FilteringCollectionValueModel<E>
+	extends CollectionValueModelWrapper<E>
+	implements CollectionValueModel<E>
 {
 	/** This filters the items in the nested collection. */
-	private Filter filter;
+	private Filter<E> filter;
 
 	/** Cache the items that were accepted by the filter */
-	private final Collection filteredItems;
+	private final Collection<E> filteredItems;
 
 
 	// ********** constructors **********
@@ -56,41 +57,41 @@ public class FilteringCollectionValueModel
 	 * Construct a collection value model with the specified wrapped
 	 * collection value model and a filter that simply accepts every object.
 	 */
-	public FilteringCollectionValueModel(CollectionValueModel collectionHolder) {
-		this(collectionHolder, Filter.Null.instance());
+	public FilteringCollectionValueModel(CollectionValueModel<? extends E> collectionHolder) {
+		this(collectionHolder, Filter.Null.<E>instance());
 	}
 
 	/**
 	 * Construct a collection value model with the specified wrapped
 	 * collection value model and filter.
 	 */
-	public FilteringCollectionValueModel(CollectionValueModel collectionHolder, Filter filter) {
+	public FilteringCollectionValueModel(CollectionValueModel<? extends E> collectionHolder, Filter<E> filter) {
 		super(collectionHolder);
 		this.filter = filter;
-		this.filteredItems = new ArrayList();
+		this.filteredItems = new ArrayList<E>();
 	}
 
 	/**
 	 * Construct a collection value model with the specified wrapped
 	 * list value model and a filter that simply accepts every object.
 	 */
-	public FilteringCollectionValueModel(ListValueModel listHolder) {
-		this(new ListCollectionValueModelAdapter(listHolder));
+	public FilteringCollectionValueModel(ListValueModel<E> listHolder) {
+		this(new ListCollectionValueModelAdapter<E>(listHolder));
 	}
 
 	/**
 	 * Construct a collection value model with the specified wrapped
 	 * list value model and filter.
 	 */
-	public FilteringCollectionValueModel(ListValueModel listHolder, Filter filter) {
-		this(new ListCollectionValueModelAdapter(listHolder), filter);
+	public FilteringCollectionValueModel(ListValueModel<E> listHolder, Filter<E> filter) {
+		this(new ListCollectionValueModelAdapter<E>(listHolder), filter);
 	}
 
 
 	// ********** CollectionValueModel implementation **********
 
-	public Iterator iterator() {
-		return new ReadOnlyIterator(this.filteredItems);
+	public Iterator<E> iterator() {
+		return new ReadOnlyIterator<E>(this.filteredItems);
 	}
 
 	public int size() {
@@ -118,7 +119,7 @@ public class FilteringCollectionValueModel
 	@Override
 	protected void itemsAdded(CollectionChangeEvent e) {
 		// filter the values before propagating the change event
-		this.addItemsToCollection(this.filter(e.items()), this.filteredItems, VALUES);
+		this.addItemsToCollection(this.filter(this.items(e)), this.filteredItems, VALUES);
 	}
 
 	@Override
@@ -145,7 +146,7 @@ public class FilteringCollectionValueModel
 	/**
 	 * Change the filter and rebuild the collection.
 	 */
-	public void setFilter(Filter filter) {
+	public void setFilter(Filter<E> filter) {
 		this.filter = filter;
 		this.rebuildFilteredItems();
 	}
@@ -153,8 +154,8 @@ public class FilteringCollectionValueModel
 	/**
 	 * Return an iterator that filters the specified iterator.
 	 */
-	protected Iterator filter(Iterator items) {
-		return new FilteringIterator(items, this.filter);
+	protected Iterator<E> filter(Iterator<? extends E> items) {
+		return new FilteringIterator<E, E>(items, this.filter);
 	}
 
 	/**

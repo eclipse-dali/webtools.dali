@@ -19,8 +19,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
 
 /**
  * This javax.swing.ButtonModel can be used to keep a listener
@@ -37,7 +37,7 @@ public class ToggleButtonModelAdapter
 	protected final boolean defaultValue;
 
 	/** A value model on the underlying model boolean. */
-	protected final PropertyValueModel booleanHolder;
+	protected final WritablePropertyValueModel<Boolean> booleanHolder;
 
 	/**
 	 * A listener that allows us to synchronize with
@@ -51,7 +51,7 @@ public class ToggleButtonModelAdapter
 	/**
 	 * Constructor - the boolean holder is required.
 	 */
-	public ToggleButtonModelAdapter(PropertyValueModel booleanHolder, boolean defaultValue) {
+	public ToggleButtonModelAdapter(WritablePropertyValueModel<Boolean> booleanHolder, boolean defaultValue) {
 		super();
 		if (booleanHolder == null) {
 			throw new NullPointerException();
@@ -67,7 +67,7 @@ public class ToggleButtonModelAdapter
 	 * Constructor - the boolean holder is required.
 	 * The default value will be false.
 	 */
-	public ToggleButtonModelAdapter(PropertyValueModel booleanHolder) {
+	public ToggleButtonModelAdapter(WritablePropertyValueModel<Boolean> booleanHolder) {
 		this(booleanHolder, false);
 	}
 
@@ -180,7 +180,7 @@ public class ToggleButtonModelAdapter
 		return this.listenerList.getListenerCount() == 0;
 	}
 
-	protected boolean getDefaultValue() {
+	protected boolean defaultValue() {
 		return this.defaultValue;
 	}
 
@@ -193,7 +193,7 @@ public class ToggleButtonModelAdapter
 	 */
 	protected void setSelected(Boolean value) {
 		if (value == null) {
-			this.setSelected(this.getDefaultValue());
+			this.setSelected(this.defaultValue());
 		} else {
 			this.setSelected(value.booleanValue());
 		}
@@ -207,12 +207,12 @@ public class ToggleButtonModelAdapter
 	}
 
 	protected void engageModel() {
-		this.booleanHolder.addPropertyChangeListener(ValueModel.VALUE, this.booleanChangeListener);
-		this.setSelected((Boolean) this.booleanHolder.value());
+		this.booleanHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.booleanChangeListener);
+		this.setSelected(this.booleanHolder.value());
 	}
 
 	protected void disengageModel() {
-		this.booleanHolder.removePropertyChangeListener(ValueModel.VALUE, this.booleanChangeListener);
+		this.booleanHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.booleanChangeListener);
 	}
 
 

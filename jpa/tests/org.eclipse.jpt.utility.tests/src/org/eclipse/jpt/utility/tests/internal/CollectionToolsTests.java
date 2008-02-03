@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -277,6 +277,14 @@ public class CollectionToolsTests extends TestCase {
 		assertEquals(7, a.length);
 		assertTrue(CollectionTools.contains(a, "X"));
 		assertTrue(Arrays.equals(new Object[] { "a", "b", "X", "X", "X", "c", "d" }, a));
+	}
+
+	public void testAddAllObjectArrayIntObjectArray4() {
+		Object[] a = new Object[] { "a", "b", "c", "d" };
+		a = CollectionTools.addAll(a, 4, new String[] { "X", "X", "X" });
+		assertEquals(7, a.length);
+		assertTrue(CollectionTools.contains(a, "X"));
+		assertTrue(Arrays.equals(new Object[] { "a", "b", "c", "d", "X", "X", "X" }, a));
 	}
 
 	public void testAddAllCharArrayCharArray() {
@@ -1259,9 +1267,9 @@ public class CollectionToolsTests extends TestCase {
 		
 		boolean exceptionThrown = false;
 		try {
-			emptyIterable.iterator();
-		}
-		catch (IllegalStateException ise) {
+			emptyIterator = emptyIterable.iterator();
+			fail("invalid iterator: " + emptyIterator);
+		} catch (IllegalStateException ise) {
 			exceptionThrown = true;
 		}
 		assertTrue("IllegalStateException not thrown.", exceptionThrown);
@@ -1933,16 +1941,34 @@ public class CollectionToolsTests extends TestCase {
 		assertTrue(Arrays.equals(new String[] { "A", "B", "A", "D" }, a));
 	}
 
+	public void testRemoveElementsAtIndexObjectArrayIntIntEmpty() {
+		String[] a = new String[] { "A", "B", "A", "C", "A", "D" };
+		a = CollectionTools.removeElementsAtIndex(a, 0, 6);
+		assertEquals(0, a.length);
+	}
+
 	public void testRemoveElementsAtIndexCharArrayIntInt() {
 		char[] a = new char[] { 'A', 'B', 'A', 'C', 'A', 'D' };
 		a = CollectionTools.removeElementsAtIndex(a, 0, 5);
 		assertTrue(Arrays.equals(new char[] { 'D' }, a));
 	}
 
+	public void testRemoveElementsAtIndexCharArrayIntIntEmpty() {
+		char[] a = new char[] { 'A', 'B', 'A', 'C', 'A', 'D' };
+		a = CollectionTools.removeElementsAtIndex(a, 0, 6);
+		assertEquals(0, a.length);
+	}
+
 	public void testRemoveElementsAtIndexIntArrayIntInt() {
 		int[] a = new int[] { 8, 6, 7, 33, 2, 11 };
-		a = CollectionTools.removeElementAtIndex(a, 3);
-		assertTrue(Arrays.equals(new int[] { 8, 6, 7, 2, 11 }, a));
+		a = CollectionTools.removeElementsAtIndex(a, 3, 3);
+		assertTrue(Arrays.equals(new int[] { 8, 6, 7 }, a));
+	}
+
+	public void testRemoveElementsAtIndexIntArrayIntIntEmpty() {
+		int[] a = new int[] { 8, 6, 7, 33, 2, 11 };
+		a = CollectionTools.removeElementsAtIndex(a, 0, 6);
+		assertEquals(0, a.length);
 	}
 
 	public void testReplaceAllObjectArray1() {

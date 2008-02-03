@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,16 +14,16 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.NumberSpinnerModelAdapter;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class NumberSpinnerModelAdapterTests extends TestCase {
-	private PropertyValueModel valueHolder;
+	private WritablePropertyValueModel<Number> valueHolder;
 	private SpinnerModel spinnerModelAdapter;
 	boolean eventFired;
 
@@ -34,7 +34,7 @@ public class NumberSpinnerModelAdapterTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.valueHolder = new SimplePropertyValueModel(new Integer(0));
+		this.valueHolder = new SimplePropertyValueModel<Number>(new Integer(0));
 		this.spinnerModelAdapter = new NumberSpinnerModelAdapter(this.valueHolder, -33, 33, 1) {
 			@Override
 			protected PropertyChangeListener buildNumberChangeListener() {
@@ -91,17 +91,17 @@ public class NumberSpinnerModelAdapterTests extends TestCase {
 	}
 
 	public void testHasListeners() throws Exception {
-		SimplePropertyValueModel localValueHolder = (SimplePropertyValueModel) this.valueHolder;
-		assertFalse(localValueHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		SimplePropertyValueModel<Number> localValueHolder = (SimplePropertyValueModel<Number>) this.valueHolder;
+		assertFalse(localValueHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.spinnerModelAdapter);
 
 		ChangeListener listener = new TestChangeListener();
 		this.spinnerModelAdapter.addChangeListener(listener);
-		assertTrue(localValueHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(localValueHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasListeners(this.spinnerModelAdapter);
 
 		this.spinnerModelAdapter.removeChangeListener(listener);
-		assertFalse(localValueHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertFalse(localValueHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.spinnerModelAdapter);
 	}
 
@@ -114,7 +114,7 @@ public class NumberSpinnerModelAdapterTests extends TestCase {
 	}
 
 	public void testNullInitialValue() {
-		this.valueHolder = new SimplePropertyValueModel();
+		this.valueHolder = new SimplePropertyValueModel<Number>();
 		this.spinnerModelAdapter = new NumberSpinnerModelAdapter(this.valueHolder, new Integer(-33), new Integer(33), new Integer(1), new Integer(0)) {
 			@Override
 			protected PropertyChangeListener buildNumberChangeListener() {

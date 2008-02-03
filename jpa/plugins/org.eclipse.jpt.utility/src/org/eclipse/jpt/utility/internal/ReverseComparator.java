@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,7 +30,6 @@ public class ReverseComparator<E extends Comparable<? super E>>
 		this.comparator = comparator;
 	}
 
-	@SuppressWarnings("unchecked")
 	public int compare(E e1, E e2) {
 		return (this.comparator == null) ?
 			e2.compareTo(e1)

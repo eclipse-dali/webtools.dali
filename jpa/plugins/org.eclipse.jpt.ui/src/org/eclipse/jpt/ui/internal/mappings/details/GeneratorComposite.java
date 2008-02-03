@@ -3,149 +3,222 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.emf.common.command.CommandStack;
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jpt.core.internal.mappings.IGenerator;
-import org.eclipse.jpt.core.internal.mappings.IId;
-import org.eclipse.jpt.core.internal.mappings.JpaCoreMappingsPackage;
-import org.eclipse.jpt.ui.internal.details.BaseJpaComposite;
-import org.eclipse.swt.SWT;
+import org.eclipse.jpt.core.internal.context.base.IGenerator;
+import org.eclipse.jpt.core.internal.context.base.IIdMapping;
+import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
- * GeneratorComposite
+ * This is the generic pane for a generator.
+ *
+ * @see IIdMapping
+ * @see IGenerator
+ * @see SequenceGeneratorComposite - A sub-pane
+ * @see TalbeGeneratorComposite - A sub-pane
+ *
+ * @version 2.0
+ * @since 1.0
  */
-public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaComposite
+@SuppressWarnings("nls")
+public abstract class GeneratorComposite<T extends IGenerator> extends AbstractFormPane<IIdMapping>
 {
-	private IId id;
-	private E generator;
-	private Adapter generatorListener;
+	private PropertyChangeListener generatorChangeListener;
+	private PropertyValueModel<T> generatorHolder;
+	private PropertyChangeListener namePropertyChangeListener;
+	private Text nameText;
 
-	protected Text nameTextWidget;
+	/**
+	 * Creates a new <code>GeneratorComposite</code>.
+	 *
+	 * @param parentPane The parent container of this one
+	 * @param parent The parent container
+	 */
+	public GeneratorComposite(AbstractFormPane<? extends IIdMapping> parentPane,
+                             Composite parent) {
 
-	public GeneratorComposite(Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, SWT.NULL, commandStack, widgetFactory);
-		this.generatorListener = buildGeneratorListner();
+		super(parentPane, parent);
 	}
-	
-	private Adapter buildGeneratorListner() {
-		return new AdapterImpl() {
-			public void notifyChanged(Notification notification) {
-				generatorChanged(notification);
+
+	/**
+	 * Creates the new <code>IGenerator</code>.
+	 *
+	 * @return The newly created <code>IGenerator</code>
+	 */
+	protected abstract T buildGenerator();
+
+	private PropertyChangeListener buildGeneratorChangeListener() {
+		return new SWTPropertyChangeListenerWrapper(this.buildGeneratorChangeListener_());
+	}
+
+	@SuppressWarnings("unchecked")
+	private PropertyChangeListener buildGeneratorChangeListener_() {
+		return new PropertyChangeListener() {
+			public void propertyChanged(PropertyChangeEvent e) {
+
+				GeneratorComposite.this.uninstallListeners((T) e.oldValue());
+
+				if (!isPopulating()) {
+					GeneratorComposite.this.repopulate();
+				}
+
+				GeneratorComposite.this.installListeners((T) e.newValue());
+			}
+		};
+	}
+
+	private PropertyValueModel<T> buildGeneratorHolder() {
+		return new PropertyAspectAdapter<IIdMapping, T>(getSubjectHolder(), propertyName()) {
+			@Override
+			protected T buildValue_() {
+				return GeneratorComposite.this.getGenerator(subject);
+			}
+		};
+	}
+
+	private ModifyListener buildGeneratorNameModifyListener() {
+		return new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				if (!isPopulating()) {
+					String name = ((Text) e.getSource()).getText();
+					updateGeneratorName(name);
+				}
+			}
+		};
+	}
+
+	private PropertyChangeListener buildNamePropertyChangeListener() {
+		return new SWTPropertyChangeListenerWrapper(buildNamePropertyChangeListener_());
+	}
+
+	private PropertyChangeListener buildNamePropertyChangeListener_() {
+		return new PropertyChangeListener() {
+			public void propertyChanged(PropertyChangeEvent e) {
+				if (isPopulating()) {
+					return;
+				}
+
+				GeneratorComposite.this.setPopulating(true);
+				try {
+					GeneratorComposite.this.populateNameViewer();
+				}
+				finally {
+					GeneratorComposite.this.setPopulating(false);
+				}
 			}
 		};
 	}
 
 	/**
 	 * Builds the Generator specifiedName viewer.
-	 * 
+	 *
 	 * @param parent
 	 * @return
 	 */
-	protected Text buildNameText(Composite parent) {
-		final Text text = getWidgetFactory().createText(parent, null);
-		text.addModifyListener(new ModifyListener() {
-			public void modifyText(org.eclipse.swt.events.ModifyEvent e) {
-				if (isPopulating()) {
-					return;
-				}
-				
-				String name = text.getText();
-				if (name.equals("")) { //$NON-NLS-1$
-					if (getGenerator().getName() == null) {
-						return;
-					}
-					name = null;
-				}
-				IGenerator generator = getGenerator();
-				if (generator == null) {
-					generator = createGenerator();
-				}
-				generator.setName(name);
-			}
-		});
+	protected final Text buildNameText(Composite parent) {
+		Text text = this.buildText(parent);
+		text.addModifyListener(this.buildGeneratorNameModifyListener());
 		return text;
 	}
 
-	protected abstract E createGenerator();
-
-	@Override
-	protected void doPopulate(EObject obj) {
-		this.id = (IId) obj;
-		if (this.id  == null) {
-			this.generator = null;
-			return;
-		}
-		this.generator = generator(this.id);
-		if (this.generator == null) {
-			clear();
-			return;
-		}
-		populateNameViewer();
-		return;
+	protected void clearNameViewer() {
+		this.nameText.setText("");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void disengageListeners() {
+		super.disengageListeners();
+
+		this.generatorHolder.removePropertyChangeListener(
+			PropertyValueModel.VALUE,
+			this.generatorChangeListener
+		);
+
+		this.uninstallListeners(this.getGenerator(this.subject()));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void doPopulate() {
-		populateNameViewer();
+		super.doPopulate();
+		this.populateNameViewer();
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
 	protected void engageListeners() {
-		if (this.generator != null) {
-			this.generator.eAdapters().add(this.generatorListener);
-		}
+		super.engageListeners();
+
+		this.generatorHolder.addPropertyChangeListener(
+			PropertyValueModel.VALUE,
+			this.generatorChangeListener
+		);
+
+		this.installListeners(this.getGenerator(this.subject()));
 	}
 
-	protected void disengageListeners() {
-		if (this.generator != null) {
-			this.generator.eAdapters().remove(this.generatorListener);
-		}
+	/**
+	 * Retrieves without creating the <code>IGenerator</code> from the subject.
+	 *
+	 * @param subject The subject used to retrieve the generator
+	 * @return The <code>IGenerator</code> or <code>null</code> if it doesn't
+	 * exists
+	 */
+	protected abstract T getGenerator(IIdMapping subject);
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void initialize() {
+		super.initialize();
+
+		this.generatorHolder            = buildGeneratorHolder();
+		this.generatorChangeListener    = buildGeneratorChangeListener();
+		this.namePropertyChangeListener = buildNamePropertyChangeListener();
 	}
 
-	protected abstract E generator(IId id);
-	
-	protected IId idMapping() {
-		return this.id;
-	}
-
-	protected void generatorChanged(Notification notification) {
-		if (notification.getFeatureID(IGenerator.class) == JpaCoreMappingsPackage.IGENERATOR__NAME) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
-					if (getControl().isDisposed()) {
-						return;
-					}
-					if (nameTextWidget.getText() == null || !nameTextWidget.getText().equals(getGenerator().getName())) {
-						if (getGenerator().getName() == null) {
-							clearNameViewer();
-						}
-						else {
-							nameTextWidget.setText(getGenerator().getName());
-						}
-					}
-				}
-			});
+	protected void installListeners(T generator) {
+		if (generator != null) {
+			generator.addPropertyChangeListener(IGenerator.NAME_PROPERTY, this.namePropertyChangeListener);
 		}
 	}
 
 	private void populateNameViewer() {
-		String name = this.getGenerator().getName();
-		if (name != null) {
-			if (!this.nameTextWidget.getText().equals(name)) {
-				this.nameTextWidget.setText(name);
+		IGenerator generator = this.getGenerator(this.subject());
+
+		if (generator != null) {
+			String name = generator.getName();
+
+			if (name != null) {
+				if (!this.nameText.getText().equals(name)) {
+					this.nameText.setText(name);
+					this.nameText.setSelection(0, 0);
+				}
+			}
+			else {
+				this.clearNameViewer();
 			}
 		}
 		else {
@@ -153,15 +226,48 @@ public abstract class GeneratorComposite<E extends IGenerator> extends BaseJpaCo
 		}
 	}
 
-	protected E getGenerator() {
-		return this.generator;
+	/**
+	 * Returns the property name used to listen to the ID mapping when the
+	 * generator changes.
+	 *
+	 * @return The property name associated with the generator
+	 */
+	protected abstract String propertyName();
+
+	protected final void setNameText(Text nameText) {
+		this.nameText = nameText;
 	}
 
-	protected void clear() {
-		this.clearNameViewer();
+	protected void uninstallListeners(T generator) {
+		if (generator != null) {
+			generator.removePropertyChangeListener(IGenerator.NAME_PROPERTY, this.namePropertyChangeListener);
+		}
 	}
 
-	protected void clearNameViewer() {
-		this.nameTextWidget.setText(""); //$NON-NLS-1$
+	private void updateGeneratorName(String name) {
+
+		if (StringTools.stringIsEmpty(name)) {
+
+			if (getGenerator(subject()).getName() == null) {
+				return;
+			}
+
+			name = null;
+		}
+
+		IGenerator generator = getGenerator(subject());
+
+		if (generator == null) {
+			setPopulating(true);
+
+			try {
+				generator = buildGenerator();
+			}
+			finally {
+				setPopulating(false);
+			}
+		}
+
+		generator.setName(name);
 	}
 }

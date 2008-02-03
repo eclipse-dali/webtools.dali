@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,8 +17,8 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
 
 /**
  * This javax.swing.ComboBoxModel can be used to keep a ListDataListener
@@ -43,7 +43,7 @@ public class ComboBoxModelAdapter
 	extends ListModelAdapter
 	implements ComboBoxModel
 {
-	protected final PropertyValueModel selectionHolder;
+	protected final WritablePropertyValueModel<Object> selectionHolder;
 	protected final PropertyChangeListener selectionListener;
 
 
@@ -52,7 +52,7 @@ public class ComboBoxModelAdapter
 	/**
 	 * Constructor - the list holder and selection holder are required;
 	 */
-	public ComboBoxModelAdapter(ListValueModel listHolder, PropertyValueModel selectionHolder) {
+	public ComboBoxModelAdapter(ListValueModel<?> listHolder, WritablePropertyValueModel<Object> selectionHolder) {
 		super(listHolder);
 		if (selectionHolder == null) {
 			throw new NullPointerException();
@@ -64,7 +64,7 @@ public class ComboBoxModelAdapter
 	/**
 	 * Constructor - the collection holder and selection holder are required;
 	 */
-	public ComboBoxModelAdapter(CollectionValueModel collectionHolder, PropertyValueModel selectionHolder) {
+	public ComboBoxModelAdapter(CollectionValueModel<?> collectionHolder, WritablePropertyValueModel<Object> selectionHolder) {
 		super(collectionHolder);
 		if (selectionHolder == null) {
 			throw new NullPointerException();
@@ -113,7 +113,7 @@ public class ComboBoxModelAdapter
 	@Override
 	protected void engageModel() {
 		super.engageModel();
-		this.selectionHolder.addPropertyChangeListener(ValueModel.VALUE, this.selectionListener);
+		this.selectionHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.selectionListener);
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class ComboBoxModelAdapter
 	 */
 	@Override
 	protected void disengageModel() {
-		this.selectionHolder.removePropertyChangeListener(ValueModel.VALUE, this.selectionListener);
+		this.selectionHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.selectionListener);
 		super.disengageModel();
 	}
 

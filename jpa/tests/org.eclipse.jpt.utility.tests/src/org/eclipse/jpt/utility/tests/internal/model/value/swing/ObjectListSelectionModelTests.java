@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -56,22 +56,22 @@ public class ObjectListSelectionModelTests extends TestCase {
 	public void testListDataListener() {
 		this.selectionModel.addListSelectionListener(this.buildListSelectionListener());
 		this.selectionModel.setSelectionInterval(0, 0);
-		assertEquals("foo", this.selectionModel.getSelectedValue());
+		assertEquals("foo", this.selectionModel.selectedValue());
 		this.listModel.set(0, "jar");
-		assertEquals("jar", this.selectionModel.getSelectedValue());
+		assertEquals("jar", this.selectionModel.selectedValue());
 	}
 
 	public void testGetSelectedValue() {
 		this.selectionModel.setSelectionInterval(0, 0);
-		assertEquals("foo", this.selectionModel.getSelectedValue());
+		assertEquals("foo", this.selectionModel.selectedValue());
 	}
 
 	public void testGetSelectedValues() {
 		this.selectionModel.setSelectionInterval(0, 0);
 		this.selectionModel.addSelectionInterval(2, 2);
-		assertEquals(2, this.selectionModel.getSelectedValues().length);
-		assertTrue(CollectionTools.contains(this.selectionModel.getSelectedValues(), "foo"));
-		assertTrue(CollectionTools.contains(this.selectionModel.getSelectedValues(), "baz"));
+		assertEquals(2, this.selectionModel.selectedValues().length);
+		assertTrue(CollectionTools.contains(this.selectionModel.selectedValues(), "foo"));
+		assertTrue(CollectionTools.contains(this.selectionModel.selectedValues(), "baz"));
 	}
 
 	public void testSetSelectedValue() {

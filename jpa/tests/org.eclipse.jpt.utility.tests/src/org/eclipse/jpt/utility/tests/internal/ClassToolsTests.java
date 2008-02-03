@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -93,7 +93,7 @@ public class ClassToolsTests extends TestCase {
 		Vector<?> v = ClassTools.newInstance(java.util.Vector.class, int.class, new Integer(initialCapacity));
 		assertNotNull(v);
 		assertEquals(0, v.size());
-		Object[] elementData = (Object[]) ClassTools.getFieldValue(v, "elementData");
+		Object[] elementData = (Object[]) ClassTools.fieldValue(v, "elementData");
 		assertEquals(initialCapacity, elementData.length);
 	}
 
@@ -106,7 +106,7 @@ public class ClassToolsTests extends TestCase {
 		Vector<?> v = ClassTools.newInstance(java.util.Vector.class, parmTypes, parms);
 		assertNotNull(v);
 		assertEquals(0, v.size());
-		Object[] elementData = (Object[]) ClassTools.getFieldValue(v, "elementData");
+		Object[] elementData = (Object[]) ClassTools.fieldValue(v, "elementData");
 		assertEquals(initialCapacity, elementData.length);
 
 		parms[0] = new Integer(-1);
@@ -129,14 +129,14 @@ public class ClassToolsTests extends TestCase {
 		assertTrue("NoSuchMethodException not thrown", exCaught);
 	}
 
-	public void testGetFieldValue() {
+	public void testFieldValue() {
 		int initialCapacity = 200;
 		Vector<?> v = new Vector<Object>(initialCapacity);
-		Object[] elementData = (Object[]) ClassTools.getFieldValue(v, "elementData");
+		Object[] elementData = (Object[]) ClassTools.fieldValue(v, "elementData");
 		assertEquals(initialCapacity, elementData.length);
 
 		// test inherited field
-		Integer modCountInteger = (Integer) ClassTools.getFieldValue(v, "modCount");
+		Integer modCountInteger = (Integer) ClassTools.fieldValue(v, "modCount");
 		int modCount = modCountInteger.intValue();
 		assertEquals(0, modCount);
 
@@ -493,7 +493,68 @@ public class ClassToolsTests extends TestCase {
 		assertEquals('B', ClassTools.codeForClassNamed("byte"));
 	}
 
-	public void testClassForTypeDeclaration() throws Exception {
+	public void testClassIsPrimitiveWrapperClass() {
+		assertTrue(ClassTools.classIsPrimitiveWrapperClass(java.lang.Void.class));
+		assertTrue(ClassTools.classIsPrimitiveWrapperClass(java.lang.Boolean.class));
+		assertTrue(ClassTools.classIsPrimitiveWrapperClass(java.lang.Integer.class));
+		assertTrue(ClassTools.classIsPrimitiveWrapperClass(java.lang.Float.class));
+
+		assertFalse(ClassTools.classIsPrimitiveWrapperClass(java.lang.String.class));
+		assertFalse(ClassTools.classIsPrimitiveWrapperClass(void.class));
+		assertFalse(ClassTools.classIsPrimitiveWrapperClass(int.class));
+	}
+
+	public void testClassIsVariablePrimitiveWrapperClass() {
+		assertFalse(ClassTools.classIsVariablePrimitiveWrapperClass(java.lang.Void.class));
+
+		assertTrue(ClassTools.classIsVariablePrimitiveWrapperClass(java.lang.Boolean.class));
+		assertTrue(ClassTools.classIsVariablePrimitiveWrapperClass(java.lang.Integer.class));
+		assertTrue(ClassTools.classIsVariablePrimitiveWrapperClass(java.lang.Float.class));
+
+		assertFalse(ClassTools.classIsVariablePrimitiveWrapperClass(java.lang.String.class));
+		assertFalse(ClassTools.classIsVariablePrimitiveWrapperClass(void.class));
+		assertFalse(ClassTools.classIsVariablePrimitiveWrapperClass(int.class));
+	}
+
+	public void testClassNamedIsPrimitive() {
+		assertTrue(void.class.isPrimitive());
+
+		assertTrue(ClassTools.classNamedIsPrimitive(void.class.getName()));
+		assertTrue(ClassTools.classNamedIsPrimitive(int.class.getName()));
+		assertTrue(ClassTools.classNamedIsPrimitive(float.class.getName()));
+		assertTrue(ClassTools.classNamedIsPrimitive(boolean.class.getName()));
+
+		assertFalse(ClassTools.classNamedIsPrimitive(java.lang.Number.class.getName()));
+		assertFalse(ClassTools.classNamedIsPrimitive(java.lang.String.class.getName()));
+		assertFalse(ClassTools.classNamedIsPrimitive(java.lang.Boolean.class.getName()));
+		assertFalse(ClassTools.classNamedIsPrimitive(java.lang.Integer.class.getName()));
+	}
+
+	public void testClassNamedIsVariablePrimitive() {
+		assertFalse(ClassTools.classNamedIsVariablePrimitive(void.class.getName()));
+
+		assertTrue(ClassTools.classNamedIsVariablePrimitive(int.class.getName()));
+		assertTrue(ClassTools.classNamedIsVariablePrimitive(float.class.getName()));
+		assertTrue(ClassTools.classNamedIsVariablePrimitive(boolean.class.getName()));
+
+		assertFalse(ClassTools.classNamedIsVariablePrimitive(java.lang.Number.class.getName()));
+		assertFalse(ClassTools.classNamedIsVariablePrimitive(java.lang.String.class.getName()));
+		assertFalse(ClassTools.classNamedIsVariablePrimitive(java.lang.Boolean.class.getName()));
+	}
+
+	public void testClassNamedIsVariablePrimitiveWrapperClass() {
+		assertFalse(ClassTools.classNamedIsVariablePrimitiveWrapperClass(java.lang.Void.class.getName()));
+
+		assertTrue(ClassTools.classNamedIsVariablePrimitiveWrapperClass(java.lang.Integer.class.getName()));
+		assertTrue(ClassTools.classNamedIsVariablePrimitiveWrapperClass(java.lang.Float.class.getName()));
+		assertTrue(ClassTools.classNamedIsVariablePrimitiveWrapperClass(java.lang.Boolean.class.getName()));
+
+		assertFalse(ClassTools.classNamedIsVariablePrimitiveWrapperClass(java.lang.Number.class.getName()));
+		assertFalse(ClassTools.classNamedIsVariablePrimitiveWrapperClass(java.lang.String.class.getName()));
+		assertFalse(ClassTools.classNamedIsVariablePrimitiveWrapperClass(java.lang.Object.class.getName()));
+	}
+
+	public void testClassForTypeDeclarationStringInt() throws Exception {
 		assertEquals(int.class, ClassTools.classForTypeDeclaration("int", 0));
 		assertEquals(int[].class, ClassTools.classForTypeDeclaration("int", 1));
 		assertEquals(int[][][].class, ClassTools.classForTypeDeclaration("int", 3));
@@ -510,7 +571,31 @@ public class ClassToolsTests extends TestCase {
 		}
 	}
 
-	public void testClassNameForTypeDeclaration() throws Exception {
+	public void testClassNameForTypeDeclarationString() throws Exception {
+		assertEquals("int", ClassTools.classNameForTypeDeclaration("int"));
+		assertEquals("[I", ClassTools.classNameForTypeDeclaration("int[]"));
+		assertEquals("[[I", ClassTools.classNameForTypeDeclaration("int [ ] [ ]"));
+
+		assertEquals("java.lang.Object", ClassTools.classNameForTypeDeclaration("java.lang.Object"));
+		assertEquals("[Ljava.lang.Object;", ClassTools.classNameForTypeDeclaration("java.lang.Object\t[]"));
+		assertEquals("[[Ljava.lang.Object;", ClassTools.classNameForTypeDeclaration("java.lang.Object\t[]\t[]"));
+	}
+
+	public void testArrayDepthForTypeDeclarationString() throws Exception {
+		assertEquals(0, ClassTools.arrayDepthForTypeDeclaration("java.lang.Object"));
+		assertEquals(1, ClassTools.arrayDepthForTypeDeclaration("java.lang.Object[]"));
+		assertEquals(3, ClassTools.arrayDepthForTypeDeclaration("java.lang.Object[][][]"));
+
+		assertEquals(0, ClassTools.arrayDepthForTypeDeclaration("int"));
+		assertEquals(1, ClassTools.arrayDepthForTypeDeclaration("int[]"));
+		assertEquals(3, ClassTools.arrayDepthForTypeDeclaration("int[][][]"));
+
+		assertEquals(0, ClassTools.arrayDepthForTypeDeclaration("float"));
+		assertEquals(1, ClassTools.arrayDepthForTypeDeclaration("float [ ]"));
+		assertEquals(3, ClassTools.arrayDepthForTypeDeclaration("float[] [] []"));
+	}
+
+	public void testClassNameForTypeDeclarationStringInt() throws Exception {
 		assertEquals(int.class.getName(), ClassTools.classNameForTypeDeclaration("int", 0));
 		assertEquals(int[].class.getName(), ClassTools.classNameForTypeDeclaration("int", 1));
 		assertEquals(int[][][].class.getName(), ClassTools.classNameForTypeDeclaration("int", 3));

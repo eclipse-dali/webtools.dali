@@ -11,40 +11,18 @@ package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>IPersistence File</b></em>'.
- * <!-- end-user-doc -->
- *
- *
- * @see org.eclipse.jpt.core.internal.JpaCorePackage#getIJpaFile()
- * @model kind="class" interface="true" abstract="true"
- * @generated
+ * 
  */
-public interface IJpaFile extends IJpaEObject
+public interface IJpaFile extends IJpaNode
 {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Content</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @model kind="operation"
-	 * @generated
+	 * Return the type of resource represented by this JPA file
+	 * @see IResourceModel#getResourceType()
 	 */
-	IJpaRootContentNode getContent();
-
-	void setContent(IJpaRootContentNode content);
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model kind="operation" required="true"
-	 * @generated
-	 */
-	String getContentId();
+	String getResourceType();
 
 	/**
 	 * Return the IFile associated with this JPA file
@@ -52,10 +30,14 @@ public interface IJpaFile extends IJpaEObject
 	IFile getFile();
 
 	/**
-	 * Return the content node corresponding to the given offset in the source.
-	 * This may (and often will) be <code>null</code>.
+	 * Return the resource model represented by this JPA file
 	 */
-	IJpaContentNode getContentNode(int offset);
+	IResourceModel getResourceModel();
+	
+	/**
+	 * Return the context node best represented by the location in the file
+	 */
+	IJpaContextNode contextNode(int textOffset);
 
 	/**
 	 * Forward the Java element changed event to the JPA file's content.
@@ -67,4 +49,16 @@ public interface IJpaFile extends IJpaEObject
 	 * hooks to external resources etc.
 	 */
 	void dispose();
+	
+	/**
+	 * jpaFile was added to the JpaProject
+	 * @param jpaFile
+	 */
+	void fileAdded(IJpaFile jpaFile);
+	
+	/**
+	 * jpaFile was removed from the JpaProject
+	 * @param jpaFile
+	 */
+	void fileRemoved(IJpaFile jpaFile);
 }

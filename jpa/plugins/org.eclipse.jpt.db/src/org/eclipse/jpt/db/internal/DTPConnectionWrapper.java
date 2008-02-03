@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.datatools.connectivity.IManagedConnectionOfflineListener;
  */
 final class DTPConnectionWrapper extends Connection {
 	
-	final private DTPConnectionProfileWrapper profile;
+	final DTPConnectionProfileWrapper profile;
 	private LocalConnectionListener connectionListener;
 	
 	// ********** constructors **********
@@ -67,12 +67,12 @@ final class DTPConnectionWrapper extends Connection {
 
 	// ********** queries **********
 
-	private IManagedConnection getDTPConnection() {
+	IManagedConnection getDTPConnection() {
 
 		return this.profile.getDTPConnection();
 	}
 
-	private IManagedConnection getDTPOfflineConnection() {
+	IManagedConnection getDTPOfflineConnection() {
 
 		return this.profile.getDTPOfflineConnection();
 	}
@@ -200,21 +200,18 @@ final class DTPConnectionWrapper extends Connection {
 			}
 		}
 		
-		@SuppressWarnings("unused")
 		void databaseChanged( Database database, int eventType) {
 			for (ConnectionListener listener : this.listeners) {
 				listener.databaseChanged( DTPConnectionWrapper.this.profile, database);
 			}
 		}
 
-		@SuppressWarnings("unused")
 		void schemaChanged( Schema schema, Database database, int eventType) {
 			for (ConnectionListener listener : this.listeners) {
 				listener.schemaChanged( DTPConnectionWrapper.this.profile, schema);
 			}
 		}
 
-		@SuppressWarnings("unused")
 		void tableChanged( Table table, Schema schema, Database database, int eventType) {
 			for (ConnectionListener listener : this.listeners) {
 				listener.tableChanged( DTPConnectionWrapper.this.profile, table);

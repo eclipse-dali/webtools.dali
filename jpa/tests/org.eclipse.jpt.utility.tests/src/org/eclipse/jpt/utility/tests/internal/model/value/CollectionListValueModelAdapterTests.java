@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JList;
@@ -22,7 +21,6 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
-import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ListModelAdapter;
@@ -31,9 +29,9 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class CollectionListValueModelAdapterTests extends TestCase {
-	private ListValueModel adapter;
-	private SimpleCollectionValueModel wrappedCollectionHolder;
-	private Collection wrappedCollection;
+	private ListValueModel<String> adapter;
+	private SimpleCollectionValueModel<String> wrappedCollectionHolder;
+	private Collection<String> wrappedCollection;
 
 	public CollectionListValueModelAdapterTests(String name) {
 		super(name);
@@ -42,9 +40,9 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.wrappedCollection = new HashBag();
-		this.wrappedCollectionHolder = new SimpleCollectionValueModel(this.wrappedCollection);
-		this.adapter = new CollectionListValueModelAdapter(this.wrappedCollectionHolder);
+		this.wrappedCollection = new HashBag<String>();
+		this.wrappedCollectionHolder = new SimpleCollectionValueModel<String>(this.wrappedCollection);
+		this.adapter = new CollectionListValueModelAdapter<String>(this.wrappedCollectionHolder);
 	}
 
 	@Override
@@ -55,42 +53,48 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 
 	public void testIterator() {
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListChangeListener() {
+			@Override
 			public void itemsAdded(ListChangeEvent e) {/* OK */}
 		});
 		this.wrappedCollectionHolder.add("foo");
 		this.wrappedCollectionHolder.add("bar");
 		this.wrappedCollectionHolder.add("baz");
-		Collection adapterCollection = CollectionTools.collection(this.adapter.iterator());
+		Collection<String> adapterCollection = this.adapterCollection();
 		assertEquals(3, adapterCollection.size());
 		assertEquals(this.wrappedCollection, adapterCollection);
 	}
 
+	private Collection<String> adapterCollection() {
+		return CollectionTools.collection(this.adapter.iterator());
+	}
+
 	public void testStaleValue() {
 		ListChangeListener listener = new TestListChangeListener() {
+			@Override
 			public void itemsAdded(ListChangeEvent e) {/* OK */}
 		};
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, listener);
 		this.wrappedCollectionHolder.add("foo");
 		this.wrappedCollectionHolder.add("bar");
 		this.wrappedCollectionHolder.add("baz");
-		Collection adapterCollection = CollectionTools.collection(this.adapter.iterator());
+		Collection<String> adapterCollection = this.adapterCollection();
 		assertEquals(3, adapterCollection.size());
 		assertEquals(this.wrappedCollection, adapterCollection);
 
 		this.adapter.removeListChangeListener(ListValueModel.LIST_VALUES, listener);
-		adapterCollection = CollectionTools.collection(this.adapter.iterator());
+		adapterCollection = this.adapterCollection();
 		assertEquals(0, adapterCollection.size());
-		assertEquals(new HashBag(), adapterCollection);
+		assertEquals(new HashBag<String>(), adapterCollection);
 
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, listener);
-		adapterCollection = CollectionTools.collection(this.adapter.iterator());
+		adapterCollection = this.adapterCollection();
 		assertEquals(3, adapterCollection.size());
 		assertEquals(this.wrappedCollection, adapterCollection);
 	}
 
 	public void testAdd() {
-		List synchList = new SynchronizedList(this.adapter);
-		Bag synchCollection = new SynchronizedBag(this.wrappedCollectionHolder);
+		List<String> synchList = new CoordinatedList<String>(this.adapter);
+		Bag<String> synchCollection = new CoordinatedBag<String>(this.wrappedCollectionHolder);
 		this.wrappedCollectionHolder.add("foo");
 		assertTrue(this.wrappedCollection.contains("foo"));
 		this.wrappedCollectionHolder.add("bar");
@@ -100,15 +104,15 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 		this.wrappedCollectionHolder.add("jaz");
 		assertEquals(6, this.wrappedCollection.size());
 
-		Collection adapterCollection = CollectionTools.collection(this.adapter.iterator());
+		Collection<String> adapterCollection = this.adapterCollection();
 		assertEquals(this.wrappedCollection, adapterCollection);
 		assertEquals(this.wrappedCollection, CollectionTools.collection(synchList.iterator()));
 		assertEquals(this.wrappedCollection, synchCollection);
 	}
 
 	public void testRemove() {
-		List synchList = new SynchronizedList(this.adapter);
-		Bag synchCollection = new SynchronizedBag(this.wrappedCollectionHolder);
+		List<String> synchList = new CoordinatedList<String>(this.adapter);
+		Bag<String> synchCollection = new CoordinatedBag<String>(this.wrappedCollectionHolder);
 		this.wrappedCollectionHolder.add("foo");
 		this.wrappedCollectionHolder.add("bar");
 		this.wrappedCollectionHolder.add("baz");
@@ -122,7 +126,7 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 		assertFalse(this.wrappedCollection.contains("foo"));
 		assertEquals(4, this.wrappedCollection.size());
 
-		Collection adapterCollection = CollectionTools.collection(this.adapter.iterator());
+		Collection<String> adapterCollection = this.adapterCollection();
 		assertEquals(this.wrappedCollection, adapterCollection);
 		assertEquals(this.wrappedCollection, CollectionTools.collection(synchList.iterator()));
 		assertEquals(this.wrappedCollection, synchCollection);
@@ -130,7 +134,9 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 
 	public void testListSynch() {
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListChangeListener() {
+			@Override
 			public void itemsAdded(ListChangeEvent e) {/* OK */}
+			@Override
 			public void itemsRemoved(ListChangeEvent e) {/* OK */}
 		});
 		this.wrappedCollectionHolder.add("foo");
@@ -145,13 +151,13 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 		assertFalse(this.wrappedCollection.contains("foo"));
 		assertEquals(4, this.wrappedCollection.size());
 
-		Collection adapterCollection = CollectionTools.collection(this.adapter.iterator());
+		Collection<String> adapterCollection = this.adapterCollection();
 		assertEquals(this.wrappedCollection, adapterCollection);
 	}
 
 	public void testHasListeners() {
 		assertFalse(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
-		SynchronizedList synchList = new SynchronizedList(this.adapter);
+		CoordinatedList<String> synchList = new CoordinatedList<String>(this.adapter);
 		assertTrue(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		this.adapter.removeListChangeListener(ListValueModel.LIST_VALUES, synchList);
 		assertFalse(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
@@ -163,45 +169,51 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 
 	public void testCollectionChangedToEmpty() {
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListChangeListener() {
+			@Override
 			public void itemsAdded(ListChangeEvent e) {/* OK */}
+			@Override
 			public void itemsRemoved(ListChangeEvent e) {/* OK */}
 		});
 		this.wrappedCollectionHolder.add("foo");
 		this.wrappedCollectionHolder.add("bar");
 		this.wrappedCollectionHolder.add("baz");
 		JList jList = new JList(new ListModelAdapter(this.adapter));
-		((SimpleCollectionValueModel) this.wrappedCollectionHolder).setCollection(new HashBag());
+		this.wrappedCollectionHolder.setCollection(new HashBag<String>());
 		assertEquals(0, jList.getModel().getSize());
 	}
 	
 	public void testCollectionChangedFromEmpty() {
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListChangeListener() {
+			@Override
 			public void itemsAdded(ListChangeEvent e) {/* OK */}
+			@Override
 			public void itemsRemoved(ListChangeEvent e) {/* OK */}
 		});
 		JList jList = new JList(new ListModelAdapter(this.adapter));
 		
-		HashBag bag = new HashBag();
+		HashBag<String> bag = new HashBag<String>();
 		bag.add("foo");
 		bag.add("bar");
-		((SimpleCollectionValueModel) this.wrappedCollectionHolder).setCollection(bag);
+		this.wrappedCollectionHolder.setCollection(bag);
 		assertEquals(2, jList.getModel().getSize());
 	}
 	
 	public void testCollectionChangedFromEmptyToEmpty() {
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListChangeListener() {
+			@Override
 			public void itemsAdded(ListChangeEvent e) {/* OK */}
+			@Override
 			public void itemsRemoved(ListChangeEvent e) {/* OK */}
 		});
 		JList jList = new JList(new ListModelAdapter(this.adapter));
 		
-		HashBag bag = new HashBag();
-		((SimpleCollectionValueModel) this.wrappedCollectionHolder).setCollection(bag);
+		HashBag<String> bag = new HashBag<String>();
+		this.wrappedCollectionHolder.setCollection(bag);
 		assertEquals(0, jList.getModel().getSize());
 	}
 
 
-	private class TestListChangeListener implements ListChangeListener {
+	class TestListChangeListener implements ListChangeListener {
 		public void itemsAdded(ListChangeEvent e) {
 			fail("unexpected event");
 		}

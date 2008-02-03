@@ -1,110 +1,114 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2007 Oracle. All rights reserved. This
+ *  Copyright (c) 2006, 2008 Oracle. All rights reserved. This
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
- *  
+ *
  *  Contributors: Oracle. - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.emf.common.command.CommandStack;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.utility.internal.model.Model;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public abstract class BaseJpaController 
+/**
+ * The abstract class used to create a pane. (TODO)
+ *
+ * @deprecated Remove this pane and extend directly AbstractFormPane.
+ *
+ * @version 2.0
+ * @since 1.0
+ */
+@Deprecated
+public abstract class BaseJpaController<T extends Model> extends AbstractFormPane<T>
+                                                         implements IJpaComposite<T>
 {
-	//****** we are using this commandStack in 0 places ********
-	//do we plan to use it in the future? *should* we be using it? are we removing emf?
-	protected CommandStack commandStack;
-	
-	protected TabbedPropertySheetWidgetFactory widgetFactory;
+	/**
+	 * Creates a new <code>BaseJpaController</code>.
+	 *
+	 * @param parentController The parent controller of this one
+	 * @param parent The parent container
+	 *
+	 * @category Constructor
+	 */
+	protected BaseJpaController(BaseJpaController<? extends T> parentController,
+	                            Composite parent) {
 
-	//put in the populating flag to stop the circular population of the entity name combo
-	//populateEntityNameCombo is calling select() which causes entityNameComboModified() to be called
-	//this sets the name in the model which starts the circle over again. We should probably
-	//short-circuit this differently, like in the emf model, keep the property change from being fired if 
-	//a change did not actually occur - KFM
-	private boolean populating;
-	
-	
-	public BaseJpaController(Composite parent, CommandStack theCommandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super();
-		this.widgetFactory = widgetFactory;
-		buildWidget(parent);
-		this.commandStack = theCommandStack;
+		super(parentController, parent);
 	}
-	
-	public BaseJpaController(Composite parent, int style, CommandStack theCommandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super();
-		this.widgetFactory = widgetFactory;
-		buildWidget(parent, style);
-		this.commandStack = theCommandStack;
-	}
-	
-	
+
 	/**
-	 * Override this method if using the constructor without the style bit
+	 * Creates a new <code>BaseJpaController</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various widgets
+	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
+	 * this pane aligned with the widgets of the given parent controller;
+	 * <code>false</code> to not align them
+	 *
+	 * @category Constructor
 	 */
-	protected void buildWidget(Composite parent) {
-		// no op
+	protected BaseJpaController(BaseJpaController<? extends T> parentController,
+	                            Composite parent,
+	                            boolean automaticallyAlignWidgets) {
+
+		super(parentController, parent, automaticallyAlignWidgets);
 	}
-	
+
 	/**
-	 * Override this method if using the constructor with the style bit
+	 * Creates a new <code>BaseJpaController</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
+	 *
+	 * @category Constructor
 	 */
-	protected void buildWidget(Composite parent, int style) {
-		// no op
+	protected BaseJpaController(BaseJpaController<?> parentController,
+	                            PropertyValueModel<? extends T> subjectHolder,
+	                            Composite parent) {
+
+		super(parentController, subjectHolder, parent);
 	}
-	
+
 	/**
-	 * This method is called from outside when setting the object of interest
+	 * Creates a new <code>BaseJpaController</code>.
+	 *
+	 * @param parentController The parent container of this one
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various widgets
+	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
+	 * this pane aligned with the widgets of the given parent controller;
+	 * <code>false</code> to not align them
+	 *
+	 * @category Constructor
 	 */
-	public final void populate(EObject obj) {
-		if (getControl().isDisposed()) {
-			return;
-		}
-		this.populating = true;
-		disengageListeners();
-		doPopulate(obj);
-		engageListeners();
-		this.populating = false;
+	protected BaseJpaController(BaseJpaController<?> parentController,
+	                            PropertyValueModel<? extends T> subjectHolder,
+	                            Composite parent,
+	                            boolean automaticallyAlignWidgets) {
+
+		super(parentController, subjectHolder, parent, automaticallyAlignWidgets);
 	}
-	
+
 	/**
-	 * This method is called (perhaps internally) when this needs to repopulate 
-	 * but the object of interest has not changed
+	 * Creates a new <code>BaseJpaController</code>.
+	 *
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 *
+	 * @category Constructor
 	 */
-	public final void populate() {
-		if (getControl().isDisposed()) {
-			return;
-		}
-		this.populating = true;
-		doPopulate();
-		this.populating = false;
+	protected BaseJpaController(PropertyValueModel<? extends T> subjectHolder,
+	                            Composite parent,
+	                            TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 	}
-	
-	protected abstract void doPopulate(EObject obj);
-	
-	protected abstract void doPopulate();
-	
-	protected abstract void engageListeners();
-	
-	protected abstract void disengageListeners();
-	
-	protected boolean isPopulating() {
-		return this.populating;
-	}
-	
-	public TabbedPropertySheetWidgetFactory getWidgetFactory() {
-		return this.widgetFactory;
-	}
-	
-	public void dispose() {
-		disengageListeners();
-	}
-	
-	public abstract Control getControl();
 }

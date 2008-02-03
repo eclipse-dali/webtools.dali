@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -26,23 +25,27 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.content.java.JpaCompilationUnit;
-import org.eclipse.jpt.core.internal.platform.IContext;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
+import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitResource;
+import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
+import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.CommandExecutor;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
-import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.node.Node;
+import org.eclipse.jst.j2ee.internal.J2EEConstants;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * 
@@ -78,6 +81,12 @@ public class JpaProject extends JpaNode implements IJpaProject {
 	protected boolean discoversAnnotatedClasses;
 
 	/**
+	 * The model representing the collated resources associated
+	 * with the JPA project.
+	 */
+	protected IContextModel contextModel;
+
+	/**
 	 * The visitor passed to resource deltas.
 	 */
 	protected final IResourceDeltaVisitor resourceDeltaVisitor;
@@ -89,10 +98,23 @@ public class JpaProject extends JpaNode implements IJpaProject {
 	protected final CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
 
 	/**
-	 * Scheduler that uses a job to update the JPA project when changes occur.
-	 * @see #update()
+	 * A pluggable updater that can be used to "update" the project either
+	 * synchronously or asynchronously (or not at all). An asynchronous
+	 * updater is the default and is used when the project is being manipulated
+	 * by the UI. A synchronous updater is used when the project is being
+	 * manipulated by a "batch" (or non-UI) client (e.g. when testing the
+	 * "update" behavior). A null updater is used during tests that
+	 * do not care whether "updates" occur. Clients will need to explicitly
+	 * configure the updater if they require something other than an
+	 * asynchronous updater.
 	 */
-	protected final UpdateJpaProjectJobScheduler updateJpaProjectJobScheduler;
+	protected Updater updater;
+
+	/**
+	 * Resource models notify this listener when they change. A project update
+	 * should occur any time a resource model changes.
+	 */
+	protected IResourceModelListener resourceModelListener;
 
 
 	// ********** constructor/initialization **********
@@ -107,18 +129,21 @@ public class JpaProject extends JpaNode implements IJpaProject {
 		}
 		this.project = config.project();
 		this.jpaPlatform = config.jpaPlatform();
-		this.jpaPlatform.setProject(this);  // TODO this must go
-		this.dataSource = this.jpaFactory().createDataSource(this, config.connectionProfileName());
+		this.dataSource = this.jpaFactory().createJpaDataSource(this, config.connectionProfileName());
 		this.discoversAnnotatedClasses = config.discoverAnnotatedClasses();
-		this.jpaFiles = this.buildJpaFiles();
+		this.jpaFiles = this.buildEmptyJpaFiles();
 
 		this.resourceDeltaVisitor = this.buildResourceDeltaVisitor();
 		this.threadLocalModifySharedDocumentCommandExecutor = this.buildThreadLocalModifySharedDocumentCommandExecutor();
 		this.modifySharedDocumentCommandExecutorProvider = this.buildModifySharedDocumentCommandExecutorProvider();
 
-		this.updateJpaProjectJobScheduler = this.buildUpdateJpaProjectJobScheduler();
+		this.updater = this.buildUpdater();
+
+		this.resourceModelListener = this.buildResourceModelListener();
 		// build the JPA files corresponding to the Eclipse project's files
 		this.project.accept(this.buildInitialResourceProxyVisitor(), IResource.NONE);
+
+		this.contextModel = this.buildContextModel();
 
 		this.update();
 	}
@@ -129,8 +154,13 @@ public class JpaProject extends JpaNode implements IJpaProject {
 			throw new IllegalArgumentException("The parent node must be null");
 		}
 	}
+	
+	@Override
+	public IResource resource() {
+		return project();
+	}
 
-	protected Vector<IJpaFile> buildJpaFiles() {
+	protected Vector<IJpaFile> buildEmptyJpaFiles() {
 		return new Vector<IJpaFile>();
 	}
 
@@ -146,12 +176,20 @@ public class JpaProject extends JpaNode implements IJpaProject {
 		return new ModifySharedDocumentCommandExecutorProvider();
 	}
 
+	protected Updater buildUpdater() {
+		return new AsynchronousJpaProjectUpdater(this);
+	}
+
+	protected IResourceModelListener buildResourceModelListener() {
+		return new ResourceModelListener();
+	}
+
 	protected IResourceProxyVisitor buildInitialResourceProxyVisitor() {
 		return new InitialResourceProxyVisitor();
 	}
 
-	protected UpdateJpaProjectJobScheduler buildUpdateJpaProjectJobScheduler() {
-		return new UpdateJpaProjectJobScheduler(this, this.project);
+	protected IContextModel buildContextModel() {
+		return this.jpaFactory().buildContextModel(this);
 	}
 
 	// ***** inner class
@@ -167,7 +205,7 @@ public class JpaProject extends JpaNode implements IJpaProject {
 				case IResource.FOLDER :
 					return true;  // visit children
 				case IResource.FILE :
-					JpaProject.this.addJpaFile((IFile) resource.requestResource());
+					JpaProject.this.addJpaFileInternal((IFile) resource.requestResource());
 					return false;  // no children
 				default :
 					return false;  // no children
@@ -206,9 +244,13 @@ public class JpaProject extends JpaNode implements IJpaProject {
 
 	@Override
 	public ConnectionProfile connectionProfile() {
-		return this.dataSource.getConnectionProfile();
+		return this.dataSource.connectionProfile();
 	}
 
+	public Schema defaultSchema() {
+		return connectionProfile().defaultSchema();
+	}
+	
 	@Override
 	public Validator validator() {
 		return NULL_VALIDATOR;
@@ -241,35 +283,57 @@ public class JpaProject extends JpaNode implements IJpaProject {
 		return null;
 	}
 
-	public Iterator<IJpaFile> jpaFiles(final String contentTypeId) {
-		return new FilteringIterator<IJpaFile>(this.jpaFiles()) {
+	public Iterator<IJpaFile> jpaFiles(final String resourceType) {
+		return new FilteringIterator<IJpaFile, IJpaFile>(this.jpaFiles()) {
 			@Override
-			protected boolean accept(Object o) {
-				return ((IJpaFile) o).getContentId().equals(contentTypeId);
+			protected boolean accept(IJpaFile o) {
+				return o.getResourceType().equals(resourceType);
 			}
 		};
 	}
 
 	public Iterator<IJpaFile> javaJpaFiles() {
-		return this.jpaFiles(JavaCore.JAVA_SOURCE_CONTENT_TYPE);
+		return this.jpaFiles(IResourceModel.JAVA_RESOURCE_TYPE);
 	}
 
 	/**
 	 * Add a JPA file for the specified file, if appropriate.
 	 */
 	protected void addJpaFile(IFile file) {
-		IJpaFile jpaFile = this.jpaPlatform.createJpaFile(this, file);
+		IJpaFile jpaFile = this.addJpaFileInternal(file);
 		if (jpaFile != null) {
-			this.addItemToCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION);
+			this.fireItemAdded(JPA_FILES_COLLECTION, jpaFile);
+			for (Iterator<IJpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
+				stream.next().fileAdded(jpaFile);
+			}
 		}
+	}
+
+	/**
+	 * Add a JPA file for the specified file, if appropriate, without firing
+	 * an event; useful during construction.
+	 * Return the new JPA file, null if it was not created.
+	 */
+	protected IJpaFile addJpaFileInternal(IFile file) {
+		IJpaFile jpaFile = this.jpaPlatform.buildJpaFile(this, file);
+		if (jpaFile == null) {
+			return null;
+		}
+		this.jpaFiles.add(jpaFile);
+		jpaFile.getResourceModel().addResourceModelChangeListener(this.resourceModelListener);
+		return jpaFile;
 	}
 
 	/**
 	 * Remove the specified JPA file and dispose it.
 	 */
 	protected void removeJpaFile(IJpaFile jpaFile) {
+		jpaFile.getResourceModel().removeResourceModelChangeListener(this.resourceModelListener);
 		if ( ! this.removeItemFromCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION)) {
 			throw new IllegalArgumentException("JPA file: " + jpaFile.getFile().getName());
+		}
+		for (Iterator<IJpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
+			stream.next().fileRemoved(jpaFile);
 		}
 		jpaFile.dispose();
 	}
@@ -279,38 +343,29 @@ public class JpaProject extends JpaNode implements IJpaProject {
 	}
 
 
+	// ********** context model **********
+
+	public IContextModel contextModel() {
+		return this.contextModel;
+	}
+
+
 	// ********** more queries **********
 
-	protected Iterator<JpaCompilationUnit> jpaCompilationUnits() {
-		return new TransformationIterator<IJpaFile, JpaCompilationUnit>(this.javaJpaFiles()) {
+	protected Iterator<JpaCompilationUnitResource> jpaCompilationUnitResources() {
+		return new TransformationIterator<IJpaFile, JpaCompilationUnitResource>(this.javaJpaFiles()) {
 			@Override
-			protected JpaCompilationUnit transform(IJpaFile jpaFile) {
-				return (JpaCompilationUnit) jpaFile.getContent();
+			protected JpaCompilationUnitResource transform(IJpaFile jpaFile) {
+				return ((JavaResourceModel) jpaFile.getResourceModel()).resource();
 			}
 		};
 	}
 
-	/**
-	 * Return an iterator of iterators on Java persistent types
-	 */
-	protected Iterator<Iterator<JavaPersistentType>> javaPersistentTypeIterators() {
-		return new TransformationIterator<JpaCompilationUnit, Iterator<JavaPersistentType>>(this.jpaCompilationUnits()) {
-			@Override
-			protected Iterator<JavaPersistentType> transform(JpaCompilationUnit jcu) {
-				return jcu.getTypes().iterator();
-			}
-		};
-	}
-
-	public Iterator<JavaPersistentType> javaPersistentTypes() {
-		return new CompositeIterator<JavaPersistentType>(this.javaPersistentTypeIterators());
-	}
-
-	public JavaPersistentType javaPersistentType(IType type) {
-		for (Iterator<JavaPersistentType> stream = this.javaPersistentTypes(); stream.hasNext(); ) {
-			JavaPersistentType jpt = stream.next();
-			if (jpt.getType().getJdtMember().equals(type)) {
-				return jpt;
+	public JavaPersistentTypeResource javaPersistentTypeResource(String typeName) {
+		for (JpaCompilationUnitResource jpCompilationUnitResource : CollectionTools.iterable(this.jpaCompilationUnitResources())) {
+			JavaPersistentTypeResource jptr =  jpCompilationUnitResource.javaPersistentTypeResource(typeName);
+			if (jptr != null) {
+				return jptr;
 			}
 		}
 		return null;
@@ -327,26 +382,94 @@ public class JpaProject extends JpaNode implements IJpaProject {
 
 
 	// ********** validation **********
-
-	@SuppressWarnings("restriction")
-	public Iterator<org.eclipse.wst.validation.internal.provisional.core.IMessage> validationMessages() {
-		List<org.eclipse.wst.validation.internal.provisional.core.IMessage> messages = new ArrayList<org.eclipse.wst.validation.internal.provisional.core.IMessage>();
-		this.jpaPlatform.addToMessages(messages);
+	
+	
+	public Iterator<IMessage> validationMessages() {
+		List<IMessage> messages = new ArrayList<IMessage>();
+		this.jpaPlatform.addToMessages(this, messages);
 		return messages.iterator();
 	}
+	
+	/* If this is true, it may be assumed that all the requirements are valid 
+	 * for further validation.  For example, if this is true at the point we
+	 * are validating persistence units, it may be assumed that there is a 
+	 * single persistence.xml and that it has valid content down to the 
+	 * persistence unit level.  */
+	private boolean okToContinueValidation = true;
+	
+	
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		//start with the project - then down
+		//project validation
+		addProjectLevelMessages(messages);
+		
+		//context model validation
+		contextModel().addToMessages(messages, astRoot);
+	}
 
+	protected void addProjectLevelMessages(List<IMessage> messages) {
+		addConnectionMessages(messages);
+		addMultiplePersistenceXmlMessage(messages);
+	}
+	
+	protected void addConnectionMessages(List<IMessage> messages) {
+		addNoConnectionMessage(messages);
+		addInactiveConnectionMessage(messages);
+	}
+	
+	protected boolean okToProceedForConnectionValidation = true;
+	
+	protected void addNoConnectionMessage(List<IMessage> messages) {
+		if (! this.dataSource().hasAConnection()) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.NORMAL_SEVERITY,
+						IJpaValidationMessages.PROJECT_NO_CONNECTION,
+						this)
+				);
+			okToProceedForConnectionValidation = false;
+		}
+	}
+	
+	protected void addInactiveConnectionMessage(List<IMessage> messages) {
+		if (okToProceedForConnectionValidation && ! this.dataSource().isConnected()) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.NORMAL_SEVERITY,
+						IJpaValidationMessages.PROJECT_INACTIVE_CONNECTION,
+						new String[] {this.dataSource().connectionProfileName()},
+						this)
+				);
+		}
+		okToProceedForConnectionValidation = true;
+	}
+	
+	protected void addMultiplePersistenceXmlMessage(List<IMessage> messages) {
+//		if (validPersistenceXmlFiles.size() > 1) {
+//			messages.add(
+//					JpaValidationMessages.buildMessage(
+//						IMessage.HIGH_SEVERITY,
+//						IJpaValidationMessages.PROJECT_MULTIPLE_PERSISTENCE_XML,
+//						jpaProject)
+//				);
+//			okToContinueValidation = false;
+//		}
+	}
 
+	
+	
+	
 	// ********** root deploy location **********
 
-	@SuppressWarnings("restriction")
-	protected static final String WEB_PROJECT_ROOT_DEPLOY_LOCATION = org.eclipse.jst.j2ee.internal.J2EEConstants.WEB_INF_CLASSES;
+	protected static final String WEB_PROJECT_ROOT_DEPLOY_LOCATION = J2EEConstants.WEB_INF_CLASSES;
 
 	public String rootDeployLocation() {
 		return this.isWebProject() ? WEB_PROJECT_ROOT_DEPLOY_LOCATION : "";
 	}
 
-	@SuppressWarnings("restriction")
-	protected static final String JST_WEB_MODULE = org.eclipse.wst.common.componentcore.internal.util.IModuleConstants.JST_WEB_MODULE;
+	protected static final String JST_WEB_MODULE = IModuleConstants.JST_WEB_MODULE;
 
 	protected boolean isWebProject() {
 		return JptCorePlugin.projectHasWebFacet(this.project);
@@ -369,12 +492,24 @@ public class JpaProject extends JpaNode implements IJpaProject {
 	// ********** dispose **********
 
 	public void dispose() {
-		this.updateJpaProjectJobScheduler.dispose();
+		this.updater.dispose();
 		// use clone iterator while deleting JPA files
 		for (Iterator<IJpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
 			this.removeJpaFile(stream.next());
 		}
 		this.dataSource.dispose();
+	}
+
+
+	// ********** resource model listener **********
+
+	protected class ResourceModelListener implements IResourceModelListener {
+		protected ResourceModelListener() {
+			super();
+		}
+		public void resourceModelChanged() {
+			JpaProject.this.update();
+		}
 	}
 
 
@@ -387,7 +522,7 @@ public class JpaProject extends JpaNode implements IJpaProject {
 	/**
 	 * resource delta visitor callback
 	 */
-	protected void synchronizeJpaFile(IFile file, int deltaKind) {
+	protected void synchronizeJpaFiles(IFile file, int deltaKind) {
 		switch (deltaKind) {
 			case IResourceDelta.ADDED :
 				if ( ! this.containsJpaFile(file)) {
@@ -424,7 +559,7 @@ public class JpaProject extends JpaNode implements IJpaProject {
 				case IResource.FOLDER :
 					return true;  // visit children
 				case IResource.FILE :
-					JpaProject.this.synchronizeJpaFile((IFile) res, delta.getKind());
+					JpaProject.this.synchronizeJpaFiles((IFile) res, delta.getKind());
 					return false;  // no children
 				default :
 					return false;  // no children
@@ -463,112 +598,41 @@ public class JpaProject extends JpaNode implements IJpaProject {
 	}
 
 
+	// ********** project "update" **********
 
-	// ********** update project **********
+	public Updater updater() {
+		return this.updater;
+	}
 
+	public void setUpdater(Updater updater) {
+		this.updater = updater;
+	}
+
+	/**
+	 * Delegate to the updater so clients can configure how updates occur.
+	 */
+	public void update() {
+		this.updater.update();
+	}
+
+	/**
+	 * Called by the updater.
+	 */
 	public IStatus update(IProgressMonitor monitor) {
-		if (monitor.isCanceled()) {
-			return Status.CANCEL_STATUS;
-		}
-
 		try {
-			IContext contextHierarchy = this.jpaPlatform.buildProjectContext();
-			this.jpaPlatform.resynch(contextHierarchy, monitor);
+			this.contextModel.update(monitor);
 		} catch (OperationCanceledException ex) {
 			return Status.CANCEL_STATUS;
 		} catch (Throwable ex) {
-			//exceptions can occur when this thread is running and changes are
-			//made to the java source.  our model is not yet updated to the changed java source.
-			//log these exceptions and assume they won't happen when the resynch runs again
-			//as a result of the java source changes.
+			// Exceptions can occur when the update is running and changes are
+			// made concurrently to the Java source. When that happens, our
+			// model might be in an inconsistent state because it is not yet in
+			// sync with the changed Java source.
+			// Log these exceptions and assume they won't happen when the
+			// update runs again as a result of the concurrent Java source changes.
 			JptCorePlugin.log(ex);
 		}
 		return Status.OK_STATUS;
 	}
 
-	public void update() {
-		this.updateJpaProjectJobScheduler.schedule();
-	}
-
-	protected static class UpdateJpaProjectJobScheduler {
-		/**
-		 * The job is built during construction and cleared out during dispose.
-		 * All the "public" methods check to make sure the job is not null,
-		 * doing nothing if it is (preventing anything from happening after
-		 * dispose).
-		 */
-		protected Job job;
-
-		protected UpdateJpaProjectJobScheduler(IJpaProject jpaProject, ISchedulingRule rule) {
-			super();
-			this.job = this.buildJob(jpaProject, rule);
-		}
-
-		protected Job buildJob(IJpaProject jpaProject, ISchedulingRule rule) {
-			Job j = new UpdateJpaProjectJob(jpaProject);
-			j.setRule(rule);
-			return j;
-		}
-
-		/**
-		 * Stop the job if it is currently running, reschedule it to
-		 * run again, and return without waiting.
-		 */
-		protected synchronized void schedule() {
-			if (this.job != null) {
-				this.job.cancel();
-				this.job.schedule();
-			}
-		}
-
-		/**
-		 * Stop the job if it is currently running, reschedule it to
-		 * run again, and wait until it is finished.
-		 */
-		protected synchronized void scheduleAndWait() {
-			if (this.job != null) {
-				this.job.cancel();
-				this.join();
-				this.job.schedule();
-				this.join();
-			}
-		}
-
-		/**
-		 * Stop the job if it is currently running, wait until
-		 * it is finished, then clear the job out so it cannot
-		 * be scheduled again.
-		 */
-		protected synchronized void dispose() {
-			if (this.job != null) {
-				this.job.cancel();
-				this.join();
-				this.job = null;
-			}
-		}
-
-		protected synchronized void join() {
-			try {
-				this.job.join();
-			} catch (InterruptedException ex) {
-				// the thread was interrupted while waiting, job must be finished
-			}
-		}
-
-		protected static class UpdateJpaProjectJob extends Job {
-			protected final IJpaProject jpaProject;
-
-			protected UpdateJpaProjectJob(IJpaProject jpaProject) {
-				super("Update JPA project");  // TODO i18n
-				this.jpaProject = jpaProject;
-			}
-
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				return this.jpaProject.update(monitor);
-			}
-
-		}
-
-	}
 }

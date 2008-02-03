@@ -32,9 +32,9 @@ import javax.swing.text.PlainDocument;
 
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.DocumentAdapter;
 
 /**
@@ -44,8 +44,8 @@ public class DocumentAdapterUITest {
 
 	private TestModel testModel;
 		private static final String DEFAULT_NAME = "Scooby Doo";
-	private PropertyValueModel testModelHolder;
-	private PropertyValueModel nameHolder;
+	private WritablePropertyValueModel<TestModel> testModelHolder;
+	private WritablePropertyValueModel<String> nameHolder;
 	private Document nameDocument;
 	private Document upperCaseNameDocument;
 
@@ -59,31 +59,31 @@ public class DocumentAdapterUITest {
 
 	private void exec(String[] args) throws Exception {
 		this.testModel = new TestModel(DEFAULT_NAME);
-		this.testModelHolder = new SimplePropertyValueModel(this.testModel);
+		this.testModelHolder = new SimplePropertyValueModel<TestModel>(this.testModel);
 		this.nameHolder = this.buildNameHolder(this.testModelHolder);
 		this.nameDocument = this.buildNameDocument(this.nameHolder);
 		this.upperCaseNameDocument = this.buildUpperCaseNameDocument(this.nameHolder);
 		this.openWindow();
 	}
 
-	private PropertyValueModel buildNameHolder(ValueModel vm) {
-		return new PropertyAspectAdapter(vm, TestModel.NAME_PROPERTY) {
+	private WritablePropertyValueModel<String> buildNameHolder(PropertyValueModel<TestModel> vm) {
+		return new PropertyAspectAdapter<TestModel, String>(vm, TestModel.NAME_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
-				return ((TestModel) this.subject).getName();
+			protected String buildValue_() {
+				return this.subject.getName();
 			}
 			@Override
-			protected void setValue_(Object value) {
-				((TestModel) this.subject).setName((String) value);
+			protected void setValue_(String value) {
+				this.subject.setName(value);
 			}
 		};
 	}
 
-	private Document buildNameDocument(PropertyValueModel stringHolder) {
+	private Document buildNameDocument(WritablePropertyValueModel<String> stringHolder) {
 		return new DocumentAdapter(stringHolder);
 	}
 
-	private Document buildUpperCaseNameDocument(PropertyValueModel stringHolder) {
+	private Document buildUpperCaseNameDocument(WritablePropertyValueModel<String> stringHolder) {
 		return new DocumentAdapter(stringHolder, this.buildUpperCaseNameDocumentDelegate());
 	}
 

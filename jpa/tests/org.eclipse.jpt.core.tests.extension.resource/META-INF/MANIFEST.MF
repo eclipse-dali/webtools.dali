@@ -20,4 +20,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jpt.utility,
  org.eclipse.core.resources
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: org.eclipse.jpt.core.tests.extension.resource;x-friends:="org.eclipse.jpt.ui.tests"
+Export-Package: org.eclipse.jpt.core.tests.extension.resource;x-friends:="org.eclipse.jpt.ui.tests,org.eclipse.jpt.core.tests"

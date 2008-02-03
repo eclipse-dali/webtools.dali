@@ -16,14 +16,16 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.platform.generic.GenericPlatform;
+import org.eclipse.jpt.core.internal.platform.generic.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.componentcore.datamodel.FacetInstallDataModelProvider;
+import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelPropertyDescriptor;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
@@ -32,11 +34,9 @@ public class JpaFacetDataModelProvider
 	extends FacetInstallDataModelProvider
 	implements IJpaFacetDataModelProperties
 {
-	@SuppressWarnings("restriction")
-	private static final String EJB_FACET_ID = org.eclipse.wst.common.componentcore.internal.util.IModuleConstants.JST_EJB_MODULE;
+	private static final String EJB_FACET_ID = IModuleConstants.JST_EJB_MODULE;
 
-	@SuppressWarnings("restriction")
-	private static final String RUNTIME_NONE = org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin.getResourceString(org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonMessages.RUNTIME_NONE, null);
+	private static final String RUNTIME_NONE = WTPCommonPlugin.getResourceString(org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonMessages.RUNTIME_NONE, null);
 
 	private static final IStatus PLATFORM_NOT_SPECIFIED_STATUS = buildErrorStatus(JptCoreMessages.VALIDATE_PLATFORM_NOT_SPECIFIED);
 	private static final IStatus CONNECTION_NOT_CONNECTED_STATUS = buildInfoStatus(JptCoreMessages.VALIDATE_CONNECTION_NOT_CONNECTED);
@@ -72,7 +72,7 @@ public class JpaFacetDataModelProvider
 			return JptCorePlugin.FACET_ID;
 		}
 		if (propertyName.equals(PLATFORM_ID)) {
-			return GenericPlatform.ID;
+			return GenericJpaPlatform.ID;
 		}
 		if (propertyName.equals(CONNECTION)) {
 			return "";

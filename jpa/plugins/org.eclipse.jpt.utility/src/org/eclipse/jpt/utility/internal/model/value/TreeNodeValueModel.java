@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 /**
- * Extend PropertyValueModel to better support the TreeModelAdapter class.
+ * Extend WritablePropertyValueModel to better support TreeModelAdapter.
  * 
  * Implementors of this interface should fire a "state change" event
  * whenever the node's internal state changes in a way that the
@@ -22,30 +22,30 @@ package org.eclipse.jpt.utility.internal.model.value;
  * 
  * @see AbstractTreeNodeValueModel
  */
-public interface TreeNodeValueModel
-	extends PropertyValueModel
+public interface TreeNodeValueModel<T>
+	extends WritablePropertyValueModel<T>
 {
 
 	/**
 	 * Return the node's parent node; null if the node
 	 * is the root.
 	 */
-	TreeNodeValueModel parent();
+	TreeNodeValueModel<T> parent();
 
 	/**
 	 * Return the path to the node.
 	 */
-	TreeNodeValueModel[] path();
+	TreeNodeValueModel<T>[] path();
 
 	/**
 	 * Return a list value model of the node's child nodes.
 	 */
-	ListValueModel childrenModel();
+	ListValueModel<TreeNodeValueModel<T>> childrenModel();
 
 	/**
 	 * Return the node's child at the specified index.
 	 */
-	TreeNodeValueModel child(int index);
+	TreeNodeValueModel<T> child(int index);
 
 	/**
 	 * Return the size of the node's list of children.
@@ -55,7 +55,7 @@ public interface TreeNodeValueModel
 	/**
 	 * Return the index in the node's list of children of the specified child.
 	 */
-	int indexOfChild(TreeNodeValueModel child);
+	int indexOfChild(TreeNodeValueModel<T> child);
 
 	/**
 	 * Return whether the node is a leaf (i.e. it has no children)

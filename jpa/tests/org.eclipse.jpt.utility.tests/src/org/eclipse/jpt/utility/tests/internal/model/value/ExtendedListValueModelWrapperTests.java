@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -27,8 +26,8 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class ExtendedListValueModelWrapperTests extends TestCase {
-	private SimpleListValueModel listHolder;
-	private ListValueModel extendedListHolder;
+	private SimpleListValueModel<String> listHolder;
+	private ListValueModel<String> extendedListHolder;
 	ListChangeEvent event;
 	String eventType;
 
@@ -46,12 +45,12 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.listHolder = new SimpleListValueModel(this.buildList());
+		this.listHolder = new SimpleListValueModel<String>(this.buildList());
 		this.extendedListHolder = this.buildExtendedListHolder(this.listHolder);
 	}
 
-	private List buildList() {
-		List result = new ArrayList();
+	private List<String> buildList() {
+		List<String> result = new ArrayList<String>();
 		result.add("A");
 		result.add("B");
 		result.add("C");
@@ -59,31 +58,31 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		return result;
 	}
 
-	private List buildExtendedList() {
-		List extendedList = new ArrayList();
+	private List<String> buildExtendedList() {
+		List<String> extendedList = new ArrayList<String>();
 		extendedList.addAll(this.buildPrefix());
 		extendedList.addAll(this.buildList());
 		extendedList.addAll(this.buildSuffix());
 		return extendedList;
 	}
 
-	private List buildPrefix() {
-		List prefix = new ArrayList();
+	private List<String> buildPrefix() {
+		List<String> prefix = new ArrayList<String>();
 		prefix.add("x");
 		prefix.add("y");
 		prefix.add("z");
 		return prefix;
 	}
 
-	private List buildSuffix() {
-		List suffix = new ArrayList();
+	private List<String> buildSuffix() {
+		List<String> suffix = new ArrayList<String>();
 		suffix.add("i");
 		suffix.add("j");
 		return suffix;
 	}
 
-	private ListValueModel buildExtendedListHolder(ListValueModel lvm) {
-		return new ExtendedListValueModelWrapper(this.buildPrefix(), lvm, this.buildSuffix());
+	private ListValueModel<String> buildExtendedListHolder(ListValueModel<String> lvm) {
+		return new ExtendedListValueModelWrapper<String>(this.buildPrefix(), lvm, this.buildSuffix());
 	}
 
 	@Override
@@ -107,13 +106,13 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		return CollectionTools.contains(this.extendedListHolder.iterator(), item);
 	}
 
-	private boolean extendedListContainsAll(Collection items) {
+	private boolean extendedListContainsAll(Collection<String> items) {
 		return CollectionTools.containsAll(this.extendedListHolder.iterator(), items);
 	}
 
-	private boolean extendedListContainsAny(Collection items) {
-		List extendedList = CollectionTools.list(this.extendedListHolder.iterator());
-		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
+	private boolean extendedListContainsAny(Collection<String> items) {
+		List<String> extendedList = CollectionTools.list(this.extendedListHolder.iterator());
+		for (Iterator<String> stream = items.iterator(); stream.hasNext(); ) {
 			if (extendedList.contains(stream.next())) {
 				return true;
 			}
@@ -125,20 +124,20 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		return CollectionTools.contains(this.listHolder.iterator(), item);
 	}
 
-	private boolean listContainsAll(Collection items) {
+	private boolean listContainsAll(Collection<String> items) {
 		return CollectionTools.containsAll(this.listHolder.iterator(), items);
 	}
 
-	private boolean listContainsAny(Collection items) {
-		List extendedList = CollectionTools.list(this.listHolder.iterator());
-		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
-			if (extendedList.contains(stream.next())) {
-				return true;
-			}
-		}
-		return false;
-	}
-
+//	private boolean listContainsAny(Collection<String> items) {
+//		List<String> extendedList = CollectionTools.list(this.listHolder.iterator());
+//		for (Iterator<String> stream = items.iterator(); stream.hasNext(); ) {
+//			if (extendedList.contains(stream.next())) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
+//
 	public void testAdd1() {
 		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.buildListener());
 
@@ -157,8 +156,8 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		assertTrue(this.listContains(null));
 	}
 
-	private List buildAddList() {
-		List addList = new ArrayList();
+	private List<String> buildAddList() {
+		List<String> addList = new ArrayList<String>();
 		addList.add("E");
 		addList.add("F");
 		return addList;

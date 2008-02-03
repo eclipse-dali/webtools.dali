@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,12 +27,12 @@ import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
  * by adapting a subject's state change events to a minimum set
  * of list change events.
  */
-public abstract class ListCurator 
-	extends AspectAdapter
-	implements ListValueModel
+public abstract class ListCurator<S extends Model, E>
+	extends AspectAdapter<S>
+	implements ListValueModel<E>
 {
 	/** How the list looked before the last state change */
-	private final ArrayList record;
+	private final ArrayList<E> record;
 
 	/** A listener that listens for the subject's state to change */
 	private final StateChangeListener stateChangeListener;
@@ -43,17 +43,17 @@ public abstract class ListCurator
 	/**
 	 * Construct a Curator for the specified subject.
 	 */
-	protected ListCurator(Model subject) {
-		this(new ReadOnlyPropertyValueModel(subject));
+	protected ListCurator(S subject) {
+		this(new StaticPropertyValueModel<S>(subject));
 	}
 
 	/**
 	 * Construct a curator for the specified subject holder.
 	 * The subject holder cannot be null.
 	 */
-	protected ListCurator(ValueModel subjectHolder) {
+	protected ListCurator(PropertyValueModel<? extends S> subjectHolder) {
 		super(subjectHolder);
-		this.record = new ArrayList();
+		this.record = new ArrayList<E>();
 		this.stateChangeListener = this.buildStateChangeListener();
 	}
 
@@ -78,18 +78,18 @@ public abstract class ListCurator
 
 	// ********** ListValueModel implementation **********
 
-	public Iterator iterator() {
+	public Iterator<E> iterator() {
 		return this.listIterator();
 	}
 
-	public ListIterator listIterator() {
-		return new ReadOnlyListIterator(this.record);
+	public ListIterator<E> listIterator() {
+		return new ReadOnlyListIterator<E>(this.record);
 	}
 
 	/**
 	 * Return the item at the specified index of the subject's list aspect.
 	 */
-	public Object get(int index) {
+	public E get(int index) {
 		return this.record.get(index);
 	}
 
@@ -142,7 +142,7 @@ public abstract class ListCurator
 	 * The subject is not null - add our listener.
 	 */
 	@Override
-	protected void engageNonNullSubject() {
+	protected void engageSubject_() {
 		((Model) this.subject).addStateChangeListener(this.stateChangeListener);
 		// synch our list *after* we start listening to the subject,
 		// since its value might change when a listener is added
@@ -153,7 +153,7 @@ public abstract class ListCurator
 	 * The subject is not null - remove our listener.
 	 */
 	@Override
-	protected void disengageNonNullSubject() {
+	protected void disengageSubject_() {
 		((Model) this.subject).removeStateChangeListener(this.stateChangeListener);
 		// clear out the list when we are not listening to the subject
 		this.record.clear();
@@ -167,24 +167,24 @@ public abstract class ListCurator
 	 * It is intended to be used only when the subject changes or the
 	 * subject's "state" changes (as signified by a state change event).
 	 */
-	protected abstract Iterator iteratorForRecord();
+	protected abstract Iterator<E> iteratorForRecord();
 
 
 	// ********** behavior **********
 
 	void submitInventoryReport() {
-		List newRecord = CollectionTools.list(this.iteratorForRecord());
+		List<E> newRecord = CollectionTools.list(this.iteratorForRecord());
 		int recordIndex = 0;
 
 		// add items from the new record
-		for (Object newItem : newRecord) {
+		for (E newItem : newRecord) {
 			this.inventoryNewItem(recordIndex, newItem);
 			recordIndex++;
 		}
 
 		// clean out items that are no longer in the new record
 		for (recordIndex = 0; recordIndex < this.record.size(); ) {
-			Object item = this.record.get(recordIndex);
+			E item = this.record.get(recordIndex);
 
 			if (newRecord.contains(item)) {
 				recordIndex++;
@@ -194,8 +194,8 @@ public abstract class ListCurator
 		}
 	}
 
-	private void inventoryNewItem(int recordIndex, Object newItem) {
-		List rec = new ArrayList(this.record);
+	private void inventoryNewItem(int recordIndex, E newItem) {
+		List<E> rec = new ArrayList<E>(this.record);
 
 		if ((recordIndex < rec.size()) && rec.get(recordIndex).equals(newItem)) {
 			return;
@@ -208,11 +208,11 @@ public abstract class ListCurator
 		}
 	}
 
-	private void addItemToInventory(int index, Object item) {
+	private void addItemToInventory(int index, E item) {
 		this.addItemToList(index, item, this.record, LIST_VALUES);
 	}
 
-	private void removeItemFromInventory(int index, Object item) {
+	private void removeItemFromInventory(int index, E item) {
 		this.removeItemFromList(index, this.record, LIST_VALUES);
 	}
 

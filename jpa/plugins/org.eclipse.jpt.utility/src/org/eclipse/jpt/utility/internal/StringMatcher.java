@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,19 +33,26 @@ public interface StringMatcher {
 	boolean matches(String string);
 
 
-	StringMatcher NULL_INSTANCE =
-		new StringMatcher() {
-			public void setPatternString(String patternString) {
-				// ignore the pattern string
-			}
-			public boolean matches(String string) {
-				// everything is a match
-				return true;
-			}
-			@Override
-			public String toString() {
-				return "NullStringMatcher";
-			}
-		};
+	final class Null implements StringMatcher {
+		public static final StringMatcher INSTANCE = new Null();
+		public static StringMatcher instance() {
+			return INSTANCE;
+		}
+		// ensure single instance
+		private Null() {
+			super();
+		}
+		public void setPatternString(String patternString) {
+			// ignore the pattern string
+		}
+		public boolean matches(String string) {
+			// everything is a match
+			return true;
+		}
+		@Override
+		public String toString() {
+			return "StringMatcher.Null";
+		}
+	}
 
 }

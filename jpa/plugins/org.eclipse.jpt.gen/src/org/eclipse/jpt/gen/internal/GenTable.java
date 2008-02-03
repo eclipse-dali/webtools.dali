@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -153,10 +153,10 @@ class GenTable {
 	 * but are also part of an "in-scope" foreign key
 	 */
 	public Iterator<Column> readOnlyPrimaryKeyColumns() {
-		return new FilteringIterator<Column>(this.table.primaryKeyColumns()) {
+		return new FilteringIterator<Column, Column>(this.table.primaryKeyColumns()) {
 			@Override
-			protected boolean accept(Object column) {
-				return GenTable.this.foreignKeyColumnsContains((Column) column);
+			protected boolean accept(Column column) {
+				return GenTable.this.foreignKeyColumnsContains(column);
 			}
 		};
 	}
@@ -166,10 +166,10 @@ class GenTable {
 	 * but are NOT part of any "in-scope" foreign key
 	 */
 	Iterator<Column> writablePrimaryKeyColumns() {
-		return new FilteringIterator<Column>(this.table.primaryKeyColumns()) {
+		return new FilteringIterator<Column, Column>(this.table.primaryKeyColumns()) {
 			@Override
-			protected boolean accept(Object column) {
-				return ! GenTable.this.foreignKeyColumnsContains((Column) column);
+			protected boolean accept(Column column) {
+				return ! GenTable.this.foreignKeyColumnsContains(column);
 			}
 		};
 	}
@@ -179,11 +179,11 @@ class GenTable {
 	 * NOR part of any foreign key
 	 */
 	public Iterator<Column> nonPrimaryKeyBasicColumns() {
-		return new FilteringIterator<Column>(this.table.columns()) {
+		return new FilteringIterator<Column, Column>(this.table.columns()) {
 			@Override
-			protected boolean accept(Object column) {
-				return ! (GenTable.this.primaryKeyColumnsContains((Column) column)
-						|| GenTable.this.foreignKeyColumnsContains((Column) column));
+			protected boolean accept(Column column) {
+				return ! (GenTable.this.primaryKeyColumnsContains(column)
+						|| GenTable.this.foreignKeyColumnsContains(column));
 			}
 		};
 	}

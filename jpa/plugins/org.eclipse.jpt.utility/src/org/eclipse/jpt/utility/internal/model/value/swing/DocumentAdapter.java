@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,8 +29,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
 
 /**
  * This javax.swing.text.Document can be used to keep a DocumentListener
@@ -51,7 +51,7 @@ public class DocumentAdapter
 	protected final CombinedListener delegateListener;
 
 	/** A value model on the underlying model string. */
-	protected final PropertyValueModel stringHolder;
+	protected final WritablePropertyValueModel<String> stringHolder;
 
 	/** A listener that allows us to synchronize with changes made to the underlying model string. */
 	protected final PropertyChangeListener stringListener;
@@ -66,7 +66,7 @@ public class DocumentAdapter
 	 * Constructor - the string holder is required.
 	 * Wrap the specified document.
 	 */
-	public DocumentAdapter(PropertyValueModel stringHolder, Document delegate) {
+	public DocumentAdapter(WritablePropertyValueModel<String> stringHolder, Document delegate) {
 		super();
 		if (stringHolder == null || delegate == null) {
 			throw new NullPointerException();
@@ -83,7 +83,7 @@ public class DocumentAdapter
 	 * Constructor - the string holder is required.
 	 * Wrap a plain document.
 	 */
-	public DocumentAdapter(PropertyValueModel stringHolder) {
+	public DocumentAdapter(WritablePropertyValueModel<String> stringHolder) {
 		this(stringHolder, new PlainDocument());
 	}
 
@@ -220,11 +220,11 @@ public class DocumentAdapter
 
 	// ********** queries **********
 
-	public DocumentListener[] getDocumentListeners() {
+	public DocumentListener[] documentListeners() {
 		return this.listenerList.getListeners(DocumentListener.class);
 	}
 
-	public UndoableEditListener[] getUndoableEditListeners() {
+	public UndoableEditListener[] undoableEditListeners() {
 		return this.listenerList.getListeners(UndoableEditListener.class);
 	}
 
@@ -257,19 +257,19 @@ public class DocumentAdapter
 	}
 
 	protected void engageStringHolder() {
-		this.stringHolder.addPropertyChangeListener(ValueModel.VALUE, this.stringListener);
-		this.synchronizeDelegate((String) this.stringHolder.value());
+		this.stringHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.stringListener);
+		this.synchronizeDelegate(this.stringHolder.value());
 	}
 
 	protected void disengageStringHolder() {
-		this.stringHolder.removePropertyChangeListener(ValueModel.VALUE, this.stringListener);
+		this.stringHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.stringListener);
 	}
 
 	protected void delegateChangedUpdate(DocumentEvent e) {
 		// no need to lazy-initialize the event;
 		// we wouldn't get here if we did not have listeners...
 		DocumentEvent ee = new InternalDocumentEvent(this, e);
-		DocumentListener[] listeners = this.getDocumentListeners();
+		DocumentListener[] listeners = this.documentListeners();
 		for (int i = listeners.length; i-- > 0; ) {
 			listeners[i].changedUpdate(ee);
 		}
@@ -279,7 +279,7 @@ public class DocumentAdapter
 		// no need to lazy-initialize the event;
 		// we wouldn't get here if we did not have listeners...
 		DocumentEvent ee = new InternalDocumentEvent(this, e);
-		DocumentListener[] listeners = this.getDocumentListeners();
+		DocumentListener[] listeners = this.documentListeners();
 		for (int i = listeners.length; i-- > 0; ) {
 			listeners[i].insertUpdate(ee);
 		}
@@ -289,7 +289,7 @@ public class DocumentAdapter
 		// no need to lazy-initialize the event;
 		// we wouldn't get here if we did not have listeners...
 		DocumentEvent ee = new InternalDocumentEvent(this, e);
-		DocumentListener[] listeners = this.getDocumentListeners();
+		DocumentListener[] listeners = this.documentListeners();
 		for (int i = listeners.length; i-- > 0; ) {
 			listeners[i].removeUpdate(ee);
 		}
@@ -299,7 +299,7 @@ public class DocumentAdapter
 		// no need to lazy-initialize the event;
 		// we wouldn't get here if we did not have listeners...
 		UndoableEditEvent ee = new UndoableEditEvent(this, e.getEdit());
-		UndoableEditListener[] listeners = this.getUndoableEditListeners();
+		UndoableEditListener[] listeners = this.undoableEditListeners();
 		for (int i = listeners.length; i-- > 0; ) {
 			listeners[i].undoableEditHappened(ee);
 		}

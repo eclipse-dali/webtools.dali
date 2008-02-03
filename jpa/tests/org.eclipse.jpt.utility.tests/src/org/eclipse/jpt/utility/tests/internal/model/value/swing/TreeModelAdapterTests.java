@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.utility.tests.internal.model.value.swing;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -25,6 +24,7 @@ import javax.swing.tree.TreeModel;
 
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.IndentingPrintWriter;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
@@ -39,13 +39,13 @@ import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.NullListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ReadOnlyPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TreeNodeValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.TreeModelAdapter;
 import org.eclipse.jpt.utility.internal.swing.Displayable;
 
@@ -194,7 +194,7 @@ public class TreeModelAdapterTests extends TestCase {
 	}
 
 	public void testTreeStructureChanged() {
-		PropertyValueModel nodeHolder = new SimplePropertyValueModel(this.buildSortedRootNode());
+		WritablePropertyValueModel<TreeNodeValueModel<Object>> nodeHolder = new SimplePropertyValueModel<TreeNodeValueModel<Object>>(this.buildSortedRootNode());
 		TreeModel treeModel = this.buildTreeModel(nodeHolder);
 		this.eventFired = false;
 		treeModel.addTreeModelListener(new TestTreeModelListener() {
@@ -290,7 +290,7 @@ public class TreeModelAdapterTests extends TestCase {
 	public static class TestModel extends AbstractModel {
 
 		// the  parent is immutable; the root's parent is null
-		private TestModel parent;
+		private final TestModel parent;
 
 		// the name is mutable; so I guess it isn't the "primary key" :-)
 		private String name;
@@ -301,13 +301,13 @@ public class TreeModelAdapterTests extends TestCase {
 
 
 		public TestModel(String name) {	// root ctor
-			super();
-			this.name = name;
-			this.children = new HashBag<TestModel>();
+			this(null, name);
 		}
 		private TestModel(TestModel parent, String name) {
-			this(name);
+			super();
 			this.parent = parent;
+			this.name = name;
+			this.children = new HashBag<TestModel>();
 		}
 
 		public TestModel getParent() {
@@ -331,45 +331,28 @@ public class TreeModelAdapterTests extends TestCase {
 		}
 		public TestModel addChild(String childName) {
 			TestModel child = new TestModel(this, childName);
-			this.children.add(child);
-			this.fireItemAdded(CHILDREN_COLLECTION, child);
+			this.addItemToCollection(child, this.children, CHILDREN_COLLECTION);
 			return child;
 		}
 		public TestModel[] addChildren(String[] childNames) {
 			TestModel[] newChildren = new TestModel[childNames.length];
 			for (int i = 0; i < childNames.length; i++) {
-				TestModel child = new TestModel(this, childNames[i]);
-				this.children.add(child);
-				newChildren[i] = child;
+				newChildren[i] = new TestModel(this, childNames[i]);
 			}
-			this.fireItemsAdded(CHILDREN_COLLECTION, Arrays.asList(newChildren));
+			this.addItemsToCollection(newChildren, this.children, CHILDREN_COLLECTION);
 			return newChildren;
 		}
 		public void removeChild(TestModel child) {
-			if (this.children.remove(child)) {
-				this.fireItemRemoved(CHILDREN_COLLECTION, child);
-			}
+			this.removeItemFromCollection(child, this.children, CHILDREN_COLLECTION);
 		}
 		public void removeChildren(TestModel[] testModels) {
-			Collection<TestModel> removedChildren = new ArrayList<TestModel>();
-			for (int i = 0; i < testModels.length; i++) {
-				if (this.children.remove(testModels[i])) {
-					removedChildren.add(testModels[i]);
-				} else {
-					throw new IllegalArgumentException(String.valueOf(testModels[i]));
-				}
-			}
-			if ( ! removedChildren.isEmpty()) {
-				this.fireItemsRemoved(CHILDREN_COLLECTION, removedChildren);
-			}
+			this.removeItemsFromCollection(testModels, this.children, CHILDREN_COLLECTION);
 		}
 		public void clearChildren() {
-			this.children.clear();
-			this.fireCollectionChanged(CHILDREN_COLLECTION);
+			this.clearCollection(this.children, CHILDREN_COLLECTION);
 		}
 		public TestModel childNamed(String childName) {
-			for (Iterator<TestModel> stream = this.children(); stream.hasNext(); ) {
-				TestModel child = stream.next();
+			for (TestModel child : this.children) {
 				if (child.getName().equals(childName)) {
 					return child;
 				}
@@ -386,8 +369,8 @@ public class TreeModelAdapterTests extends TestCase {
 		public void dumpOn(IndentingPrintWriter writer) {
 			writer.println(this);
 			writer.indent();
-			for (Iterator<TestModel> stream = this.children(); stream.hasNext(); ) {
-				stream.next().dumpOn(writer);
+			for (TestModel child : this.children) {
+				child.dumpOn(writer);
 			}
 			writer.undent();
 		}
@@ -402,7 +385,7 @@ public class TreeModelAdapterTests extends TestCase {
 
 		@Override
 		public String toString() {
-			return "TestModel(" + this.name + ")";
+			return StringTools.buildToStringFor(this, this.name);
 		}
 
 	}
@@ -415,18 +398,18 @@ public class TreeModelAdapterTests extends TestCase {
 	 * TestModel's children into a ListValueModel of Nodes whose order is
 	 * determined by subclass implementations.
 	 */
-	public static abstract class TestNode extends AbstractTreeNodeValueModel implements Displayable {
+	public static abstract class TestNode extends AbstractTreeNodeValueModel<Object> implements Displayable {
 		/** the model object wrapped by this node */
-		private TestModel testModel;
+		private final TestModel testModel;
 		/** this node's parent node; null for the root node */
-		private TestNode parent;
+		private final TestNode parent;
 		/** this node's child nodes */
-		private ListValueModel childrenModel;
+		private final ListValueModel<TreeNodeValueModel<Object>> childrenModel;
 		/** a listener that notifies us when the model object's "internal state" changes */
-		private PropertyChangeListener testModelListener;
+		private final PropertyChangeListener testModelListener;
 
 
-		// ********** constructors **********
+		// ********** constructors/initialization **********
 
 		/**
 		 * root node constructor
@@ -440,15 +423,9 @@ public class TreeModelAdapterTests extends TestCase {
 		 */
 		public TestNode(TestNode parent, TestModel testModel) {
 			super();
-			this.initialize(parent, testModel);
-		}
-
-
-		// ********** initialization **********
-
-		@Override
-		protected void initialize() {
-			super.initialize();
+			this.parent = parent;
+			this.testModel = testModel;
+			this.childrenModel = this.buildChildrenModel(testModel);
 			this.testModelListener = this.buildTestModelListener();
 		}
 
@@ -460,26 +437,20 @@ public class TreeModelAdapterTests extends TestCase {
 			};
 		}
 
-		protected void initialize(TestNode p, TestModel tm) {
-			this.parent = p;
-			this.testModel = tm;
-			this.childrenModel = this.buildChildrenModel(tm);
-		}
-
 		/**
 		 * subclasses decide the order of the child nodes
 		 */
-		protected abstract ListValueModel buildChildrenModel(TestModel model);
+		protected abstract ListValueModel<TreeNodeValueModel<Object>> buildChildrenModel(TestModel model);
 
 		/**
 		 * used by subclasses;
 		 * transform the test model children into nodes
 		 */
-		protected ListValueModel buildNodeAdapter(TestModel model) {
-			return new TransformationListValueModelAdapter(this.buildChildrenAdapter(model)) {
+		protected ListValueModel<TreeNodeValueModel<Object>> buildNodeAdapter(TestModel model) {
+			return new TransformationListValueModelAdapter<TestModel, TreeNodeValueModel<Object>>(this.buildChildrenAdapter(model)) {
 				@Override
-				protected Object transformItem(Object item) {
-					return TestNode.this.buildChildNode((TestModel) item);
+				protected TestNode transformItem(TestModel item) {
+					return TestNode.this.buildChildNode(item);
 				}
 			};
 		}
@@ -492,15 +463,15 @@ public class TreeModelAdapterTests extends TestCase {
 		/**
 		 * return a collection value model on the specified model's children
 		 */
-		protected CollectionValueModel buildChildrenAdapter(TestModel model) {
-			return new CollectionAspectAdapter(TestModel.CHILDREN_COLLECTION, model) {
+		protected CollectionValueModel<TestModel> buildChildrenAdapter(TestModel model) {
+			return new CollectionAspectAdapter<TestModel, TestModel>(TestModel.CHILDREN_COLLECTION, model) {
 				@Override
-				protected Iterator iterator_() {
-					return ((TestModel) this.subject).children();
+				protected Iterator<TestModel> iterator_() {
+					return this.subject.children();
 				}
 				@Override
 				protected int size_() {
-					return ((TestModel) this.subject).childrenSize();
+					return this.subject.childrenSize();
 				}
 			};
 		}
@@ -508,25 +479,15 @@ public class TreeModelAdapterTests extends TestCase {
 
 		// ********** TreeNodeValueModel implementation **********
 
-		public Object value() {
+		public TestModel value() {
 			return this.testModel;
 		}
 
-		/**
-		 * this will probably never be called...
-		 */
-		@Override
-		public void setValue(Object value) {
-			Object old = this.testModel;
-			this.testModel = (TestModel) value;
-			this.firePropertyChanged(VALUE, old, this.testModel);
-		}
-
-		public TreeNodeValueModel parent() {
+		public TreeNodeValueModel<Object> parent() {
 			return this.parent;
 		}
 
-		public ListValueModel childrenModel() {
+		public ListValueModel<TreeNodeValueModel<Object>> childrenModel() {
 			return this.childrenModel;
 		}
 
@@ -567,7 +528,8 @@ public class TreeModelAdapterTests extends TestCase {
 		public void dumpOn(IndentingPrintWriter writer) {
 			writer.println(this);
 			writer.indent();
-			for (Iterator stream = this.childrenModel.iterator(); stream.hasNext(); ) {
+			for (Iterator<TreeNodeValueModel<Object>> stream = this.childrenModel.iterator(); stream.hasNext(); ) {
+				// cast to a TestNode (i.e. this won't work with a NameTestNode in the tree)
 				((TestNode) stream.next()).dumpOn(writer);
 			}
 			writer.undent();
@@ -607,10 +569,12 @@ public class TreeModelAdapterTests extends TestCase {
 		 * testing convenience method
 		 */
 		public TestNode childNamed(String name) {
-			for (Iterator stream = this.childrenModel.iterator(); stream.hasNext(); ) {
-				TestNode childNode = (TestNode) stream.next();
-				if (childNode.getTestModel().getName().equals(name)) {
-					return childNode;
+			for (Iterator<TreeNodeValueModel<Object>> stream = this.childrenModel.iterator(); stream.hasNext(); ) {
+				TreeNodeValueModel<Object> childNode = stream.next();
+				if (childNode instanceof TestNode) {
+					if (((TestNode) childNode).getTestModel().getName().equals(name)) {
+						return (TestNode) childNode;
+					}
 				}
 			}
 			throw new IllegalArgumentException("child not found: " + name);
@@ -649,12 +613,12 @@ public class TreeModelAdapterTests extends TestCase {
 		// ********** initialization **********
 		/** the list should be sorted */
 		@Override
-		protected ListValueModel buildChildrenModel(TestModel testModel) {
-			return new SortedListValueModelAdapter(this.buildDisplayStringAdapter(testModel));
+		protected ListValueModel<TreeNodeValueModel<Object>> buildChildrenModel(TestModel testModel) {
+			return new SortedListValueModelAdapter<TreeNodeValueModel<Object>>(this.buildDisplayStringAdapter(testModel));
 		}
 		/** the display string (name) of each node can change */
-		protected ListValueModel buildDisplayStringAdapter(TestModel testModel) {
-			return new ItemPropertyListValueModelAdapter(this.buildNodeAdapter(testModel), DISPLAY_STRING_PROPERTY);
+		protected ListValueModel<TreeNodeValueModel<Object>> buildDisplayStringAdapter(TestModel testModel) {
+			return new ItemPropertyListValueModelAdapter<TreeNodeValueModel<Object>>(this.buildNodeAdapter(testModel), DISPLAY_STRING_PROPERTY);
 		}
 		/** children are also sorted nodes */
 		@Override
@@ -681,7 +645,7 @@ public class TreeModelAdapterTests extends TestCase {
 		// ********** initialization **********
 		/** the list should NOT be sorted */
 		@Override
-		protected ListValueModel buildChildrenModel(TestModel testModel) {
+		protected ListValueModel<TreeNodeValueModel<Object>> buildChildrenModel(TestModel testModel) {
 			return this.buildNodeAdapter(testModel);
 		}
 		/** children are also unsorted nodes */
@@ -710,16 +674,16 @@ public class TreeModelAdapterTests extends TestCase {
 		// ********** initialization **********
 		/** return a different list of children for "node 3" */
 		@Override
-		protected ListValueModel buildChildrenModel(TestModel testModel) {
+		protected ListValueModel<TreeNodeValueModel<Object>> buildChildrenModel(TestModel testModel) {
 			if (testModel.getName().equals("node 3")) {
 				return this.buildSpecialChildrenModel(testModel);
 			}
 			return super.buildChildrenModel(testModel);
 		}
-		protected ListValueModel buildSpecialChildrenModel(TestModel testModel) {
-			Object[] children = new Object[1];
+		protected ListValueModel<TreeNodeValueModel<Object>> buildSpecialChildrenModel(TestModel testModel) {
+			TreeNodeValueModel<Object>[] children = new NameTestNode[1];
 			children[0] = new NameTestNode(this);
-			return new SimpleListValueModel(Arrays.asList(children));
+			return new SimpleListValueModel<TreeNodeValueModel<Object>>(Arrays.asList(children));
 		}
 		/** children are also special nodes */
 		@Override
@@ -730,21 +694,20 @@ public class TreeModelAdapterTests extends TestCase {
 	}
 
 
-	public static class NameTestNode extends AbstractTreeNodeValueModel {
-		private PropertyValueModel nameAdapter;
-		private SpecialTestNode specialNode;		// parent node
-		private PropertyChangeListener nameListener;
+	public static class NameTestNode extends AbstractTreeNodeValueModel<Object> {
+		private final WritablePropertyValueModel<String> nameAdapter;
+		private final SpecialTestNode specialNode;		// parent node
+		private final PropertyChangeListener nameListener;
+		private final ListValueModel<TreeNodeValueModel<Object>> childrenModel;
 
 		// ********** construction/initialization **********
 
 		public NameTestNode(SpecialTestNode specialNode) {
 			super();
-			this.initialize(specialNode);
-		}
-		@Override
-		protected void initialize() {
-			super.initialize();
 			this.nameListener = this.buildNameListener();
+			this.specialNode = specialNode;
+			this.nameAdapter = this.buildNameAdapter();
+			this.childrenModel = new NullListValueModel<TreeNodeValueModel<Object>>();
 		}
 		protected PropertyChangeListener buildNameListener() {
 			return new PropertyChangeListener() {
@@ -753,20 +716,15 @@ public class TreeModelAdapterTests extends TestCase {
 				}
 			};
 		}
-		protected void initialize(SpecialTestNode node) {
-			this.specialNode = node;
-			this.nameAdapter = this.buildNameAdapter();
-		}
-
-		protected PropertyValueModel buildNameAdapter() {
-			return new PropertyAspectAdapter(TestModel.NAME_PROPERTY, this.getTestModel()) {
+		protected WritablePropertyValueModel<String> buildNameAdapter() {
+			return new PropertyAspectAdapter<TestModel, String>(TestModel.NAME_PROPERTY, this.getTestModel()) {
 				@Override
-				protected Object buildValue_() {
-					return ((TestModel) this.subject).getName();
+				protected String buildValue_() {
+					return this.subject.getName();
 				}
 				@Override
-				protected void setValue_(Object value) {
-					((TestModel) this.subject).setName((String) value);
+				protected void setValue_(String value) {
+					this.subject.setName(value);
 				}
 			};
 		}
@@ -777,29 +735,29 @@ public class TreeModelAdapterTests extends TestCase {
 
 		// ********** TreeNodeValueModel implementation **********
 
-		public Object value() {
+		public String value() {
 			return this.nameAdapter.value();
 		}
 		@Override
 		public void setValue(Object value) {
-			this.nameAdapter.setValue(value);
+			this.nameAdapter.setValue((String) value);
 		}
-		public TreeNodeValueModel parent() {
+		public TreeNodeValueModel<Object> parent() {
 			return this.specialNode;
 		}
-		public ListValueModel childrenModel() {
-			return NullListValueModel.instance();
+		public ListValueModel<TreeNodeValueModel<Object>> childrenModel() {
+			return this.childrenModel;
 		}
 
 		// ********** AbstractTreeNodeValueModel implementation **********
 
 		@Override
 		protected void engageValue() {
-			this.nameAdapter.addPropertyChangeListener(ValueModel.VALUE, this.nameListener);
+			this.nameAdapter.addPropertyChangeListener(PropertyValueModel.VALUE, this.nameListener);
 		}
 		@Override
 		protected void disengageValue() {
-			this.nameAdapter.removePropertyChangeListener(ValueModel.VALUE, this.nameListener);
+			this.nameAdapter.removePropertyChangeListener(PropertyValueModel.VALUE, this.nameListener);
 		}
 
 		// ********** behavior **********
@@ -810,12 +768,12 @@ public class TreeModelAdapterTests extends TestCase {
 		}
 	}
 
-	private TreeModel buildTreeModel(TreeNodeValueModel root) {
-		return this.buildTreeModel(new ReadOnlyPropertyValueModel(root));
+	private TreeModel buildTreeModel(TestNode root) {
+		return this.buildTreeModel(new StaticPropertyValueModel<TreeNodeValueModel<Object>>(root));
 	}
 
-	private TreeModel buildTreeModel(PropertyValueModel rootHolder) {
-		return new TreeModelAdapter(rootHolder) {
+	private TreeModel buildTreeModel(PropertyValueModel<TreeNodeValueModel<Object>> rootHolder) {
+		return new TreeModelAdapter<Object>(rootHolder) {
 			@Override
 			protected ListChangeListener buildChildrenListener() {
 				return this.buildChildrenListener_();

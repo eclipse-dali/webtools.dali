@@ -10,7 +10,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
@@ -37,27 +37,25 @@ import org.eclipse.swt.widgets.Text;
 public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 {
 	private XmlPersistentAttribute unmappedPersistentAttribute;
-			
 	private Text attributeText;
-	
 	private ComboViewer mappingCombo;
-		
-	
+
 	public AddPersistentAttributeToXmlAndMapDialog(Shell parentShell, XmlPersistentAttribute unmappedPersistentAttribute) {
 		super(parentShell);
 		this.unmappedPersistentAttribute = unmappedPersistentAttribute;
 		setTitle(JptUiMessages.AddPersistentAttributeDialog_title);
 	}
-	
+
+	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite dialogArea = (Composite) super.createDialogArea(parent);
-		
+
 		Composite composite = new Composite(dialogArea, SWT.NULL);
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		composite.setLayout(new GridLayout());
-		
+
 		createLabel(composite, 1, JptUiMessages.AddPersistentAttributeDialog_attributeLabel);
-			
+
 		attributeText = createText(composite, 1);
 //		attributeText.addModifyListener(
 //				new ModifyListener() {
@@ -68,14 +66,14 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 //			);
 		attributeText.setText(unmappedPersistentAttribute.getName());
 		attributeText.setEditable(false);
-		
+
 		createLabel(composite, 1, JptUiMessages.AddPersistentClassDialog_mappingLabel);
-		
+
 		mappingCombo = new ComboViewer(createCombo(composite, 1));
 		mappingCombo.setContentProvider(
 			new IStructuredContentProvider() {
 				public void dispose() {}
-				
+
 				public Object[] getElements(Object inputElement) {
 					return new Object[] {
 						BasicMappingUiProvider.instance(),
@@ -90,7 +88,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 						VersionMappingUiProvider.instance()
 					};
 				}
-				
+
 				public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}
 			});
 		mappingCombo.setLabelProvider(
@@ -107,18 +105,18 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 		});
 		mappingCombo.setInput("FOO");
 		mappingCombo.getCombo().select(0);  // select Basic to begin
-		
+
 		// TODO - F1 Help
 		// PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IDaliHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
-		
+
 		//getButton(IDialogConstants.OK_ID).setEnabled(false);  // disabled to start
-		applyDialogFont(dialogArea);		
-		
+		applyDialogFont(dialogArea);
+
 		validate();
-		
+
 		return dialogArea;
 	}
-	
+
 	private Label createLabel(Composite container, int span, String text) {
 		Label label = new Label(container, SWT.NONE);
 		label.setText(text);
@@ -127,7 +125,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 		label.setLayoutData(gd);
 		return label;
 	}
-	
+
 	private Text createText(Composite container, int span) {
 		Text text = new Text(container, SWT.BORDER | SWT.SINGLE);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -136,7 +134,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 		text.setLayoutData(gd);
 		return text;
 	}
-	
+
 	private Combo createCombo(Composite container, int span) {
 		Combo combo = new Combo(container, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -144,25 +142,25 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 		combo.setLayoutData(gd);
 		return combo;
 	}
-	
+
 	public String getAttributeName() {
 		return attributeText.getText();
 	}
-	
+
 	public String getMappingKey() {
 		StructuredSelection selection = (StructuredSelection) mappingCombo.getSelection();
 		return (selection.isEmpty()) ? null : ((IAttributeMappingUiProvider) selection.getFirstElement()).attributeMappingKey();
 	}
-	
+
 	private void validate() {
 //		if (entityMappings.containsPersistentType(type)) {
 //			updateStatus(
 //				new Status(
-//					IStatus.WARNING, JptUiPlugin.PLUGIN_ID, 
+//					IStatus.WARNING, JptUiPlugin.PLUGIN_ID,
 //					JptUiMessages.AddPersistentClassDialog_duplicateClassWarning));
 //			return;
 //		}
-//		
+//
 		String mappingKey = getMappingKey();
 		if (mappingKey == null) {
 			updateStatus(
@@ -171,10 +169,10 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 					JptUiMessages.AddPersistentAttributeDialog_noMappingKeyError));
 			return;
 		}
-		
+
 		updateStatus(Status.OK_STATUS);
 	}
-	
+
 	@Override
 	protected void okPressed() {
 		unmappedPersistentAttribute.setSpecifiedMappingKey(getMappingKey());

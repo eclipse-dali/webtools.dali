@@ -11,6 +11,9 @@ package org.eclipse.jpt.ui.internal;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jpt.core.internal.IJpaPlatform;
+import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class JptUiPlugin extends AbstractUIPlugin
@@ -43,15 +46,12 @@ public class JptUiPlugin extends AbstractUIPlugin
 	}
 	
 	
-	public JptUiPlugin() {
-		super();
-		INSTANCE = this;
-	}
+	// **************** Image API **********************************************
 	
 	/**
 	 * This gets a .gif from the icons folder.
 	 */
-	public ImageDescriptor getImageDescriptor(String key) {
+	public static ImageDescriptor getImageDescriptor(String key) {
 		if (! key.startsWith("icons/")) {
 			key = "icons/" + key;
 		}
@@ -59,5 +59,29 @@ public class JptUiPlugin extends AbstractUIPlugin
 			key = key + ".gif";
 		}
 		return imageDescriptorFromPlugin(PLUGIN_ID, key);
+	}
+	
+	/**
+	 * This returns an image for a .gif from the icons folder
+	 */
+	public static Image getImage(String key) {
+		ImageDescriptor desc = getImageDescriptor(key);
+		return (desc == null) ? null : desc.createImage();
+	}
+	
+	
+	// **************** Construction *******************************************
+	
+	public JptUiPlugin() {
+		super();
+		INSTANCE = this;
+	}
+	
+	
+	/**
+	 * Return the JPA platform UI corresponding to the given JPA platform
+	 */
+	public IJpaPlatformUi jpaPlatformUi(IJpaPlatform jpaPlatform) {
+		return JpaPlatformUiRegistry.instance().jpaPlatform(jpaPlatform.getId());
 	}
 }

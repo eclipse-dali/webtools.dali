@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -117,7 +117,6 @@ public class ListChangeEvent extends ChangeEvent {
 	 * @param index The index at which the items were added to or removed from the list.
 	 * @param items The items that were added to or removed from the list.
 	 */
-	@SuppressWarnings("unchecked")
 	public ListChangeEvent(Model source, String listName, int index, List<?> items) {
 		this(source, listName, index, items, Collections.emptyList(), -1, -1);
 	}
@@ -130,7 +129,6 @@ public class ListChangeEvent extends ChangeEvent {
 	 * @param targetIndex The index to which the items were moved.
 	 * @param sourceIndex The index from which the items were moved.
 	 */
-	@SuppressWarnings("unchecked")
 	public ListChangeEvent(Model source, String listName, int targetIndex, int sourceIndex, int length) {
 		this(source, listName, targetIndex, Collections.emptyList(), Collections.emptyList(), sourceIndex, length);
 	}
@@ -141,7 +139,6 @@ public class ListChangeEvent extends ChangeEvent {
 	 * @param source The object on which the event initially occurred.
 	 * @param listName The programmatic name of the list that was changed.
 	 */
-	@SuppressWarnings("unchecked")
 	public ListChangeEvent(Model source, String listName) {
 		this(source, listName, -1, Collections.emptyList(), Collections.emptyList(), -1, -1);
 	}

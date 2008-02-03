@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,16 +16,16 @@ import javax.swing.text.Document;
 
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.DocumentAdapter;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class DocumentAdapterTests extends TestCase {
-	private PropertyValueModel stringHolder;
+	private WritablePropertyValueModel<String> stringHolder;
 	Document documentAdapter;
 	boolean eventFired;
 
@@ -36,7 +36,7 @@ public class DocumentAdapterTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.stringHolder = new SimplePropertyValueModel("0123456789");
+		this.stringHolder = new SimplePropertyValueModel<String>("0123456789");
 		this.documentAdapter = new DocumentAdapter(this.stringHolder) {
 			@Override
 			protected PropertyChangeListener buildStringListener() {
@@ -115,28 +115,28 @@ public class DocumentAdapterTests extends TestCase {
 	}
 
 	public void testHasListeners() throws Exception {
-		SimplePropertyValueModel localStringHolder = (SimplePropertyValueModel) this.stringHolder;
-		assertFalse(localStringHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		SimplePropertyValueModel<String> localStringHolder = (SimplePropertyValueModel<String>) this.stringHolder;
+		assertFalse(localStringHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.documentAdapter);
 
 		DocumentListener listener = new TestDocumentListener();
 		this.documentAdapter.addDocumentListener(listener);
-		assertTrue(localStringHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(localStringHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasListeners(this.documentAdapter);
 
 		this.documentAdapter.removeDocumentListener(listener);
-		assertFalse(localStringHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertFalse(localStringHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.documentAdapter);
 	}
 
 	private void verifyHasNoListeners(Object document) throws Exception {
-		Object delegate = ClassTools.getFieldValue(document, "delegate");
+		Object delegate = ClassTools.fieldValue(document, "delegate");
 		Object[] listeners = (Object[]) ClassTools.executeMethod(delegate, "getDocumentListeners");
 		assertEquals(0, listeners.length);
 	}
 
 	private void verifyHasListeners(Object document) throws Exception {
-		Object delegate = ClassTools.getFieldValue(document, "delegate");
+		Object delegate = ClassTools.fieldValue(document, "delegate");
 		Object[] listeners = (Object[]) ClassTools.executeMethod(delegate, "getDocumentListeners");
 		assertFalse(listeners.length == 0);
 	}

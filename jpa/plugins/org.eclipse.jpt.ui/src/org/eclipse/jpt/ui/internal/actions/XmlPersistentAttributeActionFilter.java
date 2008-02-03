@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.actions;
 
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.ui.IActionFilter;
 
 public class XmlPersistentAttributeActionFilter 
@@ -19,6 +19,7 @@ public class XmlPersistentAttributeActionFilter
 	public static final String IS_VIRTUAL = "isVirtual";
 	
 	
+	@Override
 	public boolean testAttribute(Object target, String name, String value) {
 		if (! IS_VIRTUAL.equals(name)) {
 			return super.testAttribute(target, name, value);

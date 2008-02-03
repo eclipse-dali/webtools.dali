@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,17 +15,17 @@ import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationWritablePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class TransformationPropertyValueModelTests extends TestCase {
-	private PropertyValueModel objectHolder;
+	private WritablePropertyValueModel<String> objectHolder;
 	PropertyChangeEvent event;
 
-	private PropertyValueModel transformationObjectHolder;
+	private WritablePropertyValueModel<String> transformationObjectHolder;
 	PropertyChangeEvent transformationEvent;
 
 	public TransformationPropertyValueModelTests(String name) {
@@ -35,17 +35,17 @@ public class TransformationPropertyValueModelTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.objectHolder = new SimplePropertyValueModel("foo");
-		this.transformationObjectHolder = new TransformationPropertyValueModel(this.objectHolder, this.buildTransformer());
+		this.objectHolder = new SimplePropertyValueModel<String>("foo");
+		this.transformationObjectHolder = new TransformationWritablePropertyValueModel<String, String>(this.objectHolder, this.buildTransformer());
 	}
 
-	private BidiTransformer buildTransformer() {
-		return new BidiTransformer() {
-			public Object transform(Object o) {
-				return (o == null) ? null : ((String) o).toUpperCase();
+	private BidiTransformer<String, String> buildTransformer() {
+		return new BidiTransformer<String, String>() {
+			public String transform(String s) {
+				return (s == null) ? null : s.toUpperCase();
 			}
-			public Object reverseTransform(Object o) {
-				return (o == null) ? null : ((String) o).toLowerCase();
+			public String reverseTransform(String s) {
+				return (s == null) ? null : s.toLowerCase();
 			}
 		};
 	}
@@ -96,17 +96,17 @@ public class TransformationPropertyValueModelTests extends TestCase {
 	}
 
 	public void testLazyListening() {
-		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 		PropertyChangeListener listener = this.buildTransformationListener();
 		this.transformationObjectHolder.addPropertyChangeListener(listener);
-		assertTrue(((AbstractModel) this.objectHolder).hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) this.objectHolder).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.transformationObjectHolder.removePropertyChangeListener(listener);
-		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 
-		this.transformationObjectHolder.addPropertyChangeListener(ValueModel.VALUE, listener);
-		assertTrue(((AbstractModel) this.objectHolder).hasAnyPropertyChangeListeners(ValueModel.VALUE));
-		this.transformationObjectHolder.removePropertyChangeListener(ValueModel.VALUE, listener);
-		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(ValueModel.VALUE));
+		this.transformationObjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
+		assertTrue(((AbstractModel) this.objectHolder).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+		this.transformationObjectHolder.removePropertyChangeListener(PropertyValueModel.VALUE, listener);
+		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 	}
 
 	public void testPropertyChange1() {
@@ -116,8 +116,8 @@ public class TransformationPropertyValueModelTests extends TestCase {
 	}
 
 	public void testPropertyChange2() {
-		this.objectHolder.addPropertyChangeListener(ValueModel.VALUE, this.buildListener());
-		this.transformationObjectHolder.addPropertyChangeListener(ValueModel.VALUE, this.buildTransformationListener());
+		this.objectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.buildListener());
+		this.transformationObjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.buildTransformationListener());
 		this.verifyPropertyChanges();
 	}
 
@@ -177,7 +177,7 @@ public class TransformationPropertyValueModelTests extends TestCase {
 
 	private void verifyEvent(PropertyChangeEvent e, Object source, Object oldValue, Object newValue) {
 		assertEquals(source, e.getSource());
-		assertEquals(ValueModel.VALUE, e.propertyName());
+		assertEquals(PropertyValueModel.VALUE, e.propertyName());
 		assertEquals(oldValue, e.oldValue());
 		assertEquals(newValue, e.newValue());
 	}

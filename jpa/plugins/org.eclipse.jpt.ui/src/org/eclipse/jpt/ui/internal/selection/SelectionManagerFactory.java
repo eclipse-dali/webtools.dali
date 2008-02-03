@@ -3,9 +3,9 @@
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
- *  
+ *
  *  Contributors: Oracle. - initial API and implementation
- *  
+ *
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.selection;
 
@@ -16,23 +16,23 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
-public class SelectionManagerFactory 
+public class SelectionManagerFactory
 {
 	private static SelectionManagerFactory INSTANCE;
-	
+
 	private static Object MUTEX = new Object();
-	
-	
+
+
 	/**
-	 * Each <code>IWorkbenchWindow</code> has its own <code>SelectionManager</code> 
-	 * to track the selection events in the <code>IWorkbenchWindow</code>. All 
-	 * <code>ISelectionListener</code>s in the same <code>IWorkbenchWindow</code> 
-	 * share the same <code>SelectionManager</code>.
-	 * 
-	 * @return The <code>SelectionManager</code> associated with the current 
+	 * Each <code>IWorkbenchWindow</code> has its own <code>JpaSelectionManager</code>
+	 * to track the selection events in the <code>IWorkbenchWindow</code>. All
+	 * <code>ISelectionListener</code>s in the same <code>IWorkbenchWindow</code>
+	 * share the same <code>JpaSelectionManager</code>.
+	 *
+	 * @return The <code>JpaSelectionManager</code> associated with the current
 	 * <code>IWorkbenchWindow</code>
 	 */
-	public static ISelectionManager getSelectionManager(IWorkbenchWindow window) {
+	public static IJpaSelectionManager getSelectionManager(IWorkbenchWindow window) {
 		if (INSTANCE == null) {
 			// this is thread safe for now. you never know whats comming
 			synchronized (MUTEX) {
@@ -46,54 +46,54 @@ public class SelectionManagerFactory
 		}
 		return INSTANCE.internalGetSelectionManager(window);
 	}
-	
-	
-	private Map managers;
-	
+
+
+	private Map<IWorkbenchWindow, JpaSelectionManager> managers;
+
 	private WindowListener windowListener;
-	
-	
+
+
 	private SelectionManagerFactory() {
-		managers = new HashMap();
+		managers = new HashMap<IWorkbenchWindow, JpaSelectionManager>();
 		windowListener = new WindowListener();
 	}
-	
+
 	private void init() {
 		IWorkbench workbench = PlatformUI.getWorkbench();
 		workbench.addWindowListener(windowListener);
 	}
-	
+
 	/**
-	 * Returns the SelectionManager for the IWorkbenchWindow.
+	 * Returns the JpaSelectionManager for the IWorkbenchWindow.
 	 * Creates a new one if none exists yet.
 	 */
-	private SelectionManager internalGetSelectionManager(IWorkbenchWindow window) {
+	private JpaSelectionManager internalGetSelectionManager(IWorkbenchWindow window) {
 		if (window == null) {
-			throw new IllegalArgumentException(window.toString());
+			throw new IllegalArgumentException("The IWorkbenchWindow cannot be null");
 		}
-		
+
 		if (! managers.containsKey(window)) {
-			SelectionManager manager = new SelectionManager();
+			JpaSelectionManager manager = new JpaSelectionManager();
 			this.managers.put(window, manager);
 			manager.init(window);
 		}
-		
-		return (SelectionManager) managers.get(window);
+
+		return managers.get(window);
 	}
-	
-	
+
+
 	private class WindowListener implements IWindowListener
 	{
 		public void windowOpened(IWorkbenchWindow aWindow) {}
-		
+
 		public void windowClosed(IWorkbenchWindow aWindow) {
-			SelectionManager manager = internalGetSelectionManager(aWindow);
+			JpaSelectionManager manager = internalGetSelectionManager(aWindow);
 			manager.dispose();
 			managers.remove(aWindow);
 		}
-		
+
 		public void windowActivated(IWorkbenchWindow aWindow) {}
-		
+
 		public void windowDeactivated(IWorkbenchWindow aWindow) {}
 	}
 }

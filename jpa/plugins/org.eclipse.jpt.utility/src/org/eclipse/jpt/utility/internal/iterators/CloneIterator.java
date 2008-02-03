@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 public class CloneIterator<E>
 	implements Iterator<E>
 {
-	private final Iterator<E> nestedIterator;
+	private final Iterator<Object> nestedIterator;
 	private E current;
 	private final Mutator<E> mutator;
 	private boolean removeAllowed;
@@ -56,15 +56,10 @@ public class CloneIterator<E>
 	 */
 	public CloneIterator(Collection<? extends E> c, Mutator<E> mutator) {
 		super();
-		this.nestedIterator = new ArrayIterator<E>(buildArray(c));
+		this.nestedIterator = new ArrayIterator<Object>(c.toArray());
 		this.current = null;
 		this.mutator = mutator;
 		this.removeAllowed = false;
-	}
-
-	@SuppressWarnings("unchecked")
-	private static <T> T[] buildArray(Collection<? extends T> c) {
-		return (T[]) c.toArray();
 	}
 
 
@@ -75,7 +70,7 @@ public class CloneIterator<E>
 	}
 
 	public E next() {
-		this.current = this.nestedIterator.next();
+		this.current = this.nestedNext();
 		this.removeAllowed = true;
 		return this.current;
 	}
@@ -90,6 +85,17 @@ public class CloneIterator<E>
 
 
 	// ********** internal methods **********
+
+	/**
+	 * The collection passed in during construction held Es,
+	 * so this cast is not a problem. We need this cast because
+	 * all the elements of the original collection were copied into
+	 * an object array (Object[]).
+	 */
+	@SuppressWarnings("unchecked")
+	protected E nestedNext() {
+		return (E) this.nestedIterator.next();
+	}
 
 	/**
 	 * Remove the specified element from the original collection.

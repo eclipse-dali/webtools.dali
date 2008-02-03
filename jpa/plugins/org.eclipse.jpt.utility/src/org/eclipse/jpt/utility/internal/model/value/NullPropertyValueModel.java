@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,37 +9,32 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
-/**
- * A read-only property value model for when you
- * don't need to support a value.
- */
-public final class NullPropertyValueModel
-	extends AbstractReadOnlyPropertyValueModel
-{
+import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.model.AbstractModel;
 
+/**
+ * A property value model for when you
+ * don't need to support a value.
+ * 
+ * We don't use a singleton because we hold on to listeners.
+ */
+public class NullPropertyValueModel<T>
+	extends AbstractModel
+	implements PropertyValueModel<T>
+{
 	private static final long serialVersionUID = 1L;
 
-	// singleton
-	private static final NullPropertyValueModel INSTANCE = new NullPropertyValueModel();
-
 	/**
-	 * Return the singleton.
+	 * Default constructor.
 	 */
-	public static synchronized PropertyValueModel instance() {
-		return INSTANCE;
-	}
-
-	/**
-	 * Ensure non-instantiability.
-	 */
-	private NullPropertyValueModel() {
+	public NullPropertyValueModel() {
 		super();
 	}
 	
 
 	// ********** PropertyValueModel implementation **********
 
-	public Object value() {
+	public T value() {
 		return null;
 	}
 
@@ -48,14 +43,7 @@ public final class NullPropertyValueModel
 
     @Override
 	public String toString() {
-		return "NullPropertyValueModel";
-	}
-
-	/**
-	 * Serializable singleton support
-	 */
-	private Object readResolve() {
-		return instance();
+		return ClassTools.shortClassNameForObject(this);
 	}
 
 }

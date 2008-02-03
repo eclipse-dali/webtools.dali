@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,12 +20,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.jdt.core.IJavaModelStatusConstants;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.core.internal.content.java.mappings.JPA;
+import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.ForeignKey;
 import org.eclipse.jpt.db.internal.Table;
@@ -241,6 +242,8 @@ public class EntityGenerator {
 		}
 	}
 
+	// TODO if the field's type is java.util.Date, it needs @Temporal(DATE)
+	// TODO if the primary key is auto-generated, the field must be an integral type
 	private void printReadOnlyPrimaryKeyFieldOn(Column column, EntitySourceWriter pw, boolean printIdAnnotation) {
 		String fieldName = this.genTable.fieldNameFor(column);
 		if (this.config.fieldAccessType()) {
@@ -255,7 +258,7 @@ public class EntityGenerator {
 			}
 		}
 		pw.printVisibility(this.config.fieldVisibility());
-		pw.printTypeDeclaration(column.javaTypeDeclaration());
+		pw.printTypeDeclaration(column.primaryKeyJavaTypeDeclaration());
 		pw.print(' ');
 		pw.print(fieldName);
 		pw.print(';');
@@ -287,6 +290,8 @@ public class EntityGenerator {
 		}
 	}
 
+	// TODO if the field's type is java.util.Date, it needs @Temporal(DATE)
+	// TODO if the primary key is auto-generated, the field must be an integral type
 	private void printWritablePrimaryKeyFieldOn(Column column, EntitySourceWriter pw, boolean printIdAnnotation) {
 		String fieldName = this.genTable.fieldNameFor(column);
 		if (this.config.fieldAccessType()) {
@@ -299,7 +304,7 @@ public class EntityGenerator {
 			}
 		}
 		pw.printVisibility(this.config.fieldVisibility());
-		pw.printTypeDeclaration(column.javaTypeDeclaration());
+		pw.printTypeDeclaration(column.primaryKeyJavaTypeDeclaration());
 		pw.print(' ');
 		pw.print(fieldName);
 		pw.print(';');
@@ -664,6 +669,8 @@ public class EntityGenerator {
 		}
 	}
 
+	// TODO if the property's type is java.util.Date, it needs @Temporal(DATE)
+	// TODO if the primary key is auto-generated, the property must be an integral type
 	private void printReadOnlyPrimaryKeyGetterAndSetterOn(Column column, EntitySourceWriter pw, boolean printIdAnnotation) {
 		String propertyName = this.genTable.fieldNameFor(column);
 		if (this.config.propertyAccessType()) {
@@ -678,7 +685,7 @@ public class EntityGenerator {
 			}
 		}
 
-		pw.printGetterAndSetter(propertyName, column.javaTypeDeclaration(), this.config.methodVisibility());
+		pw.printGetterAndSetter(propertyName, column.primaryKeyJavaTypeDeclaration(), this.config.methodVisibility());
 	}
 
 	private void printEntityWritablePrimaryKeyGettersAndSettersOn(EntitySourceWriter pw) {
@@ -691,6 +698,8 @@ public class EntityGenerator {
 		}
 	}
 
+	// TODO if the property's type is java.util.Date, it needs @Temporal(DATE)
+	// TODO if the primary key is auto-generated, the property must be an integral type
 	private void printWritablePrimaryKeyGetterAndSetterOn(Column column, EntitySourceWriter pw, boolean printIdAnnotation) {
 		String propertyName = this.genTable.fieldNameFor(column);
 		if (this.config.propertyAccessType()) {
@@ -703,7 +712,7 @@ public class EntityGenerator {
 			}
 		}
 
-		pw.printGetterAndSetter(propertyName, column.javaTypeDeclaration(), this.config.methodVisibility());
+		pw.printGetterAndSetter(propertyName, column.primaryKeyJavaTypeDeclaration(), this.config.methodVisibility());
 	}
 
 	private void printEntityNonPrimaryKeyBasicGettersAndSettersOn(EntitySourceWriter pw) {
@@ -844,7 +853,7 @@ public class EntityGenerator {
 	private void printIdFieldOn(Column column, EntitySourceWriter pw) {
 		String fieldName = this.genTable.fieldNameFor(column);
 		pw.printVisibility(this.config.fieldVisibility());
-		pw.printTypeDeclaration(column.javaTypeDeclaration());
+		pw.printTypeDeclaration(column.primaryKeyJavaTypeDeclaration());
 		pw.print(' ');
 		pw.print(fieldName);
 		pw.print(';');
@@ -867,7 +876,7 @@ public class EntityGenerator {
 
 	private void printIdGetterAndSetterOn(Column column, EntitySourceWriter pw) {
 		String propertyName = this.genTable.fieldNameFor(column);
-		pw.printGetterAndSetter(propertyName, column.javaTypeDeclaration(), this.config.methodVisibility());
+		pw.printGetterAndSetter(propertyName, column.primaryKeyJavaTypeDeclaration(), this.config.methodVisibility());
 	}
 
 	private void printEqualsMethodOn(String className, Iterator<Column> columns, EntitySourceWriter pw) {
@@ -971,7 +980,7 @@ public class EntityGenerator {
 		String fieldName = this.genTable.fieldNameFor(column);
 		JavaType javaType = column.javaType();
 		if (javaType.isPrimitive()) {
-			this.printPrimitiveHashCodeClauseOn(javaType.getElementTypeName(), fieldName, pw);
+			this.printPrimitiveHashCodeClauseOn(javaType.elementTypeName(), fieldName, pw);
 		} else {
 			this.printReferenceHashCodeClauseOn(fieldName, pw);
 		}
@@ -1179,11 +1188,10 @@ public class EntityGenerator {
 		}
 
 		public Iterator<Map.Entry<String, String>> importEntries() {
-			return new FilteringIterator<Map.Entry<String, String>>(this.sortedImportEntries()) {
+			return new FilteringIterator<Map.Entry<String, String>, Map.Entry<String, String>>(this.sortedImportEntries()) {
 				@Override
-				protected boolean accept(Object next) {
-					@SuppressWarnings("unchecked")
-					String pkg = ((Map.Entry<String, String>) next).getValue();
+				protected boolean accept(Map.Entry<String, String> next) {
+					String pkg = next.getValue();
 					if (pkg.equals("")
 							|| pkg.equals("java.lang")
 							|| pkg.equals(EntitySourceWriter.this.packageName)) {

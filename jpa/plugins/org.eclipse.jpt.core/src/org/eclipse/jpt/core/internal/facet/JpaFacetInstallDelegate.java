@@ -23,6 +23,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jst.j2ee.classpathdep.ClasspathDependencyUtil;
 import org.eclipse.jst.j2ee.classpathdep.IClasspathDependencyConstants;
+import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IDelegate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -114,9 +115,8 @@ public class JpaFacetInstallDelegate
 		};
 	}
 
-	@SuppressWarnings("restriction")
 	private boolean projectIsStandalone(IProject project) {
-		return org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities.isStandaloneProject(project);
+		return J2EEProjectUtilities.isStandaloneProject(project);
 	}
 
 	private IProgressMonitor nonNullMonitor(IProgressMonitor monitor) {

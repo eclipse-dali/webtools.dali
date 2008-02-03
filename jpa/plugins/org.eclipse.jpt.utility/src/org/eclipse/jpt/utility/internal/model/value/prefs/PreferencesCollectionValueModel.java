@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,21 +22,21 @@ import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.AspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ReadOnlyPropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 
 /**
  * This adapter wraps a Preferences node and converts its preferences into a
  * CollectionValueModel of PreferencePropertyValueModels. It listens for
  * "preference" changes and converts them into VALUE collection changes.
  */
-public class PreferencesCollectionValueModel
-	extends AspectAdapter
-	implements CollectionValueModel
+public class PreferencesCollectionValueModel<P>
+	extends AspectAdapter<Preferences>
+	implements CollectionValueModel<PreferencePropertyValueModel<P>>
 {
 
 	/** Cache the current preferences, stored in models and keyed by name. */
-	protected final HashMap<String, PreferencePropertyValueModel> preferences;
+	protected final HashMap<String, PreferencePropertyValueModel<P>> preferences;
 
 	/** A listener that listens to the preferences node for added or removed preferences. */
 	protected final PreferenceChangeListener preferenceChangeListener;
@@ -48,15 +48,15 @@ public class PreferencesCollectionValueModel
 	 * Construct an adapter for the specified preferences node.
 	 */
 	public PreferencesCollectionValueModel(Preferences preferences) {
-		this(new ReadOnlyPropertyValueModel(preferences));
+		this(new StaticPropertyValueModel<Preferences>(preferences));
 	}
 
 	/**
 	 * Construct an adapter for the specified preferences node.
 	 */
-	public PreferencesCollectionValueModel(ValueModel preferencesHolder) {
+	public PreferencesCollectionValueModel(PropertyValueModel<? extends Preferences> preferencesHolder) {
 		super(preferencesHolder);
-		this.preferences = new HashMap<String, PreferencePropertyValueModel>();
+		this.preferences = new HashMap<String, PreferencePropertyValueModel<P>>();
 		this.preferenceChangeListener = this.buildPreferenceChangeListener();
 	}
 
@@ -85,7 +85,7 @@ public class PreferencesCollectionValueModel
 	/**
 	 * Return an iterator on the preference models.
 	 */
-	public synchronized Iterator<PreferencePropertyValueModel> iterator() {
+	public synchronized Iterator<PreferencePropertyValueModel<P>> iterator() {
 		return this.preferences.values().iterator();
 	}
 
@@ -122,18 +122,18 @@ public class PreferencesCollectionValueModel
 	}
 
     @Override
-	protected void engageNonNullSubject() {
-		((Preferences) this.subject).addPreferenceChangeListener(this.preferenceChangeListener);
-		for (Iterator<PreferencePropertyValueModel> stream = this.preferenceModels(); stream.hasNext(); ) {
-			PreferencePropertyValueModel preferenceModel = stream.next();
-			this.preferences.put(preferenceModel.getKey(), preferenceModel);
+	protected void engageSubject_() {
+		this.subject.addPreferenceChangeListener(this.preferenceChangeListener);
+		for (Iterator<PreferencePropertyValueModel<P>> stream = this.preferenceModels(); stream.hasNext(); ) {
+			PreferencePropertyValueModel<P> preferenceModel = stream.next();
+			this.preferences.put(preferenceModel.key(), preferenceModel);
 		}
 	}
 
     @Override
-	protected void disengageNonNullSubject() {
+	protected void disengageSubject_() {
 		try {
-			((Preferences) this.subject).removePreferenceChangeListener(this.preferenceChangeListener);
+			this.subject.removePreferenceChangeListener(this.preferenceChangeListener);
 		} catch (IllegalStateException ex) {
 			// for some odd reason, we are not allowed to remove a listener from a "dead"
 			// preferences node; so handle the exception that gets thrown here
@@ -160,16 +160,16 @@ public class PreferencesCollectionValueModel
 	 * Return an iterator on the preference models.
 	 * At this point we can be sure that the subject is not null.
 	 */
-	protected Iterator<PreferencePropertyValueModel> preferenceModels() {
+	protected Iterator<PreferencePropertyValueModel<P>> preferenceModels() {
 		String[] keys;
 		try {
-			keys = ((Preferences) this.subject).keys();
+			keys = this.subject.keys();
 		} catch (BackingStoreException ex) {
 			throw new RuntimeException(ex);
 		}
-		return new TransformationIterator<String, PreferencePropertyValueModel>(new ArrayIterator<String>(keys)) {
+		return new TransformationIterator<String, PreferencePropertyValueModel<P>>(new ArrayIterator<String>(keys)) {
 			@Override
-			protected PreferencePropertyValueModel transform(String key) {
+			protected PreferencePropertyValueModel<P> transform(String key) {
 				return PreferencesCollectionValueModel.this.buildPreferenceModel(key);
 			}
 		};
@@ -179,18 +179,18 @@ public class PreferencesCollectionValueModel
 	 * Override this method to tweak the model used to wrap the
 	 * specified preference (e.g. to customize the model's converter).
 	 */
-	protected PreferencePropertyValueModel buildPreferenceModel(String key) {
-		return new PreferencePropertyValueModel(this.subjectHolder, key);
+	protected PreferencePropertyValueModel<P> buildPreferenceModel(String key) {
+		return new PreferencePropertyValueModel<P>(this.subjectHolder, key);
 	}
 
 	protected synchronized void preferenceChanged(String key, String newValue) {
 		if (newValue == null) {
 			// a preference was removed
-			PreferencePropertyValueModel preferenceModel = this.preferences.remove(key);
+			PreferencePropertyValueModel<P> preferenceModel = this.preferences.remove(key);
 			this.fireItemRemoved(VALUES, preferenceModel);
 		} else if ( ! this.preferences.containsKey(key)) {
 			// a preference was added
-			PreferencePropertyValueModel preferenceModel = this.buildPreferenceModel(key);
+			PreferencePropertyValueModel<P> preferenceModel = this.buildPreferenceModel(key);
 			this.preferences.put(key, preferenceModel);
 			this.fireItemAdded(VALUES, preferenceModel);
 		} else {

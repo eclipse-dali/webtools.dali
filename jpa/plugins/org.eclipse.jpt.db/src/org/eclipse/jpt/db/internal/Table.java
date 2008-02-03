@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -149,6 +149,10 @@ public final class Table extends DTPWrapper implements Comparable<Table> {
 	 */
 	Table table(org.eclipse.datatools.modelbase.sql.tables.Table table) {
 		return this.schema.table(table);
+	}
+
+	public Database database() {
+		return this.schema.database();
 	}
 
 	// ***** columns

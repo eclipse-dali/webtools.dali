@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -20,6 +22,8 @@ import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 
 /**
  * This extension of AspectAdapter provides CollectionChange support.
+ * This allows us to convert a set of one or more collections into
+ * a single collection, VALUES.
  * 
  * The typical subclass will override the following methods:
  * #iterator_()
@@ -36,14 +40,15 @@ import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
  *     override this method only if returning a zero when the
  *     subject is null is unacceptable
  */
-public abstract class CollectionAspectAdapter 
-	extends AspectAdapter 
-	implements CollectionValueModel 
+public abstract class CollectionAspectAdapter<S extends Model, E>
+	extends AspectAdapter<S>
+	implements CollectionValueModel<E>
 {
 	/**
-	 * The name of the subject's collection that we use for the value.
+	 * The name of the subject's collections that we use for the value.
 	 */
-	protected final String collectionName;
+	protected final String[] collectionNames;
+		protected static final String[] EMPTY_COLLECTION_NAMES = new String[0];
 
 	/** A listener that listens to the subject's collection aspect. */
 	protected final CollectionChangeListener collectionChangeListener;
@@ -55,8 +60,34 @@ public abstract class CollectionAspectAdapter
 	 * Construct a CollectionAspectAdapter for the specified subject
 	 * and collection.
 	 */
-	protected CollectionAspectAdapter(String collectionName, Model subject) {
-		this(new ReadOnlyPropertyValueModel(subject), collectionName);
+	protected CollectionAspectAdapter(String collectionName, S subject) {
+		this(new String[] {collectionName}, subject);
+	}
+
+	/**
+	 * Construct a CollectionAspectAdapter for the specified subject
+	 * and collections.
+	 */
+	protected CollectionAspectAdapter(String[] collectionNames, S subject) {
+		this(new StaticPropertyValueModel<S>(subject), collectionNames);
+	}
+
+	/**
+	 * Construct a CollectionAspectAdapter for the specified subject holder
+	 * and collections.
+	 */
+	protected CollectionAspectAdapter(PropertyValueModel<? extends S> subjectHolder, String... collectionNames) {
+		super(subjectHolder);
+		this.collectionNames = collectionNames;
+		this.collectionChangeListener = this.buildCollectionChangeListener();
+	}
+
+	/**
+	 * Construct a CollectionAspectAdapter for the specified subject holder
+	 * and collections.
+	 */
+	protected CollectionAspectAdapter(PropertyValueModel<? extends S> subjectHolder, Collection<String> collectionNames) {
+		this(subjectHolder, collectionNames.toArray(new String[collectionNames.size()]));
 	}
 
 	/**
@@ -65,18 +96,8 @@ public abstract class CollectionAspectAdapter
 	 * change for a particular subject; but the subject will change, resulting in
 	 * a new collection.
 	 */
-	protected CollectionAspectAdapter(ValueModel subjectHolder) {
-		this(subjectHolder, null);
-	}
-
-	/**
-	 * Construct a CollectionAspectAdapter for the specified subject holder
-	 * and collection.
-	 */
-	protected CollectionAspectAdapter(ValueModel subjectHolder, String collectionName) {
-		super(subjectHolder);
-		this.collectionName = collectionName;
-		this.collectionChangeListener = this.buildCollectionChangeListener();
+	protected CollectionAspectAdapter(PropertyValueModel<? extends S> subjectHolder) {
+		this(subjectHolder, EMPTY_COLLECTION_NAMES);
 	}
 
 
@@ -102,7 +123,7 @@ public abstract class CollectionAspectAdapter
 			}
 			@Override
 			public String toString() {
-				return "collection change listener: " + CollectionAspectAdapter.this.collectionName;
+				return "collection change listener: " + Arrays.asList(CollectionAspectAdapter.this.collectionNames);
 			}
 		};
 	}
@@ -113,8 +134,8 @@ public abstract class CollectionAspectAdapter
 	/**
 	 * Return the elements of the subject's collection aspect.
 	 */
-	public Iterator iterator() {
-		return (this.subject == null) ? EmptyIterator.instance() : this.iterator_();
+	public Iterator<E> iterator() {
+		return (this.subject == null) ? EmptyIterator.<E>instance() : this.iterator_();
 	}
 
 	/**
@@ -122,7 +143,7 @@ public abstract class CollectionAspectAdapter
 	 * At this point we can be sure that the subject is not null.
 	 * @see #iterator()
 	 */
-	protected Iterator iterator_() {
+	protected Iterator<E> iterator_() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -171,22 +192,27 @@ public abstract class CollectionAspectAdapter
 	}
 
 	@Override
-	protected void engageNonNullSubject() {
-		if (this.collectionName != null) {
-			((Model) this.subject).addCollectionChangeListener(this.collectionName, this.collectionChangeListener);
+	protected void engageSubject_() {
+    	for (String collectionName : this.collectionNames) {
+			((Model) this.subject).addCollectionChangeListener(collectionName, this.collectionChangeListener);
 		}
 	}
 
 	@Override
-	protected void disengageNonNullSubject() {
-		if (this.collectionName != null) {
-			((Model) this.subject).removeCollectionChangeListener(this.collectionName, this.collectionChangeListener);
+	protected void disengageSubject_() {
+    	for (String collectionName : this.collectionNames) {
+			((Model) this.subject).removeCollectionChangeListener(collectionName, this.collectionChangeListener);
 		}
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.collectionName);
+		for (int i = 0; i < this.collectionNames.length; i++) {
+			if (i != 0) {
+				sb.append(", ");
+			}
+			sb.append(this.collectionNames[i]);
+		}
 	}
 
 

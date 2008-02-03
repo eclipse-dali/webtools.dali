@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,16 +15,16 @@ import javax.swing.event.ChangeListener;
 
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.SpinnerModelAdapter;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class SpinnerModelAdapterTests extends TestCase {
-	private PropertyValueModel valueHolder;
+	private WritablePropertyValueModel<Object> valueHolder;
 	SpinnerModel spinnerModelAdapter;
 	boolean eventFired;
 
@@ -35,7 +35,7 @@ public class SpinnerModelAdapterTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.valueHolder = new SimplePropertyValueModel(new Integer(0));
+		this.valueHolder = new SimplePropertyValueModel<Object>(new Integer(0));
 		this.spinnerModelAdapter = new SpinnerModelAdapter(this.valueHolder) {
 			@Override
 			protected PropertyChangeListener buildValueListener() {
@@ -80,28 +80,28 @@ public class SpinnerModelAdapterTests extends TestCase {
 	}
 
 	public void testHasListeners() throws Exception {
-		SimplePropertyValueModel localValueHolder = (SimplePropertyValueModel) this.valueHolder;
-		assertFalse(localValueHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		SimplePropertyValueModel<Object> localValueHolder = (SimplePropertyValueModel<Object>) this.valueHolder;
+		assertFalse(localValueHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.spinnerModelAdapter);
 
 		ChangeListener listener = new TestChangeListener();
 		this.spinnerModelAdapter.addChangeListener(listener);
-		assertTrue(localValueHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(localValueHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasListeners(this.spinnerModelAdapter);
 
 		this.spinnerModelAdapter.removeChangeListener(listener);
-		assertFalse(localValueHolder.hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertFalse(localValueHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		this.verifyHasNoListeners(this.spinnerModelAdapter);
 	}
 
 	private void verifyHasNoListeners(Object adapter) throws Exception {
-		Object delegate = ClassTools.getFieldValue(adapter, "delegate");
+		Object delegate = ClassTools.fieldValue(adapter, "delegate");
 		Object[] listeners = (Object[]) ClassTools.executeMethod(delegate, "getChangeListeners");
 		assertEquals(0, listeners.length);
 	}
 
 	private void verifyHasListeners(Object adapter) throws Exception {
-		Object delegate = ClassTools.getFieldValue(adapter, "delegate");
+		Object delegate = ClassTools.fieldValue(adapter, "delegate");
 		Object[] listeners = (Object[]) ClassTools.executeMethod(delegate, "getChangeListeners");
 		assertFalse(listeners.length == 0);
 	}

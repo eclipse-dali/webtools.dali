@@ -1,35 +1,35 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.mappings.properties;
 
-import org.eclipse.emf.common.command.CommandStack;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.ui.internal.IJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.IJpaComposite;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
-import org.eclipse.swt.SWT;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
+@SuppressWarnings("nls")
 public class NullAttributeMappingUiProvider
-	implements IAttributeMappingUiProvider
+	implements IAttributeMappingUiProvider<IAttributeMapping>
 {
-	
+
 	// singleton
 	private static final NullAttributeMappingUiProvider INSTANCE = new NullAttributeMappingUiProvider();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static IAttributeMappingUiProvider instance() {
+	public static IAttributeMappingUiProvider<IAttributeMapping> instance() {
 		return INSTANCE;
 	}
 
@@ -41,36 +41,47 @@ public class NullAttributeMappingUiProvider
 	}
 
 
+	/*
+	 * (non-Javadoc)
+	 */
 	public String attributeMappingKey() {
 		return null;
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 */
 	public String label() {
 		return "";
 	}
-	
-	public IJpaComposite buildAttributeMappingComposite(IJpaUiFactory factory, Composite parent, CommandStack commandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		return new NullComposite(parent);
+
+	/*
+	 * (non-Javadoc)
+	 */
+	public IJpaComposite<IAttributeMapping> buildAttributeMappingComposite(
+			IJpaUiFactory factory,
+			PropertyValueModel<IAttributeMapping> subjectHolder,
+			Composite parent,
+			TabbedPropertySheetWidgetFactory widgetFactory) {
+
+		return new NullComposite(subjectHolder, parent, widgetFactory);
 	}
-	
-	
-	public static class NullComposite extends Composite 
-		implements IJpaComposite 
-	{
-		NullComposite(Composite parent) {
-			super(parent, SWT.NONE);
+
+	public static class NullComposite extends AbstractFormPane<IAttributeMapping>
+	                                  implements IJpaComposite<IAttributeMapping>{
+
+		NullComposite(PropertyValueModel<IAttributeMapping> subjectHolder,
+		              Composite parent,
+		              TabbedPropertySheetWidgetFactory widgetFactory) {
+
+			super(subjectHolder, parent, widgetFactory);
 		}
-		
-		public void populate(EObject model) {
-			// no op
-		}
-		
+
+		/*
+		 * (non-Javadoc)
+		 */
 		@Override
-		public void dispose() {
-			super.dispose();
+		protected void initializeLayout(Composite container) {
 		}
-		public Control getControl() {
-			return this;
-		}
-	}	
+	}
 }

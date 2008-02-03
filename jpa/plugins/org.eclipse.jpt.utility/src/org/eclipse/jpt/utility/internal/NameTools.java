@@ -122,7 +122,7 @@ public final class NameTools {
 	 */
 	public static String buildQualifiedDatabaseObjectName(String catalog, String schema, String name) {
 		if (name == null) {
-			throw new IllegalArgumentException();
+			return null;
 		}
 		if ((catalog == null) && (schema == null)) {
 			return name;

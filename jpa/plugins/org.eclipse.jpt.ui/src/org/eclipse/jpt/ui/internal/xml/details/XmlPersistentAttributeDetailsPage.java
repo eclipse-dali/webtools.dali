@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -13,18 +13,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jpt.core.internal.IJpaContentNode;
-import org.eclipse.jpt.core.internal.IPersistentAttribute;
-import org.eclipse.jpt.core.internal.IPersistentType;
-import org.eclipse.jpt.core.internal.content.orm.OrmPackage;
-import org.eclipse.jpt.core.internal.content.orm.XmlAttributeMapping;
-import org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute;
-import org.eclipse.jpt.core.internal.content.orm.XmlPersistentType;
+import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
+import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
+import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.BasicMappingUiProvider;
@@ -37,182 +30,161 @@ import org.eclipse.jpt.ui.internal.java.mappings.properties.OneToManyMappingUiPr
 import org.eclipse.jpt.ui.internal.java.mappings.properties.OneToOneMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.TransientMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.VersionMappingUiProvider;
+import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public class XmlPersistentAttributeDetailsPage
-	extends PersistentAttributeDetailsPage 
+/**
+ * The default implementation of the details page used for the XML persistent
+ * attribute.
+ *
+ * @see IPersistentAttribute
+ *
+ * @version 2.0
+ * @since 2.0
+ */
+@SuppressWarnings("nls")
+public class XmlPersistentAttributeDetailsPage extends PersistentAttributeDetailsPage<XmlPersistentAttribute>
 {
+	private List<IAttributeMappingUiProvider<? extends IAttributeMapping>> attributeMappingUiProviders;
 	private XmlJavaAttributeChooser javaAttributeChooser;
-	
-	private Adapter persistentTypeListener;
-	
-	private IPersistentType persistentType;
-	
-	private List<IAttributeMappingUiProvider> attributeMappingUiProviders;
 
-	public XmlPersistentAttributeDetailsPage(Composite parent, TabbedPropertySheetWidgetFactory widgetFactory) {
+	/**
+	 * Creates a new <code>XmlPersistentAttributeDetailsPage</code>.
+	 *
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
+	public XmlPersistentAttributeDetailsPage(Composite parent,
+	                                         TabbedPropertySheetWidgetFactory widgetFactory) {
+
 		super(parent, widgetFactory);
-		buildPersistentTypeListener();
-	}
-	
-	private void buildPersistentTypeListener() {
-		this.persistentTypeListener = new AdapterImpl() {
-			@Override
-			public void notifyChanged(Notification notification) {
-				persistentTypeChanged(notification);
-			}
-		};
-	}
-	
-	void persistentTypeChanged(Notification notification) {
-		if (notification.getFeatureID(XmlPersistentType.class) == 
-			OrmPackage.XML_PERSISTENT_TYPE__SPECIFIED_ATTRIBUTE_MAPPINGS) {
-			Display.getDefault().asyncExec(
-				new Runnable() {
-					public void run() {
-						updateEnbabledState();
-					}
-				});
-		}
 	}
 
-	@Override
-	public ListIterator<IAttributeMappingUiProvider> attributeMappingUiProviders() {
-		if (this.attributeMappingUiProviders == null) {
-			this.attributeMappingUiProviders = new ArrayList<IAttributeMappingUiProvider>();
-			this.addAttributeMappingUiProvidersTo(this.attributeMappingUiProviders);
-		}
-		return new CloneListIterator<IAttributeMappingUiProvider>(this.attributeMappingUiProviders);
-
-	}
-
-	protected void addAttributeMappingUiProvidersTo(List<IAttributeMappingUiProvider> providers) {
+	protected void addAttributeMappingUiProvidersTo(List<IAttributeMappingUiProvider<? extends IAttributeMapping>> providers) {
 		providers.add(BasicMappingUiProvider.instance());
 		providers.add(EmbeddedMappingUiProvider.instance());
 		providers.add(EmbeddedIdMappingUiProvider.instance());
-		providers.add(IdMappingUiProvider.instance());			
-		providers.add(ManyToManyMappingUiProvider.instance());			
-		providers.add(ManyToOneMappingUiProvider.instance());			
-		providers.add(OneToManyMappingUiProvider.instance());			
+		providers.add(IdMappingUiProvider.instance());
+		providers.add(ManyToManyMappingUiProvider.instance());
+		providers.add(ManyToOneMappingUiProvider.instance());
+		providers.add(OneToManyMappingUiProvider.instance());
 		providers.add(OneToOneMappingUiProvider.instance());
 		providers.add(TransientMappingUiProvider.instance());
 		providers.add(VersionMappingUiProvider.instance());
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected ListIterator<IAttributeMappingUiProvider> defaultAttributeMappingUiProviders() {
-		return EmptyListIterator.instance();
+	public ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> attributeMappingUiProviders() {
+		if (this.attributeMappingUiProviders == null) {
+			this.attributeMappingUiProviders = new ArrayList<IAttributeMappingUiProvider<? extends IAttributeMapping>>();
+			this.addAttributeMappingUiProvidersTo(this.attributeMappingUiProviders);
+		}
+
+		return new CloneListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>>(
+			this.attributeMappingUiProviders
+		);
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected IAttributeMappingUiProvider defaultAttributeMappingUiProvider(String key) {
-		throw new UnsupportedOperationException("Xml attributeMappings should not be default");
-	}
-	
-	@Override
-	//bug 192035 - no default mapping option in xml
-	protected IAttributeMappingUiProvider[] attributeMappingUiProvidersFor(IPersistentAttribute persistentAttribute) {
+	@SuppressWarnings("unchecked")
+	protected IAttributeMappingUiProvider<? extends IAttributeMapping>[] attributeMappingUiProvidersFor(IPersistentAttribute persistentAttribute) {
+		//bug 192035 - no default mapping option in xml
 		return CollectionTools.array(attributeMappingUiProviders(), new IAttributeMappingUiProvider[CollectionTools.size(attributeMappingUiProviders())]);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected void initializeLayout(Composite composite) {
-		composite.setLayout(new GridLayout(2, false));
-		
-		GridData gridData;
-		
-		CommonWidgets.buildJavaAttributeNameLabel(composite, getWidgetFactory());
-		
-		this.javaAttributeChooser = CommonWidgets.buildJavaAttributeChooser(composite, this.commandStack, getWidgetFactory());
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		this.javaAttributeChooser.getControl().setLayoutData(gridData);
+	protected IAttributeMappingUiProvider<IAttributeMapping> defaultAttributeMappingUiProvider(String key) {
+		throw new UnsupportedOperationException("Xml attributeMappings should not be default");
+	}
 
-		
-		buildMappingLabel(composite);
-		
-		ComboViewer mappingCombo = buildMappingCombo(composite);
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.BEGINNING;
-		gridData.grabExcessHorizontalSpace = true;
-		mappingCombo.getCombo().setLayoutData(gridData);
-		
-		PageBook book = buildMappingPageBook(composite);
-		gridData = new GridData();
-		gridData.horizontalAlignment = SWT.FILL;
-		gridData.verticalAlignment = SWT.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace = true;
-		gridData.horizontalSpan = 2;
-		book.setLayoutData(gridData);
-	}
-	
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected void engageListeners() {
-		super.engageListeners();
-		if (getAttribute() != null) {
-			this.persistentType = getAttribute().typeMapping().getPersistentType();
-			this.persistentType.eAdapters().add(this.persistentTypeListener);
-		}
+	protected ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> defaultAttributeMappingUiProviders() {
+		return EmptyListIterator.instance();
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected void disengageListeners() {
-		if (this.persistentType != null) {
-			this.persistentType.eAdapters().remove(this.persistentTypeListener);
-			this.persistentType = null;
-		}
-		super.disengageListeners();
+	public void doDispose() {
+		this.javaAttributeChooser.dispose();
+		super.doDispose();
 	}
-	
-	@Override
-	protected void doPopulate(IJpaContentNode persistentAttributeNode) {
-		super.doPopulate(persistentAttributeNode);
-		if (persistentAttributeNode == null) {
-			this.javaAttributeChooser.populate(null);
-		}
-		else {
-			XmlAttributeMapping mapping = ((XmlPersistentAttribute) persistentAttributeNode).getMapping();
-			this.javaAttributeChooser.populate(mapping);
-			updateEnbabledState();
-		}
-	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
 		this.javaAttributeChooser.populate();
 		updateEnbabledState();
 	}
-	
+
+	private PropertyValueModel<XmlAttributeMapping<? extends AttributeMapping>> getMappingHolder() {
+		return new TransformationPropertyValueModel<IPersistentAttribute, XmlAttributeMapping<? extends AttributeMapping>>(getSubjectHolder()) {
+			@Override
+			@SuppressWarnings("unchecked")
+			protected XmlAttributeMapping<? extends AttributeMapping> transform_(IPersistentAttribute value) {
+				return (XmlAttributeMapping<? extends AttributeMapping>) value.getMapping();
+			}
+		};
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	public void dispose() {
-		this.javaAttributeChooser.dispose();
-		super.dispose();
+	protected void initializeLayout(Composite container) {
+
+		this.javaAttributeChooser = new XmlJavaAttributeChooser(
+			this,
+			getMappingHolder(),
+			container
+		);
+
+		// Entity type widgets
+		buildLabeledComposite(
+			container,
+			JptUiXmlMessages.PersistentAttributePage_javaAttributeLabel,
+			buildMappingCombo(container).getControl()
+		);
+
+		// Properties pane
+		PageBook attributePane = buildMappingPageBook(container);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment       = SWT.FILL;
+		gridData.verticalAlignment         = SWT.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace   = true;
+
+		attributePane.setLayoutData(gridData);
 	}
-	
-	public void updateEnbabledState() {
-		if (getAttribute() == null || getAttribute().eContainer() == null) {
-			return;
-		}
-		boolean enabled = !((XmlPersistentAttribute) getAttribute()).isVirtual();
-		updateEnabledState(enabled, getControl());
-	}
-	
+
 	public void updateEnabledState(boolean enabled, Control control) {
 		control.setEnabled(enabled);
 		if (control instanceof Composite) {
@@ -220,5 +192,13 @@ public class XmlPersistentAttributeDetailsPage
 				updateEnabledState(enabled, i.next());
 			}
 		}
+	}
+
+	public void updateEnbabledState() {
+		if (subject() == null || subject().parent() == null) {
+			return;
+		}
+		boolean enabled = !subject().isVirtual();
+		updateEnabledState(enabled, getControl());
 	}
 }

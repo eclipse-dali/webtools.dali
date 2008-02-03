@@ -11,19 +11,19 @@ package org.eclipse.jpt.core.internal.jdtutility;
 
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMember;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.IAnnotationBinding;
 import org.eclipse.jdt.core.dom.IBinding;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.Name;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jdt.core.dom.TypeLiteral;
 
 public class JDTTools {
 
@@ -79,15 +79,6 @@ public class JDTTools {
 		parser.setResolveBindings(resolveBindings);
 		return (CompilationUnit) parser.createAST(null);
 	}
-	
-	public static IType findType(String packageName, String qualifiedTypeName, IJavaProject javaProject) {
-		try {
-			return javaProject.findType(packageName, qualifiedTypeName.replace('$', '.'));
-		} catch (JavaModelException ex) {
-			JptCorePlugin.log(ex);
-			return null;
-		}
-	}
 
 	public static String resolveEnum(Expression expression) {
 		if (expression == null) {
@@ -112,6 +103,28 @@ public class JDTTools {
 		}
 		IVariableBinding variableBinding = (IVariableBinding) binding;
 		return variableBinding.getType().getQualifiedName() + "." + variableBinding.getName();
+	}
+	
+	public static String resolveAnnotation(Annotation node) {
+		IAnnotationBinding annotationBinding = node.resolveAnnotationBinding();
+		if (annotationBinding == null) {
+			return null;
+		}
+		ITypeBinding annotationTypeBinding = annotationBinding.getAnnotationType();
+		if (annotationTypeBinding == null) {
+			return null;
+		}
+		return annotationTypeBinding.getQualifiedName();
+	}
+	
+	public static String resolveFullyQualifiedName(Expression expression) {
+		if (expression.getNodeType() == ASTNode.TYPE_LITERAL) {
+			ITypeBinding resolvedTypeBinding = ((TypeLiteral) expression).getType().resolveBinding();
+			if (resolvedTypeBinding != null) {
+				return resolvedTypeBinding.getQualifiedName();
+			}
+		}
+		return null;
 	}
 
 }

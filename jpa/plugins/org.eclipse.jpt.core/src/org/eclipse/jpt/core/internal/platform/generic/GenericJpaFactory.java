@@ -9,8 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform.generic;
 
-import org.eclipse.jpt.core.internal.platform.BaseJpaFactory;
+import org.eclipse.jpt.core.internal.platform.base.BaseJpaFactory;
 
-public class GenericJpaFactory extends BaseJpaFactory {
-	// nothing for now... just take everything from the abstract superclass
+public class GenericJpaFactory extends BaseJpaFactory 
+{
+	public GenericJpaFactory() {
+		super();
+	}
 }

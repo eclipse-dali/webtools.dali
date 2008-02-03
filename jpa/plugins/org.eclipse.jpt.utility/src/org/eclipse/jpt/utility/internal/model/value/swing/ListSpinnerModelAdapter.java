@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,8 +19,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
 
 /**
  * This javax.swing.SpinnerListModel can be used to keep a ChangeListener
@@ -51,7 +51,7 @@ public class ListSpinnerModelAdapter
 	private final Object defaultValue;
 
 	/** A value model on the underlying value. */
-	private final PropertyValueModel valueHolder;
+	private final WritablePropertyValueModel<Object> valueHolder;
 
 	/** A listener that allows us to synchronize with changes made to the underlying value. */
 	private final PropertyChangeListener valueChangeListener;
@@ -63,14 +63,14 @@ public class ListSpinnerModelAdapter
 	 * Constructor - the value holder is required.
 	 * Use the model value itself as the default spinner value.
 	 */
-	public ListSpinnerModelAdapter(PropertyValueModel valueHolder) {
+	public ListSpinnerModelAdapter(WritablePropertyValueModel<Object> valueHolder) {
 		this(valueHolder, valueHolder.value());
 	}
 
 	/**
 	 * Constructor - the value holder is required.
 	 */
-	public ListSpinnerModelAdapter(PropertyValueModel valueHolder, Object defaultValue) {
+	public ListSpinnerModelAdapter(WritablePropertyValueModel<Object> valueHolder, Object defaultValue) {
 		this(valueHolder, new Object[] {defaultValue}, defaultValue);
 	}
 
@@ -78,14 +78,14 @@ public class ListSpinnerModelAdapter
 	 * Constructor - the value holder is required.
 	 * Use the first item in the list of values as the default spinner value.
 	 */
-	public ListSpinnerModelAdapter(PropertyValueModel valueHolder, Object[] values) {
+	public ListSpinnerModelAdapter(WritablePropertyValueModel<Object> valueHolder, Object[] values) {
 		this(valueHolder, values, values[0]);
 	}
 
 	/**
 	 * Constructor - the value holder is required.
 	 */
-	public ListSpinnerModelAdapter(PropertyValueModel valueHolder, Object[] values, Object defaultValue) {
+	public ListSpinnerModelAdapter(WritablePropertyValueModel<Object> valueHolder, Object[] values, Object defaultValue) {
 		this(valueHolder, Arrays.asList(values), defaultValue);
 	}
 
@@ -93,14 +93,14 @@ public class ListSpinnerModelAdapter
 	 * Constructor - the value holder is required.
 	 * Use the first item in the list of values as the default spinner value.
 	 */
-	public ListSpinnerModelAdapter(PropertyValueModel valueHolder, List values) {
+	public ListSpinnerModelAdapter(WritablePropertyValueModel<Object> valueHolder, List<Object> values) {
 		this(valueHolder, values, values.get(0));
 	}
 
 	/**
 	 * Constructor - the value holder is required.
 	 */
-	public ListSpinnerModelAdapter(PropertyValueModel valueHolder, List values, Object defaultValue) {
+	public ListSpinnerModelAdapter(WritablePropertyValueModel<Object> valueHolder, List<Object> values, Object defaultValue) {
 		super(values);
 		this.valueHolder = valueHolder;
 		this.valueChangeListener = this.buildValueChangeListener();
@@ -163,7 +163,7 @@ public class ListSpinnerModelAdapter
     @Override
 	public void addChangeListener(ChangeListener listener) {
 		if (this.getChangeListeners().length == 0) {
-			this.valueHolder.addPropertyChangeListener(ValueModel.VALUE, this.valueChangeListener);
+			this.valueHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.valueChangeListener);
 			this.synchronize(this.valueHolder.value());
 		}
 		super.addChangeListener(listener);
@@ -176,7 +176,7 @@ public class ListSpinnerModelAdapter
 	public void removeChangeListener(ChangeListener listener) {
 		super.removeChangeListener(listener);
 		if (this.getChangeListeners().length == 0) {
-			this.valueHolder.removePropertyChangeListener(ValueModel.VALUE, this.valueChangeListener);
+			this.valueHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.valueChangeListener);
 		}
 	}
 

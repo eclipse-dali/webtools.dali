@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.TreeSet;
 
 import org.eclipse.jpt.utility.internal.Bag;
@@ -23,7 +22,6 @@ import org.eclipse.jpt.utility.internal.ReverseComparator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
-import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
@@ -32,9 +30,9 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class SortedListValueModelAdapterTests extends TestCase {
-	private SortedListValueModelAdapter adapter;
-	private SimpleCollectionValueModel wrappedCollectionHolder;
-	private Collection wrappedCollection;
+	private SortedListValueModelAdapter<String> adapter;
+	private SimpleCollectionValueModel<String> wrappedCollectionHolder;
+	private Collection<String> wrappedCollection;
 
 	
 	public SortedListValueModelAdapterTests(String name) {
@@ -44,9 +42,9 @@ public class SortedListValueModelAdapterTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.wrappedCollection = new HashBag();
-		this.wrappedCollectionHolder = new SimpleCollectionValueModel(this.wrappedCollection);
-		this.adapter = new SortedListValueModelAdapter(this.wrappedCollectionHolder);
+		this.wrappedCollection = new HashBag<String>();
+		this.wrappedCollectionHolder = new SimpleCollectionValueModel<String>(this.wrappedCollection);
+		this.adapter = new SortedListValueModelAdapter<String>(this.wrappedCollectionHolder);
 	}
 
 	@Override
@@ -55,21 +53,23 @@ public class SortedListValueModelAdapterTests extends TestCase {
 		super.tearDown();
 	}
 
-	private void verifyList(Collection expected, ListValueModel actual) {
+	private void verifyList(Collection<String> expected, ListValueModel<String> actual) {
 		this.verifyList(expected, actual, null);
 	}
 
-	private void verifyList(Collection expected, ListValueModel actual, Comparator comparator) {
-		Collection sortedSet = new TreeSet(comparator);
+	private void verifyList(Collection<String> expected, ListValueModel<String> actual, Comparator<String> comparator) {
+		Collection<String> sortedSet = new TreeSet<String>(comparator);
 		sortedSet.addAll(expected);
-		List expectedList = new ArrayList(sortedSet);
-		List actualList = CollectionTools.list(actual.iterator());
+		List<String> expectedList = new ArrayList<String>(sortedSet);
+		List<String> actualList = CollectionTools.list(actual.iterator());
 		assertEquals(expectedList, actualList);
 	}
 
 	public void testAdd() {
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListChangeListener() {
+			@Override
 			public void itemsAdded(ListChangeEvent e) {/* OK */}
+			@Override
 			public void itemsReplaced(ListChangeEvent e) {/* OK */}
 		});
 		this.wrappedCollectionHolder.add("foo");
@@ -80,8 +80,8 @@ public class SortedListValueModelAdapterTests extends TestCase {
 	}
 
 	public void testAddItem() {
-		List synchList = new SynchronizedList(this.adapter);
-		Bag synchCollection = new SynchronizedBag(this.wrappedCollectionHolder);
+		List<String> synchList = new CoordinatedList<String>(this.adapter);
+		Bag<String> synchCollection = new CoordinatedBag<String>(this.wrappedCollectionHolder);
 		this.wrappedCollectionHolder.add("foo");
 		assertTrue(this.wrappedCollection.contains("foo"));
 		this.wrappedCollectionHolder.add("bar");
@@ -97,8 +97,8 @@ public class SortedListValueModelAdapterTests extends TestCase {
 	}
 
 	public void testRemoveItem() {
-		List synchList = new SynchronizedList(this.adapter);
-		Bag synchCollection = new SynchronizedBag(this.wrappedCollectionHolder);
+		List<String> synchList = new CoordinatedList<String>(this.adapter);
+		Bag<String> synchCollection = new CoordinatedBag<String>(this.wrappedCollectionHolder);
 		this.wrappedCollectionHolder.add("foo");
 		this.wrappedCollectionHolder.add("bar");
 		this.wrappedCollectionHolder.add("baz");
@@ -118,8 +118,11 @@ public class SortedListValueModelAdapterTests extends TestCase {
 
 	public void testListSynch() {
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListChangeListener() {
+			@Override
 			public void itemsAdded(ListChangeEvent e) {/* OK */}
+			@Override
 			public void itemsRemoved(ListChangeEvent e) {/* OK */}
+			@Override
 			public void itemsReplaced(ListChangeEvent e) {/* OK */}
 		});
 		this.wrappedCollectionHolder.add("foo");
@@ -138,8 +141,8 @@ public class SortedListValueModelAdapterTests extends TestCase {
 	}
 
 	public void testSetComparator() {
-		List synchList = new SynchronizedList(this.adapter);
-		Bag synchCollection = new SynchronizedBag(this.wrappedCollectionHolder);
+		List<String> synchList = new CoordinatedList<String>(this.adapter);
+		Bag<String> synchCollection = new CoordinatedBag<String>(this.wrappedCollectionHolder);
 		this.wrappedCollectionHolder.add("foo");
 		assertTrue(this.wrappedCollection.contains("foo"));
 		this.wrappedCollectionHolder.add("bar");
@@ -153,15 +156,15 @@ public class SortedListValueModelAdapterTests extends TestCase {
 		assertEquals(this.wrappedCollection, CollectionTools.collection(synchList.iterator()));
 		assertEquals(this.wrappedCollection, synchCollection);
 
-		this.adapter.setComparator(new ReverseComparator());
-		this.verifyList(this.wrappedCollection, this.adapter, new ReverseComparator());
+		this.adapter.setComparator(new ReverseComparator<String>());
+		this.verifyList(this.wrappedCollection, this.adapter, new ReverseComparator<String>());
 		assertEquals(this.wrappedCollection, CollectionTools.collection(synchList.iterator()));
 		assertEquals(this.wrappedCollection, synchCollection);
 	}
 
 	public void testHasListeners() {
 		assertFalse(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
-		SynchronizedList synchList = new SynchronizedList(this.adapter);
+		CoordinatedList<String> synchList = new CoordinatedList<String>(this.adapter);
 		assertTrue(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		this.adapter.removeListChangeListener(ListValueModel.LIST_VALUES, synchList);
 		assertFalse(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
@@ -171,7 +174,7 @@ public class SortedListValueModelAdapterTests extends TestCase {
 		assertFalse(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 
-	private class TestListChangeListener implements ListChangeListener {
+	class TestListChangeListener implements ListChangeListener {
 		public void itemsAdded(ListChangeEvent e) {
 			fail("unexpected event");
 		}

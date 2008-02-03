@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -72,7 +72,6 @@ public class CollectionChangeEvent extends ChangeEvent {
 	 * @param source The object on which the event initially occurred.
 	 * @param collectionName The programmatic name of the collection that was changed.
 	 */
-	@SuppressWarnings("unchecked")
 	public CollectionChangeEvent(Model source, String collectionName) {
 		this(source, collectionName, Collections.emptySet());
 	}

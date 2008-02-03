@@ -22,7 +22,7 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
@@ -47,15 +47,21 @@ public abstract class Member {
 
 	private final CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
 
+	private final AnnotationEditFormatter annotationEditFormatter;
 
 	// ********** constructor **********
-
+	
 	Member(IMember jdtMember, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
+		this(jdtMember, modifySharedDocumentCommandExecutorProvider, DefaultAnnotationEditFormatter.instance());
+	}
+	
+	Member(IMember jdtMember, CommandExecutorProvider modifySharedDocumentCommandExecutorProvider, AnnotationEditFormatter annotationEditFormatter) {
 		super();
 		this.jdtMember = jdtMember;
 		IType jdtDeclaringType = jdtMember.getDeclaringType();
 		this.declaringType = (jdtDeclaringType == null) ? null : new Type(jdtDeclaringType, modifySharedDocumentCommandExecutorProvider);
 		this.modifySharedDocumentCommandExecutorProvider = modifySharedDocumentCommandExecutorProvider;
+		this.annotationEditFormatter = annotationEditFormatter;
 	}
 
 
@@ -77,7 +83,8 @@ public abstract class Member {
 		return this.declaringType;
 	}
 
-
+	public abstract IBinding binding(CompilationUnit astRoot);
+	
 	// ********** miscellaneous **********
 
 	public ICompilationUnit compilationUnit() {
@@ -146,13 +153,6 @@ public abstract class Member {
 		} catch (JavaModelException ex) {
 			throw new RuntimeException(ex);
 		}
-	}
-
-	/**
-	 * this will throw a NPE for a top-level type
-	 */
-	TypeDeclaration declaringTypeDeclaration(CompilationUnit astRoot) {
-		return this.declaringType.bodyDeclaration(astRoot);
 	}
 
 	@Override
@@ -377,7 +377,7 @@ public abstract class Member {
 	 *     - when editing headlessly, a "working copy" must be created
 	 *        (at least as far as I can tell  ~kfm)
 	 *     - when editing via a plain text editor, make a working copy or else things are screwed
-	 *        up the second time you edit through the Persistence Properties View
+	 *        up the second time you edit through the XmlPersistence XmlProperties View
 	 */
 	private void edit_(Editor editor) throws JavaModelException, BadLocationException {
 		ICompilationUnit compilationUnit = this.compilationUnit();
@@ -421,7 +421,7 @@ public abstract class Member {
 	}
 
 	private AnnotationEditFormatter annotationEditFormatter() {
-		return DefaultAnnotationEditFormatter.instance();
+		return this.annotationEditFormatter;
 	}
 
 	private CommandExecutor modifySharedDocumentCommandExecutor() {

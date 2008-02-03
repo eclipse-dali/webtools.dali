@@ -1,63 +1,56 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2007 Oracle. All rights reserved. This
+ *  Copyright (c) 2006, 2008 Oracle. All rights reserved. This
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
- *  
+ *
  *  Contributors: Oracle. - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.emf.common.command.CommandStack;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jpt.core.internal.IJpaContentNode;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-public abstract class BaseJpaDetailsPage extends BaseJpaComposite 
-	implements IJpaDetailsPage 
+/**
+ * The base class for the details view.
+ *
+ * @see IJpaContextNode
+ *
+ * @version 2.0
+ * @since 1.0
+ */
+public abstract class BaseJpaDetailsPage<T extends IJpaContextNode>
+	extends AbstractFormPane<T>
+	implements IJpaDetailsPage<T>
 {
-	private Composite control;
+	/**
+	 * Creates a new <code>BaseJpaDetailsPage</code>.
+	 *
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create various common widgets
+	 */
+	protected BaseJpaDetailsPage(Composite parent,
+	                             TabbedPropertySheetWidgetFactory widgetFactory) {
 
-	public BaseJpaDetailsPage(
-			Composite parent, CommandStack theCommandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, theCommandStack, widgetFactory);
-	}
-
-	public BaseJpaDetailsPage(
-			Composite parent, int style, CommandStack theCommandStack, TabbedPropertySheetWidgetFactory widgetFactory) {
-		super(parent, style, theCommandStack, widgetFactory);
-	}
-	
-	@Override
-	//using this to get a Scroll bar on the JpaDetailsView
-	protected Composite createComposite(Composite parent, int style) {
-		ScrolledForm scrolledForm = this.widgetFactory.createScrolledForm(parent);
-		//Nesting another composite because combos on the ScrolledForm didn't have a border
-		scrolledForm.getBody().setLayout(new FillLayout());
-		Composite composite = super.createComposite(scrolledForm.getBody(), style);
-		this.control = scrolledForm;
-		return composite;
+		super(new SimplePropertyValueModel<T>(), parent, widgetFactory);
 	}
 
-	public final void populate(IJpaContentNode contentNode) {
-		super.populate(contentNode);
-	}
-	
-	@Override
-	protected final void doPopulate(EObject obj) {
-		doPopulate((IJpaContentNode) obj);
-	}
-	
-	protected abstract void doPopulate(IJpaContentNode contentNode);
-	
-	
-	@Override
-	public Control getControl() {
-		return this.control;
-	}
+	/*
+	 * (non-Javadoc)
+	 */
+	public final void setSubject(T subject) {
+		WritablePropertyValueModel<T> subjectHolder = (WritablePropertyValueModel<T>) getSubjectHolder();
+		subjectHolder.setValue(subject);
 
+		if (subject != null) {
+			populate();
+		}
+		else {
+			dispose();
+		}
+	}
 }

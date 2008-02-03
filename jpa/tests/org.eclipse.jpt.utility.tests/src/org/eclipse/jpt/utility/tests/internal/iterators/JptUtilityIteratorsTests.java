@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,6 +35,7 @@ public class JptUtilityIteratorsTests {
 		suite.addTestSuite(GraphIteratorTests.class);
 		suite.addTestSuite(IteratorEnumerationTests.class);
 		suite.addTestSuite(PeekableIteratorTests.class);
+		suite.addTestSuite(ReadOnlyCompositeListIteratorTests.class);
 		suite.addTestSuite(ReadOnlyIteratorTests.class);
 		suite.addTestSuite(ReadOnlyListIteratorTests.class);
 		suite.addTestSuite(SingleElementIteratorTests.class);

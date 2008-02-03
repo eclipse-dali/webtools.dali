@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -178,7 +178,7 @@ public class ComboBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	
     
     private JList getListBox(JComboBox result) {
-        return (JList) ClassTools.getFieldValue(result.getUI(), "listBox");
+        return (JList) ClassTools.fieldValue(result.getUI(), "listBox");
     }
 
 	
@@ -323,7 +323,7 @@ public class ComboBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	 * Return the renderer's preferred height. This allows you
 	 * to set the row height to something the combo-box will look good in....
 	 */
-	public int getPreferredHeight() {
+	public int preferredHeight() {
 		return height;
 	}
 

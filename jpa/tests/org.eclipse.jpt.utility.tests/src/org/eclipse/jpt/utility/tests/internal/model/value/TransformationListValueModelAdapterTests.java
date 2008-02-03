@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Transformer;
@@ -29,8 +28,8 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 import junit.framework.TestCase;
 
 public class TransformationListValueModelAdapterTests extends TestCase {
-	private SimpleListValueModel listHolder;
-	private ListValueModel transformedListHolder;
+	private SimpleListValueModel<String> listHolder;
+	private ListValueModel<String> transformedListHolder;
 	ListChangeEvent event;
 	String eventType;
 
@@ -49,26 +48,25 @@ public class TransformationListValueModelAdapterTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.listHolder = new SimpleListValueModel(this.buildList());
+		this.listHolder = new SimpleListValueModel<String>(this.buildList());
 		this.transformedListHolder = this.buildTransformedListHolder(this.listHolder);
 	}
 
-	private List buildList() {
-		List result = new ArrayList();
+	private List<String> buildList() {
+		List<String> result = new ArrayList<String>();
 		result.add("foo");
 		result.add("bar");
 		result.add("baz");
 		return result;
 	}
 
-	private List buildTransformedList() {
+	private List<String> buildTransformedList() {
 		return this.transform(this.buildList());
 	}
 
-	private List transform(List list) {
-		List result = new ArrayList(list.size());
-		for (Iterator stream = list.iterator(); stream.hasNext(); ) {
-			String string = (String) stream.next();
+	private List<String> transform(List<String> list) {
+		List<String> result = new ArrayList<String>(list.size());
+		for (String string : list) {
 			if (string == null) {
 				result.add(null);
 			} else {
@@ -78,33 +76,34 @@ public class TransformationListValueModelAdapterTests extends TestCase {
 		return result;
 	}
 
-	private List buildAddList() {
-		List result = new ArrayList();
+	private List<String> buildAddList() {
+		List<String> result = new ArrayList<String>();
 		result.add("joo");
 		result.add("jar");
 		result.add("jaz");
 		return result;
 	}
 
-	private List buildTransformedAddList() {
+	private List<String> buildTransformedAddList() {
 		return this.transform(this.buildAddList());
 	}
 
-	private List buildRemoveList() {
-		List result = new ArrayList();
-		result.add("foo");
-		result.add("bar");
-		return result;
-	}
-
-	private List buildTransformedRemoveList() {
-		return this.transform(this.buildRemoveList());
-	}
-
-	ListValueModel buildTransformedListHolder(ListValueModel lvm) {
-		return new TransformationListValueModelAdapter(lvm) {
-			protected Object transformItem(Object item) {
-				return (item == null) ? null : ((String) item).toUpperCase();
+//	private List<String> buildRemoveList() {
+//		List<String> result = new ArrayList<String>();
+//		result.add("foo");
+//		result.add("bar");
+//		return result;
+//	}
+//
+//	private List<String> buildTransformedRemoveList() {
+//		return this.transform(this.buildRemoveList());
+//	}
+//
+	ListValueModel<String> buildTransformedListHolder(ListValueModel<String> lvm) {
+		return new TransformationListValueModelAdapter<String, String>(lvm) {
+			@Override
+			protected String transformItem(String s) {
+				return (s == null) ? null : s.toUpperCase();
 			}
 		};
 	}
@@ -138,13 +137,13 @@ public class TransformationListValueModelAdapterTests extends TestCase {
 		return CollectionTools.contains(this.transformedListHolder.iterator(), item);
 	}
 
-	private boolean transformedListContainsAll(Collection items) {
+	private boolean transformedListContainsAll(Collection<String> items) {
 		return CollectionTools.containsAll(this.transformedListHolder.iterator(), items);
 	}
 
-	private boolean transformedListContainsAny(Collection items) {
-		List transformedList = CollectionTools.list(this.transformedListHolder.iterator());
-		for (Iterator stream = items.iterator(); stream.hasNext(); ) {
+	private boolean transformedListContainsAny(Collection<String> items) {
+		List<String> transformedList = CollectionTools.list(this.transformedListHolder.iterator());
+		for (Iterator<String> stream = items.iterator(); stream.hasNext(); ) {
 			if (transformedList.contains(stream.next())) {
 				return true;
 			}
@@ -304,13 +303,14 @@ public class TransformationListValueModelAdapterTests extends TestCase {
 		public TransformerTests(String name) {
 			super(name);
 		}
-		ListValueModel buildTransformedListHolder(ListValueModel lvm) {
-			return new TransformationListValueModelAdapter(lvm, this.buildTransformer());
+		@Override
+		ListValueModel<String> buildTransformedListHolder(ListValueModel<String> lvm) {
+			return new TransformationListValueModelAdapter<String, String>(lvm, this.buildTransformer());
 		}
-		private Transformer buildTransformer() {
-			return new Transformer() {
-				public Object transform(Object o) {
-					return (o == null) ? null : ((String) o).toUpperCase();
+		private Transformer<String, String> buildTransformer() {
+			return new Transformer<String, String>() {
+				public String transform(String s) {
+					return (s == null) ? null : s.toUpperCase();
 				}
 			};
 		}

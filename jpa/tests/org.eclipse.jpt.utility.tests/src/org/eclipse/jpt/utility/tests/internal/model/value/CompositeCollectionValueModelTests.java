@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,16 +22,16 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.CompositeCollectionValueModel;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class CompositeCollectionValueModelTests extends TestCase {
 	private Neighborhood neighborhood;
-	private PropertyValueModel neighborhoodHolder;
+	private WritablePropertyValueModel<Neighborhood> neighborhoodHolder;
 
 	public CompositeCollectionValueModelTests(String name) {
 		super(name);
@@ -41,7 +41,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.neighborhood = new Neighborhood("Hanna-Barbera");
-		this.neighborhoodHolder = new SimplePropertyValueModel(this.neighborhood);
+		this.neighborhoodHolder = new SimplePropertyValueModel<Neighborhood>(this.neighborhood);
 	}
 
 	@Override
@@ -58,10 +58,10 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		this.verifySynch(this.buildAllMembersComposite2(this.neighborhoodHolder));
 	}
 
-	private void verifySynch(CollectionValueModel compositeCVM) {
-		assertEquals(0, CollectionTools.size((Iterator) compositeCVM.iterator()));
-		Bag familiesSynch = new SynchronizedBag(this.buildFamiliesAspectAdapter(this.neighborhoodHolder));
-		Bag membersSynch = new SynchronizedBag(compositeCVM);
+	private void verifySynch(CollectionValueModel<Member> compositeCVM) {
+		assertEquals(0, CollectionTools.size(compositeCVM.iterator()));
+		Bag<Family> familiesSynch = new CoordinatedBag<Family>(this.buildFamiliesAspectAdapter(this.neighborhoodHolder));
+		Bag<Member> membersSynch = new CoordinatedBag<Member>(compositeCVM);
 		this.populateNeighborhood(this.neighborhood);
 
 		Family jetsons = this.neighborhood.familyNamed("Jetson");
@@ -70,35 +70,35 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		assertEquals(12, CollectionTools.size(this.neighborhood.allMembers()));
 		assertEquals(12, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.iterator()));
+		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
 
 		jetsons.removeMember(jetsons.memberNamed("Astro"));
 		assertEquals(3, familiesSynch.size());
 		assertEquals(11, CollectionTools.size(this.neighborhood.allMembers()));
 		assertEquals(11, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.iterator()));
+		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
 
 		jetsons.removeMember(jetsons.memberNamed("Judy"));
 		assertEquals(3, familiesSynch.size());
 		assertEquals(10, CollectionTools.size(this.neighborhood.allMembers()));
 		assertEquals(10, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.iterator()));
+		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
 
 		jetsons.addMember("Fido");
 		assertEquals(3, familiesSynch.size());
 		assertEquals(11, CollectionTools.size(this.neighborhood.allMembers()));
 		assertEquals(11, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.iterator()));
+		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
 
 		this.neighborhood.removeFamily(jetsons);
 		assertEquals(2, familiesSynch.size());
 		assertEquals(7, CollectionTools.size(this.neighborhood.allMembers()));
 		assertEquals(7, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.iterator()));
+		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
 
 		Family bears = this.neighborhood.addFamily("Bear");
 			bears.addMember("Yogi");
@@ -106,14 +106,14 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		assertEquals(8, CollectionTools.size(this.neighborhood.allMembers()));
 		assertEquals(8, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.iterator()));
+		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
 
 		bears.addMember("Boo-Boo");
 		assertEquals(3, familiesSynch.size());
 		assertEquals(9, CollectionTools.size(this.neighborhood.allMembers()));
 		assertEquals(9, membersSynch.size());
 		assertEquals(CollectionTools.bag(this.neighborhood.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.iterator()));
+		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
 
 		Neighborhood n2 = new Neighborhood("Hanna-Barbera 2");
 		this.neighborhoodHolder.setValue(n2);
@@ -122,11 +122,11 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		assertEquals(12, CollectionTools.size(n2.allMembers()));
 		assertEquals(12, membersSynch.size());
 		assertEquals(CollectionTools.bag(n2.allMembers()), membersSynch);
-		assertEquals(membersSynch, CollectionTools.bag((Iterator) compositeCVM.iterator()));
+		assertEquals(membersSynch, CollectionTools.bag(compositeCVM.iterator()));
 	}
 
 	public void testNoTransformer() {
-		Bag synchBag = new SynchronizedBag(this.buildBogusAllMembersComposite(this.neighborhoodHolder));
+		Bag<Member> synchBag = new CoordinatedBag<Member>(this.buildBogusAllMembersComposite(this.neighborhoodHolder));
 		boolean exCaught = false;
 		try {
 			this.populateNeighborhood(this.neighborhood);
@@ -143,7 +143,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 	}
 
 	public void testDuplicateItem() {
-		Bag synchBag = new SynchronizedBag(this.buildAllMembersComposite(this.neighborhoodHolder));
+		Bag<Member> synchBag = new CoordinatedBag<Member>(this.buildAllMembersComposite(this.neighborhoodHolder));
 		this.populateNeighborhood(this.neighborhood);
 		boolean exCaught = false;
 		try {
@@ -158,8 +158,8 @@ public class CompositeCollectionValueModelTests extends TestCase {
 	}
 
 	public void testHasListeners() {
-		CompositeCollectionValueModel compositeCVM = this.buildAllMembersComposite(this.neighborhoodHolder);
-		SynchronizedBag synchBag = new SynchronizedBag(compositeCVM);
+		CompositeCollectionValueModel<Family, Member> compositeCVM = this.buildAllMembersComposite(this.neighborhoodHolder);
+		CoordinatedBag<Member> synchBag = new CoordinatedBag<Member>(compositeCVM);
 		this.populateNeighborhood(this.neighborhood);
 		Family jetsons = this.neighborhood.familyNamed("Jetson");
 
@@ -193,45 +193,48 @@ public class CompositeCollectionValueModelTests extends TestCase {
 			family3.addMember("Astro");
 	}
 
-	private CollectionValueModel buildFamiliesAspectAdapter(ValueModel communeHolder) {
-		return new CollectionAspectAdapter(communeHolder, Neighborhood.FAMILIES_COLLECTION) {
-			protected Iterator iterator_() {
-				return ((Neighborhood) this.subject).families();
+	private CollectionValueModel<Family> buildFamiliesAspectAdapter(PropertyValueModel<Neighborhood> communeHolder) {
+		return new CollectionAspectAdapter<Neighborhood, Family>(communeHolder, Neighborhood.FAMILIES_COLLECTION) {
+			@Override
+			protected Iterator<Family> iterator_() {
+				return this.subject.families();
 			}
 		};
 	}
 
-	CollectionValueModel buildMembersAdapter(Family family) {
-		return new CollectionAspectAdapter(Family.MEMBERS_COLLECTION, family) {
-			protected Iterator iterator_() {
-				return ((Family) this.subject).members();
+	CollectionValueModel<Member> buildMembersAdapter(Family family) {
+		return new CollectionAspectAdapter<Family, Member>(Family.MEMBERS_COLLECTION, family) {
+			@Override
+			protected Iterator<Member> iterator_() {
+				return this.subject.members();
 			}
 		};
 	}
 
-	private CompositeCollectionValueModel buildAllMembersComposite(ValueModel communeHolder) {
+	private CompositeCollectionValueModel<Family, Member> buildAllMembersComposite(PropertyValueModel<Neighborhood> communeHolder) {
 		// override #transform(Object)
-		return new CompositeCollectionValueModel(this.buildFamiliesAspectAdapter(communeHolder)) {
-			protected CollectionValueModel transform(Object value) {
-				return CompositeCollectionValueModelTests.this.buildMembersAdapter((Family) value);
+		return new CompositeCollectionValueModel<Family, Member>(this.buildFamiliesAspectAdapter(communeHolder)) {
+			@Override
+			protected CollectionValueModel<Member> transform(Family family) {
+				return CompositeCollectionValueModelTests.this.buildMembersAdapter(family);
 			}
 		};
 	}
 
-	private CollectionValueModel buildAllMembersComposite2(ValueModel communeHolder) {
+	private CollectionValueModel<Member> buildAllMembersComposite2(PropertyValueModel<Neighborhood> communeHolder) {
 		// build a custom Transformer
-		return new CompositeCollectionValueModel(this.buildFamiliesAspectAdapter(communeHolder), this.buildTransformer());
+		return new CompositeCollectionValueModel<Family, Member>(this.buildFamiliesAspectAdapter(communeHolder), this.buildTransformer());
 	}
 
-	private CollectionValueModel buildBogusAllMembersComposite(ValueModel communeHolder) {
+	private CollectionValueModel<Member> buildBogusAllMembersComposite(PropertyValueModel<Neighborhood> communeHolder) {
 		// DISABLED Transformer
-		return new CompositeCollectionValueModel(this.buildFamiliesAspectAdapter(communeHolder));
+		return new CompositeCollectionValueModel<Family, Member>(this.buildFamiliesAspectAdapter(communeHolder));
 	}
 
-	private Transformer buildTransformer() {
-		return new Transformer() {
-			public Object transform(Object value) {
-				return CompositeCollectionValueModelTests.this.buildMembersAdapter((Family) value);
+	private Transformer<Family, CollectionValueModel<Member>> buildTransformer() {
+		return new Transformer<Family, CollectionValueModel<Member>>() {
+			public CollectionValueModel<Member> transform(Family family) {
+				return CompositeCollectionValueModelTests.this.buildMembersAdapter(family);
 			}
 			@Override
 			public String toString() {
@@ -249,7 +252,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 	private class Neighborhood extends AbstractModel {
 		private String name;
 			public static final String NAME_PROPERTY = "name";
-		private Collection families = new ArrayList();
+		private Collection<Family> families = new ArrayList<Family>();
 			public static final String FAMILIES_COLLECTION = "families";
 	
 		public Neighborhood(String name) {
@@ -267,7 +270,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 			this.firePropertyChanged(NAME_PROPERTY, old, name);
 		}
 	
-		public Iterator families() {
+		public Iterator<Family> families() {
 			return this.families.iterator();
 		}
 	
@@ -286,8 +289,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		}
 	
 		public Family familyNamed(String familyName) {
-			for (Iterator stream = this.families.iterator(); stream.hasNext(); ) {
-				Family family = (Family) stream.next();
+			for (Family family : this.families) {
 				if (family.getName().equals(familyName)) {
 					return family;
 				}
@@ -295,14 +297,15 @@ public class CompositeCollectionValueModelTests extends TestCase {
 			throw new IllegalArgumentException(familyName);
 		}
 	
-		public Iterator allMembers() {
-			return new CompositeIterator(this.membersIterators());
+		public Iterator<Member> allMembers() {
+			return new CompositeIterator<Member>(this.membersIterators());
 		}
 	
-		private Iterator membersIterators() {
-			return new TransformationIterator(this.families()) {
-				protected Object transform(Object next) {
-					return ((Family) next).members();
+		private Iterator<Iterator<Member>> membersIterators() {
+			return new TransformationIterator<Family, Iterator<Member>>(this.families()) {
+				@Override
+				protected Iterator<Member> transform(Family family) {
+					return family.members();
 				}
 			};
 		}
@@ -325,7 +328,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 	private class Family extends AbstractModel {
 		private String name;
 			public static final String NAME_PROPERTY = "name";
-		private Collection members = new ArrayList();
+		private Collection<Member> members = new ArrayList<Member>();
 			public static final String MEMBERS_COLLECTION = "members";
 	
 		public Family(String name) {
@@ -343,7 +346,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 			this.firePropertyChanged(NAME_PROPERTY, old, name);
 		}
 	
-		public Iterator members() {
+		public Iterator<Member> members() {
 			return this.members.iterator();
 		}
 	
@@ -358,8 +361,7 @@ public class CompositeCollectionValueModelTests extends TestCase {
 		}
 	
 		public Member memberNamed(String memberName) {
-			for (Iterator stream = this.members.iterator(); stream.hasNext(); ) {
-				Member member = (Member) stream.next();
+			for (Member member : this.members) {
 				if (member.getName().equals(memberName)) {
 					return member;
 				}

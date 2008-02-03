@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,9 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.Collection;
-import java.util.Iterator;
+
 import javax.swing.JList;
-import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
@@ -21,14 +21,16 @@ import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ListModelAdapter;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+import junit.framework.TestCase;
+
 public class PropertyCollectionValueModelAdapterTests extends TestCase {
-	private CollectionValueModel adapter;
-	private PropertyValueModel wrappedValueHolder;
+	private CollectionValueModel<String> adapter;
+	private WritablePropertyValueModel<String> wrappedValueHolder;
 
 	public PropertyCollectionValueModelAdapterTests(String name) {
 		super(name);
@@ -37,12 +39,12 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.wrappedValueHolder = new SimplePropertyValueModel();
-		this.adapter = new PropertyCollectionValueModelAdapter(this.wrappedValueHolder);
+		this.wrappedValueHolder = new SimplePropertyValueModel<String>();
+		this.adapter = new PropertyCollectionValueModelAdapter<String>(this.wrappedValueHolder);
 	}
 
-	private Collection wrappedCollection() {
-		return CollectionTools.collection(new SingleElementIterator(this.wrappedValueHolder.value()));
+	private Collection<String> wrappedCollection() {
+		return CollectionTools.collection(new SingleElementIterator<String>(this.wrappedValueHolder.value()));
 	}
 
 	@Override
@@ -53,10 +55,11 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 
 	public void testIterator() {
 		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, new TestListener() {
+			@Override
 			public void itemsAdded(CollectionChangeEvent e) {/* OK */}
 		});
 		this.wrappedValueHolder.setValue("foo");
-		Collection adapterCollection = CollectionTools.collection(this.adapter.iterator());
+		Collection<String> adapterCollection = CollectionTools.collection(this.adapter.iterator());
 		assertEquals(1, adapterCollection.size());
 		assertEquals(this.wrappedCollection(), adapterCollection);
 		assertEquals("foo", adapterCollection.iterator().next());
@@ -64,22 +67,23 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 
 	public void testStaleValue() {
 		CollectionChangeListener listener = new TestListener() {
+			@Override
 			public void itemsAdded(CollectionChangeEvent e) {/* OK */}
 		};
 		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, listener);
 		this.wrappedValueHolder.setValue("foo");
-		Collection adapterCollection = CollectionTools.collection((Iterator) this.adapter.iterator());
+		Collection<String> adapterCollection = CollectionTools.collection(this.adapter.iterator());
 		assertEquals(1, adapterCollection.size());
 		assertEquals(this.wrappedCollection(), adapterCollection);
 		assertEquals("foo", adapterCollection.iterator().next());
 
 		this.adapter.removeCollectionChangeListener(CollectionValueModel.VALUES, listener);
-		adapterCollection = CollectionTools.collection((Iterator) this.adapter.iterator());
+		adapterCollection = CollectionTools.collection(this.adapter.iterator());
 		assertEquals(0, adapterCollection.size());
-		assertEquals(new HashBag(), adapterCollection);
+		assertEquals(new HashBag<String>(), adapterCollection);
 
 		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, listener);
-		adapterCollection = CollectionTools.collection((Iterator) this.adapter.iterator());
+		adapterCollection = CollectionTools.collection(this.adapter.iterator());
 		assertEquals(1, adapterCollection.size());
 		assertEquals(this.wrappedCollection(), adapterCollection);
 		assertEquals("foo", adapterCollection.iterator().next());
@@ -87,7 +91,7 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 
 	public void testHasListeners() {
 		assertFalse(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
-		SynchronizedBag synchCollection = new SynchronizedBag(this.adapter);
+		CoordinatedBag<String> synchCollection = new CoordinatedBag<String>(this.adapter);
 		assertTrue(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 		this.adapter.removeCollectionChangeListener(CollectionValueModel.VALUES, synchCollection);
 		assertFalse(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
@@ -99,7 +103,9 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 
 	public void testListChangedToEmpty() {
 		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, new TestListener() {
+			@Override
 			public void itemsAdded(CollectionChangeEvent e) {/* OK */}
+			@Override
 			public void itemsRemoved(CollectionChangeEvent e) {/* OK */}
 		});
 		this.wrappedValueHolder.setValue("foo");
@@ -110,6 +116,7 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 
 	public void testCollectionChangedFromEmpty() {
 		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, new TestListener() {
+			@Override
 			public void itemsAdded(CollectionChangeEvent e) {/* OK */}
 		});
 		JList jList = new JList(new ListModelAdapter(this.adapter));
@@ -129,10 +136,7 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 
 	// ********** member class **********
 	
-	private static class TestListener implements CollectionChangeListener {
-		TestListener() {
-			super();
-		}
+	static class TestListener implements CollectionChangeListener {
 		public void collectionChanged(CollectionChangeEvent e) {
 			fail("unexpected event");
 		}

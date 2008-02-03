@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.validation;
 
 import java.util.Iterator;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -38,7 +37,6 @@ import org.eclipse.wst.validation.internal.provisional.core.IValidatorJob;
  * This class is referenced in the JPA extension for the
  * WTP validator extension point.
  */
-@SuppressWarnings("restriction")  // we use lots of stuff that is still internal to WTP
 public class JpaValidator implements IValidatorJob {
 
 

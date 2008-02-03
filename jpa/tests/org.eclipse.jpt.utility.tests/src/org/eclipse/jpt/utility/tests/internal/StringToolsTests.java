@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -515,6 +515,67 @@ public class StringToolsTests extends TestCase {
 		assertEquals(expectedString, sb.toString());
 	}
 
+	public void testRemoveAllWhitespace() {
+		this.verifyRemoveAllWhitespace("Employee Fred\t", ' ', "EmployeeFred");
+		this.verifyRemoveAllWhitespace("\tEmployee\n", ' ', "Employee");
+		this.verifyRemoveAllWhitespace("Employee \t Foo", ' ', "EmployeeFoo");
+		this.verifyRemoveAllWhitespace(" Emp\tloyee \n Foo", ' ', "EmployeeFoo");
+	}
+
+	private void verifyRemoveAllWhitespace(String string, char charToRemove, String expectedString) {
+		assertEquals(expectedString, StringTools.removeAllWhitespace(string));
+	}
+
+	public void testRemoveAllWhitespaceCharArray() {
+		this.verifyRemoveAllWhitespaceCharArray("Employee Fred\t", ' ', "EmployeeFred");
+		this.verifyRemoveAllWhitespaceCharArray("\tEmployee\n", ' ', "Employee");
+		this.verifyRemoveAllWhitespaceCharArray("Employee \t Foo", ' ', "EmployeeFoo");
+		this.verifyRemoveAllWhitespaceCharArray(" Emp\tloyee \n Foo", ' ', "EmployeeFoo");
+	}
+
+	private void verifyRemoveAllWhitespaceCharArray(String string, char charToRemove, String expectedString) {
+		assertEquals(expectedString, new String(StringTools.removeAllWhitespace(string.toCharArray())));
+	}
+
+	public void testRemoveAllWhitespaceOnWriter() {
+		this.verifyRemoveAllWhitespaceOnWriter("Employee Fred\t", ' ', "EmployeeFred");
+		this.verifyRemoveAllWhitespaceOnWriter("\tEmployee\n", ' ', "Employee");
+		this.verifyRemoveAllWhitespaceOnWriter("Employee \t Foo", ' ', "EmployeeFoo");
+		this.verifyRemoveAllWhitespaceOnWriter(" Emp\tloyee \n Foo", ' ', "EmployeeFoo");
+	}
+
+	private void verifyRemoveAllWhitespaceOnWriter(String string, char charToRemove, String expectedString) {
+		Writer writer = new StringWriter();
+		StringTools.removeAllWhitespaceOn(string, writer);
+		assertEquals(expectedString, writer.toString());
+	}
+
+	public void testRemoveAllWhitespaceOnStringBuffer() {
+		this.verifyRemoveAllWhitespaceOnStringBuffer("Employee Fred\t", ' ', "EmployeeFred");
+		this.verifyRemoveAllWhitespaceOnStringBuffer("\tEmployee\n", ' ', "Employee");
+		this.verifyRemoveAllWhitespaceOnStringBuffer("Employee \t Foo", ' ', "EmployeeFoo");
+		this.verifyRemoveAllWhitespaceOnStringBuffer(" Emp\tloyee \n Foo", ' ', "EmployeeFoo");
+	}
+
+	private void verifyRemoveAllWhitespaceOnStringBuffer(String string, char charToRemove, String expectedString) {
+		StringBuffer sb = new StringBuffer();
+		StringTools.removeAllWhitespaceOn(string, sb);
+		assertEquals(expectedString, sb.toString());
+	}
+
+	public void testRemoveAllWhitespaceOnStringBuilder() {
+		this.verifyRemoveAllWhitespaceOnStringBuilder("Employee Fred\t", ' ', "EmployeeFred");
+		this.verifyRemoveAllWhitespaceOnStringBuilder("\tEmployee\n", ' ', "Employee");
+		this.verifyRemoveAllWhitespaceOnStringBuilder("Employee \t Foo", ' ', "EmployeeFoo");
+		this.verifyRemoveAllWhitespaceOnStringBuilder(" Emp\tloyee \n Foo", ' ', "EmployeeFoo");
+	}
+
+	private void verifyRemoveAllWhitespaceOnStringBuilder(String string, char charToRemove, String expectedString) {
+		StringBuilder sb = new StringBuilder();
+		StringTools.removeAllWhitespaceOn(string, sb);
+		assertEquals(expectedString, sb.toString());
+	}
+
 	// ********** common prefix **********
 
 	public void testCommonPrefixLength() {
@@ -885,6 +946,38 @@ public class StringToolsTests extends TestCase {
 		assertEquals(expected, writer.toString());
 	}
 
+	public void testConvertCamelCaseToAllCapsOnStringBuffer() {
+		this.verifyConvertCamelCaseToAllCapsOnStringBuffer("TEST", "test");
+		this.verifyConvertCamelCaseToAllCapsOnStringBuffer("TEST", "TEST");
+		this.verifyConvertCamelCaseToAllCapsOnStringBuffer("TEST_TEST", "testTest");
+		this.verifyConvertCamelCaseToAllCapsOnStringBuffer("TEST_TEST", "TestTest");
+		this.verifyConvertCamelCaseToAllCapsOnStringBuffer("TEST_TEST_TEST", "testTESTTest");
+		this.verifyConvertCamelCaseToAllCapsOnStringBuffer("TEST_TEST_TEST", "TestTESTTest");
+		this.verifyConvertCamelCaseToAllCapsOnStringBuffer("TEST_TEST_TEST_T", "TestTESTTestT");
+	}
+
+	private void verifyConvertCamelCaseToAllCapsOnStringBuffer(String expected, String string) {
+		StringBuffer sb = new StringBuffer();
+		StringTools.convertCamelCaseToAllCapsOn(string, sb);
+		assertEquals(expected, sb.toString());
+	}
+
+	public void testConvertCamelCaseToAllCapsOnStringBuilder() {
+		this.verifyConvertCamelCaseToAllCapsOnStringBuilder("TEST", "test");
+		this.verifyConvertCamelCaseToAllCapsOnStringBuilder("TEST", "TEST");
+		this.verifyConvertCamelCaseToAllCapsOnStringBuilder("TEST_TEST", "testTest");
+		this.verifyConvertCamelCaseToAllCapsOnStringBuilder("TEST_TEST", "TestTest");
+		this.verifyConvertCamelCaseToAllCapsOnStringBuilder("TEST_TEST_TEST", "testTESTTest");
+		this.verifyConvertCamelCaseToAllCapsOnStringBuilder("TEST_TEST_TEST", "TestTESTTest");
+		this.verifyConvertCamelCaseToAllCapsOnStringBuilder("TEST_TEST_TEST_T", "TestTESTTestT");
+	}
+
+	private void verifyConvertCamelCaseToAllCapsOnStringBuilder(String expected, String string) {
+		StringBuilder sb = new StringBuilder();
+		StringTools.convertCamelCaseToAllCapsOn(string, sb);
+		assertEquals(expected, sb.toString());
+	}
+
 	public void testConvertCamelCaseToAllCapsMaxLength() {
 		assertEquals("TEST", StringTools.convertCamelCaseToAllCaps("test", 44));
 		assertEquals("TEST", StringTools.convertCamelCaseToAllCaps("test", 4));
@@ -927,6 +1020,31 @@ public class StringToolsTests extends TestCase {
 		Writer writer = new StringWriter();
 		StringTools.convertCamelCaseToAllCapsOn(string, max, writer);
 		assertEquals(expected, writer.toString());
+	}
+
+	public void testConvertCamelCaseToAllCapsMaxLengthOnStringBuffer() {
+		this.verifyConvertCamelCaseToAllCapsMaxLengthOnStringBuffer("TEST", "test", 44);
+		this.verifyConvertCamelCaseToAllCapsMaxLengthOnStringBuffer("TEST", "test", 4);
+		this.verifyConvertCamelCaseToAllCapsMaxLengthOnStringBuffer("TES", "test", 3);
+		this.verifyConvertCamelCaseToAllCapsMaxLengthOnStringBuffer("TEST", "TEST", 5);
+		this.verifyConvertCamelCaseToAllCapsMaxLengthOnStringBuffer("TE", "TEST", 2);
+		this.verifyConvertCamelCaseToAllCapsMaxLengthOnStringBuffer("TEST_TEST", "testTest", 9);
+		this.verifyConvertCamelCaseToAllCapsMaxLengthOnStringBuffer("TEST_TES", "testTest", 8);
+		this.verifyConvertCamelCaseToAllCapsMaxLengthOnStringBuffer("TEST_T", "testTest", 6);
+		this.verifyConvertCamelCaseToAllCapsMaxLengthOnStringBuffer("TEST_", "testTest", 5);
+		this.verifyConvertCamelCaseToAllCapsMaxLengthOnStringBuffer("TEST", "testTest", 4);
+		this.verifyConvertCamelCaseToAllCapsMaxLengthOnStringBuffer("TEST_TEST", "TestTest", 9);
+		this.verifyConvertCamelCaseToAllCapsMaxLengthOnStringBuffer("TEST_TEST", "TestTest", 1100);
+		this.verifyConvertCamelCaseToAllCapsMaxLengthOnStringBuffer("TEST_TEST_", "testTESTTest", 10);
+		this.verifyConvertCamelCaseToAllCapsMaxLengthOnStringBuffer("TEST_TEST_TEST", "TestTESTTest", 14);
+		this.verifyConvertCamelCaseToAllCapsMaxLengthOnStringBuffer("TEST_TEST_TEST_T", "TestTESTTestT", 16);
+		this.verifyConvertCamelCaseToAllCapsMaxLengthOnStringBuffer("TEST_TEST_TEST_", "TestTESTTestT", 15);
+	}
+
+	private void verifyConvertCamelCaseToAllCapsMaxLengthOnStringBuffer(String expected, String string, int max) {
+		StringBuffer sb = new StringBuffer();
+		StringTools.convertCamelCaseToAllCapsOn(string, max, sb);
+		assertEquals(expected, sb.toString());
 	}
 
 	public void testConvertUnderscoresToCamelCase() {
@@ -1009,6 +1127,50 @@ public class StringToolsTests extends TestCase {
 		Writer writer = new StringWriter();
 		StringTools.convertUnderscoresToCamelCaseOn(string, capitalizeFirstLetter, writer);
 		assertEquals(expected, writer.toString());
+	}
+
+	public void testConvertUnderscoresToCamelCaseOnStringBuffer() {
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("test", "TEST", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("test", "TEST_", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("test", "TEST____", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("Test", "TEST", true);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("test", "TeST", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("testTest", "TEST_TEST", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("testTest", "TEST___TEST", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("TestTest", "TEST_TEST", true);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("testTestTest", "TEST_TEST_TEST", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("TestTestTest", "TEST_TEST_TEST", true);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("testTestTestT", "TEST_TEST_TEST_T", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("testTestTestT", "_TEST_TEST_TEST_T", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("testTestTestT", "__TEST_TEST_TEST_T", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("TestTestTestT", "TEST_TEST_TEST_T", true);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("TestTestTestT", "_TEST_TEST_TEST_T", true);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("TestTestTestT", "__TEST_TEST_TEST_T", true);
+	}
+
+	public void testConvertUnderscoresToCamelCaseOnStringBufferLowercase() {
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("test", "test", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("test", "test_", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("test", "test____", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("Test", "test", true);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("test", "test", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("testTest", "test_test", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("testTest", "test___test", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("TestTest", "test_test", true);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("testTestTest", "test_test_test", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("TestTestTest", "test_test_test", true);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("testTestTestT", "test_test_test_t", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("testTestTestT", "_test_test_test_t", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("testTestTestT", "__test_test_test_t", false);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("TestTestTestT", "test_test_test_t", true);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("TestTestTestT", "_test_test_test_t", true);
+		this.verifyConvertUnderscoresToCamelCaseOnStringBuffer("TestTestTestT", "__test_test_test_t", true);
+	}
+
+	private void verifyConvertUnderscoresToCamelCaseOnStringBuffer(String expected, String string, boolean capitalizeFirstLetter) {
+		StringBuffer sb = new StringBuffer();
+		StringTools.convertUnderscoresToCamelCaseOn(string, capitalizeFirstLetter, sb);
+		assertEquals(expected, sb.toString());
 	}
 
 }

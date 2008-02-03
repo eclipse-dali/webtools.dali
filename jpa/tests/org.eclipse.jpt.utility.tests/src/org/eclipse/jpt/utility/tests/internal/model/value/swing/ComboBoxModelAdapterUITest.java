@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,10 +35,10 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ComboBoxModelAdapter;
 import org.eclipse.jpt.utility.internal.swing.FilteringListBrowser;
 import org.eclipse.jpt.utility.internal.swing.ListChooser;
@@ -55,8 +55,8 @@ public class ComboBoxModelAdapterUITest {
 
 	protected JFrame window;
 	private TestModel testModel;
-	private PropertyValueModel testModelHolder;
-	private PropertyValueModel colorHolder;
+	private WritablePropertyValueModel<TestModel> testModelHolder;
+	private WritablePropertyValueModel<Object> colorHolder;
 	private SimpleListValueModel<String> colorListHolder;
 	protected ComboBoxModel colorComboBoxModel;
 	private int nextColorNumber = 0;
@@ -76,22 +76,22 @@ public class ComboBoxModelAdapterUITest {
 //		UIManager.setLookAndFeel(com.sun.java.swing.plaf.motif.MotifLookAndFeel.class.getName());
 //		UIManager.setLookAndFeel(oracle.bali.ewt.olaf.OracleLookAndFeel.class.getName());
 		this.testModel = this.buildTestModel();
-		this.testModelHolder = new SimplePropertyValueModel(this.testModel);
+		this.testModelHolder = new SimplePropertyValueModel<TestModel>(this.testModel);
 		this.colorHolder = this.buildColorHolder(this.testModelHolder);
 		this.colorListHolder = this.buildColorListHolder();
 		this.colorComboBoxModel = this.buildComboBoxModelAdapter(this.colorListHolder, this.colorHolder);
 		this.openWindow();
 	}
 
-	private PropertyValueModel buildColorHolder(ValueModel vm) {
-		return new PropertyAspectAdapter(vm, TestModel.COLOR_PROPERTY) {
+	private WritablePropertyValueModel<Object> buildColorHolder(PropertyValueModel<TestModel> vm) {
+		return new PropertyAspectAdapter<TestModel, Object>(vm, TestModel.COLOR_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
-				return ((TestModel) this.subject).getColor();
+			protected String buildValue_() {
+				return this.subject.getColor();
 			}
 			@Override
 			protected void setValue_(Object value) {
-				((TestModel) this.subject).setColor((String) value);
+				this.subject.setColor((String) value);
 			}
 		};
 	}
@@ -112,11 +112,11 @@ public class ComboBoxModelAdapterUITest {
 //		};
 	}
 
-	protected ListValueModel uiColorListHolder() {
+	protected ListValueModel<String> uiColorListHolder() {
 		return this.colorListHolder;
 	}
 
-	private ComboBoxModel buildComboBoxModelAdapter(ListValueModel listHolder, PropertyValueModel selectionHolder) {
+	private ComboBoxModel buildComboBoxModelAdapter(ListValueModel<String> listHolder, WritablePropertyValueModel<Object> selectionHolder) {
 		return new ComboBoxModelAdapter(listHolder, selectionHolder);
 	}
 
@@ -386,7 +386,7 @@ public class ComboBoxModelAdapterUITest {
 		}
 		@Override
 		protected ListBrowser buildBrowser() {
-			return new FilteringListBrowser();
+			return new FilteringListBrowser<String>();
 		}
 	}
 

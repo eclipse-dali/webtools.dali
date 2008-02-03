@@ -31,7 +31,5 @@ public interface IJpaEObject extends EObject
 	 */
 	IResource getResource();
 
-	IJpaFactory jpaFactory();
-
 	IJpaPlatform jpaPlatform();
 }

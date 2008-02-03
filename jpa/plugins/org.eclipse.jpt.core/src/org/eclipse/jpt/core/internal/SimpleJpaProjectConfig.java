@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**

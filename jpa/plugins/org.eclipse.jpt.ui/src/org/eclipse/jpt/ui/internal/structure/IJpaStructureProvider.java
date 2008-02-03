@@ -3,29 +3,28 @@
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
- *  
+ *
  *  Contributors: Oracle. - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
 
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jpt.ui.internal.jface.IItemLabelProviderFactory;
+import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProviderFactory;
 
-public interface IJpaStructureProvider 
+public interface IJpaStructureProvider
 {
+	// TODO - change this
+	Object getInput();
 
-	String fileContentType();
-	
 	/**
-	 * Build an outline content provider.
+	 * Build an factory to create {@link ITreeItemContentProvider}s
 	 */
-	ITreeContentProvider buildContentProvider();
-	
+	ITreeItemContentProviderFactory treeItemContentProviderFactory();
+
 	/**
-	 * Build an outline label provider.
+	 * Build a factory to create {@link IItemLabelProvider}s
 	 */
-	ILabelProvider buildLabelProvider();
-	
+	IItemLabelProviderFactory itemLabelProviderFactory();
+
 	void dispose();
-	
 }

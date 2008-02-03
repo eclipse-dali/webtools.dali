@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,19 +21,19 @@ import org.eclipse.jpt.utility.internal.iterators.TreeIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.event.TreeChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TreeAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TreeValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class TreeAspectAdapterTests extends TestCase {
 	private TestSubject subject1;
-	private PropertyValueModel subjectHolder1;
-	private TreeAspectAdapter aa1;
+	private WritablePropertyValueModel<TestSubject> subjectHolder1;
+	private TreeAspectAdapter<TestSubject, TestNode[]> aa1;
 	private TreeChangeEvent event1;
 	private TreeChangeListener listener1;
 
@@ -66,7 +66,7 @@ public class TreeAspectAdapterTests extends TestCase {
 		this.subject1.addDescription(node, "description 1.2.1");
 		node = this.subject1.addDescription(root, "description 1.3");
 
-		this.subjectHolder1 = new SimplePropertyValueModel(this.subject1);
+		this.subjectHolder1 = new SimplePropertyValueModel<TestSubject>(this.subject1);
 		this.aa1 = this.buildAspectAdapter(this.subjectHolder1);
 		this.listener1 = this.buildValueChangeListener1();
 		this.aa1.addTreeChangeListener(TreeValueModel.NODES, this.listener1);
@@ -91,18 +91,18 @@ public class TreeAspectAdapterTests extends TestCase {
 		node = this.subject2.addDescription(root, "description 2.3");
 	}
 
-	private TreeAspectAdapter buildAspectAdapter(ValueModel subjectHolder) {
-		return new TreeAspectAdapter(subjectHolder, TestSubject.NAMES_TREE) {
+	private TreeAspectAdapter<TestSubject, TestNode[]> buildAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
+		return new TreeAspectAdapter<TestSubject, TestNode[]>(subjectHolder, TestSubject.NAMES_TREE) {
 			// this is not a typical aspect adapter - the value is determined by the aspect name
 			@Override
-			protected Iterator nodes_() {
-				if (this.treeName == TestSubject.NAMES_TREE) {
-					return ((TestSubject) this.subject).namePaths();
+			protected Iterator<TestNode[]> nodes_() {
+				if (this.treeNames[0] == TestSubject.NAMES_TREE) {
+					return this.subject.namePaths();
 				}
-				if (this.treeName == TestSubject.DESCRIPTIONS_TREE) {
-					return ((TestSubject) this.subject).descriptionPaths();
+				if (this.treeNames[0] == TestSubject.DESCRIPTIONS_TREE) {
+					return this.subject.descriptionPaths();
 				}
-				throw new IllegalStateException("invalid aspect name: " + this.treeName);
+				throw new IllegalStateException("invalid aspect name: " + this.treeNames[0]);
 			}
 		};
 	}

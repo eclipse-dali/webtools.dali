@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,9 +29,9 @@ import javax.swing.WindowConstants;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.RadioButtonModelAdapter;
 
 
@@ -41,8 +41,8 @@ import org.eclipse.jpt.utility.internal.model.value.swing.RadioButtonModelAdapte
 public class RadioButtonModelAdapterUITest {
 
 	private TestModel testModel;
-	private PropertyValueModel testModelHolder;
-	private PropertyValueModel colorHolder;
+	private WritablePropertyValueModel<TestModel> testModelHolder;
+	private WritablePropertyValueModel<Object> colorHolder;
 	private ButtonModel redButtonModel;
 	private ButtonModel greenButtonModel;
 	private ButtonModel blueButtonModel;
@@ -57,7 +57,7 @@ public class RadioButtonModelAdapterUITest {
 
 	private void exec(String[] args) throws Exception {
 		this.testModel = new TestModel();
-		this.testModelHolder = new SimplePropertyValueModel(this.testModel);
+		this.testModelHolder = new SimplePropertyValueModel<TestModel>(this.testModel);
 		this.colorHolder = this.buildColorHolder(this.testModelHolder);
 		this.redButtonModel = this.buildRadioButtonModelAdapter(this.colorHolder, TestModel.RED);
 		this.greenButtonModel = this.buildRadioButtonModelAdapter(this.colorHolder, TestModel.GREEN);
@@ -65,20 +65,20 @@ public class RadioButtonModelAdapterUITest {
 		this.openWindow();
 	}
 
-	private PropertyValueModel buildColorHolder(ValueModel subjectHolder) {
-		return new PropertyAspectAdapter(subjectHolder, TestModel.COLOR_PROPERTY) {
+	private WritablePropertyValueModel<Object> buildColorHolder(PropertyValueModel<TestModel> subjectHolder) {
+		return new PropertyAspectAdapter<TestModel, Object>(subjectHolder, TestModel.COLOR_PROPERTY) {
 			@Override
 			protected Object buildValue_() {
-				return ((TestModel) this.subject).getColor();
+				return this.subject.getColor();
 			}
 			@Override
 			protected void setValue_(Object value) {
-				((TestModel) this.subject).setColor((String) value);
+				this.subject.setColor((String) value);
 			}
 		};
 	}
 
-	private ButtonModel buildRadioButtonModelAdapter(PropertyValueModel colorPVM, String color) {
+	private ButtonModel buildRadioButtonModelAdapter(WritablePropertyValueModel<Object> colorPVM, String color) {
 		return new RadioButtonModelAdapter(colorPVM, color);
 	}
 

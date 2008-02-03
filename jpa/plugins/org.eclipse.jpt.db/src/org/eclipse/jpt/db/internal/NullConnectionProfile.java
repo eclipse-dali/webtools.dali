@@ -127,7 +127,7 @@ public final class NullConnectionProfile extends ConnectionProfile {
 	}
 
 	@Override
-	public String getDefaultSchema() {
+	public String getDefaultSchemaName() {
 		return "";
 	}
 	

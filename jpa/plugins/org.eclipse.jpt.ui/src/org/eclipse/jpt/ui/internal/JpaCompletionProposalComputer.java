@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.CompletionContext;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.ui.text.java.ContentAssistInvocationContext;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
@@ -26,7 +26,9 @@ import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.content.java.JpaCompilationUnit;
+import org.eclipse.jpt.core.internal.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
+import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 
@@ -67,7 +69,13 @@ public class JpaCompletionProposalComputer implements IJavaCompletionProposalCom
 			return Collections.emptyList();
 		}
 
-		JpaCompilationUnit jpaCU = (JpaCompilationUnit) jpaFile.getContent();
+		JavaResourceModel javaResourceModel = (JavaResourceModel) jpaFile.getResourceModel();
+		
+		//TODO A bit of hackery for now just to get this compiling and working good enough, 
+		//we need to have a way to get the context model given an IFile or IJpaFile
+		//instead of having to ask the IResourceModel for it
+		JavaPersistentType contextNode = (JavaPersistentType) javaResourceModel.rootContextNodes().next();
+		
 		CompletionContext cc = context.getCoreContext();
 
 		// the context's "token" is really a sort of "prefix" - it does NOT
@@ -88,8 +96,9 @@ public class JpaCompletionProposalComputer implements IJavaCompletionProposalCom
 //		String snippet = source.substring(Math.max(0, tokenStart - 20), Math.min(source.length(), tokenEnd + 21));
 //		System.out.println("surrounding snippet: =>" + snippet + "<=");
 
+		CompilationUnit astRoot = JDTTools.buildASTRoot(cu);
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
-		for (Iterator<String> stream = jpaCU.candidateValuesFor(context.getInvocationOffset(), filter); stream.hasNext(); ) {
+		for (Iterator<String> stream = contextNode.candidateValuesFor(context.getInvocationOffset(), filter, astRoot); stream.hasNext(); ) {
 			String s = stream.next();
 			proposals.add(new CompletionProposal(s, tokenStart, tokenEnd - tokenStart + 1, s.length()));
 		}

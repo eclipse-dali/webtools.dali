@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 
@@ -21,6 +23,8 @@ import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 
 /**
  * This extension of AspectAdapter provides ListChange support.
+ * This allows us to convert a set of one or more collections into
+ * a single collection, LIST_VALUES.
  * 
  * The typical subclass will override the following methods:
  * #listIterator_()
@@ -39,14 +43,15 @@ import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
  *     override this method only if returning a zero when the
  *     subject is null is unacceptable
  */
-public abstract class ListAspectAdapter
-	extends AspectAdapter
-	implements ListValueModel
+public abstract class ListAspectAdapter<S extends Model, E>
+	extends AspectAdapter<S>
+	implements ListValueModel<E>
 {
 	/**
-	 * The name of the subject's list that we use for the value.
+	 * The name of the subject's lists that we use for the value.
 	 */
-	protected final String listName;
+	protected final String[] listNames;
+		protected static final String[] EMPTY_LIST_NAMES = new String[0];
 
 	/** A listener that listens to the subject's list aspect. */
 	protected final ListChangeListener listChangeListener;
@@ -60,8 +65,34 @@ public abstract class ListAspectAdapter
 	 * Construct a ListAspectAdapter for the specified subject
 	 * and list.
 	 */
-	protected ListAspectAdapter(String listName, Model subject) {
-		this(new ReadOnlyPropertyValueModel(subject), listName);
+	protected ListAspectAdapter(String listName, S subject) {
+		this(new String[] {listName}, subject);
+	}
+
+	/**
+	 * Construct a ListAspectAdapter for the specified subject
+	 * and lists.
+	 */
+	protected ListAspectAdapter(String[] listNames, S subject) {
+		this(new StaticPropertyValueModel<S>(subject), listNames);
+	}
+
+	/**
+	 * Construct a ListAspectAdapter for the specified subject holder
+	 * and lists.
+	 */
+	protected ListAspectAdapter(PropertyValueModel<? extends S> subjectHolder, String... listNames) {
+		super(subjectHolder);
+		this.listNames = listNames;
+		this.listChangeListener = this.buildListChangeListener();
+	}
+
+	/**
+	 * Construct a ListAspectAdapter for the specified subject holder
+	 * and lists.
+	 */
+	protected ListAspectAdapter(PropertyValueModel<? extends S> subjectHolder, Collection<String> listNames) {
+		this(subjectHolder, listNames.toArray(new String[listNames.size()]));
 	}
 
 	/**
@@ -70,18 +101,8 @@ public abstract class ListAspectAdapter
 	 * change for a particular subject; but the subject will change, resulting in
 	 * a new list.
 	 */
-	protected ListAspectAdapter(ValueModel subjectHolder) {
-		this(subjectHolder, null);
-	}
-
-	/**
-	 * Construct a ListAspectAdapter for the specified subject holder
-	 * and list.
-	 */
-	protected ListAspectAdapter(ValueModel subjectHolder, String listName) {
-		super(subjectHolder);
-		this.listName = listName;
-		this.listChangeListener = this.buildListChangeListener();
+	protected ListAspectAdapter(PropertyValueModel<? extends S> subjectHolder) {
+		this(subjectHolder, EMPTY_LIST_NAMES);
 	}
 
 
@@ -113,7 +134,7 @@ public abstract class ListAspectAdapter
 			}
 			@Override
 			public String toString() {
-				return "list change listener: " + ListAspectAdapter.this.listName;
+				return "list change listener: " + Arrays.asList(ListAspectAdapter.this.listNames);
 			}
 		};
 	}
@@ -124,15 +145,15 @@ public abstract class ListAspectAdapter
 	/**
 	 * Return the elements of the subject's list aspect.
 	 */
-	public Iterator iterator() {
+	public Iterator<E> iterator() {
 		return this.listIterator();
 	}
 
 	/**
 	 * Return the elements of the subject's list aspect.
 	 */
-	public ListIterator listIterator() {
-		return (this.subject == null) ? EmptyListIterator.instance() : this.listIterator_();
+	public ListIterator<E> listIterator() {
+		return (this.subject == null) ? EmptyListIterator.<E>instance() : this.listIterator_();
 	}
 
 	/**
@@ -140,14 +161,14 @@ public abstract class ListAspectAdapter
 	 * At this point we can be sure that the subject is not null.
 	 * @see #listIterator()
 	 */
-	protected ListIterator listIterator_() {
+	protected ListIterator<E> listIterator_() {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * Return the element at the specified index of the subject's list aspect.
 	 */
-	public Object get(int index) {
+	public E get(int index) {
 		return CollectionTools.get(this.listIterator(), index);
 	}
 
@@ -212,22 +233,27 @@ public abstract class ListAspectAdapter
 	}
 
 	@Override
-	protected void engageNonNullSubject() {
-		if (this.listName != null) {
-			((Model) this.subject).addListChangeListener(this.listName, this.listChangeListener);
+	protected void engageSubject_() {
+    	for (String listName : this.listNames) {
+			((Model) this.subject).addListChangeListener(listName, this.listChangeListener);
 		}
 	}
 
 	@Override
-	protected void disengageNonNullSubject() {
-		if (this.listName != null) {
-			((Model) this.subject).removeListChangeListener(this.listName, this.listChangeListener);
+	protected void disengageSubject_() {
+    	for (String listName : this.listNames) {
+			((Model) this.subject).removeListChangeListener(listName, this.listChangeListener);
 		}
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.listName);
+		for (int i = 0; i < this.listNames.length; i++) {
+			if (i != 0) {
+				sb.append(", ");
+			}
+			sb.append(this.listNames[i]);
+		}
 	}
 
 

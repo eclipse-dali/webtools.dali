@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -23,14 +22,14 @@ import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class ListAspectAdapterTests extends TestCase {
 	private TestSubject subject1;
-	private PropertyValueModel subjectHolder1;
+	private WritablePropertyValueModel<TestSubject> subjectHolder1;
 	private LocalListAspectAdapter aa1;
 	private ListChangeEvent event1;
 	private ListChangeListener listener1;
@@ -47,7 +46,7 @@ public class ListAspectAdapterTests extends TestCase {
 		this.subject1 = new TestSubject();
 		this.subject1.addNames(this.subject1Names());
 		this.subject1.addDescriptions(this.subject1Descriptions());
-		this.subjectHolder1 = new SimplePropertyValueModel(this.subject1);
+		this.subjectHolder1 = new SimplePropertyValueModel<TestSubject>(this.subject1);
 		this.aa1 = this.buildAspectAdapter(this.subjectHolder1);
 		this.listener1 = this.buildValueChangeListener1();
 		this.aa1.addListChangeListener(ListValueModel.LIST_VALUES, this.listener1);
@@ -58,8 +57,8 @@ public class ListAspectAdapterTests extends TestCase {
 		this.subject2.addDescriptions(this.subject2Descriptions());
 	}
 
-	private List subject1Names() {
-		List result = new ArrayList();
+	private List<String> subject1Names() {
+		List<String> result = new ArrayList<String>();
 		result.add("foo");
 		result.add("bar");
 		result.add("baz");
@@ -67,15 +66,15 @@ public class ListAspectAdapterTests extends TestCase {
 		return result;
 	}
 
-	private List subject1Descriptions() {
-		List result = new ArrayList();
+	private List<String> subject1Descriptions() {
+		List<String> result = new ArrayList<String>();
 		result.add("this.subject1 description1");
 		result.add("this.subject1 description2");
 		return result;
 	}
 
-	private List subject2Names() {
-		List result = new ArrayList();
+	private List<String> subject2Names() {
+		List<String> result = new ArrayList<String>();
 		result.add("joo");
 		result.add("jar");
 		result.add("jaz");
@@ -83,14 +82,14 @@ public class ListAspectAdapterTests extends TestCase {
 		return result;
 	}
 
-	private List subject2Descriptions() {
-		List result = new ArrayList();
+	private List<String> subject2Descriptions() {
+		List<String> result = new ArrayList<String>();
 		result.add("this.subject2 description1");
 		result.add("this.subject2 description2");
 		return result;
 	}
 
-	private LocalListAspectAdapter buildAspectAdapter(ValueModel subjectHolder) {
+	private LocalListAspectAdapter buildAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
 		return new LocalListAspectAdapter(subjectHolder);
 	}
 
@@ -168,7 +167,7 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(this.subject1Names().size(), this.event1.index());
 		assertEquals("jam", this.event1.items().next());
-		List namesPlus = this.subject1Names();
+		List<String> namesPlus = this.subject1Names();
 		namesPlus.add("jam");
 		assertEquals(namesPlus, CollectionTools.list(this.aa1.listIterator()));
 
@@ -187,7 +186,7 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(this.subject1Names(), CollectionTools.list(this.aa1.listIterator()));
 		assertNull(this.event1);
 
-		List items = new ArrayList();
+		List<String> items = new ArrayList<String>();
 		items.add("joo");
 		items.add("jar");
 		items.add("jaz");
@@ -200,7 +199,7 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(5, this.event1.index());		// only the last "add" event will still be there
 		assertEquals("jam", this.event1.items().next());
-		List namesPlus = this.subject1Names();
+		List<String> namesPlus = this.subject1Names();
 		namesPlus.addAll(2, items);
 		assertEquals(namesPlus, CollectionTools.list(this.aa1.listIterator()));
 	}
@@ -215,7 +214,7 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(0, this.event1.index());
 		assertEquals(removedName, this.event1.items().next());
-		List namesMinus = this.subject1Names();
+		List<String> namesMinus = this.subject1Names();
 		namesMinus.remove(0);
 		assertEquals(namesMinus, CollectionTools.list(this.aa1.listIterator()));
 
@@ -234,7 +233,7 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(this.subject1Names(), CollectionTools.list(this.aa1.listIterator()));
 		assertNull(this.event1);
 
-		List items = new ArrayList();
+		List<String> items = new ArrayList<String>();
 		items.add("bar");
 		items.add("baz");
 
@@ -245,7 +244,7 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(1, this.event1.index());		// only the last "remove" event will still be there
 		assertEquals("baz", this.event1.items().next());
-		List namesPlus = this.subject1Names();
+		List<String> namesPlus = this.subject1Names();
 		namesPlus.remove(1);
 		namesPlus.remove(1);
 		assertEquals(namesPlus, CollectionTools.list(this.aa1.listIterator()));
@@ -262,7 +261,7 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(0, this.event1.index());
 		assertEquals("jelly", this.event1.items().next());
 		assertEquals(replacedName, this.event1.replacedItems().next());
-		List namesChanged = this.subject1Names();
+		List<String> namesChanged = this.subject1Names();
 		namesChanged.set(0, "jelly");
 		assertEquals(namesChanged, CollectionTools.list(this.aa1.listIterator()));
 
@@ -290,7 +289,7 @@ public class ListAspectAdapterTests extends TestCase {
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.listName());
 		assertEquals(-1, this.event1.index());
 		assertFalse(this.event1.items().hasNext());
-		List namesPlus2 = this.subject1Names();
+		List<String> namesPlus2 = this.subject1Names();
 		namesPlus2.add(0, "jaz");
 		namesPlus2.add(0, "jam");
 		assertEquals(namesPlus2, CollectionTools.list(this.aa1.listIterator()));
@@ -331,20 +330,20 @@ public class ListAspectAdapterTests extends TestCase {
 	// ********** inner class **********
 
 	private class TestSubject extends AbstractModel {
-		private List names;
+		private List<String> names;
 		public static final String NAMES_LIST = "names";
-		private List descriptions;
+		private List<String> descriptions;
 		public static final String DESCRIPTIONS_LIST = "descriptions";
 	
 		public TestSubject() {
-			this.names = new ArrayList();
-			this.descriptions = new ArrayList();
+			this.names = new ArrayList<String>();
+			this.descriptions = new ArrayList<String>();
 		}
-		public ListIterator names() {
-			return new ReadOnlyListIterator(this.names);
+		public ListIterator<String> names() {
+			return new ReadOnlyListIterator<String>(this.names);
 		}
 		public String getName(int index) {
-			return (String) this.names.get(index);
+			return this.names.get(index);
 		}
 		public void addName(int index, String name) {
 			this.names.add(index, name);
@@ -353,12 +352,12 @@ public class ListAspectAdapterTests extends TestCase {
 		public void addName(String name) {
 			this.addName(this.names.size(), name);
 		}
-		public void addNames(ListIterator newNames) {
+		public void addNames(ListIterator<String> newNames) {
 			while (newNames.hasNext()) {
-				this.addName((String) newNames.next());
+				this.addName(newNames.next());
 			}
 		}
-		public void addNames(List newNames) {
+		public void addNames(List<String> newNames) {
 			this.addNames(newNames.listIterator());
 		}
 		public void addTwoNames(String name1, String name2) {
@@ -367,20 +366,20 @@ public class ListAspectAdapterTests extends TestCase {
 			this.fireListChanged(NAMES_LIST);
 		}
 		public String removeName(int index) {
-			String removedName = (String) this.names.remove(index);
+			String removedName = this.names.remove(index);
 			this.fireItemRemoved(NAMES_LIST, index, removedName);
 			return removedName;
 		}
 		public String setName(int index, String name) {
-			String replacedName = (String) this.names.set(index, name);
+			String replacedName = this.names.set(index, name);
 			this.fireItemReplaced(NAMES_LIST, index, name, replacedName);
 			return replacedName;
 		}
-		public ListIterator descriptions() {
-			return new ReadOnlyListIterator(this.descriptions);
+		public ListIterator<String> descriptions() {
+			return new ReadOnlyListIterator<String>(this.descriptions);
 		}
 		public String getDescription(int index) {
-			return (String) this.descriptions.get(index);
+			return this.descriptions.get(index);
 		}
 		public void addDescription(int index, String description) {
 			this.descriptions.add(index, description);
@@ -389,21 +388,21 @@ public class ListAspectAdapterTests extends TestCase {
 		public void addDescription(String description) {
 			this.addDescription(this.descriptions.size(), description);
 		}
-		public void addDescriptions(ListIterator newDescriptions) {
+		public void addDescriptions(ListIterator<String> newDescriptions) {
 			while (newDescriptions.hasNext()) {
-				this.addDescription((String) newDescriptions.next());
+				this.addDescription(newDescriptions.next());
 			}
 		}
-		public void addDescriptions(List newDescriptions) {
+		public void addDescriptions(List<String> newDescriptions) {
 			this.addDescriptions(newDescriptions.listIterator());
 		}
 		public String removeDescription(int index) {
-			String removedDescription = (String) this.descriptions.remove(index);
+			String removedDescription = this.descriptions.remove(index);
 			this.fireItemRemoved(DESCRIPTIONS_LIST, index, removedDescription);
 			return removedDescription;
 		}
 		public String setDescription(int index, String description) {
-			String replacedDescription = (String) this.descriptions.set(index, description);
+			String replacedDescription = this.descriptions.set(index, description);
 			this.fireItemReplaced(DESCRIPTIONS_LIST, index, description, replacedDescription);
 			return replacedDescription;
 		}
@@ -411,51 +410,51 @@ public class ListAspectAdapterTests extends TestCase {
 
 
 	// this is not a typical aspect adapter - the value is determined by the aspect name
-	private class LocalListAspectAdapter extends ListAspectAdapter {
+	private class LocalListAspectAdapter extends ListAspectAdapter<TestSubject, String> {
 
-		LocalListAspectAdapter(ValueModel subjectHolder) {
+		LocalListAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
 			super(subjectHolder, TestSubject.NAMES_LIST);
 		}
 
 		@Override
-		protected ListIterator listIterator_() {
-			if (this.listName == TestSubject.NAMES_LIST) {
-				return ((TestSubject) this.subject).names();
-			} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
-				return ((TestSubject) this.subject).descriptions();
+		protected ListIterator<String> listIterator_() {
+			if (this.listNames[0] == TestSubject.NAMES_LIST) {
+				return this.subject.names();
+			} else if (this.listNames[0] == TestSubject.DESCRIPTIONS_LIST) {
+				return this.subject.descriptions();
 			} else {
-				throw new IllegalStateException("invalid aspect name: " + this.listName);
+				throw new IllegalStateException("invalid aspect name: " + this.listNames[0]);
 			}
 		}
 
 		public void add(int index, Object item) {
-			if (this.listName == TestSubject.NAMES_LIST) {
-				((TestSubject) this.subject).addName(index, (String) item);
-			} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
-				((TestSubject) this.subject).addDescription(index, (String) item);
+			if (this.listNames[0] == TestSubject.NAMES_LIST) {
+				this.subject.addName(index, (String) item);
+			} else if (this.listNames[0] == TestSubject.DESCRIPTIONS_LIST) {
+				this.subject.addDescription(index, (String) item);
 			} else {
-				throw new IllegalStateException("invalid aspect name: " + this.listName);
+				throw new IllegalStateException("invalid aspect name: " + this.listNames[0]);
 			}
 		}
 
-		public void addAll(int index, List items) {
+		public void addAll(int index, List<String> items) {
 			for (int i = 0; i < items.size(); i++) {
 				this.add(index + i, items.get(i));
 			}
 		}
 
-		public Object remove(int index) {
-			if (this.listName == TestSubject.NAMES_LIST) {
-				return ((TestSubject) this.subject).removeName(index);
-			} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
-				return ((TestSubject) this.subject).removeDescription(index);
+		public String remove(int index) {
+			if (this.listNames[0] == TestSubject.NAMES_LIST) {
+				return this.subject.removeName(index);
+			} else if (this.listNames[0] == TestSubject.DESCRIPTIONS_LIST) {
+				return this.subject.removeDescription(index);
 			} else {
-				throw new IllegalStateException("invalid aspect name: " + this.listName);
+				throw new IllegalStateException("invalid aspect name: " + this.listNames[0]);
 			}
 		}
 
-		public List remove(int index, int length) {
-			List removedItems = new ArrayList(length);
+		public List<String> remove(int index, int length) {
+			List<String> removedItems = new ArrayList<String>(length);
 			for (int i = 0; i < length; i++) {
 				removedItems.add(this.remove(index));
 			}
@@ -463,12 +462,12 @@ public class ListAspectAdapterTests extends TestCase {
 		}
 
 		public Object replace(int index, Object item) {
-			if (this.listName == TestSubject.NAMES_LIST) {
-				return ((TestSubject) this.subject).setName(index, (String) item);
-			} else if (this.listName == TestSubject.DESCRIPTIONS_LIST) {
-				return ((TestSubject) this.subject).setDescription(index, (String) item);
+			if (this.listNames[0] == TestSubject.NAMES_LIST) {
+				return this.subject.setName(index, (String) item);
+			} else if (this.listNames[0] == TestSubject.DESCRIPTIONS_LIST) {
+				return this.subject.setDescription(index, (String) item);
 			} else {
-				throw new IllegalStateException("invalid aspect name: " + this.listName);
+				throw new IllegalStateException("invalid aspect name: " + this.listNames[0]);
 			}
 		}
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ public class JptUtilityModelValueTests {
 		suite.addTest(JptUtilityModelValuePrefsTests.suite());
 		suite.addTest(JptUtilityModelValueSwingTests.suite());
 		
-		suite.addTestSuite(BufferedPropertyValueModelTests.class);
+		suite.addTestSuite(BufferedWritablePropertyValueModelTests.class);
 		suite.addTestSuite(CollectionAspectAdapterTests.class);
 		suite.addTestSuite(CollectionListValueModelAdapterTests.class);
 		suite.addTestSuite(CollectionPropertyValueModelAdapterTests.class);
@@ -43,8 +43,8 @@ public class JptUtilityModelValueTests {
 		suite.addTestSuite(NullPropertyValueModelTests.class);
 		suite.addTestSuite(PropertyAspectAdapterTests.class);
 		suite.addTestSuite(PropertyCollectionValueModelAdapterTests.class);
-		suite.addTestSuite(ReadOnlyCollectionValueModelTests.class);
-		suite.addTestSuite(ReadOnlyListValueModelTests.class);
+		suite.addTestSuite(StaticCollectionValueModelTests.class);
+		suite.addTestSuite(StaticListValueModelTests.class);
 		suite.addTestSuite(SimpleCollectionValueModelTests.class);
 		suite.addTestSuite(SimpleListValueModelTests.class);
 		suite.addTestSuite(SimplePropertyValueModelTests.class);
@@ -54,10 +54,10 @@ public class JptUtilityModelValueTests {
 		suite.addTestSuite(TransformationListValueModelAdapterTests.TransformerTests.class);
 		suite.addTestSuite(TransformationPropertyValueModelTests.class);
 		suite.addTestSuite(TreeAspectAdapterTests.class);
-		suite.addTestSuite(ValueCollectionPropertyValueModelAdapterTests.class);
-		suite.addTestSuite(ValueListPropertyValueModelAdapterTests.class);
-		suite.addTestSuite(ValuePropertyPropertyValueModelAdapterTests.class);
-		suite.addTestSuite(ValueStatePropertyValueModelAdapterTests.class);
+		suite.addTestSuite(ValueCollectionAdapterTests.class);
+		suite.addTestSuite(ValueListAdapterTests.class);
+		suite.addTestSuite(ValuePropertyAdapterTests.class);
+		suite.addTestSuite(ValueStateAdapterTests.class);
 	
 		return suite;
 	}

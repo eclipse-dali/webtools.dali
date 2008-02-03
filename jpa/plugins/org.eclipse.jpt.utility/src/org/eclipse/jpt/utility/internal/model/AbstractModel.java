@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.internal.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
@@ -211,6 +213,17 @@ public abstract class AbstractModel implements Model, Serializable {
 	 * Return whether collection changed.
 	 * @see java.util.Collection#addAll(java.util.Collection)
 	 */
+	protected <E> boolean addItemsToCollection(E[] items, Collection<E> collection, String collectionName) {
+		return this.addItemsToCollection(new ArrayIterator<E>(items), collection, collectionName);
+	}
+
+	/**
+	 * Convenience method.
+	 * Add the specified items to the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether collection changed.
+	 * @see java.util.Collection#addAll(java.util.Collection)
+	 */
 	protected <E> boolean addItemsToCollection(Iterable<? extends E> items, Collection<E> collection, String collectionName) {
 		return this.addItemsToCollection(items.iterator(), collection, collectionName);
 	}
@@ -262,6 +275,17 @@ public abstract class AbstractModel implements Model, Serializable {
 	 * Return whether the collection changed.
 	 * @see java.util.Collection#removeAll(java.util.Collection)
 	 */
+	protected boolean removeItemsFromCollection(Object[] items, Collection<?> collection, String collectionName) {
+		return this.removeItemsFromCollection(new ArrayIterator<Object>(items), collection, collectionName);
+	}
+
+	/**
+	 * Convenience method.
+	 * Remove the specified items from the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether the collection changed.
+	 * @see java.util.Collection#removeAll(java.util.Collection)
+	 */
 	protected boolean removeItemsFromCollection(Iterable<?> items, Collection<?> collection, String collectionName) {
 		return this.removeItemsFromCollection(items.iterator(), collection, collectionName);
 	}
@@ -282,6 +306,17 @@ public abstract class AbstractModel implements Model, Serializable {
 			this.fireItemsRemoved(collectionName, items2);
 		}
 		return changed;
+	}
+
+	/**
+	 * Convenience method.
+	 * Retain the specified items in the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether the collection changed.
+	 * @see java.util.Collection#retainAll(java.util.Collection)
+	 */
+	protected boolean retainItemsInCollection(Object[] items, Collection<?> collection, String collectionName) {
+		return this.retainItemsInCollection(new ArrayIterator<Object>(items), collection, collectionName);
 	}
 
 	/**
@@ -482,6 +517,16 @@ public abstract class AbstractModel implements Model, Serializable {
 	 * and fire the appropriate event if necessary.
 	 * @see java.util.List#addAll(int, java.util.Collection)
 	 */
+	protected <E> boolean addItemsToList(int index, E[] items, List<E> list, String listName) {
+		return this.addItemsToList(index, new ArrayIterator<E>(items), list, listName);
+	}
+
+	/**
+	 * Convenience method.
+	 * Add the specified items to the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * @see java.util.List#addAll(int, java.util.Collection)
+	 */
 	protected <E> boolean addItemsToList(int index, Iterable<? extends E> items, List<E> list, String listName) {
 		return this.addItemsToList(index, items.iterator(), list, listName);
 	}
@@ -499,6 +544,16 @@ public abstract class AbstractModel implements Model, Serializable {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Convenience method.
+	 * Add the specified items to the end of to the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * @see java.util.List#addAll(java.util.Collection)
+	 */
+	protected <E> boolean addItemsToList(E[] items, List<E> list, String listName) {
+		return this.addItemsToList(new ArrayIterator<E>(items), list, listName);
 	}
 
 	/**
@@ -579,6 +634,17 @@ public abstract class AbstractModel implements Model, Serializable {
 	 * Return the removed items.
 	 * @see java.util.List#removeAll(java.util.Collection)
 	 */
+	protected boolean removeItemsFromList(Object[] items, List<?> list, String listName) {
+		return this.removeItemsFromList(new ArrayIterator<Object>(items), list, listName);
+	}
+
+	/**
+	 * Convenience method.
+	 * Remove the specified items from the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * Return the removed items.
+	 * @see java.util.List#removeAll(java.util.Collection)
+	 */
 	protected boolean removeItemsFromList(Iterable<?> items, List<?> list, String listName) {
 		return this.removeItemsFromList(items.iterator(), list, listName);
 	}
@@ -596,6 +662,17 @@ public abstract class AbstractModel implements Model, Serializable {
 			changed |= this.removeItemFromList(items.next(), list, listName);
 		}
 		return changed;
+	}
+
+	/**
+	 * Convenience method.
+	 * Retain the specified items in the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * Return whether the collection changed.
+	 * @see java.util.List#retainAll(java.util.Collection)
+	 */
+	protected boolean retainItemsInList(Object[] items, List<?> list, String listName) {
+		return this.retainItemsInList(new ArrayIterator<Object>(items), list, listName);
 	}
 
 	/**
@@ -645,6 +722,17 @@ public abstract class AbstractModel implements Model, Serializable {
 	 */
 	protected <E> E replaceItemInList(E oldItem, E newItem, List<E> list, String listName) {
 		return this.setItemInList(list.indexOf(oldItem), newItem, list, listName);
+	}
+
+	/**
+	 * Convenience method.
+	 * Set the specified items in the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * Return the replaced items.
+	 * @see java.util.List#set(int, Object)
+	 */
+	protected <E> List<E> setItemsInList(int index, E[] items, List<E> list, String listName) {
+		return this.setItemsInList(index, Arrays.asList(items), list, listName);
 	}
 
 	/**

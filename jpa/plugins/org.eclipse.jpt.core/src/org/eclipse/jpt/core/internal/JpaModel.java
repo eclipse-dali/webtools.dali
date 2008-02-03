@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,16 +28,13 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jpt.core.internal.IJpaProject.Config;
-import org.eclipse.jpt.core.internal.content.orm.EntityMappingsInternal;
-import org.eclipse.jpt.core.internal.content.orm.OrmFactory;
-import org.eclipse.jpt.core.internal.content.orm.OrmResource;
-import org.eclipse.jpt.core.internal.content.orm.resource.OrmArtifactEdit;
-import org.eclipse.jpt.core.internal.content.persistence.Persistence;
-import org.eclipse.jpt.core.internal.content.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.content.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceArtifactEdit;
-import org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceResource;
 import org.eclipse.jpt.core.internal.facet.IJpaFacetDataModelProperties;
+import org.eclipse.jpt.core.internal.resource.orm.EntityMappings;
+import org.eclipse.jpt.core.internal.resource.orm.OrmArtifactEdit;
+import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.internal.resource.orm.OrmResource;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -221,72 +218,67 @@ public class JpaModel
 		IProject project = event.getProject().getProject();
 		IDataModel dataModel = (IDataModel) event.getActionConfig();
 
-		this.buildPersistenceXmlJob(project).schedule();
-
-		if (dataModel.getBooleanProperty(IJpaFacetDataModelProperties.CREATE_ORM_XML)) {
-			this.buildOrmXmlJob(project).schedule();
-		}
+		boolean buildOrmXml = dataModel.getBooleanProperty(IJpaFacetDataModelProperties.CREATE_ORM_XML);
+		this.buildProjectXmlJob(project, buildOrmXml).schedule();
 
 		// assume(?) this is the first event to indicate we need to add the JPA project to the JPA model
 		this.addJpaProject(project);
 	}
 
-	private Job buildPersistenceXmlJob(final IProject project) {
-		return new Job("Create persistence.xml") {
+	private Job buildProjectXmlJob(final IProject project, final boolean buildOrmXml) {
+		Job job = new Job("Create Project XML files") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				JpaModel.this.createPersistenceXml(project);
+				JpaModel.this.createProjectXml(project, buildOrmXml);
 				return Status.OK_STATUS;
 			}
 		};
+		job.setRule(ResourcesPlugin.getWorkspace().getRoot());
+		return job;
 	}
 
-	/* private */ void createPersistenceXml(IProject project) {
+	/* private */ void createProjectXml(IProject project, boolean buildOrmXml) {
+		this.createPersistenceXml(project);
+
+		if (buildOrmXml) {
+			this.createOrmXml(project);
+		}
+
+	}
+
+	private void createPersistenceXml(IProject project) {
 		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForWrite(project);
-		PersistenceResource resource = pae.getPersistenceResource(JptCorePlugin.persistenceXmlDeploymentURI(project));
 		
 		// 202811 - do not add content if it is already present
-		if (resource.getPersistence() == null) {
-			Persistence persistence = PersistenceFactory.eINSTANCE.createPersistence();
-			persistence.setVersion("1.0");
-			PersistenceUnit pUnit = PersistenceFactory.eINSTANCE.createPersistenceUnit();
-			pUnit.setName(project.getName());
-			persistence.getPersistenceUnits().add(pUnit);
-			this.resourceContents(resource).add(persistence);
-			pae.save(null);
+		PersistenceResource resource = pae.getResource();
+		if (! resource.getFile().exists()) {
+			pae.createDefaultResource();
 		}
 		
 		pae.dispose();
 	}
 
-	@SuppressWarnings({ "restriction", "unchecked" })
-	private EList<EObject> resourceContents(PersistenceResource resource) {
-		return resource.getContents();
-	}
-
-	private Job buildOrmXmlJob(final IProject project) {
-		return new Job("Create orm.xml") {
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				JpaModel.this.createOrmXml(project);
-				return Status.OK_STATUS;
-			}
-		};
-	}
-
-	/* private */ void createOrmXml(IProject project) {
+	private void createOrmXml(IProject project) {
 		OrmArtifactEdit oae = OrmArtifactEdit.getArtifactEditForWrite(project);
-		OrmResource resource = oae.getOrmResource(JptCorePlugin.ormXmlDeploymentURI(project));
+		OrmResource resource = oae.getResource(JptCorePlugin.ormXmlDeploymentURI(project));
 
 		// 202811 - do not add content if it is already present
 		if (resource.getEntityMappings() == null) {
-			EntityMappingsInternal entityMappings = OrmFactory.eINSTANCE.createEntityMappingsInternal();
+			EntityMappings entityMappings = OrmFactory.eINSTANCE.createEntityMappings();
 			entityMappings.setVersion("1.0");
-			resource.getContents().add(entityMappings);
+			this.resourceContents(resource).add(entityMappings);
 			oae.save(null);
 		}
 		
 		oae.dispose();
+	}
+
+	/**
+	 * minimize the scope of the suppressed warnings
+	 */
+	@SuppressWarnings("unchecked")
+	private EList<EObject> resourceContents(OrmResource resource) {
+		return resource.getContents();
 	}
 
 	// TODO remove classpath items? persistence.xml? orm.xml?
@@ -454,7 +446,7 @@ public class JpaModel
 		}
 
 		private IJpaProject buildJpaProject() throws CoreException {
-			return this.config.jpaPlatform().getJpaFactory().createJpaProject(this.config);
+			return this.config.jpaPlatform().jpaFactory().createJpaProject(this.config);
 		}
 
 		public void synchronizeJpaFiles(IResourceDelta delta) throws CoreException {

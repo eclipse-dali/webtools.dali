@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import java.text.Collator;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.datatools.connectivity.sqm.core.definition.DatabaseDefinition;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
@@ -70,6 +71,12 @@ public abstract class Database extends DTPWrapper implements Comparable<Database
 	Table table( org.eclipse.datatools.modelbase.sql.tables.Table dtpTable) {
 		return this.schema( dtpTable.getSchema()).table( dtpTable);
 	}
+
+	public Database database() {
+		return this;
+	}
+
+	public abstract DatabaseDefinition dtpDefinition();
 
 	// ********** Comparable implementation **********
 

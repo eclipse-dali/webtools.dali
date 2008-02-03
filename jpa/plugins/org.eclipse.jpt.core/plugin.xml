@@ -52,24 +52,27 @@
 		point="org.eclipse.core.runtime.contentTypes">
 		
 		<content-type
-	        id="org.eclipse.jpt.core.content.orm"
-	        name="%ORM_XML_CONTENT"
-	        base-type="org.eclipse.core.runtime.xml"
-	        file-names="orm.xml"
-	        priority="normal">
-	     		Only allowing file names of orm.xml.  Extenders will have to specify a different file name.
-	     		Limitation with WTP translators for registering files names instead of content types
+			id="org.eclipse.jpt.core.content.orm"
+			name="%ORM_XML_CONTENT"
+			base-type="org.eclipse.core.runtime.xml"
+			file-names="orm.xml">
+			<describer
+				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
+				<parameter name="element" value="entity-mappings"/>
+			</describer>
 		</content-type>
   		
   		<content-type
-	        id="org.eclipse.jpt.core.content.persistence"
-	        name="%PERSISTENCE_XML_CONTENT"
-	        base-type="org.eclipse.core.runtime.xml"
-	        file-names="persistence.xml"
-	        priority="normal">
-		     	Only allowing file names of persistence.xml.
+			id="org.eclipse.jpt.core.content.persistence"
+			name="%PERSISTENCE_XML_CONTENT"
+			base-type="org.eclipse.core.runtime.xml"
+			file-names="persistence.xml">
+			<describer
+				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
+				<parameter name="element" value="persistence"/>
+			</describer>
 		</content-type>
- 
+ 	
 	</extension>
 	
 	
@@ -80,15 +83,15 @@
 			class="org.eclipse.jpt.core.internal.prefs.JpaPreferenceInitializer"/>
 		
 	</extension>
-
-
+	
+	
 	<!-- ***** WTP extensions ***** -->
 
 	<extension
 		point="org.eclipse.wst.common.modulecore.resourceFactories">
 		
 		<resourceFactory
-			class="org.eclipse.jpt.core.internal.content.persistence.resource.PersistenceResourceFactory"
+			class="org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceFactory"
 			isDefault="true"
 			shortSegment="persistence.xml">
 			<contentTypeBinding
@@ -97,7 +100,7 @@
 		</resourceFactory>
 		
 		<resourceFactory
-			class="org.eclipse.jpt.core.internal.content.orm.resource.OrmResourceFactory"
+			class="org.eclipse.jpt.core.internal.resource.orm.OrmResourceFactory"
 			isDefault="true"
 			shortSegment="orm.xml">
 			<contentTypeBinding
@@ -235,7 +238,7 @@
 		<jpaPlatform
 			id="generic"
 			label="%GENERIC_PLATFORM_LABEL"
-			class="org.eclipse.jpt.core.internal.platform.generic.GenericPlatform"/>
+			class="org.eclipse.jpt.core.internal.platform.generic.GenericJpaPlatform"/>
 		
 	</extension>
 	

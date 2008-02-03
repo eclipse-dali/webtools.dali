@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.Counter;
+import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.internal.model.Model;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
 
@@ -32,22 +33,23 @@ import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
  * 
  * Subclasses need to override two methods:
  * 
- * listenToItem(Model)
+ * #listenToItem(Model)
  *     begin listening to the appropriate aspect of the specified item and call
  *     #itemAspectChanged(Object) whenever the aspect changes
  * 
- * stopListeningToItem(Model)
+ * #stopListeningToItem(Model)
  *     stop listening to the appropriate aspect of the specified item
  */
-public abstract class ItemAspectListValueModelAdapter
-	extends ListValueModelWrapper
+public abstract class ItemAspectListValueModelAdapter<E>
+	extends ListValueModelWrapper<E>
+	implements ListValueModel<E>
 {
 
 	/**
 	 * Maintain a counter for each of the items in the
 	 * wrapped list holder we are listening to.
 	 */
-	protected final IdentityHashMap counters;
+	protected final IdentityHashMap<E, Counter> counters;
 
 
 	// ********** constructors **********
@@ -55,36 +57,37 @@ public abstract class ItemAspectListValueModelAdapter
 	/**
 	 * Constructor - the list holder is required.
 	 */
-	protected ItemAspectListValueModelAdapter(ListValueModel listHolder) {
+	protected ItemAspectListValueModelAdapter(ListValueModel<? extends E> listHolder) {
 		super(listHolder);
-		this.counters = new IdentityHashMap();
+		this.counters = new IdentityHashMap<E, Counter>();
 	}
 
 	/**
 	 * Constructor - the collection holder is required.
 	 */
-	protected ItemAspectListValueModelAdapter(CollectionValueModel collectionHolder) {
-		this(new CollectionListValueModelAdapter(collectionHolder));
+	protected ItemAspectListValueModelAdapter(CollectionValueModel<? extends E> collectionHolder) {
+		this(new CollectionListValueModelAdapter<E>(collectionHolder));
 	}
 
 
 	// ********** ListValueModel implementation **********
 
-	public ListIterator listIterator() {
-		return this.listHolder.listIterator();
+	public Iterator<E> iterator() {
+		return this.listIterator();
 	}
 
-	@Override
-	public Object get(int index) {
+	public ListIterator<E> listIterator() {
+		return new ReadOnlyListIterator<E>(this.listHolder.listIterator());
+	}
+
+	public E get(int index) {
 		return this.listHolder.get(index);
 	}
 
-	@Override
 	public int size() {
 		return this.listHolder.size();
 	}
 
-	@Override
 	public Object[] toArray() {
 		return this.listHolder.toArray();
 	}
@@ -105,15 +108,15 @@ public abstract class ItemAspectListValueModelAdapter
 		this.engageItems(this.listHolder.iterator());
 	}
 
-	protected void engageItems(Iterator stream) {
+	protected void engageItems(Iterator<? extends E> stream) {
 		while (stream.hasNext()) {
 			this.engageItem(stream.next());
 		}
 	}
 
-	protected void engageItem(Object item) {
+	protected void engageItem(E item) {
 		// listen to an item only once
-		Counter counter = (Counter) this.counters.get(item);
+		Counter counter = this.counters.get(item);
 		if (counter == null) {
 			counter = new Counter();
 			this.counters.put(item, counter);
@@ -140,15 +143,15 @@ public abstract class ItemAspectListValueModelAdapter
 		this.disengageItems(this.listHolder.iterator());
 	}
 
-	protected void disengageItems(Iterator stream) {
+	protected void disengageItems(Iterator<? extends E> stream) {
 		while (stream.hasNext()) {
 			this.disengageItem(stream.next());
 		}
 	}
 
-	protected void disengageItem(Object item) {
+	protected void disengageItem(E item) {
 		// stop listening to an item only once
-		Counter counter = (Counter) this.counters.get(item);
+		Counter counter = this.counters.get(item);
 		if (counter == null) {
 			// something is wrong if this happens...  ~bjv
 			throw new IllegalStateException("missing counter: " + item);
@@ -175,7 +178,7 @@ public abstract class ItemAspectListValueModelAdapter
 	protected void itemsAdded(ListChangeEvent e) {
 		// re-fire event with the wrapper as the source
 		this.fireItemsAdded(e.cloneWithSource(this, LIST_VALUES));
-		this.engageItems(e.items());
+		this.engageItems(this.items(e));
 	}
 
 	/**
@@ -184,7 +187,7 @@ public abstract class ItemAspectListValueModelAdapter
 	 */
 	@Override
 	protected void itemsRemoved(ListChangeEvent e) {
-		this.disengageItems(e.items());
+		this.disengageItems(this.items(e));
 		// re-fire event with the wrapper as the source
 		this.fireItemsRemoved(e.cloneWithSource(this, LIST_VALUES));
 	}
@@ -196,10 +199,10 @@ public abstract class ItemAspectListValueModelAdapter
 	 */
 	@Override
 	protected void itemsReplaced(ListChangeEvent e) {
-		this.disengageItems(e.replacedItems());
+		this.disengageItems(this.replacedItems(e));
 		// re-fire event with the wrapper as the source
 		this.fireItemsReplaced(e.cloneWithSource(this, LIST_VALUES));
-		this.engageItems(e.items());
+		this.engageItems(this.items(e));
 	}
 
 	/**
@@ -220,7 +223,7 @@ public abstract class ItemAspectListValueModelAdapter
 	protected void listCleared(ListChangeEvent e) {
 		// we should only need to disengage each item once...
 		// make a copy to prevent a ConcurrentModificationException
-		Collection keys = new ArrayList(this.counters.keySet());
+		Collection<E> keys = new ArrayList<E>(this.counters.keySet());
 		this.disengageItems(keys.iterator());
 		this.counters.clear();
 		// re-fire event with the wrapper as the source
@@ -235,7 +238,7 @@ public abstract class ItemAspectListValueModelAdapter
 	protected void listChanged(ListChangeEvent e) {
 		// we should only need to disengage each item once...
 		// make a copy to prevent a ConcurrentModificationException
-		Collection keys = new ArrayList(this.counters.keySet());
+		Collection<E> keys = new ArrayList<E>(this.counters.keySet());
 		this.disengageItems(keys.iterator());
 		this.counters.clear();
 		// re-fire event with the wrapper as the source

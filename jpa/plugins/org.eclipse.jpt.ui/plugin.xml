@@ -14,18 +14,24 @@
 		<factory
 			adaptableType="org.eclipse.ui.IWorkbenchPart"
 			class="org.eclipse.jpt.ui.internal.selection.SelectionParticipantFactory">
-			<adapter type="org.eclipse.jpt.ui.internal.selection.ISelectionParticipant"/>
+			<adapter type="org.eclipse.jpt.ui.internal.selection.IJpaSelectionParticipant"/>
 		</factory>
 		
 		<factory
-			adaptableType="org.eclipse.jpt.core.internal.IPersistentAttribute"
+			adaptableType="org.eclipse.ui.IEditorPart"
+			class="org.eclipse.jpt.ui.internal.structure.JpaStructureProviderFactory">
+			<adapter type="org.eclipse.jpt.ui.internal.structure.IJpaStructureProvider"/>
+		</factory>
+		
+		<factory
+			adaptableType="org.eclipse.jpt.core.internal.context.base.IPersistentAttribute"
 			class="org.eclipse.jpt.ui.internal.actions.PersistentAttributeActionFilter$Factory">
 			<adapter
 				type="org.eclipse.ui.IActionFilter"/>
 		</factory>
 		
 		<factory
-			adaptableType="org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute"
+			adaptableType="org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute"
 			class="org.eclipse.jpt.ui.internal.actions.XmlPersistentAttributeActionFilter$Factory">
 			<adapter
 				type="org.eclipse.ui.IActionFilter"/>
@@ -39,7 +45,71 @@
 		
 		<jpaPlatform
 			id="generic"
-			class="org.eclipse.jpt.ui.internal.generic.GenericPlatformUi"/>
+			class="org.eclipse.jpt.ui.internal.platform.generic.GenericPlatformUi"/>
+		
+	</extension>
+	
+	
+	<extension
+		point="org.eclipse.ui.navigator.viewer">
+		
+		<viewerContentBinding
+			viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+			<includes>
+				<contentExtension pattern="org.eclipse.jpt.ui.*"/>
+			</includes>
+		</viewerContentBinding>
+		
+	</extension>
+	
+	
+	<extension
+		point="org.eclipse.ui.navigator.navigatorContent">
+		
+		<navigatorContent
+			id="org.eclipse.jpt.ui.jpaNavigatorContent"
+			name="%jpaNavigatorContent" 
+			priority="higher"
+			icon="icons/full/obj16/jpa_content.gif"
+			activeByDefault="true"
+			contentProvider="org.eclipse.jpt.ui.internal.navigator.JpaNavigatorContentProvider"
+			labelProvider="org.eclipse.jpt.ui.internal.navigator.JpaNavigatorLabelProvider">
+			
+			<triggerPoints>
+				<and>
+					<adapt type="org.eclipse.core.resources.IProject"> 
+						<test forcePluginActivation="true"
+							property="org.eclipse.wst.common.project.facet.core.projectFacet"
+							value="jpt.jpa" />
+					</adapt>
+				</and>
+			</triggerPoints>
+			
+			<!--
+			
+			<possibleChildren>
+				<or>
+					<and>
+						<instanceof value="org.eclipse.emf.ecore.EObject" />
+						<or>
+							<test forcePluginActivation="true"
+								property="org.eclipse.wst.common.emfworkbench.integration.emfPackage"
+								value="ejb.xmi" />
+						</or>
+					</and>
+					<instanceof value="org.eclipse.jst.j2ee.internal.ejb.provider.J2EEJavaClassProviderHelper"/>
+					<instanceof value="org.eclipse.jst.j2ee.internal.ejb.provider.GroupedEJBItemProvider"/>
+				</or>
+				<instanceof value="org.eclipse.jst.j2ee.navigator.internal.LoadingDDNode"/>
+			</possibleChildren>
+			
+			<commonSorter
+				id="org.eclipse.jst.j2ee.navigator.internal.J2EEViewerSorter"
+				class="org.eclipse.jst.j2ee.navigator.internal.J2EEViewerSorter" />
+			
+			-->
+			
+		</navigatorContent>
 		
 	</extension>
 	
@@ -124,7 +194,7 @@
 		
 		<objectContribution
 			id="org.eclipse.jpt.ui.entityMappingsActions"
-			objectClass="org.eclipse.jpt.core.internal.content.orm.EntityMappings">
+			objectClass="org.eclipse.jpt.core.internal.context.orm.EntityMappings">
 			<action
 				id="org.eclipse.jpt.ui.addPersistentClass"
 				class="org.eclipse.jpt.ui.internal.actions.AddPersistentClassAction"
@@ -134,7 +204,7 @@
 		
 		<objectContribution
 			id="org.eclipse.jpt.ui.xmlPersistentTypeActions"
-			objectClass="org.eclipse.jpt.core.internal.content.orm.XmlPersistentType">
+			objectClass="org.eclipse.jpt.core.internal.context.orm.XmlPersistentType">
 			<action
 				id="org.eclipse.jpt.ui.removePersistentClass"
 				class="org.eclipse.jpt.ui.internal.actions.RemovePersistentClassAction"
@@ -143,7 +213,7 @@
 		</objectContribution>
 				<objectContribution
 			id="org.eclipse.jpt.ui.xmlPersistentAttributeActions1"
-			objectClass="org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute">
+			objectClass="org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute">
 			
 			<action
 				id="org.eclipse.jpt.ui.addPersistentAttributeToXml"
@@ -165,7 +235,7 @@
 		
 		<objectContribution
 			id="org.eclipse.jpt.ui.xmlPersistentAttributeActions2"
-			objectClass="org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute">
+			objectClass="org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute">
 			
 			<action
 				id="org.eclipse.jpt.ui.addPersistentAttributeToXmlAndMap"
@@ -188,7 +258,7 @@
 		
 		<objectContribution
 			id="org.eclipse.jpt.ui.xmlPersistentAttributeActions3"
-			objectClass="org.eclipse.jpt.core.internal.content.orm.XmlPersistentAttribute">
+			objectClass="org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute">
 			
 			<action
 				id="org.eclipse.jpt.ui.removePersistentAttributeFromXml"
@@ -244,7 +314,7 @@
 		
 		<view
 	        category="org.eclipse.jpt.ui"
-	        class="org.eclipse.jpt.ui.internal.views.JpaStructureView"
+	        class="org.eclipse.jpt.ui.internal.views.structure.JpaStructureView"
 	        icon="icons/full/eview16/jpa_structure.gif"
 	        id="org.eclipse.jpt.ui.jpaStructureView"
 	        name="%jpaStructure"/>

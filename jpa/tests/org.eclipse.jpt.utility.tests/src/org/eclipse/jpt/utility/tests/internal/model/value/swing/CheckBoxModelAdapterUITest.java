@@ -30,11 +30,10 @@ import javax.swing.WindowConstants;
 
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.CheckBoxModelAdapter;
-
 
 /**
  * Play around with a set of check boxes.
@@ -42,10 +41,10 @@ import org.eclipse.jpt.utility.internal.model.value.swing.CheckBoxModelAdapter;
 public class CheckBoxModelAdapterUITest {
 
 	private TestModel testModel;
-	private PropertyValueModel testModelHolder;
-	private PropertyValueModel flag1Holder;
-	private PropertyValueModel flag2Holder;
-	private PropertyValueModel notFlag2Holder;
+	private WritablePropertyValueModel<TestModel> testModelHolder;
+	private WritablePropertyValueModel<Boolean> flag1Holder;
+	private WritablePropertyValueModel<Boolean> flag2Holder;
+	private WritablePropertyValueModel<Boolean> notFlag2Holder;
 	private ButtonModel flag1ButtonModel;
 	private ButtonModel flag2ButtonModel;
 	private ButtonModel notFlag2ButtonModel;
@@ -60,7 +59,7 @@ public class CheckBoxModelAdapterUITest {
 
 	private void exec(String[] args) throws Exception {
 		this.testModel = new TestModel(true, true);
-		this.testModelHolder = new SimplePropertyValueModel(this.testModel);
+		this.testModelHolder = new SimplePropertyValueModel<TestModel>(this.testModel);
 		this.flag1Holder = this.buildFlag1Holder(this.testModelHolder);
 		this.flag1ButtonModel = this.buildCheckBoxModelAdapter(this.flag1Holder);
 		this.flag2Holder = this.buildFlag2Holder(this.testModelHolder);
@@ -70,46 +69,46 @@ public class CheckBoxModelAdapterUITest {
 		this.openWindow();
 	}
 
-	private PropertyValueModel buildFlag1Holder(ValueModel vm) {
-		return new PropertyAspectAdapter(vm, TestModel.FLAG1_PROPERTY) {
+	private WritablePropertyValueModel<Boolean> buildFlag1Holder(PropertyValueModel<TestModel> vm) {
+		return new PropertyAspectAdapter<TestModel, Boolean>(vm, TestModel.FLAG1_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
-				return Boolean.valueOf(((TestModel) this.subject).isFlag1());
+			protected Boolean buildValue_() {
+				return Boolean.valueOf(this.subject.isFlag1());
 			}
 			@Override
-			protected void setValue_(Object value) {
-				((TestModel) this.subject).setFlag1(((Boolean) value).booleanValue());
-			}
-		};
-	}
-
-	private PropertyValueModel buildFlag2Holder(ValueModel vm) {
-		return new PropertyAspectAdapter(vm, TestModel.FLAG2_PROPERTY) {
-			@Override
-			protected Object buildValue_() {
-				return Boolean.valueOf(((TestModel) this.subject).isFlag2());
-			}
-			@Override
-			protected void setValue_(Object value) {
-				((TestModel) this.subject).setFlag2(((Boolean) value).booleanValue());
+			protected void setValue_(Boolean value) {
+				this.subject.setFlag1(value.booleanValue());
 			}
 		};
 	}
 
-	private PropertyValueModel buildNotFlag2Holder(ValueModel vm) {
-		return new PropertyAspectAdapter(vm, TestModel.NOT_FLAG2_PROPERTY) {
+	private WritablePropertyValueModel<Boolean> buildFlag2Holder(PropertyValueModel<TestModel> vm) {
+		return new PropertyAspectAdapter<TestModel, Boolean>(vm, TestModel.FLAG2_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
-				return Boolean.valueOf(((TestModel) this.subject).isNotFlag2());
+			protected Boolean buildValue_() {
+				return Boolean.valueOf(this.subject.isFlag2());
 			}
 			@Override
-			protected void setValue_(Object value) {
-				((TestModel) this.subject).setNotFlag2(((Boolean) value).booleanValue());
+			protected void setValue_(Boolean value) {
+				this.subject.setFlag2(value.booleanValue());
 			}
 		};
 	}
 
-	private ButtonModel buildCheckBoxModelAdapter(PropertyValueModel booleanHolder) {
+	private WritablePropertyValueModel<Boolean> buildNotFlag2Holder(PropertyValueModel<TestModel> vm) {
+		return new PropertyAspectAdapter<TestModel, Boolean>(vm, TestModel.NOT_FLAG2_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return Boolean.valueOf(this.subject.isNotFlag2());
+			}
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setNotFlag2(value.booleanValue());
+			}
+		};
+	}
+
+	private ButtonModel buildCheckBoxModelAdapter(WritablePropertyValueModel<Boolean> booleanHolder) {
 		return new CheckBoxModelAdapter(booleanHolder);
 	}
 

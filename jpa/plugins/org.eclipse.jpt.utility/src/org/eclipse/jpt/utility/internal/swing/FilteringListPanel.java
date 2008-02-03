@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -65,7 +65,7 @@ import org.eclipse.jpt.utility.internal.StringMatcher;
  * dialog that directs the user's behavior (as opposed to a "normal"
  * window).
  */
-public class FilteringListPanel extends JPanel {
+public class FilteringListPanel<T> extends JPanel {
 
 	/**
 	 * The complete list of available choices
@@ -78,7 +78,7 @@ public class FilteringListPanel extends JPanel {
 	 * to strings so they can be run through the matcher
 	 * and displayed in the text field.
 	 */
-	StringConverter stringConverter;
+	StringConverter<T> stringConverter;
 
 	/** The text field. */
 	private JTextField textField;
@@ -120,7 +120,7 @@ public class FilteringListPanel extends JPanel {
 	 * the objects).
 	 */
 	public FilteringListPanel(Object[] completeList, Object initialSelection) {
-		this(completeList, initialSelection, StringConverter.Default.instance());
+		this(completeList, initialSelection, StringConverter.Default.<T>instance());
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class FilteringListPanel extends JPanel {
 	 * and initial selection. Use the specified string converter to convert the
 	 * choices and selection to strings.
 	 */
-	public FilteringListPanel(Object[] completeList, Object initialSelection, StringConverter stringConverter) {
+	public FilteringListPanel(Object[] completeList, Object initialSelection, StringConverter<T> stringConverter) {
 		super(new BorderLayout());
 		this.completeList = completeList;
 		this.stringConverter = stringConverter;
@@ -140,13 +140,17 @@ public class FilteringListPanel extends JPanel {
 
 	private void initialize(Object initialSelection) {
 		this.maxListSize = this.defaultMaxListSize();
-		this.buffer = new Object[this.max()];
+		this.buffer = this.buildBuffer();
 
 		this.textFieldListener = this.buildTextFieldListener();
 
 		this.stringMatcher = this.buildStringMatcher();
 
 		this.initializeLayout(initialSelection);
+	}
+
+	private Object[] buildBuffer() {
+		return new Object[this.max()];
 	}
 
 	/**
@@ -186,7 +190,7 @@ public class FilteringListPanel extends JPanel {
 	}
 
 	private StringMatcher buildStringMatcher() {
-		return new SimpleStringMatcher();
+		return new SimpleStringMatcher<T>();
 	}
 
 	private void initializeLayout(Object initialSelection) {
@@ -234,7 +238,7 @@ public class FilteringListPanel extends JPanel {
 
 	// ********** public API **********
 
-	public Object getSelection() {
+	public Object selection() {
 		return this.listBox.getSelectedValue();
 	}
 
@@ -242,7 +246,7 @@ public class FilteringListPanel extends JPanel {
 		this.listBox.setSelectedValue(selection, true);
 	}
 
-	public Object[] getCompleteList() {
+	public Object[] completeList() {
 		return this.completeList;
 	}
 
@@ -253,33 +257,33 @@ public class FilteringListPanel extends JPanel {
 	public void setCompleteList(Object[] completeList) {
 		this.completeList = completeList;
 		if (this.buffer.length < this.max()) {
-			// the buffer will never shrink - might want to re-consider... -bjv
-			this.buffer = new Object[this.max()];
+			// the buffer will never shrink - might want to re-consider...  ~bjv
+			this.buffer = this.buildBuffer();
 		}
 		this.filterList();
 	}
 
-	public int getMaxListSize() {
+	public int maxListSize() {
 		return this.maxListSize;
 	}
 
 	public void setMaxListSize(int maxListSize) {
 		this.maxListSize = maxListSize;
 		if (this.buffer.length < this.max()) {
-			// the buffer will never shrink - might want to re-consider... -bjv
-			this.buffer = new Object[this.max()];
+			// the buffer will never shrink - might want to re-consider...  ~bjv
+			this.buffer = this.buildBuffer();
 		}
 		this.filterList();
 	}
 
-	public StringConverter getStringConverter() {
+	public StringConverter<T> stringConverter() {
 		return this.stringConverter;
 	}
 
 	/**
 	 * apply the new filter to the list
 	 */
-	public void setStringConverter(StringConverter stringConverter) {
+	public void setStringConverter(StringConverter<T> stringConverter) {
 		this.stringConverter = stringConverter;
 		this.filterList();
 	}
@@ -288,14 +292,14 @@ public class FilteringListPanel extends JPanel {
 	 * allow client code to access the text field
 	 * (so we can set the focus)
 	 */
-	public JTextField getTextField() {
+	public JTextField textField() {
 		return this.textField;
 	}
 
 	/**
 	 * allow client code to access the text field label
 	 */
-	public JLabel getTextFieldLabel() {
+	public JLabel textFieldLabel() {
 		return this.textFieldLabel;
 	}
 
@@ -310,7 +314,7 @@ public class FilteringListPanel extends JPanel {
 	 * allow client code to access the list box
 	 * (so we can add mouse listeners for double-clicking)
 	 */
-	public JList getListBox() {
+	public JList listBox() {
 		return this.listBox;
 	}
 
@@ -324,7 +328,7 @@ public class FilteringListPanel extends JPanel {
 	/**
 	 * allow client code to access the list box label
 	 */
-	public JLabel getListBoxLabel() {
+	public JLabel listBoxLabel() {
 		return this.listBoxLabel;
 	}
 
@@ -345,7 +349,7 @@ public class FilteringListPanel extends JPanel {
 		this.listBox.setFont(font);
 	}
 
-	public StringMatcher getStringMatcher() {
+	public StringMatcher stringMatcher() {
 		return this.stringMatcher;
 	}
 
@@ -375,8 +379,9 @@ public class FilteringListPanel extends JPanel {
 	protected ListCellRenderer buildDefaultCellRenderer() {
 		return new SimpleListCellRenderer() {
 			@Override
+			@SuppressWarnings("unchecked")
 			protected String buildText(Object value) {
-				return FilteringListPanel.this.stringConverter.convertToString(value);
+				return FilteringListPanel.this.stringConverter.convertToString((T) value);
 			}
 		};
 	}
@@ -385,7 +390,7 @@ public class FilteringListPanel extends JPanel {
 	 * Something has changed that requires us to filter the list.
 	 * 
 	 * This method is synchronized because a fast typist can
-	 * generate events quicker than we can filter the list. (? -bjv)
+	 * generate events quicker than we can filter the list. (?  ~bjv)
 	 */
 	synchronized void filterList() {
 		// temporarily stop listening to the list box selection, since we will
@@ -407,7 +412,7 @@ public class FilteringListPanel extends JPanel {
 			int len = this.completeList.length;
 			int max = this.max();
 			for (int i = 0; i < len; i++) {
-				if (this.stringMatcher.matches(this.stringConverter.convertToString(this.completeList[i]))) {
+				if (this.stringMatcher.matches(this.stringConverter.convertToString(this.entry(i)))) {
 					this.buffer[j++] = this.completeList[i];
 				}
 				if (j == max) {
@@ -425,6 +430,14 @@ public class FilteringListPanel extends JPanel {
 			this.listBox.getSelectionModel().setLeadSelectionIndex(0);
 			this.listBox.ensureIndexIsVisible(0);
 		}
+	}
+
+	/**
+	 * minimize scope of suppressed warnings
+	 */
+	@SuppressWarnings("unchecked")
+	private T entry(int index) {
+		return (T) this.completeList[index];
 	}
 
 	/**

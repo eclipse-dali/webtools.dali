@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.iterators;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -34,7 +33,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 public class CloneListIterator<E>
 	implements ListIterator<E>
 {
-	private final ListIterator<E> nestedListIterator;
+	private final ListIterator<Object> nestedListIterator;
 	private int cursor;
 	private String state;
 	private final Mutator<E> mutator;
@@ -63,15 +62,10 @@ public class CloneListIterator<E>
 		super();
 		// build a copy of the list and keep it in synch with original (if the mutator allows changes)
 		// that way the nested list iterator will maintain some of our state
-		this.nestedListIterator = CollectionTools.list(buildArray(list)).listIterator();
+		this.nestedListIterator = CollectionTools.list(list.toArray()).listIterator();
 		this.mutator = mutator;
 		this.cursor = 0;
 		this.state = UNKNOWN;
-	}
-
-	@SuppressWarnings("unchecked")
-	private static <T> T[] buildArray(Collection<? extends T> c) {
-		return (T[]) c.toArray();
 	}
 
 
@@ -83,7 +77,7 @@ public class CloneListIterator<E>
 
 	public E next() {
 		// allow the nested iterator to throw an exception before we modify the index
-		E next = this.nestedListIterator.next();
+		E next = this.nestedNext();
 		this.cursor++;
 		this.state = NEXT;
 		return next;
@@ -114,7 +108,7 @@ public class CloneListIterator<E>
 
 	public E previous() {
 		// allow the nested iterator to throw an exception before we modify the index
-		E previous = this.nestedListIterator.previous();
+		E previous = this.nestedPrevious();
 		this.cursor--;
 		this.state = PREVIOUS;
 		return previous;
@@ -139,6 +133,28 @@ public class CloneListIterator<E>
 
 
 	// ********** internal methods **********
+
+	/**
+	 * The list passed in during construction held Es,
+	 * so this cast is not a problem. We need this cast because
+	 * all the elements of the original collection were copied into
+	 * an object array (Object[]).
+	 */
+	@SuppressWarnings("unchecked")
+	protected E nestedNext() {
+		return (E) this.nestedListIterator.next();
+	}
+
+	/**
+	 * The list passed in during construction held Es,
+	 * so this cast is not a problem. We need this cast because
+	 * all the elements of the original collection were copied into
+	 * an object array (Object[]).
+	 */
+	@SuppressWarnings("unchecked")
+	protected E nestedPrevious() {
+		return (E) this.nestedListIterator.previous();
+	}
 
 	/**
 	 * Add the specified element to the original list.

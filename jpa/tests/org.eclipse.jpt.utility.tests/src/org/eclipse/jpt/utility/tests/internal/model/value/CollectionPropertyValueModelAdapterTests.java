@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -20,14 +19,14 @@ import org.eclipse.jpt.utility.internal.model.value.CollectionPropertyValueModel
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;
 
 public class CollectionPropertyValueModelAdapterTests extends TestCase {
-	private PropertyValueModel adapter;
-	private SimpleCollectionValueModel wrappedCollectionHolder;
+	private WritablePropertyValueModel<Boolean> adapter;
+	private SimpleCollectionValueModel<String> wrappedCollectionHolder;
 	PropertyChangeEvent event;
 
 	public CollectionPropertyValueModelAdapterTests(String name) {
@@ -37,7 +36,7 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.wrappedCollectionHolder = new SimpleCollectionValueModel();
+		this.wrappedCollectionHolder = new SimpleCollectionValueModel<String>();
 		this.adapter = new LocalAdapter(this.wrappedCollectionHolder, "666");
 		this.event = null;
 	}
@@ -49,15 +48,15 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 	}
 
 	private boolean booleanValue() {
-		return ((Boolean) this.adapter.value()).booleanValue();
+		return this.adapter.value().booleanValue();
 	}
 
-	private Collection wrappedCollection() {
-		return CollectionTools.collection((Iterator) this.wrappedCollectionHolder.iterator());
+	private Collection<String> wrappedCollection() {
+		return CollectionTools.collection(this.wrappedCollectionHolder.iterator());
 	}
 
 	public void testValue() {
-		this.adapter.addPropertyChangeListener(ValueModel.VALUE, new PropertyChangeListener() {
+		this.adapter.addPropertyChangeListener(PropertyValueModel.VALUE, new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {/* OK */}
 		});
 		assertFalse(this.booleanValue());
@@ -81,13 +80,13 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 		assertTrue(this.booleanValue());
 		assertTrue(this.wrappedCollection().contains("666"));
 
-		((SimpleCollectionValueModel) this.wrappedCollectionHolder).clear();
+		this.wrappedCollectionHolder.clear();
 		assertFalse(this.booleanValue());
 		assertFalse(this.wrappedCollection().contains("666"));
 	}
 
 	public void testSetValue() {
-		this.adapter.addPropertyChangeListener(ValueModel.VALUE, new PropertyChangeListener() {
+		this.adapter.addPropertyChangeListener(PropertyValueModel.VALUE, new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {/* OK */}
 		});
 		assertFalse(this.booleanValue());
@@ -103,7 +102,7 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 	}
 
 	public void testEventFiring() {
-		this.adapter.addPropertyChangeListener(ValueModel.VALUE, new PropertyChangeListener() {
+		this.adapter.addPropertyChangeListener(PropertyValueModel.VALUE, new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
 				CollectionPropertyValueModelAdapterTests.this.event = e;
 			}
@@ -125,7 +124,7 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 		this.wrappedCollectionHolder.add("666");
 		this.verifyEvent(false, true);
 
-		((SimpleCollectionValueModel) this.wrappedCollectionHolder).clear();
+		this.wrappedCollectionHolder.clear();
 		this.verifyEvent(true, false);
 	}
 
@@ -140,41 +139,41 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 		PropertyChangeListener listener = new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {/* OK */}
 		};
-		this.adapter.addPropertyChangeListener(ValueModel.VALUE, listener);
+		this.adapter.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
 		this.wrappedCollectionHolder.add("666");
 		assertTrue(this.booleanValue());
 		assertTrue(this.wrappedCollection().contains("666"));
 
-		this.adapter.removePropertyChangeListener(ValueModel.VALUE, listener);
+		this.adapter.removePropertyChangeListener(PropertyValueModel.VALUE, listener);
 		assertFalse(this.booleanValue());
 		assertTrue(this.wrappedCollection().contains("666"));
 
-		this.adapter.addPropertyChangeListener(ValueModel.VALUE, listener);
+		this.adapter.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
 		assertTrue(this.booleanValue());
 		assertTrue(this.wrappedCollection().contains("666"));
 	}
 
 	public void testHasListeners() {
-		assertFalse(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertFalse(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertFalse(((AbstractModel) this.wrappedCollectionHolder).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 
 		PropertyChangeListener listener = new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {/* OK */}
 		};
-		this.adapter.addPropertyChangeListener(ValueModel.VALUE, listener);
-		assertTrue(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		this.adapter.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
+		assertTrue(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(((AbstractModel) this.wrappedCollectionHolder).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 
-		this.adapter.removePropertyChangeListener(ValueModel.VALUE, listener);
-		assertFalse(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		this.adapter.removePropertyChangeListener(PropertyValueModel.VALUE, listener);
+		assertFalse(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertFalse(((AbstractModel) this.wrappedCollectionHolder).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 
 		this.adapter.addPropertyChangeListener(listener);
-		assertTrue(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertTrue(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(((AbstractModel) this.wrappedCollectionHolder).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 
 		this.adapter.removePropertyChangeListener(listener);
-		assertFalse(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(ValueModel.VALUE));
+		assertFalse(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertFalse(((AbstractModel) this.wrappedCollectionHolder).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 	}
 
@@ -185,10 +184,13 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 	 * the value is true if the wrapped collection contains the specified item,
 	 * otherwise the value is false
 	 */
-	private static class LocalAdapter extends CollectionPropertyValueModelAdapter {
-		private Object item;
+	private static class LocalAdapter
+		extends CollectionPropertyValueModelAdapter<Boolean>
+		implements WritablePropertyValueModel<Boolean>
+	{
+		private String item;
 
-		LocalAdapter(CollectionValueModel collectionHolder, Object item) {
+		LocalAdapter(CollectionValueModel<String> collectionHolder, String item) {
 			super(collectionHolder);
 			this.item = item;
 		}
@@ -198,27 +200,27 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 		 * always return a Boolean
 		 */
 		@Override
-		public Object value() {
-			Object result = super.value();
+		public Boolean value() {
+			Boolean result = super.value();
 			return (result == null) ? Boolean.FALSE : result;
 		}
-		@Override
-		public void setValue(Object value) {
+		@SuppressWarnings("unchecked")
+		public void setValue(Boolean value) {
 			if (this.booleanValue()) {
 				if ( ! this.booleanValueOf(value)) {
 					// the value is changing from true to false
-					((SimpleCollectionValueModel) this.collectionHolder).remove(this.item);
+					((SimpleCollectionValueModel<String>) this.collectionHolder).remove(this.item);
 				}
 			} else {
 				if (this.booleanValueOf(value)) {
 					// the value is changing from false to true
-					((SimpleCollectionValueModel) this.collectionHolder).add(this.item);
+					((SimpleCollectionValueModel<String>) this.collectionHolder).add(this.item);
 				}
 			}
 		}
 		@Override
-		protected Object buildValue() {
-			return Boolean.valueOf(CollectionTools.contains((Iterator) this.collectionHolder.iterator(), this.item));
+		protected Boolean buildValue() {
+			return Boolean.valueOf(CollectionTools.contains(this.collectionHolder.iterator(), this.item));
 		}
 
 		// ********** internal methods **********

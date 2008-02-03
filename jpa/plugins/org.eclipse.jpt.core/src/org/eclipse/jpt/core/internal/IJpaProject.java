@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal;
 
 import java.util.Iterator;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
@@ -19,11 +18,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.content.java.JavaPersistentType;
+import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
+import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.utility.internal.CommandExecutor;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * 
@@ -62,10 +62,20 @@ public interface IJpaProject extends IJpaNode {
 	IJpaDataSource dataSource();
 
 	/**
+	 * Return the project's default schema, taken from the ConnectionProfile
+	 */
+	Schema defaultSchema();
+	
+	/**
 	 * Return the JPA project's JPA files.
 	 */
 	Iterator<IJpaFile> jpaFiles();
-		String JPA_FILES_COLLECTION = "jpaFiles";
+	
+	/** 
+	 * ID string used when jpaFiles collection is changed.
+	 * @see org.eclipse.jpt.utility.internal.model.Model#addCollectionChangeListener(String, org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener)
+	 */
+	String JPA_FILES_COLLECTION = "jpaFiles";
 
 	/**
 	 * Return the size of the JPA project's JPA files.
@@ -85,22 +95,17 @@ public interface IJpaProject extends IJpaNode {
 	 * JPA file content provider.
 	 */
 	Iterator<IJpaFile> jpaFiles(String contentTypeId);
-
+	
 	/**
-	 * Return the JPA project's Java JPA files.
+	 * Return the context model representing the JPA content of this project
 	 */
-	Iterator<IJpaFile> javaJpaFiles();
+	IContextModel contextModel();
 
 	/**
-	 * Return the JPA project's Java persistent types.
-	 */
-	Iterator<JavaPersistentType> javaPersistentTypes();
-
-	/**
-	 * Return the Java persistent type for the specified JDT type;
+	 * Return the Java persistent type resource for the specified fully qualified type name;
 	 * null, if none exists.
 	 */
-	JavaPersistentType javaPersistentType(IType type);
+	JavaPersistentTypeResource javaPersistentTypeResource(String typeName);
 
 	/**
 	 * Synchronize the JPA project's JPA files with the specified resource
@@ -119,20 +124,24 @@ public interface IJpaProject extends IJpaNode {
 	 * listed in persistence.xml.
 	 */
 	boolean discoversAnnotatedClasses();
-		String DISCOVERS_ANNOTATED_CLASSES_PROPERTY = "discoversAnnotatedClasses";
-
+	
+	/** 
+	 * ID string used when discoversAnnotatedClasses property is changed.
+	 * @see org.eclipse.jpt.utility.internal.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener)
+	 */
+	String DISCOVERS_ANNOTATED_CLASSES_PROPERTY = "discoversAnnotatedClasses";
+	
 	/**
 	 * Set whether the JPA project will "discover" annotated classes
 	 * automatically, as opposed to requiring the classes to be
 	 * listed in persistence.xml.
 	 */
 	void setDiscoversAnnotatedClasses(boolean discoversAnnotatedClasses);
-
+	
 	/**
 	 * Return project's validation messages.
 	 */
-	@SuppressWarnings("restriction")
-	Iterator<org.eclipse.wst.validation.internal.provisional.core.IMessage> validationMessages();
+	Iterator<IMessage> validationMessages();
 
 	/**
 	 * Return the JPA project's root "deploy path".
@@ -167,14 +176,78 @@ public interface IJpaProject extends IJpaNode {
 	CommandExecutorProvider modifySharedDocumentCommandExecutorProvider();
 
 
-	// ********** updating defaults etc. **********
+	// ********** project "update" **********
 
 	/**
-	 * Reconnect the model together, recalculating default values as needed
+	 * Return the implementation of the Updater
+	 * interface that will be used to "update" a JPA project.
+	 */
+	Updater updater();
+
+	/**
+	 * Set the implementation of the Updater
+	 * interface that will be used to "update" a JPA project.
+	 */
+	void setUpdater(Updater updater);
+
+	/**
+	 * Something in the JPA project has changed, "update" those parts of the
+	 * JPA project that are dependent on other parts of the JPA project.
+	 * This is called when
+	 * - the JPA project is first constructed
+	 * - anything in the JPA project changes
+	 * - the JPA project's database connection is changed, opened, or closed
 	 */
 	void update();
 
+	/**
+	 * This is the callback used by the updater to perform the actual
+	 * "update".
+	 */
 	IStatus update(IProgressMonitor monitor);
+
+
+	/**
+	 * Define a strategy that can be used to "update" a JPA project whenever
+	 * something changes.
+	 */
+	interface Updater {
+
+		/**
+		 * Update the JPA project.
+		 */
+		void update();
+
+		/**
+		 * The JPA project is disposed; dispose the updater.
+		 */
+		void dispose();
+
+		/**
+		 * This updater does nothing. Useful for testing.
+		 */
+		final class Null implements Updater {
+			public static final Updater INSTANCE = new Null();
+			public static Updater instance() {
+				return INSTANCE;
+			}
+			// ensure single instance
+			private Null() {
+				super();
+			}
+			public void update() {
+				// do nothing
+			}
+			public void dispose() {
+				// do nothing
+			}
+			@Override
+			public String toString() {
+				return "IJpaProject.Updater.Null";
+			}
+		}
+
+	}
 
 
 	// ********** config that can be used to construct a JPA project **********

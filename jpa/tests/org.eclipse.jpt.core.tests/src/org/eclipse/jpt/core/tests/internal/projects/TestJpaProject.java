@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.tests.internal.projects;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.SynchronousJpaProjectUpdater;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 /**
@@ -51,6 +52,7 @@ public class TestJpaProject extends TestJavaProject {
 		this.installFacet("jpt.jpa", "1.0", jpaConfig);
 		this.addJar(this.jarName());
 		this.jpaProject = JptCorePlugin.jpaProject(this.getProject());
+		this.jpaProject.setUpdater(new SynchronousJpaProjectUpdater(this.jpaProject));
 	}
 
 	protected String jarName() {
