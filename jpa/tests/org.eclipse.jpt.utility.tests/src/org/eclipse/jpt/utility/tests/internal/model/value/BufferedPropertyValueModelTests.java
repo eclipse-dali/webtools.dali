@@ -11,32 +11,34 @@ package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.Date;
 
+import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.internal.model.value.BufferedPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.BufferedWritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueModel;
-import org.eclipse.jpt.utility.tests.internal.TestTools;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 
-import junit.framework.TestCase;
+import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 public class BufferedPropertyValueModelTests extends TestCase {
 	private Employee employee;
-	private PropertyValueModel employeeHolder;
+	private WritablePropertyValueModel<Employee> employeeHolder;
 	PropertyChangeEvent employeeEvent;
 
-	private PropertyValueModel idAdapter;
-	private PropertyValueModel nameAdapter;
-	private PropertyValueModel hireDateAdapter;
+	private WritablePropertyValueModel<Integer> idAdapter;
+	private WritablePropertyValueModel<String> nameAdapter;
+	private WritablePropertyValueModel<Date> hireDateAdapter;
 	PropertyChangeEvent adapterEvent;
 
-	private BufferedPropertyValueModel.Trigger trigger;
-	private PropertyValueModel bufferedIDHolder;
-	private PropertyValueModel bufferedNameHolder;
-	private PropertyValueModel bufferedHireDateHolder;
+	private BufferedWritablePropertyValueModel.Trigger trigger;
+	private WritablePropertyValueModel<Integer> bufferedIDHolder;
+	private WritablePropertyValueModel<String> bufferedNameHolder;
+	private WritablePropertyValueModel<Date> bufferedHireDateHolder;
 	PropertyChangeEvent bufferedEvent;
 
 	public BufferedPropertyValueModelTests(String name) {
@@ -48,55 +50,55 @@ public class BufferedPropertyValueModelTests extends TestCase {
 		super.setUp();
 
 		this.employee = new Employee(17, "Freddy", new Date());
-		this.employeeHolder = new SimplePropertyValueModel(this.employee);
+		this.employeeHolder = new SimplePropertyValueModel<Employee>(this.employee);
 
-		this.trigger = new BufferedPropertyValueModel.Trigger();
+		this.trigger = new BufferedWritablePropertyValueModel.Trigger();
 
 		this.idAdapter = this.buildIDAdapter(this.employeeHolder);
-		this.bufferedIDHolder = new BufferedPropertyValueModel(this.idAdapter, this.trigger);
+		this.bufferedIDHolder = new BufferedWritablePropertyValueModel<Integer>(this.idAdapter, this.trigger);
 
 		this.nameAdapter = this.buildNameAdapter(this.employeeHolder);
-		this.bufferedNameHolder = new BufferedPropertyValueModel(this.nameAdapter, this.trigger);
+		this.bufferedNameHolder = new BufferedWritablePropertyValueModel<String>(this.nameAdapter, this.trigger);
 
 		this.hireDateAdapter = this.buildHireDateAdapter(this.employeeHolder);
-		this.bufferedHireDateHolder = new BufferedPropertyValueModel(this.hireDateAdapter, this.trigger);
+		this.bufferedHireDateHolder = new BufferedWritablePropertyValueModel<Date>(this.hireDateAdapter, this.trigger);
 	}
 
-	private PropertyValueModel buildIDAdapter(ValueModel eHolder) {
-		return new PropertyAspectAdapter(eHolder, Employee.ID_PROPERTY) {
+	private WritablePropertyValueModel<Integer> buildIDAdapter(PropertyValueModel<Employee> eHolder) {
+		return new PropertyAspectAdapter<Employee, Integer>(eHolder, Employee.ID_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
+			protected Integer buildValue_() {
 				return new Integer(((Employee) this.subject).getID());
 			}
 			@Override
-			protected void setValue_(Object value) {
-				((Employee) this.subject).setID(((Integer) value).intValue());
+			protected void setValue_(Integer value) {
+				((Employee) this.subject).setID(value.intValue());
 			}
 		};
 	}
 
-	private PropertyValueModel buildNameAdapter(ValueModel eHolder) {
-		return new PropertyAspectAdapter(eHolder, Employee.NAME_PROPERTY) {
+	private WritablePropertyValueModel<String> buildNameAdapter(PropertyValueModel<Employee> eHolder) {
+		return new PropertyAspectAdapter<Employee, String>(eHolder, Employee.NAME_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
+			protected String buildValue_() {
 				return ((Employee) this.subject).getName();
 			}
 			@Override
-			protected void setValue_(Object value) {
-				((Employee) this.subject).setName((String) value);
+			protected void setValue_(String value) {
+				((Employee) this.subject).setName(value);
 			}
 		};
 	}
 
-	private PropertyValueModel buildHireDateAdapter(ValueModel eHolder) {
-		return new PropertyAspectAdapter(eHolder, Employee.HIRE_DATE_PROPERTY) {
+	private WritablePropertyValueModel<Date> buildHireDateAdapter(PropertyValueModel<Employee> eHolder) {
+		return new PropertyAspectAdapter<Employee, Date>(eHolder, Employee.HIRE_DATE_PROPERTY) {
 			@Override
-			protected Object buildValue_() {
+			protected Date buildValue_() {
 				return ((Employee) this.subject).getHireDate();
 			}
 			@Override
-			protected void setValue_(Object value) {
-				((Employee) this.subject).setHireDate((Date) value);
+			protected void setValue_(Date value) {
+				((Employee) this.subject).setHireDate(value);
 			}
 		};
 	}

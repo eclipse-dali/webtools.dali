@@ -271,7 +271,7 @@ public final class DTPConnectionProfileWrapper extends ConnectionProfile {
 	}
 
 	@Override
-	protected String getDefaultSchemaName() {
+	public String getDefaultSchemaName() {
 		if( this.getDatabase().getVendor().equalsIgnoreCase( POSTGRESQL_VENDOR)) {
 			return PUBLIC_SCHEMA;
 		}

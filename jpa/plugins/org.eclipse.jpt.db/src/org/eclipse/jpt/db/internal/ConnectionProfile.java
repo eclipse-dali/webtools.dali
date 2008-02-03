@@ -113,13 +113,11 @@ public abstract class ConnectionProfile extends DTPWrapper implements Comparable
 	public abstract String getUserName();
 	
 	public abstract String getUserPassword();
-	
+
 	/**
 	 * protected, use defaultSchema() : Schema instead
 	 */
 	protected abstract String getDefaultSchemaName();
-	
-	public abstract String getDefaultSchema();
 	
 	public abstract String getInstanceId();
 

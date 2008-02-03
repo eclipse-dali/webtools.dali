@@ -30,6 +30,7 @@ import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
  */
 public abstract class ValueAspectPropertyValueModelAdapter
 	extends PropertyValueModelWrapper
+	implements WritablePropertyValueModel
 {
 	/** Cache the value so we can disengage. */
 	protected Object value;
@@ -64,7 +65,7 @@ public abstract class ValueAspectPropertyValueModelAdapter
 	// ********** PropertyValueModel implementation **********
 
 	public void setValue(Object value) {
-		this.valueHolder.setValue(value);
+		this.valueHolder().setValue(value);
 	}
 
 
@@ -80,6 +81,10 @@ public abstract class ValueAspectPropertyValueModelAdapter
 
 	// ********** behavior **********
 
+	protected WritablePropertyValueModel valueHolder() {
+		return (WritablePropertyValueModel) this.valueHolder;
+	}
+	
 	/**
 	 * Start listening to the value holder and the value.
 	 */

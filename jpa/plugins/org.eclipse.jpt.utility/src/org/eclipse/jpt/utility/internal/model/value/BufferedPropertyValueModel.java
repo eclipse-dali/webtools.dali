@@ -39,6 +39,7 @@ import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
  */
 public class BufferedPropertyValueModel
 	extends PropertyValueModelWrapper
+	implements WritablePropertyValueModel
 {
 
 	/**
@@ -152,6 +153,10 @@ public class BufferedPropertyValueModel
 
 	// ********** behavior **********
 
+	protected WritablePropertyValueModel valueHolder() {
+		return (WritablePropertyValueModel) this.valueHolder;
+	}
+	
 	/**
 	 * If we do not yet have a "buffered" value, simply propagate the
 	 * change notification with the buffered model as the source.
@@ -200,7 +205,7 @@ public class BufferedPropertyValueModel
 			// set the accepting flag so we ignore any events
 			// fired by the wrapped value holder
 			this.accepting = true;
-			this.valueHolder.setValue(this.bufferedValue);
+			this.valueHolder().setValue(this.bufferedValue);
 			this.bufferedValue = UNASSIGNED;
 			// clear the flag once the "accept" is complete
 			this.accepting = false;
