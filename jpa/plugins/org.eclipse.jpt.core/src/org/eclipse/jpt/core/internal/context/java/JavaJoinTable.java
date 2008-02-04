@@ -53,16 +53,37 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 		this.specifiedInverseJoinColumns = new ArrayList<IJavaJoinColumn>();
 		this.defaultInverseJoinColumn = this.jpaFactory().createJavaJoinColumn(this, createInverseJoinColumnOwner());
 	}
+	
+	
+	//******************* AbstractJavaTable implementation *****************
 
 	@Override
 	protected String annotationName() {
 		return JoinTable.ANNOTATION_NAME;
 	}
 	
+	/**
+	 * Default join table name from the JPA spec:
+	 * 	The concatenated names of the two associated primary
+	 * 	entity tables, separated by a underscore.
+	 * 
+	 * [owning table name]_[target table name]
+	 */
 	@Override
 	protected String defaultName() {
-		// TODO default joinTable name
-		return null;
+		String owningTableName = relationshipMapping().typeMapping().tableName();
+		if (owningTableName == null) {
+			return null;
+		}
+		IEntity targetEntity = relationshipMapping().getResolvedTargetEntity();
+		if (targetEntity == null) {
+			return null;
+		}
+		String targetTableName = targetEntity.tableName();
+		if (targetTableName == null) {
+			return null;
+		}
+		return owningTableName + "_" + targetTableName;
 	}
 	
 	@Override
@@ -74,8 +95,8 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 		this.attributeResource.addAnnotation(JoinTable.ANNOTATION_NAME);
 	}
 	
+	
 	//******************* IJoinTable implementation *****************
-
 
 	public ListIterator<IJavaJoinColumn> joinColumns() {
 		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumns() : this.specifiedJoinColumns();

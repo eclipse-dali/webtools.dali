@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResour
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JoinTable;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
+import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JavaJoinTableTests extends ContextModelTestCase
@@ -66,8 +67,53 @@ public class JavaJoinTableTests extends ContextModelTestCase
 			}
 		});
 	}
+	
+	private IType createTestEntityWithValidManyToMany() throws Exception {
+		createEntityAnnotation();
+		createManyToManyAnnotation();
+		createJoinTableAnnotation();
+		
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.MANY_TO_MANY, "java.util.Collection");
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@ManyToMany").append(CR);
+				sb.append("    private Collection<Project> projects;").append(CR);
+			}
+		});
+	}
 
-
+	private IType createTargetEntity() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ENTITY);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ID);
+					sb.append(";");
+					sb.append(CR);
+				sb.append(CR);
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class Project {").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private int proj_id;").append(CR);
+				sb.append(CR);
+			}
+		};
+		return this.javaProject.createType(PACKAGE_NAME, "Project.java", sourceWriter);
+	}
 	public void testUpdateSpecifiedName() throws Exception {
 		createTestEntityWithManyToMany();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
@@ -132,61 +178,47 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertNull(attributeResource.annotation(JoinTable.ANNOTATION_NAME));
 	}
 	
-////	public void testUpdateDefaultNameFromJavaTable() throws Exception {
-////		createTestEntity();
-////		
-////		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-////		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
-////		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-////		
-////		xmlEntity.javaEntity().getTable().setSpecifiedName("Foo");
-////		assertEquals("Foo", xmlEntity.getTable().getDefaultName());
-////		
-////		xmlEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
-////		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-////
-////		xmlEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-////		xmlEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
-////		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-////	
-////		xmlEntity.setSpecifiedMetadataComplete(null);
-////		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-////		
-////		xmlEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
-////		assertEquals("Foo", xmlEntity.getTable().getDefaultName());
-////		
-////		xmlEntity.getTable().setSpecifiedName("Bar");
-////		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-////	}
-////	
-////	public void testUpdateDefaultNameNoJava() throws Exception {
-////		createTestEntity();
-////		
-////		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-////		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
-////		assertEquals("Foo", xmlEntity.getTable().getDefaultName());
-////	}
-////	
-////	public void testUpdateDefaultNameFromParent() throws Exception {
-////		createTestEntity();
-////		createTestSubType();
-////		
-////		XmlPersistentType parentXmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-////		XmlPersistentType childXmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
-////		XmlEntity parentXmlEntity = (XmlEntity) parentXmlPersistentType.getMapping();
-////		XmlEntity childXmlEntity = (XmlEntity) childXmlPersistentType.getMapping();
-////		
-////		assertEquals(TYPE_NAME, parentXmlEntity.getTable().getDefaultName());
-////		assertEquals(TYPE_NAME, childXmlEntity.getTable().getDefaultName());
-////		
-////		parentXmlEntity.getTable().setSpecifiedName("FOO");
-////		assertEquals(TYPE_NAME, parentXmlEntity.getTable().getDefaultName());
-////		assertEquals("FOO", childXmlEntity.getTable().getDefaultName());
-////
-////		parentXmlEntity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
-////		assertEquals(TYPE_NAME, parentXmlEntity.getTable().getDefaultName());
-////		assertEquals("AnnotationTestTypeChild", childXmlEntity.getTable().getDefaultName());
-////	}
+	public void testDefaultName() throws Exception {
+		createTestEntityWithValidManyToMany();
+		createTargetEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		
+		IJavaManyToManyMapping manyToManyMapping = (IJavaManyToManyMapping) javaPersistentType().attributes().next().getMapping();
+		IJoinTable joinTable = manyToManyMapping.getJoinTable();
+		
+		//joinTable default name is null because targetEntity is not in the persistence unit
+		assertNull(joinTable.getDefaultName());
+
+		//add target entity to the persistence unit, now join table name is [table name]_[target table name]
+		addXmlClassRef(PACKAGE_NAME + ".Project");
+		assertEquals(TYPE_NAME + "_Project", joinTable.getDefaultName());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.annotation(JoinTable.ANNOTATION_NAME));
+	
+		//target entity does not resolve, default name is null
+		manyToManyMapping.setSpecifiedTargetEntity("Foo");
+		assertNull(joinTable.getDefaultName());
+
+		//default target entity does resolve, so default name is again [table name]_[target table name]
+		manyToManyMapping.setSpecifiedTargetEntity(null);
+		assertEquals(TYPE_NAME + "_Project", joinTable.getDefaultName());
+
+		//add the join table annotation, verify default join table name is the same
+		attributeResource.addAnnotation(JoinTable.ANNOTATION_NAME);
+		assertEquals(TYPE_NAME + "_Project", joinTable.getDefaultName());
+		assertNotNull(attributeResource.annotation(JoinTable.ANNOTATION_NAME));
+		
+		//set a table on the target entity, very default join table name updates
+		manyToManyMapping.getResolvedTargetEntity().getTable().setSpecifiedName("FOO");
+		assertEquals(TYPE_NAME + "_FOO", joinTable.getDefaultName());
+		
+		//set a table on the owning entity, very default join table name updates
+		javaEntity().getTable().setSpecifiedName("BAR");
+		assertEquals("BAR_FOO", joinTable.getDefaultName());
+	}
 
 	public void testUpdateSpecifiedSchema() throws Exception {
 		createTestEntityWithManyToMany();
