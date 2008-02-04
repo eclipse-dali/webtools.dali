@@ -425,7 +425,7 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTable());
 		
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		classRefs.next();
 		IEmbeddable embeddable = (IEmbeddable) classRefs.next().getJavaPersistentType().getMapping();
 		

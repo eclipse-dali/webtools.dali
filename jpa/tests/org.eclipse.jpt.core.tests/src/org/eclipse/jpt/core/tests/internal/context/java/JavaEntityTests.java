@@ -1600,7 +1600,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		classRefs.next();
 		IJavaEntity javaEntity = (IJavaEntity) classRefs.next().getJavaPersistentType().getMapping();
 
@@ -2354,7 +2354,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		classRefs.next();
 		IJavaEntity javaEntity = (IJavaEntity) classRefs.next().getJavaPersistentType().getMapping();
 

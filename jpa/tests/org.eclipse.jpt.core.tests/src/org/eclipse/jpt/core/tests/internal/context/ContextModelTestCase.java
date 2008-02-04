@@ -134,7 +134,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	protected IClassRef classRef() {
-		return persistenceUnit().classRefs().next();
+		return persistenceUnit().specifiedClassRefs().next();
 	}
 	
 	protected IJavaPersistentType javaPersistentType() {

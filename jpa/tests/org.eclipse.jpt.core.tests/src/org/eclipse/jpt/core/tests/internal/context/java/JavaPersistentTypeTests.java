@@ -268,7 +268,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		classRefs.next();
 		IClassRef classRef = classRefs.next();
 		
@@ -285,7 +285,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		classRefs.next();
 		IClassRef classRef = classRefs.next();
 		
@@ -302,7 +302,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		classRefs.next();
 		IClassRef classRef = classRefs.next();
 		
@@ -319,7 +319,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		classRefs.next();
 		IClassRef classRef = classRefs.next();
 		IJavaPersistentType javaPersistentType = classRef.getJavaPersistentType();
@@ -338,7 +338,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);
 
-		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		classRefs.next();
 		IClassRef classRef = classRefs.next();
 		IJavaPersistentType javaPersistentType = classRef.getJavaPersistentType();
@@ -454,7 +454,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		IClassRef classRef = classRefs.next();
 		IJavaPersistentType rootJavaPersistentType = classRef.getJavaPersistentType();
 		
@@ -473,7 +473,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		//annotation it should not be found as the parentPersistentType
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		IJavaPersistentType javaPersistentType = classRefs.next().getJavaPersistentType();
 		
 		assertNull(javaPersistentType.parentPersistentType());
@@ -488,7 +488,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild2");
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		IClassRef classRef = classRefs.next();
 		IJavaPersistentType rootJavaPersistentType = classRef.getJavaPersistentType();
 		
@@ -507,7 +507,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild2");
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		IJavaPersistentType rootJavaPersistentType = classRefs.next().getJavaPersistentType();
 		IJavaPersistentType childJavaPersistentType = classRefs.next().getJavaPersistentType();
 		
@@ -525,7 +525,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild2");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		IJavaPersistentType childJavaPersistentType = classRefs.next().getJavaPersistentType();
 		IJavaPersistentType rootJavaPersistentType = classRefs.next().getJavaPersistentType();
 		

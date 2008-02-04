@@ -940,7 +940,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		oneToOneMapping.setSpecifiedTargetEntity("foo");
 		assertEquals(PACKAGE_NAME + ".Address", oneToOneMapping.getDefaultTargetEntity());
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		classRefs.next();
 		IClassRef addressClassRef = classRefs.next();
 		IJavaPersistentType addressPersistentType = addressClassRef.getJavaPersistentType();
@@ -1004,7 +1004,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		//add targetEntity to the persistence unit, now target entity should resolve
 		addXmlClassRef(PACKAGE_NAME + ".Address");
-		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		classRefs.next();
 		IClassRef addressClassRef = classRefs.next();
 		ITypeMapping addressTypeMapping = addressClassRef.getJavaPersistentType().getMapping();

@@ -31,7 +31,7 @@ public class ClassRefTests extends ContextModelTestCase
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		xmlClassRef.setJavaClass("com.foo.Bar");
 		xmlPersistenceUnit.getClasses().add(xmlClassRef);
-		IClassRef classRef = persistenceUnit.classRefs().next();
+		IClassRef classRef = persistenceUnit.specifiedClassRefs().next();
 		
 		// test that class names are initially equal
 		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
@@ -65,7 +65,7 @@ public class ClassRefTests extends ContextModelTestCase
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		xmlClassRef.setJavaClass("com.foo.Bar");
 		xmlPersistenceUnit.getClasses().add(xmlClassRef);
-		IClassRef classRef = persistenceUnit.classRefs().next();
+		IClassRef classRef = persistenceUnit.specifiedClassRefs().next();
 		
 		// test that class names are initially equal
 		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());

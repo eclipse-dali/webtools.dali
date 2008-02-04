@@ -202,7 +202,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		assertEquals("id", attributeOverride.getColumn().getDefaultName());
 		
 		
-		IJavaPersistentType mappedSuperclass = CollectionTools.list(persistenceUnit().classRefs()).get(1).getJavaPersistentType();
+		IJavaPersistentType mappedSuperclass = CollectionTools.list(persistenceUnit().specifiedClassRefs()).get(1).getJavaPersistentType();
 		IBasicMapping basicMapping = (IBasicMapping) mappedSuperclass.attributeNamed("id").getMapping();
 		basicMapping.getColumn().setSpecifiedName("FOO");
 	
@@ -224,7 +224,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		assertEquals("AnnotationTestTypeChild", attributeOverride.getColumn().getDefaultTable());
 
 		
-		IJavaPersistentType mappedSuperclass = CollectionTools.list(persistenceUnit().classRefs()).get(1).getJavaPersistentType();
+		IJavaPersistentType mappedSuperclass = CollectionTools.list(persistenceUnit().specifiedClassRefs()).get(1).getJavaPersistentType();
 		IBasicMapping basicMapping = (IBasicMapping) mappedSuperclass.attributeNamed("id").getMapping();
 		basicMapping.getColumn().setSpecifiedTable("BAR");
 	
