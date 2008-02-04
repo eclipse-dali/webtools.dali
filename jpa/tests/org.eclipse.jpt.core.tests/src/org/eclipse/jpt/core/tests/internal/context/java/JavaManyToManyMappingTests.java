@@ -844,6 +844,10 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		manyToManyMapping.setNoOrdering();
 		assertTrue(manyToManyMapping.isNoOrdering());
 		assertNull(manyToManyMapping.getOrderBy());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
 	}
 //TODO
 //	public boolean isOrderByPk() {
