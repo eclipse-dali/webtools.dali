@@ -50,7 +50,6 @@ import org.eclipse.jpt.core.internal.resource.java.Entity;
 import org.eclipse.jpt.core.internal.resource.java.IdClass;
 import org.eclipse.jpt.core.internal.resource.java.Inheritance;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.NamedNativeQueries;
@@ -345,25 +344,34 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.addSpecifiedSecondaryTable(0);
 		entity.addSpecifiedPrimaryKeyJoinColumn(0);
 		entity.addSpecifiedAttributeOverride(0);
+		entity.addSpecifiedAssociationOverride(0);
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
 		entity.setSpecifiedDiscriminatorValue("asdf");
+		entity.getDiscriminatorColumn().setSpecifiedName("BAR");
 		entity.addTableGenerator();
 		entity.addSequenceGenerator();
+		entity.setIdClass("myIdClass");
+		entity.addNamedNativeQuery(0);
+		entity.addNamedQuery(0);
 		
 		javaPersistentType().setMappingKey(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
 		assertTrue(javaPersistentType().getMapping() instanceof IMappedSuperclass);
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(Entity.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(Table.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(SecondaryTable.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(PrimaryKeyJoinColumn.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(AttributeOverride.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(Inheritance.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(DiscriminatorValue.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(TableGenerator.ANNOTATION_NAME));
-		assertNull(attributeResource.annotation(SequenceGenerator.ANNOTATION_NAME));
+		assertNull(typeResource.mappingAnnotation(Entity.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(Table.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(SecondaryTable.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(PrimaryKeyJoinColumn.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(AttributeOverride.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(AssociationOverride.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(Inheritance.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(DiscriminatorValue.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(DiscriminatorColumn.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(TableGenerator.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(SequenceGenerator.ANNOTATION_NAME));
+		assertNotNull(typeResource.annotation(IdClass.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(NamedQuery.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(NamedNativeQuery.ANNOTATION_NAME));
 	}
 
 	public void testMorphToEmbeddable() throws Exception {
@@ -375,10 +383,15 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.addSpecifiedSecondaryTable(0);
 		entity.addSpecifiedPrimaryKeyJoinColumn(0);
 		entity.addSpecifiedAttributeOverride(0);
+		entity.addSpecifiedAssociationOverride(0);
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
 		entity.setSpecifiedDiscriminatorValue("asdf");
+		entity.getDiscriminatorColumn().setSpecifiedName("BAR");
 		entity.addTableGenerator();
 		entity.addSequenceGenerator();
+		entity.setIdClass("myIdClass");
+		entity.addNamedNativeQuery(0);
+		entity.addNamedQuery(0);
 		
 		javaPersistentType().setMappingKey(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		assertTrue(javaPersistentType().getMapping() instanceof IEmbeddable);
@@ -389,10 +402,15 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertNull(typeResource.annotation(SecondaryTable.ANNOTATION_NAME));
 		assertNull(typeResource.annotation(PrimaryKeyJoinColumn.ANNOTATION_NAME));
 		assertNull(typeResource.annotation(AttributeOverride.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(AssociationOverride.ANNOTATION_NAME));
 		assertNull(typeResource.annotation(Inheritance.ANNOTATION_NAME));
 		assertNull(typeResource.annotation(DiscriminatorValue.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(DiscriminatorColumn.ANNOTATION_NAME));
 		assertNull(typeResource.annotation(TableGenerator.ANNOTATION_NAME));
 		assertNull(typeResource.annotation(SequenceGenerator.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(IdClass.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(NamedQuery.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(NamedNativeQuery.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToNull() throws Exception {
@@ -404,10 +422,15 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.addSpecifiedSecondaryTable(0);
 		entity.addSpecifiedPrimaryKeyJoinColumn(0);
 		entity.addSpecifiedAttributeOverride(0);
+		entity.addSpecifiedAssociationOverride(0);
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
 		entity.setSpecifiedDiscriminatorValue("asdf");
+		entity.getDiscriminatorColumn().setSpecifiedName("BAR");
 		entity.addTableGenerator();
 		entity.addSequenceGenerator();
+		entity.setIdClass("myIdClass");
+		entity.addNamedNativeQuery(0);
+		entity.addNamedQuery(0);
 		
 		javaPersistentType().setMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);
 		assertTrue(javaPersistentType().getMapping() instanceof JavaNullTypeMapping);
@@ -418,10 +441,15 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertNull(typeResource.annotation(SecondaryTable.ANNOTATION_NAME));
 		assertNull(typeResource.annotation(PrimaryKeyJoinColumn.ANNOTATION_NAME));
 		assertNull(typeResource.annotation(AttributeOverride.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(AssociationOverride.ANNOTATION_NAME));
 		assertNull(typeResource.annotation(Inheritance.ANNOTATION_NAME));
 		assertNull(typeResource.annotation(DiscriminatorValue.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(DiscriminatorColumn.ANNOTATION_NAME));
 		assertNull(typeResource.annotation(TableGenerator.ANNOTATION_NAME));
 		assertNull(typeResource.annotation(SequenceGenerator.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(IdClass.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(NamedQuery.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(NamedNativeQuery.ANNOTATION_NAME));
 	}
 	
 	public void testAccessNoAnnotations() throws Exception {
@@ -597,21 +625,21 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityWithName();
 	
-		assertEquals(ENTITY_NAME, javaEntity().getTableName());
+		assertEquals(ENTITY_NAME, javaEntity().tableName());
 	}
 	
 	public void testGetTableName2() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		assertEquals(TYPE_NAME, javaEntity().getTableName());
+		assertEquals(TYPE_NAME, javaEntity().tableName());
 	}
 	
 	public void testGetTableName3() throws Exception {
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		assertEquals(TABLE_NAME, javaEntity().getTableName());
+		assertEquals(TABLE_NAME, javaEntity().tableName());
 	}	
 	
 	public void testSetTableNameWithNullTable() throws Exception {
@@ -625,7 +653,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		table.setSpecifiedName(TABLE_NAME);
 		assertSourceContains("@Table(name=\"" + TABLE_NAME + "\")");
 		
-		assertEquals(TABLE_NAME, javaEntity().getTableName());
+		assertEquals(TABLE_NAME, javaEntity().tableName());
 		assertEquals(TABLE_NAME, table.getName());
 
 		table.setSpecifiedCatalog(TABLE_NAME);

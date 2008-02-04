@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.internal.context.base.IMappedSuperclass;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.resource.java.IdClass;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.MappedSuperclass;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -56,35 +55,45 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 				
+		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+		mappedSuperclass.setIdClass("myIdClass");
+		
 		javaPersistentType().setMappingKey(IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		assertTrue(javaPersistentType().getMapping() instanceof IEntity);
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(MappedSuperclass.ANNOTATION_NAME));
+		assertNull(typeResource.mappingAnnotation(MappedSuperclass.ANNOTATION_NAME));
+		assertNotNull(typeResource.annotation(IdClass.ANNOTATION_NAME));
 	}
 
 	public void testMorphToEmbeddable() throws Exception {
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 				
+		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+		mappedSuperclass.setIdClass("myIdClass");
+
 		javaPersistentType().setMappingKey(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		assertTrue(javaPersistentType().getMapping() instanceof IEmbeddable);
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(MappedSuperclass.ANNOTATION_NAME));
+		assertNull(typeResource.mappingAnnotation(MappedSuperclass.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(IdClass.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToNull() throws Exception {
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 				
+		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+		mappedSuperclass.setIdClass("myIdClass");
+
 		javaPersistentType().setMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);
 		assertTrue(javaPersistentType().getMapping() instanceof JavaNullTypeMapping);
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		assertNull(typeResource.mappingAnnotation(MappedSuperclass.ANNOTATION_NAME));
+		assertNull(typeResource.annotation(IdClass.ANNOTATION_NAME));
 	}
 
 	

@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.internal.context.base.IMappedSuperclass;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.resource.java.Embeddable;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -59,8 +58,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		assertTrue(javaPersistentType().getMapping() instanceof IEntity);
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(Embeddable.ANNOTATION_NAME));
+		assertNull(typeResource.mappingAnnotation(Embeddable.ANNOTATION_NAME));
 	}
 
 	public void testMorphToMappedSuperclass() throws Exception {
@@ -71,8 +69,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		assertTrue(javaPersistentType().getMapping() instanceof IMappedSuperclass);
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
-		assertNull(attributeResource.mappingAnnotation(Embeddable.ANNOTATION_NAME));
+		assertNull(typeResource.mappingAnnotation(Embeddable.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToNull() throws Exception {
