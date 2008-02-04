@@ -121,10 +121,9 @@ public class PersistenceItemContentProviderFactory
 		@Override
 		protected ListValueModel<IJpaContextNode> buildChildrenModel() {
 			return new ListAspectAdapter<IPersistenceUnit, IJpaContextNode>(
-					new String[] {IPersistenceUnit.SPECIFIED_MAPPING_FILE_REF_LIST, IPersistenceUnit.CLASS_REF_LIST},
+					new String[] {IPersistenceUnit.SPECIFIED_MAPPING_FILE_REF_LIST, IPersistenceUnit.SPECIFIED_CLASS_REF_LIST, IPersistenceUnit.IMPLIED_CLASS_REF_LIST},
 					(IPersistenceUnit) model()) {
 				@Override
-				@SuppressWarnings("unchecked")
 				protected ListIterator<IJpaContextNode> listIterator_() {
 					return new ReadOnlyCompositeListIterator<IJpaContextNode>(
 						subject.mappingFileRefs(), subject.classRefs());
