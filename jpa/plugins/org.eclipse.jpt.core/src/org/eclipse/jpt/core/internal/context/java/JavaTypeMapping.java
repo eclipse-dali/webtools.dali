@@ -14,15 +14,12 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 
-//TODO need a way to morph between mapping types to save any information that is
-//comming to the different TypeMappings.  For java, we do not know the other types
-//of mappings since they are defined in an extension point so we can do this the same
-//way as xml.
 public abstract class JavaTypeMapping extends JavaContextModel
 	implements IJavaTypeMapping
 {
@@ -32,22 +29,19 @@ public abstract class JavaTypeMapping extends JavaContextModel
 	protected JavaTypeMapping(IJavaPersistentType parent) {
 		super(parent);
 	}
-
-	public void initializeFromResource(JavaPersistentTypeResource persistentTypeResource) {
-		this.persistentTypeResource = persistentTypeResource;
+	
+	protected JavaResource mappingResource() {
+		return this.persistentTypeResource.mappingAnnotation(annotationName());
 	}
 
-	public String getTableName() {
-		return null;
-	}
+	//***************** ITypeMapping implementation *****************
 	
 	public IJavaPersistentType persistentType() {
 		return (IJavaPersistentType) parent();
 	}
 
-	public ITextRange validationTextRange(CompilationUnit astRoot) {
-		ITextRange textRange = this.persistentTypeResource.textRange(astRoot);
-		return (textRange != null) ? textRange : this.persistentType().validationTextRange(astRoot);
+	public String tableName() {
+		return null;
 	}
 
 	public Table primaryDbTable() {
@@ -98,7 +92,20 @@ public abstract class JavaTypeMapping extends JavaContextModel
 		return false;
 	}
 	
+	//******************** updatating *********************
+	public void initializeFromResource(JavaPersistentTypeResource persistentTypeResource) {
+		this.persistentTypeResource = persistentTypeResource;
+	}
+
 	public void update(JavaPersistentTypeResource persistentTypeResource) {
 		this.persistentTypeResource = persistentTypeResource;
 	}
+	
+	//******************** validation *********************
+
+	public ITextRange validationTextRange(CompilationUnit astRoot) {
+		ITextRange textRange = this.mappingResource().textRange(astRoot);
+		return (textRange != null) ? textRange : this.persistentType().validationTextRange(astRoot);
+	}
+
 }

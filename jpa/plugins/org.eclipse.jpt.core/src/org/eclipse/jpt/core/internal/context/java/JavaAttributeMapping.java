@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
+import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.db.internal.Table;
@@ -38,6 +39,10 @@ public abstract class JavaAttributeMapping extends JavaContextModel
 		this.persistentAttributeResource = persistentAttributeResource;
 	}
 
+	protected JavaResource mappingResource() {
+		return this.persistentAttributeResource.mappingAnnotation(annotationName());
+	}
+	
 	public JavaPersistentAttribute persistentAttribute() {
 		return (JavaPersistentAttribute) this.parent();
 	}
@@ -71,7 +76,7 @@ public abstract class JavaAttributeMapping extends JavaContextModel
 	}
 	
 	public ITextRange validationTextRange(CompilationUnit astRoot) {
-		ITextRange textRange = this.persistentAttributeResource.textRange(astRoot);
+		ITextRange textRange = this.mappingResource().textRange(astRoot);
 		return (textRange != null) ? textRange : this.persistentAttribute().validationTextRange(astRoot);
 	}
 

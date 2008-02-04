@@ -60,7 +60,7 @@ public class EmbeddedImpl extends AbstractAnnotationResource<Attribute> implemen
 		}
 		
 		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
-			return null;
+			return new NullEmbedded(parent);
 		}
 
 		public String getAnnotationName() {

@@ -108,6 +108,11 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 			JPA.ATTRIBUTE_OVERRIDES);
 	}
 	
+	@Override
+	protected Embedded mappingResource() {
+		return (Embedded) this.persistentAttributeResource.nonNullMappingAnnotation(annotationName());
+	}
+	
 	//****************** IEmbeddedMapping implemenation *******************
 
 	@SuppressWarnings("unchecked")
@@ -296,6 +301,7 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 	
 	//******** Validation ******************
 	
+	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 		

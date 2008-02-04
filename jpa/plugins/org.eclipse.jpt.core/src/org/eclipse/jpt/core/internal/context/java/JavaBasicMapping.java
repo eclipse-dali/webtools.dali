@@ -20,7 +20,6 @@ import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IFetchable;
 import org.eclipse.jpt.core.internal.context.base.INullable;
-import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.java.Basic;
 import org.eclipse.jpt.core.internal.resource.java.Column;
@@ -63,7 +62,7 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 	public void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.initializeFromResource(persistentAttributeResource);
 		this.column.initializeFromResource(this.columnResource());
-		Basic basicResource = this.basicResource();
+		Basic basicResource = this.mappingResource();
 		this.specifiedFetch = this.specifiedFetchType(basicResource);
 		this.specifiedOptional = this.specifiedOptional(basicResource);
 		this.specifiedEnumerated = this.specifiedEnumerated(this.enumeratedResource());
@@ -71,7 +70,8 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 		this.temporal = this.temporal(this.temporalResource());
 	}
 	
-	protected Basic basicResource() {
+	@Override
+	protected Basic mappingResource() {
 		return (Basic) this.persistentAttributeResource.nonNullMappingAnnotation(annotationName());
 	}
 	
@@ -109,7 +109,7 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 	}
 
 	public String defaultTableName() {
-		return typeMapping().getTableName();
+		return typeMapping().tableName();
 	}
 	
 	//************** IBasicMapping implementation ***************
@@ -133,7 +133,7 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
 		FetchType oldFetch = this.specifiedFetch;
 		this.specifiedFetch = newSpecifiedFetch;
-		this.basicResource().setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
+		this.mappingResource().setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
 		firePropertyChanged(IFetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
 	
@@ -164,7 +164,7 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 	public void setSpecifiedOptional(Boolean newSpecifiedOptional) {
 		Boolean oldOptional = this.specifiedOptional;
 		this.specifiedOptional = newSpecifiedOptional;
-		this.basicResource().setOptional(newSpecifiedOptional);
+		this.mappingResource().setOptional(newSpecifiedOptional);
 		firePropertyChanged(INullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
 	}
 
@@ -247,7 +247,7 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.update(persistentAttributeResource);
 		this.column.update(this.columnResource());
-		Basic basicResource = this.basicResource();
+		Basic basicResource = this.mappingResource();
 		this.setSpecifiedFetch_(this.specifiedFetchType(basicResource));
 		this.setSpecifiedOptional(this.specifiedOptional(basicResource));
 		this.setSpecifiedEnumerated_(this.specifiedEnumerated(this.enumeratedResource()));
@@ -301,6 +301,7 @@ public class JavaBasicMapping extends JavaAttributeMapping implements IJavaBasic
 	
 	// ************** Validation *************************************
 	
+	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages ,astRoot);
 		
