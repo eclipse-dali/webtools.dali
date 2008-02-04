@@ -95,7 +95,7 @@ public class EntityNameCombo extends AbstractFormPane<IEntity>
 	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-		combo = buildCombo(container);
+		combo = buildEditableCombo(container);
 		combo.addModifyListener(buildComboModifyListener());
 	}
 

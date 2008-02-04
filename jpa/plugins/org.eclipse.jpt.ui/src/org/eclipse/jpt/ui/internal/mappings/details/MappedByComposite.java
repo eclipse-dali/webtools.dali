@@ -120,7 +120,7 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		combo = buildCombo(container);
+		combo = buildEditableCombo(container);
 		combo.addModifyListener(buildComboModifyListener());
 
 		buildLabeledComposite(

@@ -131,11 +131,15 @@ public abstract class AbstractDialogPane<T extends Node> extends AbstractPane<T>
 		}
 
 		public CCombo createCombo(Composite parent) {
-			return new CCombo(parent, SWT.NULL);
+			return new CCombo(parent, SWT.READ_ONLY);
 		}
 
 		public Composite createComposite(Composite parent) {
 			return new Composite(parent, SWT.NULL);
+		}
+
+		public CCombo createEditableCombo(Composite parent) {
+			return new CCombo(parent, SWT.NULL);
 		}
 
 		public Group createGroup(Composite parent, String title) {

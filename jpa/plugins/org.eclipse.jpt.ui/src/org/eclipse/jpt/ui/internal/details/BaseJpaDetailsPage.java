@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.details;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
@@ -43,13 +42,20 @@ public abstract class BaseJpaDetailsPage<T extends IJpaContextNode>
 	 * (non-Javadoc)
 	 */
 	public final void setSubject(T subject) {
-		WritablePropertyValueModel<T> subjectHolder = (WritablePropertyValueModel<T>) getSubjectHolder();
-		subjectHolder.setValue(subject);
 
+		SimplePropertyValueModel<T> subjectHolder = (SimplePropertyValueModel<T>) getSubjectHolder();
+
+		// Populate this page with the new subject
 		if (subject != null) {
+			subjectHolder.setValue(subject);
 			populate();
 		}
+		// Dispose this page
 		else {
+			subjectHolder.setValue(null);
+
+			// TODO: This could be removed and we can simply call disengageListeners()
+			// and then nullify the subject
 			dispose();
 		}
 	}

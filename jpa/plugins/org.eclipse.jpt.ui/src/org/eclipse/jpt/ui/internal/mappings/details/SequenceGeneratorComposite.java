@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.IJpaNode;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
 import org.eclipse.jpt.db.internal.Schema;
@@ -17,6 +16,8 @@ import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.SequenceCombo;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
@@ -62,9 +63,23 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 		return subject().addSequenceGenerator();
 	}
 
-	private SequenceCombo<IJpaNode> buildSequenceNameCombo(Composite parent) {
+	private PropertyValueModel<ISequenceGenerator> buildSequenceGeneratorHolder() {
+		return new PropertyAspectAdapter<IIdMapping, ISequenceGenerator>(getSubjectHolder(), propertyName()) {
+			@Override
+			protected ISequenceGenerator buildValue_() {
+				return subject.getSequenceGenerator();
+			}
+		};
+	}
 
-		return new SequenceCombo<IJpaNode>(this, parent) {
+	private SequenceCombo<ISequenceGenerator> buildSequenceNameCombo(Composite parent) {
+
+		return new SequenceCombo<ISequenceGenerator>(this, buildSequenceGeneratorHolder(), parent) {
+
+			@Override
+			protected void buildSubject() {
+				SequenceGeneratorComposite.this.buildGenerator();
+			}
 
 			@Override
 			protected String defaultValue() {
@@ -72,37 +87,24 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 			}
 
 			@Override
+			protected boolean isBuildSubjectAllowed() {
+				return true;
+			}
+
+			@Override
 			protected Schema schema() {
-				return null;
 				// TODO
-//				return database().schemaNamed(subject().jpaProject().getSchemaName());
+				return null;
 			}
 
 			@Override
 			protected void setValue(String value) {
-				ISequenceGenerator generator = getGenerator((IIdMapping) super.subject());
-
-				if (generator == null) {
-					generator = buildGenerator();
-				}
-
-				generator.setSpecifiedSequenceName(value);
-			}
-
-			@Override
-			protected IJpaNode subject() {
-				IJpaNode subject = super.subject();
-
-				if (subject == null) {
-					subject = SequenceGeneratorComposite.this.subject();
-				}
-
-				return subject;
+				retrieveGenerator().setSpecifiedSequenceName(value);
 			}
 
 			@Override
 			protected String value() {
-				ISequenceGenerator generator = getGenerator((IIdMapping) super.subject());
+				ISequenceGenerator generator = generator();
 
 				if (generator != null) {
 					return generator.getSpecifiedSequenceName();
@@ -117,8 +119,8 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected ISequenceGenerator getGenerator(IIdMapping subject) {
-		return (subject != null) ? subject.getSequenceGenerator() : null;
+	protected ISequenceGenerator generator(IIdMapping subject) {
+		return subject.getSequenceGenerator();
 	}
 
 	/*
@@ -139,7 +141,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 		);
 
 		// Sequence Generator widgets
-		SequenceCombo<IJpaNode> sequenceNameCombo =
+		SequenceCombo<ISequenceGenerator> sequenceNameCombo =
 			buildSequenceNameCombo(container);
 
 		buildLabeledComposite(

@@ -140,7 +140,7 @@ public class XmlPersistentAttributeDetailsPage extends PersistentAttributeDetail
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
-		this.javaAttributeChooser.populate();
+		this.javaAttributeChooser.doPopulate();
 		updateEnbabledState();
 	}
 

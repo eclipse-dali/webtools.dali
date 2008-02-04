@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.Collection;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
@@ -66,6 +67,12 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 		return new EnumComboViewer<JoinColumnStateObject, Boolean>(this, container) {
 
 			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(JoinColumnStateObject.INSERTABLE_PROPERTY);
+			}
+
+			@Override
 			protected Boolean[] choices() {
 				return new Boolean[] { Boolean.TRUE, Boolean.FALSE };
 			}
@@ -90,11 +97,6 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 			}
 
 			@Override
-			protected String propertyName() {
-				return JoinColumnStateObject.INSERTABLE_PROPERTY;
-			}
-
-			@Override
 			protected void setValue(Boolean value) {
 				subject().setInsertable(value);
 			}
@@ -113,6 +115,12 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 	private EnumComboViewer<JoinColumnStateObject, Boolean> buildUpdatableCombo(Composite container) {
 
 		return new EnumComboViewer<JoinColumnStateObject, Boolean>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(JoinColumnStateObject.UPDATABLE_PROPERTY);
+			}
 
 			@Override
 			protected Boolean[] choices() {
@@ -139,11 +147,6 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 			}
 
 			@Override
-			protected String propertyName() {
-				return JoinColumnStateObject.UPDATABLE_PROPERTY;
-			}
-
-			@Override
 			protected void setValue(Boolean value) {
 				subject().setUpdatable(value);
 			}
@@ -158,7 +161,7 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 		super.initializeLayout(container);
 
 		// Join Referenced Column widgets
-		tableCombo = buildCombo(container);
+		tableCombo = buildEditableCombo(container);
 		tableCombo.addSelectionListener(buildTableComboSelectionListener());
 
 		buildLabeledComposite(

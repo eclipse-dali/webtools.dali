@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
+import java.util.Collection;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitMetadata;
@@ -68,6 +69,14 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 	private EnumComboViewer<EntityMappings, AccessType> buildAccessTypeCombo(Composite container) {
 
 		return new EnumComboViewer<EntityMappings, AccessType>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(EntityMappings.DEFAULT_ACCESS_PROPERTY);
+				propertyNames.add(EntityMappings.SPECIFIED_ACCESS_PROPERTY);
+			}
+
 			@Override
 			protected AccessType[] choices() {
 				return AccessType.values();
@@ -93,11 +102,6 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 			}
 
 			@Override
-			protected String propertyName() {
-				return EntityMappings.SPECIFIED_ACCESS_PROPERTY;
-			}
-
-			@Override
 			protected void setValue(AccessType value) {
 				subject().setSpecifiedAccess(value);
 			}
@@ -107,6 +111,14 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 	private EnumComboViewer<EntityMappings, String> buildCatalogComboViewer(Composite container) {
 
 		return new EnumComboViewer<EntityMappings, String>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(EntityMappings.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(EntityMappings.SPECIFIED_CATALOG_PROPERTY);
+			}
+
 			@Override
 			protected String[] choices() {
 				return new String[0];
@@ -128,11 +140,6 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 			}
 
 			@Override
-			protected String propertyName() {
-				return EntityMappings.SPECIFIED_CATALOG_PROPERTY;
-			}
-
-			@Override
 			protected void setValue(String value) {
 				subject().setSpecifiedCatalog(value);
 			}
@@ -151,6 +158,14 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 	private EnumComboViewer<EntityMappings, String> buildSchemaComboViewer(Composite container) {
 
 		return new EnumComboViewer<EntityMappings, String>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(EntityMappings.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(EntityMappings.SPECIFIED_SCHEMA_PROPERTY);
+			}
+
 			@Override
 			protected String[] choices() {
 				return new String[0];
@@ -169,11 +184,6 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 			@Override
 			protected String getValue() {
 				return subject().getSpecifiedSchema();
-			}
-
-			@Override
-			protected String propertyName() {
-				return EntityMappings.SPECIFIED_SCHEMA_PROPERTY;
 			}
 
 			@Override

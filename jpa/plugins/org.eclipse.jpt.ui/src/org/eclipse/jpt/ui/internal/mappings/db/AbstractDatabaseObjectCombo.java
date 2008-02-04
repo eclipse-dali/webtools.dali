@@ -71,6 +71,20 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	/**
 	 * Creates a new <code>AbstractDatabaseObjectCombo</code>.
 	 *
+	 * @param parentPane The parent container of this one
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
+	 */
+	protected AbstractDatabaseObjectCombo(AbstractFormPane<?> parentPane,
+	                                      PropertyValueModel<? extends T> subjectHolder,
+	                                      Composite parent) {
+
+		super(parentPane, subjectHolder, parent);
+	}
+
+	/**
+	 * Creates a new <code>AbstractDatabaseObjectCombo</code>.
+	 *
 	 * @param subjectHolder The holder of the subject
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
@@ -93,14 +107,14 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 		return new ConnectionListener() {
 
 			public void aboutToClose(ConnectionProfile profile) {
-				log("aboutToClose");
+				log(Tracing.UI_DB, "aboutToClose");
 			}
 
 			public void closed(ConnectionProfile profile) {
 
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
-						log("closed");
+						log(Tracing.UI_DB, "closed");
 
 						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.repopulate();
@@ -112,13 +126,13 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 			public void databaseChanged(ConnectionProfile profile,
 			                            Database database) {
 
-				log("databaseChanged");
+				log(Tracing.UI_DB, "databaseChanged");
 			}
 
 			public void modified(ConnectionProfile profile) {
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
-						log("modified");
+						log(Tracing.UI_DB, "modified");
 
 						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.repopulate();
@@ -128,7 +142,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 			}
 
 			public boolean okToClose(ConnectionProfile profile) {
-				log("okToClose");
+				log(Tracing.UI_DB, "okToClose");
 				return true;
 			}
 
@@ -136,7 +150,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
-						log("opened");
+						log(Tracing.UI_DB, "opened");
 
 						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.repopulate();
@@ -150,7 +164,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
-						log("schemaChanged: " + schema.getName());
+						log(Tracing.UI_DB, "schemaChanged: " + schema.getName());
 
 						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.schemaChanged(schema);
@@ -164,7 +178,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
-						log("tableChanged: " + table.getName());
+						log(Tracing.UI_DB, "tableChanged: " + table.getName());
 
 						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.tableChanged(table);
@@ -184,6 +198,13 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 				}
 			}
 		};
+	}
+
+	/**
+	 * If the value changes but the subject is null, then is invoked in order to
+	 * create the subject.
+	 */
+	protected void buildSubject() {
 	}
 
 	/**
@@ -278,13 +299,31 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		this.combo = buildCombo(container);
+		this.combo = buildEditableCombo(container);
 		this.combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
 		this.combo.addModifyListener(buildModifyListener());
 	}
 
-	private void log(String message) {
-		if (Tracing.booleanDebugOption(Tracing.UI_DB)) {
+	/**
+	 * Determines if the subject should be created when the value changes.
+	 *
+	 * @return <code>false</code> is the default behavior
+	 */
+	protected boolean isBuildSubjectAllowed() {
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void log(String flag, String message) {
+
+		super.log(flag, message);
+
+		if (Tracing.UI_DB.equals(flag) &&
+		    Tracing.booleanDebugOption(Tracing.UI_DB))
+		{
 			Class<?> thisClass = getClass();
 			String className = ClassTools.shortNameFor(thisClass);
 
@@ -419,11 +458,11 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 
 		IJpaNode subject = subject();
 
-		if (subject == null) {
+		if ((subject == null) && !isBuildSubjectAllowed()) {
 			return;
 		}
 
-		String oldValue = value();
+		String oldValue = (subject != null) ? value() : null;
 
 		// Check for null value
 		if (StringTools.stringIsEmpty(value)) {
@@ -440,6 +479,10 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 		    value.equals(getCombo().getItem(0)))
 		{
 			value = null;
+		}
+
+		if (subject == null) {
+			buildSubject();
 		}
 
 		// Set the new value

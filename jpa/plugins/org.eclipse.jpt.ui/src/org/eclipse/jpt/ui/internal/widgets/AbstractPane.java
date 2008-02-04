@@ -422,7 +422,7 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new flat-style combo.
+	 * Creates a new ediable combo.
 	 *
 	 * @param container The parent container
 	 * @return The newly created <code>Combo</code>
@@ -431,7 +431,6 @@ public abstract class AbstractPane<T extends Model>
 	 */
 	protected final CCombo buildCombo(Composite container) {
 
-		container = this.fixBorderNotPainted(container);
 		CCombo combo = this.widgetFactory.createCombo(container);
 
 		GridData gridData = new GridData();
@@ -443,7 +442,7 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new flat-style <code>ComboViewer</code>.
+	 * Creates a new <code>ComboViewer</code>.
 	 *
 	 * @param container The parent container
 	 * @param labelProvider The provider responsible to convert the combo's items
@@ -479,6 +478,45 @@ public abstract class AbstractPane<T extends Model>
 		container.setLayoutData(gridData);
 
 		return container;
+	}
+
+	/**
+	 * Creates a new ediable combo.
+	 *
+	 * @param container The parent container
+	 * @return The newly created <code>Combo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final CCombo buildEditableCombo(Composite container) {
+
+		CCombo combo = this.widgetFactory.createEditableCombo(container);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		combo.setLayoutData(gridData);
+
+		return combo;
+	}
+
+	/**
+	 * Creates a new editable <code>ComboViewer</code>.
+	 *
+	 * @param container The parent container
+	 * @param labelProvider The provider responsible to convert the combo's items
+	 * into human readable strings
+	 * @return The newly created <code>ComboViewer</code>
+	 *
+	 * @category Layout
+	 */
+	protected final ComboViewer buildEditableComboViewer(Composite container,
+	                                                     IBaseLabelProvider labelProvider) {
+
+		CCombo combo = this.buildEditableCombo(container);
+		ComboViewer viewer = new ComboViewer(combo);
+		viewer.setLabelProvider(labelProvider);
+		return viewer;
 	}
 
 	private PropertyChangeListener buildExpandedStateChangeListener(final Section section) {
@@ -1144,8 +1182,9 @@ public abstract class AbstractPane<T extends Model>
 
 	private PropertyChangeListener buildSubjectChangeListener_() {
 		return new PropertyChangeListener() {
+			@SuppressWarnings("unchecked")
 			public void propertyChanged(PropertyChangeEvent e) {
-				AbstractPane.this.subjectChanged(e);
+				AbstractPane.this.subjectChanged((T) e.oldValue(), (T) e.newValue());
 			}
 		};
 	}
@@ -1545,7 +1584,7 @@ public abstract class AbstractPane<T extends Model>
 	 */
 	protected void disengageListeners() {
 
-		this.log("   ->disengageListeners()");
+		this.log(Tracing.UI_LAYOUT, "   ->disengageListeners()");
 
 		this.subjectHolder.removePropertyChangeListener(
 			PropertyValueModel.VALUE,
@@ -1583,7 +1622,7 @@ public abstract class AbstractPane<T extends Model>
 	 */
 	public final void dispose() {
 		if (!this.container.isDisposed()) {
-			this.log("dispose()");
+			this.log(Tracing.UI_LAYOUT, "dispose()");
 			this.performDispose();
 			this.disengageListeners();
 		}
@@ -1595,7 +1634,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Populate
 	 */
 	protected void doDispose() {
-		this.log("   ->doDispose()");
+		this.log(Tracing.UI_LAYOUT, "   ->doDispose()");
 	}
 
 	/**
@@ -1604,7 +1643,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Populate
 	 */
 	protected void doPopulate() {
-		this.log("   ->doPopulate()");
+		this.log(Tracing.UI_LAYOUT, "   ->doPopulate()");
 	}
 
 	/**
@@ -1623,19 +1662,15 @@ public abstract class AbstractPane<T extends Model>
 
 	/**
 	 * Installs the listeners on the subject in order to be notified from changes
-	 * made outside of this panes.
+	 * made outside of this panes and notifies the sub-panes to do the same.
 	 *
 	 * @category Populate
 	 */
 	protected void engageListeners() {
 
-		this.log("   ->engageListeners()");
+		this.log(Tracing.UI_LAYOUT, "   ->engageListeners()");
 
-		this.subjectHolder.addPropertyChangeListener(
-			PropertyValueModel.VALUE,
-			this.subjectChangeListener
-		);
-
+		this.engageSubjectHolder();
 		this.engageListeners(this.subject());
 
 		for (AbstractPane<?> subPane : this.subPanes) {
@@ -1661,17 +1696,11 @@ public abstract class AbstractPane<T extends Model>
 		}
 	}
 
-	/**
-	 * Wraps the given <code>Composite</code> into a new <code>Composite</code>
-	 * in order to have the widgets' border painted. This must be a bug in the
-	 * <code>GridLayout</code> used in a form.
-	 *
-	 * @param container The parent of the sub-pane with 1 pixel border
-	 * @return A new <code>Composite</code> that has the necessary space to paint
-	 * the border
-	 */
-	protected final Composite fixBorderNotPainted(Composite container) {
-		return buildSubPane(container, 1, 1, 1, 1, 1);
+	private void engageSubjectHolder() {
+		this.subjectHolder.addPropertyChangeListener(
+			PropertyValueModel.VALUE,
+			this.subjectChangeListener
+		);
 	}
 
 	/**
@@ -1817,11 +1846,13 @@ public abstract class AbstractPane<T extends Model>
 	/**
 	 * Logs the given message if the <code>Tracing.DEBUG_LAYOUT</code> is enabled.
 	 *
+	 * @param flag
 	 * @param message The logging message
 	 */
-	private void log(String message) {
+	protected void log(String flag, String message) {
 
-		if (Tracing.booleanDebugOption(Tracing.UI_LAYOUT)) {
+		if (Tracing.UI_LAYOUT.equals(flag) &&
+		    Tracing.booleanDebugOption(Tracing.UI_LAYOUT)) {
 
 			Class<?> thisClass = getClass();
 			String className = ClassTools.shortNameFor(thisClass);
@@ -1841,7 +1872,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Populate
 	 */
 	protected void performDispose() {
-		this.log("   ->performDispose()");
+		this.log(Tracing.UI_LAYOUT, "   ->performDispose()");
 
 		// Dispose this pane
 		doDispose();
@@ -1859,9 +1890,9 @@ public abstract class AbstractPane<T extends Model>
 	 */
 	public final void populate() {
 		if (!this.container.isDisposed()) {
-			this.log("populate()");
-			this.repopulate();
+			this.log(Tracing.UI_LAYOUT, "populate()");
 			this.engageListeners();
+			this.repopulate();
 		}
 	}
 
@@ -1981,7 +2012,7 @@ public abstract class AbstractPane<T extends Model>
 	 */
 	protected final void repopulate() {
 
-		this.log("   ->repopulate()");
+		this.log(Tracing.UI_LAYOUT, "   ->repopulate()");
 
 		// Populate this pane
 		try {
@@ -2042,20 +2073,19 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * The subject holder's value changed, disconnects any listeners from the
-	 * old subject and connects those listeners onto the new subject.
+	 * The subject has changed, disconnects any listeners from the old subject
+	 * and connects those listeners onto the new subject.
 	 *
-	 * @param e The property change containing the old and new subjects
+	 * @param oldsubject The old subject or <code>null</code> if none was set
+	 * @param newSubject The new subject or <code>null</code> if none needs to be
+	 * set
 	 *
 	 * @category Populate
 	 */
-	@SuppressWarnings("unchecked")
-	private void subjectChanged(PropertyChangeEvent e) {
+	protected final void subjectChanged(T oldSubject, T newSubject) {
 		if (!this.container.isDisposed()) {
-			T oldSubject = (T) e.oldValue();
-			T newSubject = (T) e.newValue();
 
-			this.log("subjectChanged()");
+			this.log(Tracing.UI_LAYOUT, "subjectChanged()");
 			this.disengageListeners(oldSubject);
 
 			// Only repopulate if it is allowed when the subject is null
@@ -2098,6 +2128,7 @@ public abstract class AbstractPane<T extends Model>
 		Button createButton(Composite parent, String text, int style);
 		CCombo createCombo(Composite parent);
 		Composite createComposite(Composite parent);
+		CCombo createEditableCombo(Composite parent);
 		Group createGroup(Composite parent, String title);
 		Hyperlink createHyperlink(Composite parent, String text);
 		Label createLabel(Composite container, String labelText);

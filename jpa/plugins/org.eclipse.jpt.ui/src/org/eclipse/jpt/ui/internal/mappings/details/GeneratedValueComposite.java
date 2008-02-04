@@ -14,13 +14,10 @@ import org.eclipse.jpt.core.internal.context.base.GenerationType;
 import org.eclipse.jpt.core.internal.context.base.IGeneratedValue;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.custom.CCombo;
@@ -50,10 +47,7 @@ import org.eclipse.swt.widgets.Composite;
 @SuppressWarnings("nls")
 public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 {
-	private PropertyChangeListener generatedValueChangeListener;
-	private PropertyChangeListener generatorNameChangeListener;
 	private CCombo generatorNameCombo;
-	private PropertyChangeListener subjectChangeListener;
 
 	/**
 	 * Creates a new <code>GeneratedValueComposite</code>.
@@ -73,46 +67,13 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
+		propertyNames.add(IGeneratedValue.DEFAULT_GENERATOR_PROPERTY);
 		propertyNames.add(IGeneratedValue.SPECIFIED_GENERATOR_PROPERTY);
-	}
-
-	private PropertyChangeListener buildGeneratedValueChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(buildGeneratedValueChangeListener_());
-	}
-	
-	private PropertyChangeListener buildGeneratedValueChangeListener_() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-
-				IGeneratedValue oldValue = (IGeneratedValue) e.oldValue();
-				IGeneratedValue newValue = (IGeneratedValue) e.newValue();
-
-				uninstallGeneratedValueListeners(oldValue);
-				repopulate();
-				installGeneratedValueListeners(newValue);
-			}
-		};
-	}
-
-	private PropertyChangeListener buildGeneratorNameChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(buildGeneratorNameChangeListener_());
-	}
-	
-	private PropertyChangeListener buildGeneratorNameChangeListener_() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				if (isPopulating()) {
-					return;
-				}
-
-				populateGeneratorName();
-			}
-		};
 	}
 
 	private CCombo buildGeneratorNameCombo(Composite parent) {
 
-		CCombo combo = buildCombo(parent);
+		CCombo combo = buildEditableCombo(parent);
 		combo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
 		combo.addModifyListener(buildGeneratorNameModifyListener());
 		return combo;
@@ -139,11 +100,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 					generatorName = null;
 				}
 
-				if (generatedValue == null) {
-					generatedValue = subject().addGeneratedValue();
-				}
-
-				generatedValue.setSpecifiedGenerator(generatorName);
+				retrieveGeneratedValue().setSpecifiedGenerator(generatorName);
 			}
 		};
 	}
@@ -158,6 +115,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 	}
 
 	private EnumComboViewer<IGeneratedValue, GenerationType> buildStrategyComboViewer(Composite parent) {
+
 		return new EnumComboViewer<IGeneratedValue, GenerationType>(this, buildGeneratorValueHolder(), parent) {
 
 			@Override
@@ -193,34 +151,9 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 
 			@Override
 			protected void setValue(GenerationType value) {
-				IGeneratedValue generatedValue = subject();
-
-				if (generatedValue == null) {
-					generatedValue = GeneratedValueComposite.this.subject().addGeneratedValue();
-				}
-
-				subject().setSpecifiedStrategy(value);
+				retrieveGeneratedValue().setSpecifiedStrategy(value);
 			}
 		};
-	}
-
-	private PropertyChangeListener buildSubjectChangeListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				uninstallListeners((IIdMapping) e.oldValue());
-				installListeners((IIdMapping) e.newValue());
-			}
-		};
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void disengageListeners() {
-		super.disengageListeners();
-		getSubjectHolder().removePropertyChangeListener(PropertyValueModel.VALUE, subjectChangeListener);
-		uninstallListeners(subject());
 	}
 
 	/*
@@ -230,29 +163,6 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 	protected void doPopulate() {
 		super.doPopulate();
 		populateGeneratorNameCombo();
-	}
-
-//	private IGeneratorRepository getGeneratorRepository() {
-//		return NullGeneratorRepository.instance(); //this.id.getJpaProject().getPlatform().generatorRepository(this.id.typeMapping().getPersistentType());
-//	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void engageListeners() {
-		super.engageListeners();
-		getSubjectHolder().addPropertyChangeListener(PropertyValueModel.VALUE, subjectChangeListener);
-		installListeners(subject());
-	}
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-
-		subjectChangeListener        = buildSubjectChangeListener();
-		generatedValueChangeListener = buildGeneratedValueChangeListener();
-		generatorNameChangeListener  = buildGeneratorNameChangeListener();
 	}
 
 	/*
@@ -283,23 +193,6 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 			generatorNameCombo.getParent(),
 			IJpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
 		);
-
-		// TODO
-		// buildGeneratorNameSelectionButton( this);
-	}
-
-	private void installGeneratedValueListeners(IGeneratedValue generatedValue) {
-		if (generatedValue != null) {
-			generatedValue.addPropertyChangeListener(IGeneratedValue.DEFAULT_GENERATOR_PROPERTY,   generatorNameChangeListener);
-			generatedValue.addPropertyChangeListener(IGeneratedValue.SPECIFIED_GENERATOR_PROPERTY, generatorNameChangeListener);
-		}
-	}
-
-	private void installListeners(IIdMapping idMapping) {
-		if (idMapping != null) {
-			idMapping.addPropertyChangeListener(IIdMapping.GENERATED_VALUE_PROPERTY, generatedValueChangeListener);
-			installGeneratedValueListeners(idMapping.getGeneratedValue());
-		}
 	}
 
 	private void populateGeneratorName() {
@@ -335,17 +228,34 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 		populateGeneratorName();
 	}
 
-	private void uninstallGeneratedValueListeners(IGeneratedValue generatedValue) {
-		if (generatedValue != null) {
-			generatedValue.removePropertyChangeListener(IGeneratedValue.DEFAULT_GENERATOR_PROPERTY,   generatorNameChangeListener);
-			generatedValue.removePropertyChangeListener(IGeneratedValue.SPECIFIED_GENERATOR_PROPERTY, generatorNameChangeListener);
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void propertyChanged(String propertyName) {
+		super.propertyChanged(propertyName);
+
+		if (propertyName == IGeneratedValue.DEFAULT_GENERATOR_PROPERTY ||
+		    propertyName == IGeneratedValue.SPECIFIED_GENERATOR_PROPERTY) {
+
+			populateGeneratorNameCombo();
 		}
 	}
 
-	private void uninstallListeners(IIdMapping idMapping) {
-		if (idMapping != null) {
-			idMapping.removePropertyChangeListener(IIdMapping.GENERATED_VALUE_PROPERTY, generatedValueChangeListener);
-			uninstallGeneratedValueListeners(idMapping.getGeneratedValue());
+	private IGeneratedValue retrieveGeneratedValue() {
+		IGeneratedValue generatedValue = subject().getGeneratedValue();
+
+		if (generatedValue == null) {
+			setPopulating(true);
+
+			try {
+				generatedValue = subject().addGeneratedValue();
+			}
+			finally {
+				setPopulating(false);
+			}
 		}
+
+		return generatedValue;
 	}
 }

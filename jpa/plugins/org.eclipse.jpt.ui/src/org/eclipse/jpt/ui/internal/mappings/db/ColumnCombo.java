@@ -39,6 +39,20 @@ public abstract class ColumnCombo<T extends IJpaNode> extends AbstractDatabaseOb
 	/**
 	 * Creates a new <code>ColumnCombo</code>.
 	 *
+	 * @param parentPane The parent container of this one
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
+	 */
+	public ColumnCombo(AbstractFormPane<?> parentPane,
+	                   PropertyValueModel<? extends T> subjectHolder,
+	                   Composite parent) {
+
+		super(parentPane, subjectHolder, parent);
+	}
+
+	/**
+	 * Creates a new <code>ColumnCombo</code>.
+	 *
 	 * @param subjectHolder The holder of the subject
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets

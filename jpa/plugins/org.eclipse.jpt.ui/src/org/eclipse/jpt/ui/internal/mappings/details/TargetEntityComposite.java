@@ -182,7 +182,7 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		targetEntityCombo = buildCombo(container);
+		targetEntityCombo = buildEditableCombo(container);
 		targetEntityCombo.add(JptUiMappingsMessages.TargetEntityChooser_defaultEmpty);
 		targetEntityCombo.addModifyListener(buildTargetEntityModifyListener());
 

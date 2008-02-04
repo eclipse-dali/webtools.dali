@@ -9,15 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.Collection;
+import java.util.Iterator;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
+import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
+import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
@@ -51,11 +57,6 @@ import org.eclipse.swt.widgets.Text;
  */
 public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 {
-	private CCombo pkColumnNameCombo;
-	private CCombo pkColumnValueCombo;
-	private CCombo tableNameCombo;
-	private CCombo valueColumnNameCombo;
-
 	/**
 	 * Creates a new <code>TableGeneratorComposite</code>.
 	 *
@@ -76,86 +77,178 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		return subject().addTableGenerator();
 	}
 
-	private CCombo buildPkColumnNameCombo(Composite parent) {
-		CCombo combo = buildCombo(parent);
-		combo.add(JptUiMappingsMessages.TableGeneratorComposite_default);
-		combo.select(0);
-		combo.addModifyListener(buildPkColumnNameListener());
-		return combo;
-	}
+	private ColumnCombo<ITableGenerator> buildPkColumnNameCombo(Composite parent) {
 
-	private ModifyListener buildPkColumnNameListener() {
-		return new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				String text = ((CCombo) e.getSource()).getText();
-				if (text != null && pkColumnNameCombo.getItemCount() > 0 && text.equals(pkColumnNameCombo.getItem(0))) {
-					text = null;
+		return new ColumnCombo<ITableGenerator>(this, buildTableGeneratorHolder(), parent) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(ITableGenerator.DEFAULT_PK_COLUMN_NAME_PROPERTY);
+				propertyNames.add(ITableGenerator.SPECIFIED_PK_COLUMN_NAME_PROPERTY);
+			}
+
+			@Override
+			protected void buildSubject() {
+				TableGeneratorComposite.this.buildGenerator();
+			}
+
+			@Override
+			protected String defaultValue() {
+				return subject().getDefaultPkColumnName();
+			}
+
+			@Override
+			protected boolean isBuildSubjectAllowed() {
+				return true;
+			}
+
+			@Override
+			protected void setValue(String value) {
+				subject().setSpecifiedTable(value);
+			}
+
+			@Override
+			protected Table table() {
+				return subject().dbTable();
+			}
+
+			@Override
+			protected String value() {
+				return subject().getSpecifiedPkColumnName();
+			}
+
+			@Override
+			protected Iterator<String> values() {
+				Table table = table();
+
+				if (table != null) {
+					return table.columnNames();
 				}
-				ITableGenerator generator = retrieveTableGenerator();
-				generator.setSpecifiedPkColumnName(text);
+
+				return EmptyIterator.instance();
 			}
 		};
 	}
 
-	private CCombo buildPkColumnValueCombo(Composite parent) {
-		CCombo combo = buildCombo(parent);
-		combo.add(JptUiMappingsMessages.TableGeneratorComposite_default);
-		combo.select(0);
-		combo.addModifyListener(buildPkColumnValueListener());
-		return combo;
-	}
+	private ColumnCombo<ITableGenerator> buildPkColumnValueCombo(Composite parent) {
 
-	private ModifyListener buildPkColumnValueListener() {
-		return new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				String text = ((CCombo) e.getSource()).getText();
-				if (text != null && pkColumnValueCombo.getItemCount() > 0 && text.equals(pkColumnValueCombo.getItem(0))) {
-					text = null;
+		return new ColumnCombo<ITableGenerator>(this, buildTableGeneratorHolder(), parent) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(ITableGenerator.DEFAULT_PK_COLUMN_VALUE_PROPERTY);
+				propertyNames.add(ITableGenerator.SPECIFIED_PK_COLUMN_VALUE_PROPERTY);
+			}
+
+			@Override
+			protected void buildSubject() {
+				TableGeneratorComposite.this.buildGenerator();
+			}
+
+			@Override
+			protected String defaultValue() {
+				return subject().getDefaultPkColumnValue();
+			}
+
+			@Override
+			protected boolean isBuildSubjectAllowed() {
+				return true;
+			}
+
+			@Override
+			protected void setValue(String value) {
+				subject().setSpecifiedPkColumnValue(value);
+			}
+
+			@Override
+			protected Table table() {
+				return subject().dbTable();
+			}
+
+			@Override
+			protected String value() {
+				return subject().getSpecifiedPkColumnValue();
+			}
+
+			@Override
+			protected Iterator<String> values() {
+				Table table = table();
+
+				if (table != null) {
+					return table.columnNames();
 				}
-				ITableGenerator generator = retrieveTableGenerator();
-				generator.setSpecifiedPkColumnValue(text);
+
+				return EmptyIterator.instance();
 			}
 		};
 	}
 
-	private CCombo buildTableNameCombo(Composite parent) {
-		CCombo combo = buildCombo(parent);
-		combo.add(JptUiMappingsMessages.TableGeneratorComposite_default);
-		combo.select(0);
-		combo.addModifyListener(buildTableNameListener());
-		return combo;
-	}
-
-	private ModifyListener buildTableNameListener() {
-		return new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				String text = ((CCombo) e.getSource()).getText();
-				if (text != null && tableNameCombo.getItemCount() > 0 && text.equals(tableNameCombo.getItem(0))) {
-					text = null;
-				}
-				ITableGenerator generator = retrieveTableGenerator();
-				generator.setSpecifiedTable(text);
+	private PropertyValueModel<ITableGenerator> buildTableGeneratorHolder() {
+		return new PropertyAspectAdapter<IIdMapping, ITableGenerator>(getSubjectHolder(), propertyName()) {
+			@Override
+			protected ITableGenerator buildValue_() {
+				return subject.getTableGenerator();
 			}
 		};
 	}
 
-	private CCombo buildValueColumnNameCombo(Composite parent) {
-		CCombo combo = buildCombo(parent);
-		combo.add(JptUiMappingsMessages.TableGeneratorComposite_default);
-		combo.select(0);
-		combo.addModifyListener(buildValueColumnNameListener());
-		return combo;
-	}
+	private TableCombo<ITableGenerator> buildTableNameCombo(Composite parent) {
 
-	private ModifyListener buildValueColumnNameListener() {
-		return new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				String text = ((CCombo) e.getSource()).getText();
-				if (text != null && valueColumnNameCombo.getItemCount() > 0 && text.equals(valueColumnNameCombo.getItem(0))) {
-					text = null;
+		return new TableCombo<ITableGenerator>(this, buildTableGeneratorHolder(), parent) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(ITableGenerator.DEFAULT_TABLE_PROPERTY);
+				propertyNames.add(ITableGenerator.SPECIFIED_TABLE_PROPERTY);
+			}
+
+			@Override
+			protected void buildSubject() {
+				TableGeneratorComposite.this.buildGenerator();
+			}
+
+			@Override
+			protected String defaultValue() {
+				return subject().getDefaultTable();
+			}
+
+			@Override
+			protected boolean isBuildSubjectAllowed() {
+				return true;
+			}
+
+			@Override
+			protected void setValue(String value) {
+				subject().setSpecifiedTable(value);
+			}
+
+			@Override
+			protected Table table() {
+				return subject().dbTable();
+			}
+
+			@Override
+			protected String value() {
+				return subject().getSpecifiedTable();
+			}
+
+			@Override
+			protected Iterator<String> values() {
+				String schemaName = subject().getSchema();
+				Database database = database();
+
+				if ((schemaName != null) && (database != null)) {
+					Schema schema = database.schemaNamed(schemaName);
+
+					if (schema != null) {
+						return schema.tableNames();
+					}
 				}
-				ITableGenerator generator = retrieveTableGenerator();
-				generator.setSpecifiedValueColumnName(text);
+
+				return EmptyIterator.instance();
 			}
 		};
 	}
@@ -164,28 +257,8 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void doPopulate() {
-		super.doPopulate();
-
-		populateTableNameCombo();
-		populatePkColumnNameCombo();
-		populateValueColumnNameCombo();
-		populatePkColumnValueCombo();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected ITableGenerator getGenerator(IIdMapping subject) {
+	protected ITableGenerator generator(IIdMapping subject) {
 		return (subject != null) ? subject.getTableGenerator() : null;
-	}
-
-	protected Schema getSchema() {
-		if (getGenerator(subject()) != null) {
-			return null;// this.getConnectionProfile().getDatabase().schemaNamed(getGenerator().getSchema());
-		}
-		return null;
 	}
 
 	/*
@@ -195,10 +268,10 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	protected void initializeLayout(Composite container) {
 
 		// Name widgets
-		Text nameText = this.buildNameText(container);
-		this.setNameText(nameText);
+		Text nameText = buildNameText(container);
+		setNameText(nameText);
 
-		this.buildLabeledComposite(
+		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_name,
 			nameText,
@@ -206,155 +279,48 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		);
 
 		// Table widgets
-		this.tableNameCombo = buildTableNameCombo(container);
+		TableCombo<ITableGenerator> tableNameCombo =
+			buildTableNameCombo(container);
 
-		this.buildLabeledComposite(
+		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_table,
-			tableNameCombo.getParent(),
+			tableNameCombo.getControl(),
 			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_TABLE
 		);
 
 		// Primary Key Column widgets
-		this.pkColumnNameCombo = buildPkColumnNameCombo(container);
+		ColumnCombo<ITableGenerator> pkColumnNameCombo =
+			buildPkColumnNameCombo(container);
 
-		this.buildLabeledComposite(
+		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_pkColumn,
-			pkColumnNameCombo.getParent(),
+			pkColumnNameCombo.getControl(),
 			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN
 		);
 
 		// Value Column widgets
-		this.valueColumnNameCombo = buildValueColumnNameCombo(container);
+		ColumnCombo<ITableGenerator> valueColumnNameCombo =
+			buildPkColumnValueCombo(container);
 
-		this.buildLabeledComposite(
+		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_valueColumn,
-			valueColumnNameCombo.getParent(),
+			valueColumnNameCombo.getControl(),
 			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_VALUE_COLUMN
 		);
 
 		// Primary Key Column Value widgets
-		this.pkColumnValueCombo = buildPkColumnValueCombo(container);
+		ColumnCombo<ITableGenerator> pkColumnValueCombo =
+			buildPkColumnValueCombo(container);
 
-		this.buildLabeledComposite(
+		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_pkColumnValue,
-			pkColumnValueCombo.getParent(),
+			pkColumnValueCombo.getControl(),
 			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN_VALUE
 		);
-	}
-
-	private void populatePkColumnChoices() {
-		this.pkColumnNameCombo.remove(1, this.pkColumnNameCombo.getItemCount() - 1);
-
-//		if (this.getConnectionProfile().isConnected()) {
-//			if (!this.tableNameCombo.getText().equals(JptUiMappingsMessages.TableGeneratorComposite_default)) { // hmm,
-//				// if they actually set the table to Default??
-//				String tableName = this.tableNameCombo.getText();
-//				Schema schema = getSchema();
-//				if (schema != null) {
-//					Table table = schema.tableNamed(tableName);
-//					if (table != null) {
-//						for (Iterator<String> stream = CollectionTools.sort(table.columnNames()); stream.hasNext();) {
-//							this.pkColumnNameCombo.add(stream.next());
-//						}
-//					}
-//				}
-//			}
-//		}
-	}
-
-	private void populatePkColumnName() {
-		String pkColumnName = this.tableGenerator().getSpecifiedPkColumnName();
-		if (pkColumnName != null) {
-			if (!this.pkColumnNameCombo.getText().equals(pkColumnName)) {
-				this.pkColumnNameCombo.setText(pkColumnName);
-			}
-		}
-		else {
-			this.pkColumnNameCombo.select(0);
-		}
-	}
-
-	private void populatePkColumnNameCombo() {
-		if (this.tableGenerator() == null) {
-			return;
-		}
-		populatePkColumnChoices();
-		populatePkColumnName();
-	}
-
-	private void populatePkColumnValueCombo() {
-		if (this.tableGenerator() == null) {
-			return;
-		}
-		String pkColumnValue = this.tableGenerator().getSpecifiedPkColumnValue();
-		if (pkColumnValue != null) {
-			if (!this.pkColumnValueCombo.getText().equals(pkColumnValue)) {
-				this.pkColumnValueCombo.setText(pkColumnValue);
-			}
-		}
-		else {
-			this.pkColumnValueCombo.select(0);
-		}
-	}
-
-	private void populateTableNameCombo() {
-		if (this.tableGenerator() == null) {
-			return;
-		}
-//		if (this.getConnectionProfile().isConnected()) {
-//			this.tableNameCombo.remove(1, this.tableNameCombo.getItemCount()-1);
-//			Schema schema = this.getSchema();
-//			if (schema != null) {
-//				Iterator<String> tables = schema.tableNames();
-//				for (Iterator<String> stream = CollectionTools.sort(tables); stream.hasNext(); ) {
-//					this.tableNameCombo.add(stream.next());
-//				}
-//			}
-//		}
-		String tableName = this.tableGenerator().getSpecifiedTable();
-		if (tableName != null) {
-			if (!this.tableNameCombo.getText().equals(tableName)) {
-				this.tableNameCombo.setText(tableName);
-			}
-		}
-		else {
-			this.tableNameCombo.select(0);
-		}
-	}
-
-	private void populateValueColumnNameCombo() {
-		if (this.tableGenerator() == null) {
-			return;
-		}
-//		if (this.getConnectionProfile().isConnected()) {
-//			this.valueColumnNameCombo.remove(1, this.valueColumnNameCombo.getItemCount() - 1);
-//			if (!this.tableNameCombo.getText().equals(JptUiMappingsMessages.TableGeneratorComposite_default)) { // hmm,
-//				// if they actually set the table to Default??
-//				String tableName = this.tableNameCombo.getText();
-//				Schema schema = getSchema();
-//				if (schema != null) {
-//					Table table = schema.tableNamed(tableName);
-//					if (table != null) {
-//						for (Iterator<String> stream = CollectionTools.sort(table.columnNames()); stream.hasNext();) {
-//							this.valueColumnNameCombo.add(stream.next());
-//						}
-//					}
-//				}
-//			}
-//		}
-		String valueColumnName = this.tableGenerator().getSpecifiedValueColumnName();
-		if (valueColumnName != null) {
-			if (!this.valueColumnNameCombo.getText().equals(valueColumnName)) {
-				this.valueColumnNameCombo.setText(valueColumnName);
-			}
-		}
-		else {
-			this.valueColumnNameCombo.select(0);
-		}
 	}
 
 	/*
@@ -363,26 +329,5 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	@Override
 	protected String propertyName() {
 		return IIdMapping.TABLE_GENERATOR_PROPERTY;
-	}
-
-	private ITableGenerator retrieveTableGenerator() {
-		ITableGenerator generator = tableGenerator();
-
-		if (generator == null) {
-			setPopulating(true);
-
-			try {
-				generator = buildGenerator();
-			}
-			finally {
-				setPopulating(false);
-			}
-		}
-
-		return generator;
-	}
-
-	private ITableGenerator tableGenerator() {
-		return (subject() != null) ? subject().getTableGenerator() : null;
 	}
 }

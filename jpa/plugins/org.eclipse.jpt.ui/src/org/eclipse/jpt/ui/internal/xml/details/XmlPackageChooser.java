@@ -123,7 +123,7 @@ public class XmlPackageChooser extends AbstractFormPane<EntityMappings>
 			Display.getDefault().asyncExec(
 				new Runnable() {
 					public void run() {
-						populate();
+						repopulate();
 					}
 				});
 		}

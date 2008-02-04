@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
+import java.util.Collection;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitMetadata;
@@ -70,6 +71,13 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 	private EnumComboViewer<PersistenceUnitDefaults, AccessType> buildAccessTypeCombo(Composite container) {
 
 		return new EnumComboViewer<PersistenceUnitDefaults, AccessType>(this, buildPersistenceUnitDefaultsHolder(), container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(PersistenceUnitDefaults.ACCESS_PROPERTY);
+			}
+
 			@Override
 			protected AccessType[] choices() {
 				return AccessType.values();
@@ -92,11 +100,6 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 			@Override
 			protected AccessType getValue() {
 				return subject().getAccess();
-			}
-
-			@Override
-			protected String propertyName() {
-				return PersistenceUnitDefaults.ACCESS_PROPERTY;
 			}
 
 			@Override
@@ -123,6 +126,13 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 	private EnumComboViewer<PersistenceUnitDefaults, String> buildCatalogComboViewer(Composite container) {
 
 		return new EnumComboViewer<PersistenceUnitDefaults, String>(this, buildPersistenceUnitDefaultsHolder(), container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(PersistenceUnitDefaults.CATALOG_PROPERTY);
+			}
+
 			@Override
 			protected String[] choices() {
 				return new String[0];
@@ -144,11 +154,6 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 			}
 
 			@Override
-			protected String propertyName() {
-				return PersistenceUnitDefaults.CATALOG_PROPERTY;
-			}
-
-			@Override
 			protected void setValue(String value) {
 				subject().setCatalog(value);
 			}
@@ -167,6 +172,13 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 	private EnumComboViewer<PersistenceUnitDefaults, String> buildSchemaComboViewer(Composite container) {
 
 		return new EnumComboViewer<PersistenceUnitDefaults, String>(this, buildPersistenceUnitDefaultsHolder(), container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(PersistenceUnitDefaults.SCHEMA_PROPERTY);
+			}
+
 			@Override
 			protected String[] choices() {
 				return new String[0];
@@ -185,11 +197,6 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 			@Override
 			protected String getValue() {
 				return subject().getSchema();
-			}
-
-			@Override
-			protected String propertyName() {
-				return PersistenceUnitDefaults.SCHEMA_PROPERTY;
 			}
 
 			@Override

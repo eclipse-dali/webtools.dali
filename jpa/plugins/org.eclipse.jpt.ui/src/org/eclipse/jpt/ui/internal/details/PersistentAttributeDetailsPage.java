@@ -142,7 +142,7 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 
 	protected ComboViewer buildMappingCombo(Composite parent) {
 
-		this.mappingCombo = buildComboViewer(parent, buildLabelProvider());
+		this.mappingCombo = buildEditableComboViewer(parent, buildLabelProvider());
 		this.mappingCombo.getCCombo().setVisibleItemCount(Integer.MAX_VALUE);
 		this.mappingCombo.setContentProvider(buildContentProvider());
 		this.mappingCombo.addSelectionChangedListener(buildMappingComboModifyListener());
@@ -206,7 +206,7 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 	 */
 	@Override
 	protected void doDispose() {
-		log("PersistentAttributeDetailsPage.doDispose()");
+		log(Tracing.UI_DETAILS_VIEW, "PersistentAttributeDetailsPage.doDispose()");
 
 		this.currentMappingComposite = null;
 
@@ -251,8 +251,16 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 		return ((BaseJpaPlatformUi) jpaPlatformUi()).getJpaUiFactory();
 	}
 
-	private void log(String message) {
-		if (Tracing.booleanDebugOption(Tracing.UI_DETAILS_VIEW)) {
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void log(String flag, String message) {
+		super.log(flag, message);
+
+		if (Tracing.UI_DETAILS_VIEW.equals(flag) &&
+		    Tracing.booleanDebugOption(Tracing.UI_DETAILS_VIEW))
+		{
 			Tracing.log(message);
 		}
 	}
@@ -320,7 +328,11 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 			return;
 		}
 		else if (this.currentMappingComposite != null) {
-			this.log("PersistentAttributeDetailsPage.populateMappingPage() disposing of current page: " + this.currentMappingKey);
+			this.log(
+				Tracing.UI_DETAILS_VIEW,
+				"PersistentAttributeDetailsPage.populateMappingPage() disposing of current page: " + this.currentMappingKey
+			);
+
 			this.currentMappingComposite.dispose();
 		}
 
@@ -330,14 +342,20 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 			this.currentMappingComposite = mappingCompositeFor(mappingKey);
 
 			try {
-				this.log("PersistentAttributeDetailsPage.populateMappingPage() populating new page: " + this.currentMappingKey);
+				this.log(
+					Tracing.UI_DETAILS_VIEW,
+					"PersistentAttributeDetailsPage.populateMappingPage() populating new page: " + this.currentMappingKey
+				);
 
 				this.currentMappingComposite.populate();
 				this.mappingPageBook.showPage(this.currentMappingComposite.getControl());
-//				this.mappingPageBook.getParent().layout(true);
 			}
 			catch (Exception e) {
-				this.log("PersistentAttributeDetailsPage.populateMappingPage() error encountered");
+				this.log(
+					Tracing.UI_DETAILS_VIEW,
+					"PersistentAttributeDetailsPage.populateMappingPage() error encountered"
+				);
+
 				this.mappingComposites.remove(this.currentMappingComposite);
 				this.currentMappingComposite = null;
 				this.mappingPageBook.showPage(new Label(this.mappingPageBook, SWT.NULL));
@@ -345,7 +363,11 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 			}
 		}
 		else {
-			this.log("PersistentAttributeDetailsPage.populateMappingPage() no page to show");
+			this.log(
+				Tracing.UI_DETAILS_VIEW,
+				"PersistentAttributeDetailsPage.populateMappingPage() no page to show"
+			);
+
 			this.currentMappingComposite = null;
 			this.mappingPageBook.showPage(new Label(this.mappingPageBook, SWT.NULL));
 		}

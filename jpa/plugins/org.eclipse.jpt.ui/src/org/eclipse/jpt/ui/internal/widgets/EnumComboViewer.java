@@ -10,7 +10,6 @@ package org.eclipse.jpt.ui.internal.widgets;
 
 import java.text.Collator;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Comparator;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelection;
@@ -96,15 +95,6 @@ public abstract class EnumComboViewer<T extends Model, V> extends AbstractPane<T
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void addPropertyNames(Collection<String> propertyNames) {
-		super.addPropertyNames(propertyNames);
-		propertyNames.add(propertyName());
-	}
-
 	/**
 	 * Creates the list of choices and add an extra element that represents the
 	 * default value.
@@ -121,7 +111,7 @@ public abstract class EnumComboViewer<T extends Model, V> extends AbstractPane<T
 			extendedChoices[0] = NULL_VALUE;
 		}
 		else {
-			extendedChoices = choices();
+			extendedChoices = choices;
 		}
 
 		Arrays.sort(extendedChoices, buildComparator());
@@ -309,8 +299,23 @@ public abstract class EnumComboViewer<T extends Model, V> extends AbstractPane<T
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		this.comboViewer = buildComboViewer(container, buildLabelProvider());
+		if (this.isEditable()) {
+			this.comboViewer = buildEditableComboViewer(container, buildLabelProvider());
+		}
+		else {
+			this.comboViewer = buildComboViewer(container, buildLabelProvider());
+		}
+
 		this.comboViewer.addSelectionChangedListener(buildSelectionChangedListener());
+	}
+
+	/**
+	 * Determines whether the combo should be editable or not.
+	 *
+	 * @return The default is to have a non-editable combo
+	 */
+	protected boolean isEditable() {
+		return false;
 	}
 
 	/**
@@ -329,19 +334,6 @@ public abstract class EnumComboViewer<T extends Model, V> extends AbstractPane<T
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
 		this.updateSelection();
-	}
-
-	/**
-	 * Returns the property name used to listen for changes of the value when it
-	 * is done outside of this viewer.
-	 *
-	 * @return The property name associated with the value being shown by this
-	 * viewer
-	 * @deprecated Use {@link #addPropertyNames(Collection)}
-	 */
-	@Deprecated
-	protected String propertyName() {
-		return "";
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -85,7 +85,7 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 		return new PropertyAspectAdapter<IIdMapping, T>(getSubjectHolder(), propertyName()) {
 			@Override
 			protected T buildValue_() {
-				return GeneratorComposite.this.getGenerator(subject);
+				return GeneratorComposite.this.generator(subject);
 			}
 		};
 	}
@@ -151,7 +151,7 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 			this.generatorChangeListener
 		);
 
-		this.uninstallListeners(this.getGenerator(this.subject()));
+		this.uninstallListeners(this.generator());
 	}
 
 	/*
@@ -175,7 +175,11 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 			this.generatorChangeListener
 		);
 
-		this.installListeners(this.getGenerator(this.subject()));
+		this.installListeners(this.generator());
+	}
+
+	protected final T generator() {
+		return (subject() == null) ? null : generator(subject());
 	}
 
 	/**
@@ -185,7 +189,7 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 	 * @return The <code>IGenerator</code> or <code>null</code> if it doesn't
 	 * exists
 	 */
-	protected abstract T getGenerator(IIdMapping subject);
+	protected abstract T generator(IIdMapping subject);
 
 	/*
 	 * (non-Javadoc)
@@ -206,7 +210,7 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 	}
 
 	private void populateNameViewer() {
-		IGenerator generator = this.getGenerator(this.subject());
+		IGenerator generator = this.generator();
 
 		if (generator != null) {
 			String name = generator.getName();
@@ -234,6 +238,29 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 	 */
 	protected abstract String propertyName();
 
+	/**
+	 * Retrieves the <code>IGenerator</code> and if it is <code>null</code>, then
+	 * create it.
+	 *
+	 * @return The <code>IGenerator</code> which should never be <code>null</code>
+	 */
+	protected final T retrieveGenerator() {
+		T generator = generator();
+
+		if (generator == null) {
+			setPopulating(true);
+
+			try {
+				generator = buildGenerator();
+			}
+			finally {
+				setPopulating(false);
+			}
+		}
+
+		return generator;
+	}
+
 	protected final void setNameText(Text nameText) {
 		this.nameText = nameText;
 	}
@@ -248,26 +275,20 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 
 		if (StringTools.stringIsEmpty(name)) {
 
-			if (getGenerator(subject()).getName() == null) {
+			if (generator().getName() == null) {
 				return;
 			}
 
 			name = null;
 		}
 
-		IGenerator generator = getGenerator(subject());
+		setPopulating(true);
 
-		if (generator == null) {
-			setPopulating(true);
-
-			try {
-				generator = buildGenerator();
-			}
-			finally {
-				setPopulating(false);
-			}
+		try {
+			retrieveGenerator().setName(name);
 		}
-
-		generator.setName(name);
+		finally {
+			setPopulating(false);
+		}
 	}
 }

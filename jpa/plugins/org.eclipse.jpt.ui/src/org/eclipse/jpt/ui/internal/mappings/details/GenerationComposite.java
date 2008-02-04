@@ -85,7 +85,7 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 		return new PropertyAspectAdapter<IIdMapping, Boolean>(getSubjectHolder(), IIdMapping.GENERATED_VALUE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return subject().getGeneratedValue() != null;
+				return subject.getGeneratedValue() != null;
 			}
 
 			@Override
@@ -105,7 +105,7 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 		return new PropertyAspectAdapter<IIdMapping, Boolean>(getSubjectHolder(), IIdMapping.SEQUENCE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return subject().getSequenceGenerator() != null;
+				return subject.getSequenceGenerator() != null;
 			}
 
 			@Override

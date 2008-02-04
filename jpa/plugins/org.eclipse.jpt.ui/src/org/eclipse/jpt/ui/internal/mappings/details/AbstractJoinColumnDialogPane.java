@@ -112,7 +112,7 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 	protected void initializeLayout(Composite container) {
 
 		// Name widgets
-		nameCombo = buildCombo(container);
+		nameCombo = buildEditableCombo(container);
 		nameCombo.addModifyListener(buildNameComboListener());
 
 		buildLabeledComposite(
@@ -123,7 +123,7 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 		);
 
 		// Referenced Column Name widgets
-		referencedColumnNameCombo = buildCombo(container);
+		referencedColumnNameCombo = buildEditableCombo(container);
 		referencedColumnNameCombo.addModifyListener(buildReferencedColumnNameComboListener());
 
 		buildLabeledComposite(

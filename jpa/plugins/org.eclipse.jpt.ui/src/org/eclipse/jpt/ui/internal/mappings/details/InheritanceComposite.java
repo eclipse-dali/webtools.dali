@@ -221,6 +221,13 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 			container)
 		{
 			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(IDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE_PROPERTY);
+				propertyNames.add(IDiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY);
+			}
+
+			@Override
 			protected DiscriminatorType[] choices() {
 				return DiscriminatorType.values();
 			}
@@ -242,11 +249,6 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 			@Override
 			protected DiscriminatorType getValue() {
 				return subject().getSpecifiedDiscriminatorType();
-			}
-
-			@Override
-			protected String propertyName() {
-				return IDiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY;
 			}
 
 			@Override
@@ -284,6 +286,14 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 	private EnumComboViewer<IEntity, InheritanceType> buildStrategyCombo(Composite container) {
 
 		return new EnumComboViewer<IEntity, InheritanceType>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(IEntity.DEFAULT_INHERITANCE_STRATEGY_PROPERTY);
+				propertyNames.add(IEntity.SPECIFIED_INHERITANCE_STRATEGY_PROPERTY);
+			}
+
 			@Override
 			protected InheritanceType[] choices() {
 				return InheritanceType.values();
@@ -306,11 +316,6 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 			@Override
 			protected InheritanceType getValue() {
 				return subject().getSpecifiedInheritanceStrategy();
-			}
-
-			@Override
-			protected String propertyName() {
-				return IEntity.SPECIFIED_INHERITANCE_STRATEGY_PROPERTY;
 			}
 
 			@Override
@@ -352,7 +357,7 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 		);
 
 		// Column widgets
-		columnCombo = buildCombo(container);
+		columnCombo = buildEditableCombo(container);
 		columnCombo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
 		columnCombo.addModifyListener(buildColumnComboSelectionListener());
 
@@ -375,7 +380,7 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 		);
 
 		// Discrinator Value widgets
-		discriminatorValueCombo = buildCombo(container);
+		discriminatorValueCombo = buildEditableCombo(container);
 		discriminatorValueCombo.addModifyListener(buildDiscriminatorValueComboSelectionListener());
 
 		buildLabeledComposite(
