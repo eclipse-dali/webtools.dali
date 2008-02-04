@@ -28,11 +28,25 @@ public interface IPersistentType extends IJpaContextNode
 
 	boolean isMapped();
 	
+
 	/**
 	 * Return the parent IPersistentType from the inheritance hierarchy.
 	 * If the java inheritance parent is not a IPersistentType then continue
-	 * up the hierarchy.  Return null if this persistentType is the root
-	 * persistent type. 
+	 * up the hierarchy(the JPA spec allows non-persistent types to be part of the hierarchy.)  
+	 * Return null if this persistentType is the root persistent type. 
+	 * Example:
+	 * <pre>
+	 * &#64;Entity
+	 * public abstract class Model {}
+	 * <a>
+	 * public abstract class Animal extends Model {}
+	 * <a>
+	 * &#64;Entity
+	 * public class Cat extends Animal {}
+	 * </pre> 
+	 * 
+	 * If this is the Cat JavaPersistentType then parentPersistentType is the Model JavaPersistentType
+	 * The parentPersistentType could be found in java or xml.
 	 */
 	IPersistentType parentPersistentType();
 

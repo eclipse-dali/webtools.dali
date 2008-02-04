@@ -45,21 +45,6 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 
 	protected AccessType access;
 
-	/**
-	 * Store the parentPersistentType during default calculation.  This will
-	 * be the first persisentType found in the hierarchy, the JPA spec allows
-	 * for non-persistent types to be part of the hierarchy.
-	 * Example:
-	 * 
-	 * @Entity public abstract class Model {}
-	 * 
-	 * public abstract class Animal extends Model {}
-	 * 
-	 * @Entity public class Cat extends Animal {}
-	 * 
-	 * If this is the Cat JavaPersistentType then parentPersistentType is the Model JavaPersistentType
-	 * The parentPersistentType could be found in java or xml.
-	 */
 	protected IPersistentType parentPersistentType;
 
 	protected JavaPersistentTypeResource persistentTypeResource;
@@ -99,6 +84,8 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		return this.persistentTypeResource.resourceModel().resource().getCompilationUnit().getResource();
 	}
 
+	
+	//****************** IPersistentType implementation *******************
 	public String getName() {
 		return this.name;
 	}
@@ -155,11 +142,11 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	protected void setAccess(AccessType newAccess) {
 		AccessType oldAccess = this.access;
 		this.access = newAccess;
-		firePropertyChanged(ACCESS_PROPERTY, oldAccess, newAccess);
+		firePropertyChanged(IPersistentType.ACCESS_PROPERTY, oldAccess, newAccess);
 	}
 
-	protected Iterator<JavaPersistentAttribute> attributesNamed(final String attributeName) {
-		return new FilteringIterator<IJavaPersistentAttribute, JavaPersistentAttribute>(attributes()) {
+	protected Iterator<IJavaPersistentAttribute> attributesNamed(final String attributeName) {
+		return new FilteringIterator<IJavaPersistentAttribute, IJavaPersistentAttribute>(attributes()) {
 			@Override
 			protected boolean accept(IJavaPersistentAttribute o) {
 				return attributeName.equals(o.getName());
@@ -167,15 +154,15 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		};
 	}
 
-	public JavaPersistentAttribute attributeNamed(String attributeName) {
-		Iterator<JavaPersistentAttribute> stream = attributesNamed(attributeName);
+	public IJavaPersistentAttribute attributeNamed(String attributeName) {
+		Iterator<IJavaPersistentAttribute> stream = attributesNamed(attributeName);
 		return (stream.hasNext()) ? stream.next() : null;
 	}
 
 	public IPersistentAttribute resolveAttribute(String attributeName) {
-		Iterator<JavaPersistentAttribute> stream = attributesNamed(attributeName);
+		Iterator<IJavaPersistentAttribute> stream = attributesNamed(attributeName);
 		if (stream.hasNext()) {
-			JavaPersistentAttribute attribute = stream.next();
+			IJavaPersistentAttribute attribute = stream.next();
 			return (stream.hasNext()) ? null /*more than one*/: attribute;
 		}
 		return (parentPersistentType() == null) ? null : parentPersistentType().resolveAttribute(attributeName);
@@ -483,7 +470,5 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		super.toString(sb);
 		sb.append(getName());
 	}
-
-
 
 }
