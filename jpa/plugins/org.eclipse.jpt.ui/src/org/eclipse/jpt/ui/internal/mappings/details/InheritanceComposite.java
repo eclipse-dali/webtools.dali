@@ -447,7 +447,8 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 		String specifiedValue = this.subject().getSpecifiedDiscriminatorValue();
 		String defaultValue = this.subject().getDefaultDiscriminatorValue();
 
-		if (true) { // TODO this.subject().discriminatorValueIsAllowed()) {
+		//TODO enable/disable based on IEntity.DISCRIMINATOR_VALUE_ALLOWED_PROPERTY
+		if (this.subject().isDiscriminatorValueAllowed()) {
 			this.discriminatorValueCombo.setEnabled(true);
 			if (this.discriminatorValueCombo.getItemCount() == 0) {
 				this.discriminatorValueCombo.add(JptUiMappingsMessages.DiscriminatorColumnComposite_defaultEmpty);

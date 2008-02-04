@@ -17,7 +17,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
@@ -25,12 +24,9 @@ import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
-import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
-import org.eclipse.jpt.core.internal.context.java.IJavaAssociationOverride;
-import org.eclipse.jpt.core.internal.context.java.IJavaAttributeOverride;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
@@ -85,6 +81,8 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	protected String defaultDiscriminatorValue;
 
 	protected String specifiedDiscriminatorValue;
+
+	protected boolean discriminatorValueAllowed;
 
 	protected final XmlDiscriminatorColumn discriminatorColumn;
 
@@ -155,7 +153,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 	}	
 
 	@Override
-	public String getTableName() {
+	public String tableName() {
 		return getTable().getName();
 	}
 	
@@ -507,6 +505,16 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return (this.getSpecifiedDiscriminatorValue() == null) ? getDefaultDiscriminatorValue() : this.getSpecifiedDiscriminatorValue();
 	}
 	
+	public boolean isDiscriminatorValueAllowed() {
+		return this.discriminatorValueAllowed;
+	}
+	
+	protected void setDiscriminatorValueAllowed(boolean newDiscriminatorValueAllowed) {
+		boolean oldDiscriminatorValueAllowed = this.discriminatorValueAllowed;
+		this.discriminatorValueAllowed = newDiscriminatorValueAllowed;
+		firePropertyChanged(IEntity.DISCRIMINATOR_VALUE_ALLOWED_PROPERTY, oldDiscriminatorValueAllowed, newDiscriminatorValueAllowed);
+	}
+
 	@SuppressWarnings("unchecked")
 	public ListIterator<XmlPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns() {
 		return new CloneListIterator<XmlPrimaryKeyJoinColumn>(this.defaultPrimaryKeyJoinColumns);
@@ -878,6 +886,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.discriminatorColumn.initialize(entity);
 		this.specifiedDiscriminatorValue = entity.getDiscriminatorValue();
 		this.defaultDiscriminatorValue = this.defaultDiscriminatorValue();
+		this.discriminatorValueAllowed = this.discriminatorValueIsAllowed();
 		this.table.initialize(entity);
 		this.initializeSpecifiedSecondaryTables(entity);
 		this.initializeVirtualSecondaryTables();
@@ -984,6 +993,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.discriminatorColumn.update(entity);
 		this.setSpecifiedDiscriminatorValue(entity.getDiscriminatorValue());
 		this.setDefaultDiscriminatorValue(defaultDiscriminatorValue());
+		this.setDiscriminatorValueAllowed(this.discriminatorValueIsAllowed());
 		this.table.update(entity);
 		this.updateSpecifiedSecondaryTables(entity);
 		this.updateVirtualSecondaryTables();
@@ -1012,6 +1022,10 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return null;
 	}
 	
+	protected boolean discriminatorValueIsAllowed() {
+		return javaEntity() == null ? false : javaEntity().isDiscriminatorValueAllowed();
+	}
+
 	protected void updateInheritance(Inheritance inheritanceResource) {
 		this.setSpecifiedInheritanceStrategy_(this.specifiedInheritanceStrategy(inheritanceResource));
 		this.setDefaultInheritanceStrategy(this.defaultInheritanceStrategy());

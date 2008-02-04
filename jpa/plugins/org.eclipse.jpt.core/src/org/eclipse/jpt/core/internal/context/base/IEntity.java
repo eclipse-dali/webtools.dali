@@ -53,7 +53,15 @@ public interface IEntity extends ITypeMapping
 	String getSpecifiedDiscriminatorValue();
 	void setSpecifiedDiscriminatorValue(String value);
 		String SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY = "specifiedDiscriminatorValueProperty";
-	
+
+	/**
+	 * Return whether a DiscriminatorValue is allowed for this Entity
+	 * It is allowed if the IType is concrete (not abstract)
+	 */
+	//TODO add tests in java and xml for this
+ 	boolean isDiscriminatorValueAllowed();
+ 		String DISCRIMINATOR_VALUE_ALLOWED_PROPERTY = "discriminatorValueAllowedProperty";
+
 	
 	ITableGenerator getTableGenerator();
 	ITableGenerator addTableGenerator();
@@ -114,10 +122,8 @@ public interface IEntity extends ITypeMapping
 
 	String getIdClass();
 	void setIdClass(String value);
-		String ID_CLASS_PROPERTY = "isClassProperty";
+		String ID_CLASS_PROPERTY = "idClassProperty";
 
-//	boolean discriminatorValueIsAllowed();
-//
 	/**
 	 * Return the ultimate top of the inheritance hierarchy 
 	 * This method should never return null. The root

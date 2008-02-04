@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
@@ -28,7 +27,6 @@ import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
@@ -70,7 +68,6 @@ import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
-import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
@@ -96,6 +93,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 
 	protected String defaultDiscriminatorValue;
 
+	protected boolean discriminatorValueAllowed;
+	
 	protected String specifiedDiscriminatorValue;
 	
 	protected final IJavaDiscriminatorColumn discriminatorColumn;
@@ -132,7 +131,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.namedNativeQueries = new ArrayList<IJavaNamedNativeQuery>();
 		this.specifiedAssociationOverrides = new ArrayList<IJavaAssociationOverride>();
 		this.defaultAssociationOverrides = new ArrayList<IJavaAssociationOverride>();
-		
 	}
 	
 	protected IAbstractJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
@@ -175,6 +173,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.specifiedInheritanceStrategy = this.specifiedInheritanceStrategy(inheritanceResource());
 		this.specifiedDiscriminatorValue = this.discriminatorValueResource().getValue();
 		this.defaultDiscriminatorValue = this.javaDefaultDiscriminatorValue();
+		this.discriminatorValueAllowed = this.discriminatorValueIsAllowed(persistentTypeResource);
 		this.discriminatorColumn.initializeFromResource(persistentTypeResource);
 		this.initializeSecondaryTables(persistentTypeResource);
 		this.initializeTableGenerator(persistentTypeResource);
@@ -200,16 +199,14 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	protected void initializeTableGenerator(JavaPersistentTypeResource persistentTypeResource) {
 		TableGenerator tableGeneratorResource = tableGenerator(persistentTypeResource);
 		if (tableGeneratorResource != null) {
-			this.tableGenerator = jpaFactory().createJavaTableGenerator(this);
-			this.tableGenerator.initializeFromResource(tableGeneratorResource);
+			this.tableGenerator = createTableGenerator(tableGeneratorResource);
 		}
 	}
 	
 	protected void initializeSequenceGenerator(JavaPersistentTypeResource persistentTypeResource) {
 		SequenceGenerator sequenceGeneratorResource = sequenceGenerator(persistentTypeResource);
 		if (sequenceGeneratorResource != null) {
-			this.sequenceGenerator = jpaFactory().createJavaSequenceGenerator(this);
-			this.sequenceGenerator.initializeFromResource(sequenceGeneratorResource);
+			this.sequenceGenerator = createSequenceGenerator(sequenceGeneratorResource);
 		}
 	}
 	
@@ -234,8 +231,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 			String attributeName = i.next();
 			IJavaAttributeOverride attributeOverride = attributeOverrideNamed(attributeName);
 			if (attributeOverride == null) {
-				attributeOverride = createAttributeOverride(new NullAttributeOverride(persistentTypeResource, attributeName));
-				this.defaultAttributeOverrides.add(attributeOverride);
+				this.defaultAttributeOverrides.add(createAttributeOverride(new NullAttributeOverride(persistentTypeResource, attributeName)));
 			}
 		}
 	}
@@ -275,12 +271,11 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		}
 	}
 
-	//query for the table resource every time on setters.
-	//call one setter and the tableResource could change. 
+	//query for the inheritance resource every time on setters.
+	//call one setter and the inheritanceResource could change. 
 	//You could call more than one setter before this object has received any notification
 	//from the java resource model
 	protected Inheritance inheritanceResource() {
-		//TODO get the NullInheritance from the resource model or build it here in the context model??
 		return (Inheritance) this.persistentTypeResource.nonNullAnnotation(Inheritance.ANNOTATION_NAME);
 	}
 	
@@ -295,14 +290,47 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		}
 	}
 	
+	//****************** ITypeMapping implemenation *******************
+	
+	public String getKey() {
+		return IMappingKeys.ENTITY_TYPE_MAPPING_KEY;
+	}
+
+	public boolean isMapped() {
+		return true;
+	}
+
+	@Override
+	public String tableName() {
+		return getTable().getName();
+	}
+
+	@Override
+	public Table primaryDbTable() {
+		return getTable().dbTable();
+	}
+
+	@Override
+	public Table dbTable(String tableName) {
+		for (Iterator<ITable> stream = this.associatedTablesIncludingInherited(); stream.hasNext();) {
+			Table dbTable = stream.next().dbTable();
+			if (dbTable != null && dbTable.matchesShortJavaClassName(tableName)) {
+				return dbTable;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Schema dbSchema() {
+		return getTable().dbSchema();
+	}
+
+
 	//****************** IJavaTypeMapping implemenation *******************
 
 	public String annotationName() {
 		return Entity.ANNOTATION_NAME;
-	}
-	
-	public String getKey() {
-		return IMappingKeys.ENTITY_TYPE_MAPPING_KEY;
 	}
 
 	public Iterator<String> correspondingAnnotationNames() {
@@ -339,15 +367,11 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 			JPA.ASSOCIATION_OVERRIDES);
 	}
 
-	public boolean isMapped() {
-		return true;
-	}
+	//****************** IEntity implemenation *******************
 	
 	public String getName() {
 		return (this.getSpecifiedName() == null) ? this.getDefaultName() : this.getSpecifiedName();
 	}
-
-	//****************** IEntity implemenation *******************
 
 	public String getSpecifiedName() {
 		return this.specifiedName;
@@ -514,6 +538,16 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return (this.getSpecifiedDiscriminatorValue() == null) ? getDefaultDiscriminatorValue() : this.getSpecifiedDiscriminatorValue();
 	}
 
+	public boolean isDiscriminatorValueAllowed() {
+		return this.discriminatorValueAllowed;
+	}
+	
+	protected void setDiscriminatorValueAllowed(boolean newDiscriminatorValueAllowed) {
+		boolean oldDiscriminatorValueAllowed = this.discriminatorValueAllowed;
+		this.discriminatorValueAllowed = newDiscriminatorValueAllowed;
+		firePropertyChanged(IEntity.DISCRIMINATOR_VALUE_ALLOWED_PROPERTY, oldDiscriminatorValueAllowed, newDiscriminatorValueAllowed);
+	}
+	
 	public IJavaTableGenerator addTableGenerator() {
 		if (getTableGenerator() != null) {
 			throw new IllegalStateException("tableGenerator already exists");
@@ -616,7 +650,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	public int specifiedPrimaryKeyJoinColumnsSize() {
 		return this.specifiedPrimaryKeyJoinColumns.size();
 	}
-
 	
 	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaAttributeOverride> attributeOverrides() {
@@ -891,11 +924,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	protected void removeIdClassResource() {
 		this.persistentTypeResource.removeAnnotation(IdClass.ANNOTATION_NAME);
 	}
-//TODO
-//	public boolean discriminatorValueIsAllowed() {
-//		return !getType().isAbstract();
-//	}
-//
+
 	public IEntity parentEntity() {
 		for (Iterator<IPersistentType> i = persistentType().inheritanceHierarchy(); i.hasNext();) {
 			ITypeMapping typeMapping = i.next().getMapping();
@@ -903,10 +932,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 				return (IEntity) typeMapping;
 			}
 		}
-		return this;
-	}
-
-	public ITypeMapping typeMapping() {
 		return this;
 	}
 
@@ -921,32 +946,126 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return rootEntity;
 	}
 
-	@Override
-	public String getTableName() {
-		return getTable().getName();
-	}
-
-	@Override
-	public Table primaryDbTable() {
-		return getTable().dbTable();
-	}
-
-	@Override
-	public Table dbTable(String tableName) {
-		for (Iterator<ITable> stream = this.associatedTablesIncludingInherited(); stream.hasNext();) {
-			Table dbTable = stream.next().dbTable();
-			if (dbTable != null && dbTable.matchesShortJavaClassName(tableName)) {
-				return dbTable;
+	public String primaryKeyColumnName() {
+		String pkColumnName = null;
+		for (Iterator<IPersistentAttribute> stream = persistentType().allAttributes(); stream.hasNext();) {
+			IPersistentAttribute attribute = stream.next();
+			String name = attribute.primaryKeyColumnName();
+			if (pkColumnName == null) {
+				pkColumnName = name;
+			}
+			else if (name != null) {
+				// if we encounter a composite primary key, return null
+				return null;
 			}
 		}
-		return null;
+		// if we encounter only a single primary key column name, return it
+		return pkColumnName;
+	}
+//TODO
+//	public String primaryKeyAttributeName() {
+//		String pkColumnName = null;
+//		String pkAttributeName = null;
+//		for (Iterator<IPersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext();) {
+//			IPersistentAttribute attribute = stream.next();
+//			String name = attribute.primaryKeyColumnName();
+//			if (pkColumnName == null) {
+//				pkColumnName = name;
+//				pkAttributeName = attribute.getName();
+//			}
+//			else if (name != null) {
+//				// if we encounter a composite primary key, return null
+//				return null;
+//			}
+//		}
+//		// if we encounter only a single primary key column name, return it
+//		return pkAttributeName;
+//	}
+
+	@Override
+	public boolean tableNameIsInvalid(String tableName) {
+		return !CollectionTools.contains(this.associatedTableNamesIncludingInherited(), tableName);
 	}
 
 	@Override
-	public Schema dbSchema() {
-		return getTable().dbSchema();
+	public Iterator<ITable> associatedTables() {
+		return new CompositeIterator<ITable>(this.getTable(), this.secondaryTables());
 	}
 
+	@Override
+	public Iterator<ITable> associatedTablesIncludingInherited() {
+		return new CompositeIterator<ITable>(new TransformationIterator<ITypeMapping, Iterator<ITable>>(this.inheritanceHierarchy()) {
+			@Override
+			protected Iterator<ITable> transform(ITypeMapping mapping) {
+				return new FilteringIterator<ITable, ITable>(mapping.associatedTables()) {
+					@Override
+					protected boolean accept(ITable o) {
+						return true;
+						//TODO
+						//filtering these out so as to avoid the duplicate table, root and children share the same table
+						//return !(o instanceof SingleTableInheritanceChildTableImpl);
+					}
+				};
+			}
+		});
+	}
+
+	@Override
+	public Iterator<String> associatedTableNamesIncludingInherited() {
+		return this.nonNullTableNames(this.associatedTablesIncludingInherited());
+	}
+
+	protected Iterator<String> nonNullTableNames(Iterator<ITable> tables) {
+		return new FilteringIterator<String, String>(this.tableNames(tables)) {
+			@Override
+			protected boolean accept(String o) {
+				return o != null;
+			}
+		};
+	}
+
+	protected Iterator<String> tableNames(Iterator<ITable> tables) {
+		return new TransformationIterator<ITable, String>(tables) {
+			@Override
+			protected String transform(ITable t) {
+				return t.getName();
+			}
+		};
+	}
+
+	/**
+	 * Return an iterator of Entities, each which inherits from the one before,
+	 * and terminates at the root entity (or at the point of cyclicity).
+	 */
+	protected Iterator<ITypeMapping> inheritanceHierarchy() {
+		return new TransformationIterator<IPersistentType, ITypeMapping>(persistentType().inheritanceHierarchy()) {
+			@Override
+			protected ITypeMapping transform(IPersistentType type) {
+				return type.getMapping();
+			}
+		};
+	}
+
+	@Override
+	public Iterator<String> allOverridableAttributeNames() {
+		return new CompositeIterator<String>(new TransformationIterator<ITypeMapping, Iterator<String>>(this.inheritanceHierarchy()) {
+			@Override
+			protected Iterator<String> transform(ITypeMapping mapping) {
+				return mapping.overridableAttributeNames();
+			}
+		});
+	}
+
+	@Override
+	public Iterator<String> allOverridableAssociationNames() {
+		return new CompositeIterator<String>(new TransformationIterator<ITypeMapping, Iterator<String>>(this.inheritanceHierarchy()) {
+			@Override
+			protected Iterator<String> transform(ITypeMapping mapping) {
+				return mapping.overridableAssociationNames();
+			}
+		});
+	}
+	
 	@Override
 	public void update(JavaPersistentTypeResource persistentTypeResource) {
 		super.update(persistentTypeResource);
@@ -959,6 +1078,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.updateInheritance(inheritanceResource());
 		this.updateDiscriminatorColumn(persistentTypeResource);
 		this.updateDiscriminatorValue(discriminatorValueResource());
+		this.setDiscriminatorValueAllowed(discriminatorValueIsAllowed(persistentTypeResource));
 		this.updateSecondaryTables(persistentTypeResource);
 		this.updateTableGenerator(persistentTypeResource);
 		this.updateSequenceGenerator(persistentTypeResource);
@@ -1010,6 +1130,10 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.setDefaultDiscriminatorValue(this.javaDefaultDiscriminatorValue());
 	}
 	
+	protected boolean discriminatorValueIsAllowed(JavaPersistentTypeResource persistentTypeResource) {
+		return !persistentTypeResource.isAbstract();
+	}
+	
 	protected void updateSecondaryTables(JavaPersistentTypeResource persistentTypeResource) {
 		ListIterator<IJavaSecondaryTable> secondaryTables = specifiedSecondaryTables();
 		ListIterator<JavaResource> resourceSecondaryTables = persistentTypeResource.annotations(SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
@@ -1044,8 +1168,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		}
 		else {
 			if (getTableGenerator() == null) {
-				setTableGenerator(jpaFactory().createJavaTableGenerator(this));
-				getTableGenerator().initializeFromResource(tableGeneratorResource);
+				createTableGenerator(tableGeneratorResource);
 			}
 			else {
 				getTableGenerator().update(tableGeneratorResource);
@@ -1053,6 +1176,16 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		}
 	}
 	
+	protected IJavaTableGenerator createTableGenerator(TableGenerator tableGeneratorResource) {
+		IJavaTableGenerator tableGenerator = jpaFactory().createJavaTableGenerator(this);
+		tableGenerator.initializeFromResource(tableGeneratorResource);
+		return tableGenerator;
+	}
+	
+	protected TableGenerator tableGenerator(JavaPersistentTypeResource persistentTypeResource) {
+		return (TableGenerator) persistentTypeResource.annotation(TableGenerator.ANNOTATION_NAME);
+	}
+
 	protected void updateSequenceGenerator(JavaPersistentTypeResource persistentTypeResource) {
 		SequenceGenerator sequenceGeneratorResource = sequenceGenerator(persistentTypeResource);
 		if (sequenceGeneratorResource == null) {
@@ -1070,9 +1203,11 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 			}
 		}
 	}
-		
-	protected TableGenerator tableGenerator(JavaPersistentTypeResource persistentTypeResource) {
-		return (TableGenerator) persistentTypeResource.annotation(TableGenerator.ANNOTATION_NAME);
+	
+	protected IJavaSequenceGenerator createSequenceGenerator(SequenceGenerator sequenceGeneratorResource) {
+		IJavaSequenceGenerator sequenceGenerator = jpaFactory().createJavaSequenceGenerator(this);
+		sequenceGenerator.initializeFromResource(sequenceGeneratorResource);
+		return sequenceGenerator;
 	}
 	
 	protected SequenceGenerator sequenceGenerator(JavaPersistentTypeResource persistentTypeResource) {
@@ -1293,126 +1428,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return this.getDiscriminatorColumn().getDiscriminatorType();
 	}
 
-	public String primaryKeyColumnName() {
-		String pkColumnName = null;
-		for (Iterator<IPersistentAttribute> stream = persistentType().allAttributes(); stream.hasNext();) {
-			IPersistentAttribute attribute = stream.next();
-			String name = attribute.primaryKeyColumnName();
-			if (pkColumnName == null) {
-				pkColumnName = name;
-			}
-			else if (name != null) {
-				// if we encounter a composite primary key, return null
-				return null;
-			}
-		}
-		// if we encounter only a single primary key column name, return it
-		return pkColumnName;
-	}
-//TODO
-//	public String primaryKeyAttributeName() {
-//		String pkColumnName = null;
-//		String pkAttributeName = null;
-//		for (Iterator<IPersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext();) {
-//			IPersistentAttribute attribute = stream.next();
-//			String name = attribute.primaryKeyColumnName();
-//			if (pkColumnName == null) {
-//				pkColumnName = name;
-//				pkAttributeName = attribute.getName();
-//			}
-//			else if (name != null) {
-//				// if we encounter a composite primary key, return null
-//				return null;
-//			}
-//		}
-//		// if we encounter only a single primary key column name, return it
-//		return pkAttributeName;
-//	}
 
-	@Override
-	public boolean tableNameIsInvalid(String tableName) {
-		return !CollectionTools.contains(this.associatedTableNamesIncludingInherited(), tableName);
-	}
-
-	@Override
-	public Iterator<ITable> associatedTables() {
-		return new CompositeIterator<ITable>(this.getTable(), this.secondaryTables());
-	}
-
-	@Override
-	public Iterator<ITable> associatedTablesIncludingInherited() {
-		return new CompositeIterator<ITable>(new TransformationIterator<ITypeMapping, Iterator<ITable>>(this.inheritanceHierarchy()) {
-			@Override
-			protected Iterator<ITable> transform(ITypeMapping mapping) {
-				return new FilteringIterator<ITable, ITable>(mapping.associatedTables()) {
-					@Override
-					protected boolean accept(ITable o) {
-						return true;
-						//TODO
-						//filtering these out so as to avoid the duplicate table, root and children share the same table
-						//return !(o instanceof SingleTableInheritanceChildTableImpl);
-					}
-				};
-			}
-		});
-	}
-
-	@Override
-	public Iterator<String> associatedTableNamesIncludingInherited() {
-		return this.nonNullTableNames(this.associatedTablesIncludingInherited());
-	}
-
-	protected Iterator<String> nonNullTableNames(Iterator<ITable> tables) {
-		return new FilteringIterator<String, String>(this.tableNames(tables)) {
-			@Override
-			protected boolean accept(String o) {
-				return o != null;
-			}
-		};
-	}
-
-	protected Iterator<String> tableNames(Iterator<ITable> tables) {
-		return new TransformationIterator<ITable, String>(tables) {
-			@Override
-			protected String transform(ITable t) {
-				return t.getName();
-			}
-		};
-	}
-
-	/**
-	 * Return an iterator of Entities, each which inherits from the one before,
-	 * and terminates at the root entity (or at the point of cyclicity).
-	 */
-	protected Iterator<ITypeMapping> inheritanceHierarchy() {
-		return new TransformationIterator<IPersistentType, ITypeMapping>(persistentType().inheritanceHierarchy()) {
-			@Override
-			protected ITypeMapping transform(IPersistentType type) {
-				return type.getMapping();
-			}
-		};
-	}
-
-	@Override
-	public Iterator<String> allOverridableAttributeNames() {
-		return new CompositeIterator<String>(new TransformationIterator<ITypeMapping, Iterator<String>>(this.inheritanceHierarchy()) {
-			@Override
-			protected Iterator<String> transform(ITypeMapping mapping) {
-				return mapping.overridableAttributeNames();
-			}
-		});
-	}
-
-	@Override
-	public Iterator<String> allOverridableAssociationNames() {
-		return new CompositeIterator<String>(new TransformationIterator<ITypeMapping, Iterator<String>>(this.inheritanceHierarchy()) {
-			@Override
-			protected Iterator<String> transform(ITypeMapping mapping) {
-				return mapping.overridableAssociationNames();
-			}
-		});
-	}
-
+	//******************** Code Completion *************************
 
 	@Override
 	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -1452,16 +1469,14 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		if (result != null) {
 			return result;
 		}
-		IJavaTableGenerator jtg = this.getTableGenerator();
-		if (jtg != null) {
-			result = jtg.candidateValuesFor(pos, filter, astRoot);
+		if (this.getTableGenerator() != null) {
+			result = this.getTableGenerator().candidateValuesFor(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
 		}
-		IJavaSequenceGenerator jsg = this.getSequenceGenerator();
-		if (jsg != null) {
-			result = jsg.candidateValuesFor(pos, filter, astRoot);
+		if (this.getSequenceGenerator() != null) {
+			result = this.getSequenceGenerator().candidateValuesFor(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
@@ -1472,6 +1487,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	
 	//********** Validation ********************************************
 	
+	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 		
