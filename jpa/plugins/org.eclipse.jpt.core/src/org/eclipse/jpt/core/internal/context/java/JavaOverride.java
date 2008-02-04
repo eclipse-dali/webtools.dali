@@ -110,5 +110,11 @@ public abstract class JavaOverride<T extends OverrideResource> extends JavaConte
 		ITextRange textRange = this.overrideResource.textRange(astRoot);
 		return (textRange != null) ? textRange : this.parent().validationTextRange(astRoot);
 	}
+	
+	@Override
+	public void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(getName());
+	}
 
 }

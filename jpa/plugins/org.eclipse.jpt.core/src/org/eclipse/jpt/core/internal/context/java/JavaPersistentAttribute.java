@@ -295,6 +295,10 @@ public class JavaPersistentAttribute extends JavaContextModel
 		
 	}
 	
+	@Override
+	public void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(getName());
+	}
 	
-
 }
