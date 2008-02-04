@@ -231,7 +231,7 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 				IEntity entity = subject();
 
 				if (button.getSelection()) {
-					IPrimaryKeyJoinColumn defaultJoinColumn = entity.specifiedPrimaryKeyJoinColumns().next();
+					IPrimaryKeyJoinColumn defaultJoinColumn = entity.defaultPrimaryKeyJoinColumns().next();
 					String columnName = defaultJoinColumn.getDefaultName();
 					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
 
