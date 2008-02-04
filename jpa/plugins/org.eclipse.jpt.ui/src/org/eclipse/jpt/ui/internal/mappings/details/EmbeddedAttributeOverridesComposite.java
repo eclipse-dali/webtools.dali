@@ -9,6 +9,7 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
@@ -18,12 +19,10 @@ import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
+import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationWritablePropertyValueModel;
@@ -98,14 +97,14 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 		return new SimplePropertyValueModel<IAttributeOverride>();
 	}
 
-	private CollectionValueModel<IAttributeOverride> buildAttributeOverridesCollectionHolder() {
-		return new CollectionAspectAdapter<IEmbeddedMapping, IAttributeOverride>(
+	private ListValueModel<IAttributeOverride> buildAttributeOverridesListHolder() {
+		return new ListAspectAdapter<IEmbeddedMapping, IAttributeOverride>(
 			this.getSubjectHolder(),
 			IEmbeddedMapping.DEFAULT_ATTRIBUTE_OVERRIDES_LIST,
 			IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST)
 		{
 			@Override
-			protected Iterator<IAttributeOverride> iterator_() {
+			protected ListIterator<IAttributeOverride> listIterator_() {
 				return subject.attributeOverrides();
 			}
 		};
@@ -130,12 +129,6 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 		);
 
 		return list;
-	}
-
-	private ListValueModel<IAttributeOverride> buildAttributeOverridesListHolder() {
-		return new SortedListValueModelAdapter<IAttributeOverride>(
-			buildAttributeOverridesCollectionHolder()
-		);
 	}
 
 	private ListValueModel<String> buildAttributeOverridesStringListHolder() {
