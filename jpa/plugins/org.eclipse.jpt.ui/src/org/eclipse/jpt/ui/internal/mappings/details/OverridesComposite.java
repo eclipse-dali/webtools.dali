@@ -171,7 +171,7 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 	private StringConverter<IAssociationOverride> buildOverrideAttributesStringConverter() {
 		return new StringConverter<IAssociationOverride>() {
 			public String convertToString(IAssociationOverride item) {
-				return item.displayString();
+				return item.getName();
 			}
 		};
 	}
