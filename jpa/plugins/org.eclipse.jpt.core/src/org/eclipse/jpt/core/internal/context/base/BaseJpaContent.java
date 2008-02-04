@@ -10,17 +10,12 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaFile;
-import org.eclipse.jpt.core.internal.IJpaNode;
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.JpaNode;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;

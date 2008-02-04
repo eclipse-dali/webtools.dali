@@ -21,7 +21,6 @@ import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IResourceModel;
-import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
 import org.eclipse.jpt.core.internal.context.java.IDefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMappingProvider;

@@ -41,7 +41,6 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.xml.core.internal.catalog.NextCatalog;
 
 public class PersistenceUnit extends JpaContextNode
 	implements IPersistenceUnit

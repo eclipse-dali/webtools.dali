@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
