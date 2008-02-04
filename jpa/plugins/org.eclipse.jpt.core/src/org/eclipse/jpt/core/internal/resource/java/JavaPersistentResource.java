@@ -133,6 +133,12 @@ public interface JavaPersistentResource extends JavaResource
 	 */
 	boolean isPersistable();
 		String PERSISTABLE_PROPERTY = "persistableProperty";
+		
+	/**
+	 * Return whether the underlying JDT member is currently annotated as being persistent
+	 * (equivalent to "is mapped")
+	 */
+	boolean isPersisted();
 
 	/**
 	 * Return true if this JavaPersistentResource represents the underlying JDT IMeber

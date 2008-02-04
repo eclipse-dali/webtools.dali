@@ -11,7 +11,6 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 import java.util.List;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
@@ -45,6 +44,10 @@ public class ClassRef extends JpaContextNode implements IClassRef
 		return getClassName().equals(fullyQualifiedTypeName);
 	}
 	
+	public boolean isVirtual() {
+		return xmlJavaClassRef == null;
+	}
+	
 	
 	// **************** class name *********************************************
 	
@@ -53,9 +56,13 @@ public class ClassRef extends JpaContextNode implements IClassRef
 	}
 	
 	public void setClassName(String newClassName) {
+		this.xmlJavaClassRef.setJavaClass(newClassName);
+		setClassName_(newClassName);
+	}
+	
+	protected void setClassName_(String newClassName) {
 		String oldClassName = this.className;
 		this.className = newClassName;
-		this.xmlJavaClassRef.setJavaClass(newClassName);
 		firePropertyChanged(CLASS_NAME_PROPERTY, oldClassName, newClassName);
 	}
 	
@@ -78,7 +85,12 @@ public class ClassRef extends JpaContextNode implements IClassRef
 	public void initialize(XmlJavaClassRef classRef) {
 		this.xmlJavaClassRef = classRef;
 		this.className = classRef.getJavaClass();
-		this.initializeJavaPersistentType();
+		initializeJavaPersistentType();
+	}
+	
+	public void initialize(String className) {
+		this.className = className;
+		initializeJavaPersistentType();
 	}
 	
 	protected void initializeJavaPersistentType() {
@@ -90,8 +102,14 @@ public class ClassRef extends JpaContextNode implements IClassRef
 	
 	public void update(XmlJavaClassRef classRef) {
 		this.xmlJavaClassRef = classRef;
-		this.setClassName(classRef.getJavaClass());
-		this.updateJavaPersistentType();
+		setClassName_(classRef.getJavaClass());
+		updateJavaPersistentType();
+	}
+	
+	public void update(String className) {
+		this.xmlJavaClassRef = null;
+		setClassName_(className);
+		updateJavaPersistentType();
 	}
 	
 	protected void updateJavaPersistentType() {

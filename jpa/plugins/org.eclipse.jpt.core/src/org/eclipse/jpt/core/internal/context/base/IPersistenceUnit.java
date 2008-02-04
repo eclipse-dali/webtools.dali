@@ -157,34 +157,10 @@ public interface IPersistenceUnit extends IJpaContextNode
 	
 	/**
 	 * Return an iterator on the list of mapping file refs, whether specified or
-	 * not.
+	 * implied.
 	 * This will not be null.
 	 */
 	ListIterator<IMappingFileRef> mappingFileRefs();
-	
-	
-	// **************** default mapping file ref *******************************
-	
-	/**
-	 * String constant associated with changes to the default mapping file ref
-	 */
-	final static String DEFAULT_MAPPING_FILE_REF_PROPERTY = "defaultMappingFileRef";
-	
-	/**
-	 * Return the current default mapping file ref.
-	 * This may be null.
-	 */
-	IMappingFileRef getDefaultMappingFileRef();
-	
-	/**
-	 * Adds the default mapping file ref
-	 */
-	IMappingFileRef setDefaultMappingFileRef();
-	
-	/**
-	 * Removes the default mapping file ref
-	 */
-	void unsetDefaultMappingFileRef();
 	
 	
 	// **************** specified mapping file refs ****************************
@@ -223,40 +199,109 @@ public interface IPersistenceUnit extends IJpaContextNode
 	void removeSpecifiedMappingFileRef(int index);
 	
 	
+	// **************** implied mapping file ref *******************************
+	
+	/**
+	 * String constant associated with changes to the implied mapping file ref
+	 */
+	final static String IMPLIED_MAPPING_FILE_REF_PROPERTY = "impliedMappingFileRef";
+	
+	/**
+	 * Return the current implied mapping file ref.
+	 * This may be null.
+	 */
+	IMappingFileRef getImpliedMappingFileRef();
+	
+	/**
+	 * Adds the implied mapping file ref
+	 */
+	IMappingFileRef setImpliedMappingFileRef();
+	
+	/**
+	 * Removes the implied mapping file ref
+	 */
+	void unsetImpliedMappingFileRef();
+	
+	
 	// **************** class refs *********************************************
 	
 	/**
-	 * String constant associated with changes to the class refs list
-	 */
-	final static String CLASS_REF_LIST = "classRefs";
-	
-	/**
-	 * Return an iterator on the list of class refs.
+	 * Return an iterator on the list of class refs, whether specified or implied.
 	 * This will not be null.
 	 */
 	ListIterator<IClassRef> classRefs();
 	
+	
+	// **************** specified class refs ***********************************
+	
 	/**
-	 * Add a class ref to the persistence unit and return the object 
+	 * String constant associated with changes to the specified class refs list
+	 */
+	final static String SPECIFIED_CLASS_REF_LIST = "specifiedClassRefs";
+	
+	/**
+	 * Return an iterator on the list of specified class refs.
+	 * This will not be null.
+	 */
+	ListIterator<IClassRef> specifiedClassRefs();
+	
+	/**
+	 * Add a specified class ref to the persistence unit and return the object 
 	 * representing it.
 	 */
-	IClassRef addClassRef();
+	IClassRef addSpecifiedClassRef();
 	
 	/**
-	 * Add a class ref to the persistence unit at the specified index and 
+	 * Add a specified class ref to the persistence unit at the specified index and 
 	 * return the object representing it.
 	 */
-	IClassRef addClassRef(int index);
+	IClassRef addSpecifiedClassRef(int index);
 	
 	/**
-	 * Remove the class ref from the persistence unit.
+	 * Remove the specified class ref from the persistence unit.
 	 */
-	void removeClassRef(IClassRef classRef);
+	void removeSpecifiedClassRef(IClassRef classRef);
 	
 	/**
-	 * Remove the class ref at the specified index from the persistence unit.
+	 * Remove the specified class ref at the specified index from the persistence unit.
 	 */
-	void removeClassRef(int index);
+	void removeSpecifiedClassRef(int index);
+	
+	
+	// **************** implied class refs *************************************
+	
+	/**
+	 * String constant associated with changes to the implied class refs list
+	 */
+	final static String IMPLIED_CLASS_REF_LIST = "impliedClassRefs";
+	
+	/**
+	 * Return an iterator on the list of implied class refs.
+	 * This will not be null.
+	 */
+	ListIterator<IClassRef> impliedClassRefs();
+	
+	/**
+	 * Add an implied class ref to the persistence unit and return the object 
+	 * representing it.
+	 */
+	IClassRef addImpliedClassRef(String className);
+	
+	/**
+	 * Add an implied class ref to the persistence unit at the specified index and 
+	 * return the object representing it.
+	 */
+	IClassRef addImpliedClassRef(int index, String className);
+	
+	/**
+	 * Remove the implied class ref from the persistence unit.
+	 */
+	void removeImpliedClassRef(IClassRef classRef);
+	
+	/**
+	 * Remove the implied class ref at the specified index from the persistence unit.
+	 */
+	void removeImpliedClassRef(int index);
 	
 	
 	// **************** exclude unlisted classes *******************************

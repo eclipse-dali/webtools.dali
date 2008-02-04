@@ -23,11 +23,14 @@ import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
@@ -69,16 +72,16 @@ public class JpaProject extends JpaNode implements IJpaProject {
 	protected final IJpaDataSource dataSource;
 
 	/**
-	 * The JPA files associated with the JPA project.
-	 */
-	protected final Vector<IJpaFile> jpaFiles;
-
-	/**
 	 * Flag indicating whether the project should "discover" annotated
 	 * classes automatically, as opposed to requiring the classes to be
 	 * listed in persistence.xml.
 	 */
 	protected boolean discoversAnnotatedClasses;
+
+	/**
+	 * The JPA files associated with the JPA project.
+	 */
+	protected final Vector<IJpaFile> jpaFiles;
 
 	/**
 	 * The model representing the collated resources associated
@@ -221,12 +224,12 @@ public class JpaProject extends JpaNode implements IJpaProject {
 		return this;
 	}
 
-	public IProject project() {
-		return this.project;
-	}
-
 	public String name() {
 		return this.project.getName();
+	}
+
+	public IProject project() {
+		return this.project;
 	}
 
 	public IJavaProject javaProject() {
@@ -262,7 +265,20 @@ public class JpaProject extends JpaNode implements IJpaProject {
 	}
 
 
-	// ********** JPA files **********
+	// **************** discover annotated classes *****************************
+	
+	public boolean discoversAnnotatedClasses() {
+		return this.discoversAnnotatedClasses;
+	}
+	
+	public void setDiscoversAnnotatedClasses(boolean discoversAnnotatedClasses) {
+		boolean old = this.discoversAnnotatedClasses;
+		this.discoversAnnotatedClasses = discoversAnnotatedClasses;
+		this.firePropertyChanged(DISCOVERS_ANNOTATED_CLASSES_PROPERTY, old, discoversAnnotatedClasses);
+	}
+	
+	
+	// **************** JPA files **********************************************
 
 	public Iterator<IJpaFile> jpaFiles() {
 		return new CloneIterator<IJpaFile>(this.jpaFiles);  // read-only
@@ -290,10 +306,6 @@ public class JpaProject extends JpaNode implements IJpaProject {
 				return o.getResourceType().equals(resourceType);
 			}
 		};
-	}
-
-	public Iterator<IJpaFile> javaJpaFiles() {
-		return this.jpaFiles(IResourceModel.JAVA_RESOURCE_TYPE);
 	}
 
 	/**
@@ -352,6 +364,45 @@ public class JpaProject extends JpaNode implements IJpaProject {
 
 	// ********** more queries **********
 
+	public Iterator<IType> annotatedClasses() {
+		return new FilteringIterator<IType, IType>(
+				new TransformationIterator<JavaPersistentTypeResource, IType>(annotatedJavaPersistentTypes()) {
+					@Override
+					protected IType transform(JavaPersistentTypeResource next) {
+						try {
+							return javaProject().findType(next.getQualifiedName(), new NullProgressMonitor());
+						}
+						catch (JavaModelException jme) {
+							return null;
+						}
+					}
+				}) {
+			@Override
+			protected boolean accept(IType o) {
+				return o != null;
+			}
+		};
+	}
+	
+	protected Iterator<JavaPersistentTypeResource> annotatedJavaPersistentTypes() {
+		return new FilteringIterator<JavaPersistentTypeResource, JavaPersistentTypeResource>(
+				new TransformationIterator<JpaCompilationUnitResource, JavaPersistentTypeResource>(jpaCompilationUnitResources()) {
+					@Override
+					protected JavaPersistentTypeResource transform(JpaCompilationUnitResource next) {
+						return next.getPersistentType();
+					}
+				}) {
+			@Override
+			protected boolean accept(JavaPersistentTypeResource o) {
+				return o.isPersisted();
+			}
+		};
+	}
+	
+	public Iterator<IJpaFile> javaJpaFiles() {
+		return this.jpaFiles(IResourceModel.JAVA_RESOURCE_TYPE);
+	}
+	
 	protected Iterator<JpaCompilationUnitResource> jpaCompilationUnitResources() {
 		return new TransformationIterator<IJpaFile, JpaCompilationUnitResource>(this.javaJpaFiles()) {
 			@Override
@@ -382,7 +433,6 @@ public class JpaProject extends JpaNode implements IJpaProject {
 
 
 	// ********** validation **********
-	
 	
 	public Iterator<IMessage> validationMessages() {
 		List<IMessage> messages = new ArrayList<IMessage>();
@@ -457,8 +507,6 @@ public class JpaProject extends JpaNode implements IJpaProject {
 //			okToContinueValidation = false;
 //		}
 	}
-
-	
 	
 	
 	// ********** root deploy location **********
@@ -473,19 +521,6 @@ public class JpaProject extends JpaNode implements IJpaProject {
 
 	protected boolean isWebProject() {
 		return JptCorePlugin.projectHasWebFacet(this.project);
-	}
-
-
-	// ********** auto-discovery **********
-
-	public boolean discoversAnnotatedClasses() {
-		return this.discoversAnnotatedClasses;
-	}
-
-	public void setDiscoversAnnotatedClasses(boolean discoversAnnotatedClasses) {
-		boolean old = this.discoversAnnotatedClasses;
-		this.discoversAnnotatedClasses = discoversAnnotatedClasses;
-		this.firePropertyChanged(DISCOVERS_ANNOTATED_CLASSES_PROPERTY, old, discoversAnnotatedClasses);
 	}
 
 

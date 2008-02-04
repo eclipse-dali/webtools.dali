@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Schema;
@@ -31,14 +32,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public interface IJpaProject extends IJpaNode {
 
 	/**
-	 * Return the Eclipse project associated with the JPA project.
-	 */
-	IProject project();
-
-	/**
 	 * Return the JPA project's name, which is the Eclipse project's name.
 	 */
 	String name();
+
+	/**
+	 * Return the Eclipse project associated with the JPA project.
+	 */
+	IProject project();
 
 	/**
 	 * Return the Java project associated with the JPA project.
@@ -57,19 +58,40 @@ public interface IJpaProject extends IJpaNode {
 	ConnectionProfile connectionProfile();
 
 	/**
-	 * Return the data source the JPA project is mapped to.
-	 */
-	IJpaDataSource dataSource();
-
-	/**
 	 * Return the project's default schema, taken from the ConnectionProfile
 	 */
 	Schema defaultSchema();
 	
 	/**
-	 * Return the JPA project's JPA files.
+	 * Return the data source the JPA project is mapped to.
 	 */
-	Iterator<IJpaFile> jpaFiles();
+	IJpaDataSource dataSource();
+	
+	
+	// **************** discover annotated classes *****************************
+	
+	/** 
+	 * ID string used when discoversAnnotatedClasses property is changed.
+	 * @see org.eclipse.jpt.utility.internal.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener)
+	 */
+	String DISCOVERS_ANNOTATED_CLASSES_PROPERTY = "discoversAnnotatedClasses";
+	
+	/**
+	 * Return whether the JPA project will "discover" annotated classes
+	 * automatically, as opposed to requiring the classes to be
+	 * listed in persistence.xml.
+	 */
+	boolean discoversAnnotatedClasses();
+	
+	/**
+	 * Set whether the JPA project will "discover" annotated classes
+	 * automatically, as opposed to requiring the classes to be
+	 * listed in persistence.xml.
+	 */
+	void setDiscoversAnnotatedClasses(boolean discoversAnnotatedClasses);
+	
+	
+	// **************** jpa files **********************************************
 	
 	/** 
 	 * ID string used when jpaFiles collection is changed.
@@ -77,6 +99,11 @@ public interface IJpaProject extends IJpaNode {
 	 */
 	String JPA_FILES_COLLECTION = "jpaFiles";
 
+	/**
+	 * Return the JPA project's JPA files.
+	 */
+	Iterator<IJpaFile> jpaFiles();
+	
 	/**
 	 * Return the size of the JPA project's JPA files.
 	 */
@@ -96,17 +123,35 @@ public interface IJpaProject extends IJpaNode {
 	 */
 	Iterator<IJpaFile> jpaFiles(String contentTypeId);
 	
+	
+	// **************** various queries ****************************************
+	
+	/**
+	 * Return the JPA project's root "deploy path".
+	 * JPA projects associated with Web projects return "WEB-INF/classes";
+	 * all others simply return an empty string.
+	 */
+	String rootDeployLocation();
+	
 	/**
 	 * Return the context model representing the JPA content of this project
 	 */
 	IContextModel contextModel();
-
+	
+	/**
+	 * Return an iterator on all ITypes that are annotated within this project
+	 */
+	Iterator<IType> annotatedClasses();
+	
 	/**
 	 * Return the Java persistent type resource for the specified fully qualified type name;
 	 * null, if none exists.
 	 */
 	JavaPersistentTypeResource javaPersistentTypeResource(String typeName);
-
+	
+	
+	// **************** jpa model synchronization and lifecycle ****************
+	
 	/**
 	 * Synchronize the JPA project's JPA files with the specified resource
 	 * delta, watching for added and removed files.
@@ -119,45 +164,22 @@ public interface IJpaProject extends IJpaNode {
 	void javaElementChanged(ElementChangedEvent event);
 
 	/**
-	 * Return whether the JPA project will "discover" annotated classes
-	 * automatically, as opposed to requiring the classes to be
-	 * listed in persistence.xml.
+	 * The JPA project has been removed from the JPA model. Clean up any
+	 * hooks to external resources etc.
 	 */
-	boolean discoversAnnotatedClasses();
+	void dispose();
 	
-	/** 
-	 * ID string used when discoversAnnotatedClasses property is changed.
-	 * @see org.eclipse.jpt.utility.internal.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener)
-	 */
-	String DISCOVERS_ANNOTATED_CLASSES_PROPERTY = "discoversAnnotatedClasses";
 	
-	/**
-	 * Set whether the JPA project will "discover" annotated classes
-	 * automatically, as opposed to requiring the classes to be
-	 * listed in persistence.xml.
-	 */
-	void setDiscoversAnnotatedClasses(boolean discoversAnnotatedClasses);
+	// **************** validation *********************************************
 	
 	/**
 	 * Return project's validation messages.
 	 */
 	Iterator<IMessage> validationMessages();
 
-	/**
-	 * Return the JPA project's root "deploy path".
-	 * JPA projects associated with Web projects return "WEB-INF/classes";
-	 * all others simply return an empty string.
-	 */
-	String rootDeployLocation();
+	
 
-	/**
-	 * The JPA project has been removed from the JPA model. Clean up any
-	 * hooks to external resources etc.
-	 */
-	void dispose();
-
-
-	// ********** support for modifying shared documents **********
+	// **************** support for modifying shared documents *****************
 
 	/**
 	 * Set a thread-specific implementation of the CommandExecutor
@@ -176,7 +198,7 @@ public interface IJpaProject extends IJpaNode {
 	CommandExecutorProvider modifySharedDocumentCommandExecutorProvider();
 
 
-	// ********** project "update" **********
+	// **************** project "update" ***************************************
 
 	/**
 	 * Return the implementation of the Updater
@@ -250,7 +272,7 @@ public interface IJpaProject extends IJpaNode {
 	}
 
 
-	// ********** config that can be used to construct a JPA project **********
+	// **************** config that can be used to construct a JPA project *****
 
 	/**
 	 * The settings used to construct a JPA project.

@@ -21,6 +21,12 @@ public interface IClassRef extends IJpaContextNode
 	 */
 	boolean isFor(String fullyQualifiedTypeName);
 	
+	/**
+	 * Return whether this mapping file ref is represented by an entry in the
+	 * persistence.xml (false) or if it is instead virtual
+	 */
+	boolean isVirtual();
+	
 	
 	// **************** class name *********************************************
 	
@@ -55,14 +61,18 @@ public interface IClassRef extends IJpaContextNode
 	IJavaPersistentType getJavaPersistentType();
 	
 	
-	// **************** updating ***********************************************
+	// **************** initialize/update **************************************
 	
 	void initialize(XmlJavaClassRef classRef);
 	
+	void initialize(String className);
+	
 	void update(XmlJavaClassRef classRef);
+	
+	void update(String className);
+	
 	
 	// *************************************************************************
 	
-	ITextRange validationTextRange(); 
-	
+	ITextRange validationTextRange();
 }

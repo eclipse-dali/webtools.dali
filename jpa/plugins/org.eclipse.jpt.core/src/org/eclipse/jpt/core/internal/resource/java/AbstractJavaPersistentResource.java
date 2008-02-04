@@ -470,6 +470,10 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		//
 	}
 	
+	public boolean isPersisted() {
+		return mappingAnnotation() != null;
+	}
+	
 
 	public ITextRange fullTextRange(CompilationUnit astRoot) {
 		return this.getMember().textRange(astRoot);
