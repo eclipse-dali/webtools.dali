@@ -83,8 +83,16 @@ public interface ITableGenerator extends IGenerator
 
 //	IUniqueConstraint createUniqueConstraint(int index);
 
+	/**
+	 * Return a db Schema object with the specified/default schema name.
+	 * This can return null if no Schema exists on the database with that name.
+	 */
 	Schema dbSchema();
 
+	/**
+	 * Return a db Table object with the specified/default table name.
+	 * This can return null if no Table exists on the database with that name.
+	 */
 	Table dbTable();
 
 
