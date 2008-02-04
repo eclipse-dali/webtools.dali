@@ -55,6 +55,12 @@ public class JavaGeneratedValue extends JavaContextModel implements IJavaGenerat
 		firePropertyChanged(IGeneratedValue.SPECIFIED_STRATEGY_PROPERTY, oldStrategy, newStrategy);
 	}
 
+	protected void setSpecifiedStrategy_(GenerationType newStrategy) {
+		GenerationType oldStrategy = this.strategy;
+		this.strategy = newStrategy;
+		firePropertyChanged(IGeneratedValue.SPECIFIED_STRATEGY_PROPERTY, oldStrategy, newStrategy);
+	}
+
 	public String getGenerator() {
 		return (this.getSpecifiedGenerator() == null) ? this.getDefaultGenerator() : this.getSpecifiedGenerator();
 	}
@@ -74,6 +80,11 @@ public class JavaGeneratedValue extends JavaContextModel implements IJavaGenerat
 		firePropertyChanged(IGeneratedValue.SPECIFIED_GENERATOR_PROPERTY, oldGenerator, newGenerator);
 	}
 
+	protected void setSpecifiedGenerator_(String newGenerator) {
+		String oldGenerator = this.generator;
+		this.generator = newGenerator;
+		firePropertyChanged(IGeneratedValue.SPECIFIED_GENERATOR_PROPERTY, oldGenerator, newGenerator);
+	}
 	
 	public ITextRange validationTextRange(CompilationUnit astRoot) {
 		return null;//TODO //this.member.annotationTextRange(DECLARATION_ANNOTATION_ADAPTER);
@@ -87,8 +98,8 @@ public class JavaGeneratedValue extends JavaContextModel implements IJavaGenerat
 
 	public void update(GeneratedValue generatedValue) {
 		this.generatedValueResource = generatedValue;
-		setSpecifiedStrategy(this.strategy(generatedValue));
-		setSpecifiedGenerator(this.generator(generatedValue));
+		this.setSpecifiedStrategy_(this.strategy(generatedValue));
+		this.setSpecifiedGenerator_(this.generator(generatedValue));
 	}
 
 	protected GenerationType strategy(GeneratedValue generatedValue) {

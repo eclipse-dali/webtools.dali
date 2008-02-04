@@ -155,7 +155,8 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 			throw new IllegalStateException("gemeratedValue already exists");
 		}
 		this.generatedValue = jpaFactory().createJavaGeneratedValue(this);
-		this.persistentAttributeResource.addAnnotation(GeneratedValue.ANNOTATION_NAME);
+		GeneratedValue generatedValueResource = (GeneratedValue) this.persistentAttributeResource.addAnnotation(GeneratedValue.ANNOTATION_NAME);
+		this.generatedValue.initializeFromResource(generatedValueResource);
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, null, this.generatedValue);
 		return this.generatedValue;
 	}
@@ -185,7 +186,8 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 			throw new IllegalStateException("tableGenerator already exists");
 		}
 		this.tableGenerator = jpaFactory().createJavaTableGenerator(this);
-		this.persistentAttributeResource.addAnnotation(TableGenerator.ANNOTATION_NAME);
+		TableGenerator tableGeneratorResource = (TableGenerator) this.persistentAttributeResource.addAnnotation(TableGenerator.ANNOTATION_NAME);
+		this.tableGenerator.initializeFromResource(tableGeneratorResource);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
 		return this.tableGenerator;
 	}
@@ -214,8 +216,10 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 		if (getSequenceGenerator() != null) {
 			throw new IllegalStateException("sequenceGenerator already exists");
 		}
+		
 		this.sequenceGenerator = jpaFactory().createJavaSequenceGenerator(this);
-		this.persistentAttributeResource.addAnnotation(SequenceGenerator.ANNOTATION_NAME);
+		SequenceGenerator sequenceGeneratorResource = (SequenceGenerator) this.persistentAttributeResource.addAnnotation(SequenceGenerator.ANNOTATION_NAME);
+		this.sequenceGenerator.initializeFromResource(sequenceGeneratorResource);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
 		return this.sequenceGenerator;
 	}
@@ -367,6 +371,7 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 
 	//*********** Validation ************
 	
+	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 		

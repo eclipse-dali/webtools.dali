@@ -553,7 +553,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 			throw new IllegalStateException("tableGenerator already exists");
 		}
 		this.tableGenerator = jpaFactory().createJavaTableGenerator(this);
-		this.persistentTypeResource.addAnnotation(TableGenerator.ANNOTATION_NAME);
+		TableGenerator tableGeneratorResource = (TableGenerator) this.persistentTypeResource.addAnnotation(TableGenerator.ANNOTATION_NAME);
+		this.tableGenerator.initializeFromResource(tableGeneratorResource);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
 		return this.tableGenerator;
 	}
@@ -583,7 +584,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 			throw new IllegalStateException("sequenceGenerator already exists");
 		}
 		this.sequenceGenerator = jpaFactory().createJavaSequenceGenerator(this);
-		this.persistentTypeResource.addAnnotation(SequenceGenerator.ANNOTATION_NAME);
+		SequenceGenerator sequenceGeneratorResource = (SequenceGenerator) this.persistentTypeResource.addAnnotation(SequenceGenerator.ANNOTATION_NAME);
+		this.sequenceGenerator.initializeFromResource(sequenceGeneratorResource);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
 		return this.sequenceGenerator;
 	}
@@ -1168,7 +1170,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		}
 		else {
 			if (getTableGenerator() == null) {
-				createTableGenerator(tableGeneratorResource);
+				setTableGenerator(createTableGenerator(tableGeneratorResource));
 			}
 			else {
 				getTableGenerator().update(tableGeneratorResource);
@@ -1195,8 +1197,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		}
 		else {
 			if (getSequenceGenerator() == null) {
-				setSequenceGenerator(jpaFactory().createJavaSequenceGenerator(this));
-				getSequenceGenerator().initializeFromResource(sequenceGeneratorResource);
+				setSequenceGenerator(createSequenceGenerator(sequenceGeneratorResource));
 			}
 			else {
 				getSequenceGenerator().update(sequenceGeneratorResource);
