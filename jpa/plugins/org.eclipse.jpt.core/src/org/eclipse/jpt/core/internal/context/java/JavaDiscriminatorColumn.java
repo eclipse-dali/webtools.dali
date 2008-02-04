@@ -116,7 +116,7 @@ public class JavaDiscriminatorColumn extends JavaNamedColumn<DiscriminatorColumn
 
 	@Override
 	protected String tableName() {
-		return javaEntity().getTableName();
+		return javaEntity().tableName();
 	}
 	
 	public ITextRange validationTextRange(CompilationUnit astRoot) {

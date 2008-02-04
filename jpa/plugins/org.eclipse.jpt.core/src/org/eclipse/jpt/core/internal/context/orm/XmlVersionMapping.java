@@ -89,7 +89,7 @@ public class XmlVersionMapping extends XmlAttributeMapping<Version>
 	}
 
 	public String defaultTableName() {
-		return typeMapping().getTableName();
+		return typeMapping().tableName();
 	}
 
 	public Table dbTable(String tableName) {

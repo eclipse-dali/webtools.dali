@@ -87,7 +87,7 @@ public class JavaPrimaryKeyJoinColumn extends JavaNamedColumn<PrimaryKeyJoinColu
 
 	@Override
 	protected String tableName() {
-		return this.owner().typeMapping().getTableName();
+		return this.owner().typeMapping().tableName();
 	}
 
 	public Column dbReferencedColumn() {

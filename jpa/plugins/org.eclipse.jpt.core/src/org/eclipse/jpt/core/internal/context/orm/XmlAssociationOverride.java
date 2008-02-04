@@ -177,7 +177,7 @@ public class XmlAssociationOverride extends JpaContextNode
 		 * by default, the join column is in the type mapping's primary table
 		 */
 		public String defaultTableName() {
-			return XmlAssociationOverride.this.owner.typeMapping().getTableName();
+			return XmlAssociationOverride.this.owner.typeMapping().tableName();
 		}
 		
 		public String defaultColumnName() {

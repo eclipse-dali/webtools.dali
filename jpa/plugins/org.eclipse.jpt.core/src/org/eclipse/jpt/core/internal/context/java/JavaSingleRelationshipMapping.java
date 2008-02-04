@@ -291,7 +291,7 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 		 * by default, the join column is in the type mapping's primary table
 		 */
 		public String defaultTableName() {
-			return JavaSingleRelationshipMapping.this.typeMapping().getTableName();
+			return JavaSingleRelationshipMapping.this.typeMapping().tableName();
 		}
 
 		public IEntity targetEntity() {

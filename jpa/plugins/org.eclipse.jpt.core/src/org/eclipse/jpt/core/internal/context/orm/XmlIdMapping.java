@@ -230,7 +230,7 @@ public class XmlIdMapping extends XmlAttributeMapping<Id>
 	}
 
 	public String defaultTableName() {
-		return typeMapping().getTableName();
+		return typeMapping().tableName();
 	}
 
 	public ITextRange validationTextRange(CompilationUnit astRoot) {

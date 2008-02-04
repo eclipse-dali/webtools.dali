@@ -26,7 +26,10 @@ public interface ITypeMapping extends IJpaContextNode
 
 	boolean isMapped();
 	
-	String getTableName();
+	/**
+	 * Return the type mapping's primary table name, null if a primary table does not apply
+	 */
+	String tableName();
 
 	/**
 	 * Return the type mapping's "associated" tables, which includes the

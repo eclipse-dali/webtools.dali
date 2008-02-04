@@ -174,7 +174,7 @@ public class JavaAssociationOverride extends JavaOverride<AssociationOverride>
 		 * by default, the join column is in the type mapping's primary table
 		 */
 		public String defaultTableName() {
-			return JavaAssociationOverride.this.owner.typeMapping().getTableName();
+			return JavaAssociationOverride.this.owner.typeMapping().tableName();
 		}
 		
 		public String defaultColumnName() {

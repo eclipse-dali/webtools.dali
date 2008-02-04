@@ -52,7 +52,7 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 			return getJoinColumn().getDefaultTable();
 		}
 
-		return typeMapping().getTableName();
+		return typeMapping().tableName();
 	}
 
 	public IAssociationOverride getAssociationOverride() {

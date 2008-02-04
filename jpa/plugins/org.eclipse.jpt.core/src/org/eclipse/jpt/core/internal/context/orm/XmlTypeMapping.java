@@ -52,8 +52,8 @@ public abstract class XmlTypeMapping<E extends TypeMapping> extends JpaContextNo
 		return true;
 	}
 
-	public String getTableName() {
-		return "";
+	public String tableName() {
+		return null;
 	}
 
 	public String getClass_() {

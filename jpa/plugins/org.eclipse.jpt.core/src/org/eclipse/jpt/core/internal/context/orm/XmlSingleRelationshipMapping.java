@@ -197,7 +197,7 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 		 * by default, the join column is in the type mapping's primary table
 		 */
 		public String defaultTableName() {
-			return XmlSingleRelationshipMapping.this.typeMapping().getTableName();
+			return XmlSingleRelationshipMapping.this.typeMapping().tableName();
 		}
 
 		public IEntity targetEntity() {

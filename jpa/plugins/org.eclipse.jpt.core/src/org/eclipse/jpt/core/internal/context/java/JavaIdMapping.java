@@ -118,7 +118,7 @@ public class JavaIdMapping extends JavaAttributeMapping implements IJavaIdMappin
 	}
 	
 	public String defaultTableName() {
-		return typeMapping().getTableName();
+		return typeMapping().tableName();
 	}
 
 	//************** IIdMapping implementation ***************

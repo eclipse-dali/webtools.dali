@@ -123,7 +123,7 @@ public class XmlDiscriminatorColumn extends AbstractXmlNamedColumn<Discriminator
 
 	@Override
 	protected String tableName() {
-		return this.owner().typeMapping().getTableName();
+		return this.owner().typeMapping().tableName();
 	}
 
 	

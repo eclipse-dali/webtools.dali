@@ -64,7 +64,7 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 	
 	@Override
 	protected String defaultName() {
-		String tableName = relationshipMapping().typeMapping().getTableName();
+		String tableName = relationshipMapping().typeMapping().tableName();
 		if (tableName == null) {
 			return null;
 		}

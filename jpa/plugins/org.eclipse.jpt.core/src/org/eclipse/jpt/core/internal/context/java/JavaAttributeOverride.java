@@ -59,7 +59,7 @@ public class JavaAttributeOverride extends JavaOverride<AttributeOverride>
 		if (tableName != null) {
 			return tableName;
 		}
-		return owner().typeMapping().getTableName();
+		return owner().typeMapping().tableName();
 	}
 	
 	protected IColumnMapping columnMapping() {

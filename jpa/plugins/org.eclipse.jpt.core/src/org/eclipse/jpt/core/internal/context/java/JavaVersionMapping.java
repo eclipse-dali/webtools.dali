@@ -14,7 +14,6 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
@@ -83,7 +82,7 @@ public class JavaVersionMapping extends JavaAttributeMapping implements IJavaVer
 	}
 	
 	public String defaultTableName() {
-		return typeMapping().getTableName();
+		return typeMapping().tableName();
 	}
 
 	//************** IVersionMapping implementation ***************
@@ -129,6 +128,7 @@ public class JavaVersionMapping extends JavaAttributeMapping implements IJavaVer
 	
 	//***********  Validation  ******************************
 	
+	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 		

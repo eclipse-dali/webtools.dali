@@ -190,7 +190,7 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 	}
 
 	public String defaultTableName() {
-		return typeMapping().getTableName();
+		return typeMapping().tableName();
 	}
 
 	public Table dbTable(String tableName) {

@@ -89,7 +89,7 @@ public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn<PrimaryKeyJo
 
 	@Override
 	protected String tableName() {
-		return this.owner().typeMapping().getTableName();
+		return this.owner().typeMapping().tableName();
 	}
 
 	public boolean isReferencedColumnResolved() {

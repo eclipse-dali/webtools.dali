@@ -51,7 +51,7 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 			return getJoinColumn().getDefaultTable();
 		}
 
-		return relationshipMapping.typeMapping().getTableName();
+		return relationshipMapping.typeMapping().tableName();
 	}
 
 	/*
