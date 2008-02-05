@@ -71,11 +71,14 @@ public class JpaCompletionProposalComputer implements IJavaCompletionProposalCom
 
 		JavaResourceModel javaResourceModel = (JavaResourceModel) jpaFile.getResourceModel();
 		
+		if (!javaResourceModel.rootContextNodes().hasNext()) {
+			return Collections.emptyList();
+		}
+		
 		//TODO A bit of hackery for now just to get this compiling and working good enough, 
 		//we need to have a way to get the context model given an IFile or IJpaFile
 		//instead of having to ask the IResourceModel for it
 		JavaPersistentType contextNode = (JavaPersistentType) javaResourceModel.rootContextNodes().next();
-		
 		CompletionContext cc = context.getCoreContext();
 
 		// the context's "token" is really a sort of "prefix" - it does NOT
