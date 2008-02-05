@@ -38,65 +38,15 @@ public abstract class JavaMultiRelationshipMapping<T extends RelationshipMapping
 
 	protected String orderBy;
 
-	protected final IJavaJoinTable joinTable;
+	//TODO should this be null if this is the non-owning side of the relationship??
+	protected final IJavaJoinTable joinTable; 
 
 	protected String mapKey;
 
 	protected JavaMultiRelationshipMapping(IJavaPersistentAttribute parent) {
 		super(parent);
 		this.joinTable = jpaFactory().createJavaJoinTable(this); 
-
 	}
-
-	
-//	@Override
-//	protected void notifyChanged(Notification notification) {
-//		super.notifyChanged(notification);
-//		switch (notification.getFeatureID(INonOwningMapping.class)) {
-//			case JpaCoreMappingsPackage.INON_OWNING_MAPPING__MAPPED_BY :
-//				this.mappedByAdapter.setValue((String) notification.getNewValue());
-//				break;
-//			default :
-//				break;
-//		}
-//		switch (notification.getFeatureID(IMultiRelationshipMapping.class)) {
-//			case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__ORDER_BY :
-//				String orderBy = (String) notification.getNewValue();
-//				if (orderBy == null) {
-//					this.orderByAnnotationAdapter.removeAnnotation();
-//				}
-//				else if ("".equals(orderBy)) {
-//					Annotation orderByAnnotation = this.orderByAnnotationAdapter.getAnnotation();
-//					if (orderByAnnotation != null) {
-//						// if the value is already "", then leave it alone (short circuit java change cycle)
-//						if (!"".equals(orderByValueAdapter.getValue())) {
-//							this.orderByValueAdapter.setValue(null);
-//						}
-//					}
-//					else {
-//						this.orderByAnnotationAdapter.newMarkerAnnotation();
-//					}
-//				}
-//				else {
-//					this.orderByValueAdapter.setValue(orderBy);
-//				}
-//				break;
-//			case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__MAP_KEY :
-//				String mk = (String) notification.getNewValue();
-//				if (mk == null) {
-//					this.mapKeyAnnotationAdapter.removeAnnotation();
-//				}
-//				else {
-//					this.mapKeyNameAdapter.setValue(mk);
-//				}
-//				break;
-//			case JpaCoreMappingsPackage.IMULTI_RELATIONSHIP_MAPPING__FETCH :
-//				this.getFetchAdapter().setValue(((DefaultLazyFetchType) notification.getNewValue()).convertToJavaAnnotationValue());
-//				break;
-//			default :
-//				break;
-//		}
-//	}
 
 	public String getMappedBy() {
 		return this.mappedBy;
@@ -177,6 +127,10 @@ public abstract class JavaMultiRelationshipMapping<T extends RelationshipMapping
 		return getJoinTable().isSpecified();
 	}
 
+	public boolean isRelationshipOwner() {
+		return getMappedBy() == null;
+	}
+	
 	public String getMapKey() {
 		return this.mapKey;
 	}
@@ -359,10 +313,11 @@ public abstract class JavaMultiRelationshipMapping<T extends RelationshipMapping
 
 	//******** Validation ***********************************
 	
+	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 		
-		if (this.isJoinTableSpecified()) {
+		if (this.isJoinTableSpecified() || isRelationshipOwner()) {
 			addJoinTableMessages(messages, astRoot);
 		}
 		if (this.getMappedBy() != null) {
@@ -508,6 +463,4 @@ public abstract class JavaMultiRelationshipMapping<T extends RelationshipMapping
 				);
 		}
 	}
-	
-	
 }

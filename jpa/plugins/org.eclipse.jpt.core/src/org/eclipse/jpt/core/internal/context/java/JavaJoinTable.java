@@ -71,6 +71,9 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 	 */
 	@Override
 	protected String defaultName() {
+		if (!relationshipMapping().isRelationshipOwner()) {
+			return null;
+		}
 		String owningTableName = relationshipMapping().typeMapping().tableName();
 		if (owningTableName == null) {
 			return null;
@@ -87,8 +90,32 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 	}
 	
 	@Override
+	protected String defaultCatalog() {
+		if (!relationshipMapping().isRelationshipOwner()) {
+			return null;
+		}
+		return super.defaultCatalog();
+	}
+	
+	@Override
+	protected String defaultSchema() {
+		if (!relationshipMapping().isRelationshipOwner()) {
+			return null;
+		}
+		return super.defaultSchema();
+	}
+	
+	@Override
 	protected JoinTable tableResource() {
 		return (JoinTable) this.attributeResource.nonNullAnnotation(JoinTable.ANNOTATION_NAME);
+	}
+	
+	/**
+	 * Return the join table java resource, null if the annotation does not exist.
+	 * Use tableResource() if you want a non null implementation
+	 */
+	protected JoinTable joinTableResource() {
+		return (JoinTable) this.attributeResource.annotation(JoinTable.ANNOTATION_NAME);
 	}
 	
 	protected void addJoinTableResource() {
@@ -154,7 +181,6 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 		fireItemMoved(IJoinTable.SPECIFIED_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 
-
 	public ListIterator<IJavaJoinColumn> inverseJoinColumns() {
 		return this.specifiedInverseJoinColumns.isEmpty() ? this.defaultInverseJoinColumns() : this.specifiedInverseJoinColumns();
 	}
@@ -217,7 +243,7 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 	}
 
 	public boolean isSpecified() {
-		return tableResource() != null;
+		return joinTableResource() != null;
 	}
 
 	@Override
@@ -435,6 +461,10 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 			// TODO Auto-generated method stub
 			return null;
 		}
+		
+		public int joinColumnsSize() {
+			return CollectionTools.size(JavaJoinTable.this.inverseJoinColumns());
+		}
 	}
 
 
@@ -501,6 +531,10 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 		public ITextRange validationTextRange(CompilationUnit astRoot) {
 			// TODO Auto-generated method stub
 			return null;
+		}
+		
+		public int joinColumnsSize() {
+			return CollectionTools.size(JavaJoinTable.this.joinColumns());
 		}
 	}
 	

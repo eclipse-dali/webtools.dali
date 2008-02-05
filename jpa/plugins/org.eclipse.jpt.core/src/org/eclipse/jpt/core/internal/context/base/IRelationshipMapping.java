@@ -38,4 +38,11 @@ public interface IRelationshipMapping extends IAttributeMapping, IFetchable
 	 */
 	IEntity getEntity();
 
+	/**
+	 * Return whether this mapping is the owning side of the relationship.
+	 * Either this is a unidirectional mapping or it is the owning side of a bidirectional
+	 * relationship.  If bidirectional, the owning side is the side that doesn't specify
+	 * mappedBy.  This is the side where a join table would be specified
+	 */
+	boolean isRelationshipOwner();
 }

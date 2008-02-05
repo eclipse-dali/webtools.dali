@@ -58,6 +58,9 @@ public class JavaOneToOneMapping extends JavaSingleRelationshipMapping<OneToOne>
 		return (OneToOne) this.persistentAttributeResource.mappingAnnotation();
 	}
 
+	public boolean isRelationshipOwner() {
+		return getMappedBy() == null;
+	}
 	
 	public String getMappedBy() {
 		return this.mappedBy;
@@ -122,13 +125,9 @@ public class JavaOneToOneMapping extends JavaSingleRelationshipMapping<OneToOne>
 		return relationshipMapping.getOptional();
 	}
 	
-	@Override
-	protected boolean isOwningSide() {
-		return this.getMappedBy() == null;
-	}
-	
 	//***************** Validation ***********************************
 	
+	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 		

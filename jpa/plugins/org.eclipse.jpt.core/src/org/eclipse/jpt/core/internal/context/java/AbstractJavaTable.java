@@ -49,8 +49,15 @@ public abstract class AbstractJavaTable extends JavaContextModel
 		this.specifiedCatalog = table.getCatalog();
 	}
 	
+	/**
+	 * Return the java table resource, do not return null if the java annotation does not exist.
+	 * Use a null resource object instead of null.
+	 */
 	protected abstract Table tableResource();
 	
+	/**
+	 * Return the fully qualified annotation name of the java table resource
+	 */
 	protected abstract String annotationName();
 	
 	public String getName() {

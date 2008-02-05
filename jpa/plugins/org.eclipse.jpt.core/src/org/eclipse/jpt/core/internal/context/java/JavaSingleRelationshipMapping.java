@@ -172,12 +172,12 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 		ListIterator<JavaResource> resourceJoinColumns = persistentAttributeResource.annotations(JoinColumn.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
 		
 		while (joinColumns.hasNext()) {
-			IJavaJoinColumn primaryKeyJoinColumn = joinColumns.next();
+			IJavaJoinColumn joinColumn = joinColumns.next();
 			if (resourceJoinColumns.hasNext()) {
-				primaryKeyJoinColumn.update((JoinColumn) resourceJoinColumns.next());
+				joinColumn.update((JoinColumn) resourceJoinColumns.next());
 			}
 			else {
-				removeSpecifiedJoinColumn(primaryKeyJoinColumn);
+				removeSpecifiedJoinColumn(joinColumn);
 			}
 		}
 		
@@ -232,12 +232,10 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 		//of a bidirectional relationship.  This is a low risk fix for RC3, but a better
 		//solution would be to not have the default joinColumns on the non-owning side.
 		//This would fix another bug that we show default joinColumns in this situation.
-		if (entityOwned() && isOwningSide()) {
+		if (entityOwned() && isRelationshipOwner()) {
 			addJoinColumnMessages(messages, astRoot);
 		}
 	}
-	
-	protected abstract boolean isOwningSide();
 	
 	protected void addJoinColumnMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		
@@ -344,7 +342,8 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 			return JavaSingleRelationshipMapping.this.validationTextRange(astRoot);
 		}
 		
-		
-		
+		public int joinColumnsSize() {
+			return CollectionTools.size(JavaSingleRelationshipMapping.this.joinColumns());
+		}
 	}
 }

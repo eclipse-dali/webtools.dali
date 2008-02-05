@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.internal.resource.orm.AssociationOverride;
 import org.eclipse.jpt.core.internal.resource.orm.JoinColumn;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class XmlAssociationOverride extends JpaContextNode
@@ -228,6 +229,10 @@ public class XmlAssociationOverride extends JpaContextNode
 		
 		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
 			return XmlAssociationOverride.this.defaultJoinColumns.contains(joinColumn);
+		}
+
+		public int joinColumnsSize() {
+			return CollectionTools.size(XmlAssociationOverride.this.joinColumns());
 		}
 
 	}

@@ -227,5 +227,8 @@ public class JavaAssociationOverride extends JavaOverride<AssociationOverride>
 			return JavaAssociationOverride.this.defaultJoinColumns.contains(joinColumn);
 		}
 
+		public int joinColumnsSize() {
+			return CollectionTools.size(JavaAssociationOverride.this.joinColumns());
+		}
 	}
 }

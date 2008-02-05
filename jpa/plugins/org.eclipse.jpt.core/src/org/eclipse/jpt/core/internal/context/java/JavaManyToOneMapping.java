@@ -64,9 +64,10 @@ public class JavaManyToOneMapping extends JavaSingleRelationshipMapping<ManyToOn
 	}
 	
 	//ManyToOne mapping is always the owning side
-	protected boolean isOwningSide() {
+	public boolean isRelationshipOwner() {
 		return true;
 	}
+
 	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);

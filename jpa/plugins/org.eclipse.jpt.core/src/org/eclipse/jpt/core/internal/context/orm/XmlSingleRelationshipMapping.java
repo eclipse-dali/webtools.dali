@@ -249,5 +249,9 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 			// TODO Auto-generated method stub
 			return null;
 		}
+
+		public int joinColumnsSize() {
+			return CollectionTools.size(XmlSingleRelationshipMapping.this.joinColumns());
+		}
 	}
 }

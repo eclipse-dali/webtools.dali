@@ -13,6 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.resource.java.JoinColumn;
 import org.eclipse.jpt.db.internal.Column;
@@ -49,11 +50,16 @@ public class JavaJoinColumn extends AbstractJavaColumn<JoinColumn> implements IJ
 		return this.specifiedReferencedColumnName;
 	}
 
-
 	public void setSpecifiedReferencedColumnName(String newSpecifiedReferencedColumnName) {
 		String oldSpecifiedReferencedColumnName = this.specifiedReferencedColumnName;
 		this.specifiedReferencedColumnName = newSpecifiedReferencedColumnName;
-		//TODO
+		this.joinColumn.setReferencedColumnName(newSpecifiedReferencedColumnName);
+		firePropertyChanged(IAbstractJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
+	}
+
+	protected void setSpecifiedReferencedColumnName_(String newSpecifiedReferencedColumnName) {
+		String oldSpecifiedReferencedColumnName = this.specifiedReferencedColumnName;
+		this.specifiedReferencedColumnName = newSpecifiedReferencedColumnName;
 		firePropertyChanged(IAbstractJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
 	}
 
@@ -139,25 +145,93 @@ public class JavaJoinColumn extends AbstractJavaColumn<JoinColumn> implements IJ
 		this.joinColumn = joinColumn;
 		super.initializeFromResource(joinColumn);
 		this.specifiedReferencedColumnName = joinColumn.getReferencedColumnName();
+		this.defaultReferencedColumnName = this.defaultReferencedColumnName();
 	}
 	
 	@Override
 	public void update(JoinColumn joinColumn) {
 		this.joinColumn = joinColumn;
 		super.update(joinColumn);
-		this.setSpecifiedReferencedColumnName(joinColumn.getReferencedColumnName());
-		//TODO defaultName, defaultTable, defaultReferencedColumnName
+		this.setSpecifiedReferencedColumnName_(joinColumn.getReferencedColumnName());
+		this.setDefaultReferencedColumnName(this.defaultReferencedColumnName());
 	}
 	
-//	@Override
-//	public void updateFromJava(CompilationUnit astRoot) {
-//		super.updateFromJava(astRoot);
-//		this.setSpecifiedReferencedColumnName(this.referencedColumnNameAdapter.getValue(astRoot));
-//	}
-//
-//	public void refreshDefaults(DefaultsContext defaultsContext) {
-//		this.setDefaultReferencedColumnName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_REFERENCED_COLUMN_NAME_KEY));
-//		this.setDefaultName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_NAME_KEY));
-//		this.setDefaultTable((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_TABLE_KEY));
-//	}
+	@Override
+	protected String defaultName() {
+		if (!owner().relationshipMapping().isRelationshipOwner()) {
+			return null;
+		}
+		return buildDefaultName();
+	}
+	
+	protected String defaultReferencedColumnName() {
+		if (!owner().relationshipMapping().isRelationshipOwner()) {
+			return null;
+		}
+		return buildDefaultReferencedColumnName();
+	}
+	
+	@Override
+	protected String defaultTable() {
+		if (!owner().relationshipMapping().isRelationshipOwner()) {
+			return null;
+		}
+		return super.defaultTable();
+	}
+	
+	/**
+	 * return the join column's default name;
+	 * which is typically &lt;attribute name&gt;_&lt;referenced column name&gt;
+	 * but, if we don't have an attribute name (e.g. in a unidirectional
+	 * OneToMany or ManyToMany) is
+	 * &lt;target entity name&gt;_&lt;referenced column name&gt;
+	 */
+	// <attribute name>_<referenced column name>
+	//     or
+	// <target entity name>_<referenced column name>
+	protected String buildDefaultName() {
+		if (owner().joinColumnsSize() != 1) {
+			return null;
+		}
+		String prefix = owner().attributeName();
+		if (prefix == null) {
+			prefix = targetEntityName();
+		}
+		if (prefix == null) {
+			return null;
+		}
+		// TODO not sure which of these is correct...
+		// (the spec implies that the referenced column is always the
+		// primary key column of the target entity)
+		// String targetColumn = this.targetPrimaryKeyColumnName();
+		String targetColumn = getReferencedColumnName();
+		if (targetColumn == null) {
+			return null;
+		}
+		return prefix + "_" + targetColumn;
+	}
+	
+	/**
+	 * return the name of the target entity
+	 */
+	protected String targetEntityName() {
+		IEntity targetEntity = owner().targetEntity();
+		return (targetEntity == null) ? null : targetEntity.getName();
+	}
+
+	protected String buildDefaultReferencedColumnName() {
+		if (owner().joinColumnsSize() != 1) {
+			return null;
+		}
+		return this.targetPrimaryKeyColumnName();
+	}
+	
+	/**
+	 * return the name of the single primary key column of the target entity
+	 */
+	protected String targetPrimaryKeyColumnName() {
+		IEntity targetEntity = owner().targetEntity();
+		return (targetEntity == null) ? null : targetEntity.primaryKeyColumnName();
+	}
+
 }

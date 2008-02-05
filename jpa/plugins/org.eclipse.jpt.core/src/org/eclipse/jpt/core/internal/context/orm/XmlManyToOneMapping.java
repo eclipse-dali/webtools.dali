@@ -36,6 +36,11 @@ public class XmlManyToOneMapping extends XmlSingleRelationshipMapping<ManyToOne>
 		return IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
 
+	//ManyToOne mapping is always the owning side
+	public boolean isRelationshipOwner() {
+		return true;
+	}
+	
 	@Override
 	protected void initializeOn(XmlAttributeMapping<? extends AttributeMapping> newMapping) {
 		newMapping.initializeFromXmlManyToOneMapping(this);

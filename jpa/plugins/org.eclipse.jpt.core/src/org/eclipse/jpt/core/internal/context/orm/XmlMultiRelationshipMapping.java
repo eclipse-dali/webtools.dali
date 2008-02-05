@@ -38,6 +38,10 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 		this.joinTable = new XmlJoinTable(this);
 	}
 
+	public boolean isRelationshipOwner() {
+		return getMappedBy() == null;
+	}
+
 	public FetchType getDefaultFetch() {
 		return IMultiRelationshipMapping.DEFAULT_FETCH_TYPE;
 	}

@@ -39,6 +39,9 @@ public class XmlOneToOneMapping extends XmlSingleRelationshipMapping<OneToOne>
 		newMapping.initializeFromXmlOneToOneMapping(this);
 	}
 
+	public boolean isRelationshipOwner() {
+		return getMappedBy() == null;
+	}
 
 	public String getMappedBy() {
 		return this.mappedBy;

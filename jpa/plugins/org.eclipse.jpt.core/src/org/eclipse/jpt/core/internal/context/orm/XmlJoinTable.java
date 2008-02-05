@@ -59,11 +59,17 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 	
 	@Override
 	protected String defaultCatalog() {
+		if (!relationshipMapping().isRelationshipOwner()) {
+			return null;
+		}
 		return entityMappings().getCatalog();
 	}
 	
 	@Override
 	protected String defaultName() {
+		if (!relationshipMapping().isRelationshipOwner()) {
+			return null;
+		}
 		String tableName = relationshipMapping().typeMapping().tableName();
 		if (tableName == null) {
 			return null;
@@ -78,6 +84,9 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 
 	@Override
 	protected String defaultSchema() {
+		if (!relationshipMapping().isRelationshipOwner()) {
+			return null;
+		}
 		return entityMappings().getSchema();
 	}
 
@@ -446,6 +455,11 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 			// TODO Auto-generated method stub
 			return null;
 		}
+		
+		public int joinColumnsSize() {
+			return CollectionTools.size(XmlJoinTable.this.inverseJoinColumns());
+		}
+		
 	}
 
 
@@ -512,6 +526,10 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 		public ITextRange validationTextRange(CompilationUnit astRoot) {
 			// TODO Auto-generated method stub
 			return null;
+		}
+		
+		public int joinColumnsSize() {
+			return CollectionTools.size(XmlJoinTable.this.joinColumns());
 		}
 	}
 	

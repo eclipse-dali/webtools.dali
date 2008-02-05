@@ -44,5 +44,10 @@ public interface IJoinColumn extends IAbstractColumn, IAbstractJoinColumn
 		 * return the relationship mapping for this join column
 		 */
 		IRelationshipMapping relationshipMapping();
+		
+		/**
+		 * return the size of the joinColumns collection this join column is a part of
+		 */
+		int joinColumnsSize();
 	}
 }
