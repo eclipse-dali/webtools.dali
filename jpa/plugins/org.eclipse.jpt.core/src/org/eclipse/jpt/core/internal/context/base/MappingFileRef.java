@@ -45,9 +45,13 @@ public class MappingFileRef extends JpaContextNode
 	}
 	
 	public void setFileName(String newFileName) {
+		this.xmlMappingFileRef.setFileName(newFileName);
+		setFileName_(newFileName);
+	}
+	
+	protected void setFileName_(String newFileName) {
 		String oldFileName = this.fileName;
 		this.fileName = newFileName;
-		this.xmlMappingFileRef.setFileName(newFileName);
 		firePropertyChanged(FILE_NAME_PROPERTY, oldFileName, newFileName);
 	}
 	
@@ -101,10 +105,10 @@ public class MappingFileRef extends JpaContextNode
 	
 	protected void updateFileName() {
 		if (isVirtual()) {
-			setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+			setFileName_(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 		}
 		else {
-			setFileName(xmlMappingFileRef.getFileName());
+			setFileName_(xmlMappingFileRef.getFileName());
 		}
 	}
 	
