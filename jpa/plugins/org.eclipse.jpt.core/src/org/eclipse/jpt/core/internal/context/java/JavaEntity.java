@@ -949,8 +949,12 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	}
 
 	public String primaryKeyColumnName() {
+		return primaryKeyColumnName(persistentType().allAttributes());
+	}
+	
+	public static String primaryKeyColumnName(Iterator<IPersistentAttribute> attributes) {
 		String pkColumnName = null;
-		for (Iterator<IPersistentAttribute> stream = persistentType().allAttributes(); stream.hasNext();) {
+		for (Iterator<IPersistentAttribute> stream = attributes; stream.hasNext();) {
 			IPersistentAttribute attribute = stream.next();
 			String name = attribute.primaryKeyColumnName();
 			if (pkColumnName == null) {
@@ -963,6 +967,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		}
 		// if we encounter only a single primary key column name, return it
 		return pkColumnName;
+	
 	}
 //TODO
 //	public String primaryKeyAttributeName() {

@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.internal.context.base.InheritanceType;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
+import org.eclipse.jpt.core.internal.context.java.JavaEntity;
 import org.eclipse.jpt.core.internal.resource.orm.AssociationOverride;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.orm.Entity;
@@ -1283,10 +1284,8 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		this.setIdClass_(this.idClass(idClassResource));
 	}
 
-	
 	public String primaryKeyColumnName() {
-		// TODO Auto-generated method stub
-		return null;
+		return JavaEntity.primaryKeyColumnName(persistentType().allAttributes());
 	}
 
 	@SuppressWarnings("unchecked")
