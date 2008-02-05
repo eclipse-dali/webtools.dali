@@ -17,11 +17,7 @@ public class JpaHelper extends org.eclipse.wst.validation.internal.operations.Wo
 
 	@Override
 	public IResource getResource(Object obj) {
-		// TODO temporary hack until we get rid of EMF
-		return (obj instanceof IJpaEObject) ?
-			((IJpaEObject) obj).getResource()
-		:
-			((IJpaNode) obj).resource();
+		return ((IJpaNode) obj).resource();
 	}
 
 	/*
