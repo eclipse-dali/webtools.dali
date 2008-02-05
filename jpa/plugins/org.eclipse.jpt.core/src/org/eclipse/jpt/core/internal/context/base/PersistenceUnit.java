@@ -777,6 +777,7 @@ public class PersistenceUnit extends JpaContextNode
 				if (impliedMappingFileRef == null) {
 					setImpliedMappingFileRef();
 				}
+				getImpliedMappingFileRef().update(null);
 			}
 			else {
 				if (impliedMappingFileRef != null) {
