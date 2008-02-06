@@ -1111,20 +1111,55 @@ public class PersistenceUnit extends JpaContextNode
 	
 	
 	protected void addClassMessages(List<IMessage> messages, CompilationUnit astRoot) {
-//		addUnspecifiedClassMessages(messages);
+		addUnspecifiedClassMessages(messages);
 		addUnresolvedClassMessages(messages);
-//		addInvalidClassContentMessages(messages);
-//		addDuplicateClassMessages(messages);
-	
-		//need to have support for non-annotated mode
-		//can't just go down the class-ref list
-		//also need to think about 
+//		addInvalidOrRedundantClassMessages(messages);
+		addDuplicateClassMessages(messages);
 		
-		for (IClassRef classRef : specifiedClassRefs) {
-				//temporary 
+		for (IClassRef classRef : CollectionTools.collection(classRefs())) {
 				classRef.addToMessages(messages, astRoot);
 		}
 	}
+	
+	protected void addUnspecifiedClassMessages(List<IMessage> messages) {
+		for (IClassRef javaClassRef : CollectionTools.collection(this.classRefs())) {
+			if (javaClassRef.getJavaPersistentType() == null) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_CLASS,
+						javaClassRef, javaClassRef.validationTextRange())
+				);
+			}
+		}
+	}
+	
+//	protected void addInvalidOrRedundantClassMessages(List<IMessage> messages) {
+//		for (IClassRef javaClassRef : CollectionTools.collection(this.classRefs())) {
+//			IJavaPersistentType javaPersistentType = javaClassRef.getJavaPersistentType();
+//			//*****leaving this test out for now********
+//			//first test for a redundant entry in any of the mapping files
+////			if (mappingFilesContainPersistentTypeFor(jdtType)){
+////			//Uncomment below code to add info message about redundant entry.
+////			/*	messages.add(JpaValidationMessages.buildMessage(
+////						IMessage.LOW_SEVERITY,
+////						IJpaValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS,
+////						new String[] { javaClassRef.getJavaClass() },
+////						javaClassRef, javaClassRef.validationTextRange())); */
+////			//if not redundant, check to see if it is an invalid entry
+////			} else if(!StringTools.stringIsEmpty(javaClass)
+//			} if (!StringTools.stringIsEmpty(javaClass)
+//					&& jdtType != null
+//					&& (javaPersistentTypeFor(javaClassRef) == null || javaPersistentTypeFor(
+//							javaClassRef).getMappingKey() == IMappingKeys.NULL_TYPE_MAPPING_KEY)){
+//								messages.add(JpaValidationMessages.buildMessage(
+//									IMessage.HIGH_SEVERITY,
+//									IJpaValidationMessages.PERSISTENCE_UNIT_INVALID_CLASS,
+//									new String[] { javaClassRef.getJavaClass() }, javaClassRef,
+//									javaClassRef.validationTextRange()));
+//			}
+//		}
+//	}
 	
 	protected void addUnresolvedClassMessages(List<IMessage> messages) {
 		for (IClassRef javaClassRef : specifiedClassRefs) {
@@ -1141,21 +1176,30 @@ public class PersistenceUnit extends JpaContextNode
 		}
 	}
 	
-//	protected void addDuplicateClassMessages(List<IMessage> messages) {
-//		HashBag<String> classNameBag = this.classNameBag();
-//		for (JavaClassRef javaClassRef : persistenceUnit.getClasses()) {
-//			if (javaClassRef.getJavaClass() != null
-//					&& classNameBag.count(javaClassRef.getJavaClass()) > 1) {
-//				messages.add(
-//					JpaValidationMessages.buildMessage(
-//						IMessage.HIGH_SEVERITY,
-//						IJpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
-//						new String[] {javaClassRef.getJavaClass()}, 
-//						javaClassRef, javaClassRef.validationTextRange())
-//				);
-//			}
-//		}
-//	}
+	protected void addDuplicateClassMessages(List<IMessage> messages) {
+		HashBag<String> classNameBag = new HashBag(
+				CollectionTools.collection(
+						new TransformationIterator(this.classRefs()) {
+							@Override
+							protected Object transform(Object next) {
+								return ((IClassRef) next).getClassName();
+							}
+						}
+				)
+		);
+		for (IClassRef javaClassRef : CollectionTools.collection(this.classRefs())) {
+			if (javaClassRef.getClassName() != null
+					&& classNameBag.count(javaClassRef.getClassName()) > 1) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
+						new String[] {javaClassRef.getClassName()}, 
+						javaClassRef, javaClassRef.validationTextRange())
+				);
+			}
+		}
+	}
 	
 	
 	private Collection<PersistenceUnitDefaults> persistenceUnitDefaultsForValidation() {
