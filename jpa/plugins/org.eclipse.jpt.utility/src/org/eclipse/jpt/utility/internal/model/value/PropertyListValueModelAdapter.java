@@ -200,10 +200,10 @@ public class PropertyListValueModelAdapter<E>
 		E oldValue = this.value;
 		this.value = newValue;
 		if (oldValue == null) {
-			this.fireItemAdded(LIST_VALUES, newValue);
+			this.fireItemAdded(LIST_VALUES, 0, newValue);
 		} else {
 			if (newValue == null) {
-				this.fireItemRemoved(LIST_VALUES, oldValue);
+				this.fireItemRemoved(LIST_VALUES, 0, oldValue);
 			} else {
 				this.fireItemReplaced(LIST_VALUES, 0, newValue, oldValue);
 			}
