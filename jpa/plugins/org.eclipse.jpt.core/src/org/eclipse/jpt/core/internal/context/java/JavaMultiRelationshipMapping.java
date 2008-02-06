@@ -69,17 +69,17 @@ public abstract class JavaMultiRelationshipMapping<T extends RelationshipMapping
 		String oldOrderBy = this.orderBy;
 		this.orderBy = newOrderBy;
 		if (oldOrderBy != newOrderBy) {
-			if (this.orderByResource(this.persistentAttributeResource) != null) {
+			if (orderByResource() != null) {
 				if (newOrderBy != null) {
-					this.orderByResource(this.persistentAttributeResource).setValue(newOrderBy);
+					orderByResource().setValue(newOrderBy);
 				}
 				else {
-					this.persistentAttributeResource.removeAnnotation(OrderBy.ANNOTATION_NAME);				
+					removeOrderByResource();		
 				}
 			}
 			else if (newOrderBy != null) {
-				this.persistentAttributeResource.addAnnotation(OrderBy.ANNOTATION_NAME);
-				orderByResource(this.persistentAttributeResource).setValue(newOrderBy);
+				addOrderByResource();
+				orderByResource().setValue(newOrderBy);
 			}
 		}
 		firePropertyChanged(IMultiRelationshipMapping.ORDER_BY_PROPERTY, oldOrderBy, newOrderBy);
@@ -91,8 +91,16 @@ public abstract class JavaMultiRelationshipMapping<T extends RelationshipMapping
 		firePropertyChanged(IMultiRelationshipMapping.ORDER_BY_PROPERTY, oldOrderBy, newOrderBy);
 	}
 	
-	protected OrderBy orderByResource(JavaPersistentAttributeResource persistentAttributeResource) {
-		return (OrderBy) persistentAttributeResource.annotation(OrderBy.ANNOTATION_NAME);
+	protected OrderBy orderByResource() {
+		return (OrderBy) this.persistentAttributeResource.annotation(OrderBy.ANNOTATION_NAME);
+	}
+	
+	protected OrderBy addOrderByResource() {
+		return (OrderBy) this.persistentAttributeResource.addAnnotation(OrderBy.ANNOTATION_NAME);
+	}
+	
+	protected void removeOrderByResource() {
+		this.persistentAttributeResource.removeAnnotation(OrderBy.ANNOTATION_NAME);
 	}
 	
 	public boolean isNoOrdering() {
@@ -104,11 +112,16 @@ public abstract class JavaMultiRelationshipMapping<T extends RelationshipMapping
 	}
 
 	public boolean isOrderByPk() {
-		return "".equals(getOrderBy());
+		return orderByResource() != null && getOrderBy() == null;
 	}
 
 	public void setOrderByPk() {
-		setOrderBy("");
+		if (getOrderBy() != null) {
+			orderByResource().setValue(null);
+		}
+		else {
+			addOrderByResource();
+		}
 	}
 
 	public boolean isCustomOrdering() {
@@ -262,7 +275,7 @@ public abstract class JavaMultiRelationshipMapping<T extends RelationshipMapping
 		if (mapKey != null) {
 			this.mapKey = mapKey.getName();
 		}
-		OrderBy orderBy = this.orderByResource(persistentAttributeResource);
+		OrderBy orderBy = this.orderByResource();
 		if (orderBy != null) {
 			this.orderBy = orderBy.getValue();
 		}
@@ -294,7 +307,7 @@ public abstract class JavaMultiRelationshipMapping<T extends RelationshipMapping
 	}
 	
 	protected void updateOrderBy(JavaPersistentAttributeResource persistentAttributeResource) {
-		OrderBy orderBy = this.orderByResource(persistentAttributeResource);
+		OrderBy orderBy = this.orderByResource();
 		if (orderBy != null) {
 			setOrderBy_(orderBy.getValue());
 		}

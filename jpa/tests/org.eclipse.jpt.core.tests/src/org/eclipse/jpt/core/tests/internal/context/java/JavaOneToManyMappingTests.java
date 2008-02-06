@@ -848,14 +848,6 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		assertTrue(oneToManyMapping.isNoOrdering());
 		assertNull(oneToManyMapping.getOrderBy());
 	}
-//TODO
-//	public boolean isOrderByPk() {
-//		return "".equals(getOrderBy());
-//	}
-//
-//	public void setOrderByPk() {
-//		setOrderBy("");
-//	}
 
 	public void testIsCustomOrdering() throws Exception {
 		createTestEntityWithOneToManyMapping();
@@ -873,4 +865,45 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		assertFalse(oneToManyMapping.isCustomOrdering());
 	}
 
+	public void testIdOrderByPk() throws Exception {
+		createTestEntityWithOneToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IOneToManyMapping oneToManyMapping = (IOneToManyMapping) persistentAttribute.getMapping();
+	
+		assertFalse(oneToManyMapping.isOrderByPk());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		
+		OrderBy orderBy = (OrderBy) attributeResource.addAnnotation(OrderBy.ANNOTATION_NAME);
+		assertTrue(oneToManyMapping.isOrderByPk());
+
+		orderBy.setValue("foo");
+		assertFalse(oneToManyMapping.isOrderByPk());
+		
+		attributeResource.removeAnnotation(OrderBy.ANNOTATION_NAME);
+		assertFalse(oneToManyMapping.isOrderByPk());
+	}
+	
+	public void testSetOrderByPk() throws Exception {
+		createTestEntityWithOneToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IOneToManyMapping oneToManyMapping = (IOneToManyMapping) persistentAttribute.getMapping();
+				
+		assertFalse(oneToManyMapping.isOrderByPk());
+		assertNull(oneToManyMapping.getOrderBy());
+
+		oneToManyMapping.setOrderByPk();
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+	
+		OrderBy orderBy = (OrderBy) attributeResource.annotation(OrderBy.ANNOTATION_NAME);
+		assertNotNull(orderBy);
+		assertNull(orderBy.getValue());
+	}
 }
