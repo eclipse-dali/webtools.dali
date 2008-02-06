@@ -44,6 +44,13 @@ public class JptUiXmlMessages
 
 	public static String AccessTypeComposite_field;
 	public static String AccessTypeComposite_property;
+
+	public static String XmlEntityMappingsDetailsPage_field;
+	public static String XmlEntityMappingsDetailsPage_property;
+
+	public static String PersistenceUnitMetadataComposite_field;
+	public static String PersistenceUnitMetadataComposite_property;
+	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, JptUiXmlMessages.class);
