@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 
@@ -44,6 +46,16 @@ public abstract class AbstractResourceModel extends AbstractModel
 	public void removeRootContextNode(int index) {
 		IJpaContextNode contextNode = rootContextNodes.remove(index);
 		fireItemRemoved(ROOT_CONTEXT_NODE_LIST, index, contextNode);
+	}
+	
+	public IJpaStructureNode structureNode(int textOffset) {
+		for (IJpaContextNode rootNode : CollectionTools.iterable(rootContextNodes())) {
+			IJpaStructureNode node = rootNode.structureNode(textOffset);
+			if (node != null) {
+				return node;
+			}
+		}
+		return null;
 	}
 	
 	public void dispose() {
