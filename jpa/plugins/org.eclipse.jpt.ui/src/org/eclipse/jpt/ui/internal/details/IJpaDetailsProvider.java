@@ -8,7 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
@@ -31,7 +31,7 @@ public interface IJpaDetailsProvider
 	 * page to create
 	 * @param widgetFactory The factory used to create various widgets
 	 */
-	IJpaDetailsPage<? extends IJpaContextNode> buildDetailsPage(
+	IJpaDetailsPage<? extends IJpaStructureNode> buildDetailsPage(
 		Composite parent,
 		Object contentNodeId,
 		TabbedPropertySheetWidgetFactory widgetFactory);

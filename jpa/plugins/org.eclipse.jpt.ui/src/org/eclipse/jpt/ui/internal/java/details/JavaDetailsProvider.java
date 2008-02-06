@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.details;
 
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsPage;
@@ -37,7 +37,7 @@ public class JavaDetailsProvider
 	/*
 	 * (non-Javadoc)
 	 */
-	public IJpaDetailsPage<? extends IJpaContextNode> buildDetailsPage(
+	public IJpaDetailsPage<? extends IJpaStructureNode> buildDetailsPage(
 		Composite parent,
 		Object contentNodeId,
 		TabbedPropertySheetWidgetFactory widgetFactory) {

@@ -8,7 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.swt.widgets.Control;
 
 /**
@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Control;
  * @version 2.0
  * @since 2.0
  */
-public interface IJpaDetailsPage<T extends IJpaContextNode>
+public interface IJpaDetailsPage<T extends IJpaStructureNode>
 {
 	/**
 	 * Returns this details' page's widget.

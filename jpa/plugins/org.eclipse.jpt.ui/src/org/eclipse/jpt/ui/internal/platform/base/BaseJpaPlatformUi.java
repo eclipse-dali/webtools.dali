@@ -17,7 +17,7 @@ import java.util.ListIterator;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaJpaContextNode;
 import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
@@ -104,10 +104,10 @@ public abstract class BaseJpaPlatformUi implements IJpaPlatformUi
 		providers.add(new XmlDetailsProvider());
 	}
 
-	public IJpaDetailsProvider detailsProvider(IJpaContextNode contextNode) {
+	public IJpaDetailsProvider detailsProvider(IJpaStructureNode structureNode) {
 		// TODO: To implement, this is written only for testing
 		detailsProviders();
-		if (contextNode instanceof IJavaJpaContextNode) {
+		if (structureNode instanceof IJavaJpaContextNode) {
 			return detailsProviders.get(0);
 		}
 		else {

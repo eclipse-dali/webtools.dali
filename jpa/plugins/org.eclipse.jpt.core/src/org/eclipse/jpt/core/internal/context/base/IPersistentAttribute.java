@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 
-public interface IPersistentAttribute extends IJpaContextNode
+public interface IPersistentAttribute extends IJpaContextNode, IJpaStructureNode
 {
 	String getName();
 		String NAME_PROPERTY = "nameProperty";

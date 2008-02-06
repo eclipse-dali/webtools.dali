@@ -11,14 +11,14 @@
 package org.eclipse.jpt.ui.internal.selection;
 
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 
 @SuppressWarnings("nls")
 public interface IJpaSelection extends ISelection
 {
 	static IJpaSelection NULL_SELECTION =
 		new IJpaSelection() {
-			public IJpaContextNode getSelectedNode() {
+			public IJpaStructureNode getSelectedNode() {
 				return null;
 			}
 
@@ -33,5 +33,5 @@ public interface IJpaSelection extends ISelection
 		};
 
 
-	IJpaContextNode getSelectedNode();
+	IJpaStructureNode getSelectedNode();
 }

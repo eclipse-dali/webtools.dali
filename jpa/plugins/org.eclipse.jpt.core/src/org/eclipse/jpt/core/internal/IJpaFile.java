@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ElementChangedEvent;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 
 /**
  * 
@@ -35,9 +35,9 @@ public interface IJpaFile extends IJpaNode
 	IResourceModel getResourceModel();
 	
 	/**
-	 * Return the context node best represented by the location in the file
+	 * Return the structure node best represented by the location in the file
 	 */
-	IJpaContextNode contextNode(int textOffset);
+	IJpaStructureNode structureNode(int textOffset);
 
 	/**
 	 * Forward the Java element changed event to the JPA file's content.

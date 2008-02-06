@@ -17,7 +17,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.ui.internal.views.AbstractJpaView;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -97,7 +97,7 @@ public class TextEditorSelectionParticipant
 			return IJpaSelection.NULL_SELECTION;
 		}
 
-		IJpaContextNode selectedNode = jpaFile.contextNode(((ITextSelection) selection).getOffset());
+		IJpaStructureNode selectedNode = jpaFile.structureNode(((ITextSelection) selection).getOffset());
 		if (selectedNode == null) {
 			return IJpaSelection.NULL_SELECTION;
 		}

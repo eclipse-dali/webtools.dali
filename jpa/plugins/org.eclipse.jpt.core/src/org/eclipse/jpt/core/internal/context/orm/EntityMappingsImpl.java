@@ -14,8 +14,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
 import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
@@ -447,33 +448,15 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		return false;
 	}
 
-//	/* @see IJpaContentNode#getId() */
-//	public Object getId() {
-//		return IXmlContentNodes.ENTITY_MAPPINGS_ID;
-//	}
-//
-//	public IJpaContentNode getContentNode(int offset) {
-//		for (Iterator i = getTypeMappings().iterator(); i.hasNext();) {
-//			XmlTypeMapping mapping = (XmlTypeMapping) i.next();
-//			if (mapping.getNode().contains(offset)) {
-//				return mapping.getContentNode(offset);
-//			}
-//		}
-//		return this;
-//	}
-//
-//	public void javaElementChanged(ElementChangedEvent event) {
-//	}
-
 	@Override
-	public IJpaContextNode contextNode(int offset) {
+	public IJpaStructureNode structureNode(int offset) {
 		if (!this.entityMappings.contains(offset)) {
 			return null;
 		}
 		for (XmlPersistentType xmlPersistentType : CollectionTools.iterable(this.xmlPersistentTypes())) {
-			IJpaContextNode contextNode = xmlPersistentType.contextNode(offset);
-			if (contextNode != null) {
-				return contextNode;
+			IJpaStructureNode structureNode = xmlPersistentType.structureNode(offset);
+			if (structureNode != null) {
+				return structureNode;
 			}
 		}
 		return this;
@@ -730,5 +713,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		return xmlNamedNativeQuery;
 	}
 
-
+	public ITextRange selectionTextRange() {
+		return this.entityMappings.selectionTextRange();
+	}
 }

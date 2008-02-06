@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 
-public interface IPersistentType extends IJpaContextNode
+public interface IPersistentType extends IJpaContextNode, IJpaStructureNode
 {
 	String getName();
 		String NAME_PROPERTY = "nameProperty";

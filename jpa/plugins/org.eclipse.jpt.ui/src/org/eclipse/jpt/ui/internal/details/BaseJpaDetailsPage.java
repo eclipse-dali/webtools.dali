@@ -8,7 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -22,7 +22,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public abstract class BaseJpaDetailsPage<T extends IJpaContextNode>
+public abstract class BaseJpaDetailsPage<T extends IJpaStructureNode>
 	extends AbstractFormPane<T>
 	implements IJpaDetailsPage<T>
 {

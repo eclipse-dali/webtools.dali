@@ -12,6 +12,8 @@ package org.eclipse.jpt.core.internal.resource.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.IMember;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.platform.base.BaseJpaPlatform;
 
 public interface JavaPersistentResource extends JavaResource
@@ -149,5 +151,11 @@ public interface JavaPersistentResource extends JavaResource
 	 * @return
 	 */
 	boolean isFor(IMember member);
+	
+	
+	/**
+	 * return the text range for the name of the persistent resource
+	 */
+	ITextRange nameTextRange(CompilationUnit astRoot);
 
 }

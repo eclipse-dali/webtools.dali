@@ -19,6 +19,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.Annotation;
@@ -229,7 +230,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	}
 	
 	@Override
-	public IJpaContextNode contextNode(int offset) {
+	public IJpaStructureNode structureNode(int offset) {
 		//TODO astRoot, possibly get this instead of rebuilding it
 		CompilationUnit astRoot = this.persistentTypeResource.getMember().astRoot(); 
 		if (!this.contains(offset, astRoot)) {
@@ -270,9 +271,14 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	}
 
 	public ITextRange selectionTextRange(CompilationUnit astRoot) {
-		return this.persistentTypeResource.textRange(astRoot);
+		return this.persistentTypeResource.nameTextRange(astRoot);
 	}
-
+	
+	public ITextRange selectionTextRange() {
+		return this.selectionTextRange(this.persistentTypeResource.getMember().astRoot());
+	}
+	
+	
 	public Iterator<IPersistentType> inheritanceHierarchy() {
 		// using a chain iterator to traverse up the inheritance tree
 		return new ChainIterator<IPersistentType>(this) {

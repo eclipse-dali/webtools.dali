@@ -488,10 +488,10 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	}
 
 	public ITextRange textRange(CompilationUnit astRoot) {
-		return this.selectionTextRange(astRoot);
+		return this.fullTextRange(astRoot);
 	}
 
-	public ITextRange selectionTextRange(CompilationUnit astRoot) {
+	public ITextRange nameTextRange(CompilationUnit astRoot) {
 		return this.getMember().nameTextRange(astRoot);
 	}
 

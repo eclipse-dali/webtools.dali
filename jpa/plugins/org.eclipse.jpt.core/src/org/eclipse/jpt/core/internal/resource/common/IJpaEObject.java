@@ -38,6 +38,12 @@ public interface IJpaEObject extends EObject
 	 */
 	ITextRange validationTextRange();
 	
+	/**
+	 * Return the text range to be used for selection.  This is the source
+	 * range that will be highlighted when selecting in the structure view.
+	 */
+	ITextRange selectionTextRange();
+	
 	boolean isAllFeaturesUnset();
 
 	/**

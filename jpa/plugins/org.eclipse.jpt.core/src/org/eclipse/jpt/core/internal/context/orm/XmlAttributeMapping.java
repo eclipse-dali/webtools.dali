@@ -9,8 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
@@ -139,12 +140,18 @@ public abstract class XmlAttributeMapping<T extends AttributeMapping> extends Jp
 		initializeFromXmlMulitRelationshipMapping(oldMapping);
 	}
 
-	public IJpaContextNode contextNode(int offset) {
+	@Override
+	public IJpaStructureNode structureNode(int offset) {
 		if (this.attributeMapping.contains(offset)) {
 			return persistentAttribute();
 		}
 		return null;
 	}
+	
+	public ITextRange selectionTextRange() {
+		return this.attributeMapping.selectionTextRange();
+	}
+	
 
 	/**
 	 * Attributes are a sequence in the orm schema. We must keep

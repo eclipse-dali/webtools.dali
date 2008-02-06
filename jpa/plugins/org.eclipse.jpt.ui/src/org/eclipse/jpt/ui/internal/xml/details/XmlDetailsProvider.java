@@ -8,7 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
@@ -38,7 +38,7 @@ public class XmlDetailsProvider
 	/*
 	 * (non-Javadoc)
 	 */
-	public IJpaDetailsPage<? extends IJpaContextNode> buildDetailsPage(
+	public IJpaDetailsPage<? extends IJpaStructureNode> buildDetailsPage(
 		Composite parent,
 		Object contentNodeId,
 		TabbedPropertySheetWidgetFactory widgetFactory) {

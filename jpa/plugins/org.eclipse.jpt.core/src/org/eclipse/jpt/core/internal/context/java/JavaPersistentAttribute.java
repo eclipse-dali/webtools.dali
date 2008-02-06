@@ -195,8 +195,13 @@ public class JavaPersistentAttribute extends JavaContextModel
 	}
 
 	public ITextRange selectionTextRange(CompilationUnit astRoot) {
-		return this.persistentAttributeResource.textRange(astRoot);
+		return this.persistentAttributeResource.nameTextRange(astRoot);
 	}
+	
+	public ITextRange selectionTextRange() {
+		return selectionTextRange(this.persistentAttributeResource.getMember().astRoot());
+	}
+	
 
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
 		this.persistentAttributeResource = persistentAttributeResource;

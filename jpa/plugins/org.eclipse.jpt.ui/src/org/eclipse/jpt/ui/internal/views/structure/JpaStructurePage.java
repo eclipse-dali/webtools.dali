@@ -23,7 +23,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.NullLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.NullTreeContentProvider;
@@ -192,9 +192,7 @@ public class JpaStructurePage extends Page
 		if (viewerSelection.isEmpty() || viewerSelection.size() > 1) {
 			return IJpaSelection.NULL_SELECTION;
 		}
-		else {
-			return new JpaSelection((IJpaContextNode) viewerSelection.getFirstElement());
-		}
+		return new JpaSelection((IJpaStructureNode) viewerSelection.getFirstElement());
 	}
 	
 	public void setSelection(ISelection selection) {

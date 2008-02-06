@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ElementChangedEvent;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 
 /**
  * 
@@ -49,7 +49,7 @@ public class JpaFile extends JpaNode implements IJpaFile
 		return resourceModel;
 	}
 	
-	public IJpaContextNode contextNode(int textOffset) {
+	public IJpaStructureNode structureNode(int textOffset) {
 		return null;
 	}
 	

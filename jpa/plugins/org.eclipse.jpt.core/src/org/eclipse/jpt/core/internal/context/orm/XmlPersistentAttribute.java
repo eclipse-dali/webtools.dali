@@ -13,8 +13,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
@@ -116,10 +117,15 @@ public class XmlPersistentAttribute extends JpaContextNode
 		firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, oldMapping, this.attributeMapping);
 	}
 
-	public IJpaContextNode contextNode(int offset) {
-		return this.attributeMapping.contextNode(offset);
+	@Override
+	public IJpaStructureNode structureNode(int offset) {
+		return this.attributeMapping.structureNode(offset);
 	}
 
+	public ITextRange selectionTextRange() {
+		return this.attributeMapping.selectionTextRange();
+	}
+	
 	public Collection<IXmlAttributeMappingProvider> attributeMappingProviders() {
 		return this.attributeMappingProviders;
 	}

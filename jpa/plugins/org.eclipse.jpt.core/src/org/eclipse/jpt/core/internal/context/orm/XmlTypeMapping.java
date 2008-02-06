@@ -10,8 +10,9 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
@@ -143,11 +144,15 @@ public abstract class XmlTypeMapping<E extends TypeMapping> extends JpaContextNo
 	}
 	
 	@Override
-	public IJpaContextNode contextNode(int offset) {
+	public IJpaStructureNode structureNode(int offset) {
 		if (this.typeMapping.contains(offset)) {
 			return persistentType();
 		}
 		return null;
+	}
+	
+	public ITextRange selectionTextRange() {
+		return this.typeMapping.selectionTextRange();
 	}
 
 	public Table primaryDbTable() {

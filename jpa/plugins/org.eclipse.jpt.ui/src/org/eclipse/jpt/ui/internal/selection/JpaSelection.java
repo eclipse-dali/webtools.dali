@@ -9,24 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.selection;
 
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 
-@SuppressWarnings("nls")
 public class JpaSelection
 	implements IJpaSelection
 {
-	private IJpaContextNode selectedNode;
+	private IJpaStructureNode selectedNode;
 
 
-	public JpaSelection(IJpaContextNode selectedNode) {
+	public JpaSelection(IJpaStructureNode selectedNode) {
 		if (selectedNode == null) {
 			throw new NullPointerException("A 'selectedNode' is required; otherwise use NULL_SELECTION.");
 		}
 		this.selectedNode = selectedNode;
 	}
 
-	public IJpaContextNode getSelectedNode() {
-		return selectedNode;
+	public IJpaStructureNode getSelectedNode() {
+		return this.selectedNode;
 	}
 
 	public boolean isEmpty() {
@@ -51,6 +50,6 @@ public class JpaSelection
 
 	@Override
 	public String toString() {
-		return selectedNode.toString();
+		return this.selectedNode.toString();
 	}
 }

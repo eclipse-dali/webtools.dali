@@ -11,7 +11,6 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 import org.eclipse.jpt.core.internal.IJpaNode;
-import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 
@@ -28,13 +27,11 @@ public interface IJpaContextNode extends IJpaNode
 	//TODO interface for this
 	XmlPersistentType xmlPersistentType();
 	
-	ITextRange selectionTextRange();
 	
 	/**
-	 * return the context node at the given offset.  This context node
-	 * should be a *structural* context node, ie it should be available
-	 * in the structure view
+	 * Return the structure node at the given offset.  This node
+	 * will be made available in the structure view
 	 */
-	IJpaContextNode contextNode(int offset);
+	IJpaStructureNode structureNode(int offset);
 
 }

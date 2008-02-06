@@ -16,8 +16,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
@@ -89,11 +90,6 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		this.specifiedPersistentAttributes = new ArrayList<XmlPersistentAttribute>();
 		this.virtualPersistentAttributes = new ArrayList<XmlPersistentAttribute>();
 	}
-
-//	/* @see IJpaContentNode#getId() */
-//	public Object getId() {
-//		return IXmlContentNodes.PERSISTENT_TYPE_ID;
-//	}
 	
 	public boolean isFor(String fullyQualifiedTypeName) {
 		String className = getMapping().getClass_();
@@ -776,12 +772,12 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 	}
 	
 	@Override
-	public IJpaContextNode contextNode(int offset) {
-		if (this.xmlTypeMapping.contextNode(offset) == null) {
+	public IJpaStructureNode structureNode(int offset) {
+		if (this.xmlTypeMapping.structureNode(offset) == null) {
 			return null;
 		}
 		for (XmlPersistentAttribute attribute : CollectionTools.iterable(this.attributes())) {
-			IJpaContextNode contextNode = attribute.contextNode(offset);
+			IJpaStructureNode contextNode = attribute.structureNode(offset);
 			if (contextNode != null) {
 				return contextNode;
 			}
@@ -789,6 +785,10 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		return this;
 	}
 
+	public ITextRange selectionTextRange() {
+		return this.xmlTypeMapping.selectionTextRange();
+	}
+	
 	public IPersistentAttribute resolveAttribute(String attributeName) {
 		Iterator<XmlPersistentAttribute> attributes = attributesNamed(attributeName);
 		if (attributes.hasNext()) {
