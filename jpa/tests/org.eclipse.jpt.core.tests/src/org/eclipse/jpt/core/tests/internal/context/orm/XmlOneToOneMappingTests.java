@@ -86,7 +86,7 @@ public class XmlOneToOneMappingTests extends ContextModelTestCase
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append(CR);
-				sb.append("    @OneToOne(fetch=FetchType.LAZY, optional=false, targetEntity=Address.class, cascade={CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH}, mappedBy=\"foo\")");
+				sb.append("    @OneToOne(fetch=FetchType.LAZY, optional=false, targetEntity=Address.class, cascade={CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})");
 				sb.append(CR);
 				sb.append("    @JoinColumn(name=\"MY_COLUMN\", referencedColumnName=\"MY_REFERENCED_COLUMN\", unique=true, nullable=false, insertable=false, updatable=false, columnDefinition=\"COLUMN_DEFINITION\", table=\"MY_TABLE\")");
 				sb.append(CR);
@@ -497,7 +497,7 @@ public class XmlOneToOneMappingTests extends ContextModelTestCase
 		assertEquals(FetchType.LAZY, xmlOneToOneMapping.getSpecifiedFetch());
 		assertEquals(Boolean.FALSE, xmlOneToOneMapping.getSpecifiedOptional());
 		assertEquals("Address", xmlOneToOneMapping.getSpecifiedTargetEntity());
-		assertEquals("foo", xmlOneToOneMapping.getMappedBy());
+		assertNull(xmlOneToOneMapping.getMappedBy());
 
 		XmlJoinColumn xmlJoinColumn = xmlOneToOneMapping.specifiedJoinColumns().next();
 		assertEquals("MY_COLUMN", xmlJoinColumn.getSpecifiedName());
@@ -523,7 +523,7 @@ public class XmlOneToOneMappingTests extends ContextModelTestCase
 
 		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
-		xmlPersistentType.getMapping().setSpecifiedMetadataComplete(true);
+		xmlPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(3, xmlPersistentType.virtualAttributesSize());		
 		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.virtualAttributes().next();
 		
