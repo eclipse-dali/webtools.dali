@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.validation;
 
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jpt.core.internal.IJpaEObject;
 import org.eclipse.jpt.core.internal.IJpaNode;
 
 public class JpaHelper extends org.eclipse.wst.validation.internal.operations.WorkbenchContext {
