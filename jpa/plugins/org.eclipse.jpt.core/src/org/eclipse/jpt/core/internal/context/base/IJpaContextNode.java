@@ -29,4 +29,12 @@ public interface IJpaContextNode extends IJpaNode
 	XmlPersistentType xmlPersistentType();
 	
 	ITextRange selectionTextRange();
+	
+	/**
+	 * return the context node at the given offset.  This context node
+	 * should be a *structural* context node, ie it should be available
+	 * in the structure view
+	 */
+	IJpaContextNode contextNode(int offset);
+
 }

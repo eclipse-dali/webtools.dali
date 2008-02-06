@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 
@@ -28,5 +29,10 @@ public interface IJavaPersistentAttribute extends IPersistentAttribute, IJavaJpa
 	void update(JavaPersistentAttributeResource persistentAttributeResource);
 	
 	JavaPersistentAttributeResource getPersistentAttributeResource();
+	
+	/**
+	 * Return whether the attribute contains the given offset into the text file.
+	 */
+	boolean contains(int offset, CompilationUnit astRoot);
 
 }

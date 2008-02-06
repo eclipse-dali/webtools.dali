@@ -40,4 +40,9 @@ public interface IJpaEObject extends EObject
 	
 	boolean isAllFeaturesUnset();
 
+	/**
+	 * Return whether the xml object contains the given offset into the text file.
+	 */
+	boolean contains(int offset);
+
 }

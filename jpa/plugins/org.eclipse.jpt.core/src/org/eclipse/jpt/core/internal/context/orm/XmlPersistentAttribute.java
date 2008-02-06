@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
@@ -114,10 +115,10 @@ public class XmlPersistentAttribute extends JpaContextNode
 		this.attributeMapping = buildAttributeMapping(newMappingKey);
 		firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, oldMapping, this.attributeMapping);
 	}
-//
-//	public Object getId() {
-//		return IXmlContentNodes.PERSISTENT_ATTRIBUTE_ID;
-//	}
+
+	public IJpaContextNode contextNode(int offset) {
+		return this.attributeMapping.contextNode(offset);
+	}
 
 	public Collection<IXmlAttributeMappingProvider> attributeMappingProviders() {
 		return this.attributeMappingProviders;

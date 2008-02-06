@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
@@ -228,32 +227,43 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		}
 		return EmptyIterator.instance();
 	}
-//
-//	public IJpaContentNode contentNodeAt(int offset) {
-//		for (Iterator<JavaPersistentAttribute> i = attributes(); i.hasNext();) {
-//			JavaPersistentAttribute persistentAttribute = i.next();
-//			if (persistentAttribute.includes(offset)) {
-//				return persistentAttribute;
-//			}
-//		}
-//		return null;
-//	}
+	
+	@Override
+	public IJpaContextNode contextNode(int offset) {
+		//TODO astRoot, possibly get this instead of rebuilding it
+		CompilationUnit astRoot = this.persistentTypeResource.getMember().astRoot(); 
+		if (!this.contains(offset, astRoot)) {
+			return null;
+		}
+		
+		for (Iterator<IJavaPersistentAttribute> i = attributes(); i.hasNext();) {
+			IJavaPersistentAttribute persistentAttribute = i.next();
+			if (persistentAttribute.contains(offset, astRoot)) {
+				return persistentAttribute;
+			}
+		}
+		
+		return this;		
+	}
 
-//	public boolean includes(int offset) {
-//		ITextRange fullTextRange = this.fullTextRange();
-//		if (fullTextRange == null) {
-//			//This happens if the type no longer exists in the java (rename in editor).
-//			//The text selection event is fired before the update from java so our
-//			//model has not yet had a chance to update appropriately.  For now, avoid the NPE, 
-//			//not sure of the ultimate solution to these 2 threads accessing our model
-//			return false;
-//		}
-//		return fullTextRange.includes(offset);
-//	}
-//
-//	public ITextRange fullTextRange() {
-//		return this.persistentTypeResource.fullTextRange();
-//	}
+	public boolean contains(int offset, CompilationUnit astRoot) {
+		ITextRange fullTextRange = this.fullTextRange(astRoot);
+		if (fullTextRange == null) {
+			//This happens if the attribute no longer exists in the java.
+			//The text selection event is fired before the update from java so our
+			//model has not yet had a chance to update appropriately. The list of
+			//JavaPersistentAttriubtes is stale at this point.  For now, we are trying
+			//to avoid the NPE, not sure of the ultimate solution to these 2 threads accessing
+			//our model
+			return false;
+		}
+		return fullTextRange.includes(offset);
+	}
+
+
+	public ITextRange fullTextRange(CompilationUnit astRoot) {
+		return this.persistentTypeResource.textRange(astRoot);
+	}
 
 	public ITextRange validationTextRange(CompilationUnit astRoot) {
 		return this.selectionTextRange(astRoot);

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
@@ -44,20 +45,6 @@ public abstract class XmlAttributeMapping<T extends AttributeMapping> extends Jp
 		firePropertyChanged(JAVA_PERSISTENT_ATTRIBUTE_PROPERTY, oldJavaPersistentAttribute, newJavaPersistentAttribute);
 		
 	}
-
-//	protected INamedColumn.Owner buildOwner() {
-//		return new ColumnOwner();
-//	}
-//
-//	@Override
-//	protected void addInsignificantFeatureIdsTo(Set<Integer> insignificantFeatureIds) {
-//		super.addInsignificantFeatureIdsTo(insignificantFeatureIds);
-//		insignificantFeatureIds.add(OrmPackage.XML_ATTRIBUTE_MAPPING__PERSISTENT_ATTRIBUTE);
-//	}
-//
-//	public XmlPersistentType getPersistentType() {
-//		return (XmlPersistentType) eContainer();
-//	}
 
 	public String getName() {
 		return this.name;
@@ -152,9 +139,12 @@ public abstract class XmlAttributeMapping<T extends AttributeMapping> extends Jp
 		initializeFromXmlMulitRelationshipMapping(oldMapping);
 	}
 
-//	public IJpaContentNode getContentNode(int offset) {
-//		return getPersistentAttribute();
-//	}
+	public IJpaContextNode contextNode(int offset) {
+		if (this.attributeMapping.contains(offset)) {
+			return persistentAttribute();
+		}
+		return null;
+	}
 
 	/**
 	 * Attributes are a sequence in the orm schema. We must keep

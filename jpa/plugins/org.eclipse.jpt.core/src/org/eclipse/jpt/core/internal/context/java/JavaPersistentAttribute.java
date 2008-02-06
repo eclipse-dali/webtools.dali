@@ -171,23 +171,24 @@ public class JavaPersistentAttribute extends JavaContextModel
 		}
 	}
 
-//	public boolean includes(int offset) {
-//		ITextRange fullTextRange = this.fullTextRange();
-//		if (fullTextRange == null) {
-//			//This happens if the attribute no longer exists in the java.
-//			//The text selection event is fired before the update from java so our
-//			//model has not yet had a chance to update appropriately. The list of
-//			//JavaPersistentAttriubtes is stale at this point.  For now, we are trying
-//			//to avoid the NPE, not sure of the ultimate solution to these 2 threads accessing
-//			//our model
-//			return false;
-//		}
-//		return fullTextRange.includes(offset);
-//	}
-//
-//	public ITextRange fullTextRange() {
-//		return this.attribute.textRange();
-//	}
+	public boolean contains(int offset, CompilationUnit astRoot) {
+		ITextRange fullTextRange = this.fullTextRange(astRoot);
+		if (fullTextRange == null) {
+			//This happens if the attribute no longer exists in the java.
+			//The text selection event is fired before the update from java so our
+			//model has not yet had a chance to update appropriately. The list of
+			//JavaPersistentAttriubtes is stale at this point.  For now, we are trying
+			//to avoid the NPE, not sure of the ultimate solution to these 2 threads accessing
+			//our model
+			return false;
+		}
+		return fullTextRange.includes(offset);
+	}
+
+
+	public ITextRange fullTextRange(CompilationUnit astRoot) {
+		return this.persistentAttributeResource.textRange(astRoot);
+	}
 
 	public ITextRange validationTextRange(CompilationUnit astRoot) {
 		return this.selectionTextRange(astRoot);

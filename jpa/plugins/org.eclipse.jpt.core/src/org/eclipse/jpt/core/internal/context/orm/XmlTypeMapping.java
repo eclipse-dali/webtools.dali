@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
@@ -140,10 +141,14 @@ public abstract class XmlTypeMapping<E extends TypeMapping> extends JpaContextNo
 		this.setDefaultAccess(oldMapping.getDefaultAccess());
 		this.setDefaultMetadataComplete(oldMapping.isDefaultMetadataComplete());
 	}
-
-//	public IJpaContentNode getContentNode(int offset) {
-//		return persistentType().getContentNode(offset);
-//	}
+	
+	@Override
+	public IJpaContextNode contextNode(int offset) {
+		if (this.typeMapping.contains(offset)) {
+			return persistentType();
+		}
+		return null;
+	}
 
 	public Table primaryDbTable() {
 		return null;

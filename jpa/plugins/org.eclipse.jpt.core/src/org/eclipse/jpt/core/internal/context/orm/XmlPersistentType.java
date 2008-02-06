@@ -15,9 +15,9 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
@@ -775,15 +775,20 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		}
 	}
 	
-//	public IJpaContentNode getContentNode(int offset) {
-//		for (XmlAttributeMapping mapping : this.getSpecifiedAttributeMappings()) {
-//			if (mapping.getNode().contains(offset)) {
-//				return mapping.getContentNode(offset);
-//			}
-//		}
-//		return this;
-//	}
-//
+	@Override
+	public IJpaContextNode contextNode(int offset) {
+		if (this.xmlTypeMapping.contextNode(offset) == null) {
+			return null;
+		}
+		for (XmlPersistentAttribute attribute : CollectionTools.iterable(this.attributes())) {
+			IJpaContextNode contextNode = attribute.contextNode(offset);
+			if (contextNode != null) {
+				return contextNode;
+			}
+		}
+		return this;
+	}
+
 	public IPersistentAttribute resolveAttribute(String attributeName) {
 		Iterator<XmlPersistentAttribute> attributes = attributesNamed(attributeName);
 		if (attributes.hasNext()) {

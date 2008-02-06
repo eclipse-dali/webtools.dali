@@ -63,4 +63,8 @@ public abstract class JpaContextNode extends JpaNode
 	public ITextRange selectionTextRange() {
 		return new SimpleTextRange(0, 0, 0);
 	}
+	
+	public IJpaContextNode contextNode(int offset) {
+		return null;
+	}
 }

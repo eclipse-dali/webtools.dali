@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
 import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
@@ -464,6 +465,20 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 //	public void javaElementChanged(ElementChangedEvent event) {
 //	}
 
+	@Override
+	public IJpaContextNode contextNode(int offset) {
+		if (!this.entityMappings.contains(offset)) {
+			return null;
+		}
+		for (XmlPersistentType xmlPersistentType : CollectionTools.iterable(this.xmlPersistentTypes())) {
+			IJpaContextNode contextNode = xmlPersistentType.contextNode(offset);
+			if (contextNode != null) {
+				return contextNode;
+			}
+		}
+		return this;
+	}
+	
 	public PersistenceUnitDefaults persistenceUnitDefaults() {
 		return getPersistenceUnitMetadata().getPersistenceUnitDefaults();
 	}

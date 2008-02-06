@@ -212,6 +212,9 @@ public abstract class JpaEObject extends EObjectImpl implements IJpaEObject
 		return new DOMNodeTextRange(domNode);
 	}
 	
+	public boolean contains(int offset) {
+		return getNode().contains(offset);
+	}
 	
 	/**
 	 * Implementation of ITextRange that adapts a IDOMNode.
