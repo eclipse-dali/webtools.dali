@@ -142,7 +142,7 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 
 	protected ComboViewer buildMappingCombo(Composite parent) {
 
-		this.mappingCombo = buildEditableComboViewer(parent, buildLabelProvider());
+		this.mappingCombo = buildEditableCComboViewer(parent, buildLabelProvider());
 		this.mappingCombo.getCCombo().setVisibleItemCount(Integer.MAX_VALUE);
 		this.mappingCombo.setContentProvider(buildContentProvider());
 		this.mappingCombo.addSelectionChangedListener(buildMappingComboModifyListener());

@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.internal.context.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
+import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
@@ -59,9 +59,9 @@ public class MetaDataCompleteComboViewer extends AbstractFormPane<XmlTypeMapping
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private EnumComboViewer<XmlTypeMapping<? extends TypeMapping>, Boolean> buildEnumTypeCombo(Composite container) {
+	private EnumFormComboViewer<XmlTypeMapping<? extends TypeMapping>, Boolean> buildEnumTypeCombo(Composite container) {
 
-		return new EnumComboViewer<XmlTypeMapping<? extends TypeMapping>, Boolean>(this, container) {
+		return new EnumFormComboViewer<XmlTypeMapping<? extends TypeMapping>, Boolean>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {

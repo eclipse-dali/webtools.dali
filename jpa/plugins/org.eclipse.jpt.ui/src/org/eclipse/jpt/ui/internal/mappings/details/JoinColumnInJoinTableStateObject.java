@@ -25,7 +25,8 @@ public class JoinColumnInJoinTableStateObject extends AbstractJoinColumnStateObj
 	/**
 	 * Creates a new <code>JoinColumnInJoinTableStateObject</code>.
 	 *
-	 * @param joinColumn
+	 * @param joinColumn Either the join column to edit or <code>null</code> if
+	 * this state object is used to create a new one
 	 */
 	public JoinColumnInJoinTableStateObject(IJoinColumn joinColumn) {
 		super(joinColumn);

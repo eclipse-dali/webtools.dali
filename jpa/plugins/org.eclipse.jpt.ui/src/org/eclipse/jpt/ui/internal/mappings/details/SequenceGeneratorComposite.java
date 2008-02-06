@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
 import org.eclipse.jpt.db.internal.Schema;
@@ -89,6 +90,11 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 			@Override
 			protected boolean isBuildSubjectAllowed() {
 				return true;
+			}
+
+			@Override
+			protected IJpaProject jpaProject() {
+				return SequenceGeneratorComposite.this.subject().jpaProject();
 			}
 
 			@Override

@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.BaseJpaDetailsPage;
-import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
+import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -66,9 +66,9 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 		super(parent, widgetFactory);
 	}
 
-	private EnumComboViewer<EntityMappings, AccessType> buildAccessTypeCombo(Composite container) {
+	private EnumFormComboViewer<EntityMappings, AccessType> buildAccessTypeCombo(Composite container) {
 
-		return new EnumComboViewer<EntityMappings, AccessType>(this, container) {
+		return new EnumFormComboViewer<EntityMappings, AccessType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -108,9 +108,9 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 		};
 	}
 
-	private EnumComboViewer<EntityMappings, String> buildCatalogComboViewer(Composite container) {
+	private EnumFormComboViewer<EntityMappings, String> buildCatalogComboViewer(Composite container) {
 
-		return new EnumComboViewer<EntityMappings, String>(this, container) {
+		return new EnumFormComboViewer<EntityMappings, String>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -155,9 +155,9 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 		};
 	}
 
-	private EnumComboViewer<EntityMappings, String> buildSchemaComboViewer(Composite container) {
+	private EnumFormComboViewer<EntityMappings, String> buildSchemaComboViewer(Composite container) {
 
-		return new EnumComboViewer<EntityMappings, String>(this, container) {
+		return new EnumFormComboViewer<EntityMappings, String>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -213,7 +213,7 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 		);
 
 		// Schema widgets
-		EnumComboViewer<EntityMappings, String> schemaComboViewer =
+		EnumFormComboViewer<EntityMappings, String> schemaComboViewer =
 			buildSchemaComboViewer(container);
 
 		buildLabeledComposite(
@@ -224,7 +224,7 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 		);
 
 		// Catalog widgets
-		EnumComboViewer<EntityMappings, String> catalogComboViewer =
+		EnumFormComboViewer<EntityMappings, String> catalogComboViewer =
 			buildCatalogComboViewer(container);
 
 		buildLabeledComposite(
@@ -235,7 +235,7 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 		);
 
 		// Access Type widgets
-		EnumComboViewer<EntityMappings, AccessType> accessTypeComposite =
+		EnumFormComboViewer<EntityMappings, AccessType> accessTypeComposite =
 			buildAccessTypeCombo(container);
 
 		buildLabeledComposite(

@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
+import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -68,9 +68,9 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 		super(parentPane, subjectHolder, parent);
 	}
 
-	private EnumComboViewer<PersistenceUnitDefaults, AccessType> buildAccessTypeCombo(Composite container) {
+	private EnumFormComboViewer<PersistenceUnitDefaults, AccessType> buildAccessTypeCombo(Composite container) {
 
-		return new EnumComboViewer<PersistenceUnitDefaults, AccessType>(this, buildPersistenceUnitDefaultsHolder(), container) {
+		return new EnumFormComboViewer<PersistenceUnitDefaults, AccessType>(this, buildPersistenceUnitDefaultsHolder(), container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -123,9 +123,9 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 		};
 	}
 
-	private EnumComboViewer<PersistenceUnitDefaults, String> buildCatalogComboViewer(Composite container) {
+	private EnumFormComboViewer<PersistenceUnitDefaults, String> buildCatalogComboViewer(Composite container) {
 
-		return new EnumComboViewer<PersistenceUnitDefaults, String>(this, buildPersistenceUnitDefaultsHolder(), container) {
+		return new EnumFormComboViewer<PersistenceUnitDefaults, String>(this, buildPersistenceUnitDefaultsHolder(), container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -169,9 +169,9 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 		};
 	}
 
-	private EnumComboViewer<PersistenceUnitDefaults, String> buildSchemaComboViewer(Composite container) {
+	private EnumFormComboViewer<PersistenceUnitDefaults, String> buildSchemaComboViewer(Composite container) {
 
-		return new EnumComboViewer<PersistenceUnitDefaults, String>(this, buildPersistenceUnitDefaultsHolder(), container) {
+		return new EnumFormComboViewer<PersistenceUnitDefaults, String>(this, buildPersistenceUnitDefaultsHolder(), container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -249,7 +249,7 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 		);
 
 		// Schema widgets
-		EnumComboViewer<PersistenceUnitDefaults, String> schemaComboViewer =
+		EnumFormComboViewer<PersistenceUnitDefaults, String> schemaComboViewer =
 			buildSchemaComboViewer(container);
 
 		buildLabeledComposite(
@@ -260,7 +260,7 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 		);
 
 		// Catalog widgets
-		EnumComboViewer<PersistenceUnitDefaults, String> catalogComboViewer =
+		EnumFormComboViewer<PersistenceUnitDefaults, String> catalogComboViewer =
 			buildCatalogComboViewer(container);
 
 		buildLabeledComposite(
@@ -271,7 +271,7 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 		);
 
 		// Access Type widgets
-		EnumComboViewer<PersistenceUnitDefaults, AccessType> accessTypeComposite =
+		EnumFormComboViewer<PersistenceUnitDefaults, AccessType> accessTypeComposite =
 			buildAccessTypeCombo(container);
 
 		buildLabeledComposite(

@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IJoinTable;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.AbstractDialogPane;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -30,7 +31,8 @@ public class InverseJoinColumnDialog extends JoinColumnInJoinTableDialog {
 	 * Creates a new <code>InverseJoinColumnDialog</code>.
 	 *
 	 * @param parent The parent shell
-	 * @param joinColumn
+	 * @param joinColumn Either the join column to edit or <code>null</code> if
+	 * this state object is used to create a new one
 	 */
 	public InverseJoinColumnDialog(Shell parent, IJoinColumn joinColumn) {
 
@@ -52,8 +54,8 @@ public class InverseJoinColumnDialog extends JoinColumnInJoinTableDialog {
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void initializeMainPane(Composite container) {
-		new InverseJoinColumnDialogPane(getSubjectHolder(), container);
+	protected AbstractDialogPane<JoinColumnInJoinTableStateObject> buildLayout(Composite container) {
+		return new InverseJoinColumnDialogPane(subjectHolder(), container);
 	}
 
 	/*

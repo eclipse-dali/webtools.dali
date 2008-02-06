@@ -10,6 +10,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
 import java.util.Iterator;
+import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.db.internal.Table;
@@ -110,6 +111,11 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 			}
 
 			@Override
+			protected IJpaProject jpaProject() {
+				return subject().jpaProject();
+			}
+
+			@Override
 			protected void setValue(String value) {
 				subject().setSpecifiedName(value);
 			}
@@ -186,6 +192,11 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 			@Override
 			protected String defaultValue() {
 				return subject().getDefaultTable();
+			}
+
+			@Override
+			protected IJpaProject jpaProject() {
+				return subject().jpaProject();
 			}
 
 			@Override

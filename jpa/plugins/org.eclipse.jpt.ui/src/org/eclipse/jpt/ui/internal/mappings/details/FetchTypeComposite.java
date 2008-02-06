@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.internal.context.base.IFetchable;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
+import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -50,9 +50,9 @@ public class FetchTypeComposite extends AbstractFormPane<IFetchable> {
 		super(parentPane, parent);
 	}
 
-	private EnumComboViewer<IFetchable, FetchType> buildFetchTypeCombo(Composite container) {
+	private EnumFormComboViewer<IFetchable, FetchType> buildFetchTypeCombo(Composite container) {
 
-		return new EnumComboViewer<IFetchable, FetchType>(this, container) {
+		return new EnumFormComboViewer<IFetchable, FetchType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -98,7 +98,7 @@ public class FetchTypeComposite extends AbstractFormPane<IFetchable> {
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		EnumComboViewer<IFetchable, FetchType> fetchTypeCombo =
+		EnumFormComboViewer<IFetchable, FetchType> fetchTypeCombo =
 			buildFetchTypeCombo(container);
 
 		buildLabeledComposite(

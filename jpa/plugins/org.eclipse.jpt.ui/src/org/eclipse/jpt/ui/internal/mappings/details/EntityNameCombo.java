@@ -9,14 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import java.util.Arrays;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -34,6 +35,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
+@SuppressWarnings("nls")
 public class EntityNameCombo extends AbstractFormPane<IEntity>
 {
 	private CCombo combo;
@@ -63,22 +65,12 @@ public class EntityNameCombo extends AbstractFormPane<IEntity>
 	private ModifyListener buildComboModifyListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				comboModified(e);
+				if (!isPopulating()) {
+					CCombo combo = (CCombo) e.widget;
+					valueChanged(combo.getText());
+				}
 			}
 		};
-	}
-
-	private void comboModified(ModifyEvent e) {
-		String text = ((CCombo) e.getSource()).getText();
-
-		if (text.equals(combo.getItem(0))) {
-			text = null;
-		}
-
-		subject().setSpecifiedName(text);
-
-		// TODO Does this need to be done?
-		//this.editingDomain.getCommandStack().execute(SetCommand.create(this.editingDomain, this.entity, MappingsPackage.eINSTANCE.getEntity_SpecifiedName(), text));
 	}
 
 	/*
@@ -86,7 +78,10 @@ public class EntityNameCombo extends AbstractFormPane<IEntity>
 	 */
 	@Override
 	protected void doPopulate() {
+
 		super.doPopulate();
+
+		combo.removeAll();
 		populateCombo();
 	}
 
@@ -95,25 +90,33 @@ public class EntityNameCombo extends AbstractFormPane<IEntity>
 	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-		combo = buildEditableCombo(container);
+		combo = buildEditableCCombo(container);
 		combo.addModifyListener(buildComboModifyListener());
 	}
 
 	private void populateCombo() {
-		if (subject() == null) {
-			combo.clearSelection();
-			combo.setItems(new String[0]);
+
+		populateDefaultValue();
+		// TODO Add possible entity names
+		updateSelectedItem();
+	}
+
+	/**
+	 * Adds the default value to the combo if one exists.
+	 */
+	private void populateDefaultValue() {
+
+		IEntity entity = subject();
+		String defaultValue = (entity != null) ? entity.getDefaultName() : null;
+
+		if (defaultValue != null) {
+			combo.add(NLS.bind(
+				JptUiMappingsMessages.EntityGeneralSection_nameDefaultWithOneParam,
+				defaultValue
+			));
 		}
 		else {
-			String defaultItem = NLS.bind(JptUiMappingsMessages.EntityGeneralSection_nameDefaultWithOneParam, subject().getDefaultName());
-			String specifiedName = subject().getSpecifiedName();
-
-			if (specifiedName == null) {
-				setComboData(defaultItem, new String[] { defaultItem });
-			}
-			else {
-				setComboData(specifiedName, new String[] { defaultItem });
-			}
+			combo.add(JptUiMappingsMessages.EntityGeneralSection_nameDefaultEmpty);
 		}
 	}
 
@@ -131,13 +134,80 @@ public class EntityNameCombo extends AbstractFormPane<IEntity>
 		}
 	}
 
-	private void setComboData(String text, String[] items) {
-		if (! Arrays.equals(items, combo.getItems())) {
-			combo.setItems(items);
+	/**
+	 * Updates the selected item by selected the current value, if not
+	 * <code>null</code>, or select the default value if one is available,
+	 * otherwise remove the selection.
+	 * <p>
+	 * <b>Note:</b> It seems the text can be shown as truncated, changing the
+	 * selection to (0, 0) makes the entire text visible.
+	 */
+	private void updateSelectedItem() {
+		IEntity subject = subject();
+		String value = (subject != null) ? subject.getSpecifiedName() : null;
+
+		if (value != null) {
+			combo.setText(value);
+			combo.setSelection(new Point(0, 0));
+		}
+		else {
+			String defaultValue = (subject != null) ? subject.getDefaultName() : null;
+
+			String displayString = (defaultValue == null) ? "" :
+				NLS.bind(
+					JptUiMappingsMessages.ColumnComposite_defaultWithOneParam,
+					defaultValue
+				);
+
+			if (!combo.getText().equals(displayString)) {
+				combo.setText(displayString);
+				combo.setSelection(new Point(0, 0));
+			}
+			else {
+				combo.select(-1);
+			}
+		}
+	}
+
+	private void valueChanged(String value) {
+
+		IEntity subject = subject();
+		String oldValue = (subject != null) ? subject.getSpecifiedName() : null;
+
+		// Check for null value
+		if (StringTools.stringIsEmpty(value)) {
+			value = null;
+
+			if (StringTools.stringIsEmpty(oldValue)) {
+				return;
+			}
 		}
 
-		if (! text.equals(combo.getText())) {
-			combo.setText(text);
+		// The default value
+		if (value != null &&
+		    combo.getItemCount() > 0 &&
+		    value.equals(combo.getItem(0)))
+		{
+			value = null;
+		}
+
+		// Nothing to change
+		if ((oldValue == value) && value == null) {
+			return;
+		}
+
+		// Set the new value
+		if ((value != null) && (oldValue == null) ||
+		   ((oldValue != null) && !oldValue.equals(value))) {
+
+			setPopulating(true);
+
+			try {
+				subject.setSpecifiedName(value);
+			}
+			finally {
+				setPopulating(false);
+			}
 		}
 	}
 }

@@ -10,6 +10,7 @@ package org.eclipse.jpt.ui.internal.mappings.db;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IJpaNode;
+import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
@@ -94,12 +95,6 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	                                      IWidgetFactory widgetFactory)
 	{
 		super(subjectHolder, parent, widgetFactory);
-	}
-
-	private void addConnectionListener(T column) {
-		if (column != null) {
-			column.jpaProject().connectionProfile().addConnectionListener(this.connectionListener);
-		}
 	}
 
 	private ConnectionListener buildConnectionListener() {
@@ -215,7 +210,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	 * connection
 	 */
 	protected final ConnectionProfile connectionProfile() {
-		return subject().jpaProject().connectionProfile();
+		return jpaProject().connectionProfile();
 	}
 
 	/**
@@ -242,7 +237,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	@Override
 	protected void disengageListeners(T subject) {
 		super.disengageListeners(subject);
-		removeConnectionListener(subject);
+		jpaProject().connectionProfile().removeConnectionListener(this.connectionListener);
 	}
 
 	/*
@@ -251,11 +246,10 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	@Override
 	protected void doPopulate() {
 
-		this.combo.removeAll();
+		super.doPopulate();
 
-		if (subject() != null) {
-			populateCombo();
-		}
+		combo.removeAll();
+		populateCombo();
 	}
 
 	/*
@@ -277,7 +271,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	@Override
 	protected void engageListeners(T subject) {
 		super.engageListeners(subject);
-		addConnectionListener(subject);
+		jpaProject().connectionProfile().addConnectionListener(this.connectionListener);
 	}
 
 	public final CCombo getCombo() {
@@ -299,7 +293,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		this.combo = buildEditableCombo(container);
+		this.combo = buildEditableCCombo(container);
 		this.combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
 		this.combo.addModifyListener(buildModifyListener());
 	}
@@ -312,6 +306,15 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	protected boolean isBuildSubjectAllowed() {
 		return false;
 	}
+
+	/**
+	 * Retrives the <code>IJpaProject</code> that is required to register a
+	 * <code>ConnectionListener</code> in order to keep the combo in sync with
+	 * the associated online database.
+	 *
+	 * @return The JPA project
+	 */
+	protected abstract IJpaProject jpaProject();
 
 	/*
 	 * (non-Javadoc)
@@ -344,10 +347,10 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 
 		populateDefaultValue();
 
-		if (connectionProfile().isConnected()) {
+		if (connectionProfile().isConnected() && (subject() != null)) {
 
 			for (Iterator<String> iter = CollectionTools.sort(values()); iter.hasNext(); ) {
-				this.combo.add(iter.next());
+				combo.add(iter.next());
 			}
 		}
 
@@ -359,16 +362,16 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	 */
 	private void populateDefaultValue() {
 
-		String defaultValue = defaultValue();
+		String defaultValue = (subject() != null) ? defaultValue() : null;
 
 		if (defaultValue != null) {
-			this.combo.add(NLS.bind(
+			combo.add(NLS.bind(
 				JptUiMappingsMessages.ColumnComposite_defaultWithOneParam,
 				defaultValue
 			));
 		}
 		else {
-			this.combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
+			combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
 		}
 	}
 
@@ -381,12 +384,6 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 
 		if (CollectionTools.contains(propertyNames(), propertyName)) {
 			updateSelectedItem();
-		}
-	}
-
-	private void removeConnectionListener(T value) {
-		if (value != null) {
-			value.jpaProject().connectionProfile().removeConnectionListener(this.connectionListener);
 		}
 	}
 
@@ -422,22 +419,28 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	 * selection to (0, 0) makes the entire text visible.
 	 */
 	private void updateSelectedItem() {
-		String value = value();
+		T subject = subject();
+		String value = (subject != null) ? value() : null;
 
 		if (value != null) {
-			this.combo.setText(value);
-			this.combo.setSelection(new Point(0, 0));
+			combo.setText(value);
+			combo.setSelection(new Point(0, 0));
 		}
 		else {
-			String defaultValue = defaultValue();
-			String displayString = NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultValue);
+			String defaultValue = (subject != null) ? defaultValue() : null;
 
-			if (!this.combo.getText().equals(displayString)) {
-				this.combo.setText(displayString);
-				this.combo.setSelection(new Point(0, 0));
+			String displayString = (defaultValue == null) ? "" :
+				NLS.bind(
+					JptUiMappingsMessages.ColumnComposite_defaultWithOneParam,
+					defaultValue
+				);
+
+			if (!combo.getText().equals(displayString)) {
+				combo.setText(displayString);
+				combo.setSelection(new Point(0, 0));
 			}
 			else {
-				this.combo.select(-1);
+				combo.select(-1);
 			}
 		}
 	}
@@ -481,16 +484,28 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 			value = null;
 		}
 
+		// Nothing to change
+		if ((oldValue == value) && value == null) {
+			return;
+		}
+
+		// Build the subject before setting the value
 		if (subject == null) {
 			buildSubject();
 		}
 
 		// Set the new value
-		if ((value != null) && (oldValue == null)) {
-			setValue(value);
-		}
-		else if ((oldValue != null) && !oldValue.equals(value)) {
-			setValue(value);
+		if ((value != null) && (oldValue == null) ||
+		   ((oldValue != null) && !oldValue.equals(value))) {
+
+			setPopulating(true);
+
+			try {
+				setValue(value);
+			}
+			finally {
+				setPopulating(false);
+			}
 		}
 	}
 

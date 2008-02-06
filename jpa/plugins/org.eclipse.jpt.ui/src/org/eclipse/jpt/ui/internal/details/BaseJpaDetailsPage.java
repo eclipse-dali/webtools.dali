@@ -52,11 +52,8 @@ public abstract class BaseJpaDetailsPage<T extends IJpaContextNode>
 		}
 		// Dispose this page
 		else {
-			subjectHolder.setValue(null);
-
-			// TODO: This could be removed and we can simply call disengageListeners()
-			// and then nullify the subject
 			dispose();
+			subjectHolder.setValue(null);
 		}
 	}
 }

@@ -15,6 +15,9 @@ public class JptUiMappingsMessages extends NLS
 {
 	private static final String BUNDLE_NAME = "jpt_ui_mappings"; //$NON-NLS-1$
 
+
+	public static String AbstractJoinColumnStateObject_NameNotSpecified;
+
 	public static String Boolean_True;
 	public static String Boolean_False;
 
@@ -87,14 +90,20 @@ public class JptUiMappingsMessages extends NLS
 	public static String JoinTableComposite_overrideDefaultJoinColumns;
 	public static String JoinTableComposite_overrideDefaultInverseJoinColumns;
 
-	public static String JoinColumnDialog_addJoinColumn;
-	public static String JoinColumnDialog_editJoinColumn;
+	public static String JoinColumnDialog_addJoinColumnDescriptionTitle;
+	public static String JoinColumnDialog_addJoinColumnTitle;
+	public static String JoinColumnDialog_description;
+	public static String JoinColumnDialog_editJoinColumnDescriptionTitle;
+	public static String JoinColumnDialog_editJoinColumnTitle;
 	public static String JoinColumnDialog_name;
 	public static String JoinColumnDialog_insertable;
 	public static String JoinColumnDialog_updatable;
 	public static String JoinColumnDialog_defaultWithOneParam;
 	public static String JoinColumnDialog_referencedColumnName;
 	public static String JoinColumnDialog_table;
+
+	public static String JoinColumnDialogPane_true;
+	public static String JoinColumnDialogPane_false;
 
 	public static String InverseJoinColumnDialog_defaultWithOneParam;
 	public static String InverseJoinColumnDialog_editInverseJoinColumn;
@@ -228,7 +237,7 @@ public class JptUiMappingsMessages extends NLS
 
 	public static String MetaDataCompleteComboViewer_true;
 	public static String MetaDataCompleteComboViewer_false;
-	
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, JptUiMappingsMessages.class);

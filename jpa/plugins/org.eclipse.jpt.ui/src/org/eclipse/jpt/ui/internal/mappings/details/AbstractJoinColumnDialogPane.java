@@ -15,11 +15,12 @@ import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractDialogPane;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -43,8 +44,8 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObject> extends AbstractDialogPane<T>
 {
-	private CCombo nameCombo;
-	private CCombo referencedColumnNameCombo;
+	private Combo nameCombo;
+	private Combo referencedColumnNameCombo;
 
 	/**
 	 * Creates a new <code>AbstractJoinColumnDialogPane</code>.
@@ -64,16 +65,24 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
-		propertyNames.add(AbstractJoinColumnStateObject.SELECTED_REFERENCED_COLUMN_NAME_PROPERTY);
-		propertyNames.add(AbstractJoinColumnStateObject.SELECTED_NAME_PROPERTY);
+		propertyNames.add(AbstractJoinColumnStateObject.REFERENCED_COLUMN_NAME_PROPERTY);
+		propertyNames.add(AbstractJoinColumnStateObject.NAME_PROPERTY);
 	}
 
 	private ModifyListener buildNameComboListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				CCombo combo = (CCombo) e.widget;
-				subject().setSelectedName(combo.getText());
-				subject().setDefaultNameSelected(combo.getSelectionIndex() == 0);
+				if (!isPopulating()) {
+					setPopulating(true);
+					try {
+						Combo combo = (Combo) e.widget;
+						subject().setName(combo.getText());
+						subject().setDefaultNameSelected(combo.getSelectionIndex() == 0);
+					}
+					finally {
+						setPopulating(false);
+					}
+				}
 			}
 		};
 	}
@@ -81,9 +90,17 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 	private ModifyListener buildReferencedColumnNameComboListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				CCombo combo = (CCombo) e.widget;
-				subject().setSelectedReferencedColumnName(combo.getText());
-				subject().setDefaultReferencedColumnNameSelected(combo.getSelectionIndex() == 0);
+				if (!isPopulating()) {
+					setPopulating(true);
+					try {
+						Combo combo = (Combo) e.widget;
+						subject().setReferencedColumnName(combo.getText());
+						subject().setDefaultReferencedColumnNameSelected(combo.getSelectionIndex() == 0);
+					}
+					finally {
+						setPopulating(false);
+					}
+				}
 			}
 		};
 	}
@@ -97,11 +114,11 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 		populateNameCombo();
 	}
 
-	public final CCombo getNameCombo() {
+	protected final Combo getNameCombo() {
 		return nameCombo;
 	}
 
-	public final CCombo getReferencedColumnNameCombo() {
+	protected final Combo getReferencedColumnNameCombo() {
 		return referencedColumnNameCombo;
 	}
 
@@ -112,24 +129,18 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 	protected void initializeLayout(Composite container) {
 
 		// Name widgets
-		nameCombo = buildEditableCombo(container);
-		nameCombo.addModifyListener(buildNameComboListener());
-
-		buildLabeledComposite(
+		nameCombo = buildLabeledEditableCombo(
 			container,
 			JptUiMappingsMessages.JoinColumnDialog_name,
-			nameCombo,
+			buildNameComboListener(),
 			IJpaHelpContextIds.MAPPING_JOIN_COLUMN_NAME
 		);
 
 		// Referenced Column Name widgets
-		referencedColumnNameCombo = buildEditableCombo(container);
-		referencedColumnNameCombo.addModifyListener(buildReferencedColumnNameComboListener());
-
-		buildLabeledComposite(
+		referencedColumnNameCombo = buildLabeledEditableCombo(
 			container,
 			JptUiMappingsMessages.JoinColumnDialog_referencedColumnName,
-			referencedColumnNameCombo,
+			buildReferencedColumnNameComboListener(),
 			IJpaHelpContextIds.MAPPING_JOIN_REFERENCED_COLUMN
 		);
 	}
@@ -137,53 +148,88 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 	public void populateNameCombo() {
 
 		AbstractJoinColumnStateObject subject = subject();
-		this.nameCombo.removeAll();
+		nameCombo.removeAll();
 
-		if (subject.getDefaultName() != null) {
-			this.nameCombo.add(NLS.bind(JptUiMappingsMessages.JoinColumnDialog_defaultWithOneParam, subject.getDefaultName()));
+		if (subject == null) {
+			return;
 		}
 
-		Table table = subject.getNameTable();
+		// Add the default column name if one exists
+		String defaultName = subject.defaultName();
 
-		if (table != null) {
-			for (Iterator<String> iter = table.columnNames(); iter.hasNext(); ) {
-				this.nameCombo.add(iter.next());
+		if (defaultName != null) {
+			nameCombo.add(NLS.bind(
+				JptUiMappingsMessages.JoinColumnDialog_defaultWithOneParam,
+				defaultName
+			));
+		}
+
+		// Populate the combo with the column names
+		Table nameTable = subject.getNameTable();
+
+		if (nameTable != null) {
+			Iterator<String> columnNames = nameTable.columnNames();
+
+			for (Iterator<String> iter = CollectionTools.sort(columnNames); iter.hasNext(); ) {
+				nameCombo.add(iter.next());
 			}
 		}
 
-		if (subject.getJoinColumn() != null) {
-			if (subject.getSpecifiedName() != null) {
-				this.nameCombo.setText(subject.getSpecifiedName());
-			}
-			else {
-				this.nameCombo.select(0);
-			}
+		// Set the selected name
+		String name = subject.getName();
+
+		if ((name != null) && !subject.isDefaultNameSelected()) {
+			nameCombo.setText(name);
+		}
+		else if (defaultName != null) {
+			nameCombo.select(0);
+		}
+		else {
+			nameCombo.select(-1);
 		}
 	}
 
 	public void populateReferencedNameCombo() {
 
 		AbstractJoinColumnStateObject subject = subject();
+		referencedColumnNameCombo.removeAll();
 
-		if (subject.getDefaultReferencedColumnName() != null) {
-			this.referencedColumnNameCombo.add(NLS.bind(JptUiMappingsMessages.JoinColumnDialog_defaultWithOneParam, subject.getDefaultReferencedColumnName()));
+		if (subject == null) {
+			return;
 		}
 
+		// Add the default referenced column name if one exists
+		String defaultReferencedColumnName = subject.defaultReferencedColumnName();
+
+		if (defaultReferencedColumnName != null) {
+			referencedColumnNameCombo.add(NLS.bind(
+				JptUiMappingsMessages.JoinColumnDialog_defaultWithOneParam,
+				defaultReferencedColumnName)
+			);
+		}
+
+		// Populate the combo with the column names
 		Table referencedNameTable = subject.getReferencedNameTable();
 
 		if (referencedNameTable != null) {
-			for (Iterator<String> iter = referencedNameTable.columnNames(); iter.hasNext(); ) {
-				this.referencedColumnNameCombo.add(iter.next());
+			Iterator<String> columnNames = referencedNameTable.columnNames();
+
+			for (Iterator<String> iter = CollectionTools.sort(columnNames); iter.hasNext(); ) {
+				referencedColumnNameCombo.add(iter.next());
 			}
 		}
 
-		if (subject.getJoinColumn() != null) {
-			if (subject.getSpecifiedReferencedColumnName() != null) {
-				this.referencedColumnNameCombo.setText(subject().getSpecifiedReferencedColumnName());
-			}
-			else {
-				this.referencedColumnNameCombo.select(0);
-			}
+		// Set the selected referenced column name
+		String referencedColumnName = subject.getReferencedColumnName();
+
+		if ((referencedColumnName != null) && !subject.isDefaultReferencedColumnNameSelected()) {
+			referencedColumnNameCombo.setText(referencedColumnName);
+		}
+		else if (defaultReferencedColumnName != null) {
+			referencedColumnNameCombo.select(0);
+		}
+		else {
+			referencedColumnNameCombo.select(-1);
 		}
 	}
 
@@ -194,10 +240,10 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
 
-		if (propertyName == AbstractJoinColumnStateObject.SELECTED_NAME_PROPERTY) {
+		if (propertyName == AbstractJoinColumnStateObject.NAME_PROPERTY) {
 			populateNameCombo();
 		}
-		else if (propertyName == AbstractJoinColumnStateObject.SELECTED_REFERENCED_COLUMN_NAME_PROPERTY) {
+		else if (propertyName == AbstractJoinColumnStateObject.REFERENCED_COLUMN_NAME_PROPERTY) {
 			populateReferencedNameCombo();
 		}
 	}

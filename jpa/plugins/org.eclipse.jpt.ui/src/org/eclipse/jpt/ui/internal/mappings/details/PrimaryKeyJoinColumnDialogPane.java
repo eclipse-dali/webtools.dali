@@ -42,6 +42,6 @@ public final class PrimaryKeyJoinColumnDialogPane extends AbstractJoinColumnDial
 	protected void initializeLayout(Composite container) {
 		super.initializeLayout(container);
 
-		// TODO
+		// TODO or there is nothing here
 	}
 }

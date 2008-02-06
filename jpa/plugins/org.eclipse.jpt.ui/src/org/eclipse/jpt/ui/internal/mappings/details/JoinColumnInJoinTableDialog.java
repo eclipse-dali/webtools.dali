@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IJoinTable;
+import org.eclipse.jpt.ui.internal.widgets.AbstractDialogPane;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -34,7 +35,8 @@ public class JoinColumnInJoinTableDialog extends AbstractJoinColumnDialog<JoinCo
 	 * Creates a new <code>JoinColumnInJoinTableDialog</code>.
 	 *
 	 * @param parent The parent shell
-	 * @param joinColumn
+	 * @param joinColumn Either the join column to edit or <code>null</code> if
+	 * this state object is used to create a new one
 	 */
 	public JoinColumnInJoinTableDialog(Shell parent, IJoinColumn joinColumn) {
 
@@ -51,6 +53,17 @@ public class JoinColumnInJoinTableDialog extends AbstractJoinColumnDialog<JoinCo
 
 		super(parent);
 		this.joinTable = joinTable;
+	}
+
+	/*
+	 * non-Javadoc)
+	 */
+	@Override
+	protected AbstractDialogPane<JoinColumnInJoinTableStateObject> buildLayout(Composite container) {
+		return new AbstractJoinColumnDialogPane<JoinColumnInJoinTableStateObject>(
+			subjectHolder(),
+			container
+		);
 	}
 
 	/*
@@ -72,16 +85,5 @@ public class JoinColumnInJoinTableDialog extends AbstractJoinColumnDialog<JoinCo
 	@Override
 	public IJoinColumn getJoinColumn() {
 		return (IJoinColumn) super.getJoinColumn();
-	}
-
-	/*
-	 * non-Javadoc)
-	 */
-	@Override
-	protected void initializeMainPane(Composite container) {
-		new AbstractJoinColumnDialogPane<JoinColumnInJoinTableStateObject>(
-			getSubjectHolder(),
-			container
-		);
 	}
 }

@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractDialog;
+import org.eclipse.jpt.ui.internal.widgets.AbstractValidatingDialog;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Shell;
  * @version 2.0
  * @since 1.0
  */
-public abstract class AbstractJoinColumnDialog<T extends AbstractJoinColumnStateObject> extends AbstractDialog<T> {
+public abstract class AbstractJoinColumnDialog<T extends AbstractJoinColumnStateObject> extends AbstractValidatingDialog<T> {
 
 	private IAbstractJoinColumn joinColumn;
 
@@ -40,13 +40,35 @@ public abstract class AbstractJoinColumnDialog<T extends AbstractJoinColumnState
 	 * Creates a new <code>AbstractJoinColumnDialog</code>.
 	 *
 	 * @param parent The parent shell
-	 * @param joinColumn
+	 * @param joinColumn Either the join column to edit or <code>null</code> if
+	 * this state object is used to create a new one
 	 */
 	public AbstractJoinColumnDialog(Shell parent,
 	                                IAbstractJoinColumn joinColumn) {
 
 		this(parent);
 		this.joinColumn = joinColumn;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected String description() {
+		return JptUiMappingsMessages.JoinColumnDialog_description;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected String descriptionTitle() {
+
+		if (joinColumn == null) {
+			return JptUiMappingsMessages.JoinColumnDialog_addJoinColumnDescriptionTitle;
+		}
+
+		return JptUiMappingsMessages.JoinColumnDialog_editJoinColumnDescriptionTitle;
 	}
 
 	/**
@@ -63,10 +85,11 @@ public abstract class AbstractJoinColumnDialog<T extends AbstractJoinColumnState
 	 */
 	@Override
 	protected String title() {
+
 		if (joinColumn == null) {
-			return JptUiMappingsMessages.JoinColumnDialog_addJoinColumn;
+			return JptUiMappingsMessages.JoinColumnDialog_addJoinColumnTitle;
 		}
 
-		return JptUiMappingsMessages.JoinColumnDialog_editJoinColumn;
+		return JptUiMappingsMessages.JoinColumnDialog_editJoinColumnTitle;
 	}
 }

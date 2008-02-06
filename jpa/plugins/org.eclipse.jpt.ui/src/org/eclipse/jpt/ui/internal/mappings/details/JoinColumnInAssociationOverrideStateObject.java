@@ -37,7 +37,8 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 	/**
 	 * Creates a new <code>JoinColumnInAssociationOverrideStateObject</code>.
 	 *
-	 * @param joinColumn
+	 * @param joinColumn Either the join column to edit or <code>null</code> if
+	 * this state object is used to create a new one
 	 */
 	public JoinColumnInAssociationOverrideStateObject(IJoinColumn joinColumn) {
 		super(joinColumn);

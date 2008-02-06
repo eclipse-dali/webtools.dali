@@ -15,11 +15,13 @@ import org.eclipse.jpt.core.internal.context.base.INonOwningMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -39,7 +41,6 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-@SuppressWarnings("nls")
 public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 {
 	private CCombo combo;
@@ -50,8 +51,8 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	protected MappedByComposite(AbstractFormPane<? extends INonOwningMapping> parentPane,
-	                            Composite parent) {
+	public MappedByComposite(AbstractFormPane<? extends INonOwningMapping> parentPane,
+	                         Composite parent) {
 
 		super(parentPane, parent);
 	}
@@ -82,23 +83,9 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 	private ModifyListener buildComboModifyListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (isPopulating()) {
-					return;
-				}
-
-				String mappedBy = ((CCombo) e.getSource()).getText();
-				String currentMappedBy = subject().getMappedBy();
-
-				if (StringTools.stringIsEmpty(mappedBy)) {
-					mappedBy = null;
-
-					if (StringTools.stringIsEmpty(currentMappedBy)) {
-						return;
-					}
-				}
-
-				if (currentMappedBy == null || !currentMappedBy.equals(mappedBy)) {
-					subject().setMappedBy(mappedBy);
+				if (!isPopulating()) {
+					CCombo combo = (CCombo) e.widget;
+					valueChanged(combo.getText());
 				}
 			}
 		};
@@ -109,9 +96,11 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 	 */
 	@Override
 	protected void doPopulate() {
+
 		super.doPopulate();
-		populateChoices();
-		populateMappedByText();
+
+		combo.removeAll();
+		populateCombo();
 	}
 
 	/*
@@ -120,7 +109,7 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		combo = buildEditableCombo(container);
+		combo = buildEditableCCombo(container);
 		combo.addModifyListener(buildComboModifyListener());
 
 		buildLabeledComposite(
@@ -131,36 +120,19 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 		);
 	}
 
-	private void populateChoices() {
-		combo.removeAll();
+	private void populateCombo() {
 
-		if (subject() != null) {
-			for (Iterator<String> iter = subject().candidateMappedByAttributeNames(); iter.hasNext(); ) {
+		INonOwningMapping subject = subject();
+
+		if (subject != null) {
+			Iterator<String> iter = subject.candidateMappedByAttributeNames();
+
+			for (iter = CollectionTools.sort(iter); iter.hasNext(); ) {
 				combo.add(iter.next());
 			}
 		}
-	}
 
-	private void populateMappedByText() {
-		if (subject() == null) {
-			return;
-		}
-
-		if (subject() != null) {
-			String mappedBy = subject().getMappedBy();
-
-			if (mappedBy != null) {
-				if (!combo.getText().equals(mappedBy)) {
-					combo.setText(mappedBy);
-				}
-			}
-			else {
-				combo.setText("");
-			}
-		}
-		else {
-			combo.setText("");
-		}
+		updateSelectedItem();
 	}
 
 	/*
@@ -171,7 +143,71 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 		super.propertyChanged(propertyName);
 
 		if (propertyName == INonOwningMapping.MAPPED_BY_PROPERTY) {
-			populateMappedByText();
+			populateCombo();
+		}
+	}
+
+	/**
+	 * Updates the selected item by selected the current value, if not
+	 * <code>null</code>, or select the default value if one is available,
+	 * otherwise remove the selection.
+	 * <p>
+	 * <b>Note:</b> It seems the text can be shown as truncated, changing the
+	 * selection to (0, 0) makes the entire text visible.
+	 */
+	private void updateSelectedItem() {
+
+		INonOwningMapping subject = subject();
+		String value = (subject != null) ? subject.getMappedBy() : null;
+
+		if (value != null) {
+			combo.setText(value);
+			combo.setSelection(new Point(0, 0));
+		}
+		else {
+			combo.select(-1);
+		}
+	}
+
+	private void valueChanged(String value) {
+
+		INonOwningMapping subject = subject();
+		String oldValue = (subject != null) ? subject.getMappedBy() : null;
+
+		// Check for null value
+		if (StringTools.stringIsEmpty(value)) {
+			value = null;
+
+			if (StringTools.stringIsEmpty(oldValue)) {
+				return;
+			}
+		}
+
+		// The default value
+		if (value != null &&
+		    combo.getItemCount() > 0 &&
+		    value.equals(combo.getItem(0)))
+		{
+			value = null;
+		}
+
+		// Nothing to change
+		if ((oldValue == value) && value == null) {
+			return;
+		}
+
+		// Set the new value
+		if ((value != null) && (oldValue == null) ||
+		   ((oldValue != null) && !oldValue.equals(value))) {
+
+			setPopulating(true);
+
+			try {
+				subject.setMappedBy(value);
+			}
+			finally {
+				setPopulating(false);
+			}
 		}
 	}
 }

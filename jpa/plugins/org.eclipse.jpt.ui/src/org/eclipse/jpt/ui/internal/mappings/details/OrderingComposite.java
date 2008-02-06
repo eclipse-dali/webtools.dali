@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Text;
  * | |                                                                       | |
  * | | o Custom Ordering                                                     | |
  * | |   ------------------------------------------------------------------- | |
- * | |   |                                                                 | | |
+ * | |   | I                                                               | | |
  * | |   ------------------------------------------------------------------- | |
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
@@ -59,8 +59,8 @@ public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMappin
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	protected OrderingComposite(AbstractFormPane<? extends IMultiRelationshipMapping> parentPane,
-	                            Composite parent) {
+	public OrderingComposite(AbstractFormPane<? extends IMultiRelationshipMapping> parentPane,
+	                         Composite parent) {
 
 		super(parentPane, parent);
 	}
@@ -107,12 +107,10 @@ public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMappin
 	private ModifyListener buildCustomTextModifyListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				if (isPopulating()) {
-					return;
+				if (!isPopulating()) {
+					Text text = (Text) e.widget;
+					valueChanged(text.getText());
 				}
-
-				Text text = (Text) e.widget;
-				subject().setOrderBy(text.getText());
 			}
 		};
 	}
@@ -210,10 +208,6 @@ public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMappin
 
 	private void populateCustomOrdering() {
 
-		if (customOrderingText.isDisposed()) {
-			return;
-		}
-
 		if ((subject() != null) && subject().isCustomOrdering()) {
 			customOrderingText.setText(subject().getOrderBy());
 		}
@@ -231,6 +225,18 @@ public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMappin
 
 		if (propertyName == IMultiRelationshipMapping.ORDER_BY_PROPERTY) {
 			populateCustomOrdering();
+		}
+	}
+
+	private void valueChanged(String value) {
+
+		setPopulating(true);
+
+		try {
+			subject().setOrderBy(value);
+		}
+		finally {
+			setPopulating(false);
 		}
 	}
 }

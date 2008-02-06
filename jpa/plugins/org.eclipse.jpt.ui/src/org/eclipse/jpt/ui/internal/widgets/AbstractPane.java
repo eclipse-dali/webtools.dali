@@ -31,6 +31,7 @@ import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -40,6 +41,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -380,6 +382,45 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
+	 * Creates a new non-editable <code>CCombo</code>.
+	 *
+	 * @param container The parent container
+	 * @return The newly created <code>Combo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final CCombo buildCCombo(Composite container) {
+
+		CCombo combo = this.widgetFactory.createCCombo(container);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		combo.setLayoutData(gridData);
+
+		return combo;
+	}
+
+	/**
+	 * Creates a new <code>ComboViewer</code> using a <code>CCombo</code>.
+	 *
+	 * @param container The parent container
+	 * @param labelProvider The provider responsible to convert the combo's items
+	 * into human readable strings
+	 * @return The newly created <code>ComboViewer</code>
+	 *
+	 * @category Layout
+	 */
+	protected final ComboViewer buildCComboViewer(Composite container,
+	                                              IBaseLabelProvider labelProvider) {
+
+		CCombo combo = this.buildCCombo(container);
+		ComboViewer viewer = new ComboViewer(combo);
+		viewer.setLabelProvider(labelProvider);
+		return viewer;
+	}
+
+	/**
 	 * Creates a new check box using the given information.
 	 *
 	 * @param parent The parent container
@@ -422,16 +463,16 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new ediable combo.
+	 * Creates a new non-editable <code>Combo</code>.
 	 *
 	 * @param container The parent container
 	 * @return The newly created <code>Combo</code>
 	 *
 	 * @category Layout
 	 */
-	protected final CCombo buildCombo(Composite container) {
+	protected final Combo buildCombo(Composite container) {
 
-		CCombo combo = this.widgetFactory.createCombo(container);
+		Combo combo = this.widgetFactory.createCombo(container);
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -442,7 +483,7 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new <code>ComboViewer</code>.
+	 * Creates a new <code>ComboViewer</code> using a <code>Combo</code>.
 	 *
 	 * @param container The parent container
 	 * @param labelProvider The provider responsible to convert the combo's items
@@ -454,7 +495,7 @@ public abstract class AbstractPane<T extends Model>
 	protected final ComboViewer buildComboViewer(Composite container,
 	                                             IBaseLabelProvider labelProvider) {
 
-		CCombo combo = this.buildCombo(container);
+		Combo combo = this.buildCombo(container);
 		ComboViewer viewer = new ComboViewer(combo);
 		viewer.setLabelProvider(labelProvider);
 		return viewer;
@@ -481,16 +522,16 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new ediable combo.
+	 * Creates a new editable <code>CCombo</code>.
 	 *
 	 * @param container The parent container
-	 * @return The newly created <code>Combo</code>
+	 * @return The newly created <code>CCombo</code>
 	 *
 	 * @category Layout
 	 */
-	protected final CCombo buildEditableCombo(Composite container) {
+	protected final CCombo buildEditableCCombo(Composite container) {
 
-		CCombo combo = this.widgetFactory.createEditableCombo(container);
+		CCombo combo = this.widgetFactory.createEditableCCombo(container);
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -501,7 +542,46 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new editable <code>ComboViewer</code>.
+	 * Creates a new editable <code>ComboViewer</code> using a <code>CCombo</code>.
+	 *
+	 * @param container The parent container
+	 * @param labelProvider The provider responsible to convert the combo's items
+	 * into human readable strings
+	 * @return The newly created <code>ComboViewer</code>
+	 *
+	 * @category Layout
+	 */
+	protected final ComboViewer buildEditableCComboViewer(Composite container,
+	                                                      IBaseLabelProvider labelProvider) {
+
+		CCombo combo = this.buildEditableCCombo(container);
+		ComboViewer viewer = new ComboViewer(combo);
+		viewer.setLabelProvider(labelProvider);
+		return viewer;
+	}
+
+	/**
+	 * Creates a new editable <code>Combo</code>.
+	 *
+	 * @param container The parent container
+	 * @return The newly created <code>Combo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Combo buildEditableCombo(Composite container) {
+
+		Combo combo = this.widgetFactory.createEditableCombo(container);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		combo.setLayoutData(gridData);
+
+		return combo;
+	}
+
+	/**
+	 * Creates a new editable <code>ComboViewer</code> using a <code>Combo</code>.
 	 *
 	 * @param container The parent container
 	 * @param labelProvider The provider responsible to convert the combo's items
@@ -513,7 +593,7 @@ public abstract class AbstractPane<T extends Model>
 	protected final ComboViewer buildEditableComboViewer(Composite container,
 	                                                     IBaseLabelProvider labelProvider) {
 
-		CCombo combo = this.buildEditableCombo(container);
+		Combo combo = this.buildEditableCombo(container);
 		ComboViewer viewer = new ComboViewer(combo);
 		viewer.setLabelProvider(labelProvider);
 		return viewer;
@@ -574,6 +654,68 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
+	 * Creates a new container that will have a non-editable combo labeled with
+	 * the given text.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param comboListener The listener that will be notified when the selection
+	 * changes
+	 * @param rightControl The control shown to the right of the main widget
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The container of the label and the given center control
+	 *
+	 * @category Layout
+	 */
+	protected final Combo buildLabeledCombo(Composite container,
+	                                        String labelText,
+	                                        ModifyListener comboListener,
+	                                        Control rightControl,
+	                                        String helpId) {
+
+		Combo combo = this.buildCombo(container);
+		combo.addModifyListener(comboListener);
+
+		this.buildLabeledComposite(
+			container,
+			labelText,
+			combo,
+			rightControl,
+			helpId
+		);
+
+		return combo;
+	}
+
+	/**
+	 * Creates a new container that will have the given center control labeled
+	 * with the given label.
+	 *
+	 * @param container The parent container
+	 * @param leftControl The widget shown to the left of the main widget
+	 * @param centerControl The main widget
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The container of the label and the given center control
+	 *
+	 * @category Layout
+	 */
+	protected final Combo buildLabeledCombo(Composite container,
+	                                        String labelText,
+	                                        ModifyListener comboListener,
+	                                        String helpId) {
+
+		return this.buildLabeledCombo(
+			container,
+			labelText,
+			comboListener,
+			null,
+			helpId
+		);
+	}
+
+	/**
 	 * Creates a new container that will have the given center control labeled
 	 * with the given label.
 	 *
@@ -604,7 +746,7 @@ public abstract class AbstractPane<T extends Model>
 
 		// Re-parent the left control to the new sub pane
 		leftControl.setParent(container);
-		this.leftControlAligner.add(leftControl);
+//		this.leftControlAligner.add(leftControl);
 
 		// Center control
 		gridData = new GridData();
@@ -633,7 +775,6 @@ public abstract class AbstractPane<T extends Model>
 			rightControl.setLayoutData(gridData);
 			rightControl.setParent(container);
 
-			// Re-parent the right control to the new sub pane
 			this.rightControlAligner.add(rightControl);
 
 			// Register the help id for the right control
@@ -643,6 +784,33 @@ public abstract class AbstractPane<T extends Model>
 		}
 
 		return container;
+	}
+
+	/**
+	 * Creates a new container that will have the given center control labeled
+	 * with the given label.
+	 *
+	 * @param container The parent container
+	 * @param label The label used to describe the center control
+	 * @param centerControl The main widget
+	 * @param helpId The topic help ID to be registered for the given center
+	 * control
+	 * @return The container of the label and the given center control
+	 *
+	 * @category Layout
+	 */
+	protected final Composite buildLabeledComposite(Composite container,
+	                                                Control label,
+	                                                Control centerControl,
+	                                                String helpId) {
+
+		return this.buildLabeledComposite(
+			container,
+			label,
+			centerControl,
+			null,
+			helpId
+		);
 	}
 
 	/**
@@ -665,33 +833,6 @@ public abstract class AbstractPane<T extends Model>
 			label,
 			centerControl,
 			null
-		);
-	}
-
-	/**
-	 * Creates a new container that will have the given center control labeled
-	 * with the given label.
-	 *
-	 * @param container The parent container
-	 * @param label The label used to describe the center control
-	 * @param centerControl The main widget
-	 * @param helpId The topic help ID to be registered for the given center
-	 * control
-	 * @return The container of the label and the given center control
-	 *
-	 * @category Layout
-	 */
-	protected final Composite buildLabeledComposite(Composite container,
-	                                                Label label,
-	                                                Control centerControl,
-	                                                String helpId) {
-
-		return this.buildLabeledComposite(
-			container,
-			label,
-			centerControl,
-			null,
-			helpId
 		);
 	}
 
@@ -802,6 +943,68 @@ public abstract class AbstractPane<T extends Model>
 			container,
 			label,
 			centerControl,
+			helpId
+		);
+	}
+
+	/**
+	 * Creates a new container that will have the given center control labeled
+	 * with the given label.
+	 *
+	 * @param container The parent container
+	 * @param leftControl The widget shown to the left of the main widget
+	 * @param centerControl The main widget
+	 * @param rightControl The control shown to the right of the main widget
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The container of the label and the given center control
+	 *
+	 * @category Layout
+	 */
+	protected final Combo buildLabeledEditableCombo(Composite container,
+	                                                String labelText,
+	                                                ModifyListener comboListener,
+	                                                Control rightControl,
+	                                                String helpId) {
+
+		Combo combo = this.buildEditableCombo(container);
+		combo.addModifyListener(comboListener);
+
+		this.buildLabeledComposite(
+			container,
+			labelText,
+			combo,
+			rightControl,
+			helpId
+		);
+
+		return combo;
+	}
+
+	/**
+	 * Creates a new container that will have an editable combo labeled with the
+	 * given text.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param comboListener The listener that will be notified when the selection
+	 * changes
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The container of the label and the given center control
+	 *
+	 * @category Layout
+	 */
+	protected final Combo buildLabeledEditableCombo(Composite container,
+	                                                String labelText,
+	                                                ModifyListener comboListener,
+	                                                String helpId) {
+
+		return this.buildLabeledEditableCombo(
+			container,
+			labelText,
+			comboListener,
+			null,
 			helpId
 		);
 	}
@@ -936,18 +1139,11 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildPane(Composite parent, Layout layout) {
+	protected final Composite buildPane(Composite container, Layout layout) {
 
-		Composite container = this.widgetFactory.createComposite(parent);
+		container = this.widgetFactory.createComposite(container);
 		container.setLayout(layout);
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.verticalAlignment         = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace   = true;
-		container.setLayoutData(gridData);
-
+		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 		return container;
 	}
 
@@ -1289,12 +1485,7 @@ public abstract class AbstractPane<T extends Model>
 		layout.marginBottom = bottomMargin;
 		layout.marginRight  = rightMargin;
 
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-
 		container = this.buildPane(container, layout);
-		container.setLayoutData(gridData);
 
 		return container;
 	}
@@ -2113,8 +2304,9 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	private void updatePane(String propertyName) {
-		if (!container.isDisposed()) {
+		if (!isPopulating() && !container.isDisposed()) {
 			populating = true;
+
 			try {
 				propertyChanged(propertyName);
 			}
@@ -2126,9 +2318,11 @@ public abstract class AbstractPane<T extends Model>
 
 	public static interface IWidgetFactory {
 		Button createButton(Composite parent, String text, int style);
-		CCombo createCombo(Composite parent);
+		CCombo createCCombo(Composite parent);
+		Combo createCombo(Composite parent);
 		Composite createComposite(Composite parent);
-		CCombo createEditableCombo(Composite parent);
+		CCombo createEditableCCombo(Composite parent);
+		Combo createEditableCombo(Composite parent);
 		Group createGroup(Composite parent, String title);
 		Hyperlink createHyperlink(Composite parent, String text);
 		Label createLabel(Composite container, String labelText);

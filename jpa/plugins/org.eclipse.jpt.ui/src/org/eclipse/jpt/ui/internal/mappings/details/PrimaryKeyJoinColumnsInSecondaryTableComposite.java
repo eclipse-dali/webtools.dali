@@ -94,8 +94,8 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 		int index = secondaryTable.specifiedPrimaryKeyJoinColumnsSize();
 
 		IPrimaryKeyJoinColumn joinColumn = secondaryTable.addSpecifiedPrimaryKeyJoinColumn(index);
-		joinColumn.setSpecifiedName(stateObject.getSelectedName());
-		joinColumn.setSpecifiedReferencedColumnName(stateObject.getSpecifiedReferencedColumnName());
+		joinColumn.setSpecifiedName(stateObject.getName());
+		joinColumn.setSpecifiedReferencedColumnName(stateObject.getReferencedColumnName());
 	}
 
 	private void addPrimaryKeyJoinColumn() {
@@ -232,8 +232,8 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 
 	private void editPrimaryKeyJoinColumn(PrimaryKeyJoinColumnInSecondaryTableStateObject stateObject) {
 		IPrimaryKeyJoinColumn joinColumn = stateObject.getJoinColumn();
-		String name = stateObject.getSelectedName();
-		String referencedColumnName = stateObject.getSpecifiedReferencedColumnName();
+		String name = stateObject.getName();
+		String referencedColumnName = stateObject.getReferencedColumnName();
 
 		// Name
 		if (stateObject.isDefaultNameSelected()) {

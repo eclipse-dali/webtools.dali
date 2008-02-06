@@ -14,6 +14,7 @@ import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -116,6 +117,9 @@ public abstract class AbstractDialogPane<T extends Node> extends AbstractPane<T>
 		super(subjectHolder, parent, WidgetFactory.instance());
 	}
 
+	/**
+	 * This <code>IWidgetFactory</code> simply creates plain SWT widgets.
+	 */
 	private static class WidgetFactory implements IWidgetFactory {
 
 		private static final IWidgetFactory INSTANCE = new WidgetFactory();
@@ -125,21 +129,29 @@ public abstract class AbstractDialogPane<T extends Node> extends AbstractPane<T>
 		}
 
 		public Button createButton(Composite parent, String text, int style) {
-			Button button = new Button(parent, style);
+			Button button = new Button(parent, SWT.BORDER | style);
 			button.setText(text);
 			return button;
 		}
 
-		public CCombo createCombo(Composite parent) {
-			return new CCombo(parent, SWT.READ_ONLY);
+		public CCombo createCCombo(Composite parent) {
+			return new CCombo(parent, SWT.BORDER | SWT.READ_ONLY);
+		}
+
+		public Combo createCombo(Composite parent) {
+			return new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
 		}
 
 		public Composite createComposite(Composite parent) {
 			return new Composite(parent, SWT.NULL);
 		}
 
-		public CCombo createEditableCombo(Composite parent) {
-			return new CCombo(parent, SWT.NULL);
+		public CCombo createEditableCCombo(Composite parent) {
+			return new CCombo(parent, SWT.BORDER);
+		}
+
+		public Combo createEditableCombo(Composite parent) {
+			return new Combo(parent, SWT.BORDER);
 		}
 
 		public Group createGroup(Composite parent, String title) {
@@ -154,14 +166,14 @@ public abstract class AbstractDialogPane<T extends Node> extends AbstractPane<T>
 			return hyperlink;
 		}
 
-		public Label createLabel(Composite container, String labelText) {
-			Label label = new Label(container, SWT.NULL);
+		public Label createLabel(Composite parent, String labelText) {
+			Label label = new Label(parent, SWT.LEFT);
 			label.setText(labelText);
 			return label;
 		}
 
-		public List createList(Composite container, int style) {
-			return new List(container, style);
+		public List createList(Composite parent, int style) {
+			return new List(parent, SWT.BORDER | style);
 		}
 
 		public Section createSection(Composite parent, int style) {
@@ -169,7 +181,7 @@ public abstract class AbstractDialogPane<T extends Node> extends AbstractPane<T>
 		}
 
 		public Text createText(Composite parent) {
-			return new Text(parent, SWT.NULL);
+			return new Text(parent, SWT.BORDER);
 		}
 	}
 }

@@ -114,8 +114,8 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		int index = associationOverride.specifiedJoinColumnsSize();
 
 		IJoinColumn joinColumn = associationOverride.addSpecifiedJoinColumn(index);
-		joinColumn.setSpecifiedName(stateObject.getSelectedName());
-		joinColumn.setSpecifiedReferencedColumnName(stateObject.getSpecifiedReferencedColumnName());
+		joinColumn.setSpecifiedName(stateObject.getName());
+		joinColumn.setSpecifiedReferencedColumnName(stateObject.getReferencedColumnName());
 	}
 
 	private PostExecution<JoinColumnInAssociationOverrideDialog> buildAddJoinColumnPostExecution() {
@@ -259,8 +259,8 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 	private void editJoinColumn(JoinColumnInAssociationOverrideStateObject stateObject) {
 
 		IJoinColumn joinColumn = stateObject.getJoinColumn();
-		String name = stateObject.getSelectedName();
-		String referencedColumnName = stateObject.getSpecifiedReferencedColumnName();
+		String name = stateObject.getName();
+		String referencedColumnName = stateObject.getReferencedColumnName();
 
 		// Name
 		if (stateObject.isDefaultNameSelected()) {

@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.widgets;
 
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.node.Node;
@@ -40,6 +41,11 @@ import org.eclipse.ui.help.IWorkbenchHelpSystem;
 @SuppressWarnings("nls")
 public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 {
+	/**
+	 * The main content pane of this dialog.
+	 */
+	private AbstractDialogPane<?> pane;
+
 	/**
 	 * The holder of the "state object" used by this dialog.
 	 */
@@ -72,12 +78,49 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 		initialize();
 	}
 
+	/**
+	 * Initializes the main pane of this dialog. This method is invoked only
+	 * when the dialog is requested to show on screen and not during
+	 * initialization.
+	 *
+	 * @param container The container to which the widgets should be added to,
+	 * the layout is already set
+	 */
+	protected abstract AbstractDialogPane<?> buildLayout(Composite container);
+
+	/**
+	 * Creates the state object (model object) that will be used to keep track
+	 * of the information entered in this dialog. The state object will be stored
+	 * in the subject holder and can be retrieved using {@link #subject()}.
+	 *
+	 * @return A new state object
+	 */
 	protected T buildStateObject() {
 		return null;
 	}
 
+	/**
+	 * Creates the <code>Validator</code> that will be notified when changes are
+	 * made to the state object.
+	 *
+	 * @return The validator that will be set on the state object
+	 */
 	Node.Validator buildValidator() {
 		return Node.NULL_VALIDATOR;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public boolean close() {
+
+		// Dispose the pane in order to remove any listeners that could
+		// have been installed outside the scrope of the state object
+		pane.dispose();
+		pane = null;
+
+		return super.close();
 	}
 
 	/**
@@ -111,11 +154,19 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 		return createDefaultContent(parent);
 	}
 
-	private Control createDefaultContent(Composite parent) {
+	/**
+	 * Creates the default main container of this dialog when the title area is
+	 * not required. The top part is the dialog area populated by the subclass
+	 * and the lower part is the button pane having the OK and Cancel buttons.
+	 *
+	 * @param parent The parent container
+	 * @return The
+	 */
+	private Composite createDefaultContent(Composite parent) {
 
-		Composite composite = new Composite(parent, 0);
+		Composite composite = new Composite(parent, SWT.NULL);
 
-		GridLayout layout      = new GridLayout();
+		GridLayout layout      = new GridLayout(1, false);
 		layout.marginHeight    = 0;
 		layout.marginWidth     = 0;
 		layout.verticalSpacing = 0;
@@ -124,8 +175,8 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 
 		applyDialogFont(composite);
 		initializeDialogUnits(composite);
-		this.dialogArea = createDialogArea(composite);
-		this.buttonBar  = createButtonBar(composite);
+		dialogArea = createDialogArea(composite);
+		buttonBar  = createButtonBar(composite);
 
 		return composite;
 	}
@@ -136,28 +187,43 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 	@Override
 	protected Composite createDialogArea(Composite parent) {
 
-		parent = (Composite) super.createDialogArea(parent);
+		// If the title area needs to be shown, then leave the superclass to
+		// create the necessary widgets
+		if (hasTitleArea()) {
+			parent = (Composite) super.createDialogArea(parent);
+		}
 
-		GridLayout layout = new GridLayout(1, false);
-		layout.marginHeight = 0;
-		layout.marginWidth  = 0;
-		layout.marginTop    = 0;
-		layout.marginLeft   = 0;
-		layout.marginBottom = 0;
-		layout.marginRight  = 0;
+		// Create the main area's container
+		Composite container = new Composite(parent, SWT.NULL);
+		container.setLayout(new GridLayout(1, false));
 
-		Composite dialogPane = new Composite(parent, SWT.NULL);
-		dialogPane.setLayout(layout);
-		initializeMainPane(dialogPane);
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment       = GridData.FILL;
+		gridData.verticalAlignment         = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace   = true;
+		container.setLayoutData(gridData);
+
+		// Initialize the content pane
+		pane = buildLayout(container);
+		pane.populate();
+
+		// Initialize the UI part, which requires the widgets being created
+		initializeUI();
 
 		return parent;
 	}
 
-	protected final WritablePropertyValueModel<T> getSubjectHolder() {
-		return this.subjectHolder;
-	}
-
-	boolean hasTitleArea() {
+	/**
+	 * Determines whether the description area (where a title, description and
+	 * image) should be visible or hidden. <code>AbstractValidatingDialog</code>
+	 * automatically show the description area in order to show problems.
+	 *
+	 * @return <code>false</code> by default, which means the methods used to
+	 * update the title, description and image shouldn't be called; <code>true</code>
+	 * to make the description pane visible
+	 */
+	protected boolean hasTitleArea() {
 		return false;
 	}
 
@@ -180,20 +246,26 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 	}
 
 	/**
-	 * The dialog is built when the show() method is called not
-	 * when the Dialog is constructed
+	 * Initializes the UI part of this dialog, this is called after the widgets
+	 * have been created.
 	 */
-	protected abstract void initializeMainPane(Composite container);
+	protected void initializeUI() {
+	}
 
+	/**
+	 * Creates the state object, if one is needed and install a <code>Validator</code>
+	 * in order to receive notification of changes done to that state object. The
+	 * subject can be retrieved from the subject holder.
+	 */
 	private void installSubject() {
 
-		T subject = this.buildStateObject();
+		T subject = buildStateObject();
 
 		if (subject != null) {
 			subject.setValidator(buildValidator());
 		}
 
-		this.subjectHolder.setValue(subject);
+		subjectHolder.setValue(subject);
 	}
 
 	/**
@@ -223,18 +295,47 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 	 * used
 	 */
 	public T subject() {
-		return this.subjectHolder.value();
+		return subjectHolder.value();
 	}
 
+	/**
+	 * Returns the holder of the subject.
+	 *
+	 * @return The subject holder used to be passed to the dialog pane, which is
+	 * an instance of <code>AbstractDialogPane</code>
+	 */
+	protected final PropertyValueModel<T> subjectHolder() {
+		return subjectHolder;
+	}
+
+	/**
+	 * Retrieves the dialog's title. The title passed to the constructor will be
+	 * returned by default but if it wasn't specified, this method can be used
+	 * to return it.
+	 *
+	 * @return Either the title passed to the constructor or a different title
+	 */
 	protected String title() {
-		return this.title;
+		return title;
 	}
 
-	public boolean wasCancelled() {
+	/**
+	 * Determines whether the dialog was cancelled or not.
+	 *
+	 * @return <code>true</code> if the dialog was cancelled; <code>false</code>
+	 * if it was confirmed
+	 */
+	public final boolean wasCancelled() {
 		return getReturnCode() == CANCEL;
 	}
 
-	public boolean wasConfirmed() {
+	/**
+	 * Determines whether the dialog was confirmed or not.
+	 *
+	 * @return <code>true</code> if the dialog was confirmed; <code>false</code>
+	 * if it was cancelled
+	 */
+	public final boolean wasConfirmed() {
 		return getReturnCode() == OK;
 	}
 }

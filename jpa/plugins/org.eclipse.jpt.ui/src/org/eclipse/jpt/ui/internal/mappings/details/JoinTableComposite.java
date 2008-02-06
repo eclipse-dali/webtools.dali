@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
+import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IJoinTable;
 import org.eclipse.jpt.db.internal.Schema;
@@ -109,8 +110,8 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 
 		int index = subject().specifiedInverseJoinColumnsSize();
 		IJoinColumn joinColumn = subject().addSpecifiedInverseJoinColumn(index);
-		joinColumn.setSpecifiedName(stateObject.getSelectedName());
-		joinColumn.setSpecifiedReferencedColumnName(stateObject.getSpecifiedReferencedColumnName());
+		joinColumn.setSpecifiedName(stateObject.getName());
+		joinColumn.setSpecifiedReferencedColumnName(stateObject.getReferencedColumnName());
 	}
 
 	private void addJoinColumn(IJoinTable joinTable) {
@@ -123,8 +124,8 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 
 		int index = subject().specifiedJoinColumnsSize();
 		IJoinColumn joinColumn = subject().addSpecifiedJoinColumn(index);
-		joinColumn.setSpecifiedName(stateObject.getSelectedName());
-		joinColumn.setSpecifiedReferencedColumnName(stateObject.getSpecifiedReferencedColumnName());
+		joinColumn.setSpecifiedName(stateObject.getName());
+		joinColumn.setSpecifiedReferencedColumnName(stateObject.getReferencedColumnName());
 	}
 
 	private PostExecution<InverseJoinColumnDialog> buildAddInverseJoinColumnPostExecution() {
@@ -252,6 +253,11 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 			}
 
 			@Override
+			protected IJpaProject jpaProject() {
+				return subject().jpaProject();
+			}
+
+			@Override
 			protected void setValue(String value) {
 				subject().setSpecifiedName(value);
 			}
@@ -302,8 +308,8 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 	private void editJoinColumn(JoinColumnInJoinTableStateObject stateObject) {
 
 		IJoinColumn joinColumn = stateObject.getJoinColumn();
-		String name = stateObject.getSelectedName();
-		String referencedColumnName = stateObject.getSpecifiedReferencedColumnName();
+		String name = stateObject.getName();
+		String referencedColumnName = stateObject.getReferencedColumnName();
 
 		if (stateObject.isDefaultNameSelected()) {
 			if (joinColumn.getSpecifiedName() != null) {

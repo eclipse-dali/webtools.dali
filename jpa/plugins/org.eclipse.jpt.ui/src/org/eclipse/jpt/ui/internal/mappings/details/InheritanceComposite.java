@@ -22,7 +22,7 @@ import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
+import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.osgi.util.NLS;
@@ -213,9 +213,9 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 		};
 	}
 
-	private EnumComboViewer<IDiscriminatorColumn, DiscriminatorType> buildDiscriminatorTypeCombo(Composite container) {
+	private EnumFormComboViewer<IDiscriminatorColumn, DiscriminatorType> buildDiscriminatorTypeCombo(Composite container) {
 
-		return new EnumComboViewer<IDiscriminatorColumn, DiscriminatorType>(
+		return new EnumFormComboViewer<IDiscriminatorColumn, DiscriminatorType>(
 			this,
 			buildDiscriminatorColumnHolder(),
 			container)
@@ -283,9 +283,9 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 		};
 	}
 
-	private EnumComboViewer<IEntity, InheritanceType> buildStrategyCombo(Composite container) {
+	private EnumFormComboViewer<IEntity, InheritanceType> buildStrategyCombo(Composite container) {
 
-		return new EnumComboViewer<IEntity, InheritanceType>(this, container) {
+		return new EnumFormComboViewer<IEntity, InheritanceType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -346,7 +346,7 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 	protected void initializeLayout(Composite container) {
 
 		// Strategy widgets
-		EnumComboViewer<IEntity, InheritanceType> strategyViewer =
+		EnumFormComboViewer<IEntity, InheritanceType> strategyViewer =
 			buildStrategyCombo(container);
 
 		buildLabeledComposite(
@@ -357,7 +357,7 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 		);
 
 		// Column widgets
-		columnCombo = buildEditableCombo(container);
+		columnCombo = buildEditableCCombo(container);
 		columnCombo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
 		columnCombo.addModifyListener(buildColumnComboSelectionListener());
 
@@ -369,7 +369,7 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 		);
 
 		// Discriminator Type widgets
-		EnumComboViewer<IDiscriminatorColumn, DiscriminatorType> discriminatorTypeViewer =
+		EnumFormComboViewer<IDiscriminatorColumn, DiscriminatorType> discriminatorTypeViewer =
 			buildDiscriminatorTypeCombo(container);
 
 		buildLabeledComposite(
@@ -380,7 +380,7 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 		);
 
 		// Discrinator Value widgets
-		discriminatorValueCombo = buildEditableCombo(container);
+		discriminatorValueCombo = buildEditableCCombo(container);
 		discriminatorValueCombo.addModifyListener(buildDiscriminatorValueComboSelectionListener());
 
 		buildLabeledComposite(

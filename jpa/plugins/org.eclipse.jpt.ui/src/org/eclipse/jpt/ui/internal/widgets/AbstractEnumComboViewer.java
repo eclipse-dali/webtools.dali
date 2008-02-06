@@ -1,11 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved. This
- * program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0 which accompanies this distribution, and is
- * available at http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  *
- * Contributors: Oracle. - initial API and implementation
- *******************************************************************************/
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
 import java.text.Collator;
@@ -22,8 +23,6 @@ import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.Model;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -42,7 +41,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public abstract class EnumComboViewer<T extends Model, V> extends AbstractPane<T>
+abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<T>
 {
 	/**
 	 * The main widget of this pane.
@@ -55,42 +54,42 @@ public abstract class EnumComboViewer<T extends Model, V> extends AbstractPane<T
 	private static final String NULL_VALUE = "null";
 
 	/**
-	 * Creates a new <code>EnumComboViewer</code>.
+	 * Creates a new <code>AbstractEnumComboViewer</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various widgets
 	 */
-	protected EnumComboViewer(AbstractPane<? extends T> parentPane,
-	                          Composite parent) {
+	AbstractEnumComboViewer(AbstractPane<? extends T> parentPane,
+	                        Composite parent) {
 
 		super(parentPane, parent);
 	}
 
 	/**
-	 * Creates a new <code>EnumComboViewer</code>.
+	 * Creates a new <code>AbstractEnumComboViewer</code>.
 	 *
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various widgets
 	 */
-	protected EnumComboViewer(AbstractPane<?> parentPane,
-	                          PropertyValueModel<? extends T> subjectHolder,
-	                          Composite parent) {
+	AbstractEnumComboViewer(AbstractPane<?> parentPane,
+	                        PropertyValueModel<? extends T> subjectHolder,
+	                        Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
 	}
 
 	/**
-	 * Creates a new <code>EnumComboViewer</code>.
+	 * Creates a new <code>AbstractEnumComboViewer</code>.
 	 *
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various widgets
 	 */
-	protected EnumComboViewer(PropertyValueModel<? extends T> subjectHolder,
-	                          Composite parent,
-	                          IWidgetFactory widgetFactory) {
+	AbstractEnumComboViewer(PropertyValueModel<? extends T> subjectHolder,
+	                        Composite parent,
+	                        IWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
@@ -117,6 +116,14 @@ public abstract class EnumComboViewer<T extends Model, V> extends AbstractPane<T
 		Arrays.sort(extendedChoices, buildComparator());
 		return extendedChoices;
 	}
+
+	/**
+	 * Creates the <code>ComboViewer</code> with the right combo widgets.
+	 *
+	 * @param container The container of the combo
+	 * @return A new <code>ComboViewer</code> containing the right combo widget
+	 */
+	abstract ComboViewer buildComboViewer(Composite container);
 
 	private Comparator<Object> buildComparator() {
 		return new Comparator<Object>() {
@@ -196,7 +203,7 @@ public abstract class EnumComboViewer<T extends Model, V> extends AbstractPane<T
 		return displayString((V) value);
 	}
 
-	private LabelProvider buildLabelProvider() {
+	final LabelProvider buildLabelProvider() {
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -232,7 +239,7 @@ public abstract class EnumComboViewer<T extends Model, V> extends AbstractPane<T
 					value = null;
 				}
 
-				EnumComboViewer.this.setValue((V) value);
+				AbstractEnumComboViewer.this.setValue((V) value);
 			}
 		};
 	}
@@ -270,20 +277,13 @@ public abstract class EnumComboViewer<T extends Model, V> extends AbstractPane<T
 		this.populateCombo();
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Returns
+	 *
+	 * @return
 	 */
-	@Override
-	public void enableWidgets(boolean enabled) {
-		super.enableWidgets(enabled);
-
-		if (!this.comboViewer.getCCombo().isDisposed()) {
-			this.comboViewer.getCCombo().setEnabled(enabled);
-		}
-	}
-
-	protected final CCombo getCombo() {
-		return this.comboViewer.getCCombo();
+	final ComboViewer getComboViewer() {
+		return comboViewer;
 	}
 
 	/**
@@ -297,15 +297,9 @@ public abstract class EnumComboViewer<T extends Model, V> extends AbstractPane<T
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void initializeLayout(Composite container) {
+	protected final void initializeLayout(Composite container) {
 
-		if (this.isEditable()) {
-			this.comboViewer = buildEditableComboViewer(container, buildLabelProvider());
-		}
-		else {
-			this.comboViewer = buildComboViewer(container, buildLabelProvider());
-		}
-
+		this.comboViewer = this.buildComboViewer(container);
 		this.comboViewer.addSelectionChangedListener(buildSelectionChangedListener());
 	}
 
@@ -319,12 +313,13 @@ public abstract class EnumComboViewer<T extends Model, V> extends AbstractPane<T
 	}
 
 	/**
-	 * Populates
+	 * Populates the combo by re-adding all the items.
 	 */
 	private void populateCombo() {
-		this.getCombo().removeAll();
-		this.comboViewer.add(this.buildChoices());
-		this.updateSelection();
+
+		removeAll();
+		comboViewer.add(buildChoices());
+		updateSelection();
 	}
 
 	/*
@@ -337,6 +332,11 @@ public abstract class EnumComboViewer<T extends Model, V> extends AbstractPane<T
 	}
 
 	/**
+	 * Removes all the items from the combo.
+	 */
+	abstract void removeAll();
+
+	/**
 	 * Requests the given new value be set on the subject.
 	 *
 	 * @param value The new value to be set
@@ -344,10 +344,16 @@ public abstract class EnumComboViewer<T extends Model, V> extends AbstractPane<T
 	protected abstract void setValue(V value);
 
 	/**
+	 * Updates the cursor, which is required to show the entire selected item
+	 * within the combo's area.
+	 */
+	abstract void updateCursor();
+
+	/**
 	 * Updates the combo's selected item.
 	 */
 	private void updateSelection() {
-		this.comboViewer.setSelection(this.buildSelection());
-		this.comboViewer.getCCombo().setSelection(new Point(0, 0));
+		comboViewer.setSelection(buildSelection());
+		updateCursor();
 	}
 }

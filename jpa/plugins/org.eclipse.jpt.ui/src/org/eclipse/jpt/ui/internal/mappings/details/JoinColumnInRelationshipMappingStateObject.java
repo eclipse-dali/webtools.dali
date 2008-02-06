@@ -26,19 +26,22 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 	/**
 	 * Creates a new <code>JoinColumnInRelationshipMappingStateObject</code>.
 	 *
-	 * @param joinColumn
+	 * @param joinColumn Either the join column to edit or <code>null</code> if
+	 * this state object is used to create a new one
 	 */
 	public JoinColumnInRelationshipMappingStateObject(IJoinColumn joinColumn) {
 		super(joinColumn);
-		this.relationshipMapping = (ISingleRelationshipMapping) joinColumn.parent();
+		initialize((ISingleRelationshipMapping) joinColumn.parent());
 	}
 
 	/**
 	 * Creates a new <code>JoinColumnInRelationshipMappingStateObject</code>.
+	 *
+	 * @param relationshipMapping
 	 */
 	public JoinColumnInRelationshipMappingStateObject(ISingleRelationshipMapping relationshipMapping) {
 		super();
-		this.relationshipMapping = relationshipMapping;
+		initialize(relationshipMapping);
 	}
 
 	/*
@@ -47,8 +50,10 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 	@Override
 	public String defaultTableName() {
 
-		if (getJoinColumn() != null) {
-			return getJoinColumn().getDefaultTable();
+		IJoinColumn joinColumn = getJoinColumn();
+
+		if (joinColumn != null) {
+			return joinColumn.getDefaultTable();
 		}
 
 		return relationshipMapping.typeMapping().tableName();
@@ -92,5 +97,18 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 	@Override
 	public Schema getSchema() {
 		return relationshipMapping.typeMapping().dbSchema();
+	}
+
+	private void initialize(ISingleRelationshipMapping relationshipMapping) {
+		this.relationshipMapping = relationshipMapping;
+
+		// If the table isn't set or is the default table, then
+		// use the mapping's table
+		if ((getTable() == null) || isDefaultTableSelected()) {
+			String table = relationshipMapping.typeMapping().tableName();
+
+			setTable(table);
+			setDefaultTableSelected(table != null);
+		}
 	}
 }

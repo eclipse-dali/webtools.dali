@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
+import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -46,9 +46,9 @@ public class EnumTypeComposite extends AbstractFormPane<IBasicMapping>
 		super(parentPane, parent);
 	}
 
-	private EnumComboViewer<IBasicMapping, EnumType> buildEnumTypeCombo(Composite container) {
+	private EnumFormComboViewer<IBasicMapping, EnumType> buildEnumTypeCombo(Composite container) {
 
-		return new EnumComboViewer<IBasicMapping, EnumType>(this, container) {
+		return new EnumFormComboViewer<IBasicMapping, EnumType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -94,7 +94,7 @@ public class EnumTypeComposite extends AbstractFormPane<IBasicMapping>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		EnumComboViewer<IBasicMapping, EnumType> enumTypeCombo =
+		EnumFormComboViewer<IBasicMapping, EnumType> enumTypeCombo =
 			buildEnumTypeCombo(container);
 
 		buildLabeledComposite(

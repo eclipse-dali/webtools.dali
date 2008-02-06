@@ -10,6 +10,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
+import org.eclipse.jpt.ui.internal.widgets.AbstractDialogPane;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
@@ -30,7 +31,8 @@ public class PrimaryKeyJoinColumnDialog extends AbstractJoinColumnDialog<Primary
 	 * Creates a new <code>PrimaryKeyJoinColumnDialog</code>.
 	 *
 	 * @param parent The parent shell
-	 * @param entity
+	 * @param joinColumn Either the join column to edit or <code>null</code> if
+	 * this state object is used to create a new one
 	 */
 	public PrimaryKeyJoinColumnDialog(Shell parent, IEntity entity) {
 
@@ -54,6 +56,14 @@ public class PrimaryKeyJoinColumnDialog extends AbstractJoinColumnDialog<Primary
 	 * (non-Javadoc)
 	 */
 	@Override
+	protected AbstractDialogPane<PrimaryKeyJoinColumnStateObject> buildLayout(Composite container) {
+		return new PrimaryKeyJoinColumnDialogPane(subjectHolder(), container);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
 	protected PrimaryKeyJoinColumnStateObject buildStateObject() {
 
 		if (entity != null) {
@@ -69,13 +79,5 @@ public class PrimaryKeyJoinColumnDialog extends AbstractJoinColumnDialog<Primary
 	@Override
 	public IPrimaryKeyJoinColumn getJoinColumn() {
 		return (IPrimaryKeyJoinColumn) super.getJoinColumn();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeMainPane(Composite container) {
-		new PrimaryKeyJoinColumnDialogPane(getSubjectHolder(), container);
 	}
 }

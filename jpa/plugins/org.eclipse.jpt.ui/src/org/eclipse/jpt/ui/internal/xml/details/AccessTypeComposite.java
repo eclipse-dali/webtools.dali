@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
+import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -49,9 +49,9 @@ public class AccessTypeComposite extends AbstractFormPane<XmlTypeMapping<? exten
 		super(parentPane, subjectHolder, parent);
 	}
 
-	private EnumComboViewer<XmlTypeMapping<? extends TypeMapping>, AccessType> buildAccessTypeComboViewer(Composite container) {
+	private EnumFormComboViewer<XmlTypeMapping<? extends TypeMapping>, AccessType> buildAccessTypeComboViewer(Composite container) {
 
-		return new EnumComboViewer<XmlTypeMapping<? extends TypeMapping>, AccessType>(this, container) {
+		return new EnumFormComboViewer<XmlTypeMapping<? extends TypeMapping>, AccessType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -97,7 +97,7 @@ public class AccessTypeComposite extends AbstractFormPane<XmlTypeMapping<? exten
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		EnumComboViewer<XmlTypeMapping<? extends TypeMapping>, AccessType> comboViewer =
+		EnumFormComboViewer<XmlTypeMapping<? extends TypeMapping>, AccessType> comboViewer =
 			buildAccessTypeComboViewer(container);
 
 		buildLabeledComposite(

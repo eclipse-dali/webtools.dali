@@ -17,7 +17,7 @@ import org.eclipse.jpt.db.internal.Table;
  * @version 2.0
  * @since 2.0
  */
-final class PrimaryKeyJoinColumnStateObject extends AbstractJoinColumnStateObject
+public class PrimaryKeyJoinColumnStateObject extends AbstractJoinColumnStateObject
 {
 	private IEntity entity;
 
@@ -34,7 +34,8 @@ final class PrimaryKeyJoinColumnStateObject extends AbstractJoinColumnStateObjec
 	/**
 	 * Creates a new <code>PrimaryKeyJoinColumnStateObject</code>.
 	 *
-	 * @param joinColumn
+	 * @param joinColumn Either the join column to edit or <code>null</code> if
+	 * this state object is used to create a new one
 	 */
 	public PrimaryKeyJoinColumnStateObject(IPrimaryKeyJoinColumn joinColumn) {
 		super(joinColumn);

@@ -16,6 +16,7 @@ import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -167,8 +168,12 @@ public abstract class AbstractFormPane<T extends Model> extends AbstractPane<T>
 			return widgetFactory.createButton(parent, text, style);
 		}
 
-		public CCombo createCombo(Composite parent) {
+		public CCombo createCCombo(Composite parent) {
 			return createCombo(parent, SWT.READ_ONLY);
+		}
+
+		public Combo createCombo(Composite parent) {
+			return new Combo(parent, SWT.READ_ONLY);
 		}
 
 		private CCombo createCombo(Composite parent, int style) {
@@ -180,8 +185,12 @@ public abstract class AbstractFormPane<T extends Model> extends AbstractPane<T>
 			return widgetFactory.createComposite(parent);
 		}
 
-		public CCombo createEditableCombo(Composite parent) {
+		public CCombo createEditableCCombo(Composite parent) {
 			return createCombo(parent, SWT.NULL);
+		}
+
+		public Combo createEditableCombo(Composite parent) {
+			return new Combo(parent, SWT.FLAT);
 		}
 
 		public Group createGroup(Composite parent, String title) {

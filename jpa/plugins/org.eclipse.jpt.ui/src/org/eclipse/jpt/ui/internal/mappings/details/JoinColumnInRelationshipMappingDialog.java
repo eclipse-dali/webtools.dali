@@ -30,7 +30,8 @@ public class JoinColumnInRelationshipMappingDialog extends JoinColumnDialog<Join
 	 * Creates a new <code>AbstractJoinColumnDialog</code>.
 	 *
 	 * @param parent The parent shell
-	 * @param joinColumn
+	 * @param joinColumn Either the join column to edit or <code>null</code> if
+	 * this state object is used to create a new one
 	 */
 	JoinColumnInRelationshipMappingDialog(Shell parent, IJoinColumn joinColumn) {
 		super(parent, joinColumn);

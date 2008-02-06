@@ -10,45 +10,44 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
+import java.util.Iterator;
+import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
+import org.eclipse.jpt.ui.internal.widgets.EnumDialogComboViewer;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
- * |        ------------------------------------------------------------------ |
- * | Table: | TableCombo                                                   |v| |
- * |        ------------------------------------------------------------------ |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | EnumComboViewer                                                       | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | EnumComboViewer                                                       | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
+ * |             ------------------------------------------------------------- |
+ * | Table:      | TableCombo                                              |v| |
+ * |             ------------------------------------------------------------- |
+ * |             ------------------------------------------------------------- |
+ * | Insertable: | EnumDialogComboViewer                                   |v| |
+ * |             ------------------------------------------------------------- |
+ * |             ------------------------------------------------------------- |
+ * | Updatable:  | EnumDialogComboViewer                                   |v| |
+ * |             ------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see JoinColumnStateObject
- * @see EnumComboViewer
  * @see JoinColumnDialog - The parent container
+ * @see EnumDialogComboViewer
  *
  * @version 2.0
  * @since 1.0
  */
 public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColumnStateObject>
 {
-	private CCombo tableCombo;
+	private Combo tableCombo;
 
 	/**
 	 * Creates a new <code>JoinColumnDialogPane</code>.
@@ -62,9 +61,18 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 		super(subjectHolder, parent);
 	}
 
-	private EnumComboViewer<JoinColumnStateObject, Boolean> buildInsertableCombo(Composite container) {
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void addPropertyNames(Collection<String> propertyNames) {
+		super.addPropertyNames(propertyNames);
+		propertyNames.add(JoinColumnStateObject.TABLE_PROPERTY);
+	}
 
-		return new EnumComboViewer<JoinColumnStateObject, Boolean>(this, container) {
+	private EnumDialogComboViewer<JoinColumnStateObject, Boolean> buildInsertableCombo(Composite container) {
+
+		return new EnumDialogComboViewer<JoinColumnStateObject, Boolean>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -79,7 +87,7 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 
 			@Override
 			protected Boolean defaultValue() {
-				return null;
+				return subject().getDefaultInsertable();
 			}
 
 			@Override
@@ -103,18 +111,28 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 		};
 	}
 
-	private SelectionListener buildTableComboSelectionListener() {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				populateNameCombo();
+	private ModifyListener buildTableComboSelectionListener() {
+		return new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				if (!isPopulating()) {
+					setPopulating(true);
+					try {
+						Combo combo = (Combo) e.widget;
+						subject().setTable(combo.getText());
+						subject().setDefaultTableSelected(combo.getSelectionIndex() == 0);
+						populateNameCombo();
+					}
+					finally {
+						setPopulating(false);
+					}
+				}
 			}
 		};
 	}
 
-	private EnumComboViewer<JoinColumnStateObject, Boolean> buildUpdatableCombo(Composite container) {
+	private EnumDialogComboViewer<JoinColumnStateObject, Boolean> buildUpdatableCombo(Composite container) {
 
-		return new EnumComboViewer<JoinColumnStateObject, Boolean>(this, container) {
+		return new EnumDialogComboViewer<JoinColumnStateObject, Boolean>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -129,7 +147,7 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 
 			@Override
 			protected Boolean defaultValue() {
-				return true;
+				return subject().getDefaultUpdatable();
 			}
 
 			@Override
@@ -157,22 +175,28 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 	 * (non-Javadoc)
 	 */
 	@Override
+	protected void doPopulate() {
+		super.doPopulate();
+		populateTableCombo();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
 	protected void initializeLayout(Composite container) {
 		super.initializeLayout(container);
 
 		// Join Referenced Column widgets
-		tableCombo = buildEditableCombo(container);
-		tableCombo.addSelectionListener(buildTableComboSelectionListener());
-
-		buildLabeledComposite(
+		tableCombo = buildLabeledEditableCombo(
 			container,
 			JptUiMappingsMessages.JoinColumnDialog_table,
-			tableCombo,
+			buildTableComboSelectionListener(),
 			IJpaHelpContextIds.MAPPING_JOIN_REFERENCED_COLUMN
 		);
 
 		// Insertable widgets
-		EnumComboViewer<JoinColumnStateObject, Boolean> insertableCombo =
+		EnumDialogComboViewer<JoinColumnStateObject, Boolean> insertableCombo =
 			buildInsertableCombo(container);
 
 		buildLabeledComposite(
@@ -183,7 +207,7 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 		);
 
 		// Updatable widgets
-		EnumComboViewer<JoinColumnStateObject, Boolean> updatableCombo =
+		EnumDialogComboViewer<JoinColumnStateObject, Boolean> updatableCombo =
 			buildUpdatableCombo(container);
 
 		buildLabeledComposite(
@@ -192,5 +216,60 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 			updatableCombo.getControl(),
 			IJpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
 		);
+	}
+
+	private void populateTableCombo() {
+		JoinColumnStateObject subject = subject();
+		tableCombo.removeAll();
+
+		if (subject == null) {
+			return;
+		}
+
+		// Add the default table if one exists
+		String defaultTableName = subject.defaultTableName();
+
+		if (defaultTableName != null) {
+			tableCombo.add(NLS.bind(
+				JptUiMappingsMessages.JoinColumnDialog_defaultWithOneParam,
+				defaultTableName
+			));
+		}
+
+		// Populate the combo with the table names
+		Schema schema = subject.getSchema();
+
+		if (schema != null) {
+			Iterator<String> tables = schema.tableNames();
+
+			for (Iterator<String> iter = CollectionTools.sort(tables); iter.hasNext(); ) {
+				tableCombo.add(iter.next());
+			}
+		}
+
+		// Update the selected table
+		String table = subject.getTable();
+
+		if ((table != null) && !subject.isDefaultTableSelected()) {
+			tableCombo.setText(table);
+		}
+		else if (defaultTableName != null) {
+			tableCombo.select(0);
+		}
+		else {
+			tableCombo.select(-1);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void propertyChanged(String propertyName) {
+		super.propertyChanged(propertyName);
+
+		if (propertyName == JoinColumnStateObject.TABLE_PROPERTY) {
+			populateTableCombo();
+		}
 	}
 }

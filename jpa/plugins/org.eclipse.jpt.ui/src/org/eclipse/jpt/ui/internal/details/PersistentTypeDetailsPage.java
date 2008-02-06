@@ -146,7 +146,7 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 	}
 
 	protected ComboViewer buildTypeMappingCombo(Composite parent) {
-		CCombo combo = buildEditableCombo(parent);
+		CCombo combo = buildEditableCCombo(parent);
 		this.typeMappingCombo = new ComboViewer(combo);
 		this.typeMappingCombo.getCCombo().setVisibleItemCount(Integer.MAX_VALUE);
 		this.typeMappingCombo.setContentProvider(buildContentProvider());

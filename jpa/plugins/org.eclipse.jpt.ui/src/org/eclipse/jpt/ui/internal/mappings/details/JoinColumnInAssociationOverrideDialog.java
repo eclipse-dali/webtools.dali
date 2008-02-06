@@ -43,7 +43,8 @@ public class JoinColumnInAssociationOverrideDialog extends JoinColumnDialog<Join
 	 * Creates a new <code>JoinColumnInAssociationOverrideDialog</code>.
 	 *
 	 * @param parent The parent shell
-	 * @param joinColumn
+	 * @param joinColumn Either the join column to edit or <code>null</code> if
+	 * this state object is used to create a new one
 	 */
 	public JoinColumnInAssociationOverrideDialog(Shell parent,
 	                                             IJoinColumn joinColumn) {

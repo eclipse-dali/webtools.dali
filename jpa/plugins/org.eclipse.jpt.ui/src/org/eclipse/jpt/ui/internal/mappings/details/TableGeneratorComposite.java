@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
 import java.util.Iterator;
+import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
 import org.eclipse.jpt.db.internal.Database;
@@ -104,6 +105,11 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 			}
 
 			@Override
+			protected IJpaProject jpaProject() {
+				return TableGeneratorComposite.this.subject().jpaProject();
+			}
+
+			@Override
 			protected void setValue(String value) {
 				subject().setSpecifiedTable(value);
 			}
@@ -155,6 +161,11 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 			@Override
 			protected boolean isBuildSubjectAllowed() {
 				return true;
+			}
+
+			@Override
+			protected IJpaProject jpaProject() {
+				return TableGeneratorComposite.this.subject().jpaProject();
 			}
 
 			@Override
@@ -218,6 +229,11 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 			@Override
 			protected boolean isBuildSubjectAllowed() {
 				return true;
+			}
+
+			@Override
+			protected IJpaProject jpaProject() {
+				return TableGeneratorComposite.this.subject().jpaProject();
 			}
 
 			@Override

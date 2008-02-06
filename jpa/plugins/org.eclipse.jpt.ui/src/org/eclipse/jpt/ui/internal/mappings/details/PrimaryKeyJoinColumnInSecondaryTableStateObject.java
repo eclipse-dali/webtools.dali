@@ -25,7 +25,8 @@ public final class PrimaryKeyJoinColumnInSecondaryTableStateObject extends Abstr
 	/**
 	 * Creates a new <code>PrimaryKeyJoinColumnInSecondaryTableStateObject</code>.
 	 *
-	 * @param joinColumn
+	 * @param joinColumn Either the join column to edit or <code>null</code> if
+	 * this state object is used to create a new one
 	 */
 	public PrimaryKeyJoinColumnInSecondaryTableStateObject(IPrimaryKeyJoinColumn joinColumn) {
 		super(joinColumn);

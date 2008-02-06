@@ -91,8 +91,8 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 		int index = subject().specifiedPrimaryKeyJoinColumnsSize();
 
 		IPrimaryKeyJoinColumn joinColumn = subject().addSpecifiedPrimaryKeyJoinColumn(index);
-		joinColumn.setSpecifiedName(stateObject.getSelectedName());
-		joinColumn.setSpecifiedReferencedColumnName(stateObject.getSpecifiedReferencedColumnName());
+		joinColumn.setSpecifiedName(stateObject.getName());
+		joinColumn.setSpecifiedReferencedColumnName(stateObject.getReferencedColumnName());
 	}
 
 	private void addPrimaryKeyJoinColumn() {
@@ -267,8 +267,8 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 
 		IPrimaryKeyJoinColumn joinColumn = stateObject.getJoinColumn();
 
-		String name = stateObject.getSelectedName();
-		String referencedColumnName = stateObject.getSpecifiedReferencedColumnName();
+		String name = stateObject.getName();
+		String referencedColumnName = stateObject.getReferencedColumnName();
 
 		// Name
 		if (stateObject.isDefaultNameSelected()) {

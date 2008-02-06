@@ -226,6 +226,9 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 		);
 	}
 
+	/**
+	 * The editor is used to complete the behavior of this pane.
+	 */
 	public static interface IJoinColumnsEditor<T> {
 
 		void addJoinColumn(T subject);

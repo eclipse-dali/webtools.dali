@@ -27,6 +27,7 @@ import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PlatformUI;
@@ -37,12 +38,15 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
- * |                ---------------------------------------------------------- |
- * | Target Entity: |                                                      |v| |
- * |                ---------------------------------------------------------- |
+ * |                -------------------------------------------- ------------- |
+ * | Target Entity: | I                                      |v| | Browse... | |
+ * | ¯¯¯¯¯¯¯¯¯¯¯¯¯¯ -------------------------------------------- ------------- |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see IRelationshipMapping
+ * @see ManyToManyMappingComposite - A container of this pane
+ * @see ManyToOneMappingComposite - A container of this pane
+ * @see OneToManyMappingComposite - A container of this pane
  * @see OneToOneMappingComposite - A container of this pane
  *
  * @version 2.0
@@ -51,7 +55,7 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 @SuppressWarnings("nls")
 public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping>
 {
-	private CCombo targetEntityCombo;
+	private CCombo combo;
 
 	/**
 	 * Creates a new <code>TargetEntityComposite</code>.
@@ -59,8 +63,8 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	protected TargetEntityComposite(AbstractFormPane<? extends IRelationshipMapping> parentPane,
-	                                Composite parent) {
+	public TargetEntityComposite(AbstractFormPane<? extends IRelationshipMapping> parentPane,
+	                             Composite parent) {
 
 		super(parentPane, parent);
 	}
@@ -92,7 +96,7 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 	private Runnable buildOpenTargetEntityAction() {
 		return new Runnable() {
 			public void run() {
-				System.out.println("TODO: Open Editor");
+				TargetEntityComposite.this.openEditor();
 			}
 		};
 	}
@@ -100,7 +104,7 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 	private Runnable buildOpenTypeAction() {
 		return new Runnable() {
 			public void run() {
-				BusyIndicator.showWhile(targetEntityCombo.getDisplay(), new Runnable() {
+				BusyIndicator.showWhile(combo.getDisplay(), new Runnable() {
 					public void run() {
 						doOpenSelectionDialog();
 					}
@@ -112,24 +116,10 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 	private ModifyListener buildTargetEntityModifyListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-
-				String targetEntityName = targetEntityCombo.getText();
-
-				if (StringTools.stringIsEmpty(targetEntityName)) {
-					targetEntityName = null;
+				if (!isPopulating()) {
+					CCombo combo = (CCombo) e.widget;
+					valueChanged(combo.getText());
 				}
-				else if (targetEntityName.equals(targetEntityCombo.getItem(0)) || targetEntityName.equals("")) { //$NON-NLS-1$
-					targetEntityName = null;
-				}
-				else if (!subject().targetEntityIsValid(targetEntityName)) {
-					return;
-				}
-
-				if (targetEntityName != null) {
-					targetEntityName = targetEntityName.trim();
-				}
-
-				subject().setSpecifiedTargetEntity(targetEntityName);
 			}
 		};
 	}
@@ -163,7 +153,7 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 
 		if (dialog.open() == Window.OK) {
 			IType type = (IType) dialog.getResult()[0];
-			this.targetEntityCombo.setText(type.getFullyQualifiedName('$'));
+			this.combo.setText(type.getFullyQualifiedName('$'));
 		}
 	}
 
@@ -172,8 +162,11 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 	 */
 	@Override
 	protected void doPopulate() {
+
 		super.doPopulate();
-		this.populateCombo();
+
+		combo.removeAll();
+		populateCombo();
 	}
 
 	/*
@@ -182,9 +175,9 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		targetEntityCombo = buildEditableCombo(container);
-		targetEntityCombo.add(JptUiMappingsMessages.TargetEntityChooser_defaultEmpty);
-		targetEntityCombo.addModifyListener(buildTargetEntityModifyListener());
+		combo = buildEditableCCombo(container);
+		combo.add(JptUiMappingsMessages.TargetEntityChooser_defaultEmpty);
+		combo.addModifyListener(buildTargetEntityModifyListener());
 
 		Hyperlink labelLink = buildHyperLink(container,
 			JptUiMappingsMessages.TargetEntityChooser_label,
@@ -194,34 +187,44 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 		buildLabeledComposite(
 			container,
 			labelLink,
-			targetEntityCombo,
+			combo,
 			buildTargetEntitySelectionButton(container),
 			IJpaHelpContextIds.MAPPING_TARGET_ENTITY
 		);
 	}
 
+	private void openEditor() {
+
+		String targetEntity = subject().getTargetEntity();
+
+		if (targetEntity != null) {
+			System.out.println("TODO: Open Editor for " + targetEntity);
+		}
+	}
+
 	private void populateCombo() {
 
-		if (targetEntityCombo.isDisposed()) {
-			return;
+		populateDefaultValue();
+		// TODO Add possible target entity names
+		updateSelectedItem();
+	}
+
+	/**
+	 * Adds the default value to the combo if one exists.
+	 */
+	private void populateDefaultValue() {
+
+		IRelationshipMapping entity = subject();
+		String defaultValue = (entity != null) ? entity.getDefaultTargetEntity() : null;
+
+		if (defaultValue != null) {
+			combo.add(NLS.bind(
+				JptUiMappingsMessages.TargetEntityChooser_defaultWithOneParam,
+				defaultValue
+			));
 		}
-
-		targetEntityCombo.clearSelection();
-
-		if (subject() != null) {
-			String targetEntity = subject().getSpecifiedTargetEntity();
-			targetEntityCombo.setItem(0, NLS.bind(JptUiMappingsMessages.TargetEntityChooser_defaultWithOneParam, subject().getDefaultTargetEntity()));
-
-			if (targetEntity != null) {
-				if (!targetEntityCombo.getText().equals(targetEntity)) {
-					targetEntityCombo.setText(targetEntity);
-				}
-			}
-			else {
-				if (targetEntityCombo.getSelectionIndex() != 0) {
-					targetEntityCombo.select(0);
-				}
-			}
+		else {
+			combo.add(JptUiMappingsMessages.TargetEntityChooser_defaultEmpty);
 		}
 	}
 
@@ -236,6 +239,83 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 		    propertyName == IRelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY) {
 
 			populateCombo();
+		}
+	}
+
+	/**
+	 * Updates the selected item by selected the current value, if not
+	 * <code>null</code>, or select the default value if one is available,
+	 * otherwise remove the selection.
+	 * <p>
+	 * <b>Note:</b> It seems the text can be shown as truncated, changing the
+	 * selection to (0, 0) makes the entire text visible.
+	 */
+	private void updateSelectedItem() {
+		IRelationshipMapping subject = subject();
+		String value = (subject != null) ? subject.getSpecifiedTargetEntity() : null;
+
+		if (value != null) {
+			combo.setText(value);
+			combo.setSelection(new Point(0, 0));
+		}
+		else {
+			String defaultValue = (subject != null) ? subject.getDefaultTargetEntity() : null;
+
+			String displayString = (defaultValue == null) ? "" :
+				NLS.bind(
+					JptUiMappingsMessages.ColumnComposite_defaultWithOneParam,
+					defaultValue
+				);
+
+			if (!combo.getText().equals(displayString)) {
+				combo.setText(displayString);
+				combo.setSelection(new Point(0, 0));
+			}
+			else {
+				combo.select(-1);
+			}
+		}
+	}
+
+	private void valueChanged(String value) {
+
+		IRelationshipMapping subject = subject();
+		String oldValue = (subject != null) ? subject.getSpecifiedTargetEntity() : null;
+
+		// Check for null value
+		if (StringTools.stringIsEmpty(value)) {
+			value = null;
+
+			if (StringTools.stringIsEmpty(oldValue)) {
+				return;
+			}
+		}
+
+		// The default value
+		if (value != null &&
+		    combo.getItemCount() > 0 &&
+		    value.equals(combo.getItem(0)))
+		{
+			value = null;
+		}
+
+		// Nothing to change
+		if ((oldValue == value) && value == null) {
+			return;
+		}
+
+		// Set the new value
+		if ((value != null) && (oldValue == null) ||
+		   ((oldValue != null) && !oldValue.equals(value))) {
+
+			setPopulating(true);
+
+			try {
+				subject.setSpecifiedTargetEntity(value);
+			}
+			finally {
+				setPopulating(false);
+			}
 		}
 	}
 }

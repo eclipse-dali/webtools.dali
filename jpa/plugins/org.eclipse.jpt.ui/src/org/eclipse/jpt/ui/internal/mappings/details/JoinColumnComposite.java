@@ -101,14 +101,14 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 		int index = subject().specifiedJoinColumnsSize();
 
 		IJoinColumn joinColumn = subject().addSpecifiedJoinColumn(index);
-		joinColumn.setSpecifiedName(stateObject.getSelectedName());
-		joinColumn.setSpecifiedReferencedColumnName(stateObject.getSpecifiedReferencedColumnName());
+		joinColumn.setSpecifiedName(stateObject.getName());
+		joinColumn.setSpecifiedReferencedColumnName(stateObject.getReferencedColumnName());
 
 		if (!stateObject.isDefaultTableSelected()) {
 			// Not checking this for name and referenced column name because
 			// there is no default option when you are adding a second join
 			// column. There is always at least 1 join column (the default)
-			joinColumn.setSpecifiedTable(stateObject.getSelectedTable());
+			joinColumn.setSpecifiedTable(stateObject.getTable());
 		}
 	}
 
@@ -341,9 +341,9 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 	private void updateJoinColumn(JoinColumnInRelationshipMappingStateObject stateObject) {
 
 		IJoinColumn joinColumn = stateObject.getJoinColumn();
-		String name = stateObject.getSelectedName();
-		String referencedColumnName = stateObject.getSpecifiedReferencedColumnName();
-		String table = stateObject.getSelectedTable();
+		String name = stateObject.getName();
+		String referencedColumnName = stateObject.getReferencedColumnName();
+		String table = stateObject.getTable();
 
 		// Name
 		if (stateObject.isDefaultNameSelected()) {

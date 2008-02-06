@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
+import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -73,7 +73,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 
 	private CCombo buildGeneratorNameCombo(Composite parent) {
 
-		CCombo combo = buildEditableCombo(parent);
+		CCombo combo = buildEditableCCombo(parent);
 		combo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
 		combo.addModifyListener(buildGeneratorNameModifyListener());
 		return combo;
@@ -114,9 +114,9 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 		};
 	}
 
-	private EnumComboViewer<IGeneratedValue, GenerationType> buildStrategyComboViewer(Composite parent) {
+	private EnumFormComboViewer<IGeneratedValue, GenerationType> buildStrategyComboViewer(Composite parent) {
 
-		return new EnumComboViewer<IGeneratedValue, GenerationType>(this, buildGeneratorValueHolder(), parent) {
+		return new EnumFormComboViewer<IGeneratedValue, GenerationType>(this, buildGeneratorValueHolder(), parent) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -172,7 +172,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 	protected void initializeLayout(Composite container) {
 
 		// Strategy widgets
-		EnumComboViewer<IGeneratedValue, GenerationType> strategyComboViewer =
+		EnumFormComboViewer<IGeneratedValue, GenerationType> strategyComboViewer =
 			buildStrategyComboViewer(container);
 
 		buildLabeledComposite(

@@ -10,13 +10,16 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
+import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.IJoinTable;
 import org.eclipse.jpt.core.internal.context.base.IMultiRelationshipMapping;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -48,31 +51,52 @@ public class InverseJoinColumnDialogPane extends AbstractJoinColumnDialogPane<Jo
 	public void populateNameCombo() {
 
 		JoinColumnInJoinTableStateObject subject = subject();
-		IAbstractJoinColumn joinColumn = subject.getJoinColumn();
 
-		if (subject.getJoinTable() == null) {
+		Combo nameCombo = getNameCombo();
+		nameCombo.removeAll();
+
+		if (subject == null) {
 			return;
 		}
 
-		if (joinColumn != null) {
-			getNameCombo().add(NLS.bind(JptUiMappingsMessages.InverseJoinColumnDialog_defaultWithOneParam, joinColumn.getDefaultName()));
+		IJoinColumn joinColumn = subject.getJoinColumn();
+
+		// Add the default column name if one exists
+		String defaultName = (joinColumn != null) ? joinColumn.getDefaultName() : null;
+
+		if (defaultName != null) {
+			nameCombo.add(NLS.bind(
+				JptUiMappingsMessages.InverseJoinColumnDialog_defaultWithOneParam,
+				defaultName
+			));
 		}
 
-		Table joinDBTable = subject.getJoinTable().dbTable();
+		// Populate the combo with the column names
+		IJoinTable joinTable = subject.getJoinTable();
 
-		if (joinDBTable != null) {
-			for (Iterator<String> iter = joinDBTable.columnNames(); iter.hasNext(); ) {
-				getNameCombo().add(iter.next());
+		if (joinTable != null) {
+			Table joinDBTable = joinTable.dbTable();
+
+			if (joinDBTable != null) {
+				Iterator<String> columnNames = joinDBTable.columnNames();
+
+				for (Iterator<String> iter = CollectionTools.sort(columnNames); iter.hasNext(); ) {
+					nameCombo.add(iter.next());
+				}
 			}
 		}
 
-		if (joinColumn != null &&
-		    joinColumn.getSpecifiedName() != null)
-		{
-			getNameCombo().setText(joinColumn.getSpecifiedName());
+		// Set the selected name
+		String name = (joinColumn != null) ? joinColumn.getSpecifiedName() : null;
+
+		if ((name != null) && !name.equals(defaultName)) {
+			getNameCombo().setText(name);
+		}
+		else if (defaultName != null) {
+			nameCombo.select(0);
 		}
 		else {
-			getNameCombo().select(0);
+			nameCombo.select(-1);
 		}
 	}
 
@@ -83,16 +107,27 @@ public class InverseJoinColumnDialogPane extends AbstractJoinColumnDialogPane<Jo
 	public void populateReferencedNameCombo() {
 
 		JoinColumnInJoinTableStateObject subject = subject();
-		IAbstractJoinColumn joinColumn = subject.getJoinColumn();
 
-		if (subject.getJoinTable() == null) {
+		Combo referencedColumnNameCombo = getReferencedColumnNameCombo();
+		referencedColumnNameCombo.removeAll();
+
+		if (subject == null) {
 			return;
 		}
 
-		if (joinColumn != null) {
-			getReferencedColumnNameCombo().add(NLS.bind(JptUiMappingsMessages.InverseJoinColumnDialog_defaultWithOneParam, joinColumn.getDefaultReferencedColumnName()));
+		IJoinColumn joinColumn = subject.getJoinColumn();
+
+		// Add the default column name if one exists
+		String defaultReferencedColumnName = (joinColumn != null) ? joinColumn.getDefaultReferencedColumnName() : null;
+
+		if (defaultReferencedColumnName != null) {
+			referencedColumnNameCombo.add(NLS.bind(
+				JptUiMappingsMessages.InverseJoinColumnDialog_defaultWithOneParam,
+				defaultReferencedColumnName
+			));
 		}
 
+		// Populate the combo with the column names
 		IMultiRelationshipMapping multiRelationshipMapping = subject.relationshipMapping();
 		IEntity targetEntity = multiRelationshipMapping.getResolvedTargetEntity();
 
@@ -100,19 +135,26 @@ public class InverseJoinColumnDialogPane extends AbstractJoinColumnDialogPane<Jo
 			Table referencedDbTable = targetEntity.primaryDbTable();
 
 			if (referencedDbTable != null) {
-				for (Iterator<String> iter = referencedDbTable.columnNames(); iter.hasNext(); ) {
-					getReferencedColumnNameCombo().add(iter.next());
+				Iterator<String> columnNames = referencedDbTable.columnNames();
+
+				for (Iterator<String> iter = CollectionTools.sort(columnNames); iter.hasNext(); ) {
+					referencedColumnNameCombo.add(iter.next());
 				}
 			}
 		}
 
-		if (joinColumn != null &&
-		    joinColumn.getSpecifiedReferencedColumnName() != null)
+		// Set the selected name
+		String referencedColumnName = (joinColumn != null) ? joinColumn.getSpecifiedReferencedColumnName() : null;
+
+		if ((referencedColumnName != null) && !referencedColumnName.equals(defaultReferencedColumnName))
 		{
-			getReferencedColumnNameCombo().setText(joinColumn.getSpecifiedReferencedColumnName());
+			referencedColumnNameCombo.setText(referencedColumnName);
+		}
+		else if (defaultReferencedColumnName != null) {
+			referencedColumnNameCombo.select(0);
 		}
 		else {
-			getReferencedColumnNameCombo().select(0);
+			referencedColumnNameCombo.select(-1);
 		}
 	}
 }

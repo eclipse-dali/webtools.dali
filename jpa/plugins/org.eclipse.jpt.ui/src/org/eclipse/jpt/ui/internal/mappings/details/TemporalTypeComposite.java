@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.EnumComboViewer;
+import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -48,9 +48,9 @@ public class TemporalTypeComposite extends AbstractFormPane<IColumnMapping> {
 		super(parentPane, parent);
 	}
 
-	private EnumComboViewer<IColumnMapping, TemporalType> buildTemporalCombo(Composite container) {
+	private EnumFormComboViewer<IColumnMapping, TemporalType> buildTemporalCombo(Composite container) {
 
-		return new EnumComboViewer<IColumnMapping, TemporalType>(this, container) {
+		return new EnumFormComboViewer<IColumnMapping, TemporalType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -95,7 +95,7 @@ public class TemporalTypeComposite extends AbstractFormPane<IColumnMapping> {
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		EnumComboViewer<IColumnMapping, TemporalType> temporalCombo =
+		EnumFormComboViewer<IColumnMapping, TemporalType> temporalCombo =
 			buildTemporalCombo(container);
 
 		buildLabeledComposite(
