@@ -112,12 +112,7 @@ public class SimpleCollectionValueModel<E>
 	}
 
 	public void clear() {
-		if (this.collection.isEmpty()) {
-			return;
-		}
-		Collection<E> items = new ArrayList<E>(this.collection);
-		this.collection.clear();
-		this.fireItemsRemoved(VALUES, items);
+		this.clearCollection(this.collection, VALUES);
 	}
 
 	@Override

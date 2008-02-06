@@ -138,7 +138,7 @@ public abstract class CollectionValueModelWrapper<E>
 		this.collectionHolder.removeCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
 	}
 
-	// minimize suppressed warnings
+	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
 	protected Iterator<E> items(CollectionChangeEvent event) {
 		return (Iterator<E>) event.items();

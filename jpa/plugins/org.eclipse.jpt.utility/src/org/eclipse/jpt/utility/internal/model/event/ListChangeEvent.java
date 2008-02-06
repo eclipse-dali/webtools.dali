@@ -251,7 +251,7 @@ public class ListChangeEvent extends ChangeEvent {
 	 * the index by the specified amount.
 	 */
 	public ListChangeEvent cloneWithSource(Model newSource, String newListName, int offset) {
-		return new ListChangeEvent(newSource, newListName, this.index + offset, this.items, this.replacedItems);
+		return new ListChangeEvent(newSource, newListName, this.index + offset, this.items, this.replacedItems, this.sourceIndex + offset, this.moveLength);
 	}
 
 }

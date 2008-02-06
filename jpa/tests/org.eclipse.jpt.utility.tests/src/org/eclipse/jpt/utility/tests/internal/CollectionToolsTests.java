@@ -1263,7 +1263,7 @@ public class CollectionToolsTests extends TestCase {
 		Iterator<Object> emptyIterator = EmptyIterator.instance();
 		Iterable<Object> emptyIterable = CollectionTools.iterable(emptyIterator);
 		
-		assertEquals(emptyIterator, emptyIterable.iterator());
+		assertFalse(emptyIterable.iterator().hasNext());
 		
 		boolean exceptionThrown = false;
 		try {

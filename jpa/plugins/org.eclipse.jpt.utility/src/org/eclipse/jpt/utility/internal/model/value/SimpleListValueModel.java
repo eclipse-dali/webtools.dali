@@ -125,12 +125,7 @@ public class SimpleListValueModel<E>
 	}
 
 	public void clear() {
-		if (this.list.isEmpty()) {
-			return;
-		}
-		List<E> items = new ArrayList<E>(this.list);
-		this.list.clear();
-		this.fireItemsRemoved(LIST_VALUES, 0, items);
+		this.clearList(this.list, LIST_VALUES);
 	}
 
 	@Override
@@ -193,6 +188,20 @@ public class SimpleListValueModel<E>
 		}
 		this.list = list;
 		this.fireListChanged(LIST_VALUES);
+	}
+
+	/**
+	 * Move a single element.
+	 */
+	public void move(int targetIndex, int sourceIndex) {
+		this.moveItemInList(targetIndex, sourceIndex, this.list, LIST_VALUES);
+	}
+
+	/**
+	 * Move a sub-list of elements.
+	 */
+	public void move(int targetIndex, int sourceIndex, int length) {
+		this.moveItemsInList(targetIndex, sourceIndex, length, this.list, LIST_VALUES);
 	}
 
 	@Override

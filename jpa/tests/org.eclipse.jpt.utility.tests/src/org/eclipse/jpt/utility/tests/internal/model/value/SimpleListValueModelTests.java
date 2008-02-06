@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
@@ -76,11 +77,19 @@ public class SimpleListValueModelTests extends TestCase {
 	}
 
 	public void testIterator() {
+		assertEquals(this.buildList(), CollectionTools.list(this.listHolder.iterator()));
+	}
+
+	public void testListIterator() {
 		assertEquals(this.buildList(), CollectionTools.list(this.listHolder.listIterator()));
 	}
 
+	public void testListIteratorInt() {
+		assertEquals(CollectionTools.list(this.buildList().listIterator(1)), CollectionTools.list(this.listHolder.listIterator(1)));
+	}
+
 	public void testSize() {
-		assertEquals(this.buildList().size(), CollectionTools.size(this.listHolder.listIterator()));
+		assertEquals(this.buildList().size(), this.listHolder.size());
 	}
 
 	private boolean listContains(Object item) {
@@ -92,16 +101,26 @@ public class SimpleListValueModelTests extends TestCase {
 	}
 
 	private boolean listContainsAny(Collection<String> items) {
-		List<String> list = CollectionTools.list(this.listHolder.iterator());
+		Set<String> set = CollectionTools.set(this.listHolder.iterator());
 		for (Iterator<String> stream = items.iterator(); stream.hasNext(); ) {
-			if (list.contains(stream.next())) {
+			if (set.contains(stream.next())) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public void testAdd() {
+	public void testAddObject() {
+		assertFalse(this.listContains("joo"));
+		this.listHolder.add("joo");
+		assertTrue(this.listContains("joo"));
+
+		assertFalse(this.listContains(null));
+		this.listHolder.add(null);
+		assertTrue(this.listContains(null));
+	}
+
+	public void testAddIntObject() {
 		assertFalse(this.listContains("joo"));
 		this.listHolder.add(2, "joo");
 		assertTrue(this.listContains("joo"));
@@ -111,10 +130,77 @@ public class SimpleListValueModelTests extends TestCase {
 		assertTrue(this.listContains(null));
 	}
 
-	public void testAddAll() {
+	public void testAddAllCollection() {
+		assertFalse(this.listContainsAny(this.buildAddList()));
+		this.listHolder.addAll(this.buildAddList());
+		assertTrue(this.listContainsAll(this.buildAddList()));
+	}
+
+	public void testAddAllIntCollection() {
 		assertFalse(this.listContainsAny(this.buildAddList()));
 		this.listHolder.addAll(2, this.buildAddList());
 		assertTrue(this.listContainsAll(this.buildAddList()));
+	}
+
+	public void testClear() {
+		assertFalse(this.listHolder.isEmpty());
+		this.listHolder.clear();
+		assertTrue(this.listHolder.isEmpty());
+	}
+
+	public void testContainsObject() {
+		assertTrue(this.listHolder.contains("foo"));
+		assertFalse(this.listHolder.contains("joo"));
+	}
+
+	public void testContainsAllCollection() {
+		Collection<String> c = new ArrayList<String>();
+		c.add("foo");
+		c.add("bar");
+		assertTrue(this.listHolder.containsAll(c));
+
+		c.add("joo");
+		assertFalse(this.listHolder.containsAll(c));
+	}
+
+	public void testEquals() {
+		assertEquals(new SimpleListValueModel<String>(this.buildList()), this.listHolder);
+		assertFalse(this.listHolder.equals(new SimpleListValueModel<String>(this.buildAddList())));
+		assertFalse(this.listHolder.equals(this.buildList()));
+		assertFalse(this.listHolder.equals(new SimpleListValueModel<String>()));
+	}
+
+	public void testGetInt() {
+		assertEquals("foo", this.listHolder.get(0));
+		assertEquals("bar", this.listHolder.get(1));
+		assertEquals("baz", this.listHolder.get(2));
+	}
+
+	public void testHashCode() {
+		assertEquals(new SimpleListValueModel<String>(this.buildList()).hashCode(), this.listHolder.hashCode());
+	}
+
+	public void testIndexOfObject() {
+		assertEquals(0, this.listHolder.indexOf("foo"));
+		assertEquals(1, this.listHolder.indexOf("bar"));
+		assertEquals(2, this.listHolder.indexOf("baz"));
+		assertEquals(-1, this.listHolder.indexOf("joo"));
+	}
+
+	public void testLastIndexOfObject() {
+		assertEquals(0, this.listHolder.lastIndexOf("foo"));
+		assertEquals(1, this.listHolder.lastIndexOf("bar"));
+		assertEquals(2, this.listHolder.lastIndexOf("baz"));
+		assertEquals(-1, this.listHolder.lastIndexOf("joo"));
+
+		this.listHolder.add("foo");
+		assertEquals(3, this.listHolder.lastIndexOf("foo"));
+	}
+
+	public void testIsEmpty() {
+		assertFalse(this.listHolder.isEmpty());
+		this.listHolder.clear();
+		assertTrue(this.listHolder.isEmpty());
 	}
 
 	public void testRemove() {
