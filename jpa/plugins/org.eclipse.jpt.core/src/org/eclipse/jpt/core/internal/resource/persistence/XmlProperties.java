@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
@@ -38,7 +37,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * @extends IJpaEObject
  * @generated
  */
-public class XmlProperties extends JpaEObject implements IJpaEObject
+public class XmlProperties extends JpaEObject
 {
 	/**
 	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.

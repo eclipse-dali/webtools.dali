@@ -13,7 +13,6 @@ import java.util.Collection;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EDataTypeEList;
-import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
@@ -33,7 +32,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * @extends IJpaEObject
  * @generated
  */
-public class UniqueConstraint extends JpaEObject implements IJpaEObject
+public class UniqueConstraint extends JpaEObject
 {
 	/**
 	 * The cached value of the '{@link #getColumnNames() <em>Column Names</em>}' attribute list.

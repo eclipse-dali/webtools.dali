@@ -14,7 +14,6 @@ package org.eclipse.jpt.core.internal.resource.persistence;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
@@ -34,7 +33,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * @extends IJpaEObject
  * @generated
  */
-public class XmlMappingFileRef extends JpaEObject implements IJpaEObject
+public class XmlMappingFileRef extends JpaEObject
 {
 	/**
 	 * The default value of the '{@link #getFileName() <em>File Name</em>}' attribute.
