@@ -137,27 +137,27 @@ public class XmlJoinColumn extends AbstractXmlColumn<JoinColumn> implements IJoi
 	}
 	
 	protected String defaultReferencedColumnName() {
-		if (!owner().relationshipMapping().isRelationshipOwner()) {
-			return null;
-		}
+//		if (!owner().relationshipMapping().isRelationshipOwner()) {
+//			return null;
+//		}
 		//TODO
 		return null;
 	}
 	
 	@Override
 	protected String defaultName() {
-		if (!owner().relationshipMapping().isRelationshipOwner()) {
-			return null;
-		}
+//		if (!owner().relationshipMapping().isRelationshipOwner()) {
+//			return null;
+//		}
 		//TODO
 		return super.defaultName();
 	}
 	
 	@Override
 	protected String defaultTable() {
-		if (!owner().relationshipMapping().isRelationshipOwner()) {
-			return null;
-		}
+//		if (!owner().relationshipMapping().isRelationshipOwner()) {
+//			return null;
+//		}
 		//TODO
 		return super.defaultTable();
 	}
