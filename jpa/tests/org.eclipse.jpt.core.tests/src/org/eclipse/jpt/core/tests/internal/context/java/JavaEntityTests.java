@@ -32,6 +32,7 @@ import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
+import org.eclipse.jpt.core.internal.context.java.IJavaAssociationOverride;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeOverride;
 import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
@@ -193,6 +194,10 @@ public class JavaEntityTests extends ContextModelTestCase
 				sb.append("@OneToOne");
 				sb.append(CR);
 				sb.append("    private int address;").append(CR);
+				sb.append(CR);
+				sb.append("@   OneToOne");
+				sb.append(CR);
+				sb.append("    private int address2;").append(CR);
 				sb.append(CR);
 				sb.append("    ");
 			}
@@ -780,10 +785,19 @@ public class JavaEntityTests extends ContextModelTestCase
 	}
 	
 	public void testSecondaryTablesSize() throws Exception {
-		createTestEntityWithSecondaryTable();
+		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		IEntity entity = javaEntity();		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+	
+		assertEquals(0, entity.secondaryTablesSize());
+
+		((SecondaryTable) typeResource.addAnnotation(0, SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME)).setName("FOO");
+		((SecondaryTable) typeResource.addAnnotation(1, SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME)).setName("BAR");
+		((SecondaryTable) typeResource.addAnnotation(2, SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME)).setName("BAZ");
 		
-		assertEquals(1, javaEntity().secondaryTablesSize());
+		assertEquals(3, entity.secondaryTablesSize());
 	}
 	
 	public void testSpecifiedSecondaryTables() throws Exception {
@@ -799,10 +813,19 @@ public class JavaEntityTests extends ContextModelTestCase
 	}
 	
 	public void testSpecifiedSecondaryTablesSize() throws Exception {
-		createTestEntityWithSecondaryTables();
+		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		IEntity entity = javaEntity();		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+	
+		assertEquals(0, entity.specifiedSecondaryTablesSize());
+
+		((SecondaryTable) typeResource.addAnnotation(0, SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME)).setName("FOO");
+		((SecondaryTable) typeResource.addAnnotation(1, SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME)).setName("BAR");
+		((SecondaryTable) typeResource.addAnnotation(2, SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME)).setName("BAZ");
 		
-		assertEquals(2, javaEntity().specifiedSecondaryTablesSize());
+		assertEquals(3, entity.specifiedSecondaryTablesSize());
 	}
 
 	public void testAddSpecifiedSecondaryTable() throws Exception {
@@ -1100,7 +1123,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		typeResource.addAnnotation(JPA.SEQUENCE_GENERATOR);
 		
 		assertNotNull(javaEntity().getSequenceGenerator());
-		assertEquals(1, CollectionTools.size(typeResource.annotations()));
+		assertEquals(1, typeResource.annotationsSize());
 	}
 	
 	public void testAddSequenceGenerator() throws Exception {
@@ -1156,7 +1179,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		typeResource.addAnnotation(JPA.TABLE_GENERATOR);
 		
 		assertNotNull(javaEntity().getTableGenerator());		
-		assertEquals(1, CollectionTools.size(typeResource.annotations()));
+		assertEquals(1, typeResource.annotationsSize());
 	}
 	
 	public void testAddTableGenerator() throws Exception {
@@ -1281,17 +1304,47 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertFalse(specifiedPkJoinColumns.hasNext());
 	}
 	
-	public void testDefaultPrimaryKeyJoinColumns() {
-		//TODO
-	}
-	
 	public void testSpecifiedPrimaryKeyJoinColumnsSize() throws Exception {
-		createTestEntityWithPrimaryKeyJoinColumns();
+		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(2, javaEntity().specifiedPrimaryKeyJoinColumnsSize());
+		assertEquals(0, javaEntity().specifiedPrimaryKeyJoinColumnsSize());
+	
+		javaEntity().addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
+		javaEntity().addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAR");
+		javaEntity().addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAZ");
+		
+		assertEquals(3, javaEntity().specifiedPrimaryKeyJoinColumnsSize());
 	}
 
+	public void testPrimaryKeyJoinColumnsSize() throws Exception {
+		createTestEntityWithSecondaryTable();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		//just the default pkJoinColumn, so 1
+		assertEquals(1, javaEntity().primaryKeyJoinColumnsSize());
+	
+		javaEntity().addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
+		javaEntity().addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAR");
+		javaEntity().addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAZ");
+		
+		//only the specified pkJoinColumns, 3
+		assertEquals(3, javaEntity().primaryKeyJoinColumnsSize());
+	}
+
+	public void testGetDefaultPrimaryKeyJoinColumn() throws Exception {
+		createTestEntityWithSecondaryTable();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertNotNull(javaEntity().getDefaultPrimaryKeyJoinColumn());
+	
+		javaEntity().addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
+		javaEntity().addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAR");
+		javaEntity().addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAZ");
+		
+		assertNull(javaEntity().getDefaultPrimaryKeyJoinColumn());
+	}
+	
 	public void testAddSpecifiedPrimaryKeyJoinColumn() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
@@ -1459,12 +1512,13 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
+		assertTrue(javaEntity().getDefaultPrimaryKeyJoinColumn().isVirtual());
+
 		javaEntity().addSpecifiedPrimaryKeyJoinColumn(0);
 		IPrimaryKeyJoinColumn specifiedPkJoinColumn = javaEntity().specifiedPrimaryKeyJoinColumns().next();
 		assertFalse(specifiedPkJoinColumn.isVirtual());
 		
-		IPrimaryKeyJoinColumn defaultPkJoinColumn = javaEntity().defaultPrimaryKeyJoinColumns().next();
-		assertTrue(defaultPkJoinColumn.isVirtual());
+		assertNull(javaEntity().getDefaultPrimaryKeyJoinColumn());
 	}
 
 	public void testOverridableAttributeNames() throws Exception {
@@ -1494,6 +1548,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		Iterator<String> overridableAssociationNames = javaEntity().overridableAssociationNames();
 		assertFalse(overridableAssociationNames.hasNext());
 	}
+	
 	//TODO add some associations to the MappedSuperclass
 	//add all mapping types to test which ones are overridable
 	public void testAllOverridableAssociationNames() throws Exception {
@@ -1609,7 +1664,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertNull(typeResource.annotation(AttributeOverride.ANNOTATION_NAME));
 		assertNull(typeResource.annotation(AttributeOverrides.ANNOTATION_NAME));
 		
-		assertEquals(2, CollectionTools.size(javaEntity.defaultAttributeOverrides()));
+		assertEquals(2, javaEntity.defaultAttributeOverridesSize());
 		IAttributeOverride defaultAttributeOverride = javaEntity.defaultAttributeOverrides().next();
 		assertEquals("id", defaultAttributeOverride.getName());
 		assertEquals("id", defaultAttributeOverride.getColumn().getName());
@@ -1626,7 +1681,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertNull(typeResource.annotation(AttributeOverride.ANNOTATION_NAME));
 		assertNull(typeResource.annotation(AttributeOverrides.ANNOTATION_NAME));
 
-		assertEquals(2, CollectionTools.size(javaEntity.defaultAttributeOverrides()));
+		assertEquals(2, javaEntity.defaultAttributeOverridesSize());
 		defaultAttributeOverride = javaEntity.defaultAttributeOverrides().next();
 		assertEquals("id", defaultAttributeOverride.getName());
 		assertEquals("FOO", defaultAttributeOverride.getColumn().getName());
@@ -1644,7 +1699,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(SUB_TYPE_NAME, defaultAttributeOverride.getColumn().getTable());
 		
 		javaEntity.addSpecifiedAttributeOverride(0).setName("id");
-		assertEquals(1, CollectionTools.size(javaEntity.defaultAttributeOverrides()));
+		assertEquals(1, javaEntity.defaultAttributeOverridesSize());
 	}
 	
 	public void testSpecifiedAttributeOverridesSize() throws Exception {
@@ -1664,6 +1719,49 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(2, javaEntity().specifiedAttributeOverridesSize());
 	}
 	
+	public void testDefaultAttributeOverridesSize() throws Exception {
+		createTestMappedSuperclass();
+		createTestSubType();
+			
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		
+		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		classRefs.next();
+		IJavaEntity javaEntity = (IJavaEntity) classRefs.next().getJavaPersistentType().getMapping();
+		
+		assertEquals(2, javaEntity.defaultAttributeOverridesSize());
+
+		javaEntity.addSpecifiedAttributeOverride(0).setName("id");
+		assertEquals(1, javaEntity.defaultAttributeOverridesSize());
+		
+		javaEntity.addSpecifiedAttributeOverride(0).setName("name");		
+		assertEquals(0, javaEntity.defaultAttributeOverridesSize());
+	}
+	
+	public void testAttributeOverridesSize() throws Exception {
+		createTestMappedSuperclass();
+		createTestSubType();
+			
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		
+		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		classRefs.next();
+		IJavaEntity javaEntity = (IJavaEntity) classRefs.next().getJavaPersistentType().getMapping();
+		
+		assertEquals(2, javaEntity.attributeOverridesSize());
+
+		javaEntity.addSpecifiedAttributeOverride(0).setName("id");
+		assertEquals(2, javaEntity.attributeOverridesSize());
+		
+		javaEntity.addSpecifiedAttributeOverride(0).setName("name");		
+		assertEquals(2, javaEntity.attributeOverridesSize());
+		
+		javaEntity.addSpecifiedAttributeOverride(0).setName("foo");		
+		assertEquals(3, javaEntity.attributeOverridesSize());
+	}
+
 	public void testAddSpecifiedAttributeOverride() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
@@ -2013,6 +2111,22 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertFalse(namedQueries.hasNext());
 	}
 	
+	public void testNamedQueriesSize() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		IEntity entity = javaEntity();		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+	
+		assertEquals(0, entity.namedQueriesSize());
+
+		((NamedQuery) typeResource.addAnnotation(0, NamedQuery.ANNOTATION_NAME, NamedQueries.ANNOTATION_NAME)).setName("FOO");
+		((NamedQuery) typeResource.addAnnotation(1, NamedQuery.ANNOTATION_NAME, NamedQueries.ANNOTATION_NAME)).setName("BAR");
+		((NamedQuery) typeResource.addAnnotation(2, NamedQuery.ANNOTATION_NAME, NamedQueries.ANNOTATION_NAME)).setName("BAZ");
+		
+		assertEquals(3, entity.namedQueriesSize());
+	}
+	
 	public void testAddNamedNativeQuery() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
@@ -2169,6 +2283,22 @@ public class JavaEntityTests extends ContextModelTestCase
 		namedQueries = entity.namedNativeQueries();
 		assertFalse(namedQueries.hasNext());
 	}	
+	
+	public void testNamedNativeQueriesSize() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		IEntity entity = javaEntity();		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+	
+		assertEquals(0, entity.namedNativeQueriesSize());
+
+		((NamedNativeQuery) typeResource.addAnnotation(0, NamedNativeQuery.ANNOTATION_NAME, NamedNativeQueries.ANNOTATION_NAME)).setName("FOO");
+		((NamedNativeQuery) typeResource.addAnnotation(1, NamedNativeQuery.ANNOTATION_NAME, NamedNativeQueries.ANNOTATION_NAME)).setName("BAR");
+		((NamedNativeQuery) typeResource.addAnnotation(2, NamedNativeQuery.ANNOTATION_NAME, NamedNativeQueries.ANNOTATION_NAME)).setName("BAZ");
+		
+		assertEquals(3, entity.namedNativeQueriesSize());
+	}
 
 	public void testAddSpecifiedAssociationOverride() throws Exception {
 		createTestEntity();
@@ -2337,6 +2467,10 @@ public class JavaEntityTests extends ContextModelTestCase
 		IAssociationOverride defaultAssociationOverride = defaultAssociationOverrides.next();
 		assertEquals("address", defaultAssociationOverride.getName());
 		assertTrue(defaultAssociationOverride.isVirtual());
+		
+		defaultAssociationOverride = defaultAssociationOverrides.next();
+		assertEquals("address2", defaultAssociationOverride.getName());
+		assertTrue(defaultAssociationOverride.isVirtual());
 		assertFalse(defaultAssociationOverrides.hasNext());
 		
 		javaEntity().addSpecifiedAssociationOverride(0).setName("address");
@@ -2344,6 +2478,9 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertFalse(specifiedAssociationOverride.isVirtual());
 				
 		defaultAssociationOverrides = javaEntity().defaultAssociationOverrides();	
+		defaultAssociationOverride = defaultAssociationOverrides.next();
+		assertEquals("address2", defaultAssociationOverride.getName());
+		assertTrue(defaultAssociationOverride.isVirtual());
 		assertFalse(defaultAssociationOverrides.hasNext());
 	}
 
@@ -2363,9 +2500,14 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertNull(typeResource.annotation(AssociationOverride.ANNOTATION_NAME));
 		assertNull(typeResource.annotation(AssociationOverrides.ANNOTATION_NAME));
 		
-		assertEquals(1, CollectionTools.size(javaEntity.defaultAssociationOverrides()));
-		IAssociationOverride defaultAssociationOverride = javaEntity.defaultAssociationOverrides().next();
+		assertEquals(2, javaEntity.defaultAssociationOverridesSize());
+		ListIterator<IJavaAssociationOverride> defaultAssociationOverrides = javaEntity.defaultAssociationOverrides();	
+		IAssociationOverride defaultAssociationOverride = defaultAssociationOverrides.next();
 		assertEquals("address", defaultAssociationOverride.getName());
+
+		defaultAssociationOverride = defaultAssociationOverrides.next();
+		assertEquals("address2", defaultAssociationOverride.getName());
+
 		//TODO joinColumns for default association overrides
 //		IJoinColumn defaultJoinColumn = defaultAssociationOverride.joinColumns().next();
 //		assertEquals("address", defaultJoinColumn.getName());
@@ -2412,6 +2554,66 @@ public class JavaEntityTests extends ContextModelTestCase
 		//TODO 
 	}
 	
+	public void testSpecifiedAssociationOverridesSize() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertEquals(0, javaEntity().specifiedAssociationOverridesSize());
+
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+
+		//add an annotation to the resource model and verify the context model is updated
+		AssociationOverride associationOverride = (AssociationOverride) typeResource.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
+		associationOverride.setName("FOO");
+		associationOverride = (AssociationOverride) typeResource.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
+		associationOverride.setName("BAR");
+
+		assertEquals(2, javaEntity().specifiedAssociationOverridesSize());
+	}
+	
+	public void testDefaultAssociationOverridesSize() throws Exception {
+		createTestMappedSuperclass();
+		createTestSubType();
+			
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		
+		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		classRefs.next();
+		IJavaEntity javaEntity = (IJavaEntity) classRefs.next().getJavaPersistentType().getMapping();
+		
+		assertEquals(2, javaEntity.defaultAssociationOverridesSize());
+
+		javaEntity.addSpecifiedAssociationOverride(0).setName("address");
+		assertEquals(1, javaEntity.defaultAssociationOverridesSize());
+		
+		javaEntity.addSpecifiedAssociationOverride(0).setName("address2");		
+		assertEquals(0, javaEntity.defaultAssociationOverridesSize());
+	}
+	
+	public void testAssociationOverridesSize() throws Exception {
+		createTestMappedSuperclass();
+		createTestSubType();
+			
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		
+		ListIterator<IClassRef> classRefs = persistenceUnit().classRefs();
+		classRefs.next();
+		IJavaEntity javaEntity = (IJavaEntity) classRefs.next().getJavaPersistentType().getMapping();
+		
+		assertEquals(2, javaEntity.associationOverridesSize());
+
+		javaEntity.addSpecifiedAssociationOverride(0).setName("address");
+		assertEquals(2, javaEntity.associationOverridesSize());
+		
+		javaEntity.addSpecifiedAssociationOverride(0).setName("address2");		
+		assertEquals(2, javaEntity.associationOverridesSize());
+		
+		javaEntity.addSpecifiedAssociationOverride(0).setName("foo");		
+		assertEquals(3, javaEntity.associationOverridesSize());
+	}
+
 	public void testUpdateIdClass() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);

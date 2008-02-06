@@ -58,11 +58,25 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumns() : this.specifiedJoinColumns();
 	}
 
+	public int joinColumnsSize() {
+		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumnsSize() : this.specifiedJoinColumnsSize();
+	}
+	
+	public IJoinColumn getDefaultJoinColumn() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 	@SuppressWarnings("unchecked")
 	public ListIterator<XmlJoinColumn> defaultJoinColumns() {
 		return new CloneListIterator<XmlJoinColumn>(this.defaultJoinColumns);
 	}
 
+	public int defaultJoinColumnsSize() {
+		return this.defaultJoinColumns.size();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public ListIterator<XmlJoinColumn> specifiedJoinColumns() {
 		return new CloneListIterator<XmlJoinColumn>(this.specifiedJoinColumns);
@@ -88,13 +102,17 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 		addItemToList(index, joinColumn, this.specifiedJoinColumns, ISingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST);
 	}
 
+	public void removeSpecifiedJoinColumn(IJoinColumn joinColumn) {
+		this.removeSpecifiedJoinColumn(this.specifiedJoinColumns.indexOf(joinColumn));
+	}
+	
 	public void removeSpecifiedJoinColumn(int index) {
 		XmlJoinColumn removedJoinColumn = this.specifiedJoinColumns.remove(index);
 		this.attributeMapping().getJoinColumns().remove(index);
 		fireItemRemoved(ISingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 	}
 
-	protected void removeSpecifiedJoinColumn(XmlJoinColumn joinColumn) {
+	protected void removeSpecifiedJoinColumn_(XmlJoinColumn joinColumn) {
 		removeItemFromList(joinColumn, this.specifiedJoinColumns, ISingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST);
 	}
 	
@@ -176,7 +194,7 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 				joinColumn.update(resourceJoinColumns.next());
 			}
 			else {
-				removeSpecifiedJoinColumn(joinColumn);
+				removeSpecifiedJoinColumn_(joinColumn);
 			}
 		}
 		
@@ -251,7 +269,7 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 		}
 
 		public int joinColumnsSize() {
-			return CollectionTools.size(XmlSingleRelationshipMapping.this.joinColumns());
+			return XmlSingleRelationshipMapping.this.joinColumnsSize();
 		}
 	}
 }

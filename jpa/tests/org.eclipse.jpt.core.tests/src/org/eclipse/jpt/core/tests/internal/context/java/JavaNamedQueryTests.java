@@ -325,5 +325,27 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 		javaNamedQuery.removeHint(0);
 		assertFalse(namedQuery.hints().hasNext());
 	}
-
+	
+	public void testHintsSize() throws Exception {
+		createTestEntityWithNamedQuery();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		IEntity entity = javaEntity();
+		
+		INamedQuery namedQuery = entity.namedQueries().next();
+		assertEquals(0, namedQuery.hintsSize());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		NamedQuery javaNamedQuery = (NamedQuery) typeResource.annotation(NamedQuery.ANNOTATION_NAME);
+		
+		
+		javaNamedQuery.addHint(0);
+		assertEquals(1, namedQuery.hintsSize());
+		
+		javaNamedQuery.addHint(0);
+		assertEquals(2, namedQuery.hintsSize());
+		
+		javaNamedQuery.removeHint(0);
+		javaNamedQuery.removeHint(0);
+		assertEquals(0, namedQuery.hintsSize());
+	}
 }

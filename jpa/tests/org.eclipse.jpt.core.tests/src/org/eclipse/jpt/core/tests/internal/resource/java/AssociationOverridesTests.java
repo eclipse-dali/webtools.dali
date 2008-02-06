@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.resource.java.AssociationOverride;
@@ -195,9 +194,7 @@ public class AssociationOverridesTests extends JavaResourceModelTestCase {
 		
 		AssociationOverride associationOverride = (AssociationOverride) attributeResource.annotations(JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES).next();
 		
-		ListIterator<JoinColumn> iterator = associationOverride.joinColumns();
-		
-		assertEquals(0, CollectionTools.size(iterator));
+		assertEquals(0, associationOverride.joinColumnsSize());
 	}
 	
 	public void testJoinColumns2() throws Exception {
@@ -211,9 +208,7 @@ public class AssociationOverridesTests extends JavaResourceModelTestCase {
 		associationOverride.addJoinColumn(1);
 		associationOverride.updateFromJava(JDTTools.buildASTRoot(testType));
 		
-		ListIterator<JoinColumn> iterator = associationOverride.joinColumns();
-		
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(2, associationOverride.joinColumnsSize());
 	}
 	
 	public void testJoinColumns3() throws Exception {
@@ -223,9 +218,7 @@ public class AssociationOverridesTests extends JavaResourceModelTestCase {
 		
 		AssociationOverride associationOverride = (AssociationOverride) attributeResource.annotations(JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES).next();
 				
-		ListIterator<JoinColumn> iterator = associationOverride.joinColumns();
-		
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(2, associationOverride.joinColumnsSize());
 	}
 	
 	public void testAddJoinColumn() throws Exception {
@@ -340,8 +333,7 @@ public class AssociationOverridesTests extends JavaResourceModelTestCase {
 		
 		AssociationOverride associationOverride = (AssociationOverride) attributeResource.annotations(JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES).next();
 				
-		ListIterator<JoinColumn> iterator = associationOverride.joinColumns();
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(2, associationOverride.joinColumnsSize());
 		
 		JoinColumn joinColumn = associationOverride.joinColumns().next();
 		

@@ -21,13 +21,13 @@ public interface IColumn extends IAbstractColumn
 	void setSpecifiedLength(Integer newSpecifiedLength);
 		String SPECIFIED_LENGTH_PROPERTY = "spcifiedLengthProperty";
 		
-		Integer getPrecision();
+	Integer getPrecision();
 
 	Integer getDefaultPrecision();
 		Integer DEFAULT_PRECISION = Integer.valueOf(0);
 		String DEFAULT_PRECISION_PROPERTY = "defaultPrecisionProperty";
 
-		Integer getSpecifiedPrecision();
+	Integer getSpecifiedPrecision();
 	void setSpecifiedPrecision(Integer newSpecifiedPrecision);
 		String SPECIFIED_PRECISION_PROPERTY = "spcifiedPrecisionProperty";
 

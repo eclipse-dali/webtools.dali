@@ -418,7 +418,7 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 		assertNull(attributeResource.annotation(AttributeOverride.ANNOTATION_NAME));
 		assertNull(attributeResource.annotation(AttributeOverrides.ANNOTATION_NAME));
 	
-		assertEquals(2, CollectionTools.size(embeddedIdMapping.defaultAttributeOverrides()));
+		assertEquals(2, embeddedIdMapping.defaultAttributeOverridesSize());
 		IAttributeOverride defaultAttributeOverride = embeddedIdMapping.defaultAttributeOverrides().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
@@ -433,7 +433,7 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 		cityMapping.getColumn().setSpecifiedName("FOO");
 		cityMapping.getColumn().setSpecifiedTable("BAR");
 		
-		assertEquals(2, CollectionTools.size(embeddedIdMapping.defaultAttributeOverrides()));
+		assertEquals(2, embeddedIdMapping.defaultAttributeOverridesSize());
 		defaultAttributeOverride = embeddedIdMapping.defaultAttributeOverrides().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("FOO", defaultAttributeOverride.getColumn().getName());
@@ -447,7 +447,7 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTable());
 		
 		embeddedIdMapping.addSpecifiedAttributeOverride(0).setName("city");
-		assertEquals(1, CollectionTools.size(embeddedIdMapping.defaultAttributeOverrides()));
+		assertEquals(1, embeddedIdMapping.defaultAttributeOverridesSize());
 	}
 	
 	public void testSpecifiedAttributeOverridesSize() throws Exception {
@@ -471,6 +471,58 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 		assertEquals(2, embeddedIdMapping.specifiedAttributeOverridesSize());
 	}
 	
+	public void testAttributeOverridesSize() throws Exception {
+		createTestEntityWithEmbeddedIdMapping();
+		createEmbeddableType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
+		
+		IEmbeddedIdMapping embeddedIdMapping = (IEmbeddedIdMapping) javaPersistentType().attributeNamed("myEmbeddedId").getMapping();
+		assertEquals(2, embeddedIdMapping.attributeOverridesSize());
+
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+
+		//add an annotation to the resource model and verify the context model is updated
+		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("FOO");
+		attributeOverride = (AttributeOverride) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("BAR");
+
+		assertEquals(4, embeddedIdMapping.attributeOverridesSize());
+		
+		attributeOverride = (AttributeOverride) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("city");
+		assertEquals(4, embeddedIdMapping.attributeOverridesSize());	
+	}
+	
+	public void testDefaultAttributeOverridesSize() throws Exception {
+		createTestEntityWithEmbeddedIdMapping();
+		createEmbeddableType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
+		
+		IEmbeddedIdMapping embeddedIdMapping = (IEmbeddedIdMapping) javaPersistentType().attributeNamed("myEmbeddedId").getMapping();
+		assertEquals(2, embeddedIdMapping.defaultAttributeOverridesSize());
+
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+
+		//add an annotation to the resource model and verify the context model is updated
+		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("FOO");
+
+		assertEquals(2, embeddedIdMapping.defaultAttributeOverridesSize());
+		
+		attributeOverride = (AttributeOverride) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("city");
+		assertEquals(1, embeddedIdMapping.defaultAttributeOverridesSize());
+		
+		attributeOverride = (AttributeOverride) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("state");
+		assertEquals(0, embeddedIdMapping.defaultAttributeOverridesSize());
+	}
+
 	public void testAddSpecifiedAttributeOverride() throws Exception {
 		createTestEntityWithEmbeddedIdMapping();
 		createEmbeddableType();

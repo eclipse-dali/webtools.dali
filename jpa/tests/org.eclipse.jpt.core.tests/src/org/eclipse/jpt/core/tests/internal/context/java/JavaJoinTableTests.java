@@ -434,116 +434,6 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertNull(joinTable.getSpecifiedCatalog());
 		assertNull(attributeResource.annotation(JoinTable.ANNOTATION_NAME));
 	}
-	
-////	public void testUpdateDefaultCatalogFromJavaTable() throws Exception {
-////		createTestEntity();
-////		
-////		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-////		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
-////		assertNull(xmlEntity.getTable().getDefaultCatalog());
-////		
-////		xmlEntity.javaEntity().getTable().setSpecifiedCatalog("Foo");
-////		assertEquals("Foo", xmlEntity.getTable().getDefaultCatalog());
-////		
-////		xmlEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
-////		assertNull(xmlEntity.getTable().getDefaultCatalog());
-////
-////		xmlEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-////		xmlEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
-////		assertNull(xmlEntity.getTable().getDefaultCatalog());
-////	
-////		xmlEntity.setSpecifiedMetadataComplete(null);
-////		assertNull(xmlEntity.getTable().getDefaultCatalog());
-////		
-////		xmlEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
-////		assertEquals("Foo", xmlEntity.getTable().getDefaultCatalog());
-////		
-////		xmlEntity.getTable().setSpecifiedName("Bar");
-////		assertNull(xmlEntity.getTable().getDefaultCatalog());
-////	}
-////	
-////	public void testUpdateDefaultCatalogNoJava() throws Exception {
-////		createTestEntity();
-////		
-////		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-////		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
-////		assertNull(xmlEntity.getTable().getDefaultCatalog());
-////	}
-////	
-////	public void testUpdateDefaultCatalogFromParent() throws Exception {
-////		createTestEntity();
-////		createTestSubType();
-////		
-////		XmlPersistentType parentXmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-////		XmlPersistentType childXmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
-////		XmlEntity parentXmlEntity = (XmlEntity) parentXmlPersistentType.getMapping();
-////		XmlEntity childXmlEntity = (XmlEntity) childXmlPersistentType.getMapping();
-////		
-////		assertNull(parentXmlEntity.getTable().getDefaultCatalog());
-////		assertNull(childXmlEntity.getTable().getDefaultCatalog());
-////		
-////		parentXmlEntity.getTable().setSpecifiedCatalog("FOO");
-////		assertNull(parentXmlEntity.getTable().getDefaultCatalog());
-////		assertEquals("FOO", childXmlEntity.getTable().getDefaultCatalog());
-////
-////		parentXmlEntity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
-////		assertNull(parentXmlEntity.getTable().getDefaultCatalog());
-////		assertNull(childXmlEntity.getTable().getDefaultCatalog());
-////	}
-////	
-////	public void testUpdateDefaultCatalogFromPersistenceUnitDefaults() throws Exception {
-////		createTestEntity();
-////		
-////		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-////		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
-////		assertNull(xmlEntity.getTable().getDefaultCatalog());
-////		
-////		xmlEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("FOO");
-////		assertEquals("FOO", xmlEntity.getTable().getDefaultCatalog());
-////		
-////		xmlEntity.entityMappings().setSpecifiedCatalog("BAR");
-////		assertEquals("BAR", xmlEntity.getTable().getDefaultCatalog());
-////		
-////		xmlEntity.javaEntity().getTable().setSpecifiedCatalog("JAVA_CATALOG");
-////		assertEquals("JAVA_CATALOG", xmlEntity.getTable().getDefaultCatalog());
-////		
-////		xmlEntity.getTable().setSpecifiedName("BLAH");
-////		//xml entity now has a table element so default schema is not taken from java
-////		assertEquals("BAR", xmlEntity.getTable().getDefaultCatalog());
-////
-////		
-////		xmlEntity.entityMappings().setSpecifiedCatalog(null);
-////		assertEquals("FOO", xmlEntity.getTable().getDefaultCatalog());
-////
-////		xmlEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog(null);
-////		assertNull(xmlEntity.getTable().getDefaultCatalog());
-////		
-////		xmlEntity.getTable().setSpecifiedName(null);
-////		assertEquals("JAVA_CATALOG", xmlEntity.getTable().getDefaultCatalog());
-////}
-//
-////	
-////	public void testUpdateName() throws Exception {
-////		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-////		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
-////		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-////		assertEquals("Foo", xmlEntity.getName());
-////		
-////		//set class in the resource model, verify context model updated
-////		entityResource.setClassName("com.Bar");
-////		assertEquals("Bar", xmlEntity.getName());
-////		
-////		entityResource.setName("Baz");
-////		assertEquals("Baz", xmlEntity.getName());
-////		
-////		//set class to null in the resource model
-////		entityResource.setClassName(null);
-////		assertEquals("Baz", xmlEntity.getName());
-////		
-////		entityResource.setName(null);
-////		assertNull(xmlEntity.getName());
-////	}
-//
 
 	public void testAddSpecifiedJoinColumn() throws Exception {
 		createTestEntityWithManyToMany();
@@ -710,6 +600,50 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		
 		joinTableResource.removeJoinColumn(0);
 		assertFalse(joinTable.specifiedJoinColumns().hasNext());
+	}
+	
+	public void testGetDefaultJoinColumn() {
+		//TODO
+	}
+	
+	public void testSpecifiedJoinColumnsSize() throws Exception {
+		createTestEntityWithManyToMany();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IJavaManyToManyMapping manyToManyMapping = (IJavaManyToManyMapping) javaPersistentType().attributes().next().getMapping();
+		IJoinTable joinTable = manyToManyMapping.getJoinTable();
+
+		assertEquals(0, joinTable.specifiedJoinColumnsSize());
+		
+		joinTable.addSpecifiedJoinColumn(0);
+		assertEquals(1, joinTable.specifiedJoinColumnsSize());
+		
+		joinTable.removeSpecifiedJoinColumn(0);
+		assertEquals(0, joinTable.specifiedJoinColumnsSize());
+	}
+
+	public void testJoinColumnsSize() throws Exception {
+		createTestEntityWithManyToMany();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IJavaManyToManyMapping manyToManyMapping = (IJavaManyToManyMapping) javaPersistentType().attributes().next().getMapping();
+		IJoinTable joinTable = manyToManyMapping.getJoinTable();
+
+		assertEquals(1, joinTable.joinColumnsSize());
+		
+		joinTable.addSpecifiedJoinColumn(0);
+		assertEquals(1, joinTable.joinColumnsSize());
+		
+		joinTable.addSpecifiedJoinColumn(0);
+		assertEquals(2, joinTable.joinColumnsSize());
+
+		joinTable.removeSpecifiedJoinColumn(0);
+		joinTable.removeSpecifiedJoinColumn(0);
+		assertEquals(1, joinTable.joinColumnsSize());
+		
+		//if non-owning side of the relationship then no default join column
+		manyToManyMapping.setMappedBy("foo");
+		assertEquals(0, joinTable.joinColumnsSize());
 	}
 	
 	public void testAddSpecifiedInverseJoinColumn() throws Exception {
@@ -879,5 +813,48 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertFalse(joinTable.specifiedInverseJoinColumns().hasNext());
 	}
 
+	public void testGetDefaultInverseJoinColumn() {
+		//TODO
+	}
+	
+	public void testSpecifiedInverseJoinColumnsSize() throws Exception {
+		createTestEntityWithManyToMany();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IJavaManyToManyMapping manyToManyMapping = (IJavaManyToManyMapping) javaPersistentType().attributes().next().getMapping();
+		IJoinTable joinTable = manyToManyMapping.getJoinTable();
+
+		assertEquals(0, joinTable.specifiedInverseJoinColumnsSize());
+		
+		joinTable.addSpecifiedInverseJoinColumn(0);
+		assertEquals(1, joinTable.specifiedInverseJoinColumnsSize());
+		
+		joinTable.removeSpecifiedInverseJoinColumn(0);
+		assertEquals(0, joinTable.specifiedInverseJoinColumnsSize());
+	}
+
+	public void testInverseJoinColumnsSize() throws Exception {
+		createTestEntityWithManyToMany();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IJavaManyToManyMapping manyToManyMapping = (IJavaManyToManyMapping) javaPersistentType().attributes().next().getMapping();
+		IJoinTable joinTable = manyToManyMapping.getJoinTable();
+
+		assertEquals(1, joinTable.inverseJoinColumnsSize());
+		
+		joinTable.addSpecifiedInverseJoinColumn(0);
+		assertEquals(1, joinTable.inverseJoinColumnsSize());
+		
+		joinTable.addSpecifiedInverseJoinColumn(0);
+		assertEquals(2, joinTable.inverseJoinColumnsSize());
+
+		joinTable.removeSpecifiedInverseJoinColumn(0);
+		joinTable.removeSpecifiedInverseJoinColumn(0);
+		assertEquals(1, joinTable.inverseJoinColumnsSize());
+		
+		//if non-owning side of the relationship then no default join column
+		manyToManyMapping.setMappedBy("foo");
+		assertEquals(0, joinTable.inverseJoinColumnsSize());
+	}
 
 }

@@ -177,7 +177,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		
 		
 		IJavaOneToOneMapping oneToOneMapping = (IJavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
-		IJavaJoinColumn defaultJavaJoinColumn = oneToOneMapping.defaultJoinColumns().next();
+		IJavaJoinColumn defaultJavaJoinColumn = oneToOneMapping.getDefaultJoinColumn();
 		
 		assertNull(defaultJavaJoinColumn.getDefaultName());
 //TODO test default join column name

@@ -19,14 +19,19 @@ import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.IAssociationOverride;
+import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.INamedColumn;
+import org.eclipse.jpt.core.internal.context.base.INamedNativeQuery;
+import org.eclipse.jpt.core.internal.context.base.INamedQuery;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
@@ -65,6 +70,7 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -124,7 +130,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.discriminatorColumn = createJavaDiscriminatorColumn();
 		this.specifiedSecondaryTables = new ArrayList<IJavaSecondaryTable>();
 		this.specifiedPrimaryKeyJoinColumns = new ArrayList<IJavaPrimaryKeyJoinColumn>();
-		this.defaultPrimaryKeyJoinColumn = this.jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		this.specifiedAttributeOverrides = new ArrayList<IJavaAttributeOverride>();
 		this.defaultAttributeOverrides = new ArrayList<IJavaAttributeOverride>();
 		this.namedQueries = new ArrayList<IJavaNamedQuery>();
@@ -179,6 +184,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.initializeTableGenerator(persistentTypeResource);
 		this.initializeSequenceGenerator(persistentTypeResource);
 		this.initializePrimaryKeyJoinColumns(persistentTypeResource);
+		this.initializeDefaultPrimaryKeyJoinColumn(persistentTypeResource);
 		this.initializeSpecifiedAttributeOverrides(persistentTypeResource);
 		this.initializeDefaultAttributeOverrides(persistentTypeResource);
 		this.initializeSpecifiedAssociationOverrides(persistentTypeResource);
@@ -218,6 +224,18 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		}
 	}
 	
+	protected boolean shouldBuildDefaultPrimaryKeyJoinColumn() {
+		return !containsSpecifiedPrimaryKeyJoinColumns();
+	}
+
+	protected void initializeDefaultPrimaryKeyJoinColumn(JavaPersistentTypeResource persistentTypeResource) {
+		if (!shouldBuildDefaultPrimaryKeyJoinColumn()) {
+			return;
+		}
+		this.defaultPrimaryKeyJoinColumn = this.jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+		this.defaultPrimaryKeyJoinColumn.initializeFromResource(new NullPrimaryKeyJoinColumn(persistentTypeResource));
+	}	
+
 	protected void initializeSpecifiedAttributeOverrides(JavaPersistentTypeResource persistentTypeResource) {
 		ListIterator<JavaResource> annotations = persistentTypeResource.annotations(AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		
@@ -418,13 +436,17 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		addItemToList(index, secondaryTable, this.specifiedSecondaryTables, IEntity.SPECIFIED_SECONDARY_TABLES_LIST);
 	}
 	
+	public void removeSpecifiedSecondaryTable(ISecondaryTable secondaryTable) {
+		this.removeSpecifiedSecondaryTable(this.specifiedSecondaryTables.indexOf(secondaryTable));
+	}
+	
 	public void removeSpecifiedSecondaryTable(int index) {
 		IJavaSecondaryTable removedSecondaryTable = this.specifiedSecondaryTables.remove(index);
 		this.persistentTypeResource.removeAnnotation(index, SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
 		fireItemRemoved(IEntity.SPECIFIED_SECONDARY_TABLES_LIST, index, removedSecondaryTable);
 	}
 	
-	protected void removeSpecifiedSecondaryTable(IJavaSecondaryTable secondaryTable) {
+	protected void removeSpecifiedSecondaryTable_(IJavaSecondaryTable secondaryTable) {
 		removeItemFromList(secondaryTable, this.specifiedSecondaryTables, IEntity.SPECIFIED_SECONDARY_TABLES_LIST);
 	}
 	
@@ -611,15 +633,44 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	}
 
 	public ListIterator<IJavaPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
-		return this.specifiedPrimaryKeyJoinColumns.isEmpty() ? this.defaultPrimaryKeyJoinColumns() : this.specifiedPrimaryKeyJoinColumns();
+		return this.containsSpecifiedPrimaryKeyJoinColumns() ? this.specifiedPrimaryKeyJoinColumns() : this.defaultPrimaryKeyJoinColumns();
+	}
+	
+	public int primaryKeyJoinColumnsSize() {
+		return this.containsSpecifiedPrimaryKeyJoinColumns() ? this.specifiedPrimaryKeyJoinColumnsSize() : this.defaultPrimaryKeyJoinColumnsSize();
 	}
 	
 	public ListIterator<IJavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns() {
 		return new CloneListIterator<IJavaPrimaryKeyJoinColumn>(this.specifiedPrimaryKeyJoinColumns);
 	}
 	
-	public ListIterator<IJavaPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns() {
-		return new SingleElementListIterator<IJavaPrimaryKeyJoinColumn>(this.defaultPrimaryKeyJoinColumn);
+	public int specifiedPrimaryKeyJoinColumnsSize() {
+		return this.specifiedPrimaryKeyJoinColumns.size();
+	}
+	
+	public boolean containsSpecifiedPrimaryKeyJoinColumns() {
+		return !this.specifiedPrimaryKeyJoinColumns.isEmpty();
+	}	
+	
+	public IJavaPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn() {
+		return this.defaultPrimaryKeyJoinColumn;
+	}
+	
+	protected void setDefaultPrimaryKeyJoinColumn(IJavaPrimaryKeyJoinColumn newPkJoinColumn) {
+		IJavaPrimaryKeyJoinColumn oldPkJoinColumn = this.defaultPrimaryKeyJoinColumn;
+		this.defaultPrimaryKeyJoinColumn = newPkJoinColumn;
+		firePropertyChanged(IEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMN, oldPkJoinColumn, newPkJoinColumn);
+	}
+
+	protected ListIterator<IJavaPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns() {
+		if (this.defaultPrimaryKeyJoinColumn != null) {
+			return new SingleElementListIterator<IJavaPrimaryKeyJoinColumn>(this.defaultPrimaryKeyJoinColumn);
+		}
+		return EmptyListIterator.instance();
+	}
+	
+	protected int defaultPrimaryKeyJoinColumnsSize() {
+		return (this.defaultPrimaryKeyJoinColumn == null) ? 0 : 1;
 	}
 
 	public IPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
@@ -633,6 +684,10 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	protected void addSpecifiedPrimaryKeyJoinColumn(int index, IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn) {
 		addItemToList(index, primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
+		
+	public void removeSpecifiedPrimaryKeyJoinColumn(IPrimaryKeyJoinColumn primaryKeyJoinColumn) {
+		removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumns.indexOf(primaryKeyJoinColumn));
+	}
 	
 	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
 		IJavaPrimaryKeyJoinColumn removedPrimaryKeyJoinColumn = this.specifiedPrimaryKeyJoinColumns.remove(index);
@@ -640,7 +695,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		fireItemRemoved(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
 	}
 
-	protected void removeSpecifiedPrimaryKeyJoinColumn(IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn) {
+	protected void removeSpecifiedPrimaryKeyJoinColumn_(IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn) {
 		removeItemFromList(primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
@@ -649,17 +704,21 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		moveItemInList(targetIndex, sourceIndex, this.specifiedPrimaryKeyJoinColumns, IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);		
 	}
 	
-	public int specifiedPrimaryKeyJoinColumnsSize() {
-		return this.specifiedPrimaryKeyJoinColumns.size();
-	}
-	
 	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaAttributeOverride> attributeOverrides() {
 		return new CompositeListIterator<IJavaAttributeOverride>(specifiedAttributeOverrides(), defaultAttributeOverrides());
 	}
 	
+	public int attributeOverridesSize() {
+		return this.specifiedAttributeOverridesSize() + this.defaultAttributeOverridesSize();
+	}
+	
 	public ListIterator<IJavaAttributeOverride> defaultAttributeOverrides() {
 		return new CloneListIterator<IJavaAttributeOverride>(this.defaultAttributeOverrides);
+	}
+	
+	public int defaultAttributeOverridesSize() {
+		return this.defaultAttributeOverrides.size();
 	}
 	
 	public ListIterator<IJavaAttributeOverride> specifiedAttributeOverrides() {
@@ -686,13 +745,17 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
+	public void removeSpecifiedAttributeOverride(IAttributeOverride attributeOverride) {
+		removeSpecifiedAttributeOverride(this.specifiedAttributeOverrides.indexOf(attributeOverride));
+	}
+	
 	public void removeSpecifiedAttributeOverride(int index) {
 		IJavaAttributeOverride removedAttributeOverride = this.specifiedAttributeOverrides.remove(index);
 		this.persistentTypeResource.removeAnnotation(index, AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		fireItemRemoved(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, removedAttributeOverride);
 	}
 	
-	protected void removeSpecifiedAttributeOverride(IJavaAttributeOverride attributeOverride) {
+	protected void removeSpecifiedAttributeOverride_(IJavaAttributeOverride attributeOverride) {
 		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 
@@ -759,6 +822,32 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return overrideNamed(name, overrides) != null;
 	}
 
+
+	@SuppressWarnings("unchecked")
+	public ListIterator<IJavaAssociationOverride> associationOverrides() {
+		return new CompositeListIterator<IJavaAssociationOverride>(specifiedAssociationOverrides(), defaultAssociationOverrides());
+	}
+	
+	public int associationOverridesSize() {
+		return this.specifiedAssociationOverridesSize() + this.defaultAssociationOverridesSize();
+	}
+
+	public  ListIterator<IJavaAssociationOverride> defaultAssociationOverrides() {
+		return new CloneListIterator<IJavaAssociationOverride>(this.defaultAssociationOverrides);
+	}
+	
+	public int defaultAssociationOverridesSize() {
+		return this.defaultAssociationOverrides.size();
+	}
+	
+	public ListIterator<IJavaAssociationOverride> specifiedAssociationOverrides() {
+		return new CloneListIterator<IJavaAssociationOverride>(this.specifiedAssociationOverrides);
+	}
+	
+	public int specifiedAssociationOverridesSize() {
+		return this.specifiedAssociationOverrides.size();
+	}
+
 	public IJavaAssociationOverride addSpecifiedAssociationOverride(int index) {
 		IJavaAssociationOverride associationOverride = jpaFactory().createJavaAssociationOverride(this, createAssociationOverrideOwner());
 		this.specifiedAssociationOverrides.add(index, associationOverride);
@@ -775,16 +864,20 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		addItemToList(index, associationOverride, this.specifiedAssociationOverrides, IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
 	}
 	
+	public void removeSpecifiedAssociationOverride(IAssociationOverride associationOverride) {
+		removeSpecifiedAssociationOverride(this.specifiedAssociationOverrides.indexOf(associationOverride));
+	}
+	
 	public void removeSpecifiedAssociationOverride(int index) {
 		IJavaAssociationOverride removedAssociationOverride = this.specifiedAssociationOverrides.remove(index);
 		this.persistentTypeResource.removeAnnotation(index, AssociationOverride.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
 		fireItemRemoved(IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, removedAssociationOverride);
 	}
 	
-	protected void removeSpecifiedAssociationOverride(IJavaAssociationOverride associationOverride) {
+	protected void removeSpecifiedAssociationOverride_(IJavaAssociationOverride associationOverride) {
 		removeItemFromList(associationOverride, this.specifiedAssociationOverrides, IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
 	}
-
+	
 	public void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedAssociationOverrides, targetIndex, sourceIndex);
 		this.persistentTypeResource.move(targetIndex, sourceIndex, AssociationOverrides.ANNOTATION_NAME);
@@ -819,13 +912,17 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		addItemToList(index, namedQuery, this.namedQueries, IEntity.NAMED_QUERIES_LIST);
 	}
 	
+	public void removeNamedQuery(INamedQuery namedQuery) {
+		removeNamedQuery(this.namedQueries.indexOf(namedQuery));
+	}
+	
 	public void removeNamedQuery(int index) {
 		IJavaNamedQuery removedNamedQuery = this.namedQueries.remove(index);
 		this.persistentTypeResource.removeAnnotation(index, NamedQuery.ANNOTATION_NAME, NamedQueries.ANNOTATION_NAME);
 		fireItemRemoved(IEntity.NAMED_QUERIES_LIST, index, removedNamedQuery);
-	}
+	}	
 	
-	protected void removeNamedQuery(IJavaNamedQuery namedQuery) {
+	protected void removeNamedQuery_(IJavaNamedQuery namedQuery) {
 		removeItemFromList(namedQuery, this.namedQueries, IEntity.NAMED_QUERIES_LIST);
 	}
 	
@@ -855,13 +952,17 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		addItemToList(index, namedNativeQuery, this.namedNativeQueries, IEntity.NAMED_NATIVE_QUERIES_LIST);
 	}
 	
+	public void removeNamedNativeQuery(INamedNativeQuery namedNativeQuery) {
+		this.removeNamedNativeQuery(this.namedNativeQueries.indexOf(namedNativeQuery));
+	}
+	
 	public void removeNamedNativeQuery(int index) {
 		IJavaNamedNativeQuery removedNamedNativeQuery = this.namedNativeQueries.remove(index);
 		this.persistentTypeResource.removeAnnotation(index, NamedNativeQuery.ANNOTATION_NAME, NamedNativeQueries.ANNOTATION_NAME);
 		fireItemRemoved(IEntity.NAMED_NATIVE_QUERIES_LIST, index, removedNamedNativeQuery);
-	}
+	}	
 	
-	protected void removeNamedNativeQuery(IJavaNamedNativeQuery namedNativeQuery) {
+	protected void removeNamedNativeQuery_(IJavaNamedNativeQuery namedNativeQuery) {
 		removeItemFromList(namedNativeQuery, this.namedNativeQueries, IEntity.NAMED_NATIVE_QUERIES_LIST);
 	}
 	
@@ -869,23 +970,6 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		CollectionTools.move(this.namedNativeQueries, targetIndex, sourceIndex);
 		this.persistentTypeResource.move(targetIndex, sourceIndex, NamedNativeQueries.ANNOTATION_NAME);
 		fireItemMoved(IEntity.NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);		
-	}
-
-	@SuppressWarnings("unchecked")
-	public ListIterator<IJavaAssociationOverride> associationOverrides() {
-		return new CompositeListIterator<IJavaAssociationOverride>(specifiedAssociationOverrides(), defaultAssociationOverrides());
-	}
-	
-	public  ListIterator<IJavaAssociationOverride> defaultAssociationOverrides() {
-		return new CloneListIterator<IJavaAssociationOverride>(this.defaultAssociationOverrides);
-	}
-	
-	public ListIterator<IJavaAssociationOverride> specifiedAssociationOverrides() {
-		return new CloneListIterator<IJavaAssociationOverride>(this.specifiedAssociationOverrides);
-	}
-	
-	public int specifiedAssociationOverridesSize() {
-		return this.specifiedAssociationOverrides.size();
 	}
 
 	public String getIdClass() {
@@ -1090,7 +1174,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		this.updateTableGenerator(persistentTypeResource);
 		this.updateSequenceGenerator(persistentTypeResource);
 		this.updateSpecifiedPrimaryKeyJoinColumns(persistentTypeResource);
-		this.updateDefaultPrimaryKeyJoinColumns(persistentTypeResource);
+		this.updateDefaultPrimaryKeyJoinColumn(persistentTypeResource);
 		this.updateSpecifiedAttributeOverrides(persistentTypeResource);
 		this.updateDefaultAttributeOverrides(persistentTypeResource);
 		this.updateSpecifiedAssociationOverrides(persistentTypeResource);
@@ -1151,7 +1235,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 				secondaryTable.update((SecondaryTable) resourceSecondaryTables.next());
 			}
 			else {
-				removeSpecifiedSecondaryTable(secondaryTable);
+				removeSpecifiedSecondaryTable_(secondaryTable);
 			}
 		}
 		
@@ -1231,7 +1315,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 				primaryKeyJoinColumn.update((PrimaryKeyJoinColumn) resourcePrimaryKeyJoinColumns.next());
 			}
 			else {
-				removeSpecifiedPrimaryKeyJoinColumn(primaryKeyJoinColumn);
+				removeSpecifiedPrimaryKeyJoinColumn_(primaryKeyJoinColumn);
 			}
 		}
 		
@@ -1246,8 +1330,19 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return primaryKeyJoinColumn;
 	}
 
-	protected void updateDefaultPrimaryKeyJoinColumns(JavaPersistentTypeResource persistentTypeResource) {
-		this.defaultPrimaryKeyJoinColumn.update(new NullPrimaryKeyJoinColumn(persistentTypeResource));
+	protected void updateDefaultPrimaryKeyJoinColumn(JavaPersistentTypeResource persistentTypeResource) {
+		if (!shouldBuildDefaultPrimaryKeyJoinColumn()) {
+			setDefaultPrimaryKeyJoinColumn(null);
+			return;
+		}
+		if (getDefaultPrimaryKeyJoinColumn() == null) {
+			IJavaPrimaryKeyJoinColumn joinColumn = this.jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+			joinColumn.initializeFromResource(new NullPrimaryKeyJoinColumn(persistentTypeResource));
+			this.setDefaultPrimaryKeyJoinColumn(joinColumn);
+		}
+		else {
+			this.defaultPrimaryKeyJoinColumn.update(new NullPrimaryKeyJoinColumn(persistentTypeResource));
+		}
 	}
 		
 	protected void updateSpecifiedAttributeOverrides(JavaPersistentTypeResource persistentTypeResource) {
@@ -1260,7 +1355,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 				attributeOverride.update((AttributeOverride) resourceAttributeOverrides.next());
 			}
 			else {
-				removeSpecifiedAttributeOverride(attributeOverride);
+				removeSpecifiedAttributeOverride_(attributeOverride);
 			}
 		}
 		
@@ -1309,7 +1404,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 				associationOverride.update((AssociationOverride) resourceAssociationOverrides.next());
 			}
 			else {
-				removeSpecifiedAssociationOverride(associationOverride);
+				removeSpecifiedAssociationOverride_(associationOverride);
 			}
 		}
 		
@@ -1359,7 +1454,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 				namedQuery.update((NamedQuery) resourceNamedQueries.next());
 			}
 			else {
-				removeNamedQuery(namedQuery);
+				removeNamedQuery_(namedQuery);
 			}
 		}
 		
@@ -1378,7 +1473,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 				namedQuery.update((NamedNativeQuery) resourceNamedNativeQueries.next());
 			}
 			else {
-				removeNamedNativeQuery(namedQuery);
+				removeNamedNativeQuery_(namedQuery);
 			}
 		}
 		
@@ -1591,7 +1686,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		}
 
 		public int joinColumnsSize() {
-			return CollectionTools.size(JavaEntity.this.primaryKeyJoinColumns());
+			return JavaEntity.this.primaryKeyJoinColumnsSize();
 		}
 		
 		public boolean isVirtual(IAbstractJoinColumn joinColumn) {

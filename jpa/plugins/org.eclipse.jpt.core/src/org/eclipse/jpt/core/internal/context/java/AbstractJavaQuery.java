@@ -15,6 +15,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IQuery;
+import org.eclipse.jpt.core.internal.context.base.IQueryHint;
 import org.eclipse.jpt.core.internal.resource.java.Query;
 import org.eclipse.jpt.core.internal.resource.java.QueryHint;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -82,13 +83,17 @@ public abstract class AbstractJavaQuery<E extends Query> extends JavaContextMode
 		addItemToList(index, hint, this.hints, IQuery.HINTS_LIST);
 	}
 	
+	public void removeHint(IQueryHint queryHint) {
+		removeHint(this.hints.indexOf(queryHint));
+	}
+	
 	public void removeHint(int index) {
 		IJavaQueryHint removedHint = this.hints.remove(index);
 		this.query().removeHint(index);
 		fireItemRemoved(IQuery.HINTS_LIST, index, removedHint);
 	}
-
-	protected void removeHint(IJavaQueryHint hint) {
+	
+	protected void removeHint_(IJavaQueryHint hint) {
 		removeItemFromList(hint, this.hints, IQuery.HINTS_LIST);
 	}
 	
@@ -129,7 +134,7 @@ public abstract class AbstractJavaQuery<E extends Query> extends JavaContextMode
 				hint.update(resourceHints.next());
 			}
 			else {
-				removeHint(hint);
+				removeHint_(hint);
 			}
 		}
 		

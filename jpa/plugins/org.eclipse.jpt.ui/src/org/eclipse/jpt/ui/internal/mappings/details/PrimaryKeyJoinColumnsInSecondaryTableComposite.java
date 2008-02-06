@@ -204,7 +204,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 	private ListValueModel<IPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnListHolder() {
 		return new ListAspectAdapter<ISecondaryTable, IPrimaryKeyJoinColumn>(
 			getSubjectHolder(),
-			ISecondaryTable.DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST,
+			ISecondaryTable.DEFAULT_PRIMARY_KEY_JOIN_COLUMN,//TODO
 			ISecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST)
 		{
 			@Override
@@ -392,7 +392,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 			ISecondaryTable secondaryTable = subject();
 
 			if (value) {
-				IPrimaryKeyJoinColumn defaultJoinColumn = secondaryTable.defaultPrimaryKeyJoinColumns().next();
+				IPrimaryKeyJoinColumn defaultJoinColumn = secondaryTable.getDefaultPrimaryKeyJoinColumn();//TODO possibly null
 				String columnName = defaultJoinColumn.getDefaultName();
 				String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
 

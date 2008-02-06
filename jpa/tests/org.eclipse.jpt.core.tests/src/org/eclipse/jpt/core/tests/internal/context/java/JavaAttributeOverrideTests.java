@@ -196,7 +196,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 				
 		IEntity entity = javaEntity();
 		assertEquals("AnnotationTestTypeChild", entity.getName());
-		assertEquals(2, CollectionTools.size(entity.defaultAttributeOverrides()));
+		assertEquals(2, entity.defaultAttributeOverridesSize());
 		
 		IAttributeOverride attributeOverride = entity.defaultAttributeOverrides().next();
 		assertEquals("id", attributeOverride.getColumn().getDefaultName());
@@ -218,7 +218,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 				
 		IEntity entity = javaEntity();
 		assertEquals("AnnotationTestTypeChild", entity.getName());
-		assertEquals(2, CollectionTools.size(entity.defaultAttributeOverrides()));
+		assertEquals(2, entity.defaultAttributeOverridesSize());
 		
 		IAttributeOverride attributeOverride = entity.defaultAttributeOverrides().next();
 		assertEquals("AnnotationTestTypeChild", attributeOverride.getColumn().getDefaultTable());
@@ -240,7 +240,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		
 		IEntity entity = javaEntity();	
 		assertEquals("AnnotationTestTypeChild", entity.getName());
-		assertEquals(2, CollectionTools.size(entity.defaultAttributeOverrides()));
+		assertEquals(2, entity.defaultAttributeOverridesSize());
 		
 		IAttributeOverride attributeOverride = entity.defaultAttributeOverrides().next();
 		assertEquals("id", attributeOverride.getName());
@@ -254,7 +254,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		
 		IEntity entity = javaEntity();	
 		assertEquals("AnnotationTestTypeChild", entity.getName());
-		assertEquals(2, CollectionTools.size(entity.defaultAttributeOverrides()));
+		assertEquals(2, entity.defaultAttributeOverridesSize());
 		
 		IAttributeOverride attributeOverride = entity.defaultAttributeOverrides().next();
 		assertTrue(attributeOverride.isVirtual());

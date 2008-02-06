@@ -16,6 +16,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddable;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
@@ -70,9 +71,18 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 		return new CompositeListIterator<XmlAttributeOverride>(specifiedAttributeOverrides(), defaultAttributeOverrides());
 	}
 
+	public int attributeOverridesSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public ListIterator<XmlAttributeOverride> defaultAttributeOverrides() {
 		return new CloneListIterator<XmlAttributeOverride>(this.defaultAttributeOverrides);
+	}
+	
+	public int defaultAttributeOverridesSize() {
+		return this.defaultAttributeOverrides.size();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -96,13 +106,17 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
+	public void removeSpecifiedAttributeOverride(IAttributeOverride attributeOverride) {
+		removeSpecifiedAttributeOverride(this.specifiedAttributeOverrides.indexOf(attributeOverride));
+	}
+	
 	public void removeSpecifiedAttributeOverride(int index) {
 		XmlAttributeOverride removedAttributeOverride = this.specifiedAttributeOverrides.remove(index);
 		this.attributeMapping().getAttributeOverrides().remove(index);
 		fireItemRemoved(IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, removedAttributeOverride);
 	}
-
-	protected void removeSpecifiedAttributeOverride(XmlAttributeOverride attributeOverride) {
+	
+	protected void removeSpecifiedAttributeOverride_(XmlAttributeOverride attributeOverride) {
 		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
@@ -280,7 +294,7 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 				attributeOverride.update(resourceAttributeOverrides.next());
 			}
 			else {
-				removeSpecifiedAttributeOverride(attributeOverride);
+				removeSpecifiedAttributeOverride_(attributeOverride);
 			}
 		}
 		

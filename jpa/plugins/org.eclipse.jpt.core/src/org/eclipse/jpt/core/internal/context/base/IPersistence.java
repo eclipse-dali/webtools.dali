@@ -29,6 +29,12 @@ public interface IPersistence extends IJpaContextNode
 	ListIterator<IPersistenceUnit> persistenceUnits();
 	
 	/**
+	 * Return the size of the persistence unit list.
+	 * @return
+	 */
+	int persistenceUnitsSize();
+	
+	/**
 	 * Add a persistence unit to the persistence node and return the object 
 	 * representing it.
 	 */

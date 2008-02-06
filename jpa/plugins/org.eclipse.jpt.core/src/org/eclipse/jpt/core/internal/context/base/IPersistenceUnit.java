@@ -162,6 +162,10 @@ public interface IPersistenceUnit extends IJpaContextNode
 	 */
 	ListIterator<IMappingFileRef> mappingFileRefs();
 	
+	/**
+	 * Return of mapping file refs, specified and implied.
+	 */
+	int mappingFileRefsSize();
 	
 	// **************** specified mapping file refs ****************************
 	
@@ -176,6 +180,11 @@ public interface IPersistenceUnit extends IJpaContextNode
 	 */
 	ListIterator<IMappingFileRef> specifiedMappingFileRefs();
 	
+	/**
+	 * Return of specified mapping file refs.
+	 */
+	int specifiedMappingFileRefsSize();
+
 	/**
 	 * Add a specified mapping file ref to the persistence unit and return the object 
 	 * representing it.
@@ -231,6 +240,10 @@ public interface IPersistenceUnit extends IJpaContextNode
 	 */
 	ListIterator<IClassRef> classRefs();
 	
+	/**
+	 * Return the number of specified and implied class refs.
+	 */
+	int classRefsSize();
 	
 	// **************** specified class refs ***********************************
 	
@@ -244,6 +257,11 @@ public interface IPersistenceUnit extends IJpaContextNode
 	 * This will not be null.
 	 */
 	ListIterator<IClassRef> specifiedClassRefs();
+	
+	/**
+	 * Return the number of specified class refs.
+	 */
+	int specifiedClassRefsSize();
 	
 	/**
 	 * Add a specified class ref to the persistence unit and return the object 
@@ -280,6 +298,11 @@ public interface IPersistenceUnit extends IJpaContextNode
 	 * This will not be null.
 	 */
 	ListIterator<IClassRef> impliedClassRefs();
+	
+	/**
+	 * Return the number of implied class refs.
+	 */
+	int impliedClassRefsSize();
 	
 	/**
 	 * Add an implied class ref to the persistence unit and return the object 

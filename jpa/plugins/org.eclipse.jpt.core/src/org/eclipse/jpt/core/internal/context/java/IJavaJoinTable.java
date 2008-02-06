@@ -24,18 +24,23 @@ public interface IJavaJoinTable extends IJoinTable, IJavaJpaContextNode
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<IJavaJoinColumn> joinColumns();
-	@SuppressWarnings("unchecked")
-	ListIterator<IJavaJoinColumn> defaultJoinColumns();
+	
+	IJavaJoinColumn getDefaultJoinColumn();
+	
 	@SuppressWarnings("unchecked")
 	ListIterator<IJavaJoinColumn> specifiedJoinColumns();
+	
 	IJavaJoinColumn addSpecifiedJoinColumn(int index);
+	
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<IJavaJoinColumn> inverseJoinColumns();
-	@SuppressWarnings("unchecked")
-	ListIterator<IJavaJoinColumn> defaultInverseJoinColumns();
+	
+	IJavaJoinColumn getDefaultInverseJoinColumn();
+	
 	@SuppressWarnings("unchecked")
 	ListIterator<IJavaJoinColumn> specifiedInverseJoinColumns();
+	
 	IJavaJoinColumn addSpecifiedInverseJoinColumn(int index);
 
 }

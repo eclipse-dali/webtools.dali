@@ -566,7 +566,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		assertFalse(specifiedJoinColumns.hasNext());
 	}
 	
-	public void testDefaultJoinColumns() {
+	public void testGetDefaultJoin() {
 		//TODO
 	}
 	
@@ -584,6 +584,26 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		manyToOneMapping.removeSpecifiedJoinColumn(0);
 		assertEquals(0, manyToOneMapping.specifiedJoinColumnsSize());
+	}
+
+	public void testJoinColumnsSize() throws Exception {
+		createTestEntityWithManyToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IManyToOneMapping manyToOneMapping = (IManyToOneMapping) persistentAttribute.getMapping();
+
+		assertEquals(1, manyToOneMapping.joinColumnsSize());
+		
+		manyToOneMapping.addSpecifiedJoinColumn(0);
+		assertEquals(1, manyToOneMapping.joinColumnsSize());
+		
+		manyToOneMapping.addSpecifiedJoinColumn(0);
+		assertEquals(2, manyToOneMapping.joinColumnsSize());
+
+		manyToOneMapping.removeSpecifiedJoinColumn(0);
+		manyToOneMapping.removeSpecifiedJoinColumn(0);
+		assertEquals(1, manyToOneMapping.joinColumnsSize());
 	}
 
 	public void testAddSpecifiedJoinColumn() throws Exception {
@@ -770,12 +790,13 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		IManyToOneMapping manyToOneMapping = (IManyToOneMapping) persistentAttribute.getMapping();
 
+		assertTrue(manyToOneMapping.getDefaultJoinColumn().isVirtual());
+		
 		manyToOneMapping.addSpecifiedJoinColumn(0);
 		IJoinColumn specifiedJoinColumn = manyToOneMapping.specifiedJoinColumns().next();
 		assertFalse(specifiedJoinColumn.isVirtual());
 		
-		IJoinColumn defaultJoinColumn = manyToOneMapping.defaultJoinColumns().next();
-		assertTrue(defaultJoinColumn.isVirtual());
+		assertNull(manyToOneMapping.getDefaultJoinColumn());
 	}
 	
 	public void testDefaultTargetEntity() throws Exception {

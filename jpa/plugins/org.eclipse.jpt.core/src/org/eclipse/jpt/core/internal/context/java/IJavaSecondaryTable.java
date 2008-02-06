@@ -19,10 +19,12 @@ public interface IJavaSecondaryTable extends ISecondaryTable, IJavaJpaContextNod
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<IJavaPrimaryKeyJoinColumn> primaryKeyJoinColumns();
-	@SuppressWarnings("unchecked")
-	ListIterator<IJavaPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns();
+	
+	IJavaPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
+	
 	@SuppressWarnings("unchecked")
 	ListIterator<IJavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns();
+	
 	IJavaPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 	
 	void initializeFromResource(SecondaryTable secondaryTable);

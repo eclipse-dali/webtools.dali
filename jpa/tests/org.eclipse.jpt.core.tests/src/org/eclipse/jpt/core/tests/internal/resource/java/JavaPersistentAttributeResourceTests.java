@@ -341,7 +341,7 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 		IType testType = this.createTestEntityWithColumn();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
-		assertEquals(1, CollectionTools.size(attributeResource.annotations()));
+		assertEquals(1, attributeResource.annotationsSize());
 	}
 
 	public void testJavaAttributeAnnotation() throws Exception {
@@ -398,8 +398,8 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		
-		assertEquals(2, CollectionTools.size(attributeResource.mappingAnnotations()));
-		assertEquals(0, CollectionTools.size(attributeResource.annotations()));
+		assertEquals(2, attributeResource.mappingAnnotationsSize());
+		assertEquals(0, attributeResource.annotationsSize());
 		assertNotNull(attributeResource.mappingAnnotation(JPA.BASIC));
 		assertNotNull(attributeResource.mappingAnnotation(JPA.ID));
 		
@@ -409,7 +409,7 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 		assertSourceContains("@Id");
 		
 		attributeResource.setMappingAnnotation(JPA.ONE_TO_MANY);
-		assertEquals(1, CollectionTools.size(attributeResource.mappingAnnotations()));
+		assertEquals(1, attributeResource.mappingAnnotationsSize());
 		javaAttributeMappingAnnotation = attributeResource.mappingAnnotation();
 		assertTrue(javaAttributeMappingAnnotation instanceof OneToMany);
 		assertSourceDoesNotContain("@Id");
@@ -421,7 +421,7 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 		IType testType = createTestType();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
-		assertEquals(0, CollectionTools.size(attributeResource.mappingAnnotations()));
+		assertEquals(0, attributeResource.mappingAnnotationsSize());
 		
 		attributeResource.setMappingAnnotation(JPA.ID);
 		assertTrue(attributeResource.mappingAnnotation() instanceof Id);

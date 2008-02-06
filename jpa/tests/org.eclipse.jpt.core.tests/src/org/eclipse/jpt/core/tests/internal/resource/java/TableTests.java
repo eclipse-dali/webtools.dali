@@ -10,14 +10,11 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.Table;
-import org.eclipse.jpt.core.internal.resource.java.UniqueConstraint;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class TableTests extends JavaResourceModelTestCase {
@@ -224,9 +221,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		Table table = (Table) typeResource.annotation(JPA.TABLE);
 		
-		ListIterator<UniqueConstraint> iterator = table.uniqueConstraints();
-		
-		assertEquals(0, CollectionTools.size(iterator));
+		assertEquals(0, table.uniqueConstraintsSize());
 	}
 	
 	public void testUniqueConstraints2() throws Exception {
@@ -239,9 +234,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		table.addUniqueConstraint(1);
 		table.updateFromJava(JDTTools.buildASTRoot(testType));
 		
-		ListIterator<UniqueConstraint> iterator = table.uniqueConstraints();
-		
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(2, table.uniqueConstraintsSize());
 	}
 	
 	public void testUniqueConstraints3() throws Exception {
@@ -249,9 +242,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		Table table = (Table) typeResource.annotation(JPA.TABLE);
 				
-		ListIterator<UniqueConstraint> iterator = table.uniqueConstraints();
-		
-		assertEquals(3, CollectionTools.size(iterator));
+		assertEquals(3, table.uniqueConstraintsSize());
 	}
 	
 	public void testAddUniqueConstraint() throws Exception {

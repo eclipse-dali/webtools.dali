@@ -13,6 +13,8 @@ package org.eclipse.jpt.core.internal.context.base;
 public interface IRelationshipMapping extends IAttributeMapping, IFetchable
 {
 
+	// **************** target entity **************************************
+	
 	String getTargetEntity();
 
 	String getSpecifiedTargetEntity();
@@ -25,12 +27,16 @@ public interface IRelationshipMapping extends IAttributeMapping, IFetchable
 	IEntity getResolvedTargetEntity();
 		String RESOLVED_TARGET_ENTITY_PROPERTY = "resolvedTargetEntityProperty";
 	
-	ICascade getCascade();
-
 	/**
 	 * Return whether the specified 'targetEntity' is valid.
 	 */
 	boolean targetEntityIsValid(String targetEntity);
+
+	
+	// **************** cascade **************************************
+
+	ICascade getCascade();
+
 
 	/**
 	 * Return the Entity that owns this relationship mapping

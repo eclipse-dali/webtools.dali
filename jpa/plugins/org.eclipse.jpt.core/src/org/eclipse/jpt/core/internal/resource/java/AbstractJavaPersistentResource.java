@@ -159,6 +159,10 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		return new CloneIterator<Annotation>(this.annotations);
 	}
 	
+	public int annotationsSize() {
+		return this.annotations.size();
+	}
+	
 	public Annotation addAnnotation(String annotationName) {
 		Annotation annotation = buildAnnotation(annotationName);
 		this.annotations.add(annotation);
@@ -270,6 +274,10 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		return new CloneIterator<Annotation>(this.mappingAnnotations);
 	}
 
+	public int mappingAnnotationsSize() {
+		return this.mappingAnnotations.size();
+	}
+	
 	public void removeAnnotation(String annotationName) {
 		Annotation annotation = annotation(annotationName);
 		if (annotation != null) {

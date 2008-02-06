@@ -17,7 +17,6 @@ import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.NamedQuery;
 import org.eclipse.jpt.core.internal.resource.java.QueryHint;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class NamedQueryTests extends JavaResourceModelTestCase {
@@ -157,9 +156,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		
 		NamedQuery namedQuery = (NamedQuery) typeResource.annotation(JPA.NAMED_QUERY);
 		
-		ListIterator<QueryHint> iterator = namedQuery.hints();
-		
-		assertEquals(0, CollectionTools.size(iterator));
+		assertEquals(0, namedQuery.hintsSize());
 	}
 	
 	public void testHints2() throws Exception {
@@ -172,9 +169,7 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		namedQuery.addHint(1);
 		namedQuery.updateFromJava(JDTTools.buildASTRoot(testType));
 		
-		ListIterator<QueryHint> iterator = namedQuery.hints();
-		
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(2, namedQuery.hintsSize());
 	}
 	
 	public void testHints3() throws Exception {
@@ -183,11 +178,9 @@ public class NamedQueryTests extends JavaResourceModelTestCase {
 		
 		NamedQuery namedQuery = (NamedQuery) typeResource.annotation(JPA.NAMED_QUERY);
 		
+		assertEquals(2, namedQuery.hintsSize());
+		
 		ListIterator<QueryHint> iterator = namedQuery.hints();
-		
-		assertEquals(2, CollectionTools.size(iterator));
-		
-		iterator = namedQuery.hints();
 		assertEquals("BAR", iterator.next().getName());
 		assertNull(iterator.next().getName());
 	}

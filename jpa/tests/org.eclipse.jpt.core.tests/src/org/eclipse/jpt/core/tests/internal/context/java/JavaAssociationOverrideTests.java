@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JavaAssociationOverrideTests extends ContextModelTestCase
@@ -157,7 +156,7 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 		
 		IEntity entity = javaEntity();	
 		assertEquals("AnnotationTestTypeChild", entity.getName());
-		assertEquals(1, CollectionTools.size(entity.defaultAssociationOverrides()));
+		assertEquals(1, entity.defaultAssociationOverridesSize());
 		
 		IAssociationOverride associationOverride = entity.defaultAssociationOverrides().next();
 		assertEquals("address", associationOverride.getName());
@@ -171,7 +170,7 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 		
 		IEntity entity = javaEntity();	
 		assertEquals("AnnotationTestTypeChild", entity.getName());
-		assertEquals(1, CollectionTools.size(entity.defaultAssociationOverrides()));
+		assertEquals(1, entity.defaultAssociationOverridesSize());
 		
 		IAssociationOverride associationOverride = entity.defaultAssociationOverrides().next();
 		assertTrue(associationOverride.isVirtual());

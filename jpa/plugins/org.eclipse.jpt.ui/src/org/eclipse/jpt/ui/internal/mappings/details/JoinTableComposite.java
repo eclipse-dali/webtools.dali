@@ -188,7 +188,7 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 				IJoinTable joinTable = subject();
 
 				if (button.getSelection()) {
-					IJoinColumn defaultJoinColumn = joinTable.defaultInverseJoinColumns().next();
+					IJoinColumn defaultJoinColumn = joinTable.getDefaultInverseJoinColumn(); //TODO null check, override default button disabled
 					String columnName = defaultJoinColumn.getDefaultName();
 					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
 
@@ -213,7 +213,7 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 				IJoinTable joinTable = subject();
 
 				if (button.getSelection()) {
-					IJoinColumn defaultJoinColumn = joinTable.defaultJoinColumns().next();
+					IJoinColumn defaultJoinColumn = joinTable.getDefaultJoinColumn(); //TODO null check, override default button disabled
 					String columnName = defaultJoinColumn.getDefaultName();
 					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
 
@@ -413,7 +413,7 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 
 		public String[] propertyNames() {
 			return new String[] {
-				IJoinTable.DEFAULT_INVERSE_JOIN_COLUMNS_LIST,
+				IJoinTable.DEFAULT_INVERSE_JOIN_COLUMN,//TODO
 				IJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST
 			};
 		}
@@ -445,7 +445,7 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 
 		public String[] propertyNames() {
 			return new String[] {
-				IJoinTable.DEFAULT_JOIN_COLUMNS_LIST,
+				IJoinTable.DEFAULT_JOIN_COLUMN, //TODO
 				IJoinTable.SPECIFIED_JOIN_COLUMNS_LIST
 			};
 		}

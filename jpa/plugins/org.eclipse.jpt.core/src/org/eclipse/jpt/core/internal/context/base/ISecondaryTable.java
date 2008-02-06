@@ -15,62 +15,59 @@ import java.util.ListIterator;
 public interface ISecondaryTable extends ITable
 {
 
+	/**
+	 * Return a list iterator of the primary key join columns whether specified or default.
+	 * This will not be null.
+	 */
 	<T extends IPrimaryKeyJoinColumn> ListIterator<T> primaryKeyJoinColumns();
-	<T extends IPrimaryKeyJoinColumn> ListIterator<T> specifiedPrimaryKeyJoinColumns();
-	<T extends IPrimaryKeyJoinColumn> ListIterator<T> defaultPrimaryKeyJoinColumns();
-	int specifiedPrimaryKeyJoinColumnsSize();
-	IPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
-	void removeSpecifiedPrimaryKeyJoinColumn(int index);
-	void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex);
 		String SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST = "specifiedPrimaryKeyJoinColumnsList";
-		String DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST = "defaultPrimaryKeyJoinColumnsList";
+
+	/**
+	 * Return the number of primary key join columns, both specified and default.
+	 */
+	int primaryKeyJoinColumnsSize();
+
+	/**
+	 * Return a list iterator of the specified primary key join columns.
+	 * This will not be null.
+	 */
+	<T extends IPrimaryKeyJoinColumn> ListIterator<T> specifiedPrimaryKeyJoinColumns();
+
+	/**
+	 * Return the number of specified primary key join columns.
+	 */
+	int specifiedPrimaryKeyJoinColumnsSize();
+
+	/**
+	 * Return the default primary key join column or null.  A default primary key join column
+	 * only exists if there are no specified primary key join columns.
+	 */
+	IPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
+		String DEFAULT_PRIMARY_KEY_JOIN_COLUMN = "defaultPrimaryKeyJoinColumn";
+
+	/**
+	 * Add a specified primary key join column to the secondary table return the object 
+	 * representing it.
+	 */
+	IPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
+
+	/**
+	 * Remove the specified primary key join column from the secondary table.
+	 */
+	void removeSpecifiedPrimaryKeyJoinColumn(int index);
+
+	/**
+	 * Remove the specified primary key join column at the index from the secondary table.
+	 */
+	void removeSpecifiedPrimaryKeyJoinColumn(IPrimaryKeyJoinColumn pkJoinColumn);
+
+	/**
+	 * Move the specified primary key join column from the source index to the target index.
+	 */
+	void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex);
 	
-	
-//	ITypeMapping typeMapping();
-//
-//	/**
-//	 * Create a primary key join column with the given index
-//	 */
-//	IPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(int index);
-//
+
 //	boolean containsSpecifiedPrimaryKeyJoinColumns();
 //
 //	boolean isVirtual();
-//
-//	class PrimaryKeyJoinColumnOwner implements IAbstractJoinColumn.Owner
-//	{
-//		private ISecondaryTable secondaryTable;
-//
-//		public PrimaryKeyJoinColumnOwner(ISecondaryTable secondaryTable) {
-//			this.secondaryTable = secondaryTable;
-//		}
-//
-//		public ITextRange validationTextRange() {
-//			return this.secondaryTable.validationTextRange();
-//		}
-//
-//		public ITypeMapping getTypeMapping() {
-//			return this.secondaryTable.typeMapping();
-//		}
-//
-//		public Table dbTable(String tableName) {
-//			return this.secondaryTable.dbTable();
-//		}
-//
-//		public Table dbReferencedColumnTable() {
-//			return getTypeMapping().primaryDbTable();
-//		}
-//
-//		public List<IPrimaryKeyJoinColumn> joinColumns() {
-//			return this.secondaryTable.getPrimaryKeyJoinColumns();
-//		}
-//		
-//		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
-//			return this.secondaryTable.getDefaultPrimaryKeyJoinColumns().contains(joinColumn);
-//		}
-//		
-//		public int indexOf(IAbstractJoinColumn joinColumn) {
-//			return joinColumns().indexOf(joinColumn);
-//		}
-//	}
 }

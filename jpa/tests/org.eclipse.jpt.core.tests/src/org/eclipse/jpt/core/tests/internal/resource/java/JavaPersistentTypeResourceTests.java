@@ -488,7 +488,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 	public void testJavaTypeAnnotations() throws Exception {
 		IType testType = this.createTestEntityWithTable();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		assertEquals(1, CollectionTools.size(typeResource.annotations()));
+		assertEquals(1, typeResource.annotationsSize());
 	}
 
 	public void testJavaTypeAnnotation() throws Exception {
@@ -539,8 +539,8 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestEntityWithEmbeddable();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		
-		assertEquals(2, CollectionTools.size(typeResource.mappingAnnotations()));
-		assertEquals(0, CollectionTools.size(typeResource.annotations()));
+		assertEquals(2, typeResource.mappingAnnotationsSize());
+		assertEquals(0, typeResource.annotationsSize());
 		assertNotNull(typeResource.mappingAnnotation(JPA.EMBEDDABLE));
 		assertNotNull(typeResource.mappingAnnotation(JPA.ENTITY));
 		
@@ -550,7 +550,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 		assertSourceContains("@Embeddable");
 		
 		typeResource.setMappingAnnotation(JPA.MAPPED_SUPERCLASS);
-		assertEquals(1, CollectionTools.size(typeResource.mappingAnnotations()));
+		assertEquals(1, typeResource.mappingAnnotationsSize());
 		javaTypeMappingAnnotation = typeResource.mappingAnnotation();
 		assertTrue(javaTypeMappingAnnotation instanceof MappedSuperclass);
 		assertSourceDoesNotContain("@Entity");
@@ -561,7 +561,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 	public void testSetJavaTypeMappingAnnotation() throws Exception {
 		IType testType = createTestType();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		assertEquals(0, CollectionTools.size(typeResource.mappingAnnotations()));
+		assertEquals(0, typeResource.mappingAnnotationsSize());
 		
 		typeResource.setMappingAnnotation(JPA.ENTITY);
 		assertTrue(typeResource.mappingAnnotation() instanceof Entity);
@@ -862,7 +862,7 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 		Entity javaTypeMappingAnnotation = (Entity) persistentType.mappingAnnotation(JPA.ENTITY);
 		assertEquals("FirstEntity", javaTypeMappingAnnotation.getName());
 		
-		assertEquals(1, CollectionTools.size(persistentType.mappingAnnotations()));
+		assertEquals(1, persistentType.mappingAnnotationsSize());
 		
 		javaTypeMappingAnnotation = (Entity) persistentType.mappingAnnotation();
 		assertEquals("FirstEntity", javaTypeMappingAnnotation.getName());
@@ -966,12 +966,12 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 	public void testInvalidAnnotations() throws Exception {
 		IType testType = this.createTestInvalidAnnotations();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		assertEquals(0, CollectionTools.size(typeResource.mappingAnnotations()));
-		assertEquals(0, CollectionTools.size(typeResource.annotations()));
+		assertEquals(0, typeResource.mappingAnnotationsSize());
+		assertEquals(0, typeResource.annotationsSize());
 		
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
-		assertEquals(0, CollectionTools.size(attributeResource.mappingAnnotations()));
-		assertEquals(0, CollectionTools.size(attributeResource.annotations()));
+		assertEquals(0, attributeResource.mappingAnnotationsSize());
+		assertEquals(0, attributeResource.annotationsSize());
 	}
 
 }

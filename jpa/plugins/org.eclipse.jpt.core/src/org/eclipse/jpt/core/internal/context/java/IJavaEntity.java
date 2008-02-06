@@ -33,8 +33,7 @@ public interface IJavaEntity extends IJavaTypeMapping, IEntity
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<IJavaPrimaryKeyJoinColumn> primaryKeyJoinColumns();
-	@SuppressWarnings("unchecked")
-	ListIterator<IJavaPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns();	
+	IJavaPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
 	@SuppressWarnings("unchecked")
 	ListIterator<IJavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns();
 	IPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);

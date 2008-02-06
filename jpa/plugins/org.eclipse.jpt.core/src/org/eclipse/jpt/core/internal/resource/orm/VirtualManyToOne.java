@@ -15,7 +15,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.internal.context.java.IJavaJoinColumn;
 import org.eclipse.jpt.core.internal.context.java.IJavaManyToOneMapping;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
-import org.eclipse.jpt.core.internal.resource.orm.FetchType;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 
 /**
  * VirtualManyToOne is an implementation of ManyToOne used when there is 
@@ -45,7 +46,13 @@ public class VirtualManyToOne extends JpaEObject implements ManyToOne
 		this.virtualJoinColumns = new BasicEList<JoinColumn>();
 		ListIterator<IJavaJoinColumn> javaJoinColumns;
 		if (this.metadataComplete) {
-			javaJoinColumns = this.javaManyToOneMapping.defaultJoinColumns();
+			//TODO still need a default join column in xml
+			if (javaManyToOneMapping.getDefaultJoinColumn() == null) {
+				javaJoinColumns = EmptyListIterator.instance();
+			}
+			else {
+				javaJoinColumns = new SingleElementListIterator<IJavaJoinColumn>(javaManyToOneMapping.getDefaultJoinColumn());
+			}
 		}
 		else {
 			javaJoinColumns = this.javaManyToOneMapping.joinColumns();			
@@ -128,7 +135,13 @@ public class VirtualManyToOne extends JpaEObject implements ManyToOne
 		ListIterator<IJavaJoinColumn> javaJoinColumns;
 		ListIterator<JoinColumn> virtualJoinColumns = this.virtualJoinColumns.listIterator();
 		if (this.metadataComplete) {
-			javaJoinColumns = this.javaManyToOneMapping.defaultJoinColumns();
+			//TODO still need a default join column in xml
+			if (javaManyToOneMapping.getDefaultJoinColumn() == null) {
+				javaJoinColumns = EmptyListIterator.instance();
+			}
+			else {
+				javaJoinColumns = new SingleElementListIterator<IJavaJoinColumn>(javaManyToOneMapping.getDefaultJoinColumn());
+			}
 		}
 		else {
 			javaJoinColumns = this.javaManyToOneMapping.joinColumns();			

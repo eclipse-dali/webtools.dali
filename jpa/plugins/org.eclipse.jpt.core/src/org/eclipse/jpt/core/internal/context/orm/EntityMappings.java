@@ -78,6 +78,7 @@ public interface EntityMappings extends IJpaContextNode
 	int sequenceGeneratorsSize();
 	ISequenceGenerator addSequenceGenerator(int index);
 	void removeSequenceGenerator(int index);
+	void removeSequenceGenerator(ISequenceGenerator sequenceGenerator);
 	void moveSequenceGenerator(int targetIndex, int sourceIndex);
 		String SEQUENCE_GENERATORS_LIST = "sequenceGeneratorsList";
 
@@ -85,6 +86,7 @@ public interface EntityMappings extends IJpaContextNode
 	int tableGeneratorsSize();
 	ITableGenerator addTableGenerator(int index);
 	void removeTableGenerator(int index);
+	void removeTableGenerator(ITableGenerator tableGenerator);
 	void moveTableGenerator(int targetIndex, int sourceIndex);
 		String TABLE_GENERATORS_LIST = "tableGeneratorsList";
 
@@ -92,6 +94,7 @@ public interface EntityMappings extends IJpaContextNode
 	int namedQueriesSize();
 	XmlNamedQuery addNamedQuery(int index);
 	void removeNamedQuery(int index);
+	void removeNamedQuery(XmlNamedQuery namedQuery);
 	void moveNamedQuery(int targetIndex, int sourceIndex);
 		String NAMED_QUERIES_LIST = "namedQueriesList";
 
@@ -99,6 +102,7 @@ public interface EntityMappings extends IJpaContextNode
 	int namedNativeQueriesSize();
 	XmlNamedNativeQuery addNamedNativeQuery(int index);
 	void removeNamedNativeQuery(int index);
+	void removeNamedNativeQuery(XmlNamedNativeQuery namedNativeQuery);
 	void moveNamedNativeQuery(int targetIndex, int sourceIndex);
 		String NAMED_NATIVE_QUERIES_LIST = "namedNativeQueriesList";
 

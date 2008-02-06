@@ -481,7 +481,7 @@ public class XmlManyToOneMappingTests extends ContextModelTestCase
 
 		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
-		xmlPersistentType.getMapping().setSpecifiedMetadataComplete(true);
+		xmlPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(3, xmlPersistentType.virtualAttributesSize());		
 		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.virtualAttributes().next();
 		
@@ -492,16 +492,17 @@ public class XmlManyToOneMappingTests extends ContextModelTestCase
 		//TODO hmm, is this correct?
 		assertEquals("test.Address", xmlManyToOneMapping.getSpecifiedTargetEntity());
 		
-		XmlJoinColumn xmlJoinColumn = xmlManyToOneMapping.specifiedJoinColumns().next();
-		//TODO java default columns name in JavaSingleRelationshipMapping.JoinColumnOwner
-		//assertEquals("address", xmlJoinColumn.getSpecifiedName());
-		//assertEquals("address", xmlJoinColumn.getSpecifiedReferencedColumnName());
-		assertEquals(Boolean.FALSE, xmlJoinColumn.getSpecifiedUnique());
-		assertEquals(Boolean.TRUE, xmlJoinColumn.getSpecifiedNullable());
-		assertEquals(Boolean.TRUE, xmlJoinColumn.getSpecifiedInsertable());
-		assertEquals(Boolean.TRUE, xmlJoinColumn.getSpecifiedUpdatable());
-		assertNull(xmlJoinColumn.getColumnDefinition());
-		assertEquals(TYPE_NAME, xmlJoinColumn.getSpecifiedTable());
+		//TODO default join columns in xml one-to-one
+//		XmlJoinColumn xmlJoinColumn = xmlManyToOneMapping.specifiedJoinColumns().next();
+//		//TODO java default columns name in JavaSingleRelationshipMapping.JoinColumnOwner
+//		//assertEquals("address", xmlJoinColumn.getSpecifiedName());
+//		//assertEquals("address", xmlJoinColumn.getSpecifiedReferencedColumnName());
+//		assertEquals(Boolean.FALSE, xmlJoinColumn.getSpecifiedUnique());
+//		assertEquals(Boolean.TRUE, xmlJoinColumn.getSpecifiedNullable());
+//		assertEquals(Boolean.TRUE, xmlJoinColumn.getSpecifiedInsertable());
+//		assertEquals(Boolean.TRUE, xmlJoinColumn.getSpecifiedUpdatable());
+//		assertNull(xmlJoinColumn.getColumnDefinition());
+//		assertEquals(TYPE_NAME, xmlJoinColumn.getSpecifiedTable());
 
 		XmlCascade xmlCascade = xmlManyToOneMapping.getCascade();
 		assertFalse(xmlCascade.isAll());

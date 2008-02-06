@@ -284,7 +284,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		SequenceGenerator sequenceGenerator = OrmFactory.eINSTANCE.createSequenceGeneratorImpl();
 		xmlSequenceGenerator.initialize(sequenceGenerator);
 		this.entityMappings.getSequenceGenerators().add(index, sequenceGenerator);
-		fireItemAdded(SEQUENCE_GENERATORS_LIST, index, xmlSequenceGenerator);
+		fireItemAdded(EntityMappings.SEQUENCE_GENERATORS_LIST, index, xmlSequenceGenerator);
 		return xmlSequenceGenerator;
 	}
 
@@ -292,13 +292,17 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		addItemToList(index, sequenceGenerator, this.sequenceGenerators, EntityMappings.SEQUENCE_GENERATORS_LIST);
 	}
 
+	public void removeSequenceGenerator(ISequenceGenerator sequenceGenerator) {
+		removeSequenceGenerator(this.sequenceGenerators.indexOf(sequenceGenerator));
+	}
+	
 	public void removeSequenceGenerator(int index) {
 		XmlSequenceGenerator removedSequenceGenerator = this.sequenceGenerators.remove(index);
-		fireItemRemoved(SEQUENCE_GENERATORS_LIST, index, removedSequenceGenerator);
+		fireItemRemoved(EntityMappings.SEQUENCE_GENERATORS_LIST, index, removedSequenceGenerator);
 		this.entityMappings.getSequenceGenerators().remove(index);
 	}
 	
-	protected void removeSequenceGenerator(XmlSequenceGenerator sequenceGenerator) {
+	protected void removeSequenceGenerator_(XmlSequenceGenerator sequenceGenerator) {
 		removeItemFromList(sequenceGenerator, this.sequenceGenerators, EntityMappings.SEQUENCE_GENERATORS_LIST);
 	}
 
@@ -332,13 +336,17 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		addItemToList(index, tableGenerator, this.tableGenerators, EntityMappings.TABLE_GENERATORS_LIST);
 	}
 
+	public void removeTableGenerator(ITableGenerator tableGenerator) {
+		removeTableGenerator(this.tableGenerators.indexOf(tableGenerator));
+	}
+
 	public void removeTableGenerator(int index) {
 		XmlTableGenerator removedTableGenerator = this.tableGenerators.remove(index);
 		this.entityMappings.getTableGenerators().remove(index);
 		fireItemRemoved(TABLE_GENERATORS_LIST, index, removedTableGenerator);
 	}
 	
-	protected void removeTableGenerator(XmlTableGenerator tableGenerator) {
+	protected void removeTableGenerator_(XmlTableGenerator tableGenerator) {
 		removeItemFromList(tableGenerator, this.tableGenerators, EntityMappings.TABLE_GENERATORS_LIST);
 	}
 
@@ -368,13 +376,17 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		addItemToList(index, namedQuery, this.namedQueries, EntityMappings.NAMED_QUERIES_LIST);
 	}
 	
+	public void removeNamedQuery(XmlNamedQuery namedQuery) {
+		this.removeNamedQuery(this.namedQueries.indexOf(namedQuery));
+	}
+
 	public void removeNamedQuery(int index) {
 		XmlNamedQuery namedQuery = this.namedQueries.remove(index);
 		this.entityMappings.getNamedQueries().remove(index);
 		fireItemRemoved(EntityMappings.NAMED_QUERIES_LIST, index, namedQuery);
 	}
 
-	protected void removeNamedQuery(XmlNamedQuery namedQuery) {
+	protected void removeNamedQuery_(XmlNamedQuery namedQuery) {
 		removeItemFromList(namedQuery, this.namedQueries, EntityMappings.NAMED_QUERIES_LIST);
 	}
 	
@@ -403,13 +415,17 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		addItemToList(index, namedNativeQuery, this.namedNativeQueries, EntityMappings.NAMED_NATIVE_QUERIES_LIST);
 	}
 	
+	public void removeNamedNativeQuery(XmlNamedNativeQuery namedNativeQuery) {
+		removeNamedNativeQuery(this.namedNativeQueries.indexOf(namedNativeQuery));
+	}
+
 	public void removeNamedNativeQuery(int index) {
 		XmlNamedNativeQuery namedNativeQuery = this.namedNativeQueries.remove(index);
 		this.entityMappings.getNamedNativeQueries().remove(index);
-		fireItemRemoved(EntityMappings.NAMED_QUERIES_LIST, index, namedNativeQuery);
+		fireItemRemoved(EntityMappings.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
 	}
 
-	protected void removeNamedNativeQuery(XmlNamedNativeQuery namedNativeQuery) {
+	protected void removeNamedNativeQuery_(XmlNamedNativeQuery namedNativeQuery) {
 		removeItemFromList(namedNativeQuery, this.namedNativeQueries, EntityMappings.NAMED_NATIVE_QUERIES_LIST);
 	}
 	
@@ -610,7 +626,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 				tableGenerator.update(resourceTableGenerators.next());
 			}
 			else {
-				removeTableGenerator(tableGenerator);
+				removeTableGenerator_(tableGenerator);
 			}
 		}
 		
@@ -634,7 +650,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 				sequenceGenerator.update(resourceSequenceGenerators.next());
 			}
 			else {
-				removeSequenceGenerator(sequenceGenerator);
+				removeSequenceGenerator_(sequenceGenerator);
 			}
 		}
 		
@@ -659,7 +675,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 				namedQuery.update(resourceNamedQueries.next());
 			}
 			else {
-				removeNamedQuery(namedQuery);
+				removeNamedQuery_(namedQuery);
 			}
 		}
 		
@@ -684,7 +700,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 				namedQuery.update(resourceNamedNativeQueries.next());
 			}
 			else {
-				removeNamedNativeQuery(namedQuery);
+				removeNamedNativeQuery_(namedQuery);
 			}
 		}
 		

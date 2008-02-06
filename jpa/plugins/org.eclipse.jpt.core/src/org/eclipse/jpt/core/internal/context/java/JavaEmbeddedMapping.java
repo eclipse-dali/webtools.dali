@@ -119,9 +119,17 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 	public ListIterator<IJavaAttributeOverride> attributeOverrides() {
 		return new CompositeListIterator<IJavaAttributeOverride>(specifiedAttributeOverrides(), defaultAttributeOverrides());
 	}
-	
+		
+	public int attributeOverridesSize() {
+		return this.specifiedAttributeOverridesSize() + this.defaultAttributeOverridesSize();
+	}
+
 	public ListIterator<IJavaAttributeOverride> defaultAttributeOverrides() {
 		return new CloneListIterator<IJavaAttributeOverride>(this.defaultAttributeOverrides);
+	}
+	
+	public int defaultAttributeOverridesSize() {
+		return this.defaultAttributeOverrides.size();
 	}
 	
 	public ListIterator<IJavaAttributeOverride> specifiedAttributeOverrides() {
@@ -144,13 +152,17 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
+	public void removeSpecifiedAttributeOverride(IAttributeOverride attributeOverride) {
+		removeSpecifiedAttributeOverride(this.specifiedAttributeOverrides.indexOf(attributeOverride));
+	}
+	
 	public void removeSpecifiedAttributeOverride(int index) {
 		IJavaAttributeOverride removedAttributeOverride = this.specifiedAttributeOverrides.remove(index);
 		this.persistentAttributeResource.removeAnnotation(index, AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		fireItemRemoved(IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, removedAttributeOverride);
 	}
 	
-	protected void removeSpecifiedAttributeOverride(IJavaAttributeOverride attributeOverride) {
+	protected void removeSpecifiedAttributeOverride_(IJavaAttributeOverride attributeOverride) {
 		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 
@@ -223,7 +235,7 @@ public class JavaEmbeddedMapping extends JavaAttributeMapping implements IJavaEm
 				attributeOverride.update((AttributeOverride) resourceAttributeOverrides.next());
 			}
 			else {
-				removeSpecifiedAttributeOverride(attributeOverride);
+				removeSpecifiedAttributeOverride_(attributeOverride);
 			}
 		}
 		

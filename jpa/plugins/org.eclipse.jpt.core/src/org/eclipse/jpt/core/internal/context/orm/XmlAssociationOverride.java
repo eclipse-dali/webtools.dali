@@ -27,7 +27,6 @@ import org.eclipse.jpt.core.internal.resource.orm.AssociationOverride;
 import org.eclipse.jpt.core.internal.resource.orm.JoinColumn;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.db.internal.Table;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class XmlAssociationOverride extends JpaContextNode
@@ -70,9 +69,17 @@ public class XmlAssociationOverride extends JpaContextNode
 		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumns() : this.specifiedJoinColumns();
 	}
 	
+	public int joinColumnsSize() {
+		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumnsSize() : this.specifiedJoinColumnsSize();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public ListIterator<XmlJoinColumn> defaultJoinColumns() {
 		return new CloneListIterator<XmlJoinColumn>(this.defaultJoinColumns);
+	}
+	
+	public int defaultJoinColumnsSize() {
+		return this.defaultJoinColumns.size();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -232,7 +239,7 @@ public class XmlAssociationOverride extends JpaContextNode
 		}
 
 		public int joinColumnsSize() {
-			return CollectionTools.size(XmlAssociationOverride.this.joinColumns());
+			return XmlAssociationOverride.this.joinColumnsSize();
 		}
 
 	}

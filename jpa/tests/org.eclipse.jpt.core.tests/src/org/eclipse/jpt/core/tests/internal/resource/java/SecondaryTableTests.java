@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
@@ -18,7 +17,6 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.resource.java.SecondaryTable;
 import org.eclipse.jpt.core.internal.resource.java.UniqueConstraint;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class SecondaryTableTests extends JavaResourceModelTestCase {
@@ -258,9 +256,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
 		
-		ListIterator<UniqueConstraint> iterator = table.uniqueConstraints();
-		
-		assertEquals(0, CollectionTools.size(iterator));
+		assertEquals(0, table.uniqueConstraintsSize());
 	}
 	
 	public void testUniqueConstraints2() throws Exception {
@@ -272,9 +268,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		table.addUniqueConstraint(1);
 		table.updateFromJava(JDTTools.buildASTRoot(testType));
 		
-		ListIterator<UniqueConstraint> iterator = table.uniqueConstraints();
-		
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(2, table.uniqueConstraintsSize());
 	}
 	
 	public void testUniqueConstraints3() throws Exception {
@@ -282,9 +276,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
 				
-		ListIterator<UniqueConstraint> iterator = table.uniqueConstraints();
-		
-		assertEquals(3, CollectionTools.size(iterator));
+		assertEquals(3, table.uniqueConstraintsSize());
 	}
 	
 	public void testAddUniqueConstraint() throws Exception {
@@ -368,10 +360,8 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestSecondaryTable();
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
-		
-		ListIterator<PrimaryKeyJoinColumn> iterator = table.pkJoinColumns();
-		
-		assertEquals(0, CollectionTools.size(iterator));
+				
+		assertEquals(0, table.pkJoinColumnsSize());
 	}
 	
 	public void testPkJoinColumns2() throws Exception {
@@ -383,9 +373,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		table.addPkJoinColumn(1);
 		table.updateFromJava(JDTTools.buildASTRoot(testType));
 		
-		ListIterator<PrimaryKeyJoinColumn> iterator = table.pkJoinColumns();
-		
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(2, table.pkJoinColumnsSize());
 	}
 	
 	public void testPkJoinColumns3() throws Exception {
@@ -393,9 +381,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
 				
-		ListIterator<PrimaryKeyJoinColumn> iterator = table.pkJoinColumns();
-		
-		assertEquals(3, CollectionTools.size(iterator));
+		assertEquals(3, table.pkJoinColumnsSize());
 	}
 	
 	public void testAddPkJoinColumn() throws Exception {
@@ -461,8 +447,7 @@ public class SecondaryTableTests extends JavaResourceModelTestCase {
 		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
 		SecondaryTable table = (SecondaryTable) typeResource.annotation(JPA.SECONDARY_TABLE);
 				
-		ListIterator<PrimaryKeyJoinColumn> iterator = table.pkJoinColumns();
-		assertEquals(3, CollectionTools.size(iterator));
+		assertEquals(3, table.pkJoinColumnsSize());
 		
 		PrimaryKeyJoinColumn joinColumn = table.pkJoinColumns().next();
 		

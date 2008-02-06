@@ -110,7 +110,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		IPrimaryKeyJoinColumn pkJoinColumn = javaEntity().defaultPrimaryKeyJoinColumns().next();
+		IPrimaryKeyJoinColumn pkJoinColumn = javaEntity().getDefaultPrimaryKeyJoinColumn();
 		assertEquals("id", pkJoinColumn.getDefaultName());
 	}
 
@@ -118,8 +118,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		createTestEntityWithPrimaryKeyJoinColumn();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		IPrimaryKeyJoinColumn defaultPkJoinColumn = javaEntity().defaultPrimaryKeyJoinColumns().next();
-		assertEquals("id", defaultPkJoinColumn.getDefaultName());
+		assertNull(javaEntity().getDefaultPrimaryKeyJoinColumn());
 		
 		IPrimaryKeyJoinColumn specifiedPkJoinColumn = javaEntity().specifiedPrimaryKeyJoinColumns().next();
 		assertEquals("id", specifiedPkJoinColumn.getDefaultName());
@@ -217,7 +216,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		IPrimaryKeyJoinColumn pkJoinColumn = javaEntity().defaultPrimaryKeyJoinColumns().next();
+		IPrimaryKeyJoinColumn pkJoinColumn = javaEntity().getDefaultPrimaryKeyJoinColumn();
 		assertEquals("id", pkJoinColumn.getDefaultReferencedColumnName());
 	}
 	
@@ -225,8 +224,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		createTestEntityWithPrimaryKeyJoinColumn();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		IPrimaryKeyJoinColumn defaultPkJoinColumn = javaEntity().defaultPrimaryKeyJoinColumns().next();
-		assertEquals("id", defaultPkJoinColumn.getDefaultReferencedColumnName());
+		assertNull(javaEntity().getDefaultPrimaryKeyJoinColumn());
 		
 		IPrimaryKeyJoinColumn specifiedPkJoinColumn = javaEntity().specifiedPrimaryKeyJoinColumns().next();
 		assertEquals("id", specifiedPkJoinColumn.getDefaultReferencedColumnName());
@@ -280,8 +278,9 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		IPrimaryKeyJoinColumn specifiedPkJoinColumn = javaEntity().specifiedPrimaryKeyJoinColumns().next();
 		assertFalse(specifiedPkJoinColumn.isVirtual());
 		
-		IPrimaryKeyJoinColumn defaultPkJoinColumn = javaEntity().defaultPrimaryKeyJoinColumns().next();
-		assertTrue(defaultPkJoinColumn.isVirtual());
+		assertNull(javaEntity().getDefaultPrimaryKeyJoinColumn());
+		javaEntity().removeSpecifiedPrimaryKeyJoinColumn(0);
+		assertTrue(javaEntity().getDefaultPrimaryKeyJoinColumn().isVirtual());
 	}
 	
 	public void testIsReferencedColumnResolved() throws Exception {

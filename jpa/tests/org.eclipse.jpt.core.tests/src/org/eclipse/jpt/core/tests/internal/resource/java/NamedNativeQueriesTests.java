@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
@@ -18,7 +17,6 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaResource;
 import org.eclipse.jpt.core.internal.resource.java.NamedNativeQueries;
 import org.eclipse.jpt.core.internal.resource.java.NamedNativeQuery;
-import org.eclipse.jpt.core.internal.resource.java.QueryHint;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -277,9 +275,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 		NamedNativeQueries namedQueries = (NamedNativeQueries) typeResource.annotation(JPA.NAMED_NATIVE_QUERIES);
 		NamedNativeQuery namedQuery = namedQueries.nestedAnnotations().next();
 		
-		ListIterator<QueryHint> iterator = namedQuery.hints();
-		
-		assertEquals(0, CollectionTools.size(iterator));
+		assertEquals(0, namedQuery.hintsSize());
 	}
 	
 	public void testHints2() throws Exception {
@@ -293,9 +289,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 		namedQuery.addHint(1);
 		namedQuery.updateFromJava(JDTTools.buildASTRoot(testType));
 		
-		ListIterator<QueryHint> iterator = namedQuery.hints();
-		
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(2, namedQuery.hintsSize());
 	}
 	
 	public void testHints3() throws Exception {
@@ -305,9 +299,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 		NamedNativeQueries namedQueries = (NamedNativeQueries) typeResource.annotation(JPA.NAMED_NATIVE_QUERIES);
 		NamedNativeQuery namedQuery = namedQueries.nestedAnnotations().next();
 		
-		ListIterator<QueryHint> iterator = namedQuery.hints();
-		
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(2, namedQuery.hintsSize());
 	}
 	
 	public void testAddHint() throws Exception {

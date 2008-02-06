@@ -232,11 +232,21 @@ public class PersistenceUnit extends JpaContextNode
 		}
 	}
 	
-	
+	public int mappingFileRefsSize() {
+		if (this.impliedMappingFileRef == null) {
+			return specifiedMappingFileRefsSize();
+		}
+		return 1 + specifiedMappingFileRefsSize();
+	}
+
 	// **************** specified mapping file refs ****************************
 	
 	public ListIterator<IMappingFileRef> specifiedMappingFileRefs() {
 		return new CloneListIterator<IMappingFileRef>(specifiedMappingFileRefs);
+	}
+	
+	public int specifiedMappingFileRefsSize() {
+		return this.specifiedMappingFileRefs.size();
 	}
 	
 	public IMappingFileRef addSpecifiedMappingFileRef() {
@@ -312,11 +322,18 @@ public class PersistenceUnit extends JpaContextNode
 			specifiedClassRefs(), impliedClassRefs());
 	}
 	
+	public int classRefsSize() {
+		return specifiedClassRefsSize() + impliedClassRefsSize();
+	}
 	
 	// **************** specified class refs ***********************************
 	
 	public ListIterator<IClassRef> specifiedClassRefs() {
 		return new CloneListIterator<IClassRef>(this.specifiedClassRefs);
+	}
+	
+	public int specifiedClassRefsSize() {
+		return this.specifiedClassRefs.size();
 	}
 	
 	public IClassRef addSpecifiedClassRef() {
@@ -363,6 +380,10 @@ public class PersistenceUnit extends JpaContextNode
 	
 	public ListIterator<IClassRef> impliedClassRefs() {
 		return new CloneListIterator<IClassRef>(impliedClassRefs);
+	}
+	
+	public int impliedClassRefsSize() {
+		return this.impliedClassRefs.size();
 	}
 	
 	public IClassRef addImpliedClassRef(String className) {

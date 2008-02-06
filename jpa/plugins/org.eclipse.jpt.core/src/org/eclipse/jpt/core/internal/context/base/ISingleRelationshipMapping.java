@@ -14,87 +14,64 @@ import java.util.ListIterator;
 
 public interface ISingleRelationshipMapping extends IRelationshipMapping, INullable
 {
+	
+	// **************** fetch type **************************************
 
 	FetchType DEFAULT_FETCH_TYPE = FetchType.EAGER;
 
+	// **************** join columns **************************************
+
+	/**
+	 * Return a list iterator of the join columns whether specified or default.
+	 * This will not be null.
+	 */
 	<T extends IJoinColumn> ListIterator<T> joinColumns();
+
+	/**
+	 * Return the number of join columns, both specified and default.
+	 */
+	int joinColumnsSize();
+
+	/**
+	 * Return a list iterator of the specified join columns.
+	 * This will not be null.
+	 */
 	<T extends IJoinColumn> ListIterator<T> specifiedJoinColumns();
-	<T extends IJoinColumn> ListIterator<T> defaultJoinColumns();
-	int specifiedJoinColumnsSize();
-	IJoinColumn addSpecifiedJoinColumn(int index);
-	void removeSpecifiedJoinColumn(int index);
-	void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex);
 		String SPECIFIED_JOIN_COLUMNS_LIST = "specifiedJoinColumnsList";
-		String DEFAULT_JOIN_COLUMNS_LIST = "defaultJoinColumnsList";
+
+	/**
+	 * Return the number of specified join columns.
+	 */
+	int specifiedJoinColumnsSize();
+
+	/**
+	 * Return the default join column or null.  A default join column
+	 * only exists if there are no specified join columns.
+	 */
+	IJoinColumn getDefaultJoinColumn();
+		String DEFAULT_JOIN_COLUMN = "defaultJoinColumn";
+
+	/**
+	 * Add a specified join column to the join table return the object 
+	 * representing it.
+	 */
+	IJoinColumn addSpecifiedJoinColumn(int index);
+	
+	/**
+	 * Remove the specified join column from the join table.
+	 */
+	void removeSpecifiedJoinColumn(int index);
+	
+	/**
+	 * Remove the specified join column at the index from the join table.
+	 */
+	void removeSpecifiedJoinColumn(IJoinColumn joinColumn);
+	
+	/**
+	 * Move the specified join column from the source index to the target index.
+	 */
+	void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex);
 
 	boolean containsSpecifiedJoinColumns();
 
-//	public class JoinColumnOwner implements IJoinColumn.Owner
-//	{
-//		private ISingleRelationshipMapping singleRelationshipMapping;
-//
-//		public JoinColumnOwner(ISingleRelationshipMapping singleRelationshipMapping) {
-//			super();
-//			this.singleRelationshipMapping = singleRelationshipMapping;
-//		}
-//
-//		/**
-//		 * by default, the join column is in the type mapping's primary table
-//		 */
-//		public String defaultTableName() {
-//			return this.singleRelationshipMapping.getPersistentAttribute().typeMapping().getTableName();
-//		}
-//
-//		public List<IJoinColumn> joinColumns() {
-//			return this.singleRelationshipMapping.getJoinColumns();
-//		}
-//		
-//		public int indexOf(IAbstractJoinColumn joinColumn) {
-//			return joinColumns().indexOf(joinColumn);
-//		}
-//
-//		public IEntity targetEntity() {
-//			return this.singleRelationshipMapping.getResolvedTargetEntity();
-//		}
-//
-//		public String attributeName() {
-//			return this.singleRelationshipMapping.getPersistentAttribute().getName();
-//		}
-//
-//		public IRelationshipMapping getRelationshipMapping() {
-//			return this.singleRelationshipMapping;
-//		}
-//
-//		public boolean tableNameIsInvalid(String tableName) {
-//			return this.singleRelationshipMapping.getPersistentAttribute().typeMapping().tableNameIsInvalid(tableName);
-//		}
-//
-//		/**
-//		 * the join column can be on a secondary table
-//		 */
-//		public boolean tableIsAllowed() {
-//			return true;
-//		}
-//
-//		public ITextRange validationTextRange() {
-//			return this.singleRelationshipMapping.validationTextRange();
-//		}
-//
-//		public ITypeMapping getTypeMapping() {
-//			return this.singleRelationshipMapping.typeMapping();
-//		}
-//
-//		public Table dbTable(String tableName) {
-//			return getTypeMapping().dbTable(tableName);
-//		}
-//
-//		public Table dbReferencedColumnTable() {
-//			IEntity targetEntity = targetEntity();
-//			return (targetEntity == null) ? null : targetEntity().primaryDbTable();
-//		}
-//		
-//		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
-//			return this.singleRelationshipMapping.getDefaultJoinColumns().contains(joinColumn);
-//		}
-//	}
 }

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.context.base.IQuery;
+import org.eclipse.jpt.core.internal.context.base.IQueryHint;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.Query;
@@ -84,13 +85,17 @@ public abstract class AbstractXmlQuery<E extends Query> extends JpaContextNode i
 		addItemToList(index, queryHint, this.hints, IQuery.HINTS_LIST);
 	}
 	
+	public void removeHint(IQueryHint queryHint) {
+		removeHint(this.hints.indexOf(queryHint));
+	}
+	
 	public void removeHint(int index) {
 		XmlQueryHint queryHint = this.hints.remove(index);
 		this.queryResource.getHints().remove(index);
 		fireItemRemoved(IQuery.HINTS_LIST, index, queryHint);
 	}
 
-	protected void removeHint(XmlQueryHint queryHint) {
+	protected void removeHint_(XmlQueryHint queryHint) {
 		removeItemFromList(queryHint, this.hints, IQuery.HINTS_LIST);
 	}
 	
@@ -137,7 +142,7 @@ public abstract class AbstractXmlQuery<E extends Query> extends JpaContextNode i
 				hint.update(resourceHints.next());
 			}
 			else {
-				removeHint(hint);
+				removeHint_(hint);
 			}
 		}
 		

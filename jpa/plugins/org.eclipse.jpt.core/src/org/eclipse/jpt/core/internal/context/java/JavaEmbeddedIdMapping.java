@@ -91,11 +91,19 @@ public class JavaEmbeddedIdMapping extends JavaAttributeMapping
 
 	@SuppressWarnings("unchecked")
 	public ListIterator<IJavaAttributeOverride> attributeOverrides() {
-		return new CompositeListIterator<IJavaAttributeOverride>(specifiedAttributeOverrides(), defaultAttributeOverrides());
+		return new CompositeListIterator<IJavaAttributeOverride>(this.specifiedAttributeOverrides(), this.defaultAttributeOverrides());
+	}
+	
+	public int attributeOverridesSize() {
+		return this.specifiedAttributeOverridesSize() + this.defaultAttributeOverridesSize();
 	}
 	
 	public ListIterator<IJavaAttributeOverride> defaultAttributeOverrides() {
 		return new CloneListIterator<IJavaAttributeOverride>(this.defaultAttributeOverrides);
+	}
+	
+	public int defaultAttributeOverridesSize() {
+		return this.defaultAttributeOverrides.size();
 	}
 	
 	public ListIterator<IJavaAttributeOverride> specifiedAttributeOverrides() {
@@ -118,13 +126,17 @@ public class JavaEmbeddedIdMapping extends JavaAttributeMapping
 		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, IEmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
+	public void removeSpecifiedAttributeOverride(IAttributeOverride attributeOverride) {
+		removeSpecifiedAttributeOverride(this.specifiedAttributeOverrides.indexOf(attributeOverride));
+	}
+	
 	public void removeSpecifiedAttributeOverride(int index) {
 		IJavaAttributeOverride removedAttributeOverride = this.specifiedAttributeOverrides.remove(index);
 		this.persistentAttributeResource.removeAnnotation(index, AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		fireItemRemoved(IEmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, removedAttributeOverride);
 	}
 	
-	protected void removeSpecifiedAttributeOverride(IJavaAttributeOverride attributeOverride) {
+	protected void removeSpecifiedAttributeOverride_(IJavaAttributeOverride attributeOverride) {
 		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, IEmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 
@@ -226,7 +238,7 @@ public class JavaEmbeddedIdMapping extends JavaAttributeMapping
 				attributeOverride.update((AttributeOverride) resourceAttributeOverrides.next());
 			}
 			else {
-				removeSpecifiedAttributeOverride(attributeOverride);
+				removeSpecifiedAttributeOverride_(attributeOverride);
 			}
 		}
 		
@@ -304,6 +316,7 @@ public class JavaEmbeddedIdMapping extends JavaAttributeMapping
 
 	//******** Validation ******************
 	
+	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 	}
@@ -311,7 +324,6 @@ public class JavaEmbeddedIdMapping extends JavaAttributeMapping
 	//******* static methods *********
 	
 	protected static IEmbeddable embeddableFor(IJavaPersistentAttribute persistentAttribute) {
-		//TODO move this off of JavaEmbeddedMapping so that both can use it?
 		return JavaEmbeddedMapping.embeddableFor(persistentAttribute);
 	}
 

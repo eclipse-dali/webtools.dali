@@ -196,7 +196,7 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 	private ListValueModel<IPrimaryKeyJoinColumn> buildJoinColumnsListHolder() {
 		return new ListAspectAdapter<IEntity, IPrimaryKeyJoinColumn>(
 			getSubjectHolder(),
-			IEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST,
+			IEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMN, //TODO
 			IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST)
 		{
 			@Override
@@ -231,7 +231,7 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 				IEntity entity = subject();
 
 				if (button.getSelection()) {
-					IPrimaryKeyJoinColumn defaultJoinColumn = entity.defaultPrimaryKeyJoinColumns().next();
+					IPrimaryKeyJoinColumn defaultJoinColumn = entity.getDefaultPrimaryKeyJoinColumn(); //TODO sometimes null
 					String columnName = defaultJoinColumn.getDefaultName();
 					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
 

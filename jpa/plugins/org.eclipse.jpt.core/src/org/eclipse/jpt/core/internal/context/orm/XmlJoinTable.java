@@ -132,11 +132,24 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumns() : this.specifiedJoinColumns();
 	}
 
+	public int joinColumnsSize() {
+		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumnsSize() : this.specifiedJoinColumnsSize();
+	}
+	
+	public IJoinColumn getDefaultJoinColumn() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public ListIterator<XmlJoinColumn> defaultJoinColumns() {
 		return new CloneListIterator<XmlJoinColumn>(this.defaultJoinColumns);
 	}
 
+	public int defaultJoinColumnsSize() {
+		return this.defaultJoinColumns.size();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public ListIterator<XmlJoinColumn> specifiedJoinColumns() {
 		return new CloneListIterator<XmlJoinColumn>(this.specifiedJoinColumns);
@@ -171,6 +184,15 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 		fireItemRemoved(IJoinTable.SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 	}
 
+	public void removeSpecifiedJoinColumn(IJoinColumn joinColumn) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void removeSpecifiedInverseJoinColumn(IJoinColumn joinColumn) {
+		// TODO Auto-generated method stub
+		
+	}
 	protected void removeSpecifiedJoinColumn(XmlJoinColumn joinColumn) {
 		removeItemFromList(joinColumn, this.specifiedJoinColumns, IJoinTable.SPECIFIED_JOIN_COLUMNS_LIST);
 	}
@@ -187,9 +209,22 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 		return this.specifiedInverseJoinColumns.isEmpty() ? this.defaultInverseJoinColumns() : this.specifiedInverseJoinColumns();
 	}
 
+	public int inverseJoinColumnsSize() {
+		return this.specifiedInverseJoinColumns.isEmpty() ? this.defaultInverseJoinColumnsSize() : this.specifiedInverseJoinColumnsSize();
+	}
+	
+	public IJoinColumn getDefaultInverseJoinColumn() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public ListIterator<XmlJoinColumn> defaultInverseJoinColumns() {
 		return new CloneListIterator<XmlJoinColumn>(this.defaultInverseJoinColumns);
+	}
+
+	public int defaultInverseJoinColumnsSize() {
+		return this.defaultInverseJoinColumns.size();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -457,7 +492,7 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 		}
 		
 		public int joinColumnsSize() {
-			return CollectionTools.size(XmlJoinTable.this.inverseJoinColumns());
+			return XmlJoinTable.this.inverseJoinColumnsSize();
 		}
 		
 	}
@@ -529,7 +564,7 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 		}
 		
 		public int joinColumnsSize() {
-			return CollectionTools.size(XmlJoinTable.this.joinColumns());
+			return XmlJoinTable.this.joinColumnsSize();
 		}
 	}
 	

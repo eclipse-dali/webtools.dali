@@ -678,7 +678,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		assertFalse(specifiedJoinColumns.hasNext());
 	}
 	
-	public void testDefaultJoinColumns() {
+	public void testGetDefaultJoin() {
 		//TODO
 	}
 	
@@ -696,6 +696,30 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		oneToOneMapping.removeSpecifiedJoinColumn(0);
 		assertEquals(0, oneToOneMapping.specifiedJoinColumnsSize());
+	}
+
+	public void testJoinColumnsSize() throws Exception {
+		createTestEntityWithOneToOneMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IOneToOneMapping oneToOneMapping = (IOneToOneMapping) persistentAttribute.getMapping();
+
+		assertEquals(1, oneToOneMapping.joinColumnsSize());
+		
+		oneToOneMapping.addSpecifiedJoinColumn(0);
+		assertEquals(1, oneToOneMapping.joinColumnsSize());
+		
+		oneToOneMapping.addSpecifiedJoinColumn(0);
+		assertEquals(2, oneToOneMapping.joinColumnsSize());
+
+		oneToOneMapping.removeSpecifiedJoinColumn(0);
+		oneToOneMapping.removeSpecifiedJoinColumn(0);
+		assertEquals(1, oneToOneMapping.joinColumnsSize());
+		
+		//if non-owning side of the relationship then no default join column
+		oneToOneMapping.setMappedBy("foo");
+		assertEquals(0, oneToOneMapping.joinColumnsSize());
 	}
 
 	public void testAddSpecifiedJoinColumn() throws Exception {
@@ -883,15 +907,15 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		IOneToOneMapping oneToOneMapping = (IOneToOneMapping) persistentAttribute.getMapping();
 
+		assertTrue(oneToOneMapping.getDefaultJoinColumn().isVirtual());
+
 		oneToOneMapping.addSpecifiedJoinColumn(0);
 		IJoinColumn specifiedJoinColumn = oneToOneMapping.specifiedJoinColumns().next();
 		assertFalse(specifiedJoinColumn.isVirtual());
 		
-		IJoinColumn defaultJoinColumn = oneToOneMapping.defaultJoinColumns().next();
-		assertTrue(defaultJoinColumn.isVirtual());
+		assertNull(oneToOneMapping.getDefaultJoinColumn());
 	}
 
-	
 	public void testCandidateMappedByAttributeNames() throws Exception {
 		createTestEntityWithValidOneToOneMapping();
 		createTestTargetEntityAddress();

@@ -16,9 +16,11 @@ public interface IJavaSingleRelationshipMapping extends IJavaRelationshipMapping
 {
 	@SuppressWarnings("unchecked")
 	ListIterator<IJavaJoinColumn> joinColumns();
-	@SuppressWarnings("unchecked")
-	ListIterator<IJavaJoinColumn> defaultJoinColumns();
+	
+	IJavaJoinColumn getDefaultJoinColumn();
+	
 	@SuppressWarnings("unchecked")
 	ListIterator<IJavaJoinColumn> specifiedJoinColumns();
+	
 	IJavaJoinColumn addSpecifiedJoinColumn(int index);
 }

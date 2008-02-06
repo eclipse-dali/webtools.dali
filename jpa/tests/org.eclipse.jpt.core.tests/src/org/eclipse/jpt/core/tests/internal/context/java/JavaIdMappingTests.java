@@ -44,7 +44,6 @@ import org.eclipse.jpt.core.internal.resource.java.Temporal;
 import org.eclipse.jpt.core.internal.resource.java.Transient;
 import org.eclipse.jpt.core.internal.resource.java.Version;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JavaIdMappingTests extends ContextModelTestCase
@@ -515,7 +514,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		attributeResource.addAnnotation(JPA.SEQUENCE_GENERATOR);
 		
 		assertNotNull(idMapping.getSequenceGenerator());
-		assertEquals(1, CollectionTools.size(attributeResource.annotations()));
+		assertEquals(1, attributeResource.annotationsSize());
 	}
 	
 	public void testAddSequenceGenerator() throws Exception {
@@ -584,7 +583,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		attributeResource.addAnnotation(JPA.TABLE_GENERATOR);
 		
 		assertNotNull(idMapping.getTableGenerator());		
-		assertEquals(1, CollectionTools.size(attributeResource.annotations()));
+		assertEquals(1, attributeResource.annotationsSize());
 	}
 	
 	public void testAddTableGenerator() throws Exception {
@@ -653,7 +652,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		attributeResource.addAnnotation(JPA.GENERATED_VALUE);
 		
 		assertNotNull(idMapping.getGeneratedValue());		
-		assertEquals(1, CollectionTools.size(attributeResource.annotations()));
+		assertEquals(1, attributeResource.annotationsSize());
 	}
 	
 	public void testGetGeneratedValue2() throws Exception {
@@ -667,7 +666,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 
 		assertNotNull(idMapping.getGeneratedValue());
-		assertEquals(1, CollectionTools.size(attributeResource.annotations()));
+		assertEquals(1, attributeResource.annotationsSize());
 	}
 	
 	public void testAddGeneratedValue() throws Exception {

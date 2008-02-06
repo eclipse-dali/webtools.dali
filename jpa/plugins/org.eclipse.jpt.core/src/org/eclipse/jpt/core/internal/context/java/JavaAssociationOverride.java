@@ -47,8 +47,16 @@ public class JavaAssociationOverride extends JavaOverride<AssociationOverride>
 		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumns() : this.specifiedJoinColumns();
 	}
 	
+	public int joinColumnsSize() {
+		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumnsSize() : this.specifiedJoinColumnsSize();
+	}
+	
 	public ListIterator<IJavaJoinColumn> defaultJoinColumns() {
 		return new CloneListIterator<IJavaJoinColumn>(this.defaultJoinColumns);
+	}
+	
+	public int defaultJoinColumnsSize() {
+		return this.defaultJoinColumns.size();
 	}
 	
 	public ListIterator<IJavaJoinColumn> specifiedJoinColumns() {
@@ -228,7 +236,7 @@ public class JavaAssociationOverride extends JavaOverride<AssociationOverride>
 		}
 
 		public int joinColumnsSize() {
-			return CollectionTools.size(JavaAssociationOverride.this.joinColumns());
+			return JavaAssociationOverride.this.joinColumnsSize();
 		}
 	}
 }

@@ -10,15 +10,12 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
-import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.TableGenerator;
-import org.eclipse.jpt.core.internal.resource.java.UniqueConstraint;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class TableGeneratorTests extends JavaResourceModelTestCase {
@@ -436,9 +433,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		
 		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		
-		ListIterator<UniqueConstraint> iterator = tableGenerator.uniqueConstraints();
-		
-		assertEquals(0, CollectionTools.size(iterator));
+		assertEquals(0, tableGenerator.uniqueConstraintsSize());
 	}
 	
 	public void testUniqueConstraints2() throws Exception {
@@ -453,9 +448,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		tableGenerator.addUniqueConstraint(1);
 		tableGenerator.updateFromJava(JDTTools.buildASTRoot(testType));
 		
-		ListIterator<UniqueConstraint> iterator = tableGenerator.uniqueConstraints();
-		
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(2, tableGenerator.uniqueConstraintsSize());
 	}
 	
 	public void testUniqueConstraints3() throws Exception {
@@ -465,9 +458,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		
 		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
 				
-		ListIterator<UniqueConstraint> iterator = tableGenerator.uniqueConstraints();
-		
-		assertEquals(3, CollectionTools.size(iterator));
+		assertEquals(3, tableGenerator.uniqueConstraintsSize());
 	}
 	
 	public void testAddUniqueConstraint() throws Exception {

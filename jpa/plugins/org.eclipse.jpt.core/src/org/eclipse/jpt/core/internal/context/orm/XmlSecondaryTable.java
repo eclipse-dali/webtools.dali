@@ -15,6 +15,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AbstractTable;
@@ -51,6 +52,11 @@ public class XmlSecondaryTable extends AbstractXmlTable
 		return new CloneListIterator<XmlPrimaryKeyJoinColumn>(this.defaultPrimaryKeyJoinColumns);
 	}
 
+	public IPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public ListIterator<XmlPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
 		return this.specifiedPrimaryKeyJoinColumns.isEmpty() ? this.defaultPrimaryKeyJoinColumns() : this.specifiedPrimaryKeyJoinColumns();
@@ -64,6 +70,18 @@ public class XmlSecondaryTable extends AbstractXmlTable
 	public int specifiedPrimaryKeyJoinColumnsSize() {
 		return this.specifiedPrimaryKeyJoinColumns.size();
 	}
+	
+	public int defaultPrimaryKeyJoinColumnsSize() {
+		return this.defaultPrimaryKeyJoinColumns.size();
+	}
+	
+	public int primaryKeyJoinColumnsSize() {
+		return this.containsSpecifiedPrimaryKeyJoinColumns() ? this.specifiedPrimaryKeyJoinColumnsSize() : this.defaultPrimaryKeyJoinColumnsSize();
+	}
+	
+	public boolean containsSpecifiedPrimaryKeyJoinColumns() {
+		return !this.specifiedPrimaryKeyJoinColumns.isEmpty();
+	}	
 
 	public XmlPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
 		XmlPrimaryKeyJoinColumn primaryKeyJoinColumn = new XmlPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
@@ -81,13 +99,17 @@ public class XmlSecondaryTable extends AbstractXmlTable
 		addItemToList(index, primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, ISecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
+	public void removeSpecifiedPrimaryKeyJoinColumn(IPrimaryKeyJoinColumn pkJoinColumn) {
+		this.removeSpecifiedPrimaryKeyJoinColumn(this.specifiedPrimaryKeyJoinColumns.indexOf(pkJoinColumn));
+	}
+	
 	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
 		XmlPrimaryKeyJoinColumn removedPrimaryKeyJoinColumn = this.specifiedPrimaryKeyJoinColumns.remove(index);
 		this.secondaryTable.getPrimaryKeyJoinColumns().remove(index);
 		fireItemRemoved(ISecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
 	}
 
-	protected void removeSpecifiedPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn primaryKeyJoinColumn) {
+	protected void removeSpecifiedPrimaryKeyJoinColumn_(XmlPrimaryKeyJoinColumn primaryKeyJoinColumn) {
 		removeItemFromList(primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, ISecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
@@ -147,7 +169,7 @@ public class XmlSecondaryTable extends AbstractXmlTable
 				primaryKeyJoinColumn.update(resourcePrimaryKeyJoinColumns.next());
 			}
 			else {
-				removeSpecifiedPrimaryKeyJoinColumn(primaryKeyJoinColumn);
+				removeSpecifiedPrimaryKeyJoinColumn_(primaryKeyJoinColumn);
 			}
 		}
 		
@@ -198,7 +220,7 @@ public class XmlSecondaryTable extends AbstractXmlTable
 		}
 
 		public int joinColumnsSize() {
-			return CollectionTools.size(XmlSecondaryTable.this.primaryKeyJoinColumns());
+			return XmlSecondaryTable.this.primaryKeyJoinColumnsSize();
 		}
 		
 		public boolean isVirtual(IAbstractJoinColumn joinColumn) {

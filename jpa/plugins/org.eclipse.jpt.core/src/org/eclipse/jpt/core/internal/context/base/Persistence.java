@@ -42,20 +42,23 @@ public class Persistence extends JpaContextNode
 	// **************** persistence units **************************************
 	
 	public ListIterator<IPersistenceUnit> persistenceUnits() {
-		return new CloneListIterator<IPersistenceUnit>(persistenceUnits);
+		return new CloneListIterator<IPersistenceUnit>(this.persistenceUnits);
+	}
+	
+	public int persistenceUnitsSize() {
+		return this.persistenceUnits.size();
 	}
 	
 	public IPersistenceUnit addPersistenceUnit() {
 		return addPersistenceUnit(persistenceUnits.size());
 	}
 	
-	// TODO - add better change support
 	public IPersistenceUnit addPersistenceUnit(int index) {
 		XmlPersistenceUnit xmlPersistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
 		IPersistenceUnit persistenceUnit = createPersistenceUnit(xmlPersistenceUnit);
 		persistenceUnits.add(index, persistenceUnit);
 		xmlPersistence.getPersistenceUnits().add(xmlPersistenceUnit);
-		fireListChanged(PERSISTENCE_UNITS_LIST);
+		fireItemAdded(PERSISTENCE_UNITS_LIST, index, persistenceUnit);
 		return persistenceUnit;
 	}
 	
@@ -64,9 +67,9 @@ public class Persistence extends JpaContextNode
 	}
 	
 	public void removePersistenceUnit(int index) {
-		persistenceUnits.remove(index);
+		IPersistenceUnit persistenceUnit = persistenceUnits.remove(index);
 		xmlPersistence.getPersistenceUnits().remove(index);
-		fireListChanged(PERSISTENCE_UNITS_LIST);
+		fireItemRemoved(PERSISTENCE_UNITS_LIST, index, persistenceUnit);
 	}
 	
 	protected void addPersistenceUnit_(IPersistenceUnit persistenceUnit) {
@@ -74,8 +77,7 @@ public class Persistence extends JpaContextNode
 	}
 	
 	protected void addPersistenceUnit_(int index, IPersistenceUnit persistenceUnit) {
-		persistenceUnits.add(index, persistenceUnit);
-		fireListChanged(PERSISTENCE_UNITS_LIST);
+		addItemToList(index, persistenceUnit, persistenceUnits, PERSISTENCE_UNITS_LIST);
 	}
 	
 	protected void removePersistenceUnit_(IPersistenceUnit persistenceUnit) {
@@ -83,8 +85,7 @@ public class Persistence extends JpaContextNode
 	}
 	
 	protected void removePersistenceUnit_(int index) {
-		persistenceUnits.remove(index);
-		fireListChanged(PERSISTENCE_UNITS_LIST);
+		removeItemFromList(index, persistenceUnits, PERSISTENCE_UNITS_LIST);
 	}
 	
 	

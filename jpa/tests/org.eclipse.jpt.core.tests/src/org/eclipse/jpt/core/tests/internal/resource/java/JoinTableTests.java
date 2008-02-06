@@ -18,8 +18,6 @@ import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResour
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JoinColumn;
 import org.eclipse.jpt.core.internal.resource.java.JoinTable;
-import org.eclipse.jpt.core.internal.resource.java.UniqueConstraint;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JoinTableTests extends JavaResourceModelTestCase {
@@ -289,9 +287,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		
 		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
 		
-		ListIterator<UniqueConstraint> iterator = table.uniqueConstraints();
-		
-		assertEquals(0, CollectionTools.size(iterator));
+		assertEquals(0, table.uniqueConstraintsSize());
 	}
 	
 	public void testUniqueConstraints2() throws Exception {
@@ -306,9 +302,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		table.addUniqueConstraint(1);
 		table.updateFromJava(JDTTools.buildASTRoot(testType));
 		
-		ListIterator<UniqueConstraint> iterator = table.uniqueConstraints();
-		
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(2, table.uniqueConstraintsSize());
 	}
 	
 	public void testUniqueConstraints3() throws Exception {
@@ -318,9 +312,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		
 		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
 				
-		ListIterator<UniqueConstraint> iterator = table.uniqueConstraints();
-		
-		assertEquals(3, CollectionTools.size(iterator));
+		assertEquals(3, table.uniqueConstraintsSize());
 	}
 	
 	public void testAddUniqueConstraint() throws Exception {
@@ -398,10 +390,8 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
 		
 		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
-		
-		ListIterator<JoinColumn> iterator = table.joinColumns();
-		
-		assertEquals(0, CollectionTools.size(iterator));
+				
+		assertEquals(0, table.joinColumnsSize());
 	}
 	
 	public void testJoinColumns2() throws Exception {
@@ -416,9 +406,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		table.addJoinColumn(1);
 		table.updateFromJava(JDTTools.buildASTRoot(testType));
 		
-		ListIterator<JoinColumn> iterator = table.joinColumns();
-		
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(2, table.joinColumnsSize());
 	}
 	
 	public void testJoinColumns3() throws Exception {
@@ -428,9 +416,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		
 		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
 				
-		ListIterator<JoinColumn> iterator = table.joinColumns();
-		
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(2, table.joinColumnsSize());
 	}
 	
 	public void testAddJoinColumn() throws Exception {
@@ -543,7 +529,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
 				
 		ListIterator<JoinColumn> iterator = table.joinColumns();
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(2, table.joinColumnsSize());
 		
 		JoinColumn joinColumn = table.joinColumns().next();
 		
@@ -562,9 +548,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		
 		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
 		
-		ListIterator<JoinColumn> iterator = table.inverseJoinColumns();
-		
-		assertEquals(0, CollectionTools.size(iterator));
+		assertEquals(0, table.inverseJoinColumnsSize());
 	}
 	
 	public void testInverseJoinColumns2() throws Exception {
@@ -579,9 +563,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		table.addInverseJoinColumn(1);
 		table.updateFromJava(JDTTools.buildASTRoot(testType));
 		
-		ListIterator<JoinColumn> iterator = table.inverseJoinColumns();
-		
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(2, table.inverseJoinColumnsSize());
 	}
 	
 	public void testInverseJoinColumns3() throws Exception {
@@ -591,9 +573,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		
 		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
 				
-		ListIterator<JoinColumn> iterator = table.inverseJoinColumns();
-		
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(2, table.inverseJoinColumnsSize());
 	}
 	
 	public void testAddInverseJoinColumn() throws Exception {
@@ -695,8 +675,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		
 		JoinTable table = (JoinTable) attributeResource.annotation(JPA.JOIN_TABLE);
 				
-		ListIterator<JoinColumn> iterator = table.inverseJoinColumns();
-		assertEquals(2, CollectionTools.size(iterator));
+		assertEquals(2, table.inverseJoinColumnsSize());
 		
 		JoinColumn joinColumn = table.inverseJoinColumns().next();
 		

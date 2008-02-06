@@ -16,6 +16,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddable;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddedIdMapping;
@@ -66,13 +67,22 @@ public class XmlEmbeddedIdMapping extends XmlAttributeMapping<EmbeddedId> implem
 
 	@SuppressWarnings("unchecked")
 	public ListIterator<XmlAttributeOverride> attributeOverrides() {
-		//TODO
+		//TODO attribute overrides
 		return EmptyListIterator.instance();
 	}
 
+	public int attributeOverridesSize() {
+		// TODO attributes overrides size
+		return 0;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public ListIterator<XmlAttributeOverride> defaultAttributeOverrides() {
 		return new CloneListIterator<XmlAttributeOverride>(this.defaultAttributeOverrides);
+	}
+	
+	public int defaultAttributeOverridesSize() {
+		return this.defaultAttributeOverrides.size();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -96,13 +106,17 @@ public class XmlEmbeddedIdMapping extends XmlAttributeMapping<EmbeddedId> implem
 		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, IEmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
+	public void removeSpecifiedAttributeOverride(IAttributeOverride attributeOverride) {
+		removeSpecifiedAttributeOverride(this.specifiedAttributeOverrides.indexOf(attributeOverride));
+	}
+	
 	public void removeSpecifiedAttributeOverride(int index) {
 		XmlAttributeOverride removedAttributeOverride = this.specifiedAttributeOverrides.remove(index);
 		this.attributeMapping().getAttributeOverrides().remove(index);
 		fireItemRemoved(IEmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, removedAttributeOverride);
 	}
-
-	protected void removeSpecifiedAttributeOverride(XmlAttributeOverride attributeOverride) {
+	
+	protected void removeSpecifiedAttributeOverride_(XmlAttributeOverride attributeOverride) {
 		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, IEmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
@@ -267,7 +281,7 @@ public class XmlEmbeddedIdMapping extends XmlAttributeMapping<EmbeddedId> implem
 				attributeOverride.update(resourceAttributeOverrides.next());
 			}
 			else {
-				removeSpecifiedAttributeOverride(attributeOverride);
+				removeSpecifiedAttributeOverride_(attributeOverride);
 			}
 		}
 		

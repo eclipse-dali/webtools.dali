@@ -326,6 +326,28 @@ public class JavaNamedNativeQueryTests extends ContextModelTestCase
 		assertFalse(namedNativeQuery.hints().hasNext());
 	}
 
+	public void testHintsSize() throws Exception {
+		createTestEntityWithNamedNativeQuery();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		IEntity entity = javaEntity();
+		
+		INamedNativeQuery namedNativeQuery = entity.namedNativeQueries().next();
+		assertEquals(0, namedNativeQuery.hintsSize());
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		NamedNativeQuery javaNamedNativeQuery = (NamedNativeQuery) typeResource.annotation(NamedNativeQuery.ANNOTATION_NAME);
+		
+		
+		javaNamedNativeQuery.addHint(0);
+		assertEquals(1, namedNativeQuery.hintsSize());
+		
+		javaNamedNativeQuery.addHint(0);
+		assertEquals(2, namedNativeQuery.hintsSize());
+		
+		javaNamedNativeQuery.removeHint(0);
+		javaNamedNativeQuery.removeHint(0);
+		assertEquals(0, namedNativeQuery.hintsSize());
+	}
 	
 	public void testUpdateResultClass() throws Exception {
 		createTestEntityWithNamedNativeQuery();

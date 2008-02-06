@@ -208,7 +208,7 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 	private ListValueModel<IJoinColumn> buildJoinColumnsListHolder() {
 		return new ListAspectAdapter<ISingleRelationshipMapping, IJoinColumn>(
 			getSubjectHolder(),
-			ISingleRelationshipMapping.DEFAULT_JOIN_COLUMNS_LIST,
+			ISingleRelationshipMapping.DEFAULT_JOIN_COLUMN,//TODO
 			ISingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST)
 		{
 			@Override
@@ -241,7 +241,7 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 				}
 
 				if (overrideDefaultJoinColumnsCheckBox.getSelection()) {
-					IJoinColumn defaultJoinColumn = subject().defaultJoinColumns().next();
+					IJoinColumn defaultJoinColumn = subject().getDefaultJoinColumn();//TODO could be null, disable override default check box?
 					String columnName = defaultJoinColumn.getDefaultName();
 					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
 

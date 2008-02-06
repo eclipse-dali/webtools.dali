@@ -279,11 +279,15 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 	}
 
 	public int attributesSize() {
-		return CollectionTools.size(attributes());
+		return specifiedAttributesSize() + virtualAttributesSize();
 	}
 	
 	public ListIterator<XmlPersistentAttribute> specifiedAttributes() {
 		return new CloneListIterator<XmlPersistentAttribute>(this.specifiedPersistentAttributes);
+	}
+	
+	public int specifiedAttributesSize() {
+		return this.specifiedPersistentAttributes.size();
 	}
 	
 	public ListIterator<XmlPersistentAttribute> virtualAttributes() {

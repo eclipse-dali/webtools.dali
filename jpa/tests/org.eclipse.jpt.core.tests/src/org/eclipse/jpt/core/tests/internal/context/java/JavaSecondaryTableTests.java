@@ -324,6 +324,36 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		assertEquals(3, secondaryTable.specifiedPrimaryKeyJoinColumnsSize());
 	}
 
+	public void testPrimaryKeyJoinColumnsSize() throws Exception {
+		createTestEntityWithSecondaryTable();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		ISecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		//just the default pkJoinColumn, so 1
+		assertEquals(1, secondaryTable.primaryKeyJoinColumnsSize());
+	
+		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
+		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAR");
+		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAZ");
+		
+		//only the specified pkJoinColumns, 3
+		assertEquals(3, secondaryTable.primaryKeyJoinColumnsSize());
+	}
+
+	public void testGetDefaultPrimaryKeyJoinColumn() throws Exception {
+		createTestEntityWithSecondaryTable();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		ISecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		assertNotNull(secondaryTable.getDefaultPrimaryKeyJoinColumn());
+	
+		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
+		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAR");
+		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAZ");
+		
+		assertNull(secondaryTable.getDefaultPrimaryKeyJoinColumn());
+	}
+
 	public void testAddSpecifiedPrimaryKeyJoinColumn() throws Exception {
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
@@ -455,7 +485,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		ISecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
-		IPrimaryKeyJoinColumn defaultPkJoinColumn = secondaryTable.defaultPrimaryKeyJoinColumns().next();
+		IPrimaryKeyJoinColumn defaultPkJoinColumn = secondaryTable.getDefaultPrimaryKeyJoinColumn();
 		assertEquals("id", defaultPkJoinColumn.getDefaultName());
 
 		
@@ -470,7 +500,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		ISecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
-		IPrimaryKeyJoinColumn defaultPkJoinColumn = secondaryTable.defaultPrimaryKeyJoinColumns().next();
+		IPrimaryKeyJoinColumn defaultPkJoinColumn = secondaryTable.getDefaultPrimaryKeyJoinColumn();
 		assertEquals("id", defaultPkJoinColumn.getDefaultReferencedColumnName());
 		
 		//remove @Id annotation
@@ -485,12 +515,13 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		ISecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
 		
+		assertTrue(secondaryTable.getDefaultPrimaryKeyJoinColumn().isVirtual());
+		
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
 		IPrimaryKeyJoinColumn specifiedPkJoinColumn = secondaryTable.specifiedPrimaryKeyJoinColumns().next();
 		assertFalse(specifiedPkJoinColumn.isVirtual());
 		
-		IPrimaryKeyJoinColumn defaultPkJoinColumn = secondaryTable.defaultPrimaryKeyJoinColumns().next();
-		assertTrue(defaultPkJoinColumn.isVirtual());
+		assertNull(secondaryTable.getDefaultPrimaryKeyJoinColumn());
 	}
 
 }

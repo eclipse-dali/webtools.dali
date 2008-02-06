@@ -35,6 +35,7 @@ import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -45,14 +46,13 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 	
 	protected final List<IJavaJoinColumn> specifiedJoinColumns;
 
-	protected final IJavaJoinColumn defaultJoinColumn;
+	protected IJavaJoinColumn defaultJoinColumn;
 
 	protected Boolean specifiedOptional;
 
 	protected JavaSingleRelationshipMapping(IJavaPersistentAttribute parent) {
 		super(parent);
 		this.specifiedJoinColumns = new ArrayList<IJavaJoinColumn>();
-		this.defaultJoinColumn = jpaFactory().createJavaJoinColumn(this, createJoinColumnOwner());
 	}
 	
 	public FetchType getDefaultFetch() {
@@ -61,13 +61,34 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 	
 	//***************** ISingleRelationshipMapping implementation *****************
 	public ListIterator<IJavaJoinColumn> joinColumns() {
-		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumns() : this.specifiedJoinColumns();
+		return this.containsSpecifiedJoinColumns() ? this.specifiedJoinColumns() : this.defaultJoinColumns();
 	}
 
-	public ListIterator<IJavaJoinColumn> defaultJoinColumns() {
-		return new SingleElementListIterator<IJavaJoinColumn>(this.defaultJoinColumn);
+	public int joinColumnsSize() {
+		return this.containsSpecifiedJoinColumns() ? this.specifiedJoinColumnsSize() : this.defaultJoinColumnsSize();
+	}
+	
+	public IJavaJoinColumn getDefaultJoinColumn() {
+		return this.defaultJoinColumn;
+	}
+	
+	protected void setDefaultJoinColumn(IJavaJoinColumn newJoinColumn) {
+		IJavaJoinColumn oldJoinColumn = this.defaultJoinColumn;
+		this.defaultJoinColumn = newJoinColumn;
+		firePropertyChanged(ISingleRelationshipMapping.DEFAULT_JOIN_COLUMN, oldJoinColumn, newJoinColumn);
 	}
 
+	protected ListIterator<IJavaJoinColumn> defaultJoinColumns() {
+		if (this.defaultJoinColumn != null) {
+			return new SingleElementListIterator<IJavaJoinColumn>(this.defaultJoinColumn);
+		}
+		return EmptyListIterator.instance();
+	}
+	
+	protected int defaultJoinColumnsSize() {
+		return (this.defaultJoinColumn == null) ? 0 : 1;
+	}
+	
 	public ListIterator<IJavaJoinColumn> specifiedJoinColumns() {
 		return new CloneListIterator<IJavaJoinColumn>(this.specifiedJoinColumns);
 	}
@@ -83,7 +104,8 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 	public IJavaJoinColumn addSpecifiedJoinColumn(int index) {
 		IJavaJoinColumn joinColumn = jpaFactory().createJavaJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
-		this.persistentAttributeResource.addAnnotation(index, JoinColumn.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
+		JoinColumn joinColumnResource = (JoinColumn) this.persistentAttributeResource.addAnnotation(index, JoinColumn.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
+		joinColumn.initializeFromResource(joinColumnResource);
 		this.fireItemAdded(ISingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		return joinColumn;
 	}
@@ -92,13 +114,17 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 		addItemToList(index, joinColumn, this.specifiedJoinColumns, ISingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST);
 	}
 
+	public void removeSpecifiedJoinColumn(IJoinColumn joinColumn) {
+		this.removeSpecifiedJoinColumn(this.specifiedJoinColumns.indexOf(joinColumn));
+	}
+	
 	public void removeSpecifiedJoinColumn(int index) {
 		IJavaJoinColumn removedJoinColumn = this.specifiedJoinColumns.remove(index);
 		this.persistentAttributeResource.removeAnnotation(index, JoinColumn.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
 		fireItemRemoved(ISingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 	}
 
-	protected void removeSpecifiedJoinColumn(IJavaJoinColumn joinColumn) {
+	protected void removeSpecifiedJoinColumn_(IJavaJoinColumn joinColumn) {
 		removeItemFromList(joinColumn, this.specifiedJoinColumns, ISingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST);
 	}
 	
@@ -134,7 +160,7 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 	public void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.initializeFromResource(persistentAttributeResource);
 		this.initializeSpecifiedJoinColumns(persistentAttributeResource);
-		this.defaultJoinColumn.initializeFromResource(new NullJoinColumn(persistentAttributeResource));
+		this.initializeDefaultJoinColumn(persistentAttributeResource);
 	}
 	
 	@Override
@@ -151,11 +177,24 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 		}
 	}
 	
+	protected boolean shouldBuildDefaultJoinColumn() {
+		return !containsSpecifiedJoinColumns() && isRelationshipOwner();
+	}
+	
+	protected void initializeDefaultJoinColumn(JavaPersistentAttributeResource persistentAttributeResource) {
+		if (!shouldBuildDefaultJoinColumn()) {
+			return;
+		}
+		this.defaultJoinColumn = this.jpaFactory().createJavaJoinColumn(this, createJoinColumnOwner());
+		this.defaultJoinColumn.initializeFromResource(new NullJoinColumn(persistentAttributeResource));
+	}	
+	
+	
 	@Override
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.update(persistentAttributeResource);
 		this.updateSpecifiedJoinColumns(persistentAttributeResource);
-		this.defaultJoinColumn.update(new NullJoinColumn(persistentAttributeResource));
+		this.updateDefaultJoinColumn(persistentAttributeResource);
 	}
 	
 	@Override
@@ -177,7 +216,7 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 				joinColumn.update((JoinColumn) resourceJoinColumns.next());
 			}
 			else {
-				removeSpecifiedJoinColumn(joinColumn);
+				removeSpecifiedJoinColumn_(joinColumn);
 			}
 		}
 		
@@ -186,6 +225,21 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 		}
 	}
 	
+	protected void updateDefaultJoinColumn(JavaPersistentAttributeResource persistentAttributeResource) {
+		if (!shouldBuildDefaultJoinColumn()) {
+			setDefaultJoinColumn(null);
+			return;
+		}
+		if (getDefaultJoinColumn() == null) {
+			IJavaJoinColumn joinColumn = this.jpaFactory().createJavaJoinColumn(this, createJoinColumnOwner());
+			joinColumn.initializeFromResource(new NullJoinColumn(persistentAttributeResource));
+			this.setDefaultJoinColumn(joinColumn);
+		}
+		else {
+			this.defaultJoinColumn.update(new NullJoinColumn(persistentAttributeResource));
+		}
+	}	
+
 	protected IJavaJoinColumn createJoinColumn(JoinColumn joinColumnResource) {
 		IJavaJoinColumn joinColumn = jpaFactory().createJavaJoinColumn(this, createJoinColumnOwner());
 		joinColumn.initializeFromResource(joinColumnResource);
@@ -343,7 +397,7 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 		}
 		
 		public int joinColumnsSize() {
-			return CollectionTools.size(JavaSingleRelationshipMapping.this.joinColumns());
+			return JavaSingleRelationshipMapping.this.joinColumnsSize();
 		}
 	}
 }

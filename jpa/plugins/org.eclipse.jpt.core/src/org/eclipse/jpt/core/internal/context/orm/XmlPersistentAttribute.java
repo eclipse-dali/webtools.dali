@@ -256,40 +256,40 @@ public class XmlPersistentAttribute extends JpaContextNode
 			((XmlVersionMapping) getMapping()).initialize(version);				
 		}
 	}
-	public void update(ManyToOne version) {
+	public void update(ManyToOne manyToOne) {
 		if (mappingKey() == IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
-			((XmlManyToOneMapping) getMapping()).update(version);
+			((XmlManyToOneMapping) getMapping()).update(manyToOne);
 		}
 		else {
 			setSpecifiedMappingKey_(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-			((XmlManyToOneMapping) getMapping()).initialize(version);				
+			((XmlManyToOneMapping) getMapping()).initialize(manyToOne);				
 		}
 	}
-	public void update(OneToMany version) {
+	public void update(OneToMany oneToMany) {
 		if (mappingKey() == IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
-			((XmlOneToManyMapping) getMapping()).update(version);
+			((XmlOneToManyMapping) getMapping()).update(oneToMany);
 		}
 		else {
 			setSpecifiedMappingKey_(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-			((XmlOneToManyMapping) getMapping()).initialize(version);				
+			((XmlOneToManyMapping) getMapping()).initialize(oneToMany);				
 		}
 	}
-	public void update(OneToOne version) {
+	public void update(OneToOne oneToOne) {
 		if (mappingKey() == IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
-			((XmlOneToOneMapping) getMapping()).update(version);
+			((XmlOneToOneMapping) getMapping()).update(oneToOne);
 		}
 		else {
 			setSpecifiedMappingKey_(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-			((XmlOneToOneMapping) getMapping()).initialize(version);				
+			((XmlOneToOneMapping) getMapping()).initialize(oneToOne);				
 		}
 	}
-	public void update(ManyToMany version) {
+	public void update(ManyToMany manyToMany) {
 		if (mappingKey() == IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
-			((XmlManyToManyMapping) getMapping()).update(version);
+			((XmlManyToManyMapping) getMapping()).update(manyToMany);
 		}
 		else {
 			setSpecifiedMappingKey_(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-			((XmlManyToManyMapping) getMapping()).initialize(version);				
+			((XmlManyToManyMapping) getMapping()).initialize(manyToMany);				
 		}
 	}
 

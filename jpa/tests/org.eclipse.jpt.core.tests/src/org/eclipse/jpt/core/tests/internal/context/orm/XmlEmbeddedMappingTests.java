@@ -27,7 +27,6 @@ import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class XmlEmbeddedMappingTests extends ContextModelTestCase
@@ -367,7 +366,7 @@ public class XmlEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals("address", xmlEmbeddedMapping.getName());
 
 		assertEquals(4, xmlEmbeddedMapping.specifiedAttributeOverridesSize());
-		assertEquals(0, CollectionTools.size(xmlEmbeddedMapping.defaultAttributeOverrides()));
+		assertEquals(0, xmlEmbeddedMapping.defaultAttributeOverridesSize());
 		ListIterator<XmlAttributeOverride> xmlAttributeOverrides = xmlEmbeddedMapping.specifiedAttributeOverrides();
 
 		XmlAttributeOverride xmlAttributeOverride = xmlAttributeOverrides.next();

@@ -132,10 +132,10 @@ public class JavaPersistentAttributeResourceImpl
 	}
 	
 	public boolean hasAnyAnnotation() {
-		if (CollectionTools.size(mappingAnnotations()) > 0) {
+		if (mappingAnnotationsSize() > 0) {
 			return true;
 		}
-		if (CollectionTools.size(annotations()) > 0) {
+		if (annotationsSize() > 0) {
 			return true;
 		}
 		return false;
