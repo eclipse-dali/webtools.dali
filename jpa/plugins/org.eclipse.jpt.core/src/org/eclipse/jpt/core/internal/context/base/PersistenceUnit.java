@@ -9,9 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
-import static org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType.DEFAULT;
-import static org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType.JTA;
-import static org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType.RESOURCE_LOCAL;
+import static org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -236,7 +234,7 @@ public class PersistenceUnit extends JpaContextNode
 	}
 	
 	public int mappingFileRefsSize() {
-		if (this.impliedMappingFileRef == null) {
+		if (impliedMappingFileRef == null) {
 			return specifiedMappingFileRefsSize();
 		}
 		return 1 + specifiedMappingFileRefsSize();
@@ -249,7 +247,7 @@ public class PersistenceUnit extends JpaContextNode
 	}
 	
 	public int specifiedMappingFileRefsSize() {
-		return this.specifiedMappingFileRefs.size();
+		return specifiedMappingFileRefs.size();
 	}
 	
 	public IMappingFileRef addSpecifiedMappingFileRef() {
@@ -336,7 +334,7 @@ public class PersistenceUnit extends JpaContextNode
 	}
 	
 	public int specifiedClassRefsSize() {
-		return this.specifiedClassRefs.size();
+		return specifiedClassRefs.size();
 	}
 	
 	public IClassRef addSpecifiedClassRef() {
@@ -386,7 +384,7 @@ public class PersistenceUnit extends JpaContextNode
 	}
 	
 	public int impliedClassRefsSize() {
-		return this.impliedClassRefs.size();
+		return impliedClassRefs.size();
 	}
 	
 	public IClassRef addImpliedClassRef(String className) {
@@ -1228,6 +1226,35 @@ public class PersistenceUnit extends JpaContextNode
 			}
 		}
 		return null;
+	}
+	
+	@Override
+	public IJpaStructureNode structureNode(int textOffset) {
+		if (! containsOffset(textOffset)) {
+			return null;
+		}
+		for (IMappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
+			if (mappingFileRef.containsOffset(textOffset)) {
+				return mappingFileRef;
+			}
+		}
+		for (IClassRef classRef : CollectionTools.iterable(classRefs())) {
+			if (classRef.containsOffset(textOffset)) {
+				return classRef;
+			}
+		}
+		return this;
+	}
+	
+	public boolean containsOffset(int textOffset) {
+		if (xmlPersistenceUnit == null) {
+			return false;
+		}
+		return xmlPersistenceUnit.containsOffset(textOffset);
+	}
+	
+	public ITextRange selectionTextRange() {
+		return xmlPersistenceUnit.selectionTextRange();
 	}
 	
 	public ITextRange validationTextRange() {

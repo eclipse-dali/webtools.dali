@@ -13,9 +13,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 
-/**
- * 
- */
 public class JpaFile extends JpaNode implements IJpaFile
 {
 	/**
@@ -35,27 +32,18 @@ public class JpaFile extends JpaNode implements IJpaFile
 		this.resourceModel = resourceModel;
 	}
 	
-	/**
-	 * @see IJpaFile#getFile()
-	 */
 	public IFile getFile() {
 		return file;
 	}
-
-	/**
-	 * @see IJpaFile#getResourceModel()
-	 */
+	
 	public IResourceModel getResourceModel() {
 		return resourceModel;
 	}
 	
 	public IJpaStructureNode structureNode(int textOffset) {
-		return null;
+		return resourceModel.structureNode(textOffset);
 	}
 	
-	/**
-	 * @see IJpaFile#getResourceType()
-	 */
 	public String getResourceType() {
 		return getResourceModel().getResourceType();
 	}

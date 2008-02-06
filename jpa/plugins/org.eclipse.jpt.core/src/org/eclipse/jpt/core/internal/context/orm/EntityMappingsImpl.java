@@ -35,7 +35,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 {
-	protected org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings;
+	protected org.eclipse.jpt.core.internal.resource.orm.EntityMappings xmlEntityMappings;
 	
 	protected String version;
 	
@@ -103,7 +103,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	public void setPackage(String newPackage) {
 		String oldPackage = this.package_;
 		this.package_ = newPackage;
-		this.entityMappings.setPackage(newPackage);
+		this.xmlEntityMappings.setPackage(newPackage);
 		firePropertyChanged(PACKAGE_PROPERTY, oldPackage, newPackage);
 	}
 
@@ -118,7 +118,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	public void setDescription(String newDescription) {
 		String oldDescription = this.description;
 		this.description = newDescription;
-		this.entityMappings.setDescription(newDescription);
+		this.xmlEntityMappings.setDescription(newDescription);
 		firePropertyChanged(DESCRIPTION_PROPERTY, oldDescription, newDescription);
 	}
 
@@ -139,7 +139,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	public void setSpecifiedSchema(String newSpecifiedSchema) {
 		String oldSpecifiedSchema = this.specifiedSchema;
 		this.specifiedSchema = newSpecifiedSchema;
-		this.entityMappings.setSchema(newSpecifiedSchema);
+		this.xmlEntityMappings.setSchema(newSpecifiedSchema);
 		firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
 	}
 
@@ -164,7 +164,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	public void setSpecifiedCatalog(String newSpecifiedCatalog) {
 		String oldSpecifiedCatalog = this.specifiedCatalog;
 		this.specifiedCatalog = newSpecifiedCatalog;
-		this.entityMappings.setCatalog(newSpecifiedCatalog);
+		this.xmlEntityMappings.setCatalog(newSpecifiedCatalog);
 		firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
 	}
 
@@ -193,7 +193,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	public void setSpecifiedAccess(AccessType newSpecifiedAccess) {
 		AccessType oldSpecifiedAccess = this.specifiedAccess;
 		this.specifiedAccess = newSpecifiedAccess;
-		this.entityMappings.setAccess(AccessType.toXmlResourceModel(newSpecifiedAccess));
+		this.xmlEntityMappings.setAccess(AccessType.toXmlResourceModel(newSpecifiedAccess));
 		firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, oldSpecifiedAccess, newSpecifiedAccess);
 	}
 
@@ -213,7 +213,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 			// adds short name if package name is specified
 			className = className.substring(getPackage().length() + 1);
 		}
-		TypeMapping typeMapping = persistentType.getMapping().addToResourceModel(this.entityMappings);
+		TypeMapping typeMapping = persistentType.getMapping().addToResourceModel(this.xmlEntityMappings);
 		typeMapping.setClassName(className);
 		fireItemAdded(PERSISTENT_TYPES_LIST, index, persistentType);
 		return persistentType;
@@ -246,7 +246,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	public void removeXmlPersistentType(int index) {
 		XmlPersistentType xmlPersistentType = this.persistentTypes.get(index);		
 		this.persistentTypes.remove(index);
-		xmlPersistentType.getMapping().removeFromResourceModel(this.entityMappings);
+		xmlPersistentType.getMapping().removeFromResourceModel(this.xmlEntityMappings);
 		fireItemRemoved(PERSISTENT_TYPES_LIST, index, xmlPersistentType);		
 	}
 	
@@ -261,21 +261,19 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	public void changeMapping(XmlPersistentType xmlPersistentType, XmlTypeMapping<? extends TypeMapping> oldMapping, XmlTypeMapping<? extends TypeMapping> newMapping) {
 		int sourceIndex = this.persistentTypes.indexOf(xmlPersistentType);
 		this.persistentTypes.remove(sourceIndex);
-		oldMapping.removeFromResourceModel(this.entityMappings);
+		oldMapping.removeFromResourceModel(this.xmlEntityMappings);
 		int targetIndex = insertionIndex(xmlPersistentType);
 		this.persistentTypes.add(targetIndex, xmlPersistentType);
-		newMapping.addToResourceModel(this.entityMappings);
+		newMapping.addToResourceModel(this.xmlEntityMappings);
 		newMapping.initializeFrom(oldMapping);
 		//TODO are the source and target correct in this case, or is target off by one???
 		fireItemMoved(PERSISTENT_TYPES_LIST, targetIndex, sourceIndex);
 	}
-
-
-	@SuppressWarnings("unchecked")
+	
 	public ListIterator<XmlSequenceGenerator> sequenceGenerators() {
 		return new CloneListIterator<XmlSequenceGenerator>(this.sequenceGenerators);
 	}
-
+	
 	public int sequenceGeneratorsSize() {
 		return this.sequenceGenerators.size();
 	}
@@ -285,8 +283,8 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		this.sequenceGenerators.add(index, xmlSequenceGenerator);
 		SequenceGenerator sequenceGenerator = OrmFactory.eINSTANCE.createSequenceGeneratorImpl();
 		xmlSequenceGenerator.initialize(sequenceGenerator);
-		this.entityMappings.getSequenceGenerators().add(index, sequenceGenerator);
-		fireItemAdded(EntityMappings.SEQUENCE_GENERATORS_LIST, index, xmlSequenceGenerator);
+		this.xmlEntityMappings.getSequenceGenerators().add(index, sequenceGenerator);
+		fireItemAdded(SEQUENCE_GENERATORS_LIST, index, xmlSequenceGenerator);
 		return xmlSequenceGenerator;
 	}
 
@@ -300,8 +298,8 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	
 	public void removeSequenceGenerator(int index) {
 		XmlSequenceGenerator removedSequenceGenerator = this.sequenceGenerators.remove(index);
-		fireItemRemoved(EntityMappings.SEQUENCE_GENERATORS_LIST, index, removedSequenceGenerator);
-		this.entityMappings.getSequenceGenerators().remove(index);
+		fireItemRemoved(SEQUENCE_GENERATORS_LIST, index, removedSequenceGenerator);
+		this.xmlEntityMappings.getSequenceGenerators().remove(index);
 	}
 	
 	protected void removeSequenceGenerator_(XmlSequenceGenerator sequenceGenerator) {
@@ -310,12 +308,10 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 
 	public void moveSequenceGenerator(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.sequenceGenerators, targetIndex, sourceIndex);
-		this.entityMappings.getSequenceGenerators().move(targetIndex, sourceIndex);
+		this.xmlEntityMappings.getSequenceGenerators().move(targetIndex, sourceIndex);
 		fireItemMoved(EntityMappings.SEQUENCE_GENERATORS_LIST, targetIndex, sourceIndex);	
 	}
 
-	
-	@SuppressWarnings("unchecked")
 	public ListIterator<XmlTableGenerator> tableGenerators() {
 		return new CloneListIterator<XmlTableGenerator>(this.tableGenerators);
 	}
@@ -329,7 +325,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		this.tableGenerators.add(index, xmlTableGenerator);
 		TableGenerator tableGenerator = OrmFactory.eINSTANCE.createTableGeneratorImpl();
 		xmlTableGenerator.initialize(tableGenerator);
-		this.entityMappings.getTableGenerators().add(index, tableGenerator);
+		this.xmlEntityMappings.getTableGenerators().add(index, tableGenerator);
 		fireItemAdded(TABLE_GENERATORS_LIST, index, xmlTableGenerator);
 		return xmlTableGenerator;
 	}
@@ -344,7 +340,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 
 	public void removeTableGenerator(int index) {
 		XmlTableGenerator removedTableGenerator = this.tableGenerators.remove(index);
-		this.entityMappings.getTableGenerators().remove(index);
+		this.xmlEntityMappings.getTableGenerators().remove(index);
 		fireItemRemoved(TABLE_GENERATORS_LIST, index, removedTableGenerator);
 	}
 	
@@ -354,7 +350,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 
 	public void moveTableGenerator(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.tableGenerators, targetIndex, sourceIndex);
-		this.entityMappings.getTableGenerators().move(targetIndex, sourceIndex);
+		this.xmlEntityMappings.getTableGenerators().move(targetIndex, sourceIndex);
 		fireItemMoved(EntityMappings.TABLE_GENERATORS_LIST, targetIndex, sourceIndex);	
 	}
 
@@ -369,7 +365,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	public XmlNamedQuery addNamedQuery(int index) {
 		XmlNamedQuery namedQuery = new XmlNamedQuery(this);
 		this.namedQueries.add(index, namedQuery);
-		this.entityMappings.getNamedQueries().add(index, OrmFactory.eINSTANCE.createNamedQuery());
+		this.xmlEntityMappings.getNamedQueries().add(index, OrmFactory.eINSTANCE.createNamedQuery());
 		this.fireItemAdded(EntityMappings.NAMED_QUERIES_LIST, index, namedQuery);
 		return namedQuery;
 	}
@@ -384,7 +380,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 
 	public void removeNamedQuery(int index) {
 		XmlNamedQuery namedQuery = this.namedQueries.remove(index);
-		this.entityMappings.getNamedQueries().remove(index);
+		this.xmlEntityMappings.getNamedQueries().remove(index);
 		fireItemRemoved(EntityMappings.NAMED_QUERIES_LIST, index, namedQuery);
 	}
 
@@ -393,7 +389,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	}
 	
 	public void moveNamedQuery(int targetIndex, int sourceIndex) {
-		this.entityMappings.getNamedQueries().move(targetIndex, sourceIndex);
+		this.xmlEntityMappings.getNamedQueries().move(targetIndex, sourceIndex);
 		moveItemInList(targetIndex, sourceIndex, this.namedQueries, EntityMappings.NAMED_QUERIES_LIST);		
 	}
 	
@@ -408,7 +404,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	public XmlNamedNativeQuery addNamedNativeQuery(int index) {
 		XmlNamedNativeQuery namedNativeQuery = new XmlNamedNativeQuery(this);
 		this.namedNativeQueries.add(index, namedNativeQuery);
-		this.entityMappings.getNamedNativeQueries().add(index, OrmFactory.eINSTANCE.createNamedNativeQuery());
+		this.xmlEntityMappings.getNamedNativeQueries().add(index, OrmFactory.eINSTANCE.createNamedNativeQuery());
 		this.fireItemAdded(EntityMappings.NAMED_QUERIES_LIST, index, namedNativeQuery);
 		return namedNativeQuery;
 	}
@@ -423,8 +419,8 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 
 	public void removeNamedNativeQuery(int index) {
 		XmlNamedNativeQuery namedNativeQuery = this.namedNativeQueries.remove(index);
-		this.entityMappings.getNamedNativeQueries().remove(index);
-		fireItemRemoved(EntityMappings.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
+		this.xmlEntityMappings.getNamedNativeQueries().remove(index);
+		fireItemRemoved(NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
 	}
 
 	protected void removeNamedNativeQuery_(XmlNamedNativeQuery namedNativeQuery) {
@@ -432,7 +428,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	}
 	
 	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
-		this.entityMappings.getNamedNativeQueries().move(targetIndex, sourceIndex);
+		this.xmlEntityMappings.getNamedNativeQueries().move(targetIndex, sourceIndex);
 		moveItemInList(targetIndex, sourceIndex, this.namedNativeQueries, EntityMappings.NAMED_NATIVE_QUERIES_LIST);		
 	}
 
@@ -448,26 +444,12 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		return false;
 	}
 
-	@Override
-	public IJpaStructureNode structureNode(int offset) {
-		if (!this.entityMappings.contains(offset)) {
-			return null;
-		}
-		for (XmlPersistentType xmlPersistentType : CollectionTools.iterable(this.xmlPersistentTypes())) {
-			IJpaStructureNode structureNode = xmlPersistentType.structureNode(offset);
-			if (structureNode != null) {
-				return structureNode;
-			}
-		}
-		return this;
-	}
-	
 	public PersistenceUnitDefaults persistenceUnitDefaults() {
 		return getPersistenceUnitMetadata().getPersistenceUnitDefaults();
 	}
 	
 	public void initialize(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
-		this.entityMappings = entityMappings;
+		this.xmlEntityMappings = entityMappings;
 		this.version = entityMappings.getVersion();
 		this.description = entityMappings.getDescription();
 		this.package_ = entityMappings.getPackage();
@@ -544,7 +526,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	}
 
 	public void update(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings) {
-		this.entityMappings = entityMappings;
+		this.xmlEntityMappings = entityMappings;
 		this.setDescription(entityMappings.getDescription());
 		this.setPackage(entityMappings.getPackage());
 		this.setSpecifiedSchema(entityMappings.getSchema());
@@ -624,7 +606,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 				tableGenerator.update(resourceTableGenerators.next());
 			}
 			else {
-				removeTableGenerator_(tableGenerator);
+				removeTableGenerator(tableGenerator);
 			}
 		}
 		
@@ -648,7 +630,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 				sequenceGenerator.update(resourceSequenceGenerators.next());
 			}
 			else {
-				removeSequenceGenerator_(sequenceGenerator);
+				removeSequenceGenerator(sequenceGenerator);
 			}
 		}
 		
@@ -673,7 +655,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 				namedQuery.update(resourceNamedQueries.next());
 			}
 			else {
-				removeNamedQuery_(namedQuery);
+				removeNamedQuery(namedQuery);
 			}
 		}
 		
@@ -698,7 +680,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 				namedQuery.update(resourceNamedNativeQueries.next());
 			}
 			else {
-				removeNamedNativeQuery_(namedQuery);
+				removeNamedNativeQuery(namedQuery);
 			}
 		}
 		
@@ -713,7 +695,30 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		return xmlNamedNativeQuery;
 	}
 
+	
+	// *************************************************************************
+	
+	@Override
+	public IJpaStructureNode structureNode(int textOffset) {
+		if (! containsOffset(textOffset)) {
+			return null;
+		}
+		for (XmlPersistentType persistentType: CollectionTools.iterable(xmlPersistentTypes())) {
+			if (persistentType.containsOffset(textOffset)) {
+				return persistentType.structureNode(textOffset);
+			}
+		}
+		return this;
+	}
+	
+	public boolean containsOffset(int textOffset) {
+		if (xmlEntityMappings == null) {
+			return false;
+		}
+		return xmlEntityMappings.containsOffset(textOffset);
+	}
+	
 	public ITextRange selectionTextRange() {
-		return this.entityMappings.selectionTextRange();
+		return xmlEntityMappings.selectionTextRange();
 	}
 }

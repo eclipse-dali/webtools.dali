@@ -33,6 +33,11 @@ public interface IJpaEObject extends EObject
 	IJpaEObject root();
 	
 	/**
+	 * Return true if this object's text representation contains the text offset
+	 */
+	boolean containsOffset(int textOffset);
+	
+	/**
 	 * Return the text range to be used for validation.  This is the source
 	 * range that will be highlighted for a validation error.
 	 */
@@ -44,11 +49,6 @@ public interface IJpaEObject extends EObject
 	 */
 	ITextRange selectionTextRange();
 	
+	
 	boolean isAllFeaturesUnset();
-
-	/**
-	 * Return whether the xml object contains the given offset into the text file.
-	 */
-	boolean contains(int offset);
-
 }

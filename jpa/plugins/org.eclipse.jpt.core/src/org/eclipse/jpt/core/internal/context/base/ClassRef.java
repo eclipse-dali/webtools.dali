@@ -23,7 +23,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * persistence resource model object XmlJavaClassRef.
  * XmlJavaClassRef corresponds to the class tag in the persistence.xml
  */
-public class ClassRef extends JpaContextNode implements IClassRef
+public class ClassRef extends JpaContextNode 
+	implements IClassRef
 {
 	protected XmlJavaClassRef xmlJavaClassRef;
 	
@@ -146,8 +147,22 @@ public class ClassRef extends JpaContextNode implements IClassRef
 		}
 	}
 	
+	public boolean containsOffset(int textOffset) {
+		if (isVirtual()) {
+			return false;
+		}
+		return xmlJavaClassRef.containsOffset(textOffset);
+	}
+	
+	public ITextRange selectionTextRange() {
+		if (isVirtual()) {
+			return null;
+		}
+		return xmlJavaClassRef.selectionTextRange();
+	}
+	
 	public ITextRange validationTextRange() {
-		return this.xmlJavaClassRef.validationTextRange();
+		return xmlJavaClassRef.validationTextRange();
 	}
 	
 	@Override

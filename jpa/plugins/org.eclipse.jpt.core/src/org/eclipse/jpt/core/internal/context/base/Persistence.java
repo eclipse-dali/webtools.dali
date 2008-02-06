@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
@@ -22,6 +21,7 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -42,11 +42,11 @@ public class Persistence extends JpaContextNode
 	// **************** persistence units **************************************
 	
 	public ListIterator<IPersistenceUnit> persistenceUnits() {
-		return new CloneListIterator<IPersistenceUnit>(this.persistenceUnits);
+		return new CloneListIterator<IPersistenceUnit>(persistenceUnits);
 	}
 	
 	public int persistenceUnitsSize() {
-		return this.persistenceUnits.size();
+		return persistenceUnits.size();
 	}
 	
 	public IPersistenceUnit addPersistenceUnit() {
@@ -136,8 +136,25 @@ public class Persistence extends JpaContextNode
 		throw new UnsupportedOperationException("No PersistenceUnit in this context");
 	}
 	
+	@Override
+	public IJpaStructureNode structureNode(int textOffset) {
+		if (! xmlPersistence.containsOffset(textOffset)) {
+			return null;
+		}
+		for (IPersistenceUnit persistenceUnit : CollectionTools.iterable(persistenceUnits())) {
+			if (persistenceUnit.containsOffset(textOffset)) {
+				return persistenceUnit.structureNode(textOffset);
+			}
+		}
+		return this;
+	}
+	
+	public ITextRange selectionTextRange() {
+		return xmlPersistence.selectionTextRange();
+	}
+	
 	public ITextRange validationTextRange() {
-		return this.xmlPersistence.validationTextRange();
+		return xmlPersistence.validationTextRange();
 	}
 
 

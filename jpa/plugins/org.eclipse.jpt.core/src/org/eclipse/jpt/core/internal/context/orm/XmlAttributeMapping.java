@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
-import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
@@ -77,8 +76,7 @@ public abstract class XmlAttributeMapping<T extends AttributeMapping> extends Jp
 	public boolean isDefault() {
 		return false;
 	}
-
-
+	
 	/**
 	 * IMPORTANT:  See XmlAttributeMapping class comment.
 	 * Subclasses should override this method to call the
@@ -139,20 +137,7 @@ public abstract class XmlAttributeMapping<T extends AttributeMapping> extends Jp
 	public void initializeFromXmlManyToManyMapping(XmlManyToManyMapping oldMapping) {
 		initializeFromXmlMulitRelationshipMapping(oldMapping);
 	}
-
-	@Override
-	public IJpaStructureNode structureNode(int offset) {
-		if (this.attributeMapping.contains(offset)) {
-			return persistentAttribute();
-		}
-		return null;
-	}
 	
-	public ITextRange selectionTextRange() {
-		return this.attributeMapping.selectionTextRange();
-	}
-	
-
 	/**
 	 * Attributes are a sequence in the orm schema. We must keep
 	 * the list of attributes in the appropriate order so the wtp xml 
@@ -224,5 +209,13 @@ public abstract class XmlAttributeMapping<T extends AttributeMapping> extends Jp
 			return javaPersistentType.attributeNamed(getName());
 		}
 		return null;
+	}
+	
+	public boolean containsOffset(int textOffset) {
+		return attributeMapping.containsOffset(textOffset);
+	}
+	
+	public ITextRange selectionTextRange() {
+		return attributeMapping.selectionTextRange();
 	}
 }

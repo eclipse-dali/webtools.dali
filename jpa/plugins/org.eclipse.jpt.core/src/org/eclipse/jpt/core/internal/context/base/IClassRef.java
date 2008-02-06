@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 
-public interface IClassRef extends IJpaContextNode
+public interface IClassRef extends IJpaContextNode, IJpaStructureNode
 {
 	/**
 	 * Return true if the IClassRef matches the fullyQualfiedTypeName
@@ -73,6 +73,12 @@ public interface IClassRef extends IJpaContextNode
 	
 	
 	// *************************************************************************
+	
+	/**
+	 * Return whether the text representation of this persistence unit contains
+	 * the given text offset
+	 */
+	boolean containsOffset(int textOffset);
 	
 	ITextRange validationTextRange();
 }

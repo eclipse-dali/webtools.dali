@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
 
-public interface IMappingFileRef extends IJpaContextNode
+public interface IMappingFileRef extends IJpaContextNode, IJpaStructureNode
 {
 	/**
 	 * Return whether this mapping file ref is represented by an entry in the
@@ -65,4 +65,10 @@ public interface IMappingFileRef extends IJpaContextNode
 	 * with the given fullyQualifiedTypeName.  Return null if non exists.
 	 */
 	XmlPersistentType persistentTypeFor(String fullyQualifiedTypeName);
+	
+	/**
+	 * Return whether the text representation of this persistence unit contains
+	 * the given text offset
+	 */
+	boolean containsOffset(int textOffset);
 }

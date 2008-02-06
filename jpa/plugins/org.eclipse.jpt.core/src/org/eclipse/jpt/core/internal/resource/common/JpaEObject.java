@@ -212,8 +212,11 @@ public abstract class JpaEObject extends EObjectImpl implements IJpaEObject
 		return new DOMNodeTextRange(domNode);
 	}
 	
-	public boolean contains(int offset) {
-		return getNode().contains(offset);
+	public boolean containsOffset(int textOffset) {
+		if (node == null) {
+			return false;
+		}
+		return node.contains(textOffset);
 	}
 	
 	/**

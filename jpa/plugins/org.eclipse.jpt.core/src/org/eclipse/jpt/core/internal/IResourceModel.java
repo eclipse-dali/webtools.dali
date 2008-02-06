@@ -13,6 +13,7 @@ package org.eclipse.jpt.core.internal;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.utility.internal.model.Model;
 
 public interface IResourceModel extends Model
@@ -53,6 +54,11 @@ public interface IResourceModel extends Model
 	 * Return a list iterator of all root context nodes
 	 */
 	ListIterator<IJpaContextNode> rootContextNodes();
+	
+	/**
+	 * Return a structural node for the given text offset
+	 */
+	IJpaStructureNode structureNode(int textOffset);
 	
 	
 	void handleJavaElementChangedEvent(ElementChangedEvent event);

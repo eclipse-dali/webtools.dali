@@ -269,7 +269,6 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		};
 	}
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<XmlPersistentAttribute> attributes() {
 		return new CompositeListIterator<XmlPersistentAttribute>(specifiedAttributes(), virtualAttributes());
 	}
@@ -283,7 +282,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 	}
 	
 	public int specifiedAttributesSize() {
-		return this.specifiedPersistentAttributes.size();
+		return specifiedPersistentAttributes.size();
 	}
 	
 	public ListIterator<XmlPersistentAttribute> virtualAttributes() {
@@ -771,24 +770,6 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		}
 	}
 	
-	@Override
-	public IJpaStructureNode structureNode(int offset) {
-		if (this.xmlTypeMapping.structureNode(offset) == null) {
-			return null;
-		}
-		for (XmlPersistentAttribute attribute : CollectionTools.iterable(this.attributes())) {
-			IJpaStructureNode contextNode = attribute.structureNode(offset);
-			if (contextNode != null) {
-				return contextNode;
-			}
-		}
-		return this;
-	}
-
-	public ITextRange selectionTextRange() {
-		return this.xmlTypeMapping.selectionTextRange();
-	}
-	
 	public IPersistentAttribute resolveAttribute(String attributeName) {
 		Iterator<XmlPersistentAttribute> attributes = attributesNamed(attributeName);
 		if (attributes.hasNext()) {
@@ -802,27 +783,30 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 			return null;
 		}
 	}
-//
-//	@Override
-//	public ITextRange validationTextRange() {
-//		return selectionTextRange();
-//	}
-//
-//	@Override
-//	public ITextRange selectionTextRange() {
-//		return getMapping().selectionTextRange();
-//	}
-//
-//	public ITextRange classTextRange() {
-//		return getMapping().classTextRange();
-//	}
-//
-//	public ITextRange attributesTextRange() {
-//		return getMapping().attributesTextRange();
-//	}
 	
 	@Override
 	public XmlPersistentType xmlPersistentType() {
 		return this;
+	}
+	
+	@Override
+	public IJpaStructureNode structureNode(int textOffset) {
+		if (! containsOffset(textOffset)) {
+			return null;
+		}
+		for (XmlPersistentAttribute attribute : CollectionTools.iterable(specifiedAttributes())) {
+			if (attribute.containsOffset(textOffset)) {
+				return attribute;
+			}
+		}
+		return this;
+	}
+	
+	public boolean containsOffset(int textOffset) {
+		return xmlTypeMapping.containsOffset(textOffset);
+	}
+	
+	public ITextRange selectionTextRange() {
+		return xmlTypeMapping.selectionTextRange();
 	}
 }

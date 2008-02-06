@@ -156,9 +156,26 @@ public class MappingFileRef extends JpaContextNode
 		}
 		return null;
 	}
-
+	
+	public boolean containsOffset(int textOffset) {
+		if (xmlMappingFileRef == null) {
+			return false;
+		}
+		return xmlMappingFileRef.containsOffset(textOffset);
+	}
+	
+	public ITextRange selectionTextRange() {
+		if (isVirtual()) {
+			return null;
+		}
+		return xmlMappingFileRef.selectionTextRange();
+	}
+	
 	public ITextRange validationTextRange() {
-		return this.xmlMappingFileRef.validationTextRange();
+		if (isVirtual()) {
+			return persistenceUnit().validationTextRange();
+		}
+		return xmlMappingFileRef.validationTextRange();
 	}
 	
 	@Override

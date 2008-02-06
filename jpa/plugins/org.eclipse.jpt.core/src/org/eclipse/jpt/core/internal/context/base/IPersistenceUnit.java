@@ -10,9 +10,10 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 import java.util.ListIterator;
+import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 
-public interface IPersistenceUnit extends IJpaContextNode
+public interface IPersistenceUnit extends IJpaContextNode, IJpaStructureNode
 {
 	// **************** parent *************************************************
 	
@@ -447,4 +448,11 @@ public interface IPersistenceUnit extends IJpaContextNode
 	 */
 	IPersistentType persistentType(String fullyQualifiedTypeName);
 	
+	/**
+	 * Return whether the text representation of this persistence unit contains
+	 * the given text offset
+	 */
+	boolean containsOffset(int textOffset);
+	
+	ITextRange validationTextRange();
 }

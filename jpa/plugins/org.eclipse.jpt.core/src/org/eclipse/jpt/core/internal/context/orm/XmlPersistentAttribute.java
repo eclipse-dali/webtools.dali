@@ -117,15 +117,6 @@ public class XmlPersistentAttribute extends JpaContextNode
 		firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, oldMapping, this.attributeMapping);
 	}
 
-	@Override
-	public IJpaStructureNode structureNode(int offset) {
-		return this.attributeMapping.structureNode(offset);
-	}
-
-	public ITextRange selectionTextRange() {
-		return this.attributeMapping.selectionTextRange();
-	}
-	
 	public Collection<IXmlAttributeMappingProvider> attributeMappingProviders() {
 		return this.attributeMappingProviders;
 	}
@@ -319,6 +310,29 @@ public class XmlPersistentAttribute extends JpaContextNode
 			((XmlTransientMapping) getMapping()).initialize(transientResource);				
 		}
 	}
+	
+	@Override
+	public IJpaStructureNode structureNode(int offset) {
+		if (containsOffset(offset)) {
+			return this;
+		}
+		return null;
+	}
+
+	public boolean containsOffset(int textOffset) {
+		if (isVirtual()) {
+			return false;
+		}
+		return attributeMapping.containsOffset(textOffset);
+	}
+	
+	public ITextRange selectionTextRange() {
+		if (isVirtual()) {
+			return persistentType().selectionTextRange();
+		}
+		return attributeMapping.selectionTextRange();
+	}
+	
 	
 	@Override
 	public void toString(StringBuilder sb) {

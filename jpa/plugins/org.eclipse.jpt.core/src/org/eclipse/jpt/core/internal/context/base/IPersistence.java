@@ -13,7 +13,7 @@ package org.eclipse.jpt.core.internal.context.base;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 
-public interface IPersistence extends IJpaContextNode
+public interface IPersistence extends IJpaContextNode, IJpaStructureNode
 {
 	// **************** persistence units **************************************
 	

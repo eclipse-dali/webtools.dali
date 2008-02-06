@@ -143,18 +143,6 @@ public abstract class XmlTypeMapping<E extends TypeMapping> extends JpaContextNo
 		this.setDefaultMetadataComplete(oldMapping.isDefaultMetadataComplete());
 	}
 	
-	@Override
-	public IJpaStructureNode structureNode(int offset) {
-		if (this.typeMapping.contains(offset)) {
-			return persistentType();
-		}
-		return null;
-	}
-	
-	public ITextRange selectionTextRange() {
-		return this.typeMapping.selectionTextRange();
-	}
-
 	public Table primaryDbTable() {
 		return null;
 	}
@@ -312,4 +300,26 @@ public abstract class XmlTypeMapping<E extends TypeMapping> extends JpaContextNo
 	public abstract void removeFromResourceModel(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings);
 	
 	public abstract E addToResourceModel(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings);
+
+	
+	// *************************************************************************
+	
+	@Override
+	public IJpaStructureNode structureNode(int offset) {
+		if (this.typeMapping.containsOffset(offset)) {
+			return persistentType();
+		}
+		return null;
+	}
+	
+	public ITextRange selectionTextRange() {
+		return this.typeMapping.selectionTextRange();
+	}
+
+	public boolean containsOffset(int textOffset) {
+		if (typeMapping == null) {
+			return false;
+		}
+		return typeMapping.containsOffset(textOffset);
+	}
 }

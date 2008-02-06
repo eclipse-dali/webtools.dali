@@ -58,7 +58,8 @@ public abstract class JpaContextNode extends JpaNode
 		return ((IJpaContextNode) parent()).xmlPersistentType();
 	}
 	
-	public IJpaStructureNode structureNode(int offset) {
+	public IJpaStructureNode structureNode(int textOffset) {
+		// default implementation - override where necessary
 		return null;
 	}
 }
