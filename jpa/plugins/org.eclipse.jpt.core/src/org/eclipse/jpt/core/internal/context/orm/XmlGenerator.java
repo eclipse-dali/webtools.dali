@@ -42,6 +42,12 @@ public abstract class XmlGenerator<T extends Generator> extends JpaContextNode i
 		generatorResource().setName(newName);
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
+	
+	protected void setName_(String newName) {
+		String oldName = this.name;
+		this.name = newName;
+		firePropertyChanged(NAME_PROPERTY, oldName, newName);
+	}
 
 	public Integer getInitialValue() {
 		return (this.getSpecifiedInitialValue() == null) ? this.getDefaultInitialValue() : this.getSpecifiedInitialValue();
@@ -55,6 +61,12 @@ public abstract class XmlGenerator<T extends Generator> extends JpaContextNode i
 		Integer oldSpecifiedInitialValue = this.specifiedInitialValue;
 		this.specifiedInitialValue = newSpecifiedInitialValue;
 		generatorResource().setInitialValue(newSpecifiedInitialValue);
+		firePropertyChanged(SPECIFIED_INITIAL_VALUE_PROPERTY, oldSpecifiedInitialValue, newSpecifiedInitialValue);
+	}
+	
+	protected void setSpecifiedInitialValue_(Integer newSpecifiedInitialValue) {
+		Integer oldSpecifiedInitialValue = this.specifiedInitialValue;
+		this.specifiedInitialValue = newSpecifiedInitialValue;
 		firePropertyChanged(SPECIFIED_INITIAL_VALUE_PROPERTY, oldSpecifiedInitialValue, newSpecifiedInitialValue);
 	}
 	
@@ -82,6 +94,12 @@ public abstract class XmlGenerator<T extends Generator> extends JpaContextNode i
 		generatorResource().setAllocationSize(newSpecifiedAllocationSize);
 		firePropertyChanged(SPECIFIED_ALLOCATION_SIZE_PROPERTY, oldSpecifiedAllocationSize, newSpecifiedAllocationSize);
 	}
+	
+	protected void setSpecifiedAllocationSize_(Integer newSpecifiedAllocationSize) {
+		Integer oldSpecifiedAllocationSize = this.specifiedAllocationSize;
+		this.specifiedAllocationSize = newSpecifiedAllocationSize;
+		firePropertyChanged(SPECIFIED_ALLOCATION_SIZE_PROPERTY, oldSpecifiedAllocationSize, newSpecifiedAllocationSize);
+	}
 
 	public Integer getDefaultAllocationSize() {
 		return this.defaultAllocationSize;
@@ -104,9 +122,9 @@ public abstract class XmlGenerator<T extends Generator> extends JpaContextNode i
 	
 	public void update(T generatorResource) {
 		this.generatorResource = generatorResource;
-		this.setName(this.name(generatorResource));
-		this.setSpecifiedInitialValue(this.specifiedInitialValue(generatorResource));
-		this.setSpecifiedAllocationSize(this.specifiedAllocationSize(generatorResource));
+		this.setName_(this.name(generatorResource));
+		this.setSpecifiedInitialValue_(this.specifiedInitialValue(generatorResource));
+		this.setSpecifiedAllocationSize_(this.specifiedAllocationSize(generatorResource));
 		//TODO defaults
 	}
 

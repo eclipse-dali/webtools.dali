@@ -40,6 +40,12 @@ public class XmlSequenceGenerator extends XmlGenerator<SequenceGenerator>
 		generatorResource().setSequenceName(newSpecifiedSequenceName);
 		firePropertyChanged(SPECIFIED_SEQUENCE_NAME_PROPERTY, oldSpecifiedSequenceName, newSpecifiedSequenceName);
 	}
+	
+	protected void setSpecifiedSequenceName_(String newSpecifiedSequenceName) {
+		String oldSpecifiedSequenceName = this.specifiedSequenceName;
+		this.specifiedSequenceName = newSpecifiedSequenceName;
+		firePropertyChanged(SPECIFIED_SEQUENCE_NAME_PROPERTY, oldSpecifiedSequenceName, newSpecifiedSequenceName);
+	}
 
 	public String getDefaultSequenceName() {
 		return this.defaultSequenceName;
@@ -61,7 +67,7 @@ public class XmlSequenceGenerator extends XmlGenerator<SequenceGenerator>
 	@Override
 	public void update(SequenceGenerator sequenceGenerator) {
 		super.update(sequenceGenerator);
-		this.setSpecifiedSequenceName(this.specifiedSequenceName(sequenceGenerator));
+		this.setSpecifiedSequenceName_(this.specifiedSequenceName(sequenceGenerator));
 		//TODO default sequence name
 	}
 	

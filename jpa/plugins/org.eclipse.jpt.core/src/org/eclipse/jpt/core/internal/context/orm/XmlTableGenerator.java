@@ -50,11 +50,16 @@ public class XmlTableGenerator extends XmlGenerator<TableGenerator> implements I
 		return this.specifiedTable;
 	}
 
-
 	public void setSpecifiedTable(String newSpecifiedTable) {
 		String oldSpecifiedTable = this.specifiedTable;
 		this.specifiedTable = newSpecifiedTable;
 		generatorResource().setTable(newSpecifiedTable);
+		firePropertyChanged(SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
+	}
+	
+	protected void setSpecifiedTable_(String newSpecifiedTable) {
+		String oldSpecifiedTable = this.specifiedTable;
+		this.specifiedTable = newSpecifiedTable;
 		firePropertyChanged(SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
 	}
 
@@ -62,7 +67,7 @@ public class XmlTableGenerator extends XmlGenerator<TableGenerator> implements I
 		return this.defaultTable;
 	}
 	
-	public void setDefaultTable(String newDefaultTable) {
+	protected void setDefaultTable(String newDefaultTable) {
 		String oldDefaultTable = this.defaultTable;
 		this.defaultTable = newDefaultTable;
 		firePropertyChanged(DEFAULT_TABLE_PROPERTY, oldDefaultTable, newDefaultTable);
@@ -82,6 +87,12 @@ public class XmlTableGenerator extends XmlGenerator<TableGenerator> implements I
 		generatorResource().setCatalog(newSpecifiedCatalog);
 		firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
 	}
+	
+	protected void setSpecifiedCatalog_(String newSpecifiedCatalog) {
+		String oldSpecifiedCatalog = this.specifiedCatalog;
+		this.specifiedCatalog = newSpecifiedCatalog;
+		firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
+	}
 
 	public String getDefaultCatalog() {
 		return this.defaultCatalog;
@@ -99,6 +110,12 @@ public class XmlTableGenerator extends XmlGenerator<TableGenerator> implements I
 		String oldSpecifiedSchema = this.specifiedSchema;
 		this.specifiedSchema = newSpecifiedSchema;
 		generatorResource().setSchema(newSpecifiedSchema);
+		firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
+	}
+
+	protected void setSpecifiedSchema_(String newSpecifiedSchema) {
+		String oldSpecifiedSchema = this.specifiedSchema;
+		this.specifiedSchema = newSpecifiedSchema;
 		firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
 	}
 
@@ -124,6 +141,12 @@ public class XmlTableGenerator extends XmlGenerator<TableGenerator> implements I
 		String oldSpecifiedPkColumnName = this.specifiedPkColumnName;
 		this.specifiedPkColumnName = newSpecifiedPkColumnName;
 		generatorResource().setPkColumnName(newSpecifiedPkColumnName);
+		firePropertyChanged(SPECIFIED_PK_COLUMN_NAME_PROPERTY, oldSpecifiedPkColumnName, newSpecifiedPkColumnName);
+	}
+	
+	protected void setSpecifiedPkColumnName_(String newSpecifiedPkColumnName) {
+		String oldSpecifiedPkColumnName = this.specifiedPkColumnName;
+		this.specifiedPkColumnName = newSpecifiedPkColumnName;
 		firePropertyChanged(SPECIFIED_PK_COLUMN_NAME_PROPERTY, oldSpecifiedPkColumnName, newSpecifiedPkColumnName);
 	}
 
@@ -152,11 +175,17 @@ public class XmlTableGenerator extends XmlGenerator<TableGenerator> implements I
 		firePropertyChanged(SPECIFIED_VALUE_COLUMN_NAME_PROPERTY, oldSpecifiedValueColumnName, newSpecifiedValueColumnName);
 	}
 
+	protected void setSpecifiedValueColumnName_(String newSpecifiedValueColumnName) {
+		String oldSpecifiedValueColumnName = this.specifiedValueColumnName;
+		this.specifiedValueColumnName = newSpecifiedValueColumnName;
+		firePropertyChanged(SPECIFIED_VALUE_COLUMN_NAME_PROPERTY, oldSpecifiedValueColumnName, newSpecifiedValueColumnName);
+	}
+
 	public String getDefaultValueColumnName() {
 		return this.defaultValueColumnName;
 	}
 	
-	public void setDefaultValueColumnName(String newDefaultValueColumnName) {
+	protected void setDefaultValueColumnName(String newDefaultValueColumnName) {
 		String oldDefaultValueColumnName = this.defaultValueColumnName;
 		this.defaultValueColumnName = newDefaultValueColumnName;
 		firePropertyChanged(DEFAULT_VALUE_COLUMN_NAME_PROPERTY, oldDefaultValueColumnName, newDefaultValueColumnName);
@@ -174,6 +203,12 @@ public class XmlTableGenerator extends XmlGenerator<TableGenerator> implements I
 		String oldSpecifiedPkColumnValue = this.specifiedPkColumnValue;
 		this.specifiedPkColumnValue = newSpecifiedPkColumnValue;
 		generatorResource().setPkColumnValue(newSpecifiedPkColumnValue);
+		firePropertyChanged(SPECIFIED_PK_COLUMN_VALUE_PROPERTY, oldSpecifiedPkColumnValue, newSpecifiedPkColumnValue);
+	}
+
+	protected void setSpecifiedPkColumnValue_(String newSpecifiedPkColumnValue) {
+		String oldSpecifiedPkColumnValue = this.specifiedPkColumnValue;
+		this.specifiedPkColumnValue = newSpecifiedPkColumnValue;
 		firePropertyChanged(SPECIFIED_PK_COLUMN_VALUE_PROPERTY, oldSpecifiedPkColumnValue, newSpecifiedPkColumnValue);
 	}
 
@@ -234,12 +269,12 @@ public class XmlTableGenerator extends XmlGenerator<TableGenerator> implements I
 	@Override
 	public void update(TableGenerator tableGenerator) {
 		super.update(tableGenerator);
-		this.setSpecifiedTable(this.specifiedTable(tableGenerator));
-		this.setSpecifiedCatalog(this.specifiedCatalog(tableGenerator));
-		this.setSpecifiedSchema(this.specifiedSchema(tableGenerator));
-		this.setSpecifiedPkColumnName(this.specifiedPkColumnName(tableGenerator));
-		this.setSpecifiedValueColumnName(this.specifiedValueColumnName(tableGenerator));
-		this.setSpecifiedPkColumnValue(this.specifiedPkColumnValue(tableGenerator));
+		this.setSpecifiedTable_(this.specifiedTable(tableGenerator));
+		this.setSpecifiedCatalog_(this.specifiedCatalog(tableGenerator));
+		this.setSpecifiedSchema_(this.specifiedSchema(tableGenerator));
+		this.setSpecifiedPkColumnName_(this.specifiedPkColumnName(tableGenerator));
+		this.setSpecifiedValueColumnName_(this.specifiedValueColumnName(tableGenerator));
+		this.setSpecifiedPkColumnValue_(this.specifiedPkColumnValue(tableGenerator));
 		//TODO defaults
 		//this.updateUniqueConstraintsFromJava(astRoot);
 	}
