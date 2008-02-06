@@ -11,7 +11,6 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jem.util.plugin.JEMUtilPlugin;
-import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.IResourceModelListener;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResource;
@@ -109,8 +108,6 @@ public abstract class JpaXmlResource extends TranslatorResourceImpl
 	public boolean exists() {
 		return getFile().exists();
 	}
-	
-	public abstract IJpaContentNode getContentNode(int offset);
 	
 	public abstract void handleJavaElementChangedEvent(ElementChangedEvent event);
 	

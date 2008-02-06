@@ -13,7 +13,6 @@ package org.eclipse.jpt.core.internal.resource.orm;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jdt.core.ElementChangedEvent;
-import org.eclipse.jpt.core.internal.IJpaContentNode;
 import org.eclipse.jpt.core.internal.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.internal.resource.orm.translators.EntityMappingsTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
@@ -35,15 +34,6 @@ public class OrmResource extends JpaXmlResource
 	 */
 	public Translator getRootTranslator() {
 		return EntityMappingsTranslator.INSTANCE;
-	}
-	
-	/**
-	 * @see JpaXmlResource#getContentNode(int)
-	 */
-	@Override
-	public IJpaContentNode getContentNode(int offset) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	/**
