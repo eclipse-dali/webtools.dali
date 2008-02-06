@@ -18,6 +18,8 @@ import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
+import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class PersistenceXml extends JpaContextNode
@@ -119,15 +121,30 @@ public class PersistenceXml extends JpaContextNode
 	public ITextRange validationTextRange() {
 		return ITextRange.Empty.instance();
 	}
-
+	private boolean okToContinueValidation = true;
 
 	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 		
-//		addInvalidPersistenceXmlContentMessage(messages);
+		addInvalidPersistenceXmlContentMessage(messages);
 		
-		getPersistence().addToMessages(messages, astRoot);
-		
+		if (okToContinueValidation){
+			getPersistence().addToMessages(messages, astRoot);
+		}
 	}
+	
+	protected void addInvalidPersistenceXmlContentMessage(List<IMessage> messages) {
+
+		if (this.persistence == null) {
+			messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.PERSISTENCE_XML_INVALID_CONTENT,
+						this)
+				);
+			okToContinueValidation = false;
+		}
+	}
+	
 }

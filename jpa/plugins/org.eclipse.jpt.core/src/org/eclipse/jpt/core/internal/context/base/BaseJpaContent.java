@@ -153,6 +153,7 @@ public class BaseJpaContent extends JpaContextNode
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 		addNoPersistenceXmlMessage(messages);
+		//TODO - multiple persistence unit message
 		addOrphanedJavaClassMessages(messages);
 		
 		if(okToContinueValidation) {

@@ -13,6 +13,7 @@ import static org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransact
 import static org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType.JTA;
 import static org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType.RESOURCE_LOCAL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -37,10 +38,12 @@ import org.eclipse.jpt.core.internal.validation.IJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class PersistenceUnit extends JpaContextNode
@@ -1011,16 +1014,101 @@ public class PersistenceUnit extends JpaContextNode
 	}
 	
 	protected void addMappingFileMessages(List<IMessage> messages, CompilationUnit astRoot) {
-//		addMultipleMetadataMessages(messages);
-//		addUnspecifiedMappingFileMessages(messages);
-//		addUnresolvedMappingFileMessages(messages);
-//		addInvalidMappingFileContentMessage(messages);
-//		addDuplicateMappingFileMessages(messages);
+		addMultipleMetadataMessages(messages);
+		addUnspecifiedMappingFileMessages(messages);
+		addUnresolvedMappingFileMessages(messages);
+		addInvalidMappingFileContentMessage(messages);
+		addDuplicateMappingFileMessages(messages);
 		
 		for (Iterator<IMappingFileRef> stream =  mappingFileRefs(); stream.hasNext();) {
 			stream.next().addToMessages(messages, astRoot);
 		}
 	}
+	
+	protected void addMultipleMetadataMessages(List<IMessage> messages) {
+		Collection<PersistenceUnitDefaults> puDefaultsCollection = persistenceUnitDefaultsForValidation();
+		if (puDefaultsCollection.size() > 1) {
+			for (PersistenceUnitDefaults puDefaults : puDefaultsCollection) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.ENTITY_MAPPINGS_MULTIPLE_METADATA,
+						new String[] {this.getName()},
+						puDefaults)
+				);
+			}
+		}
+	}
+	
+	protected void addDuplicateMappingFileMessages(List<IMessage> messages) {
+		HashBag<String> fileBag = new HashBag<String>(
+				CollectionTools.collection(
+						new TransformationIterator(this.mappingFileRefs()) {
+							@Override
+							protected Object transform(Object next) {
+								return ((IMappingFileRef) next).getFileName();
+							}
+						}
+				)
+		);
+		for (IMappingFileRef mappingFileRef : CollectionTools.collection(this.mappingFileRefs())) {
+			if (fileBag.count(mappingFileRef.getFileName()) > 1) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_MAPPING_FILE,
+						new String[] {mappingFileRef.getFileName()}, 
+						mappingFileRef) //, mappingFileRef.validationTextRange())
+				);
+			}
+		}
+	}
+	
+	protected void addUnspecifiedMappingFileMessages(List<IMessage> messages) {
+		for (IMappingFileRef mappingFileRef : CollectionTools.collection(this.mappingFileRefs())) {
+			if (mappingFileRef.getFileName() == null || mappingFileRef.getFileName().equals("")) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE,
+						mappingFileRef) //, mappingFileRef.validationTextRange())
+				);
+			}
+		}
+	}
+	
+	protected void addUnresolvedMappingFileMessages(List<IMessage> messages) {
+		for (Iterator<IMappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
+			IMappingFileRef mappingFileRef = stream.next();
+			if (! (mappingFileRef.getFileName() == null || mappingFileRef.getFileName().equals(""))
+					&& mappingFileRef.getOrmXml() == null) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
+						new String[] {mappingFileRef.getFileName()}, 
+						mappingFileRef) //, mappingFileRef.validationTextRange()) 
+				);
+			}
+		}
+	}
+	
+	protected void addInvalidMappingFileContentMessage(List<IMessage> messages) {
+		for (Iterator<IMappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
+			IMappingFileRef mappingFileRef = (IMappingFileRef) stream.next();
+			if (mappingFileRef.getOrmXml() != null 
+					&& mappingFileRef.getOrmXml().getEntityMappings() == null) {
+				messages.add(
+					JpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						IJpaValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE,
+						new String[] {mappingFileRef.getFileName()}, 
+						mappingFileRef) //, mappingFileRef.validationTextRange())
+				);
+			}
+		} 
+	}
+	
 	
 	protected void addClassMessages(List<IMessage> messages, CompilationUnit astRoot) {
 //		addUnspecifiedClassMessages(messages);
@@ -1069,6 +1157,17 @@ public class PersistenceUnit extends JpaContextNode
 //		}
 //	}
 	
+	
+	private Collection<PersistenceUnitDefaults> persistenceUnitDefaultsForValidation() {
+		ArrayList<PersistenceUnitDefaults> puDefaults = new ArrayList<PersistenceUnitDefaults>();
+		for (IMappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
+			PersistenceUnitDefaults persistenceUnitDefaults = mappingFileRef.persistenceUnitDefaults();
+			if (persistenceUnitDefaults != null) {
+				puDefaults.add(persistenceUnitDefaults);
+			}
+		}
+		return puDefaults;
+	}
 	
 	//*************************************
 	
