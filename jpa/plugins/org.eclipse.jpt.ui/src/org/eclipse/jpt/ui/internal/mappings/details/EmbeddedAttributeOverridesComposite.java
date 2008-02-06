@@ -8,6 +8,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
@@ -19,6 +20,7 @@ import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -98,18 +100,46 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 	}
 
 	private ListValueModel<IAttributeOverride> buildAttributeOverridesListHolder() {
+		java.util.List<ListValueModel<IAttributeOverride>> list = new ArrayList<ListValueModel<IAttributeOverride>>();
+		list.add(buildSpecifiedAttributeOverridesListHolder());
+		list.add(buildDefaultAttributeOverridesListHolder());
+		return new CompositeListValueModel<ListValueModel<IAttributeOverride>, IAttributeOverride>(list);
+	}
+
+	private ListValueModel<IAttributeOverride> buildSpecifiedAttributeOverridesListHolder() {
 		return new ListAspectAdapter<IEmbeddedMapping, IAttributeOverride>(
 			this.getSubjectHolder(),
-			IEmbeddedMapping.DEFAULT_ATTRIBUTE_OVERRIDES_LIST,
 			IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST)
 		{
 			@Override
 			protected ListIterator<IAttributeOverride> listIterator_() {
-				return subject.attributeOverrides();
+				return subject.specifiedAttributeOverrides();
+			}
+			
+			@Override
+			public int size_() {
+				return subject.specifiedAttributeOverridesSize();
 			}
 		};
 	}
 
+	private ListValueModel<IAttributeOverride> buildDefaultAttributeOverridesListHolder() {
+		return new ListAspectAdapter<IEmbeddedMapping, IAttributeOverride>(
+			this.getSubjectHolder(),
+			IEmbeddedMapping.DEFAULT_ATTRIBUTE_OVERRIDES_LIST)
+		{
+			@Override
+			protected ListIterator<IAttributeOverride> listIterator_() {
+				return subject.defaultAttributeOverrides();
+			}
+			
+			@Override
+			protected int size_() {
+				return subject.defaultAttributeOverridesSize();
+			}
+		};
+	}
+	
 	private List buildAttributeOverridesList(Composite parent,
 	                                         WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder) {
 
@@ -135,7 +165,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 		return new TransformationListValueModelAdapter<IAttributeOverride, String>(buildAttributeOverridesListHolder()) {
 			@Override
 			protected String transformItem(IAttributeOverride item) {
-				return item.getName();
+				return item.getName() == null ? "" : item.getName();
 			}
 		};
 	}
@@ -238,7 +268,13 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 			protected IAttributeOverride reverseTransform_(String value) {
 				for (Iterator<IAttributeOverride> iter = subject().attributeOverrides(); iter.hasNext(); ) {
 					IAttributeOverride attributeOverride = iter.next();
-					if (attributeOverride.getName().equals(value)) {
+					
+					if (attributeOverride.getName() == null) {
+						if (value == null) {
+							return attributeOverride;
+						}
+					}
+					else if (attributeOverride.getName().equals(value)) {
 						return attributeOverride;
 					}
 				}
