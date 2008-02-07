@@ -63,13 +63,6 @@ public class EmbeddedIdImpl extends AbstractAnnotationResource<Attribute> implem
 			return null;
 		}
 		
-		//TODO put this in the java context model when JavaOneToOneMapping exists
-//		public Iterator<String> correspondingAnnotationNames() {
-//			return new ArrayIterator<String>(
-//				JPA.ATTRIBUTE_OVERRIDE,
-//				JPA.ATTRIBUTE_OVERRIDES);
-//		}
-		
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}
