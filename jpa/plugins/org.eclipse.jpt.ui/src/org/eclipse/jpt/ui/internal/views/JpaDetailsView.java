@@ -166,7 +166,6 @@ public class JpaDetailsView extends AbstractJpaView
 	 *
 	 * @param newPage The new page to display
 	 */
-	@SuppressWarnings("unchecked")
 	private void setCurrentPage(IJpaDetailsPage<? extends IJpaStructureNode> page) {
 
 		// Unpopulate old page
