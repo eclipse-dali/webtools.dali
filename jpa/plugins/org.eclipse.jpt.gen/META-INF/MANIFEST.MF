@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.eclipse.jpt.gen
-Bundle-Version: 1.0.100.qualifier
+Bundle-Version: 2.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Localization: plugin
 Export-Package: org.eclipse.jpt.gen.internal; x-friends:="org.eclipse.jpt.ui"
