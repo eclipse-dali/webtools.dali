@@ -175,7 +175,8 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 		}
 		IJavaJoinColumn joinColumn = jpaFactory().createJavaJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
-		this.tableResource().addJoinColumn(index);
+		JoinColumn joinColumnResource = this.tableResource().addJoinColumn(index);
+		joinColumn.initializeFromResource(joinColumnResource);
 		this.fireItemAdded(IJoinTable.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		return joinColumn;
 	}
@@ -256,7 +257,8 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 		}
 		IJavaJoinColumn inverseJoinColumn = jpaFactory().createJavaJoinColumn(this, createInverseJoinColumnOwner());
 		this.specifiedInverseJoinColumns.add(index, inverseJoinColumn);
-		this.tableResource().addInverseJoinColumn(index);
+		JoinColumn joinColumnResource = this.tableResource().addInverseJoinColumn(index);
+		inverseJoinColumn.initializeFromResource(joinColumnResource);
 		this.fireItemAdded(IJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, index, inverseJoinColumn);
 		return inverseJoinColumn;
 	}
@@ -610,7 +612,7 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 		}
 		
 		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
-			return JavaJoinTable.this.defaultJoinColumn.equals(joinColumn);
+			return JavaJoinTable.this.defaultJoinColumn == joinColumn;
 		}
 		
 		public String defaultColumnName() {
