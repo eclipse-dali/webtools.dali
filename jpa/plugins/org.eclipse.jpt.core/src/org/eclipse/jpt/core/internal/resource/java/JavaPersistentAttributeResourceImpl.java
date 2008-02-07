@@ -158,37 +158,37 @@ public class JavaPersistentAttributeResourceImpl
 	protected void setQualifiedTypeName(String newQualifiedTypeName) {
 		String oldQualifiedTypeName = this.qualifiedTypeName;
 		this.qualifiedTypeName = newQualifiedTypeName;
-		firePropertyChanged(QUALFIED_TYPE_NAME_PROPERTY, oldQualifiedTypeName, newQualifiedTypeName);		
+		firePropertyChanged(QUALIFIED_TYPE_NAME_PROPERTY, oldQualifiedTypeName, newQualifiedTypeName);		
 	}
 	
 	public String getQualifiedReferenceEntityTypeName() {
 		return this.qualifiedReferenceEntityTypeName;
 	}
 	
-	public void setQualifiedReferenceEntityTypeName(String newQualifiedReferenceEntityTypeName) {
+	protected void setQualifiedReferenceEntityTypeName(String newQualifiedReferenceEntityTypeName) {
 		String oldQualifiedReferenceEntityTypeName = this.qualifiedReferenceEntityTypeName;
 		this.qualifiedReferenceEntityTypeName = newQualifiedReferenceEntityTypeName;
-		firePropertyChanged(QUALFIED_REFERENCE_ENTITY_TYPE_NAME_PROPERTY, oldQualifiedReferenceEntityTypeName, newQualifiedReferenceEntityTypeName);
+		firePropertyChanged(QUALIFIED_REFERENCE_ENTITY_TYPE_NAME_PROPERTY, oldQualifiedReferenceEntityTypeName, newQualifiedReferenceEntityTypeName);
 	}
 	
 	public String getQualifiedReferenceEntityElementTypeName() {
 		return this.qualifiedReferenceEntityElementTypeName;
 	}
 	
-	public void setQualifiedReferenceEntityElementTypeName(String newQualifiedReferenceEntityElementTypeName) {
+	protected void setQualifiedReferenceEntityElementTypeName(String newQualifiedReferenceEntityElementTypeName) {
 		String oldQualifiedReferenceEntityElementTypeName = this.qualifiedReferenceEntityElementTypeName;
 		this.qualifiedReferenceEntityElementTypeName = newQualifiedReferenceEntityElementTypeName;
-		firePropertyChanged(QUALFIED_REFERENCE_ENTITY_ELEMENT_TYPE_NAME_PROPERTY, oldQualifiedReferenceEntityElementTypeName, newQualifiedReferenceEntityElementTypeName);
+		firePropertyChanged(QUALIFIED_REFERENCE_ENTITY_ELEMENT_TYPE_NAME_PROPERTY, oldQualifiedReferenceEntityElementTypeName, newQualifiedReferenceEntityElementTypeName);
 	}
 	
 	public boolean typeIsContainer() {
 		return this.typeIsContainer;
 	}
 	
-	protected void setTypeIsContainer(boolean typeIsContainer) {
+	protected void setTypeIsContainer(boolean newTypeIsContainer) {
 		boolean oldTypeIsContainer = this.typeIsContainer;
-		this.typeIsContainer = typeIsContainer;
-		firePropertyChanged(TYPE_IS_BASIC_PROPERTY, oldTypeIsContainer, typeIsContainer);
+		this.typeIsContainer = newTypeIsContainer;
+		firePropertyChanged(TYPE_IS_CONTAINER_PROPERTY, oldTypeIsContainer, newTypeIsContainer);
 	}
 	
 	@Override

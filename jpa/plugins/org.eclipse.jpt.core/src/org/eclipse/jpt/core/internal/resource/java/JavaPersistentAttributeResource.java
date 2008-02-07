@@ -44,7 +44,7 @@ public interface JavaPersistentAttributeResource extends JavaPersistentResource
 	 * Returns the resolved qualfied type name for the attribute
 	 */
 	String getQualifiedTypeName();
-		String QUALFIED_TYPE_NAME_PROPERTY = "qualfiedTypeNameProperty";
+		String QUALIFIED_TYPE_NAME_PROPERTY = "qualfiedTypeNameProperty";
 	
 	/**
 	 * Returns the resolved qualfied type name for the attribute
@@ -52,13 +52,13 @@ public interface JavaPersistentAttributeResource extends JavaPersistentResource
 	 * see typeIsContainer() to be used with this
 	 */
 	String getQualifiedReferenceEntityTypeName();
-		String QUALFIED_REFERENCE_ENTITY_TYPE_NAME_PROPERTY = "qualfiedReferenceEntityTypeNameProperty";
+		String QUALIFIED_REFERENCE_ENTITY_TYPE_NAME_PROPERTY = "qualfiedReferenceEntityTypeNameProperty";
 
 	/**
 	 * Returns the fully qualified type parameter for use as a target entity
 	 */
 	String getQualifiedReferenceEntityElementTypeName();
-		String QUALFIED_REFERENCE_ENTITY_ELEMENT_TYPE_NAME_PROPERTY = "qualfiedReferenceEntityElementTypeNameProperty";
+		String QUALIFIED_REFERENCE_ENTITY_ELEMENT_TYPE_NAME_PROPERTY = "qualfiedReferenceEntityElementTypeNameProperty";
 		
 	/**
 	 * Return true if this attribute has any mapping or non-mapping annotations
