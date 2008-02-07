@@ -16,130 +16,130 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 
 /**
- * This <code>PaneEnabler</code> keeps the "enabled" state of a collection of
- * controls in synch with the provided boolean holder.
+ * This <code>PaneVisibilityEnabler</code> keeps the "visible" state of a
+ * collection of controls in synch with the provided boolean holder.
  *
  * @version 2.0
  * @since 2.0
  */
-public class PaneEnabler extends StateController
+public class PaneVisibilityEnabler extends StateController
 {
 	/**
-	 * Creates a new <code>PaneEnabler</code> with a default value of
-	 * <code>false</code> (i.e. disabled).
+	 * Creates a new <code>PaneVisibilityEnabler</code> with a default value of
+	 * <code>false</code> (i.e. not visible).
 	 *
 	 * @param booleanHolder A value model on the underlying boolean model
-	 * @param pane The pane whose "enabled" state is kept in sync with the
+	 * @param pane The pane whose "visible" state is kept in sync with the
 	 * boolean holder's value
 	 */
-	public PaneEnabler(PropertyValueModel<Boolean> booleanHolder,
-	                   AbstractPane<?> pane) {
+	public PaneVisibilityEnabler(PropertyValueModel<Boolean> booleanHolder,
+	                             AbstractPane<?> pane) {
 
 		this(booleanHolder, pane, false);
 	}
 
 	/**
-	 * Creates a new <code>PaneEnabler</code> with a default value of
-	 * <code>false</code> (i.e. disabled).
+	 * Creates a new <code>PaneVisibilityEnabler</code> with a default value of
+	 * <code>false</code> (i.e. not visible).
 	 *
 	 * @param booleanHolder A value model on the underlying boolean model
-	 * @param panes The collection of panes whose "enabled" state is kept in sync
+	 * @param panes The collection of panes whose "visible" state is kept in sync
 	 * with the boolean holder's value
 	 */
-	public PaneEnabler(PropertyValueModel<Boolean> booleanHolder,
-	                   AbstractPane<?>... panes) {
+	public PaneVisibilityEnabler(PropertyValueModel<Boolean> booleanHolder,
+	                             AbstractPane<?>... panes) {
 
 		this(booleanHolder, CollectionTools.collection(panes), false);
 	}
 
 	/**
-	 * Creates a new <code>PaneEnabler</code>.
+	 * Creates a new <code>PaneVisibilityEnabler</code>.
 	 *
 	 * @param booleanHolder A value model on the underlying boolean model
-	 * @param pane The pane whose "enabled" state is kept in sync with the
+	 * @param pane The pane whose "visible" state is kept in sync with the
 	 * boolean holder's value
 	 * @param defaultValue The value to use when the underlying model is
 	 * <code>null</code>
 	 */
-	public PaneEnabler(PropertyValueModel<Boolean> booleanHolder,
-	                   AbstractPane<?> pane,
-	                   boolean defaultValue) {
+	public PaneVisibilityEnabler(PropertyValueModel<Boolean> booleanHolder,
+	                             AbstractPane<?> pane,
+	                             boolean defaultValue) {
 
 		this(booleanHolder, CollectionTools.singletonIterator(pane), false);
 	}
 
 	/**
-	 * Creates a new <code>PaneEnabler</code>.
+	 * Creates a new <code>PaneVisibilityEnabler</code>.
 	 *
 	 * @param booleanHolder A value model on the underlying boolean model
-	 * @param panes The collection of panes whose "enabled" state is kept in sync
+	 * @param panes The collection of panes whose "visible" state is kept in sync
 	 * with the boolean holder's value
 	 * @param defaultValue The value to use when the underlying model is
 	 * <code>null</code>
 	 */
-	public PaneEnabler(PropertyValueModel<Boolean> booleanHolder,
-	                   AbstractPane<?>[] panes,
-	                   boolean defaultValue) {
+	public PaneVisibilityEnabler(PropertyValueModel<Boolean> booleanHolder,
+	                             AbstractPane<?>[] panes,
+	                             boolean defaultValue) {
 
 		this(booleanHolder, CollectionTools.iterator(panes), defaultValue);
 	}
 
 	/**
-	 * Creates a new <code>BaseJpaControllerEnabler</code> with a default value
-	 * of* <code>false</code> (i.e. disabled).
+	 * Creates a new <code>PaneVisibilityEnabler</code> with a default value of
+	 * <code>false</code> (i.e. not visible).
 	 *
 	 * @param booleanHolder A value model on the underlying boolean model
-	 * @param panes The collection of panes whose "enabled" state is kept in sync
+	 * @param panes The collection of panes whose "visible" state is kept in sync
 	 * with the boolean holder's value
 	 */
-	public PaneEnabler(PropertyValueModel<Boolean> booleanHolder,
-	                   Collection<? extends AbstractPane<?>> panes) {
+	public PaneVisibilityEnabler(PropertyValueModel<Boolean> booleanHolder,
+	                             Collection<? extends AbstractPane<?>> panes) {
 
 		this(booleanHolder, panes, false);
 	}
 
 	/**
-	 * Creates a new <code>BaseJpaControllerEnabler</code>.
+	 * Creates a new <code>PaneVisibilityEnabler</code>.
 	 *
 	 * @param booleanHolder A value model on the underlying boolean model
-	 * @param panes The collection of panes whose "enabled" state is kept in sync
+	 * @param panes The collection of panes whose "visible" state is kept in sync
 	 * with the boolean holder's value
 	 * @param defaultValue The value to use when the underlying model is
 	 * <code>null</code>
 	 */
-	public PaneEnabler(PropertyValueModel<Boolean> booleanHolder,
-	                   Collection<? extends AbstractPane<?>> panes,
-	                   boolean defaultValue) {
+	public PaneVisibilityEnabler(PropertyValueModel<Boolean> booleanHolder,
+	                             Collection<? extends AbstractPane<?>> panes,
+	                             boolean defaultValue) {
 
 		this(booleanHolder, panes.iterator(), defaultValue);
 	}
 
 	/**
-	 * Creates a new <code>BaseJpaControllerEnabler</code> with a default value of
-	 * <code>false</code> (i.e. disabled).
+	 * Creates a new <code>PaneVisibilityEnabler</code> with a default value of
+	 * <code>false</code> (i.e. not visible).
 	 *
 	 * @param booleanHolder A value model on the underlying boolean model
-	 * @param panes An iterator on the collection of panes whose "enabled" state
+	 * @param panes An iterator on the collection of panes whose "visible" state
 	 * is kept in sync with the boolean holder's value
 	 */
-	public PaneEnabler(PropertyValueModel<Boolean> booleanHolder,
-	                   Iterator<? extends AbstractPane<?>> panes) {
+	public PaneVisibilityEnabler(PropertyValueModel<Boolean> booleanHolder,
+	                             Iterator<? extends AbstractPane<?>> panes) {
 
 		this(booleanHolder, panes, false);
 	}
 
 	/**
-	 * Creates a new <code>BaseJpaControllerEnabler</code>.
+	 * Creates a new <code>PaneVisibilityEnabler</code>.
 	 *
 	 * @param booleanHolder A value model on the underlying boolean model
-	 * @param panes An iterator on the collection of panes whose "enabled" state
+	 * @param panes An iterator on the collection of panes whose "visible" state
 	 * is kept in sync with the boolean holder's value
 	 * @param defaultValue The value to use when the underlying model is
 	 * <code>null</code>
 	 */
-	public PaneEnabler(PropertyValueModel<Boolean> booleanHolder,
-	                   Iterator<? extends AbstractPane<?>> panes,
-	                   boolean defaultValue) {
+	public PaneVisibilityEnabler(PropertyValueModel<Boolean> booleanHolder,
+	                             Iterator<? extends AbstractPane<?>> panes,
+	                             boolean defaultValue) {
 
 		super(booleanHolder, wrap(panes), defaultValue);
 	}
@@ -154,7 +154,7 @@ public class PaneEnabler extends StateController
 	}
 
 	/**
-	 * This holder holds onto an <code>AbstractPane</code> and update its enabled
+	 * This holder holds onto an <code>AbstractPane</code> and update its visible
 	 * state.
 	 */
 	private static class PaneHolder implements IControlHolder {
@@ -166,7 +166,7 @@ public class PaneEnabler extends StateController
 		}
 
 		public void updateState(boolean state) {
-			this.pane.enableWidgets(state);
+			this.pane.setVisible(state);
 		}
 	}
 }

@@ -170,7 +170,7 @@ public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMappin
 
 		// No Ordering radio button
 		buildRadioButton(
-			orderByGroup,
+			buildSubPane(orderByGroup, 8),
 			JptUiMappingsMessages.OrderByComposite_noOrdering,
 			buildNoOrderingHolder(),
 			IJpaHelpContextIds.MAPPING_ORDER_BY_NO_ORDERING

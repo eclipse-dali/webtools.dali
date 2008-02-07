@@ -112,7 +112,8 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 
 			@Override
 			protected IJpaProject jpaProject() {
-				return subject().jpaProject();
+				IColumn subject = subject();
+				return (subject != null) ? subject.jpaProject() : null;
 			}
 
 			@Override
@@ -196,7 +197,8 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 
 			@Override
 			protected IJpaProject jpaProject() {
-				return subject().jpaProject();
+				IColumn subject = subject();
+				return (subject != null) ? subject.jpaProject() : null;
 			}
 
 			@Override

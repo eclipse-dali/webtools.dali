@@ -113,13 +113,24 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 
 	private ModifyListener buildTableComboSelectionListener() {
 		return new ModifyListener() {
+
+			private boolean isDefaultTable(int selectedIndex, String value) {
+				return (selectedIndex == 0) && value.equals(subject().defaultTableName());
+			}
+
 			public void modifyText(ModifyEvent e) {
+
 				if (!isPopulating()) {
 					setPopulating(true);
+
 					try {
 						Combo combo = (Combo) e.widget;
-						subject().setTable(combo.getText());
-						subject().setDefaultTableSelected(combo.getSelectionIndex() == 0);
+						String table = combo.getText();
+						boolean defaultTable = isDefaultTable(combo.getSelectionIndex(), table);
+
+						subject().setTable(table);
+						subject().setDefaultTableSelected(defaultTable);
+
 						populateNameCombo();
 					}
 					finally {

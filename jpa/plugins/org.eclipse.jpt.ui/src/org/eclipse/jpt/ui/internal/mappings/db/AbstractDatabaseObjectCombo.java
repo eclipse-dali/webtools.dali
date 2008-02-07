@@ -206,11 +206,17 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	 * Returns the JPA project's connection profile, which is never
 	 * <code>null</code>.
 	 *
-	 * @return The connection set in the project's properties or a <code>null</code>
-	 * connection
+	 * @return The connection set in the project's properties or <code>null</code>
+	 * if it could not being retrieved
 	 */
 	protected final ConnectionProfile connectionProfile() {
-		return jpaProject().connectionProfile();
+		IJpaProject jpaProject = jpaProject();
+
+		if (jpaProject != null) {
+			return jpaProject.connectionProfile();
+		}
+
+		return null;
 	}
 
 	/**
@@ -237,7 +243,12 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	@Override
 	protected void disengageListeners(T subject) {
 		super.disengageListeners(subject);
-		jpaProject().connectionProfile().removeConnectionListener(this.connectionListener);
+
+		IJpaProject jpaProject = jpaProject();
+
+		if (jpaProject != null) {
+			jpaProject.connectionProfile().removeConnectionListener(this.connectionListener);
+		}
 	}
 
 	/*
@@ -271,7 +282,12 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	@Override
 	protected void engageListeners(T subject) {
 		super.engageListeners(subject);
-		jpaProject().connectionProfile().addConnectionListener(this.connectionListener);
+
+		IJpaProject jpaProject = jpaProject();
+
+		if (jpaProject != null) {
+			jpaProject.connectionProfile().addConnectionListener(this.connectionListener);
+		}
 	}
 
 	public final CCombo getCombo() {
@@ -347,7 +363,9 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 
 		populateDefaultValue();
 
-		if (connectionProfile().isConnected() && (subject() != null)) {
+		ConnectionProfile connectionProfile = connectionProfile();
+
+		if ((connectionProfile != null) && connectionProfile.isConnected()) {
 
 			for (Iterator<String> iter = CollectionTools.sort(values()); iter.hasNext(); ) {
 				combo.add(iter.next());

@@ -134,8 +134,10 @@ public abstract class AbstractJoinColumnStateObject extends AbstractNode
 		this.joinColumn = joinColumn;
 
 		if (joinColumn != null) {
-			this.defaultNameSelected = joinColumn.getSpecifiedName() == null;
-			this.name                = joinColumn.getName();
+			this.name                                = joinColumn.getName();
+			this.defaultNameSelected                 = joinColumn.getSpecifiedName() == null;
+			this.referencedColumnName                = joinColumn.getReferencedColumnName();
+			this.defaultReferencedColumnNameSelected = joinColumn.getSpecifiedReferencedColumnName() == null;
 		}
 	}
 
@@ -173,6 +175,41 @@ public abstract class AbstractJoinColumnStateObject extends AbstractNode
 	@Override
 	public final void setValidator(Validator validator) {
 		this.validator = validator;
+	}
+
+	/**
+	 * Updates the given join column with the values contained in this state
+	 * object.
+	 *
+	 * @param joinColumn The join column to update
+	 */
+	public void updateJoinColumn(IAbstractJoinColumn joinColumn) {
+
+		// Name
+		if (defaultNameSelected) {
+
+			if (joinColumn.getSpecifiedName() != null) {
+				joinColumn.setSpecifiedName(null);
+			}
+		}
+		else if (joinColumn.getSpecifiedName() == null ||
+		        !joinColumn.getSpecifiedName().equals(name)){
+
+			joinColumn.setSpecifiedName(name);
+		}
+
+		// Referenced Column Name
+		if (defaultReferencedColumnNameSelected) {
+
+			if (joinColumn.getSpecifiedReferencedColumnName() != null) {
+				joinColumn.setSpecifiedReferencedColumnName(null);
+			}
+		}
+		else if (joinColumn.getSpecifiedReferencedColumnName() == null ||
+		        !joinColumn.getSpecifiedReferencedColumnName().equals(referencedColumnName)){
+
+			joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+		}
 	}
 
 	/*

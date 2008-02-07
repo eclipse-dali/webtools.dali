@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -42,20 +42,26 @@ import org.eclipse.swt.widgets.Group;
  * |   Name: |                                                           |v|   |
  * |         ---------------------------------------------------------------   |
  * |                                                                           |
- * |   x Override Default Join Columns                                         |
- * |                                                                           |
+ * | - Join Columns ---------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | x Override Default                                                    | |
+ * | |                                                                       | |
+ * | | --------------------------------------------------------------------- | |
+ * | | |                                                                   | | |
+ * | | | JoinColumnsComposite                                              | | |
+ * | | |                                                                   | | |
+ * | | --------------------------------------------------------------------- | |
  * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | JoinColumnsComposite                                                  | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
  * |                                                                           |
- * |   x Override Default Inverse Join Columns                                 |
- * |                                                                           |
- * | ------------------------------------------------------------------------- |
+ * | - Inverse Join Columns -------------------------------------------------- |
  * | |                                                                       | |
- * | | JoinColumnsComposite                                                  | |
+ * | | x Override Default                                                    | |
  * | |                                                                       | |
+ * | | --------------------------------------------------------------------- | |
+ * | | |                                                                   | | |
+ * | | | JoinColumnsComposite                                              | | |
+ * | | |                                                                   | | |
+ * | | --------------------------------------------------------------------- | |
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
@@ -69,6 +75,8 @@ import org.eclipse.swt.widgets.Group;
  */
 public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 {
+	private JoinColumnsComposite<IJoinTable> inverseJoinColumnsComposite;
+	private JoinColumnsComposite<IJoinTable> joinColumnsComposite;
 	private Button overrideDefaultInverseJoinColumnsCheckBox;
 	private Button overrideDefaultJoinColumnsCheckBox;
 
@@ -108,10 +116,11 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 
 	private void addInverseJoinColumnFromDialog(JoinColumnInJoinTableStateObject stateObject) {
 
-		int index = subject().specifiedInverseJoinColumnsSize();
-		IJoinColumn joinColumn = subject().addSpecifiedInverseJoinColumn(index);
-		joinColumn.setSpecifiedName(stateObject.getName());
-		joinColumn.setSpecifiedReferencedColumnName(stateObject.getReferencedColumnName());
+		IJoinTable subject = subject();
+		int index = subject.specifiedInverseJoinColumnsSize();
+
+		IJoinColumn joinColumn = subject.addSpecifiedInverseJoinColumn(index);
+		stateObject.updateJoinColumn(joinColumn);
 	}
 
 	private void addJoinColumn(IJoinTable joinTable) {
@@ -122,10 +131,11 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 
 	private void addJoinColumnFromDialog(JoinColumnInJoinTableStateObject stateObject) {
 
-		int index = subject().specifiedJoinColumnsSize();
+		IJoinTable subject = subject();
+		int index = subject.specifiedJoinColumnsSize();
+
 		IJoinColumn joinColumn = subject().addSpecifiedJoinColumn(index);
-		joinColumn.setSpecifiedName(stateObject.getName());
-		joinColumn.setSpecifiedReferencedColumnName(stateObject.getReferencedColumnName());
+		stateObject.updateJoinColumn(joinColumn);
 	}
 
 	private PostExecution<InverseJoinColumnDialog> buildAddInverseJoinColumnPostExecution() {
@@ -177,7 +187,6 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildOverrideDefaultHolder() {
-		// TODO
 		return new SimplePropertyValueModel<Boolean>();
 	}
 
@@ -185,23 +194,7 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 		return new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Button button = (Button) e.widget;
-				IJoinTable joinTable = subject();
-
-				if (button.getSelection()) {
-					IJoinColumn defaultJoinColumn = joinTable.getDefaultInverseJoinColumn(); //TODO null check, override default button disabled
-					String columnName = defaultJoinColumn.getDefaultName();
-					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
-
-					IJoinColumn joinColumn = joinTable.addSpecifiedInverseJoinColumn(0);
-					joinColumn.setSpecifiedName(columnName);
-					joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
-				}
-				else {
-					for (int index = joinTable.specifiedInverseJoinColumnsSize(); --index >= 0; ) {
-						joinTable.removeSpecifiedJoinColumn(index);
-					}
-				}
+				updateInverseJoinColumns();
 			}
 		};
 	}
@@ -210,31 +203,14 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 		return new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Button button = (Button) e.widget;
-				IJoinTable joinTable = subject();
-
-				if (button.getSelection()) {
-					IJoinColumn defaultJoinColumn = joinTable.getDefaultJoinColumn(); //TODO null check, override default button disabled
-					String columnName = defaultJoinColumn.getDefaultName();
-					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
-
-					IJoinColumn joinColumn = joinTable.addSpecifiedJoinColumn(0);
-					joinColumn.setSpecifiedName(columnName);
-					joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
-				}
-				else {
-					for (int index = joinTable.specifiedJoinColumnsSize(); --index >= 0; ) {
-						joinTable.removeSpecifiedJoinColumn(index);
-					}
-				}
+				updateJoinColumns();
 			}
 		};
 	}
 
 	private Composite buildPane(Composite container, int groupBoxMargin) {
-		return buildSubPane(container, groupBoxMargin, 0, groupBoxMargin, 0, groupBoxMargin);
+		return buildSubPane(container, 0, groupBoxMargin, 10, groupBoxMargin);
 	}
-
 
 	private TableCombo<IJoinTable> buildTableCombo(Composite container) {
 
@@ -289,6 +265,24 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 		};
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void doPopulate() {
+		super.doPopulate();
+
+		IJoinTable subject = subject();
+		boolean enabled = (subject != null) && subject.containsSpecifiedJoinColumns();
+		boolean inverseEnabled = (subject != null) && subject.containsSpecifiedInverseJoinColumns();
+
+		overrideDefaultJoinColumnsCheckBox.setSelection(enabled);
+		overrideDefaultInverseJoinColumnsCheckBox.setSelection(enabled);
+
+		joinColumnsComposite.enableWidgets(enabled);
+		inverseJoinColumnsComposite.enableWidgets(inverseEnabled);
+	}
+
 	private void editInverseJoinColumn(IJoinColumn joinColumn) {
 
 		InverseJoinColumnDialog dialog =
@@ -306,32 +300,7 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 	}
 
 	private void editJoinColumn(JoinColumnInJoinTableStateObject stateObject) {
-
-		IJoinColumn joinColumn = stateObject.getJoinColumn();
-		String name = stateObject.getName();
-		String referencedColumnName = stateObject.getReferencedColumnName();
-
-		if (stateObject.isDefaultNameSelected()) {
-			if (joinColumn.getSpecifiedName() != null) {
-				joinColumn.setSpecifiedName(null);
-			}
-		}
-		else if (joinColumn.getSpecifiedName() == null ||
-		        !joinColumn.getSpecifiedName().equals(name)){
-
-			joinColumn.setSpecifiedName(name);
-		}
-
-		if (stateObject.isDefaultReferencedColumnNameSelected()) {
-			if (joinColumn.getSpecifiedReferencedColumnName() != null) {
-				joinColumn.setSpecifiedReferencedColumnName(null);
-			}
-		}
-		else if (joinColumn.getSpecifiedReferencedColumnName() == null ||
-		        !joinColumn.getSpecifiedReferencedColumnName().equals(referencedColumnName)){
-
-			joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
-		}
+		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
 
 	/*
@@ -352,9 +321,15 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 			IJpaHelpContextIds.MAPPING_JOIN_TABLE_NAME
 		);
 
+		// Join Columns group pane
+		Group joinColumnGroupPane = buildTitledPane(
+			container,
+			JptUiMappingsMessages.JoinTableComposite_joinColumn
+		);
+
 		// Override Default Join Columns check box
 		overrideDefaultJoinColumnsCheckBox = buildCheckBox(
-			buildPane(container, groupBoxMargin),
+			buildSubPane(joinColumnGroupPane, 8),
 			JptUiMappingsMessages.JoinTableComposite_overrideDefaultJoinColumns,
 			buildOverrideDefaultHolder()
 		);
@@ -363,21 +338,21 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 			buildOverrideDefaultSelectionListener()
 		);
 
-		// Join Columns widgets
-		Group joinColumnGroupPane = buildTitledPane(
-			container,
-			JptUiMappingsMessages.JoinTableComposite_joinColumn
-		);
-
-		new JoinColumnsComposite<IJoinTable>(
+		joinColumnsComposite = new JoinColumnsComposite<IJoinTable>(
 			this,
 			joinColumnGroupPane,
 			buildJoinColumnsEditor()
 		);
 
+		// Inverse Join Columns group pane
+		Group inverseJoinColumnGroupPane = buildTitledPane(
+			container,
+			JptUiMappingsMessages.JoinTableComposite_inverseJoinColumn
+		);
+
 		// Override Default Inverse Join Columns check box
 		overrideDefaultInverseJoinColumnsCheckBox = buildCheckBox(
-			buildPane(container, groupBoxMargin),
+			buildSubPane(inverseJoinColumnGroupPane, 8),
 			JptUiMappingsMessages.JoinTableComposite_overrideDefaultInverseJoinColumns,
 			buildOverrideDefaultHolder()
 		);
@@ -386,17 +361,87 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 			buildOverrideDefaultInverseSelectionListener()
 		);
 
-		// Inverse Join Columns widgets
-		Group inverseJoinColumnGroupPane = buildTitledPane(
-			container,
-			JptUiMappingsMessages.JoinTableComposite_inverseJoinColumn
-		);
-
-		new JoinColumnsComposite<IJoinTable>(
+		inverseJoinColumnsComposite = new JoinColumnsComposite<IJoinTable>(
 			this,
 			inverseJoinColumnGroupPane,
 			buildInverseJoinColumnsEditor()
 		);
+	}
+
+	private void updateInverseJoinColumns() {
+
+		if (isPopulating()) {
+			return;
+		}
+
+		IJoinTable subject = subject();
+		boolean selected = overrideDefaultInverseJoinColumnsCheckBox.getSelection();
+		joinColumnsComposite.enableWidgets(selected);
+		setPopulating(true);
+
+		try {
+			// Add a join column by creating a specified one using the default
+			// one if it exists
+			if (selected) {
+
+				IJoinColumn defaultJoinColumn = subject.getDefaultInverseJoinColumn(); //TODO null check, override default button disabled
+
+				if (defaultJoinColumn != null) {
+					String columnName = defaultJoinColumn.getDefaultName();
+					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
+
+					IJoinColumn joinColumn = subject.addSpecifiedInverseJoinColumn(0);
+					joinColumn.setSpecifiedName(columnName);
+					joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+				}
+			}
+			else {
+				for (int index = subject.specifiedInverseJoinColumnsSize(); --index >= 0; ) {
+					subject.removeSpecifiedInverseJoinColumn(index);
+				}
+			}
+		}
+		finally {
+			setPopulating(false);
+		}
+	}
+
+	private void updateJoinColumns() {
+
+		if (isPopulating()) {
+			return;
+		}
+
+		IJoinTable subject = subject();
+		boolean selected = overrideDefaultJoinColumnsCheckBox.getSelection();
+		joinColumnsComposite.enableWidgets(selected);
+		setPopulating(true);
+
+		try {
+			// Add a join column by creating a specified one using the default
+			// one if it exists
+			if (selected) {
+
+				IJoinColumn defaultJoinColumn = subject.getDefaultJoinColumn(); //TODO null check, override default button disabled
+
+				if (defaultJoinColumn != null) {
+					String columnName = defaultJoinColumn.getDefaultName();
+					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
+
+					IJoinColumn joinColumn = subject.addSpecifiedJoinColumn(0);
+					joinColumn.setSpecifiedName(columnName);
+					joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+				}
+			}
+			else {
+				for (int index = subject.specifiedJoinColumnsSize(); --index >= 0; ) {
+					subject.removeSpecifiedJoinColumn(index);
+				}
+			}
+		}
+		finally {
+			setPopulating(false);
+		}
 	}
 
 	private class InverseJoinColumnsProvider implements IJoinColumnsEditor<IJoinTable> {

@@ -31,6 +31,7 @@ import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionMod
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -39,13 +40,15 @@ import org.eclipse.swt.widgets.Group;
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
- * |                                                                           |
- * | x Override Default                                                        |
- * |                                                                           |
- * | ------------------------------------------------------------------------- |
+ * | - Join Columns ---------------------------------------------------------- |
  * | |                                                                       | |
- * | | AddRemoveListPane                                                     | |
+ * | | x Override Default                                                    | |
  * | |                                                                       | |
+ * | | --------------------------------------------------------------------- | |
+ * | | |                                                                   | | |
+ * | | | AddRemoveListPane                                                 | | |
+ * | | |                                                                   | | |
+ * | | --------------------------------------------------------------------- | |
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
@@ -60,6 +63,7 @@ import org.eclipse.swt.widgets.Group;
  */
 public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMapping>
 {
+	private AddRemoveListPane<ISingleRelationshipMapping> joinColumnsListPane;
 	private Button overrideDefaultJoinColumnsCheckBox;
 
 	/**
@@ -68,8 +72,8 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	protected JoinColumnComposite(AbstractFormPane<? extends ISingleRelationshipMapping> parentPane,
-	                              Composite parent) {
+	public JoinColumnComposite(AbstractFormPane<? extends ISingleRelationshipMapping> parentPane,
+	                           Composite parent) {
 
 		super(parentPane, parent);
 	}
@@ -98,26 +102,18 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 
 	private void addJoinColumn(JoinColumnInRelationshipMappingStateObject stateObject) {
 
-		int index = subject().specifiedJoinColumnsSize();
+		ISingleRelationshipMapping subject = subject();
+		int index = subject.specifiedJoinColumnsSize();
 
-		IJoinColumn joinColumn = subject().addSpecifiedJoinColumn(index);
-		joinColumn.setSpecifiedName(stateObject.getName());
-		joinColumn.setSpecifiedReferencedColumnName(stateObject.getReferencedColumnName());
-
-		if (!stateObject.isDefaultTableSelected()) {
-			// Not checking this for name and referenced column name because
-			// there is no default option when you are adding a second join
-			// column. There is always at least 1 join column (the default)
-			joinColumn.setSpecifiedTable(stateObject.getTable());
-		}
+		IJoinColumn joinColumn = subject.addSpecifiedJoinColumn(index);
+		stateObject.updateJoinColumn(joinColumn);
 	}
 
 	private PostExecution<JoinColumnInRelationshipMappingDialog> buildAddJoinColumnPostExecution() {
 		return new PostExecution<JoinColumnInRelationshipMappingDialog>() {
 			public void execute(JoinColumnInRelationshipMappingDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					JoinColumnInRelationshipMappingStateObject stateObject = dialog.subject();
-					addJoinColumn(stateObject);
+					addJoinColumn(dialog.subject());
 				}
 			}
 		};
@@ -231,40 +227,17 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 		};
 	}
 
-	private SelectionAdapter buildOverrideDefaultJoinColumnsSelectionListener() {
+	private SelectionListener buildOverrideDefaultJoinColumnsSelectionListener() {
 		return new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-
-				if (isPopulating()) {
-					return;
-				}
-
-				if (overrideDefaultJoinColumnsCheckBox.getSelection()) {
-					IJoinColumn defaultJoinColumn = subject().getDefaultJoinColumn();//TODO could be null, disable override default check box?
-					String columnName = defaultJoinColumn.getDefaultName();
-					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
-
-					IJoinColumn joinColumn = subject().addSpecifiedJoinColumn(0);
-					joinColumn.setSpecifiedName(columnName);
-					joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
-				}
-				else {
-					for (int index = subject().specifiedJoinColumnsSize(); --index >= 0; ) {
-						subject().removeSpecifiedJoinColumn(index);
-					}
-				}
+				updateJoinColumns();
 			}
 		};
 	}
 
 	private WritablePropertyValueModel<Boolean> buildOverrideDefaultJoinsColumnHolder() {
-		// TODO
 		return new SimplePropertyValueModel<Boolean>();
-	}
-
-	private Composite buildPane(Composite container, int groupBoxMargin) {
-		return buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 	}
 
 	private ListValueModel<IJoinColumn> buildSortedJoinColumnsListHolder() {
@@ -279,7 +252,12 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
-		overrideDefaultJoinColumnsCheckBox.setSelection(subject() != null && subject().containsSpecifiedJoinColumns());
+
+		ISingleRelationshipMapping subject = subject();
+		boolean enabled = (subject != null) && subject.containsSpecifiedJoinColumns();
+
+		overrideDefaultJoinColumnsCheckBox.setSelection(enabled);
+		joinColumnsListPane.enableWidgets(enabled);
 	}
 
 	private void editJoinColumn(ObjectListSelectionModel listSelectionModel) {
@@ -298,11 +276,15 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		int groupBoxMargin = groupBoxMargin();
+		// Join Columns group
+		Group groupPane = buildTitledPane(
+			container,
+			JptUiMappingsMessages.JoinColumnComposite_joinColumn
+		);
 
 		// Override Default Join Columns check box
 		overrideDefaultJoinColumnsCheckBox = buildCheckBox(
-			buildPane(container, groupBoxMargin),
+			buildSubPane(groupPane, 8),
 			JptUiMappingsMessages.JoinColumnComposite_overrideDefaultJoinColumns,
 			buildOverrideDefaultJoinsColumnHolder()
 		);
@@ -311,16 +293,10 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 			buildOverrideDefaultJoinColumnsSelectionListener()
 		);
 
-		// Join Columns group
-		Group joinColumnsGroup = buildTitledPane(
-			container,
-			JptUiMappingsMessages.JoinColumnComposite_joinColumn
-		);
-
 		// Join Columns list pane
-		new AddRemoveListPane<ISingleRelationshipMapping>(
+		joinColumnsListPane = new AddRemoveListPane<ISingleRelationshipMapping>(
 			this,
-			joinColumnsGroup,
+			groupPane,
 			buildJoinColumnsAdapter(),
 			buildSortedJoinColumnsListHolder(),
 			buildJoinColumnHolder(),
@@ -339,63 +315,45 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 	}
 
 	private void updateJoinColumn(JoinColumnInRelationshipMappingStateObject stateObject) {
+		stateObject.updateJoinColumn(stateObject.getJoinColumn());
+	}
 
-		IJoinColumn joinColumn = stateObject.getJoinColumn();
-		String name = stateObject.getName();
-		String referencedColumnName = stateObject.getReferencedColumnName();
-		String table = stateObject.getTable();
+	private void updateJoinColumns() {
 
-		// Name
-		if (stateObject.isDefaultNameSelected()) {
+		if (isPopulating()) {
+			return;
+		}
 
-			if (joinColumn.getSpecifiedName() != null) {
-				joinColumn.setSpecifiedName(null);
+		ISingleRelationshipMapping subject = subject();
+		boolean selected = overrideDefaultJoinColumnsCheckBox.getSelection();
+		joinColumnsListPane.enableWidgets(selected);
+		setPopulating(true);
+
+		try {
+			// Add a join column by creating a specified one using the default
+			// one if it exists
+			if (selected) {
+
+				IJoinColumn defaultJoinColumn = subject.getDefaultJoinColumn();//TODO could be null, disable override default check box?
+
+				if (defaultJoinColumn != null) {
+					String columnName = defaultJoinColumn.getDefaultName();
+					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
+
+					IJoinColumn joinColumn = subject.addSpecifiedJoinColumn(0);
+					joinColumn.setSpecifiedName(columnName);
+					joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+				}
+			}
+			// Remove all the specified join columns
+			else {
+				for (int index = subject.specifiedJoinColumnsSize(); --index >= 0; ) {
+					subject.removeSpecifiedJoinColumn(index);
+				}
 			}
 		}
-		else if (joinColumn.getSpecifiedName() == null ||
-		        !joinColumn.getSpecifiedName().equals(name)){
-
-			joinColumn.setSpecifiedName(name);
-		}
-
-		// Referenced Column Name
-		if (stateObject.isDefaultReferencedColumnNameSelected()) {
-
-			if (joinColumn.getSpecifiedReferencedColumnName() != null) {
-				joinColumn.setSpecifiedReferencedColumnName(null);
-			}
-		}
-		else if (joinColumn.getSpecifiedReferencedColumnName() == null ||
-		        !joinColumn.getSpecifiedReferencedColumnName().equals(referencedColumnName)){
-
-			joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
-		}
-
-		// Specified Table
-		if (stateObject.isDefaultTableSelected()) {
-
-			if (joinColumn.getSpecifiedTable() != null) {
-				joinColumn.setSpecifiedTable(null);
-			}
-		}
-		else if (joinColumn.getSpecifiedTable() == null ||
-		        !joinColumn.getSpecifiedTable().equals(table)){
-
-			joinColumn.setSpecifiedTable(table);
-		}
-
-		// Insertable
-		Boolean insertable = stateObject.getInsertable();
-
-		if (joinColumn.getInsertable() != insertable) {
-			joinColumn.setSpecifiedInsertable(insertable);
-		}
-
-		// Updatable
-		Boolean updatable = stateObject.getUpdatable();
-
-		if (joinColumn.getUpdatable() != updatable) {
-			joinColumn.setSpecifiedUpdatable(updatable);
+		finally {
+			setPopulating(false);
 		}
 	}
 }

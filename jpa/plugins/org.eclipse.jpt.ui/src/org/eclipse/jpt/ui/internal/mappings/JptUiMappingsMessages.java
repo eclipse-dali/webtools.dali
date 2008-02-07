@@ -15,7 +15,6 @@ public class JptUiMappingsMessages extends NLS
 {
 	private static final String BUNDLE_NAME = "jpt_ui_mappings"; //$NON-NLS-1$
 
-
 	public static String AbstractJoinColumnStateObject_NameNotSpecified;
 
 	public static String Boolean_True;
@@ -150,6 +149,10 @@ public class JptUiMappingsMessages extends NLS
 
 	public static String AttributeOverridesComposite_attributeOverrides;
 	public static String AttributeOverridesComposite_overrideDefault;
+
+	public static String OverridesComposite_association;
+	public static String OverridesComposite_attribute;
+	public static String OverridesComposite_noName;
 	public static String OverridesComposite_joinColumn;
 
 	public static String InheritanceComposite_default;

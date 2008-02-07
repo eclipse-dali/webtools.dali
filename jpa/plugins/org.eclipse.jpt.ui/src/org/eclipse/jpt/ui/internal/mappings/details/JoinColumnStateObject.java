@@ -21,9 +21,9 @@ import org.eclipse.jpt.db.internal.Table;
 @SuppressWarnings("nls")
 public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObject
 {
-	private Boolean defaultInsertable;
+	private Boolean defaultInsertableSelected;
 	private boolean defaultTableSelected;
-	private Boolean defaultUpdatable;
+	private Boolean defaultUpdatableSelected;
 	private Boolean insertable;
 	private String table;
 	private Boolean updatable;
@@ -52,11 +52,25 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 	public abstract String defaultTableName();
 
 	public Boolean getDefaultInsertable() {
-		return defaultInsertable;
+
+		IJoinColumn joinColumn = getJoinColumn();
+
+		if (joinColumn != null) {
+			return joinColumn.getDefaultInsertable();
+		}
+
+		return null;
 	}
 
 	public Boolean getDefaultUpdatable() {
-		return defaultUpdatable;
+
+		IJoinColumn joinColumn = getJoinColumn();
+
+		if (joinColumn != null) {
+			return joinColumn.getDefaultUpdatable();
+		}
+
+		return null;
 	}
 
 	public Boolean getInsertable() {
@@ -107,16 +121,16 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 		if (abstractJoinColumn != null) {
 			IJoinColumn joinColumn = (IJoinColumn) abstractJoinColumn;
 
-			defaultTableSelected = joinColumn.getSpecifiedTable() == null;
-			table                = joinColumn.getTable();
-			insertable           = joinColumn.getInsertable();
-			updatable            = joinColumn.getUpdatable();
-			defaultInsertable    = joinColumn.getDefaultInsertable();
-			defaultUpdatable     = joinColumn.getDefaultInsertable();
+			defaultInsertableSelected = joinColumn.getSpecifiedInsertable() == null;
+			defaultTableSelected      = joinColumn.getSpecifiedTable()      == null;
+			defaultUpdatableSelected  = joinColumn.getSpecifiedUnique()     == null;
+			insertable                = joinColumn.getInsertable();
+			table                     = joinColumn.getTable();
+			updatable                 = joinColumn.getUpdatable();
 		}
 		else {
-			defaultInsertable    = Boolean.TRUE;
-			defaultUpdatable     = Boolean.TRUE;
+			defaultInsertableSelected = Boolean.FALSE;
+			defaultUpdatableSelected  = Boolean.FALSE;
 		}
 	}
 
@@ -148,8 +162,10 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 
 	public String specifiedTableName() {
 
-		if (getJoinColumn() != null) {
-			return getJoinColumn().getSpecifiedTable();
+		IJoinColumn joinColumn = getJoinColumn();
+
+		if (joinColumn != null) {
+			return joinColumn.getSpecifiedTable();
 		}
 
 		return null;
@@ -157,5 +173,50 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 
 	public String tableName() {
 		return (specifiedTableName() == null) ? defaultTableName() : specifiedTableName();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public void updateJoinColumn(IAbstractJoinColumn abstractJoinColumn) {
+
+		IJoinColumn joinColumn = (IJoinColumn) abstractJoinColumn;
+		super.updateJoinColumn(abstractJoinColumn);
+
+		// Specified Table
+		if (defaultTableSelected) {
+
+			if (joinColumn.getSpecifiedTable() != null) {
+				joinColumn.setSpecifiedTable(null);
+			}
+		}
+		else if (joinColumn.getSpecifiedTable() == null ||
+		        !joinColumn.getSpecifiedTable().equals(table)){
+
+			joinColumn.setSpecifiedTable(table);
+		}
+
+		// Insertable
+		if (defaultInsertableSelected) {
+
+			if (joinColumn.getSpecifiedInsertable() != null) {
+				joinColumn.setSpecifiedInsertable(null);
+			}
+		}
+		else if (joinColumn.getSpecifiedInsertable() != insertable){
+			joinColumn.setSpecifiedInsertable(insertable);
+		}
+
+		// Updatable
+		if (defaultUpdatableSelected) {
+
+			if (joinColumn.getSpecifiedUpdatable() != null) {
+				joinColumn.setSpecifiedUpdatable(null);
+			}
+		}
+		else if (joinColumn.getSpecifiedUpdatable() != insertable){
+			joinColumn.setSpecifiedUpdatable(insertable);
+		}
 	}
 }

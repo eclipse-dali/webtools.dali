@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Control;
  * @version 2.0
  * @since 2.0
  */
-public class ControlEnabler extends AbstractControlEnabler
+public class ControlEnabler extends StateController
 {
 	/**
 	 * Creates a new <code>ControlEnabler</code> with a default value of
@@ -153,7 +153,11 @@ public class ControlEnabler extends AbstractControlEnabler
 		});
 	}
 
+	/**
+	 * This holder holds onto a <code>Control</code> and update its enabled state.
+	 */
 	private static class ControlHolder implements IControlHolder {
+
 		private final Control control;
 
 		ControlHolder(Control control) {
@@ -161,9 +165,9 @@ public class ControlEnabler extends AbstractControlEnabler
 			this.control = control;
 		}
 
-		public void setEnabled(boolean enabled) {
+		public void updateState(boolean state) {
 			if (!this.control.isDisposed()) {
-				this.control.setEnabled(enabled);
+				this.control.setEnabled(state);
 			}
 		}
 	}

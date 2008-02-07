@@ -16,14 +16,16 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ListModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * The abstract definition of a pane that has add/remove buttons, up/down
- * buttons and an option button that is kept in sync with the selected items.
+ * The abstract definition of a pane that has buttons for adding, removing and
+ * possibly editing the items.
+ *
+ * @see AddRemoveListPane
  *
  * @version 1.0
  * @since 2.0
@@ -234,6 +236,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	private Runnable buildOptionalAction() {
 		return new Runnable() {
 			public void run() {
+				AddRemovePane.this.editItem();
 			}
 		};
 	}
@@ -275,6 +278,13 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		return new ObjectListSelectionModel(new ListModelAdapter(listModel));
 	}
 
+	/**
+	 * @category Option
+	 */
+	protected void editItem() {
+		this.adapter.optionOnSelection(getSelectionModel());
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
@@ -304,6 +314,19 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		return selectionModel;
 	}
 
+	/**
+	 * Initializes this add/remove pane.
+	 *
+	 * @param adapter This <code>Adapter</code> is used to dictacte the behavior
+	 * of this <code>AddRemovePane</code> and by delegating to it some of the
+	 * behavior
+	 * @param listHolder The <code>ListValueModel</code> containing the items
+	 * @param selectedItemHolder The holder of the selected item, if more than
+	 * one item or no items are selected, then <code>null</code> will be passed
+	 * @param labelProvider The renderer used to format the list holder's items
+	 *
+	 * @category Initialization
+	 */
 	@SuppressWarnings("unchecked")
 	protected void initialize(Adapter adapter,
 	                          ListValueModel<?> listHolder,
@@ -317,19 +340,23 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		this.selectionModel     = new ObjectListSelectionModel(new ListModelAdapter(listHolder));
 	}
 
+	/**
+	 * Initializes the pane containing the buttons (Add, optional (if required)
+	 * and Remove).
+	 *
+	 * @param container The parent container
+	 * @param helpId The topic help ID to be registered with the buttons
+	 *
+	 * @category Layout
+	 */
 	protected void initializeButtonPane(Composite container, String helpId) {
 
-		container = buildPane(container);
+		container = buildSubPane(container);
 
-		GridLayout layout = new GridLayout(1, false);
-		layout.marginHeight = 0;
-		layout.marginWidth  = 0;
-		layout.marginTop    = 0;
-		layout.marginLeft   = 0;
-		layout.marginBottom = 0;
-		layout.marginRight  = 0;
-		container.setLayout(layout);
-		container.setLayoutData(new GridData());
+		GridData gridData = new GridData();
+		gridData.grabExcessVerticalSpace = true;
+		gridData.verticalAlignment       = SWT.TOP;
+		container.setLayoutData(gridData);
 
 		// Add button
 		addButton = buildAddButton(container);
@@ -354,13 +381,23 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 				helpSystem().setHelp(optionalButton, helpId);
 			}
 		}
-
-//		upButton       = buildUpButton((adapter instanceof UpDownAdapter) ? (UpDownAdapter) adapter : null);
-//		downButton     = buildDownButton((adapter instanceof UpDownAdapter) ? (UpDownAdapter) adapter : null);
-//		gotoButton     = buildGotoButton();
-//		component      = buildComponent();
 	}
 
+	/**
+	 * Initializes this add/remove pane by creating the widgets. The subclass is
+	 * required to build the main widget.
+	 *
+	 * @param adapter This <code>Adapter</code> is used to dictacte the behavior
+	 * of this <code>AddRemovePane</code> and by delegating to it some of the
+	 * behavior
+	 * @param listHolder The <code>ListValueModel</code> containing the items
+	 * @param selectedItemHolder The holder of the selected item, if more than
+	 * one item or no items are selected, then <code>null</code> will be passed
+	 * @param labelProvider The renderer used to format the list holder's items
+	 * @param helpId The topic help ID to be registered with this pane
+	 *
+	 * @category Layout
+	 */
 	protected void initializeLayout(Adapter adapter,
     	                             ListValueModel<?> listHolder,
    	                             WritablePropertyValueModel<?> selectedItemHolder,
@@ -379,8 +416,8 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		enableWidgets(subject() != null);
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	protected void initializeLayout(Composite container) {
@@ -400,6 +437,8 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	 * @param labelProvider The renderer used to format the list holder's items
 	 * @param helpId The topic help ID to be registered with this pane or
 	 * <code>null</code> if it was not specified
+	 *
+	 * @category Layout
 	 */
 	protected abstract void initializeMainComposite(Composite container,
 	                                                Adapter adapter,
@@ -429,13 +468,11 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	 * @category UpdateButtons
 	 */
 	protected void updateButtons() {
-		if (container.isDisposed()) {
-			return;
+		if (!container.isDisposed()) {
+			updateAddButton(addButton);
+			updateRemoveButton(removeButton);
+			updateOptionalButton(optionalButton);
 		}
-
-		updateAddButton(addButton);
-		updateRemoveButton(removeButton);
-		updateOptionalButton(optionalButton);
 	}
 
 	/**

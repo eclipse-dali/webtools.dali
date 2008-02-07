@@ -32,6 +32,7 @@ import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionMod
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -40,13 +41,15 @@ import org.eclipse.swt.widgets.Group;
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
- * |                                                                           |
- * | x Override Default Join Columns                                           |
- * |                                                                           |
- * | - Primary Key Join Columns ---------------------------------------------- |
+ * | - Join Columns ---------------------------------------------------------- |
  * | |                                                                       | |
- * | | AddRemoveListPane                                                     | |
+ * | | x Override Default                                                    | |
  * | |                                                                       | |
+ * | | --------------------------------------------------------------------- | |
+ * | | |                                                                   | | |
+ * | | | AddRemoveListPane                                                 | | |
+ * | | |                                                                   | | |
+ * | | --------------------------------------------------------------------- | |
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
@@ -58,6 +61,7 @@ import org.eclipse.swt.widgets.Group;
  */
 public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 {
+	private AddRemoveListPane<IEntity> joinColumnsListPane;
 	private Button overrideDefaultJoinColumnsCheckBox;
 
 	/**
@@ -88,11 +92,11 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 
 	private void addJoinColumn(PrimaryKeyJoinColumnStateObject stateObject) {
 
-		int index = subject().specifiedPrimaryKeyJoinColumnsSize();
+		IEntity subject = subject();
+		int index = subject.specifiedPrimaryKeyJoinColumnsSize();
 
-		IPrimaryKeyJoinColumn joinColumn = subject().addSpecifiedPrimaryKeyJoinColumn(index);
-		joinColumn.setSpecifiedName(stateObject.getName());
-		joinColumn.setSpecifiedReferencedColumnName(stateObject.getReferencedColumnName());
+		IPrimaryKeyJoinColumn joinColumn = subject.addSpecifiedPrimaryKeyJoinColumn(index);
+		stateObject.updateJoinColumn(joinColumn);
 	}
 
 	private void addPrimaryKeyJoinColumn() {
@@ -110,8 +114,12 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 		};
 	}
 
-	String buildDefaultJoinColumnLabel(IPrimaryKeyJoinColumn joinColumn) {
-		return NLS.bind(JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsDefault, joinColumn.getName(), joinColumn.getReferencedColumnName());
+	private String buildDefaultJoinColumnLabel(IPrimaryKeyJoinColumn joinColumn) {
+		return NLS.bind(
+			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsDefault,
+			joinColumn.getName(),
+			joinColumn.getReferencedColumnName()
+		);
 	}
 
 	private PostExecution<PrimaryKeyJoinColumnDialog> buildEditPrimaryKeyJoinColumnPostExecution() {
@@ -219,36 +227,19 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
-		// TODO
 		return new SimplePropertyValueModel<Boolean>();
 	}
 
-	private SelectionAdapter buildOverrideDefaultJoinColumnSelectionListener() {
+	private SelectionListener buildOverrideDefaultJoinColumnSelectionListener() {
 		return new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Button button = (Button) e.widget;
-				IEntity entity = subject();
-
-				if (button.getSelection()) {
-					IPrimaryKeyJoinColumn defaultJoinColumn = entity.getDefaultPrimaryKeyJoinColumn(); //TODO sometimes null
-					String columnName = defaultJoinColumn.getDefaultName();
-					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
-
-					IPrimaryKeyJoinColumn pkJoinColumn = entity.addSpecifiedPrimaryKeyJoinColumn(0);
-					pkJoinColumn.setSpecifiedName(columnName);
-					pkJoinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
-				}
-				else {
-					for (int index = entity.specifiedPrimaryKeyJoinColumnsSize(); --index >= 0; ) {
-						entity.removeSpecifiedPrimaryKeyJoinColumn(index);
-					}
-				}
+				updateJoinColumns();
 			}
 		};
 	}
 
-	private ListValueModel/*<IPrimaryKeyJoinColumn>*/ buildSortedJoinColumnsListHolder() {
+	private ListValueModel<IPrimaryKeyJoinColumn> buildSortedJoinColumnsListHolder() {
 		return new SortedListValueModelAdapter<IPrimaryKeyJoinColumn>(
 			buildJoinColumnsListHolder()
 		);
@@ -260,39 +251,16 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
-		overrideDefaultJoinColumnsCheckBox.setSelection(subject().specifiedPrimaryKeyJoinColumnsSize() > 0);
+
+		IEntity entity = subject();
+		boolean enabled = (entity != null) && (entity.specifiedPrimaryKeyJoinColumnsSize() > 0);
+
+		overrideDefaultJoinColumnsCheckBox.setSelection(enabled);
+		joinColumnsListPane.enableWidgets(enabled);
 	}
 
 	private void editJoinColumn(PrimaryKeyJoinColumnStateObject stateObject) {
-
-		IPrimaryKeyJoinColumn joinColumn = stateObject.getJoinColumn();
-
-		String name = stateObject.getName();
-		String referencedColumnName = stateObject.getReferencedColumnName();
-
-		// Name
-		if (stateObject.isDefaultNameSelected()) {
-			if (joinColumn.getSpecifiedName() != null) {
-				joinColumn.setSpecifiedName(null);
-			}
-		}
-		else if (joinColumn.getSpecifiedName() == null ||
-		        !joinColumn.getSpecifiedName().equals(name)){
-
-			joinColumn.setSpecifiedName(name);
-		}
-
-		// Referenced Column Name
-		if (stateObject.isDefaultReferencedColumnNameSelected()) {
-			if (joinColumn.getSpecifiedReferencedColumnName() != null) {
-				joinColumn.setSpecifiedReferencedColumnName(null);
-			}
-		}
-		else if (joinColumn.getSpecifiedReferencedColumnName() == null ||
-		         !joinColumn.getSpecifiedReferencedColumnName().equals(referencedColumnName)){
-
-			joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
-		}
+		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
 
 	private void editPrimaryKeyJoinColumn(ObjectListSelectionModel listSelectionModel) {
@@ -309,11 +277,15 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		int groupBoxMargin = groupBoxMargin();
+		// Primary Key Join Columns group pane
+		Group groupPane = buildTitledPane(
+			container,
+			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_primaryKeyJoinColumn
+		);
 
 		// Override Default Join Columns check box
 		overrideDefaultJoinColumnsCheckBox = buildCheckBox(
-			buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
+			buildSubPane(groupPane, 8),
 			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_overrideDefaultPrimaryKeyJoinColumns,
 			buildOverrideDefaultJoinColumnHolder());
 
@@ -321,21 +293,50 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 			buildOverrideDefaultJoinColumnSelectionListener()
 		);
 
-		// Primary Key Join Columns group pane
-		Group pkJoinColumnsGroup = buildTitledPane(
-			container,
-			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_primaryKeyJoinColumn
-		);
-
 		// Primary Key Join Columns list pane
-		new AddRemoveListPane<IEntity>(
+		joinColumnsListPane = new AddRemoveListPane<IEntity>(
 			this,
-			pkJoinColumnsGroup,
+			groupPane,
 			buildJoinColumnsAdapter(),
 			buildSortedJoinColumnsListHolder(),
 			buildJoinColumnHolder(),
 			buildJoinColumnsListLabelProvider(),
 			IJpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
 		);
+	}
+
+	private void updateJoinColumns() {
+
+		IEntity subject = subject();
+		boolean selected = overrideDefaultJoinColumnsCheckBox.getSelection();
+		joinColumnsListPane.enableWidgets(selected);
+		setPopulating(true);
+
+		try {
+			// Add a join column by creating a specified one using the default
+			// one if it exists
+			if (selected) {
+
+				IPrimaryKeyJoinColumn defaultJoinColumn = subject.getDefaultPrimaryKeyJoinColumn(); //TODO sometimes null
+
+				if (defaultJoinColumn != null) {
+					String columnName = defaultJoinColumn.getDefaultName();
+					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
+
+					IPrimaryKeyJoinColumn pkJoinColumn = subject.addSpecifiedPrimaryKeyJoinColumn(0);
+					pkJoinColumn.setSpecifiedName(columnName);
+					pkJoinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+				}
+			}
+			// Remove all the specified join columns
+			else {
+				for (int index = subject.specifiedPrimaryKeyJoinColumnsSize(); --index >= 0; ) {
+					subject.removeSpecifiedPrimaryKeyJoinColumn(index);
+				}
+			}
+		}
+		finally {
+			setPopulating(false);
+		}
 	}
 }

@@ -199,11 +199,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	                                       ILabelProvider labelProvider,
 	                                       String helpId) {
 
-		list = buildList(container, buildSelectedItemHolder());
-
-		if (helpId != null) {
-			helpSystem().setHelp(list, helpId);
-		}
+		list = buildList(container, buildSelectedItemHolder(), helpId);
 
 		ListBoxModelAdapter<Object> listModel = ListBoxModelAdapter.adapt(
 			(ListValueModel<Object>) listHolder,

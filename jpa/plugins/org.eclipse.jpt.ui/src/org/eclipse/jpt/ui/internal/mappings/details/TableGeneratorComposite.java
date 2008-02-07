@@ -126,13 +126,10 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 
 			@Override
 			protected Iterator<String> values() {
-				Table table = table();
-
-				if (table != null) {
-					return table.columnNames();
+				if (subject() == null) {
+					return EmptyIterator.instance();
 				}
-
-				return EmptyIterator.instance();
+				return super.values();
 			}
 		};
 	}
@@ -185,13 +182,10 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 
 			@Override
 			protected Iterator<String> values() {
-				Table table = table();
-
-				if (table != null) {
-					return table.columnNames();
+				if (subject() == null) {
+					return EmptyIterator.instance();
 				}
-
-				return EmptyIterator.instance();
+				return super.values();
 			}
 		};
 	}
@@ -253,6 +247,9 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 
 			@Override
 			protected Iterator<String> values() {
+				if (subject() == null) {
+					return EmptyIterator.instance();
+				}
 				String schemaName = subject().getSchema();
 				Database database = database();
 

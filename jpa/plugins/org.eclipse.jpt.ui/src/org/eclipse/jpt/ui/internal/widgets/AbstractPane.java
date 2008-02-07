@@ -56,6 +56,7 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
+import org.eclipse.ui.part.PageBook;
 
 /**
  * The abstract definition of a pane which holds onto a <code>PropertyValueModel</code>
@@ -501,24 +502,16 @@ public abstract class AbstractPane<T extends Model>
 		return viewer;
 	}
 
+	/**
+	 * Creates the main container of this pane. The layout and layout data are
+	 * automatically set.
+	 *
+	 * @param parent The parent container
+	 * @return The newly created <code>Composite</code> that will holds all the
+	 * widgets created by this pane through {@link #initializeLayout(Composite)}
+	 */
 	protected Composite buildContainer(Composite parent) {
-		Composite container = this.buildPane(parent);
-
-		GridLayout layout = new GridLayout(1, false);
-		layout.marginHeight = 0;
-		layout.marginWidth  = 0;
-		layout.marginTop    = 0;
-		layout.marginLeft   = 0;
-		layout.marginBottom = 0;
-		layout.marginRight  = 0;
-		container.setLayout(layout);
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		container.setLayoutData(gridData);
-
-		return container;
+		return this.buildSubPane(parent);
 	}
 
 	/**
@@ -1119,6 +1112,29 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
+	 * Creates a new <code>PageBook</code> and set the proper layout and layout
+	 * data.
+	 *
+	 * @param container The parent container
+	 * @return The newly created <code>PageBook</code>
+	 */
+	protected final PageBook buildPageBook(Composite container) {
+
+		GridLayout layout = new GridLayout(1, false);
+		layout.marginHeight = 0;
+		layout.marginWidth  = 0;
+		layout.marginTop    = 0;
+		layout.marginLeft   = 0;
+		layout.marginBottom = 0;
+		layout.marginRight  = 0;
+
+		PageBook pageBook = new PageBook(container, SWT.NULL);
+		pageBook.setLayout(layout);
+		pageBook.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		return pageBook;
+	}
+
+	/**
 	 * Creates a new container without specifying any layout manager.
 	 *
 	 * @param container The parent of the new container
@@ -1143,7 +1159,12 @@ public abstract class AbstractPane<T extends Model>
 
 		container = this.widgetFactory.createComposite(container);
 		container.setLayout(layout);
-		container.setLayoutData(new GridData(GridData.FILL_BOTH));
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace   = true;
+		gridData.horizontalAlignment       = SWT.FILL;
+		gridData.verticalAlignment         = SWT.TOP;
+		container.setLayoutData(gridData);
 		return container;
 	}
 
@@ -1265,7 +1286,7 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new <code>Section</code> with flat style.  A sub-pane is
+	 * Creates a new <code>Section</code> with flat style. A sub-pane is
 	 * automatically added as its client and is the returned <code>Composite</code>.
 	 *
 	 * @param container The container of the new widget
@@ -1283,7 +1304,7 @@ public abstract class AbstractPane<T extends Model>
 			container,
 			sectionText,
 			type,
-			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
+			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
 		);
 	}
 
@@ -1846,8 +1867,14 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Layout
 	 */
 	public void enableWidgets(boolean enabled) {
-		for (AbstractPane<?> subPane : this.subPanes) {
-			subPane.enableWidgets(enabled);
+
+		if (!container.isDisposed()) {
+
+			container.setEnabled(enabled);
+
+			for (AbstractPane<?> subPane : this.subPanes) {
+				subPane.enableWidgets(enabled);
+			}
 		}
 	}
 
@@ -2239,6 +2266,17 @@ public abstract class AbstractPane<T extends Model>
 	 */
 	protected final void setPopulating(boolean populating) {
 		this.populating = populating;
+	}
+
+	/**
+	 * Either show or hides this pane.
+	 *
+	 * @param visible The new visibility state
+	 */
+	public void setVisible(boolean visible) {
+		if (!this.container.isDisposed()) {
+			this.container.setVisible(visible);
+		}
 	}
 
 	/**

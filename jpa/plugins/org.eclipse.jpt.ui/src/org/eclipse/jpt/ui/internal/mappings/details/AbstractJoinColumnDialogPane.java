@@ -71,13 +71,23 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 
 	private ModifyListener buildNameComboListener() {
 		return new ModifyListener() {
+
+			private boolean isDefaultName(int selectedIndex, String value) {
+				return (selectedIndex == 0) && value.equals(subject().defaultName());
+			}
+
 			public void modifyText(ModifyEvent e) {
+
 				if (!isPopulating()) {
 					setPopulating(true);
+
 					try {
 						Combo combo = (Combo) e.widget;
-						subject().setName(combo.getText());
-						subject().setDefaultNameSelected(combo.getSelectionIndex() == 0);
+						String name = combo.getText();
+						boolean defaultName = isDefaultName(combo.getSelectionIndex(), name);
+
+						subject().setName(name);
+						subject().setDefaultNameSelected(defaultName);
 					}
 					finally {
 						setPopulating(false);
@@ -89,13 +99,23 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 
 	private ModifyListener buildReferencedColumnNameComboListener() {
 		return new ModifyListener() {
+
+			private boolean isDefaultReferencedColumnName(int selectedIndex, String value) {
+				return (selectedIndex == 0) && value.equals(subject().defaultReferencedColumnName());
+			}
+
 			public void modifyText(ModifyEvent e) {
+
 				if (!isPopulating()) {
 					setPopulating(true);
+
 					try {
 						Combo combo = (Combo) e.widget;
-						subject().setReferencedColumnName(combo.getText());
-						subject().setDefaultReferencedColumnNameSelected(combo.getSelectionIndex() == 0);
+						String referencedColumnName = combo.getText();
+						boolean defaultReferencedColumnName = isDefaultReferencedColumnName(combo.getSelectionIndex(), referencedColumnName);
+
+						subject().setReferencedColumnName(referencedColumnName);
+						subject().setDefaultReferencedColumnNameSelected(defaultReferencedColumnName);
 					}
 					finally {
 						setPopulating(false);
@@ -112,6 +132,7 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 	protected void doPopulate() {
 		super.doPopulate();
 		populateNameCombo();
+		populateReferencedNameCombo();
 	}
 
 	protected final Combo getNameCombo() {

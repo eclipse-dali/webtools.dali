@@ -49,7 +49,16 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T>
 {
+	/**
+	 * The editor used to perform the common behaviors defined in the list pane.
+	 */
 	private IJoinColumnsEditor<T> joinColumnsEditor;
+
+	/**
+	 * Keeps track of the list pane in order to update its enablement state when
+	 * required.
+	 */
+	private AddRemoveListPane<T> joinColumnsListPane;
 
 	/**
 	 * Creates a new <code>JoinColumnsComposite</code>.
@@ -57,6 +66,8 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
+	 * @param joinColumnsEditor The editor used to perform the common behaviors
+	 * defined in the list pane
 	 */
 	public JoinColumnsComposite(AbstractFormPane<? extends T> parentPane,
 	                            Composite parent,
@@ -74,6 +85,8 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
+	 * @param joinColumnsEditor The editor used to perform the common behaviors
+	 * defined in the list pane
 	 */
 	public JoinColumnsComposite(AbstractFormPane<?> parentPane,
 	                            PropertyValueModel<? extends T> subjectHolder,
@@ -209,13 +222,22 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 	 * (non-Javadoc)
 	 */
 	@Override
+	public void enableWidgets(boolean enabled) {
+		super.enableWidgets(enabled);
+		joinColumnsListPane.enableWidgets(enabled);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
 	protected void initializeLayout(Composite container) {
 	}
 
 	private void initializeLayout2() {
 
 		// Join Columns list pane
-		new AddRemoveListPane<T>(
+		joinColumnsListPane = new AddRemoveListPane<T>(
 			this,
 			getControl(),
 			buildJoinColumnsAdapter(),
