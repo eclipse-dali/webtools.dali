@@ -45,6 +45,9 @@ public class JavaPersistentAttributeResourceImpl
 		super.initialize(astRoot);
 		this.typeIsBasic = this.typeIsBasic(astRoot);
 		this.qualifiedTypeName = this.qualifiedTypeName(astRoot);
+		this.qualifiedReferenceEntityTypeName = this.qualifiedReferenceEntityTypeName(astRoot);
+		this.qualifiedReferenceEntityElementTypeName = this.qualifiedReferenceEntityElementTypeName(astRoot);
+		this.typeIsContainer = this.typeIsContainer(astRoot);
 	}
 	
 	public String getName() {

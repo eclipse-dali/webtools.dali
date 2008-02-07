@@ -351,6 +351,8 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	@Override
 	public void resolveTypes(CompilationUnit astRoot) {
 		super.resolveTypes(astRoot);
+		this.setSuperClassQualifiedName(this.superClassQualifiedName(astRoot));
+
 		for (JavaPersistentAttributeResource attribute : this.attributes) {
 			attribute.resolveTypes(astRoot);
 		}

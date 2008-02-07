@@ -333,7 +333,6 @@ public class JpaProject extends JpaNode implements IJpaProject {
 		}
 		this.jpaFiles.add(jpaFile);
 		jpaFile.getResourceModel().addResourceModelChangeListener(this.resourceModelListener);
-		jpaFile.getResourceModel().resolveTypes();
 		return jpaFile;
 	}
 
