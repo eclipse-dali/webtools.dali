@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
-import org.eclipse.jpt.ui.internal.views.AbstractJpaView;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
@@ -126,6 +125,7 @@ public class TextEditorSelectionParticipant
 			return;
 		}
 		this.currentSelection = newSelection;
+		
 		if (this.forwardSelection) {
 			this.selectionManager.select(newSelection);
 		}
@@ -137,12 +137,6 @@ public class TextEditorSelectionParticipant
 			return;
 		}
 		this.currentSelection = newSelection;
-
-		// bug 188344 - won't actively change selection manager selection if
-		// a "JPA" view is the active (and presumably selecting) view
-		if (this.textEditor.getEditorSite().getPage().getActivePart() instanceof AbstractJpaView) {
-			return;
-		}
 
 		if (this.forwardSelection) {
 			this.selectionManager.select(newSelection);

@@ -55,7 +55,9 @@ public class JpaStructureSelectionParticipant
 		}
 
 		public void selectionChanged(SelectionChangedEvent event) {
-			this.selectionManager.select(this.structureViewSelection());
+			if (structureView.getViewSite().getWorkbenchWindow().getPartService().getActivePart() == structureView) {
+				selectionManager.select(this.structureViewSelection());
+			}
 		}
 
 		private IJpaSelection structureViewSelection() {

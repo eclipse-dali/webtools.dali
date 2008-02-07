@@ -109,7 +109,7 @@ public class JpaSelectionManager
 	}
 	
 	private void selectEditor(IEditorPart editor) {
-		
+		selectPart(editor);
 	}
 	
 	void selectPart(IWorkbenchPart part) {

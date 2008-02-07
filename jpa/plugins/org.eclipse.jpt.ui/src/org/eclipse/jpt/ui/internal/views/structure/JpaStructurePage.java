@@ -22,11 +22,10 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
-import org.eclipse.jpt.ui.internal.jface.NullLabelProvider;
-import org.eclipse.jpt.ui.internal.jface.NullTreeContentProvider;
 import org.eclipse.jpt.ui.internal.selection.IJpaSelection;
 import org.eclipse.jpt.ui.internal.selection.JpaSelection;
 import org.eclipse.jpt.ui.internal.structure.IJpaStructureProvider;
@@ -128,51 +127,7 @@ public class JpaStructurePage extends Page
 	
 	
 	void select(IJpaSelection selection) {
-		// TODO
-	//			// note: checks for null and equals() selection have already been performed
-	//			
-	//			if (selection.equals(IJpaSelection.NULL_SELECTION)) {
-	//				clearViewer();
-	//				return;
-	//			}
-	//			
-	//			IJpaSelection currentSelection = getSelection();
-	//			IJpaContentNode newNode = selection.getSelectedNode();
-	//			IJpaFile newFile = newNode.getJpaFile();
-	//			IJpaContentNode currentNode = 
-	//				(currentSelection == IJpaSelection.NULL_SELECTION) ?
-	//						null : getSelection().getSelectedNode();
-	//			IJpaFile currentFile = 
-	//				(currentNode == null) ? 
-	//						null : currentNode.getJpaFile();
-	//			
-	//			if (newFile.equals(currentFile)) {
-	//				viewer.setSelection(new StructuredSelection(newNode), true);
-	//			}
-	//			else if (currentFile != null &&  newFile.getContentId().equals(currentFile.getContentId())) {
-	//				viewer.setInput(newFile.getContent());
-	//				viewer.setSelection(new StructuredSelection(newNode), true);
-	//			}
-	//			else {
-	//				// new content type
-	//				// replace composite and set selection of tree
-	//				IJpaStructureProvider provider = getStructureProvider(newNode);
-	//				
-	//				if (provider == null) {
-	//					clearViewer();
-	//				}
-	//				else {
-	//					viewer.setContentProvider(provider.buildContentProvider());
-	//					viewer.setLabelProvider(provider.buildLabelProvider());
-	//					viewer.setInput(newFile.getContent());
-	//				}
-	//			}
-	}
-			
-	private void clearViewer() {
-		viewer.setContentProvider(NullTreeContentProvider.INSTANCE);
-		viewer.setLabelProvider(NullLabelProvider.INSTANCE);
-		viewer.setInput(null);
+		viewer.setSelection(new StructuredSelection(selection.getSelectedNode()), true);
 	}
 	
 	

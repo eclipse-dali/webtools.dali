@@ -11,7 +11,10 @@ package org.eclipse.jpt.ui.internal.views.structure;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.selection.IJpaSelection;
+import org.eclipse.jpt.ui.internal.selection.IJpaSelectionManager;
+import org.eclipse.jpt.ui.internal.selection.SelectionManagerFactory;
 import org.eclipse.jpt.ui.internal.structure.IJpaStructureProvider;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
@@ -19,18 +22,23 @@ import org.eclipse.ui.part.IPage;
 import org.eclipse.ui.part.MessagePage;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.PageBookView;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class JpaStructureView extends PageBookView
 {
-	private TabbedPropertySheetWidgetFactory widgetFactory = 
-			new TabbedPropertySheetWidgetFactory();
-	
-	
 	public JpaStructureView() {
 		super();
 	}
 	
+	@Override
+	public void createPartControl(Composite parent) {
+		super.createPartControl(parent);
+		
+		IJpaSelectionManager selectionManager =
+			SelectionManagerFactory.getSelectionManager(getViewSite().getWorkbenchWindow());
+		
+		selectionManager.register(this);
+		select(selectionManager.getCurrentSelection());
+	}
 	
 	@Override
 	protected boolean isImportant(IWorkbenchPart part) {
