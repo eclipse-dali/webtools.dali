@@ -32,9 +32,9 @@ public class JptCoreTests {
 		String quantity = all ? "All" : "Most";
 		TestSuite suite = new TestSuite(quantity + " JPT Core Tests");
 		suite.addTest(JptCoreJdtUtilityTests.suite(all));
-		suite.addTest(JptCoreModelTests.suite(all));
-		suite.addTest(JptCoreResourceModelTests.suite(all));
-		suite.addTest(JptCoreContextModelTests.suite(all));
+//		suite.addTest(JptCoreModelTests.suite(all));
+//		suite.addTest(JptCoreResourceModelTests.suite(all));
+//		suite.addTest(JptCoreContextModelTests.suite(all));
 		return suite;
 	}
 	
