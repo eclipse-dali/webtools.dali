@@ -330,7 +330,9 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	 *
 	 * @return The JPA project
 	 */
-	protected abstract IJpaProject jpaProject();
+	protected IJpaProject jpaProject() {
+		return subject() == null ? null : subject().jpaProject();
+	}
 
 	/*
 	 * (non-Javadoc)

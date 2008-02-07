@@ -94,7 +94,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 
 			@Override
 			protected IJpaProject jpaProject() {
-				return SequenceGeneratorComposite.this.subject().jpaProject();
+				return SequenceGeneratorComposite.this.jpaProject();
 			}
 
 			@Override

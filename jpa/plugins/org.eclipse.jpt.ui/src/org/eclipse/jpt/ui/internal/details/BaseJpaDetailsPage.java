@@ -52,7 +52,7 @@ public abstract class BaseJpaDetailsPage<T extends IJpaStructureNode>
 		}
 		// Dispose this page
 		else {
-			dispose();
+			disengageListeners();
 			subjectHolder.setValue(null);
 		}
 	}

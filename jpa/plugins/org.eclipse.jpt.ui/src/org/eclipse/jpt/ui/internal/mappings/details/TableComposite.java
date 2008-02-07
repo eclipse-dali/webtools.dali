@@ -10,7 +10,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
 import java.util.Iterator;
-import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
@@ -101,11 +100,6 @@ public class TableComposite extends AbstractFormPane<ITable>
 			}
 
 			@Override
-			protected IJpaProject jpaProject() {
-				return subject().jpaProject();
-			}
-
-			@Override
 			protected void setValue(String value) {
 				subject().setSpecifiedCatalog(value);
 			}
@@ -134,11 +128,6 @@ public class TableComposite extends AbstractFormPane<ITable>
 			}
 
 			@Override
-			protected IJpaProject jpaProject() {
-				return subject().jpaProject();
-			}
-
-			@Override
 			protected void setValue(String value) {
 				subject().setSpecifiedSchema(value);
 			}
@@ -164,11 +153,6 @@ public class TableComposite extends AbstractFormPane<ITable>
 			@Override
 			protected String defaultValue() {
 				return subject().getDefaultName();
-			}
-
-			@Override
-			protected IJpaProject jpaProject() {
-				return subject().jpaProject();
 			}
 
 			@Override

@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IJoinTable;
 import org.eclipse.jpt.db.internal.Schema;
@@ -226,11 +225,6 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 			@Override
 			protected String defaultValue() {
 				return subject().getDefaultName();
-			}
-
-			@Override
-			protected IJpaProject jpaProject() {
-				return subject().jpaProject();
 			}
 
 			@Override

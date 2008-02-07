@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.context.base.IGenerator;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
@@ -190,6 +191,11 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 	 * exists
 	 */
 	protected abstract T generator(IIdMapping subject);
+
+
+	protected IJpaProject jpaProject() {
+		return subject() == null ? null : subject().jpaProject();
+	}
 
 	/*
 	 * (non-Javadoc)

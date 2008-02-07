@@ -398,6 +398,9 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 	}
 
 	private void populateColumnCombo() {
+		if (subject() == null) {
+			return; //null check and return for now, pascal change this as necessary
+		}
 		//TODO don't do instanceof check here - check on Table, or isRoot check on Entity
 		//this.tableCombo.setEnabled(!(this.table instanceof SingleTableInheritanceChildTableImpl));
 		populateDefaultColumnName();
@@ -449,6 +452,9 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 	}
 
 	private void populateDiscriminatorValueCombo() {
+		if (subject() == null) {
+			return;//null check and return for now, pascal change this as necessary
+		}
 		String specifiedValue = this.subject().getSpecifiedDiscriminatorValue();
 		String defaultValue = this.subject().getDefaultDiscriminatorValue();
 

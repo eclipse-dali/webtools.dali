@@ -77,7 +77,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	protected ITableGenerator buildGenerator() {
 		return subject().addTableGenerator();
 	}
-
+	
 	private ColumnCombo<ITableGenerator> buildPkColumnNameCombo(Composite parent) {
 
 		return new ColumnCombo<ITableGenerator>(this, buildTableGeneratorHolder(), parent) {
@@ -106,7 +106,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 
 			@Override
 			protected IJpaProject jpaProject() {
-				return TableGeneratorComposite.this.subject().jpaProject();
+				return TableGeneratorComposite.this.jpaProject();
 			}
 
 			@Override
@@ -162,7 +162,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 
 			@Override
 			protected IJpaProject jpaProject() {
-				return TableGeneratorComposite.this.subject().jpaProject();
+				return TableGeneratorComposite.this.jpaProject();
 			}
 
 			@Override
@@ -227,7 +227,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 
 			@Override
 			protected IJpaProject jpaProject() {
-				return TableGeneratorComposite.this.subject().jpaProject();
+				return TableGeneratorComposite.this.jpaProject();
 			}
 
 			@Override
