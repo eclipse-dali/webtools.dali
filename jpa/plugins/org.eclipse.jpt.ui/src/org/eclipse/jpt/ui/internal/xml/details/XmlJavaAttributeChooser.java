@@ -96,8 +96,5 @@ public class XmlJavaAttributeChooser extends AbstractFormPane<XmlAttributeMappin
 		}
 		String text = ((Text) e.getSource()).getText();
 		subject().setName(text);
-
-		// TODO Does this need to be done?
-		//this.editingDomain.getCommandStack().execute(SetCommand.create(this.editingDomain, this.entity, MappingsPackage.eINSTANCE.getEntity_SpecifiedName(), text));
 	}
 }
