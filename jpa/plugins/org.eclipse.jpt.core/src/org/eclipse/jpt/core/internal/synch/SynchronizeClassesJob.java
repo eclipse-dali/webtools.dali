@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2007 Oracle. All rights reserved. This
+ *  Copyright (c) 2006, 2008 Oracle. All rights reserved. This
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
@@ -16,15 +16,17 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IJpaFile;
+import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
  * Synchronizes the lists of persistent classes in a persistence unit and a 
@@ -49,43 +51,48 @@ public class SynchronizeClassesJob extends Job
 		}
 		
 		IJpaFile jpaFile = JptCorePlugin.jpaFile(this.persistenceXmlFile);
-		PersistenceResource resource;
+		PersistenceResourceModel persistenceResourceModel = (PersistenceResourceModel) jpaFile.getResourceModel();
+		PersistenceResource persistenceResource;
 		try {
-			resource = (PersistenceResource) jpaFile.getResourceModel();
+			persistenceResource = (PersistenceResource) persistenceResourceModel.resource();
 		}
 		catch (ClassCastException cce) {
 			return new Status(IStatus.ERROR, JptCorePlugin.PLUGIN_ID, JptCoreMessages.INVALID_PERSISTENCE_XML_CONTENT);
 		}
 		
-		XmlPersistence persistence = resource.getPersistence();
+		XmlPersistence persistence = persistenceResource.getPersistence();
 		
 		if (persistence == null) {
 			persistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
-			resource.getContents().add(persistence);
+			persistenceResource.getContents().add(persistence);
 		}
 		
-		XmlPersistenceUnit persistenceUnit;
+		XmlPersistenceUnit persistenceUnitResource;
 		
 		if (persistence.getPersistenceUnits().size() > 0) {
-			persistenceUnit = persistence.getPersistenceUnits().get(0);
+			persistenceUnitResource = persistence.getPersistenceUnits().get(0);
 		}
 		else {
-			persistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
-			persistenceUnit.setName(this.persistenceXmlFile.getProject().getName());
-			persistence.getPersistenceUnits().add(persistenceUnit);
+			persistenceUnitResource = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
+			persistenceUnitResource.setName(this.persistenceXmlFile.getProject().getName());
+			persistence.getPersistenceUnits().add(persistenceUnitResource);
 		}
 		
-		persistenceUnit.getClasses().clear();
-		for (Iterator<String> stream = this.sortedMappedTypeNames(persistenceUnit); stream.hasNext(); ) {
+		persistenceUnitResource.getClasses().clear();
+		IJpaProject jpaProject = jpaFile.jpaProject();
+		
+		//TODO njh - should be checking to see if the reference is necessary
+		//			ref is not necessary if defined in the XML, see commented code below
+		for (Iterator<IType> stream = jpaProject.annotatedClasses(); stream.hasNext(); ) {
 			XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
-			classRef.setJavaClass(stream.next());
-			persistenceUnit.getClasses().add(classRef);
+			classRef.setJavaClass(stream.next().getFullyQualifiedName());
+			persistenceUnitResource.getClasses().add(classRef);
 		}
 		
 		monitor.worked(50);
 		
 		try {
-			resource.save(null);
+			persistenceResource.save(null);
 		}
 		catch (IOException ioe) {
 			return new Status(IStatus.ERROR, JptCorePlugin.PLUGIN_ID, JptCoreMessages.ERROR_WRITING_FILE, ioe);
@@ -93,17 +100,16 @@ public class SynchronizeClassesJob extends Job
 		
 		return Status.OK_STATUS;
 	}
-	
-	private Iterator<String> sortedMappedTypeNames(XmlPersistenceUnit persistenceUnit) {
-		return EmptyIterator.instance();
+}
+//	private Iterator<String> sortedMappedTypeNames(XmlPersistenceUnit persistenceUnit) {
 //		return CollectionTools.sort(this.mappedTypeNames(persistenceUnit));
-	}
+//	}
 //	
 //	private Iterator<String> mappedTypeNames(XmlPersistenceUnit persistenceUnit) {
 //		return new TransformationIterator<IPersistentType, String>(this.mappedTypes(persistenceUnit)) {
 //			@Override
 //			protected String transform(IPersistentType pType) {
-//				return pType.findJdtType().getFullyQualifiedName();
+//				return pType.resource().findJdtType().getFullyQualifiedName();
 //			}
 //		};
 //	}
@@ -174,4 +180,4 @@ public class SynchronizeClassesJob extends Job
 //		
 //		return false;
 //	}
-}
+
