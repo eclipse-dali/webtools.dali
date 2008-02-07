@@ -127,7 +127,12 @@ public class JpaStructurePage extends Page
 	
 	
 	void select(IJpaSelection selection) {
-		viewer.setSelection(new StructuredSelection(selection.getSelectedNode()), true);
+		if (selection.isEmpty()) {
+			viewer.setSelection(StructuredSelection.EMPTY);
+		}
+		else {
+			viewer.setSelection(new StructuredSelection(selection.getSelectedNode()), true);
+		}
 	}
 	
 	
