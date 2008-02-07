@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
@@ -171,6 +172,15 @@ public class JavaTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		//default schema taken from persistence-unit-defaults not entity-mappings since the entity is not in an orm.xml file
 		assertEquals("FOO", javaEntity().getTable().getDefaultSchema());
+
+		IFile file = ormResource().getFile();
+		//remove the mapping file reference from the persistence.xml.  default schema 
+		//should still come from persistence-unit-defaults because of implied mapped-file-ref
+		xmlPersistenceUnit().getMappingFiles().remove(mappingFileRef);
+		assertEquals("FOO", javaEntity().getTable().getDefaultSchema());
+	
+		file.delete(true, null);
+		assertNull(javaEntity().getTable().getDefaultSchema());
 	}
 	
 	public void testGetNameSpecifiedNameNull() throws Exception {
@@ -279,6 +289,15 @@ public class JavaTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		//default catalog taken from persistence-unite-defaults not entity-mappings since the entity is not in an orm.xml file
 		assertEquals("FOO", javaEntity().getTable().getDefaultCatalog());
+
+		IFile file = ormResource().getFile();
+		//remove the mapping file reference from the persistence.xml.  default schema 
+		//should still come from persistence-unit-defaults because of implied mapped-file-ref
+		xmlPersistenceUnit().getMappingFiles().remove(mappingFileRef);
+		assertEquals("FOO", javaEntity().getTable().getDefaultCatalog());
+	
+		file.delete(true, null);
+		assertNull(javaEntity().getTable().getDefaultCatalog());
 	}
 
 	public void testSetSpecifiedCatalog() throws Exception {

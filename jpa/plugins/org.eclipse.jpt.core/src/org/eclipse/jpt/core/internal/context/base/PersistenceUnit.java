@@ -958,11 +958,10 @@ public class PersistenceUnit extends JpaContextNode
 	}
 
 	protected String schema(PersistenceUnitDefaults persistenceUnitDefaults) {
-		if (persistenceUnitDefaults == null) {
-			return null;
-		}
-		if (persistenceUnitDefaults.getSchema() != null) {
-			return persistenceUnitDefaults.getSchema();
+		if (persistenceUnitDefaults != null) {
+			if (persistenceUnitDefaults.getSchema() != null) {
+				return persistenceUnitDefaults.getSchema();
+			}
 		}
 		Schema projectDefaultSchema = projectDefaultSchema();
 		return projectDefaultSchema == null ? null : projectDefaultSchema.getName();
@@ -973,11 +972,10 @@ public class PersistenceUnit extends JpaContextNode
 	}
 
 	protected String catalog(PersistenceUnitDefaults persistenceUnitDefaults) {
-		if (persistenceUnitDefaults == null) {
-			return null;
-		}
-		if (persistenceUnitDefaults.getCatalog() != null) {
-			return persistenceUnitDefaults.getCatalog();
+		if (persistenceUnitDefaults != null) {
+			if (persistenceUnitDefaults.getCatalog() != null) {
+				return persistenceUnitDefaults.getCatalog();
+			}
 		}
 		String catalog = projectDefaultCatalog();
 		//the context model uses nulls for defaults that don't exist. currently
