@@ -91,7 +91,10 @@ public class PersistenceUnit extends JpaContextNode
 		this.properties = new ArrayList<IProperty>();
 	}
 	
-	
+	public String getId() {
+		return IPersistenceStructureNodes.PERSISTENCE_UNIT_ID;
+	}
+
 	@Override
 	public IPersistenceUnit persistenceUnit() {
 		return this;

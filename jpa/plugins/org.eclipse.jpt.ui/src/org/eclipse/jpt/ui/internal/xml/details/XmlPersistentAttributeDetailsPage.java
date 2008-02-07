@@ -129,18 +129,8 @@ public class XmlPersistentAttributeDetailsPage extends PersistentAttributeDetail
 	 * (non-Javadoc)
 	 */
 	@Override
-	public void doDispose() {
-		this.javaAttributeChooser.dispose();
-		super.doDispose();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
 	protected void doPopulate() {
 		super.doPopulate();
-		this.javaAttributeChooser.doPopulate();
 		updateEnbabledState();
 	}
 

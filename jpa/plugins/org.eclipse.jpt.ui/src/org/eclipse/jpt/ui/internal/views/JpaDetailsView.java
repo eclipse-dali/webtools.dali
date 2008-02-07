@@ -62,19 +62,19 @@ public class JpaDetailsView extends AbstractJpaView
 			return null;
 		}
 
-		String id = structureNode.jpaProject().jpaPlatform().getId();
+		String id = structureNode.getId();
 
 		Composite container = getWidgetFactory().createComposite(getPageBook());
 		container.setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		IJpaDetailsPage<? extends IJpaStructureNode> page = detailsProvider.buildDetailsPage(
 			container,
-			structureNode,
+			id,
 			getWidgetFactory()
 		);
 
 		if (page != null) {
-			detailsPages.put(id, page);
+			this.detailsPages.put(id, page);
 		}
 
 		return page;
@@ -95,21 +95,17 @@ public class JpaDetailsView extends AbstractJpaView
 	}
 
 	private IJpaDetailsPage<? extends IJpaStructureNode> getDetailsPage(IJpaStructureNode structureNode) {
-		//TODO commented out the caching of the details provider for the time being,
-		//someone should probably revist the possibility of caching
-//		String id = structureNode.jpaProject().jpaPlatform().getId();
-//
-//		if (detailsPages.containsKey(id)) {
-//			IJpaDetailsPage<? extends IJpaStructureNode> page = detailsPages.get(id);
-//
-//			if ((page != null) && page.getControl().isDisposed()) {
-//				detailsPages.remove(id);
-//			}
-//			else {
-//				return page;
-//			}
-//		}
-//
+		if (detailsPages.containsKey(structureNode.getId())) {
+			IJpaDetailsPage page =  detailsPages.get(structureNode.getId());
+			
+			if ((page != null) &&
+					(page.getControl().isDisposed())) {
+				detailsPages.remove(structureNode.getId());
+			}
+			else {
+				return page;
+			}
+		}
 		return buildDetailsPage(structureNode);
 	}
 

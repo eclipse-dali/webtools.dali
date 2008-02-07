@@ -10,7 +10,6 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Map;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -173,11 +172,20 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 	 */
 	@Override
 	protected void doDispose() {
+		log(Tracing.UI_DETAILS_VIEW, "PersistentTypeDetailsPage.doDispose()");
 
-		for (Iterator<IJpaComposite<ITypeMapping>> iter = this.mappingComposites.values().iterator(); iter.hasNext(); ) {
-			iter.next().dispose();
+		this.currentMappingComposite = null;
+
+		for (IJpaComposite<ITypeMapping> composite : this.mappingComposites.values()) {
+			try {
+				composite.dispose();
+			}
+			catch (Exception e) {
+				JptUiPlugin.log(e);
+			}
 		}
 
+		this.mappingComposites.clear();
 		super.doDispose();
 	}
 

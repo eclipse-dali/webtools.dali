@@ -91,6 +91,10 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		this.virtualPersistentAttributes = new ArrayList<XmlPersistentAttribute>();
 	}
 	
+	public String getId() {
+		return IOrmStructureNodes.PERSISTENT_TYPE_ID;
+	}
+
 	public boolean isFor(String fullyQualifiedTypeName) {
 		String className = getMapping().getClass_();
 		if (className == null) {

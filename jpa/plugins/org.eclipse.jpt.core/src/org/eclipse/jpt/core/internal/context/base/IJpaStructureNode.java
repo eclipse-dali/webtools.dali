@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
  * 
  * I did not implement IJpaContextNode and I'm not even sure we should implement
  * IJpaNode.  It is possibly someone could want a structure node that is
- * not actually a contextNode in the model.
+ * not actually a contextNode in the model.//TODO
  */
 public interface IJpaStructureNode extends IJpaNode
 {
@@ -29,5 +29,10 @@ public interface IJpaStructureNode extends IJpaNode
 	 * corresponding to this node.
 	 */
 	ITextRange selectionTextRange();
+	
+	/**
+	 * Return a unique identifier for all of this class of structure nodes
+	 */
+	String getId();
 
 }

@@ -10,8 +10,7 @@
 package org.eclipse.jpt.ui.internal.java.details;
 
 import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
-import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
+import org.eclipse.jpt.core.internal.context.java.IJavaStructureNodes;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
 import org.eclipse.swt.widgets.Composite;
@@ -42,11 +41,11 @@ public class JavaDetailsProvider
 		Object contentNodeId,
 		TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		if (contentNodeId instanceof IJavaPersistentType) {
+		if (contentNodeId == IJavaStructureNodes.PERSISTENT_TYPE_ID) {
 			return new JavaPersistentTypeDetailsPage(parent, widgetFactory);
 		}
 
-		if (contentNodeId instanceof IJavaPersistentAttribute) {
+		if (contentNodeId == IJavaStructureNodes.PERSISTENT_ATTRIBUTE_ID) {
 			return new JavaPersistentAttributeDetailsPage(parent, widgetFactory);
 		}
 

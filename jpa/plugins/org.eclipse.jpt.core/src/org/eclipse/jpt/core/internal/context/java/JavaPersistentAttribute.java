@@ -38,6 +38,10 @@ public class JavaPersistentAttribute extends JavaContextModel
 		super(parent);
 	}
 	
+	public String getId() {
+		return IJavaStructureNodes.PERSISTENT_ATTRIBUTE_ID;
+	}
+
 	public void initializeFromResource(JavaPersistentAttributeResource persistentAttributeResource) {
 		this.persistentAttributeResource = persistentAttributeResource;
 		this.name = this.name(persistentAttributeResource);

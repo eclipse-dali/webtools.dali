@@ -73,6 +73,9 @@ public class XmlPersistentAttribute extends JpaContextNode
 		return this.attributeMappingProvider(key).buildAttributeMapping(jpaFactory(), this);
 	}
 	
+	public String getId() {
+		return IOrmStructureNodes.PERSISTENT_ATTRIBUTE_ID;
+	}
 
 	public String getName() {
 		return getMapping().getName();

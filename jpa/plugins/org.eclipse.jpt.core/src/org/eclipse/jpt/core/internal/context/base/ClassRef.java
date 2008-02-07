@@ -37,6 +37,9 @@ public class ClassRef extends JpaContextNode
 		super(parent);
 	}
 	
+	public String getId() {
+		return IPersistenceStructureNodes.CLASS_REF_ID;
+	}
 	
 	public boolean isFor(String fullyQualifiedTypeName) {
 		if (getClassName() == null) {

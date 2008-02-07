@@ -78,6 +78,10 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 		this.namedNativeQueries = new ArrayList<XmlNamedNativeQuery>();
 	}
 	
+	public String getId() {
+		return IOrmStructureNodes.ENTITY_MAPPINGS_ID;
+	}
+	
 	@Override
 	public EntityMappings entityMappings() {
 		return this;

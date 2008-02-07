@@ -32,6 +32,10 @@ public class MappingFileRef extends JpaContextNode
 		super(parent);
 	}
 	
+	public String getId() {
+		return IPersistenceStructureNodes.MAPPING_FILE_REF_ID;
+	}
+
 	
 	public boolean isVirtual() {
 		return xmlMappingFileRef == null;

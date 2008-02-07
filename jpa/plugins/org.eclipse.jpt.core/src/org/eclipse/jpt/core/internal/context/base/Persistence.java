@@ -38,6 +38,10 @@ public class Persistence extends JpaContextNode
 		this.persistenceUnits = new ArrayList<IPersistenceUnit>();
 	}
 	
+	public String getId() {
+		return IPersistenceStructureNodes.PERSISTENCE_ID;
+	}
+
 	
 	// **************** persistence units **************************************
 	

@@ -9,9 +9,7 @@
 package org.eclipse.jpt.ui.internal.xml.details;
 
 import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
-import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
+import org.eclipse.jpt.core.internal.context.orm.IOrmStructureNodes;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
 import org.eclipse.swt.widgets.Composite;
@@ -43,15 +41,15 @@ public class XmlDetailsProvider
 		Object contentNodeId,
 		TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		if (contentNodeId instanceof EntityMappings) {
+		if (contentNodeId == IOrmStructureNodes.ENTITY_MAPPINGS_ID) {
 			return new XmlEntityMappingsDetailsPage(parent, widgetFactory);
 		}
 
-		if (contentNodeId instanceof XmlPersistentType) {
+		if (contentNodeId == IOrmStructureNodes.PERSISTENT_TYPE_ID) {
 			return new XmlPersistentTypeDetailsPage(parent, widgetFactory);
 		}
 
-		if (contentNodeId instanceof XmlPersistentAttribute) {
+		if (contentNodeId == IOrmStructureNodes.PERSISTENT_ATTRIBUTE_ID) {
 			return new XmlPersistentAttributeDetailsPage(parent, widgetFactory);
 		}
 

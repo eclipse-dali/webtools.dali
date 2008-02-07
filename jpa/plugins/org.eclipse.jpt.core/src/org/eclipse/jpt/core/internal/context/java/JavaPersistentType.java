@@ -54,6 +54,10 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		this.attributes = new ArrayList<IJavaPersistentAttribute>();
 	}
 	
+	public String getId() {
+		return IJavaStructureNodes.PERSISTENT_TYPE_ID;
+	}
+	
 	public void initializeFromResource(JavaPersistentTypeResource persistentTypeResource) {
 		this.persistentTypeResource = persistentTypeResource;
 		this.parentPersistentType = this.parentPersistentType(persistentTypeResource);
