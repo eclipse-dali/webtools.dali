@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.IResourceModel;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.IPersistence;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
@@ -24,8 +26,12 @@ import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProviderFactory;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
+import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 
 public class PersistenceItemContentProviderFactory
 	implements ITreeItemContentProviderFactory
@@ -52,7 +58,7 @@ public class PersistenceItemContentProviderFactory
 	}
 	
 	
-	public static class PersistenceResourceModelItemContentProvider extends AbstractTreeItemContentProvider<IJpaContextNode>
+	public static class PersistenceResourceModelItemContentProvider extends AbstractTreeItemContentProvider<IJpaStructureNode>
 	{
 		public PersistenceResourceModelItemContentProvider(
 				PersistenceResourceModel persistenceResourceModel, 
@@ -66,12 +72,12 @@ public class PersistenceItemContentProviderFactory
 		}
 		
 		@Override
-		protected ListValueModel<IJpaContextNode> buildChildrenModel() {
-			return new ListAspectAdapter<PersistenceResourceModel, IJpaContextNode>(
-					IResourceModel.ROOT_CONTEXT_NODE_LIST, (PersistenceResourceModel) model()) {
+		protected ListValueModel<IJpaStructureNode> buildChildrenModel() {
+			return new ListAspectAdapter<PersistenceResourceModel, IJpaStructureNode>(
+					IResourceModel.ROOT_STRUCTURE_NODE_LIST, (PersistenceResourceModel) model()) {
 				@Override
-				protected ListIterator<IJpaContextNode> listIterator_() {
-					return subject.rootContextNodes();
+				protected ListIterator<IJpaStructureNode> listIterator_() {
+					return subject.rootStructureNodes();
 				}
 			};
 		}	
@@ -106,7 +112,7 @@ public class PersistenceItemContentProviderFactory
 	}
 	
 	
-	public static class PersistenceUnitItemContentProvider extends AbstractTreeItemContentProvider<IJpaContextNode>
+	public static class PersistenceUnitItemContentProvider extends AbstractTreeItemContentProvider<IJpaStructureNode>
 	{
 		public PersistenceUnitItemContentProvider(
 				IPersistenceUnit persistenceUnit, DelegatingTreeContentAndLabelProvider contentProvider) {
@@ -119,16 +125,44 @@ public class PersistenceItemContentProviderFactory
 		}
 		
 		@Override
-		protected ListValueModel<IJpaContextNode> buildChildrenModel() {
-			return new ListAspectAdapter<IPersistenceUnit, IJpaContextNode>(
-					new String[] {IPersistenceUnit.SPECIFIED_MAPPING_FILE_REF_LIST, IPersistenceUnit.SPECIFIED_CLASS_REF_LIST, IPersistenceUnit.IMPLIED_CLASS_REF_LIST},
-					(IPersistenceUnit) model()) {
-				@Override
-				protected ListIterator<IJpaContextNode> listIterator_() {
-					return new ReadOnlyCompositeListIterator<IJpaContextNode>(
-						subject.mappingFileRefs(), subject.classRefs());
-				}
-			};
+		protected ListValueModel<IJpaStructureNode> buildChildrenModel() {
+			ListValueModel<IJpaStructureNode> specifiedMappingFileLvm = 
+				new ListAspectAdapter<IPersistenceUnit, IJpaStructureNode>(
+						IPersistenceUnit.SPECIFIED_MAPPING_FILE_REF_LIST,
+						(IPersistenceUnit) model()) {
+					@Override
+					protected ListIterator<IJpaStructureNode> listIterator_() {
+						return new ReadOnlyCompositeListIterator<IJpaStructureNode>(
+							subject.specifiedMappingFileRefs());
+					}
+				};
+			
+			ListValueModel<IJpaStructureNode> impliedMappingFileLvm = 
+				new CollectionListValueModelAdapter<IJpaStructureNode>(
+					new PropertyCollectionValueModelAdapter<IJpaStructureNode>(
+						new PropertyAspectAdapter<IPersistenceUnit, IJpaStructureNode>(
+								IPersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY,
+								(IPersistenceUnit) model()) {
+							 @Override
+							protected IJpaStructureNode buildValue_() {
+								return subject.getImpliedMappingFileRef();
+							}
+						}));
+			ListValueModel<IJpaStructureNode> classLvm = 
+				new ListAspectAdapter<IPersistenceUnit, IJpaStructureNode>(
+						new String[] {IPersistenceUnit.SPECIFIED_CLASS_REF_LIST, IPersistenceUnit.IMPLIED_CLASS_REF_LIST},
+						(IPersistenceUnit) model()) {
+					@Override
+					protected ListIterator<IJpaStructureNode> listIterator_() {
+						return new ReadOnlyCompositeListIterator<IJpaStructureNode>(
+							subject.classRefs());
+					}
+				};
+			List<ListValueModel<IJpaStructureNode>> list = new ArrayList<ListValueModel<IJpaStructureNode>>();
+			list.add(specifiedMappingFileLvm);
+			list.add(impliedMappingFileLvm);
+			list.add(classLvm);
+			return new CompositeListValueModel<ListValueModel<IJpaStructureNode>, IJpaStructureNode>(list);
 		}
 	}
 	
