@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.structure;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.IResourceModel;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModel;
@@ -38,7 +38,7 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 	}
 	
 	
-	public static class OrmResourceModelItemContentProvider extends AbstractTreeItemContentProvider<IJpaContextNode>
+	public static class OrmResourceModelItemContentProvider extends AbstractTreeItemContentProvider<IJpaStructureNode>
 	{
 		public OrmResourceModelItemContentProvider(
 				OrmResourceModel ormResourceModel, DelegatingTreeContentAndLabelProvider contentProvider) {
@@ -51,12 +51,12 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 		}
 		
 		@Override
-		protected ListValueModel<IJpaContextNode> buildChildrenModel() {
-			return new ListAspectAdapter<OrmResourceModel, IJpaContextNode>(
-					IResourceModel.ROOT_CONTEXT_NODE_LIST, (OrmResourceModel) model()) {
+		protected ListValueModel<IJpaStructureNode> buildChildrenModel() {
+			return new ListAspectAdapter<OrmResourceModel, IJpaStructureNode>(
+					IResourceModel.ROOT_STRUCTURE_NODE_LIST, (OrmResourceModel) model()) {
 				@Override
-				protected ListIterator<IJpaContextNode> listIterator_() {
-					return subject.rootContextNodes();
+				protected ListIterator<IJpaStructureNode> listIterator_() {
+					return subject.rootStructureNodes();
 				}
 			};
 		}	

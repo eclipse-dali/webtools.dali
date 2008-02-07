@@ -11,9 +11,10 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResource;
 
-public interface OrmXml extends IJpaContextNode
+public interface OrmXml extends IJpaContextNode, IJpaStructureNode
 {
 	// **************** persistence *******************************************
 	

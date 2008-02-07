@@ -150,6 +150,10 @@ public class ClassRef extends JpaContextNode
 		}
 	}
 	
+	public IJpaStructureNode structureNode(int textOffset) {
+		return this;
+	}
+	
 	public boolean containsOffset(int textOffset) {
 		if (isVirtual()) {
 			return false;

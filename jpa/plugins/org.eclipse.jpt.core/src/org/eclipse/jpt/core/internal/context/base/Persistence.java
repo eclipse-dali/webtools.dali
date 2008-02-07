@@ -140,17 +140,20 @@ public class Persistence extends JpaContextNode
 		throw new UnsupportedOperationException("No PersistenceUnit in this context");
 	}
 	
-	@Override
 	public IJpaStructureNode structureNode(int textOffset) {
-		if (! xmlPersistence.containsOffset(textOffset)) {
-			return null;
-		}
 		for (IPersistenceUnit persistenceUnit : CollectionTools.iterable(persistenceUnits())) {
 			if (persistenceUnit.containsOffset(textOffset)) {
 				return persistenceUnit.structureNode(textOffset);
 			}
 		}
 		return this;
+	}
+	
+	public boolean containsOffset(int textOffset) {
+		if (xmlPersistence == null) {
+			return false;
+		}
+		return xmlPersistence.containsOffset(textOffset);
 	}
 	
 	public ITextRange selectionTextRange() {

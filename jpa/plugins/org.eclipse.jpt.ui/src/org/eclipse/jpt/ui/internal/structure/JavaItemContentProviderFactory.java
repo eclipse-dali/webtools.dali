@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.structure;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.IResourceModel;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingContentAndLabelProvider;
@@ -34,7 +34,7 @@ public class JavaItemContentProviderFactory extends GeneralJpaMappingItemContent
 	}
 	
 	
-	public static class JavaResourceModelItemContentProvider extends AbstractTreeItemContentProvider<IJpaContextNode>
+	public static class JavaResourceModelItemContentProvider extends AbstractTreeItemContentProvider<IJpaStructureNode>
 	{
 		public JavaResourceModelItemContentProvider(
 				JavaResourceModel javaResourceModel, DelegatingTreeContentAndLabelProvider contentProvider) {
@@ -47,12 +47,12 @@ public class JavaItemContentProviderFactory extends GeneralJpaMappingItemContent
 		}
 		
 		@Override
-		protected ListValueModel<IJpaContextNode> buildChildrenModel() {
-			return new ListAspectAdapter<JavaResourceModel, IJpaContextNode>(
-					IResourceModel.ROOT_CONTEXT_NODE_LIST, (JavaResourceModel) model()) {
+		protected ListValueModel<IJpaStructureNode> buildChildrenModel() {
+			return new ListAspectAdapter<JavaResourceModel, IJpaStructureNode>(
+					IResourceModel.ROOT_STRUCTURE_NODE_LIST, (JavaResourceModel) model()) {
 				@Override
-				protected ListIterator<IJpaContextNode> listIterator_() {
-					return subject.rootContextNodes();
+				protected ListIterator<IJpaStructureNode> listIterator_() {
+					return subject.rootStructureNodes();
 				}
 			};
 		}	

@@ -71,14 +71,14 @@ public class JpaCompletionProposalComputer implements IJavaCompletionProposalCom
 
 		JavaResourceModel javaResourceModel = (JavaResourceModel) jpaFile.getResourceModel();
 		
-		if (!javaResourceModel.rootContextNodes().hasNext()) {
+		if (!javaResourceModel.rootStructureNodes().hasNext()) {
 			return Collections.emptyList();
 		}
 		
 		//TODO A bit of hackery for now just to get this compiling and working good enough, 
 		//we need to have a way to get the context model given an IFile or IJpaFile
 		//instead of having to ask the IResourceModel for it
-		JavaPersistentType contextNode = (JavaPersistentType) javaResourceModel.rootContextNodes().next();
+		JavaPersistentType structureNode = (JavaPersistentType) javaResourceModel.rootStructureNodes().next();
 		CompletionContext cc = context.getCoreContext();
 
 		// the context's "token" is really a sort of "prefix" - it does NOT
@@ -101,7 +101,7 @@ public class JpaCompletionProposalComputer implements IJavaCompletionProposalCom
 
 		CompilationUnit astRoot = JDTTools.buildASTRoot(cu);
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
-		for (Iterator<String> stream = contextNode.candidateValuesFor(context.getInvocationOffset(), filter, astRoot); stream.hasNext(); ) {
+		for (Iterator<String> stream = structureNode.candidateValuesFor(context.getInvocationOffset(), filter, astRoot); stream.hasNext(); ) {
 			String s = stream.next();
 			proposals.add(new CompletionProposal(s, tokenStart, tokenEnd - tokenStart + 1, s.length()));
 		}

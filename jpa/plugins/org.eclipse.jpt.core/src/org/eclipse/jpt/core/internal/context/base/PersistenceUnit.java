@@ -1229,11 +1229,7 @@ public class PersistenceUnit extends JpaContextNode
 		return null;
 	}
 	
-	@Override
 	public IJpaStructureNode structureNode(int textOffset) {
-		if (! containsOffset(textOffset)) {
-			return null;
-		}
 		for (IMappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
 			if (mappingFileRef.containsOffset(textOffset)) {
 				return mappingFileRef;

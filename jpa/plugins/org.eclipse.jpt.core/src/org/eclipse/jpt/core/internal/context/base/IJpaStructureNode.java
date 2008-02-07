@@ -25,6 +25,11 @@ import org.eclipse.jpt.core.internal.ITextRange;
 public interface IJpaStructureNode extends IJpaNode
 {
 	/**
+	 * Return the structure node at the given offset.
+	 */
+	IJpaStructureNode structureNode(int textOffset);
+	
+	/**
 	 * Return the text range do be used to select text in the editor
 	 * corresponding to this node.
 	 */
@@ -34,5 +39,4 @@ public interface IJpaStructureNode extends IJpaNode
 	 * Return a unique identifier for all of this class of structure nodes
 	 */
 	String getId();
-
 }

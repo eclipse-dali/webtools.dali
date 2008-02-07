@@ -793,11 +793,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		return this;
 	}
 	
-	@Override
 	public IJpaStructureNode structureNode(int textOffset) {
-		if (! containsOffset(textOffset)) {
-			return null;
-		}
 		for (XmlPersistentAttribute attribute : CollectionTools.iterable(specifiedAttributes())) {
 			if (attribute.containsOffset(textOffset)) {
 				return attribute;

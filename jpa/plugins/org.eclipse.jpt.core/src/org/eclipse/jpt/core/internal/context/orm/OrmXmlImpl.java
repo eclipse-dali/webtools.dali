@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
@@ -27,6 +28,11 @@ public class OrmXmlImpl extends JpaContextNode
 	
 	public OrmXmlImpl(IMappingFileRef parent) {
 		super(parent);
+	}
+	
+	public String getId() {
+		// isn't actually displayed, so needs no details page
+		return null;
 	}
 	
 	public XmlPersistentType persistentTypeFor(String fullyQualifiedTypeName) {
@@ -101,10 +107,10 @@ public class OrmXmlImpl extends JpaContextNode
 			else {
 				setEntityMappings(createEntityMappings(ormResource.getEntityMappings()));
 			}
-			ormResource.resourceModel().addRootContextNode(getEntityMappings());
+			ormResource.resourceModel().addRootStructureNode(getEntityMappings());
 		}
 		else {
-			ormResource.resourceModel().removeRootContextNode(getEntityMappings());
+			ormResource.resourceModel().removeRootStructureNode(getEntityMappings());
 			setEntityMappings(null);
 		}
 	}
@@ -117,6 +123,18 @@ public class OrmXmlImpl extends JpaContextNode
 	
 	
 	// *************************************************************************
+	
+	public IJpaStructureNode structureNode(int textOffset) {
+		if (entityMappings.containsOffset(textOffset)) {
+			return entityMappings.structureNode(textOffset);
+		}
+		return this;
+	}
+	
+	// never actually selected
+	public ITextRange selectionTextRange() {
+		return ITextRange.Empty.instance();
+	}
 	
 	public ITextRange validationTextRange() {
 		return ITextRange.Empty.instance();

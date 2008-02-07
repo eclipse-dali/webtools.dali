@@ -124,4 +124,8 @@ public interface EntityMappings extends IJpaContextNode, IJpaStructureNode
 	void initialize(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings);
 	
 	void update(org.eclipse.jpt.core.internal.resource.orm.EntityMappings entityMappings);
+	
+	// *************************************************************************
+	
+	boolean containsOffset(int textOffset);
 }

@@ -314,12 +314,8 @@ public class XmlPersistentAttribute extends JpaContextNode
 		}
 	}
 	
-	@Override
 	public IJpaStructureNode structureNode(int offset) {
-		if (containsOffset(offset)) {
-			return this;
-		}
-		return null;
+		return this;
 	}
 
 	public boolean containsOffset(int textOffset) {

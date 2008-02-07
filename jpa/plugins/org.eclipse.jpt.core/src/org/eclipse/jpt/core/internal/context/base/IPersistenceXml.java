@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.base;
 
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 
-public interface IPersistenceXml extends IJpaContextNode
+public interface IPersistenceXml extends IJpaContextNode, IJpaStructureNode
 {
 	// **************** persistence *******************************************
 	

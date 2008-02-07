@@ -16,6 +16,7 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.resource.java.Annotation;
 import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
@@ -173,6 +174,10 @@ public class JavaPersistentAttribute extends JavaContextModel
 				this.persistentAttributeResource.removeAnnotation(annotationName);
 			}
 		}
+	}
+	
+	public IJpaStructureNode structureNode(int textOffset) {
+		return this;
 	}
 
 	public boolean contains(int offset, CompilationUnit astRoot) {

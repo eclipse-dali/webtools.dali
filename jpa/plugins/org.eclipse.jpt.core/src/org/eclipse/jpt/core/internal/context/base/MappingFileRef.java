@@ -161,6 +161,10 @@ public class MappingFileRef extends JpaContextNode
 		return null;
 	}
 	
+	public IJpaStructureNode structureNode(int textOffset) {
+		return this;
+	}
+	
 	public boolean containsOffset(int textOffset) {
 		if (xmlMappingFileRef == null) {
 			return false;

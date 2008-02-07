@@ -26,9 +26,4 @@ public interface IJpaContextNode extends IJpaNode
 
 	//TODO interface for this
 	XmlPersistentType xmlPersistentType();
-	
-	/**
-	 * Return the structure node at the given offset.
-	 */
-	IJpaStructureNode structureNode(int textOffset);
 }

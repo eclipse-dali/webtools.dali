@@ -304,7 +304,6 @@ public abstract class XmlTypeMapping<E extends TypeMapping> extends JpaContextNo
 	
 	// *************************************************************************
 	
-	@Override
 	public IJpaStructureNode structureNode(int offset) {
 		if (this.typeMapping.containsOffset(offset)) {
 			return persistentType();

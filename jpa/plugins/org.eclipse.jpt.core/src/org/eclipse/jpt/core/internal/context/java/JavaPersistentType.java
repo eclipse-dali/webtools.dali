@@ -233,13 +233,9 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		return EmptyIterator.instance();
 	}
 	
-	@Override
 	public IJpaStructureNode structureNode(int offset) {
 		//TODO astRoot, possibly get this instead of rebuilding it
 		CompilationUnit astRoot = this.persistentTypeResource.getMember().astRoot(); 
-		if (!this.contains(offset, astRoot)) {
-			return null;
-		}
 		
 		for (Iterator<IJavaPersistentAttribute> i = attributes(); i.hasNext();) {
 			IJavaPersistentAttribute persistentAttribute = i.next();
@@ -307,7 +303,7 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	// ******************** Updating **********************
 	public void update(JavaPersistentTypeResource persistentTypeResource) {
 		this.persistentTypeResource = persistentTypeResource;
-		this.persistentTypeResource.resourceModel().addRootContextNode(this);
+		this.persistentTypeResource.resourceModel().addRootStructureNode(this);
 		updateParentPersistentType(persistentTypeResource);
 		updateAccess(persistentTypeResource);
 		updateName(persistentTypeResource);

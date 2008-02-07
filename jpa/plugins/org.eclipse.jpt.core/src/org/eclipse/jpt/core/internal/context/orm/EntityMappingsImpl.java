@@ -702,11 +702,7 @@ public class EntityMappingsImpl extends JpaContextNode implements EntityMappings
 	
 	// *************************************************************************
 	
-	@Override
 	public IJpaStructureNode structureNode(int textOffset) {
-		if (! containsOffset(textOffset)) {
-			return null;
-		}
 		for (XmlPersistentType persistentType: CollectionTools.iterable(xmlPersistentTypes())) {
 			if (persistentType.containsOffset(textOffset)) {
 				return persistentType.structureNode(textOffset);

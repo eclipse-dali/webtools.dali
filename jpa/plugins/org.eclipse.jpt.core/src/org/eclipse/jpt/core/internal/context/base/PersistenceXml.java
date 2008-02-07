@@ -11,7 +11,6 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 import java.util.List;
-
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
@@ -32,6 +31,11 @@ public class PersistenceXml extends JpaContextNode
 	
 	public PersistenceXml(IBaseJpaContent baseJpaContent) {
 		super(baseJpaContent);
+	}
+	
+	public String getId() {
+		// isn't actually displayed, so needs no details page
+		return null;
 	}
 	
 	@Override
@@ -88,7 +92,7 @@ public class PersistenceXml extends JpaContextNode
 	public void update(PersistenceResource persistenceResource) {
 		if (! persistenceResource.equals(this.persistenceResource)) {
 			this.persistenceResource = persistenceResource;
-			this.persistenceResource.resourceModel().removeRootContextNode(this);
+			this.persistenceResource.resourceModel().removeRootStructureNode(this);
 		}
 		if (persistenceResource.getPersistence() != null) {
 			if (this.persistence != null) {
@@ -97,7 +101,7 @@ public class PersistenceXml extends JpaContextNode
 			else {
 				setPersistence_(createPersistence(persistenceResource.getPersistence()));
 			}
-			persistenceResource.resourceModel().addRootContextNode(getPersistence());
+			persistenceResource.resourceModel().addRootStructureNode(getPersistence());
 		}
 		else {
 			setPersistence_(null);
@@ -118,11 +122,28 @@ public class PersistenceXml extends JpaContextNode
 		throw new UnsupportedOperationException("No PersistenceUnit in this context");
 	}
 	
+	
+	public IJpaStructureNode structureNode(int textOffset) {
+		if (persistence.containsOffset(textOffset)) {
+			return persistence.structureNode(textOffset);
+		}
+		return this;
+	}
+	
+	// never actually selected
+	public ITextRange selectionTextRange() {
+		return ITextRange.Empty.instance();
+	}
+	
 	public ITextRange validationTextRange() {
 		return ITextRange.Empty.instance();
 	}
+	
+	
+	// **************** validation *********************************************
+	
 	private boolean okToContinueValidation = true;
-
+	
 	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);

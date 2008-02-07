@@ -62,4 +62,14 @@ public interface IPersistence extends IJpaContextNode, IJpaStructureNode
 	void initialize(XmlPersistence xmlPersistence);
 	
 	void update(XmlPersistence persistence);
+	
+	
+	// **************** text range *********************************************
+	
+	/**
+	 * Return whether the text representation of this persistence contains
+	 * the given text offset
+	 */
+	boolean containsOffset(int textOffset);
+	
 }
