@@ -71,4 +71,10 @@ public interface IPersistentAttribute extends IJpaContextNode, IJpaStructureNode
 	 * Return whether the attribute's "attribute" mapping is for an ID.
 	 */
 	boolean isIdAttribute();
+	
+	/**
+	 * Return whether this attribute actually has a textual representation
+	 * in its underlying resource (false = no)
+	 */
+	boolean isVirtual();
 }

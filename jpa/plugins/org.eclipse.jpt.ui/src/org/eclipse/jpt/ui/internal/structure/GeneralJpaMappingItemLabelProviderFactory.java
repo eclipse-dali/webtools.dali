@@ -19,6 +19,7 @@ import org.eclipse.jpt.ui.internal.jface.IItemLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.IItemLabelProviderFactory;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 
 public abstract class GeneralJpaMappingItemLabelProviderFactory
@@ -89,7 +90,11 @@ public abstract class GeneralJpaMappingItemLabelProviderFactory
 					(IPersistentAttribute) model()) {
 				@Override
 				protected Image buildValue_() {
-					return JpaMappingImageHelper.imageForAttributeMapping(subject.mappingKey());
+					Image image = JpaMappingImageHelper.imageForAttributeMapping(subject.mappingKey());
+					if (((IPersistentAttribute) model()).isVirtual()) {
+						image = new Image(image.getDevice(), image, SWT.IMAGE_DISABLE);
+					}
+					return image;
 				}
 			};
 		}	

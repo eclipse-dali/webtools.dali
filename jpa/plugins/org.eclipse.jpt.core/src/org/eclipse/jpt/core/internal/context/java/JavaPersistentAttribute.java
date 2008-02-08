@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
@@ -85,6 +84,10 @@ public class JavaPersistentAttribute extends JavaContextModel
 
 	public boolean isIdAttribute() {
 		return this.getMapping().isIdMapping();
+	}
+	
+	public boolean isVirtual() {
+		return false;
 	}
 	
 	public String getName() {
