@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IJoinTable;
+import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
@@ -218,8 +219,8 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(IJoinTable.DEFAULT_NAME_PROPERTY);
-				propertyNames.add(IJoinTable.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(ITable.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(ITable.SPECIFIED_NAME_PROPERTY);
 			}
 
 			@Override
@@ -271,7 +272,7 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 		boolean inverseEnabled = (subject != null) && subject.containsSpecifiedInverseJoinColumns();
 
 		overrideDefaultJoinColumnsCheckBox.setSelection(enabled);
-		overrideDefaultInverseJoinColumnsCheckBox.setSelection(enabled);
+		overrideDefaultInverseJoinColumnsCheckBox.setSelection(inverseEnabled);
 
 		joinColumnsComposite.enableWidgets(enabled);
 		inverseJoinColumnsComposite.enableWidgets(inverseEnabled);
@@ -368,9 +369,9 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 			return;
 		}
 
-		IJoinTable subject = subject();
+		IJoinTable joinTable = subject();
 		boolean selected = overrideDefaultInverseJoinColumnsCheckBox.getSelection();
-		joinColumnsComposite.enableWidgets(selected);
+		inverseJoinColumnsComposite.enableWidgets(selected);
 		setPopulating(true);
 
 		try {
@@ -378,20 +379,20 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 			// one if it exists
 			if (selected) {
 
-				IJoinColumn defaultJoinColumn = subject.getDefaultInverseJoinColumn(); //TODO null check, override default button disabled
+				IJoinColumn defaultJoinColumn = joinTable.getDefaultInverseJoinColumn(); //TODO null check, override default button disabled
 
 				if (defaultJoinColumn != null) {
 					String columnName = defaultJoinColumn.getDefaultName();
 					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
 
-					IJoinColumn joinColumn = subject.addSpecifiedInverseJoinColumn(0);
+					IJoinColumn joinColumn = joinTable.addSpecifiedInverseJoinColumn(0);
 					joinColumn.setSpecifiedName(columnName);
 					joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
 				}
 			}
 			else {
-				for (int index = subject.specifiedInverseJoinColumnsSize(); --index >= 0; ) {
-					subject.removeSpecifiedInverseJoinColumn(index);
+				for (int index = joinTable.specifiedInverseJoinColumnsSize(); --index >= 0; ) {
+					joinTable.removeSpecifiedInverseJoinColumn(index);
 				}
 			}
 		}
@@ -406,7 +407,7 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 			return;
 		}
 
-		IJoinTable subject = subject();
+		IJoinTable joinTable = subject();
 		boolean selected = overrideDefaultJoinColumnsCheckBox.getSelection();
 		joinColumnsComposite.enableWidgets(selected);
 		setPopulating(true);
@@ -416,20 +417,20 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 			// one if it exists
 			if (selected) {
 
-				IJoinColumn defaultJoinColumn = subject.getDefaultJoinColumn(); //TODO null check, override default button disabled
+				IJoinColumn defaultJoinColumn = joinTable.getDefaultJoinColumn(); //TODO null check, override default button disabled
 
 				if (defaultJoinColumn != null) {
 					String columnName = defaultJoinColumn.getDefaultName();
 					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
 
-					IJoinColumn joinColumn = subject.addSpecifiedJoinColumn(0);
+					IJoinColumn joinColumn = joinTable.addSpecifiedJoinColumn(0);
 					joinColumn.setSpecifiedName(columnName);
 					joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
 				}
 			}
 			else {
-				for (int index = subject.specifiedJoinColumnsSize(); --index >= 0; ) {
-					subject.removeSpecifiedJoinColumn(index);
+				for (int index = joinTable.specifiedJoinColumnsSize(); --index >= 0; ) {
+					joinTable.removeSpecifiedJoinColumn(index);
 				}
 			}
 		}
@@ -452,15 +453,20 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 			return subject.containsSpecifiedInverseJoinColumns();
 		}
 
-		public ListIterator<IJoinColumn> joinColumns(IJoinTable subject) {
-			return subject.inverseJoinColumns();
+		public ListIterator<IJoinColumn> specifiedJoinColumns(IJoinTable subject) {
+			return subject.specifiedInverseJoinColumns();
+		}
+		
+		public IJoinColumn defaultJoinColumn(IJoinTable subject) {
+			return subject.getDefaultInverseJoinColumn();
 		}
 
-		public String[] propertyNames() {
-			return new String[] {
-				IJoinTable.DEFAULT_INVERSE_JOIN_COLUMN,//TODO
-				IJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST
-			};
+		public String specifiedListPropertyName() {
+			return IJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST;
+		}
+		
+		public String defaultPropertyName() {
+			return IJoinTable.DEFAULT_INVERSE_JOIN_COLUMN;
 		}
 
 		public void removeJoinColumns(IJoinTable subject, int[] selectedIndices) {
@@ -484,15 +490,20 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 			return subject.containsSpecifiedJoinColumns();
 		}
 
-		public ListIterator<IJoinColumn> joinColumns(IJoinTable subject) {
-			return subject.joinColumns();
+		public ListIterator<IJoinColumn> specifiedJoinColumns(IJoinTable subject) {
+			return subject.specifiedJoinColumns();
+		}
+		
+		public IJoinColumn defaultJoinColumn(IJoinTable subject) {
+			return subject.getDefaultJoinColumn();
 		}
 
-		public String[] propertyNames() {
-			return new String[] {
-				IJoinTable.DEFAULT_JOIN_COLUMN, //TODO
-				IJoinTable.SPECIFIED_JOIN_COLUMNS_LIST
-			};
+		public String specifiedListPropertyName() {
+			return IJoinTable.SPECIFIED_JOIN_COLUMNS_LIST;
+		}
+		
+		public String defaultPropertyName() {
+			return IJoinTable.DEFAULT_JOIN_COLUMN;
 		}
 
 		public void removeJoinColumns(IJoinTable subject, int[] selectedIndices) {

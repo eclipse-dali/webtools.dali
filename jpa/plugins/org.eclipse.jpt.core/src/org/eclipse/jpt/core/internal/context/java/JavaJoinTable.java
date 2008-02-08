@@ -165,12 +165,18 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 	}
 
 	public IJavaJoinColumn addSpecifiedJoinColumn(int index) {
-		//TODO this is a bad idea, but it's working for now. Need to revist
-		// the idea of having a way to add the JoinTable and the JoinColumn
-		//and then firing property change events.  Otherwise we end up creating
-		//the spcifiedJoinColumn then wiping it out and creating another one during
-		//an update from the java resource model
+		IJoinColumn oldDefaultJoinColumn = this.getDefaultJoinColumn();
+		if (oldDefaultJoinColumn != null) {
+			//null the default join column now if one already exists.
+			//if one does not exist, there is already a specified join column.
+			//Remove it now so that it doesn't get removed during an update and
+			//cause change notifications to be sent to the UI in the wrong order
+			this.defaultJoinColumn = null;
+		}
 		if (joinTableResource() == null) {
+			//Add the JoinTable before creating the specifiedJoinColumn.
+			//Otherwise we will remove it and create another during an update
+			//from the java resource model
 			addJoinTableResource();
 		}
 		IJavaJoinColumn joinColumn = jpaFactory().createJavaJoinColumn(this, createJoinColumnOwner());
@@ -178,6 +184,9 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 		JoinColumn joinColumnResource = this.tableResource().addJoinColumn(index);
 		joinColumn.initializeFromResource(joinColumnResource);
 		this.fireItemAdded(IJoinTable.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
+		if (oldDefaultJoinColumn != null) {
+			this.firePropertyChanged(IJoinTable.DEFAULT_JOIN_COLUMN, oldDefaultJoinColumn, null);
+		}
 		return joinColumn;
 	}
 
@@ -191,8 +200,18 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 	
 	public void removeSpecifiedJoinColumn(int index) {
 		IJavaJoinColumn removedJoinColumn = this.specifiedJoinColumns.remove(index);
+		if (!containsSpecifiedJoinColumns()) {
+			//create the defaultJoinColumn now or this will happen during project update 
+			//after removing the join column from the resource model. That causes problems 
+			//in the UI because the change notifications end up in the wrong order.
+			this.defaultJoinColumn = createJoinColumn(new NullJoinColumn(tableResource()));
+		}
 		this.tableResource().removeJoinColumn(index);
 		fireItemRemoved(IJoinTable.SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
+		if (this.defaultJoinColumn != null) {
+			//fire change notification if a defaultJoinColumn was created above
+			this.firePropertyChanged(IJoinTable.DEFAULT_JOIN_COLUMN, null, this.defaultJoinColumn);		
+		}
 	}
 
 	protected void removeSpecifiedJoinColumn_(IJavaJoinColumn joinColumn) {
@@ -247,12 +266,18 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 	}
 
 	public IJavaJoinColumn addSpecifiedInverseJoinColumn(int index) {
-		//TODO this is a bad idea, but it's working for now and tests are passing. Need to revist
-		//the idea of having a way to add the JoinTable and the JoinColumn
-		//and then firing property change events.  Otherwise we end up creating
-		//the spcifiedJoinColumn then wiping it out and creating another one during
-		//an update from the java resource model
+		IJoinColumn oldDefaultInverseJoinColumn = this.getDefaultInverseJoinColumn();
+		if (oldDefaultInverseJoinColumn != null) {
+			//null the default join column now if one already exists.
+			//if one does not exist, there is already a specified join column.
+			//Remove it now so that it doesn't get removed during an update and
+			//cause change notifications to be sent to the UI in the wrong order
+			this.defaultInverseJoinColumn = null;
+		}
 		if (joinTableResource() == null) {
+			//Add the JoinTable before creating the specifiedJoinColumn.
+			//Otherwise we will remove it and create another during an update
+			//from the java resource model
 			addJoinTableResource();
 		}
 		IJavaJoinColumn inverseJoinColumn = jpaFactory().createJavaJoinColumn(this, createInverseJoinColumnOwner());
@@ -260,6 +285,9 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 		JoinColumn joinColumnResource = this.tableResource().addInverseJoinColumn(index);
 		inverseJoinColumn.initializeFromResource(joinColumnResource);
 		this.fireItemAdded(IJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, index, inverseJoinColumn);
+		if (oldDefaultInverseJoinColumn != null) {
+			this.firePropertyChanged(IJoinTable.DEFAULT_INVERSE_JOIN_COLUMN, oldDefaultInverseJoinColumn, null);
+		}
 		return inverseJoinColumn;
 	}
 	
@@ -273,8 +301,18 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 
 	public void removeSpecifiedInverseJoinColumn(int index) {
 		IJavaJoinColumn removedJoinColumn = this.specifiedInverseJoinColumns.remove(index);
+		if (!containsSpecifiedInverseJoinColumns()) {
+			//create the defaultJoinColumn now or this will happen during project update 
+			//after removing the join column from the resource model. That causes problems 
+			//in the UI because the change notifications end up in the wrong order.
+			this.defaultInverseJoinColumn = createInverseJoinColumn(new NullJoinColumn(tableResource()));
+		}
 		this.tableResource().removeInverseJoinColumn(index);
 		fireItemRemoved(IJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, index, removedJoinColumn);
+		if (this.defaultInverseJoinColumn != null) {
+			//fire change notification if a defaultJoinColumn was created above
+			this.firePropertyChanged(IJoinTable.DEFAULT_INVERSE_JOIN_COLUMN, null, this.defaultInverseJoinColumn);		
+		}
 	}
 
 	protected void removeSpecifiedInverseJoinColumn_(IJavaJoinColumn joinColumn) {
@@ -410,9 +448,8 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 			return;
 		}
 		if (getDefaultJoinColumn() == null) {
-			IJavaJoinColumn joinColumn = this.jpaFactory().createJavaJoinColumn(this, createJoinColumnOwner());
-			joinColumn.initializeFromResource(new NullJoinColumn(joinTable));
-			this.setDefaultJoinColumn(joinColumn);
+			JoinColumn joinColumnResource = new NullJoinColumn(joinTable);
+			this.setDefaultJoinColumn(createJoinColumn(joinColumnResource));
 		}
 		else {
 			this.defaultJoinColumn.update(new NullJoinColumn(joinTable));
@@ -444,9 +481,8 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 			return;
 		}
 		if (getDefaultInverseJoinColumn() == null) {
-			IJavaJoinColumn joinColumn = this.jpaFactory().createJavaJoinColumn(this, createInverseJoinColumnOwner());
-			joinColumn.initializeFromResource(new NullJoinColumn(joinTable));
-			this.setDefaultInverseJoinColumn(joinColumn);
+			JoinColumn joinColumnResource = new NullJoinColumn(joinTable);
+			this.setDefaultInverseJoinColumn(createInverseJoinColumn(joinColumnResource));
 		}
 		else {
 			this.defaultInverseJoinColumn.update(new NullJoinColumn(joinTable));

@@ -499,15 +499,23 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 			return subject.containsSpecifiedJoinColumns();
 		}
 
-		public ListIterator<IJoinColumn> joinColumns(IAssociationOverride subject) {
-			return subject.joinColumns();
+		
+		public ListIterator<IJoinColumn> specifiedJoinColumns(IAssociationOverride subject) {
+			return subject.specifiedJoinColumns();
+		}
+	
+		public IJoinColumn defaultJoinColumn(IAssociationOverride subject) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 
-		public String[] propertyNames() {
-			return new String[] {
-				IAssociationOverride.DEFAULT_JOIN_COLUMNS_LIST,
-				IAssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST
-			};
+		public String specifiedListPropertyName() {
+			return IAssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST;
+		}
+		
+		public String defaultPropertyName() {
+			// TODO Auto-generated method stub
+			return IAssociationOverride.DEFAULT_JOIN_COLUMNS_LIST;
 		}
 
 		public void removeJoinColumns(IAssociationOverride subject, int[] selectedIndices) {

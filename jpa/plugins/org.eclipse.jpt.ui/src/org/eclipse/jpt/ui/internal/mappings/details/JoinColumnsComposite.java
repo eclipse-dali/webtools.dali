@@ -9,22 +9,28 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.ArrayList;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.core.internal.IJpaNode;
+import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
+import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.osgi.util.NLS;
@@ -115,20 +121,19 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 		initializeLayout2();
 	}
 
-	private String buildDefaultJoinColumnLabel(IJoinColumn joinColumn) {
-		return NLS.bind(
-			JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsDefault,
-			joinColumn.getName(),
-			joinColumn.getReferencedColumnName()
-		);
-	}
-
 	private WritablePropertyValueModel<IJoinColumn> buildJoinColumnHolder() {
 		return new SimplePropertyValueModel<IJoinColumn>();
 	}
 
 	private String buildJoinColumnLabel(IJoinColumn joinColumn) {
 
+		if (joinColumn.isVirtual()) {
+			return NLS.bind(
+				JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsDefault,
+				joinColumn.getName(),
+				joinColumn.getReferencedColumnName()
+			);			
+		}
 		if (joinColumn.getSpecifiedName() == null) {
 
 			if (joinColumn.getSpecifiedReferencedColumnName() == null) {
@@ -190,14 +195,45 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 		};
 	}
 
+	private ListValueModel<IJoinColumn> buildJoinColumnsListModel() {
+		return new ItemPropertyListValueModelAdapter<IJoinColumn>(buildJoinColumnsListHolder(), 
+			INamedColumn.SPECIFIED_NAME_PROPERTY, 
+			INamedColumn.DEFAULT_NAME_PROPERTY,
+			IAbstractJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
+			IAbstractJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY);
+	}	
+
 	private ListValueModel<IJoinColumn> buildJoinColumnsListHolder() {
-		return new ListAspectAdapter<T, IJoinColumn>(getSubjectHolder(), joinColumnsEditor.propertyNames()) {
+		java.util.List<ListValueModel<IJoinColumn>> list = new ArrayList<ListValueModel<IJoinColumn>>();
+		list.add(buildSpecifiedJoinColumnsListHolder());
+		list.add(buildDefaultJoinColumnListHolder());
+		return new CompositeListValueModel<ListValueModel<IJoinColumn>, IJoinColumn>(list);
+	}
+	
+	private ListValueModel<IJoinColumn> buildSpecifiedJoinColumnsListHolder() {
+		return new ListAspectAdapter<T, IJoinColumn>(getSubjectHolder(), joinColumnsEditor.specifiedListPropertyName()) {
 			@Override
 			protected ListIterator<IJoinColumn> listIterator_() {
-				return joinColumnsEditor.joinColumns(subject);
+				return joinColumnsEditor.specifiedJoinColumns(subject);
 			}
 		};
 	}
+	
+
+	private ListValueModel<IJoinColumn> buildDefaultJoinColumnListHolder() {
+		return new PropertyListValueModelAdapter<IJoinColumn>(buildDefaultJoinColumnHolder());
+
+	}
+	
+	private PropertyValueModel<IJoinColumn> buildDefaultJoinColumnHolder() {
+		return new PropertyAspectAdapter<T, IJoinColumn>(getSubjectHolder(), joinColumnsEditor.defaultPropertyName()) {
+			@Override
+			protected IJoinColumn buildValue_() {
+				return joinColumnsEditor.defaultJoinColumn(subject);
+			}
+		};
+	}
+
 
 	private ILabelProvider buildJoinColumnsListLabelProvider() {
 		return new LabelProvider() {
@@ -205,17 +241,9 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 			public String getText(Object element) {
 				IJoinColumn joinColumn = (IJoinColumn) element;
 
-				return joinColumnsEditor.hasSpecifiedJoinColumns(subject()) ?
-					buildJoinColumnLabel(joinColumn) :
-					buildDefaultJoinColumnLabel(joinColumn);
+				return buildJoinColumnLabel(joinColumn);
 			}
 		};
-	}
-
-	private ListValueModel<IJoinColumn> buildSortedJoinColumnsListHolder() {
-		return new SortedListValueModelAdapter<IJoinColumn>(
-			buildJoinColumnsListHolder()
-		);
 	}
 
 	/*
@@ -241,7 +269,7 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 			this,
 			getControl(),
 			buildJoinColumnsAdapter(),
-			buildSortedJoinColumnsListHolder(),
+			buildJoinColumnsListModel(),
 			buildJoinColumnHolder(),
 			buildJoinColumnsListLabelProvider(),
 			IJpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
@@ -256,8 +284,10 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 		void addJoinColumn(T subject);
 		void editJoinColumn(T subject, IJoinColumn joinColumn);
 		boolean hasSpecifiedJoinColumns(T subject);
-		ListIterator<IJoinColumn> joinColumns(T subject);
-		String[] propertyNames();
+		ListIterator<IJoinColumn> specifiedJoinColumns(T subject);
+		IJoinColumn defaultJoinColumn(T subject);
+		String specifiedListPropertyName();
+		String defaultPropertyName();
 		void removeJoinColumns(T subject, int[] selectedIndices);
 	}
 }
