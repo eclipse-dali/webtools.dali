@@ -159,13 +159,15 @@ public class JavaPersistentAttribute extends JavaContextModel
 		}
 		IJavaAttributeMapping oldMapping = getMapping();
 		IJavaAttributeMapping newMapping = createJavaAttributeMappingFromMappingKey(newKey);
-		setSpecifiedMapping(newMapping);
+
+		this.specifiedMapping = newMapping;	
 		if (newMapping != null) {
 			this.persistentAttributeResource.setMappingAnnotation(newMapping.annotationName());
 		}
 		else {
 			this.persistentAttributeResource.setMappingAnnotation(null);			
 		}
+		firePropertyChanged(IPersistentAttribute.SPECIFIED_MAPPING_PROPERTY, oldMapping, newMapping);
 		
 		if (oldMapping != null) {
 			Collection<String> annotationsToRemove = CollectionTools.collection(oldMapping.correspondingAnnotationNames());

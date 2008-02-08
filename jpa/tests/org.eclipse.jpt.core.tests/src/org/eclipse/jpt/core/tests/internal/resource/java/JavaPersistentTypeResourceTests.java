@@ -566,10 +566,6 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 		typeResource.setMappingAnnotation(JPA.ENTITY);
 		assertTrue(typeResource.mappingAnnotation() instanceof Entity);
 		assertSourceContains("@Entity");
-		
-		typeResource.setMappingAnnotation(JPA.ENTITY);
-		//TODO need to test behavior here, throw an exception, remove the old @Entity and replace it, 
-		//thus clearing out any annotation elements??
 	}
 
 	public void testSetJavaTypeMappingAnnotation2() throws Exception {

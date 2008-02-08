@@ -426,10 +426,6 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 		attributeResource.setMappingAnnotation(JPA.ID);
 		assertTrue(attributeResource.mappingAnnotation() instanceof Id);
 		assertSourceContains("@Id");
-		
-		attributeResource.setMappingAnnotation(JPA.ID);
-		//TODO need to test behavior here, throw an exception, remove the old @Id and replace it, 
-		//thus clearing out any annotation elements??
 	}
 
 	public void testSetJavaAttributeMappingAnnotation2() throws Exception {

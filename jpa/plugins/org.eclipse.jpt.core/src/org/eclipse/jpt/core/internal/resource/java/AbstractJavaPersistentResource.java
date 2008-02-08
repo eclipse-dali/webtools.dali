@@ -313,30 +313,45 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 			newAnnotation.initializeFrom(nestedAnnotation);
 		}
 	}
-		
-	//TODO how to handle calling setMappingAnnotation with the same annotation as already exists?  is this an error?
-	//or should we remove it and add it back as an empty annotation??
+	// removes all other *mapping* annotations that exist, not just the one returned by mappingAnnotation()
+	// mappingAnnotation() returns the first mapping annotation found in the source.  if there are multiple
+	// mapping annotations (which is a validation error condition) then calling this api would not work
+	// because the new mapping annotatio would be added to the end of the list of annotations.
 	public void setMappingAnnotation(String annotationName) {
+		if (mappingAnnotation(annotationName) != null) {
+			throw new IllegalStateException("The mapping annotation named " + annotationName + " already exists.");
+		}
 		Annotation oldMapping = mappingAnnotation();
+		Annotation newMapping = null;
 		if (oldMapping != null) {
-			removeUnnecessaryAnnotations(oldMapping.getAnnotationName(), annotationName);
+			removeUnnecessaryAnnotations(annotationName);
 		}
 		if (annotationName != null) {
-			addMappingAnnotation(annotationName);
+			if (mappingAnnotation(annotationName) != null) {
+				return;
+			}
+			newMapping = buildMappingAnnotation(annotationName);
+			this.mappingAnnotations.add(newMapping);
+			newMapping.newAnnotation();
 		}
+		//have to hold property change notification until the end so a project update does not occur
+		//before we are finished removing the old mapping and adding the new mapping
+		//just firing collectio changed since one or more removes and one add was completed.
+		//if we ever listen for specific events instead of just doing a mass update, we might need to make this more specific
+		fireCollectionChanged(MAPPING_ANNOTATIONS_COLLECTION);
 	}
-	
 	/**
-	 * Remove all mapping annotations that already exist
+	 * Remove all mapping annotations that already exist.
+	 * No change notification fired.
 	 */
-	protected void removeUnnecessaryAnnotations(String oldMappingAnnotationName, String newMappingAnnotationName) {		
-		
+	protected void removeUnnecessaryAnnotations(String newMappingAnnotationName) {	
 		for (ListIterator<String> i = possibleMappingAnnotationNames(); i.hasNext(); ) {
 			String mappingAnnotationName = i.next();
 			if (mappingAnnotationName != newMappingAnnotationName) {
 				Annotation mappingAnnotation = mappingAnnotation(mappingAnnotationName);
 				if (mappingAnnotation != null) {
-					removeMappingAnnotation(mappingAnnotation);
+					this.mappingAnnotations.remove(mappingAnnotation);
+					mappingAnnotation.removeAnnotation();
 				}
 			}
 		}
