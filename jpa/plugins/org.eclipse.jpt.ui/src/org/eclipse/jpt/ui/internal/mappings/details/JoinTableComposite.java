@@ -90,7 +90,7 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 	                          PropertyValueModel<? extends IJoinTable> subjectHolder,
 	                          Composite parent) {
 
-		super(parentPane, subjectHolder, parent);
+		super(parentPane, subjectHolder, parent, false);
 	}
 
 	/**

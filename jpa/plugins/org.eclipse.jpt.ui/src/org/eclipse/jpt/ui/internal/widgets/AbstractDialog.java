@@ -117,8 +117,10 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 
 		// Dispose the pane in order to remove any listeners that could
 		// have been installed outside the scrope of the state object
-		pane.dispose();
-		pane = null;
+		if (pane != null) {
+			pane.dispose();
+			pane = null;
+		}
 
 		return super.close();
 	}

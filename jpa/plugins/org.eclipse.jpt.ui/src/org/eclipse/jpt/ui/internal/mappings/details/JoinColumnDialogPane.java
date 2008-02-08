@@ -207,24 +207,18 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 		);
 
 		// Insertable widgets
-		EnumDialogComboViewer<JoinColumnStateObject, Boolean> insertableCombo =
-			buildInsertableCombo(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.JoinColumnDialog_insertable,
-			insertableCombo.getControl(),
+			buildInsertableCombo(container),
 			IJpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
 		);
 
 		// Updatable widgets
-		EnumDialogComboViewer<JoinColumnStateObject, Boolean> updatableCombo =
-			buildUpdatableCombo(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.JoinColumnDialog_updatable,
-			updatableCombo.getControl(),
+			buildUpdatableCombo(container),
 			IJpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
 		);
 	}

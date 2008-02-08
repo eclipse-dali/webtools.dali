@@ -92,10 +92,6 @@ public class BasicMappingComposite extends AbstractFormPane<IBasicMapping>
 		};
 	}
 
-	private Composite buildPane(Composite container, int groupBoxMargin) {
-		return buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-	}
-
 	/*
 	 * (non-Javadoc)
 	 */
@@ -107,19 +103,22 @@ public class BasicMappingComposite extends AbstractFormPane<IBasicMapping>
 		// Column widgets
 		new ColumnComposite(this, buildColumnHolder(), container);
 
+		// Align the widgets under the ColumnComposite
+		container = buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+
 		// Fetch Type widgets
-		new FetchTypeComposite(this, buildPane(container, groupBoxMargin));
+		new FetchTypeComposite(this, container);
 
 		// Temporal Type widgets
-		new TemporalTypeComposite(this, buildPane(container, groupBoxMargin));
+		new TemporalTypeComposite(this, container);
 
 		// Enumerated widgets
-		new EnumTypeComposite(this, buildPane(container, groupBoxMargin));
+		new EnumTypeComposite(this, container);
 
 		// Optional widgets
-		new OptionalComposite(this, buildPane(container, groupBoxMargin));
+		new OptionalComposite(this, container);
 
 		// Lob check box
-		new LobComposite(this, buildPane(container, groupBoxMargin));
+		new LobComposite(this, container);
 	}
 }

@@ -74,10 +74,15 @@ public class VersionMappingComposite extends AbstractFormPane<IVersionMapping>
 	@Override
 	protected void initializeLayout(Composite container) {
 
+		int groupBoxMargin = groupBoxMargin();
+
 		// Column widgets
 		new ColumnComposite(this, buildColumnHolder(), container);
 
 		// Temporal Type widgets
-		new TemporalTypeComposite(this, container);
+		new TemporalTypeComposite(
+			this,
+			buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin)
+		);
 	}
 }

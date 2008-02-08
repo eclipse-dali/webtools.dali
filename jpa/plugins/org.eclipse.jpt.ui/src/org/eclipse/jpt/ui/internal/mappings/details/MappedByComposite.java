@@ -109,13 +109,10 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		combo = buildEditableCCombo(container);
-		combo.addModifyListener(buildComboModifyListener());
-
-		buildLabeledComposite(
+		combo = buildLabeledEditableCCombo(
 			container,
 			JptUiMappingsMessages.NonOwningMapping_mappedByLabel,
-			combo.getParent(),
+			buildComboModifyListener(),
 			IJpaHelpContextIds.MAPPING_MAPPED_BY
 		);
 	}

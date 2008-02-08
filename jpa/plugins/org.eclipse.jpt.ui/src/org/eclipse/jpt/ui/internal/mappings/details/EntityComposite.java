@@ -86,6 +86,15 @@ public class EntityComposite extends AbstractFormPane<IEntity>
 		super(subjectHolder, parent, widgetFactory);
 	}
 
+	private Composite buildEntityContainer(Composite container) {
+		int groupBoxMargin = groupBoxMargin();
+		return buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+	}
+
+	private EntityNameCombo buildEntityNameCombo(Composite container) {
+		return new EntityNameCombo(this, container);
+	}
+
 	private PropertyValueModel<ITable> buildTableHolder() {
 		return new TransformationPropertyValueModel<IEntity, ITable>(getSubjectHolder()) {
 			@Override
@@ -107,19 +116,20 @@ public class EntityComposite extends AbstractFormPane<IEntity>
 
 	private void initializeGeneralPane(Composite container) {
 
-		int groupBoxMargin = groupBoxMargin();
-		EntityNameCombo entityNameCombo = new EntityNameCombo(this, container);
-
 		// Entity Name widgets
 		buildLabeledComposite(
-			buildSubPane(container, 1, 0, groupBoxMargin, 0, groupBoxMargin),
+			buildEntityContainer(container),
 			JptUiMappingsMessages.EntityGeneralSection_name,
-			entityNameCombo.getControl(),
+			buildEntityNameCombo(container),
 			IJpaHelpContextIds.ENTITY_NAME
 		);
 
 		// Table widgets
-		new TableComposite(this, buildTableHolder(), container);
+		new TableComposite(
+			this,
+			buildTableHolder(),
+			buildSubPane(container, 5)
+		);
 	}
 
 	private void initializeInheritancePane(Composite container) {

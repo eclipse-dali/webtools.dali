@@ -95,7 +95,7 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 	public OverridesComposite(AbstractFormPane<? extends IEntity> parentPane,
 	                          Composite parent) {
 
-		super(parentPane, parent);
+		super(parentPane, parent, false);
 	}
 
 	/**

@@ -94,13 +94,10 @@ public class EnumTypeComposite extends AbstractFormPane<IBasicMapping>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		EnumFormComboViewer<IBasicMapping, EnumType> enumTypeCombo =
-			buildEnumTypeCombo(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.BasicGeneralSection_enumeratedLabel,
-			enumTypeCombo.getControl(),
+			buildEnumTypeCombo(container),
 			IJpaHelpContextIds.MAPPING_ENUMERATED
 		);
 	}

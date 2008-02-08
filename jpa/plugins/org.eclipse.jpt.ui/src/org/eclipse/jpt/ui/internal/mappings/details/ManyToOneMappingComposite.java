@@ -97,15 +97,16 @@ public class ManyToOneMappingComposite extends AbstractFormPane<IManyToOneMappin
 	protected void initializeLayout(Composite container) {
 
 		int groupBoxMargin = groupBoxMargin();
+		Composite subPane = buildPane(container, groupBoxMargin);
 
 		// Target Entity widgets
-		new TargetEntityComposite(this, buildPane(container, groupBoxMargin));
+		new TargetEntityComposite(this, subPane);
 
 		// Fetch Type widgets
-		new FetchTypeComposite(this, buildPane(container, groupBoxMargin));
+		new FetchTypeComposite(this, subPane);
 
 		// Optional check box
-		new OptionalComposite(this, buildPane(container, groupBoxMargin));
+		new OptionalComposite(this, subPane);
 
 		// Cascade widgets
 		new CascadeComposite(this, buildCascadeHolder(), container);

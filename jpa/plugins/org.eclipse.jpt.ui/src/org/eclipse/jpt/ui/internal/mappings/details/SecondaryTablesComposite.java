@@ -65,7 +65,7 @@ public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 	public SecondaryTablesComposite(AbstractFormPane<? extends IEntity> parentPane,
 	                                Composite parent) {
 
-		super(parentPane, parent);
+		super(parentPane, parent, false);
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 	                                Composite parent,
 	                                TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent,widgetFactory);
+		super(subjectHolder, parent, widgetFactory);
 	}
 
 	private void addSecondaryTableFromDialog(SecondaryTableDialog dialog,

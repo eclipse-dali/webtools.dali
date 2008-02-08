@@ -147,13 +147,10 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 		);
 
 		// Sequence Generator widgets
-		SequenceCombo<ISequenceGenerator> sequenceNameCombo =
-			buildSequenceNameCombo(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.SequenceGeneratorComposite_sequence,
-			sequenceNameCombo.getControl(),
+			buildSequenceNameCombo(container),
 			IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_SEQUENCE
 		);
 	}

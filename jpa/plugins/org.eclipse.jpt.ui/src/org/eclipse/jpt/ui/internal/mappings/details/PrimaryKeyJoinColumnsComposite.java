@@ -287,7 +287,8 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 		overrideDefaultJoinColumnsCheckBox = buildCheckBox(
 			buildSubPane(groupPane, 8),
 			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_overrideDefaultPrimaryKeyJoinColumns,
-			buildOverrideDefaultJoinColumnHolder());
+			buildOverrideDefaultJoinColumnHolder()
+		);
 
 		overrideDefaultJoinColumnsCheckBox.addSelectionListener(
 			buildOverrideDefaultJoinColumnSelectionListener()

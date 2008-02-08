@@ -98,22 +98,19 @@ public class OneToManyMappingComposite extends AbstractFormPane<IOneToManyMappin
 		};
 	}
 
-	private Composite buildPane(Composite container, int groupBoxMargin) {
-		return buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-	}
-
 	private void initializeGeneralPane(Composite container) {
 
 		int groupBoxMargin = groupBoxMargin();
+		Composite subPane = buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 
 		// Target Entity widgets
-		new TargetEntityComposite(this, buildPane(container, groupBoxMargin));
+		new TargetEntityComposite(this, subPane);
 
 		// Fetch Type widgets
-		new FetchTypeComposite(this, buildPane(container, groupBoxMargin));
+		new FetchTypeComposite(this, subPane);
 
 		// Mapped By widgets
-		new MappedByComposite(this, buildPane(container, groupBoxMargin));
+		new MappedByComposite(this, subPane);
 
 		// Cascade widgets
 		new CascadeComposite(this, buildCascadeHolder(), container);

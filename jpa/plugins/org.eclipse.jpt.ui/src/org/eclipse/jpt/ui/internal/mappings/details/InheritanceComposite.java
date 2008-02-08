@@ -14,15 +14,13 @@ import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
 import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.InheritanceType;
-import org.eclipse.jpt.db.internal.ConnectionListener;
-import org.eclipse.jpt.db.internal.ConnectionProfile;
-import org.eclipse.jpt.db.internal.Database;
-import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.osgi.util.NLS;
@@ -36,10 +34,10 @@ import org.eclipse.swt.widgets.Composite;
  * <pre>
  * -----------------------------------------------------------------------------
  * |                      ---------------------------------------------------- |
- * | Strategy:            | EnumComboViewer                                  | |
+ * | Strategy:            | EnumComboViewer                                |v| |
  * |                      ---------------------------------------------------- |
  * |                      ---------------------------------------------------- |
- * | Column:              | I                                              |v| |
+ * | Column:              | ColumnCombo                                    |v| |
  * |                      ---------------------------------------------------- |
  * |                      ---------------------------------------------------- |
  * | Discriminator Type:  | EnumComboViewer                                |v| |
@@ -56,16 +54,15 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see IEntity
  * @see EntityComposite - The parent container
+ * @see ColumnCombo
  * @see EnumComboViewer
  * @see PrimaryKeyJoinColumnsComposite
  *
  * @version 2.0
  * @since 2.0
  */
-@SuppressWarnings("nls")
 public class InheritanceComposite extends AbstractFormPane<IEntity> {
 
-	private CCombo columnCombo;
 	private CCombo discriminatorValueCombo;
 
 	/**
@@ -77,7 +74,7 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 	public InheritanceComposite(AbstractFormPane<? extends IEntity> parentPane,
 	                            Composite parent) {
 
-		super(parentPane, parent);
+		super(parentPane, parent, false);
 	}
 
 	/**
@@ -91,11 +88,7 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 	                            Composite parent,
 	                            IWidgetFactory widgetFactory) {
 
-		super(subjectHolder, parent,widgetFactory);
-	}
-
-	private void addConnectionListener() {
-//		this.getConnectionProfile().addConnectionListener(this.connectionListener);
+		super(subjectHolder, parent, widgetFactory);
 	}
 
 	/*
@@ -104,105 +97,38 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
-
 		propertyNames.add(IEntity.DEFAULT_DISCRIMINATOR_VALUE_PROPERTY);
 		propertyNames.add(IEntity.SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY);
 	}
 
-    private ModifyListener buildColumnComboSelectionListener() {
-		return new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				CCombo combo = (CCombo) e.widget;
-				IDiscriminatorColumn discriminatorColumn = subject().getDiscriminatorColumn();
-				String tableText = combo.getText();
+	private ColumnCombo<IDiscriminatorColumn> buildColumnCombo(Composite container) {
 
-				if (tableText.equals("")) {
-					tableText = null;
-					if (discriminatorColumn.getSpecifiedName() == null || discriminatorColumn.getSpecifiedName().equals("")) {
-						return;
-					}
-				}
+		return new ColumnCombo<IDiscriminatorColumn>(
+			this,
+			buildDiscriminatorColumnHolder(),
+			container)
+		{
+			@Override
+			protected String defaultValue() {
+				return subject().getDefaultName();
+			}
 
-				if (tableText != null && combo.getItemCount() > 0 && tableText.equals(combo.getItem(0))) {
-					tableText = null;
-				}
+			@Override
+			protected void setValue(String value) {
+				subject().setSpecifiedName(value);
+			}
 
-				if (discriminatorColumn.getSpecifiedName() == null && tableText != null) {
-					discriminatorColumn.setSpecifiedName(tableText);
-				}
-				if (discriminatorColumn.getSpecifiedName() != null && !discriminatorColumn.getSpecifiedName().equals(tableText)) {
-					discriminatorColumn.setSpecifiedName(tableText);
-				}
+			@Override
+			protected Table table() {
+				return subject().dbTable();
+			}
+
+			@Override
+			protected String value() {
+				return subject().getSpecifiedName();
 			}
 		};
 	}
-
-	private ConnectionListener buildConnectionListener() {
-		return new ConnectionListener() {
-
-			public void aboutToClose(ConnectionProfile profile) {
-				// not interested to this event.
-			}
-
-			public void closed(ConnectionProfile profile) {
-				getControl().getDisplay().asyncExec( new Runnable() {
-					public void run() {
-						if (getControl().isDisposed()) {
-							return;
-						}
-						InheritanceComposite.this.populateColumnCombo();
-					}
-				});
-			}
-
-			public void databaseChanged(ConnectionProfile profile, final Database database) {
-				return;
-			}
-
-			public void modified(ConnectionProfile profile) {
-				getControl().getDisplay().asyncExec( new Runnable() {
-					public void run() {
-						if (getControl().isDisposed()) {
-							return;
-						}
-						InheritanceComposite.this.populateColumnCombo();
-					}
-				});
-			}
-
-			public boolean okToClose(ConnectionProfile profile) {
-				// not interested to this event.
-				return true;
-			}
-
-			public void opened(ConnectionProfile profile) {
-				getControl().getDisplay().asyncExec( new Runnable() {
-					public void run() {
-						if (getControl().isDisposed()) {
-							return;
-						}
-						InheritanceComposite.this.populateColumnCombo();
-					}
-				});
-			}
-
-			public void schemaChanged(ConnectionProfile profile, final Schema schema) {
-				return;
-			}
-
-			public void tableChanged(ConnectionProfile profile, final Table table) {
-				getControl().getDisplay().asyncExec( new Runnable() {
-					public void run() {
-						if(table == getDbTable()) {
-							if (!getControl().isDisposed()) {
-								InheritanceComposite.this.populateColumnCombo();
-							}
-						}
-					}
-				});
-			}
-		};
-    }
 
 	private PropertyValueModel<IDiscriminatorColumn> buildDiscriminatorColumnHolder() {
 		return new TransformationPropertyValueModel<IEntity, IDiscriminatorColumn>(getSubjectHolder()) {
@@ -261,23 +187,9 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 	private ModifyListener buildDiscriminatorValueComboSelectionListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				CCombo combo = (CCombo) e.widget;
-				String value = combo.getText();
-				String discriminatorValue = subject().getSpecifiedDiscriminatorValue();
-
-				if (value.equals("")) {
-					value = null;
-					if (discriminatorValue == null || discriminatorValue.equals("")) {
-						return;
-					}
-				}
-
-				if (value != null && combo.getItemCount() > 0 && value.equals(combo.getItem(0))) {
-					value = null;
-				}
-
-				if (discriminatorValue == null || !discriminatorValue.equals(value)) {
-					subject().setSpecifiedDiscriminatorValue(value);
+				if (!isPopulating()) {
+					CCombo combo = (CCombo) e.widget;
+					discriminatorValueChanged(combo.getText());
 				}
 			}
 		};
@@ -325,18 +237,55 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 		};
 	}
 
+	private void discriminatorValueChanged(String value) {
+
+		IEntity subject = subject();
+		String oldValue = (subject != null) ? subject.getSpecifiedDiscriminatorValue() : null;
+
+		// Check for null value
+		if (StringTools.stringIsEmpty(value)) {
+			value = null;
+
+			if (StringTools.stringIsEmpty(oldValue)) {
+				return;
+			}
+		}
+
+		// The default value
+		if (value != null &&
+		    discriminatorValueCombo.getItemCount() > 0 &&
+		    value.equals(discriminatorValueCombo.getItem(0)))
+		{
+			value = null;
+		}
+
+		// Nothing to change
+		if ((oldValue == value) && value == null) {
+			return;
+		}
+
+		// Set the new value
+		if ((value != null) && (oldValue == null) ||
+		   ((oldValue != null) && !oldValue.equals(value))) {
+
+			setPopulating(true);
+
+			try {
+				subject.setSpecifiedDiscriminatorValue(value);
+			}
+			finally {
+				setPopulating(false);
+			}
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
-		populateColumnCombo();
 		populateDiscriminatorValueCombo();
-	}
-
-	private Table getDbTable() {
-		return this.subject().primaryDbTable();
 	}
 
 	/*
@@ -345,150 +294,87 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		// Strategy widgets
-		EnumFormComboViewer<IEntity, InheritanceType> strategyViewer =
-			buildStrategyCombo(container);
+		int groupBoxMargin = groupBoxMargin();
 
+		Composite subPane = buildSubPane(
+			container, 0, groupBoxMargin, 0, groupBoxMargin
+		);
+
+		// Strategy widgets
 		buildLabeledComposite(
-			container,
+			subPane,
 			JptUiMappingsMessages.InheritanceComposite_strategy,
-			strategyViewer.getControl(),
+			buildStrategyCombo(subPane),
 			IJpaHelpContextIds.ENTITY_INHERITANCE_STRATEGY
 		);
 
 		// Column widgets
-		columnCombo = buildEditableCCombo(container);
-		columnCombo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
-		columnCombo.addModifyListener(buildColumnComboSelectionListener());
-
 		buildLabeledComposite(
-			container,
+			subPane,
 			JptUiMappingsMessages.DiscriminatorColumnComposite_column,
-			columnCombo,
+			buildColumnCombo(subPane),
 			IJpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_COLUMN
 		);
 
 		// Discriminator Type widgets
-		EnumFormComboViewer<IDiscriminatorColumn, DiscriminatorType> discriminatorTypeViewer =
-			buildDiscriminatorTypeCombo(container);
-
 		buildLabeledComposite(
-			container,
+			subPane,
 			JptUiMappingsMessages.DiscriminatorColumnComposite_discriminatorType,
-			discriminatorTypeViewer.getControl(),
+			buildDiscriminatorTypeCombo(subPane),
 			IJpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_TYPE
 		);
 
 		// Discrinator Value widgets
-		discriminatorValueCombo = buildEditableCCombo(container);
-		discriminatorValueCombo.addModifyListener(buildDiscriminatorValueComboSelectionListener());
-
-		buildLabeledComposite(
-			container,
+		discriminatorValueCombo = buildLabeledEditableCCombo(
+			subPane,
 			JptUiMappingsMessages.InheritanceComposite_discriminatorValue,
-			discriminatorValueCombo,
+			buildDiscriminatorValueComboSelectionListener(),
 			IJpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_VALUE
 		);
 
 		// Primary Key Join Columns widgets
 		new PrimaryKeyJoinColumnsComposite(
 			this,
-			container
+			buildSubPane(container, 5)
 		);
 	}
 
-	private void populateColumnCombo() {
-		if (subject() == null) {
-			return; //null check and return for now, pascal change this as necessary
-		}
-		//TODO don't do instanceof check here - check on Table, or isRoot check on Entity
-		//this.tableCombo.setEnabled(!(this.table instanceof SingleTableInheritanceChildTableImpl));
-		populateDefaultColumnName();
-
-//		if (this.getConnectionProfile().isConnected()) {
-//			this.columnCombo.remove(1, this.columnCombo.getItemCount()-1);
-//			Table table = getDbTable();
-//			if (table != null) {
-//				for (Iterator i = CollectionTools.sort(CollectionTools.list(table.columnNames())).iterator(); i.hasNext();) {
-//					this.columnCombo.add((String) i.next());
-//				}
-//			}
-//		}
-//		else {
-//			this.columnCombo.remove(1, this.columnCombo.getItemCount()-1);
-//		}
-
-		populateColumnName();
-	}
-
-	private void populateColumnName() {
-		IDiscriminatorColumn discriminatorColumn = subject().getDiscriminatorColumn();
-		String tableName = discriminatorColumn.getSpecifiedName();
-		String defaultName = discriminatorColumn.getDefaultName();
-
-		if (tableName != null) {
-			if (!this.columnCombo.getText().equals(tableName)) {
-				this.columnCombo.setText(tableName);
-			}
-		}
-		else {
-			if (!this.columnCombo.getText().equals(NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultName))) {
-				this.columnCombo.select(0);
-			}
-		}
-	}
-
-	private void populateDefaultColumnName() {
-		IDiscriminatorColumn discriminatorColumn = subject().getDiscriminatorColumn();
-		String defaultTableName = discriminatorColumn.getDefaultName();
-		int selectionIndex = columnCombo.getSelectionIndex();
-		columnCombo.setItem(0, NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultTableName));
-		if (selectionIndex == 0) {
-			//combo text does not update when switching between 2 mappings of the same type
-			//that both have a default column name.  clear the selection and then set it again
-			columnCombo.clearSelection();
-			columnCombo.select(0);
-		}
-	}
-
 	private void populateDiscriminatorValueCombo() {
-		if (subject() == null) {
-			return;//null check and return for now, pascal change this as necessary
-		}
-		String specifiedValue = this.subject().getSpecifiedDiscriminatorValue();
-		String defaultValue = this.subject().getDefaultDiscriminatorValue();
 
-		//TODO enable/disable based on IEntity.DISCRIMINATOR_VALUE_ALLOWED_PROPERTY
-		if (this.subject().isDiscriminatorValueAllowed()) {
-			this.discriminatorValueCombo.setEnabled(true);
-			if (this.discriminatorValueCombo.getItemCount() == 0) {
-				this.discriminatorValueCombo.add(JptUiMappingsMessages.DiscriminatorColumnComposite_defaultEmpty);
-			}
-			if (defaultValue != null) {
-				this.discriminatorValueCombo.setItem(0, NLS.bind(JptUiMappingsMessages.ColumnComposite_defaultWithOneParam, defaultValue));
-			}
-			else {
-				this.discriminatorValueCombo.setItem(0, JptUiMappingsMessages.DiscriminatorColumnComposite_defaultEmpty);
-			}
-		}
-		else {
-			this.discriminatorValueCombo.setEnabled(false);
-			if (this.discriminatorValueCombo.getItemCount() == 1) {
-				this.discriminatorValueCombo.setText("");
-				this.discriminatorValueCombo.removeAll();
-			}
+		IEntity subject = subject();
+		discriminatorValueCombo.removeAll();
+
+		if (subject == null) {
+			return;
 		}
 
-		if (specifiedValue != null) {
-			if (!this.discriminatorValueCombo.getText().equals(specifiedValue)) {
-				this.discriminatorValueCombo.setText(specifiedValue);
-			}
+		// Add the default referenced column name if one exists
+		String defaultDiscriminatorValue = subject.getDefaultDiscriminatorValue();
+
+		if (defaultDiscriminatorValue != null) {
+			discriminatorValueCombo.add(NLS.bind(
+				JptUiMappingsMessages.ColumnComposite_defaultWithOneParam,
+				defaultDiscriminatorValue)
+			);
 		}
 		else {
-			//combo text does not update when switching between 2 entities that both have a default discriminator value.
-			//clear the selection and then set it again
-			this.discriminatorValueCombo.clearSelection();
-			this.discriminatorValueCombo.select(0);
+			discriminatorValueCombo.add(NLS.bind(
+				JptUiMappingsMessages.DiscriminatorColumnComposite_defaultEmpty,
+				defaultDiscriminatorValue)
+			);
+		}
+
+		// Set the selected referenced column name
+		String specifiedDiscriminatorValue = subject.getSpecifiedDiscriminatorValue();
+
+		if (specifiedDiscriminatorValue != null) {
+			discriminatorValueCombo.setText(specifiedDiscriminatorValue);
+		}
+		else if (defaultDiscriminatorValue != null) {
+			discriminatorValueCombo.select(0);
+		}
+		else {
+			discriminatorValueCombo.select(-1);
 		}
 	}
 
@@ -504,9 +390,5 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 		{
 			populateDiscriminatorValueCombo();
 		}
-	}
-
-	private void removeConnectionListener() {
-//		this.getConnectionProfile().removeConnectionListener(this.connectionListener);
 	}
 }

@@ -279,22 +279,18 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 		);
 
 		// Column widgets
-		ColumnCombo<IColumn> columnCombo = buildColumnCombo(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.ColumnChooser_label,
-			columnCombo.getControl(),
+			buildColumnCombo(container),
 			IJpaHelpContextIds.MAPPING_COLUMN
 		);
 
 		// Table widgets
-		TableCombo<IColumn> tableCombo = buildTableCombo(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.ColumnTableChooser_label,
-			tableCombo.getControl(),
+			buildTableCombo(container),
 			IJpaHelpContextIds.MAPPING_COLUMN_TABLE
 		);
 

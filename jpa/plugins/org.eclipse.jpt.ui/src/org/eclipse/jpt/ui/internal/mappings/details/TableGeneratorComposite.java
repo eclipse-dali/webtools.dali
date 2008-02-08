@@ -77,7 +77,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	protected ITableGenerator buildGenerator() {
 		return subject().addTableGenerator();
 	}
-	
+
 	private ColumnCombo<ITableGenerator> buildPkColumnNameCombo(Composite parent) {
 
 		return new ColumnCombo<ITableGenerator>(this, buildTableGeneratorHolder(), parent) {
@@ -292,46 +292,34 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		);
 
 		// Table widgets
-		TableCombo<ITableGenerator> tableNameCombo =
-			buildTableNameCombo(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_table,
-			tableNameCombo.getControl(),
+			buildTableNameCombo(container),
 			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_TABLE
 		);
 
 		// Primary Key Column widgets
-		ColumnCombo<ITableGenerator> pkColumnNameCombo =
-			buildPkColumnNameCombo(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_pkColumn,
-			pkColumnNameCombo.getControl(),
+			buildPkColumnNameCombo(container),
 			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN
 		);
 
 		// Value Column widgets
-		ColumnCombo<ITableGenerator> valueColumnNameCombo =
-			buildPkColumnValueCombo(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_valueColumn,
-			valueColumnNameCombo.getControl(),
+			buildPkColumnValueCombo(container),
 			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_VALUE_COLUMN
 		);
 
 		// Primary Key Column Value widgets
-		ColumnCombo<ITableGenerator> pkColumnValueCombo =
-			buildPkColumnValueCombo(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_pkColumnValue,
-			pkColumnValueCombo.getControl(),
+			buildPkColumnValueCombo(container),
 			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN_VALUE
 		);
 	}

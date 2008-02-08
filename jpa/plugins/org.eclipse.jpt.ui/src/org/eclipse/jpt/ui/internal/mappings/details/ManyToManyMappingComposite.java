@@ -116,7 +116,7 @@ public class ManyToManyMappingComposite extends AbstractFormPane<IManyToManyMapp
 		new MappedByComposite(this, buildPane(container, groupBoxMargin));
 
 		// Cascade widgets
-		new CascadeComposite(this, buildCascadeHolder(), container);
+		new CascadeComposite(this, buildCascadeHolder(), buildSubPane(container, 5));
 
 		// Ordering widgets
 		new OrderingComposite(this, container);

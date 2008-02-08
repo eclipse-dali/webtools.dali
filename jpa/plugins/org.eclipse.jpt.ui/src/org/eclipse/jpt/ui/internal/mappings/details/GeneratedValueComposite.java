@@ -71,14 +71,6 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 		propertyNames.add(IGeneratedValue.SPECIFIED_GENERATOR_PROPERTY);
 	}
 
-	private CCombo buildGeneratorNameCombo(Composite parent) {
-
-		CCombo combo = buildEditableCCombo(parent);
-		combo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
-		combo.addModifyListener(buildGeneratorNameModifyListener());
-		return combo;
-	}
-
 	private ModifyListener buildGeneratorNameModifyListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
@@ -172,27 +164,22 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 	protected void initializeLayout(Composite container) {
 
 		// Strategy widgets
-		EnumFormComboViewer<IGeneratedValue, GenerationType> strategyComboViewer =
-			buildStrategyComboViewer(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.GeneratedValueComposite_strategy,
-			strategyComboViewer.getControl(),
+			buildStrategyComboViewer(container),
 			IJpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
 		);
 
 		// Generator Name widgets
-		generatorNameCombo = buildGeneratorNameCombo(container);
-
-		// Note: The combo's parent is a container fixing the issue with the
-		// border not being painted
-		buildLabeledComposite(
+		generatorNameCombo = buildLabeledEditableCCombo(
 			container,
 			JptUiMappingsMessages.GeneratedValueComposite_generatorName,
-			generatorNameCombo.getParent(),
+			buildGeneratorNameModifyListener(),
 			IJpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
 		);
+
+		generatorNameCombo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
 	}
 
 	private void populateGeneratorName() {

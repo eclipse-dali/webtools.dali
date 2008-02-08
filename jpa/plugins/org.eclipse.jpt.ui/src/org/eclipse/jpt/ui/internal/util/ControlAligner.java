@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,15 +11,14 @@ package org.eclipse.jpt.ui.internal.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 
 /**
  * This class is responsible to set a preferred width on the registered widgets
@@ -69,13 +68,26 @@ public final class ControlAligner
 	/**
 	 * The utility class used to support bound properties.
 	 */
-	private Collection<ControlListener> changeSupport;
+	private Collection<Listener> changeSupport;
+
+	/**
+	 * The types of events to listen in order to properly adjust the size of all
+	 * the widgets.
+	 */
+	private int[] EVENT_TYPES =
+	{
+		SWT.Dispose,
+		SWT.Show,
+//		SWT.Resize,
+		SWT.Hide
+//		SWT.Move
+	};
 
 	/**
 	 * The listener added to each of the controls that listens only to a text
 	 * change.
 	 */
-	private ControlListener controlListener;
+	private Listener listener;
 
 	/**
 	 * Prevents infinite recursion when recalculating the preferred width.
@@ -89,6 +101,14 @@ public final class ControlAligner
 	 * this value is -1.
 	 */
 	private int maximumWidth;
+
+	private int[] SHELL_EVENT_TYPES =
+	{
+		SWT.Dispose,
+		SWT.Show,
+		SWT.Resize
+//		SWT.Hide
+	};
 
 	/**
 	 * The collection of {@link Wrapper}s encapsulating either <code>Control</code>s
@@ -131,7 +151,7 @@ public final class ControlAligner
 	public void add(Control control)
 	{
 		Wrapper wrapper = buildWrapper(control);
-		wrapper.addControlListener(controlListener);
+		wrapper.addListener(listener);
 		wrappers.add(wrapper);
 
 		revalidate();
@@ -153,7 +173,7 @@ public final class ControlAligner
 		}
 
 		Wrapper wrapper = buildWrapper(controlAligner);
-		wrapper.addControlListener(controlListener);
+		wrapper.addListener(listener);
 		wrappers.add(wrapper);
 
 		if (!controlAligner.wrappers.isEmpty())
@@ -210,7 +230,7 @@ public final class ControlAligner
 		revalidate();
 	}
 
-	/**
+   /**
 	 * Adds the items contained in the given collection into this
 	 * <code>ControlAligner</code>. The preferred width of each item will be
 	 * used along with the width of all the other items in order to get the
@@ -237,19 +257,19 @@ public final class ControlAligner
    /**
 	 * Adds the given <code>ControListener</code>.
 	 *
-	 * @param listener The <code>ControlListener</code> to be added
+	 * @param listener The <code>Listener</code> to be added
 	 */
-	private void addControlListener(ControlListener listener)
+	private void addListener(Listener listener)
 	{
 		if (changeSupport == null)
 		{
-		    changeSupport = new ArrayList<ControlListener>();
+		    changeSupport = new ArrayList<Listener>();
 		}
 
 		changeSupport.add(listener);
    }
 
-   /**
+	/**
 	 * Creates a new <code>Wrapper</code> that encapsulates the given source.
 	 *
 	 * @param control The control to be wrapped
@@ -260,7 +280,7 @@ public final class ControlAligner
 		return new ControlWrapper(control);
 	}
 
-	/**
+   /**
 	 * Creates a new <code>Wrapper</code> that encapsulates the given source.
 	 *
 	 * @param ControlAligner The <code>ControlAligner</code> to be wrapped
@@ -271,7 +291,7 @@ public final class ControlAligner
 		return new ControlAlignerWrapper(ControlAligner);
 	}
 
-   /**
+	/**
 	 * Reports a bound property change.
 	 *
 	 * @param oldValue the old value of the property (as an int)
@@ -285,15 +305,15 @@ public final class ControlAligner
 			// throw a NPE for its source
 			Event event  = new Event();
 			event.widget = SWTUtil.getShell();
-
-			ControlEvent controlEvent = new ControlEvent(event);
+			event.data   = this;
+//			Event controlEvent = new Event(event);
 
 			// It seems we need to use reflection so the source can properly be set
-			ClassTools.setFieldValue(controlEvent, "source", this);
+//			ClassTools.setFieldValue(controlEvent, "source", this);
 
-			for (ControlListener listener : changeSupport)
+			for (Listener listener : changeSupport)
 			{
-				listener.controlResized(controlEvent);
+				listener.handleEvent(event);
 			}
 		}
 	}
@@ -314,14 +334,17 @@ public final class ControlAligner
 	 * Returns the size by determining which control has the greatest
 	 * width.
 	 *
+	 * @param checkVisibilityStatus <code>true</code> to check for the
+	 * visibility flag when calculating the preferred size; <code>false</code>
+	 * to calculate the size even if the control is not visible
 	 * @return The size of this <code>ControlAligner</code>, which is
 	 * {@link #getMaximumWidth()} for the width
 	 */
-	private Point getPreferredSize()
+	private Point getPreferredSize(boolean checkVisibilityStatus)
 	{
 		if (maximumWidth == -1)
 		{
-			recalculateWidth();
+			recalculateWidth(checkVisibilityStatus);
 		}
 
 		return new Point(maximumWidth, 0);
@@ -332,10 +355,10 @@ public final class ControlAligner
 	 */
 	private void initialize()
 	{
-		this.autoValidate    = true;
-		this.maximumWidth    = -1;
-		this.controlListener = new ControlHandler();
-		this.wrappers        = new ArrayList<Wrapper>();
+		this.autoValidate = true;
+		this.maximumWidth = -1;
+		this.listener     = new ListenerHandler();
+		this.wrappers     = new ArrayList<Wrapper>();
 	}
 
 	/**
@@ -356,7 +379,7 @@ public final class ControlAligner
 		size.x = 0;
 		size.y = 0;
 
-		wrapper.setPreferredSize(DEFAULT_SIZE);
+		wrapper.setPreferredSize(false, DEFAULT_SIZE);
 	}
 
 	/**
@@ -399,8 +422,12 @@ public final class ControlAligner
 	/**
 	 * Updates the maximum length based on the widest control. This methods
 	 * does not update the width of the controls.
+	 *
+	 * @param checkVisibilityStatus <code>true</code> to check for the
+	 * visibility flag when calculating the preferred size; <code>false</code>
+	 * to calculate the size even if the control is not visible
 	 */
-	private void recalculateWidth()
+	private void recalculateWidth(boolean checkVisibilityStatus)
 	{
 		int width = -1;
 
@@ -409,9 +436,11 @@ public final class ControlAligner
 			Point size = wrapper.getCachedSize();
 
 			// The size has not been calculated yet
-			if ((size.y == 0) && wrapper.isVisible())
+			if ((size.y == 0) &&
+			    (checkVisibilityStatus && wrapper.isVisible() ||
+			    !checkVisibilityStatus))
 			{
-				Point newSize = wrapper.getPreferredSize();
+				Point newSize = wrapper.getPreferredSize(checkVisibilityStatus);
 
 				size.x = newSize.x;
 				size.y = newSize.y;
@@ -435,7 +464,7 @@ public final class ControlAligner
 	public void remove(Control control)
 	{
 		Wrapper wrapper = retrieveWrapper(control);
-		wrapper.removeControlListener(controlListener);
+		wrapper.removeListener(listener);
 		wrappers.remove(wrapper);
 
 //		if (control.isPreferredSizeSet())
@@ -455,18 +484,18 @@ public final class ControlAligner
 	public void remove(ControlAligner controlAligner)
 	{
 		Wrapper wrapper = retrieveWrapper(controlAligner);
-		wrapper.removeControlListener(controlListener);
+		wrapper.removeListener(listener);
 		wrappers.remove(wrapper);
 
 		revalidate();
 	}
 
 	/**
-	 * Removes the given <code>ControlListener</code>.
+	 * Removes the given <code>Listener</code>.
 	 *
-	 * @param listener The <code>ControlListener</code> to be removed
+	 * @param listener The <code>Listener</code> to be removed
 	 */
-	private void removeControlListener(ControlListener listener)
+	private void removeListener(Listener listener)
 	{
 		changeSupport.remove(listener);
 
@@ -495,54 +524,127 @@ public final class ControlAligner
 		throw new IllegalArgumentException("Can't retrieve the Wrapper for " + source);
 	}
 
+	private void revalidate()
+	{
+		revalidate(true);
+	}
+
 	/**
 	 * If the count of control is greater than one and {@link #isAutoValidate()}
 	 * returns <code>true</code>, then the size of all the registered
 	 * <code>Control</code>s will be udpated.
+	 *
+	 * @param checkVisibilityStatus <code>true</code> to check for the
+	 * visibility flag when calculating the preferred size; <code>false</code>
+	 * to calculate the size even if the control is not visible
 	 */
-	private void revalidate()
+	private void revalidate(boolean checkVisibilityStatus)
 	{
 		if (autoValidate)
 		{
-			recalculateWidth();
-			revalidatePreferredSizeImp();
+			recalculateWidth(checkVisibilityStatus);
+			revalidatePreferredSizeImp(!checkVisibilityStatus);
 		}
+	}
+
+	/**
+	 * Bases on the information contained in the given <code>Event</code>,
+	 * resize the controls.
+	 *
+	 * @param event The <code>Event</code> sent by the UI thread when the state
+	 * of a widget changed
+	 */
+	private void revalidate(Event event)
+	{
+		boolean checkVisibilityStatus = true;
+		Object source;
+
+		if (event.widget != SWTUtil.getShell())
+		{
+			source = event.widget;
+			Control control = (Control) source;
+
+			// When a dialog is opened, we need to actually force a relayout of
+			// the controls, this is required because the control is actually
+			// not visible when the preferred witdh is caculated
+			if (control == control.getShell())
+			{
+				if (event.type == SWT.Dispose)
+				{
+					return;
+				}
+
+				// When a dialog appears, the controls are actually not visible
+				// force to calculate the preferred size anyway
+				checkVisibilityStatus = false;
+				source = null;
+			}
+		}
+		else
+		{
+			source = event.data;
+		}
+
+		// Either remove the ControlWrapper if the widget was disposed or
+		// invalidate the widget in order to recalculate the preferred size
+		if (source != null)
+		{
+			if (event.type == SWT.Dispose)
+			{
+				Wrapper wrapper = retrieveWrapper(source);
+				wrappers.remove(wrapper);
+			}
+			else
+			{
+				invalidate(source);
+			}
+		}
+
+		// Now revalidate all the Controls and ControlAligners
+		revalidate(checkVisibilityStatus);
 	}
 
 	/**
 	 * Updates the preferred size of every component based on the widest
 	 * component.
 	 */
-	private void revalidatePreferredSizeImp()
+	private void revalidatePreferredSizeImp(boolean updateSize)
 	{
-		for (Wrapper wrapper : wrappers)
+//		if (maximumWidth > 0)
 		{
-			Point size = wrapper.getCachedSize();
-			size = new Point(maximumWidth, size.y);
-			wrapper.setPreferredSize(size);
+			for (Wrapper wrapper : wrappers)
+			{
+				Point size = wrapper.getCachedSize();
+				size = new Point(maximumWidth, size.y);
+				wrapper.setPreferredSize(updateSize, size);
+			}
 		}
 	}
 
 	/**
 	 * Updates the size of every control based on the widest control.
+	 *
+	 * @param checkVisibilityStatus <code>true</code> to check for the
+	 * visibility flag when calculating the preferred size; <code>false</code>
+	 * to calculate the size even if the control is not visible
 	 */
-	public void revalidateSize()
+	public void revalidateSize(boolean checkVisibilityStatus)
 	{
-		recalculateWidth();
-		revalidateSizeImp();
+		recalculateWidth(checkVisibilityStatus);
+		revalidateSizeImp(!checkVisibilityStatus);
 	}
 
 	/**
 	 * Updates the size of every control based on the widest control.
 	 */
-	private void revalidateSizeImp()
+	private void revalidateSizeImp(boolean updateSize)
 	{
 		// Set the preferred width for every control
 		for (Wrapper wrapper : wrappers)
 		{
 			Point size = wrapper.getCachedSize();
 			size = new Point(maximumWidth, size.y);
-			wrapper.setPreferredSize(size);
+			wrapper.setPreferredSize(updateSize, size);
 		}
 	}
 
@@ -612,9 +714,9 @@ public final class ControlAligner
 		/*
 		 * (non-Javadoc)
 		 */
-		public void addControlListener(ControlListener listener)
+		public void addListener(Listener listener)
 		{
-			controlAligner.addControlListener(listener);
+			controlAligner.addListener(listener);
 		}
 
 		/*
@@ -628,9 +730,9 @@ public final class ControlAligner
 		/*
 		 * (non-Javadoc)
 		 */
-		public Point getPreferredSize()
+		public Point getPreferredSize(boolean checkVisibilityStatus)
 		{
-			return controlAligner.getPreferredSize();
+			return controlAligner.getPreferredSize(checkVisibilityStatus);
 		}
 
 		/*
@@ -660,15 +762,15 @@ public final class ControlAligner
 		/*
 		 * (non-Javadoc)
 		 */
-		public void removeControlListener(ControlListener listener)
+		public void removeListener(Listener listener)
 		{
-			controlAligner.removeControlListener(listener);
+			controlAligner.removeListener(listener);
 		}
 
 		/*
 		 * (non-Javadoc)
 		 */
-		public void setPreferredSize(Point size)
+		public void setPreferredSize(boolean updateSize, Point size)
 		{
 			if (size == DEFAULT_SIZE)
 			{
@@ -677,7 +779,7 @@ public final class ControlAligner
 			else if (controlAligner.maximumWidth != size.x)
 			{
 				controlAligner.maximumWidth = size.x;
-				controlAligner.revalidateSizeImp();
+				controlAligner.revalidateSizeImp(updateSize);
 			}
 		}
 
@@ -694,30 +796,6 @@ public final class ControlAligner
 			sb.append(", controlAligner=");
 			sb.append(controlAligner);
 			return sb.toString();
-		}
-	}
-
-	/**
-	 * The listener added to each of the control that listens only to a text
-	 * change.
-	 */
-	private class ControlHandler implements ControlListener
-	{
-		/*
-		 * (non-Javadoc)
-		 */
-		public void controlMoved(ControlEvent e)
-		{
-			// Nothing to do
-		}
-
-		/*
-		 * (non-Javadoc)
-		 */
-		public void controlResized(ControlEvent e)
-		{
-			invalidate(e.getSource());
-			revalidate();
 		}
 	}
 
@@ -753,9 +831,17 @@ public final class ControlAligner
 		/*
 		 * (non-Javadoc)
 		 */
-		public void addControlListener(ControlListener listener)
+		public void addListener(Listener listener)
 		{
-			control.addControlListener(listener);
+			for (int eventType : EVENT_TYPES)
+			{
+				control.addListener(eventType, listener);
+			}
+
+			for (int eventType : SHELL_EVENT_TYPES)
+			{
+				control.getShell().addListener(eventType, listener);
+			}
 		}
 
 		/*
@@ -769,7 +855,7 @@ public final class ControlAligner
 		/*
 		 * (non-Javadoc)
 		 */
-		public Point getPreferredSize()
+		public Point getPreferredSize(boolean checkVisibilityStatus)
 		{
 			return control.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
 		}
@@ -801,15 +887,23 @@ public final class ControlAligner
 		/*
 		 * (non-Javadoc)
 		 */
-		public void removeControlListener(ControlListener listener)
+		public void removeListener(Listener listener)
 		{
-			control.removeControlListener(listener);
+			for (int eventType : EVENT_TYPES)
+			{
+				control.removeListener(eventType, listener);
+			}
+
+			for (int eventType : SHELL_EVENT_TYPES)
+			{
+				control.getShell().removeListener(eventType, listener);
+			}
 		}
 
 		/*
 		 * (non-Javadoc)
 		 */
-		public void setPreferredSize(Point size)
+		public void setPreferredSize(boolean updateSize, Point size)
 		{
 			GridData data = (GridData) control.getLayoutData();
 
@@ -822,6 +916,15 @@ public final class ControlAligner
 
 			data.widthHint  = size.x;
 			data.heightHint = size.y;
+
+			// Force the control to be resized, and tell its parent to re-layout
+			// its widgets
+			if (updateSize && size.x > 0 && size.y > 0)
+			{
+				Rectangle bounds = control.getBounds();
+				control.setBounds(bounds.x, bounds.y, size.x, size.y);
+				control.getParent().layout(true);
+			}
 		}
 
 		/*
@@ -841,6 +944,18 @@ public final class ControlAligner
 	}
 
 	/**
+	 * The listener added to each of the control that is notified in order to
+	 * revalidate the preferred size.
+	 */
+	private class ListenerHandler implements Listener
+	{
+		public void handleEvent(Event event)
+		{
+			ControlAligner.this.revalidate(event);
+		}
+	}
+
+	/**
 	 * This <code>Wrapper</code> helps to encapsulate heterogeneous objects and
 	 * apply the same behavior on them.
 	 */
@@ -851,23 +966,27 @@ public final class ControlAligner
 		 * The listener will be invoked only when a call on
 		 * <code>firePropertyChange</code> names that specific property.
 		 *
-		 * @param listener The <code>ControlListener</code> to be added
+		 * @param listener The <code>Listener</code> to be added
 		 */
-		public void addControlListener(ControlListener listener);
+		public void addListener(Listener listener);
 
 		/**
 		 * Returns the cached size of the encapsulated source.
 		 *
-		 * @return A non-<code>null</code> size
+		 * @return A non-<code>null</code> <code>Point</code> where the x is the
+		 * width and the y is the height of the widget
 		 */
 		public Point getCachedSize();
 
 		/**
 		 * Returns the preferred size of the wrapped source.
 		 *
+		 * @param checkVisibilityStatus <code>true</code> to check for the
+		 * visibility flag when calculating the preferred size; <code>false</code>
+		 * to calculate the size even if the control is not visible
 		 * @return The preferred size
 		 */
-		public Point getPreferredSize();
+		public Point getPreferredSize(boolean checkVisibilityStatus);
 
 		/**
 		 * Returns the encapsulated object.
@@ -896,17 +1015,19 @@ public final class ControlAligner
 		boolean isVisible();
 
 		/**
-		 * Removes the given <code>ControlListener</code>.
+		 * Removes the given <code>Listener</code>.
 		 *
-		 * @param listener The <code>ControlListener</code> to be removed
+		 * @param listener The <code>Listener</code> to be removed
 		 */
-		public void removeControlListener(ControlListener listener);
+		public void removeListener(Listener listener);
 
 		/**
 		 * Sets the size on the encapsulated source.
 		 *
+		 * @param updateSize This flag is used to force the <code>Control</code>
+		 * to be resized
 		 * @param size The new size
 		 */
-		public void setPreferredSize(Point size);
+		public void setPreferredSize(boolean updateSize, Point size);
 	}
 }

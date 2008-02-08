@@ -200,32 +200,26 @@ public class TableComposite extends AbstractFormPane<ITable>
 		);
 
 		// Table widgets
-		TableCombo<ITable> tableCombo = buildTableCombo(tableGroupPane);
-
 		buildLabeledComposite(
 			tableGroupPane,
 			JptUiMappingsMessages.TableChooser_label,
-			tableCombo.getControl(),
+			buildTableCombo(tableGroupPane),
 			IJpaHelpContextIds.ENTITY_TABLE
 		);
 
 		// Catalog widgets
-		CatalogCombo<ITable> catalogCombo = buildCatalogCombo(tableGroupPane);
-
 		buildLabeledComposite(
 			tableGroupPane,
 			JptUiMappingsMessages.CatalogChooser_label,
-			catalogCombo.getControl(),
+			buildCatalogCombo(tableGroupPane),
 			IJpaHelpContextIds.ENTITY_CATALOG
 		);
 
 		// Schema widgets
-		SchemaCombo<ITable> schemaCombo = buildSchemaCombo(tableGroupPane);
-
 		buildLabeledComposite(
 			tableGroupPane,
 			JptUiMappingsMessages.SchemaChooser_label,
-			schemaCombo.getControl(),
+			buildSchemaCombo(tableGroupPane),
 			IJpaHelpContextIds.ENTITY_SCHEMA
 		);
 	}

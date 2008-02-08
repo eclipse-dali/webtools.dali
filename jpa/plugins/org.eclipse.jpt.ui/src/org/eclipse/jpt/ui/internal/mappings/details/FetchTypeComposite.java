@@ -98,13 +98,10 @@ public class FetchTypeComposite extends AbstractFormPane<IFetchable> {
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		EnumFormComboViewer<IFetchable, FetchType> fetchTypeCombo =
-			buildFetchTypeCombo(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.BasicGeneralSection_fetchLabel,
-			fetchTypeCombo.getControl(),
+			buildFetchTypeCombo(container),
 			IJpaHelpContextIds.MAPPING_FETCH_TYPE
 		);
 	}

@@ -95,13 +95,10 @@ public class TemporalTypeComposite extends AbstractFormPane<IColumnMapping> {
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		EnumFormComboViewer<IColumnMapping, TemporalType> temporalCombo =
-			buildTemporalCombo(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.BasicGeneralSection_temporalLabel,
-			temporalCombo.getControl(),
+			buildTemporalCombo(container),
 			IJpaHelpContextIds.MAPPING_TEMPORAL
 		);
 	}

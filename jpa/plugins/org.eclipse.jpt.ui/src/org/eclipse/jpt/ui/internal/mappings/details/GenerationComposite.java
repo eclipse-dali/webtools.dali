@@ -214,10 +214,10 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 		generatedValueComposite.getControl().setLayoutData(gridData);
 
 		// Table Generator pane
-		initializeTableGeneratorPane(container);
+		initializeTableGeneratorPane(buildSubPane(container, 5));
 
 		// Sequence Generator pane
-		initializeSequenceGeneratorPane(container);
+		initializeSequenceGeneratorPane(buildSubPane(container, 5));
 	}
 
 	private void initializeSequenceGeneratorPane(Composite container) {
