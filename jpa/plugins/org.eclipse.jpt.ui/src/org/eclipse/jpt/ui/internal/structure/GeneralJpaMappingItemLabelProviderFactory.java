@@ -13,13 +13,13 @@ package org.eclipse.jpt.ui.internal.structure;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
+import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.jface.AbstractItemLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.IItemLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.IItemLabelProviderFactory;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 
 public abstract class GeneralJpaMappingItemLabelProviderFactory
@@ -92,7 +92,7 @@ public abstract class GeneralJpaMappingItemLabelProviderFactory
 				protected Image buildValue_() {
 					Image image = JpaMappingImageHelper.imageForAttributeMapping(subject.mappingKey());
 					if (((IPersistentAttribute) model()).isVirtual()) {
-						image = new Image(image.getDevice(), image, SWT.IMAGE_DISABLE);
+						return JptUiIcons.ghost(image);
 					}
 					return image;
 				}

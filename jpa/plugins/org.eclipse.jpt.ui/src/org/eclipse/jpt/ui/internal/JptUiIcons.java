@@ -10,8 +10,22 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal;
 
+import org.eclipse.draw2d.ImageUtilities;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+
 public class JptUiIcons
 {
+	public static Image ghost(Image image) {
+		Color lightgray = new Color(image.getDevice(), 223, 223, 223);
+		ImageData imageData = ImageUtilities.createShadedImage(image, lightgray);
+		//return new Image(image.getDevice(), imageData);
+		return new Image(image.getDevice(), new Image(image.getDevice(), imageData), SWT.IMAGE_GRAY);
+	}
+	
+	
 	// **************** General JPA icons **************************************
 	
 	public static final String JPA_WIZ_BANNER = "full/wizban/jpa_facet_wizban"; //$NON-NLS-1$

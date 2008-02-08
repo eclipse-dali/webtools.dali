@@ -112,7 +112,7 @@ public class PersistenceItemLabelProviderFactory
 		protected PropertyValueModel<Image> buildImageModel() {
 			Image image = JptUiPlugin.getImage(JptUiIcons.MAPPING_FILE_REF);
 			if (((IMappingFileRef) model()).isVirtual()) {
-				image = new Image(image.getDevice(), image, SWT.IMAGE_DISABLE);
+				image = JptUiIcons.ghost(image);
 			}
 			return new StaticPropertyValueModel<Image>(image);
 		}
@@ -140,7 +140,7 @@ public class PersistenceItemLabelProviderFactory
 		protected PropertyValueModel<Image> buildImageModel() {
 			Image image = JptUiPlugin.getImage(JptUiIcons.CLASS_REF);
 			if (((IClassRef) model()).isVirtual()) {
-				image = new Image(image.getDevice(), image, SWT.IMAGE_DISABLE);
+				image = JptUiIcons.ghost(image);
 			}
 			return new StaticPropertyValueModel<Image>(image);
 		}
