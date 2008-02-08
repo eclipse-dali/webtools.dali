@@ -115,7 +115,7 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment       = SWT.FILL;
-		gridData.verticalAlignment         = SWT.FILL;
+		gridData.verticalAlignment         = SWT.TOP;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace   = true;
 

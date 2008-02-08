@@ -149,9 +149,12 @@ public final class TriStateCheckBox {
 						String version = System.getProperty("os.version");
 
 						// Under Vista, the check box has to be indented by -6
-						// but under XP, it needs to remain 0
 						if (Double.parseDouble(version) >= 6) {
 							return 6;
+						}
+						// Under XP, the check box has to be indented by -5
+						else if (Double.parseDouble(version) == 5) {
+							return 5;
 						}
 					}
 					catch (Exception e) {
@@ -189,7 +192,7 @@ public final class TriStateCheckBox {
 		this.table.getHorizontalBar().setVisible(false);
 		this.table.getVerticalBar().setVisible(false);
 
-		new TableItem(this.table, SWT.CHECK);
+		new TableItem(this.table, SWT.CHECK | SWT.TRANSPARENT);
 	}
 
 	private void changeTriState() {

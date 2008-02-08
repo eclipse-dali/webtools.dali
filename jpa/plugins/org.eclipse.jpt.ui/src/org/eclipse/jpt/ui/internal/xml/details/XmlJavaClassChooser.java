@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
+import java.util.Collection;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -29,13 +30,8 @@ import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -44,14 +40,31 @@ import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.progress.IProgressService;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
-//TODO possibly help the user and if they have chosen a package at the entity-mappings level
-//only insert the class name in the xml file if they choose a class from the package.
-//Not sure if this should be driven by the UI or by ui api in the model
+/**
+ * Here the layout of this pane:
+ * <pre>
+ * -----------------------------------------------------------------------------
+ * |             ----------------------------------------------- ------------- |
+ * | Java Class: | I                                           | | Browse... | |
+ * |             ----------------------------------------------- ------------- |
+ * -----------------------------------------------------------------------------</pre>
+ *
+ * TODO possibly help the user and if they have chosen a package at the
+ * entity-mappings level only insert the class name in the xml file if they
+ * choose a class from the package.
+ * Not sure if this should be driven by the UI or by ui api in the model
+ *
+ * @see XmlTypeMapping
+ * @see XmlPersistentTypeDetailsPage - The parent container
+ *
+ * @version 2.0
+ * @since 1.0
+ */
+@SuppressWarnings("nls")
 public class XmlJavaClassChooser extends AbstractFormPane<XmlTypeMapping<?>> {
 
-	private Composite composite;
-	private Text text;
 	private JavaTypeCompletionProcessor javaTypeCompletionProcessor;
+	private Text text;
 
 	/**
 	 * Creates a new <code>XmlJavaClassChooser</code>.
@@ -61,8 +74,8 @@ public class XmlJavaClassChooser extends AbstractFormPane<XmlTypeMapping<?>> {
 	 * @param parent The parent container
 	 */
 	public XmlJavaClassChooser(AbstractFormPane<?> parentPane,
-        PropertyValueModel<? extends XmlTypeMapping<? extends TypeMapping>> subjectHolder,
-        Composite parent) {
+	                           PropertyValueModel<? extends XmlTypeMapping<? extends TypeMapping>> subjectHolder,
+	                           Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
 	}
@@ -75,8 +88,8 @@ public class XmlJavaClassChooser extends AbstractFormPane<XmlTypeMapping<?>> {
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public XmlJavaClassChooser(PropertyValueModel<? extends XmlTypeMapping<? extends TypeMapping>> subjectHolder,
-	                                   Composite parent,
-	                                   TabbedPropertySheetWidgetFactory widgetFactory) {
+	                           Composite parent,
+	                           TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
@@ -85,133 +98,181 @@ public class XmlJavaClassChooser extends AbstractFormPane<XmlTypeMapping<?>> {
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void initializeLayout(Composite container) {
-		this.composite = getWidgetFactory().createComposite(container);
-	    GridLayout gridLayout = new GridLayout();
-	    gridLayout.marginHeight = 0;
-	    gridLayout.marginWidth = 1;
-	    gridLayout.numColumns = 2;
-	    this.composite.setLayout(gridLayout);
-
-		text = getWidgetFactory().createText(this.composite);
-		GridData data = new GridData();
-	    data.grabExcessHorizontalSpace = true;
-	    data.horizontalAlignment = GridData.FILL;
-	    this.text.setLayoutData(data);
-		text.addModifyListener(
-			new ModifyListener() {
-				public void modifyText(ModifyEvent e) {
-					textModified(e);
-				}
-			});
-
-		//TODO bug 156185 - when this is fixed there should be api for this
-		this.javaTypeCompletionProcessor = new JavaTypeCompletionProcessor(false, false);
-		ControlContentAssistHelper.createTextContentAssistant(this.text,  this.javaTypeCompletionProcessor);
-
-
-		Button browseButton = getWidgetFactory().createButton(this.composite, "Browse...", SWT.FLAT);
-		data = new GridData();
-		browseButton.setLayoutData(data);
-		browseButton.addSelectionListener(new SelectionListener() {
-			public void widgetSelected(SelectionEvent e) {
-				IType type = chooseType();
-				if (type != null) {
-					text.setText(type.getFullyQualifiedName());
-				}
-			}
-			public void widgetDefaultSelected(SelectionEvent e) {
-				IType type = chooseType();
-				if (type != null) {
-					text.setText(type.getFullyQualifiedName());
-				}
-			}
-		});
-
+	protected void addPropertyNames(Collection<String> propertyNames) {
+		super.addPropertyNames(propertyNames);
+		propertyNames.add(XmlTypeMapping.CLASS_PROPERTY);
 	}
 
-	private void textModified(ModifyEvent e) {
-		String text = ((Text) e.getSource()).getText();
-		subject().setClass(text);
+	private void browseType() {
 
-		// TODO Does this need to be done?
-		//this.editingDomain.getCommandStack().execute(SetCommand.create(this.editingDomain, this.entity, MappingsPackage.eINSTANCE.getEntity_SpecifiedName(), text));
+		IType type = chooseType();
+
+		if (type != null) {
+
+			setPopulating(true);
+
+			try {
+				String className = type.getFullyQualifiedName();
+				text.setText(className);
+				subject().setClass(className);
+			}
+			finally {
+				setPopulating(false);
+			}
+		}
 	}
 
+	private Button buildBrowseButton(Composite container) {
+		return buildButton(
+			container,
+			JptUiXmlMessages.XmlJavaClassChooser_browse,
+			buildBrowseButtonAction()
+		);
+	}
 
-	protected IType chooseType() {
-		IPackageFragmentRoot root= getPackageFragmentRoot();
+	private Runnable buildBrowseButtonAction() {
+		return new Runnable() {
+			public void run() {
+				browseType();
+			}
+		};
+	}
+
+	private ModifyListener buildPackageTextModifyListener() {
+		return new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				if (!isPopulating()) {
+					Text text = (Text) e.widget;
+					textChanged(text.getText());
+				}
+			}
+		};
+	}
+
+	private IType chooseType() {
+
+		IPackageFragmentRoot root = getPackageFragmentRoot();
+
 		if (root == null) {
 			return null;
 		}
 
 		IJavaElement[] elements= new IJavaElement[] { root.getJavaProject() };
-		IJavaSearchScope scope= SearchEngine.createJavaSearchScope(elements);
+		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements);
 		IProgressService service = PlatformUI.getWorkbench().getProgressService();
-
 		SelectionDialog typeSelectionDialog;
+
 		try {
-			typeSelectionDialog = JavaUI.createTypeDialog(this.text.getShell(), service, scope, IJavaElementSearchConstants.CONSIDER_CLASSES, false, getType());
+			typeSelectionDialog = JavaUI.createTypeDialog(
+				shell(),
+				service,
+				scope,
+				IJavaElementSearchConstants.CONSIDER_CLASSES,
+				false,
+				text.getText()
+			);
 		}
 		catch (JavaModelException e) {
 			JptUiPlugin.log(e);
-			throw new RuntimeException(e);
+			return null;
 		}
+
 		typeSelectionDialog.setTitle(JptUiXmlMessages.XmlJavaClassChooser_XmlJavaClassDialog_title);
 		typeSelectionDialog.setMessage(JptUiXmlMessages.XmlJavaClassChooser_XmlJavaClassDialog_message);
 
 		if (typeSelectionDialog.open() == Window.OK) {
 			return (IType) typeSelectionDialog.getResult()[0];
 		}
+
 		return null;
 	}
 
-	private String getType() {
-		return this.text.getText();
-	}
-
-	private IPackageFragmentRoot getPackageFragmentRoot() {
-		IProject project = this.subject().jpaProject().project();
-		IJavaProject root = JavaCore.create(project);
-		try {
-			return root.getAllPackageFragmentRoots()[0];
-		}
-		catch (JavaModelException e) {
-			JptUiPlugin.log(e);
-		}
-		return null;
-	}
-
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
 		populateText();
 	}
 
+	private IPackageFragmentRoot getPackageFragmentRoot() {
+		IProject project = subject().jpaProject().project();
+		IJavaProject root = JavaCore.create(project);
+
+		try {
+			return root.getAllPackageFragmentRoots()[0];
+		}
+		catch (JavaModelException e) {
+			JptUiPlugin.log(e);
+		}
+
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void initializeLayout(Composite container) {
+
+		text = buildLabeledText(
+			container,
+			JptUiXmlMessages.PersistentTypePage_javaClassLabel,
+			buildPackageTextModifyListener(),
+			buildBrowseButton(container)
+		);
+
+		//TODO bug 156185 - when this is fixed there should be api for this
+		this.javaTypeCompletionProcessor = new JavaTypeCompletionProcessor(false, false);
+		ControlContentAssistHelper.createTextContentAssistant(this.text,  this.javaTypeCompletionProcessor);
+	}
+
 	private void populateText() {
-		if (this.subject() == null) {
-			text.clearSelection();
+
+		XmlTypeMapping<?> subject = subject();
+		text.setText("");
+
+		if (subject == null) {
 			return;
 		}
 
 		IPackageFragmentRoot root = getPackageFragmentRoot();
+
 		if (root != null) {
-			 this.javaTypeCompletionProcessor.setPackageFragment(root.getPackageFragment(""));
+			 javaTypeCompletionProcessor.setPackageFragment(root.getPackageFragment(""));
 		}
 
-		String javaClass = this.subject().getClass_();
+		String javaClass = subject.getClass_();
 
 		if (javaClass == null) {
-			setTextData("");
+			javaClass = "";
 		}
-		else {
-			setTextData(javaClass);
+
+		text.setText(javaClass);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void propertyChanged(String propertyName) {
+		super.propertyChanged(propertyName);
+
+		if (propertyName == XmlTypeMapping.CLASS_PROPERTY) {
+			populateText();
 		}
 	}
 
-	private void setTextData(String textData) {
-		if (! textData.equals(text.getText())) {
-			text.setText(textData);
+	private void textChanged(String text) {
+
+		setPopulating(true);
+
+		try {
+			subject().setClass(text);
+		}
+		finally {
+			setPopulating(false);
 		}
 	}
 }

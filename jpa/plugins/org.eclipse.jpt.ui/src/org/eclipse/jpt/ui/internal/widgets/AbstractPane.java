@@ -1184,23 +1184,123 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new container that will have a <code>Text</code> widget labeled
-	 * with the given label text.
+	 * Creates a new container that will have a text field as the center control
+	 * labeled with the given label.
 	 *
 	 * @param container The parent container
-	 * @param labelText The text to label the text field
-	 * @return The container of the label and the given center control
+	 * @param textListener The listener that is notified when the text field's
+	 * input changes
+	 * @return The newly created <code>Text</code>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildLabeledText(Composite container,
-	                                           String labelText) {
+	protected final Text buildLabeledText(Composite container,
+	                                      String labelText,
+	                                      ModifyListener textListener) {
 
-		return this.buildLabeledComposite(
+		Text text = this.buildText(container);
+		text.addModifyListener(textListener);
+
+		this.buildLabeledComposite(
 			container,
 			labelText,
-			this.buildText(container)
+			text
 		);
+
+		return text;
+	}
+
+	/**
+	 * Creates a new container that will have a text field as the center control
+	 * labeled with the given label.
+	 *
+	 * @param container The parent container
+	 * @param textListener The listener that is notified when the text field's
+	 * input changes
+	 * @param rightControl The control shown to the right of the main widget
+	 * @return The newly created <code>Text</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildLabeledText(Composite container,
+	                                      String labelText,
+	                                      ModifyListener textListener,
+	                                      Control rightControl) {
+
+		Text text = this.buildText(container);
+		text.addModifyListener(textListener);
+
+		this.buildLabeledComposite(
+			container,
+			labelText,
+			text,
+			rightControl
+		);
+
+		return text;
+	}
+
+	/**
+	 * Creates a new container that will have a text field as the center control
+	 * labeled with the given label.
+	 *
+	 * @param container The parent container
+	 * @param textListener The listener that is notified when the text field's
+	 * input changes
+	 * @param rightControl The control shown to the right of the main widget
+	 * @param helpId The topic help ID to be registered for the text field
+	 * @return The newly created <code>Text</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildLabeledText(Composite container,
+	                                      String labelText,
+	                                      ModifyListener textListener,
+	                                      Control rightControl,
+	                                      String helpId) {
+
+		Text text = this.buildText(container);
+		text.addModifyListener(textListener);
+
+		this.buildLabeledComposite(
+			container,
+			labelText,
+			text,
+			rightControl,
+			helpId
+		);
+
+		return text;
+	}
+
+	/**
+	 * Creates a new container that will have a text field as the center control
+	 * labeled with the given label.
+	 *
+	 * @param container The parent container
+	 * @param textListener The listener that is notified when the text field's
+	 * input changes
+	 * @param helpId The topic help ID to be registered for the text field
+	 * @return The newly created <code>Text</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildLabeledText(Composite container,
+	                                      String labelText,
+	                                      ModifyListener textListener,
+	                                      String helpId) {
+
+		Text text = this.buildText(container);
+		text.addModifyListener(textListener);
+
+		this.buildLabeledComposite(
+			container,
+			labelText,
+			text,
+			helpId
+		);
+
+		return text;
 	}
 
 	/**
@@ -1343,9 +1443,7 @@ public abstract class AbstractPane<T extends Model>
 
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace   = true;
 		gridData.horizontalAlignment       = SWT.FILL;
-		gridData.verticalAlignment         = SWT.TOP;
 		container.setLayoutData(gridData);
 
 		return container;

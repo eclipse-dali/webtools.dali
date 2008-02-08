@@ -69,12 +69,7 @@ public abstract class EnumFormComboViewer<T extends Model, V> extends AbstractEn
 	 */
 	@Override
 	ComboViewer buildComboViewer(Composite container) {
-		if (isEditable()) {
-			return buildEditableCComboViewer(container, buildLabelProvider());
-		}
-		else {
-			return buildCComboViewer(container, buildLabelProvider());
-		}
+		return buildCComboViewer(container, buildLabelProvider());
 	}
 
 	/*

@@ -15,6 +15,8 @@ public class JptUiXmlMessages
 	private static final String BUNDLE_NAME = "jpt_ui_xml"; //$NON-NLS-1$
 
 
+
+
 	public static String PersistentTypePage_javaClassLabel;
 	public static String PersistentTypePage_MetadataCompleteLabel;
 	public static String PersistentTypePage_AccessLabel;
@@ -37,6 +39,7 @@ public class JptUiXmlMessages
 	public static String XmlSchemaChooser_SchemaChooser;
 	public static String XmlCatalogChooser_CatalogChooser;
 
+	public static String XmlJavaClassChooser_browse;
 	public static String XmlJavaClassChooser_XmlJavaClassDialog_title;
 	public static String XmlJavaClassChooser_XmlJavaClassDialog_message;
 	public static String XmlPackageChooser_PackageDialog_title;
@@ -50,7 +53,7 @@ public class JptUiXmlMessages
 
 	public static String PersistenceUnitMetadataComposite_field;
 	public static String PersistenceUnitMetadataComposite_property;
-	
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, JptUiXmlMessages.class);

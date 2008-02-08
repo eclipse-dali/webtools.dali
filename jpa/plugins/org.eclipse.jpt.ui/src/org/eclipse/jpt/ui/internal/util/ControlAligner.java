@@ -30,27 +30,31 @@ import org.eclipse.swt.widgets.Listener;
  * <p>
  * Here an example of the result if this aligner is used to align controls
  * within either one or two group boxes, the controls added are the labels in
- * this case.
+ * this case. It is also possible to align controls on the right side of the
+ * main component, a spacer can be used for extra space.
+ * <p>
+ * Here's an example:
  * <pre>
- * -Group Box 1------------------------------
- * |                     ------------------ |
- * | Name:               | I              | |
- * |                     ------------------ |
- * |                     ---------          |
- * | Preallocation Size: |     |I|          |
- * |                     ---------          |
- * |                     ------------------ |
- * | Descriptor:         |              |v| |
- * |                     ------------------ |
- * ------------------------------------------
- * -Group Box 2------------------------------
- * |                     ------------------ |
- * | Mapping Type:       |              |V| |
- * |                     ------------------ |
- * |                     ------------------ |
- * | Check in Script:    |I               | |
- * |                     ------------------ |
- * ------------------------------------------</pre>
+ * - Group Box 1 ---------------------------------------------------------------
+ * |                     -------------------------------------- -------------- |
+ * | Name:               | I                                  | | Browsse... | |
+ * |                     -------------------------------------- -------------- |
+ * |                     ---------                                             |
+ * | Preallocation Size: |     |I|                                             |
+ * |                     ---------                                             |
+ * |                     --------------------------------------                |
+ * | Descriptor:         |                                  |v|                |
+ * |                     --------------------------------------                |
+ * -----------------------------------------------------------------------------
+ *
+ * - Group Box 2 ---------------------------------------------------------------
+ * |                     --------------------------------------                |
+ * | Mapping Type:       |                                  |V|                |
+ * |                     --------------------------------------                |
+ * |                     --------------------------------------                |
+ * | Check in Script:    | I                                  |                |
+ * |                     --------------------------------------                |
+ * -----------------------------------------------------------------------------</pre>
  *
  * @version 2.0
  * @since 2.0
@@ -59,9 +63,8 @@ import org.eclipse.swt.widgets.Listener;
 public final class ControlAligner
 {
 	/**
-	 * <code>true</code> if the length of every control needs to be updated
-	 * when control are added or removed; <code>false</code> to add or remove
-	 * the control and then at the end invoke {@link #revalidateSize()}.
+	 * Flag used to prevent a validation so it can be done after an operation
+	 * completed.
 	 */
 	private boolean autoValidate;
 
@@ -69,19 +72,6 @@ public final class ControlAligner
 	 * The utility class used to support bound properties.
 	 */
 	private Collection<Listener> changeSupport;
-
-	/**
-	 * The types of events to listen in order to properly adjust the size of all
-	 * the widgets.
-	 */
-	private int[] EVENT_TYPES =
-	{
-		SWT.Dispose,
-		SWT.Show,
-//		SWT.Resize,
-		SWT.Hide
-//		SWT.Move
-	};
 
 	/**
 	 * The listener added to each of the controls that listens only to a text
@@ -102,14 +92,6 @@ public final class ControlAligner
 	 */
 	private int maximumWidth;
 
-	private int[] SHELL_EVENT_TYPES =
-	{
-		SWT.Dispose,
-		SWT.Show,
-		SWT.Resize
-//		SWT.Hide
-	};
-
 	/**
 	 * The collection of {@link Wrapper}s encapsulating either <code>Control</code>s
 	 * or {@link ControlAligner}s.
@@ -120,6 +102,31 @@ public final class ControlAligner
 	 * A null-<code>Point</code> object used to clear the preferred size.
 	 */
 	private static final Point DEFAULT_SIZE = new Point(SWT.DEFAULT, SWT.DEFAULT);
+
+	/**
+	 * The types of events to listen in order to properly adjust the size of all
+	 * the widgets.
+	 */
+	private static final int[] EVENT_TYPES =
+	{
+		SWT.Dispose,
+		SWT.Show,
+		SWT.Resize,
+		SWT.Hide
+//		SWT.Move
+	};
+
+	/**
+	 * The types of events to listen in order to properly adjust the size of all
+	 * the widgets when a <code>Shell</code> is opening.
+	 */
+	private static final int[] SHELL_EVENT_TYPES =
+	{
+		SWT.Dispose,
+		SWT.Show,
+		SWT.Resize
+//		SWT.Hide
+	};
 
 	/**
 	 * Creates a new <code>ControlAligner</code>.
@@ -383,23 +390,6 @@ public final class ControlAligner
 	}
 
 	/**
-	 * Determines whether the length of each control should be set each time a
-	 * control is added or removed. If the control's text is changed and
-	 * {@link #isAutoValidate()} returns <code>true</code> then the length of
-	 * each control is automatically updated. When <code>false</code> is returned,
-	 * {@link #revalidateSize()}has to be called manually.
-	 *
-	 * @return <code>true</code> to recalculate the length of every control
-	 * when a control is either added or removed; <code>false</code> to allow
-	 * all the controls to be either added or removed before invoking
-	 * {@link #revalidateSize()}
-	 */
-	public boolean isAutoValidate()
-	{
-		return autoValidate;
-	}
-
-	/**
 	 * Determines whether the wrapped component is visible or not, which will
 	 * determine if its preferred width will be included in the calculation of
 	 * this <code>ComponentAligner</code>'s minimum width.
@@ -436,9 +426,9 @@ public final class ControlAligner
 			Point size = wrapper.getCachedSize();
 
 			// The size has not been calculated yet
-			if ((size.y == 0) &&
+			if ((size.y == 0) /*&&
 			    (checkVisibilityStatus && wrapper.isVisible() ||
-			    !checkVisibilityStatus))
+			    !checkVisibilityStatus)*/)
 			{
 				Point newSize = wrapper.getPreferredSize(checkVisibilityStatus);
 
@@ -466,11 +456,6 @@ public final class ControlAligner
 		Wrapper wrapper = retrieveWrapper(control);
 		wrapper.removeListener(listener);
 		wrappers.remove(wrapper);
-
-//		if (control.isPreferredSizeSet())
-//		{
-//			control.setPreferredSize(null);
-//		}
 
 		revalidate();
 	}
@@ -607,35 +592,25 @@ public final class ControlAligner
 	/**
 	 * Updates the preferred size of every component based on the widest
 	 * component.
+	 *
+	 * @param updateSize This flag is used to force the <code>Control</code>
+	 * to be resized
 	 */
 	private void revalidatePreferredSizeImp(boolean updateSize)
 	{
-//		if (maximumWidth > 0)
+		for (Wrapper wrapper : wrappers)
 		{
-			for (Wrapper wrapper : wrappers)
-			{
-				Point size = wrapper.getCachedSize();
-				size = new Point(maximumWidth, size.y);
-				wrapper.setPreferredSize(updateSize, size);
-			}
+			Point size = wrapper.getCachedSize();
+			size = new Point(maximumWidth, size.y);
+			wrapper.setPreferredSize(updateSize, size);
 		}
 	}
 
 	/**
 	 * Updates the size of every control based on the widest control.
 	 *
-	 * @param checkVisibilityStatus <code>true</code> to check for the
-	 * visibility flag when calculating the preferred size; <code>false</code>
-	 * to calculate the size even if the control is not visible
-	 */
-	public void revalidateSize(boolean checkVisibilityStatus)
-	{
-		recalculateWidth(checkVisibilityStatus);
-		revalidateSizeImp(!checkVisibilityStatus);
-	}
-
-	/**
-	 * Updates the size of every control based on the widest control.
+	 * @param updateSize This flag is used to force the <code>Control</code>
+	 * to be resized
 	 */
 	private void revalidateSizeImp(boolean updateSize)
 	{
@@ -671,8 +646,6 @@ public final class ControlAligner
 	{
 		StringBuffer sb = new StringBuffer();
 		StringTools.buildToStringFor(this, sb);
-		sb.append("autoValidate=");
-		sb.append(autoValidate);
 		sb.append(", maximumWidth=");
 		sb.append(maximumWidth);
 		sb.append(", wrappers=");

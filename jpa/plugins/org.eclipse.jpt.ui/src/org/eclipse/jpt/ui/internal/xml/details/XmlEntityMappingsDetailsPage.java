@@ -25,9 +25,11 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
- * |              ------------------------------------------------------------ |
- * | Package:     |                                                        |v| |
- * |              ------------------------------------------------------------ |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | XmlPackageChooser                                                     | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
  * |              ------------------------------------------------------------ |
  * | Schema:      |                                                        |v| |
  * |              ------------------------------------------------------------ |
@@ -48,6 +50,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @see EntityMappings
  * @see XmlEntityMappingsDetailsPage - The parent container
  * @see PersistenceUnitMetadataComposite
+ * @see XmlPackageChooser
  *
  * @version 2.0
  * @since 2.0
@@ -200,16 +203,9 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 	protected void initializeLayout(Composite container) {
 
 		// Package widgets
-		XmlPackageChooser xmlCatalogChooser = new XmlPackageChooser(
+		new XmlPackageChooser(
 			this,
 			container
-		);
-
-		buildLabeledComposite(
-			container,
-			JptUiXmlMessages.XmlEntityMappingsDetailsPage_package,
-			xmlCatalogChooser.getControl(),
-			IJpaHelpContextIds.ENTITY_ORM_PACKAGE
 		);
 
 		// Schema widgets
@@ -249,7 +245,7 @@ public class XmlEntityMappingsDetailsPage extends BaseJpaDetailsPage<EntityMappi
 		new PersistenceUnitMetadataComposite(
 			this,
 			buildPersistentUnitMetadaHolder(),
-			container
+			buildSubPane(container, 5)
 		);
 	}
 }

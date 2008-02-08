@@ -145,7 +145,7 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 	}
 
 	protected ComboViewer buildTypeMappingCombo(Composite parent) {
-		CCombo combo = buildEditableCCombo(parent);
+		CCombo combo = buildCCombo(parent);
 		this.typeMappingCombo = new ComboViewer(combo);
 		this.typeMappingCombo.getCCombo().setVisibleItemCount(Integer.MAX_VALUE);
 		this.typeMappingCombo.setContentProvider(buildContentProvider());
@@ -174,16 +174,19 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 	protected void doDispose() {
 		log(Tracing.UI_DETAILS_VIEW, "PersistentTypeDetailsPage.doDispose()");
 
-		this.currentMappingComposite = null;
-
-		for (IJpaComposite<ITypeMapping> composite : this.mappingComposites.values()) {
-			try {
-				composite.dispose();
-			}
-			catch (Exception e) {
-				JptUiPlugin.log(e);
-			}
+		if (this.currentMappingComposite != null) {
+			this.currentMappingComposite.dispose();
+			this.currentMappingComposite = null;
 		}
+
+//		for (IJpaComposite<ITypeMapping> composite : this.mappingComposites.values()) {
+//			try {
+//				composite.dispose();
+//			}
+//			catch (Exception e) {
+//				JptUiPlugin.log(e);
+//			}
+//		}
 
 		this.mappingComposites.clear();
 		super.doDispose();
@@ -245,24 +248,34 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 	}
 
 	private void populateMappingPage(String mappingKey) {
+
 		// Nothing to update
 		if (this.currentMappingKey == mappingKey) {
 			return;
 		}
+		// Dispose the existing mapping pane
 		else if (this.currentMappingComposite != null) {
 			this.log(
 				Tracing.UI_DETAILS_VIEW,
 				"PersistentTypeDetailsPage.populateMappingPage() disposing of current page: " + this.currentMappingKey
 			);
 
-			this.currentMappingComposite.dispose();
+			try {
+				this.currentMappingComposite.dispose();
+				this.currentMappingComposite = null;
+			}
+			catch (Exception e) {
+				JptUiPlugin.log(e);
+			}
 		}
 
 		this.currentMappingKey = mappingKey;
 
+		// Change the current mapping pane with the new one
 		if (this.currentMappingKey != null) {
 			this.currentMappingComposite = mappingCompositeFor(mappingKey);
 
+			// Show the new mapping pane
 			try {
 				this.log(
 					Tracing.UI_DETAILS_VIEW,
@@ -271,26 +284,39 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 
 				this.currentMappingComposite.populate();
 				this.typeMappingPageBook.showPage(this.currentMappingComposite.getControl());
+				this.repaintDetailsView(this.typeMappingPageBook);
 			}
 			catch (Exception e) {
+				JptUiPlugin.log(e);
+
 				this.log(
 					Tracing.UI_DETAILS_VIEW,
 					"PersistentTypeDetailsPage.populateMappingPage() error encountered"
 				);
 
+				// An error was encountered either during the population, dispose it
+				try {
+					this.currentMappingComposite.dispose();
+				}
+				catch (Exception exception) {
+					JptUiPlugin.log(e);
+				}
+
 				this.mappingComposites.remove(this.currentMappingComposite);
 				this.currentMappingComposite = null;
+
+				// Show an error message
+				// TODO: Replace the blank label with the error page
 				this.typeMappingPageBook.showPage(new Label(this.typeMappingPageBook, SWT.NULL));
-				JptUiPlugin.log(e);
 			}
 		}
+		// Clear the mapping pane and show a blank page
 		else {
 			this.log(
 				Tracing.UI_DETAILS_VIEW,
 				"PersistentTypeDetailsPage.populateMappingPage() no page to show"
 			);
 
-			this.currentMappingComposite = null;
 			this.typeMappingPageBook.showPage(new Label(this.typeMappingPageBook, SWT.NULL));
 		}
 	}

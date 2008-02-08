@@ -142,7 +142,7 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 
 	protected ComboViewer buildMappingCombo(Composite parent) {
 
-		this.mappingCombo = buildEditableCComboViewer(parent, buildLabelProvider());
+		this.mappingCombo = buildCComboViewer(parent, buildLabelProvider());
 		this.mappingCombo.getCCombo().setVisibleItemCount(Integer.MAX_VALUE);
 		this.mappingCombo.setContentProvider(buildContentProvider());
 		this.mappingCombo.addSelectionChangedListener(buildMappingComboModifyListener());
@@ -208,16 +208,19 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 	protected void doDispose() {
 		log(Tracing.UI_DETAILS_VIEW, "PersistentAttributeDetailsPage.doDispose()");
 
-		this.currentMappingComposite = null;
-
-		for (IJpaComposite<IAttributeMapping> composite : this.mappingComposites.values()) {
-			try {
-				composite.dispose();
-			}
-			catch (Exception e) {
-				JptUiPlugin.log(e);
-			}
+		if (this.currentMappingComposite != null) {
+			this.currentMappingComposite.dispose();
+			this.currentMappingComposite = null;
 		}
+
+//		for (IJpaComposite<IAttributeMapping> composite : this.mappingComposites.values()) {
+//			try {
+//				composite.dispose();
+//			}
+//			catch (Exception e) {
+//				JptUiPlugin.log(e);
+//			}
+//		}
 
 		this.mappingComposites.clear();
 		super.doDispose();
@@ -327,17 +330,25 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 		if (this.currentMappingKey == mappingKey) {
 			return;
 		}
+		// Dispose the existing mapping pane
 		else if (this.currentMappingComposite != null) {
 			this.log(
 				Tracing.UI_DETAILS_VIEW,
 				"PersistentAttributeDetailsPage.populateMappingPage() disposing of current page: " + this.currentMappingKey
 			);
 
-			this.currentMappingComposite.dispose();
+			try {
+				this.currentMappingComposite.dispose();
+				this.currentMappingComposite = null;
+			}
+			catch (Exception e) {
+				JptUiPlugin.log(e);
+			}
 		}
 
 		this.currentMappingKey = mappingKey;
 
+		// Change the current mapping pane with the new one
 		if (this.currentMappingKey != null) {
 			this.currentMappingComposite = mappingCompositeFor(mappingKey);
 
@@ -349,17 +360,30 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 
 				this.currentMappingComposite.populate();
 				this.mappingPageBook.showPage(this.currentMappingComposite.getControl());
+				this.repaintDetailsView(this.mappingPageBook);
 			}
 			catch (Exception e) {
+				JptUiPlugin.log(e);
+
 				this.log(
 					Tracing.UI_DETAILS_VIEW,
 					"PersistentAttributeDetailsPage.populateMappingPage() error encountered"
 				);
 
+				// An error was encountered either during the population, dispose it
+				try {
+					this.currentMappingComposite.dispose();
+				}
+				catch (Exception exception) {
+					JptUiPlugin.log(e);
+				}
+
 				this.mappingComposites.remove(this.currentMappingComposite);
 				this.currentMappingComposite = null;
+
+				// Show an error message
+				// TODO: Replace the blank label with the error page
 				this.mappingPageBook.showPage(new Label(this.mappingPageBook, SWT.NULL));
-				JptUiPlugin.log(e);
 			}
 		}
 		else {
@@ -368,7 +392,6 @@ public abstract class PersistentAttributeDetailsPage<T extends IPersistentAttrib
 				"PersistentAttributeDetailsPage.populateMappingPage() no page to show"
 			);
 
-			this.currentMappingComposite = null;
 			this.mappingPageBook.showPage(new Label(this.mappingPageBook, SWT.NULL));
 		}
 	}

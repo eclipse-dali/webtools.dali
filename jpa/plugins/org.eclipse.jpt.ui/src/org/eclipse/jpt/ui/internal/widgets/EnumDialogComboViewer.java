@@ -70,12 +70,7 @@ public abstract class EnumDialogComboViewer<T extends Model, V> extends Abstract
 	 */
 	@Override
 	ComboViewer buildComboViewer(Composite container) {
-		if (isEditable()) {
-			return buildEditableComboViewer(container, buildLabelProvider());
-		}
-		else {
-			return buildComboViewer(container, buildLabelProvider());
-		}
+		return buildComboViewer(container, buildLabelProvider());
 	}
 
 	/*

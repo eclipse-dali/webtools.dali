@@ -249,35 +249,26 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 		);
 
 		// Schema widgets
-		EnumFormComboViewer<PersistenceUnitDefaults, String> schemaComboViewer =
-			buildSchemaComboViewer(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiXmlMessages.XmlSchemaChooser_SchemaChooser,
-			schemaComboViewer.getControl(),
+			buildSchemaComboViewer(container),
 			IJpaHelpContextIds.ENTITY_ORM_SCHEMA
 		);
 
 		// Catalog widgets
-		EnumFormComboViewer<PersistenceUnitDefaults, String> catalogComboViewer =
-			buildCatalogComboViewer(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiXmlMessages.XmlCatalogChooser_CatalogChooser,
-			catalogComboViewer.getControl(),
+			buildCatalogComboViewer(container),
 			IJpaHelpContextIds.ENTITY_ORM_CATALOG
 		);
 
 		// Access Type widgets
-		EnumFormComboViewer<PersistenceUnitDefaults, AccessType> accessTypeComposite =
-			buildAccessTypeCombo(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiXmlMessages.PersistentTypePage_AccessLabel,
-			accessTypeComposite.getControl(),
+			buildAccessTypeCombo(container),
 			IJpaHelpContextIds.ENTITY_ORM_ACCESS
 		);
 	}

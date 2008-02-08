@@ -8,10 +8,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
+import java.util.Collection;
 import org.eclipse.jpt.core.internal.context.orm.XmlAttributeMapping;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -19,9 +20,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 /**
+ * @see XmlPersistentAttributeDetailsPage - The parent ocntainer
  *
  * @version 2.0
- * @since 2.0
+ * @since 1.0
  */
 @SuppressWarnings("nls")
 public class XmlJavaAttributeChooser extends AbstractFormPane<XmlAttributeMapping<? extends AttributeMapping>>
@@ -42,9 +44,24 @@ public class XmlJavaAttributeChooser extends AbstractFormPane<XmlAttributeMappin
 		super(parentPane, subjectHolder, parent);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void addPropertyNames(Collection<String> propertyNames) {
+		super.addPropertyNames(propertyNames);
+		propertyNames.add(XmlAttributeMapping.NAME_PROPERTY);
+	}
 
-	private XmlPersistentAttribute attribute() {
-		return (subject() != null) ? subject().persistentAttribute() : null;
+	private ModifyListener buildNameModifyListener() {
+		return new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				if (!isPopulating()) {
+					Text text = (Text) e.widget;
+					textChanged(text.getText());
+				}
+			}
+		};
 	}
 
 	/*
@@ -61,40 +78,53 @@ public class XmlJavaAttributeChooser extends AbstractFormPane<XmlAttributeMappin
 	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-		text = buildText(container);
-		text.addModifyListener(
-			new ModifyListener() {
-				public void modifyText(ModifyEvent e) {
-					textModified(e);
-				}
-			});
+
+		text = buildLabeledText(
+			container,
+			JptUiXmlMessages.PersistentAttributePage_javaAttributeLabel,
+			buildNameModifyListener()
+		);
 	}
 
 	private void populateText() {
-		if (attribute() == null) {
-			text.clearSelection();
+
+		XmlAttributeMapping<?> subject = subject();
+		text.setText("");
+
+		if (subject == null) {
 			return;
 		}
 
-		String name = attribute().getName();
+		String name = subject.getName();
 
 		if (name == null) {
 			name = "";
 		}
-		setTextData(name);
+
+		text.setText(name);
 	}
 
-	private void setTextData(String textData) {
-		if (! textData.equals(text.getText())) {
-			text.setText(textData);
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void propertyChanged(String propertyName) {
+		super.propertyChanged(propertyName);
+
+		if (propertyName == XmlAttributeMapping.NAME_PROPERTY) {
+			populateText();
 		}
 	}
 
-	private void textModified(ModifyEvent e) {
-		if (isPopulating()) {
-			return;
+	private void textChanged(String text) {
+
+		setPopulating(true);
+
+		try {
+			subject().setName(text);
 		}
-		String text = ((Text) e.getSource()).getText();
-		subject().setName(text);
+		finally {
+			setPopulating(false);
+		}
 	}
 }

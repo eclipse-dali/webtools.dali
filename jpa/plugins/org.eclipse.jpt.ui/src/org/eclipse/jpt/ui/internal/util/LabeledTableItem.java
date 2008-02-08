@@ -82,7 +82,7 @@ public final class LabeledTableItem implements LabeledControl
 		int index = table.indexOf(tableItem);
 		table.remove(index);
 
-		tableItem = new TableItem(table, SWT.CHECK, index);
+		tableItem = new TableItem(table, SWT.CHECK | SWT.TRANSPARENT, index);
 		tableItem.setText(text);
 		tableItem.setImage(image);
 		tableItem.setChecked(checked);

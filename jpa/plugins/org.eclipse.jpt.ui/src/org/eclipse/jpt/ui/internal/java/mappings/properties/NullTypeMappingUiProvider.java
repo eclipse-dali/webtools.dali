@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,10 +12,9 @@ package org.eclipse.jpt.ui.internal.java.mappings.properties;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.ui.internal.details.IJpaComposite;
 import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 @SuppressWarnings("nls")
@@ -51,30 +50,22 @@ public class NullTypeMappingUiProvider implements ITypeMappingUiProvider<ITypeMa
 			Composite parent,
 			TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		return new NullComposite(parent);
+		return new NullComposite(subjectHolder, parent, widgetFactory);
 	}
 
 
-	public static class NullComposite extends Composite
-	implements IJpaComposite<ITypeMapping>
+	public static class NullComposite extends AbstractFormPane<ITypeMapping>
+	                                  implements IJpaComposite<ITypeMapping>
 	{
-		private Composite composite;
-		NullComposite(Composite parent) {
-			super(parent, SWT.NONE);
-			this.composite = new Composite(parent, SWT.NONE);
-		}
+		NullComposite(PropertyValueModel<ITypeMapping> subjectHolder,
+		              Composite parent,
+		              TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		public void populate() {
-			// no op
+			super(subjectHolder, parent, widgetFactory);
 		}
 
 		@Override
-		public void dispose() {
-			super.dispose();
-		}
-
-		public Control getControl() {
-			return this.composite;
+		protected void initializeLayout(Composite container) {
 		}
 	}
 }

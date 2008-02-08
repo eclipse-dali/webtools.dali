@@ -222,24 +222,13 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 		return new StructuredSelection(value);
 	}
 
-	@SuppressWarnings("unchecked")
 	private ISelectionChangedListener buildSelectionChangedListener() {
 		return new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent e) {
-
-				if (isPopulating()) {
-					return;
+				if (!isPopulating()) {
+					StructuredSelection selection = (StructuredSelection) e.getSelection();
+					valueChanged(selection.getFirstElement());
 				}
-
-				StructuredSelection selection = (StructuredSelection) e.getSelection();
-				Object value = selection.getFirstElement();
-
-				// Convert the default "null" value to a real null
-				if (value == NULL_VALUE) {
-					value = null;
-				}
-
-				AbstractEnumComboViewer.this.setValue((V) value);
 			}
 		};
 	}
@@ -304,15 +293,6 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	}
 
 	/**
-	 * Determines whether the combo should be editable or not.
-	 *
-	 * @return The default is to have a non-editable combo
-	 */
-	protected boolean isEditable() {
-		return false;
-	}
-
-	/**
 	 * Populates the combo by re-adding all the items.
 	 */
 	private void populateCombo() {
@@ -355,5 +335,28 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	private void updateSelection() {
 		comboViewer.setSelection(buildSelection());
 		updateCursor();
+	}
+
+	/**
+	 * The selection changes, notify the subclass to set the value.
+	 *
+	 * @param value The new selected item
+	 */
+	@SuppressWarnings("unchecked")
+	private void valueChanged(Object value) {
+
+		// Convert the default "null" value to a real null
+		if (value == NULL_VALUE) {
+			value = null;
+		}
+
+		setPopulating(true);
+
+		try {
+			setValue((V) value);
+		}
+		finally {
+			setPopulating(false);
+		}
 	}
 }

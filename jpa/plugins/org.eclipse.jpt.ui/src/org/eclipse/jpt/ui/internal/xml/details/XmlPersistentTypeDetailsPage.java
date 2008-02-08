@@ -84,14 +84,7 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlP
 	protected void initializeLayout(Composite container) {
 
 		// Java class widgets
-		XmlJavaClassChooser xmlJavaClassChooser =
-			new XmlJavaClassChooser(this, buildMappingHolder(), container);
-
-		buildLabeledComposite(
-			container,
-			JptUiXmlMessages.PersistentTypePage_javaClassLabel,
-			xmlJavaClassChooser.getControl()
-		);
+		new XmlJavaClassChooser(this, buildMappingHolder(), container);
 
 		// Type Mapping widgets
 		ComboViewer typeMappingCombo = buildTypeMappingCombo(container);
@@ -120,7 +113,7 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlP
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment       = SWT.FILL;
-		gridData.verticalAlignment         = SWT.FILL;
+		gridData.verticalAlignment         = SWT.TOP;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace   = true;
 

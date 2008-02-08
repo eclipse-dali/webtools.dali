@@ -30,7 +30,6 @@ import org.eclipse.jpt.ui.internal.java.mappings.properties.OneToManyMappingUiPr
 import org.eclipse.jpt.ui.internal.java.mappings.properties.OneToOneMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.TransientMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.VersionMappingUiProvider;
-import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -49,6 +48,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * attribute.
  *
  * @see IPersistentAttribute
+ * @see XmlJavaAttributeChooser
  *
  * @version 2.0
  * @since 2.0
@@ -57,7 +57,6 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 public class XmlPersistentAttributeDetailsPage extends PersistentAttributeDetailsPage<XmlPersistentAttribute>
 {
 	private List<IAttributeMappingUiProvider<? extends IAttributeMapping>> attributeMappingUiProviders;
-	private XmlJavaAttributeChooser javaAttributeChooser;
 
 	/**
 	 * Creates a new <code>XmlPersistentAttributeDetailsPage</code>.
@@ -150,25 +149,15 @@ public class XmlPersistentAttributeDetailsPage extends PersistentAttributeDetail
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		this.javaAttributeChooser = new XmlJavaAttributeChooser(
-			this,
-			getMappingHolder(),
-			container
-		);
-
 		// Entity type widgets
-		buildLabeledComposite(
-			container,
-			JptUiXmlMessages.PersistentAttributePage_javaAttributeLabel,
-			buildMappingCombo(container).getControl()
-		);
+		new XmlJavaAttributeChooser(this, getMappingHolder(), container);
 
 		// Properties pane
 		PageBook attributePane = buildMappingPageBook(container);
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment       = SWT.FILL;
-		gridData.verticalAlignment         = SWT.FILL;
+		gridData.verticalAlignment         = SWT.TOP;
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.grabExcessVerticalSpace   = true;
 

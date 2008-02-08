@@ -12,6 +12,7 @@ import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
@@ -36,6 +37,27 @@ public abstract class BaseJpaDetailsPage<T extends IJpaStructureNode>
 	                             TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(new SimplePropertyValueModel<T>(), parent, widgetFactory);
+	}
+
+	/**
+	 * There is an issue with <code>ScrolledForm</code>, it doesn't repaint the
+	 * entire content, this will retrieve it by going up the hierarchy of the
+	 * given <code>Composite</code> and force a reflow on it.
+	 *
+	 * @param container The container used to find the <code>ScrolledForm</code>
+	 */
+	protected final void repaintDetailsView(Composite container) {
+
+		while (container != null &&
+		     !(container instanceof ScrolledForm))
+		{
+			container = container.getParent();
+		}
+
+		if (container != null) {
+			ScrolledForm scrolledForm = (ScrolledForm) container;
+			scrolledForm.reflow(true);
+		}
 	}
 
 	/*
