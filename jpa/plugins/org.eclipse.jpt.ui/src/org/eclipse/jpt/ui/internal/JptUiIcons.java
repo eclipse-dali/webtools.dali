@@ -21,7 +21,6 @@ public class JptUiIcons
 	public static Image ghost(Image image) {
 		Color lightgray = new Color(image.getDevice(), 223, 223, 223);
 		ImageData imageData = ImageUtilities.createShadedImage(image, lightgray);
-		//return new Image(image.getDevice(), imageData);
 		return new Image(image.getDevice(), new Image(image.getDevice(), imageData), SWT.IMAGE_GRAY);
 	}
 	
