@@ -24,7 +24,6 @@ import org.eclipse.jpt.ui.internal.jface.IItemLabelProviderFactory;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 
 public class PersistenceItemLabelProviderFactory

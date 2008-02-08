@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
