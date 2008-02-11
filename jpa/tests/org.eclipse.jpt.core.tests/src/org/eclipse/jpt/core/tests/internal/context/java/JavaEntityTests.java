@@ -861,6 +861,39 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("BAR", ((SecondaryTable) secondaryTables.next()).getName());
 		assertFalse(secondaryTables.hasNext());
 	}
+	
+	public void testAddSpecifiedSecondaryTablePreservePkJoinColumns() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		ISecondaryTable specifiedSecondaryTable = javaEntity().addSpecifiedSecondaryTable(0);
+		specifiedSecondaryTable.setSpecifiedName("FOO");
+		specifiedSecondaryTable.setSpecifiedCatalog("CATALOG");
+		specifiedSecondaryTable.setSpecifiedSchema("SCHEMA");
+		specifiedSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("PK_NAME");
+		
+		//add another specified secondary table, pkJoinColumns from first should be saved.
+		ISecondaryTable specifiedSecondaryTable2 = javaEntity().addSpecifiedSecondaryTable(1);
+		specifiedSecondaryTable2.setSpecifiedName("BAR");
+		
+		
+		Iterator<ISecondaryTable> secondaryTables = javaEntity().secondaryTables();
+		ISecondaryTable secondaryTable = secondaryTables.next();
+		assertEquals(secondaryTable, specifiedSecondaryTable);
+		assertEquals("FOO", secondaryTable.getName());
+		assertEquals("CATALOG", secondaryTable.getCatalog());
+		assertEquals("SCHEMA", secondaryTable.getSchema());
+		assertEquals(1, secondaryTable.specifiedPrimaryKeyJoinColumnsSize());
+		IPrimaryKeyJoinColumn pkJoinColumn = secondaryTable.specifiedPrimaryKeyJoinColumns().next();
+		assertEquals("PK_NAME", pkJoinColumn.getName());
+		
+		secondaryTable = secondaryTables.next();
+		assertEquals(secondaryTable, specifiedSecondaryTable2);
+		assertEquals("BAR", secondaryTable.getName());
+		assertEquals(0, secondaryTable.specifiedPrimaryKeyJoinColumnsSize());
+			
+	}
+	
 	public void testRemoveSpecifiedSecondaryTable() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);

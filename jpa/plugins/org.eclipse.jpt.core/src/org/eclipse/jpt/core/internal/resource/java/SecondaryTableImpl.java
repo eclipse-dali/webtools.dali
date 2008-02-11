@@ -85,6 +85,10 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 			NestableUniqueConstraint newUniqueConstraint = addUniqueConstraint(oldSecondaryTable.indexOfUniqueConstraint(uniqueConstraint));
 			newUniqueConstraint.initializeFrom((NestableAnnotation) uniqueConstraint);
 		}
+		for (PrimaryKeyJoinColumn pkJoinColumn : CollectionTools.iterable(oldSecondaryTable.pkJoinColumns())) {
+			NestablePrimaryKeyJoinColumn newPkJoinColumn = addPkJoinColumn(oldSecondaryTable.indexOfPkJoinColumn(pkJoinColumn));
+			newPkJoinColumn.initializeFrom((NestableAnnotation) pkJoinColumn);
+		}
 	}
 	
 	@Override
@@ -111,8 +115,7 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 		return this.pkJoinColumns.indexOf(joinColumn);
 	}
 
-	
-	public PrimaryKeyJoinColumn addPkJoinColumn(int index) {
+	public NestablePrimaryKeyJoinColumn addPkJoinColumn(int index) {
 		NestablePrimaryKeyJoinColumn pkJoinColumn = (NestablePrimaryKeyJoinColumn) ContainerAnnotationTools.addNestedAnnotation(index, this.pkJoinColumnsContainerAnnotation);
 		fireItemAdded(SecondaryTable.PK_JOIN_COLUMNS_LIST, index, pkJoinColumn);
 		return pkJoinColumn;
