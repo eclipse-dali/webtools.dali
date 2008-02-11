@@ -457,6 +457,10 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 			return subject.specifiedInverseJoinColumns();
 		}
 		
+		public int specifiedJoinColumnsSize(IJoinTable subject) {
+			return subject.specifiedInverseJoinColumnsSize();
+		}
+		
 		public IJoinColumn defaultJoinColumn(IJoinTable subject) {
 			return subject.getDefaultInverseJoinColumn();
 		}
@@ -492,6 +496,10 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 
 		public ListIterator<IJoinColumn> specifiedJoinColumns(IJoinTable subject) {
 			return subject.specifiedJoinColumns();
+		}
+		
+		public int specifiedJoinColumnsSize(IJoinTable subject) {
+			return subject.specifiedJoinColumnsSize();
 		}
 		
 		public IJoinColumn defaultJoinColumn(IJoinTable subject) {

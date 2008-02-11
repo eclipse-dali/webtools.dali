@@ -427,7 +427,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	public IJavaSecondaryTable addSpecifiedSecondaryTable(int index) {
 		IJavaSecondaryTable secondaryTable = jpaFactory().createJavaSecondaryTable(this);
 		this.specifiedSecondaryTables.add(index, secondaryTable);
-		this.persistentTypeResource.addAnnotation(index, SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
+		SecondaryTable secondaryTableResource = (SecondaryTable) this.persistentTypeResource.addAnnotation(index, SecondaryTable.ANNOTATION_NAME, SecondaryTables.ANNOTATION_NAME);
+		secondaryTable.initializeFromResource(secondaryTableResource);
 		fireItemAdded(IEntity.SPECIFIED_SECONDARY_TABLES_LIST, index, secondaryTable);
 		return secondaryTable;
 	}
@@ -674,10 +675,22 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	}
 
 	public IPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
+		IJavaPrimaryKeyJoinColumn oldDefaultPkJoinColumn = this.getDefaultPrimaryKeyJoinColumn();
+		if (oldDefaultPkJoinColumn != null) {
+			//null the default join column now if one already exists.
+			//if one does not exist, there is already a specified join column.
+			//Remove it now so that it doesn't get removed during an update and
+			//cause change notifications to be sent to the UI in the wrong order
+			this.defaultPrimaryKeyJoinColumn = null;
+		}
 		IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
-		this.persistentTypeResource.addAnnotation(index, PrimaryKeyJoinColumn.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME);
+		PrimaryKeyJoinColumn pkJoinColumnResource = (PrimaryKeyJoinColumn) this.persistentTypeResource.addAnnotation(index, PrimaryKeyJoinColumn.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME);
+		primaryKeyJoinColumn.initializeFromResource(pkJoinColumnResource);
 		this.fireItemAdded(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
+		if (oldDefaultPkJoinColumn != null) {
+			this.firePropertyChanged(IEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMN, oldDefaultPkJoinColumn, null);
+		}
 		return primaryKeyJoinColumn;
 	}
 
@@ -691,8 +704,18 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	
 	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
 		IJavaPrimaryKeyJoinColumn removedPrimaryKeyJoinColumn = this.specifiedPrimaryKeyJoinColumns.remove(index);
+		if (!containsSpecifiedPrimaryKeyJoinColumns()) {
+			//create the defaultJoinColumn now or this will happen during project update 
+			//after removing the join column from the resource model. That causes problems 
+			//in the UI because the change notifications end up in the wrong order.
+			this.defaultPrimaryKeyJoinColumn = createPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumn(this.persistentTypeResource));
+		}
 		this.persistentTypeResource.removeAnnotation(index, PrimaryKeyJoinColumn.ANNOTATION_NAME, PrimaryKeyJoinColumns.ANNOTATION_NAME);
 		fireItemRemoved(IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
+		if (this.defaultPrimaryKeyJoinColumn != null) {
+			//fire change notification if a defaultJoinColumn was created above
+			this.firePropertyChanged(IEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMN, null, this.defaultPrimaryKeyJoinColumn);
+		}
 	}
 
 	protected void removeSpecifiedPrimaryKeyJoinColumn_(IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn) {
@@ -732,7 +755,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	public IJavaAttributeOverride addSpecifiedAttributeOverride(int index) {
 		IJavaAttributeOverride attributeOverride = jpaFactory().createJavaAttributeOverride(this, createAttributeOverrideOwner());
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
-		this.persistentTypeResource.addAnnotation(index, AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
+		AttributeOverride attributeOverrideResource = (AttributeOverride) this.persistentTypeResource.addAnnotation(index, AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
+		attributeOverride.initializeFromResource(attributeOverrideResource);
 		this.fireItemAdded(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
 	}
@@ -851,7 +875,8 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	public IJavaAssociationOverride addSpecifiedAssociationOverride(int index) {
 		IJavaAssociationOverride associationOverride = jpaFactory().createJavaAssociationOverride(this, createAssociationOverrideOwner());
 		this.specifiedAssociationOverrides.add(index, associationOverride);
-		this.persistentTypeResource.addAnnotation(index, AssociationOverride.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
+		AssociationOverride associationOverrideResource = (AssociationOverride) this.persistentTypeResource.addAnnotation(index, AssociationOverride.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
+		associationOverride.initializeFromResource(associationOverrideResource);
 		this.fireItemAdded(IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
 		return associationOverride;
 	}
@@ -1336,9 +1361,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 			return;
 		}
 		if (getDefaultPrimaryKeyJoinColumn() == null) {
-			IJavaPrimaryKeyJoinColumn joinColumn = this.jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
-			joinColumn.initializeFromResource(new NullPrimaryKeyJoinColumn(persistentTypeResource));
-			this.setDefaultPrimaryKeyJoinColumn(joinColumn);
+			this.setDefaultPrimaryKeyJoinColumn(createPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumn(this.persistentTypeResource)));
 		}
 		else {
 			this.defaultPrimaryKeyJoinColumn.update(new NullPrimaryKeyJoinColumn(persistentTypeResource));

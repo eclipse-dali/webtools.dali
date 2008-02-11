@@ -15,15 +15,16 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
+import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
+import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.swt.widgets.Composite;
@@ -108,7 +109,10 @@ public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 			public String getText(Object element) {
 				// TODO display a qualified name instead
 				ISecondaryTable secondaryTable = (ISecondaryTable) element;
-				return secondaryTable.getName();
+				if (secondaryTable.getName() != null) {
+					return secondaryTable.getName();
+				}
+				return "";//TODO
 			}
 		};
 	}
@@ -148,6 +152,11 @@ public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 			}
 		};
 	}
+	
+	private ListValueModel<ISecondaryTable> buildSecondaryTablesListModel() {
+		return new ItemPropertyListValueModelAdapter<ISecondaryTable>(buildSecondaryTablesListHolder(), 
+			ITable.SPECIFIED_NAME_PROPERTY);
+	}	
 
 	private ListValueModel<ISecondaryTable> buildSecondaryTablesListHolder() {
 		return new ListAspectAdapter<IEntity, ISecondaryTable>(getSubjectHolder(), IEntity.SPECIFIED_SECONDARY_TABLES_LIST) {
@@ -161,12 +170,6 @@ public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 				return subject.secondaryTablesSize();
 			}
 		};
-	}
-
-	private ListValueModel<ISecondaryTable> buildSortedSecondaryTablesListHolder() {
-		return new SortedListValueModelAdapter<ISecondaryTable>(
-			buildSecondaryTablesListHolder()
-		);
 	}
 
 	private void editSecondaryTableDialogOkd(SecondaryTableDialog dialog, ISecondaryTable secondaryTable) {
@@ -219,10 +222,10 @@ public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 			this,
 			buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
 			buildSecondaryTablesAdapter(),
-			buildSortedSecondaryTablesListHolder(),
+			buildSecondaryTablesListModel(),
 			secondaryTableHolder,
 			buildSecondaryTableLabelProvider(),
-			IJpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
+			IJpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS//TODO need a help context id for this
 		);
 
 		// Primary Key Join Columns pane

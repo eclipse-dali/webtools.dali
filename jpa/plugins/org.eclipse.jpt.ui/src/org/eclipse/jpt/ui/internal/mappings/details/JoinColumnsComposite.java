@@ -216,6 +216,11 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 			protected ListIterator<IJoinColumn> listIterator_() {
 				return joinColumnsEditor.specifiedJoinColumns(subject);
 			}
+			
+			@Override
+			protected int size_() {
+				return joinColumnsEditor.specifiedJoinColumnsSize(subject);
+			}
 		};
 	}
 	
@@ -285,6 +290,7 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 		void editJoinColumn(T subject, IJoinColumn joinColumn);
 		boolean hasSpecifiedJoinColumns(T subject);
 		ListIterator<IJoinColumn> specifiedJoinColumns(T subject);
+		int specifiedJoinColumnsSize(T subject);
 		IJoinColumn defaultJoinColumn(T subject);
 		String specifiedListPropertyName();
 		String defaultPropertyName();

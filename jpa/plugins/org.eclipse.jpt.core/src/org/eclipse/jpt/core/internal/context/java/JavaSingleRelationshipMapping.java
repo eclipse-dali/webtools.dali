@@ -102,11 +102,22 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 	}
 
 	public IJavaJoinColumn addSpecifiedJoinColumn(int index) {
+		IJoinColumn oldDefaultJoinColumn = this.getDefaultJoinColumn();
+		if (oldDefaultJoinColumn != null) {
+			//null the default join column now if one already exists.
+			//if one does not exist, there is already a specified join column.
+			//Remove it now so that it doesn't get removed during an update and
+			//cause change notifications to be sent to the UI in the wrong order
+			this.defaultJoinColumn = null;
+		}
 		IJavaJoinColumn joinColumn = jpaFactory().createJavaJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
 		JoinColumn joinColumnResource = (JoinColumn) this.persistentAttributeResource.addAnnotation(index, JoinColumn.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
 		joinColumn.initializeFromResource(joinColumnResource);
 		this.fireItemAdded(ISingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
+		if (oldDefaultJoinColumn != null) {
+			this.firePropertyChanged(ISingleRelationshipMapping.DEFAULT_JOIN_COLUMN, oldDefaultJoinColumn, null);
+		}
 		return joinColumn;
 	}
 
@@ -120,8 +131,18 @@ public abstract class JavaSingleRelationshipMapping<T extends RelationshipMappin
 	
 	public void removeSpecifiedJoinColumn(int index) {
 		IJavaJoinColumn removedJoinColumn = this.specifiedJoinColumns.remove(index);
+		if (!containsSpecifiedJoinColumns()) {
+			//create the defaultJoinColumn now or this will happen during project update 
+			//after removing the join column from the resource model. That causes problems 
+			//in the UI because the change notifications end up in the wrong order.
+			this.defaultJoinColumn = createJoinColumn(new NullJoinColumn(this.persistentAttributeResource));
+		}
 		this.persistentAttributeResource.removeAnnotation(index, JoinColumn.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
 		fireItemRemoved(ISingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
+		if (this.defaultJoinColumn != null) {
+			//fire change notification if a defaultJoinColumn was created above
+			this.firePropertyChanged(ISingleRelationshipMapping.DEFAULT_JOIN_COLUMN, null, this.defaultJoinColumn);		
+		}
 	}
 
 	protected void removeSpecifiedJoinColumn_(IJavaJoinColumn joinColumn) {

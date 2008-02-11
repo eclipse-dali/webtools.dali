@@ -504,6 +504,10 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 			return subject.specifiedJoinColumns();
 		}
 	
+		public int specifiedJoinColumnsSize(IAssociationOverride subject) {
+			return subject.specifiedJoinColumnsSize();
+		}
+		
 		public IJoinColumn defaultJoinColumn(IAssociationOverride subject) {
 			// TODO Auto-generated method stub
 			return null;

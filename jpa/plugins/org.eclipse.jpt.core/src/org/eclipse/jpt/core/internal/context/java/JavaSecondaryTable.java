@@ -16,6 +16,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
@@ -106,10 +107,22 @@ public class JavaSecondaryTable extends AbstractJavaTable
 	}
 
 	public IJavaPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
+		IJavaPrimaryKeyJoinColumn oldDefaultPkJoinColumn = this.getDefaultPrimaryKeyJoinColumn();
+		if (oldDefaultPkJoinColumn != null) {
+			//null the default join column now if one already exists.
+			//if one does not exist, there is already a specified join column.
+			//Remove it now so that it doesn't get removed during an update and
+			//cause change notifications to be sent to the UI in the wrong order
+			this.defaultPrimaryKeyJoinColumn = null;
+		}
 		IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().createJavaPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
-		this.secondaryTableResource.addPkJoinColumn(index);
+		PrimaryKeyJoinColumn pkJoinColumnResource = this.secondaryTableResource.addPkJoinColumn(index);
+		primaryKeyJoinColumn.initializeFromResource(pkJoinColumnResource);
 		this.fireItemAdded(ISecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
+		if (oldDefaultPkJoinColumn != null) {
+			this.firePropertyChanged(ISecondaryTable.DEFAULT_PRIMARY_KEY_JOIN_COLUMN, oldDefaultPkJoinColumn, null);
+		}
 		return primaryKeyJoinColumn;
 	}
 
@@ -123,8 +136,18 @@ public class JavaSecondaryTable extends AbstractJavaTable
 	
 	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
 		IJavaPrimaryKeyJoinColumn removedPrimaryKeyJoinColumn = this.specifiedPrimaryKeyJoinColumns.remove(index);
+		if (!containsSpecifiedPrimaryKeyJoinColumns()) {
+			//create the defaultJoinColumn now or this will happen during project update 
+			//after removing the join column from the resource model. That causes problems 
+			//in the UI because the change notifications end up in the wrong order.
+			this.defaultPrimaryKeyJoinColumn = createPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumn(this.secondaryTableResource));
+		}
 		this.secondaryTableResource.removePkJoinColumn(index);
 		fireItemRemoved(ISecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
+		if (this.defaultPrimaryKeyJoinColumn != null) {
+			//fire change notification if a defaultJoinColumn was created above
+			this.firePropertyChanged(IEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMN, null, this.defaultPrimaryKeyJoinColumn);
+		}
 	}	
 
 	protected void removeSpecifiedPrimaryKeyJoinColumn_(IJavaPrimaryKeyJoinColumn primaryKeyJoinColumn) {
