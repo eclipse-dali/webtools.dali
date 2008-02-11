@@ -1401,16 +1401,7 @@ public abstract class AbstractPane<T extends Model>
 	 */
 	protected final PageBook buildPageBook(Composite container) {
 
-		GridLayout layout = new GridLayout(1, false);
-		layout.marginHeight = 0;
-		layout.marginWidth  = 0;
-		layout.marginTop    = 0;
-		layout.marginLeft   = 0;
-		layout.marginBottom = 0;
-		layout.marginRight  = 0;
-
 		PageBook pageBook = new PageBook(container, SWT.NULL);
-		pageBook.setLayout(layout);
 		pageBook.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		return pageBook;
 	}

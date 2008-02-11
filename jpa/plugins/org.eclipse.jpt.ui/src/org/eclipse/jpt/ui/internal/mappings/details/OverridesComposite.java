@@ -403,11 +403,11 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		columnComposite.setVisible(false);
 		joinColumnsComposite.enableWidgets(false);
 		columnComposite.enableWidgets(false);
-		installControlSwitcher(overrideHolder, pageBook);
+		installOverrideControlSwitcher(overrideHolder, pageBook);
 	}
 
-	private void installControlSwitcher(PropertyValueModel<IOverride> overrideHolder,
-	                                    PageBook pageBook) {
+	private void installOverrideControlSwitcher(PropertyValueModel<IOverride> overrideHolder,
+	                                            PageBook pageBook) {
 
 		new ControlSwitcher<IOverride>(
 			overrideHolder,
@@ -491,6 +491,14 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 			OverridesComposite.this.addJoinColumn(subject);
 		}
 
+		public IJoinColumn defaultJoinColumn(IAssociationOverride subject) {
+			return null;
+		}
+
+		public String defaultPropertyName() {
+			return IAssociationOverride.DEFAULT_JOIN_COLUMNS_LIST;
+		}
+
 		public void editJoinColumn(IAssociationOverride subject, IJoinColumn joinColumn) {
 			OverridesComposite.this.editJoinColumn(joinColumn);
 		}
@@ -499,33 +507,22 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 			return subject.containsSpecifiedJoinColumns();
 		}
 
-		
-		public ListIterator<IJoinColumn> specifiedJoinColumns(IAssociationOverride subject) {
-			return subject.specifiedJoinColumns();
-		}
-	
-		public int specifiedJoinColumnsSize(IAssociationOverride subject) {
-			return subject.specifiedJoinColumnsSize();
-		}
-		
-		public IJoinColumn defaultJoinColumn(IAssociationOverride subject) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		public String specifiedListPropertyName() {
-			return IAssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST;
-		}
-		
-		public String defaultPropertyName() {
-			// TODO Auto-generated method stub
-			return IAssociationOverride.DEFAULT_JOIN_COLUMNS_LIST;
-		}
-
 		public void removeJoinColumns(IAssociationOverride subject, int[] selectedIndices) {
 			for (int index = selectedIndices.length; --index >= 0; ) {
 				subject.removeSpecifiedJoinColumn(selectedIndices[index]);
 			}
+		}
+
+		public ListIterator<IJoinColumn> specifiedJoinColumns(IAssociationOverride subject) {
+			return subject.specifiedJoinColumns();
+		}
+
+		public int specifiedJoinColumnsSize(IAssociationOverride subject) {
+			return subject.specifiedJoinColumnsSize();
+		}
+
+		public String specifiedListPropertyName() {
+			return IAssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST;
 		}
 	}
 }

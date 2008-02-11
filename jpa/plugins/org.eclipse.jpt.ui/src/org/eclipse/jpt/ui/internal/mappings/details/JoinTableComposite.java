@@ -445,6 +445,14 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 			JoinTableComposite.this.addInverseJoinColumn(subject);
 		}
 
+		public IJoinColumn defaultJoinColumn(IJoinTable subject) {
+			return subject.getDefaultInverseJoinColumn();
+		}
+
+		public String defaultPropertyName() {
+			return IJoinTable.DEFAULT_INVERSE_JOIN_COLUMN;
+		}
+
 		public void editJoinColumn(IJoinTable subject, IJoinColumn joinColumn) {
 			JoinTableComposite.this.editInverseJoinColumn(joinColumn);
 		}
@@ -453,30 +461,22 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 			return subject.containsSpecifiedInverseJoinColumns();
 		}
 
-		public ListIterator<IJoinColumn> specifiedJoinColumns(IJoinTable subject) {
-			return subject.specifiedInverseJoinColumns();
-		}
-		
-		public int specifiedJoinColumnsSize(IJoinTable subject) {
-			return subject.specifiedInverseJoinColumnsSize();
-		}
-		
-		public IJoinColumn defaultJoinColumn(IJoinTable subject) {
-			return subject.getDefaultInverseJoinColumn();
-		}
-
-		public String specifiedListPropertyName() {
-			return IJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST;
-		}
-		
-		public String defaultPropertyName() {
-			return IJoinTable.DEFAULT_INVERSE_JOIN_COLUMN;
-		}
-
 		public void removeJoinColumns(IJoinTable subject, int[] selectedIndices) {
 			for (int index = selectedIndices.length; --index >= 0; ) {
 				subject.removeSpecifiedInverseJoinColumn(selectedIndices[index]);
 			}
+		}
+
+		public ListIterator<IJoinColumn> specifiedJoinColumns(IJoinTable subject) {
+			return subject.specifiedInverseJoinColumns();
+		}
+
+		public int specifiedJoinColumnsSize(IJoinTable subject) {
+			return subject.specifiedInverseJoinColumnsSize();
+		}
+
+		public String specifiedListPropertyName() {
+			return IJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST;
 		}
 	}
 
@@ -484,6 +484,14 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 
 		public void addJoinColumn(IJoinTable subject) {
 			JoinTableComposite.this.addJoinColumn(subject);
+		}
+
+		public IJoinColumn defaultJoinColumn(IJoinTable subject) {
+			return subject.getDefaultJoinColumn();
+		}
+
+		public String defaultPropertyName() {
+			return IJoinTable.DEFAULT_JOIN_COLUMN;
 		}
 
 		public void editJoinColumn(IJoinTable subject, IJoinColumn joinColumn) {
@@ -494,30 +502,22 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 			return subject.containsSpecifiedJoinColumns();
 		}
 
-		public ListIterator<IJoinColumn> specifiedJoinColumns(IJoinTable subject) {
-			return subject.specifiedJoinColumns();
-		}
-		
-		public int specifiedJoinColumnsSize(IJoinTable subject) {
-			return subject.specifiedJoinColumnsSize();
-		}
-		
-		public IJoinColumn defaultJoinColumn(IJoinTable subject) {
-			return subject.getDefaultJoinColumn();
-		}
-
-		public String specifiedListPropertyName() {
-			return IJoinTable.SPECIFIED_JOIN_COLUMNS_LIST;
-		}
-		
-		public String defaultPropertyName() {
-			return IJoinTable.DEFAULT_JOIN_COLUMN;
-		}
-
 		public void removeJoinColumns(IJoinTable subject, int[] selectedIndices) {
 			for (int index = selectedIndices.length; --index >= 0; ) {
 				subject.removeSpecifiedJoinColumn(selectedIndices[index]);
 			}
+		}
+
+		public ListIterator<IJoinColumn> specifiedJoinColumns(IJoinTable subject) {
+			return subject.specifiedJoinColumns();
+		}
+
+		public int specifiedJoinColumnsSize(IJoinTable subject) {
+			return subject.specifiedJoinColumnsSize();
+		}
+
+		public String specifiedListPropertyName() {
+			return IJoinTable.SPECIFIED_JOIN_COLUMNS_LIST;
 		}
 	}
 }

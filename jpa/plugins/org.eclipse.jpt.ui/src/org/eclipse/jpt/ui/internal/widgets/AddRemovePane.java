@@ -221,15 +221,6 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		};
 	}
 
-//	private ListChangeListener/*<Object>*/ buildListChangeListener() {
-//		return new ListChangeAdapter/*<Object>*/() {
-//			@Override
-//			public void listChanged(ListChangeEvent/*<Object>*/ e) {
-//				AddRemovePane.this.updateButtons();
-//			}
-//		};
-//	}
-
 	/**
 	 * @category Option
 	 */

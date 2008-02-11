@@ -32,9 +32,12 @@ public final class LabeledButton implements LabeledControl
 	 *
 	 * @param button The button that will have its text and icon updated when
 	 * required
+	 * @exception AssertionFailedException If the given <code>Button</code> is
+	 * <code>null</code>
 	 */
 	public LabeledButton(Button button) {
 		super();
+
 		Assert.isNotNull(button, "The button cannot be null");
 		this.button = button;
 	}
@@ -42,14 +45,18 @@ public final class LabeledButton implements LabeledControl
 	/*
 	 * (non-Javadoc)
 	 */
-	public void setIcon(Image image) {
-		this.button.setImage(image);
+	public void setImage(Image image) {
+		if (!this.button.isDisposed()) {
+			this.button.setImage(image);
+		}
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	public void setText(String text) {
-		this.button.setText(text);
+		if (!this.button.isDisposed()) {
+			this.button.setText(text);
+		}
 	}
 }

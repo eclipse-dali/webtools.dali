@@ -32,9 +32,12 @@ public final class LabeledLabel implements LabeledControl
 	 *
 	 * @param label The label that will have its text and icon updated when
 	 * required
+	 * @exception AssertionFailedException If the given <code>Label</code> is
+	 * <code>null</code>
 	 */
 	public LabeledLabel(Label label) {
 		super();
+
 		Assert.isNotNull(label, "The label cannot be null");
 		this.label = label;
 	}
@@ -42,14 +45,18 @@ public final class LabeledLabel implements LabeledControl
 	/*
 	 * (non-Javadoc)
 	 */
-	public void setIcon(Image image) {
-		this.label.setImage(image);
+	public void setImage(Image image) {
+		if (!this.label.isDisposed()) {
+			this.label.setImage(image);
+		}
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	public void setText(String text) {
-		this.label.setText(text);
+		if (!this.label.isDisposed()) {
+			this.label.setText(text);
+		}
 	}
 }

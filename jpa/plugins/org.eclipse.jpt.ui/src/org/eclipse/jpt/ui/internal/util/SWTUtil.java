@@ -16,12 +16,14 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.ui.internal.widgets.NullPostExecution;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.forms.widgets.ScrolledForm;
 
 /**
  * A suite of utility methods related to the user interface.
@@ -140,6 +142,43 @@ public class SWTUtil {
 	}
 
 	/**
+	 * Relays out the parents of the <code>Control</code>. This was taken from
+	 * the widget <code>Section</code>.
+	 *
+	 * @param pane The pane to revalidate as well as its parents
+	 */
+	public static void reflow(Composite pane) {
+
+		for (Composite composite = pane; composite != null; ) {
+			composite.setRedraw(false);
+			composite = composite.getParent();
+
+			if (composite instanceof ScrolledForm) {
+				break;
+			}
+		}
+
+		for (Composite composite = pane; composite != null; ) {
+			composite.layout(true);
+			composite = composite.getParent();
+
+			if (composite instanceof ScrolledForm) {
+				((ScrolledForm) composite).reflow(true);
+				break;
+			}
+		}
+
+		for (Composite composite = pane; composite != null; ) {
+			composite.setRedraw(true);
+			composite = composite.getParent();
+
+			if (composite instanceof ScrolledForm) {
+				break;
+			}
+		}
+	}
+
+	/**
 	 * Sets whether the entire shell and its widgets should be enabled or
 	 * everything should be unaccessible.
 	 *
@@ -152,15 +191,6 @@ public class SWTUtil {
 		for (Shell shell : shells) {
 			shell.setEnabled(active);
 		}
-	}
-
-	/**
-	 * Asynchronously launches the specified dialog in the UI thread.
-	 *
-	 * @param dialog The dialog to show on screen
-	 */
-	public static void show(Dialog dialog) {
-		show(dialog, NullPostExecution.<Dialog>instance());
 	}
 
 	/**
@@ -193,6 +223,15 @@ public class SWTUtil {
 				}
 			);
 		}}.start();
+	}
+
+	/**
+	 * Asynchronously launches the specified dialog in the UI thread.
+	 *
+	 * @param dialog The dialog to show on screen
+	 */
+	public static void show(Dialog dialog) {
+		show(dialog, NullPostExecution.<Dialog>instance());
 	}
 
 	/**

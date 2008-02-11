@@ -104,15 +104,24 @@ public final class ControlSwitcher<T>
 			return;
 		}
 
+		// Retrieve the Control for the new value
 		Control pane = paneTransformer.transform(value);
+		boolean visible = (pane != null);
 
-		 if (pane == null) {
-			 pageBook.showPage(new Label(pageBook, SWT.SEPARATOR));
-		 }
-		 else {
-			 pageBook.showPage(pane);
-		 }
+		// Show the new page
+		if (visible) {
+			pageBook.showPage(pane);
+		}
+		else {
+			// Note: We can't null due to a bug in PageBook
+			pageBook.showPage(new Label(pageBook, SWT.SEPARATOR | SWT.HORIZONTAL));
+		}
 
-		 pageBook.setVisible(pane != null);
+		if (pageBook.isVisible() != visible) {
+			pageBook.setVisible(visible);
+		}
+
+		// Revalidate the parents in order to update the layout
+		SWTUtil.reflow(pageBook);
 	}
 }

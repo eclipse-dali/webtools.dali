@@ -48,21 +48,23 @@ public final class LabeledControlUpdater {
 	 *
 	 * @param labeledControl The wrapper around the control that needs to
 	 * have its image and text updated
-	 * @param imageHolder The holder this class will listen for changes
-	 * @param textHolder The holder this class will listen for changes
+	 * @param imageHolder The holder this class will listen for changes or
+	 * <code>null</code> if the text never changes
+	 * @param textHolder The holder this class will listen for changes or
+	 * <code>null</code> if the image never changes
 	 */
 	public LabeledControlUpdater(LabeledControl labeledControl,
 	                             PropertyValueModel<String> textHolder,
 	                             PropertyValueModel<Image> imageHolder)
 	{
 		super();
-		initialize(labeledControl, imageHolder, textHolder);
+		initialize(labeledControl, textHolder, imageHolder);
 	}
 
 	private PropertyChangeListener buildIconListener() {
 		return new SWTPropertyChangeListenerWrapper(buildIconListener_());
 	}
-	
+
 	private PropertyChangeListener buildIconListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
@@ -79,7 +81,7 @@ public final class LabeledControlUpdater {
 	private PropertyChangeListener buildTextListener() {
 		return new SWTPropertyChangeListenerWrapper(buildTextListener_());
 	}
-	
+
 	private PropertyChangeListener buildTextListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
@@ -94,16 +96,17 @@ public final class LabeledControlUpdater {
 	}
 
 	private void initialize(LabeledControl labeledControl,
-	                        PropertyValueModel<Image> imageHolder,
-	                        PropertyValueModel<String> textHolder)
+	                        PropertyValueModel<String> textHolder,
+	                        PropertyValueModel<Image> imageHolder)
 	{
 		Assert.isNotNull(labeledControl, "The LabeledControl cannot be null");
-		Assert.isNotNull(textHolder, "The text holder cannot be null");
 
 		this.labeledControl = labeledControl;
 
-		textHolder.addPropertyChangeListener(PropertyValueModel.VALUE, buildTextListener());
-		setText(textHolder.value());
+		if (textHolder != null) {
+			textHolder.addPropertyChangeListener(PropertyValueModel.VALUE, buildTextListener());
+			setText(textHolder.value());
+		}
 
 		if (imageHolder != null) {
 			imageHolder.addPropertyChangeListener(PropertyValueModel.VALUE, buildIconListener());
@@ -112,10 +115,15 @@ public final class LabeledControlUpdater {
 	}
 
 	private void setImage(Image icon) {
-		labeledControl.setIcon(icon);
+		labeledControl.setImage(icon);
 	}
 
 	private void setText(String text) {
+
+		if (text == null) {
+			text = "";
+		}
+
 		labeledControl.setText(text);
 	}
 }

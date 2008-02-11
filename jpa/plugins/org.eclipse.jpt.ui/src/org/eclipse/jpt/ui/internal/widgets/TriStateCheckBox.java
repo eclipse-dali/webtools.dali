@@ -209,6 +209,13 @@ public final class TriStateCheckBox {
 	}
 
 	/**
+	 * Disposes the actual widget.
+	 */
+	public void dispose() {
+		getCheckBox().dispose();
+	}
+
+	/**
 	 * Returns the actual <code>TableItem</code> used to show a tri-state check
 	 * box.
 	 *

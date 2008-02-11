@@ -34,6 +34,8 @@ public final class LabeledTableItem implements LabeledControl
 	 *
 	 * @param tableItem The <code>TableItem</code> that will have its text and
 	 * icon updated when required
+	 * @exception AssertionFailedException If the given <code>TableItem</code> is
+	 * <code>null</code>
 	 */
 	public LabeledTableItem(TableItem tableItem) {
 		super();
@@ -45,13 +47,11 @@ public final class LabeledTableItem implements LabeledControl
 	/*
 	 * (non-Javadoc)
 	 */
-	public void setIcon(final Image image) {
+	public void setImage(final Image image) {
 
-		if (tableItem.isDisposed()) {
-			return;
+		if (!tableItem.isDisposed()) {
+			updateTableItem(tableItem.getText(), image);
 		}
-
-		updateTableItem(tableItem.getText(), image);
 	}
 
 	/*
@@ -59,11 +59,9 @@ public final class LabeledTableItem implements LabeledControl
 	 */
 	public void setText(final String text) {
 
-		if (tableItem.isDisposed()) {
-			return;
+		if (!tableItem.isDisposed()) {
+			updateTableItem(text, tableItem.getImage());
 		}
-
-		updateTableItem(text, tableItem.getImage());
 	}
 
 	private void updateTableItem(String text, Image image) {
@@ -87,6 +85,7 @@ public final class LabeledTableItem implements LabeledControl
 		tableItem.setImage(image);
 		tableItem.setChecked(checked);
 		tableItem.setGrayed(grayed);
+		tableItem.setBackground(table.getBackground());
 
 		table.layout(true, true);
 		table.getParent().getParent().layout(true, true);

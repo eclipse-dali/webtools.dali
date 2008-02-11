@@ -26,7 +26,7 @@ public interface LabeledControl {
 	 *
 	 * @param image The new <code>Image</code>
 	 */
-	void setIcon(Image image);
+	void setImage(Image image);
 
 	/**
 	 * Passes the text so the wrapped component can receive it.
