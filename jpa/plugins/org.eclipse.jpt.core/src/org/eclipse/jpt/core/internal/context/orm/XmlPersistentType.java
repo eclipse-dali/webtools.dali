@@ -76,6 +76,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 	protected final List<XmlPersistentAttribute> specifiedPersistentAttributes;
 
 	protected final List<XmlPersistentAttribute> virtualPersistentAttributes;
+	public static final String VIRTUAL_ATTRIBUTES_LIST = "virtualAttributesList";
 
 	protected final Collection<IXmlTypeMappingProvider> typeMappingProviders;
 
@@ -273,6 +274,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 		};
 	}
 
+	@SuppressWarnings("unchecked")
 	public ListIterator<XmlPersistentAttribute> attributes() {
 		return new CompositeListIterator<XmlPersistentAttribute>(specifiedAttributes(), virtualAttributes());
 	}
@@ -286,7 +288,7 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 	}
 	
 	public int specifiedAttributesSize() {
-		return specifiedPersistentAttributes.size();
+		return this.specifiedPersistentAttributes.size();
 	}
 	
 	public ListIterator<XmlPersistentAttribute> virtualAttributes() {
@@ -298,11 +300,11 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 	}
 	
 	protected void addVirtualPersistentAttribute(XmlPersistentAttribute xmlPersistentAttribute) {
-		addItemToList(xmlPersistentAttribute, this.virtualPersistentAttributes, IPersistentType.VIRTUAL_ATTRIBUTES_LIST);
+		addItemToList(xmlPersistentAttribute, this.virtualPersistentAttributes, XmlPersistentType.VIRTUAL_ATTRIBUTES_LIST);
 	}
 
 	protected void removeVirtualPersistentAttribute(XmlPersistentAttribute xmlPersistentAttribute) {
-		removeItemFromList(xmlPersistentAttribute, this.virtualPersistentAttributes, IPersistentType.VIRTUAL_ATTRIBUTES_LIST);
+		removeItemFromList(xmlPersistentAttribute, this.virtualPersistentAttributes, XmlPersistentType.VIRTUAL_ATTRIBUTES_LIST);
 	}
 	
 	protected boolean containsVirtualPersistentAttribute(XmlPersistentAttribute xmlPersistentAttribute) {
@@ -803,10 +805,10 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 	}
 	
 	public boolean containsOffset(int textOffset) {
-		return xmlTypeMapping.containsOffset(textOffset);
+		return this.xmlTypeMapping.containsOffset(textOffset);
 	}
 	
 	public ITextRange selectionTextRange() {
-		return xmlTypeMapping.selectionTextRange();
+		return this.xmlTypeMapping.selectionTextRange();
 	}
 }

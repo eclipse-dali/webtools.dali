@@ -13,6 +13,8 @@ package org.eclipse.jpt.ui.internal.structure;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.IResourceModel;
 import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
+import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingContentAndLabelProvider;
@@ -24,6 +26,7 @@ import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 
 public class JavaItemContentProviderFactory extends GeneralJpaMappingItemContentProviderFactory
 {
+	@Override
 	public ITreeItemContentProvider buildItemContentProvider(
 			Object item, DelegatingContentAndLabelProvider contentProvider) {
 		DelegatingTreeContentAndLabelProvider treeContentProvider = (DelegatingTreeContentAndLabelProvider) contentProvider;
@@ -33,7 +36,38 @@ public class JavaItemContentProviderFactory extends GeneralJpaMappingItemContent
 		return super.buildItemContentProvider(item, treeContentProvider);
 	}
 	
+	@Override
+	protected ITreeItemContentProvider buildPersistentTypeItemContentProvider(IPersistentType persistentType, DelegatingTreeContentAndLabelProvider treeContentProvider) {
+		return new PersistentTypeItemContentProvider(persistentType, treeContentProvider);
+	}
 	
+	public static class PersistentTypeItemContentProvider extends AbstractTreeItemContentProvider<IPersistentAttribute>
+	{
+		public PersistentTypeItemContentProvider(
+				IPersistentType persistentType, DelegatingTreeContentAndLabelProvider contentProvider) {
+			super(persistentType, contentProvider);
+		}
+		
+		@Override
+		public Object getParent() {
+			return ((IPersistentType) model()).parent();
+		}
+		
+		@Override
+		protected ListValueModel<IPersistentAttribute> buildChildrenModel() {
+			return new ListAspectAdapter<IPersistentType, IPersistentAttribute>(new String[]{IPersistentType.SPECIFIED_ATTRIBUTES_LIST}, (IPersistentType) model()) {
+				@Override
+				protected ListIterator<IPersistentAttribute> listIterator_() {
+					return subject.attributes();
+				}
+				
+				@Override
+				protected int size_() {
+					return subject.attributesSize();
+				}
+			};
+		}
+	}
 	public static class JavaResourceModelItemContentProvider extends AbstractTreeItemContentProvider<IJpaStructureNode>
 	{
 		public JavaResourceModelItemContentProvider(

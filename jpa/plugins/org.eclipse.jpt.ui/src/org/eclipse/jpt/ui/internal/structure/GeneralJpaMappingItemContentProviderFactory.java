@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
@@ -18,8 +17,6 @@ import org.eclipse.jpt.ui.internal.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProviderFactory;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 
 public abstract class GeneralJpaMappingItemContentProviderFactory
 	implements ITreeItemContentProviderFactory
@@ -28,7 +25,7 @@ public abstract class GeneralJpaMappingItemContentProviderFactory
 			Object item, DelegatingContentAndLabelProvider contentAndLabelProvider) {
 		DelegatingTreeContentAndLabelProvider treeContentProvider = (DelegatingTreeContentAndLabelProvider) contentAndLabelProvider;
 		if (item instanceof IPersistentType) {
-			return new PersistentTypeItemContentProvider((IPersistentType) item, treeContentProvider);
+			return buildPersistentTypeItemContentProvider((IPersistentType) item, treeContentProvider);
 		}
 		else if (item instanceof IPersistentAttribute) {
 			return new PersistentAttributeItemContentProvider((IPersistentAttribute) item, treeContentProvider);
@@ -36,29 +33,8 @@ public abstract class GeneralJpaMappingItemContentProviderFactory
 		return null;
 	}
 	
-	
-	public static class PersistentTypeItemContentProvider extends AbstractTreeItemContentProvider<IPersistentAttribute>
-	{
-		public PersistentTypeItemContentProvider(
-				IPersistentType persistentType, DelegatingTreeContentAndLabelProvider contentProvider) {
-			super(persistentType, contentProvider);
-		}
-		
-		@Override
-		public Object getParent() {
-			return ((IPersistentType) model()).parent();
-		}
-		
-		@Override
-		protected ListValueModel<IPersistentAttribute> buildChildrenModel() {
-			return new ListAspectAdapter<IPersistentType, IPersistentAttribute>(new String[]{IPersistentType.SPECIFIED_ATTRIBUTES_LIST, IPersistentType.VIRTUAL_ATTRIBUTES_LIST}, (IPersistentType) model()) {
-				@Override
-				protected ListIterator<IPersistentAttribute> listIterator_() {
-					return subject.attributes();
-				}
-			};
-		}
-	}
+	protected abstract ITreeItemContentProvider buildPersistentTypeItemContentProvider(IPersistentType persistentType, DelegatingTreeContentAndLabelProvider treeContentProvider);
+
 	
 	
 	@SuppressWarnings("unchecked")
