@@ -114,9 +114,11 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 		}
 		IJavaTypeMapping oldMapping = getMapping();
 		IJavaTypeMapping newMapping = createJavaTypeMappingFromMappingKey(key);
-		setMapping(newMapping);		
+	
+		this.mapping = newMapping;	
 		this.persistentTypeResource.setMappingAnnotation(newMapping.annotationName());
-		
+		firePropertyChanged(IPersistentType.MAPPING_PROPERTY, oldMapping, newMapping);
+	
 		if (oldMapping != null) {
 			Collection<String> annotationsToRemove = CollectionTools.collection(oldMapping.correspondingAnnotationNames());
 			if (getMapping() != null) {
