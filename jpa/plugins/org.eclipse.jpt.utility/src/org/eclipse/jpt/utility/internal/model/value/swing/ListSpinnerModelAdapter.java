@@ -118,8 +118,8 @@ public class ListSpinnerModelAdapter
 
 	protected PropertyChangeListener buildValueChangeListener_() {
 		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				ListSpinnerModelAdapter.this.synchronize(e.newValue());
+			public void propertyChanged(PropertyChangeEvent event) {
+				ListSpinnerModelAdapter.this.synchronize(event.newValue());
 			}
 			@Override
 			public String toString() {

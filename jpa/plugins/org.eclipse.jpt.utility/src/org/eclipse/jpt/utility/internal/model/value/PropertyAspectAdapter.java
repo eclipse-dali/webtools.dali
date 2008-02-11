@@ -118,7 +118,7 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	protected PropertyChangeListener buildPropertyChangeListener() {
 		// transform the subject's property change events into VALUE property change events
 		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
+			public void propertyChanged(PropertyChangeEvent event) {
 				PropertyAspectAdapter.this.propertyChanged();
 			}
 			@Override

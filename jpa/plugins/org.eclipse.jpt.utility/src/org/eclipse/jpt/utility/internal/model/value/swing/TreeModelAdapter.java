@@ -140,7 +140,7 @@ public class TreeModelAdapter<T>
 
 	protected PropertyChangeListener buildRootListener_() {
 		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
+			public void propertyChanged(PropertyChangeEvent event) {
 				TreeModelAdapter.this.rootChanged();
 			}
 			@Override
@@ -157,8 +157,8 @@ public class TreeModelAdapter<T>
 	protected PropertyChangeListener buildNodeValueListener_() {
 		return new PropertyChangeListener() {
 			@SuppressWarnings("unchecked")
-			public void propertyChanged(PropertyChangeEvent e) {
-				TreeModelAdapter.this.nodeChanged((TreeNodeValueModel<T>) e.getSource());
+			public void propertyChanged(PropertyChangeEvent event) {
+				TreeModelAdapter.this.nodeChanged((TreeNodeValueModel<T>) event.getSource());
 			}
 			@Override
 			public String toString() {
@@ -174,8 +174,8 @@ public class TreeModelAdapter<T>
 	protected StateChangeListener buildNodeStateListener_() {
 		return new StateChangeListener() {
 			@SuppressWarnings("unchecked")
-			public void stateChanged(StateChangeEvent e) {
-				TreeModelAdapter.this.nodeChanged((TreeNodeValueModel<T>) e.getSource());
+			public void stateChanged(StateChangeEvent event) {
+				TreeModelAdapter.this.nodeChanged((TreeNodeValueModel<T>) event.getSource());
 			}
 			@Override
 			public String toString() {
@@ -190,23 +190,23 @@ public class TreeModelAdapter<T>
 
 	protected ListChangeListener buildChildrenListener_() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent e) {
-				new EventChangePolicy(e).addChildren();
+			public void itemsAdded(ListChangeEvent event) {
+				new EventChangePolicy(event).addChildren();
 			}
-			public void itemsRemoved(ListChangeEvent e) {
-				new EventChangePolicy(e).removeChildren();
+			public void itemsRemoved(ListChangeEvent event) {
+				new EventChangePolicy(event).removeChildren();
 			}
-			public void itemsReplaced(ListChangeEvent e) {
-				new EventChangePolicy(e).replaceChildren();
+			public void itemsReplaced(ListChangeEvent event) {
+				new EventChangePolicy(event).replaceChildren();
 			}
-			public void itemsMoved(ListChangeEvent e) {
-				new EventChangePolicy(e).moveChildren();
+			public void itemsMoved(ListChangeEvent event) {
+				new EventChangePolicy(event).moveChildren();
 			}
-			public void listCleared(ListChangeEvent e) {
-				new EventChangePolicy(e).clearChildren();
+			public void listCleared(ListChangeEvent event) {
+				new EventChangePolicy(event).clearChildren();
 			}
-			public void listChanged(ListChangeEvent e) {
-				new EventChangePolicy(e).rebuildChildren();
+			public void listChanged(ListChangeEvent event) {
+				new EventChangePolicy(event).rebuildChildren();
 			}
 			@Override
 			public String toString() {

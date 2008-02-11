@@ -163,8 +163,8 @@ public class PreferencePropertyValueModel<P>
 	protected PreferenceChangeListener buildPreferenceChangeListener() {
 		// transform the preference change events into VALUE property change events
 		return new PreferenceChangeListener() {
-			public void preferenceChange(PreferenceChangeEvent e) {
-				PreferencePropertyValueModel.this.preferenceChanged(e.getKey(), e.getNewValue());
+			public void preferenceChange(PreferenceChangeEvent event) {
+				PreferencePropertyValueModel.this.preferenceChanged(event.getKey(), event.getNewValue());
 			}
 			@Override
 			public String toString() {

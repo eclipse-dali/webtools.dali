@@ -69,12 +69,12 @@ public class TransformationPropertyValueModel<T1, T2>
 	// ********** PropertyValueModelWrapper implementation **********
 
 	@Override
-	protected void valueChanged(PropertyChangeEvent e) {
+	protected void valueChanged(PropertyChangeEvent event) {
 		// transform the values before propagating the change event
 	    @SuppressWarnings("unchecked")
-		Object oldValue = this.transform((T1) e.oldValue());
+		Object oldValue = this.transform((T1) event.oldValue());
 	    @SuppressWarnings("unchecked")
-		Object newValue = this.transform((T1) e.newValue());
+		Object newValue = this.transform((T1) event.newValue());
 		this.firePropertyChanged(VALUE, oldValue, newValue);
 	}
 

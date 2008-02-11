@@ -69,8 +69,8 @@ public class PreferencesCollectionValueModel<P>
 	protected PreferenceChangeListener buildPreferenceChangeListener() {
 		// transform the preference change events into VALUE collection change events
 		return new PreferenceChangeListener() {
-			public void preferenceChange(PreferenceChangeEvent e) {
-				PreferencesCollectionValueModel.this.preferenceChanged(e.getKey(), e.getNewValue());
+			public void preferenceChange(PreferenceChangeEvent event) {
+				PreferencesCollectionValueModel.this.preferenceChanged(event.getKey(), event.getNewValue());
 			}
 			@Override
 			public String toString() {

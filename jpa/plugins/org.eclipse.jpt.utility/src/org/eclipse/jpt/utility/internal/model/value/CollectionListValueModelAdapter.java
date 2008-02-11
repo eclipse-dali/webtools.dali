@@ -85,17 +85,17 @@ public class CollectionListValueModelAdapter<E>
 	 */
 	protected CollectionChangeListener buildCollectionChangeListener() {
 		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionChangeEvent e) {
-				CollectionListValueModelAdapter.this.itemsAdded(e);
+			public void itemsAdded(CollectionChangeEvent event) {
+				CollectionListValueModelAdapter.this.itemsAdded(event);
 			}
-			public void itemsRemoved(CollectionChangeEvent e) {
-				CollectionListValueModelAdapter.this.itemsRemoved(e);
+			public void itemsRemoved(CollectionChangeEvent event) {
+				CollectionListValueModelAdapter.this.itemsRemoved(event);
 			}
-			public void collectionCleared(CollectionChangeEvent e) {
-				CollectionListValueModelAdapter.this.collectionCleared(e);
+			public void collectionCleared(CollectionChangeEvent event) {
+				CollectionListValueModelAdapter.this.collectionCleared(event);
 			}
-			public void collectionChanged(CollectionChangeEvent e) {
-				CollectionListValueModelAdapter.this.collectionChanged(e);
+			public void collectionChanged(CollectionChangeEvent event) {
+				CollectionListValueModelAdapter.this.collectionChanged(event);
 			}
 			@Override
 			public String toString() {

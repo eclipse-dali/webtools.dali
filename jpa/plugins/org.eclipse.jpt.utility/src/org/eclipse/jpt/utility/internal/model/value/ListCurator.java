@@ -65,7 +65,7 @@ public abstract class ListCurator<S extends Model, E>
 	 */
 	protected StateChangeListener buildStateChangeListener() {
 		return new StateChangeListener() {
-			public void stateChanged(StateChangeEvent e) {
+			public void stateChanged(StateChangeEvent event) {
 				ListCurator.this.submitInventoryReport();
 			}
 			@Override

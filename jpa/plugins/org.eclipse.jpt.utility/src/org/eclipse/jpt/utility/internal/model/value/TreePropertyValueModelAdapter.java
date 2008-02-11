@@ -24,7 +24,7 @@ import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
  *     current collection value
  * 
  * Subclasses might want to override:
- * - #stateChanged(StateChangeEvent e)
+ * - #stateChanged(StateChangeEvent event)
  *     to improve performance (by not recalculating the value, if possible)
  */
 public abstract class TreePropertyValueModelAdapter<T>

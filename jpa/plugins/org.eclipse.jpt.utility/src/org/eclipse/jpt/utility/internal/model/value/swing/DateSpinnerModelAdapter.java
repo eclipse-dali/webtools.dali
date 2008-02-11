@@ -98,8 +98,8 @@ public class DateSpinnerModelAdapter
 
 	protected PropertyChangeListener buildDateChangeListener_() {
 		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				DateSpinnerModelAdapter.this.synchronize(e.newValue());
+			public void propertyChanged(PropertyChangeEvent event) {
+				DateSpinnerModelAdapter.this.synchronize(event.newValue());
 			}
 			@Override
 			public String toString() {

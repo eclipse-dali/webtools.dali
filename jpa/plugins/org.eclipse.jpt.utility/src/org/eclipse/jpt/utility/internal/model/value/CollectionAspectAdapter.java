@@ -109,17 +109,17 @@ public abstract class CollectionAspectAdapter<S extends Model, E>
 	protected CollectionChangeListener buildCollectionChangeListener() {
 		// transform the subject's collection change events into VALUE collection change events
 		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionChangeEvent e) {
-				CollectionAspectAdapter.this.itemsAdded(e);
+			public void itemsAdded(CollectionChangeEvent event) {
+				CollectionAspectAdapter.this.itemsAdded(event);
 			}
-			public void itemsRemoved(CollectionChangeEvent e) {
-				CollectionAspectAdapter.this.itemsRemoved(e);
+			public void itemsRemoved(CollectionChangeEvent event) {
+				CollectionAspectAdapter.this.itemsRemoved(event);
 			}
-			public void collectionCleared(CollectionChangeEvent e) {
-				CollectionAspectAdapter.this.collectionCleared(e);
+			public void collectionCleared(CollectionChangeEvent event) {
+				CollectionAspectAdapter.this.collectionCleared(event);
 			}
-			public void collectionChanged(CollectionChangeEvent e) {
-				CollectionAspectAdapter.this.collectionChanged(e);
+			public void collectionChanged(CollectionChangeEvent event) {
+				CollectionAspectAdapter.this.collectionChanged(event);
 			}
 			@Override
 			public String toString() {
@@ -218,19 +218,19 @@ public abstract class CollectionAspectAdapter<S extends Model, E>
 
 	// ********** behavior **********
 
-	protected void itemsAdded(CollectionChangeEvent e) {
-		this.fireItemsAdded(e.cloneWithSource(this, VALUES));
+	protected void itemsAdded(CollectionChangeEvent event) {
+		this.fireItemsAdded(event.cloneWithSource(this, VALUES));
 	}
 
-	protected void itemsRemoved(CollectionChangeEvent e) {
-		this.fireItemsRemoved(e.cloneWithSource(this, VALUES));
+	protected void itemsRemoved(CollectionChangeEvent event) {
+		this.fireItemsRemoved(event.cloneWithSource(this, VALUES));
 	}
 
-	protected void collectionCleared(CollectionChangeEvent e) {
+	protected void collectionCleared(CollectionChangeEvent event) {
 		this.fireCollectionCleared(VALUES);  // nothing from original event to forward
 	}
 
-	protected void collectionChanged(CollectionChangeEvent e) {
+	protected void collectionChanged(CollectionChangeEvent event) {
 		this.fireCollectionChanged(VALUES);  // nothing from original event to forward
 	}
 

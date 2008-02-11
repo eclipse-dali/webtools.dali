@@ -57,17 +57,17 @@ public class ItemTreeListValueModelAdapter<E>
 	 */
 	protected TreeChangeListener buildItemTreeListener() {
 		return new TreeChangeListener() {
-			public void nodeAdded(TreeChangeEvent e) {
-				ItemTreeListValueModelAdapter.this.itemAspectChanged(e);
+			public void nodeAdded(TreeChangeEvent event) {
+				ItemTreeListValueModelAdapter.this.itemAspectChanged(event);
 			}
-			public void nodeRemoved(TreeChangeEvent e) {
-				ItemTreeListValueModelAdapter.this.itemAspectChanged(e);
+			public void nodeRemoved(TreeChangeEvent event) {
+				ItemTreeListValueModelAdapter.this.itemAspectChanged(event);
 			}
-			public void treeCleared(TreeChangeEvent e) {
-				ItemTreeListValueModelAdapter.this.itemAspectChanged(e);
+			public void treeCleared(TreeChangeEvent event) {
+				ItemTreeListValueModelAdapter.this.itemAspectChanged(event);
 			}
-			public void treeChanged(TreeChangeEvent e) {
-				ItemTreeListValueModelAdapter.this.itemAspectChanged(e);
+			public void treeChanged(TreeChangeEvent event) {
+				ItemTreeListValueModelAdapter.this.itemAspectChanged(event);
 			}
 			@Override
 			public String toString() {

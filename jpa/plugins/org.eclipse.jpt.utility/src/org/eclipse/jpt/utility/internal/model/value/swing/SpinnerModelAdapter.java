@@ -87,8 +87,8 @@ public class SpinnerModelAdapter
 
 	protected PropertyChangeListener buildValueListener_() {
 		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				SpinnerModelAdapter.this.valueChanged(e);
+			public void propertyChanged(PropertyChangeEvent event) {
+				SpinnerModelAdapter.this.valueChanged(event);
 			}
 			@Override
 			public String toString() {
@@ -107,7 +107,7 @@ public class SpinnerModelAdapter
 
 	protected ChangeListener buildDelegateListener() {
 		return new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
+			public void stateChanged(ChangeEvent event) {
 				// forward the event, with this as the source
 				SpinnerModelAdapter.this.fireStateChanged();
 			}
@@ -173,8 +173,8 @@ public class SpinnerModelAdapter
 	 * A third party has modified the underlying value.
 	 * Synchronize the delegate model accordingly.
 	 */
-	protected void valueChanged(PropertyChangeEvent e) {
-		this.synchronizeDelegate(e.newValue());
+	protected void valueChanged(PropertyChangeEvent event) {
+		this.synchronizeDelegate(event.newValue());
 	}
 
 	/**

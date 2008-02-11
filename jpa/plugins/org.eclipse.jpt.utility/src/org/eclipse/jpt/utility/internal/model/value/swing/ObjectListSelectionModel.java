@@ -50,14 +50,14 @@ public class ObjectListSelectionModel
 
 	private ListDataListener buildListDataListener() {
 		return new ListDataListener() {
-			public void intervalAdded(ListDataEvent e) {
+			public void intervalAdded(ListDataEvent event) {
 				// this does not affect the selection
 			}
-			public void intervalRemoved(ListDataEvent e) {
+			public void intervalRemoved(ListDataEvent event) {
 				// this does not affect the selection
 			}
-			public void contentsChanged(ListDataEvent e) {
-				ObjectListSelectionModel.this.listModelContentsChanged(e);
+			public void contentsChanged(ListDataEvent event) {
+				ObjectListSelectionModel.this.listModelContentsChanged(event);
 			}
 			@Override
 			public String toString() {
@@ -75,7 +75,7 @@ public class ObjectListSelectionModel
 	 * A subclass can override this method if the selection
 	 * should be cleared because a change could mean the selection is invalid.
 	 */
-	protected void listModelContentsChanged(ListDataEvent e) {
+	protected void listModelContentsChanged(ListDataEvent event) {
 		/**this.clearSelection();*/
 	}
 

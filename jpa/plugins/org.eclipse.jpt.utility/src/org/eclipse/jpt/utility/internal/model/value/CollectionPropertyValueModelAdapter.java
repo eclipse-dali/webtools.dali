@@ -24,10 +24,10 @@ import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
  *     current collection value
  * 
  * Subclasses might want to override:
- * - #itemsAdded(CollectionChangeEvent e)
- * - #itemsRemoved(CollectionChangeEvent e)
- * - #collectionCleared(CollectionChangeEvent e)
- * - #collectionChanged(CollectionChangeEvent e)
+ * - #itemsAdded(CollectionChangeEvent event)
+ * - #itemsRemoved(CollectionChangeEvent event)
+ * - #collectionCleared(CollectionChangeEvent event)
+ * - #collectionChanged(CollectionChangeEvent event)
  *     to improve performance (by not recalculating the value, if possible)
  */
 public abstract class CollectionPropertyValueModelAdapter<T>
@@ -54,17 +54,17 @@ public abstract class CollectionPropertyValueModelAdapter<T>
 
 	protected CollectionChangeListener buildCollectionChangeListener() {
 		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionChangeEvent e) {
-				CollectionPropertyValueModelAdapter.this.itemsAdded(e);
+			public void itemsAdded(CollectionChangeEvent event) {
+				CollectionPropertyValueModelAdapter.this.itemsAdded(event);
 			}		
-			public void itemsRemoved(CollectionChangeEvent e) {
-				CollectionPropertyValueModelAdapter.this.itemsRemoved(e);
+			public void itemsRemoved(CollectionChangeEvent event) {
+				CollectionPropertyValueModelAdapter.this.itemsRemoved(event);
 			}
-			public void collectionCleared(CollectionChangeEvent e) {
-				CollectionPropertyValueModelAdapter.this.collectionCleared(e);
+			public void collectionCleared(CollectionChangeEvent event) {
+				CollectionPropertyValueModelAdapter.this.collectionCleared(event);
 			}
-			public void collectionChanged(CollectionChangeEvent e) {
-				CollectionPropertyValueModelAdapter.this.collectionChanged(e);
+			public void collectionChanged(CollectionChangeEvent event) {
+				CollectionPropertyValueModelAdapter.this.collectionChanged(event);
 			}
 			@Override
 			public String toString() {
@@ -104,7 +104,7 @@ public abstract class CollectionPropertyValueModelAdapter<T>
 	 * Items were added to the wrapped collection holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected void itemsAdded(CollectionChangeEvent e) {
+	protected void itemsAdded(CollectionChangeEvent event) {
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}
@@ -113,7 +113,7 @@ public abstract class CollectionPropertyValueModelAdapter<T>
 	 * Items were removed from the wrapped collection holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected void itemsRemoved(CollectionChangeEvent e) {
+	protected void itemsRemoved(CollectionChangeEvent event) {
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}
@@ -122,7 +122,7 @@ public abstract class CollectionPropertyValueModelAdapter<T>
 	 * The wrapped collection holder was cleared;
 	 * propagate the change notification appropriately.
 	 */
-	protected void collectionCleared(CollectionChangeEvent e) {
+	protected void collectionCleared(CollectionChangeEvent event) {
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}
@@ -131,7 +131,7 @@ public abstract class CollectionPropertyValueModelAdapter<T>
 	 * The value of the wrapped collection holder has changed;
 	 * propagate the change notification appropriately.
 	 */
-	protected void collectionChanged(CollectionChangeEvent e) {
+	protected void collectionChanged(CollectionChangeEvent event) {
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}

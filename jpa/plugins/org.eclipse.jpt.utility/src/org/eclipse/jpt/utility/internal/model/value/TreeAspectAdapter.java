@@ -102,17 +102,17 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 	protected TreeChangeListener buildTreeChangeListener() {
 		// transform the subject's tree change events into VALUE tree change events
 		return new TreeChangeListener() {
-			public void nodeAdded(TreeChangeEvent e) {
-				TreeAspectAdapter.this.nodeAdded(e);
+			public void nodeAdded(TreeChangeEvent event) {
+				TreeAspectAdapter.this.nodeAdded(event);
 			}
-			public void nodeRemoved(TreeChangeEvent e) {
-				TreeAspectAdapter.this.nodeRemoved(e);
+			public void nodeRemoved(TreeChangeEvent event) {
+				TreeAspectAdapter.this.nodeRemoved(event);
 			}
-			public void treeCleared(TreeChangeEvent e) {
-				TreeAspectAdapter.this.treeCleared(e);
+			public void treeCleared(TreeChangeEvent event) {
+				TreeAspectAdapter.this.treeCleared(event);
 			}
-			public void treeChanged(TreeChangeEvent e) {
-				TreeAspectAdapter.this.treeChanged(e);
+			public void treeChanged(TreeChangeEvent event) {
+				TreeAspectAdapter.this.treeChanged(event);
 			}
 			@Override
 			public String toString() {
@@ -195,20 +195,20 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 
 	// ********** behavior **********
 
-	protected void nodeAdded(TreeChangeEvent e) {
-		this.fireNodeAdded(NODES, e.path());
+	protected void nodeAdded(TreeChangeEvent event) {
+		this.fireNodeAdded(NODES, event.path());
 	}
 
-	protected void nodeRemoved(TreeChangeEvent e) {
-		this.fireNodeRemoved(NODES, e.path());
+	protected void nodeRemoved(TreeChangeEvent event) {
+		this.fireNodeRemoved(NODES, event.path());
 	}
 
-	protected void treeCleared(TreeChangeEvent e) {
+	protected void treeCleared(TreeChangeEvent event) {
 		this.fireTreeCleared(NODES);
 	}
 
-	protected void treeChanged(TreeChangeEvent e) {
-		this.fireTreeChanged(NODES, e.path());
+	protected void treeChanged(TreeChangeEvent event) {
+		this.fireTreeChanged(NODES, event.path());
 	}
 
 }

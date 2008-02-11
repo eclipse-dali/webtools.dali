@@ -84,10 +84,10 @@ public abstract class ValueAspectAdapter<T>
 	// ********** PropertyValueModelWrapper implementation **********
 
 	@Override
-	protected void valueChanged(PropertyChangeEvent e) {
+	protected void valueChanged(PropertyChangeEvent event) {
 		this.disengageValue();
 		this.engageValue();
-		this.firePropertyChanged(e.cloneWithSource(this));
+		this.firePropertyChanged(event.cloneWithSource(this));
 	}
 
 

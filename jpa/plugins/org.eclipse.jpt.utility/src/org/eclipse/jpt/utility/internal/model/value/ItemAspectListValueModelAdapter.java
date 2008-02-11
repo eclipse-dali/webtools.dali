@@ -175,10 +175,10 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	 * Forward the event and begin listening to the added items.
 	 */
 	@Override
-	protected void itemsAdded(ListChangeEvent e) {
+	protected void itemsAdded(ListChangeEvent event) {
 		// re-fire event with the wrapper as the source
-		this.fireItemsAdded(e.cloneWithSource(this, LIST_VALUES));
-		this.engageItems(this.items(e));
+		this.fireItemsAdded(event.cloneWithSource(this, LIST_VALUES));
+		this.engageItems(this.items(event));
 	}
 
 	/**
@@ -186,10 +186,10 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	 * Stop listening to the removed items and forward the event.
 	 */
 	@Override
-	protected void itemsRemoved(ListChangeEvent e) {
-		this.disengageItems(this.items(e));
+	protected void itemsRemoved(ListChangeEvent event) {
+		this.disengageItems(this.items(event));
 		// re-fire event with the wrapper as the source
-		this.fireItemsRemoved(e.cloneWithSource(this, LIST_VALUES));
+		this.fireItemsRemoved(event.cloneWithSource(this, LIST_VALUES));
 	}
 
 	/**
@@ -198,11 +198,11 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	 * and begin listening to the added items.
 	 */
 	@Override
-	protected void itemsReplaced(ListChangeEvent e) {
-		this.disengageItems(this.replacedItems(e));
+	protected void itemsReplaced(ListChangeEvent event) {
+		this.disengageItems(this.replacedItems(event));
 		// re-fire event with the wrapper as the source
-		this.fireItemsReplaced(e.cloneWithSource(this, LIST_VALUES));
-		this.engageItems(this.items(e));
+		this.fireItemsReplaced(event.cloneWithSource(this, LIST_VALUES));
+		this.engageItems(this.items(event));
 	}
 
 	/**
@@ -210,9 +210,9 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	 * No need to change any listeners; just forward the event.
 	 */
 	@Override
-	protected void itemsMoved(ListChangeEvent e) {
+	protected void itemsMoved(ListChangeEvent event) {
 		// re-fire event with the wrapper as the source
-		this.fireItemsMoved(e.cloneWithSource(this, LIST_VALUES));
+		this.fireItemsMoved(event.cloneWithSource(this, LIST_VALUES));
 	}
 
 	/**
@@ -220,7 +220,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	 * Stop listening to the removed items and forward the event.
 	 */
 	@Override
-	protected void listCleared(ListChangeEvent e) {
+	protected void listCleared(ListChangeEvent event) {
 		// we should only need to disengage each item once...
 		// make a copy to prevent a ConcurrentModificationException
 		Collection<E> keys = new ArrayList<E>(this.counters.keySet());
@@ -235,7 +235,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	 * Reconfigure our listeners and forward the event.
 	 */
 	@Override
-	protected void listChanged(ListChangeEvent e) {
+	protected void listChanged(ListChangeEvent event) {
 		// we should only need to disengage each item once...
 		// make a copy to prevent a ConcurrentModificationException
 		Collection<E> keys = new ArrayList<E>(this.counters.keySet());
@@ -253,8 +253,8 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	 * The specified item has a bound property that has changed.
 	 * Notify listeners of the change.
 	 */
-	protected void itemAspectChanged(EventObject e) {
-		Object item = e.getSource();
+	protected void itemAspectChanged(EventObject event) {
+		Object item = event.getSource();
 		int index = this.lastIdentityIndexOf(item);
 		while (index != -1) {
 			this.itemAspectChanged(index, item);

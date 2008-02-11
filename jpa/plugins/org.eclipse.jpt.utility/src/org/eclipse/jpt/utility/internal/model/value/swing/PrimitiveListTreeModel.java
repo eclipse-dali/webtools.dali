@@ -191,42 +191,42 @@ public abstract class PrimitiveListTreeModel
 			super();
 		}
 
-		public void itemsAdded(ListChangeEvent e) {
-			int i = e.index();
-			for (ListIterator<?> stream = e.items(); stream.hasNext(); ) {
+		public void itemsAdded(ListChangeEvent event) {
+			int i = event.index();
+			for (ListIterator<?> stream = event.items(); stream.hasNext(); ) {
 				PrimitiveListTreeModel.this.insertPrimitive(i++, stream.next());
 			}
 		}
 
-		public void itemsRemoved(ListChangeEvent e) {
-			for (int i = 0; i < e.itemsSize(); i++) {
-				PrimitiveListTreeModel.this.removeNode(e.index());
+		public void itemsRemoved(ListChangeEvent event) {
+			for (int i = 0; i < event.itemsSize(); i++) {
+				PrimitiveListTreeModel.this.removeNode(event.index());
 			}
 		}
 
-		public void itemsReplaced(ListChangeEvent e) {
-			int i = e.index();
-			for (ListIterator<?> stream = e.items(); stream.hasNext(); ) {
+		public void itemsReplaced(ListChangeEvent event) {
+			int i = event.index();
+			for (ListIterator<?> stream = event.items(); stream.hasNext(); ) {
 				PrimitiveListTreeModel.this.replacePrimitive(i++, stream.next());
 			}
 		}
 
-		public void itemsMoved(ListChangeEvent e) {
-			ArrayList<MutableTreeNode> temp = new ArrayList<MutableTreeNode>(e.moveLength());
-			for (int i = 0; i < e.moveLength(); i++) {
-				temp.add(PrimitiveListTreeModel.this.removeNode(e.sourceIndex()));
+		public void itemsMoved(ListChangeEvent event) {
+			ArrayList<MutableTreeNode> temp = new ArrayList<MutableTreeNode>(event.moveLength());
+			for (int i = 0; i < event.moveLength(); i++) {
+				temp.add(PrimitiveListTreeModel.this.removeNode(event.sourceIndex()));
 			}
-			int i = e.targetIndex();
+			int i = event.targetIndex();
 			for (MutableTreeNode node : temp) {
 				PrimitiveListTreeModel.this.insertPrimitive(i++, node);
 			}
 		}
 
-		public void listCleared(ListChangeEvent e) {
+		public void listCleared(ListChangeEvent event) {
 			PrimitiveListTreeModel.this.clearList();
 		}
 
-		public void listChanged(ListChangeEvent e) {
+		public void listChanged(ListChangeEvent event) {
 			PrimitiveListTreeModel.this.synchronizeList();
 		}
 

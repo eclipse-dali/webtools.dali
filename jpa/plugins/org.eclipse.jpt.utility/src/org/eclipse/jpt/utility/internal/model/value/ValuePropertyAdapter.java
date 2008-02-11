@@ -45,7 +45,7 @@ public class ValuePropertyAdapter<T extends Model>
 
 	protected PropertyChangeListener buildValuePropertyListener() {
 		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
+			public void propertyChanged(PropertyChangeEvent event) {
 				ValuePropertyAdapter.this.valueAspectChanged();
 			}
 			@Override

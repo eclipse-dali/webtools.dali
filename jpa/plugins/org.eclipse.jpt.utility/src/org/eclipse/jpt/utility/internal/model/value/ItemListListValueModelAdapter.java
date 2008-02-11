@@ -57,23 +57,23 @@ public class ItemListListValueModelAdapter<E>
 	 */
 	protected ListChangeListener buildItemListListener() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent e) {
-				ItemListListValueModelAdapter.this.itemAspectChanged(e);
+			public void itemsAdded(ListChangeEvent event) {
+				ItemListListValueModelAdapter.this.itemAspectChanged(event);
 			}
-			public void itemsRemoved(ListChangeEvent e) {
-				ItemListListValueModelAdapter.this.itemAspectChanged(e);
+			public void itemsRemoved(ListChangeEvent event) {
+				ItemListListValueModelAdapter.this.itemAspectChanged(event);
 			}
-			public void itemsReplaced(ListChangeEvent e) {
-				ItemListListValueModelAdapter.this.itemAspectChanged(e);
+			public void itemsReplaced(ListChangeEvent event) {
+				ItemListListValueModelAdapter.this.itemAspectChanged(event);
 			}
-			public void itemsMoved(ListChangeEvent e) {
-				ItemListListValueModelAdapter.this.itemAspectChanged(e);
+			public void itemsMoved(ListChangeEvent event) {
+				ItemListListValueModelAdapter.this.itemAspectChanged(event);
 			}
-			public void listCleared(ListChangeEvent e) {
-				ItemListListValueModelAdapter.this.itemAspectChanged(e);
+			public void listCleared(ListChangeEvent event) {
+				ItemListListValueModelAdapter.this.itemAspectChanged(event);
 			}
-			public void listChanged(ListChangeEvent e) {
-				ItemListListValueModelAdapter.this.itemAspectChanged(e);
+			public void listChanged(ListChangeEvent event) {
+				ItemListListValueModelAdapter.this.itemAspectChanged(event);
 			}
 			@Override
 			public String toString() {

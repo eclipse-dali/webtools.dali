@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
  *     current model
  * 
  * Subclasses might want to override:
- * - #stateChanged(StateChangeEvent e)
+ * - #stateChanged(StateChangeEvent event)
  *     to improve performance (by not recalculating the value, if possible)
  */
 public abstract class StatePropertyValueModelAdapter<T>
@@ -92,7 +92,7 @@ public abstract class StatePropertyValueModelAdapter<T>
 	 * The model's state changed;
 	 * propagate the change notification appropriately.
 	 */
-	protected void stateChanged(StateChangeEvent e) {
+	protected void stateChanged(StateChangeEvent event) {
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}

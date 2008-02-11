@@ -117,26 +117,26 @@ public class FilteringCollectionValueModel<E>
 	}
 
 	@Override
-	protected void itemsAdded(CollectionChangeEvent e) {
+	protected void itemsAdded(CollectionChangeEvent event) {
 		// filter the values before propagating the change event
-		this.addItemsToCollection(this.filter(this.items(e)), this.filteredItems, VALUES);
+		this.addItemsToCollection(this.filter(this.items(event)), this.filteredItems, VALUES);
 	}
 
 	@Override
-	protected void itemsRemoved(CollectionChangeEvent e) {
+	protected void itemsRemoved(CollectionChangeEvent event) {
 		// do *not* filter the values, because they may no longer be
 		// "accepted" and that might be why they were removed in the first place;
 		// anyway, any extraneous items are harmless
-		this.removeItemsFromCollection(e.items(), this.filteredItems, VALUES);
+		this.removeItemsFromCollection(event.items(), this.filteredItems, VALUES);
 	}
 
 	@Override
-	protected void collectionCleared(CollectionChangeEvent e) {
+	protected void collectionCleared(CollectionChangeEvent event) {
 		this.clearCollection(this.filteredItems, VALUES);
 	}
 
 	@Override
-	protected void collectionChanged(CollectionChangeEvent e) {
+	protected void collectionChanged(CollectionChangeEvent event) {
 		this.rebuildFilteredItems();
 	}
 

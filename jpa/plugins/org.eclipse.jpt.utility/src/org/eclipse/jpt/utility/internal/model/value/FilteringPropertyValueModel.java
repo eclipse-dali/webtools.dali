@@ -92,12 +92,12 @@ public class FilteringPropertyValueModel<T>
 	// ********** PropertyValueModelWrapper implementation **********
 
 	@Override
-	protected void valueChanged(PropertyChangeEvent e) {
+	protected void valueChanged(PropertyChangeEvent event) {
 		// filter the values before propagating the change event
 		@SuppressWarnings("unchecked")
-		Object oldValue = this.filterValue((T) e.oldValue());
+		Object oldValue = this.filterValue((T) event.oldValue());
 		@SuppressWarnings("unchecked")
-		Object newValue = this.filterValue((T) e.newValue());
+		Object newValue = this.filterValue((T) event.newValue());
 		this.firePropertyChanged(VALUE, oldValue, newValue);
 	}
 

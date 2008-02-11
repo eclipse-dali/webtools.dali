@@ -105,9 +105,9 @@ public class SortedListValueModelAdapter<E>
 	 * the list will need to be sorted after the item is added
 	 */
 	@Override
-	protected void itemsAdded(CollectionChangeEvent e) {
+	protected void itemsAdded(CollectionChangeEvent event) {
 		// first add the items and notify our listeners...
-		super.itemsAdded(e);
+		super.itemsAdded(event);
 		// ...then sort the list
 		this.sortList();
 	}

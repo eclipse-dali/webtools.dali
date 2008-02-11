@@ -39,7 +39,7 @@ public class ValueStateAdapter<T extends Model>
 
 	protected StateChangeListener buildValueStateListener() {
 		return new StateChangeListener() {
-			public void stateChanged(StateChangeEvent e) {
+			public void stateChanged(StateChangeEvent event) {
 				ValueStateAdapter.this.valueAspectChanged();
 			}
 			@Override

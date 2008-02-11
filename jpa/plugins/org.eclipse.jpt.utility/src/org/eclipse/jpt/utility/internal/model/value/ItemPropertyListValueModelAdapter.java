@@ -53,8 +53,8 @@ public class ItemPropertyListValueModelAdapter<E>
 
 	protected PropertyChangeListener buildItemPropertyListener() {
 		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				ItemPropertyListValueModelAdapter.this.itemAspectChanged(e);
+			public void propertyChanged(PropertyChangeEvent event) {
+				ItemPropertyListValueModelAdapter.this.itemAspectChanged(event);
 			}
 			@Override
 			public String toString() {

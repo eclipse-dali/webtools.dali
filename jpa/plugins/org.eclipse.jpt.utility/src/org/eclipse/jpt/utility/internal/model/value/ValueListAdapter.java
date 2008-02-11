@@ -50,22 +50,22 @@ public class ValueListAdapter<T extends Model>
 	 */
 	protected ListChangeListener buildValueListListener() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent e) {
+			public void itemsAdded(ListChangeEvent event) {
 				ValueListAdapter.this.valueAspectChanged();
 			}
-			public void itemsRemoved(ListChangeEvent e) {
+			public void itemsRemoved(ListChangeEvent event) {
 				ValueListAdapter.this.valueAspectChanged();
 			}
-			public void itemsReplaced(ListChangeEvent e) {
+			public void itemsReplaced(ListChangeEvent event) {
 				ValueListAdapter.this.valueAspectChanged();
 			}
-			public void itemsMoved(ListChangeEvent e) {
+			public void itemsMoved(ListChangeEvent event) {
 				ValueListAdapter.this.valueAspectChanged();
 			}
-			public void listCleared(ListChangeEvent e) {
+			public void listCleared(ListChangeEvent event) {
 				ValueListAdapter.this.valueAspectChanged();
 			}
-			public void listChanged(ListChangeEvent e) {
+			public void listChanged(ListChangeEvent event) {
 				ValueListAdapter.this.valueAspectChanged();
 			}
 			@Override

@@ -81,22 +81,22 @@ public class ListModelAdapter
 
 	protected ListChangeListener buildListChangeListener_() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent e) {
-				ListModelAdapter.this.itemsAdded(e);
+			public void itemsAdded(ListChangeEvent event) {
+				ListModelAdapter.this.itemsAdded(event);
 			}
-			public void itemsRemoved(ListChangeEvent e) {
-				ListModelAdapter.this.itemsRemoved(e);
+			public void itemsRemoved(ListChangeEvent event) {
+				ListModelAdapter.this.itemsRemoved(event);
 			}
-			public void itemsReplaced(ListChangeEvent e) {
-				ListModelAdapter.this.itemsReplaced(e);
+			public void itemsReplaced(ListChangeEvent event) {
+				ListModelAdapter.this.itemsReplaced(event);
 			}
-			public void itemsMoved(ListChangeEvent e) {
-				ListModelAdapter.this.itemsMoved(e);
+			public void itemsMoved(ListChangeEvent event) {
+				ListModelAdapter.this.itemsMoved(event);
 			}
-			public void listCleared(ListChangeEvent e) {
+			public void listCleared(ListChangeEvent event) {
 				ListModelAdapter.this.listCleared();
 			}
-			public void listChanged(ListChangeEvent e) {
+			public void listChanged(ListChangeEvent event) {
 				ListModelAdapter.this.listChanged();
 			}
 			@Override
@@ -213,31 +213,31 @@ public class ListModelAdapter
 	 * Items were added to the underlying model list.
 	 * Notify listeners of the changes.
 	 */
-	protected void itemsAdded(ListChangeEvent e) {
-		int start = e.index();
-		int end = start + e.itemsSize() - 1;
+	protected void itemsAdded(ListChangeEvent event) {
+		int start = event.index();
+		int end = start + event.itemsSize() - 1;
 		this.fireIntervalAdded(this, start, end);
-		this.listSize += e.itemsSize();
+		this.listSize += event.itemsSize();
 	}
 
 	/**
 	 * Items were removed from the underlying model list.
 	 * Notify listeners of the changes.
 	 */
-	protected void itemsRemoved(ListChangeEvent e) {
-		int start = e.index();
-		int end = start + e.itemsSize() - 1;
+	protected void itemsRemoved(ListChangeEvent event) {
+		int start = event.index();
+		int end = start + event.itemsSize() - 1;
 		this.fireIntervalRemoved(this, start, end);
-		this.listSize -= e.itemsSize();
+		this.listSize -= event.itemsSize();
 	}
 
 	/**
 	 * Items were replaced in the underlying model list.
 	 * Notify listeners of the changes.
 	 */
-	protected void itemsReplaced(ListChangeEvent e) {
-		int start = e.index();
-		int end = start + e.itemsSize() - 1;
+	protected void itemsReplaced(ListChangeEvent event) {
+		int start = event.index();
+		int end = start + event.itemsSize() - 1;
 		this.fireContentsChanged(this, start, end);
 	}
 
@@ -245,9 +245,9 @@ public class ListModelAdapter
 	 * Items were moved in the underlying model list.
 	 * Notify listeners of the changes.
 	 */
-	protected void itemsMoved(ListChangeEvent e) {
-		int start = Math.min(e.sourceIndex(), e.targetIndex());
-		int end = Math.max(e.sourceIndex(), e.targetIndex()) + e.moveLength() - 1;
+	protected void itemsMoved(ListChangeEvent event) {
+		int start = Math.min(event.sourceIndex(), event.targetIndex());
+		int end = Math.max(event.sourceIndex(), event.targetIndex()) + event.moveLength() - 1;
 		this.fireContentsChanged(this, start, end);
 	}
 

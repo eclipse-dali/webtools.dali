@@ -98,8 +98,8 @@ public class BufferedWritablePropertyValueModel<T>
 
 	protected PropertyChangeListener buildTriggerChangeListener() {
 		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				BufferedWritablePropertyValueModel.this.triggerChanged(e);
+			public void propertyChanged(PropertyChangeEvent event) {
+				BufferedWritablePropertyValueModel.this.triggerChanged(event);
 			}
 			@Override
 			public String toString() {
@@ -161,16 +161,16 @@ public class BufferedWritablePropertyValueModel<T>
 	 * If we do have a "buffered" value, do nothing.
 	 */
 	@Override
-	protected void valueChanged(PropertyChangeEvent e) {
+	protected void valueChanged(PropertyChangeEvent event) {
 		if (this.accepting) {
 			// if we are currently "accepting" the value, ignore change notifications,
 			// since we caused them and our own listeners are already aware of the change
 			return;
 		}
 		if (this.buffering) {
-			this.handleChangeConflict(e);
+			this.handleChangeConflict(event);
 		} else {
-			this.firePropertyChanged(e.cloneWithSource(this));
+			this.firePropertyChanged(event.cloneWithSource(this));
 		}
 	}
 	
@@ -183,7 +183,7 @@ public class BufferedWritablePropertyValueModel<T>
 	 * and replace it with the new "wrapped" value, or you could throw an
 	 * exception.
 	 */
-	protected void handleChangeConflict(PropertyChangeEvent e) {
+	protected void handleChangeConflict(PropertyChangeEvent event) {
 		// the default is to do nothing
 	}
 	
@@ -193,13 +193,13 @@ public class BufferedWritablePropertyValueModel<T>
 	 * it to the wrapped value holder.
 	 * If it is now false, "reset" the buffered value to its original value.
 	 */
-	protected void triggerChanged(PropertyChangeEvent e) {
+	protected void triggerChanged(PropertyChangeEvent event) {
 		if ( ! this.buffering) {
 			// if nothing has been "buffered", we don't need to do anything:
 			// nothing needs to be passed through; nothing needs to be reset;
 			return;
 		}
-		if (((Boolean) e.newValue()).booleanValue()) {
+		if (((Boolean) event.newValue()).booleanValue()) {
 			// set the accepting flag so we ignore any events
 			// fired by the wrapped value holder
 			this.accepting = true;

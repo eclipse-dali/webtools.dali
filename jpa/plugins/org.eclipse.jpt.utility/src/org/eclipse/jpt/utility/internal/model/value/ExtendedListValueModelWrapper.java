@@ -150,32 +150,32 @@ public class ExtendedListValueModelWrapper<E>
 	// ********** ListValueModelWrapper implementation/overrides **********
 
 	@Override
-	protected void itemsAdded(ListChangeEvent e) {
-		this.fireItemsAdded(e.cloneWithSource(this, LIST_VALUES, this.prefix.size()));
+	protected void itemsAdded(ListChangeEvent event) {
+		this.fireItemsAdded(event.cloneWithSource(this, LIST_VALUES, this.prefix.size()));
 	}
 
 	@Override
-	protected void itemsRemoved(ListChangeEvent e) {
-		this.fireItemsRemoved(e.cloneWithSource(this, LIST_VALUES, this.prefix.size()));
+	protected void itemsRemoved(ListChangeEvent event) {
+		this.fireItemsRemoved(event.cloneWithSource(this, LIST_VALUES, this.prefix.size()));
 	}
 
 	@Override
-	protected void itemsReplaced(ListChangeEvent e) {
-		this.fireItemsReplaced(e.cloneWithSource(this, LIST_VALUES, this.prefix.size()));
+	protected void itemsReplaced(ListChangeEvent event) {
+		this.fireItemsReplaced(event.cloneWithSource(this, LIST_VALUES, this.prefix.size()));
 	}
 
 	@Override
-	protected void itemsMoved(ListChangeEvent e) {
-		this.fireItemsMoved(e.cloneWithSource(this, LIST_VALUES, this.prefix.size()));
+	protected void itemsMoved(ListChangeEvent event) {
+		this.fireItemsMoved(event.cloneWithSource(this, LIST_VALUES, this.prefix.size()));
 	}
 
 	@Override
-	protected void listCleared(ListChangeEvent e) {
-		this.fireListCleared(LIST_VALUES);
+	protected void listCleared(ListChangeEvent event) {
+		this.fireListChanged(LIST_VALUES);  // not "cleared"
 	}
 
 	@Override
-	protected void listChanged(ListChangeEvent e) {
+	protected void listChanged(ListChangeEvent event) {
 		this.fireListChanged(LIST_VALUES);
 	}
 

@@ -53,8 +53,8 @@ public abstract class PropertyValueModelWrapper<T>
 
 	protected PropertyChangeListener buildValueChangeListener() {
 		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				PropertyValueModelWrapper.this.valueChanged(e);
+			public void propertyChanged(PropertyChangeEvent event) {
+				PropertyValueModelWrapper.this.valueChanged(event);
 			}
 		    @Override
 			public String toString() {
@@ -139,6 +139,6 @@ public abstract class PropertyValueModelWrapper<T>
 	 * The value of the wrapped value holder has changed;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void valueChanged(PropertyChangeEvent e);
+	protected abstract void valueChanged(PropertyChangeEvent event);
 
 }

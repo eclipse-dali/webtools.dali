@@ -123,8 +123,8 @@ public class TransformationListValueModelAdapter<E1, E2>
 	/**
 	 * Transform the items associated with the specified event.
 	 */
-	protected List<E2> transformItems(ListChangeEvent e) {
-		return this.transformItems(this.items(e), e.itemsSize());
+	protected List<E2> transformItems(ListChangeEvent event) {
+		return this.transformItems(this.items(event), event.itemsSize());
 	}
 
 	/**
@@ -137,8 +137,8 @@ public class TransformationListValueModelAdapter<E1, E2>
 	/**
 	 * Transform the replaced items associated with the specified event.
 	 */
-	protected List<E2> transformReplacedItems(ListChangeEvent e) {
-		return this.transformItems(this.replacedItems(e), e.itemsSize());
+	protected List<E2> transformReplacedItems(ListChangeEvent event) {
+		return this.transformItems(this.replacedItems(event), event.itemsSize());
 	}
 
 	/**
@@ -185,8 +185,8 @@ public class TransformationListValueModelAdapter<E1, E2>
 	 * and notify our listeners.
 	 */
     @Override
-	protected void itemsAdded(ListChangeEvent e) {
-		this.addItemsToList(e.index(), this.transformItems(e), this.transformedList, LIST_VALUES);
+	protected void itemsAdded(ListChangeEvent event) {
+		this.addItemsToList(event.index(), this.transformItems(event), this.transformedList, LIST_VALUES);
 	}
 
 	/**
@@ -195,8 +195,8 @@ public class TransformationListValueModelAdapter<E1, E2>
 	 * and notify our listeners.
 	 */
     @Override
-	protected void itemsRemoved(ListChangeEvent e) {
-		this.removeItemsFromList(e.index(), e.itemsSize(), this.transformedList, LIST_VALUES);
+	protected void itemsRemoved(ListChangeEvent event) {
+		this.removeItemsFromList(event.index(), event.itemsSize(), this.transformedList, LIST_VALUES);
 	}
 
 	/**
@@ -205,8 +205,8 @@ public class TransformationListValueModelAdapter<E1, E2>
 	 * and notify our listeners.
 	 */
     @Override
-	protected void itemsReplaced(ListChangeEvent e) {
-		this.setItemsInList(e.index(), this.transformItems(e), this.transformedList, LIST_VALUES);
+	protected void itemsReplaced(ListChangeEvent event) {
+		this.setItemsInList(event.index(), this.transformItems(event), this.transformedList, LIST_VALUES);
 	}
 
 	/**
@@ -215,8 +215,8 @@ public class TransformationListValueModelAdapter<E1, E2>
 	 * and notify our listeners.
 	 */
     @Override
-	protected void itemsMoved(ListChangeEvent e) {
-    	this.moveItemsInList(e.targetIndex(), e.sourceIndex(), e.moveLength(), this.transformedList, LIST_VALUES);
+	protected void itemsMoved(ListChangeEvent event) {
+    	this.moveItemsInList(event.targetIndex(), event.sourceIndex(), event.moveLength(), this.transformedList, LIST_VALUES);
 	}
 
 	/**
@@ -224,7 +224,7 @@ public class TransformationListValueModelAdapter<E1, E2>
 	 * Clear our transformation list and notify our listeners.
 	 */
     @Override
-	protected void listCleared(ListChangeEvent e) {
+	protected void listCleared(ListChangeEvent event) {
     	this.clearList(this.transformedList, LIST_VALUES);
 	}
 
@@ -233,7 +233,7 @@ public class TransformationListValueModelAdapter<E1, E2>
 	 * Rebuild our transformation list and notify our listeners.
 	 */
     @Override
-	protected void listChanged(ListChangeEvent e) {
+	protected void listChanged(ListChangeEvent event) {
 		this.rebuildTransformedList();
 	}
 

@@ -58,23 +58,23 @@ public abstract class ListValueModelWrapper<E>
 
 	protected ListChangeListener buildListChangeListener() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent e) {
-				ListValueModelWrapper.this.itemsAdded(e);
+			public void itemsAdded(ListChangeEvent event) {
+				ListValueModelWrapper.this.itemsAdded(event);
 			}
-			public void itemsRemoved(ListChangeEvent e) {
-				ListValueModelWrapper.this.itemsRemoved(e);
+			public void itemsRemoved(ListChangeEvent event) {
+				ListValueModelWrapper.this.itemsRemoved(event);
 			}
-			public void itemsReplaced(ListChangeEvent e) {
-				ListValueModelWrapper.this.itemsReplaced(e);
+			public void itemsReplaced(ListChangeEvent event) {
+				ListValueModelWrapper.this.itemsReplaced(event);
 			}
-			public void itemsMoved(ListChangeEvent e) {
-				ListValueModelWrapper.this.itemsMoved(e);
+			public void itemsMoved(ListChangeEvent event) {
+				ListValueModelWrapper.this.itemsMoved(event);
 			}
-			public void listCleared(ListChangeEvent e) {
-				ListValueModelWrapper.this.listCleared(e);
+			public void listCleared(ListChangeEvent event) {
+				ListValueModelWrapper.this.listCleared(event);
 			}
-			public void listChanged(ListChangeEvent e) {
-				ListValueModelWrapper.this.listChanged(e);
+			public void listChanged(ListChangeEvent event) {
+				ListValueModelWrapper.this.listChanged(event);
 			}
 			@Override
 			public String toString() {
@@ -154,14 +154,14 @@ public abstract class ListValueModelWrapper<E>
 
 	// minimize suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected ListIterator<E> items(ListChangeEvent e) {
-		return (ListIterator<E>) e.items();
+	protected ListIterator<E> items(ListChangeEvent event) {
+		return (ListIterator<E>) event.items();
 	}
 
 	// minimize suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected ListIterator<E> replacedItems(ListChangeEvent e) {
-		return (ListIterator<E>) e.replacedItems();
+	protected ListIterator<E> replacedItems(ListChangeEvent event) {
+		return (ListIterator<E>) event.replacedItems();
 	}
 
 
@@ -171,36 +171,36 @@ public abstract class ListValueModelWrapper<E>
 	 * Items were added to the wrapped list holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void itemsAdded(ListChangeEvent e);
+	protected abstract void itemsAdded(ListChangeEvent event);
 
 	/**
 	 * Items were removed from the wrapped list holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void itemsRemoved(ListChangeEvent e);
+	protected abstract void itemsRemoved(ListChangeEvent event);
 
 	/**
 	 * Items were replaced in the wrapped list holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void itemsReplaced(ListChangeEvent e);
+	protected abstract void itemsReplaced(ListChangeEvent event);
 
 	/**
 	 * Items were moved in the wrapped list holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void itemsMoved(ListChangeEvent e);
+	protected abstract void itemsMoved(ListChangeEvent event);
 
 	/**
 	 * The wrapped list holder was cleared;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void listCleared(ListChangeEvent e);
+	protected abstract void listCleared(ListChangeEvent event);
 
 	/**
 	 * The value of the wrapped list holder has changed;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void listChanged(ListChangeEvent e);
+	protected abstract void listChanged(ListChangeEvent event);
 
 }

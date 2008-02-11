@@ -90,7 +90,7 @@ public abstract class AspectAdapter<S>
 	 */
 	protected PropertyChangeListener buildSubjectChangeListener() {
 		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
+			public void propertyChanged(PropertyChangeEvent event) {
 				AspectAdapter.this.subjectChanged();
 			}
 			@Override

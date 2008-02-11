@@ -50,16 +50,16 @@ public class ValueCollectionAdapter<T extends Model>
 	 */
 	protected CollectionChangeListener buildValueCollectionListener() {
 		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionChangeEvent e) {
+			public void itemsAdded(CollectionChangeEvent event) {
 				ValueCollectionAdapter.this.valueAspectChanged();
 			}
-			public void itemsRemoved(CollectionChangeEvent e) {
+			public void itemsRemoved(CollectionChangeEvent event) {
 				ValueCollectionAdapter.this.valueAspectChanged();
 			}
-			public void collectionCleared(CollectionChangeEvent e) {
+			public void collectionCleared(CollectionChangeEvent event) {
 				ValueCollectionAdapter.this.valueAspectChanged();
 			}
-			public void collectionChanged(CollectionChangeEvent e) {
+			public void collectionChanged(CollectionChangeEvent event) {
 				ValueCollectionAdapter.this.valueAspectChanged();
 			}
 			@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -80,8 +80,8 @@ public class ToggleButtonModelAdapter
 
 	protected PropertyChangeListener buildBooleanChangeListener_() {
 		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				ToggleButtonModelAdapter.this.booleanChanged(e);
+			public void propertyChanged(PropertyChangeEvent event) {
+				ToggleButtonModelAdapter.this.booleanChanged(event);
 			}
 		    @Override
 			public String toString() {
@@ -202,8 +202,8 @@ public class ToggleButtonModelAdapter
 	/**
 	 * The underlying model has changed - synchronize accordingly.
 	 */
-	protected void booleanChanged(PropertyChangeEvent e) {
-		this.setSelected((Boolean) e.newValue());
+	protected void booleanChanged(PropertyChangeEvent event) {
+		this.setSelected((Boolean) event.newValue());
 	}
 
 	protected void engageModel() {

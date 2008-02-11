@@ -123,22 +123,22 @@ public class TableModelAdapter<E>
 
 	protected ListChangeListener buildListChangeListener_() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent e) {
-				TableModelAdapter.this.addRows(e.index(), e.itemsSize(), this.items(e));
+			public void itemsAdded(ListChangeEvent event) {
+				TableModelAdapter.this.addRows(event.index(), event.itemsSize(), this.items(event));
 			}
-			public void itemsRemoved(ListChangeEvent e) {
-				TableModelAdapter.this.removeRows(e.index(), e.itemsSize());
+			public void itemsRemoved(ListChangeEvent event) {
+				TableModelAdapter.this.removeRows(event.index(), event.itemsSize());
 			}
-			public void itemsReplaced(ListChangeEvent e) {
-				TableModelAdapter.this.replaceRows(e.index(), this.items(e));
+			public void itemsReplaced(ListChangeEvent event) {
+				TableModelAdapter.this.replaceRows(event.index(), this.items(event));
 			}
-			public void itemsMoved(ListChangeEvent e) {
-				TableModelAdapter.this.moveRows(e.targetIndex(), e.sourceIndex(), e.moveLength());
+			public void itemsMoved(ListChangeEvent event) {
+				TableModelAdapter.this.moveRows(event.targetIndex(), event.sourceIndex(), event.moveLength());
 			}
-			public void listCleared(ListChangeEvent e) {
+			public void listCleared(ListChangeEvent event) {
 				TableModelAdapter.this.clearTable();
 			}
-			public void listChanged(ListChangeEvent e) {
+			public void listChanged(ListChangeEvent event) {
 				TableModelAdapter.this.rebuildTable();
 			}
 			/**
@@ -163,8 +163,8 @@ public class TableModelAdapter<E>
 	protected PropertyChangeListener buildCellListener_() {
 		return new PropertyChangeListener() {
 			@SuppressWarnings("unchecked")
-			public void propertyChanged(PropertyChangeEvent evt) {
-				TableModelAdapter.this.cellChanged((WritablePropertyValueModel<Object>) evt.getSource());
+			public void propertyChanged(PropertyChangeEvent event) {
+				TableModelAdapter.this.cellChanged((WritablePropertyValueModel<Object>) event.getSource());
 			}
 			@Override
 			public String toString() {

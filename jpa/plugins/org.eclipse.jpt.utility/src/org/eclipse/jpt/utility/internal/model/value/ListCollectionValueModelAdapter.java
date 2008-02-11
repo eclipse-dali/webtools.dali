@@ -80,23 +80,23 @@ public class ListCollectionValueModelAdapter<E>
 	 */
 	protected ListChangeListener buildListChangeListener() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent e) {
-				ListCollectionValueModelAdapter.this.itemsAdded(e);
+			public void itemsAdded(ListChangeEvent event) {
+				ListCollectionValueModelAdapter.this.itemsAdded(event);
 			}
-			public void itemsRemoved(ListChangeEvent e) {
-				ListCollectionValueModelAdapter.this.itemsRemoved(e);
+			public void itemsRemoved(ListChangeEvent event) {
+				ListCollectionValueModelAdapter.this.itemsRemoved(event);
 			}
-			public void itemsReplaced(ListChangeEvent e) {
-				ListCollectionValueModelAdapter.this.itemsReplaced(e);
+			public void itemsReplaced(ListChangeEvent event) {
+				ListCollectionValueModelAdapter.this.itemsReplaced(event);
 			}
-			public void itemsMoved(ListChangeEvent e) {
-				ListCollectionValueModelAdapter.this.itemsMoved(e);
+			public void itemsMoved(ListChangeEvent event) {
+				ListCollectionValueModelAdapter.this.itemsMoved(event);
 			}
-			public void listCleared(ListChangeEvent e) {
-				ListCollectionValueModelAdapter.this.listCleared(e);
+			public void listCleared(ListChangeEvent event) {
+				ListCollectionValueModelAdapter.this.listCleared(event);
 			}
-			public void listChanged(ListChangeEvent e) {
-				ListCollectionValueModelAdapter.this.listChanged(e);
+			public void listChanged(ListChangeEvent event) {
+				ListCollectionValueModelAdapter.this.listChanged(event);
 			}
 			@Override
 			public String toString() {
@@ -225,18 +225,18 @@ public class ListCollectionValueModelAdapter<E>
 
 	// minimize suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected ListIterator<E> items(ListChangeEvent e) {
-		return (ListIterator<E>) e.items();
+	protected ListIterator<E> items(ListChangeEvent event) {
+		return (ListIterator<E>) event.items();
 	}
 
 	// minimize suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected ListIterator<E> replacedItems(ListChangeEvent e) {
-		return (ListIterator<E>) e.replacedItems();
+	protected ListIterator<E> replacedItems(ListChangeEvent event) {
+		return (ListIterator<E>) event.replacedItems();
 	}
 
-	protected void itemsAdded(ListChangeEvent e) {
-		this.addItemsToCollection(this.items(e), this.collection, VALUES);
+	protected void itemsAdded(ListChangeEvent event) {
+		this.addItemsToCollection(this.items(event), this.collection, VALUES);
 	}
 
 	protected void removeInternalItems(Iterator<E> items) {
@@ -250,20 +250,20 @@ public class ListCollectionValueModelAdapter<E>
 		}
 	}
 
-	protected void itemsRemoved(ListChangeEvent e) {
-		this.removeInternalItems(this.items(e));
+	protected void itemsRemoved(ListChangeEvent event) {
+		this.removeInternalItems(this.items(event));
 	}
 
-	protected void itemsReplaced(ListChangeEvent e) {
-		this.removeInternalItems(this.replacedItems(e));
-		this.addItemsToCollection(this.items(e), this.collection, VALUES);
+	protected void itemsReplaced(ListChangeEvent event) {
+		this.removeInternalItems(this.replacedItems(event));
+		this.addItemsToCollection(this.items(event), this.collection, VALUES);
 	}
 
-	protected void itemsMoved(ListChangeEvent e) {
+	protected void itemsMoved(ListChangeEvent event) {
 		// do nothing? moving items in a list has no net effect on a collection...
 	}
 
-	protected void listCleared(ListChangeEvent e) {
+	protected void listCleared(ListChangeEvent event) {
 		// put in empty check so we don't fire events unnecessarily
 		if ( ! this.collection.isEmpty()) {
 			this.collection.clear();
@@ -275,7 +275,7 @@ public class ListCollectionValueModelAdapter<E>
 	 * synchronize our internal collection with the wrapped list
 	 * and fire the appropriate events
 	 */
-	protected void listChanged(ListChangeEvent e) {
+	protected void listChanged(ListChangeEvent event) {
 		// put in empty check so we don't fire events unnecessarily
 		if ( ! this.collection.isEmpty()) {
 			@SuppressWarnings("unchecked")

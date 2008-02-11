@@ -96,8 +96,8 @@ public class DocumentAdapter
 
 	protected PropertyChangeListener buildStringListener_() {
 		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				DocumentAdapter.this.stringChanged(e);
+			public void propertyChanged(PropertyChangeEvent event) {
+				DocumentAdapter.this.stringChanged(event);
 			}
 			@Override
 			public String toString() {
@@ -235,8 +235,8 @@ public class DocumentAdapter
 	 * A third party has modified the underlying model string.
 	 * Synchronize the delegate document accordingly.
 	 */
-	protected void stringChanged(PropertyChangeEvent e) {
-		this.synchronizeDelegate((String) e.newValue());
+	protected void stringChanged(PropertyChangeEvent event) {
+		this.synchronizeDelegate((String) event.newValue());
 	}
 
 	/**
@@ -265,40 +265,40 @@ public class DocumentAdapter
 		this.stringHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.stringListener);
 	}
 
-	protected void delegateChangedUpdate(DocumentEvent e) {
+	protected void delegateChangedUpdate(DocumentEvent event) {
 		// no need to lazy-initialize the event;
 		// we wouldn't get here if we did not have listeners...
-		DocumentEvent ee = new InternalDocumentEvent(this, e);
+		DocumentEvent ee = new InternalDocumentEvent(this, event);
 		DocumentListener[] listeners = this.documentListeners();
 		for (int i = listeners.length; i-- > 0; ) {
 			listeners[i].changedUpdate(ee);
 		}
 	}
 
-	protected void delegateInsertUpdate(DocumentEvent e) {
+	protected void delegateInsertUpdate(DocumentEvent event) {
 		// no need to lazy-initialize the event;
 		// we wouldn't get here if we did not have listeners...
-		DocumentEvent ee = new InternalDocumentEvent(this, e);
+		DocumentEvent ee = new InternalDocumentEvent(this, event);
 		DocumentListener[] listeners = this.documentListeners();
 		for (int i = listeners.length; i-- > 0; ) {
 			listeners[i].insertUpdate(ee);
 		}
 	}
 
-	protected void delegateRemoveUpdate(DocumentEvent e) {
+	protected void delegateRemoveUpdate(DocumentEvent event) {
 		// no need to lazy-initialize the event;
 		// we wouldn't get here if we did not have listeners...
-		DocumentEvent ee = new InternalDocumentEvent(this, e);
+		DocumentEvent ee = new InternalDocumentEvent(this, event);
 		DocumentListener[] listeners = this.documentListeners();
 		for (int i = listeners.length; i-- > 0; ) {
 			listeners[i].removeUpdate(ee);
 		}
 	}
 
-	protected void delegateUndoableEditHappened(UndoableEditEvent e) {
+	protected void delegateUndoableEditHappened(UndoableEditEvent event) {
 		// no need to lazy-initialize the event;
 		// we wouldn't get here if we did not have listeners...
-		UndoableEditEvent ee = new UndoableEditEvent(this, e.getEdit());
+		UndoableEditEvent ee = new UndoableEditEvent(this, event.getEdit());
 		UndoableEditListener[] listeners = this.undoableEditListeners();
 		for (int i = listeners.length; i-- > 0; ) {
 			listeners[i].undoableEditHappened(ee);
@@ -320,17 +320,17 @@ public class DocumentAdapter
 	}
 
 	protected class InternalListener implements CombinedListener {
-		public void changedUpdate(DocumentEvent e) {
-			DocumentAdapter.this.delegateChangedUpdate(e);
+		public void changedUpdate(DocumentEvent event) {
+			DocumentAdapter.this.delegateChangedUpdate(event);
 		}
-		public void insertUpdate(DocumentEvent e) {
-			DocumentAdapter.this.delegateInsertUpdate(e);
+		public void insertUpdate(DocumentEvent event) {
+			DocumentAdapter.this.delegateInsertUpdate(event);
 		}
-		public void removeUpdate(DocumentEvent e) {
-			DocumentAdapter.this.delegateRemoveUpdate(e);
+		public void removeUpdate(DocumentEvent event) {
+			DocumentAdapter.this.delegateRemoveUpdate(event);
 		}
-		public void undoableEditHappened(UndoableEditEvent e) {
-			DocumentAdapter.this.delegateUndoableEditHappened(e);
+		public void undoableEditHappened(UndoableEditEvent event) {
+			DocumentAdapter.this.delegateUndoableEditHappened(event);
 		}
 	}
 	

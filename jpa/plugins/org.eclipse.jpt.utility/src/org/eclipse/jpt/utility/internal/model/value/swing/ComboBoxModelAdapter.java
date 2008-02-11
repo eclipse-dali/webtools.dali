@@ -82,7 +82,7 @@ public class ComboBoxModelAdapter
 
 	protected PropertyChangeListener buildSelectionListener_() {
 		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
+			public void propertyChanged(PropertyChangeEvent event) {
 				// notify listeners that the selection has changed
 				ComboBoxModelAdapter.this.fireSelectionChanged();
 			}

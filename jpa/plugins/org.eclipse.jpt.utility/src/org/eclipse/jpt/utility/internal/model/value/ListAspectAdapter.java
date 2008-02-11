@@ -114,23 +114,23 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	protected ListChangeListener buildListChangeListener() {
 		// transform the subject's list change events into VALUE list change events
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent e) {
-				ListAspectAdapter.this.itemsAdded(e);
+			public void itemsAdded(ListChangeEvent event) {
+				ListAspectAdapter.this.itemsAdded(event);
 			}
-			public void itemsRemoved(ListChangeEvent e) {
-				ListAspectAdapter.this.itemsRemoved(e);
+			public void itemsRemoved(ListChangeEvent event) {
+				ListAspectAdapter.this.itemsRemoved(event);
 			}
-			public void itemsReplaced(ListChangeEvent e) {
-				ListAspectAdapter.this.itemsReplaced(e);
+			public void itemsReplaced(ListChangeEvent event) {
+				ListAspectAdapter.this.itemsReplaced(event);
 			}
-			public void itemsMoved(ListChangeEvent e) {
-				ListAspectAdapter.this.itemsMoved(e);
+			public void itemsMoved(ListChangeEvent event) {
+				ListAspectAdapter.this.itemsMoved(event);
 			}
-			public void listCleared(ListChangeEvent e) {
-				ListAspectAdapter.this.listCleared(e);
+			public void listCleared(ListChangeEvent event) {
+				ListAspectAdapter.this.listCleared(event);
 			}
-			public void listChanged(ListChangeEvent e) {
-				ListAspectAdapter.this.listChanged(e);
+			public void listChanged(ListChangeEvent event) {
+				ListAspectAdapter.this.listChanged(event);
 			}
 			@Override
 			public String toString() {
@@ -259,27 +259,27 @@ public abstract class ListAspectAdapter<S extends Model, E>
 
 	// ********** behavior **********
 
-	protected void itemsAdded(ListChangeEvent e) {
-		this.fireItemsAdded(e.cloneWithSource(this, LIST_VALUES));
+	protected void itemsAdded(ListChangeEvent event) {
+		this.fireItemsAdded(event.cloneWithSource(this, LIST_VALUES));
 	}
 
-	protected void itemsRemoved(ListChangeEvent e) {
-		this.fireItemsRemoved(e.cloneWithSource(this, LIST_VALUES));
+	protected void itemsRemoved(ListChangeEvent event) {
+		this.fireItemsRemoved(event.cloneWithSource(this, LIST_VALUES));
 	}
 
-	protected void itemsReplaced(ListChangeEvent e) {
-		this.fireItemsReplaced(e.cloneWithSource(this, LIST_VALUES));
+	protected void itemsReplaced(ListChangeEvent event) {
+		this.fireItemsReplaced(event.cloneWithSource(this, LIST_VALUES));
 	}
 
-	protected void itemsMoved(ListChangeEvent e) {
-		this.fireItemsMoved(e.cloneWithSource(this, LIST_VALUES));
+	protected void itemsMoved(ListChangeEvent event) {
+		this.fireItemsMoved(event.cloneWithSource(this, LIST_VALUES));
 	}
 
-	protected void listCleared(ListChangeEvent e) {
+	protected void listCleared(ListChangeEvent event) {
 		this.fireListCleared(LIST_VALUES);  // nothing from original event to forward
 	}
 
-	protected void listChanged(ListChangeEvent e) {
+	protected void listChanged(ListChangeEvent event) {
 		this.fireListChanged(LIST_VALUES);  // nothing from original event to forward
 	}
 

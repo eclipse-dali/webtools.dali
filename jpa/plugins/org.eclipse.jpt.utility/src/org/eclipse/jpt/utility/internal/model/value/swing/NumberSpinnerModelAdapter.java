@@ -122,8 +122,8 @@ public class NumberSpinnerModelAdapter
 
 	protected PropertyChangeListener buildNumberChangeListener_() {
 		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				NumberSpinnerModelAdapter.this.synchronize(e.newValue());
+			public void propertyChanged(PropertyChangeEvent event) {
+				NumberSpinnerModelAdapter.this.synchronize(event.newValue());
 			}
 			@Override
 			public String toString() {
