@@ -152,6 +152,14 @@ public class XmlPersistentAttributeDetailsPage extends PersistentAttributeDetail
 		// Entity type widgets
 		new XmlJavaAttributeChooser(this, getMappingHolder(), container);
 
+		// Note: The combo's parent is a container fixing the issue with the
+		// border not being painted
+		buildLabeledComposite(
+			container,
+			buildMappingLabel(container),
+			buildMappingCombo(container).getControl().getParent()
+		);
+
 		// Properties pane
 		PageBook attributePane = buildMappingPageBook(container);
 
