@@ -71,6 +71,12 @@ public class JavaPrimaryKeyJoinColumn extends JavaNamedColumn<PrimaryKeyJoinColu
 		firePropertyChanged(SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
 	}
 
+	protected void setSpecifiedReferencedColumnName_(String newSpecifiedReferencedColumnName) {
+		String oldSpecifiedReferencedColumnName = this.specifiedReferencedColumnName;
+		this.specifiedReferencedColumnName = newSpecifiedReferencedColumnName;
+		firePropertyChanged(SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
+	}
+
 	public String getDefaultReferencedColumnName() {
 		return this.defaultReferencedColumnName;
 	}
@@ -145,7 +151,7 @@ public class JavaPrimaryKeyJoinColumn extends JavaNamedColumn<PrimaryKeyJoinColu
 	public void update(PrimaryKeyJoinColumn column) {
 		this.primaryKeyJoinColumnResource = column;
 		super.update(column);
-		this.setSpecifiedReferencedColumnName(this.specifiedReferencedColumnName(column));
+		this.setSpecifiedReferencedColumnName_(this.specifiedReferencedColumnName(column));
 		this.setDefaultReferencedColumnName(this.defaultReferencedColumnName());
 	}
 	
