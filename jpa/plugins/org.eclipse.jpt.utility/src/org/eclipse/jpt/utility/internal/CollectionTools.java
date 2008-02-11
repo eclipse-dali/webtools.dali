@@ -26,7 +26,9 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Vector;
+
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.utility.internal.iterators.GenericIteratorWrapper;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 
 public final class CollectionTools {
@@ -665,7 +667,10 @@ public final class CollectionTools {
 	 * HashBag(java.util.Enumeration enumeration)
 	 */
 	public static <E> Bag<E> bag(Enumeration<? extends E> enumeration) {
-		return bag(enumeration, new HashBag<E>());
+		return (enumeration.hasMoreElements()) ?
+				bag(enumeration, new HashBag<E>())
+			:
+				Bag.Empty.<E>instance();
 	}
 
 	/**
@@ -673,7 +678,10 @@ public final class CollectionTools {
 	 * HashBag(java.util.Enumeration enumeration)
 	 */
 	public static <E> Bag<E> bag(Enumeration<? extends E> enumeration, int size) {
-		return bag(enumeration, new HashBag<E>(size));
+		return (enumeration.hasMoreElements()) ?
+				bag(enumeration, new HashBag<E>(size))
+			:
+				Bag.Empty.<E>instance();
 	}
 
 	private static <E> Bag<E> bag(Enumeration<? extends E> enumeration, HashBag<E> bag) {
@@ -704,7 +712,10 @@ public final class CollectionTools {
 	 * HashBag(java.util.Iterator iterator)
 	 */
 	public static <E> Bag<E> bag(Iterator<? extends E> iterator) {
-		return bag(iterator, new HashBag<E>());
+		return (iterator.hasNext()) ?
+				bag(iterator, new HashBag<E>())
+			:
+				Bag.Empty.<E>instance();
 	}
 
 	/**
@@ -712,7 +723,10 @@ public final class CollectionTools {
 	 * HashBag(java.util.Iterator iterator)
 	 */
 	public static <E> Bag<E> bag(Iterator<? extends E> iterator, int size) {
-		return bag(iterator, new HashBag<E>(size));
+		return (iterator.hasNext()) ?
+				bag(iterator, new HashBag<E>(size))
+			:
+				Bag.Empty.<E>instance();
 	}
 
 	private static <E> Bag<E> bag(Iterator<? extends E> iterator, HashBag<E> bag) {
@@ -727,7 +741,11 @@ public final class CollectionTools {
 	 * HashBag(Object[] array)
 	 */
 	public static <E> Bag<E> bag(E... array) {
-		Bag<E> bag = new HashBag<E>(array.length);
+		int len = array.length;
+		if (len == 0) {
+			return Bag.Empty.<E>instance();
+		}
+		Bag<E> bag = new HashBag<E>(len);
 		for (E item : array) {
 			bag.add(item);
 		}
@@ -1584,62 +1602,8 @@ public final class CollectionTools {
 	 * As such, this utility should only be used in one-use situations, such as
 	 * a "for" loop.
 	 */
-	public static <E> Iterable<E> iterable(final Iterator<? extends E> iterator) {
+	public static <E> Iterable<E> iterable(Iterator<? extends E> iterator) {
 		return new SingleUseIterable<E>(iterator);
-	}
-
-	/**
-	 * This is a one-time use iterable that can return a single iterator.
-	 * Once the iterator is returned the iterable is no longer valid.
-	 * As such, this utility should only be used in one-time use situations,
-	 * such as a 'for-each' loop.
-	 */
-	public static class SingleUseIterable<E> implements Iterable<E> {
-		private Iterator<E> iterator;
-
-		public SingleUseIterable(Iterator<? extends E> iterator) {
-			super();
-			if (iterator == null) {
-				throw new NullPointerException();
-			}
-			this.iterator = new LocalIterator<E>(iterator);
-		}
-
-		public Iterator<E> iterator() {
-			if (this.iterator == null) {
-				throw new IllegalStateException("This method has already been called.");
-			}
-			Iterator<E> result = this.iterator;
-			this.iterator = null;
-			return result;
-		}
-
-		@Override
-		public String toString() {
-			return StringTools.buildToStringFor(this, this.iterator);
-		}
-
-		private static class LocalIterator<E> implements Iterator<E> {
-			private final Iterator<? extends E> iterator;
-			LocalIterator(Iterator<? extends E> iterator) {
-				super();
-				this.iterator = iterator;
-			}
-			public boolean hasNext() {
-				return iterator.hasNext();
-			}
-			public E next() {
-				return iterator.next();
-			}
-			public void remove() {
-				iterator.remove();
-			}
-			@Override
-			public String toString() {
-				return StringTools.buildToStringFor(this, this.iterator);
-			}
-		}
-
 	}
 
 	/**
@@ -1753,7 +1717,7 @@ public final class CollectionTools {
 	 * java.util.Iterator#toList()
 	 */
 	public static <E> List<E> list(Iterator<? extends E> iterator) {
-		return list(iterator, new ArrayList<E>());
+		return (iterator.hasNext()) ? list(iterator, new ArrayList<E>()) : Collections.<E>emptyList();
 	}
 
 	/**
@@ -1761,7 +1725,7 @@ public final class CollectionTools {
 	 * java.util.Iterator#toList()
 	 */
 	public static <E> List<E> list(Iterator<? extends E> iterator, int size) {
-		return list(iterator, new ArrayList<E>(size));
+		return (iterator.hasNext()) ? list(iterator, new ArrayList<E>(size)) : Collections.<E>emptyList();
 	}
 
 	private static <E> List<E> list(Iterator<? extends E> iterator, ArrayList<E> list) {
@@ -3111,7 +3075,7 @@ public final class CollectionTools {
 	 * java.util.HashSet(Object[] array)
 	 */
 	public static <E> Set<E> set(E... array) {
-		Set<E> set = new HashSet<E>(2 * array.length);
+		Set<E> set = new HashSet<E>(array.length);
 		for (E item : array) {
 			set.add(item);
 		}
@@ -3441,7 +3405,43 @@ public final class CollectionTools {
 	}
 
 
-	//********** java.util.Collections enhancements **********
+	// ********** single-use Iterable **********
+
+	/**
+	 * This is a one-time use iterable that can return a single iterator.
+	 * Once the iterator is returned the iterable is no longer valid.
+	 * As such, this utility should only be used in one-time use situations,
+	 * such as a 'for-each' loop.
+	 */
+	public static class SingleUseIterable<E> implements Iterable<E> {
+		private Iterator<E> iterator;
+
+		public SingleUseIterable(Iterator<? extends E> iterator) {
+			super();
+			if (iterator == null) {
+				throw new NullPointerException();
+			}
+			this.iterator = new GenericIteratorWrapper<E>(iterator);
+		}
+
+		public Iterator<E> iterator() {
+			if (this.iterator == null) {
+				throw new IllegalStateException("This method has already been called.");
+			}
+			Iterator<E> result = this.iterator;
+			this.iterator = null;
+			return result;
+		}
+
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, this.iterator);
+		}
+
+	}
+
+
+	// ********** java.util.Collections enhancements **********
 
 	/**
 	 * Return the destination list after the source list has been copied into it.
@@ -3561,7 +3561,7 @@ public final class CollectionTools {
 	}
 
 
-	//********** java.util.Arrays enhancements **********
+	// ********** java.util.Arrays enhancements **********
 
 	/**
 	 * Return the array after it has been "filled".
@@ -3888,7 +3888,7 @@ public final class CollectionTools {
 	}
 
 
-	//********** constructor **********
+	// ********** constructor **********
 
 	/**
 	 * Suppress default constructor, ensuring non-instantiability.

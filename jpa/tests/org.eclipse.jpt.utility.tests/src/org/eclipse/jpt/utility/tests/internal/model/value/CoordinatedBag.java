@@ -24,7 +24,7 @@ import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
  */
 class CoordinatedBag<E> implements Bag<E>, CollectionChangeListener {
 
-	private Bag<E> synchBag = new HashBag<E>();
+	private Bag<E> bag = new HashBag<E>();
 
 	CoordinatedBag(CollectionValueModel<E> cvm) {
 		cvm.addCollectionChangeListener(CollectionValueModel.VALUES, this);
@@ -34,98 +34,98 @@ class CoordinatedBag<E> implements Bag<E>, CollectionChangeListener {
 	// ********** Collection implementation **********
 
 	public boolean add(E o) {
-		return this.synchBag.add(o);
+		return this.bag.add(o);
 	}
 
 	public boolean addAll(Collection<? extends E> c) {
-		return this.synchBag.addAll(c);
+		return this.bag.addAll(c);
 	}
 
 	public void clear() {
-		this.synchBag.clear();
+		this.bag.clear();
 	}
 
 	public boolean contains(Object o) {
-		return this.synchBag.contains(o);
+		return this.bag.contains(o);
 	}
 
 	public boolean containsAll(Collection<?> c) {
-		return this.synchBag.containsAll(c);
+		return this.bag.containsAll(c);
 	}
 
 	public boolean isEmpty() {
-		return this.synchBag.isEmpty();
+		return this.bag.isEmpty();
 	}
 
 	public Iterator<E> iterator() {
-		return this.synchBag.iterator();
+		return this.bag.iterator();
 	}
 
 	public boolean remove(Object o) {
-		return this.synchBag.remove(o);
+		return this.bag.remove(o);
 	}
 
 	public boolean removeAll(Collection<?> c) {
-		return this.synchBag.removeAll(c);
+		return this.bag.removeAll(c);
 	}
 
 	public boolean retainAll(Collection<?> c) {
-		return this.synchBag.retainAll(c);
+		return this.bag.retainAll(c);
 	}
 
 	public int size() {
-		return this.synchBag.size();
+		return this.bag.size();
 	}
 
 	public Object[] toArray() {
-		return this.synchBag.toArray();
+		return this.bag.toArray();
 	}
 
 	public <T> T[] toArray(T[] a) {
-		return this.synchBag.toArray(a);
+		return this.bag.toArray(a);
 	}
 
 
 	// ********** Bag implementation **********
 
 	public int count(Object o) {
-		return this.synchBag.count(o);
+		return this.bag.count(o);
 	}
 
 	public boolean add(E o, int count) {
-		return this.synchBag.add(o, count);
+		return this.bag.add(o, count);
 	}
 
 	public boolean remove(Object o, int count) {
-		return this.synchBag.remove(o, count);
+		return this.bag.remove(o, count);
 	}
 
 	public Iterator<E> uniqueIterator() {
-		return this.synchBag.uniqueIterator();
+		return this.bag.uniqueIterator();
 	}
 
 	// ********** CollectionChangeListener implementation **********
 
 	public void itemsAdded(CollectionChangeEvent e) {
 		for (@SuppressWarnings("unchecked") Iterator<E> stream = (Iterator<E>) e.items(); stream.hasNext(); ) {
-			this.synchBag.add(stream.next());
+			this.bag.add(stream.next());
 		}
 	}
 
 	public void itemsRemoved(CollectionChangeEvent e) {
 		for (@SuppressWarnings("unchecked") Iterator<E> stream = (Iterator<E>) e.items(); stream.hasNext(); ) {
-			this.synchBag.remove(stream.next());
+			this.bag.remove(stream.next());
 		}
 	}
 
 	public void collectionCleared(CollectionChangeEvent e) {
-		this.synchBag.clear();
+		this.bag.clear();
 	}
 
 	@SuppressWarnings("unchecked")
 	public void collectionChanged(CollectionChangeEvent e) {
-		this.synchBag.clear();
-		CollectionTools.addAll(this.synchBag, ((CollectionValueModel<E>) e.getSource()).iterator());
+		this.bag.clear();
+		CollectionTools.addAll(this.bag, ((CollectionValueModel<E>) e.getSource()).iterator());
 	}
 
 
@@ -133,17 +133,17 @@ class CoordinatedBag<E> implements Bag<E>, CollectionChangeListener {
 
 	@Override
 	public boolean equals(Object o) {
-		return this.synchBag.equals(o);
+		return this.bag.equals(o);
 	}
 
 	@Override
 	public int hashCode() {
-		return this.synchBag.hashCode();
+		return this.bag.hashCode();
 	}
 
 	@Override
 	public String toString() {
-		return this.synchBag.toString();
+		return this.bag.toString();
 	}
 
 }

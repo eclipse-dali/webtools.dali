@@ -204,6 +204,20 @@ public class SimpleListValueModel<E>
 		this.moveItemsInList(targetIndex, sourceIndex, length, this.list, LIST_VALUES);
 	}
 
+	/**
+	 * Remove a range of elements.
+	 */
+	public void remove(int index, int length) {
+		this.removeItemsFromList(index, length, this.list, LIST_VALUES);
+	}
+
+	/**
+	 * Set a range of elements.
+	 */
+	public void set(int index, List<E> elements) {
+		this.setItemsInList(index, elements, this.list, LIST_VALUES);
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.list);

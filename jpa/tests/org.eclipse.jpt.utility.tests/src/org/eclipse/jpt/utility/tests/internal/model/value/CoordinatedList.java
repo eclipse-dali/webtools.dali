@@ -29,7 +29,7 @@ import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
  * list held by a list value model.
  */
 public class CoordinatedList<E> implements List<E>, ListChangeListener, ListDataListener {
-	private List<E> synchList = new ArrayList<E>();
+	private List<E> list = new ArrayList<E>();
 
 	public CoordinatedList(ListValueModel<E> listValueModel) {
 		listValueModel.addListChangeListener(ListValueModel.LIST_VALUES, this);
@@ -49,95 +49,95 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 	// ********** List implementation **********
 
 	public void add(int index, E element) {
-		this.synchList.add(index, element);
+		this.list.add(index, element);
 	}
 
 	public boolean add(E o) {
-		return this.synchList.add(o);
+		return this.list.add(o);
 	}
 
 	public boolean addAll(Collection<? extends E> c) {
-		return this.synchList.addAll(c);
+		return this.list.addAll(c);
 	}
 
 	public boolean addAll(int index, Collection<? extends E> c) {
-		return this.synchList.addAll(index, c);
+		return this.list.addAll(index, c);
 	}
 
 	public void clear() {
-		this.synchList.clear();
+		this.list.clear();
 	}
 
 	public boolean contains(Object o) {
-		return this.synchList.contains(o);
+		return this.list.contains(o);
 	}
 
 	public boolean containsAll(Collection<?> c) {
-		return this.synchList.containsAll(c);
+		return this.list.containsAll(c);
 	}
 
 	public E get(int index) {
-		return this.synchList.get(index);
+		return this.list.get(index);
 	}
 
 	public int indexOf(Object o) {
-		return this.synchList.indexOf(o);
+		return this.list.indexOf(o);
 	}
 
 	public boolean isEmpty() {
-		return this.synchList.isEmpty();
+		return this.list.isEmpty();
 	}
 
 	public Iterator<E> iterator() {
-		return this.synchList.iterator();
+		return this.list.iterator();
 	}
 
 	public int lastIndexOf(Object o) {
-		return this.synchList.lastIndexOf(o);
+		return this.list.lastIndexOf(o);
 	}
 
 	public ListIterator<E> listIterator() {
-		return this.synchList.listIterator();
+		return this.list.listIterator();
 	}
 
 	public ListIterator<E> listIterator(int index) {
-		return this.synchList.listIterator(index);
+		return this.list.listIterator(index);
 	}
 
 	public E remove(int index) {
-		return this.synchList.remove(index);
+		return this.list.remove(index);
 	}
 
 	public boolean remove(Object o) {
-		return this.synchList.remove(o);
+		return this.list.remove(o);
 	}
 
 	public boolean removeAll(Collection<?> c) {
-		return this.synchList.removeAll(c);
+		return this.list.removeAll(c);
 	}
 
 	public boolean retainAll(Collection<?> c) {
-		return this.synchList.retainAll(c);
+		return this.list.retainAll(c);
 	}
 
 	public E set(int index, E element) {
-		return this.synchList.set(index, element);
+		return this.list.set(index, element);
 	}
 
 	public int size() {
-		return this.synchList.size();
+		return this.list.size();
 	}
 
 	public List<E> subList(int fromIndex, int toIndex) {
-		return this.synchList.subList(fromIndex, toIndex);
+		return this.list.subList(fromIndex, toIndex);
 	}
 
 	public Object[] toArray() {
-		return this.synchList.toArray();
+		return this.list.toArray();
 	}
 
 	public <T> T[] toArray(T[] a) {
-		return this.synchList.toArray(a);
+		return this.list.toArray(a);
 	}
 
 
@@ -146,7 +146,7 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 	public void itemsAdded(ListChangeEvent e) {
 		int i = e.index();
 		for (Iterator<E> stream = this.items(e); stream.hasNext(); ) {
-			this.synchList.add(i++, stream.next());
+			this.list.add(i++, stream.next());
 		}
 	}
 
@@ -154,39 +154,39 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 		int i = e.index();
 		for (Iterator<E> stream = this.items(e); stream.hasNext(); ) {
 			stream.next();
-			this.synchList.remove(i);
+			this.list.remove(i);
 		}
 	}
 
 	public void itemsReplaced(ListChangeEvent e) {
 		int i = e.index();
 		for (Iterator<E> stream = this.items(e); stream.hasNext(); ) {
-			this.synchList.set(i++, stream.next());
+			this.list.set(i++, stream.next());
 		}
 	}
 
 	public void itemsMoved(ListChangeEvent e) {
-		CollectionTools.move(this.synchList, e.targetIndex(), e.sourceIndex(), e.itemsSize());
+		CollectionTools.move(this.list, e.targetIndex(), e.sourceIndex(), e.moveLength());
 	}
 
 	public void listCleared(ListChangeEvent e) {
-		this.synchList.clear();
+		this.list.clear();
 	}
 
 	public void listChanged(ListChangeEvent e) {
-		this.synchList.clear();
-		CollectionTools.addAll(this.synchList, this.getSource(e).iterator());
+		this.list.clear();
+		CollectionTools.addAll(this.list, this.getSource(e).iterator());
 	}
 
 
 	// ********** ListDataListener implementation **********
 
 	public void contentsChanged(ListDataEvent e) {
-		this.synchList.clear();
+		this.list.clear();
 		ListModel lm = (ListModel) e.getSource();
 		int size = lm.getSize();
 		for (int i = 0; i < size; i++) {
-			this.synchList.add(i, this.getElementAt(lm, i));
+			this.list.add(i, this.getElementAt(lm, i));
 		}
 	}
 
@@ -195,7 +195,7 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 		int start = Math.min(e.getIndex0(), e.getIndex1());
 		int end = Math.max(e.getIndex0(), e.getIndex1());
 		for (int i = start; i <= end; i++) {
-			this.synchList.add(i, this.getElementAt(lm, i));
+			this.list.add(i, this.getElementAt(lm, i));
 		}
 	}
 
@@ -204,7 +204,7 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 		int end = Math.max(e.getIndex0(), e.getIndex1());
 		int length = end - start + 1;
 		for (int i = 1; i <= length; i++) {
-			this.synchList.remove(start);
+			this.list.remove(start);
 		}
 	}
 
@@ -213,17 +213,17 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 
     @Override
 	public boolean equals(Object o) {
-		return this.synchList.equals(o);
+		return this.list.equals(o);
 	}
 
     @Override
 	public int hashCode() {
-		return this.synchList.hashCode();
+		return this.list.hashCode();
 	}
 
     @Override
 	public String toString() {
-		return this.synchList.toString();
+		return this.list.toString();
 	}
 
 

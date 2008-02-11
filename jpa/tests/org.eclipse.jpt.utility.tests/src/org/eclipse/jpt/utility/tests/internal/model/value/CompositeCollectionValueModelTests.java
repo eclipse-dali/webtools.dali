@@ -22,6 +22,7 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.CompositeCollectionValueModel;
+import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -126,20 +127,31 @@ public class CompositeCollectionValueModelTests extends TestCase {
 	}
 
 	public void testNoTransformer() {
-//		Bag<Member> synchBag = new CoordinatedBag<Member>(this.buildBogusAllMembersComposite(this.neighborhoodHolder));
-//		boolean exCaught = false;
-//		try {
-//			this.populateNeighborhood(this.neighborhood);
-//			fail("UnsupportedOperationException was expected");
-//		} catch (UnsupportedOperationException ex) {
-//			StackTraceElement ste = ex.getStackTrace()[0];
-//			if (ste.getClassName().equals(Transformer.Disabled.class.getName())
-//					&& ste.getMethodName().equals("transform")) {
-//				exCaught = true;
-//			}
-//		}
-//		assertTrue(exCaught);
-//		assertEquals(0, synchBag.size());
+		SimpleCollectionValueModel<String> subCVM1 = new SimpleCollectionValueModel<String>();
+		SimpleCollectionValueModel<String> subCVM2 = new SimpleCollectionValueModel<String>();
+		Collection<CollectionValueModel<String>> collection = new ArrayList<CollectionValueModel<String>>();
+		collection.add(subCVM1);
+		collection.add(subCVM2);
+		Bag<String> synchBag = new CoordinatedBag<String>(new CompositeCollectionValueModel<CollectionValueModel<String>, String>(collection));
+
+		assertEquals(0, synchBag.size());
+
+		subCVM1.add("foo");
+		subCVM1.add("bar");
+		subCVM1.add("baz");
+		assertEquals(3, synchBag.size());
+		assertTrue(synchBag.contains("foo"));
+
+		subCVM2.add("joo");
+		subCVM2.add("jar");
+		subCVM2.add("jaz");
+		assertEquals(6, synchBag.size());
+		assertTrue(synchBag.contains("foo"));
+		assertTrue(synchBag.contains("jaz"));
+
+		subCVM1.remove("baz");
+		assertEquals(5, synchBag.size());
+		assertFalse(synchBag.contains("baz"));
 	}
 
 	public void testDuplicateItem() {
@@ -224,11 +236,6 @@ public class CompositeCollectionValueModelTests extends TestCase {
 	private CollectionValueModel<Member> buildAllMembersComposite2(PropertyValueModel<Neighborhood> communeHolder) {
 		// build a custom Transformer
 		return new CompositeCollectionValueModel<Family, Member>(this.buildFamiliesAspectAdapter(communeHolder), this.buildTransformer());
-	}
-
-	private CollectionValueModel<Member> buildBogusAllMembersComposite(PropertyValueModel<Neighborhood> communeHolder) {
-		// DISABLED Transformer
-		return new CompositeCollectionValueModel<Family, Member>(this.buildFamiliesAspectAdapter(communeHolder));
 	}
 
 	private Transformer<Family, CollectionValueModel<Member>> buildTransformer() {

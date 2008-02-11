@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal;
 
+import java.io.Serializable;
+import java.util.AbstractCollection;
+import java.util.Iterator;
+
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+
 /**
  * A collection that allows duplicate elements.
  * <p>
@@ -16,8 +22,6 @@ package org.eclipse.jpt.utility.internal;
  * beyond those inherited from the <code>java.util.Collection</code> interface,
  * on the contracts of the <code>equals</code> and <code>hashCode</code> methods.
  * 
- * @version 1.00 Jan-2002
- * @see java.util.Collection
  * @see HashBag
  */
 
@@ -68,5 +72,57 @@ public interface Bag<E> extends java.util.Collection<E> {
 	 * the item was added to the bag.
 	 */
 	java.util.Iterator<E> uniqueIterator();
+
+
+	final class Empty<E> extends AbstractCollection<E> implements Bag<E>, Serializable {
+		@SuppressWarnings("unchecked")
+		public static final Bag INSTANCE = new Empty();
+		@SuppressWarnings("unchecked")
+		public static <T> Bag<T> instance() {
+			return INSTANCE;
+		}
+		// ensure single instance
+		private Empty() {
+			super();
+		}
+		@Override
+		public Iterator<E> iterator() {
+			return EmptyIterator.instance();
+		}
+		@Override
+		public int size() {
+			return 0;
+		}
+		public Iterator<E> uniqueIterator() {
+			return EmptyIterator.instance();
+		}
+		public int count(Object o) {
+			return 0;
+		}
+		public boolean remove(Object o, int count) {
+			return false;
+		}
+		public boolean add(E o, int count) {
+			throw new UnsupportedOperationException();
+		}
+		@Override
+		public boolean equals(Object o) {
+			if (o == this) {
+				return true;
+			}
+			if ( ! (o instanceof Bag)) {
+				return false;
+			}
+			return ((Bag<?>) o).size() == 0;
+		}
+		@Override
+		public int hashCode() {
+			return 0;
+		}
+		private static final long serialVersionUID = 1L;
+		private Object readResolve() {
+			return INSTANCE;
+		}
+	}
 
 }
