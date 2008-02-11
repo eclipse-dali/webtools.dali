@@ -137,16 +137,16 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 	// ********** member class **********
 	
 	static class TestListener implements CollectionChangeListener {
-		public void collectionChanged(CollectionChangeEvent e) {
+		public void collectionChanged(CollectionChangeEvent event) {
 			fail("unexpected event");
 		}
-		public void collectionCleared(CollectionChangeEvent e) {
+		public void collectionCleared(CollectionChangeEvent event) {
 			fail("unexpected event");
 		}
-		public void itemsAdded(CollectionChangeEvent e) {
+		public void itemsAdded(CollectionChangeEvent event) {
 			fail("unexpected event");
 		}
-		public void itemsRemoved(CollectionChangeEvent e) {
+		public void itemsRemoved(CollectionChangeEvent event) {
 			fail("unexpected event");
 		}
 	}

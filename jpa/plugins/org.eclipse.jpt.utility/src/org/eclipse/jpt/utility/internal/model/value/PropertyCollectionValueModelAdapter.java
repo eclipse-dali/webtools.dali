@@ -44,7 +44,7 @@ public class PropertyCollectionValueModelAdapter<E>
 	// ********** constructors/initialization **********
 
 	/**
-	 * Wrap the specified property value model.
+	 * Wrap the specified ListValueModel.
 	 */
 	public PropertyCollectionValueModelAdapter(PropertyValueModel<? extends E> valueHolder) {
 		super();

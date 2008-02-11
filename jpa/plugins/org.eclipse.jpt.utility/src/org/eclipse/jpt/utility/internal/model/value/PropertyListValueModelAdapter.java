@@ -109,10 +109,6 @@ public class PropertyListValueModelAdapter<E>
 		return this.value;
 	}
 
-	protected IndexOutOfBoundsException ioobe(int index, int size) {
-		return new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-	}
-
 	protected static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 	public Object[] toArray() {
 		return (this.value == null) ? EMPTY_OBJECT_ARRAY : new Object[] {this.value};
@@ -178,6 +174,10 @@ public class PropertyListValueModelAdapter<E>
 
 
 	// ********** behavior **********
+
+	protected IndexOutOfBoundsException ioobe(int index, int size) {
+		return new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+	}
 
 	protected void engageModel() {
 		this.valueHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.propertyChangeListener);

@@ -28,6 +28,7 @@ public class JptUtilityModelValueTests {
 		suite.addTestSuite(CollectionListValueModelAdapterTests.class);
 		suite.addTestSuite(CollectionPropertyValueModelAdapterTests.class);
 		suite.addTestSuite(CompositeCollectionValueModelTests.class);
+		suite.addTestSuite(CompositeListValueModelTests.class);
 		suite.addTestSuite(ExtendedListValueModelWrapperTests.class);
 		suite.addTestSuite(FilteringCollectionValueModelTests.class);
 		suite.addTestSuite(FilteringPropertyValueModelTests.class);
@@ -43,6 +44,7 @@ public class JptUtilityModelValueTests {
 		suite.addTestSuite(NullPropertyValueModelTests.class);
 		suite.addTestSuite(PropertyAspectAdapterTests.class);
 		suite.addTestSuite(PropertyCollectionValueModelAdapterTests.class);
+		suite.addTestSuite(PropertyListValueModelAdapterTests.class);
 		suite.addTestSuite(StaticCollectionValueModelTests.class);
 		suite.addTestSuite(StaticListValueModelTests.class);
 		suite.addTestSuite(SimpleCollectionValueModelTests.class);
