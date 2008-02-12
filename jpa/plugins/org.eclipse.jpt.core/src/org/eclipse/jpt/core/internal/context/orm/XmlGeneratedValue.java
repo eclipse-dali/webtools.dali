@@ -50,6 +50,12 @@ public class XmlGeneratedValue extends JpaContextNode implements IGeneratedValue
 		this.generatedValue.setStrategy(GenerationType.toOrmResourceModel(newSpecifiedStrategy));
 		firePropertyChanged(SPECIFIED_STRATEGY_PROPERTY, oldStrategy, newSpecifiedStrategy);
 	}
+	
+	protected void setSpecifiedStrategy_(GenerationType newSpecifiedStrategy) {
+		GenerationType oldStrategy = this.specifiedStrategy;
+		this.specifiedStrategy = newSpecifiedStrategy;
+		firePropertyChanged(SPECIFIED_STRATEGY_PROPERTY, oldStrategy, newSpecifiedStrategy);
+	}
 
 	public String getGenerator() {
 		return (this.getSpecifiedGenerator() == null) ? this.getDefaultGenerator() : this.getSpecifiedGenerator();
@@ -73,6 +79,12 @@ public class XmlGeneratedValue extends JpaContextNode implements IGeneratedValue
 		String oldGenerator = this.specifiedGenerator;
 		this.specifiedGenerator = newSpecifiedGenerator;
 		this.generatedValue.setGenerator(newSpecifiedGenerator);
+		firePropertyChanged(SPECIFIED_GENERATOR_PROPERTY, oldGenerator, newSpecifiedGenerator);
+	}
+
+	protected void setSpecifiedGenerator_(String newSpecifiedGenerator) {
+		String oldGenerator = this.specifiedGenerator;
+		this.specifiedGenerator = newSpecifiedGenerator;
 		firePropertyChanged(SPECIFIED_GENERATOR_PROPERTY, oldGenerator, newSpecifiedGenerator);
 	}
 
@@ -100,8 +112,8 @@ public class XmlGeneratedValue extends JpaContextNode implements IGeneratedValue
 
 	public void update(GeneratedValue generatedValue) {
 		this.generatedValue = generatedValue;
-		this.setSpecifiedStrategy(this.strategy(generatedValue));
-		this.setSpecifiedGenerator(this.generator(generatedValue));
+		this.setSpecifiedStrategy_(this.strategy(generatedValue));
+		this.setSpecifiedGenerator_(this.generator(generatedValue));
 		//TODO
 		this.setDefaultGenerator(null);
 	}
