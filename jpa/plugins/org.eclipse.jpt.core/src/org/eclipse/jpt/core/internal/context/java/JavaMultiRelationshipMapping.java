@@ -38,6 +38,12 @@ public abstract class JavaMultiRelationshipMapping<T extends RelationshipMapping
 
 	protected String orderBy;
 
+	protected boolean isNoOrdering;
+
+	protected boolean isPkOrdering;
+
+	protected boolean isCustomOrdering;
+	
 	//TODO should this be null if this is the non-owning side of the relationship??
 	protected final IJavaJoinTable joinTable; 
 
@@ -68,19 +74,16 @@ public abstract class JavaMultiRelationshipMapping<T extends RelationshipMapping
 	public void setOrderBy(String newOrderBy) {
 		String oldOrderBy = this.orderBy;
 		this.orderBy = newOrderBy;
-		if (oldOrderBy != newOrderBy) {
-			if (orderByResource() != null) {
-				if (newOrderBy != null) {
-					orderByResource().setValue(newOrderBy);
-				}
-				else {
-					removeOrderByResource();		
-				}
+		if (newOrderBy == null) {
+			if (orderByResource() != null) { 
+				removeOrderByResource();
 			}
-			else if (newOrderBy != null) {
+		}
+		else {
+			if (orderByResource() == null) {
 				addOrderByResource();
-				orderByResource().setValue(newOrderBy);
 			}
+			orderByResource().setValue(newOrderBy);
 		}
 		firePropertyChanged(IMultiRelationshipMapping.ORDER_BY_PROPERTY, oldOrderBy, newOrderBy);
 	}
@@ -104,30 +107,72 @@ public abstract class JavaMultiRelationshipMapping<T extends RelationshipMapping
 	}
 	
 	public boolean isNoOrdering() {
-		return getOrderBy() == null;
+		return this.isNoOrdering;
 	}
 
-	public void setNoOrdering() {
-		setOrderBy(null);
-	}
-
-	public boolean isOrderByPk() {
-		return orderByResource() != null && getOrderBy() == null;
-	}
-
-	public void setOrderByPk() {
-		if (getOrderBy() != null) {
-			orderByResource().setValue(null);
+	public void setNoOrdering(boolean newNoOrdering) {
+		boolean oldNoOrdering = this.isNoOrdering;
+		this.isNoOrdering = newNoOrdering;
+		if (newNoOrdering) {
+			if (orderByResource() != null) {
+				removeOrderByResource();
+			}
 		}
 		else {
-			addOrderByResource();
+			//??
 		}
+		firePropertyChanged(NO_ORDERING_PROPERTY, oldNoOrdering, newNoOrdering);
+	}
+	
+	protected void setNoOrdering_(boolean newNoOrdering) {
+		boolean oldNoOrdering = this.isNoOrdering;
+		this.isNoOrdering = newNoOrdering;
+		firePropertyChanged(NO_ORDERING_PROPERTY, oldNoOrdering, newNoOrdering);			
+	}
+
+	public boolean isPkOrdering() {
+		return this.isPkOrdering;
+	}
+	
+	public void setPkOrdering(boolean newPkOrdering) {
+		boolean oldPkOrdering = this.isPkOrdering;
+		this.isPkOrdering = newPkOrdering;
+		if (newPkOrdering) {
+			if (orderByResource() == null) {
+				addOrderByResource();
+			}
+			else {
+				orderByResource().setValue(null);
+			}
+		}
+		firePropertyChanged(PK_ORDERING_PROPERTY, oldPkOrdering, newPkOrdering);	
+	}
+	
+	protected void setPkOrdering_(boolean newPkOrdering) {
+		boolean oldPkOrdering = this.isPkOrdering;
+		this.isPkOrdering = newPkOrdering;
+		firePropertyChanged(PK_ORDERING_PROPERTY, oldPkOrdering, newPkOrdering);	
 	}
 
 	public boolean isCustomOrdering() {
-		return !StringTools.stringIsEmpty(getOrderBy());
+		return this.isCustomOrdering;
 	}
 
+	public void setCustomOrdering(boolean newCustomOrdering) {
+		boolean oldCustomOrdering = this.isCustomOrdering;
+		this.isCustomOrdering = newCustomOrdering;
+		if (newCustomOrdering) {
+			setOrderBy("");
+		}
+		firePropertyChanged(CUSTOM_ORDERING_PROPERTY, oldCustomOrdering, newCustomOrdering);
+	}
+	
+	protected void setCustomOrdering_(boolean newCustomOrdering) {
+		boolean oldCustomOrdering = this.isCustomOrdering;
+		this.isCustomOrdering = newCustomOrdering;
+		firePropertyChanged(CUSTOM_ORDERING_PROPERTY, oldCustomOrdering, newCustomOrdering);
+	}
+	
 	public FetchType getDefaultFetch() {
 		return IMultiRelationshipMapping.DEFAULT_FETCH_TYPE;
 	}
@@ -190,32 +235,6 @@ public abstract class JavaMultiRelationshipMapping<T extends RelationshipMapping
 //		}
 //	}
 
-//	private void updateOrderByFromJava(CompilationUnit astRoot) {
-//		String orderBy = this.orderByValueAdapter.getValue(astRoot);
-//		if (orderBy == null) {
-//			if (orderByAnnotation(astRoot) == null) {
-//				this.setNoOrdering();
-//			}
-//			else {
-//				this.setOrderByPk();
-//			}
-//		}
-//		else if ("".equals(orderBy)) {
-//			this.setOrderByPk();
-//		}
-//		else {
-//			this.setOrderBy(orderBy);
-//		}
-//	}
-//
-//	private Annotation orderByAnnotation(CompilationUnit astRoot) {
-//		return this.orderByAnnotationAdapter.getAnnotation(astRoot);
-//	}
-//
-//	private void updateMapKeyFromJava(CompilationUnit astRoot) {
-//		this.setMapKey(this.mapKeyNameAdapter.getValue(astRoot));
-//	}
-
 	@Override
 	protected String defaultTargetEntity(JavaPersistentAttributeResource persistentAttributeResource) {
 		if (!persistentAttributeResource.typeIsContainer()) {
@@ -275,10 +294,7 @@ public abstract class JavaMultiRelationshipMapping<T extends RelationshipMapping
 		if (mapKey != null) {
 			this.mapKey = mapKey.getName();
 		}
-		OrderBy orderBy = this.orderByResource();
-		if (orderBy != null) {
-			this.orderBy = orderBy.getValue();
-		}
+		this.initializeOrderBy(this.orderByResource());
 		this.joinTable.initializeFromResource(persistentAttributeResource);
 	}
 	
@@ -288,12 +304,33 @@ public abstract class JavaMultiRelationshipMapping<T extends RelationshipMapping
 		this.mappedBy = this.mappedBy(relationshipMapping);
 	}
 	
+	protected void initializeOrderBy(OrderBy orderBy) {
+		if (orderBy != null) {
+			this.orderBy = orderBy.getValue();
+			if (orderBy.getValue() == null) {
+				this.isPkOrdering = true;
+			}
+			else {
+				this.isCustomOrdering = true;
+			}
+		}
+		else {
+			this.isNoOrdering = true;
+		}
+	}
+	
 	@Override
 	public void update(JavaPersistentAttributeResource persistentAttributeResource) {
 		super.update(persistentAttributeResource);
 		this.updateMapKey(persistentAttributeResource);
-		this.updateOrderBy(persistentAttributeResource);
+		this.updateOrderBy(this.orderByResource());
 		this.joinTable.update(persistentAttributeResource);
+	}	
+	
+	@Override
+	protected void update(T relationshipMapping) {
+		super.update(relationshipMapping);
+		this.setMappedBy(this.mappedBy(relationshipMapping));
 	}
 	
 	protected void updateMapKey(JavaPersistentAttributeResource persistentAttributeResource) {
@@ -306,22 +343,27 @@ public abstract class JavaMultiRelationshipMapping<T extends RelationshipMapping
 		}
 	}
 	
-	protected void updateOrderBy(JavaPersistentAttributeResource persistentAttributeResource) {
-		OrderBy orderBy = this.orderByResource();
+	protected void updateOrderBy(OrderBy orderBy) {
 		if (orderBy != null) {
 			setOrderBy_(orderBy.getValue());
+			if (orderBy.getValue() == null) {
+				setPkOrdering_(true);
+				setCustomOrdering_(false);
+				setNoOrdering_(false);
+			}
+			else {
+				setPkOrdering_(false);
+				setCustomOrdering_(true);
+				setNoOrdering_(false);
+			}
 		}
 		else {
 			setOrderBy_(null);
+			setPkOrdering_(false);
+			setCustomOrdering_(false);
+			setNoOrdering_(true);
 		}
 	}
-	
-	@Override
-	protected void update(T relationshipMapping) {
-		super.update(relationshipMapping);
-		this.setMappedBy(this.mappedBy(relationshipMapping));
-	}
-	
 	protected abstract String mappedBy(T relationshipMapping);
 
 	//******** Validation ***********************************

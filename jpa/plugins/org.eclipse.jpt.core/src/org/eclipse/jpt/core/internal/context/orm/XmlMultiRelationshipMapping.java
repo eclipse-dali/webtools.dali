@@ -17,7 +17,6 @@ import org.eclipse.jpt.core.internal.context.base.IMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.orm.MapKey;
 import org.eclipse.jpt.core.internal.resource.orm.MultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
-import org.eclipse.jpt.utility.internal.StringTools;
 
 
 public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMapping>
@@ -28,6 +27,12 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 	protected String mappedBy;
 
 	protected String orderBy;//TODO change this to defaultOrderBy and specifiedOrderBy?
+
+	protected boolean isNoOrdering;
+
+	protected boolean isPkOrdering;
+
+	protected boolean isCustomOrdering;
 
 	protected final XmlJoinTable joinTable;
 
@@ -81,24 +86,60 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 	}
 
 	public boolean isNoOrdering() {
-		return getOrderBy() == null;
+		return this.isNoOrdering;
 	}
 
-	public void setNoOrdering() {
-		setOrderBy(null);
+	public void setNoOrdering(boolean newNoOrdering) {
+		boolean oldNoOrdering = this.isNoOrdering;
+		this.isNoOrdering = newNoOrdering;
+		if (newNoOrdering) {
+			attributeMapping().setOrderBy(null);
+		}
+		firePropertyChanged(NO_ORDERING_PROPERTY, oldNoOrdering, newNoOrdering);			
 	}
-
-	//hmm, this looks odd TODO for default orderBy for pk ordering
-	public boolean isOrderByPk() {
-		return "".equals(getOrderBy());
+	
+	protected void setNoOrdering_(boolean newNoOrdering) {
+		boolean oldNoOrdering = this.isNoOrdering;
+		this.isNoOrdering = newNoOrdering;
+		firePropertyChanged(NO_ORDERING_PROPERTY, oldNoOrdering, newNoOrdering);			
 	}
-
-	public void setOrderByPk() {
-		setOrderBy("");
+	
+	public boolean isPkOrdering() {
+		return this.isPkOrdering;
 	}
-
+	
+	public void setPkOrdering(boolean newPkOrdering) {
+		boolean oldPkOrdering = this.isPkOrdering;
+		this.isPkOrdering = newPkOrdering;
+		if (newPkOrdering) {
+			attributeMapping().setOrderBy("");
+		}
+		firePropertyChanged(PK_ORDERING_PROPERTY, oldPkOrdering, newPkOrdering);	
+	}
+	
+	protected void setPkOrdering_(boolean newPkOrdering) {
+		boolean oldPkOrdering = this.isPkOrdering;
+		this.isPkOrdering = newPkOrdering;
+		firePropertyChanged(PK_ORDERING_PROPERTY, oldPkOrdering, newPkOrdering);	
+	}
+	
 	public boolean isCustomOrdering() {
-		return !StringTools.stringIsEmpty(getOrderBy());
+		return this.isCustomOrdering;
+	}
+
+	public void setCustomOrdering(boolean newCustomOrdering) {
+		boolean oldCustomOrdering = this.isCustomOrdering;
+		this.isCustomOrdering = newCustomOrdering;
+		if (newCustomOrdering) {
+			setOrderBy("");
+		}
+		firePropertyChanged(CUSTOM_ORDERING_PROPERTY, oldCustomOrdering, newCustomOrdering);
+	}
+	
+	protected void setCustomOrdering_(boolean newCustomOrdering) {
+		boolean oldCustomOrdering = this.isCustomOrdering;
+		this.isCustomOrdering = newCustomOrdering;
+		firePropertyChanged(CUSTOM_ORDERING_PROPERTY, oldCustomOrdering, newCustomOrdering);
 	}
 
 //	public ITextRange mappedByTextRange() {
@@ -210,6 +251,12 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 		this.mappedBy = multiRelationshipMapping.getMappedBy();
 		this.mapKey = this.mapKey(multiRelationshipMapping);
 		this.orderBy = this.orderBy(multiRelationshipMapping);
+		if (this.orderBy == null) { 
+			this.isNoOrdering = true;
+		}
+		else {
+			this.isCustomOrdering = true;
+		}
 		this.joinTable.initialize(multiRelationshipMapping);
 	}
 	
@@ -219,14 +266,24 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 		this.setMappedBy_(multiRelationshipMapping.getMappedBy());
 		this.setMapKey_(this.mapKey(multiRelationshipMapping));
 		this.setOrderBy_(this.orderBy(multiRelationshipMapping));
+		if (getOrderBy() == null) { 
+			setNoOrdering_(true);
+			setPkOrdering_(false);
+			setCustomOrdering_(false);
+		}
+		else {
+			setNoOrdering_(false);
+			setPkOrdering_(false);
+			setCustomOrdering_(true);
+		}
 		this.joinTable.update(multiRelationshipMapping);
 	}
 	
 	protected String mapKey(T multiRelationshipMapping) {
-		return attributeMapping().getMapKey() == null ? null : attributeMapping().getMapKey().getName();
+		return multiRelationshipMapping.getMapKey() == null ? null : multiRelationshipMapping.getMapKey().getName();
 	}
 	
 	protected String orderBy(T multiRelationshipMapping) {
-		return attributeMapping().getOrderBy();
+		return multiRelationshipMapping.getOrderBy();
 	}
 }

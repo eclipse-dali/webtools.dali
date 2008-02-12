@@ -21,14 +21,16 @@ public interface IMultiRelationshipMapping extends INonOwningMapping
 
 
 	boolean isNoOrdering();
+	void setNoOrdering(boolean newNoOrdering);
+		String NO_ORDERING_PROPERTY = "noOrderingProperty";
 
-	void setNoOrdering();
-
-	boolean isOrderByPk();
-
-	void setOrderByPk();
+	boolean isPkOrdering();
+	void setPkOrdering(boolean newPkOrdering);
+	String PK_ORDERING_PROPERTY = "pkOrderingProperty";
 
 	boolean isCustomOrdering();
+	void setCustomOrdering(boolean newCustomOrdering);
+	String CUSTOM_ORDERING_PROPERTY = "customOrderingProperty";
 
 	
 	IJoinTable getJoinTable();

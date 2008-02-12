@@ -816,94 +816,84 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
 	}
 	
-	public void testIsNoOrdering() throws Exception {
+	public void testUpdateNoOrdering()  throws Exception {
 		createTestEntityWithOneToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		IOneToManyMapping oneToManyMapping = (IOneToManyMapping) persistentAttribute.getMapping();
-		
-		assertTrue(oneToManyMapping.isNoOrdering());
-
-		oneToManyMapping.setOrderBy("foo");
-		assertFalse(oneToManyMapping.isNoOrdering());
-		
-		oneToManyMapping.setOrderBy(null);
-		assertTrue(oneToManyMapping.isNoOrdering());
-	}
-	
-	public void testSetNoOrdering() throws Exception {
-		createTestEntityWithOneToManyMapping();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		IOneToManyMapping oneToManyMapping = (IOneToManyMapping) persistentAttribute.getMapping();
-		
-		assertTrue(oneToManyMapping.isNoOrdering());
-
-		oneToManyMapping.setOrderBy("foo");
-		assertFalse(oneToManyMapping.isNoOrdering());
-		
-		oneToManyMapping.setNoOrdering();
-		assertTrue(oneToManyMapping.isNoOrdering());
-		assertNull(oneToManyMapping.getOrderBy());
-	}
-
-	public void testIsCustomOrdering() throws Exception {
-		createTestEntityWithOneToManyMapping();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		IOneToManyMapping oneToManyMapping = (IOneToManyMapping) persistentAttribute.getMapping();
-				
-		assertFalse(oneToManyMapping.isCustomOrdering());
-
-		oneToManyMapping.setOrderBy("foo");
-		assertTrue(oneToManyMapping.isCustomOrdering());
-		
-		oneToManyMapping.setOrderBy(null);
-		assertFalse(oneToManyMapping.isCustomOrdering());
-	}
-
-	public void testIdOrderByPk() throws Exception {
-		createTestEntityWithOneToManyMapping();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		IOneToManyMapping oneToManyMapping = (IOneToManyMapping) persistentAttribute.getMapping();
-	
-		assertFalse(oneToManyMapping.isOrderByPk());
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 		
-		OrderBy orderBy = (OrderBy) attributeResource.addAnnotation(OrderBy.ANNOTATION_NAME);
-		assertTrue(oneToManyMapping.isOrderByPk());
-
-		orderBy.setValue("foo");
-		assertFalse(oneToManyMapping.isOrderByPk());
-		
-		attributeResource.removeAnnotation(OrderBy.ANNOTATION_NAME);
-		assertFalse(oneToManyMapping.isOrderByPk());
-	}
-	
-	public void testSetOrderByPk() throws Exception {
-		createTestEntityWithOneToManyMapping();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		IOneToManyMapping oneToManyMapping = (IOneToManyMapping) persistentAttribute.getMapping();
+		assertTrue(oneToManyMapping.isNoOrdering());
+		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
 				
-		assertFalse(oneToManyMapping.isOrderByPk());
-		assertNull(oneToManyMapping.getOrderBy());
-
-		oneToManyMapping.setOrderByPk();
+		//set orderBy in the resource model, verify context model updated
+		attributeResource.addAnnotation(OrderBy.ANNOTATION_NAME);
+		assertFalse(oneToManyMapping.isNoOrdering());
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
-	
 		OrderBy orderBy = (OrderBy) attributeResource.annotation(OrderBy.ANNOTATION_NAME);
-		assertNotNull(orderBy);
-		assertNull(orderBy.getValue());
+		orderBy.setValue("newOrderBy");
+		assertFalse(oneToManyMapping.isNoOrdering());
+	
+		//set orderBy to null in the resource model
+		attributeResource.removeAnnotation(OrderBy.ANNOTATION_NAME);
+		assertTrue(oneToManyMapping.isNoOrdering());
+		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+	}
+	
+	public void testUpdatePkOrdering()  throws Exception {
+		createTestEntityWithOneToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IOneToManyMapping oneToManyMapping = (IOneToManyMapping) persistentAttribute.getMapping();
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		
+		assertFalse(oneToManyMapping.isPkOrdering());
+		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+				
+		//set orderBy in the resource model, verify context model updated
+		attributeResource.addAnnotation(OrderBy.ANNOTATION_NAME);
+		assertTrue(oneToManyMapping.isPkOrdering());
+		
+		OrderBy orderBy = (OrderBy) attributeResource.annotation(OrderBy.ANNOTATION_NAME);
+		orderBy.setValue("newOrderBy");
+		assertFalse(oneToManyMapping.isPkOrdering());
+	
+		//set orderBy to null in the resource model
+		attributeResource.removeAnnotation(OrderBy.ANNOTATION_NAME);
+		assertFalse(oneToManyMapping.isPkOrdering());
+		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+	}
+
+	public void testUpdateCustomOrdering()  throws Exception {
+		createTestEntityWithOneToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IOneToManyMapping oneToManyMapping = (IOneToManyMapping) persistentAttribute.getMapping();
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		
+		assertFalse(oneToManyMapping.isCustomOrdering());
+		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+				
+		//set orderBy in the resource model, verify context model updated
+		attributeResource.addAnnotation(OrderBy.ANNOTATION_NAME);
+		assertFalse(oneToManyMapping.isCustomOrdering());
+		
+		OrderBy orderBy = (OrderBy) attributeResource.annotation(OrderBy.ANNOTATION_NAME);
+		orderBy.setValue("newOrderBy");
+		assertTrue(oneToManyMapping.isCustomOrdering());
+	
+		//set orderBy to null in the resource model
+		attributeResource.removeAnnotation(OrderBy.ANNOTATION_NAME);
+		assertFalse(oneToManyMapping.isCustomOrdering());
+		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
 	}
 }

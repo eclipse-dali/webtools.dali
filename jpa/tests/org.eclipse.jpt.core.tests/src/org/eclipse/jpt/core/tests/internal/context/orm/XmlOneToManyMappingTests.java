@@ -324,7 +324,7 @@ public class XmlOneToManyMappingTests extends ContextModelTestCase
 		xmlOneToManyMapping.setOrderBy("foo");
 		assertFalse(xmlOneToManyMapping.isNoOrdering());
 		
-		xmlOneToManyMapping.setNoOrdering();
+		xmlOneToManyMapping.setNoOrdering(true);
 		assertTrue(xmlOneToManyMapping.isNoOrdering());
 		assertNull(xmlOneToManyMapping.getOrderBy());
 	}

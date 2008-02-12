@@ -320,7 +320,7 @@ public class XmlManyToManyMappingTests extends ContextModelTestCase
 		xmlManyToManyMapping.setOrderBy("foo");
 		assertFalse(xmlManyToManyMapping.isNoOrdering());
 		
-		xmlManyToManyMapping.setNoOrdering();
+		xmlManyToManyMapping.setNoOrdering(true);
 		assertTrue(xmlManyToManyMapping.isNoOrdering());
 		assertNull(xmlManyToManyMapping.getOrderBy());
 	}

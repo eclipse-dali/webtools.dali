@@ -813,98 +813,111 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
 	}
 	
-	public void testIsNoOrdering() throws Exception {
+	public void testUpdateNoOrdering()  throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		IManyToManyMapping manyToManyMapping = (IManyToManyMapping) persistentAttribute.getMapping();
-		
-		assertTrue(manyToManyMapping.isNoOrdering());
-
-		manyToManyMapping.setOrderBy("foo");
-		assertFalse(manyToManyMapping.isNoOrdering());
-		
-		manyToManyMapping.setOrderBy(null);
-		assertTrue(manyToManyMapping.isNoOrdering());
-	}
-	
-	public void testSetNoOrdering() throws Exception {
-		createTestEntityWithManyToManyMapping();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		IManyToManyMapping manyToManyMapping = (IManyToManyMapping) persistentAttribute.getMapping();
-		
-		assertTrue(manyToManyMapping.isNoOrdering());
-
-		manyToManyMapping.setOrderBy("foo");
-		assertFalse(manyToManyMapping.isNoOrdering());
-		
-		manyToManyMapping.setNoOrdering();
-		assertTrue(manyToManyMapping.isNoOrdering());
-		assertNull(manyToManyMapping.getOrderBy());
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		
+		assertTrue(manyToManyMapping.isNoOrdering());
+		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+				
+		//set orderBy in the resource model, verify context model updated
+		attributeResource.addAnnotation(OrderBy.ANNOTATION_NAME);
+		assertFalse(manyToManyMapping.isNoOrdering());
+		
+		OrderBy orderBy = (OrderBy) attributeResource.annotation(OrderBy.ANNOTATION_NAME);
+		orderBy.setValue("newOrderBy");
+		assertFalse(manyToManyMapping.isNoOrdering());
+	
+		//set orderBy to null in the resource model
+		attributeResource.removeAnnotation(OrderBy.ANNOTATION_NAME);
+		assertTrue(manyToManyMapping.isNoOrdering());
+		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+	}
+	
+	public void testModifyNoOrdering() throws Exception {
+		createTestEntityWithManyToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IManyToManyMapping manyToManyMapping = (IManyToManyMapping) persistentAttribute.getMapping();
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		
+		assertTrue(manyToManyMapping.isNoOrdering());
+		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+				
+//		manyToManyMapping.setNoOrdering(false); //this does nothing
+//		//set mappedBy in the context model, verify resource model updated
+//		manyToManyMapping.setOrderBy("newOrderBy");
+//		assertEquals("newOrderBy", manyToManyMapping.getOrderBy());
+//		OrderBy orderBy = (OrderBy) attributeResource.annotation(OrderBy.ANNOTATION_NAME);
+//		assertEquals("newOrderBy", orderBy.getValue());
+//	
+//		//set mappedBy to null in the context model
+//		manyToManyMapping.setOrderBy(null);
+//		assertNull(manyToManyMapping.getOrderBy());
+//		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));		
+	}
+	
+	public void testUpdatePkOrdering() throws Exception {
+		createTestEntityWithManyToManyMapping();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		IManyToManyMapping manyToManyMapping = (IManyToManyMapping) persistentAttribute.getMapping();
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		
+		assertFalse(manyToManyMapping.isPkOrdering());
+		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
+				
+		//set orderBy in the resource model, verify context model updated
+		attributeResource.addAnnotation(OrderBy.ANNOTATION_NAME);
+		assertTrue(manyToManyMapping.isPkOrdering());
+		
+		OrderBy orderBy = (OrderBy) attributeResource.annotation(OrderBy.ANNOTATION_NAME);
+		orderBy.setValue("newOrderBy");
+		assertFalse(manyToManyMapping.isPkOrdering());
+	
+		//set orderBy to null in the resource model
+		attributeResource.removeAnnotation(OrderBy.ANNOTATION_NAME);
+		assertFalse(manyToManyMapping.isPkOrdering());
 		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
 	}
 
-	public void testIsCustomOrdering() throws Exception {
+	public void testUpdateCustomOrdering()  throws Exception {
 		createTestEntityWithManyToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		IManyToManyMapping manyToManyMapping = (IManyToManyMapping) persistentAttribute.getMapping();
-				
-		assertFalse(manyToManyMapping.isCustomOrdering());
-
-		manyToManyMapping.setOrderBy("foo");
-		assertTrue(manyToManyMapping.isCustomOrdering());
-		
-		manyToManyMapping.setOrderBy(null);
-		assertFalse(manyToManyMapping.isCustomOrdering());
-	}
-	
-	public void testIdOrderByPk() throws Exception {
-		createTestEntityWithManyToManyMapping();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		IManyToManyMapping manyToManyMapping = (IManyToManyMapping) persistentAttribute.getMapping();
-	
-		assertFalse(manyToManyMapping.isOrderByPk());
 		
 		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
 		
-		OrderBy orderBy = (OrderBy) attributeResource.addAnnotation(OrderBy.ANNOTATION_NAME);
-		assertTrue(manyToManyMapping.isOrderByPk());
-
-		orderBy.setValue("foo");
-		assertFalse(manyToManyMapping.isOrderByPk());
-		
-		attributeResource.removeAnnotation(OrderBy.ANNOTATION_NAME);
-		assertFalse(manyToManyMapping.isOrderByPk());
-	}
-	
-	public void testSetOrderByPk() throws Exception {
-		createTestEntityWithManyToManyMapping();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
-		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		IManyToManyMapping manyToManyMapping = (IManyToManyMapping) persistentAttribute.getMapping();
+		assertFalse(manyToManyMapping.isCustomOrdering());
+		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
 				
-		assertFalse(manyToManyMapping.isOrderByPk());
-		assertNull(manyToManyMapping.getOrderBy());
-
-		manyToManyMapping.setOrderByPk();
+		//set orderBy in the resource model, verify context model updated
+		attributeResource.addAnnotation(OrderBy.ANNOTATION_NAME);
+		assertFalse(manyToManyMapping.isCustomOrdering());
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
-	
 		OrderBy orderBy = (OrderBy) attributeResource.annotation(OrderBy.ANNOTATION_NAME);
-		assertNotNull(orderBy);
-		assertNull(orderBy.getValue());
+		orderBy.setValue("newOrderBy");
+		assertTrue(manyToManyMapping.isCustomOrdering());
+	
+		//set orderBy to null in the resource model
+		attributeResource.removeAnnotation(OrderBy.ANNOTATION_NAME);
+		assertFalse(manyToManyMapping.isCustomOrdering());
+		assertNull(attributeResource.annotation(OrderBy.ANNOTATION_NAME));
 	}
+
 }

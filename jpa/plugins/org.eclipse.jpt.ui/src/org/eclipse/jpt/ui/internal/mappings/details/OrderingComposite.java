@@ -88,60 +88,12 @@ public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMappin
 		propertyNames.add(IMultiRelationshipMapping.ORDER_BY_PROPERTY);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildCustomOrderingHolder() {
-		return new PropertyAspectAdapter<IMultiRelationshipMapping, Boolean>(getSubjectHolder(), IMultiRelationshipMapping.ORDER_BY_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return subject.isCustomOrdering();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value) {
-					subject.setOrderBy("");
-				}
-			}
-		};
-	}
-
 	private ModifyListener buildCustomTextModifyListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				if (!isPopulating()) {
 					Text text = (Text) e.widget;
 					valueChanged(text.getText());
-				}
-			}
-		};
-	}
-
-	private WritablePropertyValueModel<Boolean> buildNoOrderingHolder() {
-		return new PropertyAspectAdapter<IMultiRelationshipMapping, Boolean>(getSubjectHolder(), IMultiRelationshipMapping.ORDER_BY_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return subject.isNoOrdering();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value) {
-					subject.setNoOrdering();
-				}
-			}
-		};
-	}
-
-	private WritablePropertyValueModel<Boolean> buildPrimaryKeyOrderingHolder() {
-		return new PropertyAspectAdapter<IMultiRelationshipMapping, Boolean>(getSubjectHolder(), IMultiRelationshipMapping.ORDER_BY_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return subject.isOrderByPk();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				if (value) {
-					subject.setOrderByPk();
 				}
 			}
 		};
@@ -206,9 +158,50 @@ public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMappin
 		new ControlEnabler(buildCustomOrderingHolder(), text);
 	}
 
+	private WritablePropertyValueModel<Boolean> buildCustomOrderingHolder() {
+		return new PropertyAspectAdapter<IMultiRelationshipMapping, Boolean>(getSubjectHolder(), IMultiRelationshipMapping.CUSTOM_ORDERING_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return Boolean.valueOf(subject.isCustomOrdering());
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				subject.setCustomOrdering(value.booleanValue());
+			}
+		};
+	}
+
+	private WritablePropertyValueModel<Boolean> buildNoOrderingHolder() {
+		return new PropertyAspectAdapter<IMultiRelationshipMapping, Boolean>(getSubjectHolder(), IMultiRelationshipMapping.NO_ORDERING_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return Boolean.valueOf(subject.isNoOrdering());
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				subject.setNoOrdering(value.booleanValue());
+			}
+		};
+	}
+
+	private WritablePropertyValueModel<Boolean> buildPrimaryKeyOrderingHolder() {
+		return new PropertyAspectAdapter<IMultiRelationshipMapping, Boolean>(getSubjectHolder(), IMultiRelationshipMapping.PK_ORDERING_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return Boolean.valueOf(subject.isPkOrdering());
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				subject.setPkOrdering(value.booleanValue());
+			}
+		};
+	}
 	private void populateCustomOrdering() {
 
-		if ((subject() != null) && subject().isCustomOrdering()) {
+		if ((subject() != null) && subject().getOrderBy() != null) {
 			customOrderingText.setText(subject().getOrderBy());
 		}
 		else  {

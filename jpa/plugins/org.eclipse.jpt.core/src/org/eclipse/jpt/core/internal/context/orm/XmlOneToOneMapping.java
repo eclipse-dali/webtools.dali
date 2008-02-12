@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
@@ -101,12 +100,6 @@ public class XmlOneToOneMapping extends XmlSingleRelationshipMapping<OneToOne>
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}
-	}
-	
-	@Override
-	public Iterator<String> candidateMappedByAttributeNames() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	@Override
