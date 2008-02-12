@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.XmlTypeMapping;
@@ -25,8 +26,8 @@ import org.eclipse.jpt.ui.internal.java.mappings.properties.EntityUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.MappedSuperclassUiProvider;
 import org.eclipse.jpt.ui.internal.xml.JptUiXmlMessages;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -69,10 +70,10 @@ public class XmlPersistentTypeDetailsPage extends PersistentTypeDetailsPage<XmlP
 	}
 
 	private PropertyValueModel<XmlTypeMapping<? extends TypeMapping>> buildMappingHolder() {
-		return new TransformationPropertyValueModel<XmlPersistentType, XmlTypeMapping<? extends TypeMapping>>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<XmlPersistentType,  XmlTypeMapping<? extends TypeMapping>>(getSubjectHolder(), IPersistentType.MAPPING_PROPERTY) {
 			@Override
-			protected XmlTypeMapping<? extends TypeMapping> transform_(XmlPersistentType value) {
-				return value.getMapping();
+			protected XmlTypeMapping<? extends TypeMapping> buildValue_() {
+				return subject.getMapping();
 			}
 		};
 	}
