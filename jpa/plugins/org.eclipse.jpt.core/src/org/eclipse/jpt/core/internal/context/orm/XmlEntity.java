@@ -29,6 +29,7 @@ import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
@@ -1296,7 +1297,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return xmlAttributeOverride;
 	}
 
-	protected IOverride.Owner createAttributeOverrideOwner() {
+	protected IAttributeOverride.Owner createAttributeOverrideOwner() {
 		return new AttributeOverrideOwner();
 	}
 
@@ -1325,7 +1326,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		return xmlAssociationOverride;
 	}
 
-	protected IOverride.Owner createAssociationOverrideOwner() {
+	protected IAssociationOverride.Owner createAssociationOverrideOwner() {
 		return new AssociationOverrideOwner();
 	}
 	
@@ -1515,7 +1516,7 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		}
 	}
 	
-	class AttributeOverrideOwner implements IOverride.Owner {
+	class AttributeOverrideOwner implements IAttributeOverride.Owner {
 
 		public IColumnMapping columnMapping(String attributeName) {
 			if (attributeName == null) {
@@ -1547,17 +1548,17 @@ public class XmlEntity extends XmlTypeMapping<Entity> implements IEntity
 		
 	}
 
-	class AssociationOverrideOwner implements IOverride.Owner {
+	class AssociationOverrideOwner implements IAssociationOverride.Owner {
 
-		public IColumnMapping columnMapping(String attributeName) {
+		public IRelationshipMapping relationshipMapping(String attributeName) {
 			if (attributeName == null) {
 				return null;
 			}
 			for (Iterator<IPersistentAttribute> stream = persistentType().allAttributes(); stream.hasNext();) {
 				IPersistentAttribute persAttribute = stream.next();
 				if (attributeName.equals(persAttribute.getName())) {
-					if (persAttribute.getMapping() instanceof IColumnMapping) {
-						return (IColumnMapping) persAttribute.getMapping();
+					if (persAttribute.getMapping() instanceof IRelationshipMapping) {
+						return (IRelationshipMapping) persAttribute.getMapping();
 					}
 				}
 			}

@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.java.JoinColumn;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
@@ -158,14 +159,22 @@ public class JavaJoinColumn extends AbstractJavaColumn<JoinColumn> implements IJ
 	
 	@Override
 	protected String defaultName() {
-		if (!owner().relationshipMapping().isRelationshipOwner()) {
+		IRelationshipMapping relationshipMapping = owner().relationshipMapping();
+		if (relationshipMapping == null) {
+			return null;
+		}
+		if (!relationshipMapping.isRelationshipOwner()) {
 			return null;
 		}
 		return buildDefaultName();
 	}
 	
 	protected String defaultReferencedColumnName() {
-		if (!owner().relationshipMapping().isRelationshipOwner()) {
+		IRelationshipMapping relationshipMapping = owner().relationshipMapping();
+		if (relationshipMapping == null) {
+			return null;
+		}
+		if (!relationshipMapping.isRelationshipOwner()) {
 			return null;
 		}
 		return buildDefaultReferencedColumnName();
@@ -173,7 +182,11 @@ public class JavaJoinColumn extends AbstractJavaColumn<JoinColumn> implements IJ
 	
 	@Override
 	protected String defaultTable() {
-		if (!owner().relationshipMapping().isRelationshipOwner()) {
+		IRelationshipMapping relationshipMapping = owner().relationshipMapping();
+		if (relationshipMapping == null) {
+			return null;
+		}
+		if (!relationshipMapping.isRelationshipOwner()) {
 			return null;
 		}
 		return super.defaultTable();

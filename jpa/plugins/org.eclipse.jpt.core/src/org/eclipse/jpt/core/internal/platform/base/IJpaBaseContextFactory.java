@@ -12,13 +12,14 @@ package org.eclipse.jpt.core.internal.platform.base;
 
 import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.IAssociationOverride;
+import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.INamedColumn;
-import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.context.base.IPersistence;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
@@ -158,9 +159,9 @@ public interface IJpaBaseContextFactory extends IJpaFactory
 	
 	IJavaPrimaryKeyJoinColumn createJavaPrimaryKeyJoinColumn(IJavaJpaContextNode parent, IAbstractJoinColumn.Owner owner);
 	
-	IJavaAttributeOverride createJavaAttributeOverride(IJavaJpaContextNode parent, IOverride.Owner owner);
+	IJavaAttributeOverride createJavaAttributeOverride(IJavaJpaContextNode parent, IAttributeOverride.Owner owner);
 	
-	IJavaAssociationOverride createJavaAssociationOverride(IJavaJpaContextNode parent, IOverride.Owner owner);
+	IJavaAssociationOverride createJavaAssociationOverride(IJavaJpaContextNode parent, IAssociationOverride.Owner owner);
 
 	IJavaNamedQuery createJavaNamedQuery(IJavaJpaContextNode parent);
 	

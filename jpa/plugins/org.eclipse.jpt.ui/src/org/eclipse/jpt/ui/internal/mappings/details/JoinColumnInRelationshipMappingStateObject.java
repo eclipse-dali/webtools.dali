@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.ISingleRelationshipMapping;
+import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 
@@ -21,7 +21,7 @@ import org.eclipse.jpt.db.internal.Table;
  */
 public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateObject
 {
-	private ISingleRelationshipMapping relationshipMapping;
+	private IRelationshipMapping relationshipMapping;
 
 	/**
 	 * Creates a new <code>JoinColumnInRelationshipMappingStateObject</code>.
@@ -31,7 +31,7 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 	 */
 	public JoinColumnInRelationshipMappingStateObject(IJoinColumn joinColumn) {
 		super(joinColumn);
-		initialize((ISingleRelationshipMapping) joinColumn.parent());
+		initialize(joinColumn.owner().relationshipMapping());
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 	 *
 	 * @param relationshipMapping
 	 */
-	public JoinColumnInRelationshipMappingStateObject(ISingleRelationshipMapping relationshipMapping) {
+	public JoinColumnInRelationshipMappingStateObject(IRelationshipMapping relationshipMapping) {
 		super();
 		initialize(relationshipMapping);
 	}
@@ -87,7 +87,7 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 	 *
 	 * @return
 	 */
-	public ISingleRelationshipMapping getRelationshipMapping() {
+	public IRelationshipMapping getRelationshipMapping() {
 		return relationshipMapping;
 	}
 
@@ -99,7 +99,7 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 		return relationshipMapping.typeMapping().dbSchema();
 	}
 
-	private void initialize(ISingleRelationshipMapping relationshipMapping) {
+	private void initialize(IRelationshipMapping relationshipMapping) {
 		this.relationshipMapping = relationshipMapping;
 
 		// If the table isn't set or is the default table, then

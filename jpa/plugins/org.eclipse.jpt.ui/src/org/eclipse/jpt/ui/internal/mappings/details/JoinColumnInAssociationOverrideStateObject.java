@@ -99,6 +99,6 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 	}
 
 	public ITypeMapping typeMapping() {
-		return null; //TODO (ITypeMapping) associationOverride.parent();
+		return this.associationOverride.owner().typeMapping();
 	}
 }

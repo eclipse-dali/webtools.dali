@@ -31,11 +31,12 @@ import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Transformer;
+import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
@@ -268,21 +269,71 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		};
 	}
 
+	private ListValueModel<IOverride> buildOverridesListModel() {
+		return new ItemPropertyListValueModelAdapter<IOverride>(buildOverridesListHolder(), IOverride.NAME_PROPERTY);
+	}	
+
 	private ListValueModel<IOverride> buildOverridesListHolder() {
-		// TODO: Use an aggregate/composite ListValueModel
-		return new ListAspectAdapter<IEntity, IOverride>(
-			getSubjectHolder(),
-			IEntity.DEFAULT_ASSOCIATION_OVERRIDES_LIST,
-			IEntity.DEFAULT_ATTRIBUTE_OVERRIDES_LIST,
-			IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST,
-			IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST)
-		{
+		java.util.List<ListValueModel<? extends IOverride>> list = new ArrayList<ListValueModel<? extends IOverride>>();
+		list.add(buildSpecifiedAttributeOverridesListHolder());
+		list.add(buildDefaultAttributeOverridesListHolder());
+		list.add(buildSpecifiedAssociationOverridesListHolder());
+		list.add(buildDefaultAssociationOverridesListHolder());
+		return new CompositeListValueModel<ListValueModel<? extends IOverride>, IOverride>(list);
+	}
+	
+	private ListValueModel<IAttributeOverride> buildSpecifiedAttributeOverridesListHolder() {
+		return new ListAspectAdapter<IEntity, IAttributeOverride>(getSubjectHolder(), IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST) {
 			@Override
-			protected ListIterator<IOverride> listIterator_() {
-				ArrayList<IOverride> list = new ArrayList<IOverride>();
-				CollectionTools.addAll(list, subject.associationOverrides());
-				CollectionTools.addAll(list, subject.attributeOverrides());
-				return list.listIterator();
+			protected ListIterator<IAttributeOverride> listIterator_() {
+				return subject.specifiedAttributeOverrides();
+			}
+			
+			@Override
+			protected int size_() {
+				return subject.specifiedAttributeOverridesSize();
+			}
+		};
+	}
+	
+	private ListValueModel<IAttributeOverride> buildDefaultAttributeOverridesListHolder() {
+		return new ListAspectAdapter<IEntity, IAttributeOverride>(getSubjectHolder(), IEntity.DEFAULT_ATTRIBUTE_OVERRIDES_LIST) {
+			@Override
+			protected ListIterator<IAttributeOverride> listIterator_() {
+				return subject.defaultAttributeOverrides();
+			}
+			
+			@Override
+			protected int size_() {
+				return subject.defaultAttributeOverridesSize();
+			}
+		};
+	}
+
+	private ListValueModel<IAssociationOverride> buildSpecifiedAssociationOverridesListHolder() {
+		return new ListAspectAdapter<IEntity, IAssociationOverride>(getSubjectHolder(), IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST) {
+			@Override
+			protected ListIterator<IAssociationOverride> listIterator_() {
+				return subject.specifiedAssociationOverrides();
+			}
+			
+			@Override
+			protected int size_() {
+				return subject.specifiedAssociationOverridesSize();
+			}
+		};
+	}
+	
+	private ListValueModel<IAssociationOverride> buildDefaultAssociationOverridesListHolder() {
+		return new ListAspectAdapter<IEntity, IAssociationOverride>(getSubjectHolder(), IEntity.DEFAULT_ASSOCIATION_OVERRIDES_LIST) {
+			@Override
+			protected ListIterator<IAssociationOverride> listIterator_() {
+				return subject.defaultAssociationOverrides();
+			}
+			
+			@Override
+			protected int size_() {
+				return subject.defaultAssociationOverridesSize();
 			}
 		};
 	}
@@ -306,12 +357,6 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 				return null;
 			}
 		};
-	}
-
-	private ListValueModel<IOverride> buildSortedOverridesListHolder() {
-		return new SortedListValueModelAdapter<IOverride>(
-			buildOverridesListHolder()
-		);
 	}
 
 	private void editJoinColumn(IJoinColumn joinColumn) {
@@ -354,7 +399,7 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 			this,
 			buildSubPane(container, 8),
 			buildOverridesAdapter(),
-			buildSortedOverridesListHolder(),
+			buildOverridesListModel(),
 			overrideHolder,
 			buildOverrideLabelProvider(),
 			IJpaHelpContextIds.ENTITY_ATTRIBUTE_OVERRIDES

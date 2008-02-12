@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IJoinTable;
-import org.eclipse.jpt.core.internal.context.base.IMultiRelationshipMapping;
+import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -128,8 +128,8 @@ public class InverseJoinColumnDialogPane extends AbstractJoinColumnDialogPane<Jo
 		}
 
 		// Populate the combo with the column names
-		IMultiRelationshipMapping multiRelationshipMapping = subject.relationshipMapping();
-		IEntity targetEntity = multiRelationshipMapping.getResolvedTargetEntity();
+		IRelationshipMapping relationshipMapping = subject.relationshipMapping();
+		IEntity targetEntity = relationshipMapping.getResolvedTargetEntity();
 
 		if (targetEntity != null) {
 			Table referencedDbTable = targetEntity.primaryDbTable();

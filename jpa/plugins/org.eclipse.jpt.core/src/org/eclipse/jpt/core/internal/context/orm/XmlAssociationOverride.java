@@ -39,18 +39,22 @@ public class XmlAssociationOverride extends JpaContextNode
 
 	protected final List<XmlJoinColumn> defaultJoinColumns;
 
-	private final Owner owner;
+	private final IAssociationOverride.Owner owner;
 
 	protected AssociationOverride associationOverride;
 
 
-	protected XmlAssociationOverride(IJpaContextNode parent, IOverride.Owner owner) {
+	protected XmlAssociationOverride(IJpaContextNode parent, IAssociationOverride.Owner owner) {
 		super(parent);
 		this.owner = owner;
 		this.specifiedJoinColumns = new ArrayList<XmlJoinColumn>();
 		this.defaultJoinColumns = new ArrayList<XmlJoinColumn>();
 	}
 	
+	public Owner owner() {
+		return this.owner;
+	}
+
 	// ********** IAssociationOverride implementation **********
 
 	public String getName() {
@@ -127,7 +131,7 @@ public class XmlAssociationOverride extends JpaContextNode
 	}	
 
 	public boolean isVirtual() {
-		return this.owner.isVirtual(this);
+		return owner().isVirtual(this);
 	}
 	
 	
@@ -193,7 +197,8 @@ public class XmlAssociationOverride extends JpaContextNode
 		}
 		
 		public IEntity targetEntity() {
-			return relationshipMapping().getResolvedTargetEntity();
+			IRelationshipMapping relationshipMapping = relationshipMapping();
+			return relationshipMapping == null ? null : relationshipMapping.getResolvedTargetEntity();
 		}
 
 		public String attributeName() {
@@ -201,8 +206,7 @@ public class XmlAssociationOverride extends JpaContextNode
 		}
 
 		public IRelationshipMapping relationshipMapping() {
-			//TODO this isn't going to work, classCastException
-			return (IRelationshipMapping) XmlAssociationOverride.this.owner.columnMapping(XmlAssociationOverride.this.getName());
+			return XmlAssociationOverride.this.owner.relationshipMapping(XmlAssociationOverride.this.getName());
 		}
 
 		public boolean tableNameIsInvalid(String tableName) {
@@ -231,7 +235,7 @@ public class XmlAssociationOverride extends JpaContextNode
 
 		public Table dbReferencedColumnTable() {
 			IEntity targetEntity = targetEntity();
-			return (targetEntity == null) ? null : targetEntity().primaryDbTable();
+			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
 		}
 		
 		public boolean isVirtual(IAbstractJoinColumn joinColumn) {

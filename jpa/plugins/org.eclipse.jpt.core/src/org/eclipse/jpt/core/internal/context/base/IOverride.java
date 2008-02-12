@@ -28,10 +28,17 @@ public interface IOverride extends IJpaContextNode
 
 	interface Owner
 	{
+		/**
+		 * Return the type mapping that this override is contained in
+		 * @return
+		 */
 		ITypeMapping typeMapping();
 
-		IColumnMapping columnMapping(String attributeName);
-
+		/**
+		 * Teturn whether the given override is virtual. virtual means that
+		 * it is not specified, but defaulted in from the mapped superclass or
+		 * embeddable.
+		 */
 		boolean isVirtual(IOverride override);
 
 		ITextRange validationTextRange(CompilationUnit astRoot);

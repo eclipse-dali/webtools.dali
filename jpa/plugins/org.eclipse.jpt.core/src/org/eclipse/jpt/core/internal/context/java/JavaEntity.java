@@ -31,6 +31,7 @@ import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.core.internal.context.base.ITable;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
@@ -761,7 +762,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return attributeOverride;
 	}
 	
-	protected IOverride.Owner createAttributeOverrideOwner() {
+	protected IAttributeOverride.Owner createAttributeOverrideOwner() {
 		return new AttributeOverrideOwner();
 	}
 	
@@ -881,7 +882,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		return associationOverride;
 	}
 	
-	protected IOverride.Owner createAssociationOverrideOwner() {
+	protected IAssociationOverride.Owner createAssociationOverrideOwner() {
 		return new AssociationOverrideOwner();
 	}
 	
@@ -895,6 +896,11 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	
 	public void removeSpecifiedAssociationOverride(int index) {
 		IJavaAssociationOverride removedAssociationOverride = this.specifiedAssociationOverrides.remove(index);
+		if (CollectionTools.contains(allOverridableAssociationNames(), removedAssociationOverride.getName())) {
+			if (!containsSpecifiedAssociationOverride(removedAssociationOverride.getName())) {
+				this.defaultAssociationOverrides.add(createAssociationOverride(new NullAssociationOverride(this.persistentTypeResource, removedAssociationOverride.getName())));
+			}
+		}
 		this.persistentTypeResource.removeAnnotation(index, AssociationOverride.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
 		fireItemRemoved(IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, removedAssociationOverride);
 	}
@@ -1724,7 +1730,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		}
 	}
 	
-	class AttributeOverrideOwner implements IOverride.Owner {
+	class AttributeOverrideOwner implements IAttributeOverride.Owner {
 
 		public IColumnMapping columnMapping(String attributeName) {
 			if (attributeName == null) {
@@ -1756,17 +1762,17 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		
 	}
 
-	class AssociationOverrideOwner implements IOverride.Owner {
+	class AssociationOverrideOwner implements IAssociationOverride.Owner {
 
-		public IColumnMapping columnMapping(String attributeName) {
+		public IRelationshipMapping relationshipMapping(String attributeName) {
 			if (attributeName == null) {
 				return null;
 			}
 			for (Iterator<IPersistentAttribute> stream = persistentType().allAttributes(); stream.hasNext();) {
 				IPersistentAttribute persAttribute = stream.next();
 				if (attributeName.equals(persAttribute.getName())) {
-					if (persAttribute.getMapping() instanceof IColumnMapping) {
-						return (IColumnMapping) persAttribute.getMapping();
+					if (persAttribute.getMapping() instanceof IRelationshipMapping) {
+						return (IRelationshipMapping) persAttribute.getMapping();
 					}
 				}
 			}

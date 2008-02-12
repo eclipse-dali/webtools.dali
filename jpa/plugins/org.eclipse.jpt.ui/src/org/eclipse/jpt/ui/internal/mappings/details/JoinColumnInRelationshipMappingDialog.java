@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.ISingleRelationshipMapping;
+import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class JoinColumnInRelationshipMappingDialog extends JoinColumnDialog<JoinColumnInRelationshipMappingStateObject> {
 
-	private ISingleRelationshipMapping relationshipMapping;
+	private IRelationshipMapping relationshipMapping;
 
 	/**
 	 * Creates a new <code>AbstractJoinColumnDialog</code>.
@@ -44,7 +44,7 @@ public class JoinColumnInRelationshipMappingDialog extends JoinColumnDialog<Join
 	 * @param relationshipMapping
 	 */
 	JoinColumnInRelationshipMappingDialog(Shell parent,
-	                                      ISingleRelationshipMapping relationshipMapping) {
+		IRelationshipMapping relationshipMapping) {
 
 		super(parent);
 		this.relationshipMapping = relationshipMapping;

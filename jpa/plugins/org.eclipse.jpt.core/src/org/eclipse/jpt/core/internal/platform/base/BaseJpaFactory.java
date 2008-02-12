@@ -27,6 +27,8 @@ import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
 import org.eclipse.jpt.core.internal.context.base.ClassRef;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.IAssociationOverride;
+import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
 import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
@@ -42,7 +44,6 @@ import org.eclipse.jpt.core.internal.context.base.Persistence;
 import org.eclipse.jpt.core.internal.context.base.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.PersistenceXml;
 import org.eclipse.jpt.core.internal.context.base.Property;
-import org.eclipse.jpt.core.internal.context.base.IOverride.Owner;
 import org.eclipse.jpt.core.internal.context.java.IJavaAssociationOverride;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeOverride;
@@ -382,11 +383,11 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 		return new JavaPrimaryKeyJoinColumn(parent, owner);
 	}
 	
-	public IJavaAttributeOverride createJavaAttributeOverride(IJavaJpaContextNode parent, Owner owner) {
+	public IJavaAttributeOverride createJavaAttributeOverride(IJavaJpaContextNode parent, IAttributeOverride.Owner owner) {
 		return new JavaAttributeOverride(parent, owner);
 	}
 	
-	public IJavaAssociationOverride createJavaAssociationOverride(IJavaJpaContextNode parent, Owner owner) {
+	public IJavaAssociationOverride createJavaAssociationOverride(IJavaJpaContextNode parent, IAssociationOverride.Owner owner) {
 		return new JavaAssociationOverride(parent, owner);
 	}
 	

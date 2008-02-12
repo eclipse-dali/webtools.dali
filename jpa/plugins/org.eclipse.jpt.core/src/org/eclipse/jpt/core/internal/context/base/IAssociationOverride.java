@@ -27,4 +27,15 @@ public interface IAssociationOverride extends IOverride
 		
 	boolean containsSpecifiedJoinColumns();
 
+	IAssociationOverride.Owner owner();
+	
+	interface Owner extends IOverride.Owner
+	{
+		/**
+		 * Return the relationship mapping with the given attribute name.
+		 * Return null if it does not exist.  This relationship mapping
+		 * will be found in the mapped superclass, not in the owning entity
+		 */
+		IRelationshipMapping relationshipMapping(String attributeName);
+	}
 }

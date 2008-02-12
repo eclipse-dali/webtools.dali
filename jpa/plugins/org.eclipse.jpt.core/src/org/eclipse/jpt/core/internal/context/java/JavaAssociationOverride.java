@@ -37,12 +37,17 @@ public class JavaAssociationOverride extends JavaOverride<AssociationOverride>
 	protected final List<IJavaJoinColumn> defaultJoinColumns;
 
 
-	public JavaAssociationOverride(IJavaJpaContextNode parent, Owner owner) {
+	public JavaAssociationOverride(IJavaJpaContextNode parent, IAssociationOverride.Owner owner) {
 		super(parent, owner);
 		this.specifiedJoinColumns = new ArrayList<IJavaJoinColumn>();
 		this.defaultJoinColumns = new ArrayList<IJavaJoinColumn>();
 	}
 
+	@Override
+	public IAssociationOverride.Owner owner() {
+		return (IAssociationOverride.Owner) super.owner();
+	}
+	
 	public ListIterator<IJavaJoinColumn> joinColumns() {
 		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumns() : this.specifiedJoinColumns();
 	}
@@ -70,7 +75,8 @@ public class JavaAssociationOverride extends JavaOverride<AssociationOverride>
 	public IJavaJoinColumn addSpecifiedJoinColumn(int index) {
 		IJavaJoinColumn joinColumn = jpaFactory().createJavaJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
-		this.overrideResource.addJoinColumn(index);
+		JoinColumn joinColumnResource = this.overrideResource.addJoinColumn(index);
+		joinColumn.initializeFromResource(joinColumnResource);
 		this.fireItemAdded(IAssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		return joinColumn;
 	}
@@ -141,7 +147,6 @@ public class JavaAssociationOverride extends JavaOverride<AssociationOverride>
 	@Override
 	public void update(AssociationOverride associationOverride) {
 		super.update(associationOverride);
-		this.setName(associationOverride.getName());
 		updateSpecifiedJoinColumns(associationOverride);
 	}
 
@@ -190,7 +195,8 @@ public class JavaAssociationOverride extends JavaOverride<AssociationOverride>
 		}
 		
 		public IEntity targetEntity() {
-			return relationshipMapping().getResolvedTargetEntity();
+			IRelationshipMapping relationshipMapping = relationshipMapping();
+			return relationshipMapping == null ? null : relationshipMapping.getResolvedTargetEntity();
 		}
 
 		public String attributeName() {
@@ -198,8 +204,7 @@ public class JavaAssociationOverride extends JavaOverride<AssociationOverride>
 		}
 
 		public IRelationshipMapping relationshipMapping() {
-			//TODO this isn't going to work, classCastException
-			return (IRelationshipMapping) JavaAssociationOverride.this.owner.columnMapping(JavaAssociationOverride.this.getName());
+			return JavaAssociationOverride.this.owner().relationshipMapping(JavaAssociationOverride.this.getName());
 		}
 
 		public boolean tableNameIsInvalid(String tableName) {
@@ -228,7 +233,7 @@ public class JavaAssociationOverride extends JavaOverride<AssociationOverride>
 
 		public Table dbReferencedColumnTable() {
 			IEntity targetEntity = targetEntity();
-			return (targetEntity == null) ? null : targetEntity().primaryDbTable();
+			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
 		}
 		
 		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
