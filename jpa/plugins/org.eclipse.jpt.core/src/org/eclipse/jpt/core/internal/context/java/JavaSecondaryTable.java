@@ -304,7 +304,7 @@ public class JavaSecondaryTable extends AbstractJavaTable
 			if (joinColumnsSize() != 1) {
 				return null;
 			}
-			return javaEntity().parentEntity().primaryKeyColumnName();
+			return javaEntity().primaryKeyColumnName();
 
 		}
 	}

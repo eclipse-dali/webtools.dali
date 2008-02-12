@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
@@ -38,7 +39,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 	}
 		
 	private void createSecondaryTableAnnotation() throws Exception{
-		this.createAnnotationAndMembers("eSecondaryTable", 
+		this.createAnnotationAndMembers("SecondaryTable", 
 			"String name() default \"\"; " +
 			"String catalog() default \"\"; " +
 			"String schema() default \"\";");		
@@ -352,6 +353,27 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAZ");
 		
 		assertNull(secondaryTable.getDefaultPrimaryKeyJoinColumn());
+	}
+	
+	public void testPrimaryKeyJoinColumnDefaults() throws Exception {
+		createTestEntityWithSecondaryTable();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		ISecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		IPrimaryKeyJoinColumn defaultPkJoinColumn = secondaryTable.getDefaultPrimaryKeyJoinColumn(); 
+		assertNotNull(defaultPkJoinColumn);	
+		assertEquals("id", defaultPkJoinColumn.getDefaultName());
+		assertEquals("id", defaultPkJoinColumn.getDefaultReferencedColumnName());
+		
+		
+		IIdMapping idMapping = (IIdMapping) javaEntity().persistentType().attributeNamed("id").getMapping();
+		idMapping.getColumn().setSpecifiedName("FOO");		
+		assertEquals("FOO", defaultPkJoinColumn.getDefaultName());
+		assertEquals("FOO", defaultPkJoinColumn.getDefaultReferencedColumnName());
+		
+		idMapping.getColumn().setSpecifiedName(null);
+		assertEquals("id", defaultPkJoinColumn.getDefaultName());
+		assertEquals("id", defaultPkJoinColumn.getDefaultReferencedColumnName());
 	}
 
 	public void testAddSpecifiedPrimaryKeyJoinColumn() throws Exception {

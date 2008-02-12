@@ -159,6 +159,7 @@ public class JavaPrimaryKeyJoinColumn extends JavaNamedColumn<PrimaryKeyJoinColu
 		return column.getReferencedColumnName();
 	}
 	
+	//TODO not correct when we start supporting primaryKeyJoinColumns in 1-1 mappings
 	protected String defaultReferencedColumnName() {
 		return defaultName();
 	}
