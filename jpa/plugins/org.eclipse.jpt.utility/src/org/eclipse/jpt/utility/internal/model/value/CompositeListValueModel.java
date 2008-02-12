@@ -30,9 +30,9 @@ import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
  * 
  * Terminology:
  * - sources - the items in the wrapped list value model; these
- * 	  are converted into component LVMs by the transformer
+ *    are converted into component LVMs by the transformer
  * - componentLVMs - the component list value models that are combined
- * 	  by this composite list value model
+ *    by this composite list value model
  * - items - the items held by the component LVMs
  */
 public class CompositeListValueModel<E1, E2>
@@ -163,7 +163,7 @@ public class CompositeListValueModel<E1, E2>
 				return info.items.get(index - info.begin);
 			}
 		}
-		throw new IllegalStateException();  // something is whack
+		throw new IllegalStateException();  // something is wack
 	}
 
 	public Iterator<E2> iterator() {
