@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
-import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.db.internal.Table;
 
 /**
@@ -63,8 +62,7 @@ public final class PrimaryKeyJoinColumnInSecondaryTableStateObject extends Abstr
 	 */
 	@Override
 	public Table getReferencedNameTable() {
-		ITypeMapping type = (ITypeMapping) secondaryTable.parent();
-		return type.primaryDbTable();
+		return secondaryTable.parent().primaryDbTable();
 	}
 
 	public ISecondaryTable getSecondaryTable() {

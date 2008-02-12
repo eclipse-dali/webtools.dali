@@ -52,6 +52,10 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 		this.specifiedInverseJoinColumns = new ArrayList<IJavaJoinColumn>();
 	}
 	
+	@Override
+	public IJavaRelationshipMapping parent() {
+		return (IJavaRelationshipMapping) super.parent();
+	}
 	
 	//******************* AbstractJavaTable implementation *****************
 
@@ -515,6 +519,7 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 		public ITypeMapping typeMapping() {
 			return relationshipMapping().typeMapping();
 		}
+		
 		public IRelationshipMapping relationshipMapping() {
 			return JavaJoinTable.this.relationshipMapping();
 		}

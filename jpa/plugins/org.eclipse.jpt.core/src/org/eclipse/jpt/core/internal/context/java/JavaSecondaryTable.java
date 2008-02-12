@@ -44,6 +44,10 @@ public class JavaSecondaryTable extends AbstractJavaTable
 		this.specifiedPrimaryKeyJoinColumns = new ArrayList<IJavaPrimaryKeyJoinColumn>();
 	}
 	
+	@Override
+	public IJavaEntity parent() {
+		return (IJavaEntity) super.parent();
+	}
 
 	//***************** AbstractJavaTable implementation ********************
 	
@@ -161,7 +165,7 @@ public class JavaSecondaryTable extends AbstractJavaTable
 	}
 	
 	public IJavaEntity javaEntity() {
-		return (IJavaEntity) parent();
+		return parent();
 	}
 	
 	

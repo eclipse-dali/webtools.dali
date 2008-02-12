@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IJoinTable;
-import org.eclipse.jpt.core.internal.context.base.IMultiRelationshipMapping;
+import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.db.internal.Table;
 
 /**
@@ -74,7 +74,7 @@ public class JoinColumnInJoinTableStateObject extends AbstractJoinColumnStateObj
 		return relationshipMapping().typeMapping().primaryDbTable();
 	}
 
-	public IMultiRelationshipMapping relationshipMapping() {
-		return (IMultiRelationshipMapping) joinTable.parent();
+	public IRelationshipMapping relationshipMapping() {
+		return joinTable.parent();
 	}
 }

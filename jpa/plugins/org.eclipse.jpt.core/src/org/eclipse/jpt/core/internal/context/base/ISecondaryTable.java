@@ -15,6 +15,8 @@ import java.util.ListIterator;
 public interface ISecondaryTable extends ITable
 {
 
+	public IEntity parent();
+	
 	/**
 	 * Return a list iterator of the primary key join columns whether specified or default.
 	 * This will not be null.

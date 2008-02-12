@@ -55,6 +55,10 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 		this.defaultInverseJoinColumns = new ArrayList<XmlJoinColumn>();
 	}
 	
+	@Override
+	public XmlRelationshipMapping<? extends RelationshipMapping> parent() {
+		return (XmlRelationshipMapping<? extends RelationshipMapping>) super.parent();
+	}
 	//******************* AbstractXmlTable implementation *****************
 	
 	@Override
@@ -272,9 +276,8 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 		fireItemMoved(IJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 
-	@SuppressWarnings("unchecked")
 	public XmlRelationshipMapping<? extends RelationshipMapping> relationshipMapping() {
-		return (XmlRelationshipMapping) parent();
+		return parent();
 	}
 
 //	@Override

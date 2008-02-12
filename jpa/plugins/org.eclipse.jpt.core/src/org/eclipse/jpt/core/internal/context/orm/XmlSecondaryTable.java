@@ -43,11 +43,15 @@ public class XmlSecondaryTable extends AbstractXmlTable
 //		this.getDefaultPrimaryKeyJoinColumns().add(this.createPrimaryKeyJoinColumn(0));
 	}
 	
-	public XmlEntity xmlEntity() {
+	@Override
+	public XmlEntity parent() {
 		return (XmlEntity) super.parent();
 	}
+	
+	public XmlEntity xmlEntity() {
+		return parent();
+	}
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<XmlPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns() {
 		return new CloneListIterator<XmlPrimaryKeyJoinColumn>(this.defaultPrimaryKeyJoinColumns);
 	}

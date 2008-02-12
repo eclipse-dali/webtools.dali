@@ -15,6 +15,8 @@ import java.util.ListIterator;
 public interface IJoinTable extends ITable
 {
 
+	IRelationshipMapping parent();
+	
 	// **************** join columns **************************************
 	
 	/**
