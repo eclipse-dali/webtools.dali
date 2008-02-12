@@ -251,7 +251,7 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 
 		public Table dbReferencedColumnTable() {
 			IEntity targetEntity = targetEntity();
-			return (targetEntity == null) ? null : targetEntity().primaryDbTable();
+			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
 		}
 		
 		public boolean isVirtual(IAbstractJoinColumn joinColumn) {
