@@ -15,7 +15,6 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
-import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.java.Column;
 import org.eclipse.jpt.core.internal.resource.java.JPA;
@@ -136,7 +135,6 @@ public class JavaVersionMapping extends JavaAttributeMapping implements IJavaVer
 	}
 	
 	protected void addColumnMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		ITypeMapping typeMapping = this.typeMapping();
 		IJavaColumn column = this.getColumn();
 		String table = column.getTable();
 		boolean doContinue = entityOwned() && column.isConnected();
