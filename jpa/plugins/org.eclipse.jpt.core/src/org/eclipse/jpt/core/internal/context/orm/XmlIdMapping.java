@@ -149,12 +149,6 @@ public class XmlIdMapping extends XmlAttributeMapping<Id>
 	protected void setTableGenerator(XmlTableGenerator newTableGenerator) {
 		XmlTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = newTableGenerator;
-		if (newTableGenerator != null) {
-			this.attributeMapping().setTableGenerator(OrmFactory.eINSTANCE.createTableGeneratorImpl());
-		}
-		else {
-			this.attributeMapping().setTableGenerator(null);
-		}
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, newTableGenerator);
 	}
 
