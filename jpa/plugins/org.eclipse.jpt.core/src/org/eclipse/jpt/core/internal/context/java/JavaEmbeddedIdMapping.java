@@ -117,7 +117,8 @@ public class JavaEmbeddedIdMapping extends JavaAttributeMapping
 	public IJavaAttributeOverride addSpecifiedAttributeOverride(int index) {
 		IJavaAttributeOverride attributeOverride = jpaFactory().createJavaAttributeOverride(this, this);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
-		this.persistentAttributeResource.addAnnotation(index, AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
+		AttributeOverride attributeOverrideResource = (AttributeOverride) this.persistentAttributeResource.addAnnotation(index, AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
+		attributeOverride.initializeFromResource(attributeOverrideResource);
 		this.fireItemAdded(IEmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
 	}

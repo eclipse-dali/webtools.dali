@@ -14,6 +14,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
+import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter;
@@ -21,6 +22,7 @@ import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -99,6 +101,23 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 		return new SimplePropertyValueModel<IAttributeOverride>();
 	}
 
+
+	private ListValueModel<String> buildAttributeOverridesStringListHolder() {
+		return new TransformationListValueModelAdapter<IAttributeOverride, String>(buildAttributeOverridesListModel()) {
+			@Override
+			protected String transformItem(IAttributeOverride item) {
+				return item.getName() == null ? "" : item.getName();
+			}
+		};
+	}
+
+	private ListValueModel<IAttributeOverride> buildAttributeOverridesListModel() {
+		return new ItemPropertyListValueModelAdapter<IAttributeOverride>(
+			buildAttributeOverridesListHolder(),
+			IOverride.NAME_PROPERTY
+		);
+	}
+
 	private ListValueModel<IAttributeOverride> buildAttributeOverridesListHolder() {
 		java.util.List<ListValueModel<IAttributeOverride>> list = new ArrayList<ListValueModel<IAttributeOverride>>();
 		list.add(buildSpecifiedAttributeOverridesListHolder());
@@ -159,15 +178,6 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 		);
 
 		return list;
-	}
-
-	private ListValueModel<String> buildAttributeOverridesStringListHolder() {
-		return new TransformationListValueModelAdapter<IAttributeOverride, String>(buildAttributeOverridesListHolder()) {
-			@Override
-			protected String transformItem(IAttributeOverride item) {
-				return item.getName() == null ? "" : item.getName();
-			}
-		};
 	}
 
 	private PropertyValueModel<Boolean> buildColumnEnablementHolder(PropertyValueModel<IColumn> columnHolder) {
@@ -302,10 +312,6 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder =
-			buildAttributeOverrideHolder();
-
 		// Attribute Overrides group box
 		Composite groupBox = buildTitledPane(
 			container,
@@ -319,7 +325,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 		// Attribute Overrides list
 		list = buildAttributeOverridesList(
 			container,
-			attributeOverrideHolder
+			this.attributeOverrideHolder
 		);
 
 		GridData data = new GridData();
@@ -332,7 +338,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 		// Properties for the selected attribute overrides
 		buildPropertiesPane(
 			buildSubPane(container, 5, 0),
-			attributeOverrideHolder
+			this.attributeOverrideHolder
 		);
 	}
 
