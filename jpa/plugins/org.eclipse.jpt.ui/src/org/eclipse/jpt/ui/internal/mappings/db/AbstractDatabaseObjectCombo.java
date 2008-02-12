@@ -26,6 +26,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
@@ -184,6 +186,47 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 		};
 	}
 
+	private FocusListener buildFocusListener() {
+
+		return new FocusListener() {
+
+			public void focusGained(FocusEvent e) {
+
+				if (!isPopulating()) {
+					CCombo combo = (CCombo) e.widget;
+
+					if (combo.getSelectionIndex() == 0) {
+						setPopulating(true);
+
+						try {
+							combo.setText("");
+						}
+						finally {
+							setPopulating(false);
+						}
+					}
+				}
+			}
+
+			public void focusLost(FocusEvent e) {
+				if (!isPopulating()) {
+					CCombo combo = (CCombo) e.widget;
+
+					if (combo.getText().length() == 0) {
+						setPopulating(true);
+
+						try {
+							combo.select(0);
+						}
+						finally {
+							setPopulating(false);
+						}
+					}
+				}
+			}
+		};
+	}
+
 	private ModifyListener buildModifyListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
@@ -310,8 +353,8 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	protected void initializeLayout(Composite container) {
 
 		this.combo = buildEditableCCombo(container);
-		this.combo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
 		this.combo.addModifyListener(buildModifyListener());
+		this.combo.addFocusListener(buildFocusListener());
 	}
 
 	/**
@@ -401,10 +444,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	@Override
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
-
-		if (CollectionTools.contains(propertyNames(), propertyName)) {
-			updateSelectedItem();
-		}
+		updateSelectedItem();
 	}
 
 	/**
@@ -442,23 +482,29 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 		T subject = subject();
 		String value = (subject != null) ? value() : null;
 
+		// Select the new selected item
 		if (value != null) {
 			combo.setText(value);
 			combo.setSelection(new Point(0, 0));
 		}
+		// Handle the default value
 		else {
 			String defaultValue = (subject != null) ? defaultValue() : null;
+			String displayString = JptUiMappingsMessages.ColumnComposite_defaultEmpty;
 
-			String displayString = (defaultValue == null) ? "" :
-				NLS.bind(
+			if (defaultValue != null) {
+				displayString = NLS.bind(
 					JptUiMappingsMessages.ColumnComposite_defaultWithOneParam,
 					defaultValue
 				);
+			}
 
-			if (!combo.getText().equals(displayString)) {
-				combo.setText(displayString);
+			// Selected the default value
+			if (displayString != null) {
+				combo.select(0);
 				combo.setSelection(new Point(0, 0));
 			}
+			// Remove the selection
 			else {
 				combo.select(-1);
 			}
@@ -496,7 +542,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 			}
 		}
 
-		// The default value
+		// Convert the default value to null
 		if (value != null &&
 		    getCombo().getItemCount() > 0 &&
 		    value.equals(getCombo().getItem(0)))

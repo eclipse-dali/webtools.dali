@@ -179,15 +179,6 @@ public abstract class PersistentTypeDetailsPage<T extends IPersistentType> exten
 			this.currentMappingComposite = null;
 		}
 
-//		for (IJpaComposite<ITypeMapping> composite : this.mappingComposites.values()) {
-//			try {
-//				composite.dispose();
-//			}
-//			catch (Exception e) {
-//				JptUiPlugin.log(e);
-//			}
-//		}
-
 		this.mappingComposites.clear();
 		super.doDispose();
 	}

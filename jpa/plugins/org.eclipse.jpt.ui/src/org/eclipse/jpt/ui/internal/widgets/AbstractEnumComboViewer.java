@@ -51,7 +51,7 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	/**
 	 * A constant used to represent the <code>null</code> value.
 	 */
-	private static final String NULL_VALUE = "null";
+	public static final String NULL_VALUE = "null";
 
 	/**
 	 * Creates a new <code>AbstractEnumComboViewer</code>.
@@ -102,16 +102,10 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	 */
 	private Object[] buildChoices() {
 		V[] choices = choices();
-		Object[] extendedChoices;
 
-		if (subject() != null) {
-			extendedChoices = new Object[choices.length + 1];
-			System.arraycopy(choices, 0, extendedChoices, 1, choices.length);
-			extendedChoices[0] = NULL_VALUE;
-		}
-		else {
-			extendedChoices = choices;
-		}
+		Object[] extendedChoices = new Object[choices.length + 1];
+		System.arraycopy(choices, 0, extendedChoices, 1, choices.length);
+		extendedChoices[0] = NULL_VALUE;
 
 		Arrays.sort(extendedChoices, buildComparator());
 		return extendedChoices;

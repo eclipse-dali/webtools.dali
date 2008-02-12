@@ -110,9 +110,9 @@ public final class ControlAligner
 	 */
 	private static final int[] EVENT_TYPES = {
 		SWT.Dispose,
-		SWT.Show,
+		SWT.Hide,
 		SWT.Resize,
-		SWT.Hide
+		SWT.Show
 	};
 
 	/**
@@ -130,7 +130,7 @@ public final class ControlAligner
 	 */
 	public ControlAligner(Collection<? extends Control> controls) {
 		this();
-		addAllComponents(controls);
+		addAllControls(controls);
 	}
 
 	/**
@@ -141,6 +141,8 @@ public final class ControlAligner
 	 * @param control The <code>Control</code> to be added
 	 */
 	public void add(Control control) {
+
+		Assert.isNotNull(control, "Can't add null to this ControlAligner");
 
 		Wrapper wrapper = buildWrapper(control);
 		wrapper.addListener(listener);
@@ -160,6 +162,7 @@ public final class ControlAligner
 	 */
 	public void add(ControlAligner controlAligner) {
 
+		Assert.isNotNull(controlAligner, "Can't add null to this ControlAligner");
 		Assert.isLegal(controlAligner != this, "Can't add the ControlAligner to itself");
 
 		Wrapper wrapper = buildWrapper(controlAligner);
@@ -177,35 +180,12 @@ public final class ControlAligner
 	 * used along with the width of all the other items in order to get the
 	 * widest control and use its width as the width for all the controls.
 	 *
-	 * @param items The collection of <code>Control</code>s
+	 * @param aligners The collection of <code>ControlAligner</code>s
 	 */
-	public void addAll(Collection<? extends Control> items) {
+	public void addAllControlAligners(Collection<ControlAligner> aligners) {
 
-		// Deactivate the auto validation while adding all the Controls
-		// in order to improve performance
-		boolean oldAutoValidate = autoValidate;
-		autoValidate = false;
-
-		for (Control item : items) {
-			add(item);
-		}
-
-		autoValidate = oldAutoValidate;
-		revalidate();
-	}
-
-	/**
-	 * Adds the items contained in the given collection into this
-	 * <code>ControlAligner</code>. The preferred width of each item will be
-	 * used along with the width of all the other items in order to get the
-	 * widest component and use its width as the width for all the components.
-	 *
-	 * @param items The collection of <code>ControlAligner</code>s
-	 */
-	public void addAllComponentAligners(Collection<ControlAligner> aligners) {
-
-		// Deactivate the auto validation while adding all the JComponents and/or
-		// ComponentAligners in order to improve performance
+		// Deactivate the auto validation while adding all the Controls and/or
+		// ControlAligners in order to improve performance
 		boolean oldAutoValidate = autoValidate;
 		autoValidate = false;
 
@@ -221,19 +201,19 @@ public final class ControlAligner
 	 * Adds the items contained in the given collection into this
 	 * <code>ControlAligner</code>. The preferred width of each item will be
 	 * used along with the width of all the other items in order to get the
-	 * widest component and use its width as the width for all the components.
+	 * widest control and use its width as the width for all the controls.
 	 *
-	 * @param items The collection of <code>Control</code>s
+	 * @param controls The collection of <code>Control</code>s
 	 */
-	public void addAllComponents(Collection<? extends Control> components) {
+	public void addAllControls(Collection<? extends Control> controls) {
 
-		// Deactivate the auto validation while adding all the JComponents and/or
-		// ComponentAligners in order to improve performance
+		// Deactivate the auto validation while adding all the Controls and/or
+		// ControlAligners in order to improve performance
 		boolean oldAutoValidate = autoValidate;
 		autoValidate = false;
 
-		for (Control component : components) {
-			add(component);
+		for (Control control : controls) {
+			add(control);
 		}
 
 		autoValidate = oldAutoValidate;
@@ -528,9 +508,9 @@ public final class ControlAligner
 	 */
 	private Point size() {
 
-		if (maximumWidth == -1) {
-			recalculateWidth();
-		}
+//		if (maximumWidth == -1) {
+//			recalculateWidth();
+//		}
 
 		return new Point(maximumWidth, 0);
 	}
@@ -559,7 +539,7 @@ public final class ControlAligner
 		/**
 		 * The cached size, which is {@link ControlAligner#maximumWidth}.
 		 */
-		private Point cachedSize;
+		private final Point cachedSize;
 
 		/**
 		 * The <code>ControlAligner</code> encapsulated by this
@@ -578,7 +558,7 @@ public final class ControlAligner
 			super();
 
 			this.controlAligner = controlAligner;
-			cachedSize = new Point(controlAligner.maximumWidth, 0);
+			this.cachedSize     = new Point(controlAligner.maximumWidth, 0);
 		}
 
 		/*
@@ -613,12 +593,11 @@ public final class ControlAligner
 		 * (non-Javadoc)
 		 */
 		public void setSize(Point size) {
-			if (size == DEFAULT_SIZE)
-			{
+
+			if (size == DEFAULT_SIZE) {
 				controlAligner.maximumWidth = -1;
 			}
-			else if (controlAligner.maximumWidth != size.x)
-			{
+			else if (controlAligner.maximumWidth != size.x) {
 				controlAligner.maximumWidth = size.x;
 				controlAligner.revalidateImp();
 			}
@@ -628,6 +607,7 @@ public final class ControlAligner
 		 * (non-Javadoc)
 		 */
 		public Point size() {
+			cachedSize.x = controlAligner.maximumWidth;
 			return controlAligner.size();
 		}
 
@@ -689,10 +669,6 @@ public final class ControlAligner
 			for (int eventType : EVENT_TYPES) {
 				control.addListener(eventType, listener);
 			}
-
-//			for (int eventType : SHELL_EVENT_TYPES) {
-//				control.getShell().addListener(eventType, listener);
-//			}
 		}
 
 		/*
@@ -724,10 +700,6 @@ public final class ControlAligner
 			for (int eventType : EVENT_TYPES) {
 				control.removeListener(eventType, listener);
 			}
-
-//			for (int eventType : SHELL_EVENT_TYPES) {
-//				control.getShell().removeListener(eventType, listener);
-//			}
 		}
 
 		/*

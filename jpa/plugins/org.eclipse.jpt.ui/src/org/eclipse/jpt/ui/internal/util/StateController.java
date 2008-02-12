@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
@@ -210,6 +211,23 @@ abstract class StateController
 	 * @return A new <code>PropertyChangeListener</code>
 	 */
 	private PropertyChangeListener buildBooleanChangeListener() {
+		return new SWTPropertyChangeListenerWrapper(
+			buildBooleanChangeListener_()
+		)
+		{
+			@Override
+			public String toString() {
+				return "StateController.SWTPropertyChangeListenerWrapper";
+			}
+		};
+	}
+
+	/**
+	 * Creates a listener for the boolean holder.
+	 *
+	 * @return A new <code>PropertyChangeListener</code>
+	 */
+	private PropertyChangeListener buildBooleanChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent event) {
 				updateState(booleanValue(booleanHolder.value()));
@@ -217,7 +235,7 @@ abstract class StateController
 
 			@Override
 			public String toString() {
-				return "boolean change listener";
+				return "StateController.PropertyChangeListener";
 			}
 		};
 	}

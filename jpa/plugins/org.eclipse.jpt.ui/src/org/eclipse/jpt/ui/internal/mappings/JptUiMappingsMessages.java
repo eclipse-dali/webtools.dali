@@ -15,6 +15,8 @@ public class JptUiMappingsMessages extends NLS
 {
 	private static final String BUNDLE_NAME = "jpt_ui_mappings"; //$NON-NLS-1$
 
+	public static String NoneSelected;
+
 	public static String AbstractJoinColumnStateObject_NameNotSpecified;
 
 	public static String Boolean_True;

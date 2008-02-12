@@ -9,6 +9,7 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.SearchEngine;
@@ -25,11 +26,14 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.forms.widgets.Hyperlink;
@@ -91,6 +95,47 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 		super.addPropertyNames(propertyNames);
 		propertyNames.add(IRelationshipMapping.DEFAULT_TARGET_ENTITY_PROPERTY);
 		propertyNames.add(IRelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY);
+	}
+
+	private FocusListener buildFocusListener() {
+
+		return new FocusListener() {
+
+			public void focusGained(FocusEvent e) {
+
+				if (!isPopulating()) {
+					CCombo combo = (CCombo) e.widget;
+
+					if (combo.getSelectionIndex() == 0) {
+						setPopulating(true);
+
+						try {
+							combo.setText("");
+						}
+						finally {
+							setPopulating(false);
+						}
+					}
+				}
+			}
+
+			public void focusLost(FocusEvent e) {
+				if (!isPopulating()) {
+					CCombo combo = (CCombo) e.widget;
+
+					if (combo.getText().length() == 0) {
+						setPopulating(true);
+
+						try {
+							combo.select(0);
+						}
+						finally {
+							setPopulating(false);
+						}
+					}
+				}
+			}
+		};
 	}
 
 	private Runnable buildOpenTargetEntityAction() {
@@ -178,6 +223,7 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 		combo = buildEditableCCombo(container);
 		combo.add(JptUiMappingsMessages.TargetEntityChooser_defaultEmpty);
 		combo.addModifyListener(buildTargetEntityModifyListener());
+		combo.addFocusListener(buildFocusListener());
 
 		Hyperlink labelLink = buildHyperLink(container,
 			JptUiMappingsMessages.TargetEntityChooser_label,
@@ -198,7 +244,21 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 		String targetEntity = subject().getTargetEntity();
 
 		if (targetEntity != null) {
-			System.out.println("TODO: Open Editor for " + targetEntity);
+
+			try {
+				IType type = subject().jpaProject().javaProject().findType(targetEntity);
+
+				if (type != null) {
+					IJavaElement javaElement = type.getParent();
+					JavaUI.openInEditor(javaElement, true, true);
+				}
+			}
+			catch (JavaModelException e) {
+				JptUiPlugin.log(e);
+			}
+			catch (PartInitException e) {
+				JptUiPlugin.log(e);
+			}
 		}
 	}
 
@@ -260,17 +320,21 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 		}
 		else {
 			String defaultValue = (subject != null) ? subject.getDefaultTargetEntity() : null;
+			String displayString = JptUiMappingsMessages.TargetEntityChooser_defaultEmpty;
 
-			String displayString = (defaultValue == null) ? "" :
-				NLS.bind(
+			if (defaultValue != null) {
+				displayString = NLS.bind(
 					JptUiMappingsMessages.ColumnComposite_defaultWithOneParam,
 					defaultValue
 				);
+			}
 
-			if (!combo.getText().equals(displayString)) {
-				combo.setText(displayString);
+			// Selected the default value
+			if (displayString != null) {
+				combo.select(0);
 				combo.setSelection(new Point(0, 0));
 			}
+			// Remove the selection
 			else {
 				combo.select(-1);
 			}

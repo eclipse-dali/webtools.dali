@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -167,6 +168,34 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		};
 	}
 
+	private ListValueModel<IAssociationOverride> buildDefaultAssociationOverridesListHolder() {
+		return new ListAspectAdapter<IEntity, IAssociationOverride>(getSubjectHolder(), IEntity.DEFAULT_ASSOCIATION_OVERRIDES_LIST) {
+			@Override
+			protected ListIterator<IAssociationOverride> listIterator_() {
+				return subject.defaultAssociationOverrides();
+			}
+
+			@Override
+			protected int size_() {
+				return subject.defaultAssociationOverridesSize();
+			}
+		};
+	}
+
+	private ListValueModel<IAttributeOverride> buildDefaultAttributeOverridesListHolder() {
+		return new ListAspectAdapter<IEntity, IAttributeOverride>(getSubjectHolder(), IEntity.DEFAULT_ATTRIBUTE_OVERRIDES_LIST) {
+			@Override
+			protected ListIterator<IAttributeOverride> listIterator_() {
+				return subject.defaultAttributeOverrides();
+			}
+
+			@Override
+			protected int size_() {
+				return subject.defaultAttributeOverridesSize();
+			}
+		};
+	}
+
 	private PostExecution<JoinColumnInAssociationOverrideDialog> buildEditJoinColumnPostExecution() {
 		return new PostExecution<JoinColumnInAssociationOverrideDialog>() {
 			public void execute(JoinColumnInAssociationOverrideDialog dialog) {
@@ -269,73 +298,20 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		};
 	}
 
-	private ListValueModel<IOverride> buildOverridesListModel() {
-		return new ItemPropertyListValueModelAdapter<IOverride>(buildOverridesListHolder(), IOverride.NAME_PROPERTY);
-	}	
-
 	private ListValueModel<IOverride> buildOverridesListHolder() {
-		java.util.List<ListValueModel<? extends IOverride>> list = new ArrayList<ListValueModel<? extends IOverride>>();
+		List<ListValueModel<? extends IOverride>> list = new ArrayList<ListValueModel<? extends IOverride>>();
 		list.add(buildSpecifiedAttributeOverridesListHolder());
 		list.add(buildDefaultAttributeOverridesListHolder());
 		list.add(buildSpecifiedAssociationOverridesListHolder());
 		list.add(buildDefaultAssociationOverridesListHolder());
 		return new CompositeListValueModel<ListValueModel<? extends IOverride>, IOverride>(list);
 	}
-	
-	private ListValueModel<IAttributeOverride> buildSpecifiedAttributeOverridesListHolder() {
-		return new ListAspectAdapter<IEntity, IAttributeOverride>(getSubjectHolder(), IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST) {
-			@Override
-			protected ListIterator<IAttributeOverride> listIterator_() {
-				return subject.specifiedAttributeOverrides();
-			}
-			
-			@Override
-			protected int size_() {
-				return subject.specifiedAttributeOverridesSize();
-			}
-		};
-	}
-	
-	private ListValueModel<IAttributeOverride> buildDefaultAttributeOverridesListHolder() {
-		return new ListAspectAdapter<IEntity, IAttributeOverride>(getSubjectHolder(), IEntity.DEFAULT_ATTRIBUTE_OVERRIDES_LIST) {
-			@Override
-			protected ListIterator<IAttributeOverride> listIterator_() {
-				return subject.defaultAttributeOverrides();
-			}
-			
-			@Override
-			protected int size_() {
-				return subject.defaultAttributeOverridesSize();
-			}
-		};
-	}
 
-	private ListValueModel<IAssociationOverride> buildSpecifiedAssociationOverridesListHolder() {
-		return new ListAspectAdapter<IEntity, IAssociationOverride>(getSubjectHolder(), IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST) {
-			@Override
-			protected ListIterator<IAssociationOverride> listIterator_() {
-				return subject.specifiedAssociationOverrides();
-			}
-			
-			@Override
-			protected int size_() {
-				return subject.specifiedAssociationOverridesSize();
-			}
-		};
-	}
-	
-	private ListValueModel<IAssociationOverride> buildDefaultAssociationOverridesListHolder() {
-		return new ListAspectAdapter<IEntity, IAssociationOverride>(getSubjectHolder(), IEntity.DEFAULT_ASSOCIATION_OVERRIDES_LIST) {
-			@Override
-			protected ListIterator<IAssociationOverride> listIterator_() {
-				return subject.defaultAssociationOverrides();
-			}
-			
-			@Override
-			protected int size_() {
-				return subject.defaultAssociationOverridesSize();
-			}
-		};
+	private ListValueModel<IOverride> buildOverridesListModel() {
+		return new ItemPropertyListValueModelAdapter<IOverride>(
+			buildOverridesListHolder(),
+			IOverride.NAME_PROPERTY
+		);
 	}
 
 	private Composite buildPane(Composite container, int groupBoxMargin) {
@@ -355,6 +331,34 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 				}
 
 				return null;
+			}
+		};
+	}
+
+	private ListValueModel<IAssociationOverride> buildSpecifiedAssociationOverridesListHolder() {
+		return new ListAspectAdapter<IEntity, IAssociationOverride>(getSubjectHolder(), IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST) {
+			@Override
+			protected ListIterator<IAssociationOverride> listIterator_() {
+				return subject.specifiedAssociationOverrides();
+			}
+
+			@Override
+			protected int size_() {
+				return subject.specifiedAssociationOverridesSize();
+			}
+		};
+	}
+
+	private ListValueModel<IAttributeOverride> buildSpecifiedAttributeOverridesListHolder() {
+		return new ListAspectAdapter<IEntity, IAttributeOverride>(getSubjectHolder(), IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST) {
+			@Override
+			protected ListIterator<IAttributeOverride> listIterator_() {
+				return subject.specifiedAttributeOverrides();
+			}
+
+			@Override
+			protected int size_() {
+				return subject.specifiedAttributeOverridesSize();
 			}
 		};
 	}
@@ -395,15 +399,7 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		);
 
 		// Overrides list pane
-		new AddRemoveListPane<IEntity>(
-			this,
-			buildSubPane(container, 8),
-			buildOverridesAdapter(),
-			buildOverridesListModel(),
-			overrideHolder,
-			buildOverrideLabelProvider(),
-			IJpaHelpContextIds.ENTITY_ATTRIBUTE_OVERRIDES
-		);
+		initializeOverridesList(container);
 
 		// Override Default check box
 		overrideDefaultButton = buildCheckBox(
@@ -451,10 +447,32 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		installOverrideControlSwitcher(overrideHolder, pageBook);
 	}
 
+	private AddRemoveListPane<IEntity> initializeOverridesList(Composite container) {
+
+		return new AddRemoveListPane<IEntity>(
+			this,
+			buildSubPane(container, 8),
+			buildOverridesAdapter(),
+			buildOverridesListModel(),
+			overrideHolder,
+			buildOverrideLabelProvider(),
+			IJpaHelpContextIds.ENTITY_ATTRIBUTE_OVERRIDES
+		)
+		{
+			@Override
+			protected void initializeButtonPane(Composite container, String helpId) {
+			}
+
+			@Override
+			protected void updateButtons() {
+			}
+		};
+	}
+
 	private void installOverrideControlSwitcher(PropertyValueModel<IOverride> overrideHolder,
 	                                            PageBook pageBook) {
 
-		new ControlSwitcher<IOverride>(
+		new ControlSwitcher(
 			overrideHolder,
 			buildPaneTransformer(),
 			pageBook

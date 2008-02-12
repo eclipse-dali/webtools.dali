@@ -119,7 +119,7 @@ public final class ControlSwitcherTest {
 		pane2 = buildPane2();
 		pane2.setVisible(false);
 
-		new ControlSwitcher<Boolean>(
+		new ControlSwitcher(
 			switchHolder,
 			transformer,
 			pageBook

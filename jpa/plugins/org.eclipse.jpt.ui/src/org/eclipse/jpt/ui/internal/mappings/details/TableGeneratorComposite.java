@@ -111,7 +111,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 
 			@Override
 			protected void setValue(String value) {
-				subject().setSpecifiedTable(value);
+				subject().setSpecifiedPkColumnName(value);
 			}
 
 			@Override
@@ -129,6 +129,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 				if (subject() == null) {
 					return EmptyIterator.instance();
 				}
+				// TODO
 				return super.values();
 			}
 		};
@@ -185,6 +186,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 				if (subject() == null) {
 					return EmptyIterator.instance();
 				}
+				// TODO
 				return super.values();
 			}
 		};
@@ -266,6 +268,63 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		};
 	}
 
+	private ColumnCombo<ITableGenerator> buildValueColumnCombo(Composite parent) {
+
+		return new ColumnCombo<ITableGenerator>(this, buildTableGeneratorHolder(), parent) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(ITableGenerator.DEFAULT_VALUE_COLUMN_NAME_PROPERTY);
+				propertyNames.add(ITableGenerator.SPECIFIED_VALUE_COLUMN_NAME_PROPERTY);
+			}
+
+			@Override
+			protected void buildSubject() {
+				TableGeneratorComposite.this.buildGenerator();
+			}
+
+			@Override
+			protected String defaultValue() {
+				return subject().getDefaultValueColumnName();
+			}
+
+			@Override
+			protected boolean isBuildSubjectAllowed() {
+				return true;
+			}
+
+			@Override
+			protected IJpaProject jpaProject() {
+				return TableGeneratorComposite.this.jpaProject();
+			}
+
+			@Override
+			protected void setValue(String value) {
+				subject().setSpecifiedValueColumnName(value);
+			}
+
+			@Override
+			protected Table table() {
+				return subject().dbTable();
+			}
+
+			@Override
+			protected String value() {
+				return subject().getSpecifiedValueColumnName();
+			}
+
+			@Override
+			protected Iterator<String> values() {
+				if (subject() == null) {
+					return EmptyIterator.instance();
+				}
+				// TODO
+				return super.values();
+			}
+		};
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
@@ -311,7 +370,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_valueColumn,
-			buildPkColumnValueCombo(container),
+			buildValueColumnCombo(container),
 			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_VALUE_COLUMN
 		);
 

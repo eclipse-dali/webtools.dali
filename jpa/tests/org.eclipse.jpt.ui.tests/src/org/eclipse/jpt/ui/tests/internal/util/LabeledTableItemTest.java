@@ -24,7 +24,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 @SuppressWarnings("nls")
-public class LabeledTableItemTest {
+public final class LabeledTableItemTest {
 
 	private Composite parent;
 

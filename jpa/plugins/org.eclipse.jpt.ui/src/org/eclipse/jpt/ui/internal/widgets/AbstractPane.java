@@ -14,6 +14,7 @@ import java.util.Collection;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.swt.BooleanButtonModelAdapter;
@@ -1113,6 +1114,79 @@ public abstract class AbstractPane<T extends Model>
 	                                                  String helpId) {
 
 		return this.buildLabeledEditableCCombo(
+			container,
+			labelText,
+			comboListener,
+			null,
+			helpId
+		);
+	}
+
+	/**
+	 * Creates a new container that will have the given center control labeled
+	 * with the given label.
+	 *
+	 * @param container The parent container
+	 * @param leftControl The widget shown to the left of the main widget
+	 * @param centerControl The main widget
+	 * @param labelProvider The provider responsible to convert the combo's items
+	 * into human readable strings
+	 * @param rightControl The control shown to the right of the main widget
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The newly created <code>CCombo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final CCombo buildLabeledEditableCComboViewer(Composite container,
+	                                                        String labelText,
+	                                                        ModifyListener comboListener,
+	                                                        ILabelProvider labelProvider,
+	                                                        Control rightControl,
+	                                                        String helpId) {
+
+		ComboViewer comboViewer = this.buildEditableCComboViewer(
+			container,
+			labelProvider
+		);
+
+		CCombo combo = comboViewer.getCCombo();
+		combo.addModifyListener(comboListener);
+
+		this.buildLabeledComposite(
+			container,
+			labelText,
+			(combo.getParent() != container) ? combo.getParent() : combo,
+			rightControl,
+			helpId
+		);
+
+		return combo;
+	}
+
+	/**
+	 * Creates a new container that will have an editable combo labeled with the
+	 * given text.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param comboListener The listener that will be notified when the selection
+	 * changes
+	 * @param labelProvider The provider responsible to convert the combo's items
+	 * into human readable strings
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The newly created <code>CCombo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final CCombo buildLabeledEditableCComboViewer(Composite container,
+	                                                        String labelText,
+	                                                        ModifyListener comboListener,
+	                                                        ILabelProvider labelProvider,
+	                                                        String helpId) {
+
+		return this.buildLabeledEditableCComboViewer(
 			container,
 			labelText,
 			comboListener,

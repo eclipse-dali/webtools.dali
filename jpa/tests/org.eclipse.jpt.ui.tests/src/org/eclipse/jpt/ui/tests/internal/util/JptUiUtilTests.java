@@ -20,10 +20,14 @@ import org.junit.runners.Suite.SuiteClasses;
 ({
 	ControlAlignerTest.class,
 	ControlSwitcherTest.class,
+	ControlEnablerTest.class,
+	ControlVisibilityEnablerTest.class,
 	LabeledButtonTest.class,
 	LabeledLabelTest.class,
 	LabeledTableItemTest.class,
 	LabeledControlUpdaterTest.class,
+	PaneEnablerTest.class,
+	PaneVisibilityEnablerTest.class,
 })
 @RunWith(Suite.class)
 public final class JptUiUtilTests {

@@ -26,7 +26,7 @@ import org.eclipse.ui.part.PageBook;
  * @version 2.0
  * @since 2.0
  */
-public final class ControlSwitcher<T>
+public final class ControlSwitcher
 {
 	/**
 	 * The widget that is used to show the active <code>Control</code>.
@@ -37,7 +37,7 @@ public final class ControlSwitcher<T>
 	 * The <code>Transformer</code> used to transform the value into a
 	 * <code>Control</code>.
 	 */
-	private Transformer<T, Control> paneTransformer;
+	private Transformer<?, Control> paneTransformer;
 
 	/**
 	 * Creates a new <code>ControlSwitcher</code>.
@@ -49,19 +49,18 @@ public final class ControlSwitcher<T>
 	 * @param pageBook The <code>Transformer</code> used to transform the value
 	 * into a <code>Control</code>
 	 */
-	public ControlSwitcher(PropertyValueModel<T> switchHolder,
-	                       Transformer<T, Control> paneTransformer,
-	                       PageBook pageBook)
+	public <T> ControlSwitcher(PropertyValueModel<? extends T> switchHolder,
+	                           Transformer<T, Control> paneTransformer,
+	                           PageBook pageBook)
 	{
 		super();
 		initialize(switchHolder, paneTransformer, pageBook);
 	}
 
-	@SuppressWarnings("unchecked")
 	private PropertyChangeListener buildPropertyChangeListener() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-				switchPanes((T) e.newValue());
+				switchPanes(e.newValue());
 			}
 		};
 	}
@@ -76,8 +75,8 @@ public final class ControlSwitcher<T>
 	 * @param pageBook The <code>Transformer</code> used to transform the value
 	 * into a <code>Control</code>
 	 */
-	private void initialize(PropertyValueModel<T> switchHolder,
-	                        Transformer<T, Control> paneTransformer,
+	private void initialize(PropertyValueModel<?> switchHolder,
+	                        Transformer<?, Control> paneTransformer,
 	                        PageBook pageBook)
 	{
 		this.pageBook        = pageBook;
@@ -98,14 +97,14 @@ public final class ControlSwitcher<T>
 	 * @param value The state passed to the transformer in order to retrieve the
 	 * new pane
 	 */
-	private void switchPanes(T value) {
+	private void switchPanes(Object value) {
 
 		if (pageBook.isDisposed()) {
 			return;
 		}
 
 		// Retrieve the Control for the new value
-		Control pane = paneTransformer.transform(value);
+		Control pane = transform(value);
 		boolean visible = (pane != null);
 
 		// Show the new page
@@ -123,5 +122,10 @@ public final class ControlSwitcher<T>
 
 		// Revalidate the parents in order to update the layout
 		SWTUtil.reflow(pageBook);
+	}
+
+	@SuppressWarnings("unchecked")
+	private Control transform(Object value) {
+		return ((Transformer<Object, Control>) paneTransformer).transform(value);
 	}
 }

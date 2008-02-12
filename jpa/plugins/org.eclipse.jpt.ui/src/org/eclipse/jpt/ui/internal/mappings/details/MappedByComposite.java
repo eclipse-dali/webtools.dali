@@ -19,6 +19,8 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
@@ -41,6 +43,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
+@SuppressWarnings("nls")
 public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 {
 	private CCombo combo;
@@ -91,6 +94,39 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 		};
 	}
 
+	private FocusListener buildFocusListener() {
+		return new FocusListener() {
+
+			public void focusGained(FocusEvent e) {
+
+				setPopulating(true);
+
+				try {
+					if (combo.getSelectionIndex() == 0) {
+						combo.setText("");
+					}
+				}
+				finally {
+					setPopulating(false);
+				}
+			}
+
+			public void focusLost(FocusEvent e) {
+
+				setPopulating(true);
+
+				try {
+					if (combo.getText().length() == 0) {
+						combo.select(0);
+					}
+				}
+				finally {
+					setPopulating(false);
+				}
+			}
+		};
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
@@ -99,6 +135,7 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 
 		super.doPopulate();
 
+		combo.select(-1);
 		combo.removeAll();
 		populateCombo();
 	}
@@ -115,9 +152,13 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 			buildComboModifyListener(),
 			IJpaHelpContextIds.MAPPING_MAPPED_BY
 		);
+
+		combo.addFocusListener(buildFocusListener());
 	}
 
 	private void populateCombo() {
+
+		combo.add(JptUiMappingsMessages.NoneSelected);
 
 		INonOwningMapping subject = subject();
 
@@ -159,11 +200,12 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 
 		if (value != null) {
 			combo.setText(value);
-			combo.setSelection(new Point(0, 0));
 		}
 		else {
-			combo.select(-1);
+			combo.select(0);
 		}
+
+		combo.setSelection(new Point(0, 0));
 	}
 
 	private void valueChanged(String value) {
@@ -181,10 +223,7 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 		}
 
 		// The default value
-		if (value != null &&
-		    combo.getItemCount() > 0 &&
-		    value.equals(combo.getItem(0)))
-		{
+		if (value == JptUiMappingsMessages.NoneSelected) {
 			value = null;
 		}
 
