@@ -155,7 +155,6 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 	
 		//set name to null in the resource model
 		associationOverrideResource.setName(null);
-		ormResource().save(null);
 		assertNull(javaAssociationOverride.getName());
 		assertNull(associationOverrideResource.getName());
 		
@@ -209,17 +208,13 @@ public class JavaAssociationOverrideTests extends ContextModelTestCase
 		assertEquals("FOO", associationOverrideResource.joinColumnAt(0).getName());
 		
 		IJoinColumn joinColumn2 = javaAssociationOverride.addSpecifiedJoinColumn(0);
-		ormResource().save(null);
 		joinColumn2.setSpecifiedName("BAR");
-		ormResource().save(null);
 		
 		assertEquals("BAR", associationOverrideResource.joinColumnAt(0).getName());
 		assertEquals("FOO", associationOverrideResource.joinColumnAt(1).getName());
 		
 		IJoinColumn joinColumn3 = javaAssociationOverride.addSpecifiedJoinColumn(1);
-		ormResource().save(null);
 		joinColumn3.setSpecifiedName("BAZ");
-		ormResource().save(null);
 		
 		assertEquals("BAR", associationOverrideResource.joinColumnAt(0).getName());
 		assertEquals("BAZ", associationOverrideResource.joinColumnAt(1).getName());
