@@ -33,12 +33,16 @@ public class XmlAttributeOverride extends JpaContextNode
 
 	protected final XmlColumn column;
 
-	protected XmlAttributeOverride(IJpaContextNode parent, IOverride.Owner owner) {
+	protected XmlAttributeOverride(IJpaContextNode parent, IAttributeOverride.Owner owner) {
 		super(parent);
 		this.owner = owner;
 		this.column = new XmlColumn(this, this);
 	}
 
+	public Owner owner() {
+		return this.owner;
+	}
+	
 	public String getName() {
 		return this.name;
 	}
@@ -66,7 +70,7 @@ public class XmlAttributeOverride extends JpaContextNode
 	}
 
 	public ITypeMapping typeMapping() {
-		return getOwner().typeMapping();
+		return owner().typeMapping();
 	}
 
 	public Table dbTable(String tablename) {
@@ -84,7 +88,7 @@ public class XmlAttributeOverride extends JpaContextNode
 	}
 
 	public boolean isVirtual() {
-		return getOwner().isVirtual(this);
+		return owner().isVirtual(this);
 	}
 
 //	@Override
@@ -94,10 +98,6 @@ public class XmlAttributeOverride extends JpaContextNode
 //		}
 //		return super.validationTextRange();
 //	}
-
-	public Owner getOwner() {
-		return this.owner;
-	}
 
 	public void initialize(AttributeOverride attributeOverride) {
 		this.attributeOverride = attributeOverride;

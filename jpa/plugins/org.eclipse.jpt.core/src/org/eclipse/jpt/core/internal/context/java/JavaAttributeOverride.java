@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverride;
@@ -26,16 +27,14 @@ public class JavaAttributeOverride extends JavaOverride<AttributeOverride>
 	protected final IJavaColumn column;
 	
 
-	public JavaAttributeOverride(IJavaJpaContextNode parent, Owner owner) {
+	public JavaAttributeOverride(IJavaJpaContextNode parent, IAttributeOverride.Owner owner) {
 		super(parent, owner);
 		this.column = jpaFactory().createJavaColumn(this, this);
 	}
 	
-	
 	@Override
-	public void initializeFromResource(AttributeOverride attributeOverrideResource) {
-		super.initializeFromResource(attributeOverrideResource);
-		this.column.initializeFromResource(this.columnResource());
+	public IAttributeOverride.Owner owner() {
+		return (IAttributeOverride.Owner) super.owner();
 	}
 	
 	public Column columnResource() {
@@ -88,7 +87,13 @@ public class JavaAttributeOverride extends JavaOverride<AttributeOverride>
 		return this.owner().typeMapping().allOverridableAttributeNames();
 	}
 	
-	//************* java resource model -> java context model **************
+	//************* java resource model -> java context model **************	
+	@Override
+	public void initializeFromResource(AttributeOverride attributeOverrideResource) {
+		super.initializeFromResource(attributeOverrideResource);
+		this.column.initializeFromResource(this.columnResource());
+	}
+
 	@Override
 	public void update(AttributeOverride attributeOverrideResource) {
 		super.update(attributeOverrideResource);

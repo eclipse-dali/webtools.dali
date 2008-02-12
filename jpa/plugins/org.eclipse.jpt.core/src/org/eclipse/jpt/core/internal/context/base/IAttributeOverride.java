@@ -14,4 +14,15 @@ public interface IAttributeOverride extends IOverride, IColumn.Owner
 {
 	IColumn getColumn();
 
+	IAttributeOverride.Owner owner();
+	
+	interface Owner extends IOverride.Owner
+	{
+		/**
+		 * Return the column mapping with the given attribute name.
+		 * Return null if it does not exist.  This column mapping
+		 * will be found in the mapped superclass (or embeddable), not in the owning entity
+		 */
+		IColumnMapping columnMapping(String attributeName);
+	}
 }

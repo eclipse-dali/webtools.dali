@@ -91,6 +91,21 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 			}
 		});
 	}
+	
+	private IType createTestEntity() throws Exception {
+		createEntityAnnotation();
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+		});
+	}
 
 	private IType createTestSubType() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
@@ -258,5 +273,22 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		
 		IAttributeOverride attributeOverride = entity.defaultAttributeOverrides().next();
 		assertTrue(attributeOverride.isVirtual());
+	}
+	
+	public void testSetColumn() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		IEntity entity = javaEntity();
+		IAttributeOverride attributeOverride = entity.addSpecifiedAttributeOverride(0);
+		
+		attributeOverride.getColumn().setSpecifiedName("FOO");
+		
+		
+		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		AttributeOverride attributeOverrideResource = (AttributeOverride) typeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
+	
+		assertEquals("FOO", attributeOverrideResource.getColumn().getName());
+		assertEquals("FOO", entity.specifiedAttributeOverrides().next().getColumn().getSpecifiedName());
 	}
 }

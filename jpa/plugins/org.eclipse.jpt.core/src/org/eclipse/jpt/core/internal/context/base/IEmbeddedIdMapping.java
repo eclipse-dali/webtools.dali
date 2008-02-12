@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.base;
 import java.util.ListIterator;
 
 
-public interface IEmbeddedIdMapping extends IAttributeMapping, IOverride.Owner
+public interface IEmbeddedIdMapping extends IAttributeMapping, IAttributeOverride.Owner
 {
 	// **************** attribute overrides **************************************
 
