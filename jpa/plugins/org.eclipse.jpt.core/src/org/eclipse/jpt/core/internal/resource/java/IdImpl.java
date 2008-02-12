@@ -55,11 +55,11 @@ public class IdImpl extends AbstractAnnotationResource<Attribute> implements Id
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResource parent, Member member) {
+		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new IdImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return null;
 		}
 		

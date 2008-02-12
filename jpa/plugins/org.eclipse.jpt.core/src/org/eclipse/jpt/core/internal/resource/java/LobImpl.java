@@ -55,11 +55,11 @@ public class LobImpl extends AbstractAnnotationResource<Attribute> implements Lo
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResource parent, Member member) {
+		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new LobImpl(parent, (Attribute) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return null;
 		}
 

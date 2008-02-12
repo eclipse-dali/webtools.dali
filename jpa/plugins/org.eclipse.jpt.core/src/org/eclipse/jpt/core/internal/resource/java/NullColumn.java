@@ -15,19 +15,23 @@ import org.eclipse.jpt.core.internal.ITextRange;
 
 public class NullColumn extends NullAbstractColumn implements Column, Annotation
 {	
-	public NullColumn(JavaResource parent) {
+	public NullColumn(JavaPersistentResource parent) {
 		super(parent);
 	}
 
+	@Override
+	public JavaPersistentResource parent() {
+		return (JavaPersistentResource) super.parent();
+	}
+	
 	public String getAnnotationName() {
 		return Column.ANNOTATION_NAME;
 	}
 
 	@Override
 	protected Column createColumnResource() {
-		return (Column) super.createColumnResource();
+		return (Column) parent().addAnnotation(getAnnotationName());
 	}
-
 
 	public Integer getLength() {
 		return null;

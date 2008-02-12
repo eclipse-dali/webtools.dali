@@ -62,7 +62,7 @@ public class AttributeOverrideImpl
 	//************ AttriubteOverride implementation ****************
 	
 	public Column getNonNullColumn() {
-		return (getColumn() != null) ? getColumn() : new NullColumn(this);
+		return (getColumn() != null) ? getColumn() : new NullAttributeOverrideColumn(this);
 	}
 	
 	public Column getColumn() {
@@ -139,11 +139,11 @@ public class AttributeOverrideImpl
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResource parent, Member member) {
+		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
 			return AttributeOverrideImpl.createAttributeOverride(parent, member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return null;
 		}
 

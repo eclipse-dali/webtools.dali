@@ -139,11 +139,11 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResource parent, Member member) {
+		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new DiscriminatorColumnImpl(parent, member, DiscriminatorColumnImpl.DECLARATION_ANNOTATION_ADAPTER);
 		}
 		
-		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return new NullDiscriminatorColumn(parent);
 		}
 

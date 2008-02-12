@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
 
 public class NullEmbedded extends AbstractResource implements Embedded, Annotation
 {	
-	protected NullEmbedded(JavaResource parent) {
+	protected NullEmbedded(JavaPersistentResource parent) {
 		super(parent);
 	}
 

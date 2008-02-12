@@ -132,11 +132,11 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 			super();
 		}
 
-		public AttributeOverrides buildAnnotation(JavaResource parent, Member member) {
+		public AttributeOverrides buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new AttributeOverridesImpl(parent, member);
 		}
 		
-		public AttributeOverrides buildNullAnnotation(JavaResource parent, Member member) {
+		public AttributeOverrides buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return null;
 		}
 

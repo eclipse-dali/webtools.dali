@@ -26,7 +26,7 @@ public class NullJoinColumn extends NullAbstractColumn implements JoinColumn, An
 
 	@Override
 	protected JoinColumn createColumnResource() {
-		return (JoinColumn) super.createColumnResource();
+		throw new UnsupportedOperationException();
 	}
 
 	public String getReferencedColumnName() {
@@ -34,9 +34,7 @@ public class NullJoinColumn extends NullAbstractColumn implements JoinColumn, An
 	}
 
 	public void setReferencedColumnName(String referencedColumnName) {
-		if (referencedColumnName != null) {
-			createColumnResource().setReferencedColumnName(referencedColumnName);
-		}		
+		throw new UnsupportedOperationException();
 	}
 
 	public ITextRange referencedColumnNameTextRange(CompilationUnit astRoot) {

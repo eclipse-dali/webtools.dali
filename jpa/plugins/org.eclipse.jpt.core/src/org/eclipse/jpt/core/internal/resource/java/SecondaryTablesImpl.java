@@ -136,11 +136,11 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResource parent, Member member) {
+		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new SecondaryTablesImpl((JavaPersistentTypeResource) parent, member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return null;
 		}
 

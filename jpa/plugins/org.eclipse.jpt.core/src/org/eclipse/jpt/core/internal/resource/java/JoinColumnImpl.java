@@ -199,11 +199,11 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResource parent, Member member) {
+		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
 			return JoinColumnImpl.createJoinColumn(parent, member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return null;
 		}
 

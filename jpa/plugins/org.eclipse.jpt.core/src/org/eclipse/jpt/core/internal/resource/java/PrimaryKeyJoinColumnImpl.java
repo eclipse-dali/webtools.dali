@@ -158,12 +158,12 @@ public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements Nes
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResource parent, Member member) {
+		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
 			return PrimaryKeyJoinColumnImpl.createPrimaryKeyJoinColumn(parent, member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
-			return new NullPrimaryKeyJoinColumn(parent);
+		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+			return null;
 		}
 
 		public String getAnnotationName() {

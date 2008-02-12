@@ -134,11 +134,11 @@ public class JoinColumnsImpl extends AbstractAnnotationResource<Member> implemen
 			super();
 		}
 
-		public JoinColumns buildAnnotation(JavaResource parent, Member member) {
+		public JoinColumns buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new JoinColumnsImpl(parent, member);
 		}
 		
-		public JoinColumns buildNullAnnotation(JavaResource parent, Member member) {
+		public JoinColumns buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return null;
 		}
 

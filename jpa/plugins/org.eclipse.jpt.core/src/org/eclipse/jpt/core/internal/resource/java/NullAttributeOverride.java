@@ -19,14 +19,14 @@ public class NullAttributeOverride extends AbstractResource implements Attribute
 	//this would make it more similar to the Virtual mappings concept in xml
 	
 	
-	private final NullColumn column;
+	private final NullAttributeOverrideColumn column;
 	
 	private String name;
 	
 	public NullAttributeOverride(JavaResource parent, String name) {
 		super(parent);
 		this.name = name;
-		this.column = new NullColumn(this);
+		this.column = new NullAttributeOverrideColumn(this);
 	}
 
 	public void initialize(CompilationUnit astRoot) {

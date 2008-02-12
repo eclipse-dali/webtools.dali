@@ -13,8 +13,13 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 public class NullDiscriminatorColumn extends NullNamedColumn implements DiscriminatorColumn, Annotation
 {	
-	public NullDiscriminatorColumn(JavaResource parent) {
+	public NullDiscriminatorColumn(JavaPersistentResource parent) {
 		super(parent);
+	}
+	
+	@Override
+	public JavaPersistentResource parent() {
+		return (JavaPersistentResource) super.parent();
 	}
 
 	public String getAnnotationName() {
@@ -23,7 +28,7 @@ public class NullDiscriminatorColumn extends NullNamedColumn implements Discrimi
 
 	@Override
 	protected DiscriminatorColumn createColumnResource() {
-		return (DiscriminatorColumn) super.createColumnResource();
+		return (DiscriminatorColumn) parent().addAnnotation(getAnnotationName());
 	}
 
 	public DiscriminatorType getDiscriminatorType() {

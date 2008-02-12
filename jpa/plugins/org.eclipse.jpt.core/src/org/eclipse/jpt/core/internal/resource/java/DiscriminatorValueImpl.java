@@ -91,11 +91,11 @@ public class DiscriminatorValueImpl extends AbstractAnnotationResource<Type> imp
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResource parent, Member member) {
+		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new DiscriminatorValueImpl(parent, (Type) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return new NullDiscriminatorValue(parent);
 		}
 

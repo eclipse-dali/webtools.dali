@@ -90,11 +90,11 @@ public class EnumeratedImpl extends AbstractAnnotationResource<Attribute> implem
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResource parent, Member member) {
+		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new EnumeratedImpl(parent, (Attribute) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return new NullEnumerated(parent);
 		}
 		

@@ -15,8 +15,13 @@ import org.eclipse.jpt.core.internal.ITextRange;
 
 public class NullEnumerated extends AbstractResource implements Enumerated, Annotation
 {	
-	protected NullEnumerated(JavaResource parent) {
+	protected NullEnumerated(JavaPersistentResource parent) {
 		super(parent);
+	}
+
+	@Override
+	public JavaPersistentResource parent() {
+		return (JavaPersistentResource) super.parent();
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -38,12 +43,7 @@ public class NullEnumerated extends AbstractResource implements Enumerated, Anno
 	public String getAnnotationName() {
 		return Enumerated.ANNOTATION_NAME;
 	}
-	
-	@Override
-	public JavaPersistentResource parent() {
-		return (JavaPersistentResource) super.parent();
-	}
-	
+		
 	protected Enumerated createEnumeratedResource() {
 		return (Enumerated) parent().addAnnotation(getAnnotationName());
 	}

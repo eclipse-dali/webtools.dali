@@ -16,8 +16,13 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 public abstract class NullAbstractTable extends AbstractResource implements Table, Annotation
 {
-	protected NullAbstractTable(JavaResource parent) {
+	protected NullAbstractTable(JavaPersistentResource parent) {
 		super(parent);
+	}
+	
+	@Override
+	public JavaPersistentResource parent() {
+		return (JavaPersistentResource) super.parent();
 	}
 	
 	public void initialize(CompilationUnit astRoot) {
@@ -34,11 +39,6 @@ public abstract class NullAbstractTable extends AbstractResource implements Tabl
 	
 	public void removeAnnotation() {
 		throw new UnsupportedOperationException();
-	}
-	
-	@Override
-	public JavaPersistentResource parent() {
-		return (JavaPersistentResource) super.parent();
 	}
 	
 	protected Table createTableResource() {

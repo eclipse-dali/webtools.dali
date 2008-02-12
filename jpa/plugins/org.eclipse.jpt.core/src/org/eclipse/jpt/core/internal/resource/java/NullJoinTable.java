@@ -15,7 +15,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 public class NullJoinTable extends NullAbstractTable implements JoinTable
 {	
-	protected NullJoinTable(JavaResource parent) {
+	protected NullJoinTable(JavaPersistentResource parent) {
 		super(parent);
 	}
 

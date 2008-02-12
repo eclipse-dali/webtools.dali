@@ -35,15 +35,7 @@ public abstract class NullNamedColumn extends AbstractResource implements NamedC
 		throw new UnsupportedOperationException();
 	}
 	
-	@Override
-	public JavaPersistentResource parent() {
-		return (JavaPersistentResource) super.parent();
-	}
-	
-	protected NamedColumn createColumnResource() {
-		return (NamedColumn) parent().addAnnotation(getAnnotationName());
-	}
-
+	protected abstract NamedColumn createColumnResource();
 
 	public String getName() {
 		return null;

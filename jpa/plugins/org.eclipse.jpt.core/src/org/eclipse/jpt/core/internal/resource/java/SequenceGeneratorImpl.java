@@ -125,11 +125,11 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 			super();
 		}
 		
-		public Annotation buildAnnotation(JavaResource parent, Member member) {
+		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new SequenceGeneratorImpl(parent, member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return null;
 		}
 

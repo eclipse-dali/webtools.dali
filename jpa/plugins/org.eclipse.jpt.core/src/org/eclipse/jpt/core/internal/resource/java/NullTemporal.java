@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
 
 public class NullTemporal extends AbstractResource implements Temporal, Annotation
 {	
-	protected NullTemporal(JavaResource parent) {
+	protected NullTemporal(JavaPersistentResource parent) {
 		super(parent);
 	}
 

@@ -54,11 +54,11 @@ public class TransientImpl extends AbstractAnnotationResource<Attribute> impleme
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResource parent, Member member) {
+		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new TransientImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return null;
 		}
 		

@@ -439,11 +439,11 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 			super();
 		}
 		
-		public Annotation buildAnnotation(JavaResource parent, Member member) {
+		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new TableGeneratorImpl(parent, member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return null;
 		}
 

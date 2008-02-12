@@ -26,7 +26,7 @@ public class NullPrimaryKeyJoinColumn extends NullNamedColumn implements Primary
 
 	@Override
 	protected PrimaryKeyJoinColumn createColumnResource() {
-		return (PrimaryKeyJoinColumn) super.createColumnResource();
+		throw new UnsupportedOperationException();
 	}
 
 	public String getReferencedColumnName() {
@@ -34,9 +34,7 @@ public class NullPrimaryKeyJoinColumn extends NullNamedColumn implements Primary
 	}
 
 	public void setReferencedColumnName(String referencedColumnName) {
-		if (referencedColumnName != null) {
-			createColumnResource().setReferencedColumnName(referencedColumnName);
-		}		
+		throw new UnsupportedOperationException();
 	}
 
 	public ITextRange referencedColumnNameTextRange(CompilationUnit astRoot) {

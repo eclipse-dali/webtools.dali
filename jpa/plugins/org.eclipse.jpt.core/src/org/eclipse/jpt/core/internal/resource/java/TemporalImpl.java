@@ -90,11 +90,11 @@ public class TemporalImpl extends AbstractAnnotationResource<Attribute> implemen
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResource parent, Member member) {
+		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new TemporalImpl(parent, (Attribute) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return new NullTemporal(parent);
 		}
 		

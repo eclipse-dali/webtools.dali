@@ -131,11 +131,11 @@ public class AssociationOverridesImpl extends AbstractAnnotationResource<Member>
 			super();
 		}
 
-		public AssociationOverrides buildAnnotation(JavaResource parent, Member member) {
+		public AssociationOverrides buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new AssociationOverridesImpl(parent, member);
 		}
 		
-		public AssociationOverrides buildNullAnnotation(JavaResource parent, Member member) {
+		public AssociationOverrides buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return null;
 		}
 

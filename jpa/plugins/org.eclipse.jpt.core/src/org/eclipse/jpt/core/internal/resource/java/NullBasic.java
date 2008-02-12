@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.ITextRange;
 
 public class NullBasic extends AbstractResource implements Basic, Annotation
 {	
-	protected NullBasic(JavaResource parent) {
+	protected NullBasic(JavaPersistentResource parent) {
 		super(parent);
 	}
 

@@ -15,8 +15,13 @@ import org.eclipse.jpt.core.internal.ITextRange;
 
 public class NullDiscriminatorValue extends AbstractResource implements DiscriminatorValue, Annotation
 {	
-	protected NullDiscriminatorValue(JavaResource parent) {
+	protected NullDiscriminatorValue(JavaPersistentResource parent) {
 		super(parent);
+	}
+	
+	@Override
+	public JavaPersistentResource parent() {
+		return (JavaPersistentResource) super.parent();
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -47,11 +52,6 @@ public class NullDiscriminatorValue extends AbstractResource implements Discrimi
 		if (value != null) {
 			createDiscriminatorValueResource().setValue(value);
 		}		
-	}
-	
-	@Override
-	public JavaPersistentResource parent() {
-		return (JavaPersistentResource) super.parent();
 	}
 	
 	protected DiscriminatorValue createDiscriminatorValueResource() {

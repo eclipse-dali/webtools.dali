@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 public class NullTable extends NullAbstractTable implements Table
 {	
-	protected NullTable(JavaResource parent) {
+	protected NullTable(JavaPersistentResource parent) {
 		super(parent);
 	}
 

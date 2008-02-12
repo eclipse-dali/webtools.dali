@@ -20,9 +20,7 @@ public abstract class NullAbstractColumn extends NullNamedColumn implements Abst
 	}
 
 	@Override
-	protected AbstractColumn createColumnResource() {
-		return (AbstractColumn) super.createColumnResource();
-	}
+	protected abstract AbstractColumn createColumnResource();
 
 	public String getTable() {
 		return null;

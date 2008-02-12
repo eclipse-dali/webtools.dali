@@ -95,11 +95,11 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResource parent, Member member) {
+		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new EntityImpl((JavaPersistentTypeResource) parent, (Type) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return null;
 		}
 

@@ -89,11 +89,11 @@ public class InheritanceImpl extends AbstractAnnotationResource<Type> implements
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResource parent, Member member) {
+		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new InheritanceImpl(parent, (Type) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return new NullInheritance(parent);
 		}
 

@@ -134,11 +134,11 @@ public class PrimaryKeyJoinColumnsImpl extends AbstractAnnotationResource<Member
 			super();
 		}
 
-		public PrimaryKeyJoinColumns buildAnnotation(JavaResource parent, Member member) {
+		public PrimaryKeyJoinColumns buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new PrimaryKeyJoinColumnsImpl(parent, member);
 		}
 		
-		public PrimaryKeyJoinColumns buildNullAnnotation(JavaResource parent, Member member) {
+		public PrimaryKeyJoinColumns buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return null;
 		}
 

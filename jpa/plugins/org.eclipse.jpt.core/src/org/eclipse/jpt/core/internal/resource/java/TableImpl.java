@@ -78,11 +78,11 @@ public class TableImpl extends AbstractTableResource
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResource parent, Member member) {
+		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new TableImpl(parent, member);
 		}
 
-		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return new NullTable(parent);
 		}
 		

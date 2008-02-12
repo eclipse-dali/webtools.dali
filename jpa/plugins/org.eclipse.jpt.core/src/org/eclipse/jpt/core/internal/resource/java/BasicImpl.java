@@ -126,11 +126,11 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResource parent, Member member) {
+		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new BasicImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return new NullBasic(parent);
 		}
 

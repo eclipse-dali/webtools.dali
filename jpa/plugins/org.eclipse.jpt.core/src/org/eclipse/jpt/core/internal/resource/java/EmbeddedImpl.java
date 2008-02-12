@@ -55,11 +55,11 @@ public class EmbeddedImpl extends AbstractAnnotationResource<Attribute> implemen
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaResource parent, Member member) {
+		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
 			return new EmbeddedImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
 			return new NullEmbedded(parent);
 		}
 
