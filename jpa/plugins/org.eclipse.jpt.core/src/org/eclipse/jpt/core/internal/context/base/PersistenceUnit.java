@@ -1221,7 +1221,7 @@ public class PersistenceUnit extends JpaContextNode
 				return xmlPersistentType;
 			}
 		}
-		for (IClassRef classRef : CollectionTools.iterable(specifiedClassRefs())) {
+		for (IClassRef classRef : CollectionTools.iterable(classRefs())) {
 			if (classRef.isFor(fullyQualifiedTypeName)) {
 				return classRef.getJavaPersistentType();
 			}

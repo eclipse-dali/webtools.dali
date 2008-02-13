@@ -984,7 +984,6 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		//persistentType not listed in persistence.xml and discoverAnnotatedClasses is false
 		assertFalse(jpaProject().discoversAnnotatedClasses());
 		assertNull(persistenceUnit.persistentType(FULLY_QUALIFIED_TYPE_NAME));
-		assertEquals(javaPersistentType(), persistenceUnit.persistentType(FULLY_QUALIFIED_TYPE_NAME));
 		
 		//test persistentType not listed in persistence.xml, discover annotated classes set to true
 		jpaProject().setDiscoversAnnotatedClasses(true);	
