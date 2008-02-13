@@ -776,8 +776,24 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	
 	public void removeSpecifiedAttributeOverride(int index) {
 		IJavaAttributeOverride removedAttributeOverride = this.specifiedAttributeOverrides.remove(index);
+		
+		//add the default attribute override so that I can control the order that change notification is sent.
+		//otherwise when we remove the annotation from java we will get an update and add the attribute override
+		//during the udpate.  This causes the UI to be flaky, since change notification might not occur in the correct order
+		IJavaAttributeOverride defaultAttributeOverride = null;
+		if (removedAttributeOverride.getName() != null) {
+			if (CollectionTools.contains(allOverridableAttributeNames(), removedAttributeOverride.getName())) {
+				defaultAttributeOverride = createAttributeOverride(new NullAttributeOverride(this.persistentTypeResource, removedAttributeOverride.getName()));
+				this.defaultAttributeOverrides.add(defaultAttributeOverride);
+			}
+		}
+
 		this.persistentTypeResource.removeAnnotation(index, AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		fireItemRemoved(IEntity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, removedAttributeOverride);
+		
+		if (defaultAttributeOverride != null) {
+			fireItemAdded(IEntity.DEFAULT_ATTRIBUTE_OVERRIDES_LIST, defaultAttributeOverridesSize() - 1, defaultAttributeOverride);
+		}
 	}
 	
 	protected void removeSpecifiedAttributeOverride_(IJavaAttributeOverride attributeOverride) {
@@ -896,13 +912,23 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	
 	public void removeSpecifiedAssociationOverride(int index) {
 		IJavaAssociationOverride removedAssociationOverride = this.specifiedAssociationOverrides.remove(index);
-		if (CollectionTools.contains(allOverridableAssociationNames(), removedAssociationOverride.getName())) {
-			if (!containsSpecifiedAssociationOverride(removedAssociationOverride.getName())) {
-				this.defaultAssociationOverrides.add(createAssociationOverride(new NullAssociationOverride(this.persistentTypeResource, removedAssociationOverride.getName())));
+		IJavaAssociationOverride defaultAssociationOverride = null;
+
+		//add the default association override so that I can control the order that change notification is sent.
+		//otherwise when we remove the annotation from java we will get an update and add the association override
+		//during the udpate.  This causes the UI to be flaky, since change notification might not occur in the correct order
+		if (removedAssociationOverride.getName() != null) {
+			if (CollectionTools.contains(allOverridableAttributeNames(), removedAssociationOverride.getName())) {
+				defaultAssociationOverride = createAssociationOverride(new NullAssociationOverride(this.persistentTypeResource, removedAssociationOverride.getName()));
+				this.defaultAssociationOverrides.add(defaultAssociationOverride);
 			}
 		}
 		this.persistentTypeResource.removeAnnotation(index, AssociationOverride.ANNOTATION_NAME, AssociationOverrides.ANNOTATION_NAME);
 		fireItemRemoved(IEntity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, removedAssociationOverride);
+
+		if (defaultAssociationOverride != null) {
+			fireItemAdded(IEntity.DEFAULT_ASSOCIATION_OVERRIDES_LIST, defaultAssociationOverridesSize() - 1, defaultAssociationOverride);
+		}
 	}
 	
 	protected void removeSpecifiedAssociationOverride_(IJavaAssociationOverride associationOverride) {

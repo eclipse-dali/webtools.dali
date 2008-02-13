@@ -133,8 +133,24 @@ public class JavaEmbeddedIdMapping extends JavaAttributeMapping
 	
 	public void removeSpecifiedAttributeOverride(int index) {
 		IJavaAttributeOverride removedAttributeOverride = this.specifiedAttributeOverrides.remove(index);
+	
+		//add the default attribute override so that I can control the order that change notification is sent.
+		//otherwise when we remove the annotation from java we will get an update and add the attribute override
+		//during the udpate.  This causes the UI to be flaky, since change notification might not occur in the correct order
+		IJavaAttributeOverride defaultAttributeOverride = null;
+		if (removedAttributeOverride.getName() != null) {
+			if (CollectionTools.contains(allOverridableAttributeNames(), removedAttributeOverride.getName())) {
+				defaultAttributeOverride = createAttributeOverride(new NullAttributeOverride(this.persistentAttributeResource, removedAttributeOverride.getName()));
+				this.defaultAttributeOverrides.add(defaultAttributeOverride);
+			}
+		}
+		
 		this.persistentAttributeResource.removeAnnotation(index, AttributeOverride.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		fireItemRemoved(IEmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, removedAttributeOverride);
+	
+		if (defaultAttributeOverride != null) {
+			fireItemAdded(IEmbeddedIdMapping.DEFAULT_ATTRIBUTE_OVERRIDES_LIST, defaultAttributeOverridesSize() - 1, defaultAttributeOverride);
+		}
 	}
 	
 	protected void removeSpecifiedAttributeOverride_(IJavaAttributeOverride attributeOverride) {
