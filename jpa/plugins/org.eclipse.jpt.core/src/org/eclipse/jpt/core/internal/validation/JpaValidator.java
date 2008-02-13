@@ -71,6 +71,9 @@ public class JpaValidator implements IValidatorJob {
 	}
 
 	public IStatus validateInJob(IValidationContext context, IReporter reporter) throws ValidationException {
+		if (reporter.isCancelled()) {
+			return Status.CANCEL_STATUS;
+		}
 		this.validate(context, reporter);
 		return OK_STATUS;
 	}
