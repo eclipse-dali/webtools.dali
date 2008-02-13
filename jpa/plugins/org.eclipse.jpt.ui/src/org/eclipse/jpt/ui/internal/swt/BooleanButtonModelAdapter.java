@@ -171,6 +171,9 @@ public class BooleanButtonModelAdapter {
 	}
 
 	protected void setButtonSelection(Boolean b) {
+		if (this.button.isDisposed()) {
+			return;
+		}
 		this.button.setSelection(this.booleanValue(b));
 	}
 
@@ -186,13 +189,18 @@ public class BooleanButtonModelAdapter {
 	 * The button has been "selected" - synchronize the model.
 	 */
 	protected void buttonSelected(SelectionEvent event) {
-		this.booleanHolder.setValue(Boolean.valueOf(button.getSelection()));
+		if (this.button.isDisposed()) {
+			return;
+		}
+		this.booleanHolder.setValue(Boolean.valueOf(this.button.getSelection()));
 	}
 
 
 	// ********** dispose **********
 
 	protected void buttonDisposed(DisposeEvent event) {
+		// the button is not yet "disposed" when we receive this event
+		// so we can still remove our listeners
 		this.button.removeSelectionListener(this.buttonSelectionListener);
 		this.button.removeDisposeListener(this.buttonDisposeListener);
 		this.booleanHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.booleanChangeListener);
