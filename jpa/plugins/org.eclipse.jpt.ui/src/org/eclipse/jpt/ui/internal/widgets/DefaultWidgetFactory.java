@@ -58,7 +58,7 @@ public final class DefaultWidgetFactory implements IWidgetFactory {
 	}
 
 	private Button createButton(Composite parent, String text, int style) {
-		Button button = new Button(parent, SWT.BORDER | style);
+		Button button = new Button(parent, style);
 		button.setText(text);
 		return button;
 	}

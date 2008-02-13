@@ -208,12 +208,12 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 	}
 
 	private ListValueModel<IJoinColumn> buildJoinColumnsListModel() {
-		return new ItemPropertyListValueModelAdapter<IJoinColumn>(buildJoinColumnsListHolder(), 
-			INamedColumn.SPECIFIED_NAME_PROPERTY, 
+		return new ItemPropertyListValueModelAdapter<IJoinColumn>(buildJoinColumnsListHolder(),
+			INamedColumn.SPECIFIED_NAME_PROPERTY,
 			INamedColumn.DEFAULT_NAME_PROPERTY,
 			IAbstractJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
 			IAbstractJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY);
-	}	
+	}
 
 	private ListValueModel<IJoinColumn> buildJoinColumnsListHolder() {
 		java.util.List<ListValueModel<IJoinColumn>> list = new ArrayList<ListValueModel<IJoinColumn>>();
@@ -221,14 +221,14 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 		list.add(buildDefaultJoinColumnListHolder());
 		return new CompositeListValueModel<ListValueModel<IJoinColumn>, IJoinColumn>(list);
 	}
-	
+
 	private ListValueModel<IJoinColumn> buildSpecifiedJoinColumnsListHolder() {
 		return new ListAspectAdapter<ISingleRelationshipMapping, IJoinColumn>(getSubjectHolder(), ISingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST) {
 			@Override
 			protected ListIterator<IJoinColumn> listIterator_() {
 				return subject.specifiedJoinColumns();
 			}
-			
+
 			@Override
 			protected int size_() {
 				return subject.specifiedJoinColumnsSize();
@@ -238,9 +238,8 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 
 	private ListValueModel<IJoinColumn> buildDefaultJoinColumnListHolder() {
 		return new PropertyListValueModelAdapter<IJoinColumn>(buildDefaultJoinColumnHolder());
-
 	}
-	
+
 	private PropertyValueModel<IJoinColumn> buildDefaultJoinColumnHolder() {
 		return new PropertyAspectAdapter<ISingleRelationshipMapping, IJoinColumn>(getSubjectHolder(), ISingleRelationshipMapping.DEFAULT_JOIN_COLUMN) {
 			@Override
@@ -249,7 +248,6 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 			}
 		};
 	}
-
 
 	private ILabelProvider buildJoinColumnsListLabelProvider() {
 		return new LabelProvider() {
@@ -261,7 +259,6 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 			}
 		};
 	}
-
 
 	private SelectionListener buildOverrideDefaultJoinColumnsSelectionListener() {
 		return new SelectionAdapter() {
@@ -373,6 +370,8 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 					IJoinColumn joinColumn = subject.addSpecifiedJoinColumn(0);
 					joinColumn.setSpecifiedName(columnName);
 					joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+
+					joinColumnsListPane.setSelectedItem(joinColumn);
 				}
 			}
 			// Remove all the specified join columns

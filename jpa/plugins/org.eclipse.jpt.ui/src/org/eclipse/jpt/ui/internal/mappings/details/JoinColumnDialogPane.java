@@ -14,9 +14,11 @@ import java.util.Iterator;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.EnumDialogComboViewer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -27,15 +29,14 @@ import org.eclipse.swt.widgets.Composite;
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
- * |             ------------------------------------------------------------- |
- * | Table:      | TableCombo                                              |v| |
- * |             ------------------------------------------------------------- |
- * |             ------------------------------------------------------------- |
- * | Insertable: | EnumDialogComboViewer                                   |v| |
- * |             ------------------------------------------------------------- |
- * |             ------------------------------------------------------------- |
- * | Updatable:  | EnumDialogComboViewer                                   |v| |
- * |             ------------------------------------------------------------- |
+ * |        ------------------------------------------------------------------ |
+ * | Table: | TableCombo                                                   |v| |
+ * |        ------------------------------------------------------------------ |
+ * |                                                                           |
+ * | x Insertable                                                              |
+ * |                                                                           |
+ * | x Updatable                                                               |
+ * |                                                                           |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see JoinColumnStateObject
@@ -70,43 +71,56 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 		propertyNames.add(JoinColumnStateObject.TABLE_PROPERTY);
 	}
 
-	private EnumDialogComboViewer<JoinColumnStateObject, Boolean> buildInsertableCombo(Composite container) {
-
-		return new EnumDialogComboViewer<JoinColumnStateObject, Boolean>(this, container) {
-
+	private WritablePropertyValueModel<Boolean> buildInsertableHolder() {
+		return new PropertyAspectAdapter<JoinColumnStateObject, Boolean>(getSubjectHolder(), JoinColumnStateObject.INSERTABLE_PROPERTY) {
 			@Override
-			protected void addPropertyNames(Collection<String> propertyNames) {
-				super.addPropertyNames(propertyNames);
-				propertyNames.add(JoinColumnStateObject.INSERTABLE_PROPERTY);
+			protected Boolean buildValue_() {
+				return subject.getInsertable();
 			}
 
 			@Override
-			protected Boolean[] choices() {
-				return new Boolean[] { Boolean.TRUE, Boolean.FALSE };
+			protected void setValue_(Boolean value) {
+				subject.setInsertable(value);
 			}
 
 			@Override
-			protected Boolean defaultValue() {
-				return subject().getDefaultInsertable();
+			protected void subjectChanged() {
+				Object oldValue = this.value();
+				super.subjectChanged();
+				Object newValue = this.value();
+
+				// Make sure the default value is appended to the text
+				if (oldValue == newValue && newValue == null) {
+					this.fireAspectChange(Boolean.TRUE, newValue);
+				}
 			}
+		};
+	}
+
+	private PropertyValueModel<String> buildInsertableStringHolder() {
+
+		return new TransformationPropertyValueModel<Boolean, String>(buildInsertableHolder()) {
 
 			@Override
-			protected String displayString(Boolean value) {
-				return buildDisplayString(
-					JptUiMappingsMessages.class,
-					JoinColumnDialogPane.this,
-					value
-				);
-			}
+			protected String transform(Boolean value) {
 
-			@Override
-			protected Boolean getValue() {
-				return subject().getInsertable();
-			}
+				if ((subject() != null) && (value == null)) {
 
-			@Override
-			protected void setValue(Boolean value) {
-				subject().setInsertable(value);
+					Boolean defaultValue = subject().getDefaultInsertable();
+
+					if (defaultValue != null) {
+
+						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+						                                           JptUiMappingsMessages.Boolean_False;
+
+						return NLS.bind(
+							JptUiMappingsMessages.ColumnComposite_insertableWithDefault,
+							defaultStringValue
+						);
+					}
+				}
+
+				return JptUiMappingsMessages.JoinColumnDialog_insertable;
 			}
 		};
 	}
@@ -141,43 +155,56 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 		};
 	}
 
-	private EnumDialogComboViewer<JoinColumnStateObject, Boolean> buildUpdatableCombo(Composite container) {
-
-		return new EnumDialogComboViewer<JoinColumnStateObject, Boolean>(this, container) {
-
+	private WritablePropertyValueModel<Boolean> buildUpdatableHolder() {
+		return new PropertyAspectAdapter<JoinColumnStateObject, Boolean>(getSubjectHolder(), JoinColumnStateObject.UPDATABLE_PROPERTY) {
 			@Override
-			protected void addPropertyNames(Collection<String> propertyNames) {
-				super.addPropertyNames(propertyNames);
-				propertyNames.add(JoinColumnStateObject.UPDATABLE_PROPERTY);
+			protected Boolean buildValue_() {
+				return subject.getUpdatable();
 			}
 
 			@Override
-			protected Boolean[] choices() {
-				return new Boolean[] { Boolean.TRUE, Boolean.FALSE };
+			protected void setValue_(Boolean value) {
+				subject.setUpdatable(value);
 			}
 
 			@Override
-			protected Boolean defaultValue() {
-				return subject().getDefaultUpdatable();
+			protected void subjectChanged() {
+				Object oldValue = this.value();
+				super.subjectChanged();
+				Object newValue = this.value();
+
+				// Make sure the default value is appended to the text
+				if (oldValue == newValue && newValue == null) {
+					this.fireAspectChange(Boolean.TRUE, newValue);
+				}
 			}
+		};
+	}
+
+	private PropertyValueModel<String> buildUpdatableStringHolder() {
+
+		return new TransformationPropertyValueModel<Boolean, String>(buildUpdatableHolder()) {
 
 			@Override
-			protected String displayString(Boolean value) {
-				return buildDisplayString(
-					JptUiMappingsMessages.class,
-					JoinColumnDialogPane.this,
-					value
-				);
-			}
+			protected String transform(Boolean value) {
 
-			@Override
-			protected Boolean getValue() {
-				return subject().getUpdatable();
-			}
+				if ((subject() != null) && (value == null)) {
 
-			@Override
-			protected void setValue(Boolean value) {
-				subject().setUpdatable(value);
+					Boolean defaultValue = subject().getDefaultUpdatable();
+
+					if (defaultValue != null) {
+
+						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+						                                           JptUiMappingsMessages.Boolean_False;
+
+						return NLS.bind(
+							JptUiMappingsMessages.ColumnComposite_updatableWithDefault,
+							defaultStringValue
+						);
+					}
+				}
+
+				return JptUiMappingsMessages.JoinColumnDialog_updatable;
 			}
 		};
 	}
@@ -206,19 +233,21 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 			IJpaHelpContextIds.MAPPING_JOIN_REFERENCED_COLUMN
 		);
 
-		// Insertable widgets
-		buildLabeledComposite(
-			container,
+		// Insertable check box
+		buildTriStateCheckBoxWithDefault(
+			buildSubPane(container, 4),
 			JptUiMappingsMessages.JoinColumnDialog_insertable,
-			buildInsertableCombo(container),
+			buildInsertableHolder(),
+			buildInsertableStringHolder(),
 			IJpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
 		);
 
-		// Updatable widgets
-		buildLabeledComposite(
+		// Updatable check box
+		buildTriStateCheckBoxWithDefault(
 			container,
 			JptUiMappingsMessages.JoinColumnDialog_updatable,
-			buildUpdatableCombo(container),
+			buildUpdatableHolder(),
+			buildUpdatableStringHolder(),
 			IJpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
 		);
 	}

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.util;
 
+import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
@@ -58,6 +59,12 @@ public final class ControlSwitcher
 	}
 
 	private PropertyChangeListener buildPropertyChangeListener() {
+		return new SWTPropertyChangeListenerWrapper(
+			buildPropertyChangeListener_()
+		);
+	}
+
+	private PropertyChangeListener buildPropertyChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
 				switchPanes(e.newValue());

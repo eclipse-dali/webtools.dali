@@ -66,6 +66,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
+@SuppressWarnings("nls")
 public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbeddedMapping>
 {
 	private WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder;
@@ -134,7 +135,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 			protected ListIterator<IAttributeOverride> listIterator_() {
 				return subject.specifiedAttributeOverrides();
 			}
-			
+
 			@Override
 			public int size_() {
 				return subject.specifiedAttributeOverridesSize();
@@ -151,14 +152,14 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 			protected ListIterator<IAttributeOverride> listIterator_() {
 				return subject.defaultAttributeOverrides();
 			}
-			
+
 			@Override
 			protected int size_() {
 				return subject.defaultAttributeOverridesSize();
 			}
 		};
 	}
-	
+
 	private List buildAttributeOverridesList(Composite parent,
 	                                         WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder) {
 
@@ -278,7 +279,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 			protected IAttributeOverride reverseTransform_(String value) {
 				for (Iterator<IAttributeOverride> iter = subject().attributeOverrides(); iter.hasNext(); ) {
 					IAttributeOverride attributeOverride = iter.next();
-					
+
 					if (attributeOverride.getName() == null) {
 						if (value == null) {
 							return attributeOverride;

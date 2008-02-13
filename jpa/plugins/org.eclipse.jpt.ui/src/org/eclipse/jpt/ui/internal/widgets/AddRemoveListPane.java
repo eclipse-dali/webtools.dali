@@ -9,11 +9,15 @@
 package org.eclipse.jpt.ui.internal.widgets;
 
 import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter.SelectionChangeEvent;
 import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter.SelectionChangeListener;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.Model;
+import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -50,6 +54,11 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * The main widget of this add/remove pane.
 	 */
 	private List list;
+
+	/**
+	 * Flag used to prevent circular
+	 */
+	private boolean locked;
 
 	/**
 	 * Creates a new <code>AddRemoveListPane</code>.
@@ -171,6 +180,39 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		return new SimplePropertyValueModel<String>();
 	}
 
+	private PropertyChangeListener buildSelectedItemPropertyChangeListener() {
+		return new SWTPropertyChangeListenerWrapper(
+			buildSelectedItemPropertyChangeListener_()
+		);
+	}
+
+	private PropertyChangeListener buildSelectedItemPropertyChangeListener_() {
+		return new PropertyChangeListener() {
+			public void propertyChanged(PropertyChangeEvent e) {
+
+				if (!locked) {
+					locked = true;
+
+					try {
+						Object value = e.newValue();
+						getSelectionModel().setSelectedValue(e.newValue());
+						int index = -1;
+
+						if (value != null) {
+							index = CollectionTools.indexOf(getListHolder().iterator(), value);
+						}
+
+						list.select(index);
+						updateButtons();
+					}
+					finally {
+						locked = false;
+					}
+				}
+			}
+		};
+	}
+
 	private SelectionChangeListener<Object> buildSelectionListener() {
 		return new SelectionChangeListener<Object>() {
 			public void selectionChanged(SelectionChangeEvent<Object> e) {
@@ -209,6 +251,11 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		);
 
 		listModel.addSelectionChangeListener(buildSelectionListener());
+
+		selectedItemHolder.addPropertyChangeListener(
+			PropertyValueModel.VALUE,
+			buildSelectedItemPropertyChangeListener()
+		);
 	}
 
 	/**
@@ -217,30 +264,46 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 */
 	private void selectionChanged() {
 
-		WritablePropertyValueModel<Object> selectedItemHolder = getSelectedItemHolder();
-		ObjectListSelectionModel selectionModel = getSelectionModel();
-		int selectionCount = list.getSelectionCount();
+		locked = true;
 
-		if (selectionCount == 0) {
-			selectedItemHolder.setValue(null);
-			selectionModel.clearSelection();
-		}
-		else if (selectionCount != 1) {
-			selectedItemHolder.setValue(null);
-			selectionModel.clearSelection();
+		try {
+			WritablePropertyValueModel<Object> selectedItemHolder = getSelectedItemHolder();
+			ObjectListSelectionModel selectionModel = getSelectionModel();
+			int selectionCount = list.getSelectionCount();
 
-			for (int index : list.getSelectionIndices()) {
-				selectionModel.addSelectionInterval(index, index);
+			if (selectionCount == 0) {
+				selectedItemHolder.setValue(null);
+				selectionModel.clearSelection();
 			}
-		}
-		else {
-			int selectedIndex = list.getSelectionIndex();
-			Object selectedItem = getListHolder().get(selectedIndex);
+			else if (selectionCount != 1) {
+				selectedItemHolder.setValue(null);
+				selectionModel.clearSelection();
 
-			selectedItemHolder.setValue(selectedItem);
-			selectionModel.setSelectedValue(selectedItem);
-		}
+				for (int index : list.getSelectionIndices()) {
+					selectionModel.addSelectionInterval(index, index);
+				}
+			}
+			else {
+				int selectedIndex = list.getSelectionIndex();
+				Object selectedItem = getListHolder().get(selectedIndex);
 
-		updateButtons();
+				selectedItemHolder.setValue(selectedItem);
+				selectionModel.setSelectedValue(selectedItem);
+			}
+
+			updateButtons();
+		}
+		finally {
+			locked = false;
+		}
+	}
+
+	/**
+	 * Selects the given value, which can be <code>null</code>.
+	 *
+	 * @param value The new selected value
+	 */
+	public void setSelectedItem(Object value) {
+		getSelectedItemHolder().setValue(value);
 	}
 }

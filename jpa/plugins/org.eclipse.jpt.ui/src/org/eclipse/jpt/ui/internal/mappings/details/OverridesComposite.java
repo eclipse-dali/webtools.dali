@@ -24,7 +24,6 @@ import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.IJoinColumnsEditor;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
-import org.eclipse.jpt.ui.internal.util.ControlVisibilityEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
@@ -40,6 +39,7 @@ import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationWritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -62,7 +62,7 @@ import org.eclipse.ui.part.PageBook;
  * | | |                                                                   | | |
  * | | --------------------------------------------------------------------- | |
  * | |                                                                       | |
- * | | x Override Default                                                    | |
+ * | |   x Override Default                                                  | |
  * | |                                                                       | |
  * | | --------------------------------------------------------------------- | |
  * | | |                                                                   | | |
@@ -84,8 +84,9 @@ import org.eclipse.ui.part.PageBook;
 public class OverridesComposite extends AbstractFormPane<IEntity>
 {
 	private ColumnComposite columnComposite;
+	private Composite columnPane;
 	private JoinColumnsComposite<IAssociationOverride> joinColumnsComposite;
-	private Composite joinColumnsGroupPane;
+	private Composite joinColumnsPane;
 	private Button overrideDefaultButton;
 	private WritablePropertyValueModel<IOverride> overrideHolder;
 
@@ -212,7 +213,17 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildOverrideDefaultHolder() {
-		return new SimplePropertyValueModel<Boolean>();
+		return new TransformationWritablePropertyValueModel<IOverride, Boolean>(overrideHolder) {
+			@Override
+			public void setValue(Boolean value) {
+				// Done in the button selection listener;
+			}
+
+			@Override
+			protected Boolean transform_(IOverride value) {
+				return !value.isVirtual();
+			}
+		};
 	}
 
 	private SelectionListener buildOverrideDefaultSelectionListener() {
@@ -223,15 +234,6 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 					Button button = (Button) e.widget;
 					overrideDefaultButtonSelected(button.getSelection());
 				}
-			}
-		};
-	}
-
-	private PropertyValueModel<Boolean> buildOverrideDefaultVisibilityHolder() {
-		return new TransformationPropertyValueModel<IOverride, Boolean>(overrideHolder) {
-			@Override
-			protected Boolean transform(IOverride value) {
-				return (value != null);
 			}
 		};
 	}
@@ -315,20 +317,16 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		);
 	}
 
-	private Composite buildPane(Composite container, int groupBoxMargin) {
-		return buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-	}
-
 	private Transformer<IOverride, Control> buildPaneTransformer() {
 		return new Transformer<IOverride, Control>() {
 			public Control transform(IOverride override) {
 
 				if (override instanceof IAttributeOverride) {
-					return columnComposite.getControl();
+					return columnPane;
 				}
 
 				if (override instanceof IAssociationOverride) {
-					return joinColumnsGroupPane;
+					return joinColumnsPane;
 				}
 
 				return null;
@@ -385,13 +383,70 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		overrideHolder = buildOverrideHolder();
 	}
 
+	private void initializeColumnPane(PageBook pageBook) {
+
+		int groupBoxMargin = groupBoxMargin();
+		columnPane = buildSubPane(pageBook, 5);
+
+		// Override Default check box
+		overrideDefaultButton = buildCheckBox(
+			buildSubPane(columnPane, 0, groupBoxMargin, 0, groupBoxMargin),
+			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
+			buildOverrideDefaultHolder()
+		);
+
+		overrideDefaultButton.addSelectionListener(
+			buildOverrideDefaultSelectionListener()
+		);
+
+		// Column widgets (for IOverrideAttribute)
+		columnComposite = new ColumnComposite(
+			this,
+			buildColumnHolder(buildAttributeOverrideHolder(overrideHolder)),
+			columnPane,
+			false
+		);
+
+		columnPane.setVisible(false);
+		columnComposite.enableWidgets(false);
+	}
+
+	private void initializeJoinColumnsPane(PageBook pageBook) {
+
+		joinColumnsPane = buildTitledPane(
+			pageBook,
+			JptUiMappingsMessages.OverridesComposite_joinColumn
+		);
+
+		// Override Default check box
+		overrideDefaultButton = buildCheckBox(
+			buildSubPane(joinColumnsPane, 5),
+			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
+			buildOverrideDefaultHolder()
+		);
+
+		overrideDefaultButton.addSelectionListener(
+			buildOverrideDefaultSelectionListener()
+		);
+
+		// Join Columns list pane (for IOverrideAssociation)
+		joinColumnsComposite = new JoinColumnsComposite<IAssociationOverride>(
+			this,
+			buildAssociationOverrideHolder(overrideHolder),
+			joinColumnsPane,
+			buildJoinColumnsEditor(),
+			false
+		);
+
+		joinColumnsPane.setVisible(false);
+		joinColumnsComposite.enableWidgets(false);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		int groupBoxMargin = groupBoxMargin();
 
 		// Overrides group pane
 		container = buildTitledPane(
@@ -402,51 +457,10 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		// Overrides list pane
 		initializeOverridesList(container);
 
-		// Override Default check box
-		overrideDefaultButton = buildCheckBox(
-			buildPane(container, groupBoxMargin),
-			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
-			buildOverrideDefaultHolder()
-		);
-
-		overrideDefaultButton.addSelectionListener(
-			buildOverrideDefaultSelectionListener()
-		);
-
-		installOverrideDefaultControlVisibilityEnabler(overrideDefaultButton);
-
-		// The pane responsible to show either the Join Columns or the Column pane
+		// Property pane
 		PageBook pageBook = buildPageBook(container);
-
-		// Join Columns group pane (for IOverrideAssociation)
-		joinColumnsGroupPane = buildTitledPane(
-			pageBook,
-			JptUiMappingsMessages.OverridesComposite_joinColumn
-		);
-
-		// Join Columns list pane (for IOverrideAssociation)
-		joinColumnsComposite = new JoinColumnsComposite<IAssociationOverride>(
-			this,
-			buildAssociationOverrideHolder(overrideHolder),
-			joinColumnsGroupPane,
-			buildJoinColumnsEditor(),
-			false
-		);
-
-		// Column widgets (for IOverrideAttribute)
-		columnComposite = new ColumnComposite(
-			this,
-			buildColumnHolder(buildAttributeOverrideHolder(overrideHolder)),
-			pageBook,
-			false
-		);
-
-		// Hide both panes, the ControlSwitcher will show the right pane based on
-		// on the selected IOverride
-		joinColumnsGroupPane.setVisible(false);
-		columnComposite.setVisible(false);
-		joinColumnsComposite.enableWidgets(false);
-		columnComposite.enableWidgets(false);
+		initializeJoinColumnsPane(pageBook);
+		initializeColumnPane(pageBook);
 		installOverrideControlSwitcher(overrideHolder, pageBook);
 	}
 
@@ -482,14 +496,6 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		);
 	}
 
-	private void installOverrideDefaultControlVisibilityEnabler(Button overrideDefaultCheckBox) {
-
-		new ControlVisibilityEnabler(
-			buildOverrideDefaultVisibilityHolder(),
-			overrideDefaultCheckBox
-		);
-	}
-
 	private void overrideDefaultButtonSelected(boolean selected) {
 
 		IEntity subject = subject();
@@ -509,12 +515,14 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 					IAttributeOverride attributeOverride = subject.addSpecifiedAttributeOverride(index);
 					attributeOverride.setName(override.getName());
 					attributeOverride.getColumn().setSpecifiedName(((IAttributeOverride) override).getColumn().getName());
+					overrideHolder.setValue(attributeOverride);
 				}
 				else {
 					int index = subject.specifiedAssociationOverridesSize();
 					IAssociationOverride associationOverride = subject.addSpecifiedAssociationOverride(index);
 					associationOverride.setName(override.getName());
 					//attributeOverride.getColumn().setSpecifiedName(this.attributeOverride.getColumn().getName());
+					overrideHolder.setValue(associationOverride);
 				}
 			}
 			// Remove the specified overrides

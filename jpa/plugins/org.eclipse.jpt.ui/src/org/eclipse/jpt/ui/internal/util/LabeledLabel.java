@@ -48,6 +48,7 @@ public final class LabeledLabel implements LabeledControl
 	public void setImage(Image image) {
 		if (!this.label.isDisposed()) {
 			this.label.setImage(image);
+			this.label.getParent().layout(true);
 		}
 	}
 
@@ -57,6 +58,7 @@ public final class LabeledLabel implements LabeledControl
 	public void setText(String text) {
 		if (!this.label.isDisposed()) {
 			this.label.setText(text);
+			this.label.getParent().layout(true);
 		}
 	}
 }

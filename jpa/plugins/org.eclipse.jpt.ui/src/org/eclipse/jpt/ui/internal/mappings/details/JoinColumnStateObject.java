@@ -21,9 +21,7 @@ import org.eclipse.jpt.db.internal.Table;
 @SuppressWarnings("nls")
 public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObject
 {
-	private Boolean defaultInsertableSelected;
 	private boolean defaultTableSelected;
-	private Boolean defaultUpdatableSelected;
 	private Boolean insertable;
 	private String table;
 	private Boolean updatable;
@@ -121,16 +119,10 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 		if (abstractJoinColumn != null) {
 			IJoinColumn joinColumn = (IJoinColumn) abstractJoinColumn;
 
-			defaultInsertableSelected = joinColumn.getSpecifiedInsertable() == null;
-			defaultTableSelected      = joinColumn.getSpecifiedTable()      == null;
-			defaultUpdatableSelected  = joinColumn.getSpecifiedUnique()     == null;
-			insertable                = joinColumn.getInsertable();
-			table                     = joinColumn.getTable();
-			updatable                 = joinColumn.getUpdatable();
-		}
-		else {
-			defaultInsertableSelected = Boolean.FALSE;
-			defaultUpdatableSelected  = Boolean.FALSE;
+			defaultTableSelected = joinColumn.getSpecifiedTable() == null;
+			insertable           = joinColumn.getSpecifiedInsertable();
+			table                = joinColumn.getTable();
+			updatable            = joinColumn.getSpecifiedUpdatable();
 		}
 	}
 
@@ -198,25 +190,13 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 		}
 
 		// Insertable
-		if (defaultInsertableSelected) {
-
-			if (joinColumn.getSpecifiedInsertable() != null) {
-				joinColumn.setSpecifiedInsertable(null);
-			}
-		}
-		else if (joinColumn.getSpecifiedInsertable() != insertable){
+		if (joinColumn.getSpecifiedInsertable() != insertable){
 			joinColumn.setSpecifiedInsertable(insertable);
 		}
 
 		// Updatable
-		if (defaultUpdatableSelected) {
-
-			if (joinColumn.getSpecifiedUpdatable() != null) {
-				joinColumn.setSpecifiedUpdatable(null);
-			}
-		}
-		else if (joinColumn.getSpecifiedUpdatable() != insertable){
-			joinColumn.setSpecifiedUpdatable(insertable);
+		if (joinColumn.getSpecifiedUpdatable() != updatable){
+			joinColumn.setSpecifiedUpdatable(updatable);
 		}
 	}
 }
