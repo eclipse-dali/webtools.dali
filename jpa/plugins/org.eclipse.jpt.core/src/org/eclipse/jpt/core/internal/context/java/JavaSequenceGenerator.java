@@ -41,14 +41,14 @@ public class JavaSequenceGenerator extends JavaGenerator<SequenceGenerator>
 	}
 
 	public void setSpecifiedSequenceName(String newSpecifiedSequenceName) {
-		String oldSpecifiedSequenceName = newSpecifiedSequenceName;
+		String oldSpecifiedSequenceName = this.specifiedSequenceName;
 		this.specifiedSequenceName = newSpecifiedSequenceName;
 		generatorResource().setSequenceName(newSpecifiedSequenceName);
 		firePropertyChanged(SPECIFIED_SEQUENCE_NAME_PROPERTY, oldSpecifiedSequenceName, newSpecifiedSequenceName);
 	}
 
 	protected void setSpecifiedSequenceName_(String newSpecifiedSequenceName) {
-		String oldSpecifiedSequenceName = newSpecifiedSequenceName;
+		String oldSpecifiedSequenceName = this.specifiedSequenceName;
 		this.specifiedSequenceName = newSpecifiedSequenceName;
 		firePropertyChanged(SPECIFIED_SEQUENCE_NAME_PROPERTY, oldSpecifiedSequenceName, newSpecifiedSequenceName);
 	}
