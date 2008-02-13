@@ -165,31 +165,31 @@ public class ListBoxModelAdapterUITest
 		this.buildListPanel2(parent, "object reverse sorted", this.buildCustomSortedObjectListModel(), this.buildPriorityTaskListAdapter());
 	}
 
-	private ListValueModel buildUnsortedPrimitiveListModel() {
+	private ListValueModel<String> buildUnsortedPrimitiveListModel() {
 		return this.buildPrimitiveTaskListAdapter();
 	}
 
-	private ListValueModel buildStandardSortedPrimitiveListModel() {
-		return new SortedListValueModelAdapter(this.buildPrimitiveTaskListAdapter());
+	private ListValueModel<String> buildStandardSortedPrimitiveListModel() {
+		return new SortedListValueModelAdapter<String>(this.buildPrimitiveTaskListAdapter());
 	}
 
-	private ListValueModel buildCustomSortedPrimitiveListModel() {
-		return new SortedListValueModelAdapter(this.buildPrimitiveTaskListAdapter(), this.buildCustomStringComparator());
+	private ListValueModel<String> buildCustomSortedPrimitiveListModel() {
+		return new SortedListValueModelAdapter<String>(this.buildPrimitiveTaskListAdapter(), this.buildCustomStringComparator());
 	}
 
-	private ListValueModel buildUnsortedObjectListModel() {
+	private ListValueModel<Task> buildUnsortedObjectListModel() {
 		return this.buildObjectTaskListAdapter();
 	}
 
-	private ListValueModel buildStandardSortedObjectListModel() {
-		return new SortedListValueModelAdapter(this.buildObjectTaskListAdapter());
+	private ListValueModel<Task> buildStandardSortedObjectListModel() {
+		return new SortedListValueModelAdapter<Task>(this.buildObjectTaskListAdapter());
 	}
 
-	private ListValueModel buildCustomSortedObjectListModel() {
-		return new SortedListValueModelAdapter(this.buildObjectTaskListAdapter(), this.buildCustomTaskComparator());
+	private ListValueModel<Task> buildCustomSortedObjectListModel() {
+		return new SortedListValueModelAdapter<Task>(this.buildObjectTaskListAdapter(), this.buildCustomTaskComparator());
 	}
 
-	private ListBoxModelAdapter buildListPanel(Composite parent, String label, ListValueModel model, CollectionValueModel selectedItemsModel) {
+	private <E> ListBoxModelAdapter<E> buildListPanel(Composite parent, String label, ListValueModel<E> model, CollectionValueModel<E> selectedItemsModel) {
 		Composite panel = new Composite(parent, SWT.NONE);
 		panel.setLayout(new FormLayout());
 
@@ -212,7 +212,7 @@ public class ListBoxModelAdapterUITest
 		return ListBoxModelAdapter.adapt(model, selectedItemsModel, listBox);  // use #toString()
 	}
 
-	private void buildListPanel2(Composite parent, String label, ListValueModel model, CollectionValueModel selectedItemsModel) {
+	private void buildListPanel2(Composite parent, String label, ListValueModel<Task> model, CollectionValueModel<Task> selectedItemsModel) {
 		ListBoxModelAdapter<Task> adapter = this.buildListPanel(parent, label, model, selectedItemsModel);
 		adapter.addDoubleClickListener(this.buildDoubleClickListener());
 		adapter.addSelectionChangeListener(this.buildSelectionChangeListener());
@@ -250,29 +250,29 @@ public class ListBoxModelAdapterUITest
 		};
 	}
 
-	private ListValueModel buildPrimitiveTaskListAdapter() {
-		return new ListAspectAdapter(this.taskListHolder, TaskList.TASK_NAMES_LIST) {
+	private ListValueModel<String> buildPrimitiveTaskListAdapter() {
+		return new ListAspectAdapter<TaskList, String>(this.taskListHolder, TaskList.TASK_NAMES_LIST) {
 			@Override
 			protected ListIterator<String> listIterator_() {
-				return ((TaskList) this.subject).taskNames();
+				return this.subject.taskNames();
 			}
 		};
 	}
 
-	private ListValueModel buildObjectTaskListAdapter() {
-		return new ListAspectAdapter(this.taskListHolder, TaskList.TASKS_LIST) {
+	private ListValueModel<Task> buildObjectTaskListAdapter() {
+		return new ListAspectAdapter<TaskList, Task>(this.taskListHolder, TaskList.TASKS_LIST) {
 			@Override
 			protected ListIterator<Task> listIterator_() {
-				return ((TaskList) this.subject).tasks();
+				return this.subject.tasks();
 			}
 		};
 	}
 
-	private CollectionValueModel buildPriorityTaskListAdapter() {
-		return new CollectionAspectAdapter(this.taskListHolder, TaskList.PRIORITY_TASKS_COLLECTION) {
+	private CollectionValueModel<Task> buildPriorityTaskListAdapter() {
+		return new CollectionAspectAdapter<TaskList, Task>(this.taskListHolder, TaskList.PRIORITY_TASKS_COLLECTION) {
 			@Override
 			protected Iterator<Task> iterator_() {
-				return ((TaskList) this.subject).priorityTasks();
+				return this.subject.priorityTasks();
 			}
 		};
 	}

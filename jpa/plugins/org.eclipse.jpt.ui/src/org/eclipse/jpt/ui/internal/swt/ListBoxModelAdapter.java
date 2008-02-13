@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.swt;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EventObject;
 import java.util.Iterator;
 import java.util.ListIterator;
@@ -326,6 +327,9 @@ public class ListBoxModelAdapter<E> {
 	 * Brute force synchronization of list box with the model list.
 	 */
 	protected void synchronizeListBoxItems() {
+		if (this.listBox.isDisposed()) {
+			return;
+		}
 		int len = this.listHolder.size();
 		String[] items = new String[len];
 		for (int i = 0; i < len; i++) {
@@ -338,6 +342,9 @@ public class ListBoxModelAdapter<E> {
 	 * The model has changed - synchronize the list box.
 	 */
 	protected void listItemsAdded(ListChangeEvent event) {
+		if (this.listBox.isDisposed()) {
+			return;
+		}
 		int i = event.index();
 		for (ListIterator<E> stream = this.items(event); stream.hasNext(); ) {
 			this.listBox.add(this.convert(stream.next()), i++);
@@ -348,6 +355,9 @@ public class ListBoxModelAdapter<E> {
 	 * The model has changed - synchronize the list box.
 	 */
 	protected void listItemsRemoved(ListChangeEvent event) {
+		if (this.listBox.isDisposed()) {
+			return;
+		}
 		this.listBox.remove(event.index(), event.index() + event.itemsSize() - 1);
 	}
 
@@ -355,6 +365,9 @@ public class ListBoxModelAdapter<E> {
 	 * The model has changed - synchronize the list box.
 	 */
 	protected void listItemsMoved(ListChangeEvent event) {
+		if (this.listBox.isDisposed()) {
+			return;
+		}
 		int target = event.targetIndex();
 		int source = event.sourceIndex();
 		int len = event.moveLength();
@@ -374,6 +387,9 @@ public class ListBoxModelAdapter<E> {
 	 * The model has changed - synchronize the list box.
 	 */
 	protected void listItemsReplaced(ListChangeEvent event) {
+		if (this.listBox.isDisposed()) {
+			return;
+		}
 		int i = event.index();
 		for (ListIterator<E> stream = this.items(event); stream.hasNext(); ) {
 			this.listBox.setItem(i++, this.convert(stream.next()));
@@ -384,6 +400,9 @@ public class ListBoxModelAdapter<E> {
 	 * The model has changed - synchronize the list box.
 	 */
 	protected void listCleared(ListChangeEvent event) {
+		if (this.listBox.isDisposed()) {
+			return;
+		}
 		this.listBox.removeAll();
 	}
 
@@ -414,6 +433,9 @@ public class ListBoxModelAdapter<E> {
 	}
 
 	protected void synchronizeListBoxSelection() {
+		if (this.listBox.isDisposed()) {
+			return;
+		}
 		int[] indices = new int[this.selectedItemsHolder.size()];
 		int i = 0;
 		for (Iterator<E> stream = this.selectedItemsHolder.iterator(); stream.hasNext(); ) {
@@ -424,6 +446,9 @@ public class ListBoxModelAdapter<E> {
 	}
 
 	protected void selectedItemsAdded(CollectionChangeEvent event) {
+		if (this.listBox.isDisposed()) {
+			return;
+		}
 		int[] indices = new int[event.itemsSize()];
 		int i = 0;
 		for (Iterator<E> stream = this.items(event); stream.hasNext(); ) {
@@ -433,6 +458,9 @@ public class ListBoxModelAdapter<E> {
 	}
 
 	protected void selectedItemsRemoved(CollectionChangeEvent event) {
+		if (this.listBox.isDisposed()) {
+			return;
+		}
 		int[] indices = new int[event.itemsSize()];
 		int i = 0;
 		for (Iterator<E> stream = this.items(event); stream.hasNext(); ) {
@@ -442,6 +470,9 @@ public class ListBoxModelAdapter<E> {
 	}
 
 	protected void selectedItemsCleared(CollectionChangeEvent event) {
+		if (this.listBox.isDisposed()) {
+			return;
+		}
 		this.listBox.deselectAll();
 	}
 
@@ -469,6 +500,9 @@ public class ListBoxModelAdapter<E> {
 	}
 
 	protected Collection<E> selectedItems() {
+		if (this.listBox.isDisposed()) {
+			return Collections.emptySet();
+		}
 		@SuppressWarnings("unchecked")
 		ArrayList<E> selectedItems = new ArrayList(this.listBox.getSelectionCount());
 		for (int selectionIndex : this.listBox.getSelectionIndices()) {
@@ -478,6 +512,9 @@ public class ListBoxModelAdapter<E> {
 	}
 
 	protected void listBoxDoubleClicked(SelectionEvent event) {
+		if (this.listBox.isDisposed()) {
+			return;
+		}
 		if (this.doubleClickListeners.length > 0) {
 			// there should be only a single item selected during a double-click(?)
 			E selection = this.listHolder.get(this.listBox.getSelectionIndex());
@@ -493,6 +530,8 @@ public class ListBoxModelAdapter<E> {
 	// ********** dispose **********
 
 	protected void listBoxDisposed(DisposeEvent event) {
+		// the list box is not yet "disposed" when we receive this event
+		// so we can still remove our listeners
 		this.listBox.removeDisposeListener(this.listBoxDisposeListener);
 		this.listBox.removeSelectionListener(this.listBoxSelectionListener);
 		this.selectedItemsHolder.removeCollectionChangeListener(CollectionValueModel.VALUES, this.selectedItemsChangeListener);
