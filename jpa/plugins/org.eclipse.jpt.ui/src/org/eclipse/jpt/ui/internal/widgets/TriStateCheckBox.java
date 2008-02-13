@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -18,13 +16,9 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Layout;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
 
 /**
  * This <code>TriStateCheckBox</code> is responsible to handle three states:
@@ -38,8 +32,13 @@ import org.eclipse.swt.widgets.TableItem;
  * @version 2.0
  * @since 2.0
  */
-@SuppressWarnings("nls")
-public final class TriStateCheckBox {
+public final class TriStateCheckBox
+{
+	/**
+	 * A tri-state check box can only be used within a tree or table, we used
+	 * here the table widget.
+	 */
+	private Button button;
 
 	/**
 	 * Flag used to prevent the selection listener from changing the selection
@@ -54,35 +53,41 @@ public final class TriStateCheckBox {
 	private TriState state;
 
 	/**
-	 * A tri-state check box can only be used within a tree or table, we used
-	 * here the table widget.
+	 * Creates a new <code>TriStateCheckBox</code>.
+	 *
+	 * @param parent The parent composite
+	 * @param widgetFactory The factory used to create the check box
 	 */
-	private Table table;
+	public TriStateCheckBox(Composite parent, IWidgetFactory widgetFactory) {
+		this(parent, null, widgetFactory);
+	}
 
 	/**
 	 * Creates a new <code>TriStateCheckBox</code>.
 	 *
 	 * @param parent The parent composite
+	 * @param text The check box's text
+	 * @param widgetFactory The factory used to create the check box
 	 */
-	public TriStateCheckBox(Composite parent) {
+	public TriStateCheckBox(Composite parent,
+	                        String text,
+	                        IWidgetFactory widgetFactory) {
 		super();
-
-		this.state = TriState.UNCHECKED;
-		this.buildWidgets(parent);
+		this.buildWidgets(parent, text, widgetFactory);
 	}
 
 	/**
 	 * @see org.eclipse.swt.widgets.Widget#addDisposeListener(DisposeListener)
 	 */
 	public void addDisposeListener(DisposeListener disposeListener) {
-		this.table.addDisposeListener(disposeListener);
+		this.button.addDisposeListener(disposeListener);
 	}
 
 	/**
 	 * @see Table#addSelectionListener(SelectionListener)
 	 */
 	public void addSelectionListener(SelectionListener selectionListener) {
-		this.table.addSelectionListener(selectionListener);
+		this.button.addSelectionListener(selectionListener);
 	}
 
 	private MouseAdapter buildMouseListener() {
@@ -106,7 +111,7 @@ public final class TriStateCheckBox {
 		};
 	}
 
-	private SelectionAdapter buildSelectionListener() {
+	private SelectionListener buildSelectionListener() {
 
 		return new SelectionAdapter() {
 
@@ -133,66 +138,15 @@ public final class TriStateCheckBox {
 		return selection.booleanValue() ? TriState.CHECKED : TriState.UNCHECKED;
 	}
 
-	private Layout buildTableLayout() {
+	private void buildWidgets(Composite parent,
+	                          String text,
+	                          IWidgetFactory widgetFactory) {
 
-		return new Layout() {
+		this.state = TriState.UNCHECKED;
 
-			@Override
-			protected Point computeSize(Composite composite, int wHint, int hHint, boolean flushCache) {
-				Rectangle bounds = TriStateCheckBox.this.getCheckBox().getBounds();
-				return new Point(bounds.x + bounds.width, bounds.y + bounds.height);
-			}
-
-			private int indentation() {
-				if (Platform.OS_WIN32.equals(Platform.getOS())) {
-					try {
-						String version = System.getProperty("os.version");
-
-						// Under Vista, the check box has to be indented by -6
-						if (Double.parseDouble(version) >= 6) {
-							return 6;
-						}
-						// Under XP, the check box has to be indented by -5
-						else if (Double.parseDouble(version) == 5) {
-							return 5;
-						}
-					}
-					catch (Exception e) {
-						// Ignore and return 0
-					}
-				}
-
-				return 0;
-			}
-
-			@Override
-			protected void layout(Composite composite, boolean flushCache) {
-
-				Rectangle bounds = TriStateCheckBox.this.getCheckBox().getBounds();
-				int indentation = indentation();
-
-				TriStateCheckBox.this.table.setBounds(
-					-indentation,
-					0,
-					bounds.x + bounds.width + indentation,
-					bounds.y + bounds.height
-				);
-			}
-		};
-	}
-
-	private void buildWidgets(Composite parent) {
-
-		parent = new Composite(parent, SWT.NULL);
-		parent.setLayout(this.buildTableLayout());
-
-		this.table = new Table(parent, SWT.CHECK | SWT.SINGLE | SWT.TRANSPARENT);
-		this.table.addMouseListener(buildMouseListener());
-		this.table.addSelectionListener(buildSelectionListener());
-		this.table.getHorizontalBar().setVisible(false);
-		this.table.getVerticalBar().setVisible(false);
-
-		new TableItem(this.table, SWT.CHECK | SWT.TRANSPARENT);
+		this.button = widgetFactory.createCheckBox(parent, text);
+		this.button.addMouseListener(buildMouseListener());
+		this.button.addSelectionListener(buildSelectionListener());
 	}
 
 	private void changeTriState() {
@@ -221,8 +175,8 @@ public final class TriStateCheckBox {
 	 *
 	 * @return The unique item of the table that handles tri-state selection
 	 */
-	public TableItem getCheckBox() {
-		return this.table.getItem(0);
+	public Button getCheckBox() {
+		return this.button;
 	}
 
 	/**
@@ -231,7 +185,7 @@ public final class TriStateCheckBox {
 	 * @return The main composite used to display the tri-state check box
 	 */
 	public Control getControl() {
-		return this.table.getParent();
+		return this.button;
 	}
 
 	/**
@@ -269,21 +223,21 @@ public final class TriStateCheckBox {
 	 * otherwise
 	 */
 	public boolean isEnabled() {
-		return this.table.isEnabled();
+		return this.button.isEnabled();
 	}
 
 	/**
 	 * @see org.eclipse.swt.widgets.Widget#removeDisposeListener(DisposeListener)
 	 */
 	public void removeDisposeListener(DisposeListener disposeListener) {
-		this.table.removeDisposeListener(disposeListener);
+		this.button.removeDisposeListener(disposeListener);
 	}
 
 	/**
 	 * @see Table#removeSelectionListener(SelectionListener)
 	 */
 	public void removeSelectionListener(SelectionListener selectionListener) {
-		this.table.removeSelectionListener(selectionListener);
+		this.button.removeSelectionListener(selectionListener);
 	}
 
 	/**
@@ -293,7 +247,7 @@ public final class TriStateCheckBox {
 	 * to disable them
 	 */
 	public void setEnabled(boolean enabled) {
-		this.table.setEnabled(enabled);
+		this.button.setEnabled(enabled);
 	}
 
 	/**
@@ -302,8 +256,6 @@ public final class TriStateCheckBox {
 	 * @param image The new image of the check box
 	 */
 	public void setImage(Image image) {
-		// TODO: Not sure this will update the layout, if that is the case,
-		// then copy the code from LabeledTableItem.updateTableItem()
 		this.getCheckBox().setImage(image);
 	}
 
@@ -338,15 +290,15 @@ public final class TriStateCheckBox {
 	 * value.
 	 */
 	private void updateCheckBox() {
-		TableItem checkBox = this.getCheckBox();
+		Button checkBox = this.getCheckBox();
 
 		if (this.state == TriState.PARTIALLY_CHECKED) {
-			checkBox.setChecked(true);
+			checkBox.setSelection(true);
 			checkBox.setGrayed(true);
 		}
 		else {
 			checkBox.setGrayed(false);
-			checkBox.setChecked(this.state == TriState.CHECKED);
+			checkBox.setSelection(this.state == TriState.CHECKED);
 		}
 	}
 

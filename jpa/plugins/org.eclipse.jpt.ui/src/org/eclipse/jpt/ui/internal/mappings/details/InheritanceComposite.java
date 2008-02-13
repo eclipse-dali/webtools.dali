@@ -18,9 +18,12 @@ import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
+import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.osgi.util.NLS;
@@ -184,6 +187,15 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 		};
 	}
 
+	private PropertyValueModel<Boolean> buildDiscriminatorValueBooleanHolder() {
+		return new PropertyAspectAdapter<IEntity, Boolean>(getSubjectHolder(), IEntity.DISCRIMINATOR_VALUE_ALLOWED_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return subject.isDiscriminatorValueAllowed();
+			}
+		};
+	}
+
 	private ModifyListener buildDiscriminatorValueComboSelectionListener() {
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
@@ -332,10 +344,19 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 			IJpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_VALUE
 		);
 
+		installDiscriminatorValueComboEnabler(discriminatorValueCombo);
+
 		// Primary Key Join Columns widgets
 		new PrimaryKeyJoinColumnsComposite(
 			this,
 			buildSubPane(container, 5)
+		);
+	}
+
+	private void installDiscriminatorValueComboEnabler(CCombo discriminatorValueCombo) {
+		new ControlEnabler(
+			buildDiscriminatorValueBooleanHolder(),
+			discriminatorValueCombo
 		);
 	}
 
@@ -348,7 +369,7 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 			return;
 		}
 
-		// Add the default referenced column name if one exists
+		// Add the default discriminator column value if one exists
 		String defaultDiscriminatorValue = subject.getDefaultDiscriminatorValue();
 
 		if (defaultDiscriminatorValue != null) {
@@ -364,17 +385,14 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 			);
 		}
 
-		// Set the selected referenced column name
+		// Select the discriminator column value
 		String specifiedDiscriminatorValue = subject.getSpecifiedDiscriminatorValue();
 
 		if (specifiedDiscriminatorValue != null) {
 			discriminatorValueCombo.setText(specifiedDiscriminatorValue);
 		}
-		else if (defaultDiscriminatorValue != null) {
-			discriminatorValueCombo.select(0);
-		}
 		else {
-			discriminatorValueCombo.select(-1);
+			discriminatorValueCombo.select(0);
 		}
 	}
 

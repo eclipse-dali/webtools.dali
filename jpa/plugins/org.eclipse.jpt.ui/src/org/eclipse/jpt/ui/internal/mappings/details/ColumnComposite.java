@@ -18,6 +18,7 @@ import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
 import org.eclipse.jpt.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -77,6 +78,24 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 	                       Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
+	}
+
+	/**
+	 * Creates a new <code>ColumnComposite</code>.
+	 *
+	 * @param parentPane The parent container of this one
+	 * @param subjectHolder The holder of the subject <code>IColumn</code>
+	 * @param parent The parent container
+	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
+	 * this pane aligned with the widgets of the given parent controller;
+	 * <code>false</code> to not align them
+	 */
+	public ColumnComposite(AbstractFormPane<?> parentPane,
+	                       PropertyValueModel<? extends IColumn> subjectHolder,
+	                       Composite parent,
+	                       boolean automaticallyAlignWidgets) {
+
+		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets);
 	}
 
 	/**
@@ -296,7 +315,7 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 
 		// Insertable widgets
 		insertableCheckBox = buildTriStateCheckBoxWithDefault(
-			container,
+			buildSubPane(container, 4),
 			JptUiMappingsMessages.ColumnComposite_insertable,
 			buildInsertableHolder(),
 			buildInsertableStringHolder(),

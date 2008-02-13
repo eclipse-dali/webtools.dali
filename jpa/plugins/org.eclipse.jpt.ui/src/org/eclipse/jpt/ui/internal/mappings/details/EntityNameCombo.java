@@ -35,7 +35,6 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-@SuppressWarnings("nls")
 public class EntityNameCombo extends AbstractFormPane<IEntity>
 {
 	private CCombo combo;
@@ -80,8 +79,6 @@ public class EntityNameCombo extends AbstractFormPane<IEntity>
 	protected void doPopulate() {
 
 		super.doPopulate();
-
-		combo.removeAll();
 		populateCombo();
 	}
 
@@ -96,8 +93,8 @@ public class EntityNameCombo extends AbstractFormPane<IEntity>
 
 	private void populateCombo() {
 
+		combo.removeAll();
 		populateDefaultValue();
-		// TODO Add possible entity names
 		updateSelectedItem();
 	}
 
@@ -130,7 +127,7 @@ public class EntityNameCombo extends AbstractFormPane<IEntity>
 		if (propertyName == IEntity.DEFAULT_NAME_PROPERTY ||
 		    propertyName == IEntity.SPECIFIED_NAME_PROPERTY) {
 
-			populateCombo();
+			updateSelectedItem();
 		}
 	}
 
@@ -143,30 +140,36 @@ public class EntityNameCombo extends AbstractFormPane<IEntity>
 	 * selection to (0, 0) makes the entire text visible.
 	 */
 	private void updateSelectedItem() {
-		IEntity subject = subject();
-		String value = (subject != null) ? subject.getSpecifiedName() : null;
 
+		IEntity subject = subject();
+
+		String value         = (subject != null) ? subject.getSpecifiedName() : null;
+		String defaultValue  = (subject != null) ? subject.getDefaultName()   : null;
+		String displayString = JptUiMappingsMessages.ColumnComposite_defaultEmpty;
+
+		if (defaultValue != null) {
+			displayString = NLS.bind(
+				JptUiMappingsMessages.ColumnComposite_defaultWithOneParam,
+				defaultValue
+			);
+		}
+
+		// Make sure the default value is up to date
+		if (!combo.getItem(0).equals(displayString)) {
+			combo.remove(0);
+			combo.add(displayString, 0);
+		}
+
+		// Select the new value
 		if (value != null) {
 			combo.setText(value);
-			combo.setSelection(new Point(0, 0));
 		}
+		// Select the default value
 		else {
-			String defaultValue = (subject != null) ? subject.getDefaultName() : null;
-
-			String displayString = (defaultValue == null) ? "" :
-				NLS.bind(
-					JptUiMappingsMessages.ColumnComposite_defaultWithOneParam,
-					defaultValue
-				);
-
-			if (!combo.getText().equals(displayString)) {
-				combo.setText(displayString);
-				combo.setSelection(new Point(0, 0));
-			}
-			else {
-				combo.select(-1);
-			}
+			combo.select(0);
 		}
+
+		combo.setSelection(new Point(0, 0));
 	}
 
 	private void valueChanged(String value) {

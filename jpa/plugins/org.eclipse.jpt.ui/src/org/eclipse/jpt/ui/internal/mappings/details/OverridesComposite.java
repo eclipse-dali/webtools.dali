@@ -27,6 +27,7 @@ import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.util.ControlVisibilityEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
+import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -428,14 +429,16 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 			this,
 			buildAssociationOverrideHolder(overrideHolder),
 			joinColumnsGroupPane,
-			buildJoinColumnsEditor()
+			buildJoinColumnsEditor(),
+			false
 		);
 
 		// Column widgets (for IOverrideAttribute)
 		columnComposite = new ColumnComposite(
 			this,
 			buildColumnHolder(buildAttributeOverrideHolder(overrideHolder)),
-			pageBook
+			pageBook,
+			false
 		);
 
 		// Hide both panes, the ControlSwitcher will show the right pane based on

@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.db;
 import org.eclipse.jpt.core.internal.IJpaNode;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 

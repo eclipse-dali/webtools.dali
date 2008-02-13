@@ -116,7 +116,7 @@ public class BasicMappingComposite extends AbstractFormPane<IBasicMapping>
 		new EnumTypeComposite(this, container);
 
 		// Optional widgets
-		new OptionalComposite(this, container);
+		new OptionalComposite(this, buildSubPane(container, 4));
 
 		// Lob check box
 		new LobComposite(this, container);

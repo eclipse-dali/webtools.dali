@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.Collection;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
@@ -76,6 +77,13 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 	private SequenceCombo<ISequenceGenerator> buildSequenceNameCombo(Composite parent) {
 
 		return new SequenceCombo<ISequenceGenerator>(this, buildSequenceGeneratorHolder(), parent) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(ISequenceGenerator.DEFAULT_SEQUENCE_NAME_PROPERTY);
+				propertyNames.add(ISequenceGenerator.SPECIFIED_SEQUENCE_NAME_PROPERTY);
+			}
 
 			@Override
 			protected void buildSubject() {

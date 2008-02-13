@@ -113,7 +113,7 @@ public class OneToManyMappingComposite extends AbstractFormPane<IOneToManyMappin
 		new MappedByComposite(this, subPane);
 
 		// Cascade widgets
-		new CascadeComposite(this, buildCascadeHolder(), container);
+		new CascadeComposite(this, buildCascadeHolder(), buildSubPane(container, 4));
 
 		// Ordering widgets
 		new OrderingComposite(this, container);

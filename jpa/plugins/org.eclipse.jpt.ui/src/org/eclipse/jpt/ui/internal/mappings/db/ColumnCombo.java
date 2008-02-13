@@ -12,6 +12,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.internal.IJpaNode;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;

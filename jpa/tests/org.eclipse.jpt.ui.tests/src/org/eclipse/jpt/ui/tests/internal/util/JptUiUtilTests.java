@@ -24,7 +24,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	ControlVisibilityEnablerTest.class,
 	LabeledButtonTest.class,
 	LabeledLabelTest.class,
-	LabeledTableItemTest.class,
 	LabeledControlUpdaterTest.class,
 	PaneEnablerTest.class,
 	PaneVisibilityEnablerTest.class,

@@ -106,7 +106,7 @@ public class ManyToOneMappingComposite extends AbstractFormPane<IManyToOneMappin
 		new FetchTypeComposite(this, subPane);
 
 		// Optional check box
-		new OptionalComposite(this, subPane);
+		new OptionalComposite(this, buildSubPane(subPane, 4));
 
 		// Cascade widgets
 		new CascadeComposite(this, buildCascadeHolder(), container);

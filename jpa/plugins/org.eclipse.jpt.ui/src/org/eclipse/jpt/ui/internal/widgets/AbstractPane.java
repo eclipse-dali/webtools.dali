@@ -20,8 +20,8 @@ import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.swt.BooleanButtonModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.TriStateBooleanButtonModelAdapter;
 import org.eclipse.jpt.ui.internal.util.ControlAligner;
+import org.eclipse.jpt.ui.internal.util.LabeledButton;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
-import org.eclipse.jpt.ui.internal.util.LabeledTableItem;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.Model;
@@ -369,7 +369,7 @@ public abstract class AbstractPane<T extends Model>
 	                                   String helpId,
 	                                   final Runnable buttonAction) {
 
-		Button button = this.widgetFactory.createButton(container, text, SWT.NULL);
+		Button button = this.widgetFactory.createButton(container, text);
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -1547,11 +1547,7 @@ public abstract class AbstractPane<T extends Model>
 	                                       String helpId,
 	                                       final Runnable buttonAction) {
 
-		Button button = this.widgetFactory.createButton(
-			parent,
-			buttonText,
-			SWT.PUSH
-		);
+		Button button = this.widgetFactory.createPushButton(parent, buttonText);
 
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -1678,13 +1674,15 @@ public abstract class AbstractPane<T extends Model>
 		);
 
 		section.setText(sectionText);
+		section.marginWidth  = 0;
+		section.marginHeight = 0;
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment       = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		section.setLayoutData(gridData);
 
-		Composite subPane = this.buildSubPane(section, 5, 0);
+		Composite subPane = this.buildSubPane(section);
 		section.setClient(subPane);
 
 		expandedStateHolder.addPropertyChangeListener(
@@ -2031,11 +2029,20 @@ public abstract class AbstractPane<T extends Model>
 	                                 String helpId,
 	                                 int toggleButtonType) {
 
-		Button button = this.widgetFactory.createButton(
-			parent,
-			buttonText,
-			toggleButtonType
-		);
+		Button button;
+
+		if (toggleButtonType == SWT.PUSH) {
+			button = this.widgetFactory.createPushButton(parent, buttonText);
+		}
+		else if (toggleButtonType == SWT.RADIO) {
+			button = this.widgetFactory.createRadioButton(parent, buttonText);
+		}
+		else if (toggleButtonType == SWT.CHECK) {
+			button = this.widgetFactory.createCheckBox(parent, buttonText);
+		}
+		else {
+			button = this.widgetFactory.createButton(parent, buttonText);
+		}
 
 		button.setLayoutData(new GridData());
 		BooleanButtonModelAdapter.adapt(booleanHolder, button);
@@ -2080,8 +2087,11 @@ public abstract class AbstractPane<T extends Model>
 	                                                       WritablePropertyValueModel<Boolean> booleanHolder,
 	                                                       String helpId) {
 
-		TriStateCheckBox checkBox = new TriStateCheckBox(parent);
-		checkBox.setText(text);
+		TriStateCheckBox checkBox = new TriStateCheckBox(
+			parent,
+			text,
+			this.getWidgetFactory()
+		);
 
 		TriStateBooleanButtonModelAdapter.adapt(
 			booleanHolder,
@@ -2089,7 +2099,7 @@ public abstract class AbstractPane<T extends Model>
 		);
 
 		if (helpId != null) {
-			helpSystem().setHelp(checkBox.getControl(), helpId);
+			helpSystem().setHelp(checkBox.getCheckBox(), helpId);
 		}
 
 		return checkBox;
@@ -2148,7 +2158,7 @@ public abstract class AbstractPane<T extends Model>
 		);
 
 		new LabeledControlUpdater(
-			new LabeledTableItem(checkBox.getCheckBox()),
+			new LabeledButton(checkBox.getCheckBox()),
 			stringHolder
 		);
 
@@ -2719,20 +2729,5 @@ public abstract class AbstractPane<T extends Model>
 				populating = false;
 			}
 		}
-	}
-
-	public static interface IWidgetFactory {
-		Button createButton(Composite parent, String text, int style);
-		CCombo createCCombo(Composite parent);
-		Combo createCombo(Composite parent);
-		Composite createComposite(Composite parent);
-		CCombo createEditableCCombo(Composite parent);
-		Combo createEditableCombo(Composite parent);
-		Group createGroup(Composite parent, String title);
-		Hyperlink createHyperlink(Composite parent, String text);
-		Label createLabel(Composite container, String labelText);
-		List createList(Composite container, int style);
-		Section createSection(Composite parent, int style);
-		Text createText(Composite parent);
 	}
 }

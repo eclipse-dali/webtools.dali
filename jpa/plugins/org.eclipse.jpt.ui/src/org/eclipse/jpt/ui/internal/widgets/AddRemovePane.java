@@ -10,7 +10,11 @@ package org.eclipse.jpt.ui.internal.widgets;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.Model;
+import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
@@ -221,6 +225,45 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		};
 	}
 
+	private ListChangeListener buildListChangeListener() {
+		return new SWTListChangeListenerWrapper(buildListChangeListener_());
+	}
+	
+	private ListChangeListener buildListChangeListener_() {
+		return new ListChangeListener() {
+
+			public void itemsAdded(ListChangeEvent e) {
+			}
+
+			public void itemsMoved(ListChangeEvent e) {
+			}
+
+			public void itemsRemoved(ListChangeEvent e) {
+				Object selectedItem = selectedItemHolder.value();
+
+				if (selectedItem == null) {
+					return;
+				}
+
+				if (CollectionTools.contains(e.items(), selectedItem)) {
+					selectedItemHolder.setValue(null);
+					updateButtons();
+				}
+			}
+
+			public void itemsReplaced(ListChangeEvent e) {
+			}
+
+			public void listChanged(ListChangeEvent e) {
+			}
+
+			public void listCleared(ListChangeEvent e) {
+				selectedItemHolder.setValue(null);
+				updateButtons();
+			}
+		};
+	}
+
 	/**
 	 * @category Option
 	 */
@@ -329,6 +372,11 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		this.adapter            = (adapter == null) ? buildAdapter() : adapter;
 		this.selectedItemHolder = (WritablePropertyValueModel<Object>) selectedItemHolder;
 		this.selectionModel     = new ObjectListSelectionModel(new ListModelAdapter(listHolder));
+
+		this.listHolder.addListChangeListener(
+			ListValueModel.LIST_VALUES,
+			buildListChangeListener()
+		);
 	}
 
 	/**
@@ -493,26 +541,66 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	 */
 	public static abstract class AbstractAdapter implements Adapter {
 
+		/**
+		 * The text of the add button.
+		 */
 		private String addButtonText;
+
+		/**
+		 * Determines whether the optional button should be shown or not.
+		 */
 		private boolean hasOptionalButton;
+
+		/**
+		 * The text of the optional button, if used.
+		 */
 		private String optionalButtonText;
+
+		/**
+		 * The text of the remove button.
+		 */
 		private String removeButtonText;
 
+		/**
+		 * Creates a new <code>AbstractAdapter</code> with default text for the
+		 * add and remove buttons.
+		 */
 		public AbstractAdapter() {
 			this(JptUiMessages.AddRemovePane_AddButtonText,
 			     JptUiMessages.AddRemovePane_RemoveButtonText);
 		}
 
+		/**
+		 * Creates a new <code>AbstractAdapter</code> with default text for the
+		 * add and remove buttons.
+		 *
+		 * @param hasOptionalButton <code>true</code> to show an optional button
+		 * and to use the behavior related to the optional button;
+		 * <code>false</code> to not use it
+		 */
 		public AbstractAdapter(boolean hasOptionalButton) {
-			super();
-			this.hasOptionalButton = hasOptionalButton;
+			this();
+			this.setHasOptionalButton(hasOptionalButton);
 		}
 
+		/**
+		 * Creates a new <code>AbstractAdapter</code> with default text for the
+		 * add and remove buttons.
+		 *
+		 * @param optionalButtonText The text of the optional button, which means
+		 * the optional button will be shown
+		 */
 		public AbstractAdapter(String optionalButtonText) {
 			this(true);
-			this.optionalButtonText = optionalButtonText;
+			this.setOptionalButtonText(optionalButtonText);
 		}
 
+		/**
+		 * Creates a new <code>AbstractAdapter</code>.
+		 *
+		 * @param addButtonText The add button's text
+		 * @param removeButtonText The remove button's text
+		 */
 		public AbstractAdapter(String addButtonText,
 		                       String removeButtonText) {
 
@@ -521,46 +609,103 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 			this.removeButtonText = removeButtonText;
 		}
 
+		/**
+		 * Creates a new <code>AbstractAdapter</code>.
+		 *
+		 * @param addButtonText The add button's text
+		 * @param removeButtonText The remove button's text
+		 * @param optionalButtonText The text of the optional button, which means
+		 * the optional button will be shown
+		 */
 		public AbstractAdapter(String addButtonText,
 		                       String removeButtonText,
 		                       String optionalButtonText) {
 
 			this(optionalButtonText);
-			this.addButtonText    = addButtonText;
-			this.removeButtonText = removeButtonText;
+			this.setAddButtonText(addButtonText);
+			this.setRemoveButtonText(removeButtonText);
 		}
 
+		/*
+		 * (non-Javadoc)
+		 */
 		public String addButtonText() {
 			return addButtonText;
 		}
 
+		/*
+		 * (non-Javadoc)
+		 */
 		public boolean enableOptionOnSelectionChange(ObjectListSelectionModel listSelectionModel) {
 			return listSelectionModel.selectedValuesSize() == 1;
 		}
 
+		/*
+		 * (non-Javadoc)
+		 */
 		public boolean hasOptionalButton() {
 			return hasOptionalButton;
 		}
 
+		/*
+		 * (non-Javadoc)
+		 */
 		public String optionalButtonText() {
 			return optionalButtonText;
 		}
 
+		/*
+		 * (non-Javadoc)
+		 */
 		public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
 		}
 
+		/*
+		 * (non-Javadoc)
+		 */
 		public String removeButtonText() {
 			return removeButtonText;
 		}
 
+		/**
+		 * Changes the text of the add button. This method has to be called before
+		 * the <code>AddRemoveListPane</code> is initialized.
+		 *
+		 * @param addButtonText The add button's text
+		 */
 		public void setAddButtonText(String addButtonText) {
 			this.addButtonText = addButtonText;
 		}
 
+		/**
+		 * Changes the state of the optional button, meaning if it should be shown
+		 * between the add and remove buttons or not.
+		 *
+		 * @param hasOptionalButton <code>true</code> to show an optional button
+		 * and to use the behavior related to the optional button;
+		 * <code>false</code> to not use it
+		 */
+		public void setHasOptionalButton(boolean hasOptionalButton) {
+			this.hasOptionalButton = hasOptionalButton;
+		}
+
+		/**
+		 * Changes the text of the optional button. This method has to be called
+		 * before the <code>AddRemoveListPane</code> is initialized. This does not
+		 * make the optional button visible.
+		 *
+		 * @param optionalButtonText The optional button's text
+		 */
 		public void setOptionalButtonText(String optionalButtonText) {
 			this.optionalButtonText = optionalButtonText;
 		}
 
+		/**
+		 * Changes the text of the remove button. This method has to be called
+		 * before the <code>AddRemoveListPane</code> is initialized.
+		 *
+		 * @param removeButtonText The remove button's text
+		 */
 		public void setRemoveButtonText(String removeButtonText) {
 			this.removeButtonText = removeButtonText;
 		}
@@ -573,7 +718,9 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	public static interface Adapter {
 
 		/**
+		 * The add button's text.
 		 *
+		 * @return The text shown on the add button
 		 */
 		String addButtonText();
 
@@ -589,7 +736,12 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		boolean enableOptionOnSelectionChange(ObjectListSelectionModel listSelectionModel);
 
 		/**
+		 * Determines whether an optional button should be added between the add
+		 * and remove buttons.
 		 *
+		 * @return <code>true</code> to show an optional button and to use the
+		 * behavior related to the optional button; <code>false</code> to not use
+		 * it
 		 */
 		boolean hasOptionalButton();
 
@@ -604,7 +756,9 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		void optionOnSelection(ObjectListSelectionModel listSelectionModel);
 
 		/**
+		 * The remove button's text.
 		 *
+		 * @return The text shown on the remove button
 		 */
 		String removeButtonText();
 

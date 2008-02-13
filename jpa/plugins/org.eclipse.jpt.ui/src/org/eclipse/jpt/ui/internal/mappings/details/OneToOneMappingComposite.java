@@ -111,7 +111,7 @@ public class OneToOneMappingComposite extends AbstractFormPane<IOneToOneMapping>
 		new MappedByComposite(this, subPane);
 
 		// Optional check box
-		new OptionalComposite(this, subPane);
+		new OptionalComposite(this, buildSubPane(subPane, 4));
 
 		// Cascade widgets
 		new CascadeComposite(this, buildCascadeHolder(), container);

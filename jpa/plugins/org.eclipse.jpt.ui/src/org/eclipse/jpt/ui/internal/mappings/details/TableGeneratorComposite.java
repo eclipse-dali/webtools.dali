@@ -126,11 +126,10 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 
 			@Override
 			protected Iterator<String> values() {
-				if (subject() == null) {
+				if ((subject() == null) || (table() == null)) {
 					return EmptyIterator.instance();
 				}
-				// TODO
-				return super.values();
+				return table().columnNames();
 			}
 		};
 	}
@@ -183,11 +182,10 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 
 			@Override
 			protected Iterator<String> values() {
-				if (subject() == null) {
+				if ((subject() == null) || (table() == null)) {
 					return EmptyIterator.instance();
 				}
-				// TODO
-				return super.values();
+				return table().columnNames();
 			}
 		};
 	}
@@ -249,9 +247,11 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 
 			@Override
 			protected Iterator<String> values() {
+
 				if (subject() == null) {
 					return EmptyIterator.instance();
 				}
+
 				String schemaName = subject().getSchema();
 				Database database = database();
 
@@ -316,11 +316,10 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 
 			@Override
 			protected Iterator<String> values() {
-				if (subject() == null) {
+				if ((subject() == null) || (table() == null)) {
 					return EmptyIterator.instance();
 				}
-				// TODO
-				return super.values();
+				return table().columnNames();
 			}
 		};
 	}
@@ -346,7 +345,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		buildLabeledComposite(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_name,
-			nameText,
+			nameText.getParent(),
 			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_NAME
 		);
 

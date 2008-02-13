@@ -102,12 +102,12 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	 */
 	private Object[] buildChoices() {
 		V[] choices = choices();
+		Arrays.sort(choices, buildComparator());
 
 		Object[] extendedChoices = new Object[choices.length + 1];
 		System.arraycopy(choices, 0, extendedChoices, 1, choices.length);
 		extendedChoices[0] = NULL_VALUE;
 
-		Arrays.sort(extendedChoices, buildComparator());
 		return extendedChoices;
 	}
 

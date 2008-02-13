@@ -11,17 +11,7 @@ package org.eclipse.jpt.ui.internal.widgets;
 
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.node.Node;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.forms.widgets.Hyperlink;
-import org.eclipse.ui.forms.widgets.Section;
 
 /**
  * The abstract pane to use when the pane is shown in an <code>AbstractDialog</code>.
@@ -114,74 +104,6 @@ public abstract class AbstractDialogPane<T extends Node> extends AbstractPane<T>
 	protected AbstractDialogPane(PropertyValueModel<? extends T> subjectHolder,
 	                             Composite parent) {
 
-		super(subjectHolder, parent, WidgetFactory.instance());
-	}
-
-	/**
-	 * This <code>IWidgetFactory</code> simply creates plain SWT widgets.
-	 */
-	private static class WidgetFactory implements IWidgetFactory {
-
-		private static final IWidgetFactory INSTANCE = new WidgetFactory();
-
-		static IWidgetFactory instance() {
-			return INSTANCE;
-		}
-
-		public Button createButton(Composite parent, String text, int style) {
-			Button button = new Button(parent, SWT.BORDER | style);
-			button.setText(text);
-			return button;
-		}
-
-		public CCombo createCCombo(Composite parent) {
-			return new CCombo(parent, SWT.BORDER | SWT.READ_ONLY);
-		}
-
-		public Combo createCombo(Composite parent) {
-			return new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
-		}
-
-		public Composite createComposite(Composite parent) {
-			return new Composite(parent, SWT.NULL);
-		}
-
-		public CCombo createEditableCCombo(Composite parent) {
-			return new CCombo(parent, SWT.BORDER);
-		}
-
-		public Combo createEditableCombo(Composite parent) {
-			return new Combo(parent, SWT.BORDER);
-		}
-
-		public Group createGroup(Composite parent, String title) {
-			Group group = new Group(parent, SWT.NULL);
-			group.setText(title);
-			return group;
-		}
-
-		public Hyperlink createHyperlink(Composite parent, String text) {
-			Hyperlink hyperlink = new Hyperlink(parent, SWT.NULL);
-			hyperlink.setText(text);
-			return hyperlink;
-		}
-
-		public Label createLabel(Composite parent, String labelText) {
-			Label label = new Label(parent, SWT.LEFT);
-			label.setText(labelText);
-			return label;
-		}
-
-		public List createList(Composite parent, int style) {
-			return new List(parent, SWT.BORDER | style);
-		}
-
-		public Section createSection(Composite parent, int style) {
-			return new Section(parent, style);
-		}
-
-		public Text createText(Composite parent) {
-			return new Text(parent, SWT.BORDER);
-		}
+		super(subjectHolder, parent, DefaultWidgetFactory.instance());
 	}
 }

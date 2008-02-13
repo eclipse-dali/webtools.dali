@@ -20,6 +20,7 @@ import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -301,8 +302,6 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	protected void doPopulate() {
 
 		super.doPopulate();
-
-		combo.removeAll();
 		populateCombo();
 	}
 
@@ -406,6 +405,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	 */
 	private void populateCombo() {
 
+		combo.removeAll();
 		populateDefaultValue();
 
 		ConnectionProfile connectionProfile = connectionProfile();
@@ -479,36 +479,36 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	 * selection to (0, 0) makes the entire text visible.
 	 */
 	private void updateSelectedItem() {
-		T subject = subject();
-		String value = (subject != null) ? value() : null;
 
-		// Select the new selected item
+		T subject = subject();
+
+		String value         = (subject != null) ? value()        : null;
+		String defaultValue  = (subject != null) ? defaultValue() : null;
+		String displayString = JptUiMappingsMessages.ColumnComposite_defaultEmpty;
+
+		if (defaultValue != null) {
+			displayString = NLS.bind(
+				JptUiMappingsMessages.ColumnComposite_defaultWithOneParam,
+				defaultValue
+			);
+		}
+
+		// Make sure the default value is up to date
+		if (!combo.getItem(0).equals(displayString)) {
+			combo.remove(0);
+			combo.add(displayString, 0);
+		}
+
+		// Select the new value
 		if (value != null) {
 			combo.setText(value);
-			combo.setSelection(new Point(0, 0));
 		}
-		// Handle the default value
+		// Select the default value
 		else {
-			String defaultValue = (subject != null) ? defaultValue() : null;
-			String displayString = JptUiMappingsMessages.ColumnComposite_defaultEmpty;
-
-			if (defaultValue != null) {
-				displayString = NLS.bind(
-					JptUiMappingsMessages.ColumnComposite_defaultWithOneParam,
-					defaultValue
-				);
-			}
-
-			// Selected the default value
-			if (displayString != null) {
-				combo.select(0);
-				combo.setSelection(new Point(0, 0));
-			}
-			// Remove the selection
-			else {
-				combo.select(-1);
-			}
+			combo.select(0);
 		}
+
+		combo.setSelection(new Point(0, 0));
 	}
 
 	/**
