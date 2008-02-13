@@ -9,11 +9,16 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.persistence;
 
+import java.util.Iterator;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.AccessType;
 import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.base.IProperty;
 import org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType;
+import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
+import org.eclipse.jpt.core.internal.resource.java.JPA;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResource;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
@@ -24,6 +29,7 @@ import org.eclipse.jpt.core.internal.resource.persistence.XmlProperties;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlProperty;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class PersistenceUnitTests extends ContextModelTestCase
 {
@@ -950,7 +956,59 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 		persistenceResource().save(null);
-	}	
+	}
+	
+	private void createEntityAnnotation() throws Exception{
+		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
+	}
+
+	private IType createTestEntity() throws Exception {
+		createEntityAnnotation();
+	
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+		});
+	}
+
+	public void testPersistentType() throws Exception {
+		IPersistenceUnit persistenceUnit = persistenceUnit();
+		createTestEntity();
+		
+		//persistentType not listed in persistence.xml and discoverAnnotatedClasses is false
+		assertFalse(jpaProject().discoversAnnotatedClasses());
+		assertNull(persistenceUnit.persistentType(FULLY_QUALIFIED_TYPE_NAME));
+		assertEquals(javaPersistentType(), persistenceUnit.persistentType(FULLY_QUALIFIED_TYPE_NAME));
+		
+		//test persistentType not listed in persistence.xml, discover annotated classes set to true
+		jpaProject().setDiscoversAnnotatedClasses(true);	
+		assertNotNull(persistenceUnit.persistentType(FULLY_QUALIFIED_TYPE_NAME));
+		
+		//test persistentType list as class in persistence.xml
+		jpaProject().setDiscoversAnnotatedClasses(false);
+		XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
+		classRef.setJavaClass(FULLY_QUALIFIED_TYPE_NAME);
+		xmlPersistenceUnit().getClasses().add(classRef);
+		assertNotNull(persistenceUnit.persistentType(FULLY_QUALIFIED_TYPE_NAME));
+
+		
+		//test persistentType from orm.xml file that is specified in the persistence.xml
+		createOrmXmlFile();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		assertNotNull(persistenceUnit.persistentType("model.Foo"));
+		assertEquals(xmlPersistentType, persistenceUnit.persistentType("model.Foo"));
+
+		//test persistentType from orm.xml file that is implied(not specified) in the persistence.xml
+		xmlPersistenceUnit().getMappingFiles().remove(0);
+		assertNotNull(persistenceUnit.persistentType("model.Foo"));
+	}
+	
 //TODO
 //	String getDefaultSchema();
 //	String getDefaultCatalog();
