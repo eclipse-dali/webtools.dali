@@ -38,6 +38,7 @@ import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
@@ -838,7 +839,7 @@ public class PersistenceUnit extends JpaContextNode
 	
 	protected void updateClassRefs(XmlPersistenceUnit persistenceUnit) {
 		Iterator<IClassRef> stream = specifiedClassRefs();
-		Iterator<XmlJavaClassRef> stream2 = persistenceUnit.getClasses().iterator();
+		Iterator<XmlJavaClassRef> stream2 = new CloneIterator<XmlJavaClassRef>(persistenceUnit.getClasses());
 		
 		while (stream.hasNext()) {
 			IClassRef classRef = stream.next();
