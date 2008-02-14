@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IJoinTable;
 import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
@@ -18,7 +19,7 @@ import org.eclipse.jpt.db.internal.Table;
  * @version 2.0
  * @since 2.0
  */
-public class JoinColumnInJoinTableStateObject extends AbstractJoinColumnStateObject
+public class InverseJoinColumnInJoinTableStateObject extends AbstractJoinColumnStateObject
 {
 	private IJoinTable joinTable;
 
@@ -28,7 +29,7 @@ public class JoinColumnInJoinTableStateObject extends AbstractJoinColumnStateObj
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
-	public JoinColumnInJoinTableStateObject(IJoinTable joinTable, IJoinColumn joinColumn) {
+	public InverseJoinColumnInJoinTableStateObject(IJoinTable joinTable, IJoinColumn joinColumn) {
 		super(joinColumn);
 		this.joinTable = joinTable;
 	}
@@ -38,7 +39,7 @@ public class JoinColumnInJoinTableStateObject extends AbstractJoinColumnStateObj
 	 *
 	 * @param joinTable
 	 */
-	public JoinColumnInJoinTableStateObject(IJoinTable joinTable) {
+	public InverseJoinColumnInJoinTableStateObject(IJoinTable joinTable) {
 		this(joinTable, null);
 	}
 
@@ -67,7 +68,11 @@ public class JoinColumnInJoinTableStateObject extends AbstractJoinColumnStateObj
 	 */
 	@Override
 	public Table getReferencedNameTable() {
-		return relationshipMapping().typeMapping().primaryDbTable();
+		IEntity targetEntity = relationshipMapping().getResolvedTargetEntity();
+		if (targetEntity == null) {
+			return null;
+		}
+		return targetEntity.primaryDbTable();
 	}
 
 	public IRelationshipMapping relationshipMapping() {

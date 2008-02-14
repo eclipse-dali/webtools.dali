@@ -11,63 +11,68 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IJoinTable;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractDialogPane;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * TODO
  *
- * @see JoinColumnInJoinTableStateObject
+ * @see InverseJoinColumnInJoinTableStateObject
  * @see InverseJoinColumnDialogPane
  *
  * @version 2.0
  * @since 2.0
  */
-public class InverseJoinColumnDialog extends JoinColumnInJoinTableDialog {
+public class InverseJoinColumnInJoinTableDialog extends AbstractJoinColumnDialog<InverseJoinColumnInJoinTableStateObject> {
+
+	private IJoinTable joinTable;
 
 	/**
-	 * Creates a new <code>InverseJoinColumnDialog</code>.
+	 * Creates a new <code>JoinColumnInJoinTableDialog</code>.
 	 *
 	 * @param parent The parent shell
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
-	public InverseJoinColumnDialog(Shell parent, IJoinColumn joinColumn) {
-
+	public InverseJoinColumnInJoinTableDialog(Shell parent, IJoinTable joinTable, IJoinColumn joinColumn) {
 		super(parent, joinColumn);
+		this.joinTable = joinTable;
 	}
 
 	/**
-	 * Creates a new <code>InverseJoinColumnDialog</code>.
+	 * Creates a new <code>JoinColumnInJoinTableDialog</code>.
 	 *
 	 * @param parent The parent shell
-	 * @param joinTable
+	 * @param joinColumn
 	 */
-	public InverseJoinColumnDialog(Shell parent, IJoinTable joinTable) {
+	public InverseJoinColumnInJoinTableDialog(Shell parent, IJoinTable joinTable) {
+		this(parent, joinTable, null);
+	}
 
-		super(parent, joinTable);
+	/*
+	 * non-Javadoc)
+	 */
+	@Override
+	protected AbstractDialogPane<InverseJoinColumnInJoinTableStateObject> buildLayout(Composite container) {
+		return new AbstractJoinColumnDialogPane<InverseJoinColumnInJoinTableStateObject>(
+			subjectHolder(),
+			container
+		);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected AbstractDialogPane<JoinColumnInJoinTableStateObject> buildLayout(Composite container) {
-		return new InverseJoinColumnDialogPane(subjectHolder(), container);
+	protected InverseJoinColumnInJoinTableStateObject buildStateObject() {
+		return new InverseJoinColumnInJoinTableStateObject(this.joinTable, getJoinColumn());
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected String title() {
-
-		if (getJoinColumn() != null) {
-			return JptUiMappingsMessages.InverseJoinColumnDialog_editInverseJoinColumn;
-		}
-
-		return super.title();
+	public IJoinColumn getJoinColumn() {
+		return (IJoinColumn) super.getJoinColumn();
 	}
 }

@@ -38,9 +38,9 @@ public class JoinColumnInJoinTableDialog extends AbstractJoinColumnDialog<JoinCo
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
-	public JoinColumnInJoinTableDialog(Shell parent, IJoinColumn joinColumn) {
-
+	public JoinColumnInJoinTableDialog(Shell parent, IJoinTable joinTable, IJoinColumn joinColumn) {
 		super(parent, joinColumn);
+		this.joinTable = joinTable;
 	}
 
 	/**
@@ -50,9 +50,7 @@ public class JoinColumnInJoinTableDialog extends AbstractJoinColumnDialog<JoinCo
 	 * @param joinColumn
 	 */
 	public JoinColumnInJoinTableDialog(Shell parent, IJoinTable joinTable) {
-
-		super(parent);
-		this.joinTable = joinTable;
+		this(parent, joinTable, null);
 	}
 
 	/*
@@ -71,12 +69,7 @@ public class JoinColumnInJoinTableDialog extends AbstractJoinColumnDialog<JoinCo
 	 */
 	@Override
 	protected JoinColumnInJoinTableStateObject buildStateObject() {
-
-		if (joinTable != null) {
-			return new JoinColumnInJoinTableStateObject(joinTable);
-		}
-
-		return new JoinColumnInJoinTableStateObject(getJoinColumn());
+		return new JoinColumnInJoinTableStateObject(this.joinTable, getJoinColumn());
 	}
 
 	/*

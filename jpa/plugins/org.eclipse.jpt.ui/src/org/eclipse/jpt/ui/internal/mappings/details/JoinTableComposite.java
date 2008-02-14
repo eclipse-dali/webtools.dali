@@ -111,11 +111,11 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 
 	private void addInverseJoinColumn(IJoinTable joinTable) {
 
-		InverseJoinColumnDialog dialog = new InverseJoinColumnDialog(shell(), joinTable);
+		InverseJoinColumnInJoinTableDialog dialog = new InverseJoinColumnInJoinTableDialog(shell(), joinTable);
 		dialog.openDialog(buildAddInverseJoinColumnPostExecution());
 	}
 
-	private void addInverseJoinColumnFromDialog(JoinColumnInJoinTableStateObject stateObject) {
+	private void addInverseJoinColumnFromDialog(InverseJoinColumnInJoinTableStateObject stateObject) {
 
 		IJoinTable subject = subject();
 		int index = subject.specifiedInverseJoinColumnsSize();
@@ -139,9 +139,9 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 		stateObject.updateJoinColumn(joinColumn);
 	}
 
-	private PostExecution<InverseJoinColumnDialog> buildAddInverseJoinColumnPostExecution() {
-		return new PostExecution<InverseJoinColumnDialog>() {
-			public void execute(InverseJoinColumnDialog dialog) {
+	private PostExecution<InverseJoinColumnInJoinTableDialog> buildAddInverseJoinColumnPostExecution() {
+		return new PostExecution<InverseJoinColumnInJoinTableDialog>() {
+			public void execute(InverseJoinColumnInJoinTableDialog dialog) {
 				if (dialog.wasConfirmed()) {
 					addInverseJoinColumnFromDialog(dialog.subject());
 				}
@@ -159,11 +159,11 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 		};
 	}
 
-	private PostExecution<JoinColumnInJoinTableDialog> buildEditInverseJoinColumnPostExecution() {
-		return new PostExecution<JoinColumnInJoinTableDialog>() {
-			public void execute(JoinColumnInJoinTableDialog dialog) {
+	private PostExecution<InverseJoinColumnInJoinTableDialog> buildEditInverseJoinColumnPostExecution() {
+		return new PostExecution<InverseJoinColumnInJoinTableDialog>() {
+			public void execute(InverseJoinColumnInJoinTableDialog dialog) {
 				if (dialog.wasConfirmed()) {
-					editJoinColumn(dialog.subject());
+					editInverseJoinColumn(dialog.subject());
 				}
 			}
 		};
@@ -281,8 +281,8 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 
 	private void editInverseJoinColumn(IJoinColumn joinColumn) {
 
-		InverseJoinColumnDialog dialog =
-			new InverseJoinColumnDialog(shell(), joinColumn);
+		InverseJoinColumnInJoinTableDialog dialog =
+			new InverseJoinColumnInJoinTableDialog(shell(), subject(), joinColumn);
 
 		dialog.openDialog(buildEditInverseJoinColumnPostExecution());
 	}
@@ -290,12 +290,16 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 	private void editJoinColumn(IJoinColumn joinColumn) {
 
 		JoinColumnInJoinTableDialog dialog =
-			new JoinColumnInJoinTableDialog(shell(), joinColumn);
+			new JoinColumnInJoinTableDialog(shell(), subject(), joinColumn);
 
 		dialog.openDialog(buildEditJoinColumnPostExecution());
 	}
 
 	private void editJoinColumn(JoinColumnInJoinTableStateObject stateObject) {
+		stateObject.updateJoinColumn(stateObject.getJoinColumn());
+	}
+	
+	private void editInverseJoinColumn(InverseJoinColumnInJoinTableStateObject stateObject) {
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
 
