@@ -918,7 +918,7 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 		//otherwise when we remove the annotation from java we will get an update and add the association override
 		//during the udpate.  This causes the UI to be flaky, since change notification might not occur in the correct order
 		if (removedAssociationOverride.getName() != null) {
-			if (CollectionTools.contains(allOverridableAttributeNames(), removedAssociationOverride.getName())) {
+			if (CollectionTools.contains(allOverridableAssociationNames(), removedAssociationOverride.getName())) {
 				defaultAssociationOverride = createAssociationOverride(new NullAssociationOverride(this.persistentTypeResource, removedAssociationOverride.getName()));
 				this.defaultAssociationOverrides.add(defaultAssociationOverride);
 			}
