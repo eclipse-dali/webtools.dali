@@ -399,8 +399,8 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	
 	protected void updateAnnotations(CompilationUnit astRoot) {
 		getMember().bodyDeclaration(astRoot).accept(annotationVisitor(astRoot));
-		removeAnnotationsNotInSource(astRoot);
 		removeMappingAnnotationsNotInSource(astRoot);
+		removeAnnotationsNotInSource(astRoot);
 	}
 	
 	protected void removeAnnotationsNotInSource(CompilationUnit astRoot) {
