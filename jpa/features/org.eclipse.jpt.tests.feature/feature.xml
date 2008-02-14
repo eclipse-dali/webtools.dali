@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jpt.tests.feature"
       label="Dali Java Persistence API Tools (JPA) JUnit Tests"
-      version="1.0.1.qualifier"
+      version="1.0.2.qualifier"
       provider-name="Eclipse.org">
 
    <description>
