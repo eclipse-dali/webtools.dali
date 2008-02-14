@@ -52,7 +52,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * @extends IJpaEObject
  * @generated
  */
-public class EntityMappings extends JpaEObject
+public class EntityMappings extends JpaEObject implements IJpaEObject
 {
 	/**
 	 * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.

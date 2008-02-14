@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
@@ -39,7 +40,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * @extends IJpaEObject
  * @generated
  */
-public class SqlResultSetMapping extends JpaEObject
+public class SqlResultSetMapping extends JpaEObject implements IJpaEObject
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.

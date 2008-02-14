@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
@@ -31,7 +32,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * @extends IJpaEObject
  * @generated
  */
-public class EventMethod extends JpaEObject
+public class EventMethod extends JpaEObject implements IJpaEObject
 {
 	/**
 	 * The default value of the '{@link #getMethodName() <em>Method Name</em>}' attribute.

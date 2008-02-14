@@ -41,7 +41,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * @extends IJpaEObject
  * @generated
  */
-public class XmlPersistence extends JpaEObject
+public class XmlPersistence extends JpaEObject implements IJpaEObject
 {
 	/**
 	 * The cached value of the '{@link #getPersistenceUnits() <em>Persistence Units</em>}' containment reference list.

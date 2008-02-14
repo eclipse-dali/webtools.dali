@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.orm.translators;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.wst.common.internal.emf.resource.IDTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -23,6 +25,11 @@ public class TransientTranslator extends Translator
 		super(domNameAndPath, aFeature, END_TAG_NO_INDENT);
 	}
 	
+	@Override
+	public EObject createEMFObject(String nodeName, String readAheadName) {
+		return OrmFactory.eINSTANCE.createTransientImpl();
+	}
+
 	@Override
 	public Translator[] getChildren(Object target, int versionID) {
 		if (this.children == null) {

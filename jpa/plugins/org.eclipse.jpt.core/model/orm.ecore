@@ -132,26 +132,26 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Embeddable" eSuperTypes="#//TypeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="Attributes">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ids" upperBound="-1" eType="#//IdImpl"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ids" upperBound="-1" eType="#//Id"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="embeddedIds" upperBound="-1"
-        eType="#//EmbeddedIdImpl" containment="true" resolveProxies="false"/>
+        eType="#//EmbeddedId" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="basics" upperBound="-1"
-        eType="#//BasicImpl" containment="true" resolveProxies="false"/>
+        eType="#//Basic" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="versions" upperBound="-1"
-        eType="#//VersionImpl" containment="true" resolveProxies="false"/>
+        eType="#//Version" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="manyToOnes" upperBound="-1"
-        eType="#//ManyToOneImpl" containment="true" resolveProxies="false"/>
+        eType="#//ManyToOne" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="oneToManys" upperBound="-1"
-        eType="#//OneToManyImpl" containment="true" resolveProxies="false"/>
+        eType="#//OneToMany" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="oneToOnes" upperBound="-1"
-        eType="#//OneToOneImpl" containment="true" resolveProxies="false"/>
+        eType="#//OneToOne" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="manyToManys" upperBound="-1"
-        eType="#//ManyToManyImpl" containment="true" resolveProxies="false"/>
+        eType="#//ManyToMany" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="embeddeds" upperBound="-1"
-        eType="#//EmbeddedImpl" containment="true" resolveProxies="false"/>
+        eType="#//Embedded" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="transients" upperBound="-1"
-        eType="#//TransientImpl" containment="true" resolveProxies="false"/>
+        eType="#//Transient" containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AttributeMapping" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>

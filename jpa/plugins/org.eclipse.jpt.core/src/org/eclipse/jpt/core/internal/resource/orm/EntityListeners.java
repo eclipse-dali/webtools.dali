@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
@@ -35,7 +36,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * @extends IJpaEObject
  * @generated
  */
-public class EntityListeners extends JpaEObject
+public class EntityListeners extends JpaEObject implements IJpaEObject
 {
 	/**
 	 * The cached value of the '{@link #getEntityListeners() <em>Entity Listeners</em>}' containment reference list.

@@ -13,6 +13,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.internal.resource.common.IJpaEObject;
 import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
 
 /**
@@ -36,7 +37,7 @@ import org.eclipse.jpt.core.internal.resource.common.JpaEObject;
  * @extends IJpaEObject
  * @generated
  */
-public abstract class TypeMapping extends JpaEObject
+public abstract class TypeMapping extends JpaEObject implements IJpaEObject
 {
 	/**
 	 * The default value of the '{@link #getClassName() <em>Class Name</em>}' attribute.
