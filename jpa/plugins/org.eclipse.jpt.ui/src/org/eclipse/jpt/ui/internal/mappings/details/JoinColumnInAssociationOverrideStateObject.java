@@ -23,25 +23,16 @@ import org.eclipse.jpt.db.internal.Table;
  */
 public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateObject
 {
-	private IAssociationOverride associationOverride;
-
-	/**
-	 * Creates a new <code>JoinColumnInAssociationOverrideStateObject</code>.
-	 */
-	public JoinColumnInAssociationOverrideStateObject(IAssociationOverride associationOverride) {
-		super();
-		this.associationOverride = associationOverride;
-	}
-
 	/**
 	 * Creates a new <code>JoinColumnInAssociationOverrideStateObject</code>.
 	 *
-	 * @param joinColumn Either the join column to edit or <code>null</code> if
-	 * this state object is used to create a new one
+	 * @param associationOverride The owner of the join column to create
+	 * @param joinColumn The join column to edit or <code>null</code> if this is
+	 * used to create a new one
 	 */
-	public JoinColumnInAssociationOverrideStateObject(IAssociationOverride associationOverride, IJoinColumn joinColumn) {
-		super(joinColumn);
-		this.associationOverride = associationOverride;
+	public JoinColumnInAssociationOverrideStateObject(IAssociationOverride associationOverride,
+	                                                  IJoinColumn joinColumn) {
+		super(associationOverride, joinColumn);
 	}
 
 	/*
@@ -56,10 +47,6 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 		return typeMapping().tableName();
 	}
 
-	public IAssociationOverride getAssociationOverride() {
-		return this.associationOverride;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 */
@@ -72,8 +59,18 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 	 * (non-Javadoc)
 	 */
 	@Override
+	public IAssociationOverride getOwner() {
+		return (IAssociationOverride) super.getOwner();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
 	public Table getReferencedNameTable() {
-		IRelationshipMapping relationshipMapping = this.associationOverride.owner().relationshipMapping(this.associationOverride.getName());
+
+		IAssociationOverride associationOverride = getOwner();
+		IRelationshipMapping relationshipMapping = associationOverride.owner().relationshipMapping(associationOverride.getName());
 
 		if (relationshipMapping == null){
 			return null;
@@ -96,7 +93,12 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 		return typeMapping().dbSchema();
 	}
 
+	/**
+	 * Returns the mapping where the join column is located.
+	 *
+	 * @return The owner of the join column to create or to edit
+	 */
 	public ITypeMapping typeMapping() {
-		return this.associationOverride.owner().typeMapping();
+		return getOwner().owner().typeMapping();
 	}
 }

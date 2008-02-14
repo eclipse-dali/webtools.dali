@@ -114,7 +114,7 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 						                                           JptUiMappingsMessages.Boolean_False;
 
 						return NLS.bind(
-							JptUiMappingsMessages.ColumnComposite_insertableWithDefault,
+							JptUiMappingsMessages.JoinColumnDialog_insertableWithDefault,
 							defaultStringValue
 						);
 					}
@@ -128,10 +128,6 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 	private ModifyListener buildTableComboSelectionListener() {
 		return new ModifyListener() {
 
-			private boolean isDefaultTable(int selectedIndex, String value) {
-				return (selectedIndex == 0) && value.equals(subject().defaultTableName());
-			}
-
 			public void modifyText(ModifyEvent e) {
 
 				if (!isPopulating()) {
@@ -139,12 +135,9 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 
 					try {
 						Combo combo = (Combo) e.widget;
-						String table = combo.getText();
-						boolean defaultTable = isDefaultTable(combo.getSelectionIndex(), table);
-
-						subject().setTable(table);
-						subject().setDefaultTableSelected(defaultTable);
-
+						String value = combo.getText();
+						boolean defaultValue = value.equals(combo.getItem(0));
+						subject().setTable(defaultValue ? null : value);
 						populateNameCombo();
 					}
 					finally {
@@ -198,7 +191,7 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 						                                           JptUiMappingsMessages.Boolean_False;
 
 						return NLS.bind(
-							JptUiMappingsMessages.ColumnComposite_updatableWithDefault,
+							JptUiMappingsMessages.JoinColumnDialog_updatableWithDefault,
 							defaultStringValue
 						);
 					}
@@ -269,6 +262,9 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 				defaultTableName
 			));
 		}
+		else {
+			tableCombo.add(JptUiMappingsMessages.JoinColumnDialog_defaultEmpty);
+		}
 
 		// Populate the combo with the table names
 		Schema schema = subject.getSchema();
@@ -284,14 +280,11 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 		// Update the selected table
 		String table = subject.getTable();
 
-		if ((table != null) && !subject.isDefaultTableSelected()) {
+		if (table != null) {
 			tableCombo.setText(table);
 		}
-		else if (defaultTableName != null) {
-			tableCombo.select(0);
-		}
 		else {
-			tableCombo.select(-1);
+			tableCombo.select(0);
 		}
 	}
 

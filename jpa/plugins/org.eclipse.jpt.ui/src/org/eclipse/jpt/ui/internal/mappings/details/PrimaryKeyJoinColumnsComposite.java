@@ -10,16 +10,17 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
@@ -29,6 +30,7 @@ import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
@@ -37,10 +39,6 @@ import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
@@ -68,8 +66,7 @@ import org.eclipse.swt.widgets.Group;
  */
 public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 {
-	private AddRemoveListPane<IEntity> joinColumnsListPane;
-	private Button overrideDefaultJoinColumnsCheckBox;
+	private WritablePropertyValueModel<IPrimaryKeyJoinColumn> joinColumnHolder;
 
 	/**
 	 * Creates a new <code>PrimaryKeyJoinColumnsComposite</code>.
@@ -107,7 +104,13 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 	}
 
 	private void addPrimaryKeyJoinColumn() {
-		PrimaryKeyJoinColumnDialog dialog = new PrimaryKeyJoinColumnDialog(shell(), subject());
+
+		PrimaryKeyJoinColumnDialog dialog = new PrimaryKeyJoinColumnDialog(
+			shell(),
+			subject(),
+			null
+		);
+
 		dialog.openDialog(buildAddPrimaryKeyJoinColumnPostExecution());
 	}
 
@@ -121,6 +124,20 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 		};
 	}
 
+	private PropertyValueModel<IPrimaryKeyJoinColumn> buildDefaultJoinColumnHolder() {
+		return new PropertyAspectAdapter<IEntity, IPrimaryKeyJoinColumn>(getSubjectHolder(), IEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMN) {
+			@Override
+			protected IPrimaryKeyJoinColumn buildValue_() {
+				return subject.getDefaultPrimaryKeyJoinColumn();
+			}
+		};
+	}
+
+	private ListValueModel<IPrimaryKeyJoinColumn> buildDefaultJoinColumnListHolder() {
+		return new PropertyListValueModelAdapter<IPrimaryKeyJoinColumn>(buildDefaultJoinColumnHolder());
+
+	}
+
 	private PostExecution<PrimaryKeyJoinColumnDialog> buildEditPrimaryKeyJoinColumnPostExecution() {
 		return new PostExecution<PrimaryKeyJoinColumnDialog>() {
 			public void execute(PrimaryKeyJoinColumnDialog dialog) {
@@ -131,8 +148,8 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 		};
 	}
 
-	private WritablePropertyValueModel<IJoinColumn> buildJoinColumnHolder() {
-		return new SimplePropertyValueModel<IJoinColumn>();
+	private WritablePropertyValueModel<IPrimaryKeyJoinColumn> buildJoinColumnHolder() {
+		return new SimplePropertyValueModel<IPrimaryKeyJoinColumn>();
 	}
 
 	private String buildJoinColumnLabel(IPrimaryKeyJoinColumn joinColumn) {
@@ -208,49 +225,6 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 		};
 	}
 
-	private ListValueModel<IPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListModel() {
-		return new ItemPropertyListValueModelAdapter<IPrimaryKeyJoinColumn>(buildPrimaryKeyJoinColumnsListHolder(), 
-			INamedColumn.SPECIFIED_NAME_PROPERTY, 
-			INamedColumn.DEFAULT_NAME_PROPERTY,
-			IAbstractJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
-			IAbstractJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY);
-	}	
-
-	private ListValueModel<IPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListHolder() {
-		java.util.List<ListValueModel<IPrimaryKeyJoinColumn>> list = new ArrayList<ListValueModel<IPrimaryKeyJoinColumn>>();
-		list.add(buildSpecifiedJoinColumnsListHolder());
-		list.add(buildDefaultJoinColumnListHolder());
-		return new CompositeListValueModel<ListValueModel<IPrimaryKeyJoinColumn>, IPrimaryKeyJoinColumn>(list);
-	}
-	
-	private ListValueModel<IPrimaryKeyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
-		return new ListAspectAdapter<IEntity, IPrimaryKeyJoinColumn>(getSubjectHolder(), IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST) {
-			@Override
-			protected ListIterator<IPrimaryKeyJoinColumn> listIterator_() {
-				return subject.specifiedPrimaryKeyJoinColumns();
-			}
-			@Override
-			protected int size_() {
-				return subject.specifiedPrimaryKeyJoinColumnsSize();
-			}
-		};
-	}
-
-	private ListValueModel<IPrimaryKeyJoinColumn> buildDefaultJoinColumnListHolder() {
-		return new PropertyListValueModelAdapter<IPrimaryKeyJoinColumn>(buildDefaultJoinColumnHolder());
-
-	}
-	
-	private PropertyValueModel<IPrimaryKeyJoinColumn> buildDefaultJoinColumnHolder() {
-		return new PropertyAspectAdapter<IEntity, IPrimaryKeyJoinColumn>(getSubjectHolder(), IEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMN) {
-			@Override
-			protected IPrimaryKeyJoinColumn buildValue_() {
-				return subject.getDefaultPrimaryKeyJoinColumn();
-			}
-		};
-	}
-
-
 	private ILabelProvider buildJoinColumnsListLabelProvider() {
 		return new LabelProvider() {
 			@Override
@@ -260,32 +234,39 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 		};
 	}
 
-
 	private WritablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
-		return new SimplePropertyValueModel<Boolean>();
+		return new OverrideDefaultJoinColumnHolder();
 	}
 
-	private SelectionListener buildOverrideDefaultJoinColumnSelectionListener() {
-		return new SelectionAdapter() {
+	private ListValueModel<IPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListHolder() {
+		List<ListValueModel<IPrimaryKeyJoinColumn>> list = new ArrayList<ListValueModel<IPrimaryKeyJoinColumn>>();
+		list.add(buildSpecifiedJoinColumnsListHolder());
+		list.add(buildDefaultJoinColumnListHolder());
+		return new CompositeListValueModel<ListValueModel<IPrimaryKeyJoinColumn>, IPrimaryKeyJoinColumn>(list);
+	}
+
+	private ListValueModel<IPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListModel() {
+		return new ItemPropertyListValueModelAdapter<IPrimaryKeyJoinColumn>(
+			buildPrimaryKeyJoinColumnsListHolder(),
+			INamedColumn.SPECIFIED_NAME_PROPERTY,
+			INamedColumn.DEFAULT_NAME_PROPERTY,
+			IAbstractJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
+			IAbstractJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY
+		);
+	}
+
+	private ListValueModel<IPrimaryKeyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
+		return new ListAspectAdapter<IEntity, IPrimaryKeyJoinColumn>(getSubjectHolder(), IEntity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST) {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				updateJoinColumns();
+			protected ListIterator<IPrimaryKeyJoinColumn> listIterator_() {
+				return subject.specifiedPrimaryKeyJoinColumns();
+			}
+
+			@Override
+			protected int size_() {
+				return subject.specifiedPrimaryKeyJoinColumnsSize();
 			}
 		};
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void doPopulate() {
-		super.doPopulate();
-
-		IEntity entity = subject();
-		boolean enabled = (entity != null) && (entity.specifiedPrimaryKeyJoinColumnsSize() > 0);
-
-		overrideDefaultJoinColumnsCheckBox.setSelection(enabled);
-		joinColumnsListPane.enableWidgets(enabled);
 	}
 
 	private void editJoinColumn(PrimaryKeyJoinColumnStateObject stateObject) {
@@ -296,8 +277,22 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 
 		IPrimaryKeyJoinColumn joinColumn = (IPrimaryKeyJoinColumn) listSelectionModel.selectedValue();
 
-		PrimaryKeyJoinColumnDialog dialog = new PrimaryKeyJoinColumnDialog(shell(), joinColumn);
+		PrimaryKeyJoinColumnDialog dialog = new PrimaryKeyJoinColumnDialog(
+			shell(),
+			subject(),
+			joinColumn
+		);
+
 		dialog.openDialog(buildEditPrimaryKeyJoinColumnPostExecution());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void initialize() {
+		super.initialize();
+		joinColumnHolder = buildJoinColumnHolder();
 	}
 
 	/*
@@ -313,36 +308,44 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 		);
 
 		// Override Default Join Columns check box
-		overrideDefaultJoinColumnsCheckBox = buildCheckBox(
+		buildCheckBox(
 			buildSubPane(groupPane, 8),
 			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_overrideDefaultPrimaryKeyJoinColumns,
 			buildOverrideDefaultJoinColumnHolder()
 		);
 
-		overrideDefaultJoinColumnsCheckBox.addSelectionListener(
-			buildOverrideDefaultJoinColumnSelectionListener()
-		);
-
 		// Primary Key Join Columns list pane
-		joinColumnsListPane = new AddRemoveListPane<IEntity>(
+		AddRemoveListPane<IEntity> joinColumnsListPane = new AddRemoveListPane<IEntity>(
 			this,
 			groupPane,
 			buildJoinColumnsAdapter(),
 			buildPrimaryKeyJoinColumnsListModel(),
-			buildJoinColumnHolder(),
+			joinColumnHolder,
 			buildJoinColumnsListLabelProvider(),
 			IJpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
 		);
+
+		installJoinColumnsListPaneEnabler(joinColumnsListPane);
 	}
 
-	private void updateJoinColumns() {
+	private void installJoinColumnsListPaneEnabler(AddRemoveListPane<IEntity> pane) {
+		new PaneEnabler(
+			buildOverrideDefaultJoinColumnHolder(),
+			pane
+		);
+	}
 
-		IEntity subject = subject();
-		boolean selected = overrideDefaultJoinColumnsCheckBox.getSelection();
-		joinColumnsListPane.enableWidgets(selected);
+	private void updateJoinColumns(boolean selected) {
+
+		if (isPopulating()) {
+			return;
+		}
+
 		setPopulating(true);
 
 		try {
+			IEntity subject = subject();
+
 			// Add a join column by creating a specified one using the default
 			// one if it exists
 			if (selected) {
@@ -356,6 +359,8 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 					IPrimaryKeyJoinColumn pkJoinColumn = subject.addSpecifiedPrimaryKeyJoinColumn(0);
 					pkJoinColumn.setSpecifiedName(columnName);
 					pkJoinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+
+					joinColumnHolder.setValue(pkJoinColumn);
 				}
 			}
 			// Remove all the specified join columns
@@ -367,6 +372,23 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 		}
 		finally {
 			setPopulating(false);
+		}
+	}
+
+	private class OverrideDefaultJoinColumnHolder extends ListPropertyValueModelAdapter<Boolean>
+	                                              implements WritablePropertyValueModel<Boolean> {
+
+		public OverrideDefaultJoinColumnHolder() {
+			super(buildSpecifiedJoinColumnsListHolder());
+		}
+
+		@Override
+		protected Boolean buildValue() {
+			return listHolder.size() > 0;
+		}
+
+		public void setValue(Boolean value) {
+			updateJoinColumns(value);
 		}
 	}
 }

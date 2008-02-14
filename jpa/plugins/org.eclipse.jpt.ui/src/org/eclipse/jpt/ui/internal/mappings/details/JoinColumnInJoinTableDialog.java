@@ -16,41 +16,32 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * TODO
+ * This dialog is used to either create or edit a joing column that is located
+ * on a join table.
  *
+ * @see IJoinColumn
+ * @see IJoinTable
  * @see JoinColumnInJoinTableStateObject
  * @see AbstractJoinColumnDialogPane
- *
- * TODO: If there is only 1 join column and the user is editing it, they should
- * be able to define defaults. otherwise, we probably shouldn't allow it.
  *
  * @version 2.0
  * @since 1.0
  */
 public class JoinColumnInJoinTableDialog extends AbstractJoinColumnDialog<JoinColumnInJoinTableStateObject> {
 
-	private IJoinTable joinTable;
-
 	/**
 	 * Creates a new <code>JoinColumnInJoinTableDialog</code>.
 	 *
 	 * @param parent The parent shell
+	 * @param joinTable The parent of the join column to edit or to create
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
-	public JoinColumnInJoinTableDialog(Shell parent, IJoinTable joinTable, IJoinColumn joinColumn) {
-		super(parent, joinColumn);
-		this.joinTable = joinTable;
-	}
+	public JoinColumnInJoinTableDialog(Shell parent,
+	                                   IJoinTable joinTable,
+	                                   IJoinColumn joinColumn) {
 
-	/**
-	 * Creates a new <code>JoinColumnInJoinTableDialog</code>.
-	 *
-	 * @param parent The parent shell
-	 * @param joinColumn
-	 */
-	public JoinColumnInJoinTableDialog(Shell parent, IJoinTable joinTable) {
-		this(parent, joinTable, null);
+		super(parent, joinTable, joinColumn);
 	}
 
 	/*
@@ -69,7 +60,10 @@ public class JoinColumnInJoinTableDialog extends AbstractJoinColumnDialog<JoinCo
 	 */
 	@Override
 	protected JoinColumnInJoinTableStateObject buildStateObject() {
-		return new JoinColumnInJoinTableStateObject(this.joinTable, getJoinColumn());
+		return new JoinColumnInJoinTableStateObject(
+			getOwner(),
+			getJoinColumn()
+		);
 	}
 
 	/*
@@ -78,5 +72,13 @@ public class JoinColumnInJoinTableDialog extends AbstractJoinColumnDialog<JoinCo
 	@Override
 	public IJoinColumn getJoinColumn() {
 		return (IJoinColumn) super.getJoinColumn();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected IJoinTable getOwner() {
+		return (IJoinTable) super.getOwner();
 	}
 }

@@ -13,7 +13,7 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * TODO:
+ * See <code>AbstractJoinColumnDialogPane</code> for the layout.
  *
  * @see PrimaryKeyJoinColumnStateObject
  * @see PrimaryKeyJoinColumnDialog - The parent container
@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public final class PrimaryKeyJoinColumnDialogPane extends AbstractJoinColumnDialogPane<PrimaryKeyJoinColumnStateObject>
+public class PrimaryKeyJoinColumnDialogPane extends AbstractJoinColumnDialogPane<PrimaryKeyJoinColumnStateObject>
 {
 	/**
 	 * Creates a new <code>PrimaryKeyJoinColumnDialogPane</code>.
@@ -33,15 +33,5 @@ public final class PrimaryKeyJoinColumnDialogPane extends AbstractJoinColumnDial
 	                                      Composite parent) {
 
 		super(subjectHolder, parent);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
-		super.initializeLayout(container);
-
-		// TODO or there is nothing here
 	}
 }

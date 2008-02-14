@@ -14,32 +14,30 @@ import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
 import org.eclipse.jpt.db.internal.Table;
 
 /**
+ * The state object used to create or edit a primary key join column on an
+ * secondary table.
+ *
+ * @see IPrimaryKeyJoinColumn
+ * @see ISecondaryTable
+ * @see PrimaryKeyJoinColumnInSecondaryTableDialog
+ *
  * @version 2.0
  * @since 2.0
  */
-public final class PrimaryKeyJoinColumnInSecondaryTableStateObject extends AbstractJoinColumnStateObject
+public class PrimaryKeyJoinColumnInSecondaryTableStateObject extends AbstractJoinColumnStateObject
 {
-	private ISecondaryTable secondaryTable;
-
 	/**
 	 * Creates a new <code>PrimaryKeyJoinColumnInSecondaryTableStateObject</code>.
 	 *
-	 * @param joinColumn Either the join column to edit or <code>null</code> if
-	 * this state object is used to create a new one
+	 * @param secondaryTable The owner of the join column to create or where it
+	 * is located
+	 * @param joinColumn The join column to edit or <code>null</code> if it is to
+	 * create a new one
 	 */
-	public PrimaryKeyJoinColumnInSecondaryTableStateObject(IPrimaryKeyJoinColumn joinColumn) {
-		super(joinColumn);
-		this.secondaryTable = (ISecondaryTable) joinColumn.parent();
-	}
+	public PrimaryKeyJoinColumnInSecondaryTableStateObject(ISecondaryTable secondaryTable,
+	                                                       IPrimaryKeyJoinColumn joinColumn) {
 
-	/**
-	 * Creates a new <code>PrimaryKeyJoinColumnInSecondaryTableStateObject</code>.
-	 *
-	 * @param secondaryTable
-	 */
-	public PrimaryKeyJoinColumnInSecondaryTableStateObject(ISecondaryTable secondaryTable) {
-		super();
-		this.secondaryTable = secondaryTable;
+		super(secondaryTable, joinColumn);
 	}
 
 	/*
@@ -55,17 +53,21 @@ public final class PrimaryKeyJoinColumnInSecondaryTableStateObject extends Abstr
 	 */
 	@Override
 	public Table getNameTable() {
-		return secondaryTable.dbTable();
+		return getOwner().dbTable();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public ISecondaryTable getOwner() {
+		return (ISecondaryTable) super.getOwner();
 	}
 
 	/* (non-Javadoc)
 	 */
 	@Override
 	public Table getReferencedNameTable() {
-		return secondaryTable.parent().primaryDbTable();
-	}
-
-	public ISecondaryTable getSecondaryTable() {
-		return secondaryTable;
+		return getOwner().parent().primaryDbTable();
 	}
 }

@@ -71,11 +71,6 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 
 	private ModifyListener buildNameComboListener() {
 		return new ModifyListener() {
-
-			private boolean isDefaultName(int selectedIndex, String value) {
-				return (selectedIndex == 0) && value.equals(subject().defaultName());
-			}
-
 			public void modifyText(ModifyEvent e) {
 
 				if (!isPopulating()) {
@@ -83,11 +78,9 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 
 					try {
 						Combo combo = (Combo) e.widget;
-						String name = combo.getText();
-						boolean defaultName = isDefaultName(combo.getSelectionIndex(), name);
-
-						subject().setName(name);
-						subject().setDefaultNameSelected(defaultName);
+						String value = combo.getText();
+						boolean defaultValue = value.equals(combo.getItem(0));
+						subject().setName(defaultValue ? null : value);
 					}
 					finally {
 						setPopulating(false);
@@ -99,11 +92,6 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 
 	private ModifyListener buildReferencedColumnNameComboListener() {
 		return new ModifyListener() {
-
-			private boolean isDefaultReferencedColumnName(int selectedIndex, String value) {
-				return (selectedIndex == 0) && value.equals(subject().defaultReferencedColumnName());
-			}
-
 			public void modifyText(ModifyEvent e) {
 
 				if (!isPopulating()) {
@@ -111,11 +99,9 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 
 					try {
 						Combo combo = (Combo) e.widget;
-						String referencedColumnName = combo.getText();
-						boolean defaultReferencedColumnName = isDefaultReferencedColumnName(combo.getSelectionIndex(), referencedColumnName);
-
-						subject().setReferencedColumnName(referencedColumnName);
-						subject().setDefaultReferencedColumnNameSelected(defaultReferencedColumnName);
+						String value = combo.getText();
+						boolean defaultValue = value.equals(combo.getItem(0));
+						subject().setReferencedColumnName(defaultValue ? null : value);
 					}
 					finally {
 						setPopulating(false);
@@ -184,6 +170,9 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 				defaultName
 			));
 		}
+		else {
+			nameCombo.add(JptUiMappingsMessages.JoinColumnDialog_defaultEmpty);
+		}
 
 		// Populate the combo with the column names
 		Table nameTable = subject.getNameTable();
@@ -199,14 +188,11 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 		// Set the selected name
 		String name = subject.getName();
 
-		if ((name != null) && !subject.isDefaultNameSelected()) {
+		if (name != null) {
 			nameCombo.setText(name);
 		}
-		else if (defaultName != null) {
-			nameCombo.select(0);
-		}
 		else {
-			nameCombo.select(-1);
+			nameCombo.select(0);
 		}
 	}
 
@@ -228,6 +214,9 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 				defaultReferencedColumnName)
 			);
 		}
+		else {
+			referencedColumnNameCombo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
+		}
 
 		// Populate the combo with the column names
 		Table referencedNameTable = subject.getReferencedNameTable();
@@ -243,14 +232,11 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 		// Set the selected referenced column name
 		String referencedColumnName = subject.getReferencedColumnName();
 
-		if ((referencedColumnName != null) && !subject.isDefaultReferencedColumnNameSelected()) {
+		if (referencedColumnName != null) {
 			referencedColumnNameCombo.setText(referencedColumnName);
 		}
-		else if (defaultReferencedColumnName != null) {
-			referencedColumnNameCombo.select(0);
-		}
 		else {
-			referencedColumnNameCombo.select(-1);
+			referencedColumnNameCombo.select(0);
 		}
 	}
 

@@ -15,38 +15,42 @@ import org.eclipse.jpt.ui.internal.widgets.AbstractValidatingDialog;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * @see AbstractJoinColumnStateObject
+ * The abstract definition the dialog showing the information for a join column
+ * to edit or to create.
  *
- * TODO: If there is only 1 join column and the user is editing it, they should
- * be able to define defaults. otherwise, we probably shouldn't allow it.
+ * @see AbstractJoinColumnStateObject
  *
  * @version 2.0
  * @since 1.0
  */
 public abstract class AbstractJoinColumnDialog<T extends AbstractJoinColumnStateObject> extends AbstractValidatingDialog<T> {
 
+	/**
+	 * Either the join column to edit or <code>null</code> if this state object
+	 * is used to create a new one.
+	 */
 	private IAbstractJoinColumn joinColumn;
 
 	/**
-	 * Creates a new <code>AbstractJoinColumnDialog</code>.
-	 *
-	 * @param parent The parent shell
+	 * The owner of the join column to create or where it is located.
 	 */
-	public AbstractJoinColumnDialog(Shell parent) {
-		super(parent);
-	}
+	private Object owner;
 
 	/**
 	 * Creates a new <code>AbstractJoinColumnDialog</code>.
 	 *
 	 * @param parent The parent shell
+	 * @param owner The owner of the join column to create or where it is located
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
 	public AbstractJoinColumnDialog(Shell parent,
+	                                Object owner,
 	                                IAbstractJoinColumn joinColumn) {
 
-		this(parent);
+		super(parent);
+
+		this.owner      = owner;
 		this.joinColumn = joinColumn;
 	}
 
@@ -72,12 +76,23 @@ public abstract class AbstractJoinColumnDialog<T extends AbstractJoinColumnState
 	}
 
 	/**
-	 * Returns
+	 * Returns the join column used by this state object for editing or
+	 * <code>null</code> if this state object is used to create a new one.
 	 *
-	 * @return
+	 * @return Either the edited join column or <code>null</code>
 	 */
 	public IAbstractJoinColumn getJoinColumn() {
 		return joinColumn;
+	}
+
+	/**
+	 * Returns the owner where the join column is located or where a new one can
+	 * be added.
+	 *
+	 * @return The parent of the join column
+	 */
+	protected Object getOwner() {
+		return owner;
 	}
 
 	/*

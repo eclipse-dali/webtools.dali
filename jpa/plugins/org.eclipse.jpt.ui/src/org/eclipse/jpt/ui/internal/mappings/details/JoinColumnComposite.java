@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.internal.context.base.INamedColumn;
 import org.eclipse.jpt.core.internal.context.base.ISingleRelationshipMapping;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane;
@@ -28,6 +29,7 @@ import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
@@ -36,10 +38,6 @@ import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
@@ -70,8 +68,7 @@ import org.eclipse.swt.widgets.Group;
  */
 public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMapping>
 {
-	private AddRemoveListPane<ISingleRelationshipMapping> joinColumnsListPane;
-	private Button overrideDefaultJoinColumnsCheckBox;
+	private WritablePropertyValueModel<IJoinColumn> joinColumnHolder;
 
 	/**
 	 * Creates a new <code>JoinColumnComposite</code>.
@@ -102,7 +99,7 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 	private void addJoinColumn() {
 
 		JoinColumnInRelationshipMappingDialog dialog =
-			new JoinColumnInRelationshipMappingDialog(shell(), subject());
+			new JoinColumnInRelationshipMappingDialog(shell(), subject(), null);
 
 		dialog.openDialog(buildAddJoinColumnPostExecution());
 	}
@@ -124,6 +121,19 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 				}
 			}
 		};
+	}
+
+	private PropertyValueModel<IJoinColumn> buildDefaultJoinColumnHolder() {
+		return new PropertyAspectAdapter<ISingleRelationshipMapping, IJoinColumn>(getSubjectHolder(), ISingleRelationshipMapping.DEFAULT_JOIN_COLUMN) {
+			@Override
+			protected IJoinColumn buildValue_() {
+				return subject.getDefaultJoinColumn();
+			}
+		};
+	}
+
+	private ListValueModel<IJoinColumn> buildDefaultJoinColumnListHolder() {
+		return new PropertyListValueModelAdapter<IJoinColumn>(buildDefaultJoinColumnHolder());
 	}
 
 	private PostExecution<JoinColumnInRelationshipMappingDialog> buildEditJoinColumnPostExecution() {
@@ -207,6 +217,23 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 		};
 	}
 
+	private ListValueModel<IJoinColumn> buildJoinColumnsListHolder() {
+		java.util.List<ListValueModel<IJoinColumn>> list = new ArrayList<ListValueModel<IJoinColumn>>();
+		list.add(buildSpecifiedJoinColumnsListHolder());
+		list.add(buildDefaultJoinColumnListHolder());
+		return new CompositeListValueModel<ListValueModel<IJoinColumn>, IJoinColumn>(list);
+	}
+
+	private ILabelProvider buildJoinColumnsListLabelProvider() {
+		return new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				IJoinColumn joinColumn = (IJoinColumn) element;
+				return buildJoinColumnLabel(joinColumn);
+			}
+		};
+	}
+
 	private ListValueModel<IJoinColumn> buildJoinColumnsListModel() {
 		return new ItemPropertyListValueModelAdapter<IJoinColumn>(buildJoinColumnsListHolder(),
 			INamedColumn.SPECIFIED_NAME_PROPERTY,
@@ -215,11 +242,8 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 			IAbstractJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY);
 	}
 
-	private ListValueModel<IJoinColumn> buildJoinColumnsListHolder() {
-		java.util.List<ListValueModel<IJoinColumn>> list = new ArrayList<ListValueModel<IJoinColumn>>();
-		list.add(buildSpecifiedJoinColumnsListHolder());
-		list.add(buildDefaultJoinColumnListHolder());
-		return new CompositeListValueModel<ListValueModel<IJoinColumn>, IJoinColumn>(list);
+	private WritablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
+		return new OverrideDefaultJoinColumnHolder();
 	}
 
 	private ListValueModel<IJoinColumn> buildSpecifiedJoinColumnsListHolder() {
@@ -236,65 +260,23 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 		};
 	}
 
-	private ListValueModel<IJoinColumn> buildDefaultJoinColumnListHolder() {
-		return new PropertyListValueModelAdapter<IJoinColumn>(buildDefaultJoinColumnHolder());
-	}
+	private void editJoinColumn(ObjectListSelectionModel listSelectionModel) {
 
-	private PropertyValueModel<IJoinColumn> buildDefaultJoinColumnHolder() {
-		return new PropertyAspectAdapter<ISingleRelationshipMapping, IJoinColumn>(getSubjectHolder(), ISingleRelationshipMapping.DEFAULT_JOIN_COLUMN) {
-			@Override
-			protected IJoinColumn buildValue_() {
-				return subject.getDefaultJoinColumn();
-			}
-		};
-	}
+		IJoinColumn joinColumn = (IJoinColumn) listSelectionModel.selectedValue();
 
-	private ILabelProvider buildJoinColumnsListLabelProvider() {
-		return new LabelProvider() {
-			@Override
-			public String getText(Object element) {
-				IJoinColumn joinColumn = (IJoinColumn) element;
+		JoinColumnInRelationshipMappingDialog dialog =
+			new JoinColumnInRelationshipMappingDialog(shell(), subject(), joinColumn);
 
-				return buildJoinColumnLabel(joinColumn);
-			}
-		};
-	}
-
-	private SelectionListener buildOverrideDefaultJoinColumnsSelectionListener() {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				updateJoinColumns();
-			}
-		};
-	}
-
-	private WritablePropertyValueModel<Boolean> buildOverrideDefaultJoinsColumnHolder() {
-		return new SimplePropertyValueModel<Boolean>();
+		dialog.openDialog(buildEditJoinColumnPostExecution());
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void doPopulate() {
-		super.doPopulate();
-
-		ISingleRelationshipMapping subject = subject();
-		boolean enabled = (subject != null) && subject.containsSpecifiedJoinColumns();
-
-		overrideDefaultJoinColumnsCheckBox.setSelection(enabled);
-		joinColumnsListPane.enableWidgets(enabled);
-	}
-
-	private void editJoinColumn(ObjectListSelectionModel listSelectionModel) {
-
-		IJoinColumn joinColumn = (IJoinColumn) listSelectionModel.selectedValue();
-
-		JoinColumnInRelationshipMappingDialog dialog =
-			new JoinColumnInRelationshipMappingDialog(shell(), joinColumn);
-
-		dialog.openDialog(buildEditJoinColumnPostExecution());
+	protected void initialize() {
+		super.initialize();
+		joinColumnHolder = buildJoinColumnHolder();
 	}
 
 	/*
@@ -310,25 +292,31 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 		);
 
 		// Override Default Join Columns check box
-		overrideDefaultJoinColumnsCheckBox = buildCheckBox(
+		buildCheckBox(
 			buildSubPane(groupPane, 8),
 			JptUiMappingsMessages.JoinColumnComposite_overrideDefaultJoinColumns,
-			buildOverrideDefaultJoinsColumnHolder()
-		);
-
-		overrideDefaultJoinColumnsCheckBox.addSelectionListener(
-			buildOverrideDefaultJoinColumnsSelectionListener()
+			buildOverrideDefaultJoinColumnHolder()
 		);
 
 		// Join Columns list pane
-		joinColumnsListPane = new AddRemoveListPane<ISingleRelationshipMapping>(
-			this,
-			groupPane,
-			buildJoinColumnsAdapter(),
-			buildJoinColumnsListModel(),
-			buildJoinColumnHolder(),
-			buildJoinColumnsListLabelProvider(),
-			IJpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
+		AddRemoveListPane<ISingleRelationshipMapping> joinColumnsListPane =
+			new AddRemoveListPane<ISingleRelationshipMapping>(
+				this,
+				groupPane,
+				buildJoinColumnsAdapter(),
+				buildJoinColumnsListModel(),
+				joinColumnHolder,
+				buildJoinColumnsListLabelProvider(),
+				IJpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
+			);
+
+		installJoinColumnsListPaneEnabler(joinColumnsListPane);
+	}
+
+	private void installJoinColumnsListPaneEnabler(AddRemoveListPane<ISingleRelationshipMapping> pane) {
+		new PaneEnabler(
+			buildOverrideDefaultJoinColumnHolder(),
+			pane
 		);
 	}
 
@@ -345,18 +333,17 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
 
-	private void updateJoinColumns() {
+	private void updateJoinColumns(boolean selected) {
 
 		if (isPopulating()) {
 			return;
 		}
 
-		ISingleRelationshipMapping subject = subject();
-		boolean selected = overrideDefaultJoinColumnsCheckBox.getSelection();
-		joinColumnsListPane.enableWidgets(selected);
 		setPopulating(true);
 
 		try {
+			ISingleRelationshipMapping subject = subject();
+
 			// Add a join column by creating a specified one using the default
 			// one if it exists
 			if (selected) {
@@ -371,7 +358,7 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 					joinColumn.setSpecifiedName(columnName);
 					joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
 
-					joinColumnsListPane.setSelectedItem(joinColumn);
+					joinColumnHolder.setValue(joinColumn);
 				}
 			}
 			// Remove all the specified join columns
@@ -383,6 +370,23 @@ public class JoinColumnComposite extends AbstractFormPane<ISingleRelationshipMap
 		}
 		finally {
 			setPopulating(false);
+		}
+	}
+
+	private class OverrideDefaultJoinColumnHolder extends ListPropertyValueModelAdapter<Boolean>
+	                                              implements WritablePropertyValueModel<Boolean> {
+
+		public OverrideDefaultJoinColumnHolder() {
+			super(buildSpecifiedJoinColumnsListHolder());
+		}
+
+		@Override
+		protected Boolean buildValue() {
+			return listHolder.size() > 0;
+		}
+
+		public void setValue(Boolean value) {
+			updateJoinColumns(value);
 		}
 	}
 }

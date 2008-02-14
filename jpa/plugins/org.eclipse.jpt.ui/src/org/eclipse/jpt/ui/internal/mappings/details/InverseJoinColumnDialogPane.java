@@ -66,13 +66,16 @@ public class InverseJoinColumnDialogPane extends AbstractJoinColumnDialogPane<Jo
 
 		if (defaultName != null) {
 			nameCombo.add(NLS.bind(
-				JptUiMappingsMessages.InverseJoinColumnDialog_defaultWithOneParam,
+				JptUiMappingsMessages.JoinColumnDialog_defaultWithOneParam,
 				defaultName
 			));
 		}
+		else {
+			nameCombo.add(JptUiMappingsMessages.JoinColumnDialog_defaultEmpty);
+		}
 
 		// Populate the combo with the column names
-		IJoinTable joinTable = subject.getJoinTable();
+		IJoinTable joinTable = subject.getOwner();
 
 		if (joinTable != null) {
 			Table joinDBTable = joinTable.dbTable();
@@ -89,14 +92,11 @@ public class InverseJoinColumnDialogPane extends AbstractJoinColumnDialogPane<Jo
 		// Set the selected name
 		String name = (joinColumn != null) ? joinColumn.getSpecifiedName() : null;
 
-		if ((name != null) && !name.equals(defaultName)) {
+		if (name != null) {
 			getNameCombo().setText(name);
 		}
-		else if (defaultName != null) {
-			nameCombo.select(0);
-		}
 		else {
-			nameCombo.select(-1);
+			nameCombo.select(0);
 		}
 	}
 
@@ -122,9 +122,12 @@ public class InverseJoinColumnDialogPane extends AbstractJoinColumnDialogPane<Jo
 
 		if (defaultReferencedColumnName != null) {
 			referencedColumnNameCombo.add(NLS.bind(
-				JptUiMappingsMessages.InverseJoinColumnDialog_defaultWithOneParam,
+				JptUiMappingsMessages.JoinColumnDialog_defaultWithOneParam,
 				defaultReferencedColumnName
 			));
+		}
+		else {
+			referencedColumnNameCombo.add(JptUiMappingsMessages.ColumnComposite_defaultEmpty);
 		}
 
 		// Populate the combo with the column names
@@ -146,15 +149,11 @@ public class InverseJoinColumnDialogPane extends AbstractJoinColumnDialogPane<Jo
 		// Set the selected name
 		String referencedColumnName = (joinColumn != null) ? joinColumn.getSpecifiedReferencedColumnName() : null;
 
-		if ((referencedColumnName != null) && !referencedColumnName.equals(defaultReferencedColumnName))
-		{
+		if (referencedColumnName != null) {
 			referencedColumnNameCombo.setText(referencedColumnName);
 		}
-		else if (defaultReferencedColumnName != null) {
-			referencedColumnNameCombo.select(0);
-		}
 		else {
-			referencedColumnNameCombo.select(-1);
+			referencedColumnNameCombo.select(0);
 		}
 	}
 }

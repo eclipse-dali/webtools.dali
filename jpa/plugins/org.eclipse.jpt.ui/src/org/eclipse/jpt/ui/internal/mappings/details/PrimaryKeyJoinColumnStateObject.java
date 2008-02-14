@@ -14,32 +14,30 @@ import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
 import org.eclipse.jpt.db.internal.Table;
 
 /**
+ * The state object used to create or edit a primary key join column on an
+ * entity.
+ *
+ * @see IPrimaryKeyJoinColumn
+ * @see IEntity
+ * @see PrimaryKeyJoinColumnDialog
+ * @see PrimaryKeyJoinColumnDialogPane
+ *
  * @version 2.0
  * @since 2.0
  */
 public class PrimaryKeyJoinColumnStateObject extends AbstractJoinColumnStateObject
 {
-	private IEntity entity;
-
 	/**
 	 * Creates a new <code>PrimaryKeyJoinColumnStateObject</code>.
 	 *
-	 * @param entity
+	 * @param entity The owner of the join column to create or where it is
+	 * located
+	 * @param joinColumn The join column to edit or <code>null</code> if this is
+	 * used to create a new one
 	 */
-	public PrimaryKeyJoinColumnStateObject(IEntity entity) {
-		super();
-		this.entity = entity;
-	}
-
-	/**
-	 * Creates a new <code>PrimaryKeyJoinColumnStateObject</code>.
-	 *
-	 * @param joinColumn Either the join column to edit or <code>null</code> if
-	 * this state object is used to create a new one
-	 */
-	public PrimaryKeyJoinColumnStateObject(IPrimaryKeyJoinColumn joinColumn) {
-		super(joinColumn);
-		this.entity = (IEntity) joinColumn.parent();
+	public PrimaryKeyJoinColumnStateObject(IEntity entity,
+	                                       IPrimaryKeyJoinColumn joinColumn) {
+		super(entity, joinColumn);
 	}
 
 	/*
@@ -55,7 +53,15 @@ public class PrimaryKeyJoinColumnStateObject extends AbstractJoinColumnStateObje
 	 */
 	@Override
 	public Table getNameTable() {
-		return entity.primaryDbTable();
+		return getOwner().primaryDbTable();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public IEntity getOwner() {
+		return (IEntity) super.getOwner();
 	}
 
 	/*
@@ -63,6 +69,6 @@ public class PrimaryKeyJoinColumnStateObject extends AbstractJoinColumnStateObje
 	 */
 	@Override
 	public Table getReferencedNameTable() {
-		return entity.parentEntity().primaryDbTable();
+		return getOwner().parentEntity().primaryDbTable();
 	}
 }

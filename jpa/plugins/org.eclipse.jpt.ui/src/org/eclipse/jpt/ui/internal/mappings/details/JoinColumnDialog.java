@@ -15,8 +15,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * TODO
+ * The abstract definition of the dialog used to edit an <code>IJoinColumn</code>.
  *
+ * @see IJoinColumn
  * @see JoinColumnStateObject
  * @see JoinColumnDialogPane
  *
@@ -29,20 +30,12 @@ public abstract class JoinColumnDialog<T extends JoinColumnStateObject> extends 
 	 * Creates a new <code>AbstractJoinColumnDialog</code>.
 	 *
 	 * @param parent The parent shell
-	 */
-	public JoinColumnDialog(Shell parent) {
-		super(parent);
-	}
-
-	/**
-	 * Creates a new <code>AbstractJoinColumnDialog</code>.
-	 *
-	 * @param parent The parent shell
+	 * @param owner The owner of the join column to create or where it is located
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
-	public JoinColumnDialog(Shell parent, IJoinColumn joinColumn) {
-		super(parent, joinColumn);
+	public JoinColumnDialog(Shell parent, Object owner, IJoinColumn joinColumn) {
+		super(parent, owner, joinColumn);
 	}
 
 	/*

@@ -111,7 +111,9 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 
 	private void addInverseJoinColumn(IJoinTable joinTable) {
 
-		InverseJoinColumnInJoinTableDialog dialog = new InverseJoinColumnInJoinTableDialog(shell(), joinTable);
+		InverseJoinColumnInJoinTableDialog dialog =
+			new InverseJoinColumnInJoinTableDialog(shell(), joinTable, null);
+
 		dialog.openDialog(buildAddInverseJoinColumnPostExecution());
 	}
 
@@ -126,7 +128,9 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 
 	private void addJoinColumn(IJoinTable joinTable) {
 
-		JoinColumnInJoinTableDialog dialog = new JoinColumnInJoinTableDialog(shell(), joinTable);
+		JoinColumnInJoinTableDialog dialog =
+			new JoinColumnInJoinTableDialog(shell(), joinTable, null);
+
 		dialog.openDialog(buildAddJoinColumnPostExecution());
 	}
 
@@ -298,7 +302,7 @@ public class JoinTableComposite extends AbstractFormPane<IJoinTable>
 	private void editJoinColumn(JoinColumnInJoinTableStateObject stateObject) {
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
-	
+
 	private void editInverseJoinColumn(InverseJoinColumnInJoinTableStateObject stateObject) {
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}

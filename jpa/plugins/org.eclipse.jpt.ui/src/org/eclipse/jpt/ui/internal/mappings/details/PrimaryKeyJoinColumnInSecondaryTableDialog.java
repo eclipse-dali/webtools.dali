@@ -15,8 +15,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * TODO
+ * This dialog is used to either create or edit a joing column that is within
+ * a secondary table.
  *
+ * @see IPrimaryKeyJoinColumn
+ * @see ISecondaryTable
  * @see PrimaryKeyJoinColumnInSecondaryTableStateObject
  * @see AbstractJoinColumnDialogPane
  *
@@ -25,32 +28,20 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class PrimaryKeyJoinColumnInSecondaryTableDialog extends AbstractJoinColumnDialog<PrimaryKeyJoinColumnInSecondaryTableStateObject> {
 
-	private ISecondaryTable secondaryTable;
-
 	/**
 	 * Creates a new <code>PrimaryKeyJoinColumnDialog</code>.
 	 *
 	 * @param parent The parent shell
+	 * @param secondaryTable The owner of the join column to create or where it
+	 * is located
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
 	public PrimaryKeyJoinColumnInSecondaryTableDialog(Shell parent,
+	                                                  ISecondaryTable secondaryTable,
 	                                                  IPrimaryKeyJoinColumn joinColumn) {
 
-		super(parent, joinColumn);
-	}
-
-	/**
-	 * Creates a new <code>PrimaryKeyJoinColumnDialog</code>.
-	 *
-	 * @param parent The parent shell
-	 * @param secondaryTable
-	 */
-	public PrimaryKeyJoinColumnInSecondaryTableDialog(Shell parent,
-	                                                  ISecondaryTable secondaryTable) {
-
-		super(parent);
-		this.secondaryTable = secondaryTable;
+		super(parent, secondaryTable, joinColumn);
 	}
 
 	/*
@@ -69,12 +60,10 @@ public class PrimaryKeyJoinColumnInSecondaryTableDialog extends AbstractJoinColu
 	 */
 	@Override
 	protected PrimaryKeyJoinColumnInSecondaryTableStateObject buildStateObject() {
-
-		if (secondaryTable != null) {
-			return new PrimaryKeyJoinColumnInSecondaryTableStateObject(secondaryTable);
-		}
-
-		return new PrimaryKeyJoinColumnInSecondaryTableStateObject(getJoinColumn());
+		return new PrimaryKeyJoinColumnInSecondaryTableStateObject(
+			getOwner(),
+			getJoinColumn()
+		);
 	}
 
 	/*
@@ -83,5 +72,13 @@ public class PrimaryKeyJoinColumnInSecondaryTableDialog extends AbstractJoinColu
 	@Override
 	public IPrimaryKeyJoinColumn getJoinColumn() {
 		return (IPrimaryKeyJoinColumn) super.getJoinColumn();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected ISecondaryTable getOwner() {
+		return (ISecondaryTable) super.getOwner();
 	}
 }

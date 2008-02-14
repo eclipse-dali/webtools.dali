@@ -14,8 +14,11 @@ import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * TODO
+ * This dialog is used to either create or edit a joing column that is located
+ * on an association override.
  *
+ * @see IJoinColumn
+ * @see IAssociationOverride
  * @see JoinColumnInAssociationOverrideStateObject
  * @see JoinColumnDialogPane
  *
@@ -24,34 +27,19 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class JoinColumnInAssociationOverrideDialog extends JoinColumnDialog<JoinColumnInAssociationOverrideStateObject> {
 
-	private IAssociationOverride associationOverride;
-
 	/**
 	 * Creates a new <code>JoinColumnInAssociationOverrideDialog</code>.
 	 *
 	 * @param parent The parent shell
-	 * @param associationOverride
+	 * @param associationOverride The owner of the join column to create
+	 * @param joinColumn The join column to edit or <code>null</code> if this is
+	 * used to create a new one
 	 */
 	public JoinColumnInAssociationOverrideDialog(Shell parent,
-	                                             IAssociationOverride associationOverride) {
+	                                             IAssociationOverride associationOverride,
+	                                             IJoinColumn joinColumn) {
 
-		this(parent, associationOverride, null);
-		this.associationOverride = associationOverride;
-	}
-
-	/**
-	 * Creates a new <code>JoinColumnInAssociationOverrideDialog</code>.
-	 *
-	 * @param parent The parent shell
-	 * @param joinColumn Either the join column to edit or <code>null</code> if
-	 * this state object is used to create a new one
-	 */
-	public JoinColumnInAssociationOverrideDialog(Shell parent,
-												IAssociationOverride associationOverride,
-	                                            IJoinColumn joinColumn) {
-
-		super(parent, joinColumn);
-		this.associationOverride = associationOverride;
+		super(parent, associationOverride, joinColumn);
 	}
 
 	/*
@@ -59,6 +47,17 @@ public class JoinColumnInAssociationOverrideDialog extends JoinColumnDialog<Join
 	 */
 	@Override
 	protected JoinColumnInAssociationOverrideStateObject buildStateObject() {
-		return new JoinColumnInAssociationOverrideStateObject(this.associationOverride, getJoinColumn());
+		return new JoinColumnInAssociationOverrideStateObject(
+			getOwner(),
+			getJoinColumn()
+		);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected IAssociationOverride getOwner() {
+		return (IAssociationOverride) super.getOwner();
 	}
 }

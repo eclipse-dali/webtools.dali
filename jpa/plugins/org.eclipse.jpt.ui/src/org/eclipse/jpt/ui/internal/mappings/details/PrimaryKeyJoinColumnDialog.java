@@ -15,8 +15,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * TODO
+ * This dialog is used to either create or edit a joing column that is located
+ * on an entity.
  *
+ * @see IPrimaryKeyJoinColumn
+ * @see IEntity
  * @see PrimaryKeyJoinColumnStateObject
  * @see PrimaryKeyJoinColumnDialogPane
  *
@@ -25,31 +28,20 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class PrimaryKeyJoinColumnDialog extends AbstractJoinColumnDialog<PrimaryKeyJoinColumnStateObject> {
 
-	private IEntity entity;
-
 	/**
 	 * Creates a new <code>PrimaryKeyJoinColumnDialog</code>.
 	 *
 	 * @param parent The parent shell
+	 * @param entity The owner of the join column to create or where it is
+	 * located
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
-	public PrimaryKeyJoinColumnDialog(Shell parent, IEntity entity) {
-
-		super(parent);
-		this.entity = entity;
-	}
-
-	/**
-	 * Creates a new <code>PrimaryKeyJoinColumnDialog</code>.
-	 *
-	 * @param parent The parent shell
-	 * @param joinColumn
-	 */
 	public PrimaryKeyJoinColumnDialog(Shell parent,
+	                                  IEntity entity,
 	                                  IPrimaryKeyJoinColumn joinColumn) {
 
-		super(parent, joinColumn);
+		super(parent, entity, joinColumn);
 	}
 
 	/*
@@ -65,12 +57,7 @@ public class PrimaryKeyJoinColumnDialog extends AbstractJoinColumnDialog<Primary
 	 */
 	@Override
 	protected PrimaryKeyJoinColumnStateObject buildStateObject() {
-
-		if (entity != null) {
-			return new PrimaryKeyJoinColumnStateObject(entity);
-		}
-
-		return new PrimaryKeyJoinColumnStateObject(getJoinColumn());
+		return new PrimaryKeyJoinColumnStateObject(getOwner(), getJoinColumn());
 	}
 
 	/*
@@ -79,5 +66,13 @@ public class PrimaryKeyJoinColumnDialog extends AbstractJoinColumnDialog<Primary
 	@Override
 	public IPrimaryKeyJoinColumn getJoinColumn() {
 		return (IPrimaryKeyJoinColumn) super.getJoinColumn();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected IEntity getOwner() {
+		return (IEntity) super.getOwner();
 	}
 }

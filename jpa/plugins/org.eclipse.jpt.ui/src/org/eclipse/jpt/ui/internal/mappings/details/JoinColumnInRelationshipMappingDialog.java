@@ -14,8 +14,11 @@ import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * TODO
+ * This dialog is used to either create or edit a joing column that is located
+ * on a relational mapping.
  *
+ * @see IJoinColumn
+ * @see IRelationshipMapping
  * @see JoinColumnInRelationshipMappingStateObject
  * @see JoinColumnDialogPane
  *
@@ -24,30 +27,20 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class JoinColumnInRelationshipMappingDialog extends JoinColumnDialog<JoinColumnInRelationshipMappingStateObject> {
 
-	private IRelationshipMapping relationshipMapping;
-
 	/**
 	 * Creates a new <code>AbstractJoinColumnDialog</code>.
 	 *
 	 * @param parent The parent shell
-	 * @param joinColumn Either the join column to edit or <code>null</code> if
-	 * this state object is used to create a new one
-	 */
-	JoinColumnInRelationshipMappingDialog(Shell parent, IJoinColumn joinColumn) {
-		super(parent, joinColumn);
-	}
-
-	/**
-	 * Creates a new <code>AbstractJoinColumnDialog</code>.
-	 *
-	 * @param parent The parent shell
-	 * @param relationshipMapping
+	 * @param relationshipMapping The owner of the join column to edit or to
+	 * create
+	 * @param joinColumn The join column to edit or <code>null</code> if this is
+	 * used to create a new one
 	 */
 	JoinColumnInRelationshipMappingDialog(Shell parent,
-		IRelationshipMapping relationshipMapping) {
+	                                      IRelationshipMapping relationshipMapping,
+	                                      IJoinColumn joinColumn) {
 
-		super(parent);
-		this.relationshipMapping = relationshipMapping;
+		super(parent, relationshipMapping, joinColumn);
 	}
 
 	/*
@@ -55,11 +48,17 @@ public class JoinColumnInRelationshipMappingDialog extends JoinColumnDialog<Join
 	 */
 	@Override
 	protected JoinColumnInRelationshipMappingStateObject buildStateObject() {
+		return new JoinColumnInRelationshipMappingStateObject(
+			getOwner(),
+			getJoinColumn()
+		);
+	}
 
-		if (relationshipMapping != null) {
-			return new JoinColumnInRelationshipMappingStateObject(relationshipMapping);
-		}
-
-		return new JoinColumnInRelationshipMappingStateObject(getJoinColumn());
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected IRelationshipMapping getOwner() {
+		return (IRelationshipMapping) super.getOwner();
 	}
 }

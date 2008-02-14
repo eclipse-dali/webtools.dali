@@ -16,31 +16,29 @@ import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.db.internal.Table;
 
 /**
+ * The state object used to create or edit a primary key join column on a join
+ * table.
+ *
+ * @see IJoinColumn
+ * @see IJoinTable
+ * @see InverseJoinColumnInJoinTableDialog
+ *
  * @version 2.0
  * @since 2.0
  */
 public class InverseJoinColumnInJoinTableStateObject extends AbstractJoinColumnStateObject
 {
-	private IJoinTable joinTable;
-
-	/**
-	 * Creates a new <code>JoinColumnInJoinTableStateObject</code>.
-	 *
-	 * @param joinColumn Either the join column to edit or <code>null</code> if
-	 * this state object is used to create a new one
-	 */
-	public InverseJoinColumnInJoinTableStateObject(IJoinTable joinTable, IJoinColumn joinColumn) {
-		super(joinColumn);
-		this.joinTable = joinTable;
-	}
-
 	/**
 	 * Creates a new <code>JoinColumnInJoinTableStateObject</code>.
 	 *
 	 * @param joinTable
+	 * @param joinColumn Either the join column to edit or <code>null</code> if
+	 * this state object is used to create a new one
 	 */
-	public InverseJoinColumnInJoinTableStateObject(IJoinTable joinTable) {
-		this(joinTable, null);
+	public InverseJoinColumnInJoinTableStateObject(IJoinTable joinTable,
+	                                               IJoinColumn joinColumn) {
+
+		super(joinTable, joinColumn);
 	}
 
 	/*
@@ -51,16 +49,20 @@ public class InverseJoinColumnInJoinTableStateObject extends AbstractJoinColumnS
 		return (IJoinColumn) super.getJoinColumn();
 	}
 
-	public final IJoinTable getJoinTable() {
-		return this.joinTable;
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public Table getNameTable() {
+		return getOwner().dbTable();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
-	public Table getNameTable() {
-		return getJoinTable().dbTable();
+	public IJoinTable getOwner() {
+		return (IJoinTable) super.getOwner();
 	}
 
 	/*
@@ -69,13 +71,20 @@ public class InverseJoinColumnInJoinTableStateObject extends AbstractJoinColumnS
 	@Override
 	public Table getReferencedNameTable() {
 		IEntity targetEntity = relationshipMapping().getResolvedTargetEntity();
+
 		if (targetEntity == null) {
 			return null;
 		}
+
 		return targetEntity.primaryDbTable();
 	}
 
+	/**
+	 * Returns the mapping where the join column is located.
+	 *
+	 * @return The owner of the join column to create or to edit
+	 */
 	public IRelationshipMapping relationshipMapping() {
-		return getJoinTable().parent();
+		return getOwner().parent();
 	}
 }

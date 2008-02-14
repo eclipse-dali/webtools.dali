@@ -15,31 +15,29 @@ import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
 import org.eclipse.jpt.db.internal.Table;
 
 /**
+ * The state object used to create or edit a primary key join column on a
+ * joint table.
+ *
+ * @see IJoinColumn
+ * @see IJoinTable
+ * @see InverseJoinColumnDialog
+ * @see InverseJoinColumnDialogPane
+ * @see JoinColumnInJoinTableDialog
+ *
  * @version 2.0
  * @since 2.0
  */
 public class JoinColumnInJoinTableStateObject extends AbstractJoinColumnStateObject
 {
-	private IJoinTable joinTable;
-
 	/**
 	 * Creates a new <code>JoinColumnInJoinTableStateObject</code>.
 	 *
-	 * @param joinColumn Either the join column to edit or <code>null</code> if
-	 * this state object is used to create a new one
+	 * @param joinTable The owner of the join column to create or to edit
+	 * @param joinColumn The join column to edit
 	 */
-	public JoinColumnInJoinTableStateObject(IJoinTable joinTable, IJoinColumn joinColumn) {
-		super(joinColumn);
-		this.joinTable = joinTable;
-	}
-
-	/**
-	 * Creates a new <code>JoinColumnInJoinTableStateObject</code>.
-	 *
-	 * @param joinTable
-	 */
-	public JoinColumnInJoinTableStateObject(IJoinTable joinTable) {
-		this(joinTable, null);
+	public JoinColumnInJoinTableStateObject(IJoinTable joinTable,
+	                                        IJoinColumn joinColumn) {
+		super(joinTable, joinColumn);
 	}
 
 	/*
@@ -50,16 +48,20 @@ public class JoinColumnInJoinTableStateObject extends AbstractJoinColumnStateObj
 		return (IJoinColumn) super.getJoinColumn();
 	}
 
-	public final IJoinTable getJoinTable() {
-		return this.joinTable;
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public Table getNameTable() {
+		return getOwner().dbTable();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
-	public Table getNameTable() {
-		return getJoinTable().dbTable();
+	public IJoinTable getOwner() {
+		return (IJoinTable) super.getOwner();
 	}
 
 	/*
@@ -70,7 +72,12 @@ public class JoinColumnInJoinTableStateObject extends AbstractJoinColumnStateObj
 		return relationshipMapping().typeMapping().primaryDbTable();
 	}
 
+	/**
+	 * Returns the mapping owning the join table.
+	 *
+	 * @return The parent of the join table
+	 */
 	public IRelationshipMapping relationshipMapping() {
-		return getJoinTable().parent();
+		return getOwner().parent();
 	}
 }

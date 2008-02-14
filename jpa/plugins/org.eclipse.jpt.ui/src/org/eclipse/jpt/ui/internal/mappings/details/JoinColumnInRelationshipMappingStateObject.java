@@ -16,32 +16,28 @@ import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 
 /**
+ * The state object used to create or edit a primary key join column on a
+ * relationship mapping.
+ *
+ * @see IJoinColumn
+ * @see IRelationshipMapping
+ * @see JoinColumnInRelationshipMappingDialog
+ *
  * @version 2.0
  * @since 2.0
  */
 public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateObject
 {
-	private IRelationshipMapping relationshipMapping;
-
 	/**
 	 * Creates a new <code>JoinColumnInRelationshipMappingStateObject</code>.
 	 *
-	 * @param joinColumn Either the join column to edit or <code>null</code> if
-	 * this state object is used to create a new one
+	 * @param relationshipMapping The owner of the join column to create
+	 * @param joinColumn The join column to edit or <code>null</code> if this is
+	 * used to create a new one
 	 */
-	public JoinColumnInRelationshipMappingStateObject(IJoinColumn joinColumn) {
-		super(joinColumn);
-		initialize(joinColumn.owner().relationshipMapping());
-	}
-
-	/**
-	 * Creates a new <code>JoinColumnInRelationshipMappingStateObject</code>.
-	 *
-	 * @param relationshipMapping
-	 */
-	public JoinColumnInRelationshipMappingStateObject(IRelationshipMapping relationshipMapping) {
-		super();
-		initialize(relationshipMapping);
+	public JoinColumnInRelationshipMappingStateObject(IRelationshipMapping relationshipMapping,
+	                                                  IJoinColumn joinColumn) {
+		super(relationshipMapping, joinColumn);
 	}
 
 	/*
@@ -56,7 +52,7 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 			return joinColumn.getDefaultTable();
 		}
 
-		return relationshipMapping.typeMapping().tableName();
+		return getOwner().typeMapping().tableName();
 	}
 
 	/*
@@ -72,8 +68,16 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 	 * (non-Javadoc)
 	 */
 	@Override
+	public IRelationshipMapping getOwner() {
+		return (IRelationshipMapping) super.getOwner();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
 	public Table getReferencedNameTable() {
-		IEntity targetEntity = relationshipMapping.getResolvedTargetEntity();
+		IEntity targetEntity = getOwner().getResolvedTargetEntity();
 
 		if (targetEntity != null) {
 			return targetEntity.primaryDbTable();
@@ -82,33 +86,11 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 		return null;
 	}
 
-	/**
-	 * Returns
-	 *
-	 * @return
-	 */
-	public IRelationshipMapping getRelationshipMapping() {
-		return relationshipMapping;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
 	public Schema getSchema() {
-		return relationshipMapping.typeMapping().dbSchema();
-	}
-
-	private void initialize(IRelationshipMapping relationshipMapping) {
-		this.relationshipMapping = relationshipMapping;
-
-		// If the table isn't set or is the default table, then
-		// use the mapping's table
-		if ((getTable() == null) || isDefaultTableSelected()) {
-			String table = relationshipMapping.typeMapping().tableName();
-
-			setTable(table);
-			setDefaultTableSelected(table != null);
-		}
+		return getOwner().typeMapping().dbSchema();
 	}
 }

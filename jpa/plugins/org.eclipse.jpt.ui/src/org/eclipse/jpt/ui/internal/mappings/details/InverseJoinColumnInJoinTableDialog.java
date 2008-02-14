@@ -25,28 +25,20 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class InverseJoinColumnInJoinTableDialog extends AbstractJoinColumnDialog<InverseJoinColumnInJoinTableStateObject> {
 
-	private IJoinTable joinTable;
-
 	/**
 	 * Creates a new <code>JoinColumnInJoinTableDialog</code>.
 	 *
 	 * @param parent The parent shell
+	 * @param joinTable The owner of the join column to create or where it is
+	 * located
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
-	public InverseJoinColumnInJoinTableDialog(Shell parent, IJoinTable joinTable, IJoinColumn joinColumn) {
-		super(parent, joinColumn);
-		this.joinTable = joinTable;
-	}
+	public InverseJoinColumnInJoinTableDialog(Shell parent,
+	                                          IJoinTable joinTable,
+	                                          IJoinColumn joinColumn) {
 
-	/**
-	 * Creates a new <code>JoinColumnInJoinTableDialog</code>.
-	 *
-	 * @param parent The parent shell
-	 * @param joinColumn
-	 */
-	public InverseJoinColumnInJoinTableDialog(Shell parent, IJoinTable joinTable) {
-		this(parent, joinTable, null);
+		super(parent, joinTable, joinColumn);
 	}
 
 	/*
@@ -65,7 +57,10 @@ public class InverseJoinColumnInJoinTableDialog extends AbstractJoinColumnDialog
 	 */
 	@Override
 	protected InverseJoinColumnInJoinTableStateObject buildStateObject() {
-		return new InverseJoinColumnInJoinTableStateObject(this.joinTable, getJoinColumn());
+		return new InverseJoinColumnInJoinTableStateObject(
+			getOwner(),
+			getJoinColumn()
+		);
 	}
 
 	/*
@@ -74,5 +69,13 @@ public class InverseJoinColumnInJoinTableDialog extends AbstractJoinColumnDialog
 	@Override
 	public IJoinColumn getJoinColumn() {
 		return (IJoinColumn) super.getJoinColumn();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected IJoinTable getOwner() {
+		return (IJoinTable) super.getOwner();
 	}
 }

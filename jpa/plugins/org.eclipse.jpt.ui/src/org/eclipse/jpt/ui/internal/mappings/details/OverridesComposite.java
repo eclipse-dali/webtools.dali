@@ -48,6 +48,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.part.PageBook;
 
 /**
@@ -119,14 +120,14 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 	private void addJoinColumn(IAssociationOverride subject) {
 
 		JoinColumnInAssociationOverrideDialog dialog =
-			new JoinColumnInAssociationOverrideDialog(shell(), subject);
+			new JoinColumnInAssociationOverrideDialog(shell(), subject, null);
 
 		dialog.openDialog(buildAddJoinColumnPostExecution());
 	}
 
 	private void addJoinColumn(JoinColumnInAssociationOverrideStateObject stateObject) {
 
-		IAssociationOverride associationOverride = stateObject.getAssociationOverride();
+		IAssociationOverride associationOverride = stateObject.getOwner();
 		int index = associationOverride.specifiedJoinColumnsSize();
 
 		IJoinColumn joinColumn = associationOverride.addSpecifiedJoinColumn(index);
@@ -365,7 +366,11 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 	private void editJoinColumn(IJoinColumn joinColumn) {
 
 		JoinColumnInAssociationOverrideDialog dialog =
-			new JoinColumnInAssociationOverrideDialog(shell(), (IAssociationOverride) overrideHolder.value(), joinColumn);
+			new JoinColumnInAssociationOverrideDialog(
+				shell(),
+				(IAssociationOverride) overrideHolder.value(),
+				joinColumn
+			);
 
 		dialog.openDialog(buildEditJoinColumnPostExecution());
 	}
@@ -413,10 +418,7 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 
 	private void initializeJoinColumnsPane(PageBook pageBook) {
 
-		joinColumnsPane = buildTitledPane(
-			pageBook,
-			JptUiMappingsMessages.OverridesComposite_joinColumn
-		);
+		joinColumnsPane = buildSubPane(pageBook);
 
 		// Override Default check box
 		overrideDefaultButton = buildCheckBox(
@@ -429,11 +431,16 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 			buildOverrideDefaultSelectionListener()
 		);
 
+		Group joinColumnsGroupPane = buildTitledPane(
+			joinColumnsPane,
+			JptUiMappingsMessages.OverridesComposite_joinColumn
+		);
+
 		// Join Columns list pane (for IOverrideAssociation)
 		joinColumnsComposite = new JoinColumnsComposite<IAssociationOverride>(
 			this,
 			buildAssociationOverrideHolder(overrideHolder),
-			joinColumnsPane,
+			joinColumnsGroupPane,
 			buildJoinColumnsEditor(),
 			false
 		);

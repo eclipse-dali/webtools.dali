@@ -135,9 +135,6 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 	protected void doPopulate() {
 
 		super.doPopulate();
-
-		combo.select(-1);
-		combo.removeAll();
 		populateCombo();
 	}
 
@@ -159,6 +156,7 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 
 	private void populateCombo() {
 
+		combo.removeAll();
 		combo.add(JptUiMappingsMessages.NoneSelected);
 
 		INonOwningMapping subject = subject();
