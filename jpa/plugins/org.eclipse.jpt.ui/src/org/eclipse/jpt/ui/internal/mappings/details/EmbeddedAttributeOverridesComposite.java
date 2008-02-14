@@ -371,6 +371,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 
 			attributeOverride.setName(defaultAttributeOverride.getName());
 			attributeOverride.getColumn().setSpecifiedName(defaultAttributeOverride.getColumn().getName());
+			this.attributeOverrideHolder.setValue(attributeOverride);
 		}
 		else {
 			this.subject().removeSpecifiedAttributeOverride(this.list.getSelectionIndex());
