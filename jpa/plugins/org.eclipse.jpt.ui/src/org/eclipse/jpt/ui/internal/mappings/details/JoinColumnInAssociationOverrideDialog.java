@@ -35,7 +35,7 @@ public class JoinColumnInAssociationOverrideDialog extends JoinColumnDialog<Join
 	public JoinColumnInAssociationOverrideDialog(Shell parent,
 	                                             IAssociationOverride associationOverride) {
 
-		super(parent);
+		this(parent, associationOverride, null);
 		this.associationOverride = associationOverride;
 	}
 
@@ -47,10 +47,11 @@ public class JoinColumnInAssociationOverrideDialog extends JoinColumnDialog<Join
 	 * this state object is used to create a new one
 	 */
 	public JoinColumnInAssociationOverrideDialog(Shell parent,
-	                                             IJoinColumn joinColumn) {
+												IAssociationOverride associationOverride,
+	                                            IJoinColumn joinColumn) {
 
 		super(parent, joinColumn);
-		this.associationOverride = (IAssociationOverride) joinColumn.parent();
+		this.associationOverride = associationOverride;
 	}
 
 	/*
@@ -58,11 +59,6 @@ public class JoinColumnInAssociationOverrideDialog extends JoinColumnDialog<Join
 	 */
 	@Override
 	protected JoinColumnInAssociationOverrideStateObject buildStateObject() {
-
-		if (associationOverride != null) {
-			return new JoinColumnInAssociationOverrideStateObject(associationOverride);
-		}
-
-		return new JoinColumnInAssociationOverrideStateObject(getJoinColumn());
+		return new JoinColumnInAssociationOverrideStateObject(this.associationOverride, getJoinColumn());
 	}
 }

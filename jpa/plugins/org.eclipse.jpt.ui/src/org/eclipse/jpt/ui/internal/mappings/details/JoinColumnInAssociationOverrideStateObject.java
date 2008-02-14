@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.internal.context.base.IAssociationOverride;
-import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.context.base.IEntity;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
@@ -40,8 +39,9 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
-	public JoinColumnInAssociationOverrideStateObject(IJoinColumn joinColumn) {
+	public JoinColumnInAssociationOverrideStateObject(IAssociationOverride associationOverride, IJoinColumn joinColumn) {
 		super(joinColumn);
+		this.associationOverride = associationOverride;
 	}
 
 	/*
@@ -57,7 +57,7 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 	}
 
 	public IAssociationOverride getAssociationOverride() {
-		return associationOverride;
+		return this.associationOverride;
 	}
 
 	/*
@@ -73,15 +73,13 @@ public class JoinColumnInAssociationOverrideStateObject extends JoinColumnStateO
 	 */
 	@Override
 	public Table getReferencedNameTable() {
-		IAttributeMapping attributeMapping = null;// TODO: this.associationOverride.getOwner().attributeMapping(this.associationOverride.getName());
+		IRelationshipMapping relationshipMapping = this.associationOverride.owner().relationshipMapping(this.associationOverride.getName());
 
-		if (attributeMapping == null ||
-		  !(attributeMapping instanceof IRelationshipMapping))
-		{
+		if (relationshipMapping == null){
 			return null;
 		}
 
-		IEntity targetEntity = ((IRelationshipMapping) attributeMapping).getResolvedTargetEntity();
+		IEntity targetEntity = relationshipMapping.getResolvedTargetEntity();
 
 		if (targetEntity != null) {
 			return targetEntity.primaryDbTable();

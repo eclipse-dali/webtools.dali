@@ -365,7 +365,7 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 	private void editJoinColumn(IJoinColumn joinColumn) {
 
 		JoinColumnInAssociationOverrideDialog dialog =
-			new JoinColumnInAssociationOverrideDialog(shell(), joinColumn);
+			new JoinColumnInAssociationOverrideDialog(shell(), (IAssociationOverride) overrideHolder.value(), joinColumn);
 
 		dialog.openDialog(buildEditJoinColumnPostExecution());
 	}
