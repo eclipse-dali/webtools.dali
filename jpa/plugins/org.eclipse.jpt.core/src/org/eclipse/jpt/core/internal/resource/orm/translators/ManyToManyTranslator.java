@@ -72,7 +72,7 @@ public class ManyToManyTranslator extends Translator
 	}
 	
 	private Translator createMapKeyTranslator() {
-		return new Translator(MAP_KEY, ORM_PKG.getMultiRelationshipMapping_MapKey());
+		return new MapKeyTranslator(MAP_KEY, ORM_PKG.getMultiRelationshipMapping_MapKey());
 	}
 	
 	private Translator createJoinTableTranslator() {
