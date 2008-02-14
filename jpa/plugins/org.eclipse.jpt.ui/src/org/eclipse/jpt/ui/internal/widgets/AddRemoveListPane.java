@@ -189,7 +189,9 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	private PropertyChangeListener buildSelectedItemPropertyChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-
+				if (list.isDisposed()) {
+					return;
+				}
 				if (!locked) {
 					locked = true;
 
