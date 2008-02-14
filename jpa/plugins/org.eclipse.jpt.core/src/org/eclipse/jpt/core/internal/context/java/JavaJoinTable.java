@@ -545,6 +545,19 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 			}
 			return (JavaJoinTable.this.getName().equals(tableName)) ? JavaJoinTable.this.dbTable() : null;
 		}
+		
+		/**
+		 * by default, the join column is, obviously, in the join table;
+		 * not sure whether it can be anywhere else...
+		 */
+		public String defaultTableName() {
+			return JavaJoinTable.this.getName();
+		}
+		
+		public ITextRange validationTextRange(CompilationUnit astRoot) {
+			return JavaJoinTable.this.validationTextRange(astRoot);
+		}
+
 	}
 
 
@@ -586,16 +599,6 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 		}
 		
 		public String defaultColumnName() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		public String defaultTableName() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		public ITextRange validationTextRange(CompilationUnit astRoot) {
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -657,16 +660,6 @@ public class JavaJoinTable extends AbstractJavaTable implements IJavaJoinTable
 		}
 		
 		public String defaultColumnName() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		public String defaultTableName() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		public ITextRange validationTextRange(CompilationUnit astRoot) {
 			// TODO Auto-generated method stub
 			return null;
 		}
