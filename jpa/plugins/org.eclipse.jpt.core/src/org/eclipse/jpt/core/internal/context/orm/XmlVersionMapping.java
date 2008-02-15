@@ -16,10 +16,10 @@ import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
+import org.eclipse.jpt.core.internal.resource.orm.Column;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.Version;
-import org.eclipse.jpt.core.internal.resource.orm.VersionImpl;
 import org.eclipse.jpt.db.internal.Table;
 
 
@@ -48,6 +48,13 @@ public class XmlVersionMapping extends XmlAttributeMapping<Version>
 		newMapping.initializeFromXmlVersionMapping(this);
 	}
 
+	@Override
+	public void initializeFromXmlColumnMapping(IXmlColumnMapping oldMapping) {
+		super.initializeFromXmlColumnMapping(oldMapping);
+		setTemporal(oldMapping.getTemporal());
+		getColumn().initializeFrom(oldMapping.getColumn());
+	}
+
 	public XmlColumn getColumn() {
 		return this.column;
 	}
@@ -71,7 +78,8 @@ public class XmlVersionMapping extends XmlAttributeMapping<Version>
 
 	@Override
 	public Version addToResourceModel(TypeMapping typeMapping) {
-		VersionImpl version = OrmFactory.eINSTANCE.createVersionImpl();
+		Version version = OrmFactory.eINSTANCE.createVersionImpl();
+		persistentAttribute().initialize(version);
 		typeMapping.getAttributes().getVersions().add(version);
 		return version;
 	}
@@ -105,18 +113,31 @@ public class XmlVersionMapping extends XmlAttributeMapping<Version>
 	public void initialize(Version version) {
 		super.initialize(version);
 		this.temporal = this.specifiedTemporal(version);
-		this.column.initialize(version);
+		this.column.initialize(version.getColumn());
 	}
 	
 	@Override
 	public void update(Version version) {
 		super.update(version);
 		this.setTemporal_(this.specifiedTemporal(version));
-		this.column.update(version);
+		this.column.update(version.getColumn());
 	}
 	
 	protected TemporalType specifiedTemporal(Version version) {
 		return TemporalType.fromOrmResourceModel(version.getTemporal());
 	}
 
+	//***************** IXmlColumn.Owner implementation ****************
+	
+	public Column columnResource() {
+		return this.attributeMapping().getColumn();
+	}
+	
+	public void addColumnResource() {
+		this.attributeMapping().setColumn(OrmFactory.eINSTANCE.createColumnImpl());
+	}
+	
+	public void removeColumnResource() {
+		this.attributeMapping().setColumn(null);
+	}
 }

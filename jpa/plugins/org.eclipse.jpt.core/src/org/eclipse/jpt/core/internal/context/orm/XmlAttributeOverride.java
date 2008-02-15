@@ -17,11 +17,13 @@ import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeOverride;
+import org.eclipse.jpt.core.internal.resource.orm.Column;
+import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.db.internal.Table;
 
 
 public class XmlAttributeOverride extends JpaContextNode
-	implements IAttributeOverride
+	implements IAttributeOverride, IXmlColumn.Owner
 {
 
 	protected String name;
@@ -99,6 +101,23 @@ public class XmlAttributeOverride extends JpaContextNode
 //		return super.validationTextRange();
 //	}
 
+	//***************** IXmlColumn.Owner implementation ****************
+	
+	public Column columnResource() {
+		return this.attributeOverride.getColumn();
+	}
+	
+	public void addColumnResource() {
+		this.attributeOverride.setColumn(OrmFactory.eINSTANCE.createColumnImpl());
+	}
+	
+	public void removeColumnResource() {
+		this.attributeOverride.setColumn(null);
+	}
+	
+	
+	//***************** updating ****************
+	
 	public void initialize(AttributeOverride attributeOverride) {
 		this.attributeOverride = attributeOverride;
 		this.name = attributeOverride.getName();

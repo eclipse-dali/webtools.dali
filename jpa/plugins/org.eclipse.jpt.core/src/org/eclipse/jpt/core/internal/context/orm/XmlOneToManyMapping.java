@@ -11,10 +11,10 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
+import org.eclipse.jpt.core.internal.context.base.INonOwningMapping;
 import org.eclipse.jpt.core.internal.context.base.IOneToManyMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.OneToMany;
-import org.eclipse.jpt.core.internal.resource.orm.OneToManyImpl;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 
@@ -37,6 +37,12 @@ public class XmlOneToManyMapping extends XmlMultiRelationshipMapping<OneToMany>
 	}
 
 	@Override
+	public void initializeFromXmlNonOwningMapping(INonOwningMapping oldMapping) {
+		super.initializeFromXmlNonOwningMapping(oldMapping);
+		setMappedBy(oldMapping.getMappedBy());
+	}
+
+	@Override
 	public int xmlSequence() {
 		return 4;
 	}
@@ -50,7 +56,8 @@ public class XmlOneToManyMapping extends XmlMultiRelationshipMapping<OneToMany>
 	
 	@Override
 	public OneToMany addToResourceModel(TypeMapping typeMapping) {
-		OneToManyImpl oneToMany = OrmFactory.eINSTANCE.createOneToManyImpl();
+		OneToMany oneToMany = OrmFactory.eINSTANCE.createOneToManyImpl();
+		persistentAttribute().initialize(oneToMany);
 		typeMapping.getAttributes().getOneToManys().add(oneToMany);
 		return oneToMany;
 	}

@@ -34,7 +34,16 @@ public abstract class AbstractXmlColumn<T extends AbstractColumn> extends Abstra
 	protected AbstractXmlColumn(IJpaContextNode parent, IAbstractColumn.Owner owner) {
 		super(parent, owner);
 	}
-
+	
+	public void initializeFrom(IAbstractColumn oldColumn) {
+		super.initializeFrom(oldColumn);
+		setSpecifiedTable(oldColumn.getSpecifiedTable());
+		setSpecifiedUnique(oldColumn.getSpecifiedUnique());
+		setSpecifiedNullable(oldColumn.getSpecifiedNullable());
+		setSpecifiedInsertable(oldColumn.getSpecifiedInsertable());
+		setSpecifiedUpdatable(oldColumn.getSpecifiedUpdatable());
+	}
+	
 	@Override
 	public IAbstractColumn.Owner owner() {
 		return (IAbstractColumn.Owner) super.owner();

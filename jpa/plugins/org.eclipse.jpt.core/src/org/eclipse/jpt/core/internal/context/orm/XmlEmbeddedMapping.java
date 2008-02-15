@@ -27,7 +27,6 @@ import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.orm.Embedded;
-import org.eclipse.jpt.core.internal.resource.orm.EmbeddedImpl;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -55,6 +54,17 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 	@Override
 	protected void initializeOn(XmlAttributeMapping<? extends AttributeMapping> newMapping) {
 		newMapping.initializeFromXmlEmbeddedMapping(this);
+	}
+
+	@Override
+	public void initializeFromXmlEmbeddedIdMapping(XmlEmbeddedIdMapping oldMapping) {
+		super.initializeFromXmlEmbeddedIdMapping(oldMapping);
+		int index = 0;
+		for (IAttributeOverride attributeOverride : CollectionTools.iterable(oldMapping.specifiedAttributeOverrides())) {
+			XmlAttributeOverride newAttributeOverride = addSpecifiedAttributeOverride(index++);
+			newAttributeOverride.setName(attributeOverride.getName());
+			newAttributeOverride.getColumn().initializeFrom(attributeOverride.getColumn());
+		}
 	}
 
 	@Override
@@ -97,7 +107,9 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 	public XmlAttributeOverride addSpecifiedAttributeOverride(int index) {
 		XmlAttributeOverride attributeOverride = new XmlAttributeOverride(this, this);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
-		this.attributeMapping().getAttributeOverrides().add(index, OrmFactory.eINSTANCE.createAttributeOverrideImpl());
+		AttributeOverride attributeOverrideResource = OrmFactory.eINSTANCE.createAttributeOverrideImpl();
+		this.attributeMapping().getAttributeOverrides().add(index, attributeOverrideResource);
+		attributeOverride.initialize(attributeOverrideResource);
 		this.fireItemAdded(IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
 	}
@@ -305,7 +317,8 @@ public class XmlEmbeddedMapping extends XmlAttributeMapping<Embedded> implements
 
 	@Override
 	public Embedded addToResourceModel(TypeMapping typeMapping) {
-		EmbeddedImpl embedded = OrmFactory.eINSTANCE.createEmbeddedImpl();
+		Embedded embedded = OrmFactory.eINSTANCE.createEmbeddedImpl();
+		persistentAttribute().initialize(embedded);
 		typeMapping.getAttributes().getEmbeddeds().add(embedded);
 		return embedded;
 	}

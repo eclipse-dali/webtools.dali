@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
+import org.eclipse.jpt.core.internal.context.base.INonOwningMapping;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
@@ -84,14 +85,24 @@ public abstract class XmlAttributeMapping<T extends AttributeMapping> extends Jp
 	 */
 	protected abstract void initializeOn(XmlAttributeMapping<? extends AttributeMapping> newMapping);
 
-	public void initializeFromXmlAttributeMapping(XmlAttributeMapping<? extends AttributeMapping> oldMapping) {}
+	public void initializeFromXmlAttributeMapping(XmlAttributeMapping<? extends AttributeMapping> oldMapping) {
+		setName(oldMapping.getName());
+	}
+
+	public void initializeFromXmlColumnMapping(IXmlColumnMapping oldMapping) {
+		initializeFromXmlAttributeMapping((XmlAttributeMapping) oldMapping);
+	}
+
+	public void initializeFromXmlNonOwningMapping(INonOwningMapping oldMapping) {
+		initializeFromXmlAttributeMapping((XmlAttributeMapping) oldMapping);
+	}
 
 	public void initializeFromXmlBasicMapping(XmlBasicMapping oldMapping) {
-		initializeFromXmlAttributeMapping(oldMapping);
+		initializeFromXmlColumnMapping(oldMapping);
 	}
 
 	public void initializeFromXmlIdMapping(XmlIdMapping oldMapping) {
-		initializeFromXmlAttributeMapping(oldMapping);
+		initializeFromXmlColumnMapping(oldMapping);
 	}
 
 	public void initializeFromXmlTransientMapping(XmlTransientMapping oldMapping) {
@@ -107,7 +118,7 @@ public abstract class XmlAttributeMapping<T extends AttributeMapping> extends Jp
 	}
 
 	public void initializeFromXmlVersionMapping(XmlVersionMapping oldMapping) {
-		initializeFromXmlAttributeMapping(oldMapping);
+		initializeFromXmlColumnMapping(oldMapping);
 	}
 
 	public void initializeFromXmlRelationshipMapping(XmlRelationshipMapping<? extends RelationshipMapping> oldMapping) {
@@ -123,6 +134,7 @@ public abstract class XmlAttributeMapping<T extends AttributeMapping> extends Jp
 	}
 
 	public void initializeFromXmlOneToManyMapping(XmlOneToManyMapping oldMapping) {
+		initializeFromXmlNonOwningMapping(oldMapping);
 		initializeFromXmlMulitRelationshipMapping(oldMapping);
 	}
 
@@ -131,10 +143,12 @@ public abstract class XmlAttributeMapping<T extends AttributeMapping> extends Jp
 	}
 
 	public void initializeFromXmlOneToOneMapping(XmlOneToOneMapping oldMapping) {
+		initializeFromXmlNonOwningMapping(oldMapping);
 		initializeFromXmlSingleRelationshipMapping(oldMapping);
 	}
 
 	public void initializeFromXmlManyToManyMapping(XmlManyToManyMapping oldMapping) {
+		initializeFromXmlNonOwningMapping(oldMapping);
 		initializeFromXmlMulitRelationshipMapping(oldMapping);
 	}
 	

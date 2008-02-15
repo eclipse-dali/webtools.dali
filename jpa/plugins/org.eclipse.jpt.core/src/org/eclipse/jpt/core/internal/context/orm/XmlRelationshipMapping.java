@@ -110,6 +110,7 @@ public abstract class XmlRelationshipMapping<T extends RelationshipMapping> exte
 		super.initializeFromXmlRelationshipMapping(oldMapping);
 		setSpecifiedTargetEntity(oldMapping.getSpecifiedTargetEntity());
 		setSpecifiedFetch(oldMapping.getSpecifiedFetch());
+		getCascade().initializeFrom(oldMapping.getCascade());
 	}
 	//TODO should we set the fetch type from a BasicMapping??
 

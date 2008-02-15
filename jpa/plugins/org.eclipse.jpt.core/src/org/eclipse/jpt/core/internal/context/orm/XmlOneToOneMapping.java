@@ -14,10 +14,10 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
+import org.eclipse.jpt.core.internal.context.base.INonOwningMapping;
 import org.eclipse.jpt.core.internal.context.base.IOneToOneMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.OneToOne;
-import org.eclipse.jpt.core.internal.resource.orm.OneToOneImpl;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 
@@ -38,6 +38,12 @@ public class XmlOneToOneMapping extends XmlSingleRelationshipMapping<OneToOne>
 		newMapping.initializeFromXmlOneToOneMapping(this);
 	}
 
+	@Override
+	public void initializeFromXmlNonOwningMapping(INonOwningMapping oldMapping) {
+		super.initializeFromXmlNonOwningMapping(oldMapping);
+		setMappedBy(oldMapping.getMappedBy());
+	}
+	
 	public boolean isRelationshipOwner() {
 		return getMappedBy() == null;
 	}
@@ -89,7 +95,8 @@ public class XmlOneToOneMapping extends XmlSingleRelationshipMapping<OneToOne>
 	
 	@Override
 	public OneToOne addToResourceModel(TypeMapping typeMapping) {
-		OneToOneImpl oneToOne = OrmFactory.eINSTANCE.createOneToOneImpl();
+		OneToOne oneToOne = OrmFactory.eINSTANCE.createOneToOneImpl();
+		persistentAttribute().initialize(oneToOne);
 		typeMapping.getAttributes().getOneToOnes().add(oneToOne);
 		return oneToOne;
 	}

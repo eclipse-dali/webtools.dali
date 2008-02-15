@@ -43,6 +43,12 @@ public abstract class XmlMultiRelationshipMapping<T extends MultiRelationshipMap
 		this.joinTable = new XmlJoinTable(this);
 	}
 
+	@Override
+	public void initializeFromXmlMulitRelationshipMapping(XmlMultiRelationshipMapping<? extends MultiRelationshipMapping> oldMapping) {
+		super.initializeFromXmlMulitRelationshipMapping(oldMapping);
+		getJoinTable().initializeFrom(oldMapping.getJoinTable());
+	}
+	
 	public boolean isRelationshipOwner() {
 		return getMappedBy() == null;
 	}

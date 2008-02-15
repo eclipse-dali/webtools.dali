@@ -13,6 +13,18 @@ package org.eclipse.jpt.core.tests.internal.context.orm;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.FetchType;
+import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
+import org.eclipse.jpt.core.internal.context.base.IEmbeddedIdMapping;
+import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
+import org.eclipse.jpt.core.internal.context.base.IIdMapping;
+import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
+import org.eclipse.jpt.core.internal.context.base.IJoinTable;
+import org.eclipse.jpt.core.internal.context.base.IManyToManyMapping;
+import org.eclipse.jpt.core.internal.context.base.IManyToOneMapping;
+import org.eclipse.jpt.core.internal.context.base.IOneToManyMapping;
+import org.eclipse.jpt.core.internal.context.base.IOneToOneMapping;
+import org.eclipse.jpt.core.internal.context.base.ITransientMapping;
+import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 import org.eclipse.jpt.core.internal.context.orm.XmlManyToManyMapping;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
@@ -345,5 +357,298 @@ public class XmlManyToManyMappingTests extends ContextModelTestCase
 		
 		xmlManyToManyMapping.setOrderBy(null);
 		assertFalse(xmlManyToManyMapping.isCustomOrdering());
+	}
+	
+	public void testManyToManyMorphToIdMapping() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToMany");
+		
+		IManyToManyMapping manyToManyMapping = (IManyToManyMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(manyToManyMapping.isDefault());
+		manyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
+		manyToManyMapping.setSpecifiedTargetEntity("TargetEntity");
+		manyToManyMapping.setOrderBy("customOrder");
+		manyToManyMapping.setMapKey("mapKey");
+		manyToManyMapping.setMappedBy("mappedBy");
+		manyToManyMapping.getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
+		IJoinColumn joinColumn = manyToManyMapping.getJoinTable().addSpecifiedJoinColumn(0);
+		joinColumn.setSpecifiedName("name");
+		joinColumn.setSpecifiedReferencedColumnName("referenceName");
+		IJoinColumn inverseJoinColumn = manyToManyMapping.getJoinTable().addSpecifiedInverseJoinColumn(0);
+		inverseJoinColumn.setSpecifiedName("inverseName");
+		inverseJoinColumn.setSpecifiedReferencedColumnName("inverseReferenceName");
+		assertFalse(manyToManyMapping.isDefault());	
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IIdMapping);
+		assertEquals("manyToMany", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testManyToManyMorphToVersionMapping() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToMany");
+		
+		IManyToManyMapping manyToManyMapping = (IManyToManyMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(manyToManyMapping.isDefault());
+		manyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
+		manyToManyMapping.setSpecifiedTargetEntity("TargetEntity");
+		manyToManyMapping.setOrderBy("customOrder");
+		manyToManyMapping.setMapKey("mapKey");
+		manyToManyMapping.setMappedBy("mappedBy");
+		manyToManyMapping.getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
+		IJoinColumn joinColumn = manyToManyMapping.getJoinTable().addSpecifiedJoinColumn(0);
+		joinColumn.setSpecifiedName("name");
+		joinColumn.setSpecifiedReferencedColumnName("referenceName");
+		IJoinColumn inverseJoinColumn = manyToManyMapping.getJoinTable().addSpecifiedInverseJoinColumn(0);
+		inverseJoinColumn.setSpecifiedName("inverseName");
+		inverseJoinColumn.setSpecifiedReferencedColumnName("inverseReferenceName");
+		assertFalse(manyToManyMapping.isDefault());	
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IVersionMapping);
+		assertEquals("manyToMany", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testManyToManyMorphToTransientMapping() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToMany");
+		
+		IManyToManyMapping manyToManyMapping = (IManyToManyMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(manyToManyMapping.isDefault());
+		manyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
+		manyToManyMapping.setSpecifiedTargetEntity("TargetEntity");
+		manyToManyMapping.setOrderBy("customOrder");
+		manyToManyMapping.setMapKey("mapKey");
+		manyToManyMapping.setMappedBy("mappedBy");
+		manyToManyMapping.getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
+		IJoinColumn joinColumn = manyToManyMapping.getJoinTable().addSpecifiedJoinColumn(0);
+		joinColumn.setSpecifiedName("name");
+		joinColumn.setSpecifiedReferencedColumnName("referenceName");
+		IJoinColumn inverseJoinColumn = manyToManyMapping.getJoinTable().addSpecifiedInverseJoinColumn(0);
+		inverseJoinColumn.setSpecifiedName("inverseName");
+		inverseJoinColumn.setSpecifiedReferencedColumnName("inverseReferenceName");
+		assertFalse(manyToManyMapping.isDefault());	
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof ITransientMapping);
+		assertEquals("manyToMany", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testManyToManyMorphToEmbeddedMapping() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToMany");
+		
+		IManyToManyMapping manyToManyMapping = (IManyToManyMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(manyToManyMapping.isDefault());
+		manyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
+		manyToManyMapping.setSpecifiedTargetEntity("TargetEntity");
+		manyToManyMapping.setOrderBy("customOrder");
+		manyToManyMapping.setMapKey("mapKey");
+		manyToManyMapping.setMappedBy("mappedBy");
+		manyToManyMapping.getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
+		IJoinColumn joinColumn = manyToManyMapping.getJoinTable().addSpecifiedJoinColumn(0);
+		joinColumn.setSpecifiedName("name");
+		joinColumn.setSpecifiedReferencedColumnName("referenceName");
+		IJoinColumn inverseJoinColumn = manyToManyMapping.getJoinTable().addSpecifiedInverseJoinColumn(0);
+		inverseJoinColumn.setSpecifiedName("inverseName");
+		inverseJoinColumn.setSpecifiedReferencedColumnName("inverseReferenceName");
+		assertFalse(manyToManyMapping.isDefault());	
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IEmbeddedMapping);
+		assertEquals("manyToMany", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testManyToManyMorphToEmbeddedIdMapping() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToMany");
+		
+		IManyToManyMapping manyToManyMapping = (IManyToManyMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(manyToManyMapping.isDefault());
+		manyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
+		manyToManyMapping.setSpecifiedTargetEntity("TargetEntity");
+		manyToManyMapping.setOrderBy("customOrder");
+		manyToManyMapping.setMapKey("mapKey");
+		manyToManyMapping.setMappedBy("mappedBy");
+		manyToManyMapping.getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
+		IJoinColumn joinColumn = manyToManyMapping.getJoinTable().addSpecifiedJoinColumn(0);
+		joinColumn.setSpecifiedName("name");
+		joinColumn.setSpecifiedReferencedColumnName("referenceName");
+		IJoinColumn inverseJoinColumn = manyToManyMapping.getJoinTable().addSpecifiedInverseJoinColumn(0);
+		inverseJoinColumn.setSpecifiedName("inverseName");
+		inverseJoinColumn.setSpecifiedReferencedColumnName("inverseReferenceName");
+		assertFalse(manyToManyMapping.isDefault());	
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IEmbeddedIdMapping);
+		assertEquals("manyToMany", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testManyToManyMorphToOneToOneMapping() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToMany");
+		
+		IManyToManyMapping manyToManyMapping = (IManyToManyMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(manyToManyMapping.isDefault());
+		manyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
+		manyToManyMapping.setSpecifiedTargetEntity("TargetEntity");
+		manyToManyMapping.setOrderBy("customOrder");
+		manyToManyMapping.setMapKey("mapKey");
+		manyToManyMapping.setMappedBy("mappedBy");
+		manyToManyMapping.getCascade().setAll(true);
+		manyToManyMapping.getCascade().setMerge(true);
+		manyToManyMapping.getCascade().setPersist(true);
+		manyToManyMapping.getCascade().setRefresh(true);
+		manyToManyMapping.getCascade().setRemove(true);
+		manyToManyMapping.getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
+		IJoinColumn joinColumn = manyToManyMapping.getJoinTable().addSpecifiedJoinColumn(0);
+		joinColumn.setSpecifiedName("name");
+		joinColumn.setSpecifiedReferencedColumnName("referenceName");
+		IJoinColumn inverseJoinColumn = manyToManyMapping.getJoinTable().addSpecifiedInverseJoinColumn(0);
+		inverseJoinColumn.setSpecifiedName("inverseName");
+		inverseJoinColumn.setSpecifiedReferencedColumnName("inverseReferenceName");
+		assertFalse(manyToManyMapping.isDefault());	
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IOneToOneMapping);
+		assertEquals("manyToMany", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(FetchType.EAGER, ((IOneToOneMapping) xmlPersistentAttribute.getMapping()).getSpecifiedFetch());
+		assertEquals("TargetEntity", ((IOneToOneMapping) xmlPersistentAttribute.getMapping()).getSpecifiedTargetEntity());
+		assertEquals("mappedBy", ((IOneToOneMapping) xmlPersistentAttribute.getMapping()).getMappedBy());
+		assertTrue(((IOneToOneMapping) xmlPersistentAttribute.getMapping()).getCascade().isAll());
+		assertTrue(((IOneToOneMapping) xmlPersistentAttribute.getMapping()).getCascade().isMerge());
+		assertTrue(((IOneToOneMapping) xmlPersistentAttribute.getMapping()).getCascade().isPersist());
+		assertTrue(((IOneToOneMapping) xmlPersistentAttribute.getMapping()).getCascade().isRefresh());
+		assertTrue(((IOneToOneMapping) xmlPersistentAttribute.getMapping()).getCascade().isRemove());
+	}
+	
+	public void testManyToManyMorphToOneToManyMapping() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToMany");
+		
+		IManyToManyMapping manyToManyMapping = (IManyToManyMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(manyToManyMapping.isDefault());
+		manyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
+		manyToManyMapping.setSpecifiedTargetEntity("TargetEntity");
+		manyToManyMapping.setOrderBy("customOrder");
+		manyToManyMapping.setMapKey("mapKey");
+		manyToManyMapping.setMappedBy("mappedBy");
+		manyToManyMapping.getCascade().setAll(true);
+		manyToManyMapping.getCascade().setMerge(true);
+		manyToManyMapping.getCascade().setPersist(true);
+		manyToManyMapping.getCascade().setRefresh(true);
+		manyToManyMapping.getCascade().setRemove(true);
+		manyToManyMapping.getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
+		IJoinColumn joinColumn = manyToManyMapping.getJoinTable().addSpecifiedJoinColumn(0);
+		joinColumn.setSpecifiedName("name");
+		joinColumn.setSpecifiedReferencedColumnName("referenceName");
+		IJoinColumn inverseJoinColumn = manyToManyMapping.getJoinTable().addSpecifiedInverseJoinColumn(0);
+		inverseJoinColumn.setSpecifiedName("inverseName");
+		inverseJoinColumn.setSpecifiedReferencedColumnName("inverseReferenceName");
+		assertFalse(manyToManyMapping.isDefault());	
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IOneToManyMapping);
+		assertEquals("manyToMany", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(FetchType.EAGER, ((IOneToManyMapping) xmlPersistentAttribute.getMapping()).getSpecifiedFetch());
+		assertEquals("TargetEntity", ((IOneToManyMapping) xmlPersistentAttribute.getMapping()).getSpecifiedTargetEntity());
+		assertEquals("mappedBy", ((IOneToManyMapping) xmlPersistentAttribute.getMapping()).getMappedBy());
+		assertTrue(((IOneToManyMapping) xmlPersistentAttribute.getMapping()).getCascade().isAll());
+		assertTrue(((IOneToManyMapping) xmlPersistentAttribute.getMapping()).getCascade().isMerge());
+		assertTrue(((IOneToManyMapping) xmlPersistentAttribute.getMapping()).getCascade().isPersist());
+		assertTrue(((IOneToManyMapping) xmlPersistentAttribute.getMapping()).getCascade().isRefresh());
+		assertTrue(((IOneToManyMapping) xmlPersistentAttribute.getMapping()).getCascade().isRemove());
+		IJoinTable joinTable = ((IOneToManyMapping) xmlPersistentAttribute.getMapping()).getJoinTable();
+		assertEquals("MY_JOIN_TABLE", joinTable.getName());
+		assertEquals("name", joinTable.joinColumns().next().getSpecifiedName());
+		assertEquals("referenceName", joinTable.joinColumns().next().getSpecifiedReferencedColumnName());
+		assertEquals("inverseName", joinTable.inverseJoinColumns().next().getSpecifiedName());
+		assertEquals("inverseReferenceName", joinTable.inverseJoinColumns().next().getSpecifiedReferencedColumnName());
+	}
+	
+	public void testManyToManyMorphToManyToOneMapping() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToMany");
+		
+		IManyToManyMapping manyToManyMapping = (IManyToManyMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(manyToManyMapping.isDefault());
+		manyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
+		manyToManyMapping.setSpecifiedTargetEntity("TargetEntity");
+		manyToManyMapping.setOrderBy("customOrder");
+		manyToManyMapping.setMapKey("mapKey");
+		manyToManyMapping.setMappedBy("mappedBy");
+		manyToManyMapping.getCascade().setAll(true);
+		manyToManyMapping.getCascade().setMerge(true);
+		manyToManyMapping.getCascade().setPersist(true);
+		manyToManyMapping.getCascade().setRefresh(true);
+		manyToManyMapping.getCascade().setRemove(true);
+		manyToManyMapping.getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
+		IJoinColumn joinColumn = manyToManyMapping.getJoinTable().addSpecifiedJoinColumn(0);
+		joinColumn.setSpecifiedName("name");
+		joinColumn.setSpecifiedReferencedColumnName("referenceName");
+		IJoinColumn inverseJoinColumn = manyToManyMapping.getJoinTable().addSpecifiedInverseJoinColumn(0);
+		inverseJoinColumn.setSpecifiedName("inverseName");
+		inverseJoinColumn.setSpecifiedReferencedColumnName("inverseReferenceName");
+		assertFalse(manyToManyMapping.isDefault());	
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IManyToOneMapping);
+		assertEquals("manyToMany", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(FetchType.EAGER, ((IManyToOneMapping) xmlPersistentAttribute.getMapping()).getSpecifiedFetch());
+		assertEquals("TargetEntity", ((IManyToOneMapping) xmlPersistentAttribute.getMapping()).getSpecifiedTargetEntity());
+		assertTrue(((IManyToOneMapping) xmlPersistentAttribute.getMapping()).getCascade().isAll());
+		assertTrue(((IManyToOneMapping) xmlPersistentAttribute.getMapping()).getCascade().isMerge());
+		assertTrue(((IManyToOneMapping) xmlPersistentAttribute.getMapping()).getCascade().isPersist());
+		assertTrue(((IManyToOneMapping) xmlPersistentAttribute.getMapping()).getCascade().isRefresh());
+		assertTrue(((IManyToOneMapping) xmlPersistentAttribute.getMapping()).getCascade().isRemove());
+	}
+	
+	public void testManyToManyMorphToBasicMapping() throws Exception {
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToMany");
+		
+		IManyToManyMapping manyToManyMapping = (IManyToManyMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(manyToManyMapping.isDefault());
+		manyToManyMapping.setSpecifiedFetch(FetchType.EAGER);
+		manyToManyMapping.setSpecifiedTargetEntity("TargetEntity");
+		manyToManyMapping.setOrderBy("customOrder");
+		manyToManyMapping.setMapKey("mapKey");
+		manyToManyMapping.setMappedBy("mappedBy");
+		manyToManyMapping.getCascade().setAll(true);
+		manyToManyMapping.getCascade().setMerge(true);
+		manyToManyMapping.getCascade().setPersist(true);
+		manyToManyMapping.getCascade().setRefresh(true);
+		manyToManyMapping.getCascade().setRemove(true);
+		manyToManyMapping.getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
+		IJoinColumn joinColumn = manyToManyMapping.getJoinTable().addSpecifiedJoinColumn(0);
+		joinColumn.setSpecifiedName("name");
+		joinColumn.setSpecifiedReferencedColumnName("referenceName");
+		IJoinColumn inverseJoinColumn = manyToManyMapping.getJoinTable().addSpecifiedInverseJoinColumn(0);
+		inverseJoinColumn.setSpecifiedName("inverseName");
+		inverseJoinColumn.setSpecifiedReferencedColumnName("inverseReferenceName");
+		assertFalse(manyToManyMapping.isDefault());	
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IBasicMapping);
+		assertEquals("manyToMany", xmlPersistentAttribute.getMapping().getName());
+//TODO	assertEquals(FetchType.EAGER, ((IBasicMapping) xmlPersistentAttribute.getMapping()).getSpecifiedFetch());
 	}
 }

@@ -9,12 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.internal.context.base.IAbstractColumn;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
 import org.eclipse.jpt.core.internal.resource.orm.Column;
-import org.eclipse.jpt.core.internal.resource.orm.ColumnMapping;
-import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 
 public class XmlColumn extends AbstractXmlColumn<Column> implements IColumn
 {
@@ -24,10 +21,20 @@ public class XmlColumn extends AbstractXmlColumn<Column> implements IColumn
 
 	protected Integer specifiedScale;
 
-	protected ColumnMapping columnMapping;
-	
-	protected XmlColumn(IJpaContextNode parent, IAbstractColumn.Owner owner) {
+	protected XmlColumn(IJpaContextNode parent, IXmlColumn.Owner owner) {
 		super(parent, owner);
+	}
+	
+	@Override
+	public IXmlColumn.Owner owner() {
+		return (IXmlColumn.Owner) super.owner();
+	}
+	
+	public void initializeFrom(IColumn oldColumn) {
+		super.initializeFrom(oldColumn);
+		setSpecifiedLength(oldColumn.getSpecifiedLength());
+		setSpecifiedPrecision(oldColumn.getSpecifiedPrecision());
+		setSpecifiedScale(oldColumn.getSpecifiedScale());
 	}
 //
 //	@Override
@@ -149,29 +156,20 @@ public class XmlColumn extends AbstractXmlColumn<Column> implements IColumn
 
 	@Override
 	protected Column columnResource() {
-		return this.columnMapping.getColumn();
+		return owner().columnResource();
 	}
 	
 	@Override
 	protected void addColumnResource() {
-		this.columnMapping.setColumn(OrmFactory.eINSTANCE.createColumnImpl());
+		owner().addColumnResource();
+		//this.columnMapping.setColumn(OrmFactory.eINSTANCE.createColumnImpl());
 	}
 	
 	@Override
 	protected void removeColumnResource() {
-		this.columnMapping.setColumn(null);
+		owner().removeColumnResource();
+		//this.columnMapping.setColumn(null);
 	}
-	
-	public void initialize(ColumnMapping columnMapping) {
-		this.columnMapping = columnMapping;
-		this.initialize(this.columnResource());
-	}
-	
-	public void update(ColumnMapping columnMapping) {
-		this.columnMapping = columnMapping;
-		this.update(this.columnResource());
-	}
-
 	
 	@Override
 	protected void initialize(Column column) {

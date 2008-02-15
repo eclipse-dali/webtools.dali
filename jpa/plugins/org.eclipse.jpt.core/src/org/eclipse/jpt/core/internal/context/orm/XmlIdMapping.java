@@ -16,8 +16,8 @@ import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 import org.eclipse.jpt.core.internal.context.base.IIdMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
+import org.eclipse.jpt.core.internal.resource.orm.Column;
 import org.eclipse.jpt.core.internal.resource.orm.Id;
-import org.eclipse.jpt.core.internal.resource.orm.IdImpl;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.db.internal.Table;
@@ -41,6 +41,29 @@ public class XmlIdMapping extends XmlAttributeMapping<Id>
 		this.column = new XmlColumn(this, this);
 	}
 
+
+	public String getKey() {
+		return IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
+	}
+
+	@Override
+	public int xmlSequence() {
+		return 0;
+	}
+
+	@Override
+	protected void initializeOn(XmlAttributeMapping<? extends AttributeMapping> newMapping) {
+		newMapping.initializeFromXmlIdMapping(this);
+	}
+
+	@Override
+	public void initializeFromXmlColumnMapping(IXmlColumnMapping oldMapping) {
+		super.initializeFromXmlColumnMapping(oldMapping);
+		setTemporal(oldMapping.getTemporal());
+		getColumn().initializeFrom(oldMapping.getColumn());
+	}
+
+	
 	public XmlColumn getColumn() {
 		return this.column;
 	}
@@ -153,42 +176,10 @@ public class XmlIdMapping extends XmlAttributeMapping<Id>
 	}
 
 
-	public String getKey() {
-		return IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
-	}
-
-	@Override
-	protected void initializeOn(XmlAttributeMapping<? extends AttributeMapping> newMapping) {
-		newMapping.initializeFromXmlIdMapping(this);
-	}
-
-	@Override
-	public void initializeFromXmlBasicMapping(XmlBasicMapping oldMapping) {
-		super.initializeFromXmlBasicMapping(oldMapping);
-		setTemporal(oldMapping.getTemporal());
-	}
-
-	@Override
-	public int xmlSequence() {
-		return 0;
-	}
-
 	@Override
 	public String primaryKeyColumnName() {
 		return this.getColumn().getName();
 	}
-
-//	public IGeneratedValue createGeneratedValue() {
-//		return OrmFactory.eINSTANCE.createXmlGeneratedValue();
-//	}
-//
-//	public ISequenceGenerator createSequenceGenerator() {
-//		return OrmFactory.eINSTANCE.createXmlSequenceGenerator();
-//	}
-//
-//	public ITableGenerator createTableGenerator() {
-//		return OrmFactory.eINSTANCE.createXmlTableGenerator();
-//	}
 
 	@Override
 	public boolean isOverridableAttributeMapping() {
@@ -202,7 +193,8 @@ public class XmlIdMapping extends XmlAttributeMapping<Id>
 	
 	@Override
 	public Id addToResourceModel(TypeMapping typeMapping) {
-		IdImpl id = OrmFactory.eINSTANCE.createIdImpl();
+		Id id = OrmFactory.eINSTANCE.createIdImpl();
+		persistentAttribute().initialize(id);
 		typeMapping.getAttributes().getIds().add(id);
 		return id;
 	}
@@ -236,7 +228,7 @@ public class XmlIdMapping extends XmlAttributeMapping<Id>
 	public void initialize(Id id) {
 		super.initialize(id);
 		this.temporal = this.specifiedTemporal(id);
-		this.column.initialize(id);
+		this.column.initialize(id.getColumn());
 		this.initializeSequenceGenerator(id);
 		this.initializeTableGenerator(id);
 		this.initializeGeneratedValue(id);
@@ -267,7 +259,7 @@ public class XmlIdMapping extends XmlAttributeMapping<Id>
 	public void update(Id id) {
 		super.update(id);
 		this.setTemporal_(this.specifiedTemporal(id));
-		this.column.update(id);
+		this.column.update(id.getColumn());
 		this.updateSequenceGenerator(id);
 		this.updateTableGenerator(id);
 		this.updateGeneratedValue(id);
@@ -329,4 +321,17 @@ public class XmlIdMapping extends XmlAttributeMapping<Id>
 		return TemporalType.fromOrmResourceModel(id.getTemporal());
 	}
 
+	//***************** IXmlColumn.Owner implementation ****************
+	
+	public Column columnResource() {
+		return this.attributeMapping().getColumn();
+	}
+	
+	public void addColumnResource() {
+		this.attributeMapping().setColumn(OrmFactory.eINSTANCE.createColumnImpl());
+	}
+	
+	public void removeColumnResource() {
+		this.attributeMapping().setColumn(null);
+	}
 }

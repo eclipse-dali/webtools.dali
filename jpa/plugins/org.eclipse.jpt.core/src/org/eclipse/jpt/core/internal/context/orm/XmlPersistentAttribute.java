@@ -107,7 +107,7 @@ public class XmlPersistentAttribute extends JpaContextNode
 		}
 		XmlAttributeMapping<? extends AttributeMapping> oldMapping = getMapping();
 		this.attributeMapping = buildAttributeMapping(newMappingKey);
-		//TODO persistentType().changeMapping(this, oldMapping, this.attributeMapping);
+		persistentType().changeMapping(this, oldMapping, this.attributeMapping);
 		firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, oldMapping, this.attributeMapping);
 	}
 	

@@ -48,6 +48,16 @@ public abstract class XmlSingleRelationshipMapping<T extends SingleRelationshipM
 		//this.getDefaultJoinColumns().add(this.createJoinColumn(new JoinColumnOwner(this)));
 	}
 	
+	@Override
+	public void initializeFromXmlSingleRelationshipMapping(XmlSingleRelationshipMapping<? extends SingleRelationshipMapping> oldMapping) {
+		super.initializeFromXmlSingleRelationshipMapping(oldMapping);
+		int index = 0;
+		for (IJoinColumn joinColumn : CollectionTools.iterable(oldMapping.specifiedJoinColumns())) {
+			XmlJoinColumn newJoinColumn = addSpecifiedJoinColumn(index++);
+			newJoinColumn.initializeFrom(joinColumn);
+		}
+	}
+	
 	public FetchType getDefaultFetch() {
 		return ISingleRelationshipMapping.DEFAULT_FETCH_TYPE;
 	}

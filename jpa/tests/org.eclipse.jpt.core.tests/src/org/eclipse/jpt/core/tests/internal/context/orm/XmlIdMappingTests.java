@@ -15,6 +15,16 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.context.base.GenerationType;
+import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
+import org.eclipse.jpt.core.internal.context.base.IEmbeddedIdMapping;
+import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
+import org.eclipse.jpt.core.internal.context.base.IIdMapping;
+import org.eclipse.jpt.core.internal.context.base.IManyToManyMapping;
+import org.eclipse.jpt.core.internal.context.base.IManyToOneMapping;
+import org.eclipse.jpt.core.internal.context.base.IOneToManyMapping;
+import org.eclipse.jpt.core.internal.context.base.IOneToOneMapping;
+import org.eclipse.jpt.core.internal.context.base.ITransientMapping;
+import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.context.orm.XmlColumn;
 import org.eclipse.jpt.core.internal.context.orm.XmlGeneratedValue;
@@ -243,8 +253,8 @@ public class XmlIdMappingTests extends ContextModelTestCase
 		assertNull(xmlIdMapping.getTemporal());
 	}
 	
-	//TODO test morphing to other mapping types
 	//TODO test defaults
+	//TODO test overriding java mapping with a different mapping type in xml
 
 	
 	public void testAddSequenceGenerator() throws Exception {
@@ -547,7 +557,7 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	public void testVirtualMappingMetadataCompleteTrue() throws Exception {
 		createTestEntityIdMapping();
 		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		xmlPersistentType.getMapping().setSpecifiedMetadataComplete(true);
+		xmlPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(2, xmlPersistentType.virtualAttributesSize());		
 		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.virtualAttributes().next();
 		
@@ -616,5 +626,165 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	//2. virtual mapping metadata complete=true - defaults are taken from java defaults,annotations ignored
 	//3. specified mapping (metadata complete=true/false - defaults are taken from java annotations
 
+	public void testIdMorphToBasicMapping() throws Exception {
+		createTestEntityIdMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		
+		IIdMapping idMapping = (IIdMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(idMapping.isDefault());
+		idMapping.getColumn().setSpecifiedName("FOO");
+		idMapping.setTemporal(TemporalType.TIME);
+		assertFalse(idMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IBasicMapping);
+		assertEquals("id", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(TemporalType.TIME, ((IBasicMapping) xmlPersistentAttribute.getMapping()).getTemporal());
+		assertEquals("FOO", ((IBasicMapping) xmlPersistentAttribute.getMapping()).getColumn().getSpecifiedName());
+	}
 	
+	public void testIdMorphToVersionMapping() throws Exception {
+		createTestEntityIdMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		
+		IIdMapping idMapping = (IIdMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(idMapping.isDefault());
+		idMapping.getColumn().setSpecifiedName("FOO");
+		idMapping.setTemporal(TemporalType.TIME);
+		assertFalse(idMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IVersionMapping);
+		assertEquals("id", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(TemporalType.TIME, ((IVersionMapping) xmlPersistentAttribute.getMapping()).getTemporal());
+		assertEquals("FOO", ((IVersionMapping) xmlPersistentAttribute.getMapping()).getColumn().getSpecifiedName());
+	}
+	
+	public void testIdMorphToTransientMapping() throws Exception {
+		createTestEntityIdMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		
+		IIdMapping idMapping = (IIdMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(idMapping.isDefault());
+		idMapping.getColumn().setSpecifiedName("FOO");
+		idMapping.setTemporal(TemporalType.TIME);
+		assertFalse(idMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof ITransientMapping);
+		assertEquals("id", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testIdMorphToEmbeddedMapping() throws Exception {
+		createTestEntityIdMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		
+		IIdMapping idMapping = (IIdMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(idMapping.isDefault());
+		idMapping.getColumn().setSpecifiedName("FOO");
+		idMapping.setTemporal(TemporalType.TIME);
+		assertFalse(idMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IEmbeddedMapping);
+		assertEquals("id", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testIdMorphToEmbeddedIdMapping() throws Exception {
+		createTestEntityIdMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		
+		IIdMapping idMapping = (IIdMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(idMapping.isDefault());
+		idMapping.getColumn().setSpecifiedName("FOO");
+		idMapping.setTemporal(TemporalType.TIME);
+		assertFalse(idMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IEmbeddedIdMapping);
+		assertEquals("id", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testIdMorphToOneToOneMapping() throws Exception {
+		createTestEntityIdMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		
+		IIdMapping idMapping = (IIdMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(idMapping.isDefault());
+		idMapping.getColumn().setSpecifiedName("FOO");
+		idMapping.setTemporal(TemporalType.TIME);
+		assertFalse(idMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IOneToOneMapping);
+		assertEquals("id", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testIdMorphToOneToManyMapping() throws Exception {
+		createTestEntityIdMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		
+		IIdMapping idMapping = (IIdMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(idMapping.isDefault());
+		idMapping.getColumn().setSpecifiedName("FOO");
+		idMapping.setTemporal(TemporalType.TIME);
+		assertFalse(idMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IOneToManyMapping);
+		assertEquals("id", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testIdMorphToManyToOneMapping() throws Exception {
+		createTestEntityIdMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		
+		IIdMapping idMapping = (IIdMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(idMapping.isDefault());
+		idMapping.getColumn().setSpecifiedName("FOO");
+		idMapping.setTemporal(TemporalType.TIME);
+		assertFalse(idMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IManyToOneMapping);
+		assertEquals("id", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testIdMorphToManyToManyMapping() throws Exception {
+		createTestEntityIdMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		
+		IIdMapping idMapping = (IIdMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(idMapping.isDefault());
+		idMapping.getColumn().setSpecifiedName("FOO");
+		idMapping.setTemporal(TemporalType.TIME);
+		assertFalse(idMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IManyToManyMapping);
+		assertEquals("id", xmlPersistentAttribute.getMapping().getName());
+	}	
 }

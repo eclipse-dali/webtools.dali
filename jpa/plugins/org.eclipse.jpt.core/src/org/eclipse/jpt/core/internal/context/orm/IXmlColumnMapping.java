@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
 
 
-public interface IXmlColumnMapping extends IColumnMapping
+public interface IXmlColumnMapping extends IColumnMapping, IXmlColumn.Owner
 {
 
 	XmlColumn getColumn();

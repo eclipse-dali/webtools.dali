@@ -26,7 +26,6 @@ import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeOverride;
 import org.eclipse.jpt.core.internal.resource.orm.EmbeddedId;
-import org.eclipse.jpt.core.internal.resource.orm.EmbeddedIdImpl;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -56,6 +55,17 @@ public class XmlEmbeddedIdMapping extends XmlAttributeMapping<EmbeddedId> implem
 		newMapping.initializeFromXmlEmbeddedIdMapping(this);
 	}
 
+	@Override
+	public void initializeFromXmlEmbeddedMapping(XmlEmbeddedMapping oldMapping) {
+		super.initializeFromXmlEmbeddedMapping(oldMapping);
+		int index = 0;
+		for (IAttributeOverride attributeOverride : CollectionTools.iterable(oldMapping.specifiedAttributeOverrides())) {
+			XmlAttributeOverride newAttributeOverride = addSpecifiedAttributeOverride(index++);
+			newAttributeOverride.setName(attributeOverride.getName());
+			newAttributeOverride.getColumn().initializeFrom(attributeOverride.getColumn());
+		}
+	}
+	
 	@Override
 	public int xmlSequence() {
 		return 7;
@@ -97,7 +107,9 @@ public class XmlEmbeddedIdMapping extends XmlAttributeMapping<EmbeddedId> implem
 	public XmlAttributeOverride addSpecifiedAttributeOverride(int index) {
 		XmlAttributeOverride attributeOverride = new XmlAttributeOverride(this, this);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
-		this.attributeMapping().getAttributeOverrides().add(index, OrmFactory.eINSTANCE.createAttributeOverrideImpl());
+		AttributeOverride attributeOverrideResource = OrmFactory.eINSTANCE.createAttributeOverrideImpl();
+		this.attributeMapping().getAttributeOverrides().add(index, attributeOverrideResource);
+		attributeOverride.initialize(attributeOverrideResource);
 		this.fireItemAdded(IEmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
 	}
@@ -292,14 +304,15 @@ public class XmlEmbeddedIdMapping extends XmlAttributeMapping<EmbeddedId> implem
 
 	@Override
 	public EmbeddedId addToResourceModel(TypeMapping typeMapping) {
-		EmbeddedIdImpl embeddedId = OrmFactory.eINSTANCE.createEmbeddedIdImpl();
+		EmbeddedId embeddedId = OrmFactory.eINSTANCE.createEmbeddedIdImpl();
+		persistentAttribute().initialize(embeddedId);
 		typeMapping.getAttributes().getEmbeddedIds().add(embeddedId);
 		return embeddedId;
 	}
 	
 	@Override
 	public void removeFromResourceModel(TypeMapping typeMapping) {
-		typeMapping.getAttributes().getEmbeddeds().remove(this.attributeMapping());
+		typeMapping.getAttributes().getEmbeddedIds().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}

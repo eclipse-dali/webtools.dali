@@ -34,6 +34,11 @@ public abstract class AbstractXmlNamedColumn<T extends NamedColumn>  extends Jpa
 		super(parent);
 		this.owner = owner;
 	}
+	
+	public void initializeFrom(INamedColumn oldColumn) {
+		setSpecifiedName(oldColumn.getSpecifiedName());
+		setColumnDefinition(oldColumn.getColumnDefinition());
+	}
 
 	protected abstract T columnResource();
 	

@@ -35,6 +35,14 @@ public class XmlCascade extends JpaContextNode implements ICascade
 	protected XmlCascade(XmlRelationshipMapping<? extends RelationshipMapping> parent) {
 		super(parent);
 	}
+	
+	public void initializeFrom(ICascade oldCascade) {
+		setAll(oldCascade.isAll());
+		setPersist(oldCascade.isPersist());
+		setMerge(oldCascade.isMerge());
+		setRemove(oldCascade.isRemove());
+		setRefresh(oldCascade.isRefresh());
+	}
 
 	public boolean isAll() {
 		return this.all;

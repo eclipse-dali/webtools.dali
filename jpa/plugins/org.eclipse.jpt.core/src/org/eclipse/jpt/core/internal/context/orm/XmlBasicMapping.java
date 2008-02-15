@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.internal.context.base.INullable;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.resource.orm.AttributeMapping;
 import org.eclipse.jpt.core.internal.resource.orm.Basic;
-import org.eclipse.jpt.core.internal.resource.orm.BasicImpl;
+import org.eclipse.jpt.core.internal.resource.orm.Column;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.TypeMapping;
 import org.eclipse.jpt.db.internal.Table;
@@ -165,10 +165,12 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 		newMapping.initializeFromXmlBasicMapping(this);
 	}
 
+
 	@Override
-	public void initializeFromXmlIdMapping(XmlIdMapping oldMapping) {
-		super.initializeFromXmlIdMapping(oldMapping);
+	public void initializeFromXmlColumnMapping(IXmlColumnMapping oldMapping) {
+		super.initializeFromXmlColumnMapping(oldMapping);
 		setTemporal(oldMapping.getTemporal());
+		getColumn().initializeFrom(oldMapping.getColumn());
 	}
 
 	@Override
@@ -210,7 +212,7 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 		this.specifiedEnumerated = this.specifiedEnumerated(basic);
 		this.temporal = this.specifiedTemporal(basic);
 		this.lob = specifiedLob(basic);
-		this.column.initialize(basic);
+		this.column.initialize(basic.getColumn());
 	}
 	
 	@Override
@@ -221,7 +223,7 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 		this.setSpecifiedEnumerated_(this.specifiedEnumerated(basic));
 		this.setTemporal_(this.specifiedTemporal(basic));
 		this.setLob_(this.specifiedLob(basic));
-		this.column.update(basic);
+		this.column.update(basic.getColumn());
 	}
 	
 	protected Boolean specifiedOptional(Basic basic) {
@@ -246,7 +248,8 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 	
 	@Override
 	public Basic addToResourceModel(TypeMapping typeMapping) {
-		BasicImpl basic = OrmFactory.eINSTANCE.createBasicImpl();
+		Basic basic = OrmFactory.eINSTANCE.createBasicImpl();
+		persistentAttribute().initialize(basic);
 		typeMapping.getAttributes().getBasics().add(basic);
 		return basic;
 	}
@@ -258,4 +261,19 @@ public class XmlBasicMapping extends XmlAttributeMapping<Basic>
 			typeMapping.setAttributes(null);
 		}
 	}
+	
+	//***************** IXmlColumn.Owner implementation ****************
+	
+	public Column columnResource() {
+		return this.attributeMapping().getColumn();
+	}
+	
+	public void addColumnResource() {
+		this.attributeMapping().setColumn(OrmFactory.eINSTANCE.createColumnImpl());
+	}
+	
+	public void removeColumnResource() {
+		this.attributeMapping().setColumn(null);
+	}
+
 }

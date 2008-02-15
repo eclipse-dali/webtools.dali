@@ -15,6 +15,17 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
+import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
+import org.eclipse.jpt.core.internal.context.base.IEmbeddedIdMapping;
+import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
+import org.eclipse.jpt.core.internal.context.base.IIdMapping;
+import org.eclipse.jpt.core.internal.context.base.IManyToManyMapping;
+import org.eclipse.jpt.core.internal.context.base.IManyToOneMapping;
+import org.eclipse.jpt.core.internal.context.base.IOneToManyMapping;
+import org.eclipse.jpt.core.internal.context.base.IOneToOneMapping;
+import org.eclipse.jpt.core.internal.context.base.ITransientMapping;
+import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 import org.eclipse.jpt.core.internal.context.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.internal.context.orm.XmlColumn;
 import org.eclipse.jpt.core.internal.context.orm.XmlEmbeddedMapping;
@@ -406,7 +417,7 @@ public class XmlEmbeddedMappingTests extends ContextModelTestCase
 
 		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		entityMappings().addXmlPersistentType(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
-		xmlPersistentType.getMapping().setSpecifiedMetadataComplete(true);
+		xmlPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(3, xmlPersistentType.virtualAttributesSize());		
 		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.virtualAttributes().next();
 		
@@ -496,6 +507,179 @@ public class XmlEmbeddedMappingTests extends ContextModelTestCase
 //		assertEquals("zip", xmlAttributeOverride.getName());
 //		xmlColumn = xmlAttributeOverride.getColumn();
 //		assertEquals("zip", xmlColumn.getDefaultName());
+	}
+	
+	
+	public void testEmbeddedMorphToIdMapping() throws Exception {
+		createTestEntityEmbeddedMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embedded");
+		
+		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(embeddedMapping.isDefault());
+		IAttributeOverride attributeOverride = embeddedMapping.addSpecifiedAttributeOverride(0);
+		attributeOverride.setName("override");
+		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
+		assertFalse(embeddedMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IIdMapping);
+		assertEquals("embedded", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testEmbeddedMorphToVersionMapping() throws Exception {
+		createTestEntityEmbeddedMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embedded");
+		
+		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(embeddedMapping.isDefault());
+		IAttributeOverride attributeOverride = embeddedMapping.addSpecifiedAttributeOverride(0);
+		attributeOverride.setName("override");
+		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
+		assertFalse(embeddedMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IVersionMapping);
+		assertEquals("embedded", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testEmbeddedMorphToTransientMapping() throws Exception {
+		createTestEntityEmbeddedMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embedded");
+		
+		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(embeddedMapping.isDefault());
+		IAttributeOverride attributeOverride = embeddedMapping.addSpecifiedAttributeOverride(0);
+		attributeOverride.setName("override");
+		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
+		assertFalse(embeddedMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof ITransientMapping);
+		assertEquals("embedded", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testEmbeddedMorphToBasicMapping() throws Exception {
+		createTestEntityEmbeddedMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embedded");
+		
+		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(embeddedMapping.isDefault());
+		IAttributeOverride attributeOverride = embeddedMapping.addSpecifiedAttributeOverride(0);
+		attributeOverride.setName("override");
+		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
+		assertFalse(embeddedMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IBasicMapping);
+		assertEquals("embedded", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testEmbeddedMorphToEmbeddedIdMapping() throws Exception {
+		createTestEntityEmbeddedMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embedded");
+		
+		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(embeddedMapping.isDefault());
+		IAttributeOverride attributeOverride = embeddedMapping.addSpecifiedAttributeOverride(0);
+		attributeOverride.setName("override");
+		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
+		assertFalse(embeddedMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IEmbeddedIdMapping);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertEquals("embedded", xmlPersistentAttribute.getMapping().getName());
+		attributeOverride = ((IEmbeddedIdMapping) xmlPersistentAttribute.getMapping()).specifiedAttributeOverrides().next();
+		assertEquals("override", attributeOverride.getName());
+		assertEquals("OVERRIDE_COLUMN", attributeOverride.getColumn().getSpecifiedName());
+	}
+	
+	public void testEmbeddedMorphToOneToOneMapping() throws Exception {
+		createTestEntityEmbeddedMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embedded");
+		
+		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(embeddedMapping.isDefault());
+		IAttributeOverride attributeOverride = embeddedMapping.addSpecifiedAttributeOverride(0);
+		attributeOverride.setName("override");
+		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
+		assertFalse(embeddedMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IOneToOneMapping);
+		assertEquals("embedded", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testEmbeddedMorphToOneToManyMapping() throws Exception {
+		createTestEntityEmbeddedMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embedded");
+		
+		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(embeddedMapping.isDefault());
+		IAttributeOverride attributeOverride = embeddedMapping.addSpecifiedAttributeOverride(0);
+		attributeOverride.setName("override");
+		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
+		assertFalse(embeddedMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IOneToManyMapping);
+		assertEquals("embedded", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testEmbeddedMorphToManyToOneMapping() throws Exception {
+		createTestEntityEmbeddedMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embedded");
+		
+		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(embeddedMapping.isDefault());
+		IAttributeOverride attributeOverride = embeddedMapping.addSpecifiedAttributeOverride(0);
+		attributeOverride.setName("override");
+		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
+		assertFalse(embeddedMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IManyToOneMapping);
+		assertEquals("embedded", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testEmbeddedMorphToManyToManyMapping() throws Exception {
+		createTestEntityEmbeddedMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embedded");
+		
+		IEmbeddedMapping embeddedMapping = (IEmbeddedMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(embeddedMapping.isDefault());
+		IAttributeOverride attributeOverride = embeddedMapping.addSpecifiedAttributeOverride(0);
+		attributeOverride.setName("override");
+		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
+		assertFalse(embeddedMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IManyToManyMapping);
+		assertEquals("embedded", xmlPersistentAttribute.getMapping().getName());
 	}
 
 }

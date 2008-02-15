@@ -59,6 +59,21 @@ public class XmlJoinTable extends AbstractXmlTable implements IJoinTable
 	public XmlRelationshipMapping<? extends RelationshipMapping> parent() {
 		return (XmlRelationshipMapping<? extends RelationshipMapping>) super.parent();
 	}
+	
+	public void initializeFrom(IJoinTable oldJoinTable) {
+		super.initializeFrom(oldJoinTable);
+		int index = 0;
+		for (IJoinColumn joinColumn : CollectionTools.iterable(oldJoinTable.specifiedJoinColumns())) {
+			XmlJoinColumn newJoinColumn = addSpecifiedJoinColumn(index++);
+			newJoinColumn.initializeFrom(joinColumn);
+		}
+		index = 0;
+		for (IJoinColumn joinColumn : CollectionTools.iterable(oldJoinTable.specifiedInverseJoinColumns())) {
+			XmlJoinColumn newJoinColumn = addSpecifiedInverseJoinColumn(index++);
+			newJoinColumn.initializeFrom(joinColumn);
+		}
+	}
+	
 	//******************* AbstractXmlTable implementation *****************
 	
 	@Override

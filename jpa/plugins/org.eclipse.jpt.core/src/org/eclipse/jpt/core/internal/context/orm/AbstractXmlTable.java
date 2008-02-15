@@ -38,19 +38,14 @@ public abstract class AbstractXmlTable extends JpaContextNode implements ITable
 	protected AbstractXmlTable(IJpaContextNode parent) {
 		super(parent);
 	}
-//
-//	@Override
-//	protected void addInsignificantXmlFeatureIdsTo(Set<Integer> insignificantXmlFeatureIds) {
-//		super.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);
-//		insignificantXmlFeatureIds.add(OrmPackage.ABSTRACT_XML_TABLE__NAME);
-//		insignificantXmlFeatureIds.add(OrmPackage.ABSTRACT_XML_TABLE__DEFAULT_NAME);
-//		insignificantXmlFeatureIds.add(OrmPackage.ABSTRACT_XML_TABLE__SCHEMA);
-//		insignificantXmlFeatureIds.add(OrmPackage.ABSTRACT_XML_TABLE__DEFAULT_SCHEMA);
-//		insignificantXmlFeatureIds.add(OrmPackage.ABSTRACT_XML_TABLE__CATALOG);
-//		insignificantXmlFeatureIds.add(OrmPackage.ABSTRACT_XML_TABLE__DEFAULT_CATALOG);
-//	}
-//
 
+	public void initializeFrom(ITable oldTable) {
+		setSpecifiedName(oldTable.getSpecifiedName());
+		setSpecifiedCatalog(oldTable.getSpecifiedCatalog());
+		setSpecifiedSchema(oldTable.getSpecifiedSchema());
+	}
+	
+	
 	public String getName() {
 		return (this.getSpecifiedName() == null) ? this.getDefaultName() : this.getSpecifiedName();
 	}

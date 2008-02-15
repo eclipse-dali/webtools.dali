@@ -14,6 +14,16 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.IMappingKeys;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
+import org.eclipse.jpt.core.internal.context.base.IEmbeddedIdMapping;
+import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
+import org.eclipse.jpt.core.internal.context.base.IIdMapping;
+import org.eclipse.jpt.core.internal.context.base.IManyToManyMapping;
+import org.eclipse.jpt.core.internal.context.base.IManyToOneMapping;
+import org.eclipse.jpt.core.internal.context.base.IOneToManyMapping;
+import org.eclipse.jpt.core.internal.context.base.IOneToOneMapping;
+import org.eclipse.jpt.core.internal.context.base.ITransientMapping;
+import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
 import org.eclipse.jpt.core.internal.context.base.TemporalType;
 import org.eclipse.jpt.core.internal.context.orm.XmlColumn;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
@@ -199,8 +209,8 @@ public class XmlVersionMappingTests extends ContextModelTestCase
 		assertNull(xmlVersionMapping.getTemporal());
 	}
 	
-	//TODO test morphing to other mapping types
 	//TODO test defaults
+	//TODO test overriding java mapping with a different mapping type in xml
 	
 	public void testVersionMappingNoUnderylingJavaAttribute() throws Exception {
 		createTestEntityVersionMapping();
@@ -273,7 +283,7 @@ public class XmlVersionMappingTests extends ContextModelTestCase
 	public void testVirtualMappingMetadataCompleteTrue() throws Exception {
 		createTestEntityVersionMapping();
 		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		xmlPersistentType.getMapping().setSpecifiedMetadataComplete(true);
+		xmlPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(2, xmlPersistentType.virtualAttributesSize());		
 		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.virtualAttributes().next();
 		
@@ -331,5 +341,170 @@ public class XmlVersionMappingTests extends ContextModelTestCase
 		assertEquals(Integer.valueOf(0), xmlColumn.getDefaultScale());
 	}
 	
+	public void testVersionMorphToIdMapping() throws Exception {
+		createTestEntityVersionMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "version");
+		
+		IVersionMapping versionMapping = (IVersionMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(versionMapping.isDefault());
+		versionMapping.getColumn().setSpecifiedName("FOO");
+		versionMapping.setTemporal(TemporalType.TIME);
+		assertFalse(versionMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IIdMapping);
+		assertEquals("version", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(TemporalType.TIME, ((IIdMapping) xmlPersistentAttribute.getMapping()).getTemporal());
+		assertEquals("FOO", ((IIdMapping) xmlPersistentAttribute.getMapping()).getColumn().getSpecifiedName());
+	}
+	
+	public void testVersionMorphToBasicMapping() throws Exception {
+		createTestEntityVersionMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "version");
+		
+		IVersionMapping versionMapping = (IVersionMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(versionMapping.isDefault());
+		versionMapping.getColumn().setSpecifiedName("FOO");
+		versionMapping.setTemporal(TemporalType.TIME);
+		assertFalse(versionMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IBasicMapping);
+		assertEquals("version", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(TemporalType.TIME, ((IBasicMapping) xmlPersistentAttribute.getMapping()).getTemporal());
+		assertEquals("FOO", ((IBasicMapping) xmlPersistentAttribute.getMapping()).getColumn().getSpecifiedName());
+	}
+	
+	public void testVersionMorphToTransientMapping() throws Exception {
+		createTestEntityVersionMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "version");
+		
+		IVersionMapping versionMapping = (IVersionMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(versionMapping.isDefault());
+		versionMapping.getColumn().setSpecifiedName("FOO");
+		versionMapping.setTemporal(TemporalType.TIME);
+		assertFalse(versionMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof ITransientMapping);
+		assertEquals("version", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testVersionMorphToEmbeddedMapping() throws Exception {
+		createTestEntityVersionMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "version");
+		
+		IVersionMapping versionMapping = (IVersionMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(versionMapping.isDefault());
+		versionMapping.getColumn().setSpecifiedName("FOO");
+		versionMapping.setTemporal(TemporalType.TIME);
+		assertFalse(versionMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IEmbeddedMapping);
+		assertEquals("version", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testVersionMorphToEmbeddedIdMapping() throws Exception {
+		createTestEntityVersionMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "version");
+		
+		IVersionMapping versionMapping = (IVersionMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(versionMapping.isDefault());
+		versionMapping.getColumn().setSpecifiedName("FOO");
+		versionMapping.setTemporal(TemporalType.TIME);
+		assertFalse(versionMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IEmbeddedIdMapping);
+		assertEquals("version", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testVersionMorphToOneToOneMapping() throws Exception {
+		createTestEntityVersionMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "version");
+		
+		IVersionMapping versionMapping = (IVersionMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(versionMapping.isDefault());
+		versionMapping.getColumn().setSpecifiedName("FOO");
+		versionMapping.setTemporal(TemporalType.TIME);
+		assertFalse(versionMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IOneToOneMapping);
+		assertEquals("version", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testVersionMorphToOneToManyMapping() throws Exception {
+		createTestEntityVersionMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "version");
+
+		IVersionMapping versionMapping = (IVersionMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(versionMapping.isDefault());
+		versionMapping.getColumn().setSpecifiedName("FOO");
+		versionMapping.setTemporal(TemporalType.TIME);
+		assertFalse(versionMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IOneToManyMapping);
+		assertEquals("version", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testVersionMorphToManyToOneMapping() throws Exception {
+		createTestEntityVersionMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "version");
+		
+		IVersionMapping versionMapping = (IVersionMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(versionMapping.isDefault());
+		versionMapping.getColumn().setSpecifiedName("FOO");
+		versionMapping.setTemporal(TemporalType.TIME);
+		assertFalse(versionMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IManyToOneMapping);
+		assertEquals("version", xmlPersistentAttribute.getMapping().getName());
+	}
+	
+	public void testVersionMorphToManyToManyMapping() throws Exception {
+		createTestEntityVersionMapping();
+		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "version");
+		
+		IVersionMapping versionMapping = (IVersionMapping) xmlPersistentAttribute.getMapping();
+		assertFalse(versionMapping.isDefault());
+		versionMapping.getColumn().setSpecifiedName("FOO");
+		versionMapping.setTemporal(TemporalType.TIME);
+		assertFalse(versionMapping.isDefault());
+		
+		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof IManyToManyMapping);
+		assertEquals("version", xmlPersistentAttribute.getMapping().getName());
+	}
 
 }

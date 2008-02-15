@@ -171,6 +171,20 @@ public class XmlPersistentType extends JpaContextNode implements IPersistentType
 	public AccessType access() {
 		return getMapping().getAccess();
 	}
+	public void changeMapping(XmlPersistentAttribute xmlPersistentAttribute, XmlAttributeMapping<? extends AttributeMapping> oldMapping, XmlAttributeMapping<? extends AttributeMapping> newMapping) {
+		int sourceIndex = this.specifiedPersistentAttributes.indexOf(xmlPersistentAttribute);
+		this.specifiedPersistentAttributes.remove(sourceIndex);
+		oldMapping.removeFromResourceModel(getMapping().typeMappingResource());
+		if (getMapping().typeMappingResource().getAttributes() == null) {
+			getMapping().typeMappingResource().setAttributes(OrmFactory.eINSTANCE.createAttributes());
+		}
+		int targetIndex = insertionIndex(xmlPersistentAttribute);
+		this.specifiedPersistentAttributes.add(targetIndex, xmlPersistentAttribute);
+		newMapping.addToResourceModel(getMapping().typeMappingResource());
+		oldMapping.initializeOn(newMapping);
+		//TODO are the source and target correct in this case, or is target off by one???
+		fireItemMoved(SPECIFIED_ATTRIBUTES_LIST, targetIndex, sourceIndex);
+	}
 
 //	protected void changeMapping(XmlAttributeMapping oldMapping, String newMappingKey) {
 //		boolean virtual = oldMapping.isVirtual();

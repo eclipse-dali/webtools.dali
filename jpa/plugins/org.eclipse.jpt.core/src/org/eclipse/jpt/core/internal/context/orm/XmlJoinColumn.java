@@ -30,6 +30,11 @@ public class XmlJoinColumn extends AbstractXmlColumn<JoinColumn> implements IJoi
 		super(parent, owner);
 	}
 
+	public void initializeFrom(IJoinColumn oldColumn) {
+		super.initializeFrom(oldColumn);
+		setSpecifiedReferencedColumnName(oldColumn.getSpecifiedReferencedColumnName());
+	}
+	
 	public String getReferencedColumnName() {
 		return (this.getSpecifiedReferencedColumnName() == null) ? getDefaultReferencedColumnName() : this.getSpecifiedReferencedColumnName();
 	}
