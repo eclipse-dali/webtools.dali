@@ -234,7 +234,7 @@ public class ListChangeEvent extends ChangeEvent {
 	 */
 	@Override
 	public ListChangeEvent cloneWithSource(Model newSource) {
-		return new ListChangeEvent(newSource, this.listName, this.index, this.items, this.replacedItems);
+		return new ListChangeEvent(newSource, this.listName, this.index, this.items, this.replacedItems, this.sourceIndex, this.moveLength);
 	}
 
 	/**
@@ -242,7 +242,7 @@ public class ListChangeEvent extends ChangeEvent {
 	 * replacing the current source and list name.
 	 */
 	public ListChangeEvent cloneWithSource(Model newSource, String newListName) {
-		return new ListChangeEvent(newSource, newListName, this.index, this.items, this.replacedItems);
+		return new ListChangeEvent(newSource, newListName, this.index, this.items, this.replacedItems, this.sourceIndex, this.moveLength);
 	}
 
 	/**
