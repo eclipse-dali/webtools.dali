@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved. This
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved. This
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
@@ -10,35 +10,35 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IColumn;
 import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.base.IOverride;
 import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
+import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
+import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationWritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridData;
+import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * Here the layout of this pane:
@@ -50,7 +50,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * |                                                                           |
- * | x Override Default                                                        |
+ * |   x Override Default                                                      |
  * |                                                                           |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
@@ -66,11 +66,9 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-@SuppressWarnings("nls")
 public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbeddedMapping>
 {
 	private WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder;
-	private List list;
 
 	/**
 	 * Creates a new <code>EmbeddedAttributeOverridesComposite</code>.
@@ -93,7 +91,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 	 */
 	public EmbeddedAttributeOverridesComposite(PropertyValueModel<? extends IEmbeddedMapping> subjectHolder,
 	             	                            Composite parent,
-	            	                            TabbedPropertySheetWidgetFactory widgetFactory) {
+	            	                            IWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
@@ -102,14 +100,31 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 		return new SimplePropertyValueModel<IAttributeOverride>();
 	}
 
-
-	private ListValueModel<String> buildAttributeOverridesStringListHolder() {
-		return new TransformationListValueModelAdapter<IAttributeOverride, String>(buildAttributeOverridesListModel()) {
+	private ILabelProvider buildAttributeOverrideLabelProvider() {
+		return new LabelProvider() {
 			@Override
-			protected String transformItem(IAttributeOverride item) {
-				return item.getName() == null ? "" : item.getName();
+			public String getText(Object element) {
+				return buildOverrideDisplayString((IAttributeOverride) element);
 			}
 		};
+	}
+
+	private Adapter buildAttributeOverridesAdapter() {
+		return new AddRemoveListPane.AbstractAdapter() {
+
+			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
+			}
+
+			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
+			}
+		};
+	}
+
+	private ListValueModel<IAttributeOverride> buildAttributeOverridesListHolder() {
+		List<ListValueModel<IAttributeOverride>> list = new ArrayList<ListValueModel<IAttributeOverride>>();
+		list.add(buildSpecifiedAttributeOverridesListHolder());
+		list.add(buildDefaultAttributeOverridesListHolder());
+		return new CompositeListValueModel<ListValueModel<IAttributeOverride>, IAttributeOverride>(list);
 	}
 
 	private ListValueModel<IAttributeOverride> buildAttributeOverridesListModel() {
@@ -119,26 +134,11 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 		);
 	}
 
-	private ListValueModel<IAttributeOverride> buildAttributeOverridesListHolder() {
-		java.util.List<ListValueModel<IAttributeOverride>> list = new ArrayList<ListValueModel<IAttributeOverride>>();
-		list.add(buildSpecifiedAttributeOverridesListHolder());
-		list.add(buildDefaultAttributeOverridesListHolder());
-		return new CompositeListValueModel<ListValueModel<IAttributeOverride>, IAttributeOverride>(list);
-	}
-
-	private ListValueModel<IAttributeOverride> buildSpecifiedAttributeOverridesListHolder() {
-		return new ListAspectAdapter<IEmbeddedMapping, IAttributeOverride>(
-			this.getSubjectHolder(),
-			IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST)
-		{
+	private PropertyValueModel<IColumn> buildColumnHolder(WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder) {
+		return new TransformationPropertyValueModel<IAttributeOverride, IColumn>(attributeOverrideHolder) {
 			@Override
-			protected ListIterator<IAttributeOverride> listIterator_() {
-				return subject.specifiedAttributeOverrides();
-			}
-
-			@Override
-			public int size_() {
-				return subject.specifiedAttributeOverridesSize();
+			protected IColumn transform_(IAttributeOverride value) {
+				return value.getColumn();
 			}
 		};
 	}
@@ -160,46 +160,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 		};
 	}
 
-	private List buildAttributeOverridesList(Composite parent,
-	                                         WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder) {
-
-		WritablePropertyValueModel<String> selectedItemHolder =
-			buildSelectedAttributeOverrideHolder(attributeOverrideHolder);
-
-		List list = buildList(
-			parent,
-			selectedItemHolder,
-			IJpaHelpContextIds.MAPPING_EMBEDDED_ATTRIBUTE_OVERRIDES
-		);
-
-		ListBoxModelAdapter.adapt(
-			buildAttributeOverridesStringListHolder(),
-			selectedItemHolder,
-			list
-		);
-
-		return list;
-	}
-
-	private PropertyValueModel<Boolean> buildColumnEnablementHolder(PropertyValueModel<IColumn> columnHolder) {
-		return new TransformationPropertyValueModel<IColumn, Boolean>(columnHolder) {
-			@Override
-			protected Boolean transform(IColumn value) {
-				return (value != null);
-			}
-		};
-	}
-
-	private PropertyValueModel<IColumn> buildColumnHolder(WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder) {
-		return new TransformationPropertyValueModel<IAttributeOverride, IColumn>(attributeOverrideHolder) {
-			@Override
-			protected IColumn transform_(IAttributeOverride value) {
-				return value.getColumn();
-			}
-		};
-	}
-
-	private PropertyValueModel<Boolean> buildOverrideDefaultButtonBooleanHolder(PropertyValueModel<IAttributeOverride> attributeOverrideHolder) {
+	private PropertyValueModel<Boolean> buildOverrideDefaultAttributeOverrideEnablerHolder() {
 		return new TransformationPropertyValueModel<IAttributeOverride, Boolean>(attributeOverrideHolder) {
 			@Override
 			protected Boolean transform(IAttributeOverride value) {
@@ -208,11 +169,11 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 		};
 	}
 
-	private WritablePropertyValueModel<Boolean> buildOverrideDefaultHolder(WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder) {
+	private WritablePropertyValueModel<Boolean> buildOverrideDefaultAttributeOverrideHolder() {
 		return new TransformationWritablePropertyValueModel<IAttributeOverride, Boolean>(attributeOverrideHolder) {
 			@Override
 			public void setValue(Boolean value) {
-				// Not done here
+				updateAssociationOverride(value);
 			}
 
 			@Override
@@ -222,79 +183,33 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 		};
 	}
 
-	private SelectionListener buildOverrideDefaultSelectionListener() {
-		return new SelectionAdapter(){
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				Button button = (Button) e.widget;
-				overrideDefaultButtonSelected(button.getSelection());
-			}
-		};
+	private String buildOverrideDisplayString(IAttributeOverride override) {
+
+		String name = override.getName();
+
+		if (StringTools.stringIsEmpty(name)) {
+			name = JptUiMappingsMessages.OverridesComposite_noName;
+		}
+		else {
+			name = name.trim();
+		}
+
+		return name;
 	}
 
-	private void buildPropertiesPane(Composite container,
-	                                 WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder) {
-
-		// Override Default check box
-		Button overrideDefaultButton = buildCheckBox(
-			container,
-			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
-			buildOverrideDefaultHolder(attributeOverrideHolder)
-		);
-
-		GridData data = new GridData();
-		data.horizontalIndent = groupBoxMargin();
-		data.verticalIndent   = 0;
-		overrideDefaultButton.setLayoutData(data);
-
-		overrideDefaultButton.addSelectionListener(
-			buildOverrideDefaultSelectionListener()
-		);
-
-		installOverrideDefaultButtonEnabler(
-			attributeOverrideHolder,
-			overrideDefaultButton
-		);
-
-		// Column widgets
-		PropertyValueModel<IColumn> columnHolder = buildColumnHolder(attributeOverrideHolder);
-
-		ColumnComposite columnComposite = new ColumnComposite(
-			this,
-			columnHolder,
-			container
-		);
-
-		data = new GridData();
-		data.grabExcessHorizontalSpace = true;
-		data.horizontalAlignment       = GridData.FILL;
-		columnComposite.getControl().setLayoutData(data);
-
-		installColumnCompositeEnabler(columnHolder, columnComposite);
-	}
-
-	private WritablePropertyValueModel<String> buildSelectedAttributeOverrideHolder(WritablePropertyValueModel<IAttributeOverride> attributeOverrideHolder) {
-		return new TransformationWritablePropertyValueModel<IAttributeOverride, String>(attributeOverrideHolder) {
+	private ListValueModel<IAttributeOverride> buildSpecifiedAttributeOverridesListHolder() {
+		return new ListAspectAdapter<IEmbeddedMapping, IAttributeOverride>(
+			this.getSubjectHolder(),
+			IEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST)
+		{
 			@Override
-			protected IAttributeOverride reverseTransform_(String value) {
-				for (Iterator<IAttributeOverride> iter = subject().attributeOverrides(); iter.hasNext(); ) {
-					IAttributeOverride attributeOverride = iter.next();
-
-					if (attributeOverride.getName() == null) {
-						if (value == null) {
-							return attributeOverride;
-						}
-					}
-					else if (attributeOverride.getName().equals(value)) {
-						return attributeOverride;
-					}
-				}
-				return null;
+			protected ListIterator<IAttributeOverride> listIterator_() {
+				return subject.specifiedAttributeOverrides();
 			}
 
 			@Override
-			protected String transform_(IAttributeOverride value) {
-				return value.getName();
+			public int size_() {
+				return subject.specifiedAttributeOverridesSize();
 			}
 		};
 	}
@@ -308,73 +223,122 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<IEmbed
 		this.attributeOverrideHolder = buildAttributeOverrideHolder();
 	}
 
+	private AddRemoveListPane<IEmbeddedMapping> initializeAttributeOverridesList(Composite container) {
+
+		return new AddRemoveListPane<IEmbeddedMapping>(
+			this,
+			buildSubPane(container, 8),
+			buildAttributeOverridesAdapter(),
+			buildAttributeOverridesListModel(),
+			attributeOverrideHolder,
+			buildAttributeOverrideLabelProvider(),
+			IJpaHelpContextIds.MAPPING_EMBEDDED_ATTRIBUTE_OVERRIDES
+		)
+		{
+			@Override
+			protected void initializeButtonPane(Composite container, String helpId) {
+			}
+
+			@Override
+			protected void updateButtons() {
+			}
+		};
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
 	protected void initializeLayout(Composite container) {
+
 		// Attribute Overrides group box
-		Composite groupBox = buildTitledPane(
+		container = buildTitledPane(
 			container,
 			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
 		);
 
-		// Sub-pane to align the check box and ColumnComposite
-		// to the right of the list
-		container = buildSubPane(groupBox, 1, 5, 0, 0, 0);
-
 		// Attribute Overrides list
-		list = buildAttributeOverridesList(
-			container,
-			this.attributeOverrideHolder
-		);
+		initializeAttributeOverridesList(container);
 
-		GridData data = new GridData();
-		data.verticalSpan            = 2;
-		data.grabExcessVerticalSpace = true;
-		data.horizontalAlignment     = GridData.FILL;
-		data.verticalAlignment       = GridData.FILL;
-		list.setLayoutData(data);
-
-		// Properties for the selected attribute overrides
-		buildPropertiesPane(
-			buildSubPane(container, 5, 0),
-			this.attributeOverrideHolder
-		);
+		// Property pane
+		initializePropertyPane(buildSubPane(container, 5, 0));
 	}
 
-	private void installColumnCompositeEnabler(PropertyValueModel<IColumn> columnHolder,
-	                                           ColumnComposite columnComposite) {
+	private void initializePropertyPane(Composite container) {
 
+		// Override Default check box
+		Button overrideDefaultButton = buildCheckBox(
+			buildSubPane(container, 0, groupBoxMargin()),
+			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
+			buildOverrideDefaultAttributeOverrideHolder()
+		);
+
+		installOverrideDefaultButtonEnabler(overrideDefaultButton);
+
+		// Column widgets
+		ColumnComposite columnComposite = new ColumnComposite(
+			this,
+			buildColumnHolder(attributeOverrideHolder),
+			container
+		);
+
+		installColumnCompositeEnabler(columnComposite);
+	}
+
+	private void installColumnCompositeEnabler(ColumnComposite columnComposite) {
 		new PaneEnabler(
-			buildColumnEnablementHolder(columnHolder),
+			buildOverrideDefaultAttributeOverrideHolder(),
 			columnComposite
 		);
 	}
 
-	private void installOverrideDefaultButtonEnabler(PropertyValueModel<IAttributeOverride> attributeOverrideHolder,
-	                                                 Button overrideDefaultButton) {
-
+	private void installOverrideDefaultButtonEnabler(Button overrideDefaultButton) {
 		new ControlEnabler(
-			this.buildOverrideDefaultButtonBooleanHolder(attributeOverrideHolder),
+			buildOverrideDefaultAttributeOverrideEnablerHolder(),
 			overrideDefaultButton
 		);
 	}
 
-	private void overrideDefaultButtonSelected(boolean overrideDefault) {
+	private void updateAssociationOverride(boolean selected) {
 
-		if (overrideDefault) {
-			int index = this.subject().specifiedAttributeOverridesSize();
-
-			IAttributeOverride defaultAttributeOverride = this.attributeOverrideHolder.value();
-			IAttributeOverride attributeOverride = this.subject().addSpecifiedAttributeOverride(index);
-
-			attributeOverride.setName(defaultAttributeOverride.getName());
-			attributeOverride.getColumn().setSpecifiedName(defaultAttributeOverride.getColumn().getName());
-			this.attributeOverrideHolder.setValue(attributeOverride);
+		if (isPopulating()) {
+			return;
 		}
-		else {
-			this.subject().removeSpecifiedAttributeOverride(this.list.getSelectionIndex());
+
+		setPopulating(true);
+
+		try {
+			IEmbeddedMapping subject = subject();
+			IAttributeOverride override = attributeOverrideHolder.value();
+
+			// Add a new association override
+			if (selected) {
+				int index = this.subject().specifiedAttributeOverridesSize();
+
+				IAttributeOverride attributeOverride = subject.addSpecifiedAttributeOverride(index);
+				attributeOverride.setName(override.getName());
+				attributeOverride.getColumn().setSpecifiedName(override.getColumn().getName());
+
+				attributeOverrideHolder.setValue(attributeOverride);
+			}
+			// Remove the specified association override
+			else {
+				String name = override.getName();
+				subject.removeSpecifiedAttributeOverride(override);
+
+				// Select the default attribute override
+				for (Iterator<IAttributeOverride> iter = subject.defaultAttributeOverrides(); iter.hasNext(); ) {
+					IAttributeOverride attributeOverride = iter.next();
+
+					if (attributeOverride.getName().equals(name)) {
+						attributeOverrideHolder.setValue(attributeOverride);
+						break;
+					}
+				}
+			}
+		}
+		finally {
+			setPopulating(false);
 		}
 	}
 }

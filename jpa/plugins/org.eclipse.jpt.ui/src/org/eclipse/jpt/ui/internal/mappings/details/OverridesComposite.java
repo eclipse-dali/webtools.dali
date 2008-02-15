@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -24,6 +25,7 @@ import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.IJoinColumnsEditor;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
+import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
@@ -42,10 +44,6 @@ import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueM
 import org.eclipse.jpt.utility.internal.model.value.TransformationWritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
@@ -84,11 +82,8 @@ import org.eclipse.ui.part.PageBook;
 @SuppressWarnings("nls")
 public class OverridesComposite extends AbstractFormPane<IEntity>
 {
-	private ColumnComposite columnComposite;
 	private Composite columnPane;
-	private JoinColumnsComposite<IAssociationOverride> joinColumnsComposite;
 	private Composite joinColumnsPane;
-	private Button overrideDefaultButton;
 	private WritablePropertyValueModel<IOverride> overrideHolder;
 
 	/**
@@ -144,8 +139,8 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		};
 	}
 
-	private PropertyValueModel<IAssociationOverride> buildAssociationOverrideHolder(PropertyValueModel<IOverride> overrideHolder) {
-		return new TransformationPropertyValueModel<IOverride, IAssociationOverride>(overrideHolder) {
+	private WritablePropertyValueModel<IAssociationOverride> buildAssociationOverrideHolder() {
+		return new TransformationWritablePropertyValueModel<IOverride, IAssociationOverride>(overrideHolder) {
 			@Override
 			protected IAssociationOverride transform_(IOverride value) {
 				return (value instanceof IAssociationOverride) ? (IAssociationOverride) value : null;
@@ -153,8 +148,8 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		};
 	}
 
-	private PropertyValueModel<IAttributeOverride> buildAttributeOverrideHolder(PropertyValueModel<IOverride> overrideHolder) {
-		return new TransformationPropertyValueModel<IOverride, IAttributeOverride>(overrideHolder) {
+	private WritablePropertyValueModel<IAttributeOverride> buildAttributeOverrideHolder() {
+		return new TransformationWritablePropertyValueModel<IOverride, IAttributeOverride>(overrideHolder) {
 			@Override
 			protected IAttributeOverride transform_(IOverride value) {
 				return (value instanceof IAttributeOverride) ? (IAttributeOverride) value : null;
@@ -213,28 +208,30 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		return new JoinColumnsProvider();
 	}
 
-	private WritablePropertyValueModel<Boolean> buildOverrideDefaultHolder() {
-		return new TransformationWritablePropertyValueModel<IOverride, Boolean>(overrideHolder) {
+	private WritablePropertyValueModel<Boolean> buildOverrideDefaultAssociationOverrideHolder() {
+		return new TransformationWritablePropertyValueModel<IAssociationOverride, Boolean>(buildAssociationOverrideHolder()) {
 			@Override
 			public void setValue(Boolean value) {
-				// Done in the button selection listener;
+				updateAssociationOverride(value);
 			}
 
 			@Override
-			protected Boolean transform_(IOverride value) {
+			protected Boolean transform_(IAssociationOverride value) {
 				return !value.isVirtual();
 			}
 		};
 	}
 
-	private SelectionListener buildOverrideDefaultSelectionListener() {
-		return new SelectionAdapter(){
+	private WritablePropertyValueModel<Boolean> buildOverrideDefaultAttributeOverrideHolder() {
+		return new TransformationWritablePropertyValueModel<IAttributeOverride, Boolean>(buildAttributeOverrideHolder()) {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				if (!isPopulating()) {
-					Button button = (Button) e.widget;
-					overrideDefaultButtonSelected(button.getSelection());
-				}
+			public void setValue(Boolean value) {
+				updateAttributeOverride(value);
+			}
+
+			@Override
+			protected Boolean transform_(IAttributeOverride value) {
+				return !value.isVirtual();
 			}
 		};
 	}
@@ -394,26 +391,22 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		columnPane = buildSubPane(pageBook, 5);
 
 		// Override Default check box
-		overrideDefaultButton = buildCheckBox(
+		buildCheckBox(
 			buildSubPane(columnPane, 0, groupBoxMargin, 0, groupBoxMargin),
 			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
-			buildOverrideDefaultHolder()
-		);
-
-		overrideDefaultButton.addSelectionListener(
-			buildOverrideDefaultSelectionListener()
+			buildOverrideDefaultAttributeOverrideHolder()
 		);
 
 		// Column widgets (for IOverrideAttribute)
-		columnComposite = new ColumnComposite(
+		ColumnComposite columnComposite = new ColumnComposite(
 			this,
-			buildColumnHolder(buildAttributeOverrideHolder(overrideHolder)),
+			buildColumnHolder(buildAttributeOverrideHolder()),
 			columnPane,
 			false
 		);
 
 		columnPane.setVisible(false);
-		columnComposite.enableWidgets(false);
+		installColumnsPaneEnabler(columnComposite);
 	}
 
 	private void initializeJoinColumnsPane(PageBook pageBook) {
@@ -421,14 +414,10 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		joinColumnsPane = buildSubPane(pageBook);
 
 		// Override Default check box
-		overrideDefaultButton = buildCheckBox(
-			buildSubPane(joinColumnsPane, 5),
+		buildCheckBox(
+			buildSubPane(joinColumnsPane, 5, groupBoxMargin()),
 			JptUiMappingsMessages.AttributeOverridesComposite_overrideDefault,
-			buildOverrideDefaultHolder()
-		);
-
-		overrideDefaultButton.addSelectionListener(
-			buildOverrideDefaultSelectionListener()
+			buildOverrideDefaultAssociationOverrideHolder()
 		);
 
 		Group joinColumnsGroupPane = buildTitledPane(
@@ -437,16 +426,17 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		);
 
 		// Join Columns list pane (for IOverrideAssociation)
-		joinColumnsComposite = new JoinColumnsComposite<IAssociationOverride>(
-			this,
-			buildAssociationOverrideHolder(overrideHolder),
-			joinColumnsGroupPane,
-			buildJoinColumnsEditor(),
-			false
-		);
+		JoinColumnsComposite<IAssociationOverride> joinColumnsComposite =
+			new JoinColumnsComposite<IAssociationOverride>(
+				this,
+				buildAssociationOverrideHolder(),
+				joinColumnsGroupPane,
+				buildJoinColumnsEditor(),
+				false
+			);
 
 		joinColumnsPane.setVisible(false);
-		joinColumnsComposite.enableWidgets(false);
+		installJoinColumnsPaneEnabler(joinColumnsComposite);
 	}
 
 	/*
@@ -493,6 +483,20 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		};
 	}
 
+	private void installColumnsPaneEnabler(ColumnComposite pane) {
+		new PaneEnabler(
+			buildOverrideDefaultAttributeOverrideHolder(),
+			pane
+		);
+	}
+
+	private void installJoinColumnsPaneEnabler(JoinColumnsComposite<IAssociationOverride> pane) {
+		new PaneEnabler(
+			buildOverrideDefaultAssociationOverrideHolder(),
+			pane
+		);
+	}
+
 	private void installOverrideControlSwitcher(PropertyValueModel<IOverride> overrideHolder,
 	                                            PageBook pageBook) {
 
@@ -503,43 +507,57 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		);
 	}
 
-	private void overrideDefaultButtonSelected(boolean selected) {
+	private void removeOverrides(ObjectListSelectionModel listSelectionModel) {
 
 		IEntity subject = subject();
-		IOverride override = overrideHolder.value();
+		Object[] selectedItems = listSelectionModel.selectedValues();
 
-		joinColumnsComposite.enableWidgets(selected);
-		columnComposite.enableWidgets(selected);
+		for (int index = selectedItems.length; --index >= 0; ) {
+
+			Object override = selectedItems[index];
+
+			if (override instanceof IAttributeOverride) {
+				subject.removeSpecifiedAttributeOverride((IAttributeOverride) override);
+			}
+			else if (override instanceof IAssociationOverride) {
+				subject.removeSpecifiedAssociationOverride((IAssociationOverride) override);
+			}
+		}
+	}
+
+	private void updateAssociationOverride(boolean selected) {
+
+		if (isPopulating()) {
+			return;
+		}
 
 		setPopulating(true);
 
 		try {
-			// Add a new override
+			IEntity subject = subject();
+			IAssociationOverride override = (IAssociationOverride) overrideHolder.value();
+
+			// Add a new association override
 			if (selected) {
+				int index = subject.specifiedAssociationOverridesSize();
+				IAssociationOverride associationOverride = subject.addSpecifiedAssociationOverride(index);
+				associationOverride.setName(override.getName());
 
-				if (override instanceof IAttributeOverride) {
-					int index = subject.specifiedAttributeOverridesSize();
-					IAttributeOverride attributeOverride = subject.addSpecifiedAttributeOverride(index);
-					attributeOverride.setName(override.getName());
-					attributeOverride.getColumn().setSpecifiedName(((IAttributeOverride) override).getColumn().getName());
-					overrideHolder.setValue(attributeOverride);
-				}
-				else {
-					int index = subject.specifiedAssociationOverridesSize();
-					IAssociationOverride associationOverride = subject.addSpecifiedAssociationOverride(index);
-					associationOverride.setName(override.getName());
-					//attributeOverride.getColumn().setSpecifiedName(this.attributeOverride.getColumn().getName());
-					overrideHolder.setValue(associationOverride);
-				}
+				overrideHolder.setValue(associationOverride);
 			}
-			// Remove the specified overrides
+			// Remove the specified association override
 			else {
+				String name = override.getName();
+				subject.removeSpecifiedAssociationOverride(override);
 
-				if (override instanceof IAttributeOverride) {
-					subject.removeSpecifiedAttributeOverride((IAttributeOverride) override);
-				}
-				else {
-					subject.removeSpecifiedAssociationOverride((IAssociationOverride) override);
+				// Select the default association override
+				for (Iterator<IAssociationOverride> iter = subject.defaultAssociationOverrides(); iter.hasNext(); ) {
+					IAssociationOverride associationOverride = iter.next();
+
+					if (associationOverride.getName().equals(name)) {
+						overrideHolder.setValue(associationOverride);
+						break;
+					}
 				}
 			}
 		}
@@ -548,21 +566,45 @@ public class OverridesComposite extends AbstractFormPane<IEntity>
 		}
 	}
 
-	private void removeOverrides(ObjectListSelectionModel listSelectionModel) {
+	private void updateAttributeOverride(boolean selected) {
 
-		IEntity subject = subject();
-		Object[] selectedItems = listSelectionModel.selectedValues();
+		if (isPopulating()) {
+			return;
+		}
 
-		for (int index = selectedItems.length; --index >= 0; ) {
+		setPopulating(true);
 
-			IOverride override = (IOverride) selectedItems[index];
+		try {
+			IEntity subject = subject();
+			IAttributeOverride override = (IAttributeOverride) overrideHolder.value();
 
-			if (override instanceof IAttributeOverride) {
-				subject.removeSpecifiedAttributeOverride((IAttributeOverride) override);
+			// Add a new attribute override
+			if (selected) {
+				int index = subject.specifiedAttributeOverridesSize();
+				IAttributeOverride attributeOverride = subject.addSpecifiedAttributeOverride(index);
+				attributeOverride.setName(override.getName());
+				attributeOverride.getColumn().setSpecifiedName(override.getColumn().getName());
+
+				overrideHolder.setValue(attributeOverride);
 			}
-			else if (override instanceof IAssociationOverride) {
-				subject.removeSpecifiedAssociationOverride((IAssociationOverride) override);
+			// Remove the specified attribute override
+			else {
+				String name = override.getName();
+				subject.removeSpecifiedAttributeOverride(override);
+
+				// Select the default attribute override
+				for (Iterator<IAttributeOverride> iter = subject.defaultAttributeOverrides(); iter.hasNext(); ) {
+					IAttributeOverride attributeOverride = iter.next();
+
+					if (attributeOverride.getName().equals(name)) {
+						overrideHolder.setValue(attributeOverride);
+						break;
+					}
+				}
 			}
+		}
+		finally {
+			setPopulating(false);
 		}
 	}
 

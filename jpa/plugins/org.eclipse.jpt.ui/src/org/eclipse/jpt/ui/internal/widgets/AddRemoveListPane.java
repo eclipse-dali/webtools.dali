@@ -266,6 +266,10 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 */
 	private void selectionChanged() {
 
+		if (locked) {
+			return;
+		}
+
 		locked = true;
 
 		try {

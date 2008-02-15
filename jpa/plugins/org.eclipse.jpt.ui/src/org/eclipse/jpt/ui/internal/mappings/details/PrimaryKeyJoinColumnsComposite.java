@@ -350,7 +350,7 @@ public class PrimaryKeyJoinColumnsComposite extends AbstractFormPane<IEntity>
 			// one if it exists
 			if (selected) {
 
-				IPrimaryKeyJoinColumn defaultJoinColumn = subject.getDefaultPrimaryKeyJoinColumn(); //TODO sometimes null
+				IPrimaryKeyJoinColumn defaultJoinColumn = subject.getDefaultPrimaryKeyJoinColumn();
 
 				if (defaultJoinColumn != null) {
 					String columnName = defaultJoinColumn.getDefaultName();
