@@ -7,9 +7,9 @@
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.internal.context.base;
+package org.eclipse.jpt.core.internal.context.persistence;
 
-import static org.eclipse.jpt.core.internal.context.base.PersistenceUnitTransactionType.*;
+import static org.eclipse.jpt.core.internal.context.persistence.PersistenceUnitTransactionType.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -19,8 +19,12 @@ import java.util.NoSuchElementException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.ITextRange;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.internal.context.base.AccessType;
+import org.eclipse.jpt.core.internal.context.base.IPersistentType;
+import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
 import org.eclipse.jpt.core.internal.resource.orm.OrmArtifactEdit;

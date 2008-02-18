@@ -8,7 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.xml.details;
 
-import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
+import org.eclipse.jpt.core.internal.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.context.orm.IOrmStructureNodes;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;

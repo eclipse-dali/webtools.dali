@@ -7,8 +7,9 @@
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.internal.context.base;
+package org.eclipse.jpt.core.internal.context.persistence;
 
+import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlProperty;
 
 

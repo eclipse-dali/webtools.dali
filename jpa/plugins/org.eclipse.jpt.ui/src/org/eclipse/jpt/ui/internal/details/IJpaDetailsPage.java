@@ -8,7 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
+import org.eclipse.jpt.core.internal.IJpaStructureNode;
 import org.eclipse.swt.widgets.Control;
 
 /**

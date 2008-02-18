@@ -7,10 +7,14 @@
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.internal.context.base;
+package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.ListIterator;
+import org.eclipse.jpt.core.internal.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.internal.context.base.AccessType;
+import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
+import org.eclipse.jpt.core.internal.context.base.IPersistentType;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
 
 public interface IPersistenceUnit extends IJpaContextNode, IJpaStructureNode

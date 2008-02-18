@@ -10,7 +10,7 @@ package org.eclipse.jpt.ui.internal.views;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
+import org.eclipse.jpt.core.internal.IJpaStructureNode;
 import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;

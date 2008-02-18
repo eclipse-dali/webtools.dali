@@ -11,7 +11,7 @@
 package org.eclipse.jpt.ui.internal.selection;
 
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
+import org.eclipse.jpt.core.internal.IJpaStructureNode;
 
 @SuppressWarnings("nls")
 public interface IJpaSelection extends ISelection

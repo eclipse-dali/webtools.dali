@@ -15,15 +15,9 @@ import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IAssociationOverride;
 import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
-import org.eclipse.jpt.core.internal.context.base.IClassRef;
 import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
 import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
-import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.INamedColumn;
-import org.eclipse.jpt.core.internal.context.base.IPersistence;
-import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
-import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
-import org.eclipse.jpt.core.internal.context.base.IProperty;
 import org.eclipse.jpt.core.internal.context.java.IJavaAssociationOverride;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaAttributeOverride;
@@ -68,6 +62,12 @@ import org.eclipse.jpt.core.internal.context.orm.XmlEntity;
 import org.eclipse.jpt.core.internal.context.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
+import org.eclipse.jpt.core.internal.context.persistence.IClassRef;
+import org.eclipse.jpt.core.internal.context.persistence.IMappingFileRef;
+import org.eclipse.jpt.core.internal.context.persistence.IPersistence;
+import org.eclipse.jpt.core.internal.context.persistence.IPersistenceUnit;
+import org.eclipse.jpt.core.internal.context.persistence.IPersistenceXml;
+import org.eclipse.jpt.core.internal.context.persistence.IProperty;
 
 /**
  * An IJpaFactory that also assumes a base JPA project context structure 

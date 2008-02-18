@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.internal.context.base;
 
 import org.eclipse.jpt.core.internal.IContextModel;
+import org.eclipse.jpt.core.internal.context.persistence.IPersistenceXml;
 
 public interface IBaseJpaContent extends IJpaContextNode, IContextModel
 {

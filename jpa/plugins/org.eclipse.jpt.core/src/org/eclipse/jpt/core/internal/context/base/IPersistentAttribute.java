@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.base;
 
+import org.eclipse.jpt.core.internal.IJpaStructureNode;
+
 
 public interface IPersistentAttribute extends IJpaContextNode, IJpaStructureNode
 {

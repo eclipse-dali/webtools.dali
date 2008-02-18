@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal;
 
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ElementChangedEvent;
-import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 import org.eclipse.jpt.utility.internal.model.Model;
 
 public interface IResourceModel extends Model

@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
 
-import org.eclipse.jpt.core.internal.context.base.IClassRef;
-import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
-import org.eclipse.jpt.core.internal.context.base.IPersistence;
-import org.eclipse.jpt.core.internal.context.base.IPersistenceUnit;
+import org.eclipse.jpt.core.internal.context.persistence.IClassRef;
+import org.eclipse.jpt.core.internal.context.persistence.IMappingFileRef;
+import org.eclipse.jpt.core.internal.context.persistence.IPersistence;
+import org.eclipse.jpt.core.internal.context.persistence.IPersistenceUnit;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;

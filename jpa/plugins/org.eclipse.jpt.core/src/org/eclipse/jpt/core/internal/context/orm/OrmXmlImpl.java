@@ -11,10 +11,10 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jpt.core.internal.IJpaStructureNode;
 import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
-import org.eclipse.jpt.core.internal.context.base.IMappingFileRef;
 import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
+import org.eclipse.jpt.core.internal.context.persistence.IMappingFileRef;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResource;
 

@@ -8,10 +8,8 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.internal.context.base;
+package org.eclipse.jpt.core.internal;
 
-import org.eclipse.jpt.core.internal.IJpaNode;
-import org.eclipse.jpt.core.internal.ITextRange;
 
 /**
  * Implement this interface for objects that appear in the Structure view

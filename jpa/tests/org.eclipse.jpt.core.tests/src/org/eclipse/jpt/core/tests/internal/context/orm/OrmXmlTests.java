@@ -11,8 +11,8 @@
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
 import org.eclipse.jpt.core.internal.context.orm.OrmXml;
+import org.eclipse.jpt.core.internal.context.persistence.IPersistenceXml;
 import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResource;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;

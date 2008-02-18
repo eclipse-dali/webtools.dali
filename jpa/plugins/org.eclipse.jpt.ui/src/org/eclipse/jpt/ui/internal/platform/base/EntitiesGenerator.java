@@ -25,7 +25,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
-import org.eclipse.jpt.core.internal.context.base.IPersistenceXml;
+import org.eclipse.jpt.core.internal.context.persistence.IPersistenceXml;
 import org.eclipse.jpt.core.internal.synch.SynchronizeClassesJob;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.gen.internal.EntityGenerator;

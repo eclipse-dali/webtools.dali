@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.internal.IJpaNode;
 import org.eclipse.jpt.core.internal.JpaNode;
 import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
+import org.eclipse.jpt.core.internal.context.persistence.IPersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
 
 public abstract class JpaContextNode extends JpaNode

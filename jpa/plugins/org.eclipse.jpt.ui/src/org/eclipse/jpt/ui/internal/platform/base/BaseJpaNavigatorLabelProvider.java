@@ -13,7 +13,7 @@ package org.eclipse.jpt.ui.internal.platform.base;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.core.internal.IContextModel;
-import org.eclipse.jpt.core.internal.context.base.PersistenceXml;
+import org.eclipse.jpt.core.internal.context.persistence.PersistenceXml;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.swt.graphics.Image;

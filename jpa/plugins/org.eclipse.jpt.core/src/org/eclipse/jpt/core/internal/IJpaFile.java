@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ElementChangedEvent;
-import org.eclipse.jpt.core.internal.context.base.IJpaStructureNode;
 
 /**
  * 

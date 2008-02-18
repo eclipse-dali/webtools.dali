@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.persistence;
 
-import org.eclipse.jpt.core.internal.context.base.IPersistence;
+import org.eclipse.jpt.core.internal.context.persistence.IPersistence;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
