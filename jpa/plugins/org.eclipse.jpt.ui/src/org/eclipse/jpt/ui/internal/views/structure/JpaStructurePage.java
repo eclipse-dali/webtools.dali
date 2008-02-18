@@ -35,7 +35,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 
@@ -50,10 +49,10 @@ public class JpaStructurePage extends Page
 	
 	private TreeViewer viewer;
 	
-	private IWorkbenchPart workbenchPart;
+	private JpaStructureView jpaStructureView;
 	
-	public JpaStructurePage(IWorkbenchPart part, IJpaStructureProvider structureProvider) {
-		this.workbenchPart = part;
+	public JpaStructurePage(JpaStructureView jpaStructureView, IJpaStructureProvider structureProvider) {
+		this.jpaStructureView = jpaStructureView;
 		this.structureProvider = structureProvider;
 		this.selectionChangedListeners = new ListenerList();
 	}
@@ -102,7 +101,7 @@ public class JpaStructurePage extends Page
         });
         Menu menu = mgr.createContextMenu(viewer.getControl());
         viewer.getControl().setMenu(menu);
-        workbenchPart.getSite().registerContextMenu(mgr, viewer);
+        this.jpaStructureView.getSite().registerContextMenu(mgr, viewer);
     }	
 	
     /**

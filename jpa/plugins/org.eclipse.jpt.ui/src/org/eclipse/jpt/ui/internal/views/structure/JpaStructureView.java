@@ -69,7 +69,7 @@ public class JpaStructureView extends PageBookView
 		IJpaStructureProvider structureProvider = 
 				(IJpaStructureProvider) part.getAdapter(IJpaStructureProvider.class);
 		if (structureProvider != null) {
-			JpaStructurePage page = new JpaStructurePage(part, structureProvider);
+			JpaStructurePage page = new JpaStructurePage(this, structureProvider);
 			initPage(page);
 			page.createControl(getPageBook());
 			return new PageRec(part, page);
