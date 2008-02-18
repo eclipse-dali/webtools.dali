@@ -8,28 +8,23 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.ui.internal.structure;
+package org.eclipse.jpt.ui.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.IResourceModel;
 import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModel;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
-import org.eclipse.jpt.ui.internal.views.structure.JpaStructurePage;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 
-public class JpaStructureProviderFactory
+public class JpaFileAdapterFactory
 	implements IAdapterFactory
 {
 	@SuppressWarnings("unchecked")
 	private static final Class[] ADAPTER_LIST = 
-			new Class[] { JpaStructurePage.class };
+			new Class[] { IJpaFile.class };
 	
 	@SuppressWarnings("unchecked")
 	public Class[] getAdapterList() {
@@ -55,24 +50,6 @@ public class JpaStructureProviderFactory
 			return null;
 		}
 		
-		IJpaFile jpaFile = jpaProject.jpaFile(file);
-		
-		if (jpaFile == null) {
-			return null;
-		}
-		
-		IResourceModel resourceModel = jpaFile.getResourceModel();
-		
-		if (resourceModel instanceof JavaResourceModel) {
-			return new JavaResourceModelStructureProvider((JavaResourceModel) resourceModel);
-		}
-		else if (resourceModel instanceof OrmResourceModel) {
-			return new OrmResourceModelStructureProvider((OrmResourceModel) resourceModel);
-		}
-		else if (resourceModel instanceof PersistenceResourceModel) {
-			return new PersistenceResourceModelStructureProvider((PersistenceResourceModel) resourceModel);
-		}
-		
-		return null;
+		return jpaProject.jpaFile(file);
 	}
 }

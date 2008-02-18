@@ -10,10 +10,12 @@
 package org.eclipse.jpt.ui.internal;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IJpaStructureNode;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
+import org.eclipse.jpt.ui.internal.structure.IJpaStructureProvider;
 import org.eclipse.ui.navigator.ICommonContentProvider;
 import org.eclipse.ui.navigator.ICommonLabelProvider;
 
@@ -42,41 +44,16 @@ public interface IJpaPlatformUi
 	 * of these per view that uses it.
 	 */
 	ICommonLabelProvider buildNavigatorLabelProvider();
-
+	
+	/**
+	 * Return a *new* structure provider for the given JPA file
+	 */
+	// TODO - binary java type support
+	IJpaStructureProvider buildStructureProvider(IJpaFile jpaFile);
+	
+	IJpaDetailsProvider detailsProvider(IJpaStructureNode contextNode);
 
 	void generateDDL(IJpaProject project, IStructuredSelection selection);
 
 	void generateEntities(IJpaProject project, IStructuredSelection selection);
-
-
-//	Iterator<IJpaStructureProvider> structureProviders();
-//
-//	IJpaStructureProvider structureProvider(String fileContentType);
-//
-//	Iterator<IJpaDetailsProvider> detailsProviders();
-//
-	IJpaDetailsProvider detailsProvider(IJpaStructureNode contextNode);
-//
-//	/**
-//	 * Return the type mapping UI providers for java.  This will populate
-//	 * the type mapping combo box in order and displaying ITypeMappingUiProvider.label().
-//	 * It will also be used to create the appropriate composite given a type mapping.
-//	 */
-//	ListIterator<ITypeMappingUiProvider> javaTypeMappingUiProviders();
-//
-//	/**
-//	 * Return the attribute mapping UI providers for java.  This will populate
-//	 * the attribute mapping combo box in order and display IAttributeMappingUiProvider.label().
-//	 * It will also be used to create the appropriate composite given an attribute mapping.
-//	 */
-//	ListIterator<IAttributeMappingUiProvider> javaAttributeMappingUiProviders();
-//
-//	/**
-//	 * Return the default attribute mapping UI providers for java.  These will be used
-//	 * to provide a default mapping option if one applies in java.
-//	 */
-//	ListIterator<IAttributeMappingUiProvider> defaultJavaAttributeMappingUiProviders();
-//
-//	IJpaUiFactory getJpaUiFactory();
-
 }

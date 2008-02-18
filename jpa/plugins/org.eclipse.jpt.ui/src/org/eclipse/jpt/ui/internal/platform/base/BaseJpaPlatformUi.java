@@ -15,11 +15,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaProject;
 import org.eclipse.jpt.core.internal.IJpaStructureNode;
+import org.eclipse.jpt.core.internal.IResourceModel;
 import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
 import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
 import org.eclipse.jpt.core.internal.context.java.IJavaJpaContextNode;
+import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
+import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModel;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
 import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.IJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
@@ -43,6 +48,9 @@ import org.eclipse.jpt.ui.internal.java.mappings.properties.OneToOneMappingUiPro
 import org.eclipse.jpt.ui.internal.java.mappings.properties.TransientMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.mappings.properties.VersionMappingUiProvider;
 import org.eclipse.jpt.ui.internal.structure.IJpaStructureProvider;
+import org.eclipse.jpt.ui.internal.structure.JavaResourceModelStructureProvider;
+import org.eclipse.jpt.ui.internal.structure.OrmResourceModelStructureProvider;
+import org.eclipse.jpt.ui.internal.structure.PersistenceResourceModelStructureProvider;
 import org.eclipse.jpt.ui.internal.xml.details.XmlDetailsProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -53,8 +61,7 @@ public abstract class BaseJpaPlatformUi implements IJpaPlatformUi
 {
 	// TODO: Transformed into a List for testing
 	private List<IJpaDetailsProvider> detailsProviders;
-	private Collection<IJpaStructureProvider> structureProviders;
-
+	
 	private List<ITypeMappingUiProvider<? extends ITypeMapping>> javaTypeMappingUiProviders;
 	private List<IAttributeMappingUiProvider<? extends IAttributeMapping>> javaAttributeMappingUiProviders;
 	private List<IAttributeMappingUiProvider<? extends IAttributeMapping>> defaultJavaAttributeMappingUiProviders;
@@ -77,8 +84,28 @@ public abstract class BaseJpaPlatformUi implements IJpaPlatformUi
 	public ICommonLabelProvider buildNavigatorLabelProvider() {
 		return new BaseJpaNavigatorLabelProvider();
 	}
-
-
+	
+	
+	// **************** structure view content *********************************
+	
+	public IJpaStructureProvider buildStructureProvider(IJpaFile jpaFile) {
+		IResourceModel resourceModel = jpaFile.getResourceModel();
+		String resourceType = resourceModel.getResourceType();
+		
+		if (resourceType == IResourceModel.JAVA_RESOURCE_TYPE) {
+			return new JavaResourceModelStructureProvider((JavaResourceModel) resourceModel);
+		}
+		else if (resourceType == IResourceModel.ORM_RESOURCE_TYPE) {
+			return new OrmResourceModelStructureProvider((OrmResourceModel) resourceModel);
+		}
+		else if (resourceType == IResourceModel.PERSISTENCE_RESOURCE_TYPE) {
+			return new PersistenceResourceModelStructureProvider((PersistenceResourceModel) resourceModel);
+		}
+		
+		return null;
+	}
+	
+	
 	// ********** behavior **********
 
 	protected abstract IJpaUiFactory createJpaUiFactory();

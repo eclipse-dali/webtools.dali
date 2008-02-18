@@ -9,7 +9,10 @@
 package org.eclipse.jpt.ui.internal.views.structure;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jpt.core.internal.IJpaFile;
+import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.selection.IJpaSelection;
 import org.eclipse.jpt.ui.internal.selection.IJpaSelectionManager;
 import org.eclipse.jpt.ui.internal.selection.SelectionManagerFactory;
@@ -67,7 +70,7 @@ public class JpaStructureView extends PageBookView
 	@Override
 	protected PageRec doCreatePage(IWorkbenchPart part) {
 		IJpaStructureProvider structureProvider = 
-				(IJpaStructureProvider) part.getAdapter(IJpaStructureProvider.class);
+			structureProvider(part);
 		if (structureProvider != null) {
 			JpaStructurePage page = new JpaStructurePage(this, structureProvider);
 			initPage(page);
@@ -75,6 +78,18 @@ public class JpaStructureView extends PageBookView
 			return new PageRec(part, page);
 		}
 		return null;
+	}
+	
+	private IJpaStructureProvider structureProvider(IWorkbenchPart part) {
+		IJpaFile jpaFile = 
+			(IJpaFile) part.getAdapter(IJpaFile.class);
+		
+		if (jpaFile == null) {
+			return null;
+		}
+		
+		IJpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(jpaFile.jpaProject().jpaPlatform());
+		return platformUi.buildStructureProvider(jpaFile);
 	}
 	
 	@Override

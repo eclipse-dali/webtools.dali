@@ -19,8 +19,8 @@
 		
 		<factory
 			adaptableType="org.eclipse.ui.IEditorPart"
-			class="org.eclipse.jpt.ui.internal.structure.JpaStructureProviderFactory">
-			<adapter type="org.eclipse.jpt.ui.internal.structure.IJpaStructureProvider"/>
+			class="org.eclipse.jpt.ui.internal.JpaFileAdapterFactory">
+			<adapter type="org.eclipse.jpt.core.internal.IJpaFile"/>
 		</factory>
 		
 		<factory
@@ -70,7 +70,7 @@
 			id="org.eclipse.jpt.ui.jpaNavigatorContent"
 			name="%jpaNavigatorContent" 
 			priority="higher"
-			icon="icons/full/obj16/jpa_content.gif"
+			icon="icons/full/obj16/jpa-content.gif"
 			activeByDefault="true"
 			contentProvider="org.eclipse.jpt.ui.internal.navigator.JpaNavigatorContentProvider"
 			labelProvider="org.eclipse.jpt.ui.internal.navigator.JpaNavigatorLabelProvider">
