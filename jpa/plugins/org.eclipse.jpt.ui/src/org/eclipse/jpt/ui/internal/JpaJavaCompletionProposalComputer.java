@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,9 +32,12 @@ import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 
-public class JpaCompletionProposalComputer implements IJavaCompletionProposalComputer {
+/**
+ * JPA Java code-completion proposal computer
+ */
+public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposalComputer {
 
-	public JpaCompletionProposalComputer() {
+	public JpaJavaCompletionProposalComputer() {
 		super();
 	}
 
@@ -45,9 +48,9 @@ public class JpaCompletionProposalComputer implements IJavaCompletionProposalCom
 	@SuppressWarnings("unchecked")
 	public List computeCompletionProposals(ContentAssistInvocationContext context, IProgressMonitor monitor) {
 		return (context instanceof JavaContentAssistInvocationContext) ?
-			this.computeCompletionProposals((JavaContentAssistInvocationContext) context)
-		:
-			Collections.emptyList();
+					this.computeCompletionProposals((JavaContentAssistInvocationContext) context)
+				:
+					Collections.emptyList();
 	}
 
 	private List<ICompletionProposal> computeCompletionProposals(JavaContentAssistInvocationContext context) {
@@ -68,13 +71,13 @@ public class JpaCompletionProposalComputer implements IJavaCompletionProposalCom
 		if (jpaFile == null) {
 			return Collections.emptyList();
 		}
-
+// TODO use interface
 		JavaResourceModel javaResourceModel = (JavaResourceModel) jpaFile.getResourceModel();
-		
-		if (!javaResourceModel.rootStructureNodes().hasNext()) {
+
+		if (javaResourceModel.rootStructureNodesSize() == 0) {
 			return Collections.emptyList();
 		}
-		
+
 		//TODO A bit of hackery for now just to get this compiling and working good enough, 
 		//we need to have a way to get the context model given an IFile or IJpaFile
 		//instead of having to ask the IResourceModel for it
@@ -101,7 +104,7 @@ public class JpaCompletionProposalComputer implements IJavaCompletionProposalCom
 
 		CompilationUnit astRoot = JDTTools.buildASTRoot(cu);
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
-		for (Iterator<String> stream = structureNode.candidateValuesFor(context.getInvocationOffset(), filter, astRoot); stream.hasNext(); ) {
+		for (Iterator<String> stream = structureNode.javaCompletionProposals(context.getInvocationOffset(), filter, astRoot); stream.hasNext(); ) {
 			String s = stream.next();
 			proposals.add(new CompletionProposal(s, tokenStart, tokenEnd - tokenStart + 1, s.length()));
 		}
@@ -110,7 +113,7 @@ public class JpaCompletionProposalComputer implements IJavaCompletionProposalCom
 
 	@SuppressWarnings("unchecked")
 	public List computeContextInformation(ContentAssistInvocationContext context, IProgressMonitor monitor) {
-		return Collections.EMPTY_LIST;
+		return Collections.emptyList();
 	}
 
 	public String getErrorMessage() {

@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
 import java.util.ListIterator;
@@ -41,12 +40,12 @@ public interface IResourceModel extends Model
 	String getResourceType();
 	
 	
-	// **************** root context nodes *************************************
+	// **************** root structure nodes *************************************
 	
 	/**
 	 * String constant associated with changes to the list of root structure nodes
 	 */
-	final static String ROOT_STRUCTURE_NODE_LIST = "rootStructureNodes";
+	final static String ROOT_STRUCTURE_NODES_LIST = "rootStructureNodes";
 	
 	/**
 	 * Return a list iterator of all root structure nodes
@@ -54,12 +53,17 @@ public interface IResourceModel extends Model
 	ListIterator<IJpaStructureNode> rootStructureNodes();
 	
 	/**
-	 * Return a structural node for the given text offset
+	 * Return the size of all root structure nodes
+	 */
+	int rootStructureNodesSize();
+	
+	/**
+	 * Return a structure node for the given text offset
 	 */
 	IJpaStructureNode structureNode(int textOffset);
 	
 	
-	void handleJavaElementChangedEvent(ElementChangedEvent event);
+	void javaElementChanged(ElementChangedEvent event);
 	
 	
 	void addResourceModelChangeListener(IResourceModelListener listener);

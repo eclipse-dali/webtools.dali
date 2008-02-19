@@ -366,7 +366,7 @@
 		point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
 		id="JpaCompletionProposalComputer">
 		<javaCompletionProposalComputer 
-			class="org.eclipse.jpt.ui.internal.JpaCompletionProposalComputer"
+			class="org.eclipse.jpt.ui.internal.JpaJavaCompletionProposalComputer"
 			categoryId="org.eclipse.jpt.ui.jpaProposalCategory">
 			<partition type="__dftl_partition_content_type"/>
 			<partition type="__java_string"/>

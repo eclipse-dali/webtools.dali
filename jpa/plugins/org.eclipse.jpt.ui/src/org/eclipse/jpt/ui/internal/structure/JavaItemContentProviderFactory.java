@@ -83,7 +83,7 @@ public class JavaItemContentProviderFactory extends GeneralJpaMappingItemContent
 		@Override
 		protected ListValueModel<IJpaStructureNode> buildChildrenModel() {
 			return new ListAspectAdapter<JavaResourceModel, IJpaStructureNode>(
-					IResourceModel.ROOT_STRUCTURE_NODE_LIST, (JavaResourceModel) model()) {
+					IResourceModel.ROOT_STRUCTURE_NODES_LIST, (JavaResourceModel) model()) {
 				@Override
 				protected ListIterator<IJpaStructureNode> listIterator_() {
 					return subject.rootStructureNodes();

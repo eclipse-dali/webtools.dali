@@ -61,7 +61,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		}
 		public void elementChanged(ElementChangedEvent event) {
 			if (JavaResourceModelTestCase.this.javaResourceModel != null) {
-				JavaResourceModelTestCase.this.javaResourceModel.handleJavaElementChangedEvent(event);
+				JavaResourceModelTestCase.this.javaResourceModel.javaElementChanged(event);
 			}
 		}
 		@Override

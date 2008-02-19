@@ -1588,51 +1588,51 @@ public class JavaEntity extends JavaTypeMapping implements IJavaEntity
 	//******************** Code Completion *************************
 
 	@Override
-	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
+	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		result = this.getTable().candidateValuesFor(pos, filter, astRoot);
+		result = this.getTable().javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		for (IJavaSecondaryTable sTable : CollectionTools.iterable(this.secondaryTables())) {
-			result = sTable.candidateValuesFor(pos, filter, astRoot);
+			result = sTable.javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
 		}
 		for (IJavaPrimaryKeyJoinColumn column : CollectionTools.iterable(this.primaryKeyJoinColumns())) {
-			result = column.candidateValuesFor(pos, filter, astRoot);
+			result = column.javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
 		}
 		for (IJavaAttributeOverride override : CollectionTools.iterable(this.attributeOverrides())) {
-			result = override.candidateValuesFor(pos, filter, astRoot);
+			result = override.javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
 		}
 		for (IJavaAssociationOverride override : CollectionTools.iterable(this.associationOverrides())) {
-			result = override.candidateValuesFor(pos, filter, astRoot);
+			result = override.javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
 		}
-		result = this.getDiscriminatorColumn().candidateValuesFor(pos, filter, astRoot);
+		result = this.getDiscriminatorColumn().javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		if (this.getTableGenerator() != null) {
-			result = this.getTableGenerator().candidateValuesFor(pos, filter, astRoot);
+			result = this.getTableGenerator().javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
 		}
 		if (this.getSequenceGenerator() != null) {
-			result = this.getSequenceGenerator().candidateValuesFor(pos, filter, astRoot);
+			result = this.getSequenceGenerator().javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}

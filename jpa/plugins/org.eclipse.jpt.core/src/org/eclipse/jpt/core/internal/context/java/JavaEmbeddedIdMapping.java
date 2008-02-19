@@ -317,13 +317,13 @@ public class JavaEmbeddedIdMapping extends JavaAttributeMapping
 	}
 
 	@Override
-	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
+	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		for (IAttributeOverride override : CollectionTools.iterable(this.attributeOverrides())) {
-			result = ((IJavaAttributeOverride) override).candidateValuesFor(pos, filter, astRoot);
+			result = ((IJavaAttributeOverride) override).javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}

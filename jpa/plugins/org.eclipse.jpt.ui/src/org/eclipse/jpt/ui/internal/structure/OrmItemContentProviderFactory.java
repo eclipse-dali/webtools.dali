@@ -112,7 +112,7 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 		@Override
 		protected ListValueModel<IJpaStructureNode> buildChildrenModel() {
 			return new ListAspectAdapter<OrmResourceModel, IJpaStructureNode>(
-					IResourceModel.ROOT_STRUCTURE_NODE_LIST, (OrmResourceModel) model()) {
+					IResourceModel.ROOT_STRUCTURE_NODES_LIST, (OrmResourceModel) model()) {
 				@Override
 				protected ListIterator<IJpaStructureNode> listIterator_() {
 					return subject.rootStructureNodes();

@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -101,12 +101,12 @@ public class JavaAttributeOverride extends JavaOverride<AttributeOverride>
 	}
 
 	@Override
-	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
+	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		result = this.getColumn().candidateValuesFor(pos, filter, astRoot);
+		result = this.getColumn().javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}

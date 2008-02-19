@@ -217,17 +217,17 @@ public class JavaPersistentType extends JavaContextModel implements IJavaPersist
 	}
 
 	@Override
-	public Iterator<String> candidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.candidateValuesFor(pos, filter, astRoot);
+	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		Iterator<String> values = this.mapping.candidateValuesFor(pos, filter, astRoot);
+		Iterator<String> values = this.mapping.javaCompletionProposals(pos, filter, astRoot);
 		if (values != null) {
 			return values;
 		}
 		for (Iterator<IJavaPersistentAttribute> stream = attributes(); stream.hasNext();) {
-			values = stream.next().candidateValuesFor(pos, filter, astRoot);
+			values = stream.next().javaCompletionProposals(pos, filter, astRoot);
 			if (values != null) {
 				return values;
 			}

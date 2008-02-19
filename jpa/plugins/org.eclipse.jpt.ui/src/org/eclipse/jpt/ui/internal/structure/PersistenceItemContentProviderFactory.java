@@ -74,7 +74,7 @@ public class PersistenceItemContentProviderFactory
 		@Override
 		protected ListValueModel<IJpaStructureNode> buildChildrenModel() {
 			return new ListAspectAdapter<PersistenceResourceModel, IJpaStructureNode>(
-					IResourceModel.ROOT_STRUCTURE_NODE_LIST, (PersistenceResourceModel) model()) {
+					IResourceModel.ROOT_STRUCTURE_NODES_LIST, (PersistenceResourceModel) model()) {
 				@Override
 				protected ListIterator<IJpaStructureNode> listIterator_() {
 					return subject.rootStructureNodes();
