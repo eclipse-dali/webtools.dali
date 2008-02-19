@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
@@ -25,6 +26,7 @@ import org.eclipse.swt.widgets.Button;
  * This adapter can be used to keep a check box or toggle button in synch with
  * a model boolean.
  */
+@SuppressWarnings("nls")
 public class BooleanButtonModelAdapter {
 
 	/** A value model on the underlying model boolean. */
@@ -132,12 +134,10 @@ public class BooleanButtonModelAdapter {
 	}
 
 	protected SelectionListener buildButtonSelectionListener() {
-		return new SelectionListener() {
+		return new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 				BooleanButtonModelAdapter.this.buttonSelected(event);
-			}
-			public void widgetDefaultSelected(SelectionEvent event) {
-				// ignore
 			}
 		    @Override
 			public String toString() {

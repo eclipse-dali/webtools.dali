@@ -18,7 +18,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.swt.BooleanButtonModelAdapter;
-import org.eclipse.jpt.ui.internal.swt.TriStateBooleanButtonModelAdapter;
+import org.eclipse.jpt.ui.internal.swt.TriStateCheckBoxModelAdapter;
 import org.eclipse.jpt.ui.internal.util.ControlAligner;
 import org.eclipse.jpt.ui.internal.util.LabeledButton;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
@@ -2093,7 +2093,7 @@ public abstract class AbstractPane<T extends Model>
 			this.getWidgetFactory()
 		);
 
-		TriStateBooleanButtonModelAdapter.adapt(
+		TriStateCheckBoxModelAdapter.adapt(
 			booleanHolder,
 			checkBox
 		);

@@ -28,7 +28,7 @@ import org.eclipse.swt.events.SelectionListener;
  * a model Boolean where the value can be <code>null</code>.
  */
 @SuppressWarnings("nls")
-public class TriStateBooleanButtonModelAdapter {
+public class TriStateCheckBoxModelAdapter {
 
 	/** A value model on the underlying model boolean. */
 	protected final WritablePropertyValueModel<Boolean> booleanHolder;
@@ -59,10 +59,11 @@ public class TriStateBooleanButtonModelAdapter {
 
 	/**
 	 * Adapt the specified boolean to the specified button.
-	 * If the boolean is null, the button's value will be "unselected".
+	 * If the boolean is null, the button's value will be "partially checked"
+	 * (i.e. the button will be checked but grayed out).
 	 */
-	public static TriStateBooleanButtonModelAdapter adapt(WritablePropertyValueModel<Boolean> booleanHolder, TriStateCheckBox button) {
-		return new TriStateBooleanButtonModelAdapter(booleanHolder, button);
+	public static TriStateCheckBoxModelAdapter adapt(WritablePropertyValueModel<Boolean> booleanHolder, TriStateCheckBox button) {
+		return new TriStateCheckBoxModelAdapter(booleanHolder, button);
 	}
 
 
@@ -71,7 +72,7 @@ public class TriStateBooleanButtonModelAdapter {
 	/**
 	 * Constructor - the boolean holder and button are required.
 	 */
-	protected TriStateBooleanButtonModelAdapter(WritablePropertyValueModel<Boolean> booleanHolder, TriStateCheckBox button) {
+	protected TriStateCheckBoxModelAdapter(WritablePropertyValueModel<Boolean> booleanHolder, TriStateCheckBox button) {
 		super();
 
 		Assert.isNotNull(booleanHolder, "The boolean holder cannot be null");
@@ -102,7 +103,7 @@ public class TriStateBooleanButtonModelAdapter {
 	protected PropertyChangeListener buildBooleanChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent event) {
-				TriStateBooleanButtonModelAdapter.this.booleanChanged(event);
+				TriStateCheckBoxModelAdapter.this.booleanChanged(event);
 			}
 			@Override
 			public String toString() {
@@ -115,7 +116,7 @@ public class TriStateBooleanButtonModelAdapter {
 		return new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				TriStateBooleanButtonModelAdapter.this.buttonSelected(event);
+				TriStateCheckBoxModelAdapter.this.buttonSelected(event);
 			}
 			@Override
 			public String toString() {
@@ -127,7 +128,7 @@ public class TriStateBooleanButtonModelAdapter {
 	protected DisposeListener buildButtonDisposeListener() {
 		return new DisposeListener() {
 			public void widgetDisposed(DisposeEvent event) {
-				TriStateBooleanButtonModelAdapter.this.buttonDisposed(event);
+				TriStateCheckBoxModelAdapter.this.buttonDisposed(event);
 			}
 		    @Override
 			public String toString() {
@@ -149,6 +150,9 @@ public class TriStateBooleanButtonModelAdapter {
 	}
 
 	protected void setButtonSelection(Boolean selection) {
+		if (this.button.isDisposed()) {
+			return;
+		}
 		this.button.setSelection(selection);
 	}
 
@@ -156,6 +160,9 @@ public class TriStateBooleanButtonModelAdapter {
 	 * The button has been "selected" - synchronize the model.
 	 */
 	protected void buttonSelected(SelectionEvent event) {
+		if (this.button.isDisposed()) {
+			return;
+		}
 		this.booleanHolder.setValue(button.getSelection());
 	}
 
@@ -163,6 +170,8 @@ public class TriStateBooleanButtonModelAdapter {
 	// ********** dispose **********
 
 	protected void buttonDisposed(DisposeEvent event) {
+		// the button is not yet "disposed" when we receive this event
+		// so we can still remove our listeners
 		this.button.removeSelectionListener(this.buttonSelectionListener);
 		this.button.removeDisposeListener(this.buttonDisposeListener);
 		this.booleanHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.booleanChangeListener);

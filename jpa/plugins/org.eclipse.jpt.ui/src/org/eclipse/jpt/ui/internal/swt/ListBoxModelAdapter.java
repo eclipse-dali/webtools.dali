@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.List;
  * 'selectedItemsHolder' contains the items in 'listHolder' that are selected
  * in the list box.
  */
+@SuppressWarnings("nls")
 public class ListBoxModelAdapter<E> {
 
 	// ********** model **********
