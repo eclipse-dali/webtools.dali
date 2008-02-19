@@ -542,7 +542,6 @@ public class PersistenceUnit extends JpaContextNode
 			throw new NoSuchElementException("Missing Property name: " + key + ", value: " + oldValue);
 		}
 		xmlProperty.setValue(value);
-		this.setItemInList(xmlProperties.indexOf(xmlProperty), xmlProperty, xmlProperties, PROPERTIES_LIST);
 	}	
 	
 	public boolean containsProperty(String key) {
