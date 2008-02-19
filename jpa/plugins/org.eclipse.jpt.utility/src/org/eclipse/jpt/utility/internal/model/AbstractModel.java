@@ -60,7 +60,7 @@ public abstract class AbstractModel implements Model, Serializable {
 	/**
 	 * This accessor will build the change support when required.
 	 */
-	private synchronized ChangeSupport changeSupport() {
+	protected synchronized ChangeSupport changeSupport() {
 		if (this.changeSupport == null) {
 			this.changeSupport = this.buildChangeSupport();
 		}
