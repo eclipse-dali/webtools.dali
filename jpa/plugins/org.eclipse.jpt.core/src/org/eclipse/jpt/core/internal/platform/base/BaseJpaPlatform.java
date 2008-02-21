@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
-import org.eclipse.jpt.core.internal.IJpaFactory;
 import org.eclipse.jpt.core.internal.IJpaFile;
 import org.eclipse.jpt.core.internal.IJpaPlatform;
 import org.eclipse.jpt.core.internal.IJpaProject;
@@ -51,7 +50,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 {
 	private String id;
 	
-	protected IJpaFactory jpaFactory;
+	protected IJpaBaseContextFactory jpaFactory;
 	
 	protected IJpaAnnotationProvider annotationProvider;
 	
@@ -84,14 +83,14 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	
 	// **************** Model construction / updating **************************
 	
-	public IJpaFactory jpaFactory() {
+	public IJpaBaseContextFactory jpaFactory() {
 		if (this.jpaFactory == null) {
 			this.jpaFactory = buildJpaFactory();
 		}
 		return this.jpaFactory;
 	}
 	
-	protected abstract IJpaFactory buildJpaFactory();
+	protected abstract IJpaBaseContextFactory buildJpaFactory();
 	
 	public IJpaFile buildJpaFile(IJpaProject jpaProject, IFile file) {
 		if (jpaFactory().hasRelevantContent(file)) {
@@ -118,25 +117,23 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	// **************** type mapping support ********************************
 	
 	public IJavaTypeMapping createJavaTypeMappingFromMappingKey(String typeMappingKey, IJavaPersistentType parent) {
-		//TODO I don't like that i am casting to IJpaBaseContextFactory here, not sure what to do about it
-		return javaTypeMappingProviderFromMappingKey(typeMappingKey).buildMapping(parent, (IJpaBaseContextFactory) jpaFactory());
+		return javaTypeMappingProviderFromMappingKey(typeMappingKey).buildMapping(parent, jpaFactory());
 	}
 	
 	public IJavaTypeMapping createJavaTypeMappingFromAnnotation(String mappingAnnotationName, IJavaPersistentType parent) {
-		//TODO I don't like that i am casting to IJpaBaseContextFactory here, not sure what to do about it
-		return javaTypeMappingProviderFromAnnotation(mappingAnnotationName).buildMapping(parent, (IJpaBaseContextFactory) jpaFactory());
+		return javaTypeMappingProviderFromAnnotation(mappingAnnotationName).buildMapping(parent, jpaFactory());
 	}
 	
 	public IJavaAttributeMapping createJavaAttributeMappingFromMappingKey(String attributeMappingKey, IJavaPersistentAttribute parent) {
-		return javaAttributeMappingProviderFromMappingKey(attributeMappingKey).buildMapping(parent, (IJpaBaseContextFactory) jpaFactory());
+		return javaAttributeMappingProviderFromMappingKey(attributeMappingKey).buildMapping(parent, jpaFactory());
 	}
 	
 	public IJavaAttributeMapping createJavaAttributeMappingFromAnnotation(String mappingAnnotationName, IJavaPersistentAttribute parent) {
-		return javaAttributeMappingProviderFromAnnotation(mappingAnnotationName).buildMapping(parent, (IJpaBaseContextFactory) jpaFactory());
+		return javaAttributeMappingProviderFromAnnotation(mappingAnnotationName).buildMapping(parent, jpaFactory());
 	}
 
 	public IJavaAttributeMapping createDefaultJavaAttributeMapping(IJavaPersistentAttribute parent) {
-		return defaultJavaAttributeMappingProvider(parent).buildMapping(parent, (IJpaBaseContextFactory) jpaFactory());
+		return defaultJavaAttributeMappingProvider(parent).buildMapping(parent, jpaFactory());
 	}
 	
 	protected Iterator<IJavaTypeMappingProvider> javaTypeMappingProviders() {
