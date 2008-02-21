@@ -15,7 +15,6 @@ import org.eclipse.jpt.core.internal.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.internal.resource.persistence.translators.PersistenceTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
-import org.eclipse.wst.common.internal.emf.resource.TranslatorResource;
 
 public class PersistenceResource extends JpaXmlResource
 {
@@ -31,6 +30,7 @@ public class PersistenceResource extends JpaXmlResource
 		return PersistenceTranslator.INSTANCE;
 	}
 	
+	@Override
 	public void javaElementChanged(ElementChangedEvent event) {
 		// TODO Auto-generated method stub	
 	}

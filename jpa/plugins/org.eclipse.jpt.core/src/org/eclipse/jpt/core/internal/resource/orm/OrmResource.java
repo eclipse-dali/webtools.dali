@@ -15,7 +15,6 @@ import org.eclipse.jpt.core.internal.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.internal.resource.orm.translators.EntityMappingsTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
-import org.eclipse.wst.common.internal.emf.resource.TranslatorResource;
 
 public class OrmResource extends JpaXmlResource 
 {
