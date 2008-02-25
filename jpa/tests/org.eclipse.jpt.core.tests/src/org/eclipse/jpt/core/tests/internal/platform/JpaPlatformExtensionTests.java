@@ -10,15 +10,6 @@
 package org.eclipse.jpt.core.tests.internal.platform;
 
 import junit.framework.TestCase;
-//import org.eclipse.core.runtime.IExtension;
-//import org.eclipse.core.runtime.IExtensionPoint;
-//import org.eclipse.core.runtime.IExtensionRegistry;
-//import org.eclipse.core.runtime.Platform;
-//import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
-//import org.eclipse.jpt.core.internal.JptCorePlugin;
-//import org.eclipse.jpt.core.tests.extension.resource.ExtensionTestPlugin;
-//import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatform;
-//import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class JpaPlatformExtensionTests extends TestCase
 {

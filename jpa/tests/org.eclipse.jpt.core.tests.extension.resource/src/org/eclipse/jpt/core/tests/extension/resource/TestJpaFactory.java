@@ -9,13 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.extension.resource;
 
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaBasic;
-import org.eclipse.jpt.core.internal.content.java.mappings.IJavaEntity;
+import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.core.internal.platform.BaseJpaFactory;
+import org.eclipse.jpt.core.platform.GenericJpaFactory;
 
-public class TestJpaFactory extends BaseJpaFactory
+public class TestJpaFactory extends GenericJpaFactory
 {
 	@Override
 	public JavaEntity createJavaEntity(Type type) {

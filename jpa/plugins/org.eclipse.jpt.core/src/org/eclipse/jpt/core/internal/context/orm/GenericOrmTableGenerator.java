@@ -231,7 +231,7 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 
 
 //	public void refreshDefaults(DefaultsContext defaultsContext) {
-//		setDefaultSchema((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_TABLE_GENERATOR_SCHEMA_KEY));
+//		setDefaultSchema((String) defaultsContext.getDefault(GenericJpaPlatform.DEFAULT_TABLE_GENERATOR_SCHEMA_KEY));
 //	}
 //
 //	public IUniqueConstraint createUniqueConstraint(int index) {

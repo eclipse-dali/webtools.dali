@@ -8,7 +8,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
 
+import org.eclipse.jpt.ui.internal.jface.ItemLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.ItemLabelProviderFactory;
+import org.eclipse.jpt.ui.internal.jface.TreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.TreeItemContentProviderFactory;
 
 public interface JpaStructureProvider

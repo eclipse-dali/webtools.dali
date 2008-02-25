@@ -10,8 +10,8 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
+import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.db.internal.Table;

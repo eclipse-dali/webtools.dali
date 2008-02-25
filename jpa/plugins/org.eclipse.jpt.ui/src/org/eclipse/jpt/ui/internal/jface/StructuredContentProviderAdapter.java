@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.jface;
 
 import java.util.ListIterator;
-
 import org.eclipse.jface.viewers.AbstractListViewer;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;

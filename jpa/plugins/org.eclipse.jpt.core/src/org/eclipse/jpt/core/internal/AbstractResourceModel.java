@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;

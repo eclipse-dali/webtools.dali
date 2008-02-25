@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.platform.base;
+package org.eclipse.jpt.core.platform;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,9 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFile;
-import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
@@ -42,15 +40,18 @@ import org.eclipse.jpt.core.internal.context.java.JavaOneToManyMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaOneToOneMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingProvider;
+import org.eclipse.jpt.core.internal.platform.JpaAnnotationProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public abstract class BaseJpaPlatform implements JpaPlatform
+public class GenericJpaPlatform implements JpaPlatform
 {
+	public static String ID = "generic";
+	
 	private String id;
 	
-	protected JpaBaseContextFactory jpaFactory;
+	protected JpaFactory jpaFactory;
 	
 	protected JpaAnnotationProvider annotationProvider;
 	
@@ -60,7 +61,7 @@ public abstract class BaseJpaPlatform implements JpaPlatform
 	
 	protected List<DefaultJavaAttributeMappingProvider> defaultJavaAttributeMappingProviders;
 	
-	protected BaseJpaPlatform() {
+	public GenericJpaPlatform() {
 		super();
 	}
 	
@@ -83,14 +84,16 @@ public abstract class BaseJpaPlatform implements JpaPlatform
 	
 	// **************** Model construction / updating **************************
 	
-	public JpaBaseContextFactory jpaFactory() {
+	public JpaFactory jpaFactory() {
 		if (this.jpaFactory == null) {
 			this.jpaFactory = buildJpaFactory();
 		}
 		return this.jpaFactory;
 	}
 	
-	protected abstract JpaBaseContextFactory buildJpaFactory();
+	protected JpaFactory buildJpaFactory() {
+		return new GenericJpaFactory();
+	}
 	
 	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file) {
 		if (jpaFactory().hasRelevantContent(file)) {
@@ -111,7 +114,9 @@ public abstract class BaseJpaPlatform implements JpaPlatform
 		return this.annotationProvider;
 	}
 	
-	protected abstract JpaAnnotationProvider buildAnnotationProvider();
+	protected JpaAnnotationProvider buildAnnotationProvider() {
+		return new GenericJpaAnnotationProvider();
+	}
 	
 	
 	// **************** type mapping support ********************************

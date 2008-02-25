@@ -10,13 +10,13 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAttributeMapping;
-import org.eclipse.jpt.core.internal.platform.base.JpaBaseContextFactory;
+import org.eclipse.jpt.core.platform.JpaFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 
 public interface OrmAttributeMappingProvider
 {
 	String key();
 	
-	AbstractOrmAttributeMapping<? extends XmlAttributeMapping> buildAttributeMapping(JpaBaseContextFactory factory, OrmPersistentAttribute parent);
+	AbstractOrmAttributeMapping<? extends XmlAttributeMapping> buildAttributeMapping(JpaFactory factory, OrmPersistentAttribute parent);
 
 }

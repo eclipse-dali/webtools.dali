@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
-import org.eclipse.jpt.core.internal.platform.base.JpaBaseContextFactory;
+import org.eclipse.jpt.core.platform.JpaFactory;
 import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
 
 public class JavaEmbeddableProvider
@@ -45,7 +45,7 @@ public class JavaEmbeddableProvider
 		return EmbeddableAnnotation.ANNOTATION_NAME;
 	}
 
-	public JavaTypeMapping buildMapping(JavaPersistentType parent, JpaBaseContextFactory factory) {
+	public JavaTypeMapping buildMapping(JavaPersistentType parent, JpaFactory factory) {
 		return factory.buildJavaEmbeddable(parent);
 	}
 

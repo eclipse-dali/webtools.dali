@@ -24,8 +24,8 @@ import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.EnumType;
 import org.eclipse.jpt.core.resource.java.Enumerated;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 
 public class EnumeratedImpl extends AbstractAnnotationResource<Attribute> implements Enumerated
 {

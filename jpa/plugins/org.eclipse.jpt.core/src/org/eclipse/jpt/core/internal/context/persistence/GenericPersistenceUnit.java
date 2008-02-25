@@ -9,9 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.persistence;
 
-import static org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType.DEFAULT;
-import static org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType.JTA;
-import static org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType.RESOURCE_LOCAL;
+import static org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -22,8 +20,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
@@ -33,11 +31,11 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
+import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmArtifactEdit;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;

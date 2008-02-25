@@ -11,17 +11,17 @@
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmNamedNativeQuery;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmNamedQuery;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;

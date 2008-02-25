@@ -11,8 +11,8 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
-import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
+import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;

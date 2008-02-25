@@ -10,10 +10,9 @@
 package org.eclipse.jpt.core;
 
 import java.util.List;
-
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 

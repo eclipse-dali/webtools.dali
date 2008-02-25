@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.internal.platform.base.JpaBaseContextFactory;
+import org.eclipse.jpt.core.platform.JpaFactory;
 
 public class OrmOneToOneMappingProvider implements OrmAttributeMappingProvider
 {
@@ -37,7 +37,7 @@ public class OrmOneToOneMappingProvider implements OrmAttributeMappingProvider
 		return MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public GenericOrmOneToOneMapping buildAttributeMapping(JpaBaseContextFactory factory, OrmPersistentAttribute parent) {
+	public GenericOrmOneToOneMapping buildAttributeMapping(JpaFactory factory, OrmPersistentAttribute parent) {
 		return new GenericOrmOneToOneMapping(parent);
 	}
 }

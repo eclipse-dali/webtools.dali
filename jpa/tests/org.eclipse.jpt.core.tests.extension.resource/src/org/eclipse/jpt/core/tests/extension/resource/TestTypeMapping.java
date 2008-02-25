@@ -1,6 +1,6 @@
 package org.eclipse.jpt.core.tests.extension.resource;
 
-import org.eclipse.jpt.core.internal.content.java.mappings.JavaTypeMapping;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaTypeMapping;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 

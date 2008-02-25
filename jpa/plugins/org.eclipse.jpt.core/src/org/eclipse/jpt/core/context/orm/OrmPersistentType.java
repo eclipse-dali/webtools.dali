@@ -13,11 +13,11 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAttributeMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 
 public interface OrmPersistentType extends PersistentType
 {

@@ -10,17 +10,16 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaTable;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAbstractTable;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class GenericOrmTable extends AbstractOrmTable

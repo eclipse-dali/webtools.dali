@@ -156,7 +156,7 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 //	}
 //
 //	public void refreshDefaults(DefaultsContext defaultsContext) {
-//		setDefaultName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_COLUMN_NAME_KEY));
+//		setDefaultName((String) defaultsContext.getDefault(GenericJpaPlatform.DEFAULT_COLUMN_NAME_KEY));
 //	}
 	
 	// ******************* initialization from orm xml resource model ********************

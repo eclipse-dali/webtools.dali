@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
-import org.eclipse.jpt.core.internal.platform.base.JpaBaseContextFactory;
+import org.eclipse.jpt.core.platform.JpaFactory;
 
 /**
  * Map a string key to a type mapping and its corresponding
@@ -31,6 +31,6 @@ public interface JavaTypeMappingProvider {
 	 * @param type
 	 * @param jpaFactory
 	 */
-	public JavaTypeMapping buildMapping(JavaPersistentType parent, JpaBaseContextFactory factory);
+	public JavaTypeMapping buildMapping(JavaPersistentType parent, JpaFactory factory);
 
 }

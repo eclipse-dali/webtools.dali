@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.platform.base;
+package org.eclipse.jpt.core.platform;
 
 import java.io.IOException;
 import org.eclipse.core.resources.IFile;
@@ -131,9 +131,9 @@ import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.resource.orm.OrmResourceModel;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResourceModel;
 
-public abstract class BaseJpaFactory implements JpaBaseContextFactory
+public class GenericJpaFactory implements JpaFactory
 {
-	protected BaseJpaFactory() {
+	protected GenericJpaFactory() {
 		super();
 	}
 	

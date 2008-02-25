@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.tests.internal.jdtutility;
 
 import java.util.Arrays;
-
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.ASTNodeTextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;

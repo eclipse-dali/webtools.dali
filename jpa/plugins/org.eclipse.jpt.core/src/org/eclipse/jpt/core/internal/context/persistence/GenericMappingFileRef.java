@@ -11,8 +11,8 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;

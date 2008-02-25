@@ -7,14 +7,17 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core;
+package org.eclipse.jpt.core.platform;
 
 import java.util.List;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.internal.platform.JpaAnnotationProvider;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -78,7 +81,7 @@ public interface JpaPlatform
 	/**
 	 * Build a Java type mapping with the given mapping key and parent.  Throws a IllegalArgumentException
 	 * if the typeMappingKey is not supported by this platform.
-	 * Override {@link #BaseJpaPlatform.addJavaTypeMappingProvidersTo(Collection<IJavaTypeMappingProvider>)}
+	 * Override {@link #GenericJpaPlatform.addJavaTypeMappingProvidersTo(Collection<IJavaTypeMappingProvider>)}
 	 * to add new supported type mappings to the platform
 	 */
 	JavaTypeMapping buildJavaTypeMappingFromMappingKey(String typeMappingKey, JavaPersistentType parent);
@@ -86,7 +89,7 @@ public interface JpaPlatform
 	/**
 	 * Build a Java type mapping with the given mapping annotation and parent.  Throws a IllegalArgumentException
 	 * if the mapping annotation is not supported by this platform.
-	 * Override {@link #BaseJpaPlatform.addJavaTypeMappingProvidersTo(Collection<IJavaTypeMappingProvider>)}
+	 * Override {@link #GenericJpaPlatform.addJavaTypeMappingProvidersTo(Collection<IJavaTypeMappingProvider>)}
 	 * to add new supported type mappings to the platform
 	 */
 	JavaTypeMapping buildJavaTypeMappingFromAnnotation(String mappingAnnotationName, JavaPersistentType parent);
@@ -96,7 +99,7 @@ public interface JpaPlatform
 	/**
 	 * Build a Java attribute mapping with the given mapping key and parent.  Throws a IllegalArgumentException
 	 * if the attributeMappingKey is not supported by this platform.
-	 * Override {@link #BaseJpaPlatform.addJavaAttributeMappingProvidersTo(Collection<IJavaAttributeMappingProvider>)}
+	 * Override {@link #GenericJpaPlatform.addJavaAttributeMappingProvidersTo(Collection<IJavaAttributeMappingProvider>)}
 	 * to add new supported attribute mappings to the platform
 	 */
 	JavaAttributeMapping buildJavaAttributeMappingFromMappingKey(String attributeMappingKey, JavaPersistentAttribute parent);
@@ -104,7 +107,7 @@ public interface JpaPlatform
 	/**
 	 * Build a Java attribute mapping with the given mapping annotation and parent.  Throws a IllegalArgumentException
 	 * if the mapping annotation is not supported by this platform.
-	 * Override {@link #BaseJpaPlatform.addJavaAttributeMappingProvidersTo(Collection<IJavaAttributeMappingProvider>)}
+	 * Override {@link #GenericJpaPlatform.addJavaAttributeMappingProvidersTo(Collection<IJavaAttributeMappingProvider>)}
 	 * to add new supported attribute mappings to the platform
 	 */
 	JavaAttributeMapping buildJavaAttributeMappingFromAnnotation(String mappingAnnotationName, JavaPersistentAttribute parent);
@@ -112,7 +115,7 @@ public interface JpaPlatform
 	/**
 	 * Build a default Java attribute mapping with the given mapping annotation and parent.  Throws a IllegalArgumentException
 	 * if the mapping annotation is not supported by this platform.
-	 * Override {@link #BaseJpaPlatform.addDefaultJavaAttributeMappingProvidersTo(Collection<IDefaultJavaAttributeMappingProvider>)}
+	 * Override {@link #GenericJpaPlatform.addDefaultJavaAttributeMappingProvidersTo(Collection<IDefaultJavaAttributeMappingProvider>)}
 	 * to add new supported attribute mappings to the platform
 	 */
 	JavaAttributeMapping buildDefaultJavaAttributeMapping(JavaPersistentAttribute parent);

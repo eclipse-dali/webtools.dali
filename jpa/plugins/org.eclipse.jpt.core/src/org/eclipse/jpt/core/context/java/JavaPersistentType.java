@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.context.java;
 
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;

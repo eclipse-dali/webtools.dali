@@ -13,9 +13,9 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.EntityMappings;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 

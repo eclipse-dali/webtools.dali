@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.extension.resource;
 
-import org.eclipse.jpt.core.JpaFactory;
-import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
-import org.eclipse.jpt.core.internal.content.java.IJavaTypeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.platform.JpaFactory;
 
 /**
  * 

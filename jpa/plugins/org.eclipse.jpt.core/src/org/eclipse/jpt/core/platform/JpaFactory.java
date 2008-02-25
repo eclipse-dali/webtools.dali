@@ -1,16 +1,21 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
-package org.eclipse.jpt.core.internal.platform.base;
+ * Copyright (c) 2007 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
+package org.eclipse.jpt.core.platform;
 
-import org.eclipse.jpt.core.JpaFactory;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jpt.core.ContextModel;
+import org.eclipse.jpt.core.JpaDataSource;
+import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
@@ -70,7 +75,10 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappedSuperclass;
 
 /**
- * An IJpaFactory that also assumes a base JPA project context structure 
+ * Use JpaFactory to create any core (e.g. JpaProject), resource 
+ * (e.g. PersistenceResource), or context (e.g. AttributeMapping) model objects.
+ * 
+ * Assumes a base JPA project context structure 
  * corresponding to the JPA spec:
  * 
  * 	RootContent
@@ -82,20 +90,55 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappedSuperclass;
  *           |- persistent type mapping(s)
  *   
  *   ... and associated objects.
+ *
+ * @see GenericJpaFactory
  */
-public interface JpaBaseContextFactory extends JpaFactory
+public interface JpaFactory 
 {
+	// **************** core objects *******************************************
+	
+	/**
+	 * Construct a JpaProject for the specified config, to be
+	 * added to the specified JPA project. Return null if unable to create
+	 * the JPA file (e.g. the content type is unrecognized).
+	 */
+	JpaProject buildJpaProject(JpaProject.Config config) throws CoreException;
+	
+	JpaDataSource buildJpaDataSource(JpaProject jpaProject, String connectionProfileName);
+	
+	/**
+	 * Construct a JPA file for the specified file and with the specified resource
+	 * model, to be added to the specified JPA project.
+	 * This should be non-null iff (if and only if) {@link #hasRelevantContent(IFile)}
+	 * returns true.
+	 */
+	JpaFile buildJpaFile(JpaProject jpaProject, IFile file, ResourceModel resourceModel);
+	
+	/**
+	 * Return true if a resource model will be provided for the given file
+	 */
+	boolean hasRelevantContent(IFile file);
+	
+	/**
+	 * Build a resource model to be associated with the given file.
+	 * This should be non-null iff (if and only if) {@link #hasRelevantContent(IFile)}
+	 * returns true. 
+	 */
+	ResourceModel buildResourceModel(JpaProject jpaProject, IFile file);
+	
+	/**
+	 * Build a (updated) context model to be associated with the given JPA project.
+	 * The context model will be built once, but updated many times.
+	 * @see JpaProject.update(ProgressMonitor)
+	 */
+	ContextModel buildContextModel(JpaProject jpaProject);
+	
+	
+	// **************** persistence context objects ****************************
+	
 	PersistenceXml buildPersistenceXml(IBaseJpaContent parent);
 	
 	Persistence buildPersistence(PersistenceXml parent);
-	
-	OrmXml buildOrmXml(MappingFileRef parent);
-
-	EntityMappings buildEntityMappings(OrmXml parent);
-	
-	PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent);
-	
-	PersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent);
 	
 	PersistenceUnit buildPersistenceUnit(Persistence parent);
 	
@@ -105,30 +148,42 @@ public interface JpaBaseContextFactory extends JpaFactory
 	
 	Property buildProperty(PersistenceUnit parent);
 	
+	
+	// **************** orm context objects ************************************
+	
+	OrmXml buildOrmXml(MappingFileRef parent);
+
+	EntityMappings buildEntityMappings(OrmXml parent);
+	
+	PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent);
+	
+	PersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent);
+	
+	OrmPersistentType buildOrmPersistentType(EntityMappings parent, String mappingKey);
+	
+	GenericOrmEntity buildXmlEntity(OrmPersistentType parent);
+	
+	GenericOrmMappedSuperclass buildXmlMappedSuperclass(OrmPersistentType parent);
+	
+	GenericOrmEmbeddable buildXmlEmbeddable(OrmPersistentType parent);
+	
+	OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, String mappingKey);
+	
+	
+	// **************** java context objects ***********************************
+	
 	JavaPersistentType buildJavaPersistentType(JpaContextNode parent);
 	
-	JavaPersistentAttribute buildJavaPersistentAttribute(JavaPersistentType parent);
-
-	JavaTypeMapping buildJavaNullTypeMapping(JavaPersistentType parent);
-
 	JavaEntity buildJavaEntity(JavaPersistentType parent);
 	
 	JavaMappedSuperclass buildJavaMappedSuperclass(JavaPersistentType parent);
 	
 	JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent);
 	
-	JavaTable buildJavaTable(JavaEntity parent);
+	JavaTypeMapping buildJavaNullTypeMapping(JavaPersistentType parent);
 	
-	JavaJoinTable buildJavaJoinTable(JavaRelationshipMapping parent);
-	
-	JavaColumn buildJavaColumn(JavaJpaContextNode parent, JavaColumn.Owner owner);
+	JavaPersistentAttribute buildJavaPersistentAttribute(JavaPersistentType parent);
 
-	JavaDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, NamedColumn.Owner owner);
-	
-	JavaJoinColumn buildJavaJoinColumn(JavaJpaContextNode parent, JoinColumn.Owner owner);
-
-	JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent);
-	
 	JavaBasicMapping buildJavaBasicMapping(JavaPersistentAttribute parent);
 	
 	JavaEmbeddedIdMapping buildJavaEmbeddedIdMapping(JavaPersistentAttribute parent);
@@ -151,6 +206,18 @@ public interface JpaBaseContextFactory extends JpaFactory
 	
 	JavaAttributeMapping buildJavaNullAttributeMapping(JavaPersistentAttribute parent);
 	
+	JavaTable buildJavaTable(JavaEntity parent);
+	
+	JavaJoinTable buildJavaJoinTable(JavaRelationshipMapping parent);
+	
+	JavaColumn buildJavaColumn(JavaJpaContextNode parent, JavaColumn.Owner owner);
+
+	JavaDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, NamedColumn.Owner owner);
+	
+	JavaJoinColumn buildJavaJoinColumn(JavaJpaContextNode parent, JoinColumn.Owner owner);
+
+	JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent);
+	
 	JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent);
 	
 	JavaTableGenerator buildJavaTableGenerator(JavaJpaContextNode parent);
@@ -168,15 +235,4 @@ public interface JpaBaseContextFactory extends JpaFactory
 	JavaNamedNativeQuery buildJavaNamedNativeQuery(JavaJpaContextNode parent);
 	
 	JavaQueryHint buildJavaQueryHint(JavaQuery<?> parent);
-	
-	OrmPersistentType buildOrmPersistentType(EntityMappings parent, String mappingKey);
-	
-	OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, String mappingKey);
-
-	GenericOrmEntity buildXmlEntity(OrmPersistentType parent);
-	
-	GenericOrmMappedSuperclass buildXmlMappedSuperclass(OrmPersistentType parent);
-	
-	GenericOrmEmbeddable buildXmlEmbeddable(OrmPersistentType parent);
-	
 }

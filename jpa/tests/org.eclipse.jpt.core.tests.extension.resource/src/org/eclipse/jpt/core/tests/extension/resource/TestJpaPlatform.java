@@ -1,12 +1,12 @@
 package org.eclipse.jpt.core.tests.extension.resource;
 
 import java.util.Collection;
-import org.eclipse.jpt.core.JpaFactory;
-import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMappingProvider;
-import org.eclipse.jpt.core.internal.content.java.IJavaTypeMappingProvider;
-import org.eclipse.jpt.core.internal.platform.BaseJpaPlatform;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
+import org.eclipse.jpt.core.platform.GenericJpaPlatform;
+import org.eclipse.jpt.core.platform.JpaFactory;
 
-public class TestJpaPlatform extends BaseJpaPlatform
+public class TestJpaPlatform extends GenericJpaPlatform
 {
 	public static final String ID = "core.testJpaPlatform";
 

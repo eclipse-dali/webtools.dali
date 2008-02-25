@@ -109,8 +109,8 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 //	}
 //
 //	public void refreshDefaults(DefaultsContext defaultsContext) {
-//		setDefaultReferencedColumnName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_REFERENCED_COLUMN_NAME_KEY));
-//		setDefaultName((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_JOIN_COLUMN_NAME_KEY));
+//		setDefaultReferencedColumnName((String) defaultsContext.getDefault(GenericJpaPlatform.DEFAULT_JOIN_COLUMN_REFERENCED_COLUMN_NAME_KEY));
+//		setDefaultName((String) defaultsContext.getDefault(GenericJpaPlatform.DEFAULT_JOIN_COLUMN_NAME_KEY));
 //	}
 
 		

@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.internal.platform.base.JpaBaseContextFactory;
+import org.eclipse.jpt.core.platform.JpaFactory;
 
 public class OrmTransientMappingProvider implements OrmAttributeMappingProvider
 {
@@ -37,7 +37,7 @@ public class OrmTransientMappingProvider implements OrmAttributeMappingProvider
 		return MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public GenericOrmTransientMapping buildAttributeMapping(JpaBaseContextFactory factory, OrmPersistentAttribute parent) {
+	public GenericOrmTransientMapping buildAttributeMapping(JpaFactory factory, OrmPersistentAttribute parent) {
 		return new GenericOrmTransientMapping(parent);
 	}
 }

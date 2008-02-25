@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
-import org.eclipse.jpt.core.internal.platform.base.JpaBaseContextFactory;
+import org.eclipse.jpt.core.platform.JpaFactory;
 
 /**
  * This mapping provider implementation is used to create a JavaNullAttributeMapping.
@@ -48,7 +48,7 @@ public class JavaNullTypeMappingProvider
 		return null;
 	}
 	
-	public JavaTypeMapping buildMapping(JavaPersistentType parent, JpaBaseContextFactory factory) {
+	public JavaTypeMapping buildMapping(JavaPersistentType parent, JpaFactory factory) {
 		return factory.buildJavaNullTypeMapping(parent);
 	}
 

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core;
 
 import java.util.List;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;

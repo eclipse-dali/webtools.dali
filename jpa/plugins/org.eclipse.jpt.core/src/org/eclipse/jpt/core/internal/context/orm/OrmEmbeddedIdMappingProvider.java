@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.internal.platform.base.JpaBaseContextFactory;
+import org.eclipse.jpt.core.platform.JpaFactory;
 
 public class OrmEmbeddedIdMappingProvider implements OrmAttributeMappingProvider
 {
@@ -33,7 +33,7 @@ public class OrmEmbeddedIdMappingProvider implements OrmAttributeMappingProvider
 		super();
 	}
 
-	public GenericOrmEmbeddedIdMapping buildAttributeMapping(JpaBaseContextFactory factory, OrmPersistentAttribute parent) {
+	public GenericOrmEmbeddedIdMapping buildAttributeMapping(JpaFactory factory, OrmPersistentAttribute parent) {
 		return new GenericOrmEmbeddedIdMapping(parent);
 	}
 

@@ -12,9 +12,9 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
+import org.eclipse.jpt.core.resource.orm.UniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
-import org.eclipse.jpt.core.resource.orm.UniqueConstraint;
 
 public class VirtualJoinTable extends AbstractJpaEObject implements XmlJoinTable
 {

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui;
 
-import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
@@ -23,7 +22,12 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
+import org.eclipse.jpt.core.platform.JpaFactory;
+import org.eclipse.jpt.core.platform.JpaPlatform;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;

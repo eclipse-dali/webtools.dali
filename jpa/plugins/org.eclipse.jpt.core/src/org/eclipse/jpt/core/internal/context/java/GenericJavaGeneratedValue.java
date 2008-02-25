@@ -11,8 +11,8 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
-import org.eclipse.jpt.core.context.GenerationType;
 import org.eclipse.jpt.core.context.GeneratedValue;
+import org.eclipse.jpt.core.context.GenerationType;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
 import org.eclipse.jpt.core.resource.java.GeneratedValueAnnotation;

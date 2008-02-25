@@ -19,8 +19,8 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.NamedNativeQueries;
 import org.eclipse.jpt.core.resource.java.NamedNativeQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableNamedNativeQuery;

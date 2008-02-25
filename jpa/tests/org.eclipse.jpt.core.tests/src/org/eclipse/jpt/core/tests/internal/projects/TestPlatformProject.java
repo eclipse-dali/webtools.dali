@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.projects;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;

@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.tests.internal.model;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-
+import junit.framework.TestCase;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -25,8 +25,6 @@ import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestFacetedProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestPlatformProject;
 import org.eclipse.jpt.utility.internal.ClassTools;
-
-import junit.framework.TestCase;
 
 public class JpaModelTests extends TestCase {
 

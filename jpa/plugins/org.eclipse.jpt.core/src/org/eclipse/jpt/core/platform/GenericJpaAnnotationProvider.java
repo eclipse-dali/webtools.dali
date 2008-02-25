@@ -8,16 +8,16 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.internal.platform.base;
+package org.eclipse.jpt.core.platform;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.internal.platform.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.resource.java.AssociationOverrideImpl.AssociationOverrideAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AssociationOverridesImpl.AssociationOverridesAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverrideImpl.AttributeOverrideAnnotationDefinition;
@@ -69,7 +69,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 
-public abstract class BaseJpaAnnotationProvider implements JpaAnnotationProvider
+public class GenericJpaAnnotationProvider implements JpaAnnotationProvider
 {
 	/**
 	 * Ordered list of possible type mapping annotations.  Ordered because this
@@ -88,7 +88,7 @@ public abstract class BaseJpaAnnotationProvider implements JpaAnnotationProvider
 	private Collection<AnnotationDefinition> attributeAnnotationDefinitions;
 	
 	
-	protected BaseJpaAnnotationProvider() {
+	protected GenericJpaAnnotationProvider() {
 		super();
 	}
 	

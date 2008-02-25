@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Nullable;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;

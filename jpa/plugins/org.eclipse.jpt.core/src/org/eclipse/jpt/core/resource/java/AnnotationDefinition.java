@@ -10,16 +10,16 @@
 package org.eclipse.jpt.core.resource.java;
 
 import org.eclipse.jpt.core.internal.jdtutility.Member;
-import org.eclipse.jpt.core.internal.platform.base.BaseJpaPlatform;
+import org.eclipse.jpt.core.platform.GenericJpaPlatform;
 
 /**
  * Used for building new Annotations. 
  * These should be used to define non-mapping annotations.  If you
  * want to provide new AnnotationDefinitions you will need
- * to create a new JpaPlatform by extending BaseJpaPlatform.
+ * to create a new JpaPlatform by extending GenericJpaPlatform.
  * 
  * @see MappingAnnotation
- * @see BaseJpaPlatform
+ * @see GenericJpaPlatform
  */
 public interface AnnotationDefinition
 {

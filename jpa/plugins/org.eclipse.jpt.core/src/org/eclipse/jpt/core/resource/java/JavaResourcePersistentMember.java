@@ -14,7 +14,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
-import org.eclipse.jpt.core.internal.platform.base.BaseJpaPlatform;
+import org.eclipse.jpt.core.platform.GenericJpaPlatform;
 
 public interface JavaResourcePersistentMember extends JavaResourceNode
 {
@@ -33,8 +33,8 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	/**
 	 * Return the <code>JavaResource</code> specified on this JavaPersistentResource
 	 * In the case of multiples the first one will be returned as defined by the order of
-	 * {@link BaseJpaPlatform#typeMappingAnnotationDefinitions()} or 
-	 * {@link BaseJpaPlatform#attributeMappingAnnotationDefinitions()}
+	 * {@link GenericJpaPlatform#typeMappingAnnotationDefinitions()} or 
+	 * {@link GenericJpaPlatform#attributeMappingAnnotationDefinitions()}
 	 * @return
 	 */
 	JavaResourceNode mappingAnnotation();

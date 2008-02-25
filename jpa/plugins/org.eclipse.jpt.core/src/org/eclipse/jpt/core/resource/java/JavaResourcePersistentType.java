@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.resource.java;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 
 public interface JavaResourcePersistentType extends JavaResourcePersistentMember

@@ -158,7 +158,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 //	@Override
 //	public void refreshDefaults(DefaultsContext defaultsContext) {
 //		super.refreshDefaults(defaultsContext);
-//		setDefaultTargetEntity((String) defaultsContext.getDefault(BaseJpaPlatform.DEFAULT_TARGET_ENTITY_KEY));
+//		setDefaultTargetEntity((String) defaultsContext.getDefault(GenericJpaPlatform.DEFAULT_TARGET_ENTITY_KEY));
 //		String targetEntity = fullyQualifiedTargetEntity(defaultsContext.astRoot());
 //		if (targetEntity != null) {
 //			IPersistentType persistentType = defaultsContext.persistentType(targetEntity);

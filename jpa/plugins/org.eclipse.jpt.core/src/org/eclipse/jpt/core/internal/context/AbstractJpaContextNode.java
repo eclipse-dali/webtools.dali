@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.AbstractJpaNode;
-import org.eclipse.jpt.core.internal.platform.base.JpaBaseContextFactory;
 
 public abstract class AbstractJpaContextNode extends AbstractJpaNode
 	implements JpaContextNode
@@ -29,11 +28,6 @@ public abstract class AbstractJpaContextNode extends AbstractJpaNode
 	
 	
 	// **************** IJpaContextNode impl ***********************************
-	
-	@Override
-	protected JpaBaseContextFactory jpaFactory() {
-		return (JpaBaseContextFactory) super.jpaFactory();
-	}
 	
 	//TODO casting to IJpaContextNode here(possible CCE).
 	/**

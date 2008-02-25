@@ -10,17 +10,17 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.internal.platform.base.JpaBaseContextFactory;
+import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
+import org.eclipse.jpt.core.platform.JpaFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 
 
 public class OrmEmbeddableProvider implements OrmTypeMappingProvider
 {
 
-	public OrmTypeMapping<XmlEmbeddable> buildTypeMapping(JpaBaseContextFactory factory, OrmPersistentType parent) {
+	public OrmTypeMapping<XmlEmbeddable> buildTypeMapping(JpaFactory factory, OrmPersistentType parent) {
 		return factory.buildXmlEmbeddable(parent);
 	}
 

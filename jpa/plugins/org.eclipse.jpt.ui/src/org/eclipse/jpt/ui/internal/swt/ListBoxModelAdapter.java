@@ -15,7 +15,6 @@ import java.util.Collections;
 import java.util.EventObject;
 import java.util.Iterator;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.ui.internal.listeners.SWTCollectionChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.CollectionTools;
