@@ -22,8 +22,8 @@ public class JptCoreContextJavaModelTests extends TestCase
 
 	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptCoreContextJavaModelTests.class.getName());
-		//suite.addTestSuite(JavaAssociationOverrideTests.class);
-		//suite.addTestSuite(JavaAttributeOverrideTests.class);
+		suite.addTestSuite(JavaAssociationOverrideTests.class);
+		suite.addTestSuite(JavaAttributeOverrideTests.class);
 		suite.addTestSuite(JavaBasicMappingTests.class);
 		suite.addTestSuite(JavaColumnTests.class);
 		suite.addTestSuite(JavaDiscriminatorColumnTests.class);
