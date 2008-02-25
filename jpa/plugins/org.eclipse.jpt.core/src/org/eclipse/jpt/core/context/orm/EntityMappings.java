@@ -114,8 +114,8 @@ public interface EntityMappings extends JpaContextNode, JpaStructureNode
 	PersistenceUnitDefaults persistenceUnitDefaults();
 	
 	/**
-	 * Return the XmlPersistentType listed in this mapping file
-	 * with the given fullyQualifiedTypeName.  Return null if non exists.
+	 * Return the {@link OrmPersistentType) listed in this mapping file
+	 * with the given fullyQualifiedTypeName.  Return null if none exists.
 	 */
 	OrmPersistentType persistentTypeFor(String fullyQualifiedTypeName);
 	

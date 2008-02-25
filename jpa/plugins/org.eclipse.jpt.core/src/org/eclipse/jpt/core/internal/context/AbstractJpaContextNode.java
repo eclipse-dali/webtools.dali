@@ -54,7 +54,7 @@ public abstract class AbstractJpaContextNode extends AbstractJpaNode
 	
 	/**
 	 * Overidden in BaseJpaContext to return null
-	 * Overidden in XmlPersistentType to return it.
+	 * Overidden in OrmPersistentType to return it.
 	 */
 	public OrmPersistentType ormPersistentType() {
 		return ((JpaContextNode) parent()).ormPersistentType();

@@ -1229,9 +1229,9 @@ public class GenericPersistenceUnit extends AbstractJpaContextNode
 	
 	public PersistentType persistentType(String fullyQualifiedTypeName) {
 		for (MappingFileRef mappingFileRef : CollectionTools.iterable(mappingFileRefs())) {
-			OrmPersistentType xmlPersistentType = mappingFileRef.persistentTypeFor(fullyQualifiedTypeName);
-			if (xmlPersistentType != null) {
-				return xmlPersistentType;
+			OrmPersistentType ormPersistentType = mappingFileRef.persistentTypeFor(fullyQualifiedTypeName);
+			if (ormPersistentType != null) {
+				return ormPersistentType;
 			}
 		}
 		for (ClassRef classRef : CollectionTools.iterable(classRefs())) {

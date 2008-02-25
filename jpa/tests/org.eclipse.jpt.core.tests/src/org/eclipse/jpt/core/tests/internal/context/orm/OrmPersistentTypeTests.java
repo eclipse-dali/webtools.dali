@@ -37,9 +37,9 @@ import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
-public class XmlPersistentTypeTests extends ContextModelTestCase
+public class OrmPersistentTypeTests extends ContextModelTestCase
 {
-	public XmlPersistentTypeTests(String name) {
+	public OrmPersistentTypeTests(String name) {
 		super(name);
 	}
 	
@@ -186,25 +186,25 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 		assertEquals("idAttribute",  entity.getAttributes().getIds().get(0).getName());
 		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
 		
-		entityPersistentType.removeSpecifiedXmlPersistentAttribute(entityPersistentType.attributeNamed("basicAttribute"));
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("basicAttribute"));
 		assertEquals("embeddedAttribute",  entity.getAttributes().getEmbeddeds().get(0).getName());
 		assertEquals("versionAttribute",  entity.getAttributes().getVersions().get(0).getName());
 		assertEquals("idAttribute",  entity.getAttributes().getIds().get(0).getName());
 		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
 		
-		entityPersistentType.removeSpecifiedXmlPersistentAttribute(entityPersistentType.attributeNamed("embeddedAttribute"));
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("embeddedAttribute"));
 		assertEquals("versionAttribute",  entity.getAttributes().getVersions().get(0).getName());
 		assertEquals("idAttribute",  entity.getAttributes().getIds().get(0).getName());
 		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
 		
-		entityPersistentType.removeSpecifiedXmlPersistentAttribute(entityPersistentType.attributeNamed("versionAttribute"));
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("versionAttribute"));
 		assertEquals("idAttribute",  entity.getAttributes().getIds().get(0).getName());
 		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
 		
-		entityPersistentType.removeSpecifiedXmlPersistentAttribute(entityPersistentType.attributeNamed("idAttribute"));
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("idAttribute"));
 		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
 		
-		entityPersistentType.removeSpecifiedXmlPersistentAttribute(entityPersistentType.attributeNamed("transientAttribute"));
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("transientAttribute"));
 		assertNull(entity.getAttributes());
 	}
 	
@@ -215,7 +215,7 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idAttribute");
 		assertEquals("idAttribute",  entity.getAttributes().getIds().get(0).getName());
 
-		entityPersistentType.removeSpecifiedXmlPersistentAttribute(entityPersistentType.attributeNamed("idAttribute"));	
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("idAttribute"));	
 		assertNull(entity.getAttributes());
 	}
 	
@@ -226,7 +226,7 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicAttribute");
 		assertEquals("basicAttribute",  entity.getAttributes().getBasics().get(0).getName());
 
-		entityPersistentType.removeSpecifiedXmlPersistentAttribute(entityPersistentType.attributeNamed("basicAttribute"));	
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("basicAttribute"));	
 		assertNull(entity.getAttributes());
 	}
 	
@@ -237,7 +237,7 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionAttribute");
 		assertEquals("versionAttribute",  entity.getAttributes().getVersions().get(0).getName());
 
-		entityPersistentType.removeSpecifiedXmlPersistentAttribute(entityPersistentType.attributeNamed("versionAttribute"));	
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("versionAttribute"));	
 		assertNull(entity.getAttributes());
 	}
 	
@@ -248,7 +248,7 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedAttribute");
 		assertEquals("embeddedAttribute",  entity.getAttributes().getEmbeddeds().get(0).getName());
 
-		entityPersistentType.removeSpecifiedXmlPersistentAttribute(entityPersistentType.attributeNamed("embeddedAttribute"));	
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("embeddedAttribute"));	
 		assertNull(entity.getAttributes());
 	}
 	
@@ -259,7 +259,7 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientAttribute");
 		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
 
-		entityPersistentType.removeSpecifiedXmlPersistentAttribute(entityPersistentType.attributeNamed("transientAttribute"));	
+		entityPersistentType.removeSpecifiedPersistentAttribute(entityPersistentType.attributeNamed("transientAttribute"));	
 		assertNull(entity.getAttributes());
 	}
 

@@ -49,10 +49,10 @@ public class OrmPersistentTypeDetailsPage extends PersistentTypeDetailsPage<OrmP
 	 * Storing these here instead of querying IJpaPlatformUI, because the orm.xml
 	 * schema is not extensible. We only need to support extensibility for java.
 	 */
-	private List<TypeMappingUiProvider<? extends TypeMapping>> xmlTypeMappingUiProviders;
+	private List<TypeMappingUiProvider<? extends TypeMapping>> ormTypeMappingUiProviders;
 
 	/**
-	 * Creates a new <code>XmlPersistentTypeDetailsPage</code>.
+	 * Creates a new <code>OrmPersistentTypeDetailsPage</code>.
 	 *
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
@@ -63,7 +63,7 @@ public class OrmPersistentTypeDetailsPage extends PersistentTypeDetailsPage<OrmP
 		super(parent, widgetFactory);
 	}
 
-	protected void addXmlTypeMappingUiProvidersTo(Collection<TypeMappingUiProvider<? extends TypeMapping>> providers) {
+	protected void addOrmTypeMappingUiProvidersTo(Collection<TypeMappingUiProvider<? extends TypeMapping>> providers) {
 		providers.add(EntityUiProvider.instance());
 		providers.add(MappedSuperclassUiProvider.instance());
 		providers.add(EmbeddableUiProvider.instance());
@@ -126,10 +126,10 @@ public class OrmPersistentTypeDetailsPage extends PersistentTypeDetailsPage<OrmP
 	 */
 	@Override
 	public ListIterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders() {
-		if (this.xmlTypeMappingUiProviders == null) {
-			this.xmlTypeMappingUiProviders = new ArrayList<TypeMappingUiProvider<? extends TypeMapping>>();
-			this.addXmlTypeMappingUiProvidersTo(this.xmlTypeMappingUiProviders);
+		if (this.ormTypeMappingUiProviders == null) {
+			this.ormTypeMappingUiProviders = new ArrayList<TypeMappingUiProvider<? extends TypeMapping>>();
+			this.addOrmTypeMappingUiProvidersTo(this.ormTypeMappingUiProviders);
 		}
-		return new CloneListIterator<TypeMappingUiProvider<? extends TypeMapping>>(this.xmlTypeMappingUiProviders);
+		return new CloneListIterator<TypeMappingUiProvider<? extends TypeMapping>>(this.ormTypeMappingUiProviders);
 	}
 }

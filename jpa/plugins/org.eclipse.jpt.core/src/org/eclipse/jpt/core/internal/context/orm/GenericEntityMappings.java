@@ -230,12 +230,12 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 		return persistentType;
 	}
 	
-	protected void addOrmPersistentType(OrmPersistentType xmlPersistentType) { 
-		addItemToList(xmlPersistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
+	protected void addOrmPersistentType(OrmPersistentType ormPersistentType) { 
+		addItemToList(ormPersistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
 	}
 
-	protected int insertionIndex(OrmPersistentType persistentType) {
-		return CollectionTools.insertionIndexOf(this.persistentTypes, persistentType, buildMappingComparator());
+	protected int insertionIndex(OrmPersistentType ormPersistentType) {
+		return CollectionTools.insertionIndexOf(this.persistentTypes, ormPersistentType, buildMappingComparator());
 	}
 
 	private Comparator<OrmPersistentType> buildMappingComparator() {
@@ -269,12 +269,12 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 		removeItemFromList(ormPersistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
 	}
 
-	public void changeMapping(OrmPersistentType xmlPersistentType, OrmTypeMapping<? extends AbstractTypeMapping> oldMapping, OrmTypeMapping<? extends AbstractTypeMapping> newMapping) {
-		int sourceIndex = this.persistentTypes.indexOf(xmlPersistentType);
+	public void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping<? extends AbstractTypeMapping> oldMapping, OrmTypeMapping<? extends AbstractTypeMapping> newMapping) {
+		int sourceIndex = this.persistentTypes.indexOf(ormPersistentType);
 		this.persistentTypes.remove(sourceIndex);
 		oldMapping.removeFromResourceModel(this.xmlEntityMappings);
-		int targetIndex = insertionIndex(xmlPersistentType);
-		this.persistentTypes.add(targetIndex, xmlPersistentType);
+		int targetIndex = insertionIndex(ormPersistentType);
+		this.persistentTypes.add(targetIndex, ormPersistentType);
 		newMapping.addToResourceModel(this.xmlEntityMappings);
 		newMapping.initializeFrom(oldMapping);
 		//TODO are the source and target correct in this case, or is target off by one???
@@ -711,7 +711,7 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 	
 	public JpaStructureNode structureNode(int textOffset) {
 		for (OrmPersistentType persistentType: CollectionTools.iterable(ormPersistentTypes())) {
-			if (persistentType.containsOffset(textOffset)) {
+			if (persistentType.contains(textOffset)) {
 				return persistentType.structureNode(textOffset);
 			}
 		}
