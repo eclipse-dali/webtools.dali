@@ -20,13 +20,13 @@ public class JptCoreJdtUtilityTests {
 	
 	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptCoreJdtUtilityTests.class.getPackage().getName());
-//		suite.addTestSuite(CombinationIndexedDeclarationAnnotationAdapterTests.class);
+		suite.addTestSuite(CombinationIndexedDeclarationAnnotationAdapterTests.class);
 		suite.addTestSuite(DefaultAnnotationEditFormatterTests.class);
-//		suite.addTestSuite(JDTToolsTests.class);
-//		suite.addTestSuite(MemberAnnotationElementAdapterTests.class);
-//		suite.addTestSuite(NestedDeclarationAnnotationAdapterTests.class);
-//		suite.addTestSuite(NestedIndexedDeclarationAnnotationAdapterTests.class);
-//		suite.addTestSuite(SimpleDeclarationAnnotationAdapterTests.class);
+		suite.addTestSuite(JDTToolsTests.class);
+		suite.addTestSuite(MemberAnnotationElementAdapterTests.class);
+		suite.addTestSuite(NestedDeclarationAnnotationAdapterTests.class);
+		suite.addTestSuite(NestedIndexedDeclarationAnnotationAdapterTests.class);
+		suite.addTestSuite(SimpleDeclarationAnnotationAdapterTests.class);
 		suite.addTestSuite(TypeTests.class);
 		return suite;
 	}
