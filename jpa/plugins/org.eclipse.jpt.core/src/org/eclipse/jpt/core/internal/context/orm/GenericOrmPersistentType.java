@@ -34,13 +34,16 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
-import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.Attributes;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
@@ -52,9 +55,7 @@ import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
@@ -295,7 +296,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 	}
 	
 	public OrmPersistentAttribute addSpecifiedPersistentAttribute(String mappingKey, String attributeName) {
-		OrmPersistentAttribute persistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, mappingKey);
+		OrmPersistentAttribute persistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, mappingKey);
 		int index = insertionIndex(persistentAttribute);
 		if (getMapping().typeMappingResource().getAttributes() == null) {
 			getMapping().typeMappingResource().setAttributes(OrmFactory.eINSTANCE.createAttributes());
@@ -396,52 +397,52 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 	
 	protected void initializeSpecifiedPersistentAttributes(Attributes attributes) {
 		for (XmlId id : attributes.getIds()) {
-			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 			ormPersistentAttribute.initialize(id);
 			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
 		}
 		for (XmlEmbeddedId embeddedId : attributes.getEmbeddedIds()) {
-			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
 			ormPersistentAttribute.initialize(embeddedId);
 			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
 		}
 		for (XmlBasic basic : attributes.getBasics()) {
-			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 			ormPersistentAttribute.initialize(basic);
 			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
 		}
 		for (XmlVersion version : attributes.getVersions()) {
-			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 			ormPersistentAttribute.initialize(version);
 			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
 		}
 		for (XmlManyToOne manyToOne : attributes.getManyToOnes()) {
-			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 			ormPersistentAttribute.initialize(manyToOne);
 			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
 		}
 		for (XmlOneToMany oneToMany : attributes.getOneToManys()) {
-			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 			ormPersistentAttribute.initialize(oneToMany);
 			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
 		}
 		for (XmlOneToOne oneToOne : attributes.getOneToOnes()) {
-			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 			ormPersistentAttribute.initialize(oneToOne);
 			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
 		}
 		for (XmlManyToMany manyToMany : attributes.getManyToManys()) {
-			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 			ormPersistentAttribute.initialize(manyToMany);
 			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
 		}
 		for (XmlEmbedded embedded : attributes.getEmbeddeds()) {
-			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 			ormPersistentAttribute.initialize(embedded);
 			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
 		}
 		for (XmlTransient transientResource : attributes.getTransients()) {
-			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+			OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
 			ormPersistentAttribute.initialize(transientResource);
 			this.specifiedPersistentAttributes.add(ormPersistentAttribute);
 		}
@@ -599,7 +600,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 	}
 	
 	protected OrmPersistentAttribute createVirtualPersistentAttribute(JavaPersistentAttribute javaAttribute) {
-		OrmPersistentAttribute ormPersistentAttribute = new OrmPersistentAttribute(this, javaAttribute.mappingKey());
+		OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, javaAttribute.mappingKey());
 		if (javaAttribute.mappingKey() == MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
 			ormPersistentAttribute.initialize(new VirtualBasic((JavaBasicMapping) javaAttribute.getMapping(), getMapping().isMetadataComplete()));
 		}
@@ -639,7 +640,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 				ormPersistentAttributes.next().update(id);
 			}
 			else {
-				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 				ormPersistentAttribute.initialize(id);
 				addSpecifiedPersistentAttribute_(ormPersistentAttribute);
 			}
@@ -652,7 +653,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 				ormPersistentAttributes.next().update(embeddedId);
 			}
 			else {
-				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
 				ormPersistentAttribute.initialize(embeddedId);
 				addSpecifiedPersistentAttribute_(ormPersistentAttribute);
 			}
@@ -665,7 +666,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 				ormPersistentAttributes.next().update(basic);
 			}
 			else {
-				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 				ormPersistentAttribute.initialize(basic);
 				addSpecifiedPersistentAttribute_(ormPersistentAttribute);
 			}
@@ -678,7 +679,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 				ormPersistentAttributes.next().update(version);
 			}
 			else {
-				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 				ormPersistentAttribute.initialize(version);
 				addSpecifiedPersistentAttribute_(ormPersistentAttribute);
 			}
@@ -690,7 +691,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 				ormPersistentAttributes.next().update(manyToOne);
 			}
 			else {
-				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 				ormPersistentAttribute.initialize(manyToOne);
 				addSpecifiedPersistentAttribute_(ormPersistentAttribute);
 			}
@@ -702,7 +703,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 				ormPersistentAttributes.next().update(oneToMany);
 			}
 			else {
-				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 				ormPersistentAttribute.initialize(oneToMany);
 				addSpecifiedPersistentAttribute_(ormPersistentAttribute);
 			}
@@ -714,7 +715,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 				ormPersistentAttributes.next().update(oneToOne);
 			}
 			else {
-				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 				ormPersistentAttribute.initialize(oneToOne);
 				addSpecifiedPersistentAttribute_(ormPersistentAttribute);
 			}
@@ -726,7 +727,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 				ormPersistentAttributes.next().update(manyToMany);
 			}
 			else {
-				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 				ormPersistentAttribute.initialize(manyToMany);
 				addSpecifiedPersistentAttribute_(ormPersistentAttribute);
 			}
@@ -739,7 +740,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 				ormPersistentAttributes.next().update(embedded);
 			}
 			else {
-				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 				ormPersistentAttribute.initialize(embedded);
 				addSpecifiedPersistentAttribute_(ormPersistentAttribute);
 			}
@@ -752,7 +753,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 				ormPersistentAttributes.next().update(transientResource);
 			}
 			else {
-				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildXmlPersistentAttribute(this, MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+				OrmPersistentAttribute ormPersistentAttribute = jpaFactory().buildOrmPersistentAttribute(this, MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
 				ormPersistentAttribute.initialize(transientResource);
 				addSpecifiedPersistentAttribute_(ormPersistentAttribute);
 			}
@@ -780,7 +781,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 	
 	public JpaStructureNode structureNode(int textOffset) {
 		for (OrmPersistentAttribute attribute : CollectionTools.iterable(specifiedAttributes())) {
-			if (attribute.containsOffset(textOffset)) {
+			if (attribute.contains(textOffset)) {
 				return attribute;
 			}
 		}

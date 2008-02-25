@@ -11,10 +11,11 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.TransientMapping;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlTransient;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlTransient;
 
 
 public class GenericOrmTransientMapping extends AbstractOrmAttributeMapping<XmlTransient> implements TransientMapping

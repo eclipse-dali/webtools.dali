@@ -13,13 +13,14 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.ColumnMapping;
-import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.core.context.TemporalType;
+import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.db.internal.Table;
 

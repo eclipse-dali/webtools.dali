@@ -13,10 +13,11 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.OneToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 
 
 public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapping<XmlOneToMany>

@@ -15,11 +15,10 @@ import java.util.List;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.TextRange;
-import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
@@ -35,15 +34,15 @@ import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 
 
-public class OrmPersistentAttribute extends AbstractJpaContextNode
-	implements PersistentAttribute
+public class GenericOrmPersistentAttribute extends AbstractJpaContextNode
+	implements OrmPersistentAttribute
 {
 
 	protected List<OrmAttributeMappingProvider> attributeMappingProviders;
 
 	protected AbstractOrmAttributeMapping<? extends XmlAttributeMapping> attributeMapping;
 	
-	public OrmPersistentAttribute(OrmPersistentType parent, String mappingKey) {
+	public GenericOrmPersistentAttribute(OrmPersistentType parent, String mappingKey) {
 		super(parent);
 		this.attributeMappingProviders = buildAttributeMappingProviders();
 		this.attributeMapping = buildAttributeMapping(mappingKey);
@@ -85,11 +84,11 @@ public class OrmPersistentAttribute extends AbstractJpaContextNode
 		return getMapping().getName();
 	}
 
-	protected void nameChanged(String oldName, String newName) {
+	public void nameChanged(String oldName, String newName) {
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 
-	public AttributeMapping getSpecifiedMapping() {
+	public AbstractOrmAttributeMapping getSpecifiedMapping() {
 		return this.attributeMapping;
 	}
 	
@@ -322,7 +321,7 @@ public class OrmPersistentAttribute extends AbstractJpaContextNode
 		return this;
 	}
 
-	public boolean containsOffset(int textOffset) {
+	public boolean contains(int textOffset) {
 		if (isVirtual()) {
 			return false;
 		}

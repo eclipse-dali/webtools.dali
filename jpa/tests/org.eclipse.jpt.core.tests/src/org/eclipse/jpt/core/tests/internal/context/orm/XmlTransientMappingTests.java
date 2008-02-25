@@ -23,8 +23,8 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmTransientMapping;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
@@ -78,8 +78,8 @@ public class XmlTransientMappingTests extends ContextModelTestCase
 	}
 	public void testUpdateName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientMapping");
-		GenericOrmTransientMapping xmlTransientnMapping = (GenericOrmTransientMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientMapping");
+		GenericOrmTransientMapping xmlTransientnMapping = (GenericOrmTransientMapping) ormPersistentAttribute.getMapping();
 		XmlTransient transientResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getTransients().get(0);
 		
 		assertEquals("transientMapping", xmlTransientnMapping.getName());
@@ -98,8 +98,8 @@ public class XmlTransientMappingTests extends ContextModelTestCase
 	
 	public void testModifyName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientMapping");
-		GenericOrmTransientMapping xmlTransientnMapping = (GenericOrmTransientMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientMapping");
+		GenericOrmTransientMapping xmlTransientnMapping = (GenericOrmTransientMapping) ormPersistentAttribute.getMapping();
 		XmlTransient transientResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getTransients().get(0);
 		
 		assertEquals("transientMapping", xmlTransientnMapping.getName());
@@ -124,8 +124,8 @@ public class XmlTransientMappingTests extends ContextModelTestCase
 		ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "foo");
 		assertEquals(2, ormPersistentType.virtualAttributesSize());
 		
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.specifiedAttributes().next();
-		GenericOrmTransientMapping xmlTransientMapping = (GenericOrmTransientMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		GenericOrmTransientMapping xmlTransientMapping = (GenericOrmTransientMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals("foo", xmlTransientMapping.getName());
 	}
@@ -141,9 +141,9 @@ public class XmlTransientMappingTests extends ContextModelTestCase
 		createTestEntityTransientMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		assertEquals(2, ormPersistentType.virtualAttributesSize());		
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		
-		GenericOrmTransientMapping xmlTransientMapping = (GenericOrmTransientMapping) xmlPersistentAttribute.getMapping();	
+		GenericOrmTransientMapping xmlTransientMapping = (GenericOrmTransientMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", xmlTransientMapping.getName());
 	}
 	
@@ -152,9 +152,9 @@ public class XmlTransientMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(2, ormPersistentType.virtualAttributesSize());		
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		
-		GenericOrmTransientMapping xmlTransientMapping = (GenericOrmTransientMapping) xmlPersistentAttribute.getMapping();	
+		GenericOrmTransientMapping xmlTransientMapping = (GenericOrmTransientMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", xmlTransientMapping.getName());
 	}
 	
@@ -165,8 +165,8 @@ public class XmlTransientMappingTests extends ContextModelTestCase
 		ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "id");
 		assertEquals(1, ormPersistentType.virtualAttributesSize());
 		
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.specifiedAttributes().next();
-		GenericOrmTransientMapping xmlTransientMapping = (GenericOrmTransientMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		GenericOrmTransientMapping xmlTransientMapping = (GenericOrmTransientMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals("id", xmlTransientMapping.getName());
 	}
@@ -174,135 +174,135 @@ public class XmlTransientMappingTests extends ContextModelTestCase
 	public void testTransientMorphToIdMapping() throws Exception {
 		createTestEntityTransientMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transient");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transient");
 		
-		TransientMapping transientMapping = (TransientMapping) xmlPersistentAttribute.getMapping();
+		TransientMapping transientMapping = (TransientMapping) ormPersistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof IdMapping);
-		assertEquals("transient", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof IdMapping);
+		assertEquals("transient", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testTransientMorphToVersionMapping() throws Exception {
 		createTestEntityTransientMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transient");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transient");
 		
-		TransientMapping transientMapping = (TransientMapping) xmlPersistentAttribute.getMapping();
+		TransientMapping transientMapping = (TransientMapping) ormPersistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof VersionMapping);
-		assertEquals("transient", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof VersionMapping);
+		assertEquals("transient", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testTransientMorphToTransientMapping() throws Exception {
 		createTestEntityTransientMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transient");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transient");
 		
-		TransientMapping transientMapping = (TransientMapping) xmlPersistentAttribute.getMapping();
+		TransientMapping transientMapping = (TransientMapping) ormPersistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof TransientMapping);
-		assertEquals("transient", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof TransientMapping);
+		assertEquals("transient", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testTransientMorphToEmbeddedMapping() throws Exception {
 		createTestEntityTransientMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transient");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transient");
 		
-		TransientMapping transientMapping = (TransientMapping) xmlPersistentAttribute.getMapping();
+		TransientMapping transientMapping = (TransientMapping) ormPersistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof EmbeddedMapping);
-		assertEquals("transient", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof EmbeddedMapping);
+		assertEquals("transient", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testTransientMorphToEmbeddedIdMapping() throws Exception {
 		createTestEntityTransientMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transient");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transient");
 		
-		TransientMapping transientMapping = (TransientMapping) xmlPersistentAttribute.getMapping();
+		TransientMapping transientMapping = (TransientMapping) ormPersistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 	
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof EmbeddedIdMapping);
-		assertEquals("transient", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof EmbeddedIdMapping);
+		assertEquals("transient", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testTransientMorphToOneToOneMapping() throws Exception {
 		createTestEntityTransientMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transient");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transient");
 		
-		TransientMapping transientMapping = (TransientMapping) xmlPersistentAttribute.getMapping();
+		TransientMapping transientMapping = (TransientMapping) ormPersistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof OneToOneMapping);
-		assertEquals("transient", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof OneToOneMapping);
+		assertEquals("transient", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testTransientMorphToOneToManyMapping() throws Exception {
 		createTestEntityTransientMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transient");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transient");
 		
-		TransientMapping transientMapping = (TransientMapping) xmlPersistentAttribute.getMapping();
+		TransientMapping transientMapping = (TransientMapping) ormPersistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof OneToManyMapping);
-		assertEquals("transient", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof OneToManyMapping);
+		assertEquals("transient", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testTransientMorphToManyToOneMapping() throws Exception {
 		createTestEntityTransientMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transient");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transient");
 		
-		TransientMapping transientMapping = (TransientMapping) xmlPersistentAttribute.getMapping();
+		TransientMapping transientMapping = (TransientMapping) ormPersistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof ManyToOneMapping);
-		assertEquals("transient", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof ManyToOneMapping);
+		assertEquals("transient", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testTransientMorphToManyToManyMapping() throws Exception {
 		createTestEntityTransientMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transient");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transient");
 		
-		TransientMapping transientMapping = (TransientMapping) xmlPersistentAttribute.getMapping();
+		TransientMapping transientMapping = (TransientMapping) ormPersistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof ManyToManyMapping);
-		assertEquals("transient", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof ManyToManyMapping);
+		assertEquals("transient", ormPersistentAttribute.getMapping().getName());
 	}
 }

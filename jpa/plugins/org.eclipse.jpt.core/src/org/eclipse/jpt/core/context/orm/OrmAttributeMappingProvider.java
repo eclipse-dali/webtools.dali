@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAttributeMapping;
-import org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.platform.base.JpaBaseContextFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 

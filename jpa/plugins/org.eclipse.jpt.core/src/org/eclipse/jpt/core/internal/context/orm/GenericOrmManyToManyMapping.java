@@ -13,10 +13,11 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.core.context.NonOwningMapping;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 
 public class GenericOrmManyToManyMapping extends AbstractOrmMultiRelationshipMapping<XmlManyToMany>
 	implements ManyToManyMapping

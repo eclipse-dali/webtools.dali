@@ -19,8 +19,8 @@ import org.eclipse.jpt.core.ContextModel;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
@@ -64,6 +64,7 @@ import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
@@ -97,7 +98,6 @@ import org.eclipse.jpt.core.internal.context.java.GenericJavaMappedSuperclass;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaNamedNativeQuery;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaNamedQuery;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaNullAttributeMapping;
-import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToManyMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToOneMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaPersistentAttribute;
@@ -110,20 +110,21 @@ import org.eclipse.jpt.core.internal.context.java.GenericJavaTable;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaTableGenerator;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaTransientMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaVersionMapping;
+import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericEntityMappings;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddable;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappedSuperclass;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.orm.OrmXmlImpl;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddable;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappedSuperclass;
-import org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.persistence.GeenericPersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.GenericClassRef;
 import org.eclipse.jpt.core.internal.context.persistence.GenericMappingFileRef;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistence;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
-import org.eclipse.jpt.core.internal.context.persistence.GeenericPersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
 import org.eclipse.jpt.core.internal.jdtutility.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
@@ -420,7 +421,7 @@ public abstract class BaseJpaFactory implements JpaBaseContextFactory
 		return new GenericOrmEmbeddable(parent);
 	}
 	
-	public OrmPersistentAttribute buildXmlPersistentAttribute(OrmPersistentType parent, String mappingKey) {
-		return new OrmPersistentAttribute(parent, mappingKey);
+	public OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, String mappingKey) {
+		return new GenericOrmPersistentAttribute(parent, mappingKey);
 	}
 }

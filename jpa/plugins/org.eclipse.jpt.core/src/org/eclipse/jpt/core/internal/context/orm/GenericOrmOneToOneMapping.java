@@ -16,10 +16,11 @@ import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.OneToOneMapping;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 
 
 public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapping<XmlOneToOne>

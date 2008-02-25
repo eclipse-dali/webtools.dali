@@ -25,8 +25,8 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
@@ -110,8 +110,8 @@ public class XmlEmbeddedIdMappingTests extends ContextModelTestCase
 
 //	public void testUpdateName() throws Exception {
 //		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-//		XmlPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedIdMapping");
-//		XmlEmbeddedIdMapping xmlEmbeddedIdMapping = (XmlEmbeddedIdMapping) xmlPersistentAttribute.getMapping();
+//		XmlPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedIdMapping");
+//		XmlEmbeddedIdMapping xmlEmbeddedIdMapping = (XmlEmbeddedIdMapping) ormPersistentAttribute.getMapping();
 //		EmbeddedId embeddedIdResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 //		
 //		assertEquals("embeddedIdMapping", xmlEmbeddedIdMapping.getName());
@@ -130,8 +130,8 @@ public class XmlEmbeddedIdMappingTests extends ContextModelTestCase
 //	
 //	public void testModifyName() throws Exception {
 //		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-//		XmlPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedIdMapping");
-//		XmlEmbeddedIdMapping xmlEmbeddedIdMapping = (XmlEmbeddedIdMapping) xmlPersistentAttribute.getMapping();
+//		XmlPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedIdMapping");
+//		XmlEmbeddedIdMapping xmlEmbeddedIdMapping = (XmlEmbeddedIdMapping) ormPersistentAttribute.getMapping();
 //		EmbeddedId embeddedIdResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 //		
 //		assertEquals("embeddedIdMapping", xmlEmbeddedIdMapping.getName());
@@ -150,8 +150,8 @@ public class XmlEmbeddedIdMappingTests extends ContextModelTestCase
 //	
 //	public void testAddSpecifiedAttributeOverride() throws Exception {
 //		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-//		XmlPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedIdMapping");
-//		XmlEmbeddedIdMapping xmlEmbeddedIdMapping = (XmlEmbeddedIdMapping) xmlPersistentAttribute.getMapping();
+//		XmlPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedIdMapping");
+//		XmlEmbeddedIdMapping xmlEmbeddedIdMapping = (XmlEmbeddedIdMapping) ormPersistentAttribute.getMapping();
 //		EmbeddedId embeddedIdResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 //		
 //		XmlAttributeOverride attributeOverride = xmlEmbeddedIdMapping.addSpecifiedAttributeOverride(0);
@@ -191,8 +191,8 @@ public class XmlEmbeddedIdMappingTests extends ContextModelTestCase
 //	
 //	public void testRemoveSpecifiedAttributeOverride() throws Exception {
 //		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-//		XmlPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedIdMapping");
-//		XmlEmbeddedIdMapping xmlEmbeddedIdMapping = (XmlEmbeddedIdMapping) xmlPersistentAttribute.getMapping();
+//		XmlPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedIdMapping");
+//		XmlEmbeddedIdMapping xmlEmbeddedIdMapping = (XmlEmbeddedIdMapping) ormPersistentAttribute.getMapping();
 //		EmbeddedId embeddedIdResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 //
 //		xmlEmbeddedIdMapping.addSpecifiedAttributeOverride(0).setName("FOO");
@@ -216,8 +216,8 @@ public class XmlEmbeddedIdMappingTests extends ContextModelTestCase
 //	
 //	public void testMoveSpecifiedAttributeOverride() throws Exception {
 //		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-//		XmlPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedIdMapping");
-//		XmlEmbeddedIdMapping xmlEmbeddedIdMapping = (XmlEmbeddedIdMapping) xmlPersistentAttribute.getMapping();
+//		XmlPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedIdMapping");
+//		XmlEmbeddedIdMapping xmlEmbeddedIdMapping = (XmlEmbeddedIdMapping) ormPersistentAttribute.getMapping();
 //		EmbeddedId embeddedIdResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 //
 //		xmlEmbeddedIdMapping.addSpecifiedAttributeOverride(0).setName("FOO");
@@ -251,8 +251,8 @@ public class XmlEmbeddedIdMappingTests extends ContextModelTestCase
 //	
 //	public void testUpdateAttributeOverrides() throws Exception {
 //		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-//		XmlPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedIdMapping");
-//		XmlEmbeddedIdMapping xmlEmbeddedIdMapping = (XmlEmbeddedIdMapping) xmlPersistentAttribute.getMapping();
+//		XmlPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedIdMapping");
+//		XmlEmbeddedIdMapping xmlEmbeddedIdMapping = (XmlEmbeddedIdMapping) ormPersistentAttribute.getMapping();
 //		EmbeddedId embeddedIdResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 //		
 //		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverrideImpl());
@@ -301,97 +301,97 @@ public class XmlEmbeddedIdMappingTests extends ContextModelTestCase
 	public void testEmbeddedIdMorphToIdMapping() throws Exception {
 		createTestEntityEmbeddedIdMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedId");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedId");
 		
-		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) xmlPersistentAttribute.getMapping();
+		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedIdMapping.isDefault());
 		AttributeOverride attributeOverride = embeddedIdMapping.addSpecifiedAttributeOverride(0);
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedIdMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof IdMapping);
-		assertEquals("embeddedId", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof IdMapping);
+		assertEquals("embeddedId", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testEmbeddedIdMorphToVersionMapping() throws Exception {
 		createTestEntityEmbeddedIdMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedId");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedId");
 		
-		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) xmlPersistentAttribute.getMapping();
+		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedIdMapping.isDefault());
 		AttributeOverride attributeOverride = embeddedIdMapping.addSpecifiedAttributeOverride(0);
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedIdMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof VersionMapping);
-		assertEquals("embeddedId", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof VersionMapping);
+		assertEquals("embeddedId", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testEmbeddedIdMorphToTransientMapping() throws Exception {
 		createTestEntityEmbeddedIdMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedId");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedId");
 		
-		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) xmlPersistentAttribute.getMapping();
+		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedIdMapping.isDefault());
 		AttributeOverride attributeOverride = embeddedIdMapping.addSpecifiedAttributeOverride(0);
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedIdMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof TransientMapping);
-		assertEquals("embeddedId", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof TransientMapping);
+		assertEquals("embeddedId", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testEmbeddedIdMorphToBasicMapping() throws Exception {
 		createTestEntityEmbeddedIdMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedId");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedId");
 		
-		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) xmlPersistentAttribute.getMapping();
+		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedIdMapping.isDefault());
 		AttributeOverride attributeOverride = embeddedIdMapping.addSpecifiedAttributeOverride(0);
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedIdMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof BasicMapping);
-		assertEquals("embeddedId", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof BasicMapping);
+		assertEquals("embeddedId", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testEmbeddedIdMorphToEmbeddedMapping() throws Exception {
 		createTestEntityEmbeddedIdMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedId");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedId");
 		
-		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) xmlPersistentAttribute.getMapping();
+		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedIdMapping.isDefault());
 		AttributeOverride attributeOverride = embeddedIdMapping.addSpecifiedAttributeOverride(0);
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedIdMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof EmbeddedMapping);
-		assertEquals("embeddedId", xmlPersistentAttribute.getMapping().getName());
-		attributeOverride = ((EmbeddedMapping) xmlPersistentAttribute.getMapping()).specifiedAttributeOverrides().next();
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof EmbeddedMapping);
+		assertEquals("embeddedId", ormPersistentAttribute.getMapping().getName());
+		attributeOverride = ((EmbeddedMapping) ormPersistentAttribute.getMapping()).specifiedAttributeOverrides().next();
 		assertEquals("override", attributeOverride.getName());
 		assertEquals("OVERRIDE_COLUMN", attributeOverride.getColumn().getSpecifiedName());
 	}
@@ -399,75 +399,75 @@ public class XmlEmbeddedIdMappingTests extends ContextModelTestCase
 	public void testEmbeddedIdMorphToOneToOneMapping() throws Exception {
 		createTestEntityEmbeddedIdMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedId");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedId");
 		
-		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) xmlPersistentAttribute.getMapping();
+		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedIdMapping.isDefault());
 		AttributeOverride attributeOverride = embeddedIdMapping.addSpecifiedAttributeOverride(0);
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedIdMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof OneToOneMapping);
-		assertEquals("embeddedId", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof OneToOneMapping);
+		assertEquals("embeddedId", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testEmbeddedIdMorphToOneToManyMapping() throws Exception {
 		createTestEntityEmbeddedIdMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedId");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedId");
 		
-		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) xmlPersistentAttribute.getMapping();
+		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedIdMapping.isDefault());
 		AttributeOverride attributeOverride = embeddedIdMapping.addSpecifiedAttributeOverride(0);
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedIdMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof OneToManyMapping);
-		assertEquals("embeddedId", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof OneToManyMapping);
+		assertEquals("embeddedId", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testEmbeddedIdMorphToManyToOneMapping() throws Exception {
 		createTestEntityEmbeddedIdMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedId");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedId");
 		
-		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) xmlPersistentAttribute.getMapping();
+		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedIdMapping.isDefault());
 		AttributeOverride attributeOverride = embeddedIdMapping.addSpecifiedAttributeOverride(0);
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedIdMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof ManyToOneMapping);
-		assertEquals("embeddedId", xmlPersistentAttribute.getMapping().getName());
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(ormPersistentAttribute.getMapping() instanceof ManyToOneMapping);
+		assertEquals("embeddedId", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testEmbeddedIdMorphToManyToManyMapping() throws Exception {
 		createTestEntityEmbeddedIdMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedId");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedId");
 		
-		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) xmlPersistentAttribute.getMapping();
+		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedIdMapping.isDefault());
 		AttributeOverride attributeOverride = embeddedIdMapping.addSpecifiedAttributeOverride(0);
 		attributeOverride.setName("override");
 		attributeOverride.getColumn().setSpecifiedName("OVERRIDE_COLUMN");
 		assertFalse(embeddedIdMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof ManyToManyMapping);
-		assertEquals("embeddedId", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof ManyToManyMapping);
+		assertEquals("embeddedId", ormPersistentAttribute.getMapping().getName());
 	}
 
 }

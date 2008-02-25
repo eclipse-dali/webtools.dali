@@ -10,10 +10,10 @@
 package org.eclipse.jpt.ui.internal.actions;
 
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.ui.IActionFilter;
 
-public class XmlPersistentAttributeActionFilter 
+public class OrmPersistentAttributeActionFilter 
 	extends PersistentAttributeActionFilter
 {
 	public static final String IS_VIRTUAL = "isVirtual";
@@ -46,7 +46,7 @@ public class XmlPersistentAttributeActionFilter
 		
 		public Object getAdapter(final Object adaptable, final Class adapterType ) {
 			if( adapterType == IActionFilter.class ) {
-				return new XmlPersistentAttributeActionFilter();
+				return new OrmPersistentAttributeActionFilter();
 			} else {
 				return null;
 			}

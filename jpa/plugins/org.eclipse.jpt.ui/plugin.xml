@@ -32,7 +32,7 @@
 		
 		<factory
 			adaptableType="org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute"
-			class="org.eclipse.jpt.ui.internal.actions.XmlPersistentAttributeActionFilter$Factory">
+			class="org.eclipse.jpt.ui.internal.actions.OrmPersistentAttributeActionFilter$Factory">
 			<adapter
 				type="org.eclipse.ui.IActionFilter"/>
 		</factory>
@@ -203,7 +203,7 @@
 		</objectContribution>
 		
 		<objectContribution
-			id="org.eclipse.jpt.ui.xmlPersistentTypeActions"
+			id="org.eclipse.jpt.ui.ormPersistentTypeActions"
 			objectClass="org.eclipse.jpt.core.context.orm.OrmPersistentType">
 			<action
 				id="org.eclipse.jpt.ui.removePersistentClass"
@@ -212,7 +212,7 @@
 				menubarPath="additions"/>
 		</objectContribution>
 				<objectContribution
-			id="org.eclipse.jpt.ui.xmlPersistentAttributeActions1"
+			id="org.eclipse.jpt.ui.ormPersistentAttributeActions1"
 			objectClass="org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute">
 			
 			<action
@@ -234,7 +234,7 @@
 		</objectContribution>
 		
 		<objectContribution
-			id="org.eclipse.jpt.ui.xmlPersistentAttributeActions2"
+			id="org.eclipse.jpt.ui.ormPersistentAttributeActions2"
 			objectClass="org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute">
 			
 			<action
@@ -257,7 +257,7 @@
 		</objectContribution>
 		
 		<objectContribution
-			id="org.eclipse.jpt.ui.xmlPersistentAttributeActions3"
+			id="org.eclipse.jpt.ui.ormPersistentAttributeActions3"
 			objectClass="org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute">
 			
 			<action

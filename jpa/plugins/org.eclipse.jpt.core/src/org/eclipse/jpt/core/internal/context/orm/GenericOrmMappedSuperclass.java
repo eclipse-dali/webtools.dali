@@ -13,13 +13,13 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.MappedSuperclass;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.orm.EntityMappings;
 import org.eclipse.jpt.core.resource.orm.IdClass;
-import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -99,8 +99,8 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 		return this.namesOf(this.overridableAttributes());
 	}
 
-	public Iterator<PersistentAttribute> overridableAttributes() {
-		return new FilteringIterator<OrmPersistentAttribute, PersistentAttribute>(this.persistentType().attributes()) {
+	public Iterator<OrmPersistentAttribute> overridableAttributes() {
+		return new FilteringIterator<OrmPersistentAttribute, OrmPersistentAttribute>(this.persistentType().attributes()) {
 			@Override
 			protected boolean accept(OrmPersistentAttribute o) {
 				return o.isOverridableAttribute();
@@ -113,8 +113,8 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 		return this.namesOf(this.overridableAssociations());
 	}
 
-	public Iterator<PersistentAttribute> overridableAssociations() {
-		return new FilteringIterator<OrmPersistentAttribute, PersistentAttribute>(this.persistentType().attributes()) {
+	public Iterator<OrmPersistentAttribute> overridableAssociations() {
+		return new FilteringIterator<OrmPersistentAttribute, OrmPersistentAttribute>(this.persistentType().attributes()) {
 			@Override
 			protected boolean accept(OrmPersistentAttribute o) {
 				return o.isOverridableAssociation();
@@ -122,10 +122,10 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 		};
 	}
 
-	private Iterator<String> namesOf(Iterator<PersistentAttribute> attributes) {
-		return new TransformationIterator<PersistentAttribute, String>(attributes) {
+	private Iterator<String> namesOf(Iterator<OrmPersistentAttribute> attributes) {
+		return new TransformationIterator<OrmPersistentAttribute, String>(attributes) {
 			@Override
-			protected String transform(PersistentAttribute attribute) {
+			protected String transform(OrmPersistentAttribute attribute) {
 				return attribute.getName();
 			}
 		};

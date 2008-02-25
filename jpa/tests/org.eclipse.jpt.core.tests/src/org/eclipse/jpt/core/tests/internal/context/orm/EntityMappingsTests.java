@@ -358,7 +358,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 	}	
 
 	
-	public void testUpdateXmlPersistentTypes() throws Exception {
+	public void testUpdateOrmPersistentTypes() throws Exception {
 		assertFalse(entityMappings().ormPersistentTypes().hasNext());
 		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
 		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
@@ -399,7 +399,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 	}
 	
 	
-	public void testAddXmlPersistentType() throws Exception {
+	public void testAddOrmPersistentType() throws Exception {
 		assertFalse(entityMappings().ormPersistentTypes().hasNext());
 		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
 		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
@@ -436,7 +436,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("model.Foo3", ormResource().getEntityMappings().getMappedSuperclasses().get(0).getClassName());
 	}
 	
-	public void testRemoveXmlPersistentType() throws Exception {
+	public void testRemoveOrmPersistentType() throws Exception {
 		assertFalse(entityMappings().ormPersistentTypes().hasNext());
 		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
 		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
@@ -447,7 +447,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		entityMappings().addOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo3");
 		
 		ormResource().save(null);
-		//remove xmlPersistentType from the context model, verify resource model modified
+		//remove ormPersistentType from the context model, verify resource model modified
 		entityMappings().removeOrmPersistentType(1);
 		ormResource().save(null);
 		assertFalse(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());

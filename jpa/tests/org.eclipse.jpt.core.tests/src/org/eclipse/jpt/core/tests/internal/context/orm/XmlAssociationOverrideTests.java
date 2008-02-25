@@ -40,8 +40,8 @@ public class XmlAssociationOverrideTests extends ContextModelTestCase
 	}
 
 	public void testUpdateName() throws Exception {
-		OrmPersistentType xmlPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) xmlPersistentType.getMapping();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
+		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
 		GenericOrmAssociationOverride xmlAssociationOverride = xmlEntity.addSpecifiedAssociationOverride(0);
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
@@ -75,8 +75,8 @@ public class XmlAssociationOverrideTests extends ContextModelTestCase
 	}
 	
 	public void testModifyName() throws Exception {
-		OrmPersistentType xmlPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) xmlPersistentType.getMapping();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
+		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
 		GenericOrmAssociationOverride xmlAssociationOverride = xmlEntity.addSpecifiedAssociationOverride(0);
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
@@ -98,8 +98,8 @@ public class XmlAssociationOverrideTests extends ContextModelTestCase
 	
 	
 	public void testAddSpecifiedJoinColumn() throws Exception {
-		OrmPersistentType xmlPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) xmlPersistentType.getMapping();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
 		GenericOrmAssociationOverride associationOverride = xmlEntity.addSpecifiedAssociationOverride(0);
 		
 		XmlAssociationOverride associationOverrideResource = ormResource().getEntityMappings().getEntities().get(0).getAssociationOverrides().get(0);
@@ -138,8 +138,8 @@ public class XmlAssociationOverrideTests extends ContextModelTestCase
 	}
 	
 	public void testRemoveSpecifiedJoinColumn() throws Exception {
-		OrmPersistentType xmlPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) xmlPersistentType.getMapping();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
 		GenericOrmAssociationOverride associationOverride = xmlEntity.addSpecifiedAssociationOverride(0);
 		
 		XmlAssociationOverride associationOverrideResource = ormResource().getEntityMappings().getEntities().get(0).getAssociationOverrides().get(0);
@@ -164,8 +164,8 @@ public class XmlAssociationOverrideTests extends ContextModelTestCase
 	}
 	
 	public void testMoveSpecifiedJoinColumn() throws Exception {
-		OrmPersistentType xmlPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) xmlPersistentType.getMapping();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
 		GenericOrmAssociationOverride associationOverride = xmlEntity.addSpecifiedAssociationOverride(0);
 		
 		XmlAssociationOverride associationOverrideResource = ormResource().getEntityMappings().getEntities().get(0).getAssociationOverrides().get(0);
@@ -200,8 +200,8 @@ public class XmlAssociationOverrideTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateJoinColumns() throws Exception {
-		OrmPersistentType xmlPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) xmlPersistentType.getMapping();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
 		GenericOrmAssociationOverride associationOverride = xmlEntity.addSpecifiedAssociationOverride(0);
 		
 		XmlAssociationOverride associationOverrideResource = ormResource().getEntityMappings().getEntities().get(0).getAssociationOverrides().get(0);

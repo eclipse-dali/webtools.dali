@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.ui.actions.ActionDelegate;
 
 public class RemovePersistentAttributeFromXmlAction extends ActionDelegate
@@ -29,9 +29,9 @@ public class RemovePersistentAttributeFromXmlAction extends ActionDelegate
 	@Override
 	public void run(IAction action) {
 		if (this.selection instanceof StructuredSelection) {
-			for (Iterator<OrmPersistentAttribute> i = ((StructuredSelection) selection).iterator(); i.hasNext(); ) {
-				OrmPersistentAttribute xmlPersistentAttribute = i.next();
-				xmlPersistentAttribute.setVirtual(true);
+			for (Iterator<OrmPersistentAttribute> i = ((StructuredSelection) this.selection).iterator(); i.hasNext(); ) {
+				OrmPersistentAttribute ormPersistentAttribute = i.next();
+				ormPersistentAttribute.setVirtual(true);
 			}
 		}
 	}

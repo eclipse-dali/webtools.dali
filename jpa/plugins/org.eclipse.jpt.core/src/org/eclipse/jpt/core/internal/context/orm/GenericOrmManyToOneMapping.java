@@ -12,10 +12,11 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 
 
 public class GenericOrmManyToOneMapping extends AbstractOrmSingleRelationshipMapping<XmlManyToOne>

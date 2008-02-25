@@ -11,12 +11,13 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
-import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.MultiRelationshipMapping;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.MapKey;
-import org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping;
 
 
 public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRelationshipMapping>

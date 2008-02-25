@@ -14,23 +14,23 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.EnumType;
-import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.core.context.EmbeddedMapping;
+import org.eclipse.jpt.core.context.EnumType;
+import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.OneToOneMapping;
+import org.eclipse.jpt.core.context.TemporalType;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
-import org.eclipse.jpt.core.context.TemporalType;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmBasicMapping;
-import org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
@@ -121,8 +121,8 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 	
 	public void testUpdateName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
-		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
 		
 		assertEquals("basicMapping", xmlBasicMapping.getName());
@@ -141,8 +141,8 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 	
 	public void testModifyName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
-		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
 		
 		assertEquals("basicMapping", xmlBasicMapping.getName());
@@ -161,8 +161,8 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 
 	public void testUpdateSpecifiedFetch() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
-		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
 		
 		assertNull(xmlBasicMapping.getSpecifiedFetch());
@@ -185,8 +185,8 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 	
 	public void testModifySpecifiedFetch() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
-		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
 		
 		assertNull(xmlBasicMapping.getSpecifiedFetch());
@@ -209,8 +209,8 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 	
 	public void testUpdateSpecifiedEnumerated() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
-		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
 		
 		assertNull(xmlBasicMapping.getSpecifiedEnumerated());
@@ -233,8 +233,8 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 	
 	public void testModifySpecifiedEnumerated() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
-		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
 		
 		assertNull(xmlBasicMapping.getSpecifiedEnumerated());
@@ -257,8 +257,8 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 	
 	public void testUpdateSpecifiedOptional() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
-		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
 		
 		assertNull(xmlBasicMapping.getSpecifiedOptional());
@@ -281,8 +281,8 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 	
 	public void testModifySpecifiedOptional() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
-		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
 		
 		assertNull(xmlBasicMapping.getSpecifiedOptional());
@@ -305,8 +305,8 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 	
 	public void testUpdateSpecifiedLob() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
-		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
 		ormResource().save(null);
 		
@@ -328,8 +328,8 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 	
 	public void testModifySpecifiedLob() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
-		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
 		ormResource().save(null);
 	
@@ -351,8 +351,8 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 	
 	public void testUpdateTemporal() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
-		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
 		ormResource().save(null);
 		
@@ -384,8 +384,8 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 	
 	public void testModifyTemporal() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
-		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
+		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
 		ormResource().save(null);
 		
@@ -426,8 +426,8 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 		ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "foo");
 		assertEquals(2, ormPersistentType.virtualAttributesSize());
 		
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.specifiedAttributes().next();
-		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals("foo", xmlBasicMapping.getName());
 		assertNull(xmlBasicMapping.getSpecifiedEnumerated());
@@ -475,9 +475,9 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 		createTestEntityBasicMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		assertEquals(2, ormPersistentType.virtualAttributesSize());		
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		
-		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) xmlPersistentAttribute.getMapping();	
+		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", xmlBasicMapping.getName());
 		assertTrue(xmlBasicMapping.isLob());
 		assertEquals(EnumType.STRING, xmlBasicMapping.getSpecifiedEnumerated());
@@ -503,9 +503,9 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(2, ormPersistentType.virtualAttributesSize());		
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		
-		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) xmlPersistentAttribute.getMapping();	
+		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", xmlBasicMapping.getName());
 		assertFalse(xmlBasicMapping.isLob());
 		assertEquals(EnumType.ORDINAL, xmlBasicMapping.getSpecifiedEnumerated());
@@ -533,8 +533,8 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 		ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "id");
 		assertEquals(1, ormPersistentType.virtualAttributesSize());
 		
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.specifiedAttributes().next();
-		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		GenericOrmBasicMapping xmlBasicMapping = (GenericOrmBasicMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals("id", xmlBasicMapping.getName());
 		assertNull(xmlBasicMapping.getSpecifiedEnumerated());
@@ -579,9 +579,9 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 	public void testBasicMorphToIdMapping() throws Exception {
 		createTestEntityBasicMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
 		
-		BasicMapping basicMapping = (BasicMapping) xmlPersistentAttribute.getMapping();
+		BasicMapping basicMapping = (BasicMapping) ormPersistentAttribute.getMapping();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
 		basicMapping.setLob(true);
@@ -591,21 +591,21 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 		basicMapping.setSpecifiedOptional(Boolean.FALSE);
 		assertFalse(basicMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof IdMapping);
-		assertEquals("basic", xmlPersistentAttribute.getMapping().getName());
-		assertEquals(TemporalType.TIME, ((IdMapping) xmlPersistentAttribute.getMapping()).getTemporal());
-		assertEquals("FOO", ((IdMapping) xmlPersistentAttribute.getMapping()).getColumn().getSpecifiedName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof IdMapping);
+		assertEquals("basic", ormPersistentAttribute.getMapping().getName());
+		assertEquals(TemporalType.TIME, ((IdMapping) ormPersistentAttribute.getMapping()).getTemporal());
+		assertEquals("FOO", ((IdMapping) ormPersistentAttribute.getMapping()).getColumn().getSpecifiedName());
 	}
 	
 	public void testBasicMorphToVersionMapping() throws Exception {
 		createTestEntityBasicMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
 		
-		BasicMapping basicMapping = (BasicMapping) xmlPersistentAttribute.getMapping();
+		BasicMapping basicMapping = (BasicMapping) ormPersistentAttribute.getMapping();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
 		basicMapping.setLob(true);
@@ -615,21 +615,21 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 		basicMapping.setSpecifiedOptional(Boolean.FALSE);
 		assertFalse(basicMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof VersionMapping);
-		assertEquals("basic", xmlPersistentAttribute.getMapping().getName());
-		assertEquals(TemporalType.TIME, ((VersionMapping) xmlPersistentAttribute.getMapping()).getTemporal());
-		assertEquals("FOO", ((VersionMapping) xmlPersistentAttribute.getMapping()).getColumn().getSpecifiedName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof VersionMapping);
+		assertEquals("basic", ormPersistentAttribute.getMapping().getName());
+		assertEquals(TemporalType.TIME, ((VersionMapping) ormPersistentAttribute.getMapping()).getTemporal());
+		assertEquals("FOO", ((VersionMapping) ormPersistentAttribute.getMapping()).getColumn().getSpecifiedName());
 	}
 	
 	public void testBasicMorphToTransientMapping() throws Exception {
 		createTestEntityBasicMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
 		
-		BasicMapping basicMapping = (BasicMapping) xmlPersistentAttribute.getMapping();
+		BasicMapping basicMapping = (BasicMapping) ormPersistentAttribute.getMapping();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
 		basicMapping.setLob(true);
@@ -639,19 +639,19 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 		basicMapping.setSpecifiedOptional(Boolean.FALSE);
 		assertFalse(basicMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof TransientMapping);
-		assertEquals("basic", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof TransientMapping);
+		assertEquals("basic", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testBasicMorphToEmbeddedMapping() throws Exception {
 		createTestEntityBasicMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
 		
-		BasicMapping basicMapping = (BasicMapping) xmlPersistentAttribute.getMapping();
+		BasicMapping basicMapping = (BasicMapping) ormPersistentAttribute.getMapping();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
 		basicMapping.setLob(true);
@@ -661,19 +661,19 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 		basicMapping.setSpecifiedOptional(Boolean.FALSE);
 		assertFalse(basicMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof EmbeddedMapping);
-		assertEquals("basic", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof EmbeddedMapping);
+		assertEquals("basic", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testBasicMorphToEmbeddedIdMapping() throws Exception {
 		createTestEntityBasicMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
 		
-		BasicMapping basicMapping = (BasicMapping) xmlPersistentAttribute.getMapping();
+		BasicMapping basicMapping = (BasicMapping) ormPersistentAttribute.getMapping();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
 		basicMapping.setLob(true);
@@ -683,19 +683,19 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 		basicMapping.setSpecifiedOptional(Boolean.FALSE);
 		assertFalse(basicMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof EmbeddedIdMapping);
-		assertEquals("basic", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof EmbeddedIdMapping);
+		assertEquals("basic", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testBasicMorphToOneToOneMapping() throws Exception {
 		createTestEntityBasicMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
 		
-		BasicMapping basicMapping = (BasicMapping) xmlPersistentAttribute.getMapping();
+		BasicMapping basicMapping = (BasicMapping) ormPersistentAttribute.getMapping();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
 		basicMapping.setLob(true);
@@ -705,19 +705,19 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 		basicMapping.setSpecifiedOptional(Boolean.FALSE);
 		assertFalse(basicMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof OneToOneMapping);
-		assertEquals("basic", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof OneToOneMapping);
+		assertEquals("basic", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testBasicMorphToOneToManyMapping() throws Exception {
 		createTestEntityBasicMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
 		
-		BasicMapping basicMapping = (BasicMapping) xmlPersistentAttribute.getMapping();
+		BasicMapping basicMapping = (BasicMapping) ormPersistentAttribute.getMapping();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
 		basicMapping.setLob(true);
@@ -727,19 +727,19 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 		basicMapping.setSpecifiedOptional(Boolean.FALSE);
 		assertFalse(basicMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof OneToManyMapping);
-		assertEquals("basic", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof OneToManyMapping);
+		assertEquals("basic", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testBasicMorphToManyToOneMapping() throws Exception {
 		createTestEntityBasicMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
 		
-		BasicMapping basicMapping = (BasicMapping) xmlPersistentAttribute.getMapping();
+		BasicMapping basicMapping = (BasicMapping) ormPersistentAttribute.getMapping();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
 		basicMapping.setLob(true);
@@ -749,19 +749,19 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 		basicMapping.setSpecifiedOptional(Boolean.FALSE);
 		assertFalse(basicMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof ManyToOneMapping);
-		assertEquals("basic", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof ManyToOneMapping);
+		assertEquals("basic", ormPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testBasicMorphToManyToManyMapping() throws Exception {
 		createTestEntityBasicMapping();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
 		
-		BasicMapping basicMapping = (BasicMapping) xmlPersistentAttribute.getMapping();
+		BasicMapping basicMapping = (BasicMapping) ormPersistentAttribute.getMapping();
 		assertFalse(basicMapping.isDefault());
 		basicMapping.getColumn().setSpecifiedName("FOO");
 		basicMapping.setLob(true);
@@ -771,10 +771,10 @@ public class XmlBasicMappingTests extends ContextModelTestCase
 		basicMapping.setSpecifiedOptional(Boolean.FALSE);
 		assertFalse(basicMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(1, ormPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof ManyToManyMapping);
-		assertEquals("basic", xmlPersistentAttribute.getMapping().getName());
+		assertEquals(ormPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(ormPersistentAttribute.getMapping() instanceof ManyToManyMapping);
+		assertEquals("basic", ormPersistentAttribute.getMapping().getName());
 	}
 }

@@ -37,8 +37,8 @@ public class XmlAttributeOverrideTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateName() throws Exception {
-		OrmPersistentType xmlPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) xmlPersistentType.getMapping();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
+		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
 		GenericOrmAttributeOverride xmlAttributeOverride = xmlEntity.addSpecifiedAttributeOverride(0);
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
@@ -72,8 +72,8 @@ public class XmlAttributeOverrideTests extends ContextModelTestCase
 	}
 	
 	public void testModifyName() throws Exception {
-		OrmPersistentType xmlPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) xmlPersistentType.getMapping();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
+		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
 		GenericOrmAttributeOverride xmlAttributeOverride = xmlEntity.addSpecifiedAttributeOverride(0);
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);

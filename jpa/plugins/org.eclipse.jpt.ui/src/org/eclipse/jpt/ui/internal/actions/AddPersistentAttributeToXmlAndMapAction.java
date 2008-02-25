@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.actions;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.ui.internal.dialogs.AddPersistentAttributeToXmlAndMapDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
@@ -23,7 +23,7 @@ public class AddPersistentAttributeToXmlAndMapAction
 {
 	private Shell shell;
 	
-	private OrmPersistentAttribute unmappedXmlAttribute;
+	private OrmPersistentAttribute unmappedOrmAttribute;
 	
 	
 	public AddPersistentAttributeToXmlAndMapAction() {
@@ -31,7 +31,7 @@ public class AddPersistentAttributeToXmlAndMapAction
 	}
 	
 	public void run(IAction action) {
-		AddPersistentAttributeToXmlAndMapDialog dialog = new AddPersistentAttributeToXmlAndMapDialog(shell, unmappedXmlAttribute);
+		AddPersistentAttributeToXmlAndMapDialog dialog = new AddPersistentAttributeToXmlAndMapDialog(shell, this.unmappedOrmAttribute);
 		
 		dialog.create();
 		dialog.setBlockOnOpen(true);
@@ -39,10 +39,10 @@ public class AddPersistentAttributeToXmlAndMapAction
 	}
 	
 	public void selectionChanged(IAction action, ISelection selection) {
-		unmappedXmlAttribute = (OrmPersistentAttribute) ((StructuredSelection) selection).getFirstElement();
+		this.unmappedOrmAttribute = (OrmPersistentAttribute) ((StructuredSelection) selection).getFirstElement();
 	}
 	
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-		shell = targetPart.getSite().getShell();
+		this.shell = targetPart.getSite().getShell();
 	}
 }

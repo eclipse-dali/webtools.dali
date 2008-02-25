@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAttributeMapping;
-import org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.java.details.BasicMappingUiProvider;
@@ -59,7 +59,7 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 	private List<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders;
 
 	/**
-	 * Creates a new <code>XmlPersistentAttributeDetailsPage</code>.
+	 * Creates a new <code>OrmPersistentAttributeDetailsPage</code>.
 	 *
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets

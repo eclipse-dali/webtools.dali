@@ -16,11 +16,12 @@ import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.TemporalType;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlId;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.db.internal.Table;
 
 

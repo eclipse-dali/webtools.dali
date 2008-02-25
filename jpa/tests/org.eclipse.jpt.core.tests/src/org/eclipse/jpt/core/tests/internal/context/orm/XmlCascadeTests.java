@@ -12,12 +12,12 @@ package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToOneMapping;
 import org.eclipse.jpt.core.internal.context.orm.OrmCascade;
-import org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -40,8 +40,8 @@ public class XmlCascadeTests extends ContextModelTestCase
 	
 	public void testUpdateCascadeAll() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
-		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlOneToOne oneToOne = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
 		OrmCascade xmlCascade = xmlOneToOneMapping.getCascade();
 		
@@ -66,8 +66,8 @@ public class XmlCascadeTests extends ContextModelTestCase
 	
 	public void testModifyCascadeAll() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
-		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlOneToOne oneToOne = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
 		
 		OrmCascade xmlCascade = xmlOneToOneMapping.getCascade();
@@ -88,8 +88,8 @@ public class XmlCascadeTests extends ContextModelTestCase
 	
 	public void testUpdateCascadePersist() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
-		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlOneToOne oneToOne = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
 		OrmCascade xmlCascade = xmlOneToOneMapping.getCascade();
 		
@@ -114,8 +114,8 @@ public class XmlCascadeTests extends ContextModelTestCase
 	
 	public void testModifyCascadePersist() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
-		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlOneToOne oneToOne = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
 		
 		OrmCascade xmlCascade = xmlOneToOneMapping.getCascade();
@@ -136,8 +136,8 @@ public class XmlCascadeTests extends ContextModelTestCase
 	
 	public void testUpdateCascadeMerge() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
-		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlOneToOne oneToOne = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
 		OrmCascade xmlCascade = xmlOneToOneMapping.getCascade();
 		
@@ -162,8 +162,8 @@ public class XmlCascadeTests extends ContextModelTestCase
 	
 	public void testModifyCascadeMerge() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
-		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlOneToOne oneToOne = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
 		
 		OrmCascade xmlCascade = xmlOneToOneMapping.getCascade();
@@ -184,8 +184,8 @@ public class XmlCascadeTests extends ContextModelTestCase
 	
 	public void testUpdateCascadeRemove() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
-		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlOneToOne oneToOne = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
 		OrmCascade xmlCascade = xmlOneToOneMapping.getCascade();
 		
@@ -210,8 +210,8 @@ public class XmlCascadeTests extends ContextModelTestCase
 	
 	public void testModifyCascadeRemove() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
-		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlOneToOne oneToOne = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
 		
 		OrmCascade xmlCascade = xmlOneToOneMapping.getCascade();
@@ -232,8 +232,8 @@ public class XmlCascadeTests extends ContextModelTestCase
 	
 	public void testUpdateCascadeRefresh() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
-		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlOneToOne oneToOne = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
 		OrmCascade xmlCascade = xmlOneToOneMapping.getCascade();
 		
@@ -258,8 +258,8 @@ public class XmlCascadeTests extends ContextModelTestCase
 	
 	public void testModifyCascadeRefresh() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
-		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
+		GenericOrmOneToOneMapping xmlOneToOneMapping = (GenericOrmOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlOneToOne oneToOne = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
 		
 		OrmCascade xmlCascade = xmlOneToOneMapping.getCascade();

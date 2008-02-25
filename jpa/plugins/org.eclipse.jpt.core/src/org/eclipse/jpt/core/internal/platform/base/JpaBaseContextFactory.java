@@ -54,6 +54,7 @@ import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
@@ -67,7 +68,6 @@ import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappedSuperclass;
-import org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute;
 
 /**
  * An IJpaFactory that also assumes a base JPA project context structure 
@@ -171,12 +171,12 @@ public interface JpaBaseContextFactory extends JpaFactory
 	
 	OrmPersistentType buildOrmPersistentType(EntityMappings parent, String mappingKey);
 	
+	OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, String mappingKey);
+
 	GenericOrmEntity buildXmlEntity(OrmPersistentType parent);
 	
 	GenericOrmMappedSuperclass buildXmlMappedSuperclass(OrmPersistentType parent);
 	
 	GenericOrmEmbeddable buildXmlEmbeddable(OrmPersistentType parent);
 	
-	OrmPersistentAttribute buildXmlPersistentAttribute(OrmPersistentType parent, String mappingKey);
-
 }

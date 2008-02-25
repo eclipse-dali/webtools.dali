@@ -368,7 +368,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		assertEquals(AccessType.PROPERTY, javaPersistentType.access());
 	}
 	
-	public void testAccessXmlPersistentUnitDefaultsAccessNoAnnotations()  throws Exception {
+	public void testAccessXmlPersistenceUnitDefaultsAccessNoAnnotations()  throws Exception {
 		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntity();
 		JavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
@@ -400,7 +400,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		assertEquals(AccessType.FIELD, javaPersistentType.access());
 	}
 	
-	public void testAccessXmlPersistentUnitDefaultsAccessFieldAnnotations() throws Exception {
+	public void testAccessXmlPersistenceUnitDefaultsAccessFieldAnnotations() throws Exception {
 		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityAnnotatedField();
 		JavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 

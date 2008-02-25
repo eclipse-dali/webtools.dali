@@ -10,10 +10,11 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Fetchable;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
