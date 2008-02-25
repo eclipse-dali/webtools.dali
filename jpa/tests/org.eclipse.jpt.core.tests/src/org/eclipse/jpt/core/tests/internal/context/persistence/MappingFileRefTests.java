@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.persistence;
 
-import org.eclipse.jpt.core.internal.context.persistence.IMappingFileRef;
-import org.eclipse.jpt.core.internal.context.persistence.IPersistenceUnit;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
+import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 public class MappingFileRefTests extends ContextModelTestCase
@@ -23,19 +23,19 @@ public class MappingFileRefTests extends ContextModelTestCase
 		super(name);
 	}
 	
-	protected IMappingFileRef mappingFileRef() {
+	protected MappingFileRef mappingFileRef() {
 		return persistenceUnit().mappingFileRefs().next();
 	}
 	
 	public void testUpdateFileName() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		IPersistenceUnit persistenceUnit = persistenceUnit();
+		PersistenceUnit persistenceUnit = persistenceUnit();
 		
 		// add mapping file ref
 		XmlMappingFileRef xmlFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		xmlFileRef.setFileName("foo.xml");
 		xmlPersistenceUnit.getMappingFiles().add(xmlFileRef);
-		IMappingFileRef fileRef = persistenceUnit.specifiedMappingFileRefs().next();
+		MappingFileRef fileRef = persistenceUnit.specifiedMappingFileRefs().next();
 		
 		// test that file names are initially equal
 		assertEquals(fileRef.getFileName(), xmlFileRef.getFileName());
@@ -63,13 +63,13 @@ public class MappingFileRefTests extends ContextModelTestCase
 	
 	public void testModifyFileName() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		IPersistenceUnit persistenceUnit = persistenceUnit();
+		PersistenceUnit persistenceUnit = persistenceUnit();
 		
 		// add mapping file ref
 		XmlMappingFileRef xmlFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		xmlFileRef.setFileName("foo.xml");
 		xmlPersistenceUnit.getMappingFiles().add(xmlFileRef);
-		IMappingFileRef fileRef = persistenceUnit.specifiedMappingFileRefs().next();
+		MappingFileRef fileRef = persistenceUnit.specifiedMappingFileRefs().next();
 		
 		// test that file names are initially equal
 		assertEquals(fileRef.getFileName(), xmlFileRef.getFileName());

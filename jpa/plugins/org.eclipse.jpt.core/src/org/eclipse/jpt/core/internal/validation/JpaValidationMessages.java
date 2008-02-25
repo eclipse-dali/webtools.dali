@@ -1,53 +1,127 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0, which accompanies this distribution
- * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
- * Contributors:
- *     Oracle - initial API and implementation
- ******************************************************************************/
+ *  Copyright (c) 2005, 2007 Oracle. All rights reserved.  This program and 
+ *  the accompanying materials are made available under the terms of the 
+ *  Eclipse Public License v1.0 which accompanies this distribution, and is 
+ *  available at http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *  Contributors: 
+ *  	Oracle - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.jpt.core.internal.validation;
 
-import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.wst.validation.internal.core.Message;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+public interface JpaValidationMessages
+{
+	public static final String BUNDLE = "jpa_validation";
+	
+	
+	public static final String PROJECT_NO_CONNECTION = "PROJECT_NO_CONNECTION";
+	
+	public static final String PROJECT_INACTIVE_CONNECTION = "PROJECT_INACTIVE_CONNECTION";
+	
+	public static final String PROJECT_NO_PERSISTENCE_XML = "PROJECT_NO_PERSISTENCE_XML";
+	
+	public static final String PROJECT_MULTIPLE_PERSISTENCE_XML = "PROJECT_MULTIPLE_PERSISTENCE_XML";
+	
+	public static final String PERSISTENCE_XML_INVALID_CONTENT = "PERSISTENCE_XML_INVALID_CONTENT";
+	
+	public static final String PERSISTENCE_NO_PERSISTENCE_UNIT = "PERSISTENCE_NO_PERSISTENCE_UNIT";
 
-public class JpaValidationMessages
-	implements IJpaValidationMessages
-{	
-	private static String[] DEFAULT_PARMS = new String[0];
-	
-	private static ITextRange DEFAULT_TEXT_RANGE = ITextRange.Empty.instance();
-	
-	public static IMessage buildMessage(
-			int severity, String messageId, Object targetObject) {
-		return buildMessage(severity, messageId, DEFAULT_PARMS, targetObject);
-	}
-	
-	public static IMessage buildMessage(
-			int severity, String messageId, String[] parms, Object targetObject) {
-		return buildMessage(severity, messageId, parms, targetObject, DEFAULT_TEXT_RANGE);
-	}
-	
-	public static IMessage buildMessage(
-			int severity, String messageId, Object targetObject, ITextRange textRange) {
-		return buildMessage(severity, messageId, DEFAULT_PARMS, targetObject, textRange);
-	}
-	
-	public static IMessage buildMessage(
-			int severity, String messageId, String[] parms, Object targetObject, ITextRange textRange) {
-		IMessage message = new Message(BUNDLE, severity, messageId, parms, targetObject);
-		message.setLineNo(textRange.getLineNumber());
-		message.setOffset(textRange.getOffset());
-		message.setLength(textRange.getLength());
-		return message;
-	}
-	
-	
-	private JpaValidationMessages() {
-		super();
-		throw new UnsupportedOperationException();
-	}
+	public static final String PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS = "PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS";
 
+	public static final String PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE = "PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE";
+	
+	public static final String PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE = "PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE";
+
+	public static final String PERSISTENCE_UNIT_INVALID_MAPPING_FILE = "PERSISTENCE_UNIT_INVALID_MAPPING_FILE";
+	
+	public static final String PERSISTENCE_UNIT_DUPLICATE_MAPPING_FILE = "PERSISTENCE_UNIT_DUPLICATE_MAPPING_FILE";
+	
+	public static final String PERSISTENCE_UNIT_UNSPECIFIED_CLASS = "PERSISTENCE_UNIT_UNSPECIFIED_CLASS";
+	
+	public static final String PERSISTENCE_UNIT_NONEXISTENT_CLASS = "PERSISTENCE_UNIT_NONEXISTENT_CLASS";
+	
+	public static final String PERSISTENCE_UNIT_INVALID_CLASS = "PERSISTENCE_UNIT_INVALID_CLASS";
+	
+	public static final String PERSISTENCE_UNIT_DUPLICATE_CLASS = "PERSISTENCE_UNIT_DUPLICATE_CLASS";
+	
+	public static final String ENTITY_MAPPINGS_MULTIPLE_METADATA = "ENTITY_MAPPINGS_MULTIPLE_METADATA";
+	
+	public static final String PERSISTENT_TYPE_UNSPECIFIED_CONTEXT = "PERSISTENT_TYPE_UNSPECIFIED_CONTEXT";
+	
+	public static final String PERSISTENT_TYPE_UNSPECIFIED_CLASS = "PERSISTENT_TYPE_UNSPECIFIED_CLASS";
+	
+	public static final String PERSISTENT_TYPE_UNRESOLVED_CLASS = "PERSISTENT_TYPE_UNRESOLVED_CLASS";
+	
+	public static final String ENTITY_NO_ID = "ENTITY_NO_ID";
+	
+	public static final String PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME = "PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME";
+	
+	public static final String PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME = "PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME";
+	
+	public static final String PERSISTENT_ATTRIBUTE_FINAL_FIELD = "PERSISTENT_ATTRIBUTE_FINAL_FIELD";
+	
+	public static final String PERSISTENT_ATTRIBUTE_PUBLIC_FIELD = "PERSISTENT_ATTRIBUTE_PUBLIC_FIELD";
+	
+	public static final String PERSISTENT_ATTRIBUTE_INVALID_MAPPING = "PERSISTENT_ATTRIBUTE_INVALID_MAPPING";
+	
+	public static final String MAPPING_UNRESOLVED_MAPPED_BY = "MAPPING_UNRESOLVED_MAPPED_BY";
+	
+	public static final String MAPPING_INVALID_MAPPED_BY = "MAPPING_INVALID_MAPPED_BY";
+	
+	public static final String MAPPING_MAPPED_BY_WITH_JOIN_TABLE = "MAPPING_MAPPED_BY_WITH_JOIN_TABLE";
+	
+	public static final String MAPPING_MAPPED_BY_ON_BOTH_SIDES = "MAPPING_MAPPED_BY_ON_BOTH_SIDES";
+	
+	public static final String TABLE_UNRESOLVED_SCHEMA = "TABLE_UNRESOLVED_SCHEMA";
+	
+	public static final String TABLE_UNRESOLVED_NAME = "TABLE_UNRESOLVED_NAME";
+	
+	public static final String SECONDARY_TABLE_UNRESOLVED_SCHEMA = "SECONDARY_TABLE_UNRESOLVED_SCHEMA";
+	
+	public static final String SECONDARY_TABLE_UNRESOLVED_NAME = "SECONDARY_TABLE_UNRESOLVED_NAME";
+
+	public static final String JOIN_TABLE_UNRESOLVED_SCHEMA = "JOIN_TABLE_UNRESOLVED_SCHEMA";
+	
+	public static final String VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA = "VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA";
+	
+	public static final String JOIN_TABLE_UNRESOLVED_NAME = "JOIN_TABLE_UNRESOLVED_NAME";
+	
+	public static final String VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME = "VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME";
+	
+	public static final String COLUMN_UNRESOLVED_TABLE = "COLUMN_UNRESOLVED_TABLE";
+	
+	public static final String VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_TABLE = "VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_TABLE";
+	
+	public static final String VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_TABLE = "VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_TABLE";
+	
+	public static final String COLUMN_UNRESOLVED_NAME = "COLUMN_UNRESOLVED_NAME";
+	
+	public static final String VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME = "VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME";
+	
+	public static final String VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME = "VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME";
+	
+	public static final String JOIN_COLUMN_UNRESOLVED_TABLE = "JOIN_COLUMN_UNRESOLVED_TABLE";
+	
+	public static final String VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_TABLE = "VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_TABLE";
+	
+	public static final String VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_TABLE = "VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_TABLE";
+	
+	public static final String JOIN_COLUMN_UNRESOLVED_NAME = "JOIN_COLUMN_UNRESOLVED_NAME";
+	
+	public static final String VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME = "VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME";
+	
+	public static final String VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME = "VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME";
+	
+	public static final String JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME = "JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME";
+	
+	public static final String VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME = "VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME";
+
+	public static final String VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME = "VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME";
+	
+	public static final String GENERATED_VALUE_UNRESOLVED_GENERATOR = "GENERATED_VALUE_UNRESOLVED_GENERATOR";
+	
+	public static final String PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME = "PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME";
+	
+	public static final String PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME = "PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME";
+	
 }

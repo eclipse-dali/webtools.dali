@@ -12,17 +12,17 @@ package org.eclipse.jpt.ui.internal.structure;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.internal.IJpaStructureNode;
-import org.eclipse.jpt.core.internal.IResourceModel;
-import org.eclipse.jpt.core.internal.context.base.IPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModel;
+import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.ResourceModel;
+import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.resource.orm.OrmResourceModel;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
-import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProvider;
+import org.eclipse.jpt.ui.internal.jface.TreeItemContentProvider;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
@@ -30,7 +30,7 @@ import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentProviderFactory
 {
 	@Override
-	public ITreeItemContentProvider buildItemContentProvider(
+	public TreeItemContentProvider buildItemContentProvider(
 			Object item, DelegatingContentAndLabelProvider contentProvider) {
 		DelegatingTreeContentAndLabelProvider treeContentProvider = (DelegatingTreeContentAndLabelProvider) contentProvider;
 		if (item instanceof OrmResourceModel) {
@@ -44,35 +44,35 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 	
 	
 	@Override
-	protected ITreeItemContentProvider buildPersistentTypeItemContentProvider(IPersistentType persistentType, DelegatingTreeContentAndLabelProvider treeContentProvider) {
-		return new PersistentTypeItemContentProvider((XmlPersistentType) persistentType, treeContentProvider);
+	protected TreeItemContentProvider buildPersistentTypeItemContentProvider(PersistentType persistentType, DelegatingTreeContentAndLabelProvider treeContentProvider) {
+		return new PersistentTypeItemContentProvider((OrmPersistentType) persistentType, treeContentProvider);
 	}
 	
-	public static class PersistentTypeItemContentProvider extends AbstractTreeItemContentProvider<XmlPersistentAttribute>
+	public static class PersistentTypeItemContentProvider extends AbstractTreeItemContentProvider<OrmPersistentAttribute>
 	{
 		public PersistentTypeItemContentProvider(
-			XmlPersistentType persistentType, DelegatingTreeContentAndLabelProvider contentProvider) {
+			OrmPersistentType persistentType, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(persistentType, contentProvider);
 		}
 		
 		@Override
 		public Object getParent() {
-			return ((XmlPersistentType) model()).parent();
+			return ((OrmPersistentType) model()).parent();
 		}
 		
 		@Override
-		protected ListValueModel<XmlPersistentAttribute> buildChildrenModel() {
-			java.util.List<ListValueModel<XmlPersistentAttribute>> list = new ArrayList<ListValueModel<XmlPersistentAttribute>>();
+		protected ListValueModel<OrmPersistentAttribute> buildChildrenModel() {
+			java.util.List<ListValueModel<OrmPersistentAttribute>> list = new ArrayList<ListValueModel<OrmPersistentAttribute>>();
 			list.add(buildSpecifiedPersistentAttributesListHolder());
 			list.add(buildVirtualPersistentAttributesListHolder());
-			return new CompositeListValueModel<ListValueModel<XmlPersistentAttribute>, XmlPersistentAttribute>(list);
+			return new CompositeListValueModel<ListValueModel<OrmPersistentAttribute>, OrmPersistentAttribute>(list);
 		}
 		
 
-		protected ListValueModel<XmlPersistentAttribute> buildSpecifiedPersistentAttributesListHolder() {
-			return new ListAspectAdapter<XmlPersistentType, XmlPersistentAttribute>(new String[]{IPersistentType.SPECIFIED_ATTRIBUTES_LIST}, (XmlPersistentType) model()) {
+		protected ListValueModel<OrmPersistentAttribute> buildSpecifiedPersistentAttributesListHolder() {
+			return new ListAspectAdapter<OrmPersistentType, OrmPersistentAttribute>(new String[]{PersistentType.SPECIFIED_ATTRIBUTES_LIST}, (OrmPersistentType) model()) {
 				@Override
-				protected ListIterator<XmlPersistentAttribute> listIterator_() {
+				protected ListIterator<OrmPersistentAttribute> listIterator_() {
 					return subject.specifiedAttributes();
 				}
 				@Override
@@ -82,10 +82,10 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 			};
 		}
 		
-		protected ListValueModel<XmlPersistentAttribute> buildVirtualPersistentAttributesListHolder() {
-			return new ListAspectAdapter<XmlPersistentType, XmlPersistentAttribute>(new String[]{XmlPersistentType.VIRTUAL_ATTRIBUTES_LIST}, (XmlPersistentType) model()) {
+		protected ListValueModel<OrmPersistentAttribute> buildVirtualPersistentAttributesListHolder() {
+			return new ListAspectAdapter<OrmPersistentType, OrmPersistentAttribute>(new String[]{OrmPersistentType.VIRTUAL_ATTRIBUTES_LIST}, (OrmPersistentType) model()) {
 				@Override
-				protected ListIterator<XmlPersistentAttribute> listIterator_() {
+				protected ListIterator<OrmPersistentAttribute> listIterator_() {
 					return subject.virtualAttributes();
 				}
 				@Override
@@ -97,7 +97,7 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 }
 	
 	
-	public static class OrmResourceModelItemContentProvider extends AbstractTreeItemContentProvider<IJpaStructureNode>
+	public static class OrmResourceModelItemContentProvider extends AbstractTreeItemContentProvider<JpaStructureNode>
 	{
 		public OrmResourceModelItemContentProvider(
 				OrmResourceModel ormResourceModel, DelegatingTreeContentAndLabelProvider contentProvider) {
@@ -110,11 +110,11 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 		}
 		
 		@Override
-		protected ListValueModel<IJpaStructureNode> buildChildrenModel() {
-			return new ListAspectAdapter<OrmResourceModel, IJpaStructureNode>(
-					IResourceModel.ROOT_STRUCTURE_NODES_LIST, (OrmResourceModel) model()) {
+		protected ListValueModel<JpaStructureNode> buildChildrenModel() {
+			return new ListAspectAdapter<OrmResourceModel, JpaStructureNode>(
+					ResourceModel.ROOT_STRUCTURE_NODES_LIST, (OrmResourceModel) model()) {
 				@Override
-				protected ListIterator<IJpaStructureNode> listIterator_() {
+				protected ListIterator<JpaStructureNode> listIterator_() {
 					return subject.rootStructureNodes();
 				}
 			};
@@ -122,7 +122,7 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 	}
 	
 	
-	public static class EntityMappingsItemContentProvider extends AbstractTreeItemContentProvider<XmlPersistentType>
+	public static class EntityMappingsItemContentProvider extends AbstractTreeItemContentProvider<OrmPersistentType>
 	{
 		public EntityMappingsItemContentProvider(
 				EntityMappings entityMappings, DelegatingTreeContentAndLabelProvider contentProvider) {
@@ -138,12 +138,12 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 		}
 		
 		@Override
-		protected ListValueModel<XmlPersistentType> buildChildrenModel() {
-			return new ListAspectAdapter<EntityMappings, XmlPersistentType>(
+		protected ListValueModel<OrmPersistentType> buildChildrenModel() {
+			return new ListAspectAdapter<EntityMappings, OrmPersistentType>(
 					EntityMappings.PERSISTENT_TYPES_LIST, (EntityMappings) model()) {
 				@Override
-				protected ListIterator<XmlPersistentType> listIterator_() {
-					return subject.xmlPersistentTypes();
+				protected ListIterator<OrmPersistentType> listIterator_() {
+					return subject.ormPersistentTypes();
 				}
 			};
 		}

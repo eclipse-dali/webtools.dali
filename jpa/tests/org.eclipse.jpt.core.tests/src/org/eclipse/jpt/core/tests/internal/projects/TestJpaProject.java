@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.tests.internal.projects;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.SynchronousJpaProjectUpdater;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
@@ -23,7 +23,7 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
  * controlled by building a data model and passing it into the constructor.
  */
 public class TestJpaProject extends TestJavaProject {
-	private final IJpaProject jpaProject;
+	private final JpaProject jpaProject;
 
 	public static final String JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.jpa.jar";
 
@@ -66,7 +66,7 @@ public class TestJpaProject extends TestJavaProject {
 
 	// ********** public methods **********
 
-	public IJpaProject getJpaProject() {
+	public JpaProject getJpaProject() {
 		return this.jpaProject;
 	}
 

@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.persistence;
 
-import org.eclipse.jpt.core.internal.context.persistence.IClassRef;
-import org.eclipse.jpt.core.internal.context.persistence.IPersistenceUnit;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
+import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 public class ClassRefTests extends ContextModelTestCase
@@ -25,13 +25,13 @@ public class ClassRefTests extends ContextModelTestCase
 	
 	public void testUpdateClassName() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		IPersistenceUnit persistenceUnit = persistenceUnit();
+		PersistenceUnit persistenceUnit = persistenceUnit();
 		
 		// add class ref
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		xmlClassRef.setJavaClass("com.foo.Bar");
 		xmlPersistenceUnit.getClasses().add(xmlClassRef);
-		IClassRef classRef = persistenceUnit.specifiedClassRefs().next();
+		ClassRef classRef = persistenceUnit.specifiedClassRefs().next();
 		
 		// test that class names are initially equal
 		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
@@ -59,13 +59,13 @@ public class ClassRefTests extends ContextModelTestCase
 	
 	public void testModifyClassName() {
 		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		IPersistenceUnit persistenceUnit = persistenceUnit();
+		PersistenceUnit persistenceUnit = persistenceUnit();
 		
 		// add class ref
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		xmlClassRef.setJavaClass("com.foo.Bar");
 		xmlPersistenceUnit.getClasses().add(xmlClassRef);
-		IClassRef classRef = persistenceUnit.specifiedClassRefs().next();
+		ClassRef classRef = persistenceUnit.specifiedClassRefs().next();
 		
 		// test that class names are initially equal
 		assertEquals(classRef.getClassName(), xmlClassRef.getJavaClass());
@@ -101,7 +101,7 @@ public class ClassRefTests extends ContextModelTestCase
 		xmlClassRef.setJavaClass(FULLY_QUALIFIED_TYPE_NAME);
 		xmlPersistenceUnit.getClasses().add(xmlClassRef);
 		
-		IClassRef classRef = classRef();
+		ClassRef classRef = classRef();
 		
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, classRef.getJavaPersistentType().getName());
 		

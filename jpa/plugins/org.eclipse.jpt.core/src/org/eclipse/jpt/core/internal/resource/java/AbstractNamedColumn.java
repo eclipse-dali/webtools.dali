@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.BooleanExpressionConverter;
@@ -20,8 +20,11 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdap
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.NumberIntegerExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NamedColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 
-public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Member> implements NamedColumn
+public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Member> implements NamedColumnAnnotation
 {
 	// hold this so we can get the 'name' text range
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
@@ -36,7 +39,7 @@ public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Mem
 	private String name;
 	private String columnDefinition;
 	
-	public AbstractNamedColumn(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	public AbstractNamedColumn(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildStringElementAdapter(this.nameElementName());
 		this.nameAdapter = this.buildShortCircuitElementAdapter(this.nameDeclarationAdapter);
@@ -81,7 +84,7 @@ public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Mem
 	}
 	
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		NamedColumn oldColumn = (NamedColumn) oldAnnotation;
+		NamedColumnAnnotation oldColumn = (NamedColumnAnnotation) oldAnnotation;
 		setName(oldColumn.getName());
 		setColumnDefinition(oldColumn.getColumnDefinition());
 	}
@@ -109,11 +112,11 @@ public abstract class AbstractNamedColumn extends AbstractAnnotationResource<Mem
 		firePropertyChanged(COLUMN_DEFINITION_PROPERTY, oldColumnDefinition, newColumnDefinition);
 	}	
 
-	public ITextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange nameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
-	public ITextRange columnDefinitionTextRange(CompilationUnit astRoot) {
+	public TextRange columnDefinitionTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.columnDefinitionDeclarationAdapter, astRoot);
 	}
 	

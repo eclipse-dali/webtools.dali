@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
@@ -19,6 +19,12 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdap
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.MapKey;
 
 public class MapKeyImpl extends AbstractAnnotationResource<Attribute> implements MapKey
 {
@@ -31,7 +37,7 @@ public class MapKeyImpl extends AbstractAnnotationResource<Attribute> implements
 
 	private String name;
 	
-	protected MapKeyImpl(JavaResource parent, Attribute attribute) {
+	protected MapKeyImpl(JavaResourceNode parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, NAME_ADAPTER);
 	}
@@ -55,7 +61,7 @@ public class MapKeyImpl extends AbstractAnnotationResource<Attribute> implements
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
-	public ITextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange nameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(NAME_ADAPTER, astRoot);
 	}
 
@@ -96,11 +102,11 @@ public class MapKeyImpl extends AbstractAnnotationResource<Attribute> implements
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new MapKeyImpl(parent, (Attribute) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 		

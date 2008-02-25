@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jst.j2ee.classpathdep.ClasspathDependencyUtil;
@@ -34,7 +34,7 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
  * used in the POST_INSTALL event listener to build the JPA project.
  */
 public class JpaFacetInstallDelegate 
-	implements IDelegate, IJpaFacetDataModelProperties
+	implements IDelegate, JpaFacetDataModelProperties
 {
 
 	public void execute(IProject project, IProjectFacetVersion fv, 

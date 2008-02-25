@@ -11,13 +11,13 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
 import java.util.Iterator;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.context.base.IIdMapping;
-import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
@@ -49,14 +49,14 @@ import org.eclipse.swt.widgets.Text;
  * |                           ----------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IIdMapping
- * @see ITableGenerator
+ * @see IdMapping
+ * @see TableGenerator
  * @see GenerationComposite - The parent container
  *
  * @version 2.0
  * @since 1.0
  */
-public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
+public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 {
 	/**
 	 * Creates a new <code>TableGeneratorComposite</code>.
@@ -64,7 +64,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TableGeneratorComposite(AbstractFormPane<? extends IIdMapping> parentPane,
+	public TableGeneratorComposite(AbstractFormPane<? extends IdMapping> parentPane,
 	                               Composite parent) {
 
 		super(parentPane, parent);
@@ -74,19 +74,19 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected ITableGenerator buildGenerator() {
+	protected TableGenerator buildGenerator() {
 		return subject().addTableGenerator();
 	}
 
-	private ColumnCombo<ITableGenerator> buildPkColumnNameCombo(Composite parent) {
+	private ColumnCombo<TableGenerator> buildPkColumnNameCombo(Composite parent) {
 
-		return new ColumnCombo<ITableGenerator>(this, buildTableGeneratorHolder(), parent) {
+		return new ColumnCombo<TableGenerator>(this, buildTableGeneratorHolder(), parent) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ITableGenerator.DEFAULT_PK_COLUMN_NAME_PROPERTY);
-				propertyNames.add(ITableGenerator.SPECIFIED_PK_COLUMN_NAME_PROPERTY);
+				propertyNames.add(TableGenerator.DEFAULT_PK_COLUMN_NAME_PROPERTY);
+				propertyNames.add(TableGenerator.SPECIFIED_PK_COLUMN_NAME_PROPERTY);
 			}
 
 			@Override
@@ -105,7 +105,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 			}
 
 			@Override
-			protected IJpaProject jpaProject() {
+			protected JpaProject jpaProject() {
 				return TableGeneratorComposite.this.jpaProject();
 			}
 
@@ -134,15 +134,15 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		};
 	}
 
-	private ColumnCombo<ITableGenerator> buildPkColumnValueCombo(Composite parent) {
+	private ColumnCombo<TableGenerator> buildPkColumnValueCombo(Composite parent) {
 
-		return new ColumnCombo<ITableGenerator>(this, buildTableGeneratorHolder(), parent) {
+		return new ColumnCombo<TableGenerator>(this, buildTableGeneratorHolder(), parent) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ITableGenerator.DEFAULT_PK_COLUMN_VALUE_PROPERTY);
-				propertyNames.add(ITableGenerator.SPECIFIED_PK_COLUMN_VALUE_PROPERTY);
+				propertyNames.add(TableGenerator.DEFAULT_PK_COLUMN_VALUE_PROPERTY);
+				propertyNames.add(TableGenerator.SPECIFIED_PK_COLUMN_VALUE_PROPERTY);
 			}
 
 			@Override
@@ -161,7 +161,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 			}
 
 			@Override
-			protected IJpaProject jpaProject() {
+			protected JpaProject jpaProject() {
 				return TableGeneratorComposite.this.jpaProject();
 			}
 
@@ -190,24 +190,24 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		};
 	}
 
-	private PropertyValueModel<ITableGenerator> buildTableGeneratorHolder() {
-		return new PropertyAspectAdapter<IIdMapping, ITableGenerator>(getSubjectHolder(), propertyName()) {
+	private PropertyValueModel<TableGenerator> buildTableGeneratorHolder() {
+		return new PropertyAspectAdapter<IdMapping, TableGenerator>(getSubjectHolder(), propertyName()) {
 			@Override
-			protected ITableGenerator buildValue_() {
+			protected TableGenerator buildValue_() {
 				return subject.getTableGenerator();
 			}
 		};
 	}
 
-	private TableCombo<ITableGenerator> buildTableNameCombo(Composite parent) {
+	private TableCombo<TableGenerator> buildTableNameCombo(Composite parent) {
 
-		return new TableCombo<ITableGenerator>(this, buildTableGeneratorHolder(), parent) {
+		return new TableCombo<TableGenerator>(this, buildTableGeneratorHolder(), parent) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ITableGenerator.DEFAULT_TABLE_PROPERTY);
-				propertyNames.add(ITableGenerator.SPECIFIED_TABLE_PROPERTY);
+				propertyNames.add(TableGenerator.DEFAULT_TABLE_PROPERTY);
+				propertyNames.add(TableGenerator.SPECIFIED_TABLE_PROPERTY);
 			}
 
 			@Override
@@ -226,7 +226,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 			}
 
 			@Override
-			protected IJpaProject jpaProject() {
+			protected JpaProject jpaProject() {
 				return TableGeneratorComposite.this.jpaProject();
 			}
 
@@ -268,15 +268,15 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 		};
 	}
 
-	private ColumnCombo<ITableGenerator> buildValueColumnCombo(Composite parent) {
+	private ColumnCombo<TableGenerator> buildValueColumnCombo(Composite parent) {
 
-		return new ColumnCombo<ITableGenerator>(this, buildTableGeneratorHolder(), parent) {
+		return new ColumnCombo<TableGenerator>(this, buildTableGeneratorHolder(), parent) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ITableGenerator.DEFAULT_VALUE_COLUMN_NAME_PROPERTY);
-				propertyNames.add(ITableGenerator.SPECIFIED_VALUE_COLUMN_NAME_PROPERTY);
+				propertyNames.add(TableGenerator.DEFAULT_VALUE_COLUMN_NAME_PROPERTY);
+				propertyNames.add(TableGenerator.SPECIFIED_VALUE_COLUMN_NAME_PROPERTY);
 			}
 
 			@Override
@@ -295,7 +295,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 			}
 
 			@Override
-			protected IJpaProject jpaProject() {
+			protected JpaProject jpaProject() {
 				return TableGeneratorComposite.this.jpaProject();
 			}
 
@@ -328,7 +328,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected ITableGenerator generator(IIdMapping subject) {
+	protected TableGenerator generator(IdMapping subject) {
 		return (subject != null) ? subject.getTableGenerator() : null;
 	}
 
@@ -346,7 +346,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_name,
 			nameText.getParent(),
-			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_NAME
+			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_NAME
 		);
 
 		// Table widgets
@@ -354,7 +354,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_table,
 			buildTableNameCombo(container),
-			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_TABLE
+			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_TABLE
 		);
 
 		// Primary Key Column widgets
@@ -362,7 +362,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_pkColumn,
 			buildPkColumnNameCombo(container),
-			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN
+			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN
 		);
 
 		// Value Column widgets
@@ -370,7 +370,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_valueColumn,
 			buildValueColumnCombo(container),
-			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_VALUE_COLUMN
+			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_VALUE_COLUMN
 		);
 
 		// Primary Key Column Value widgets
@@ -378,7 +378,7 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_pkColumnValue,
 			buildPkColumnValueCombo(container),
-			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN_VALUE
+			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN_VALUE
 		);
 	}
 
@@ -387,6 +387,6 @@ public class TableGeneratorComposite extends GeneratorComposite<ITableGenerator>
 	 */
 	@Override
 	protected String propertyName() {
-		return IIdMapping.TABLE_GENERATOR_PROPERTY;
+		return IdMapping.TABLE_GENERATOR_PROPERTY;
 	}
 }

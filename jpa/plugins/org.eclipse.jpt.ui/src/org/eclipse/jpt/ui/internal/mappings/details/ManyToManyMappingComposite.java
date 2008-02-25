@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.ICascade;
-import org.eclipse.jpt.core.internal.context.base.IJoinTable;
-import org.eclipse.jpt.core.internal.context.base.IManyToManyMapping;
-import org.eclipse.jpt.ui.internal.details.IJpaComposite;
+import org.eclipse.jpt.core.context.Cascade;
+import org.eclipse.jpt.core.context.JoinTable;
+import org.eclipse.jpt.core.context.ManyToManyMapping;
+import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -52,7 +52,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IManyToManyMapping
+ * @see ManyToManyMapping
  * @see BaseJpaUiFactory - The factory creating this pane
  * @see CascadeComposite
  * @see FetchTypeComposite
@@ -63,8 +63,8 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class ManyToManyMappingComposite extends AbstractFormPane<IManyToManyMapping>
-                                        implements IJpaComposite<IManyToManyMapping>
+public class ManyToManyMappingComposite extends AbstractFormPane<ManyToManyMapping>
+                                        implements JpaComposite<ManyToManyMapping>
 {
 	/**
 	 * Creates a new <code>ManyToManyMappingComposite</code>.
@@ -73,26 +73,26 @@ public class ManyToManyMappingComposite extends AbstractFormPane<IManyToManyMapp
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public ManyToManyMappingComposite(PropertyValueModel<? extends IManyToManyMapping> subjectHolder,
+	public ManyToManyMappingComposite(PropertyValueModel<? extends ManyToManyMapping> subjectHolder,
 	                                  Composite parent,
 	                                  TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private PropertyValueModel<ICascade> buildCascadeHolder() {
-		return new TransformationPropertyValueModel<IManyToManyMapping, ICascade>(getSubjectHolder()) {
+	private PropertyValueModel<Cascade> buildCascadeHolder() {
+		return new TransformationPropertyValueModel<ManyToManyMapping, Cascade>(getSubjectHolder()) {
 			@Override
-			protected ICascade transform_(IManyToManyMapping value) {
+			protected Cascade transform_(ManyToManyMapping value) {
 				return value.getCascade();
 			}
 		};
 	}
 
-	private PropertyValueModel<IJoinTable> buildJointTableHolder() {
-		return new TransformationPropertyValueModel<IManyToManyMapping, IJoinTable>(getSubjectHolder()) {
+	private PropertyValueModel<JoinTable> buildJointTableHolder() {
+		return new TransformationPropertyValueModel<ManyToManyMapping, JoinTable>(getSubjectHolder()) {
 			@Override
-			protected IJoinTable transform_(IManyToManyMapping value) {
+			protected JoinTable transform_(ManyToManyMapping value) {
 				return value.getJoinTable();
 			}
 		};

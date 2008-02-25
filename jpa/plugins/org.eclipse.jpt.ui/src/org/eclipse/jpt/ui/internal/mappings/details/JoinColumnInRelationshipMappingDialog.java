@@ -9,16 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.swt.widgets.Shell;
 
 /**
  * This dialog is used to either create or edit a joing column that is located
  * on a relational mapping.
  *
- * @see IJoinColumn
- * @see IRelationshipMapping
+ * @see JoinColumn
+ * @see RelationshipMapping
  * @see JoinColumnInRelationshipMappingStateObject
  * @see JoinColumnDialogPane
  *
@@ -37,8 +37,8 @@ public class JoinColumnInRelationshipMappingDialog extends JoinColumnDialog<Join
 	 * used to create a new one
 	 */
 	JoinColumnInRelationshipMappingDialog(Shell parent,
-	                                      IRelationshipMapping relationshipMapping,
-	                                      IJoinColumn joinColumn) {
+	                                      RelationshipMapping relationshipMapping,
+	                                      JoinColumn joinColumn) {
 
 		super(parent, relationshipMapping, joinColumn);
 	}
@@ -58,7 +58,7 @@ public class JoinColumnInRelationshipMappingDialog extends JoinColumnDialog<Join
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected IRelationshipMapping getOwner() {
-		return (IRelationshipMapping) super.getOwner();
+	protected RelationshipMapping getOwner() {
+		return (RelationshipMapping) super.getOwner();
 	}
 }

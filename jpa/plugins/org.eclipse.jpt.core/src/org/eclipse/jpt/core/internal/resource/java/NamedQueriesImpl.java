@@ -17,6 +17,13 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NamedQueries;
+import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableNamedQuery;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
@@ -27,7 +34,7 @@ public class NamedQueriesImpl extends AbstractAnnotationResource<Type> implement
 
 	private List<NestableNamedQuery> namedQueries;
 	
-	protected NamedQueriesImpl(JavaResource parent, Type type) {
+	protected NamedQueriesImpl(JavaResourceNode parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.namedQueries = new ArrayList<NestableNamedQuery>();
 	}
@@ -41,7 +48,7 @@ public class NamedQueriesImpl extends AbstractAnnotationResource<Type> implement
 	}
 
 	public String getNestableAnnotationName() {
-		return NamedQuery.ANNOTATION_NAME;
+		return NamedQueryAnnotation.ANNOTATION_NAME;
 	}
 
 	public String getElementName() {
@@ -132,11 +139,11 @@ public class NamedQueriesImpl extends AbstractAnnotationResource<Type> implement
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new NamedQueriesImpl(parent, (Type) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

@@ -22,7 +22,7 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * Implementation of {@link IStructuredContentProvider} and {@link ILabelProvider} that 
- * maintains a collection (Map, actually) of {@link IItemContentProvider} 
+ * maintains a collection (Map, actually) of {@link ItemContentProvider} 
  * delegates that perform the function of providing content and label information
  * for each represented item
  * 
@@ -33,35 +33,35 @@ import org.eclipse.swt.graphics.Image;
 public abstract class DelegatingContentAndLabelProvider extends BaseLabelProvider
 	implements IStructuredContentProvider, ILabelProvider
 {
-	private final IItemContentProviderFactory itemContentProviderFactory;
+	private final ItemContentProviderFactory itemContentProviderFactory;
 	
-	private final IItemLabelProviderFactory itemLabelProviderFactory;
+	private final ItemLabelProviderFactory itemLabelProviderFactory;
 	
-	private final Map<Object, IItemContentProvider> itemContentProviders;
+	private final Map<Object, ItemContentProvider> itemContentProviders;
 	
-	private final Map<Object, IItemLabelProvider> itemLabelProviders;
+	private final Map<Object, ItemLabelProvider> itemLabelProviders;
 	
 	private StructuredViewer viewer;
 	
 	
 	protected DelegatingContentAndLabelProvider(
-			IItemContentProviderFactory itemContentProviderFactory) {
+			ItemContentProviderFactory itemContentProviderFactory) {
 		this(itemContentProviderFactory, null);
 	}
 	
 	protected DelegatingContentAndLabelProvider(
-			IItemContentProviderFactory itemContentProviderFactory,
-			IItemLabelProviderFactory itemLabelProviderFactory) {
+			ItemContentProviderFactory itemContentProviderFactory,
+			ItemLabelProviderFactory itemLabelProviderFactory) {
 		super();
 		this.itemContentProviderFactory = itemContentProviderFactory;
 		this.itemLabelProviderFactory = itemLabelProviderFactory;
-		this.itemContentProviders = new HashMap<Object, IItemContentProvider>();
-		this.itemLabelProviders = new HashMap<Object, IItemLabelProvider>();
+		this.itemContentProviders = new HashMap<Object, ItemContentProvider>();
+		this.itemLabelProviders = new HashMap<Object, ItemLabelProvider>();
 	}
 	
 	
-	protected IItemContentProvider itemContentProvider(Object item) {
-		IItemContentProvider itemContentProvider = itemContentProviders.get(item);
+	protected ItemContentProvider itemContentProvider(Object item) {
+		ItemContentProvider itemContentProvider = itemContentProviders.get(item);
 		if (itemContentProvider != null) {
 			return itemContentProvider;
 		}
@@ -73,13 +73,13 @@ public abstract class DelegatingContentAndLabelProvider extends BaseLabelProvide
 		return itemContentProvider;
 	}
 	
-	protected IItemLabelProvider itemLabelProvider(Object item) {
+	protected ItemLabelProvider itemLabelProvider(Object item) {
 		if (viewer == null) {
 			throw new IllegalStateException(
 					"This provider must be used as a content" +
 					"provider *as well as* a label provider.");
 		}
-		IItemLabelProvider itemLabelProvider = itemLabelProviders.get(item);
+		ItemLabelProvider itemLabelProvider = itemLabelProviders.get(item);
 		if (itemLabelProvider != null) {
 			return itemLabelProvider;
 		}

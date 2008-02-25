@@ -10,14 +10,16 @@
 package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jpt.core.JpaPlatform;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Straightforward implementation of the JPA project config.
  */
-public class SimpleJpaProjectConfig implements IJpaProject.Config {
+public class SimpleJpaProjectConfig implements JpaProject.Config {
 	protected IProject project;
-	protected IJpaPlatform jpaPlatform;
+	protected JpaPlatform jpaPlatform;
 	protected String connectionProfileName;
 	protected boolean discoverAnnotatedClasses;
 
@@ -33,11 +35,11 @@ public class SimpleJpaProjectConfig implements IJpaProject.Config {
 		this.project = project;
 	}
 
-	public IJpaPlatform jpaPlatform() {
+	public JpaPlatform jpaPlatform() {
 		return this.jpaPlatform;
 	}
 
-	public void setJpaPlatform(IJpaPlatform jpaPlatform) {
+	public void setJpaPlatform(JpaPlatform jpaPlatform) {
 		this.jpaPlatform = jpaPlatform;
 	}
 

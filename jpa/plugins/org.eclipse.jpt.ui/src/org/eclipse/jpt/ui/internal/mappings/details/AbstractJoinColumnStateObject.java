@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
+import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.utility.internal.node.Node;
@@ -18,7 +18,7 @@ import org.eclipse.jpt.utility.internal.node.Node;
  * The abstract definition of a state object used to edit or create a new
  * join column.
  *
- * @see IAbstractJoinColumn
+ * @see AbstractJoinColumn
  *
  * @version 2.0
  * @since 2.0
@@ -30,7 +30,7 @@ public abstract class AbstractJoinColumnStateObject extends AbstractNode
 	 * Either the join column is being edited or <code>null</code> the state
 	 * object is being created.
 	 */
-	private IAbstractJoinColumn joinColumn;
+	private AbstractJoinColumn joinColumn;
 
 	/**
 	 * The join column's name or <code>null</code> if not defined.
@@ -70,7 +70,7 @@ public abstract class AbstractJoinColumnStateObject extends AbstractNode
 	 * this state object is used to create a new one
 	 */
 	public AbstractJoinColumnStateObject(Object owner,
-	                                     IAbstractJoinColumn joinColumn) {
+	                                     AbstractJoinColumn joinColumn) {
 		super(null);
 		initialize(owner, joinColumn);
 	}
@@ -125,7 +125,7 @@ public abstract class AbstractJoinColumnStateObject extends AbstractNode
 	 *
 	 * @return The edited join column or <code>null</code>
 	 */
-	public IAbstractJoinColumn getJoinColumn() {
+	public AbstractJoinColumn getJoinColumn() {
 		return this.joinColumn;
 	}
 
@@ -184,7 +184,7 @@ public abstract class AbstractJoinColumnStateObject extends AbstractNode
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
-	protected void initialize(Object owner, IAbstractJoinColumn joinColumn) {
+	protected void initialize(Object owner, AbstractJoinColumn joinColumn) {
 
 		this.owner      = owner;
 		this.joinColumn = joinColumn;
@@ -233,7 +233,7 @@ public abstract class AbstractJoinColumnStateObject extends AbstractNode
 	 *
 	 * @param joinColumn The join column to update
 	 */
-	public void updateJoinColumn(IAbstractJoinColumn joinColumn) {
+	public void updateJoinColumn(AbstractJoinColumn joinColumn) {
 
 		// Name
 		if (valuesAreDifferent(name, joinColumn.getSpecifiedName())) {

@@ -10,12 +10,16 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.Basic;
+import org.eclipse.jpt.core.resource.java.FetchType;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 
 
 public class NullBasic extends AbstractResource implements Basic, Annotation
 {	
-	protected NullBasic(JavaPersistentResource parent) {
+	protected NullBasic(JavaResourcePersistentMember parent) {
 		super(parent);
 	}
 
@@ -40,8 +44,8 @@ public class NullBasic extends AbstractResource implements Basic, Annotation
 	}
 	
 	@Override
-	public JavaPersistentResource parent() {
-		return (JavaPersistentResource) super.parent();
+	public JavaResourcePersistentMember parent() {
+		return (JavaResourcePersistentMember) super.parent();
 	}
 	
 	protected Basic createBasicResource() {
@@ -73,15 +77,15 @@ public class NullBasic extends AbstractResource implements Basic, Annotation
 		throw new UnsupportedOperationException();
 	}
 
-	public ITextRange textRange(CompilationUnit astRoot) {
+	public TextRange textRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public ITextRange fetchTextRange(CompilationUnit astRoot) {
+	public TextRange fetchTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	
-	public ITextRange optionalTextRange(CompilationUnit astRoot) {
+	public TextRange optionalTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 }

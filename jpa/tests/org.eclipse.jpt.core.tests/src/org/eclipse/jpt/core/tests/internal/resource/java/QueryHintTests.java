@@ -11,10 +11,10 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.NamedQuery;
-import org.eclipse.jpt.core.internal.resource.java.QueryHint;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
+import org.eclipse.jpt.core.resource.java.QueryHintAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class QueryHintTests extends JavaResourceModelTestCase {
@@ -54,19 +54,19 @@ public class QueryHintTests extends JavaResourceModelTestCase {
 
 	public void testGetName() throws Exception {
 		IType testType = this.createTestNamedQueryWithQueryHints();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		NamedQuery namedQuery = (NamedQuery) typeResource.annotation(JPA.NAMED_QUERY);
-		QueryHint queryHint = namedQuery.hints().next();
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.annotation(JPA.NAMED_QUERY);
+		QueryHintAnnotation queryHint = namedQuery.hints().next();
 		assertEquals(QUERY_HINT_NAME, queryHint.getName());
 	}
 
 	public void testSetName() throws Exception {
 		IType testType = this.createTestNamedQueryWithQueryHints();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		NamedQuery namedQuery = (NamedQuery) typeResource.annotation(JPA.NAMED_QUERY);
-		QueryHint queryHint = namedQuery.hints().next();
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.annotation(JPA.NAMED_QUERY);
+		QueryHintAnnotation queryHint = namedQuery.hints().next();
 		assertEquals(QUERY_HINT_NAME, queryHint.getName());
 		
 		queryHint.setName("foo");

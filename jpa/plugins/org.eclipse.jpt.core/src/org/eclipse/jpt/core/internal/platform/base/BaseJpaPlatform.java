@@ -15,18 +15,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
-import org.eclipse.jpt.core.internal.IJpaFile;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.IResourceModel;
-import org.eclipse.jpt.core.internal.context.java.IDefaultJavaAttributeMappingProvider;
-import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMapping;
-import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMappingProvider;
-import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
-import org.eclipse.jpt.core.internal.context.java.IJavaTypeMapping;
-import org.eclipse.jpt.core.internal.context.java.IJavaTypeMappingProvider;
+import org.eclipse.jpt.core.JpaAnnotationProvider;
+import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaPlatform;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.ResourceModel;
+import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaBasicMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaEmbeddableProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedIdMappingProvider;
@@ -46,19 +46,19 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public abstract class BaseJpaPlatform implements IJpaPlatform
+public abstract class BaseJpaPlatform implements JpaPlatform
 {
 	private String id;
 	
-	protected IJpaBaseContextFactory jpaFactory;
+	protected JpaBaseContextFactory jpaFactory;
 	
-	protected IJpaAnnotationProvider annotationProvider;
+	protected JpaAnnotationProvider annotationProvider;
 	
-	protected Collection<IJavaTypeMappingProvider> javaTypeMappingProviders;
+	protected Collection<JavaTypeMappingProvider> javaTypeMappingProviders;
 	
-	protected Collection<IJavaAttributeMappingProvider> javaAttributeMappingProviders;
+	protected Collection<JavaAttributeMappingProvider> javaAttributeMappingProviders;
 	
-	protected List<IDefaultJavaAttributeMappingProvider> defaultJavaAttributeMappingProviders;
+	protected List<DefaultJavaAttributeMappingProvider> defaultJavaAttributeMappingProviders;
 	
 	protected BaseJpaPlatform() {
 		super();
@@ -74,7 +74,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	 * * IMPORTANT *   For INTERNAL use only !!
 	 * *************
 	 * 
-	 * @see IJpaPlatform#setId(String)
+	 * @see JpaPlatform#setId(String)
 	 */
 	public void setId(String theId) {
 		this.id = theId;
@@ -83,19 +83,19 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	
 	// **************** Model construction / updating **************************
 	
-	public IJpaBaseContextFactory jpaFactory() {
+	public JpaBaseContextFactory jpaFactory() {
 		if (this.jpaFactory == null) {
 			this.jpaFactory = buildJpaFactory();
 		}
 		return this.jpaFactory;
 	}
 	
-	protected abstract IJpaBaseContextFactory buildJpaFactory();
+	protected abstract JpaBaseContextFactory buildJpaFactory();
 	
-	public IJpaFile buildJpaFile(IJpaProject jpaProject, IFile file) {
+	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file) {
 		if (jpaFactory().hasRelevantContent(file)) {
-			IResourceModel resourceModel = jpaFactory().buildResourceModel(jpaProject, file);
-			return jpaFactory().createJpaFile(jpaProject, file, resourceModel);
+			ResourceModel resourceModel = jpaFactory().buildResourceModel(jpaProject, file);
+			return jpaFactory().buildJpaFile(jpaProject, file, resourceModel);
 		}
 		
 		return null;
@@ -104,44 +104,44 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	
 	// **************** java annotation support ********************************
 	
-	public IJpaAnnotationProvider annotationProvider() {
+	public JpaAnnotationProvider annotationProvider() {
 		if (this.annotationProvider == null) {
 			this.annotationProvider = buildAnnotationProvider();
 		}
 		return this.annotationProvider;
 	}
 	
-	protected abstract IJpaAnnotationProvider buildAnnotationProvider();
+	protected abstract JpaAnnotationProvider buildAnnotationProvider();
 	
 	
 	// **************** type mapping support ********************************
 	
-	public IJavaTypeMapping createJavaTypeMappingFromMappingKey(String typeMappingKey, IJavaPersistentType parent) {
+	public JavaTypeMapping buildJavaTypeMappingFromMappingKey(String typeMappingKey, JavaPersistentType parent) {
 		return javaTypeMappingProviderFromMappingKey(typeMappingKey).buildMapping(parent, jpaFactory());
 	}
 	
-	public IJavaTypeMapping createJavaTypeMappingFromAnnotation(String mappingAnnotationName, IJavaPersistentType parent) {
+	public JavaTypeMapping buildJavaTypeMappingFromAnnotation(String mappingAnnotationName, JavaPersistentType parent) {
 		return javaTypeMappingProviderFromAnnotation(mappingAnnotationName).buildMapping(parent, jpaFactory());
 	}
 	
-	public IJavaAttributeMapping createJavaAttributeMappingFromMappingKey(String attributeMappingKey, IJavaPersistentAttribute parent) {
+	public JavaAttributeMapping buildJavaAttributeMappingFromMappingKey(String attributeMappingKey, JavaPersistentAttribute parent) {
 		return javaAttributeMappingProviderFromMappingKey(attributeMappingKey).buildMapping(parent, jpaFactory());
 	}
 	
-	public IJavaAttributeMapping createJavaAttributeMappingFromAnnotation(String mappingAnnotationName, IJavaPersistentAttribute parent) {
+	public JavaAttributeMapping buildJavaAttributeMappingFromAnnotation(String mappingAnnotationName, JavaPersistentAttribute parent) {
 		return javaAttributeMappingProviderFromAnnotation(mappingAnnotationName).buildMapping(parent, jpaFactory());
 	}
 
-	public IJavaAttributeMapping createDefaultJavaAttributeMapping(IJavaPersistentAttribute parent) {
+	public JavaAttributeMapping buildDefaultJavaAttributeMapping(JavaPersistentAttribute parent) {
 		return defaultJavaAttributeMappingProvider(parent).buildMapping(parent, jpaFactory());
 	}
 	
-	protected Iterator<IJavaTypeMappingProvider> javaTypeMappingProviders() {
+	protected Iterator<JavaTypeMappingProvider> javaTypeMappingProviders() {
 		if (this.javaTypeMappingProviders == null) {
-			this.javaTypeMappingProviders = new ArrayList<IJavaTypeMappingProvider>();
+			this.javaTypeMappingProviders = new ArrayList<JavaTypeMappingProvider>();
 			this.addJavaTypeMappingProvidersTo(this.javaTypeMappingProviders);
 		}
-		return new CloneIterator<IJavaTypeMappingProvider>(this.javaTypeMappingProviders);
+		return new CloneIterator<JavaTypeMappingProvider>(this.javaTypeMappingProviders);
 	}
 
 	/**
@@ -149,16 +149,16 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	 * The default includes the JPA spec-defined type mappings of 
 	 * Entity, MappedSuperclass, and Embeddable
 	 */
-	protected void addJavaTypeMappingProvidersTo(Collection<IJavaTypeMappingProvider> providers) {
+	protected void addJavaTypeMappingProvidersTo(Collection<JavaTypeMappingProvider> providers) {
 		providers.add(JavaEntityProvider.instance());
 		providers.add(JavaMappedSuperclassProvider.instance());
 		providers.add(JavaEmbeddableProvider.instance());
 		providers.add(JavaNullTypeMappingProvider.instance());
 	}
 
-	protected IJavaTypeMappingProvider javaTypeMappingProviderFromMappingKey(String typeMappingKey) {
-		for (Iterator<IJavaTypeMappingProvider> i = this.javaTypeMappingProviders(); i.hasNext(); ) {
-			IJavaTypeMappingProvider provider = i.next();
+	protected JavaTypeMappingProvider javaTypeMappingProviderFromMappingKey(String typeMappingKey) {
+		for (Iterator<JavaTypeMappingProvider> i = this.javaTypeMappingProviders(); i.hasNext(); ) {
+			JavaTypeMappingProvider provider = i.next();
 			if (provider.key() == typeMappingKey) {
 				return provider;
 			}
@@ -166,9 +166,9 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		throw new IllegalArgumentException("Illegal type mapping key: " + typeMappingKey);
 	}
 	
-	protected IJavaTypeMappingProvider javaTypeMappingProviderFromAnnotation(String annotationName) {
-		for (Iterator<IJavaTypeMappingProvider> i = this.javaTypeMappingProviders(); i.hasNext(); ) {
-			IJavaTypeMappingProvider provider = i.next();
+	protected JavaTypeMappingProvider javaTypeMappingProviderFromAnnotation(String annotationName) {
+		for (Iterator<JavaTypeMappingProvider> i = this.javaTypeMappingProviders(); i.hasNext(); ) {
+			JavaTypeMappingProvider provider = i.next();
 			if (provider.annotationName() == annotationName) {
 				return provider;
 			}
@@ -176,12 +176,12 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		throw new IllegalArgumentException("Illegal annotation name: " + annotationName);
 	}
 	
-	protected Iterator<IJavaAttributeMappingProvider> javaAttributeMappingProviders() {
+	protected Iterator<JavaAttributeMappingProvider> javaAttributeMappingProviders() {
 		if (this.javaAttributeMappingProviders == null) {
-			this.javaAttributeMappingProviders = new ArrayList<IJavaAttributeMappingProvider>();
+			this.javaAttributeMappingProviders = new ArrayList<JavaAttributeMappingProvider>();
 			this.addJavaAttributeMappingProvidersTo(this.javaAttributeMappingProviders);
 		}
-		return new CloneIterator<IJavaAttributeMappingProvider>(this.javaAttributeMappingProviders);
+		return new CloneIterator<JavaAttributeMappingProvider>(this.javaAttributeMappingProviders);
 	}
 
 	/**
@@ -189,7 +189,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	 * The default includes the JPA spec-defined attribute mappings of 
 	 * Basic, Id, Transient OneToOne, OneToMany, ManyToOne, ManyToMany, Embeddable, EmbeddedId, Version.
 	 */
-	protected void addJavaAttributeMappingProvidersTo(Collection<IJavaAttributeMappingProvider> providers) {
+	protected void addJavaAttributeMappingProvidersTo(Collection<JavaAttributeMappingProvider> providers) {
 		providers.add(JavaBasicMappingProvider.instance());
 		providers.add(JavaEmbeddedMappingProvider.instance());
 		providers.add(JavaEmbeddedIdMappingProvider.instance());
@@ -202,9 +202,9 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		providers.add(JavaVersionMappingProvider.instance());
 	}
 
-	protected IJavaAttributeMappingProvider javaAttributeMappingProviderFromMappingKey(String attributeMappingKey) {
-		for (Iterator<IJavaAttributeMappingProvider> i = this.javaAttributeMappingProviders(); i.hasNext(); ) {
-			IJavaAttributeMappingProvider provider = i.next();
+	protected JavaAttributeMappingProvider javaAttributeMappingProviderFromMappingKey(String attributeMappingKey) {
+		for (Iterator<JavaAttributeMappingProvider> i = this.javaAttributeMappingProviders(); i.hasNext(); ) {
+			JavaAttributeMappingProvider provider = i.next();
 			if (provider.key() == attributeMappingKey) {
 				return provider;
 			}
@@ -212,9 +212,9 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		throw new IllegalArgumentException("Illegal attribute mapping key: " + attributeMappingKey);
 	}
 	
-	protected IJavaAttributeMappingProvider javaAttributeMappingProviderFromAnnotation(String annotationName) {
-		for (Iterator<IJavaAttributeMappingProvider> i = this.javaAttributeMappingProviders(); i.hasNext(); ) {
-			IJavaAttributeMappingProvider provider = i.next();
+	protected JavaAttributeMappingProvider javaAttributeMappingProviderFromAnnotation(String annotationName) {
+		for (Iterator<JavaAttributeMappingProvider> i = this.javaAttributeMappingProviders(); i.hasNext(); ) {
+			JavaAttributeMappingProvider provider = i.next();
 			if (provider.annotationName() == annotationName) {
 				return provider;
 			}
@@ -222,12 +222,12 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		throw new IllegalArgumentException("Illegal annotation name: " + annotationName);
 	}
 	
-	protected ListIterator<IDefaultJavaAttributeMappingProvider> defaultJavaAttributeMappingProviders() {
+	protected ListIterator<DefaultJavaAttributeMappingProvider> defaultJavaAttributeMappingProviders() {
 		if (this.defaultJavaAttributeMappingProviders == null) {
-			this.defaultJavaAttributeMappingProviders = new ArrayList<IDefaultJavaAttributeMappingProvider>();
+			this.defaultJavaAttributeMappingProviders = new ArrayList<DefaultJavaAttributeMappingProvider>();
 			this.addDefaultJavaAttributeMappingProvidersTo(this.defaultJavaAttributeMappingProviders);
 		}
-		return new CloneListIterator<IDefaultJavaAttributeMappingProvider>(this.defaultJavaAttributeMappingProviders);
+		return new CloneListIterator<DefaultJavaAttributeMappingProvider>(this.defaultJavaAttributeMappingProviders);
 	}
 	
 	/**
@@ -235,14 +235,14 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	 * The default includes the JPA spec-defined attribute mappings of 
 	 * Embedded and Basic.
 	 */
-	protected void addDefaultJavaAttributeMappingProvidersTo(List<IDefaultJavaAttributeMappingProvider> providers) {
+	protected void addDefaultJavaAttributeMappingProvidersTo(List<DefaultJavaAttributeMappingProvider> providers) {
 		providers.add(JavaEmbeddedMappingProvider.instance()); //bug 190344 need to test default embedded before basic
 		providers.add(JavaBasicMappingProvider.instance());
 	}
 
-	protected IJavaAttributeMappingProvider defaultJavaAttributeMappingProvider(IJavaPersistentAttribute persistentAttribute) {
-		for (Iterator<IDefaultJavaAttributeMappingProvider> i = this.defaultJavaAttributeMappingProviders(); i.hasNext(); ) {
-			IDefaultJavaAttributeMappingProvider provider = i.next();
+	protected JavaAttributeMappingProvider defaultJavaAttributeMappingProvider(JavaPersistentAttribute persistentAttribute) {
+		for (Iterator<DefaultJavaAttributeMappingProvider> i = this.defaultJavaAttributeMappingProviders(); i.hasNext(); ) {
+			DefaultJavaAttributeMappingProvider provider = i.next();
 			if (provider.defaultApplies(persistentAttribute)) {
 				return provider;
 			}
@@ -251,7 +251,7 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 		return nullAttributeMappingProvider();
 	}
 
-	public String defaultJavaAttributeMappingKey(IJavaPersistentAttribute persistentAttribute) {
+	public String defaultJavaAttributeMappingKey(JavaPersistentAttribute persistentAttribute) {
 		return defaultJavaAttributeMappingProvider(persistentAttribute).key();
 	}
 	
@@ -259,13 +259,13 @@ public abstract class BaseJpaPlatform implements IJpaPlatform
 	 * the "null" attribute mapping is used when the attribute is neither
 	 * modified with a mapping annotation nor mapped by a "default" mapping
 	 */
-	protected IJavaAttributeMappingProvider nullAttributeMappingProvider() {
+	protected JavaAttributeMappingProvider nullAttributeMappingProvider() {
 		return JavaNullAttributeMappingProvider.instance();
 	}
 
 	// **************** Validation *********************************************
 	
-	public void addToMessages(IJpaProject project, List<IMessage> messages) {
+	public void addToMessages(JpaProject project, List<IMessage> messages) {
 		project.addToMessages(messages, null);
 	}
 }

@@ -20,12 +20,12 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
-import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
-import org.eclipse.jpt.ui.internal.JptUiPlugin;
+import org.eclipse.jpt.core.JpaPlatform;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.ui.JpaPlatformUi;
+import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.eclipse.ui.navigator.ICommonContentProvider;
@@ -118,9 +118,9 @@ public class JpaNavigatorContentProvider
 			IProject project = (IProject) ((IAdaptable) element).getAdapter(IProject.class);
 			
 			if (project != null) {
-				IJpaProject jpaProject = JptCorePlugin.jpaProject(project);
+				JpaProject jpaProject = JptCorePlugin.jpaProject(project);
 				if (jpaProject != null) {
-					IJpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(jpaProject.jpaPlatform());
+					JpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(jpaProject.jpaPlatform());
 					
 					return platformUi != null;
 				}	
@@ -141,9 +141,9 @@ public class JpaNavigatorContentProvider
 			IProject project = (IProject) ((IAdaptable) parentElement).getAdapter(IProject.class);
 			
 			if (project != null) {
-				IJpaProject jpaProject = JptCorePlugin.jpaProject(project);
+				JpaProject jpaProject = JptCorePlugin.jpaProject(project);
 				if (jpaProject != null) {
-					IJpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(jpaProject.jpaPlatform());
+					JpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(jpaProject.jpaPlatform());
 					
 					if (platformUi != null) {
 						return new Object[] {jpaProject.contextModel()};
@@ -193,14 +193,14 @@ public class JpaNavigatorContentProvider
 			return null;
 		}
 		
-		IJpaContextNode contextNode = (IJpaContextNode) ((IAdaptable) element).getAdapter(IJpaContextNode.class);
+		JpaContextNode contextNode = (JpaContextNode) ((IAdaptable) element).getAdapter(JpaContextNode.class);
 		
 		if (contextNode == null) {
 			return null;
 		}
 		
-		IJpaPlatform platform = contextNode.jpaProject().jpaPlatform();
-		IJpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(platform);
+		JpaPlatform platform = contextNode.jpaProject().jpaPlatform();
+		JpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(platform);
 		
 		ICommonContentProvider delegate = delegateContentProviders.get(platform.getId());
 		

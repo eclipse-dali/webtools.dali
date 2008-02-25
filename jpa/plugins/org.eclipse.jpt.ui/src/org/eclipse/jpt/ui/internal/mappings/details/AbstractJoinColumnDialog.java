@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
+import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractValidatingDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -29,7 +29,7 @@ public abstract class AbstractJoinColumnDialog<T extends AbstractJoinColumnState
 	 * Either the join column to edit or <code>null</code> if this state object
 	 * is used to create a new one.
 	 */
-	private IAbstractJoinColumn joinColumn;
+	private AbstractJoinColumn joinColumn;
 
 	/**
 	 * The owner of the join column to create or where it is located.
@@ -46,7 +46,7 @@ public abstract class AbstractJoinColumnDialog<T extends AbstractJoinColumnState
 	 */
 	public AbstractJoinColumnDialog(Shell parent,
 	                                Object owner,
-	                                IAbstractJoinColumn joinColumn) {
+	                                AbstractJoinColumn joinColumn) {
 
 		super(parent);
 
@@ -81,7 +81,7 @@ public abstract class AbstractJoinColumnDialog<T extends AbstractJoinColumnState
 	 *
 	 * @return Either the edited join column or <code>null</code>
 	 */
-	public IAbstractJoinColumn getJoinColumn() {
+	public AbstractJoinColumn getJoinColumn() {
 		return joinColumn;
 	}
 

@@ -8,10 +8,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.ITable;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.IJpaComposite;
+import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -56,7 +56,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IBasicMapping
+ * @see BasicMapping
  * @see BaseJpaUiFactory - The factory creating this pane
  * @see EntityNameCombo
  * @see InheritanceComposite
@@ -69,8 +69,8 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class EntityComposite extends AbstractFormPane<IEntity>
-                             implements IJpaComposite<IEntity>
+public class EntityComposite extends AbstractFormPane<Entity>
+                             implements JpaComposite<Entity>
 {
 	/**
 	 * Creates a new <code>EntityComposite</code>.
@@ -79,7 +79,7 @@ public class EntityComposite extends AbstractFormPane<IEntity>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EntityComposite(PropertyValueModel<? extends IEntity> subjectHolder,
+	public EntityComposite(PropertyValueModel<? extends Entity> subjectHolder,
 	                       Composite parent,
 	                       TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -95,10 +95,10 @@ public class EntityComposite extends AbstractFormPane<IEntity>
 		return new EntityNameCombo(this, container);
 	}
 
-	private PropertyValueModel<ITable> buildTableHolder() {
-		return new TransformationPropertyValueModel<IEntity, ITable>(getSubjectHolder()) {
+	private PropertyValueModel<Table> buildTableHolder() {
+		return new TransformationPropertyValueModel<Entity, Table>(getSubjectHolder()) {
 			@Override
-			protected ITable transform_(IEntity value) {
+			protected Table transform_(Entity value) {
 				return value.getTable();
 			}
 		};
@@ -121,7 +121,7 @@ public class EntityComposite extends AbstractFormPane<IEntity>
 			buildEntityContainer(container),
 			JptUiMappingsMessages.EntityGeneralSection_name,
 			buildEntityNameCombo(container),
-			IJpaHelpContextIds.ENTITY_NAME
+			JpaHelpContextIds.ENTITY_NAME
 		);
 
 		// Table widgets

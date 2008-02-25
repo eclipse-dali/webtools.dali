@@ -12,12 +12,14 @@ package org.eclipse.jpt.core.internal;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JptCorePlugin;
 
 public class JpaProjectAdapterFactory
 	implements IAdapterFactory
 {
 	private static Class[] PROPERTIES= new Class[] {
-		IJpaProject.class
+		JpaProject.class
 	};
 		
 	public Class[] getAdapterList() {

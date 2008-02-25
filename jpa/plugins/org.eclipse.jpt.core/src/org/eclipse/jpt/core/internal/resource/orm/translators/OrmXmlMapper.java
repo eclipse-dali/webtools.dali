@@ -8,7 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.orm.translators;
 
-import org.eclipse.jpt.core.internal.resource.orm.OrmPackage;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
 
 public interface OrmXmlMapper
 {

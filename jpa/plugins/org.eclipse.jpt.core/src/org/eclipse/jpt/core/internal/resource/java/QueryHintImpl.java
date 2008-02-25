@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -21,6 +21,11 @@ import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableQueryHint;
+import org.eclipse.jpt.core.resource.java.QueryHintAnnotation;
 
 public class QueryHintImpl extends AbstractAnnotationResource<Type>
 	implements NestableQueryHint
@@ -40,7 +45,7 @@ public class QueryHintImpl extends AbstractAnnotationResource<Type>
 	
 	private String value;
 	
-	public QueryHintImpl(JavaResource parent, Type type, IndexedDeclarationAnnotationAdapter idaa) {
+	public QueryHintImpl(JavaResourceNode parent, Type type, IndexedDeclarationAnnotationAdapter idaa) {
 		super(parent, type, idaa, new MemberIndexedAnnotationAdapter(type, idaa));
 		this.nameDeclarationAdapter = this.nameAdapter(idaa);
 		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
@@ -97,11 +102,11 @@ public class QueryHintImpl extends AbstractAnnotationResource<Type>
 		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 
-	public ITextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange nameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 	
-	public ITextRange valueTextRange(CompilationUnit astRoot) {
+	public TextRange valueTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.valueDeclarationAdapter, astRoot);
 	}
 
@@ -124,13 +129,13 @@ public class QueryHintImpl extends AbstractAnnotationResource<Type>
 	}
 
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		QueryHint oldQueryHint = (QueryHint) oldAnnotation;
+		QueryHintAnnotation oldQueryHint = (QueryHintAnnotation) oldAnnotation;
 		setName(oldQueryHint.getName());
 		setValue(oldQueryHint.getValue());
 	}
 	
 	// ********** static methods **********
-	static QueryHintImpl createNamedQueryQueryHint(JavaResource parent, Type type,  DeclarationAnnotationAdapter namedQueryAdapter, int index) {
+	static QueryHintImpl createNamedQueryQueryHint(JavaResourceNode parent, Type type,  DeclarationAnnotationAdapter namedQueryAdapter, int index) {
 		return new QueryHintImpl(parent, type, buildNamedQueryQueryHintAnnotationAdapter(namedQueryAdapter, index));
 	}
 
@@ -138,7 +143,7 @@ public class QueryHintImpl extends AbstractAnnotationResource<Type>
 		return new NestedIndexedDeclarationAnnotationAdapter(namedQueryAdapter, JPA.NAMED_QUERY__HINTS, index, JPA.QUERY_HINT);
 	}
 
-	static QueryHintImpl createNamedNativeQueryQueryHint(JavaResource parent, Type type, DeclarationAnnotationAdapter namedNativeQueryAdapter, int index) {
+	static QueryHintImpl createNamedNativeQueryQueryHint(JavaResourceNode parent, Type type, DeclarationAnnotationAdapter namedNativeQueryAdapter, int index) {
 		return new QueryHintImpl(parent, type, buildNamedNativeQueryQueryHintAnnotationAdapter(namedNativeQueryAdapter, index));
 	}
 

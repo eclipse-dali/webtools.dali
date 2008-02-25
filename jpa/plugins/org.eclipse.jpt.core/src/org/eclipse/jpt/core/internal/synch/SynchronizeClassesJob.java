@@ -17,16 +17,16 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.IJpaFile;
-import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
+import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
+import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 
 /**
  * Synchronizes the lists of persistent classes in a persistence unit and a 
@@ -50,7 +50,7 @@ public class SynchronizeClassesJob extends Job
 			return Status.CANCEL_STATUS;
 		}
 		
-		IJpaFile jpaFile = JptCorePlugin.jpaFile(this.persistenceXmlFile);
+		JpaFile jpaFile = JptCorePlugin.jpaFile(this.persistenceXmlFile);
 		PersistenceResourceModel persistenceResourceModel = (PersistenceResourceModel) jpaFile.getResourceModel();
 		PersistenceResource persistenceResource;
 		try {
@@ -79,7 +79,7 @@ public class SynchronizeClassesJob extends Job
 		}
 		
 		persistenceUnitResource.getClasses().clear();
-		IJpaProject jpaProject = jpaFile.jpaProject();
+		JpaProject jpaProject = jpaFile.jpaProject();
 		
 		//TODO njh - should be checking to see if the reference is necessary
 		//			ref is not necessary if defined in the XML, see commented code below

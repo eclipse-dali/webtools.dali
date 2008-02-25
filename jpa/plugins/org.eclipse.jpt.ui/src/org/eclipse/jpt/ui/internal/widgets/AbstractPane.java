@@ -129,7 +129,7 @@ public abstract class AbstractPane<T extends Model>
 	/**
 	 * The factory used to create various common widgets.
 	 */
-	private IWidgetFactory widgetFactory;
+	private WidgetFactory widgetFactory;
 
 	/**
 	 * Creates a new <code>AbstractSubjectPane</code>.
@@ -229,7 +229,7 @@ public abstract class AbstractPane<T extends Model>
 	 */
 	protected AbstractPane(PropertyValueModel<? extends T> subjectHolder,
 	                       Composite parent,
-	                       IWidgetFactory widgetFactory) {
+	                       WidgetFactory widgetFactory) {
 
 		super();
 
@@ -2327,7 +2327,7 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final IWidgetFactory getWidgetFactory() {
+	protected final WidgetFactory getWidgetFactory() {
 		return this.widgetFactory;
 	}
 
@@ -2403,7 +2403,7 @@ public abstract class AbstractPane<T extends Model>
 	 */
 	@SuppressWarnings("unchecked")
 	private void initialize(PropertyValueModel<? extends T> subjectHolder,
-	                        IWidgetFactory widgetFactory)
+	                        WidgetFactory widgetFactory)
 	{
 		Assert.isNotNull(subjectHolder, "The subject holder cannot be null");
 

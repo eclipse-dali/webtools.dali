@@ -7,7 +7,7 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * Implementation of {@link IItemLabelProvider} that provides updating
+ * Implementation of {@link ItemLabelProvider} that provides updating
  * label information for a Model object.
  * 
  * The typical subclass will override the following methods:
@@ -21,7 +21,7 @@ import org.eclipse.swt.graphics.Image;
  * Other methods may be overridden, but take care to preserve the logic provided 
  * by this class.
  */
-public abstract class AbstractItemLabelProvider implements IItemLabelProvider
+public abstract class AbstractItemLabelProvider implements ItemLabelProvider
 {
 	private DelegatingContentAndLabelProvider labelProvider;
 	

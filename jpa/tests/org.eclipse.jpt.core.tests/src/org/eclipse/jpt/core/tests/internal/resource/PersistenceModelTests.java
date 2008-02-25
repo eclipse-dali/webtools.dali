@@ -1,8 +1,8 @@
 package org.eclipse.jpt.core.tests.internal.resource;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.resource.persistence.PersistenceArtifactEdit;
+import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 

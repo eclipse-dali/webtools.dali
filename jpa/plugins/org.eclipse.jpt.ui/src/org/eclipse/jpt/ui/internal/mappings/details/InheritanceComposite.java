@@ -10,18 +10,18 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.core.internal.context.base.DiscriminatorType;
-import org.eclipse.jpt.core.internal.context.base.IDiscriminatorColumn;
-import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.InheritanceType;
+import org.eclipse.jpt.core.context.DiscriminatorType;
+import org.eclipse.jpt.core.context.DiscriminatorColumn;
+import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.db.internal.Table;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -55,7 +55,7 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IEntity
+ * @see Entity
  * @see EntityComposite - The parent container
  * @see ColumnCombo
  * @see EnumComboViewer
@@ -64,7 +64,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class InheritanceComposite extends AbstractFormPane<IEntity> {
+public class InheritanceComposite extends AbstractFormPane<Entity> {
 
 	private CCombo discriminatorValueCombo;
 
@@ -74,7 +74,7 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public InheritanceComposite(AbstractFormPane<? extends IEntity> parentPane,
+	public InheritanceComposite(AbstractFormPane<? extends Entity> parentPane,
 	                            Composite parent) {
 
 		super(parentPane, parent, false);
@@ -87,9 +87,9 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public InheritanceComposite(PropertyValueModel<? extends IEntity> subjectHolder,
+	public InheritanceComposite(PropertyValueModel<? extends Entity> subjectHolder,
 	                            Composite parent,
-	                            IWidgetFactory widgetFactory) {
+	                            WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
@@ -100,13 +100,13 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
-		propertyNames.add(IEntity.DEFAULT_DISCRIMINATOR_VALUE_PROPERTY);
-		propertyNames.add(IEntity.SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY);
+		propertyNames.add(Entity.DEFAULT_DISCRIMINATOR_VALUE_PROPERTY);
+		propertyNames.add(Entity.SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY);
 	}
 
-	private ColumnCombo<IDiscriminatorColumn> buildColumnCombo(Composite container) {
+	private ColumnCombo<DiscriminatorColumn> buildColumnCombo(Composite container) {
 
-		return new ColumnCombo<IDiscriminatorColumn>(
+		return new ColumnCombo<DiscriminatorColumn>(
 			this,
 			buildDiscriminatorColumnHolder(),
 			container)
@@ -133,18 +133,18 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 		};
 	}
 
-	private PropertyValueModel<IDiscriminatorColumn> buildDiscriminatorColumnHolder() {
-		return new TransformationPropertyValueModel<IEntity, IDiscriminatorColumn>(getSubjectHolder()) {
+	private PropertyValueModel<DiscriminatorColumn> buildDiscriminatorColumnHolder() {
+		return new TransformationPropertyValueModel<Entity, DiscriminatorColumn>(getSubjectHolder()) {
 			@Override
-			protected IDiscriminatorColumn transform_(IEntity value) {
+			protected DiscriminatorColumn transform_(Entity value) {
 				return value.getDiscriminatorColumn();
 			}
 		};
 	}
 
-	private EnumFormComboViewer<IDiscriminatorColumn, DiscriminatorType> buildDiscriminatorTypeCombo(Composite container) {
+	private EnumFormComboViewer<DiscriminatorColumn, DiscriminatorType> buildDiscriminatorTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<IDiscriminatorColumn, DiscriminatorType>(
+		return new EnumFormComboViewer<DiscriminatorColumn, DiscriminatorType>(
 			this,
 			buildDiscriminatorColumnHolder(),
 			container)
@@ -152,8 +152,8 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(IDiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE_PROPERTY);
-				propertyNames.add(IDiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY);
+				propertyNames.add(DiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE_PROPERTY);
+				propertyNames.add(DiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY);
 			}
 
 			@Override
@@ -188,7 +188,7 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 	}
 
 	private PropertyValueModel<Boolean> buildDiscriminatorValueBooleanHolder() {
-		return new PropertyAspectAdapter<IEntity, Boolean>(getSubjectHolder(), IEntity.DISCRIMINATOR_VALUE_ALLOWED_PROPERTY) {
+		return new PropertyAspectAdapter<Entity, Boolean>(getSubjectHolder(), Entity.DISCRIMINATOR_VALUE_ALLOWED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.isDiscriminatorValueAllowed();
@@ -207,15 +207,15 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 		};
 	}
 
-	private EnumFormComboViewer<IEntity, InheritanceType> buildStrategyCombo(Composite container) {
+	private EnumFormComboViewer<Entity, InheritanceType> buildStrategyCombo(Composite container) {
 
-		return new EnumFormComboViewer<IEntity, InheritanceType>(this, container) {
+		return new EnumFormComboViewer<Entity, InheritanceType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(IEntity.DEFAULT_INHERITANCE_STRATEGY_PROPERTY);
-				propertyNames.add(IEntity.SPECIFIED_INHERITANCE_STRATEGY_PROPERTY);
+				propertyNames.add(Entity.DEFAULT_INHERITANCE_STRATEGY_PROPERTY);
+				propertyNames.add(Entity.SPECIFIED_INHERITANCE_STRATEGY_PROPERTY);
 			}
 
 			@Override
@@ -251,7 +251,7 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 
 	private void discriminatorValueChanged(String value) {
 
-		IEntity subject = subject();
+		Entity subject = subject();
 		String oldValue = (subject != null) ? subject.getSpecifiedDiscriminatorValue() : null;
 
 		// Check for null value
@@ -317,7 +317,7 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 			subPane,
 			JptUiMappingsMessages.InheritanceComposite_strategy,
 			buildStrategyCombo(subPane),
-			IJpaHelpContextIds.ENTITY_INHERITANCE_STRATEGY
+			JpaHelpContextIds.ENTITY_INHERITANCE_STRATEGY
 		);
 
 		// Column widgets
@@ -325,7 +325,7 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 			subPane,
 			JptUiMappingsMessages.DiscriminatorColumnComposite_column,
 			buildColumnCombo(subPane),
-			IJpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_COLUMN
+			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_COLUMN
 		);
 
 		// Discriminator Type widgets
@@ -333,7 +333,7 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 			subPane,
 			JptUiMappingsMessages.DiscriminatorColumnComposite_discriminatorType,
 			buildDiscriminatorTypeCombo(subPane),
-			IJpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_TYPE
+			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_TYPE
 		);
 
 		// Discrinator Value widgets
@@ -341,7 +341,7 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 			subPane,
 			JptUiMappingsMessages.InheritanceComposite_discriminatorValue,
 			buildDiscriminatorValueComboSelectionListener(),
-			IJpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_VALUE
+			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_VALUE
 		);
 
 		installDiscriminatorValueComboEnabler(discriminatorValueCombo);
@@ -362,7 +362,7 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 
 	private void populateDiscriminatorValueCombo() {
 
-		IEntity subject = subject();
+		Entity subject = subject();
 		discriminatorValueCombo.removeAll();
 
 		if (subject == null) {
@@ -403,8 +403,8 @@ public class InheritanceComposite extends AbstractFormPane<IEntity> {
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
 
-		if (propertyName == IEntity.DEFAULT_DISCRIMINATOR_VALUE_PROPERTY ||
-		    propertyName == IEntity.SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY)
+		if (propertyName == Entity.DEFAULT_DISCRIMINATOR_VALUE_PROPERTY ||
+		    propertyName == Entity.SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY)
 		{
 			populateDiscriminatorValueCombo();
 		}

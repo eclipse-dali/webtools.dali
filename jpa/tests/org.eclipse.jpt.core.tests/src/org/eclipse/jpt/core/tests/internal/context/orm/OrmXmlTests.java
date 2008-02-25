@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
-import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.context.orm.OrmXml;
-import org.eclipse.jpt.core.internal.context.persistence.IPersistenceXml;
-import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResource;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
+import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.context.orm.OrmXml;
+import org.eclipse.jpt.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.OrmResource;
+import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 public class OrmXmlTests extends ContextModelTestCase
@@ -35,7 +35,7 @@ public class OrmXmlTests extends ContextModelTestCase
 		persistenceResource().save(null);
 	}
 	
-	protected IPersistenceXml persistenceXml() {
+	protected PersistenceXml persistenceXml() {
 		return jpaContent().getPersistenceXml();
 	}
 	

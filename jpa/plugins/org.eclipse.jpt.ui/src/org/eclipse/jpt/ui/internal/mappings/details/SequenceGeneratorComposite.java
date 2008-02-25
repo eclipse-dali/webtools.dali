@@ -10,11 +10,11 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.context.base.IIdMapping;
-import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.db.internal.Schema;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.SequenceCombo;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
@@ -35,15 +35,15 @@ import org.eclipse.swt.widgets.Text;
  * |                     ----------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IIdMapping
- * @see ISequenceGenerator
+ * @see IdMapping
+ * @see SequenceGenerator
  * @see GenerationComposite - The parent container
  * @see SequenceCombo
  *
  * @version 2.0
  * @since 1.0
  */
-public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGenerator>
+public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGenerator>
 {
 	/**
 	 * Creates a new <code>SequenceGeneratorComposite</code>.
@@ -51,7 +51,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public SequenceGeneratorComposite(AbstractFormPane<? extends IIdMapping> parentPane,
+	public SequenceGeneratorComposite(AbstractFormPane<? extends IdMapping> parentPane,
 	                                  Composite parent) {
 
 		super(parentPane, parent);
@@ -61,28 +61,28 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected ISequenceGenerator buildGenerator() {
+	protected SequenceGenerator buildGenerator() {
 		return subject().addSequenceGenerator();
 	}
 
-	private PropertyValueModel<ISequenceGenerator> buildSequenceGeneratorHolder() {
-		return new PropertyAspectAdapter<IIdMapping, ISequenceGenerator>(getSubjectHolder(), propertyName()) {
+	private PropertyValueModel<SequenceGenerator> buildSequenceGeneratorHolder() {
+		return new PropertyAspectAdapter<IdMapping, SequenceGenerator>(getSubjectHolder(), propertyName()) {
 			@Override
-			protected ISequenceGenerator buildValue_() {
+			protected SequenceGenerator buildValue_() {
 				return subject.getSequenceGenerator();
 			}
 		};
 	}
 
-	private SequenceCombo<ISequenceGenerator> buildSequenceNameCombo(Composite parent) {
+	private SequenceCombo<SequenceGenerator> buildSequenceNameCombo(Composite parent) {
 
-		return new SequenceCombo<ISequenceGenerator>(this, buildSequenceGeneratorHolder(), parent) {
+		return new SequenceCombo<SequenceGenerator>(this, buildSequenceGeneratorHolder(), parent) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ISequenceGenerator.DEFAULT_SEQUENCE_NAME_PROPERTY);
-				propertyNames.add(ISequenceGenerator.SPECIFIED_SEQUENCE_NAME_PROPERTY);
+				propertyNames.add(SequenceGenerator.DEFAULT_SEQUENCE_NAME_PROPERTY);
+				propertyNames.add(SequenceGenerator.SPECIFIED_SEQUENCE_NAME_PROPERTY);
 			}
 
 			@Override
@@ -101,7 +101,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 			}
 
 			@Override
-			protected IJpaProject jpaProject() {
+			protected JpaProject jpaProject() {
 				return SequenceGeneratorComposite.this.jpaProject();
 			}
 
@@ -118,7 +118,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 
 			@Override
 			protected String value() {
-				ISequenceGenerator generator = generator();
+				SequenceGenerator generator = generator();
 
 				if (generator != null) {
 					return generator.getSpecifiedSequenceName();
@@ -133,7 +133,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected ISequenceGenerator generator(IIdMapping subject) {
+	protected SequenceGenerator generator(IdMapping subject) {
 		return subject.getSequenceGenerator();
 	}
 
@@ -151,7 +151,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 			container,
 			JptUiMappingsMessages.SequenceGeneratorComposite_name,
 			nameText,
-			IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_NAME
+			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_NAME
 		);
 
 		// Sequence Generator widgets
@@ -159,7 +159,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 			container,
 			JptUiMappingsMessages.SequenceGeneratorComposite_sequence,
 			buildSequenceNameCombo(container),
-			IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_SEQUENCE
+			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_SEQUENCE
 		);
 	}
 
@@ -168,6 +168,6 @@ public class SequenceGeneratorComposite extends GeneratorComposite<ISequenceGene
 	 */
 	@Override
 	protected String propertyName() {
-		return IIdMapping.SEQUENCE_GENERATOR_PROPERTY;
+		return IdMapping.SEQUENCE_GENERATOR_PROPERTY;
 	}
 }

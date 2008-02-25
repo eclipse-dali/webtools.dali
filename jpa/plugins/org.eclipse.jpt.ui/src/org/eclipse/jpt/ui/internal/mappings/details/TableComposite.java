@@ -10,16 +10,15 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
 import java.util.Iterator;
-import org.eclipse.jpt.core.internal.context.base.ITable;
+import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.db.internal.Schema;
-import org.eclipse.jpt.db.internal.Table;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -43,7 +42,7 @@ import org.eclipse.swt.widgets.Group;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see ITable
+ * @see Table
  * @see EntityComposite - The parent container
  * @see TableCombo
  * @see CatalogCombo
@@ -54,7 +53,7 @@ import org.eclipse.swt.widgets.Group;
  * @version 2.0
  * @since 1.0
  */
-public class TableComposite extends AbstractFormPane<ITable>
+public class TableComposite extends AbstractFormPane<Table>
 {
 	/**
 	 * Creates a new <code>TableComposite</code>.
@@ -64,7 +63,7 @@ public class TableComposite extends AbstractFormPane<ITable>
 	 * @param parent The parent container
 	 */
 	public TableComposite(AbstractFormPane<?> parentPane,
-	                      PropertyValueModel<? extends ITable> subjectHolder,
+	                      PropertyValueModel<? extends Table> subjectHolder,
 	                      Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -77,22 +76,22 @@ public class TableComposite extends AbstractFormPane<ITable>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public TableComposite(PropertyValueModel<? extends ITable> subjectHolder,
+	public TableComposite(PropertyValueModel<? extends Table> subjectHolder,
 	                      Composite parent,
-	                      IWidgetFactory widgetFactory) {
+	                      WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private CatalogCombo<ITable> buildCatalogCombo(Composite container) {
+	private CatalogCombo<Table> buildCatalogCombo(Composite container) {
 
-		return new CatalogCombo<ITable>(this, container) {
+		return new CatalogCombo<Table>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ITable.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(ITable.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.add(Table.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(Table.SPECIFIED_CATALOG_PROPERTY);
 			}
 
 			@Override
@@ -112,15 +111,15 @@ public class TableComposite extends AbstractFormPane<ITable>
 		};
 	}
 
-	private SchemaCombo<ITable> buildSchemaCombo(Composite container) {
+	private SchemaCombo<Table> buildSchemaCombo(Composite container) {
 
-		return new SchemaCombo<ITable>(this, container) {
+		return new SchemaCombo<Table>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ITable.DEFAULT_SCHEMA_PROPERTY);
-				propertyNames.add(ITable.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.add(Table.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(Table.SPECIFIED_SCHEMA_PROPERTY);
 			}
 
 			@Override
@@ -140,15 +139,15 @@ public class TableComposite extends AbstractFormPane<ITable>
 		};
 	}
 
-	private TableCombo<ITable> buildTableCombo(Composite container) {
+	private TableCombo<Table> buildTableCombo(Composite container) {
 
-		return new TableCombo<ITable>(this, container) {
+		return new TableCombo<Table>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ITable.DEFAULT_NAME_PROPERTY);
-				propertyNames.add(ITable.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(Table.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(Table.SPECIFIED_NAME_PROPERTY);
 			}
 
 			@Override
@@ -162,7 +161,7 @@ public class TableComposite extends AbstractFormPane<ITable>
 			}
 
 			@Override
-			protected Table table() {
+			protected org.eclipse.jpt.db.internal.Table table() {
 				return subject().dbTable();
 			}
 
@@ -205,7 +204,7 @@ public class TableComposite extends AbstractFormPane<ITable>
 			tableGroupPane,
 			JptUiMappingsMessages.TableChooser_label,
 			buildTableCombo(tableGroupPane),
-			IJpaHelpContextIds.ENTITY_TABLE
+			JpaHelpContextIds.ENTITY_TABLE
 		);
 
 		// Catalog widgets
@@ -213,7 +212,7 @@ public class TableComposite extends AbstractFormPane<ITable>
 			tableGroupPane,
 			JptUiMappingsMessages.CatalogChooser_label,
 			buildCatalogCombo(tableGroupPane),
-			IJpaHelpContextIds.ENTITY_CATALOG
+			JpaHelpContextIds.ENTITY_CATALOG
 		);
 
 		// Schema widgets
@@ -221,7 +220,7 @@ public class TableComposite extends AbstractFormPane<ITable>
 			tableGroupPane,
 			JptUiMappingsMessages.SchemaChooser_label,
 			buildSchemaCombo(tableGroupPane),
-			IJpaHelpContextIds.ENTITY_SCHEMA
+			JpaHelpContextIds.ENTITY_SCHEMA
 		);
 	}
 }

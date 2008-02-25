@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform.generic;
 
-import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
+import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.platform.base.BaseJpaPlatform;
-import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
+import org.eclipse.jpt.core.internal.platform.base.JpaBaseContextFactory;
 
 
 public class GenericJpaPlatform extends BaseJpaPlatform
@@ -27,7 +27,7 @@ public class GenericJpaPlatform extends BaseJpaPlatform
 	// **************** Model construction / updating **************************
 	
 	@Override
-	protected IJpaBaseContextFactory buildJpaFactory() {
+	protected JpaBaseContextFactory buildJpaFactory() {
 		return new GenericJpaFactory();
 	}
 	
@@ -35,7 +35,7 @@ public class GenericJpaPlatform extends BaseJpaPlatform
 	// **************** java annotation support ********************************
 	
 	@Override
-	protected IJpaAnnotationProvider buildAnnotationProvider() {
+	protected JpaAnnotationProvider buildAnnotationProvider() {
 		return new GenericJpaAnnotationProvider();
 	}
 }

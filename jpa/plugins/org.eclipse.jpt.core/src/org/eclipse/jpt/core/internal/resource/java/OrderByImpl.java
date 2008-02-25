@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
@@ -19,6 +19,12 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdap
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.OrderBy;
 
 public class OrderByImpl extends AbstractAnnotationResource<Attribute> implements OrderBy
 {
@@ -31,7 +37,7 @@ public class OrderByImpl extends AbstractAnnotationResource<Attribute> implement
 
 	private String value;
 	
-	protected OrderByImpl(JavaResource parent, Attribute attribute) {
+	protected OrderByImpl(JavaResourceNode parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, VALUE_ADAPTER);
 	}
@@ -55,7 +61,7 @@ public class OrderByImpl extends AbstractAnnotationResource<Attribute> implement
 		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 	
-	public ITextRange valueTextRange(CompilationUnit astRoot) {
+	public TextRange valueTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(VALUE_ADAPTER, astRoot);
 	}
 
@@ -92,11 +98,11 @@ public class OrderByImpl extends AbstractAnnotationResource<Attribute> implement
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new OrderByImpl(parent, (Attribute) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 		

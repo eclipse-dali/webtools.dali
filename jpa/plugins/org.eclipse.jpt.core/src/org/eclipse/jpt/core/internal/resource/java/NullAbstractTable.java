@@ -11,18 +11,22 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.TableAnnotation;
+import org.eclipse.jpt.core.resource.java.UniqueConstraint;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
-public abstract class NullAbstractTable extends AbstractResource implements Table, Annotation
+public abstract class NullAbstractTable extends AbstractResource implements TableAnnotation, Annotation
 {
-	protected NullAbstractTable(JavaPersistentResource parent) {
+	protected NullAbstractTable(JavaResourcePersistentMember parent) {
 		super(parent);
 	}
 	
 	@Override
-	public JavaPersistentResource parent() {
-		return (JavaPersistentResource) super.parent();
+	public JavaResourcePersistentMember parent() {
+		return (JavaResourcePersistentMember) super.parent();
 	}
 	
 	public void initialize(CompilationUnit astRoot) {
@@ -41,8 +45,8 @@ public abstract class NullAbstractTable extends AbstractResource implements Tabl
 		throw new UnsupportedOperationException();
 	}
 	
-	protected Table createTableResource() {
-		return (Table) parent().addAnnotation(getAnnotationName());
+	protected TableAnnotation createTableResource() {
+		return (TableAnnotation) parent().addAnnotation(getAnnotationName());
 	}
 	
 	public String getName() {
@@ -102,19 +106,19 @@ public abstract class NullAbstractTable extends AbstractResource implements Tabl
 		return 0;
 	}
 
-	public ITextRange textRange(CompilationUnit astRoot) {
+	public TextRange textRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public ITextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange nameTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public ITextRange catalogTextRange(CompilationUnit astRoot) {
+	public TextRange catalogTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public ITextRange schemaTextRange(CompilationUnit astRoot) {
+	public TextRange schemaTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 

@@ -9,6 +9,7 @@
 package org.eclipse.jpt.ui.internal;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jpt.ui.JptUiPlugin;
 
 /**
  * This tracing class manages to convert the string value into boolean values or

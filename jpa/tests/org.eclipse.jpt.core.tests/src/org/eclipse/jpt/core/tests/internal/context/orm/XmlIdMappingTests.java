@@ -12,32 +12,32 @@ package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.context.base.GenerationType;
-import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
-import org.eclipse.jpt.core.internal.context.base.IEmbeddedIdMapping;
-import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
-import org.eclipse.jpt.core.internal.context.base.IIdMapping;
-import org.eclipse.jpt.core.internal.context.base.IManyToManyMapping;
-import org.eclipse.jpt.core.internal.context.base.IManyToOneMapping;
-import org.eclipse.jpt.core.internal.context.base.IOneToManyMapping;
-import org.eclipse.jpt.core.internal.context.base.IOneToOneMapping;
-import org.eclipse.jpt.core.internal.context.base.ITransientMapping;
-import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
-import org.eclipse.jpt.core.internal.context.base.TemporalType;
-import org.eclipse.jpt.core.internal.context.orm.XmlColumn;
-import org.eclipse.jpt.core.internal.context.orm.XmlGeneratedValue;
-import org.eclipse.jpt.core.internal.context.orm.XmlIdMapping;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.XmlSequenceGenerator;
-import org.eclipse.jpt.core.internal.context.orm.XmlTableGenerator;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.orm.Id;
-import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
+import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.GenerationType;
+import org.eclipse.jpt.core.context.BasicMapping;
+import org.eclipse.jpt.core.context.EmbeddedIdMapping;
+import org.eclipse.jpt.core.context.EmbeddedMapping;
+import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.context.ManyToManyMapping;
+import org.eclipse.jpt.core.context.ManyToOneMapping;
+import org.eclipse.jpt.core.context.OneToManyMapping;
+import org.eclipse.jpt.core.context.OneToOneMapping;
+import org.eclipse.jpt.core.context.TransientMapping;
+import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.context.TemporalType;
+import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmColumn;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmSequenceGenerator;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmTableGenerator;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmGeneratedValue;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmIdMapping;
+import org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.orm.XmlId;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -148,10 +148,10 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateName() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
-		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) xmlPersistentAttribute.getMapping();
+		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
 		assertEquals("idMapping", xmlIdMapping.getName());
 		assertEquals("idMapping", idResource.getName());
@@ -168,10 +168,10 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	}
 	
 	public void testModifyName() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
-		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) xmlPersistentAttribute.getMapping();
+		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
 		assertEquals("idMapping", xmlIdMapping.getName());
 		assertEquals("idMapping", idResource.getName());
@@ -188,30 +188,30 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateTemporal() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
-		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) xmlPersistentAttribute.getMapping();
+		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		ormResource().save(null);
 		
 		assertNull(xmlIdMapping.getTemporal());
 		assertNull(idResource.getTemporal());
 				
 		//set temporal in the resource model, verify context model updated
-		idResource.setTemporal(org.eclipse.jpt.core.internal.resource.orm.TemporalType.DATE);
+		idResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.DATE);
 		ormResource().save(null);
 		assertEquals(TemporalType.DATE, xmlIdMapping.getTemporal());
-		assertEquals(org.eclipse.jpt.core.internal.resource.orm.TemporalType.DATE, idResource.getTemporal());
+		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.DATE, idResource.getTemporal());
 	
-		idResource.setTemporal(org.eclipse.jpt.core.internal.resource.orm.TemporalType.TIME);
+		idResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIME);
 		ormResource().save(null);
 		assertEquals(TemporalType.TIME, xmlIdMapping.getTemporal());
-		assertEquals(org.eclipse.jpt.core.internal.resource.orm.TemporalType.TIME, idResource.getTemporal());
+		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIME, idResource.getTemporal());
 
-		idResource.setTemporal(org.eclipse.jpt.core.internal.resource.orm.TemporalType.TIMESTAMP);
+		idResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP);
 		ormResource().save(null);
 		assertEquals(TemporalType.TIMESTAMP, xmlIdMapping.getTemporal());
-		assertEquals(org.eclipse.jpt.core.internal.resource.orm.TemporalType.TIMESTAMP, idResource.getTemporal());
+		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP, idResource.getTemporal());
 
 		//set temporal to null in the resource model
 		idResource.setTemporal(null);
@@ -221,10 +221,10 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	}
 	
 	public void testModifyTemporal() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
-		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) xmlPersistentAttribute.getMapping();
+		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		ormResource().save(null);
 		
 		assertNull(xmlIdMapping.getTemporal());
@@ -233,17 +233,17 @@ public class XmlIdMappingTests extends ContextModelTestCase
 		//set temporal in the context model, verify resource model updated
 		xmlIdMapping.setTemporal(TemporalType.DATE);
 		ormResource().save(null);
-		assertEquals(org.eclipse.jpt.core.internal.resource.orm.TemporalType.DATE, idResource.getTemporal());
+		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.DATE, idResource.getTemporal());
 		assertEquals(TemporalType.DATE, xmlIdMapping.getTemporal());
 	
 		xmlIdMapping.setTemporal(TemporalType.TIME);
 		ormResource().save(null);
-		assertEquals(org.eclipse.jpt.core.internal.resource.orm.TemporalType.TIME, idResource.getTemporal());
+		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIME, idResource.getTemporal());
 		assertEquals(TemporalType.TIME, xmlIdMapping.getTemporal());
 
 		xmlIdMapping.setTemporal(TemporalType.TIMESTAMP);
 		ormResource().save(null);
-		assertEquals(org.eclipse.jpt.core.internal.resource.orm.TemporalType.TIMESTAMP, idResource.getTemporal());
+		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP, idResource.getTemporal());
 		assertEquals(TemporalType.TIMESTAMP, xmlIdMapping.getTemporal());
 
 		//set temporal to null in the context model
@@ -258,10 +258,10 @@ public class XmlIdMappingTests extends ContextModelTestCase
 
 	
 	public void testAddSequenceGenerator() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
-		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) xmlPersistentAttribute.getMapping();
+		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
 		assertNull(xmlIdMapping.getSequenceGenerator());
 		assertNull(idResource.getSequenceGenerator());
@@ -281,10 +281,10 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	}
 	
 	public void testRemoveSequenceGenerator() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
-		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) xmlPersistentAttribute.getMapping();
+		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
 		assertNull(xmlIdMapping.getSequenceGenerator());
 		assertNull(idResource.getSequenceGenerator());
@@ -308,10 +308,10 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	}
 
 	public void testUpdateSequenceGenerator() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
-		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) xmlPersistentAttribute.getMapping();
+		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
 		assertNull(xmlIdMapping.getSequenceGenerator());
 		assertNull(idResource.getSequenceGenerator());
@@ -327,10 +327,10 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	}
 	
 	public void testAddTableGenerator() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
-		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) xmlPersistentAttribute.getMapping();
+		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
 		assertNull(xmlIdMapping.getTableGenerator());
 		assertNull(idResource.getTableGenerator());
@@ -350,10 +350,10 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	}
 	
 	public void testRemoveTableGenerator() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
-		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) xmlPersistentAttribute.getMapping();
+		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
 		assertNull(xmlIdMapping.getTableGenerator());
 		assertNull(idResource.getTableGenerator());
@@ -377,10 +377,10 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateTableGenerator() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
-		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) xmlPersistentAttribute.getMapping();
+		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
 		assertNull(xmlIdMapping.getTableGenerator());
 		assertNull(idResource.getTableGenerator());
@@ -396,10 +396,10 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	}
 
 	public void testAddGeneratedValue() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
-		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) xmlPersistentAttribute.getMapping();
+		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
 		assertNull(xmlIdMapping.getGeneratedValue());
 		assertNull(idResource.getGeneratedValue());
@@ -419,10 +419,10 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	}
 	
 	public void testRemoveGeneratedValue() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
-		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) xmlPersistentAttribute.getMapping();
+		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
 		assertNull(xmlIdMapping.getGeneratedValue());
 		assertNull(idResource.getGeneratedValue());
@@ -446,10 +446,10 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	}
 
 	public void testUpdateGeneratedValue() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
-		Id idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
+		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) xmlPersistentAttribute.getMapping();
+		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
 		assertNull(xmlIdMapping.getGeneratedValue());
 		assertNull(idResource.getGeneratedValue());
@@ -468,12 +468,12 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	public void testIdMappingNoUnderylingJavaAttribute() throws Exception {
 		createTestEntityIdMapping();
 
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "foo");
-		assertEquals(2, xmlPersistentType.virtualAttributesSize());
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "foo");
+		assertEquals(2, ormPersistentType.virtualAttributesSize());
 		
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.specifiedAttributes().next();
-		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) xmlPersistentAttribute.getMapping();
 		
 		assertEquals("foo", xmlIdMapping.getName());
 		assertNull(xmlIdMapping.getTemporal());
@@ -482,7 +482,7 @@ public class XmlIdMappingTests extends ContextModelTestCase
 		assertNull(xmlIdMapping.getTableGenerator());
 
 		
-		XmlColumn xmlColumn = xmlIdMapping.getColumn();
+		GenericOrmColumn xmlColumn = xmlIdMapping.getColumn();
 		assertNull(xmlColumn.getSpecifiedName());
 		assertNull(xmlColumn.getSpecifiedUnique());
 		assertNull(xmlColumn.getSpecifiedNullable());
@@ -515,15 +515,15 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	//@Enumerated(EnumType.STRING)
 	public void testVirtualMappingMetadataCompleteFalse() throws Exception {
 		createTestEntityIdMapping();
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		assertEquals(2, xmlPersistentType.virtualAttributesSize());		
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.virtualAttributes().next();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		assertEquals(2, ormPersistentType.virtualAttributesSize());		
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		
-		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();	
+		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) xmlPersistentAttribute.getMapping();	
 		assertEquals("id", xmlIdMapping.getName());
 		assertEquals(TemporalType.TIMESTAMP, xmlIdMapping.getTemporal());
 		
-		XmlColumn xmlColumn = xmlIdMapping.getColumn();
+		GenericOrmColumn xmlColumn = xmlIdMapping.getColumn();
 		assertEquals("MY_COLUMN", xmlColumn.getSpecifiedName());
 		assertEquals(Boolean.TRUE, xmlColumn.getSpecifiedUnique());
 		assertEquals(Boolean.FALSE, xmlColumn.getSpecifiedNullable());
@@ -535,11 +535,11 @@ public class XmlIdMappingTests extends ContextModelTestCase
 		assertEquals(Integer.valueOf(6), xmlColumn.getSpecifiedPrecision());
 		assertEquals(Integer.valueOf(7), xmlColumn.getSpecifiedScale());
 		
-		XmlGeneratedValue xmlGeneratedValue = xmlIdMapping.getGeneratedValue();
+		GenericOrmGeneratedValue xmlGeneratedValue = xmlIdMapping.getGeneratedValue();
 		assertEquals("myTableGenerator", xmlGeneratedValue.getSpecifiedGenerator());
 		assertEquals(GenerationType.TABLE, xmlGeneratedValue.getSpecifiedStrategy());
 		
-		XmlTableGenerator xmlTableGenerator = xmlIdMapping.getTableGenerator();
+		GenericOrmTableGenerator xmlTableGenerator = xmlIdMapping.getTableGenerator();
 		assertEquals("myTableGenerator", xmlTableGenerator.getName());
 		assertEquals("myTable", xmlTableGenerator.getSpecifiedTable());
 		assertEquals("myCatalog", xmlTableGenerator.getSpecifiedCatalog());
@@ -550,25 +550,25 @@ public class XmlIdMappingTests extends ContextModelTestCase
 		assertEquals(Integer.valueOf(1), xmlTableGenerator.getSpecifiedInitialValue());
 		assertEquals(Integer.valueOf(1), xmlTableGenerator.getSpecifiedAllocationSize());
 
-		XmlSequenceGenerator xmlSequenceGenerator = xmlIdMapping.getSequenceGenerator();
+		GenericOrmSequenceGenerator xmlSequenceGenerator = xmlIdMapping.getSequenceGenerator();
 		assertEquals("mySequenceGenerator", xmlSequenceGenerator.getName());
 	}
 	
 	public void testVirtualMappingMetadataCompleteTrue() throws Exception {
 		createTestEntityIdMapping();
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		xmlPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		assertEquals(2, xmlPersistentType.virtualAttributesSize());		
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.virtualAttributes().next();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
+		assertEquals(2, ormPersistentType.virtualAttributesSize());		
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		
-		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();	
+		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) xmlPersistentAttribute.getMapping();	
 		assertEquals("id", xmlIdMapping.getName());
 		assertNull(xmlIdMapping.getTemporal());
 		assertNull(xmlIdMapping.getGeneratedValue());
 		assertNull(xmlIdMapping.getSequenceGenerator());
 		assertNull(xmlIdMapping.getTableGenerator());
 		
-		XmlColumn xmlColumn = xmlIdMapping.getColumn();
+		GenericOrmColumn xmlColumn = xmlIdMapping.getColumn();
 		assertEquals("id", xmlColumn.getSpecifiedName());
 		assertEquals(Boolean.FALSE, xmlColumn.getSpecifiedUnique());
 		assertEquals(Boolean.TRUE, xmlColumn.getSpecifiedNullable());
@@ -584,12 +584,12 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	public void testSpecifiedMapping() throws Exception {
 		createTestEntityIdMapping();
 
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
-		assertEquals(1, xmlPersistentType.virtualAttributesSize());
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		assertEquals(1, ormPersistentType.virtualAttributesSize());
 		
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.specifiedAttributes().next();
-		XmlIdMapping xmlIdMapping = (XmlIdMapping) xmlPersistentAttribute.getMapping();
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.specifiedAttributes().next();
+		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) xmlPersistentAttribute.getMapping();
 		
 		assertEquals("id", xmlIdMapping.getName());
 		assertNull(xmlIdMapping.getTemporal());
@@ -597,7 +597,7 @@ public class XmlIdMappingTests extends ContextModelTestCase
 		assertNull(xmlIdMapping.getSequenceGenerator());
 		assertNull(xmlIdMapping.getTableGenerator());
 		
-		XmlColumn xmlColumn = xmlIdMapping.getColumn();
+		GenericOrmColumn xmlColumn = xmlIdMapping.getColumn();
 		assertNull(xmlColumn.getSpecifiedName());
 		assertNull(xmlColumn.getSpecifiedUnique());
 		assertNull(xmlColumn.getSpecifiedNullable());
@@ -628,163 +628,163 @@ public class XmlIdMappingTests extends ContextModelTestCase
 
 	public void testIdMorphToBasicMapping() throws Exception {
 		createTestEntityIdMapping();
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
 		
-		IIdMapping idMapping = (IIdMapping) xmlPersistentAttribute.getMapping();
+		IdMapping idMapping = (IdMapping) xmlPersistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
 		idMapping.setTemporal(TemporalType.TIME);
 		assertFalse(idMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof IBasicMapping);
+		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, ormPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof BasicMapping);
 		assertEquals("id", xmlPersistentAttribute.getMapping().getName());
-		assertEquals(TemporalType.TIME, ((IBasicMapping) xmlPersistentAttribute.getMapping()).getTemporal());
-		assertEquals("FOO", ((IBasicMapping) xmlPersistentAttribute.getMapping()).getColumn().getSpecifiedName());
+		assertEquals(TemporalType.TIME, ((BasicMapping) xmlPersistentAttribute.getMapping()).getTemporal());
+		assertEquals("FOO", ((BasicMapping) xmlPersistentAttribute.getMapping()).getColumn().getSpecifiedName());
 	}
 	
 	public void testIdMorphToVersionMapping() throws Exception {
 		createTestEntityIdMapping();
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
 		
-		IIdMapping idMapping = (IIdMapping) xmlPersistentAttribute.getMapping();
+		IdMapping idMapping = (IdMapping) xmlPersistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
 		idMapping.setTemporal(TemporalType.TIME);
 		assertFalse(idMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof IVersionMapping);
+		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, ormPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof VersionMapping);
 		assertEquals("id", xmlPersistentAttribute.getMapping().getName());
-		assertEquals(TemporalType.TIME, ((IVersionMapping) xmlPersistentAttribute.getMapping()).getTemporal());
-		assertEquals("FOO", ((IVersionMapping) xmlPersistentAttribute.getMapping()).getColumn().getSpecifiedName());
+		assertEquals(TemporalType.TIME, ((VersionMapping) xmlPersistentAttribute.getMapping()).getTemporal());
+		assertEquals("FOO", ((VersionMapping) xmlPersistentAttribute.getMapping()).getColumn().getSpecifiedName());
 	}
 	
 	public void testIdMorphToTransientMapping() throws Exception {
 		createTestEntityIdMapping();
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
 		
-		IIdMapping idMapping = (IIdMapping) xmlPersistentAttribute.getMapping();
+		IdMapping idMapping = (IdMapping) xmlPersistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
 		idMapping.setTemporal(TemporalType.TIME);
 		assertFalse(idMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof ITransientMapping);
+		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof TransientMapping);
 		assertEquals("id", xmlPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testIdMorphToEmbeddedMapping() throws Exception {
 		createTestEntityIdMapping();
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
 		
-		IIdMapping idMapping = (IIdMapping) xmlPersistentAttribute.getMapping();
+		IdMapping idMapping = (IdMapping) xmlPersistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
 		idMapping.setTemporal(TemporalType.TIME);
 		assertFalse(idMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof IEmbeddedMapping);
+		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, ormPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof EmbeddedMapping);
 		assertEquals("id", xmlPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testIdMorphToEmbeddedIdMapping() throws Exception {
 		createTestEntityIdMapping();
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
 		
-		IIdMapping idMapping = (IIdMapping) xmlPersistentAttribute.getMapping();
+		IdMapping idMapping = (IdMapping) xmlPersistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
 		idMapping.setTemporal(TemporalType.TIME);
 		assertFalse(idMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof IEmbeddedIdMapping);
+		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof EmbeddedIdMapping);
 		assertEquals("id", xmlPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testIdMorphToOneToOneMapping() throws Exception {
 		createTestEntityIdMapping();
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
 		
-		IIdMapping idMapping = (IIdMapping) xmlPersistentAttribute.getMapping();
+		IdMapping idMapping = (IdMapping) xmlPersistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
 		idMapping.setTemporal(TemporalType.TIME);
 		assertFalse(idMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof IOneToOneMapping);
+		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, ormPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof OneToOneMapping);
 		assertEquals("id", xmlPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testIdMorphToOneToManyMapping() throws Exception {
 		createTestEntityIdMapping();
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
 		
-		IIdMapping idMapping = (IIdMapping) xmlPersistentAttribute.getMapping();
+		IdMapping idMapping = (IdMapping) xmlPersistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
 		idMapping.setTemporal(TemporalType.TIME);
 		assertFalse(idMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof IOneToManyMapping);
+		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, ormPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof OneToManyMapping);
 		assertEquals("id", xmlPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testIdMorphToManyToOneMapping() throws Exception {
 		createTestEntityIdMapping();
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
 		
-		IIdMapping idMapping = (IIdMapping) xmlPersistentAttribute.getMapping();
+		IdMapping idMapping = (IdMapping) xmlPersistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
 		idMapping.setTemporal(TemporalType.TIME);
 		assertFalse(idMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof IManyToOneMapping);
+		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, ormPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof ManyToOneMapping);
 		assertEquals("id", xmlPersistentAttribute.getMapping().getName());
 	}
 	
 	public void testIdMorphToManyToManyMapping() throws Exception {
 		createTestEntityIdMapping();
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
 		
-		IIdMapping idMapping = (IIdMapping) xmlPersistentAttribute.getMapping();
+		IdMapping idMapping = (IdMapping) xmlPersistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
 		idMapping.setTemporal(TemporalType.TIME);
 		assertFalse(idMapping.isDefault());
 		
-		xmlPersistentAttribute.setSpecifiedMappingKey(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(1, xmlPersistentType.specifiedAttributesSize());
-		assertEquals(xmlPersistentAttribute, xmlPersistentType.specifiedAttributes().next());
-		assertTrue(xmlPersistentAttribute.getMapping() instanceof IManyToManyMapping);
+		xmlPersistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		assertEquals(1, ormPersistentType.specifiedAttributesSize());
+		assertEquals(xmlPersistentAttribute, ormPersistentType.specifiedAttributes().next());
+		assertTrue(xmlPersistentAttribute.getMapping() instanceof ManyToManyMapping);
 		assertEquals("id", xmlPersistentAttribute.getMapping().getName());
 	}	
 }

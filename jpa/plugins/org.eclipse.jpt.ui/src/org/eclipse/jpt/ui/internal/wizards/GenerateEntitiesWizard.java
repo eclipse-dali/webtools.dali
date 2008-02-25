@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
@@ -27,7 +27,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class GenerateEntitiesWizard extends Wizard {	
 
-	private IJpaProject jpaProject;
+	private JpaProject jpaProject;
 
 	private IStructuredSelection selection;
 
@@ -44,7 +44,7 @@ public class GenerateEntitiesWizard extends Wizard {
 	
 	private Collection<Table> selectedTables;
 
-	public GenerateEntitiesWizard( IJpaProject jpaProject, IStructuredSelection selection) {
+	public GenerateEntitiesWizard( JpaProject jpaProject, IStructuredSelection selection) {
 		super();
 		this.jpaProject = jpaProject;
 		this.selection = selection;
@@ -116,7 +116,7 @@ public class GenerateEntitiesWizard extends Wizard {
 		return this.jpaProject.connectionProfile();
 	}
 	
-	IJpaProject getJpaProject(){
+	JpaProject getJpaProject(){
 		return this.jpaProject;
 	}
 

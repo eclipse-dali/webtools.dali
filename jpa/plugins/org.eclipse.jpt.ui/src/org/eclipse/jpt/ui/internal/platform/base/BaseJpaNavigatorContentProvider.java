@@ -11,7 +11,7 @@
 package org.eclipse.jpt.ui.internal.platform.base;
 
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
+import org.eclipse.jpt.core.context.IBaseJpaContent;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.eclipse.ui.navigator.ICommonContentProvider;

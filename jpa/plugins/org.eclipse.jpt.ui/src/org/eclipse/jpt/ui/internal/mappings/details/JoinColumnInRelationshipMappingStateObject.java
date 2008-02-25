@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
+import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 
@@ -19,8 +19,8 @@ import org.eclipse.jpt.db.internal.Table;
  * The state object used to create or edit a primary key join column on a
  * relationship mapping.
  *
- * @see IJoinColumn
- * @see IRelationshipMapping
+ * @see JoinColumn
+ * @see RelationshipMapping
  * @see JoinColumnInRelationshipMappingDialog
  *
  * @version 2.0
@@ -35,8 +35,8 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 	 * @param joinColumn The join column to edit or <code>null</code> if this is
 	 * used to create a new one
 	 */
-	public JoinColumnInRelationshipMappingStateObject(IRelationshipMapping relationshipMapping,
-	                                                  IJoinColumn joinColumn) {
+	public JoinColumnInRelationshipMappingStateObject(RelationshipMapping relationshipMapping,
+	                                                  JoinColumn joinColumn) {
 		super(relationshipMapping, joinColumn);
 	}
 
@@ -46,7 +46,7 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 	@Override
 	public String defaultTableName() {
 
-		IJoinColumn joinColumn = getJoinColumn();
+		JoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn != null) {
 			return joinColumn.getDefaultTable();
@@ -68,8 +68,8 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 	 * (non-Javadoc)
 	 */
 	@Override
-	public IRelationshipMapping getOwner() {
-		return (IRelationshipMapping) super.getOwner();
+	public RelationshipMapping getOwner() {
+		return (RelationshipMapping) super.getOwner();
 	}
 
 	/*
@@ -77,7 +77,7 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 	 */
 	@Override
 	public Table getReferencedNameTable() {
-		IEntity targetEntity = getOwner().getResolvedTargetEntity();
+		Entity targetEntity = getOwner().getResolvedTargetEntity();
 
 		if (targetEntity != null) {
 			return targetEntity.primaryDbTable();

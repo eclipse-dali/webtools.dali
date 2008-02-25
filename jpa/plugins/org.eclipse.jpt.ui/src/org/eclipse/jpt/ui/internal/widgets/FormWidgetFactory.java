@@ -36,7 +36,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public final class FormWidgetFactory implements IWidgetFactory {
+public final class FormWidgetFactory implements WidgetFactory {
 
 	/**
 	 * The actual factory responsible for creating the new widgets.

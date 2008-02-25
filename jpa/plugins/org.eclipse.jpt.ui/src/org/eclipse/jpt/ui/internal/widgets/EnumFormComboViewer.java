@@ -59,7 +59,7 @@ public abstract class EnumFormComboViewer<T extends Model, V> extends AbstractEn
 	 */
 	protected EnumFormComboViewer(PropertyValueModel<? extends T> subjectHolder,
 	                              Composite parent,
-	                              IWidgetFactory widgetFactory) {
+	                              WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}

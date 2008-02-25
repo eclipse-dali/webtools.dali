@@ -29,6 +29,10 @@ import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IOpenable;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaModel;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -72,7 +76,7 @@ public class JpaModelManager {
 	/**
 	 * The JPA model - null until the plug-in is started.
 	 */
-	private JpaModel jpaModel;
+	private GenericJpaModel jpaModel;
 
 	/**
 	 * Listen for changes to projects and files.
@@ -131,7 +135,7 @@ public class JpaModelManager {
 	public synchronized void start() throws Exception {
 		debug("*** START JPA model manager ***");
 		try {
-			this.jpaModel = new JpaModel();
+			this.jpaModel = new GenericJpaModel();
 			ResourcesPlugin.getWorkspace().addResourceChangeListener(this.resourceChangeListener);
 			FacetedProjectFramework.addListener(this.facetedProjectListener, IFacetedProjectEvent.Type.values());
 			JavaCore.addElementChangedListener(this.javaElementChangeListener);
@@ -161,7 +165,7 @@ public class JpaModelManager {
 	/**
 	 * Return the workspace-wide JPA model.
 	 */
-	public IJpaModel jpaModel() {
+	public JpaModel jpaModel() {
 		return this.jpaModel;
 	}
 
@@ -170,7 +174,7 @@ public class JpaModelManager {
 	 * or null if unable to associate the specified project with a
 	 * JPA project.
 	 */
-	public IJpaProject jpaProject(IProject project) throws CoreException {
+	public JpaProject jpaProject(IProject project) throws CoreException {
 		return this.jpaModel.jpaProject(project);
 	}
 
@@ -178,7 +182,7 @@ public class JpaModelManager {
 	 * Return the JPA file corresponding to the specified Eclipse file,
 	 * or null if unable to associate the specified file with a JPA file.
 	 */
-	public IJpaFile jpaFile(IFile file) throws CoreException {
+	public JpaFile jpaFile(IFile file) throws CoreException {
 		return this.jpaModel.jpaFile(file);
 	}
 

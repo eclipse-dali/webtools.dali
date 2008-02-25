@@ -10,16 +10,17 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
+import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationEditFormatter;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.utility.internal.node.Node;
 
 public abstract class AbstractResource extends AbstractNode
-	implements JavaResource
+	implements JavaResourceNode
 {	
-	protected AbstractResource(JavaResource parent) {
+	protected AbstractResource(JavaResourceNode parent) {
 		super(parent);
 	}
 	
@@ -27,8 +28,8 @@ public abstract class AbstractResource extends AbstractNode
 	// **************** overrides **********************************************
 	
 	@Override
-	public JavaResource parent() {
-		return (JavaResource) super.parent();
+	public JavaResourceNode parent() {
+		return (JavaResourceNode) super.parent();
 	}
 	
 	@Override
@@ -39,7 +40,7 @@ public abstract class AbstractResource extends AbstractNode
 	
 	// **************** JavaResource implementation ****************************
 	
-	public IJpaAnnotationProvider annotationProvider() {
+	public JpaAnnotationProvider annotationProvider() {
 		return root().annotationProvider();
 	}
 	

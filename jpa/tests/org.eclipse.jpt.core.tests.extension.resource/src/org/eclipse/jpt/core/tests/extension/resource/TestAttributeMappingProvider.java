@@ -1,13 +1,13 @@
 package org.eclipse.jpt.core.tests.extension.resource;
 
-import org.eclipse.jpt.core.internal.IJpaFactory;
+import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 
 public class TestAttributeMappingProvider
-	implements IJavaAttributeMappingProvider
+	implements JavaAttributeMappingProvider
 {
 	// singleton
 	private static final TestAttributeMappingProvider INSTANCE = new TestAttributeMappingProvider();
@@ -15,7 +15,7 @@ public class TestAttributeMappingProvider
 	/**
 	 * Return the singleton.
 	 */
-	public static IJavaAttributeMappingProvider instance() {
+	public static JavaAttributeMappingProvider instance() {
 		return INSTANCE;
 	}
 
@@ -30,7 +30,7 @@ public class TestAttributeMappingProvider
 		return "test";
 	}
 	
-	public IJavaAttributeMapping buildMapping(Attribute attribute, IJpaFactory factory) {
+	public JavaAttributeMapping buildMapping(Attribute attribute, JpaFactory factory) {
 		return ((TestJpaFactory) factory).createTestAttributeMapping(attribute);
 	}
 

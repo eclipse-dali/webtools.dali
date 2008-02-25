@@ -12,12 +12,12 @@ package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.orm.TableGenerator;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
+import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.context.TableGenerator;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
+import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -84,8 +84,8 @@ public class XmlTableGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedName() throws Exception {
-		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
-		TableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
 		
 		//set name in the resource model, verify context model updated
 		tableGeneratorResource.setName("FOO");
@@ -99,8 +99,8 @@ public class XmlTableGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedName() throws Exception {
-		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
-		TableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
 		
 		//set name in the context model, verify resource model modified
 		tableGenerator.setName("FOO");
@@ -114,8 +114,8 @@ public class XmlTableGeneratorTests extends ContextModelTestCase
 	}
 
 	public void testUpdateSpecifiedInitialValue() throws Exception {
-		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
-		TableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
 		
 		//set initial value in the resource model, verify context model updated
 		tableGeneratorResource.setInitialValue(Integer.valueOf(10));
@@ -134,8 +134,8 @@ public class XmlTableGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedInitialValue() throws Exception {
-		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
-		TableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
 		
 		//set initial value in the context model, verify resource model modified
 		tableGenerator.setSpecifiedInitialValue(Integer.valueOf(10));
@@ -153,8 +153,8 @@ public class XmlTableGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedAllocationSize() throws Exception {
-		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
-		TableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
 		
 		//set allocation size in the resource model, verify context model updated
 		tableGeneratorResource.setAllocationSize(Integer.valueOf(10));
@@ -173,8 +173,8 @@ public class XmlTableGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedAllocationSize() throws Exception {
-		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
-		TableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
 		
 		//set allocation size in the context model, verify resource model modified
 		tableGenerator.setSpecifiedAllocationSize(Integer.valueOf(10));
@@ -192,8 +192,8 @@ public class XmlTableGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedTable() throws Exception {
-		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
-		TableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
 		
 		//set name in the resource model, verify context model updated
 		tableGeneratorResource.setTable("FOO");
@@ -207,8 +207,8 @@ public class XmlTableGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedTable() throws Exception {
-		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
-		TableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
 		
 		//set name in the context model, verify resource model modified
 		tableGenerator.setSpecifiedTable("FOO");
@@ -222,8 +222,8 @@ public class XmlTableGeneratorTests extends ContextModelTestCase
 	}
 
 	public void testUpdateSpecifiedSchema() throws Exception {
-		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
-		TableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
 		
 		//set name in the resource model, verify context model updated
 		tableGeneratorResource.setSchema("FOO");
@@ -237,8 +237,8 @@ public class XmlTableGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedSchema() throws Exception {
-		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
-		TableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
 		
 		//set name in the context model, verify resource model modified
 		tableGenerator.setSpecifiedSchema("FOO");
@@ -252,8 +252,8 @@ public class XmlTableGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedCatalog() throws Exception {
-		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
-		TableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
 		
 		//set name in the resource model, verify context model updated
 		tableGeneratorResource.setCatalog("FOO");
@@ -267,8 +267,8 @@ public class XmlTableGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedCatalog() throws Exception {
-		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
-		TableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
 		
 		//set name in the context model, verify resource model modified
 		tableGenerator.setSpecifiedCatalog("FOO");
@@ -282,8 +282,8 @@ public class XmlTableGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedPkColumnName() throws Exception {
-		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
-		TableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
 		
 		//set name in the resource model, verify context model updated
 		tableGeneratorResource.setPkColumnName("FOO");
@@ -297,8 +297,8 @@ public class XmlTableGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedPkColumnName() throws Exception {
-		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
-		TableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
 		
 		//set name in the context model, verify resource model modified
 		tableGenerator.setSpecifiedPkColumnName("FOO");
@@ -312,8 +312,8 @@ public class XmlTableGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedValueColumnName() throws Exception {
-		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
-		TableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
 		
 		//set name in the resource model, verify context model updated
 		tableGeneratorResource.setValueColumnName("FOO");
@@ -327,8 +327,8 @@ public class XmlTableGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedValueColumnName() throws Exception {
-		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
-		TableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
 		
 		//set name in the context model, verify resource model modified
 		tableGenerator.setSpecifiedValueColumnName("FOO");
@@ -342,8 +342,8 @@ public class XmlTableGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedPkColumnValue() throws Exception {
-		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
-		TableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
 		
 		//set name in the resource model, verify context model updated
 		tableGeneratorResource.setPkColumnValue("FOO");
@@ -357,8 +357,8 @@ public class XmlTableGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedPkColumnValue() throws Exception {
-		ITableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
-		TableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
+		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);		
+		XmlTableGenerator tableGeneratorResource = ormResource().getEntityMappings().getTableGenerators().get(0);
 		
 		//set name in the context model, verify resource model modified
 		tableGenerator.setSpecifiedPkColumnValue("FOO");

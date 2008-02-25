@@ -9,18 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.IJoinTable;
-import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
+import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinTable;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.db.internal.Table;
 
 /**
  * The state object used to create or edit a primary key join column on a join
  * table.
  *
- * @see IJoinColumn
- * @see IJoinTable
+ * @see JoinColumn
+ * @see JoinTable
  * @see InverseJoinColumnInJoinTableDialog
  *
  * @version 2.0
@@ -35,8 +35,8 @@ public class InverseJoinColumnInJoinTableStateObject extends AbstractJoinColumnS
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
-	public InverseJoinColumnInJoinTableStateObject(IJoinTable joinTable,
-	                                               IJoinColumn joinColumn) {
+	public InverseJoinColumnInJoinTableStateObject(JoinTable joinTable,
+	                                               JoinColumn joinColumn) {
 
 		super(joinTable, joinColumn);
 	}
@@ -45,8 +45,8 @@ public class InverseJoinColumnInJoinTableStateObject extends AbstractJoinColumnS
 	 * (non-Javadoc)
 	 */
 	@Override
-	public IJoinColumn getJoinColumn() {
-		return (IJoinColumn) super.getJoinColumn();
+	public JoinColumn getJoinColumn() {
+		return (JoinColumn) super.getJoinColumn();
 	}
 
 	/*
@@ -61,8 +61,8 @@ public class InverseJoinColumnInJoinTableStateObject extends AbstractJoinColumnS
 	 * (non-Javadoc)
 	 */
 	@Override
-	public IJoinTable getOwner() {
-		return (IJoinTable) super.getOwner();
+	public JoinTable getOwner() {
+		return (JoinTable) super.getOwner();
 	}
 
 	/*
@@ -70,7 +70,7 @@ public class InverseJoinColumnInJoinTableStateObject extends AbstractJoinColumnS
 	 */
 	@Override
 	public Table getReferencedNameTable() {
-		IEntity targetEntity = relationshipMapping().getResolvedTargetEntity();
+		Entity targetEntity = relationshipMapping().getResolvedTargetEntity();
 
 		if (targetEntity == null) {
 			return null;
@@ -84,7 +84,7 @@ public class InverseJoinColumnInJoinTableStateObject extends AbstractJoinColumnS
 	 *
 	 * @return The owner of the join column to create or to edit
 	 */
-	public IRelationshipMapping relationshipMapping() {
+	public RelationshipMapping relationshipMapping() {
 		return getOwner().parent();
 	}
 }

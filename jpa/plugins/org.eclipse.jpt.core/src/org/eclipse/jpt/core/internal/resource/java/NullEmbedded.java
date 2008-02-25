@@ -10,12 +10,15 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.Embedded;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 
 
 public class NullEmbedded extends AbstractResource implements Embedded, Annotation
 {	
-	protected NullEmbedded(JavaPersistentResource parent) {
+	protected NullEmbedded(JavaResourcePersistentMember parent) {
 		super(parent);
 	}
 
@@ -40,8 +43,8 @@ public class NullEmbedded extends AbstractResource implements Embedded, Annotati
 	}
 	
 	@Override
-	public JavaPersistentResource parent() {
-		return (JavaPersistentResource) super.parent();
+	public JavaResourcePersistentMember parent() {
+		return (JavaResourcePersistentMember) super.parent();
 	}
 
 
@@ -49,7 +52,7 @@ public class NullEmbedded extends AbstractResource implements Embedded, Annotati
 		throw new UnsupportedOperationException();
 	}
 
-	public ITextRange textRange(CompilationUnit astRoot) {
+	public TextRange textRange(CompilationUnit astRoot) {
 		return null;
 	}
 

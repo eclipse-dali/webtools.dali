@@ -16,6 +16,13 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.NestableSecondaryTable;
+import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
+import org.eclipse.jpt.core.resource.java.SecondaryTables;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
@@ -25,7 +32,7 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 
 	private final List<NestableSecondaryTable> secondaryTables;
 	
-	protected SecondaryTablesImpl(JavaPersistentTypeResource parent, Member member) {
+	protected SecondaryTablesImpl(JavaResourcePersistentType parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.secondaryTables = new ArrayList<NestableSecondaryTable>();
 	}
@@ -39,7 +46,7 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 	}
 
 	public String getNestableAnnotationName() {
-		return SecondaryTable.ANNOTATION_NAME;
+		return SecondaryTableAnnotation.ANNOTATION_NAME;
 	}
 
 	public String getElementName() {
@@ -136,11 +143,11 @@ public class SecondaryTablesImpl extends AbstractAnnotationResource<Member> impl
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
-			return new SecondaryTablesImpl((JavaPersistentTypeResource) parent, member);
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
+			return new SecondaryTablesImpl((JavaResourcePersistentType) parent, member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

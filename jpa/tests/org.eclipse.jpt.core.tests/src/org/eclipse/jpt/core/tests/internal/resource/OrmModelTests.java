@@ -1,8 +1,8 @@
 package org.eclipse.jpt.core.tests.internal.resource;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.core.internal.resource.orm.OrmArtifactEdit;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResource;
+import org.eclipse.jpt.core.resource.orm.OrmArtifactEdit;
+import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 

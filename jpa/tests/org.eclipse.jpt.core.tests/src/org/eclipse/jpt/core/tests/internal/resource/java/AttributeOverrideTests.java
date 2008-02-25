@@ -12,11 +12,11 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
-import org.eclipse.jpt.core.internal.resource.java.AttributeOverride;
-import org.eclipse.jpt.core.internal.resource.java.Column;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
+import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class AttributeOverrideTests extends JavaResourceModelTestCase {
@@ -80,9 +80,9 @@ public class AttributeOverrideTests extends JavaResourceModelTestCase {
 		
 	public void testGetName() throws Exception {
 		IType testType = this.createTestAttributeOverrideOnField();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
-		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
 
 		assertNotNull(attributeOverride);
 		assertEquals(ATTRIBUTE_OVERRIDE_NAME, attributeOverride.getName());
@@ -90,19 +90,19 @@ public class AttributeOverrideTests extends JavaResourceModelTestCase {
 
 	public void testGetNullColumn() throws Exception {
 		IType testType = this.createTestAttributeOverrideOnField();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
-		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
-		Column column = attributeOverride.getColumn();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
+		ColumnAnnotation column = attributeOverride.getColumn();
 		assertNotNull(attributeOverride);
 		assertNull(column);
 	}
 
 	public void testSetName() throws Exception {
 		IType testType = this.createTestAttributeOverrideOnField();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
-		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
 
 		assertNotNull(attributeOverride);
 		assertEquals(ATTRIBUTE_OVERRIDE_NAME, attributeOverride.getName());
@@ -114,9 +114,9 @@ public class AttributeOverrideTests extends JavaResourceModelTestCase {
 	
 	public void testSetNameNull() throws Exception {
 		IType testType = this.createTestAttributeOverrideOnField();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
-		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
 
 		assertEquals(ATTRIBUTE_OVERRIDE_NAME, attributeOverride.getName());
 		
@@ -129,19 +129,19 @@ public class AttributeOverrideTests extends JavaResourceModelTestCase {
 	
 	public void testColumnGetName() throws Exception {
 		IType testType = this.createTestAttributeOverrideWithColumnOnField();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
-		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
-		Column column = attributeOverride.getColumn();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
+		ColumnAnnotation column = attributeOverride.getColumn();
 		assertEquals(COLUMN_NAME, column.getName());
 	}
 	
 	public void testColumnSetName() throws Exception {
 		IType testType = this.createTestAttributeOverrideWithColumnOnField();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
-		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
-		Column column = attributeOverride.getColumn();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
+		ColumnAnnotation column = attributeOverride.getColumn();
 		assertEquals(COLUMN_NAME, column.getName());
 		
 		column.setName("Foo");
@@ -157,19 +157,19 @@ public class AttributeOverrideTests extends JavaResourceModelTestCase {
 	
 	public void testAddColumn() throws Exception {
 		IType testType = this.createTestAttributeOverrideOnField();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
-		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
-		Column column = attributeOverride.getColumn();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
+		ColumnAnnotation column = attributeOverride.getColumn();
 		assertNull(column);
 	}
 	
 	public void testRemoveColumn() throws Exception {
 		IType testType = this.createTestAttributeOverrideOnField();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
-		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
-		Column column = attributeOverride.getColumn();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
+		ColumnAnnotation column = attributeOverride.getColumn();
 		assertNull(column);
 	}
 

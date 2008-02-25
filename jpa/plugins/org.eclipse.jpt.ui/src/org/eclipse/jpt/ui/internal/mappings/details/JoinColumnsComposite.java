@@ -13,15 +13,15 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.core.internal.IJpaNode;
-import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.INamedColumn;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.core.JpaNode;
+import org.eclipse.jpt.core.context.AbstractJoinColumn;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.NamedColumn;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
@@ -54,7 +54,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T>
+public class JoinColumnsComposite<T extends JpaNode> extends AbstractFormPane<T>
 {
 	/**
 	 * The editor used to perform the common behaviors defined in the list pane.
@@ -115,7 +115,7 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 	 */
 	public JoinColumnsComposite(PropertyValueModel<? extends T> subjectHolder,
 	                            Composite parent,
-	                            IWidgetFactory widgetFactory,
+	                            WidgetFactory widgetFactory,
 	                            IJoinColumnsEditor<T> joinColumnsEditor) {
 
 		super(subjectHolder, parent, widgetFactory);
@@ -123,11 +123,11 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 		initializeLayout2();
 	}
 
-	private WritablePropertyValueModel<IJoinColumn> buildJoinColumnHolder() {
-		return new SimplePropertyValueModel<IJoinColumn>();
+	private WritablePropertyValueModel<JoinColumn> buildJoinColumnHolder() {
+		return new SimplePropertyValueModel<JoinColumn>();
 	}
 
-	private String buildJoinColumnLabel(IJoinColumn joinColumn) {
+	private String buildJoinColumnLabel(JoinColumn joinColumn) {
 
 		if (joinColumn.isVirtual()) {
 			return NLS.bind(
@@ -187,7 +187,7 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 
 			@Override
 			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
-				IJoinColumn joinColumn = (IJoinColumn) listSelectionModel.selectedValue();
+				JoinColumn joinColumn = (JoinColumn) listSelectionModel.selectedValue();
 				joinColumnsEditor.editJoinColumn(subject(), joinColumn);
 			}
 
@@ -197,25 +197,25 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 		};
 	}
 
-	private ListValueModel<IJoinColumn> buildJoinColumnsListModel() {
-		return new ItemPropertyListValueModelAdapter<IJoinColumn>(buildJoinColumnsListHolder(),
-			INamedColumn.SPECIFIED_NAME_PROPERTY,
-			INamedColumn.DEFAULT_NAME_PROPERTY,
-			IAbstractJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
-			IAbstractJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY);
+	private ListValueModel<JoinColumn> buildJoinColumnsListModel() {
+		return new ItemPropertyListValueModelAdapter<JoinColumn>(buildJoinColumnsListHolder(),
+			NamedColumn.SPECIFIED_NAME_PROPERTY,
+			NamedColumn.DEFAULT_NAME_PROPERTY,
+			AbstractJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
+			AbstractJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY);
 	}
 
-	private ListValueModel<IJoinColumn> buildJoinColumnsListHolder() {
-		java.util.List<ListValueModel<IJoinColumn>> list = new ArrayList<ListValueModel<IJoinColumn>>();
+	private ListValueModel<JoinColumn> buildJoinColumnsListHolder() {
+		java.util.List<ListValueModel<JoinColumn>> list = new ArrayList<ListValueModel<JoinColumn>>();
 		list.add(buildSpecifiedJoinColumnsListHolder());
 		list.add(buildDefaultJoinColumnListHolder());
-		return new CompositeListValueModel<ListValueModel<IJoinColumn>, IJoinColumn>(list);
+		return new CompositeListValueModel<ListValueModel<JoinColumn>, JoinColumn>(list);
 	}
 
-	private ListValueModel<IJoinColumn> buildSpecifiedJoinColumnsListHolder() {
-		return new ListAspectAdapter<T, IJoinColumn>(getSubjectHolder(), joinColumnsEditor.specifiedListPropertyName()) {
+	private ListValueModel<JoinColumn> buildSpecifiedJoinColumnsListHolder() {
+		return new ListAspectAdapter<T, JoinColumn>(getSubjectHolder(), joinColumnsEditor.specifiedListPropertyName()) {
 			@Override
-			protected ListIterator<IJoinColumn> listIterator_() {
+			protected ListIterator<JoinColumn> listIterator_() {
 				return joinColumnsEditor.specifiedJoinColumns(subject);
 			}
 
@@ -227,15 +227,15 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 	}
 
 
-	private ListValueModel<IJoinColumn> buildDefaultJoinColumnListHolder() {
-		return new PropertyListValueModelAdapter<IJoinColumn>(buildDefaultJoinColumnHolder());
+	private ListValueModel<JoinColumn> buildDefaultJoinColumnListHolder() {
+		return new PropertyListValueModelAdapter<JoinColumn>(buildDefaultJoinColumnHolder());
 
 	}
 
-	private PropertyValueModel<IJoinColumn> buildDefaultJoinColumnHolder() {
-		return new PropertyAspectAdapter<T, IJoinColumn>(getSubjectHolder(), joinColumnsEditor.defaultPropertyName()) {
+	private PropertyValueModel<JoinColumn> buildDefaultJoinColumnHolder() {
+		return new PropertyAspectAdapter<T, JoinColumn>(getSubjectHolder(), joinColumnsEditor.defaultPropertyName()) {
 			@Override
-			protected IJoinColumn buildValue_() {
+			protected JoinColumn buildValue_() {
 				return joinColumnsEditor.defaultJoinColumn(subject);
 			}
 		};
@@ -246,7 +246,7 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				IJoinColumn joinColumn = (IJoinColumn) element;
+				JoinColumn joinColumn = (JoinColumn) element;
 
 				return buildJoinColumnLabel(joinColumn);
 			}
@@ -279,7 +279,7 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 			buildJoinColumnsListModel(),
 			buildJoinColumnHolder(),
 			buildJoinColumnsListLabelProvider(),
-			IJpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
+			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
 		);
 	}
 
@@ -289,11 +289,11 @@ public class JoinColumnsComposite<T extends IJpaNode> extends AbstractFormPane<T
 	public static interface IJoinColumnsEditor<T> {
 
 		void addJoinColumn(T subject);
-		void editJoinColumn(T subject, IJoinColumn joinColumn);
+		void editJoinColumn(T subject, JoinColumn joinColumn);
 		boolean hasSpecifiedJoinColumns(T subject);
-		ListIterator<IJoinColumn> specifiedJoinColumns(T subject);
+		ListIterator<JoinColumn> specifiedJoinColumns(T subject);
 		int specifiedJoinColumnsSize(T subject);
-		IJoinColumn defaultJoinColumn(T subject);
+		JoinColumn defaultJoinColumn(T subject);
 		String specifiedListPropertyName();
 		String defaultPropertyName();
 		void removeJoinColumns(T subject, int[] selectedIndices);

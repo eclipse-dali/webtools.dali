@@ -106,7 +106,7 @@ public abstract class AbstractFormPane<T extends Model> extends AbstractPane<T>
 	 */
 	protected AbstractFormPane(PropertyValueModel<? extends T> subjectHolder,
 	                           Composite parent,
-	                           IWidgetFactory widgetFactory) {
+	                           WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}

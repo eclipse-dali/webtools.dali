@@ -15,16 +15,18 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.JpaAnnotationProvider;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.node.Node;
 
-public class JpaCompilationUnitResource extends AbstractResource implements JavaResource
+public class JpaCompilationUnitResource extends AbstractResource implements JavaResourceNode
 {
-	protected final IJpaAnnotationProvider annotationProvider;
+	protected final JpaAnnotationProvider annotationProvider;
 	
 	protected final CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
 	
@@ -38,14 +40,14 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 	 * a public/protected no-arg constructor and there is no way to access
 	 * it in a non-public/protected class.
 	 */
-	protected JavaPersistentTypeResource persistentType;	
+	protected JavaResourcePersistentType persistentType;	
 		public static final String PERSISTENT_TYPE_PROPERTY = "persistentTypeProperty";
 	
 	protected final JavaResourceModel javaResourceModel;
 	
 	public JpaCompilationUnitResource(
 			IFile file, 
-			IJpaAnnotationProvider annotationProvider, 
+			JpaAnnotationProvider annotationProvider, 
 			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
 			AnnotationEditFormatter annotationEditFormatter,
 			JavaResourceModel javaResourceModel) {
@@ -93,7 +95,7 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 	}
 	
 	@Override
-	public IJpaAnnotationProvider annotationProvider() {
+	public JpaAnnotationProvider annotationProvider() {
 		return this.annotationProvider;
 	}
 	
@@ -119,7 +121,7 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 		return this.compilationUnit;
 	}
 	
-	public JavaPersistentTypeResource javaPersistentTypeResource(String fullyQualifiedTypeName) {
+	public JavaResourcePersistentType javaPersistentTypeResource(String fullyQualifiedTypeName) {
 		return getPersistentType().javaPersistentTypeResource(fullyQualifiedTypeName);
 	}
 
@@ -127,7 +129,7 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 	 * The persistentType resource for the compilation unit's primary type.
 	 * Will be null if the primary type is null.
 	 */
-	public JavaPersistentTypeResource getPersistentType() {	
+	public JavaResourcePersistentType getPersistentType() {	
 		return this.persistentType;
 		//TODO should i only be returning this if it returns true to isPersistable?
 		//that's how we handle nestedTypes on JavaPersistentTypeResource
@@ -138,13 +140,13 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 //	return null;
 	}
 	
-	protected void setPersistentType(JavaPersistentTypeResource newPersistentType) {
-		JavaPersistentTypeResource oldPersistentType = this.persistentType;
+	protected void setPersistentType(JavaResourcePersistentType newPersistentType) {
+		JavaResourcePersistentType oldPersistentType = this.persistentType;
 		this.persistentType = newPersistentType;
 		firePropertyChanged(PERSISTENT_TYPE_PROPERTY, oldPersistentType, newPersistentType);
 	}
 	
-	private JavaPersistentTypeResource createJavaPersistentType(IType iType, CompilationUnit astRoot) {
+	private JavaResourcePersistentType createJavaPersistentType(IType iType, CompilationUnit astRoot) {
 		return 
 		JavaPersistentTypeResourceImpl.createJavaPersistentType(this, 
 			iType, 
@@ -169,7 +171,7 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 	}
 	
 	
-	public ITextRange textRange(CompilationUnit astRoot) {
+	public TextRange textRange(CompilationUnit astRoot) {
 		return null;//this.selectionTextRange();
 	}
 

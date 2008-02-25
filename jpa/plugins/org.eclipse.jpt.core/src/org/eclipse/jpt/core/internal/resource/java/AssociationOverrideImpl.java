@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.IndexedAnnotationAdapter;
@@ -23,6 +23,17 @@ import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
+import org.eclipse.jpt.core.resource.java.ContainerAnnotation;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableAssociationOverride;
+import org.eclipse.jpt.core.resource.java.NestableJoinColumn;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
@@ -36,7 +47,7 @@ public class AssociationOverrideImpl
 	
 	private final JoinColumnsContainerAnnotation joinColumnsContainerAnnotation;
 	
-	protected AssociationOverrideImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected AssociationOverrideImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.joinColumns = new ArrayList<NestableJoinColumn>();
 		this.joinColumnsContainerAnnotation = new JoinColumnsContainerAnnotation();
@@ -49,14 +60,14 @@ public class AssociationOverrideImpl
 	}
 	
 	public String getAnnotationName() {
-		return AssociationOverride.ANNOTATION_NAME;
+		return AssociationOverrideAnnotation.ANNOTATION_NAME;
 	}
 	
 	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		super.initializeFrom(oldAnnotation);
-		AssociationOverride oldAssociationOverride = (AssociationOverride) oldAnnotation;
-		for (JoinColumn joinColumn : CollectionTools.iterable(oldAssociationOverride.joinColumns())) {
+		AssociationOverrideAnnotation oldAssociationOverride = (AssociationOverrideAnnotation) oldAnnotation;
+		for (JoinColumnAnnotation joinColumn : CollectionTools.iterable(oldAssociationOverride.joinColumns())) {
 			NestableJoinColumn newJoinColumn = addJoinColumn(oldAssociationOverride.indexOfJoinColumn(joinColumn));
 			newJoinColumn.initializeFrom((NestableAnnotation) joinColumn);
 		}
@@ -65,8 +76,8 @@ public class AssociationOverrideImpl
 
 	// ************* Association implementation *******************
 	
-	public ListIterator<JoinColumn> joinColumns() {
-		return new CloneListIterator<JoinColumn>(this.joinColumns);
+	public ListIterator<JoinColumnAnnotation> joinColumns() {
+		return new CloneListIterator<JoinColumnAnnotation>(this.joinColumns);
 	}
 	
 	public int joinColumnsSize() {
@@ -77,18 +88,18 @@ public class AssociationOverrideImpl
 		return this.joinColumns.get(index);
 	}
 	
-	public int indexOfJoinColumn(JoinColumn joinColumn) {
+	public int indexOfJoinColumn(JoinColumnAnnotation joinColumn) {
 		return this.joinColumns.indexOf(joinColumn);
 	}
 	
 	public NestableJoinColumn addJoinColumn(int index) {
 		NestableJoinColumn joinColumn = (NestableJoinColumn) ContainerAnnotationTools.addNestedAnnotation(index, this.joinColumnsContainerAnnotation);
-		fireItemAdded(AssociationOverride.JOIN_COLUMNS_LIST, index, joinColumn);
+		fireItemAdded(AssociationOverrideAnnotation.JOIN_COLUMNS_LIST, index, joinColumn);
 		return joinColumn;
 	}
 	
 	private void addJoinColumn(int index, NestableJoinColumn joinColumn) {
-		addItemToList(index, joinColumn, this.joinColumns, AssociationOverride.JOIN_COLUMNS_LIST);
+		addItemToList(index, joinColumn, this.joinColumns, AssociationOverrideAnnotation.JOIN_COLUMNS_LIST);
 	}
 	
 	public void removeJoinColumn(int index) {
@@ -99,13 +110,13 @@ public class AssociationOverrideImpl
 	}
 
 	private void removeJoinColumn(NestableJoinColumn joinColumn) {
-		removeItemFromList(joinColumn, this.joinColumns, AssociationOverride.JOIN_COLUMNS_LIST);
+		removeItemFromList(joinColumn, this.joinColumns, AssociationOverrideAnnotation.JOIN_COLUMNS_LIST);
 	}
 
 	public void moveJoinColumn(int targetIndex, int sourceIndex) {
 		moveJoinColumnInternal(targetIndex, sourceIndex);
 		ContainerAnnotationTools.synchAnnotationsAfterMove(targetIndex, sourceIndex, this.joinColumnsContainerAnnotation);
-		fireItemMoved(AssociationOverride.JOIN_COLUMNS_LIST, targetIndex, sourceIndex);
+		fireItemMoved(AssociationOverrideAnnotation.JOIN_COLUMNS_LIST, targetIndex, sourceIndex);
 	}
 	
 	protected void moveJoinColumnInternal(int targetIndex, int sourceIndex) {
@@ -128,11 +139,11 @@ public class AssociationOverrideImpl
 
 
 	// ********** static methods **********
-	static AssociationOverrideImpl createAssociationOverride(JavaResource parent, Member member) {
+	static AssociationOverrideImpl createAssociationOverride(JavaResourceNode parent, Member member) {
 		return new AssociationOverrideImpl(parent, member, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
-	static AssociationOverrideImpl createNestedAssociationOverride(JavaResource parent, Member member, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
+	static AssociationOverrideImpl createNestedAssociationOverride(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
 		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
 		return new AssociationOverrideImpl(parent, member, idaa, annotationAdapter);
@@ -230,7 +241,7 @@ public class AssociationOverrideImpl
 			AssociationOverrideImpl.this.updateFromJava(astRoot);
 		}
 		
-		public ITextRange textRange(CompilationUnit astRoot) {
+		public TextRange textRange(CompilationUnit astRoot) {
 			return AssociationOverrideImpl.this.textRange(astRoot);
 		}
 		
@@ -259,16 +270,16 @@ public class AssociationOverrideImpl
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return AssociationOverrideImpl.createAssociationOverride(parent, member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 
 		public String getAnnotationName() {
-			return AssociationOverride.ANNOTATION_NAME;
+			return AssociationOverrideAnnotation.ANNOTATION_NAME;
 		}
 	}
 }

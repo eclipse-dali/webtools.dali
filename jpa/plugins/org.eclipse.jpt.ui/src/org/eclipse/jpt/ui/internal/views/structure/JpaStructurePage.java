@@ -24,11 +24,11 @@ import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jpt.core.internal.IJpaStructureNode;
+import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
-import org.eclipse.jpt.ui.internal.selection.IJpaSelection;
 import org.eclipse.jpt.ui.internal.selection.JpaSelection;
-import org.eclipse.jpt.ui.internal.structure.IJpaStructureProvider;
+import org.eclipse.jpt.ui.internal.selection.DefaultJpaSelection;
+import org.eclipse.jpt.ui.internal.structure.JpaStructureProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -41,7 +41,7 @@ import org.eclipse.ui.part.Page;
 public class JpaStructurePage extends Page
 	implements ISelectionProvider, ISelectionChangedListener
 {
-	private IJpaStructureProvider structureProvider;
+	private JpaStructureProvider structureProvider;
 	
 	private ListenerList selectionChangedListeners;
 	
@@ -51,7 +51,7 @@ public class JpaStructurePage extends Page
 	
 	private JpaStructureView jpaStructureView;
 	
-	public JpaStructurePage(JpaStructureView jpaStructureView, IJpaStructureProvider structureProvider) {
+	public JpaStructurePage(JpaStructureView jpaStructureView, JpaStructureProvider structureProvider) {
 		this.jpaStructureView = jpaStructureView;
 		this.structureProvider = structureProvider;
 		this.selectionChangedListeners = new ListenerList();
@@ -125,7 +125,7 @@ public class JpaStructurePage extends Page
 	
 	
 	
-	void select(IJpaSelection selection) {
+	void select(JpaSelection selection) {
 		if (selection.isEmpty()) {
 			viewer.setSelection(StructuredSelection.EMPTY);
 		}
@@ -145,13 +145,13 @@ public class JpaStructurePage extends Page
 		selectionChangedListeners.remove(listener);
 	}
 	
-	public IJpaSelection getSelection() {
+	public JpaSelection getSelection() {
 		ITreeSelection viewerSelection = (ITreeSelection) viewer.getSelection();
 		
 		if (viewerSelection.isEmpty() || viewerSelection.size() > 1) {
-			return IJpaSelection.NULL_SELECTION;
+			return JpaSelection.NULL_SELECTION;
 		}
-		return new JpaSelection((IJpaStructureNode) viewerSelection.getFirstElement());
+		return new DefaultJpaSelection((JpaStructureNode) viewerSelection.getFirstElement());
 	}
 	
 	public void setSelection(ISelection selection) {

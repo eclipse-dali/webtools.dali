@@ -16,12 +16,12 @@ import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.JptUiPlugin;
+import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
@@ -48,7 +48,7 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * | ¯¯¯¯¯¯¯¯¯¯¯¯¯¯ -------------------------------------------- ------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IRelationshipMapping
+ * @see RelationshipMapping
  * @see ManyToManyMappingComposite - A container of this pane
  * @see ManyToOneMappingComposite - A container of this pane
  * @see OneToManyMappingComposite - A container of this pane
@@ -58,7 +58,7 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping>
+public class TargetEntityComposite extends AbstractFormPane<RelationshipMapping>
 {
 	private CCombo combo;
 
@@ -68,7 +68,7 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TargetEntityComposite(AbstractFormPane<? extends IRelationshipMapping> parentPane,
+	public TargetEntityComposite(AbstractFormPane<? extends RelationshipMapping> parentPane,
 	                             Composite parent) {
 
 		super(parentPane, parent);
@@ -81,9 +81,9 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public TargetEntityComposite(PropertyValueModel<? extends IRelationshipMapping> subjectHolder,
+	public TargetEntityComposite(PropertyValueModel<? extends RelationshipMapping> subjectHolder,
 	                             Composite parent,
-	                             IWidgetFactory widgetFactory) {
+	                             WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
@@ -94,8 +94,8 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
-		propertyNames.add(IRelationshipMapping.DEFAULT_TARGET_ENTITY_PROPERTY);
-		propertyNames.add(IRelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY);
+		propertyNames.add(RelationshipMapping.DEFAULT_TARGET_ENTITY_PROPERTY);
+		propertyNames.add(RelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY);
 	}
 
 	private FocusListener buildFocusListener() {
@@ -236,7 +236,7 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 			labelLink,
 			combo,
 			buildTargetEntitySelectionButton(container),
-			IJpaHelpContextIds.MAPPING_TARGET_ENTITY
+			JpaHelpContextIds.MAPPING_TARGET_ENTITY
 		);
 	}
 
@@ -275,7 +275,7 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 	 */
 	private void populateDefaultValue() {
 
-		IRelationshipMapping entity = subject();
+		RelationshipMapping entity = subject();
 		String defaultValue = (entity != null) ? entity.getDefaultTargetEntity() : null;
 
 		if (defaultValue != null) {
@@ -296,8 +296,8 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
 
-		if (propertyName == IRelationshipMapping.DEFAULT_TARGET_ENTITY_PROPERTY ||
-		    propertyName == IRelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY) {
+		if (propertyName == RelationshipMapping.DEFAULT_TARGET_ENTITY_PROPERTY ||
+		    propertyName == RelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY) {
 
 			populateCombo();
 		}
@@ -312,7 +312,7 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 	 * selection to (0, 0) makes the entire text visible.
 	 */
 	private void updateSelectedItem() {
-		IRelationshipMapping subject = subject();
+		RelationshipMapping subject = subject();
 		String value = (subject != null) ? subject.getSpecifiedTargetEntity() : null;
 
 		if (value != null) {
@@ -344,7 +344,7 @@ public class TargetEntityComposite extends AbstractFormPane<IRelationshipMapping
 
 	private void valueChanged(String value) {
 
-		IRelationshipMapping subject = subject();
+		RelationshipMapping subject = subject();
 		String oldValue = (subject != null) ? subject.getSpecifiedTargetEntity() : null;
 
 		// Check for null value

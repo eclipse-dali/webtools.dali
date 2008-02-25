@@ -15,13 +15,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.internal.IJpaAnnotationProvider;
+import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.core.internal.resource.java.Annotation;
-import org.eclipse.jpt.core.internal.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.AssociationOverrideImpl.AssociationOverrideAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AssociationOverridesImpl.AssociationOverridesAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverrideImpl.AttributeOverrideAnnotationDefinition;
@@ -64,12 +60,16 @@ import org.eclipse.jpt.core.internal.resource.java.TableImpl.TableAnnotationDefi
 import org.eclipse.jpt.core.internal.resource.java.TemporalImpl.TemporalAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.TransientImpl.TransientAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.VersionImpl.VersionAnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 
-public abstract class BaseJpaAnnotationProvider implements IJpaAnnotationProvider
+public abstract class BaseJpaAnnotationProvider implements JpaAnnotationProvider
 {
 	/**
 	 * Ordered list of possible type mapping annotations.  Ordered because this
@@ -208,22 +208,22 @@ public abstract class BaseJpaAnnotationProvider implements IJpaAnnotationProvide
 	
 	//********************* IJpaPlatform implementation *************************
 
-	public Annotation buildTypeMappingAnnotation(JavaPersistentTypeResource parent, Type type, String mappingAnnotationName) {
+	public Annotation buildTypeMappingAnnotation(JavaResourcePersistentType parent, Type type, String mappingAnnotationName) {
 		AnnotationDefinition annotationDefinition = typeMappingAnnotationDefinition(mappingAnnotationName);
 		return annotationDefinition.buildAnnotation(parent, type);
 	}
 	
-	public Annotation buildNullTypeMappingAnnotation(JavaPersistentTypeResource parent, Type type, String mappingAnnotationName) {
+	public Annotation buildNullTypeMappingAnnotation(JavaResourcePersistentType parent, Type type, String mappingAnnotationName) {
 		AnnotationDefinition annotationDefinition = typeMappingAnnotationDefinition(mappingAnnotationName);
 		return annotationDefinition.buildNullAnnotation(parent, type);
 	}
 
-	public Annotation buildTypeAnnotation(JavaPersistentTypeResource parent, Type type, String annotationName) {
+	public Annotation buildTypeAnnotation(JavaResourcePersistentType parent, Type type, String annotationName) {
 		AnnotationDefinition annotationDefinition = typeAnnotationDefinition(annotationName);
 		return annotationDefinition.buildAnnotation(parent, type);
 	}
 
-	public Annotation buildNullTypeAnnotation(JavaPersistentTypeResource parent, Type type, String annotationName) {
+	public Annotation buildNullTypeAnnotation(JavaResourcePersistentType parent, Type type, String annotationName) {
 		AnnotationDefinition annotationDefinition = typeAnnotationDefinition(annotationName);
 		return annotationDefinition.buildNullAnnotation(parent, type);
 	}
@@ -246,22 +246,22 @@ public abstract class BaseJpaAnnotationProvider implements IJpaAnnotationProvide
 		};
 	}
 	
-	public Annotation buildAttributeMappingAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String mappingAnnotationName) {
+	public Annotation buildAttributeMappingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String mappingAnnotationName) {
 		AnnotationDefinition annotationDefinition = attributeMappingAnnotationDefinition(mappingAnnotationName);
 		return annotationDefinition.buildAnnotation(parent, attribute);
 	}
 	
-	public Annotation buildNullAttributeMappingAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String annotationName) {
+	public Annotation buildNullAttributeMappingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName) {
 		AnnotationDefinition annotationDefinition = attributeMappingAnnotationDefinition(annotationName);
 		return annotationDefinition.buildNullAnnotation(parent, attribute);
 	}
 	
-	public Annotation buildAttributeAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String annotationName) {
+	public Annotation buildAttributeAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName) {
 		AnnotationDefinition annotationDefinition = attributeAnnotationDefinition(annotationName);
 		return annotationDefinition.buildAnnotation(parent, attribute);
 	}
 	
-	public Annotation buildNullAttributeAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, String annotationName) {
+	public Annotation buildNullAttributeAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName) {
 		AnnotationDefinition annotationDefinition = attributeAnnotationDefinition(annotationName);
 		return annotationDefinition.buildNullAnnotation(parent, attribute);
 	}

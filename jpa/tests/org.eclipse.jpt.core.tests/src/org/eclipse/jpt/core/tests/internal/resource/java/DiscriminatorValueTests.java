@@ -11,9 +11,9 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.resource.java.DiscriminatorValue;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.resource.java.DiscriminatorValue;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class DiscriminatorValueTests extends JavaResourceModelTestCase {
@@ -52,7 +52,7 @@ public class DiscriminatorValueTests extends JavaResourceModelTestCase {
 
 	public void testDiscriminatorValue() throws Exception {
 		IType testType = this.createTestDiscriminatorValue();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 	
 		DiscriminatorValue discriminatorValue = (DiscriminatorValue) typeResource.annotation(JPA.DISCRIMINATOR_VALUE);
 		assertNotNull(discriminatorValue);
@@ -60,7 +60,7 @@ public class DiscriminatorValueTests extends JavaResourceModelTestCase {
 	
 	public void testGetValue() throws Exception {
 		IType testType = this.createTestDiscriminatorValueWithValue();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
 		DiscriminatorValue discriminatorValue = (DiscriminatorValue) typeResource.annotation(JPA.DISCRIMINATOR_VALUE);
 		assertEquals("discriminator", discriminatorValue.getValue());
@@ -68,7 +68,7 @@ public class DiscriminatorValueTests extends JavaResourceModelTestCase {
 	
 	public void testSetValue() throws Exception {
 		IType testType = this.createTestDiscriminatorValue();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
 		DiscriminatorValue discriminatorValue = (DiscriminatorValue) typeResource.annotation(JPA.DISCRIMINATOR_VALUE);
 

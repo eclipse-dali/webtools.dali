@@ -28,10 +28,10 @@ import org.eclipse.jpt.ui.internal.jface.AbstractItemLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
-import org.eclipse.jpt.ui.internal.jface.IItemLabelProvider;
-import org.eclipse.jpt.ui.internal.jface.IItemLabelProviderFactory;
-import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProvider;
-import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProviderFactory;
+import org.eclipse.jpt.ui.internal.jface.ItemLabelProvider;
+import org.eclipse.jpt.ui.internal.jface.ItemLabelProviderFactory;
+import org.eclipse.jpt.ui.internal.jface.TreeItemContentProvider;
+import org.eclipse.jpt.ui.internal.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -308,9 +308,9 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 	
 	
 	private static class VehicleContentProviderFactory
-		implements ITreeItemContentProviderFactory
+		implements TreeItemContentProviderFactory
 	{
-		public ITreeItemContentProvider buildItemContentProvider(Object item, DelegatingContentAndLabelProvider contentAndLabelProvider) {
+		public TreeItemContentProvider buildItemContentProvider(Object item, DelegatingContentAndLabelProvider contentAndLabelProvider) {
 			if (item instanceof Root) {
 				return new RootContentProvider(
 					(Root) item, (DelegatingTreeContentAndLabelProvider) contentAndLabelProvider);
@@ -358,9 +358,9 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 	
 	
 	private static class VehicleLabelProviderFactory
-		implements IItemLabelProviderFactory
+		implements ItemLabelProviderFactory
 	{
-		public IItemLabelProvider buildItemLabelProvider(Object element, DelegatingContentAndLabelProvider labelProvider) {
+		public ItemLabelProvider buildItemLabelProvider(Object element, DelegatingContentAndLabelProvider labelProvider) {
 			return new VehicleLabelProvider((Vehicle) element, labelProvider);
 		}
 	}

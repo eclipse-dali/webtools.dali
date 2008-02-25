@@ -10,12 +10,13 @@
 package org.eclipse.jpt.ui.internal.java.details;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.internal.context.base.ITypeMapping;
-import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
-import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
+import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.internal.details.PersistentTypeDetailsPage;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
+import org.eclipse.jpt.ui.java.details.TypeMappingUiProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -26,12 +27,12 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * The default implementation of the details page used for the Java persistent
  * type.
  *
- * @see IJavaPersistentType
+ * @see JavaPersistentType
  *
  * @version 2.0
  * @since 2.0
  */
-public class JavaPersistentTypeDetailsPage extends PersistentTypeDetailsPage<IJavaPersistentType>
+public class JavaPersistentTypeDetailsPage extends PersistentTypeDetailsPage<JavaPersistentType>
 {
 	/**
 	 * Creates a new <code>JavaPersistentTypeDetailsPage</code>.
@@ -45,7 +46,7 @@ public class JavaPersistentTypeDetailsPage extends PersistentTypeDetailsPage<IJa
 		super(parent, widgetFactory);
 	}
 
-	protected IJpaPlatformUi jpaPlatformUi() {
+	protected JpaPlatformUi jpaPlatformUi() {
 		String platformId = subject().jpaProject().jpaPlatform().getId();
 		return JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
 	}
@@ -54,7 +55,7 @@ public class JavaPersistentTypeDetailsPage extends PersistentTypeDetailsPage<IJa
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected ListIterator<ITypeMappingUiProvider<? extends ITypeMapping>> typeMappingUiProviders() {
+	protected ListIterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders() {
 		// TODO
 		return ((BaseJpaPlatformUi) jpaPlatformUi()).javaTypeMappingUiProviders();
 	}

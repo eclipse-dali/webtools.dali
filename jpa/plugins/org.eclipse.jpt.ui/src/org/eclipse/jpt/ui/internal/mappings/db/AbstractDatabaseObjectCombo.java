@@ -9,8 +9,8 @@
 package org.eclipse.jpt.ui.internal.mappings.db;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.internal.IJpaNode;
-import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.JpaNode;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
@@ -20,7 +20,7 @@ import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -47,7 +47,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends AbstractFormPane<T>
+public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends AbstractFormPane<T>
 {
 	/**
 	 * The main widget of this pane.
@@ -95,7 +95,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	 */
 	protected AbstractDatabaseObjectCombo(PropertyValueModel<? extends T> subjectHolder,
 	                                      Composite parent,
-	                                      IWidgetFactory widgetFactory)
+	                                      WidgetFactory widgetFactory)
 	{
 		super(subjectHolder, parent, widgetFactory);
 	}
@@ -254,7 +254,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	 * if it could not being retrieved
 	 */
 	protected final ConnectionProfile connectionProfile() {
-		IJpaProject jpaProject = jpaProject();
+		JpaProject jpaProject = jpaProject();
 
 		if (jpaProject != null) {
 			return jpaProject.connectionProfile();
@@ -288,7 +288,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	protected void disengageListeners(T subject) {
 		super.disengageListeners(subject);
 
-		IJpaProject jpaProject = jpaProject();
+		JpaProject jpaProject = jpaProject();
 
 		if (jpaProject != null) {
 			jpaProject.connectionProfile().removeConnectionListener(this.connectionListener);
@@ -325,7 +325,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	protected void engageListeners(T subject) {
 		super.engageListeners(subject);
 
-		IJpaProject jpaProject = jpaProject();
+		JpaProject jpaProject = jpaProject();
 
 		if (jpaProject != null) {
 			jpaProject.connectionProfile().addConnectionListener(this.connectionListener);
@@ -372,7 +372,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	 *
 	 * @return The JPA project
 	 */
-	protected IJpaProject jpaProject() {
+	protected JpaProject jpaProject() {
 		return subject() == null ? null : subject().jpaProject();
 	}
 
@@ -525,7 +525,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends IJpaNode> extends Ab
 	 */
 	protected void valueChanged(String value) {
 
-		IJpaNode subject = subject();
+		JpaNode subject = subject();
 
 		if ((subject == null) && !isBuildSubjectAllowed()) {
 			return;

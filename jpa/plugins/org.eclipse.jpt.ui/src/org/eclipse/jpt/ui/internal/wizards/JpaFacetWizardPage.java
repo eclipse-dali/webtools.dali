@@ -22,14 +22,14 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jpt.core.internal.facet.IJpaFacetDataModelProperties;
+import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.prefs.JpaPreferencePage;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
@@ -57,7 +57,7 @@ import org.eclipse.wst.web.ui.internal.wizards.DataModelFacetInstallPage;
 
 public class JpaFacetWizardPage 
 	extends DataModelFacetInstallPage
-	implements IJpaFacetDataModelProperties
+	implements JpaFacetDataModelProperties
 {	
 	
 	public JpaFacetWizardPage() {
@@ -83,7 +83,7 @@ public class JpaFacetWizardPage
 		setUpRuntimeListener();
 		
 		Dialog.applyDialogFont(parent);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, IJpaHelpContextIds.DIALOG_JPA_FACET);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, JpaHelpContextIds.DIALOG_JPA_FACET);
 		
 		return composite;
 	}
@@ -165,7 +165,7 @@ public class JpaFacetWizardPage
 			group.setText(JptUiMessages.JpaFacetWizardPage_platformLabel);
 			group.setLayout(new GridLayout());
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IJpaHelpContextIds.DIALOG_JPA_PLATFORM);
+			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.DIALOG_JPA_PLATFORM);
 			
 			platformCombo = new ComboViewer(createCombo(group, 1, true));
 			platformCombo.setContentProvider(
@@ -228,7 +228,7 @@ public class JpaFacetWizardPage
 			group.setText(JptUiMessages.JpaFacetWizardPage_connectionLabel);
 			group.setLayout(new GridLayout());
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IJpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
+			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE);
 			
 			connectionCombo = createCombo(group, 1, true);
 			connectionCombo.addSelectionListener(
@@ -305,7 +305,7 @@ public class JpaFacetWizardPage
 			group.setText(JptUiMessages.JpaFacetWizardPage_jpaImplementationLabel);
 			group.setLayout(new GridLayout(2, false));
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IJpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);
+			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);
 			
 			boolean useServerLib = model.getBooleanProperty(USE_SERVER_JPA_IMPLEMENTATION);
 			
@@ -417,7 +417,7 @@ public class JpaFacetWizardPage
 			group.setText(JptUiMessages.JpaFacetWizardPage_persistentClassManagementLabel);
 			group.setLayout(new GridLayout());
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IJpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);
+			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);
 			
 			boolean discoverClasses = model.getBooleanProperty(DISCOVER_ANNOTATED_CLASSES);
 			
@@ -473,7 +473,7 @@ public class JpaFacetWizardPage
 			Composite group = new Composite(composite, SWT.NONE);
 			group.setLayout(new GridLayout());
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IJpaHelpContextIds.DIALOG_CREATE_ORM);
+			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.DIALOG_CREATE_ORM);
 			
 			createOrmXmlButton = new Button(group, SWT.CHECK);
 			createOrmXmlButton.setText(JptUiMessages.JpaFacetWizardPage_createOrmXmlButton);

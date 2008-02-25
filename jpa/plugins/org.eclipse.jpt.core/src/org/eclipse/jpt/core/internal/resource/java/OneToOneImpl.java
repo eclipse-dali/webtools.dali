@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.BooleanExpressionConverter;
@@ -19,6 +19,12 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.OneToOne;
 
 public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implements OneToOne
 {
@@ -43,7 +49,7 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 	
 	private String mappedBy;
 
-	public OneToOneImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
+	public OneToOneImpl(JavaResourcePersistentAttribute parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.mappedByAdapter = buildAnnotationElementAdapter(MAPPED_BY_ADAPTER);
 		this.optionalAdapter = this.buildBooleanAnnotationElementAdapter(OPTIONAL_ADAPTER);
@@ -102,11 +108,11 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 		firePropertyChanged(MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
 	}
 	
-	public ITextRange mappedByTextRange(CompilationUnit astRoot) {
+	public TextRange mappedByTextRange(CompilationUnit astRoot) {
 		return elementTextRange(MAPPED_BY_ADAPTER, astRoot);
 	}
 	
-	public ITextRange optionalTextRange(CompilationUnit astRoot) {
+	public TextRange optionalTextRange(CompilationUnit astRoot) {
 		return elementTextRange(OPTIONAL_ADAPTER, astRoot);
 	}
 	
@@ -176,11 +182,11 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
-			return new OneToOneImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
+			return new OneToOneImpl((JavaResourcePersistentAttribute) parent, (Attribute) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

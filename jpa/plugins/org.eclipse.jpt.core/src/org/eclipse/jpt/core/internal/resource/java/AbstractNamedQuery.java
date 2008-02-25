@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
@@ -23,11 +23,18 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdap
 import org.eclipse.jpt.core.internal.jdtutility.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.resource.java.ContainerAnnotation;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableQueryHint;
+import org.eclipse.jpt.core.resource.java.QueryAnnotation;
+import org.eclipse.jpt.core.resource.java.QueryHintAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type> 
-	implements Query
+	implements QueryAnnotation
 {
 	// hold this so we can get the 'name' text range
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
@@ -46,7 +53,7 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 	private final List<NestableQueryHint> hints;
 	private final HintsContainerAnnotation hintsContainerAnnotation;
 	
-	protected AbstractNamedQuery(JavaResource parent, Type type,DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected AbstractNamedQuery(JavaResourceNode parent, Type type,DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, type, daa, annotationAdapter);
 		this.nameDeclarationAdapter = nameAdapter(daa);
 		this.queryDeclarationAdapter = queryAdapter(daa);
@@ -102,8 +109,8 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 		firePropertyChanged(QUERY_PROPERTY, oldQuery, newQuery);
 	}
 
-	public ListIterator<QueryHint> hints() {
-		return new CloneListIterator<QueryHint>(this.hints);
+	public ListIterator<QueryHintAnnotation> hints() {
+		return new CloneListIterator<QueryHintAnnotation>(this.hints);
 	}
 	
 	public int hintsSize() {
@@ -114,13 +121,13 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 		return this.hints.get(index);
 	}
 	
-	public int indexOfHint(QueryHint queryHint) {
+	public int indexOfHint(QueryHintAnnotation queryHint) {
 		return this.hints.indexOf(queryHint);
 	}
 	
 	public NestableQueryHint addHint(int index) {
 		NestableQueryHint queryHint = (NestableQueryHint) ContainerAnnotationTools.addNestedAnnotation(index, this.hintsContainerAnnotation);
-		fireItemAdded(Query.HINTS_LIST, index, queryHint);
+		fireItemAdded(QueryAnnotation.HINTS_LIST, index, queryHint);
 		return queryHint;
 	}
 	
@@ -142,18 +149,18 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 	public void moveHint(int targetIndex, int sourceIndex) {
 		moveHintInternal(targetIndex, sourceIndex);
 		ContainerAnnotationTools.synchAnnotationsAfterMove(targetIndex, sourceIndex, this.hintsContainerAnnotation);
-		fireItemMoved(Query.HINTS_LIST, targetIndex, sourceIndex);
+		fireItemMoved(QueryAnnotation.HINTS_LIST, targetIndex, sourceIndex);
 	}
 	
 	protected void moveHintInternal(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.hints, targetIndex, sourceIndex);
 	}
 	
-	public ITextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange nameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
-	public ITextRange queryTextRange(CompilationUnit astRoot) {
+	public TextRange queryTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.queryDeclarationAdapter, astRoot);
 	}
 	
@@ -190,7 +197,7 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 		AbstractNamedQuery oldNamedQuery = (AbstractNamedQuery) oldAnnotation;
 		setName(oldNamedQuery.getName());
 		setQuery(oldNamedQuery.getQuery());
-		for (QueryHint queryHint : CollectionTools.iterable(oldNamedQuery.hints())) {
+		for (QueryHintAnnotation queryHint : CollectionTools.iterable(oldNamedQuery.hints())) {
 			NestableQueryHint newQueryHint = addHint(oldNamedQuery.indexOfHint(queryHint));
 			newQueryHint.initializeFrom((NestableQueryHint) queryHint);
 		}
@@ -284,7 +291,7 @@ public abstract class AbstractNamedQuery extends AbstractAnnotationResource<Type
 			AbstractNamedQuery.this.updateFromJava(astRoot);
 		}
 		
-		public ITextRange textRange(CompilationUnit astRoot) {
+		public TextRange textRange(CompilationUnit astRoot) {
 			return AbstractNamedQuery.this.textRange(astRoot);
 		}
 		

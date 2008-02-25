@@ -11,11 +11,11 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
 import java.util.Iterator;
-import org.eclipse.jpt.core.internal.context.base.INonOwningMapping;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.core.context.NonOwningMapping;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
  * |            -------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see INonOwningMapping
+ * @see NonOwningMapping
  * @see ManyToManyMappingComposite - A container of this pane
  * @see OneToManyMappingComposite - A container of this pane
  * @see OneToOneMappingComposite - A container of this pane
@@ -45,7 +45,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
+public class MappedByComposite extends AbstractFormPane<NonOwningMapping>
 {
 	private CCombo combo;
 
@@ -55,7 +55,7 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public MappedByComposite(AbstractFormPane<? extends INonOwningMapping> parentPane,
+	public MappedByComposite(AbstractFormPane<? extends NonOwningMapping> parentPane,
 	                         Composite parent) {
 
 		super(parentPane, parent);
@@ -68,9 +68,9 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public MappedByComposite(PropertyValueModel<? extends INonOwningMapping> subjectHolder,
+	public MappedByComposite(PropertyValueModel<? extends NonOwningMapping> subjectHolder,
 	                         Composite parent,
-	                         IWidgetFactory widgetFactory) {
+	                         WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
@@ -81,7 +81,7 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
-		propertyNames.add(INonOwningMapping.MAPPED_BY_PROPERTY);
+		propertyNames.add(NonOwningMapping.MAPPED_BY_PROPERTY);
 	}
 
 	private ModifyListener buildComboModifyListener() {
@@ -148,7 +148,7 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 			container,
 			JptUiMappingsMessages.NonOwningMapping_mappedByLabel,
 			buildComboModifyListener(),
-			IJpaHelpContextIds.MAPPING_MAPPED_BY
+			JpaHelpContextIds.MAPPING_MAPPED_BY
 		);
 
 		combo.addFocusListener(buildFocusListener());
@@ -159,7 +159,7 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 		combo.removeAll();
 		combo.add(JptUiMappingsMessages.NoneSelected);
 
-		INonOwningMapping subject = subject();
+		NonOwningMapping subject = subject();
 
 		if (subject != null) {
 			Iterator<String> iter = subject.candidateMappedByAttributeNames();
@@ -179,7 +179,7 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
 
-		if (propertyName == INonOwningMapping.MAPPED_BY_PROPERTY) {
+		if (propertyName == NonOwningMapping.MAPPED_BY_PROPERTY) {
 			populateCombo();
 		}
 	}
@@ -194,7 +194,7 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 	 */
 	private void updateSelectedItem() {
 
-		INonOwningMapping subject = subject();
+		NonOwningMapping subject = subject();
 		String value = (subject != null) ? subject.getMappedBy() : null;
 
 		if (value != null) {
@@ -209,7 +209,7 @@ public class MappedByComposite extends AbstractFormPane<INonOwningMapping>
 
 	private void valueChanged(String value) {
 
-		INonOwningMapping subject = subject();
+		NonOwningMapping subject = subject();
 		String oldValue = (subject != null) ? subject.getMappedBy() : null;
 
 		// Check for null value

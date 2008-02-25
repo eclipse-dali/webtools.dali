@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
+import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.ui.internal.widgets.AbstractDialogPane;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * The abstract definition of the dialog used to edit an <code>IJoinColumn</code>.
  *
- * @see IJoinColumn
+ * @see JoinColumn
  * @see JoinColumnStateObject
  * @see JoinColumnDialogPane
  *
@@ -34,7 +34,7 @@ public abstract class JoinColumnDialog<T extends JoinColumnStateObject> extends 
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
-	public JoinColumnDialog(Shell parent, Object owner, IJoinColumn joinColumn) {
+	public JoinColumnDialog(Shell parent, Object owner, JoinColumn joinColumn) {
 		super(parent, owner, joinColumn);
 	}
 
@@ -50,7 +50,7 @@ public abstract class JoinColumnDialog<T extends JoinColumnStateObject> extends 
 	 * (non-Javadoc)
 	 */
 	@Override
-	public IJoinColumn getJoinColumn() {
-		return (IJoinColumn) super.getJoinColumn();
+	public JoinColumn getJoinColumn() {
+		return (JoinColumn) super.getJoinColumn();
 	}
 }

@@ -20,9 +20,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jpt.core.internal.IJpaModel;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.JpaModel;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
 import org.eclipse.wst.validation.internal.core.ValidationException;
@@ -84,7 +84,7 @@ public class JpaValidator implements IValidatorJob {
 	private static final CollectionChangeListener JPA_MODEL_LISTENER = new LocalCollectionChangeListener();
 
 	static {
-		JptCorePlugin.jpaModel().addCollectionChangeListener(IJpaModel.JPA_PROJECTS_COLLECTION, JPA_MODEL_LISTENER);
+		JptCorePlugin.jpaModel().addCollectionChangeListener(JpaModel.JPA_PROJECTS_COLLECTION, JPA_MODEL_LISTENER);
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class JpaValidator implements IValidatorJob {
 		 */
 		public void itemsRemoved(CollectionChangeEvent event) {
 			@SuppressWarnings("unchecked")
-			Iterator<IJpaProject> items = (Iterator<IJpaProject>) event.items();
+			Iterator<JpaProject> items = (Iterator<JpaProject>) event.items();
 			Job j = new DeleteMarkersJob(items.next());
 			j.schedule();
 			if (items.hasNext()) {
@@ -128,9 +128,9 @@ public class JpaValidator implements IValidatorJob {
 	 * Delete all the markers associated with the specified JPA project.
 	 */
 	private static class DeleteMarkersJob extends Job {
-		private final IJpaProject jpaProject;
+		private final JpaProject jpaProject;
 
-		DeleteMarkersJob(IJpaProject jpaProject) {
+		DeleteMarkersJob(JpaProject jpaProject) {
 			super("Delete Markers");
 			this.jpaProject = jpaProject;
 		}

@@ -26,7 +26,7 @@ import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.SimpleTextRange;
 import org.eclipse.jpt.utility.internal.Command;
 import org.eclipse.jpt.utility.internal.CommandExecutor;
@@ -121,23 +121,23 @@ public abstract class Member {
 		return new ModifiedDeclaration(this.bodyDeclaration(astRoot));
 	}
 
-	public ITextRange textRange() {
+	public TextRange textRange() {
 		return this.textRange(this.lightweightASTRoot());
 	}
 
-	public ITextRange textRange(CompilationUnit astRoot) {
+	public TextRange textRange(CompilationUnit astRoot) {
 		return this.textRange(this.bodyDeclaration(astRoot));
 	}
 	
-	ITextRange textRange(ASTNode astNode) {
+	TextRange textRange(ASTNode astNode) {
 		return (astNode == null) ? null : new ASTNodeTextRange(astNode);
 	}
 
-	public ITextRange nameTextRange() {
+	public TextRange nameTextRange() {
 		return this.nameTextRange(this.lightweightASTRoot());
 	}
 	
-	public ITextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange nameTextRange(CompilationUnit astRoot) {
 		ISourceRange sourceRange = this.nameSourceRange();
 		return
 			new SimpleTextRange(
@@ -210,7 +210,7 @@ public abstract class Member {
 	 * Return the text range corresponding to the specified annotation.
 	 * If the annotation is missing, return null.
 	 */
-	public ITextRange annotationTextRange(DeclarationAnnotationAdapter adapter, CompilationUnit astRoot) {
+	public TextRange annotationTextRange(DeclarationAnnotationAdapter adapter, CompilationUnit astRoot) {
 		return this.textRange(this.annotation(adapter, astRoot));
 	}
 
@@ -218,7 +218,7 @@ public abstract class Member {
 	 * Return the text range corresponding to the specified annotation.
 	 * If the annotation is missing, return null.
 	 */
-	public ITextRange annotationTextRange(DeclarationAnnotationAdapter adapter) {
+	public TextRange annotationTextRange(DeclarationAnnotationAdapter adapter) {
 		return this.annotationTextRange(adapter, this.astRoot());
 	}
 
@@ -313,7 +313,7 @@ public abstract class Member {
 	 * Return the text range corresponding to the specified element.
 	 * If the element is missing, return null.
 	 */
-	public ITextRange annotationElementTextRange(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
+	public TextRange annotationElementTextRange(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
 		return this.textRange(this.annotationElementExpression(adapter, astRoot));
 	}
 
@@ -321,7 +321,7 @@ public abstract class Member {
 	 * Return the text range corresponding to the specified element.
 	 * If the element is missing, return null.
 	 */
-	public ITextRange annotationElementTextRange(DeclarationAnnotationElementAdapter<?> adapter) {
+	public TextRange annotationElementTextRange(DeclarationAnnotationElementAdapter<?> adapter) {
 		return this.annotationElementTextRange(adapter, this.astRoot());
 	}
 

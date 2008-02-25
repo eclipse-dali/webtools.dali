@@ -10,22 +10,25 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 
 
 
-public class NullPrimaryKeyJoinColumn extends NullNamedColumn implements PrimaryKeyJoinColumn, Annotation
+public class NullPrimaryKeyJoinColumn extends NullNamedColumn implements PrimaryKeyJoinColumnAnnotation, Annotation
 {	
-	public NullPrimaryKeyJoinColumn(JavaResource parent) {
+	public NullPrimaryKeyJoinColumn(JavaResourceNode parent) {
 		super(parent);
 	}
 
 	public String getAnnotationName() {
-		return PrimaryKeyJoinColumn.ANNOTATION_NAME;
+		return PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME;
 	}
 
 	@Override
-	protected PrimaryKeyJoinColumn createColumnResource() {
+	protected PrimaryKeyJoinColumnAnnotation createColumnResource() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -37,7 +40,7 @@ public class NullPrimaryKeyJoinColumn extends NullNamedColumn implements Primary
 		throw new UnsupportedOperationException();
 	}
 
-	public ITextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
+	public TextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	

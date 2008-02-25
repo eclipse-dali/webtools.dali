@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.internal.platform.BaseJpaFactory;
 public class TestJpaFactory extends BaseJpaFactory
 {
 	@Override
-	public IJavaEntity createJavaEntity(Type type) {
+	public JavaEntity createJavaEntity(Type type) {
 		return new TestJavaEntity(type);
 	}
 	

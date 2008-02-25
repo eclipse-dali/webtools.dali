@@ -25,17 +25,17 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaModelManager;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.facet.IJpaFacetDataModelProperties;
+import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -59,7 +59,7 @@ import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
 
 public class JpaProjectPropertiesPage 
 	extends DataModelPropertyPage
-	implements IJpaFacetDataModelProperties
+	implements JpaFacetDataModelProperties
 {
 	private PlatformGroup platformGroup;
 	
@@ -89,7 +89,7 @@ public class JpaProjectPropertiesPage
 		setRuntime();
 		
 		Dialog.applyDialogFont(parent);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, IJpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE);
 		
 		return composite;
 	}
@@ -104,20 +104,20 @@ public class JpaProjectPropertiesPage
 			return;
 		}
 		IRuntime runtime = facetedProject.getPrimaryRuntime();
-		model.setProperty(IJpaFacetDataModelProperties.RUNTIME, runtime);
+		model.setProperty(JpaFacetDataModelProperties.RUNTIME, runtime);
 	}
 	
 	@Override
 	protected String[] getValidationPropertyNames() {
 		return new String[] {
-			IJpaFacetDataModelProperties.PLATFORM_ID,
-			IJpaFacetDataModelProperties.CONNECTION,
-			IJpaFacetDataModelProperties.DISCOVER_ANNOTATED_CLASSES
+			JpaFacetDataModelProperties.PLATFORM_ID,
+			JpaFacetDataModelProperties.CONNECTION,
+			JpaFacetDataModelProperties.DISCOVER_ANNOTATED_CLASSES
 		};
 	}
 	
-	protected IJpaProject getJpaProject() {
-		return (IJpaProject) this.getElement().getAdapter(IJpaProject.class);
+	protected JpaProject getJpaProject() {
+		return (JpaProject) this.getElement().getAdapter(JpaProject.class);
 	}
 	
 	Combo createCombo(Composite container, boolean fillHorizontal) {
@@ -149,7 +149,7 @@ public class JpaProjectPropertiesPage
 	
 	@Override
 	public boolean performOk() {
-		IJpaProject jpaProject = this.getJpaProject();
+		JpaProject jpaProject = this.getJpaProject();
 		if (jpaProject == null) {
 			return true;  // the facet has been uninstalled during our trip to the properties
 		}
@@ -159,21 +159,21 @@ public class JpaProjectPropertiesPage
 
 		IProject project = jpaProject.project();
 
-		String platform = this.model.getStringProperty(IJpaFacetDataModelProperties.PLATFORM_ID);
+		String platform = this.model.getStringProperty(JpaFacetDataModelProperties.PLATFORM_ID);
 		if ( ! platform.equals(jpaProject.jpaPlatform().getId())) {
 			change = true;
 			platformChange = true;
 			JptCorePlugin.setJpaPlatformId(project, platform);
 		}
 
-		String connection = this.model.getStringProperty(IJpaFacetDataModelProperties.CONNECTION);
+		String connection = this.model.getStringProperty(JpaFacetDataModelProperties.CONNECTION);
 		if ( ! connection.equals(jpaProject.dataSource().connectionProfileName())) {
 			change = true;
 			jpaProject.dataSource().setConnectionProfileName(connection);
 			JptCorePlugin.setConnectionProfileName(project, connection);
 		}
 
-		boolean discover = this.model.getBooleanProperty(IJpaFacetDataModelProperties.DISCOVER_ANNOTATED_CLASSES);
+		boolean discover = this.model.getBooleanProperty(JpaFacetDataModelProperties.DISCOVER_ANNOTATED_CLASSES);
 		if (discover != jpaProject.discoversAnnotatedClasses()) {
 			change = true;
 			jpaProject.setDiscoversAnnotatedClasses(discover);
@@ -298,7 +298,7 @@ public class JpaProjectPropertiesPage
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			
 			connectionCombo = createCombo(group, true);
-			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IJpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_CONNECTION);
+			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_CONNECTION);
 			connectionCombo.addSelectionListener(
 					new SelectionListener() {
 						public void widgetDefaultSelected(SelectionEvent e) {
@@ -371,7 +371,7 @@ public class JpaProjectPropertiesPage
 			group.setText(JptUiMessages.JpaFacetWizardPage_persistentClassManagementLabel);
 			group.setLayout(new GridLayout());
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, IJpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);
+			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);
 			
 			discoverClassesButton = createButton(group, 1, JptUiMessages.JpaFacetWizardPage_discoverClassesButton, SWT.RADIO);
 			discoverClassesButton.addSelectionListener(

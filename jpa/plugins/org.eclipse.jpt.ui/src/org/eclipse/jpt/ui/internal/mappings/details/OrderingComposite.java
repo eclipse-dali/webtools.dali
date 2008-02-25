@@ -10,12 +10,12 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.core.internal.context.base.IMultiRelationshipMapping;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.core.context.MultiRelationshipMapping;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Text;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IMultiRelationshipMapping
+ * @see MultiRelationshipMapping
  * @see ManyToManyMappingComposite - A container of this pane
  * @see OneToManyMappingComposite - A container of this pane
  *
@@ -50,7 +50,7 @@ import org.eclipse.swt.widgets.Text;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMapping>
+public class OrderingComposite extends AbstractFormPane<MultiRelationshipMapping>
 {
 	private Text customOrderingText;
 
@@ -60,7 +60,7 @@ public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMappin
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OrderingComposite(AbstractFormPane<? extends IMultiRelationshipMapping> parentPane,
+	public OrderingComposite(AbstractFormPane<? extends MultiRelationshipMapping> parentPane,
 	                         Composite parent) {
 
 		super(parentPane, parent);
@@ -73,9 +73,9 @@ public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMappin
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrderingComposite(PropertyValueModel<? extends IMultiRelationshipMapping> subjectHolder,
+	public OrderingComposite(PropertyValueModel<? extends MultiRelationshipMapping> subjectHolder,
 	                         Composite parent,
-	                         IWidgetFactory widgetFactory) {
+	                         WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
@@ -86,7 +86,7 @@ public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMappin
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
-		propertyNames.add(IMultiRelationshipMapping.ORDER_BY_PROPERTY);
+		propertyNames.add(MultiRelationshipMapping.ORDER_BY_PROPERTY);
 	}
 
 	private ModifyListener buildCustomTextModifyListener() {
@@ -119,14 +119,14 @@ public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMappin
 		Group orderByGroup = buildTitledPane(
 			container,
 			JptUiMappingsMessages.OrderByComposite_orderByGroup,
-			IJpaHelpContextIds.MAPPING_ORDER_BY);
+			JpaHelpContextIds.MAPPING_ORDER_BY);
 
 		// No Ordering radio button
 		buildRadioButton(
 			buildSubPane(orderByGroup, 8),
 			JptUiMappingsMessages.OrderByComposite_noOrdering,
 			buildNoOrderingHolder(),
-			IJpaHelpContextIds.MAPPING_ORDER_BY_NO_ORDERING
+			JpaHelpContextIds.MAPPING_ORDER_BY_NO_ORDERING
 		);
 
 		// Order by Primary Key radio button
@@ -134,7 +134,7 @@ public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMappin
 			orderByGroup,
 			JptUiMappingsMessages.OrderByComposite_primaryKeyOrdering,
 			buildPrimaryKeyOrderingHolder(),
-			IJpaHelpContextIds.MAPPING_ORDER_BY_PRIMARY_KEY_ORDERING
+			JpaHelpContextIds.MAPPING_ORDER_BY_PRIMARY_KEY_ORDERING
 		);
 
 		// Custom Ordering radio button
@@ -142,13 +142,13 @@ public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMappin
 			orderByGroup,
 			JptUiMappingsMessages.OrderByComposite_customOrdering,
 			buildCustomOrderingHolder(),
-			IJpaHelpContextIds.MAPPING_ORDER_BY_CUSTOM_ORDERING
+			JpaHelpContextIds.MAPPING_ORDER_BY_CUSTOM_ORDERING
 		);
 
 		// Custom Ordering text field
 		customOrderingText = buildText(
 			buildSubPane(orderByGroup, 0, 16),
-			IJpaHelpContextIds.MAPPING_ORDER_BY
+			JpaHelpContextIds.MAPPING_ORDER_BY
 		);
 
 		customOrderingText.addModifyListener(buildCustomTextModifyListener());
@@ -160,7 +160,7 @@ public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMappin
 	}
 
 	private WritablePropertyValueModel<Boolean> buildCustomOrderingHolder() {
-		return new PropertyAspectAdapter<IMultiRelationshipMapping, Boolean>(getSubjectHolder(), IMultiRelationshipMapping.CUSTOM_ORDERING_PROPERTY) {
+		return new PropertyAspectAdapter<MultiRelationshipMapping, Boolean>(getSubjectHolder(), MultiRelationshipMapping.CUSTOM_ORDERING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(subject.isCustomOrdering());
@@ -174,7 +174,7 @@ public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMappin
 	}
 
 	private WritablePropertyValueModel<Boolean> buildNoOrderingHolder() {
-		return new PropertyAspectAdapter<IMultiRelationshipMapping, Boolean>(getSubjectHolder(), IMultiRelationshipMapping.NO_ORDERING_PROPERTY) {
+		return new PropertyAspectAdapter<MultiRelationshipMapping, Boolean>(getSubjectHolder(), MultiRelationshipMapping.NO_ORDERING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(subject.isNoOrdering());
@@ -188,7 +188,7 @@ public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMappin
 	}
 
 	private WritablePropertyValueModel<Boolean> buildPrimaryKeyOrderingHolder() {
-		return new PropertyAspectAdapter<IMultiRelationshipMapping, Boolean>(getSubjectHolder(), IMultiRelationshipMapping.PK_ORDERING_PROPERTY) {
+		return new PropertyAspectAdapter<MultiRelationshipMapping, Boolean>(getSubjectHolder(), MultiRelationshipMapping.PK_ORDERING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(subject.isPkOrdering());
@@ -217,7 +217,7 @@ public class OrderingComposite extends AbstractFormPane<IMultiRelationshipMappin
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
 
-		if (propertyName == IMultiRelationshipMapping.ORDER_BY_PROPERTY) {
+		if (propertyName == MultiRelationshipMapping.ORDER_BY_PROPERTY) {
 			populateCustomOrdering();
 		}
 	}

@@ -11,11 +11,11 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.resource.java.Embeddable;
-import org.eclipse.jpt.core.internal.resource.java.Entity;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaResource;
+import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
+import org.eclipse.jpt.core.resource.java.EntityAnnotation;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class EmbeddableTests extends JavaResourceModelTestCase {
@@ -56,20 +56,20 @@ public class EmbeddableTests extends JavaResourceModelTestCase {
 
 	public void testEmbeddable() throws Exception {
 		IType testType = this.createTestEmbeddable();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		JavaResource mappingAnnotation = typeResource.mappingAnnotation();
-		assertTrue(mappingAnnotation instanceof Embeddable);
+		JavaResourceNode mappingAnnotation = typeResource.mappingAnnotation();
+		assertTrue(mappingAnnotation instanceof EmbeddableAnnotation);
 	}
 	
 	public void testEmbeddableAndEntity() throws Exception {
 		IType testType = this.createTestEmbeddableAndEntity();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		JavaResource mappingAnnotation = typeResource.mappingAnnotation();
-		assertTrue(mappingAnnotation instanceof Embeddable);
+		JavaResourceNode mappingAnnotation = typeResource.mappingAnnotation();
+		assertTrue(mappingAnnotation instanceof EmbeddableAnnotation);
 		
-		Entity entity = (Entity) typeResource.mappingAnnotation(JPA.ENTITY);
+		EntityAnnotation entity = (EntityAnnotation) typeResource.mappingAnnotation(JPA.ENTITY);
 		assertNotNull(entity);
 	}
 

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -19,9 +19,15 @@ import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.EntityAnnotation;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
 
-public class EntityImpl extends AbstractAnnotationResource<Type> implements Entity
+public class EntityImpl extends AbstractAnnotationResource<Type> implements EntityAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
@@ -31,7 +37,7 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 
 	private String name;
 
-	protected EntityImpl(JavaPersistentTypeResource parent, Type type) {
+	protected EntityImpl(JavaResourcePersistentType parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(getMember(), NAME_ADAPTER);
 	}
@@ -42,7 +48,7 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 	
 	//*********** Annotation implementation ****************
 	public String getAnnotationName() {
-		return Entity.ANNOTATION_NAME;
+		return EntityAnnotation.ANNOTATION_NAME;
 	}
 	
 	//*********** Entity implementation ****************
@@ -54,10 +60,10 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 		String oldName = this.name;
 		this.name = newName;
 		this.nameAdapter.setValue(newName);
-		firePropertyChanged(Entity.NAME_PROPERTY, oldName, newName);
+		firePropertyChanged(EntityAnnotation.NAME_PROPERTY, oldName, newName);
 	}
 
-	public ITextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange nameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(NAME_ADAPTER, astRoot);
 	}
 	
@@ -95,17 +101,17 @@ public class EntityImpl extends AbstractAnnotationResource<Type> implements Enti
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
-			return new EntityImpl((JavaPersistentTypeResource) parent, (Type) member);
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
+			return new EntityImpl((JavaResourcePersistentType) parent, (Type) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 
 
 		public String getAnnotationName() {
-			return Entity.ANNOTATION_NAME;
+			return EntityAnnotation.ANNOTATION_NAME;
 		}
 	}
 }

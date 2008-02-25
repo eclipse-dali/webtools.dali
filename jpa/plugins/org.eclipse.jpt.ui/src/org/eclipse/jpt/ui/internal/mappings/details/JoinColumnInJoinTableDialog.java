@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.IJoinTable;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.ui.internal.widgets.AbstractDialogPane;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -19,8 +19,8 @@ import org.eclipse.swt.widgets.Shell;
  * This dialog is used to either create or edit a joing column that is located
  * on a join table.
  *
- * @see IJoinColumn
- * @see IJoinTable
+ * @see JoinColumn
+ * @see JoinTable
  * @see JoinColumnInJoinTableStateObject
  * @see AbstractJoinColumnDialogPane
  *
@@ -38,8 +38,8 @@ public class JoinColumnInJoinTableDialog extends AbstractJoinColumnDialog<JoinCo
 	 * this state object is used to create a new one
 	 */
 	public JoinColumnInJoinTableDialog(Shell parent,
-	                                   IJoinTable joinTable,
-	                                   IJoinColumn joinColumn) {
+	                                   JoinTable joinTable,
+	                                   JoinColumn joinColumn) {
 
 		super(parent, joinTable, joinColumn);
 	}
@@ -70,15 +70,15 @@ public class JoinColumnInJoinTableDialog extends AbstractJoinColumnDialog<JoinCo
 	 * (non-Javadoc)
 	 */
 	@Override
-	public IJoinColumn getJoinColumn() {
-		return (IJoinColumn) super.getJoinColumn();
+	public JoinColumn getJoinColumn() {
+		return (JoinColumn) super.getJoinColumn();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected IJoinTable getOwner() {
-		return (IJoinTable) super.getOwner();
+	protected JoinTable getOwner() {
+		return (JoinTable) super.getOwner();
 	}
 }

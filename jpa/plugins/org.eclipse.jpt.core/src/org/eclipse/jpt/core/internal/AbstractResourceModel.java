@@ -13,24 +13,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 
 public abstract class AbstractResourceModel
 	extends AbstractModel
-	implements IResourceModel
+	implements ResourceModel
 {
-	private final List<IJpaStructureNode> rootStructureNodes;
+	private final List<JpaStructureNode> rootStructureNodes;
 
 
 	protected AbstractResourceModel() {
-		this.rootStructureNodes = new ArrayList<IJpaStructureNode>();
+		this.rootStructureNodes = new ArrayList<JpaStructureNode>();
 	}
 
 	public abstract Object resource();
 
-	public ListIterator<IJpaStructureNode> rootStructureNodes() {
-		return new CloneListIterator<IJpaStructureNode>(this.rootStructureNodes);
+	public ListIterator<JpaStructureNode> rootStructureNodes() {
+		return new CloneListIterator<JpaStructureNode>(this.rootStructureNodes);
 	}
 
 	public int rootStructureNodesSize() {
@@ -40,17 +42,17 @@ public abstract class AbstractResourceModel
 	/**
 	 * Add the new node to the end of the list.
 	 */
-	public void addRootStructureNode(IJpaStructureNode structureNode) {
+	public void addRootStructureNode(JpaStructureNode structureNode) {
 		this.addRootStructureNode(this.rootStructureNodes.size(), structureNode);
 	}
 
-	public void addRootStructureNode(int index, IJpaStructureNode structureNode) {
+	public void addRootStructureNode(int index, JpaStructureNode structureNode) {
 		if ( ! this.rootStructureNodes.contains(structureNode)) {
 			this.addItemToList(index, structureNode, this.rootStructureNodes, ROOT_STRUCTURE_NODES_LIST);
 		}
 	}
 
-	public void removeRootStructureNode(IJpaStructureNode structureNode) {
+	public void removeRootStructureNode(JpaStructureNode structureNode) {
 		this.removeItemFromList(structureNode, this.rootStructureNodes, ROOT_STRUCTURE_NODES_LIST);
 	}
 
@@ -58,10 +60,10 @@ public abstract class AbstractResourceModel
 		this.removeItemFromList(index, this.rootStructureNodes, ROOT_STRUCTURE_NODES_LIST);
 	}
 
-	public IJpaStructureNode structureNode(int textOffset) {
+	public JpaStructureNode structureNode(int textOffset) {
 		synchronized (this.rootStructureNodes) {
-			for (IJpaStructureNode rootNode : this.rootStructureNodes) {
-				IJpaStructureNode node = rootNode.structureNode(textOffset);
+			for (JpaStructureNode rootNode : this.rootStructureNodes) {
+				JpaStructureNode node = rootNode.structureNode(textOffset);
 				if (node != null) {
 					return node;
 				}

@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.ICascade;
-import org.eclipse.jpt.core.internal.context.base.IOneToOneMapping;
-import org.eclipse.jpt.ui.internal.details.IJpaComposite;
+import org.eclipse.jpt.core.context.Cascade;
+import org.eclipse.jpt.core.context.OneToOneMapping;
+import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -54,7 +54,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IOneToOneMapping
+ * @see OneToOneMapping
  * @see BaseJpaUiFactory - The factory creating this pane
  * @see CascadeComposite
  * @see FetchTypeComposite
@@ -66,8 +66,8 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class OneToOneMappingComposite extends AbstractFormPane<IOneToOneMapping>
-                                      implements IJpaComposite<IOneToOneMapping>
+public class OneToOneMappingComposite extends AbstractFormPane<OneToOneMapping>
+                                      implements JpaComposite<OneToOneMapping>
 {
 	/**
 	 * Creates a new <code>OneToOneMappingComposite</code>.
@@ -76,17 +76,17 @@ public class OneToOneMappingComposite extends AbstractFormPane<IOneToOneMapping>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OneToOneMappingComposite(PropertyValueModel<? extends IOneToOneMapping> subjectHolder,
+	public OneToOneMappingComposite(PropertyValueModel<? extends OneToOneMapping> subjectHolder,
 	                                Composite parent,
 	                                TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private PropertyValueModel<ICascade> buildCascadeHolder() {
-		return new TransformationPropertyValueModel<IOneToOneMapping, ICascade>(getSubjectHolder()) {
+	private PropertyValueModel<Cascade> buildCascadeHolder() {
+		return new TransformationPropertyValueModel<OneToOneMapping, Cascade>(getSubjectHolder()) {
 			@Override
-			protected ICascade transform_(IOneToOneMapping value) {
+			protected Cascade transform_(OneToOneMapping value) {
 				return value.getCascade();
 			}
 		};

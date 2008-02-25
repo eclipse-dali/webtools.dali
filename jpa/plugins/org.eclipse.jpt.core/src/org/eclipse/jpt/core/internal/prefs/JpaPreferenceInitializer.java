@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.prefs;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.JptCorePlugin;
 
 /**
  * Class used to initialize default preference values.

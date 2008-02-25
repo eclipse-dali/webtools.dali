@@ -17,22 +17,22 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
-import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
-import org.eclipse.jpt.core.internal.context.persistence.IClassRef;
-import org.eclipse.jpt.core.internal.context.persistence.IPersistenceUnit;
-import org.eclipse.jpt.core.internal.resource.orm.OrmArtifactEdit;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResource;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceArtifactEdit;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlJavaClassRef;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.context.IBaseJpaContent;
+import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.resource.orm.OrmArtifactEdit;
+import org.eclipse.jpt.core.resource.orm.OrmResource;
+import org.eclipse.jpt.core.resource.persistence.PersistenceArtifactEdit;
+import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
+import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
+import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
@@ -88,7 +88,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		return TestJpaProject.buildJpaProject(projectName, autoBuild);
 	}
 	
-	protected IJpaProject jpaProject() {
+	protected JpaProject jpaProject() {
 		return getJavaProject().getJpaProject();
 	}
 	
@@ -129,20 +129,20 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		return persistenceResource().getPersistence().getPersistenceUnits().get(0);
 	}
 	
-	protected IPersistenceUnit persistenceUnit() {
+	protected PersistenceUnit persistenceUnit() {
 		return jpaContent().getPersistenceXml().getPersistence().persistenceUnits().next();
 	}
 	
-	protected IClassRef classRef() {
+	protected ClassRef classRef() {
 		return persistenceUnit().specifiedClassRefs().next();
 	}
 	
-	protected IJavaPersistentType javaPersistentType() {
+	protected JavaPersistentType javaPersistentType() {
 		return classRef().getJavaPersistentType();
 	}
 	
-	protected IEntity javaEntity() {
-		return (IEntity) javaPersistentType().getMapping();
+	protected Entity javaEntity() {
+		return (Entity) javaPersistentType().getMapping();
 	}
 	
 	protected void addXmlClassRef(String className) {

@@ -9,17 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.IJoinTable;
-import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinTable;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.db.internal.Table;
 
 /**
  * The state object used to create or edit a primary key join column on a
  * joint table.
  *
- * @see IJoinColumn
- * @see IJoinTable
+ * @see JoinColumn
+ * @see JoinTable
  * @see InverseJoinColumnDialog
  * @see InverseJoinColumnDialogPane
  * @see JoinColumnInJoinTableDialog
@@ -35,8 +35,8 @@ public class JoinColumnInJoinTableStateObject extends AbstractJoinColumnStateObj
 	 * @param joinTable The owner of the join column to create or to edit
 	 * @param joinColumn The join column to edit
 	 */
-	public JoinColumnInJoinTableStateObject(IJoinTable joinTable,
-	                                        IJoinColumn joinColumn) {
+	public JoinColumnInJoinTableStateObject(JoinTable joinTable,
+	                                        JoinColumn joinColumn) {
 		super(joinTable, joinColumn);
 	}
 
@@ -44,8 +44,8 @@ public class JoinColumnInJoinTableStateObject extends AbstractJoinColumnStateObj
 	 * (non-Javadoc)
 	 */
 	@Override
-	public IJoinColumn getJoinColumn() {
-		return (IJoinColumn) super.getJoinColumn();
+	public JoinColumn getJoinColumn() {
+		return (JoinColumn) super.getJoinColumn();
 	}
 
 	/*
@@ -60,8 +60,8 @@ public class JoinColumnInJoinTableStateObject extends AbstractJoinColumnStateObj
 	 * (non-Javadoc)
 	 */
 	@Override
-	public IJoinTable getOwner() {
-		return (IJoinTable) super.getOwner();
+	public JoinTable getOwner() {
+		return (JoinTable) super.getOwner();
 	}
 
 	/*
@@ -77,7 +77,7 @@ public class JoinColumnInJoinTableStateObject extends AbstractJoinColumnStateObj
 	 *
 	 * @return The parent of the join table
 	 */
-	public IRelationshipMapping relationshipMapping() {
+	public RelationshipMapping relationshipMapping() {
 		return getOwner().parent();
 	}
 }

@@ -14,8 +14,8 @@ import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.internal.platform.generic.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
@@ -32,7 +32,7 @@ import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
 
 public class JpaFacetDataModelProvider
 	extends FacetInstallDataModelProvider
-	implements IJpaFacetDataModelProperties
+	implements JpaFacetDataModelProperties
 {
 	private static final String EJB_FACET_ID = IModuleConstants.JST_EJB_MODULE;
 

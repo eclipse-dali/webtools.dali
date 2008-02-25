@@ -8,22 +8,22 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IMappedSuperclass;
-import org.eclipse.jpt.ui.internal.details.IJpaComposite;
+import org.eclipse.jpt.core.context.MappedSuperclass;
+import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
- * @see IMappedSuperclass
+ * @see MappedSuperclass
  * @see BaseJpaUiFactory - The factory creating this pane
  *
  * @version 2.0
  * @since 2.0
  */
-public class MappedSuperclassComposite extends AbstractFormPane<IMappedSuperclass>
-                                       implements IJpaComposite<IMappedSuperclass>
+public class MappedSuperclassComposite extends AbstractFormPane<MappedSuperclass>
+                                       implements JpaComposite<MappedSuperclass>
 {
 	/**
 	 * Creates a new <code>MappedSuperclassComposite</code>.
@@ -32,7 +32,7 @@ public class MappedSuperclassComposite extends AbstractFormPane<IMappedSuperclas
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public MappedSuperclassComposite(PropertyValueModel<? extends IMappedSuperclass> subjectHolder,
+	public MappedSuperclassComposite(PropertyValueModel<? extends MappedSuperclass> subjectHolder,
 	                                 Composite parent,
 	                                 TabbedPropertySheetWidgetFactory widgetFactory) {
 

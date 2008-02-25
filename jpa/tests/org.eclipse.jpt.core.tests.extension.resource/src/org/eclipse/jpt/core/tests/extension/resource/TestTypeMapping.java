@@ -4,7 +4,7 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaTypeMapping;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 
-public class TestTypeMapping extends JavaTypeMapping
+public class TestTypeMapping extends AbstractJavaTypeMapping
 {
 	public TestTypeMapping(Type type) {
 		super(type);

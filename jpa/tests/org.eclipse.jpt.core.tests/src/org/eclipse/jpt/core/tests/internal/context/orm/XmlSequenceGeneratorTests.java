@@ -12,12 +12,12 @@ package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.orm.SequenceGenerator;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
+import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.context.SequenceGenerator;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
+import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -84,8 +84,8 @@ public class XmlSequenceGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedName() throws Exception {
-		ISequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);		
-		SequenceGenerator sequenceGeneratorResource = ormResource().getEntityMappings().getSequenceGenerators().get(0);
+		SequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);		
+		XmlSequenceGenerator sequenceGeneratorResource = ormResource().getEntityMappings().getSequenceGenerators().get(0);
 		
 		//set name in the resource model, verify context model updated
 		sequenceGeneratorResource.setName("FOO");
@@ -99,8 +99,8 @@ public class XmlSequenceGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedName() throws Exception {
-		ISequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);		
-		SequenceGenerator sequenceGeneratorResource = ormResource().getEntityMappings().getSequenceGenerators().get(0);
+		SequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);		
+		XmlSequenceGenerator sequenceGeneratorResource = ormResource().getEntityMappings().getSequenceGenerators().get(0);
 		
 		//set name in the context model, verify resource model modified
 		sequenceGenerator.setName("FOO");
@@ -114,8 +114,8 @@ public class XmlSequenceGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedSequenceName() throws Exception {
-		ISequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);		
-		SequenceGenerator sequenceGeneratorResource = ormResource().getEntityMappings().getSequenceGenerators().get(0);
+		SequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);		
+		XmlSequenceGenerator sequenceGeneratorResource = ormResource().getEntityMappings().getSequenceGenerators().get(0);
 		
 		//set name in the resource model, verify context model updated
 		sequenceGeneratorResource.setSequenceName("FOO");
@@ -129,8 +129,8 @@ public class XmlSequenceGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedSequenceName() throws Exception {
-		ISequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);		
-		SequenceGenerator sequenceGeneratorResource = ormResource().getEntityMappings().getSequenceGenerators().get(0);
+		SequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);		
+		XmlSequenceGenerator sequenceGeneratorResource = ormResource().getEntityMappings().getSequenceGenerators().get(0);
 		
 		//set name in the context model, verify resource model modified
 		sequenceGenerator.setSpecifiedSequenceName("FOO");
@@ -144,8 +144,8 @@ public class XmlSequenceGeneratorTests extends ContextModelTestCase
 	}
 
 	public void testUpdateSpecifiedInitialValue() throws Exception {
-		ISequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);		
-		SequenceGenerator sequenceGeneratorResource = ormResource().getEntityMappings().getSequenceGenerators().get(0);
+		SequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);		
+		XmlSequenceGenerator sequenceGeneratorResource = ormResource().getEntityMappings().getSequenceGenerators().get(0);
 		
 		//set initial value in the resource model, verify context model updated
 		sequenceGeneratorResource.setInitialValue(Integer.valueOf(10));
@@ -164,8 +164,8 @@ public class XmlSequenceGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedInitialValue() throws Exception {
-		ISequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);		
-		SequenceGenerator sequenceGeneratorResource = ormResource().getEntityMappings().getSequenceGenerators().get(0);
+		SequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);		
+		XmlSequenceGenerator sequenceGeneratorResource = ormResource().getEntityMappings().getSequenceGenerators().get(0);
 		
 		//set initial value in the context model, verify resource model modified
 		sequenceGenerator.setSpecifiedInitialValue(Integer.valueOf(10));
@@ -183,8 +183,8 @@ public class XmlSequenceGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedAllocationSize() throws Exception {
-		ISequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);		
-		SequenceGenerator sequenceGeneratorResource = ormResource().getEntityMappings().getSequenceGenerators().get(0);
+		SequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);		
+		XmlSequenceGenerator sequenceGeneratorResource = ormResource().getEntityMappings().getSequenceGenerators().get(0);
 		
 		//set allocation size in the resource model, verify context model updated
 		sequenceGeneratorResource.setAllocationSize(Integer.valueOf(10));
@@ -203,8 +203,8 @@ public class XmlSequenceGeneratorTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedAllocationSize() throws Exception {
-		ISequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);		
-		SequenceGenerator sequenceGeneratorResource = ormResource().getEntityMappings().getSequenceGenerators().get(0);
+		SequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);		
+		XmlSequenceGenerator sequenceGeneratorResource = ormResource().getEntityMappings().getSequenceGenerators().get(0);
 		
 		//set allocation size in the context model, verify resource model modified
 		sequenceGenerator.setSpecifiedAllocationSize(Integer.valueOf(10));

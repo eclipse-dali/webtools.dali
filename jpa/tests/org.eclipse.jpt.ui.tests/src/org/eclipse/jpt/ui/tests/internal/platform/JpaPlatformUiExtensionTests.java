@@ -1,7 +1,7 @@
 package org.eclipse.jpt.ui.tests.internal.platform;
 
 import junit.framework.TestCase;
-import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.core.tests.extension.resource.ExtensionTestPlugin;
 import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatform;
@@ -48,7 +48,7 @@ public class JpaPlatformUiExtensionTests extends TestCase
 		super.tearDown();
 	}
 
-	protected IJpaProject jpaProject() {
+	protected JpaProject jpaProject() {
 		return this.testProject.getJpaProject();
 	}
 

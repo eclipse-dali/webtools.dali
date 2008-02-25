@@ -10,15 +10,18 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.AbstractColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 
-public abstract class AbstractColumnImpl extends AbstractNamedColumn implements AbstractColumn
+public abstract class AbstractColumnImpl extends AbstractNamedColumn implements AbstractColumnAnnotation
 {
 	// hold this so we can get the 'table' text range
 	private final DeclarationAnnotationElementAdapter<String> tableDeclarationAdapter;
@@ -52,11 +55,11 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 	private Boolean updatable;
 	
 
-	public AbstractColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
+	public AbstractColumnImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
 		this(parent, member, daa, new MemberAnnotationAdapter(member, daa));
 	}
 	
-	public AbstractColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	public AbstractColumnImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.tableDeclarationAdapter = this.buildStringElementAdapter(this.tableElementName());
 		this.tableAdapter = this.buildShortCircuitElementAdapter(this.tableDeclarationAdapter);
@@ -93,7 +96,7 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		super.initializeFrom(oldAnnotation);
-		AbstractColumn oldColumn = (AbstractColumn) oldAnnotation;
+		AbstractColumnAnnotation oldColumn = (AbstractColumnAnnotation) oldAnnotation;
 		setTable(oldColumn.getTable());
 		setUnique(oldColumn.getUnique());
 		setNullable(oldColumn.getNullable());
@@ -157,23 +160,23 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 		firePropertyChanged(UPDATABLE_PROPERTY, oldUpdatable, newUpdatable);
 	}
 
-	public ITextRange nullableTextRange(CompilationUnit astRoot) {
+	public TextRange nullableTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.nullableDeclarationAdapter, astRoot);
 	}
 	
-	public ITextRange insertableTextRange(CompilationUnit astRoot) {
+	public TextRange insertableTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.insertableDeclarationAdapter, astRoot);
 	}
 	
-	public ITextRange uniqueTextRange(CompilationUnit astRoot) {
+	public TextRange uniqueTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.uniqueDeclarationAdapter, astRoot);
 	}
 	
-	public ITextRange updatableTextRange(CompilationUnit astRoot) {
+	public TextRange updatableTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.updatableDeclarationAdapter, astRoot);
 	}
 	
-	public ITextRange tableTextRange(CompilationUnit astRoot) {
+	public TextRange tableTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.tableDeclarationAdapter, astRoot);
 	}
 	

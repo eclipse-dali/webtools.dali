@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -19,8 +19,15 @@ import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElement
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.GeneratedValueAnnotation;
+import org.eclipse.jpt.core.resource.java.GenerationType;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 
-public class GeneratedValueImpl extends AbstractAnnotationResource<Member> implements GeneratedValue
+public class GeneratedValueImpl extends AbstractAnnotationResource<Member> implements GeneratedValueAnnotation
 {
 	private final AnnotationElementAdapter<String> strategyAdapter;
 
@@ -37,7 +44,7 @@ public class GeneratedValueImpl extends AbstractAnnotationResource<Member> imple
 	private String generator;
 	
 		
-	protected GeneratedValueImpl(JavaResource parent, Member member) {
+	protected GeneratedValueImpl(JavaResourceNode parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.strategyAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, STRATEGY_ADAPTER);
 		this.generatorAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, GENERATOR_ADAPTER);
@@ -74,11 +81,11 @@ public class GeneratedValueImpl extends AbstractAnnotationResource<Member> imple
 		firePropertyChanged(GENERATOR_PROPERTY, oldGenerator, newGenerator);
 	}
 
-	public ITextRange strategyTextRange(CompilationUnit astRoot) {
+	public TextRange strategyTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(STRATEGY_ADAPTER, astRoot);
 	}
 	
-	public ITextRange generatorTextRange(CompilationUnit astRoot) {
+	public TextRange generatorTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(GENERATOR_ADAPTER, astRoot);
 	}
 
@@ -124,11 +131,11 @@ public class GeneratedValueImpl extends AbstractAnnotationResource<Member> imple
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new GeneratedValueImpl(parent, member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 		

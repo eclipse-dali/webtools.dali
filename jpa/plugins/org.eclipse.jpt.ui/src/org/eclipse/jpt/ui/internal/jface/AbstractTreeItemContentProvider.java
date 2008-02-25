@@ -23,7 +23,7 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModel
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 
 /**
- * Implementation of {@link ITreeItemContentProvider} that provides updating
+ * Implementation of {@link TreeItemContentProvider} that provides updating
  * children information for a Model object.
  * 
  * The typical subclass will override the following methods:
@@ -42,7 +42,7 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
  * by this class.
  */
 public abstract class AbstractTreeItemContentProvider<E>
-	implements ITreeItemContentProvider
+	implements TreeItemContentProvider
 {
 	private DelegatingTreeContentAndLabelProvider treeContentProvider;
 	

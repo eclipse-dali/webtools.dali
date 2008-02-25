@@ -60,7 +60,7 @@ public abstract class EnumDialogComboViewer<T extends Model, V> extends Abstract
 	 */
 	protected EnumDialogComboViewer(PropertyValueModel<? extends T> subjectHolder,
 	                                Composite parent,
-	                                IWidgetFactory widgetFactory) {
+	                                WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}

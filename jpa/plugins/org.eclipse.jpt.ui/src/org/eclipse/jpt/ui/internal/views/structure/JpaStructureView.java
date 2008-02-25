@@ -9,14 +9,14 @@
 package org.eclipse.jpt.ui.internal.views.structure;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jpt.core.internal.IJpaFile;
-import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
+import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.ui.JpaPlatformUi;
+import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.JptUiPlugin;
-import org.eclipse.jpt.ui.internal.selection.IJpaSelection;
-import org.eclipse.jpt.ui.internal.selection.IJpaSelectionManager;
+import org.eclipse.jpt.ui.internal.selection.JpaSelection;
+import org.eclipse.jpt.ui.internal.selection.JpaSelectionManager;
 import org.eclipse.jpt.ui.internal.selection.SelectionManagerFactory;
-import org.eclipse.jpt.ui.internal.structure.IJpaStructureProvider;
+import org.eclipse.jpt.ui.internal.structure.JpaStructureProvider;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -36,7 +36,7 @@ public class JpaStructureView extends PageBookView
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 		
-		IJpaSelectionManager selectionManager =
+		JpaSelectionManager selectionManager =
 			SelectionManagerFactory.getSelectionManager(getViewSite().getWorkbenchWindow());
 		
 		selectionManager.register(this);
@@ -69,7 +69,7 @@ public class JpaStructureView extends PageBookView
 	
 	@Override
 	protected PageRec doCreatePage(IWorkbenchPart part) {
-		IJpaStructureProvider structureProvider = 
+		JpaStructureProvider structureProvider = 
 			structureProvider(part);
 		if (structureProvider != null) {
 			JpaStructurePage page = new JpaStructurePage(this, structureProvider);
@@ -80,15 +80,15 @@ public class JpaStructureView extends PageBookView
 		return null;
 	}
 	
-	private IJpaStructureProvider structureProvider(IWorkbenchPart part) {
-		IJpaFile jpaFile = 
-			(IJpaFile) part.getAdapter(IJpaFile.class);
+	private JpaStructureProvider structureProvider(IWorkbenchPart part) {
+		JpaFile jpaFile = 
+			(JpaFile) part.getAdapter(JpaFile.class);
 		
 		if (jpaFile == null) {
 			return null;
 		}
 		
-		IJpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(jpaFile.jpaProject().jpaPlatform());
+		JpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(jpaFile.jpaProject().jpaPlatform());
 		return platformUi.buildStructureProvider(jpaFile);
 	}
 	
@@ -100,16 +100,16 @@ public class JpaStructureView extends PageBookView
         pageRecord.dispose();
 	}
 	
-	public IJpaSelection getSelection() {
+	public JpaSelection getSelection() {
 		if (getCurrentPage() != getDefaultPage()) {
 			return ((JpaStructurePage) getCurrentPage()).getSelection();
 		}
 		else {
-			return IJpaSelection.NULL_SELECTION;
+			return JpaSelection.NULL_SELECTION;
 		}
 	}
 	
-	public void select(IJpaSelection newSelection) {
+	public void select(JpaSelection newSelection) {
 		// correct page should be shown
 		if (getCurrentPage() != getDefaultPage()) {
 			((JpaStructurePage) getCurrentPage()).select(newSelection);

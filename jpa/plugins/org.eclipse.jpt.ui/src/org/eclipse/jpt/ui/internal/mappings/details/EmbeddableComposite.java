@@ -8,8 +8,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IEmbeddable;
-import org.eclipse.jpt.ui.internal.details.IJpaComposite;
+import org.eclipse.jpt.core.context.Embeddable;
+import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -18,15 +18,15 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 /**
  * This pane does not have any widgets.
  *
- * @see IEmbeddable
+ * @see Embeddable
  * @see BaseJpaUiFactory - The factory creating this pane
  * @see EmbeddableUiProvider
  *
  * @version 2.0
  * @since 2.0
  */
-public class EmbeddableComposite extends AbstractFormPane<IEmbeddable>
-                                 implements IJpaComposite<IEmbeddable>
+public class EmbeddableComposite extends AbstractFormPane<Embeddable>
+                                 implements JpaComposite<Embeddable>
 {
 	/**
 	 * Creates a new <code>EmbeddableComposite</code>.
@@ -35,7 +35,7 @@ public class EmbeddableComposite extends AbstractFormPane<IEmbeddable>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EmbeddableComposite(PropertyValueModel<? extends IEmbeddable> subjectHolder,
+	public EmbeddableComposite(PropertyValueModel<? extends Embeddable> subjectHolder,
 	                           Composite parent,
 	                           TabbedPropertySheetWidgetFactory widgetFactory) {
 

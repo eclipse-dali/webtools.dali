@@ -47,7 +47,7 @@ public final class TriStateCheckBox
 	 * @param parent The parent composite
 	 * @param widgetFactory The factory used to create the check box
 	 */
-	public TriStateCheckBox(Composite parent, IWidgetFactory widgetFactory) {
+	public TriStateCheckBox(Composite parent, WidgetFactory widgetFactory) {
 		this(parent, null, widgetFactory);
 	}
 
@@ -60,7 +60,7 @@ public final class TriStateCheckBox
 	 */
 	public TriStateCheckBox(Composite parent,
 	                        String text,
-	                        IWidgetFactory widgetFactory) {
+	                        WidgetFactory widgetFactory) {
 		super();
 		this.state = TriState.UNCHECKED;
 		this.button = widgetFactory.createCheckBox(parent, text);

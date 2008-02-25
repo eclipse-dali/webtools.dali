@@ -19,7 +19,7 @@ public class SelectionParticipantFactory
 	implements IAdapterFactory
 {
 	@SuppressWarnings("unchecked")
-	private static final Class[] ADAPTER_LIST = new Class[] { IJpaSelectionParticipant.class };
+	private static final Class[] ADAPTER_LIST = new Class[] { JpaSelectionParticipant.class };
 	
 	@SuppressWarnings("unchecked")
 	public Class[] getAdapterList() {
@@ -32,7 +32,7 @@ public class SelectionParticipantFactory
 			return null;
 		}
 		
-		IJpaSelectionManager selectionManager = 
+		JpaSelectionManager selectionManager = 
 			SelectionManagerFactory.getSelectionManager(((IWorkbenchPart) adaptableObject).getSite().getWorkbenchWindow());
 		if (adaptableObject instanceof ITextEditor) {
 			return new TextEditorSelectionParticipant(selectionManager, (ITextEditor) adaptableObject);

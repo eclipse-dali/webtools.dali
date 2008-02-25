@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -18,8 +18,10 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdap
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.NumberIntegerExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.resource.java.GeneratorAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 
-public abstract class GeneratorImpl extends AbstractAnnotationResource<Member> implements Generator
+public abstract class GeneratorImpl extends AbstractAnnotationResource<Member> implements GeneratorAnnotation
 {
 	// hold this so we can get the 'name' text range
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
@@ -42,7 +44,7 @@ public abstract class GeneratorImpl extends AbstractAnnotationResource<Member> i
 	
 	private Integer allocationSize;
 		
-	public GeneratorImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
+	public GeneratorImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa);
 		this.nameDeclarationAdapter = this.nameAdapter();
 		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
@@ -110,15 +112,15 @@ public abstract class GeneratorImpl extends AbstractAnnotationResource<Member> i
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
-	public ITextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange nameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 	
-	public ITextRange initialValueTextRange(CompilationUnit astRoot) {
+	public TextRange initialValueTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.initialValueDeclarationAdapter, astRoot);
 	}
 	
-	public ITextRange allocationSizeTextRange(CompilationUnit astRoot) {
+	public TextRange allocationSizeTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.allocationSizeDeclarationAdapter, astRoot);
 	}
 

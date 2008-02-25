@@ -9,11 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal;
 
+import org.eclipse.jpt.ui.JpaUiFactory;
+
 /**
  * The default implementation of the UI factory required to show the information
  * related to a JPA mapping (type or attribute).
  *
- * @see IJpaUiFactory
+ * @see JpaUiFactory
  *
  * @version 1.0
  * @since 1.0

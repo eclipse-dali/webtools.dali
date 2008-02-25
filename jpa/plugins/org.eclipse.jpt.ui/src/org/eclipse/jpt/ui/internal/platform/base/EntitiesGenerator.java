@@ -23,9 +23,9 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
-import org.eclipse.jpt.core.internal.context.persistence.IPersistenceXml;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.context.IBaseJpaContent;
+import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.synch.SynchronizeClassesJob;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.gen.internal.EntityGenerator;
@@ -47,12 +47,12 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class EntitiesGenerator
 {
-	private IJpaProject project;
+	private JpaProject project;
 	private IStructuredSelection selection;
 
 	// ********** constructors **********
 
-	static public void generate( IJpaProject project, IStructuredSelection selection) {
+	static public void generate( JpaProject project, IStructuredSelection selection) {
 		if(project == null) {
 			throw new NullPointerException();
 		}
@@ -63,7 +63,7 @@ public class EntitiesGenerator
 		super();
 	}
 
-	private EntitiesGenerator( IJpaProject project, IStructuredSelection selection) {
+	private EntitiesGenerator( JpaProject project, IStructuredSelection selection) {
 		super();
 		this.project = project;
 		this.selection = selection;
@@ -103,14 +103,14 @@ public class EntitiesGenerator
 		private final Collection<Table> selectedTables;
 		private final boolean synchronizePersistenceXml;
 		private final EntityGenerator.OverwriteConfirmer overwriteConfirmer;
-		private final IJpaProject project;
+		private final JpaProject project;
 		
 		GenerateEntitiesRunnable(
 				PackageGenerator.Config packageConfig,
 				EntityGenerator.Config entityConfig,
 				Collection<Table> selectedTables,
 				boolean synchronizePersistenceXml,
-				IJpaProject project,
+				JpaProject project,
 				EntityGenerator.OverwriteConfirmer overwriteConfirmer
 		) {
 			super("Generating Entities");
@@ -132,7 +132,7 @@ public class EntitiesGenerator
 				// we currently only support *one* persistence.xml file per project
 				//TODO casting to IBaseJpaContent, IContextModel doesn't seem useful to me 
 				//just trying to get rid of all compiler errors for now KFB
-				IPersistenceXml persistenceXml = ((IBaseJpaContent) this.project.contextModel()).getPersistenceXml();
+				PersistenceXml persistenceXml = ((IBaseJpaContent) this.project.contextModel()).getPersistenceXml();
 				if (persistenceXml != null) {
 					//TODO casting to IFile - just trying to get rid of all compiler errors for now
 					SynchronizeClassesJob job = new SynchronizeClassesJob((IFile) persistenceXml.resource());

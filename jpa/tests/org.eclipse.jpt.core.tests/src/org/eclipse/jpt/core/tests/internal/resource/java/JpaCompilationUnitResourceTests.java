@@ -14,12 +14,12 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.IJpaFile;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.resource.java.Entity;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
+import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitResource;
+import org.eclipse.jpt.core.resource.java.EntityAnnotation;
+import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
@@ -61,8 +61,8 @@ public class JpaCompilationUnitResourceTests extends AnnotationTestCase {
 	}
 	
 	protected JpaCompilationUnitResource getJpaCompilationUnitResource(ICompilationUnit testCompilationUnit) throws CoreException {
-		IJpaProject jpaProject = ((TestJpaProject) this.javaProject).getJpaProject();
-		IJpaFile jpaFile = jpaProject.jpaFile((IFile) testCompilationUnit.getResource());
+		JpaProject jpaProject = ((TestJpaProject) this.javaProject).getJpaProject();
+		JpaFile jpaFile = jpaProject.jpaFile((IFile) testCompilationUnit.getResource());
 		JavaResourceModel javaResourceModel = (JavaResourceModel) jpaFile.getResourceModel();
 		return javaResourceModel.resource();
 	}
@@ -71,7 +71,7 @@ public class JpaCompilationUnitResourceTests extends AnnotationTestCase {
 		ICompilationUnit compilationUnit = this.createTestCompilationUnit();
 		JpaCompilationUnitResource jpaCompilationUnit = getJpaCompilationUnitResource(compilationUnit);
 		
-		assertTrue(jpaCompilationUnit.getPersistentType().mappingAnnotation() instanceof Entity);
+		assertTrue(jpaCompilationUnit.getPersistentType().mappingAnnotation() instanceof EntityAnnotation);
 	}
 
 }

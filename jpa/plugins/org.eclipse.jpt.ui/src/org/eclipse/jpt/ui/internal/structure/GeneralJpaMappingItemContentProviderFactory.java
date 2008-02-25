@@ -10,30 +10,30 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
 
-import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.base.IPersistentType;
+import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
-import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProvider;
-import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProviderFactory;
+import org.eclipse.jpt.ui.internal.jface.TreeItemContentProvider;
+import org.eclipse.jpt.ui.internal.jface.TreeItemContentProviderFactory;
 
 public abstract class GeneralJpaMappingItemContentProviderFactory
-	implements ITreeItemContentProviderFactory
+	implements TreeItemContentProviderFactory
 {
-	public ITreeItemContentProvider buildItemContentProvider(
+	public TreeItemContentProvider buildItemContentProvider(
 			Object item, DelegatingContentAndLabelProvider contentAndLabelProvider) {
 		DelegatingTreeContentAndLabelProvider treeContentProvider = (DelegatingTreeContentAndLabelProvider) contentAndLabelProvider;
-		if (item instanceof IPersistentType) {
-			return buildPersistentTypeItemContentProvider((IPersistentType) item, treeContentProvider);
+		if (item instanceof PersistentType) {
+			return buildPersistentTypeItemContentProvider((PersistentType) item, treeContentProvider);
 		}
-		else if (item instanceof IPersistentAttribute) {
-			return new PersistentAttributeItemContentProvider((IPersistentAttribute) item, treeContentProvider);
+		else if (item instanceof PersistentAttribute) {
+			return new PersistentAttributeItemContentProvider((PersistentAttribute) item, treeContentProvider);
 		}
 		return null;
 	}
 	
-	protected abstract ITreeItemContentProvider buildPersistentTypeItemContentProvider(IPersistentType persistentType, DelegatingTreeContentAndLabelProvider treeContentProvider);
+	protected abstract TreeItemContentProvider buildPersistentTypeItemContentProvider(PersistentType persistentType, DelegatingTreeContentAndLabelProvider treeContentProvider);
 
 	
 	
@@ -41,13 +41,13 @@ public abstract class GeneralJpaMappingItemContentProviderFactory
 	public static class PersistentAttributeItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public PersistentAttributeItemContentProvider(
-				IPersistentAttribute persistentAttribute, DelegatingTreeContentAndLabelProvider contentProvider) {
+				PersistentAttribute persistentAttribute, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(persistentAttribute, contentProvider);
 		}
 		
 		@Override
 		public Object getParent() {
-			return ((IPersistentAttribute) model()).parent();
+			return ((PersistentAttribute) model()).parent();
 		}
 		
 		@Override

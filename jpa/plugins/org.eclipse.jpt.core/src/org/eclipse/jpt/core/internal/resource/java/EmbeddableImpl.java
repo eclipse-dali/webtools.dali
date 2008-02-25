@@ -14,13 +14,18 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
 
-public class EmbeddableImpl extends AbstractAnnotationResource<Type> implements Embeddable
+public class EmbeddableImpl extends AbstractAnnotationResource<Type> implements EmbeddableAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	protected EmbeddableImpl(JavaPersistentTypeResource parent, Type type) {
+	protected EmbeddableImpl(JavaResourcePersistentType parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	
@@ -56,11 +61,11 @@ public class EmbeddableImpl extends AbstractAnnotationResource<Type> implements 
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
-			return new EmbeddableImpl((JavaPersistentTypeResource) parent, (Type) member);
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
+			return new EmbeddableImpl((JavaResourcePersistentType) parent, (Type) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 		

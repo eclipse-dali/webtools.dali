@@ -16,10 +16,10 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.LabelProviderChangedEvent;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
-import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
-import org.eclipse.jpt.ui.internal.JptUiPlugin;
+import org.eclipse.jpt.core.JpaPlatform;
+import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.ui.JpaPlatformUi;
+import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
@@ -154,14 +154,14 @@ public class JpaNavigatorLabelProvider extends LabelProvider
 			return null;
 		}
 		
-		IJpaContextNode contextNode = (IJpaContextNode) ((IAdaptable) element).getAdapter(IJpaContextNode.class);
+		JpaContextNode contextNode = (JpaContextNode) ((IAdaptable) element).getAdapter(JpaContextNode.class);
 		
 		if (contextNode == null) {
 			return null;
 		}
 		
-		IJpaPlatform platform = contextNode.jpaProject().jpaPlatform();
-		IJpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(platform);
+		JpaPlatform platform = contextNode.jpaProject().jpaPlatform();
+		JpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(platform);
 		
 		ICommonLabelProvider delegate = delegateLabelProviders.get(platform.getId());
 		

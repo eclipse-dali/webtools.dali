@@ -10,18 +10,22 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.EnumType;
+import org.eclipse.jpt.core.resource.java.Enumerated;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 
 
 public class NullEnumerated extends AbstractResource implements Enumerated, Annotation
 {	
-	protected NullEnumerated(JavaPersistentResource parent) {
+	protected NullEnumerated(JavaResourcePersistentMember parent) {
 		super(parent);
 	}
 
 	@Override
-	public JavaPersistentResource parent() {
-		return (JavaPersistentResource) super.parent();
+	public JavaResourcePersistentMember parent() {
+		return (JavaResourcePersistentMember) super.parent();
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -63,11 +67,11 @@ public class NullEnumerated extends AbstractResource implements Enumerated, Anno
 		throw new UnsupportedOperationException();
 	}
 
-	public ITextRange textRange(CompilationUnit astRoot) {
+	public TextRange textRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public ITextRange valueTextRange(CompilationUnit astRoot) {
+	public TextRange valueTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 }

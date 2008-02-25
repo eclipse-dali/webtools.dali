@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
 
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
-import org.eclipse.jpt.ui.internal.jface.IItemLabelProviderFactory;
-import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProviderFactory;
+import org.eclipse.jpt.core.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.ui.internal.jface.ItemLabelProviderFactory;
+import org.eclipse.jpt.ui.internal.jface.TreeItemContentProviderFactory;
 
 public class PersistenceResourceModelStructureProvider
 	extends ResourceModelStructureProvider
@@ -21,11 +21,11 @@ public class PersistenceResourceModelStructureProvider
 		super(resourceModel);
 	}
 	
-	public ITreeItemContentProviderFactory treeItemContentProviderFactory() {
+	public TreeItemContentProviderFactory treeItemContentProviderFactory() {
 		return new PersistenceItemContentProviderFactory();
 	}
 	
-	public IItemLabelProviderFactory itemLabelProviderFactory() {
+	public ItemLabelProviderFactory itemLabelProviderFactory() {
 		return new PersistenceItemLabelProviderFactory();
 	}
 }

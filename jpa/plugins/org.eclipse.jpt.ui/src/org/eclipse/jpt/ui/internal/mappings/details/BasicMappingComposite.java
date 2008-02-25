@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
-import org.eclipse.jpt.core.internal.context.base.IColumn;
-import org.eclipse.jpt.ui.internal.details.IJpaComposite;
+import org.eclipse.jpt.core.context.BasicMapping;
+import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -54,7 +54,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IBasicMapping
+ * @see BasicMapping
  * @see BaseJpaUiFactory - The factory creating this pane
  * @see ColumnComposite
  * @see EnumTypeComposite
@@ -66,8 +66,8 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class BasicMappingComposite extends AbstractFormPane<IBasicMapping>
-                                   implements IJpaComposite<IBasicMapping>
+public class BasicMappingComposite extends AbstractFormPane<BasicMapping>
+                                   implements JpaComposite<BasicMapping>
 {
 	/**
 	 * Creates a new <code>BasicMappingComposite</code>.
@@ -76,17 +76,17 @@ public class BasicMappingComposite extends AbstractFormPane<IBasicMapping>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public BasicMappingComposite(PropertyValueModel<IBasicMapping> subjectHolder,
+	public BasicMappingComposite(PropertyValueModel<BasicMapping> subjectHolder,
 	                             Composite parent,
 	                             TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private PropertyValueModel<IColumn> buildColumnHolder() {
-		return new TransformationPropertyValueModel<IBasicMapping, IColumn>(getSubjectHolder()) {
+	private PropertyValueModel<Column> buildColumnHolder() {
+		return new TransformationPropertyValueModel<BasicMapping, Column>(getSubjectHolder()) {
 			@Override
-			protected IColumn transform_(IBasicMapping value) {
+			protected Column transform_(BasicMapping value) {
 				return value.getColumn();
 			}
 		};

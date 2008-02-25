@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
@@ -19,6 +19,13 @@ import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.Inheritance;
+import org.eclipse.jpt.core.resource.java.InheritanceType;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 
 public class InheritanceImpl extends AbstractAnnotationResource<Type> implements Inheritance
 {
@@ -29,7 +36,7 @@ public class InheritanceImpl extends AbstractAnnotationResource<Type> implements
 
 	private InheritanceType strategy;
 	
-	protected InheritanceImpl(JavaResource parent, Type type) {
+	protected InheritanceImpl(JavaResourceNode parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.strategyAdapter = new ShortCircuitAnnotationElementAdapter<String>(type, STRATEGY_ADAPTER);
 	}
@@ -53,7 +60,7 @@ public class InheritanceImpl extends AbstractAnnotationResource<Type> implements
 		firePropertyChanged(STRATEGY_PROPERTY, oldStrategy, newStrategy);
 	}
 
-	public ITextRange strategyTextRange(CompilationUnit astRoot) {
+	public TextRange strategyTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(STRATEGY_ADAPTER, astRoot);
 	}
 	
@@ -89,11 +96,11 @@ public class InheritanceImpl extends AbstractAnnotationResource<Type> implements
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new InheritanceImpl(parent, (Type) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new NullInheritance(parent);
 		}
 

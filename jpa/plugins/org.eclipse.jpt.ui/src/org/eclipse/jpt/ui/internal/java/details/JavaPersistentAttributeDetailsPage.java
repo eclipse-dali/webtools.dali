@@ -10,12 +10,12 @@
 package org.eclipse.jpt.ui.internal.java.details;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.internal.context.base.IAttributeMapping;
-import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
+import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.NullAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
+import org.eclipse.jpt.ui.java.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -27,12 +27,12 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * The default implementation of the details page used for the Java persistent
  * attribute.
  *
- * @see IPersistentAttribute
+ * @see PersistentAttribute
  *
  * @version 2.0
  * @since 2.0
  */
-public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetailsPage<IJavaPersistentAttribute>
+public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetailsPage<JavaPersistentAttribute>
 {
 	/**
 	 * Creates a new <code>JavaPersistentAttributeDetailsPage</code>.
@@ -50,7 +50,7 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> attributeMappingUiProviders() {
+	protected ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders() {
 		// TODO
 		return ((BaseJpaPlatformUi) jpaPlatformUi()).javaAttributeMappingUiProviders();
 	}
@@ -63,11 +63,11 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 	 * determined by matching its key with the key of the current attributeMapping.
 	 */
 	@Override
-	protected IAttributeMappingUiProvider<? extends IAttributeMapping>[] attributeMappingUiProvidersFor(IPersistentAttribute persistentAttribute) {
-		IAttributeMappingUiProvider<? extends IAttributeMapping>[] providers = new IAttributeMappingUiProvider<?>[CollectionTools.size(attributeMappingUiProviders()) + 1];
+	protected AttributeMappingUiProvider<? extends AttributeMapping>[] attributeMappingUiProvidersFor(PersistentAttribute persistentAttribute) {
+		AttributeMappingUiProvider<? extends AttributeMapping>[] providers = new AttributeMappingUiProvider<?>[CollectionTools.size(attributeMappingUiProviders()) + 1];
 		providers[0] =  defaultAttributeMappingUiProvider(persistentAttribute.defaultMappingKey());
 		int i = 1;
-		for (ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> iterator = attributeMappingUiProviders(); iterator.hasNext(); ) {
+		for (ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> iterator = attributeMappingUiProviders(); iterator.hasNext(); ) {
 			providers[i++] = iterator.next();
 		}
 		return providers;
@@ -77,9 +77,9 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected IAttributeMappingUiProvider<? extends IAttributeMapping> defaultAttributeMappingUiProvider(String key) {
-		for (ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> i = defaultAttributeMappingUiProviders(); i.hasNext(); ) {
-			IAttributeMappingUiProvider<? extends IAttributeMapping> provider = i.next();
+	protected AttributeMappingUiProvider<? extends AttributeMapping> defaultAttributeMappingUiProvider(String key) {
+		for (ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> i = defaultAttributeMappingUiProviders(); i.hasNext(); ) {
+			AttributeMappingUiProvider<? extends AttributeMapping> provider = i.next();
 			if (provider.attributeMappingKey() == key) {
 				return provider;
 			}
@@ -91,7 +91,7 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected ListIterator<IAttributeMappingUiProvider<? extends IAttributeMapping>> defaultAttributeMappingUiProviders() {
+	protected ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
 		// TODO
 //		return jpaPlatformUi().defaultJavaAttributeMappingUiProviders();
 		return ((BaseJpaPlatformUi) jpaPlatformUi()).defaultJavaAttributeMappingUiProviders();
@@ -122,7 +122,7 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 		mappingPane.setLayoutData(gridData);
 	}
 
-	protected IAttributeMappingUiProvider<IAttributeMapping> nullAttributeMappingUiProvider() {
+	protected AttributeMappingUiProvider<AttributeMapping> nullAttributeMappingUiProvider() {
 		return NullAttributeMappingUiProvider.instance();
 	}
 }

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -22,6 +22,14 @@ import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableJoinColumn;
 
 public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinColumn
 {
@@ -34,17 +42,17 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 
 	private String referencedColumnName;
 	
-	public JoinColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	public JoinColumnImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.referencedColumnNameDeclarationAdapter = this.buildStringElementAdapter(JPA.JOIN_COLUMN__REFERENCED_COLUMN_NAME);
 		this.referencedColumnNameAdapter = this.buildShortCircuitElementAdapter(this.referencedColumnNameDeclarationAdapter);
 	}
 	
-	public JoinColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
+	public JoinColumnImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
 		this(parent, member, daa, new MemberAnnotationAdapter(member, daa));
 	}
 	
-	public JoinColumnImpl(JavaResource parent, Member member, IndexedDeclarationAnnotationAdapter idaa) {
+	public JoinColumnImpl(JavaResourceNode parent, Member member, IndexedDeclarationAnnotationAdapter idaa) {
 		this(parent, member, idaa, new MemberIndexedAnnotationAdapter(member, idaa));
 	}
 	
@@ -104,7 +112,7 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		super.initializeFrom(oldAnnotation);
-		JoinColumn oldColumn = (JoinColumn) oldAnnotation;
+		JoinColumnAnnotation oldColumn = (JoinColumnAnnotation) oldAnnotation;
 		setReferencedColumnName(oldColumn.getReferencedColumnName());
 	}
 	
@@ -120,7 +128,7 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 		firePropertyChanged(REFERENCED_COLUMN_NAME_PROPERTY, oldReferencedColumnName, newReferencedColumnName);
 	}
 	
-	public ITextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
+	public TextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.referencedColumnNameDeclarationAdapter, astRoot);
 	}
 
@@ -140,11 +148,11 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 	
 	// ********** static methods **********
 
-	static JoinColumnImpl createJoinColumn(JavaResource parent, Member member) {
+	static JoinColumnImpl createJoinColumn(JavaResourceNode parent, Member member) {
 		return new JoinColumnImpl(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	
-	static JoinColumnImpl createNestedJoinColumn(JavaResource parent, Member member, int index, DeclarationAnnotationAdapter joinColumnsAdapter) {
+	static JoinColumnImpl createNestedJoinColumn(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter joinColumnsAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, joinColumnsAdapter);
 		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
 		return new JoinColumnImpl(parent, member, idaa, annotationAdapter);
@@ -153,7 +161,7 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 	private static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter joinColumnsAdapter) {
 		return new NestedIndexedDeclarationAnnotationAdapter(joinColumnsAdapter, index, JPA.JOIN_COLUMN);
 	}
-	static NestableJoinColumn createJoinTableJoinColumn(JavaResource parent, Member member, int index) {
+	static NestableJoinColumn createJoinTableJoinColumn(JavaResourceNode parent, Member member, int index) {
 		return new JoinColumnImpl(parent, member, buildJoinTableAnnotationAdapter(index));
 	}
 
@@ -161,7 +169,7 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 		return new NestedIndexedDeclarationAnnotationAdapter(JoinTableImpl.DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__JOIN_COLUMNS, index, JPA.JOIN_COLUMN);
 	}
 
-	static NestableJoinColumn createJoinTableInverseJoinColumn(JavaResource parent, Member member, int index) {
+	static NestableJoinColumn createJoinTableInverseJoinColumn(JavaResourceNode parent, Member member, int index) {
 		return new JoinColumnImpl(parent, member, buildJoinTableInverseAnnotationAdapter(index));
 	}
 
@@ -170,7 +178,7 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 	}
 	
 	
-	static NestableJoinColumn createAssociationOverrideJoinColumn(DeclarationAnnotationAdapter associationOverrideAdapter, JavaResource parent, Member member, int index) {
+	static NestableJoinColumn createAssociationOverrideJoinColumn(DeclarationAnnotationAdapter associationOverrideAdapter, JavaResourceNode parent, Member member, int index) {
 		return new JoinColumnImpl(parent, member, buildAssociationOverrideAnnotationAdapter(associationOverrideAdapter, index));
 	}
 
@@ -199,11 +207,11 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return JoinColumnImpl.createJoinColumn(parent, member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

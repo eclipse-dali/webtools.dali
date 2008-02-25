@@ -34,7 +34,7 @@ public class JpaSelectionEvent extends EventObject
 	/**
 	 * The selection object whose selection status has changed
 	 */
-	private IJpaSelection selection;
+	private JpaSelection selection;
 	
 	/**
 	 * The type of the selection event, either a SELECTION or a DESELECTION
@@ -42,7 +42,7 @@ public class JpaSelectionEvent extends EventObject
 	private int type;
 	
 	
-	public JpaSelectionEvent(IJpaSelection theSelection, int theType, Object source) {
+	public JpaSelectionEvent(JpaSelection theSelection, int theType, Object source) {
 		super(source);
 		selection = theSelection;
 		type = theType;
@@ -51,7 +51,7 @@ public class JpaSelectionEvent extends EventObject
 	/**
 	 * Return the selection object whose selection status has changed
 	 */
-	public IJpaSelection getSelection() {
+	public JpaSelection getSelection() {
 		return selection;
 	}
 	

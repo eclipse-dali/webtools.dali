@@ -14,10 +14,10 @@ import org.eclipse.jface.viewers.IPostSelectionProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jpt.core.internal.IJpaFile;
-import org.eclipse.jpt.core.internal.IJpaStructureNode;
-import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
@@ -25,9 +25,9 @@ import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 public class TextEditorSelectionParticipant
-	implements IJpaSelectionParticipant
+	implements JpaSelectionParticipant
 {
-	private final IJpaSelectionManager selectionManager;
+	private final JpaSelectionManager selectionManager;
 
 	final ITextEditor textEditor;
 
@@ -35,12 +35,12 @@ public class TextEditorSelectionParticipant
 
 	private final ISelectionChangedListener editorSelectionListener;
 
-	private IJpaSelection currentSelection;
+	private JpaSelection currentSelection;
 
 	private boolean forwardSelection = true;  // TODO this just smells wrong  ~bjv
 
 
-	public TextEditorSelectionParticipant(IJpaSelectionManager selectionManager, ITextEditor textEditor) {
+	public TextEditorSelectionParticipant(JpaSelectionManager selectionManager, ITextEditor textEditor) {
 		super();
 		this.selectionManager = selectionManager;
 		this.textEditor = textEditor;
@@ -53,20 +53,20 @@ public class TextEditorSelectionParticipant
 
 	// ********** IJpaSelectionParticipant implementation **********
 
-	public IJpaSelection getSelection() {
+	public JpaSelection getSelection() {
 		return this.currentSelection;
 	}
 
 	public void selectionChanged(JpaSelectionEvent evt) {
-		IJpaSelection newSelection = evt.getSelection();
+		JpaSelection newSelection = evt.getSelection();
 
-		if ((newSelection == IJpaSelection.NULL_SELECTION)
+		if ((newSelection == JpaSelection.NULL_SELECTION)
 			|| newSelection.equals(this.currentSelection)) {
 			return;
 		}
 
 		this.forwardSelection = false;
-		ITextRange textRange = newSelection.getSelectedNode().selectionTextRange();
+		TextRange textRange = newSelection.getSelectedNode().selectionTextRange();
 		if (textRange != null) {
 			this.textEditor.selectAndReveal(textRange.getOffset(), textRange.getLength());
 		}
@@ -85,26 +85,26 @@ public class TextEditorSelectionParticipant
 
 	// ********** internal methods **********
 
-	private IJpaSelection calculateSelection() {
+	private JpaSelection calculateSelection() {
 		ISelection selection = this.textEditor.getSelectionProvider().getSelection();
 		if (! (selection instanceof ITextSelection)) {
-			return IJpaSelection.NULL_SELECTION;
+			return JpaSelection.NULL_SELECTION;
 		}
 
-		IJpaFile jpaFile = this.jpaFile();
+		JpaFile jpaFile = this.jpaFile();
 		if (jpaFile == null) {
-			return IJpaSelection.NULL_SELECTION;
+			return JpaSelection.NULL_SELECTION;
 		}
 
-		IJpaStructureNode selectedNode = jpaFile.structureNode(((ITextSelection) selection).getOffset());
+		JpaStructureNode selectedNode = jpaFile.structureNode(((ITextSelection) selection).getOffset());
 		if (selectedNode == null) {
-			return IJpaSelection.NULL_SELECTION;
+			return JpaSelection.NULL_SELECTION;
 		}
 
-		return new JpaSelection(selectedNode);
+		return new DefaultJpaSelection(selectedNode);
 	}
 
-	private IJpaFile jpaFile() {
+	private JpaFile jpaFile() {
 		IEditorInput input = this.textEditor.getEditorInput();
 		if ( ! (input instanceof IFileEditorInput)) {
 			return null;
@@ -120,7 +120,7 @@ public class TextEditorSelectionParticipant
 	// ********** listener callbacks **********
 
 	void editorInputChanged() {
-		IJpaSelection newSelection = this.calculateSelection();
+		JpaSelection newSelection = this.calculateSelection();
 		if (newSelection.equals(this.currentSelection)) {
 			return;
 		}
@@ -132,7 +132,7 @@ public class TextEditorSelectionParticipant
 	}
 
 	void editorSelectionChanged(SelectionChangedEvent event) {
-		IJpaSelection newSelection = this.calculateSelection();
+		JpaSelection newSelection = this.calculateSelection();
 		if (newSelection.equals(this.currentSelection)) {
 			return;
 		}

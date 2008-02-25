@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IEntity;
+import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -29,13 +29,13 @@ import org.eclipse.swt.widgets.Composite;
  * |              ------------------------------------------------------------ |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IEntity
+ * @see Entity
  * @see EntityComposite - The parent container
  *
  * @version 2.0
  * @since 1.0
  */
-public class EntityNameCombo extends AbstractFormPane<IEntity>
+public class EntityNameCombo extends AbstractFormPane<Entity>
 {
 	private CCombo combo;
 
@@ -45,7 +45,7 @@ public class EntityNameCombo extends AbstractFormPane<IEntity>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public EntityNameCombo(AbstractFormPane<? extends IEntity> parentPane,
+	public EntityNameCombo(AbstractFormPane<? extends Entity> parentPane,
 	                       Composite parent) {
 
 		super(parentPane, parent);
@@ -57,8 +57,8 @@ public class EntityNameCombo extends AbstractFormPane<IEntity>
 	@Override
 	protected void addPropertyNames(java.util.Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
-		propertyNames.add(IEntity.DEFAULT_NAME_PROPERTY);
-		propertyNames.add(IEntity.SPECIFIED_NAME_PROPERTY);
+		propertyNames.add(Entity.DEFAULT_NAME_PROPERTY);
+		propertyNames.add(Entity.SPECIFIED_NAME_PROPERTY);
 	}
 
 	private ModifyListener buildComboModifyListener() {
@@ -103,7 +103,7 @@ public class EntityNameCombo extends AbstractFormPane<IEntity>
 	 */
 	private void populateDefaultValue() {
 
-		IEntity entity = subject();
+		Entity entity = subject();
 		String defaultValue = (entity != null) ? entity.getDefaultName() : null;
 
 		if (defaultValue != null) {
@@ -124,8 +124,8 @@ public class EntityNameCombo extends AbstractFormPane<IEntity>
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
 
-		if (propertyName == IEntity.DEFAULT_NAME_PROPERTY ||
-		    propertyName == IEntity.SPECIFIED_NAME_PROPERTY) {
+		if (propertyName == Entity.DEFAULT_NAME_PROPERTY ||
+		    propertyName == Entity.SPECIFIED_NAME_PROPERTY) {
 
 			updateSelectedItem();
 		}
@@ -141,7 +141,7 @@ public class EntityNameCombo extends AbstractFormPane<IEntity>
 	 */
 	private void updateSelectedItem() {
 
-		IEntity subject = subject();
+		Entity subject = subject();
 
 		String value         = (subject != null) ? subject.getSpecifiedName() : null;
 		String defaultValue  = (subject != null) ? subject.getDefaultName()   : null;
@@ -174,7 +174,7 @@ public class EntityNameCombo extends AbstractFormPane<IEntity>
 
 	private void valueChanged(String value) {
 
-		IEntity subject = subject();
+		Entity subject = subject();
 		String oldValue = (subject != null) ? subject.getSpecifiedName() : null;
 
 		// Check for null value

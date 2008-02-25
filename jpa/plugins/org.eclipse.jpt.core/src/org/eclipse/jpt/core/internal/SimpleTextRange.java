@@ -9,12 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Straightforward, albeit almost useless, implementation of ITextRange.
  */
-public class SimpleTextRange implements ITextRange {
+public class SimpleTextRange implements TextRange {
 	private final int offset;
 	private final int length;
 	private final int lineNumber;
@@ -59,10 +60,10 @@ public class SimpleTextRange implements ITextRange {
 		if (o == this) {
 			return true;
 		}
-		if ( ! (o instanceof ITextRange)) {
+		if ( ! (o instanceof TextRange)) {
 			return false;
 		}
-		ITextRange r = (ITextRange) o;
+		TextRange r = (TextRange) o;
 		return (r.getOffset() == this.offset)
 				&& (r.getLength() == this.length);
 	}

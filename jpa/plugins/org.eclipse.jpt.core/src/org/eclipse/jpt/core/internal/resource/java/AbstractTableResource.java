@@ -14,17 +14,23 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
+import org.eclipse.jpt.core.resource.java.ContainerAnnotation;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NestableUniqueConstraint;
+import org.eclipse.jpt.core.resource.java.TableAnnotation;
+import org.eclipse.jpt.core.resource.java.UniqueConstraint;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public abstract class AbstractTableResource extends AbstractAnnotationResource<Member> implements Table
+public abstract class AbstractTableResource extends AbstractAnnotationResource<Member> implements TableAnnotation
 {
 	// hold this so we can get the 'name' text range
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
@@ -51,7 +57,7 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	
 	private final UniqueConstraintsContainerAnnotation uniqueConstraintsContainerAnnotation;
 	
-	protected AbstractTableResource(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected AbstractTableResource(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.nameAdapter(daa);
 		this.schemaDeclarationAdapter = this.schemaAdapter(daa);
@@ -141,7 +147,7 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	
 	public NestableUniqueConstraint addUniqueConstraint(int index) {
 		NestableUniqueConstraint uniqueConstraint = (NestableUniqueConstraint) ContainerAnnotationTools.addNestedAnnotation(index, this.uniqueConstraintsContainerAnnotation);
-		fireItemAdded(Table.UNIQUE_CONSTRAINTS_LIST, index, uniqueConstraint);
+		fireItemAdded(TableAnnotation.UNIQUE_CONSTRAINTS_LIST, index, uniqueConstraint);
 		return uniqueConstraint;
 	}
 	
@@ -163,7 +169,7 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
 		moveUniqueConstraintInternal(targetIndex, sourceIndex);
 		ContainerAnnotationTools.synchAnnotationsAfterMove(targetIndex, sourceIndex, this.uniqueConstraintsContainerAnnotation);
-		fireItemMoved(Table.UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);
+		fireItemMoved(TableAnnotation.UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);
 	}
 	
 	protected void moveUniqueConstraintInternal(int targetIndex, int sourceIndex) {
@@ -172,15 +178,15 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	
 	protected abstract NestableUniqueConstraint createUniqueConstraint(int index);
 
-	public ITextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange nameTextRange(CompilationUnit astRoot) {
 		return elementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 	
-	public ITextRange schemaTextRange(CompilationUnit astRoot) {
+	public TextRange schemaTextRange(CompilationUnit astRoot) {
 		return elementTextRange(this.schemaDeclarationAdapter, astRoot);
 	}
 	
-	public ITextRange catalogTextRange(CompilationUnit astRoot) {
+	public TextRange catalogTextRange(CompilationUnit astRoot) {
 		return elementTextRange(this.catalogDeclarationAdapter, astRoot);
 	}
 	
@@ -312,7 +318,7 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 			AbstractTableResource.this.updateFromJava(astRoot);
 		}
 		
-		public ITextRange textRange(CompilationUnit astRoot) {
+		public TextRange textRange(CompilationUnit astRoot) {
 			return AbstractTableResource.this.textRange(astRoot);
 		}
 		

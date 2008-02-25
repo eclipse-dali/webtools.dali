@@ -10,12 +10,15 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NamedColumnAnnotation;
 
 
-public abstract class NullNamedColumn extends AbstractResource implements NamedColumn, Annotation
+public abstract class NullNamedColumn extends AbstractResource implements NamedColumnAnnotation, Annotation
 {	
-	protected NullNamedColumn(JavaResource parent) {
+	protected NullNamedColumn(JavaResourceNode parent) {
 		super(parent);
 	}
 
@@ -35,7 +38,7 @@ public abstract class NullNamedColumn extends AbstractResource implements NamedC
 		throw new UnsupportedOperationException();
 	}
 	
-	protected abstract NamedColumn createColumnResource();
+	protected abstract NamedColumnAnnotation createColumnResource();
 
 	public String getName() {
 		return null;
@@ -61,15 +64,15 @@ public abstract class NullNamedColumn extends AbstractResource implements NamedC
 		throw new UnsupportedOperationException();
 	}
 
-	public ITextRange textRange(CompilationUnit astRoot) {
+	public TextRange textRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public ITextRange columnDefinitionTextRange(CompilationUnit astRoot) {
+	public TextRange columnDefinitionTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public ITextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange nameTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 

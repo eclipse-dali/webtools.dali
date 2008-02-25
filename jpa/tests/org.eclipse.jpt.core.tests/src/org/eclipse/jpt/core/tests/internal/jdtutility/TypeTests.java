@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.jdtutility;
 
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 
 public class TypeTests extends AnnotationTestCase {
@@ -55,7 +55,7 @@ public class TypeTests extends AnnotationTestCase {
 
 	public void testTextRange() throws Exception {
 		String source = this.jdtType.getOpenable().getBuffer().getContents();
-		ITextRange textRange = this.testType.textRange();
+		TextRange textRange = this.testType.textRange();
 		String body = source.substring(textRange.getOffset());
 		assertTrue(body.startsWith("public class " + TYPE_NAME));
 	}

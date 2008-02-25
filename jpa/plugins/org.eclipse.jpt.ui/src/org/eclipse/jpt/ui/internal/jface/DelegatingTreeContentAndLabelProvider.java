@@ -20,19 +20,19 @@ public class DelegatingTreeContentAndLabelProvider extends DelegatingContentAndL
 	implements ITreeContentProvider
 {
 	public DelegatingTreeContentAndLabelProvider(
-			ITreeItemContentProviderFactory treeItemContentProviderFactory) {
+			TreeItemContentProviderFactory treeItemContentProviderFactory) {
 		super(treeItemContentProviderFactory);
 	}
 	
 	public DelegatingTreeContentAndLabelProvider(
-			ITreeItemContentProviderFactory treeItemContentProviderFactory,
-			IItemLabelProviderFactory itemLabelProviderFactory) {
+			TreeItemContentProviderFactory treeItemContentProviderFactory,
+			ItemLabelProviderFactory itemLabelProviderFactory) {
 		super(treeItemContentProviderFactory, itemLabelProviderFactory);
 	}
 	
 	
-	protected ITreeItemContentProvider itemContentProvider(Object item) {
-		return (ITreeItemContentProvider) super.itemContentProvider(item);
+	protected TreeItemContentProvider itemContentProvider(Object item) {
+		return (TreeItemContentProvider) super.itemContentProvider(item);
 	}
 	
 	public Object[] getChildren(Object parentElement) {

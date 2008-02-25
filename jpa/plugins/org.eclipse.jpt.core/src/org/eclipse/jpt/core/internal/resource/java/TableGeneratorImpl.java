@@ -13,16 +13,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.ContainerAnnotation;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NestableUniqueConstraint;
+import org.eclipse.jpt.core.resource.java.TableAnnotation;
+import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
+import org.eclipse.jpt.core.resource.java.UniqueConstraint;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
+public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorAnnotation
 {
 	private final AnnotationElementAdapter<String> tableAdapter;
 
@@ -73,7 +83,7 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 	private final UniqueConstraintsContainerAnnotation uniqueConstraintsContainerAnnotation;
 	
 
-	protected TableGeneratorImpl(JavaResource parent, Member member) {
+	protected TableGeneratorImpl(JavaResourceNode parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.tableAdapter = this.buildAdapter(TABLE_ADAPTER);
 		this.catalogAdapter = this.buildAdapter(CATALOG_ADAPTER);
@@ -208,7 +218,7 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 	
 	public NestableUniqueConstraint addUniqueConstraint(int index) {
 		NestableUniqueConstraint uniqueConstraint = (NestableUniqueConstraint) ContainerAnnotationTools.addNestedAnnotation(index, this.uniqueConstraintsContainerAnnotation);
-		fireItemAdded(TableGenerator.UNIQUE_CONSTRAINTS_LIST, index, uniqueConstraint);
+		fireItemAdded(TableGeneratorAnnotation.UNIQUE_CONSTRAINTS_LIST, index, uniqueConstraint);
 		return uniqueConstraint;
 	}
 	
@@ -230,7 +240,7 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
 		moveUniqueConstraintInternal(targetIndex, sourceIndex);
 		ContainerAnnotationTools.synchAnnotationsAfterMove(targetIndex, sourceIndex, this.uniqueConstraintsContainerAnnotation);
-		fireItemMoved(Table.UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);
+		fireItemMoved(TableAnnotation.UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);
 	}
 	
 	protected void moveUniqueConstraintInternal(int targetIndex, int sourceIndex) {
@@ -249,27 +259,27 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 		return UniqueConstraintImpl.createTableGeneratorUniqueConstraint(this, this.getMember(), index);
 	}
 
-	public ITextRange tableTextRange(CompilationUnit astRoot) {
+	public TextRange tableTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(TABLE_ADAPTER, astRoot);
 	}
 	
-	public ITextRange catalogTextRange(CompilationUnit astRoot) {
+	public TextRange catalogTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(CATALOG_ADAPTER, astRoot);
 	}
 	
-	public ITextRange schemaTextRange(CompilationUnit astRoot) {
+	public TextRange schemaTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(SCHEMA_ADAPTER, astRoot);
 	}
 	
-	public ITextRange pkColumnNameTextRange(CompilationUnit astRoot) {
+	public TextRange pkColumnNameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(PK_COLUMN_NAME_ADAPTER, astRoot);
 	}
 	
-	public ITextRange pkColumnValueTextRange(CompilationUnit astRoot) {
+	public TextRange pkColumnValueTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(PK_COLUMN_VALUE_ADAPTER, astRoot);
 	}
 	
-	public ITextRange valueColumnNameTextRange(CompilationUnit astRoot) {
+	public TextRange valueColumnNameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(VALUE_COLUMN_NAME_ADAPTER, astRoot);
 	}
 
@@ -411,7 +421,7 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 			TableGeneratorImpl.this.updateFromJava(astRoot);
 		}
 		
-		public ITextRange textRange(CompilationUnit astRoot) {
+		public TextRange textRange(CompilationUnit astRoot) {
 			return TableGeneratorImpl.this.textRange(astRoot);
 		}
 		
@@ -439,11 +449,11 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGenerator
 			super();
 		}
 		
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new TableGeneratorImpl(parent, member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

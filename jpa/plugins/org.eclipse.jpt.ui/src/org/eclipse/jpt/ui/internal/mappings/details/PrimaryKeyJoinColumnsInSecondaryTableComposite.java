@@ -14,11 +14,11 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.INamedColumn;
-import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.core.context.AbstractJoinColumn;
+import org.eclipse.jpt.core.context.NamedColumn;
+import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.SecondaryTable;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
@@ -60,16 +60,16 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see ISecondaryTable
+ * @see SecondaryTable
  * @see EntityComposite - The container of this pane
  * @see AddRemoveListPane
  *
  * @version 2.0
  * @since 1.0
  */
-public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractFormPane<ISecondaryTable>
+public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractFormPane<SecondaryTable>
 {
-	private WritablePropertyValueModel<IPrimaryKeyJoinColumn> joinColumnHolder;
+	private WritablePropertyValueModel<PrimaryKeyJoinColumn> joinColumnHolder;
 
 	/**
 	 * Creates a new <code>PrimaryKeyJoinColumnsInSecondaryTableComposite</code>.
@@ -79,7 +79,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 	 * @param parent The parent container
 	 */
 	public PrimaryKeyJoinColumnsInSecondaryTableComposite(AbstractFormPane<?> parentPane,
-	                                                      PropertyValueModel<? extends ISecondaryTable> subjectHolder,
+	                                                      PropertyValueModel<? extends SecondaryTable> subjectHolder,
 	                                                      Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -92,7 +92,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public PrimaryKeyJoinColumnsInSecondaryTableComposite(PropertyValueModel<? extends ISecondaryTable> subjectHolder,
+	public PrimaryKeyJoinColumnsInSecondaryTableComposite(PropertyValueModel<? extends SecondaryTable> subjectHolder,
 	                                                      Composite parent,
 	                                                      TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -101,10 +101,10 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 
 	private void addJoinColumn(PrimaryKeyJoinColumnInSecondaryTableStateObject stateObject) {
 
-		ISecondaryTable secondaryTable = stateObject.getOwner();
+		SecondaryTable secondaryTable = stateObject.getOwner();
 		int index = secondaryTable.specifiedPrimaryKeyJoinColumnsSize();
 
-		IPrimaryKeyJoinColumn joinColumn = secondaryTable.addSpecifiedPrimaryKeyJoinColumn(index);
+		PrimaryKeyJoinColumn joinColumn = secondaryTable.addSpecifiedPrimaryKeyJoinColumn(index);
 		stateObject.updateJoinColumn(joinColumn);
 	}
 
@@ -127,25 +127,25 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 	}
 
 	private PropertyValueModel<Boolean> buildControlBooleanHolder() {
-		return new TransformationPropertyValueModel<ISecondaryTable, Boolean>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<SecondaryTable, Boolean>(getSubjectHolder()) {
 			@Override
-			protected Boolean transform(ISecondaryTable value) {
+			protected Boolean transform(SecondaryTable value) {
 				return (value != null);
 			}
 		};
 	}
 
-	private PropertyValueModel<IPrimaryKeyJoinColumn> buildDefaultJoinColumnHolder() {
-		return new PropertyAspectAdapter<ISecondaryTable, IPrimaryKeyJoinColumn>(getSubjectHolder(), ISecondaryTable.DEFAULT_PRIMARY_KEY_JOIN_COLUMN) {
+	private PropertyValueModel<PrimaryKeyJoinColumn> buildDefaultJoinColumnHolder() {
+		return new PropertyAspectAdapter<SecondaryTable, PrimaryKeyJoinColumn>(getSubjectHolder(), SecondaryTable.DEFAULT_PRIMARY_KEY_JOIN_COLUMN) {
 			@Override
-			protected IPrimaryKeyJoinColumn buildValue_() {
+			protected PrimaryKeyJoinColumn buildValue_() {
 				return subject.getDefaultPrimaryKeyJoinColumn();
 			}
 		};
 	}
 
-	private ListValueModel<IPrimaryKeyJoinColumn> buildDefaultJoinColumnListHolder() {
-		return new PropertyListValueModelAdapter<IPrimaryKeyJoinColumn>(
+	private ListValueModel<PrimaryKeyJoinColumn> buildDefaultJoinColumnListHolder() {
+		return new PropertyListValueModelAdapter<PrimaryKeyJoinColumn>(
 			buildDefaultJoinColumnHolder()
 		);
 	}
@@ -160,7 +160,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 		};
 	}
 
-	private String buildJoinColumnLabel(IPrimaryKeyJoinColumn joinColumn) {
+	private String buildJoinColumnLabel(PrimaryKeyJoinColumn joinColumn) {
 
 		if (joinColumn.isVirtual()) {
 			return NLS.bind(
@@ -205,7 +205,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				IPrimaryKeyJoinColumn joinColumn = (IPrimaryKeyJoinColumn) element;
+				PrimaryKeyJoinColumn joinColumn = (PrimaryKeyJoinColumn) element;
 				return buildJoinColumnLabel(joinColumn);
 			}
 		};
@@ -246,31 +246,31 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 		};
 	}
 
-	private WritablePropertyValueModel<IPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnHolder() {
-		return new SimplePropertyValueModel<IPrimaryKeyJoinColumn>();
+	private WritablePropertyValueModel<PrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnHolder() {
+		return new SimplePropertyValueModel<PrimaryKeyJoinColumn>();
 	}
 
-	private ListValueModel<IPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListHolder() {
-		List<ListValueModel<IPrimaryKeyJoinColumn>> list = new ArrayList<ListValueModel<IPrimaryKeyJoinColumn>>();
+	private ListValueModel<PrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListHolder() {
+		List<ListValueModel<PrimaryKeyJoinColumn>> list = new ArrayList<ListValueModel<PrimaryKeyJoinColumn>>();
 		list.add(buildSpecifiedJoinColumnsListHolder());
 		list.add(buildDefaultJoinColumnListHolder());
-		return new CompositeListValueModel<ListValueModel<IPrimaryKeyJoinColumn>, IPrimaryKeyJoinColumn>(list);
+		return new CompositeListValueModel<ListValueModel<PrimaryKeyJoinColumn>, PrimaryKeyJoinColumn>(list);
 	}
 
-	private ListValueModel<IPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListModel() {
-		return new ItemPropertyListValueModelAdapter<IPrimaryKeyJoinColumn>(
+	private ListValueModel<PrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListModel() {
+		return new ItemPropertyListValueModelAdapter<PrimaryKeyJoinColumn>(
 			buildPrimaryKeyJoinColumnsListHolder(),
-			INamedColumn.SPECIFIED_NAME_PROPERTY,
-			INamedColumn.DEFAULT_NAME_PROPERTY,
-			IAbstractJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
-			IAbstractJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY
+			NamedColumn.SPECIFIED_NAME_PROPERTY,
+			NamedColumn.DEFAULT_NAME_PROPERTY,
+			AbstractJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
+			AbstractJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY
 		);
 	}
 
-	private ListValueModel<IPrimaryKeyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
-		return new ListAspectAdapter<ISecondaryTable, IPrimaryKeyJoinColumn>(getSubjectHolder(), ISecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST) {
+	private ListValueModel<PrimaryKeyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
+		return new ListAspectAdapter<SecondaryTable, PrimaryKeyJoinColumn>(getSubjectHolder(), SecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST) {
 			@Override
-			protected ListIterator<IPrimaryKeyJoinColumn> listIterator_() {
+			protected ListIterator<PrimaryKeyJoinColumn> listIterator_() {
 				return subject.specifiedPrimaryKeyJoinColumns();
 			}
 
@@ -283,7 +283,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 
 	private void editPrimaryKeyJoinColumn(ObjectListSelectionModel listSelectionModel) {
 
-		IPrimaryKeyJoinColumn joinColumn = (IPrimaryKeyJoinColumn) listSelectionModel.selectedValue();
+		PrimaryKeyJoinColumn joinColumn = (PrimaryKeyJoinColumn) listSelectionModel.selectedValue();
 
 		PrimaryKeyJoinColumnInSecondaryTableDialog dialog =
 			new PrimaryKeyJoinColumnInSecondaryTableDialog(
@@ -330,14 +330,14 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 		installOverrideDefaultButtonEnabler(button);
 
 		// Primary Key Join Columns list pane
-		AddRemoveListPane<ISecondaryTable> joinColumnsPane = new AddRemoveListPane<ISecondaryTable>(
+		AddRemoveListPane<SecondaryTable> joinColumnsPane = new AddRemoveListPane<SecondaryTable>(
 			this,
 			groupPane,
 			buildPrimaryKeyJoinColumnAdapter(),
 			buildPrimaryKeyJoinColumnsListModel(),
 			joinColumnHolder,
 			buildJoinColumnsListLabelProvider(),
-			IJpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
+			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
 		);
 
 		installPrimaryKeyJoinColumnListPaneEnabler(joinColumnsPane);
@@ -351,7 +351,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 		);
 	}
 
-	private void installPrimaryKeyJoinColumnListPaneEnabler(AddRemoveListPane<ISecondaryTable> pkJoinColumnListPane) {
+	private void installPrimaryKeyJoinColumnListPaneEnabler(AddRemoveListPane<SecondaryTable> pkJoinColumnListPane) {
 
 		new PaneEnabler(
 			buildOverrideDefaultJoinColumnHolder(),
@@ -376,19 +376,19 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 		setPopulating(true);
 
 		try {
-			ISecondaryTable secondaryTable = subject();
+			SecondaryTable secondaryTable = subject();
 
 			// Add a join column by creating a specified one using the default
 			// one if it exists
 			if (selected) {
 
-				IPrimaryKeyJoinColumn defaultJoinColumn = secondaryTable.getDefaultPrimaryKeyJoinColumn();
+				PrimaryKeyJoinColumn defaultJoinColumn = secondaryTable.getDefaultPrimaryKeyJoinColumn();
 
 				if (defaultJoinColumn != null) {
 					String columnName = defaultJoinColumn.getDefaultName();
 					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
 
-					IPrimaryKeyJoinColumn pkJoinColumn = secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
+					PrimaryKeyJoinColumn pkJoinColumn = secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
 					pkJoinColumn.setSpecifiedName(columnName);
 					pkJoinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
 

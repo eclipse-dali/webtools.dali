@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -19,6 +19,12 @@ import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.DiscriminatorValue;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 
 public class DiscriminatorValueImpl extends AbstractAnnotationResource<Type> implements DiscriminatorValue
 {
@@ -30,7 +36,7 @@ public class DiscriminatorValueImpl extends AbstractAnnotationResource<Type> imp
 
 	private String value;
 	
-	protected DiscriminatorValueImpl(JavaResource parent, Type type) {
+	protected DiscriminatorValueImpl(JavaResourceNode parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = new ShortCircuitAnnotationElementAdapter<String>(type, VALUE_ADAPTER);
 	}
@@ -54,7 +60,7 @@ public class DiscriminatorValueImpl extends AbstractAnnotationResource<Type> imp
 		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 	
-	public ITextRange valueTextRange(CompilationUnit astRoot) {
+	public TextRange valueTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(VALUE_ADAPTER, astRoot);
 	}
 	
@@ -91,11 +97,11 @@ public class DiscriminatorValueImpl extends AbstractAnnotationResource<Type> imp
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new DiscriminatorValueImpl(parent, (Type) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new NullDiscriminatorValue(parent);
 		}
 

@@ -11,11 +11,11 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.Temporal;
-import org.eclipse.jpt.core.internal.resource.java.TemporalType;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.Temporal;
+import org.eclipse.jpt.core.resource.java.TemporalType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class TemporalTests extends JavaResourceModelTestCase {
@@ -56,8 +56,8 @@ public class TemporalTests extends JavaResourceModelTestCase {
 
 	public void testTemporal() throws Exception {
 		IType testType = this.createTestTemporal();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		Temporal temporal = (Temporal) attributeResource.annotation(JPA.TEMPORAL);
 		assertNotNull(temporal);
@@ -65,8 +65,8 @@ public class TemporalTests extends JavaResourceModelTestCase {
 	
 	public void testGetValue() throws Exception {
 		IType testType = this.createTestTemporalWithValue();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		Temporal temporal = (Temporal) attributeResource.annotation(JPA.TEMPORAL);
 		assertEquals(TemporalType.DATE, temporal.getValue());
@@ -74,8 +74,8 @@ public class TemporalTests extends JavaResourceModelTestCase {
 	
 	public void testSetValue() throws Exception {
 		IType testType = this.createTestTemporal();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 
 		Temporal temporal = (Temporal) attributeResource.annotation(JPA.TEMPORAL);
 

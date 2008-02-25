@@ -8,11 +8,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.core.context.BasicMapping;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -20,12 +20,12 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * This composite simply shows the Lob check box.
  *
- * @see IBasicMapping
+ * @see BasicMapping
  *
  * @version 2.0
  * @since 1.0
  */
-public class LobComposite extends AbstractFormPane<IBasicMapping>
+public class LobComposite extends AbstractFormPane<BasicMapping>
 {
 	/**
 	 * Creates a new <code>LobComposite</code>.
@@ -33,7 +33,7 @@ public class LobComposite extends AbstractFormPane<IBasicMapping>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public LobComposite(AbstractFormPane<? extends IBasicMapping> parentPane,
+	public LobComposite(AbstractFormPane<? extends BasicMapping> parentPane,
 	                    Composite parent) {
 
 		super(parentPane, parent);
@@ -46,16 +46,16 @@ public class LobComposite extends AbstractFormPane<IBasicMapping>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public LobComposite(PropertyValueModel<? extends IBasicMapping> subjectHolder,
+	public LobComposite(PropertyValueModel<? extends BasicMapping> subjectHolder,
 	                    Composite parent,
-	                    IWidgetFactory widgetFactory) {
+	                    WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private PropertyAspectAdapter<IBasicMapping, Boolean> buildLobHolder() {
+	private PropertyAspectAdapter<BasicMapping, Boolean> buildLobHolder() {
 
-		return new PropertyAspectAdapter<IBasicMapping, Boolean>(getSubjectHolder(), IBasicMapping.LOB_PROPERTY) {
+		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), BasicMapping.LOB_PROPERTY) {
 
 			@Override
 			protected Boolean buildValue_() {
@@ -79,7 +79,7 @@ public class LobComposite extends AbstractFormPane<IBasicMapping>
 			container,
 			JptUiMappingsMessages.BasicGeneralSection_lobLabel,
 			buildLobHolder(),
-			IJpaHelpContextIds.MAPPING_LOB
+			JpaHelpContextIds.MAPPING_LOB
 		);
 	}
 }

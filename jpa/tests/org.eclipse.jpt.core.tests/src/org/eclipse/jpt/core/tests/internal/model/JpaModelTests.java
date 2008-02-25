@@ -17,10 +17,10 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.JpaModel;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.GenericJpaModel;
 import org.eclipse.jpt.core.internal.JpaModelManager;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
 import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestFacetedProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestPlatformProject;
@@ -104,7 +104,7 @@ public class JpaModelTests extends TestCase {
 
 		testProject.installFacet("jpt.jpa", "1.0");
 		assertEquals(1, JptCorePlugin.jpaModel().jpaProjectsSize());
-		IJpaProject jpaProject = JptCorePlugin.jpaProject(testProject.getProject());
+		JpaProject jpaProject = JptCorePlugin.jpaProject(testProject.getProject());
 		assertNotNull(jpaProject);
 //		assertEquals(4, jpaProject.jpaFilesSize());
 		assertNotNull(jpaProject.jpaFile(this.file(testProject, "src/test.pkg/TestEntity.java")));
@@ -126,7 +126,7 @@ public class JpaModelTests extends TestCase {
 
 		testProject.getProject().close(null);
 		assertFalse(testProject.getProject().isOpen());
-		IJpaProject jpaProject = JptCorePlugin.jpaProject(testProject.getProject());
+		JpaProject jpaProject = JptCorePlugin.jpaProject(testProject.getProject());
 		assertNull(jpaProject);
 
 		testProject.getProject().open(null);
@@ -144,7 +144,7 @@ public class JpaModelTests extends TestCase {
 	public void testProjectDeleteReimport() throws Exception {
 		TestFacetedProject testProject = this.buildTestProject();
 		testProject.installFacet("jpt.jpa", "1.0");
-		IJpaProject jpaProject = JptCorePlugin.jpaProject(testProject.getProject());
+		JpaProject jpaProject = JptCorePlugin.jpaProject(testProject.getProject());
 		assertNotNull(jpaProject);
 		assertEquals(1, JptCorePlugin.jpaModel().jpaProjectsSize());
 
@@ -192,7 +192,7 @@ public class JpaModelTests extends TestCase {
 		facetSettingsFile.setContents(new ByteArrayInputStream(newDocument.getBytes()), false, false, null);
 
 		assertEquals(1, JptCorePlugin.jpaModel().jpaProjectsSize());
-		IJpaProject jpaProject = JptCorePlugin.jpaProject(testProject.getProject());
+		JpaProject jpaProject = JptCorePlugin.jpaProject(testProject.getProject());
 		assertNotNull(jpaProject);
 		// persistence.xml and orm.xml do not get created in this situation (?)
 		assertEquals(2, jpaProject.jpaFilesSize());
@@ -219,7 +219,7 @@ public class JpaModelTests extends TestCase {
 	 */
 	public void testDEBUG() {
 		this.verifyDEBUG(JpaModelManager.class);
-		this.verifyDEBUG(JpaModel.class);
+		this.verifyDEBUG(GenericJpaModel.class);
 	}
 
 	private void verifyDEBUG(Class<?> clazz) {

@@ -9,16 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IAssociationOverride;
-import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
+import org.eclipse.jpt.core.context.AssociationOverride;
+import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.swt.widgets.Shell;
 
 /**
  * This dialog is used to either create or edit a joing column that is located
  * on an association override.
  *
- * @see IJoinColumn
- * @see IAssociationOverride
+ * @see JoinColumn
+ * @see AssociationOverride
  * @see JoinColumnInAssociationOverrideStateObject
  * @see JoinColumnDialogPane
  *
@@ -36,8 +36,8 @@ public class JoinColumnInAssociationOverrideDialog extends JoinColumnDialog<Join
 	 * used to create a new one
 	 */
 	public JoinColumnInAssociationOverrideDialog(Shell parent,
-	                                             IAssociationOverride associationOverride,
-	                                             IJoinColumn joinColumn) {
+	                                             AssociationOverride associationOverride,
+	                                             JoinColumn joinColumn) {
 
 		super(parent, associationOverride, joinColumn);
 	}
@@ -57,7 +57,7 @@ public class JoinColumnInAssociationOverrideDialog extends JoinColumnDialog<Join
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected IAssociationOverride getOwner() {
-		return (IAssociationOverride) super.getOwner();
+	protected AssociationOverride getOwner() {
+		return (AssociationOverride) super.getOwner();
 	}
 }

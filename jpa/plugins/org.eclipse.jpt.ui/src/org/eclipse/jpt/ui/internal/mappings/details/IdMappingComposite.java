@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IColumn;
-import org.eclipse.jpt.core.internal.context.base.IIdMapping;
-import org.eclipse.jpt.ui.internal.details.IJpaComposite;
+import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -39,7 +39,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IIdMapping
+ * @see IdMapping
  * @see BaseJpaUiFactory - The factory creating this pane
  * @see ColumnComposite
  * @see TemporalTypeComposite
@@ -48,8 +48,8 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class IdMappingComposite extends AbstractFormPane<IIdMapping>
-                                implements IJpaComposite<IIdMapping>
+public class IdMappingComposite extends AbstractFormPane<IdMapping>
+                                implements JpaComposite<IdMapping>
 {
 	/**
 	 * Creates a new <code>IdMappingComposite</code>.
@@ -58,17 +58,17 @@ public class IdMappingComposite extends AbstractFormPane<IIdMapping>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public IdMappingComposite(PropertyValueModel<? extends IIdMapping> subjectHolder,
+	public IdMappingComposite(PropertyValueModel<? extends IdMapping> subjectHolder,
 	                          Composite parent,
 	                          TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private PropertyValueModel<? extends IColumn> buildColumnHolder() {
-		return new TransformationPropertyValueModel<IIdMapping, IColumn>(getSubjectHolder())  {
+	private PropertyValueModel<? extends Column> buildColumnHolder() {
+		return new TransformationPropertyValueModel<IdMapping, Column>(getSubjectHolder())  {
 			@Override
-			protected IColumn transform_(IIdMapping value) {
+			protected Column transform_(IdMapping value) {
 				return value.getColumn();
 			}
 		};

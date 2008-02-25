@@ -8,8 +8,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.ui.internal.widgets.AbstractDialogPane;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -18,8 +18,8 @@ import org.eclipse.swt.widgets.Shell;
  * This dialog is used to either create or edit a joing column that is located
  * on an entity.
  *
- * @see IPrimaryKeyJoinColumn
- * @see IEntity
+ * @see PrimaryKeyJoinColumn
+ * @see Entity
  * @see PrimaryKeyJoinColumnStateObject
  * @see PrimaryKeyJoinColumnDialogPane
  *
@@ -38,8 +38,8 @@ public class PrimaryKeyJoinColumnDialog extends AbstractJoinColumnDialog<Primary
 	 * this state object is used to create a new one
 	 */
 	public PrimaryKeyJoinColumnDialog(Shell parent,
-	                                  IEntity entity,
-	                                  IPrimaryKeyJoinColumn joinColumn) {
+	                                  Entity entity,
+	                                  PrimaryKeyJoinColumn joinColumn) {
 
 		super(parent, entity, joinColumn);
 	}
@@ -64,15 +64,15 @@ public class PrimaryKeyJoinColumnDialog extends AbstractJoinColumnDialog<Primary
 	 * (non-Javadoc)
 	 */
 	@Override
-	public IPrimaryKeyJoinColumn getJoinColumn() {
-		return (IPrimaryKeyJoinColumn) super.getJoinColumn();
+	public PrimaryKeyJoinColumn getJoinColumn() {
+		return (PrimaryKeyJoinColumn) super.getJoinColumn();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected IEntity getOwner() {
-		return (IEntity) super.getOwner();
+	protected Entity getOwner() {
+		return (Entity) super.getOwner();
 	}
 }

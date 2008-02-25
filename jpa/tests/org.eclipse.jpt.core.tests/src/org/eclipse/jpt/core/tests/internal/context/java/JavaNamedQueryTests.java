@@ -13,12 +13,12 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.INamedQuery;
-import org.eclipse.jpt.core.internal.context.base.IQueryHint;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.NamedQuery;
+import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.NamedQuery;
+import org.eclipse.jpt.core.context.QueryHint;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -72,11 +72,11 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 		createTestEntityWithNamedQuery();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		IEntity entity = javaEntity();
-		INamedQuery namedQuery = entity.namedQueries().next();
+		Entity entity = javaEntity();
+		NamedQuery namedQuery = entity.namedQueries().next();
 				
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		NamedQuery javaNamedQuery = (NamedQuery) typeResource.annotation(NamedQuery.ANNOTATION_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		NamedQueryAnnotation javaNamedQuery = (NamedQueryAnnotation) typeResource.annotation(NamedQueryAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(QUERY_NAME, javaNamedQuery.getName());
 		assertEquals(QUERY_NAME, namedQuery.getName());
@@ -95,11 +95,11 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 	public void testModifyName() throws Exception {
 		createTestEntityWithNamedQuery();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		IEntity entity = javaEntity();
-		INamedQuery namedQuery = entity.namedQueries().next();
+		Entity entity = javaEntity();
+		NamedQuery namedQuery = entity.namedQueries().next();
 				
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		NamedQuery javaNamedQuery = (NamedQuery) typeResource.annotation(NamedQuery.ANNOTATION_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		NamedQueryAnnotation javaNamedQuery = (NamedQueryAnnotation) typeResource.annotation(NamedQueryAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(QUERY_NAME, javaNamedQuery.getName());
 		assertEquals(QUERY_NAME, namedQuery.getName());
@@ -119,11 +119,11 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 		createTestEntityWithNamedQuery();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		IEntity entity = javaEntity();
-		INamedQuery namedQuery = entity.namedQueries().next();
+		Entity entity = javaEntity();
+		NamedQuery namedQuery = entity.namedQueries().next();
 				
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		NamedQuery javaNamedQuery = (NamedQuery) typeResource.annotation(NamedQuery.ANNOTATION_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		NamedQueryAnnotation javaNamedQuery = (NamedQueryAnnotation) typeResource.annotation(NamedQueryAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(QUERY_QUERY, javaNamedQuery.getQuery());
 		assertEquals(QUERY_QUERY, namedQuery.getQuery());
@@ -142,11 +142,11 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 	public void testModifyQuery() throws Exception {
 		createTestEntityWithNamedQuery();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		IEntity entity = javaEntity();
-		INamedQuery namedQuery = entity.namedQueries().next();
+		Entity entity = javaEntity();
+		NamedQuery namedQuery = entity.namedQueries().next();
 				
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		NamedQuery javaNamedQuery = (NamedQuery) typeResource.annotation(NamedQuery.ANNOTATION_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		NamedQueryAnnotation javaNamedQuery = (NamedQueryAnnotation) typeResource.annotation(NamedQueryAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(QUERY_QUERY, javaNamedQuery.getQuery());
 		assertEquals(QUERY_QUERY, namedQuery.getQuery());
@@ -166,21 +166,21 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 	public void testAddHint() throws Exception {
 		createTestEntityWithNamedQuery();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		IEntity entity = javaEntity();
-		INamedQuery namedQuery = entity.namedQueries().next();
+		Entity entity = javaEntity();
+		NamedQuery namedQuery = entity.namedQueries().next();
 				
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		NamedQuery javaNamedQuery = (NamedQuery) typeResource.annotation(NamedQuery.ANNOTATION_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		NamedQueryAnnotation javaNamedQuery = (NamedQueryAnnotation) typeResource.annotation(NamedQueryAnnotation.ANNOTATION_NAME);
 	
 		
-		IQueryHint queryHint = namedQuery.addHint(0);
+		QueryHint queryHint = namedQuery.addHint(0);
 		ormResource().save(null);
 		queryHint.setName("FOO");
 		ormResource().save(null);
 
 		assertEquals("FOO", javaNamedQuery.hintAt(0).getName());
 		
-		IQueryHint queryHint2 = namedQuery.addHint(0);
+		QueryHint queryHint2 = namedQuery.addHint(0);
 		ormResource().save(null);
 		queryHint2.setName("BAR");
 		ormResource().save(null);
@@ -188,7 +188,7 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 		assertEquals("BAR", javaNamedQuery.hintAt(0).getName());
 		assertEquals("FOO", javaNamedQuery.hintAt(1).getName());
 		
-		IQueryHint queryHint3 = namedQuery.addHint(1);
+		QueryHint queryHint3 = namedQuery.addHint(1);
 		ormResource().save(null);
 		queryHint3.setName("BAZ");
 		ormResource().save(null);
@@ -197,7 +197,7 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 		assertEquals("BAZ", javaNamedQuery.hintAt(1).getName());
 		assertEquals("FOO", javaNamedQuery.hintAt(2).getName());
 		
-		ListIterator<IQueryHint> hints = namedQuery.hints();
+		ListIterator<QueryHint> hints = namedQuery.hints();
 		assertEquals(queryHint2, hints.next());
 		assertEquals(queryHint3, hints.next());
 		assertEquals(queryHint, hints.next());
@@ -211,11 +211,11 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 	public void testRemoveHint() throws Exception {
 		createTestEntityWithNamedQuery();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		IEntity entity = javaEntity();
-		INamedQuery namedQuery = entity.namedQueries().next();
+		Entity entity = javaEntity();
+		NamedQuery namedQuery = entity.namedQueries().next();
 				
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		NamedQuery javaNamedQuery = (NamedQuery) typeResource.annotation(NamedQuery.ANNOTATION_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		NamedQueryAnnotation javaNamedQuery = (NamedQueryAnnotation) typeResource.annotation(NamedQueryAnnotation.ANNOTATION_NAME);
 
 		namedQuery.addHint(0).setName("FOO");
 		namedQuery.addHint(1).setName("BAR");
@@ -239,11 +239,11 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 	public void testMoveHint() throws Exception {
 		createTestEntityWithNamedQuery();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		IEntity entity = javaEntity();
-		INamedQuery namedQuery = entity.namedQueries().next();
+		Entity entity = javaEntity();
+		NamedQuery namedQuery = entity.namedQueries().next();
 				
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		NamedQuery javaNamedQuery = (NamedQuery) typeResource.annotation(NamedQuery.ANNOTATION_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		NamedQueryAnnotation javaNamedQuery = (NamedQueryAnnotation) typeResource.annotation(NamedQueryAnnotation.ANNOTATION_NAME);
 
 		namedQuery.addHint(0).setName("FOO");
 		namedQuery.addHint(1).setName("BAR");
@@ -253,7 +253,7 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 		
 		
 		namedQuery.moveHint(2, 0);
-		ListIterator<IQueryHint> hints = namedQuery.hints();
+		ListIterator<QueryHint> hints = namedQuery.hints();
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
@@ -277,11 +277,11 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 	public void testUpdateHints() throws Exception {
 		createTestEntityWithNamedQuery();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		IEntity entity = javaEntity();
-		INamedQuery namedQuery = entity.namedQueries().next();
+		Entity entity = javaEntity();
+		NamedQuery namedQuery = entity.namedQueries().next();
 				
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		NamedQuery javaNamedQuery = (NamedQuery) typeResource.annotation(NamedQuery.ANNOTATION_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		NamedQueryAnnotation javaNamedQuery = (NamedQueryAnnotation) typeResource.annotation(NamedQueryAnnotation.ANNOTATION_NAME);
 		
 		javaNamedQuery.addHint(0);
 		javaNamedQuery.addHint(1);
@@ -291,7 +291,7 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 		javaNamedQuery.hintAt(1).setName("BAR");
 		javaNamedQuery.hintAt(2).setName("BAZ");
 	
-		ListIterator<IQueryHint> hints = namedQuery.hints();
+		ListIterator<QueryHint> hints = namedQuery.hints();
 		assertEquals("FOO", hints.next().getName());
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("BAZ", hints.next().getName());
@@ -329,13 +329,13 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 	public void testHintsSize() throws Exception {
 		createTestEntityWithNamedQuery();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		IEntity entity = javaEntity();
+		Entity entity = javaEntity();
 		
-		INamedQuery namedQuery = entity.namedQueries().next();
+		NamedQuery namedQuery = entity.namedQueries().next();
 		assertEquals(0, namedQuery.hintsSize());
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		NamedQuery javaNamedQuery = (NamedQuery) typeResource.annotation(NamedQuery.ANNOTATION_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		NamedQueryAnnotation javaNamedQuery = (NamedQueryAnnotation) typeResource.annotation(NamedQueryAnnotation.ANNOTATION_NAME);
 		
 		
 		javaNamedQuery.addHint(0);

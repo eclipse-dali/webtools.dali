@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.ICascade;
-import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
+import org.eclipse.jpt.core.context.Cascade;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -31,8 +31,8 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see ICascade
- * @see IRelationshipMapping
+ * @see Cascade
+ * @see RelationshipMapping
  * @see ManyToManyMappingComposite - A container of this pane
  * @see ManyToOneMappingComposite - A container of this pane
  * @see OneToManyMappingComposite - A container of this pane
@@ -41,7 +41,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class CascadeComposite extends AbstractFormPane<ICascade>
+public class CascadeComposite extends AbstractFormPane<Cascade>
 {
 	/**
 	 * Creates a new <code>CascadeComposite</code>.
@@ -50,8 +50,8 @@ public class CascadeComposite extends AbstractFormPane<ICascade>
 	 * @param subjectHolder The holder of the subject <code>ICascade</code>
 	 * @param parent The parent container
 	 */
-	public CascadeComposite(AbstractFormPane<? extends IRelationshipMapping> parentPane,
-	                        PropertyValueModel<? extends ICascade> subjectHolder,
+	public CascadeComposite(AbstractFormPane<? extends RelationshipMapping> parentPane,
+	                        PropertyValueModel<? extends Cascade> subjectHolder,
 		                     Composite parent) {
 
 		super(parentPane, subjectHolder, parent, false);
@@ -64,7 +64,7 @@ public class CascadeComposite extends AbstractFormPane<ICascade>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public CascadeComposite(PropertyValueModel<? extends ICascade> subjectHolder,
+	public CascadeComposite(PropertyValueModel<? extends Cascade> subjectHolder,
 		                     Composite parent,
 		                     TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -72,7 +72,7 @@ public class CascadeComposite extends AbstractFormPane<ICascade>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildCascadeTypeAllHolder() {
-		return new PropertyAspectAdapter<ICascade, Boolean>(getSubjectHolder(), ICascade.ALL_PROPERTY) {
+		return new PropertyAspectAdapter<Cascade, Boolean>(getSubjectHolder(), Cascade.ALL_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.isAll();
@@ -86,7 +86,7 @@ public class CascadeComposite extends AbstractFormPane<ICascade>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildCascadeTypeMergeHolder() {
-		return new PropertyAspectAdapter<ICascade, Boolean>(getSubjectHolder(), ICascade.MERGE_PROPERTY) {
+		return new PropertyAspectAdapter<Cascade, Boolean>(getSubjectHolder(), Cascade.MERGE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.isMerge();
@@ -100,7 +100,7 @@ public class CascadeComposite extends AbstractFormPane<ICascade>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildCascadeTypePersistHolder() {
-		return new PropertyAspectAdapter<ICascade, Boolean>(getSubjectHolder(), ICascade.PERSIST_PROPERTY) {
+		return new PropertyAspectAdapter<Cascade, Boolean>(getSubjectHolder(), Cascade.PERSIST_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.isPersist();
@@ -114,7 +114,7 @@ public class CascadeComposite extends AbstractFormPane<ICascade>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildCascadeTypeRefreshHolder() {
-		return new PropertyAspectAdapter<ICascade, Boolean>(getSubjectHolder(), ICascade.REFRESH_PROPERTY) {
+		return new PropertyAspectAdapter<Cascade, Boolean>(getSubjectHolder(), Cascade.REFRESH_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.isRefresh();
@@ -128,7 +128,7 @@ public class CascadeComposite extends AbstractFormPane<ICascade>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildCascadeTypeRemoveHolder() {
-		return new PropertyAspectAdapter<ICascade, Boolean>(getSubjectHolder(), ICascade.REMOVE_PROPERTY) {
+		return new PropertyAspectAdapter<Cascade, Boolean>(getSubjectHolder(), Cascade.REMOVE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.isRemove();

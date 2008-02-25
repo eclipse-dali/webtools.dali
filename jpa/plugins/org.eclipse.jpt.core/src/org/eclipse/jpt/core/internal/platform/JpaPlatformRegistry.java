@@ -16,8 +16,8 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jpt.core.internal.IJpaPlatform;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.JpaPlatform;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
@@ -154,14 +154,14 @@ public class JpaPlatformRegistry {
 	 * Unlike other registry methods, invoking this method may activate 
 	 * the plug-in.
 	 */
-	public IJpaPlatform jpaPlatform(String id) {
+	public JpaPlatform jpaPlatform(String id) {
 		IConfigurationElement configElement = this.jpaPlatformConfigurationElements.get(id);
 		if (configElement == null) {
 			throw new IllegalArgumentException(id);
 		}
-		IJpaPlatform platform;
+		JpaPlatform platform;
 		try {
-			platform = (IJpaPlatform) configElement.createExecutableExtension(AT_CLASS);
+			platform = (JpaPlatform) configElement.createExecutableExtension(AT_CLASS);
 		} catch (CoreException ex) {
 			this.logFailedInstantiation(configElement, ex);
 			throw new IllegalArgumentException(id);

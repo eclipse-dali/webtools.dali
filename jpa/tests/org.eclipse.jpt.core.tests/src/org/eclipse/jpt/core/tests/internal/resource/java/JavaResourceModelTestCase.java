@@ -18,14 +18,14 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.core.internal.IContextModel;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.JpaProject;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.ContextModel;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.GenericJpaProject;
 import org.eclipse.jpt.core.internal.SimpleJpaProjectConfig;
 import org.eclipse.jpt.core.internal.jdtutility.NullAnnotationEditFormatter;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.utility.internal.StringTools;
 
@@ -79,12 +79,12 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	}
 
 	//build up a dummy JpaProject that does not have JpaFiles in it and does not update from java changes
-	protected IJpaProject buildJpaProject() throws CoreException {
+	protected JpaProject buildJpaProject() throws CoreException {
 		return new TestJpaProject(this.buildJpaProjectConfig(this.javaProject.getProject()));
 	}
 
-	protected class TestJpaProject extends JpaProject {
-		protected TestJpaProject(IJpaProject.Config config) throws CoreException {
+	protected class TestJpaProject extends GenericJpaProject {
+		protected TestJpaProject(JpaProject.Config config) throws CoreException {
 			super(config);
 		}
 
@@ -98,7 +98,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		}
 
 		@Override
-		protected IContextModel buildContextModel() {
+		protected ContextModel buildContextModel() {
 			return null;  // no context model
 		}
 
@@ -109,7 +109,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 
 	}
 
-	private IJpaProject.Config buildJpaProjectConfig(IProject project) {
+	private JpaProject.Config buildJpaProjectConfig(IProject project) {
 		SimpleJpaProjectConfig config = new SimpleJpaProjectConfig();
 		config.setProject(project);
 		config.setJpaPlatform(JptCorePlugin.jpaPlatform(project));
@@ -118,7 +118,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		return config;
 	}
 
-	protected JavaPersistentTypeResource buildJavaTypeResource(IType testType) 
+	protected JavaResourcePersistentType buildJavaTypeResource(IType testType) 
 		throws CoreException {
 		this.javaResourceModel = buildJavaResourceModel(testType);
 		this.javaResourceModel.resolveTypes();
@@ -130,7 +130,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 			throw new IllegalStateException();
 		}
 		IFile file = (IFile) testType.getResource();
-		IJpaProject jpaProject = buildJpaProject();
+		JpaProject jpaProject = buildJpaProject();
 		return new JavaResourceModel(
 			file, 
 			jpaProject.jpaPlatform().annotationProvider(),

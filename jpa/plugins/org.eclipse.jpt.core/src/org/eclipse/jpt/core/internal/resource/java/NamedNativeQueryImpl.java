@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
@@ -26,6 +26,15 @@ import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotati
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NamedNativeQueryAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableNamedNativeQuery;
+import org.eclipse.jpt.core.resource.java.NestableQueryHint;
 
 public class NamedNativeQueryImpl extends AbstractNamedQuery
 	implements NestableNamedNativeQuery
@@ -50,7 +59,7 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 	
 	private String resultSetMapping;
 	
-	protected NamedNativeQueryImpl(JavaResource parent, Type type, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected NamedNativeQueryImpl(JavaResourceNode parent, Type type, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, type, daa, annotationAdapter);
 		this.resultClassDeclarationAdapter = resultClassAdapter(daa);
 		this.resultClassAdapter = this.buildAdapter(this.resultClassDeclarationAdapter);
@@ -95,7 +104,7 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		super.initializeFrom(oldAnnotation);
-		NamedNativeQuery oldNamedQuery = (NamedNativeQuery) oldAnnotation;
+		NamedNativeQueryAnnotation oldNamedQuery = (NamedNativeQueryAnnotation) oldAnnotation;
 		setResultClass(oldNamedQuery.getResultClass());
 		setResultSetMapping(oldNamedQuery.getResultSetMapping());
 	}
@@ -132,11 +141,11 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 		firePropertyChanged(RESULT_SET_MAPPING_PROPERTY, oldResultSetMapping, newResultSetMapping);
 	}
 
-	public ITextRange resultClassTextRange(CompilationUnit astRoot) {
+	public TextRange resultClassTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.resultClassDeclarationAdapter, astRoot);
 	}
 	
-	public ITextRange resultSetMappingTextRange(CompilationUnit astRoot) {
+	public TextRange resultSetMappingTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.resultSetMappingDeclarationAdapter, astRoot);
 	}
 	
@@ -169,11 +178,11 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 	}
 
 	// ********** static methods **********
-	static NamedNativeQueryImpl createNamedNativeQuery(JavaResource parent, Type type) {
+	static NamedNativeQueryImpl createNamedNativeQuery(JavaResourceNode parent, Type type) {
 		return new NamedNativeQueryImpl(parent, type, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(type, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
-	static NamedNativeQueryImpl createNestedNamedNativeQuery(JavaResource parent, Type type, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
+	static NamedNativeQueryImpl createNestedNamedNativeQuery(JavaResourceNode parent, Type type, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
 		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(type, idaa);
 		return new NamedNativeQueryImpl(parent, type, idaa, annotationAdapter);
@@ -202,11 +211,11 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return NamedNativeQueryImpl.createNamedNativeQuery(parent, (Type) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

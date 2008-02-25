@@ -9,12 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
-import org.eclipse.jpt.core.internal.resource.java.Id;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.platform.base.JpaBaseContextFactory;
+import org.eclipse.jpt.core.resource.java.Id;
 
 public class JavaIdMappingProvider
-	implements IJavaAttributeMappingProvider
+	implements JavaAttributeMappingProvider
 {
 
 	// singleton
@@ -23,7 +26,7 @@ public class JavaIdMappingProvider
 	/**
 	 * Return the singleton.
 	 */
-	public static IJavaAttributeMappingProvider instance() {
+	public static JavaAttributeMappingProvider instance() {
 		return INSTANCE;
 	}
 
@@ -35,14 +38,14 @@ public class JavaIdMappingProvider
 	}
 
 	public String key() {
-		return IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
+		return MappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
 	}
 	
 	public String annotationName() {
 		return Id.ANNOTATION_NAME;
 	}
 
-	public IJavaAttributeMapping buildMapping(IJavaPersistentAttribute parent, IJpaBaseContextFactory factory) {
-		return factory.createJavaIdMapping(parent);
+	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaBaseContextFactory factory) {
+		return factory.buildJavaIdMapping(parent);
 	}
 }

@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jpt.db.internal.Table;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractDialogPane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -140,7 +140,7 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 			container,
 			JptUiMappingsMessages.JoinColumnDialog_name,
 			buildNameComboListener(),
-			IJpaHelpContextIds.MAPPING_JOIN_COLUMN_NAME
+			JpaHelpContextIds.MAPPING_JOIN_COLUMN_NAME
 		);
 
 		// Referenced Column Name widgets
@@ -148,7 +148,7 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 			container,
 			JptUiMappingsMessages.JoinColumnDialog_referencedColumnName,
 			buildReferencedColumnNameComboListener(),
-			IJpaHelpContextIds.MAPPING_JOIN_REFERENCED_COLUMN
+			JpaHelpContextIds.MAPPING_JOIN_REFERENCED_COLUMN
 		);
 	}
 

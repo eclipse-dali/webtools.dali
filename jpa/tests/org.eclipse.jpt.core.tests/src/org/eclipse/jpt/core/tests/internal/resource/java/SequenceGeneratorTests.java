@@ -11,10 +11,10 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.SequenceGenerator;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class SequenceGeneratorTests extends JavaResourceModelTestCase {
@@ -109,36 +109,36 @@ public class SequenceGeneratorTests extends JavaResourceModelTestCase {
 
 	public void testSequenceGeneratorOnField() throws Exception {
 		IType testType = this.createTestSequenceGeneratorOnField();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		SequenceGenerator sequenceGenerator = (SequenceGenerator) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
 		assertNotNull(sequenceGenerator);
 	}
 	
 	public void testSequenceGeneratorOnType() throws Exception {
 		IType testType = this.createTestSequenceGeneratorOnType();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		SequenceGenerator sequenceGenerator = (SequenceGenerator) typeResource.annotation(JPA.SEQUENCE_GENERATOR);
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) typeResource.annotation(JPA.SEQUENCE_GENERATOR);
 		assertNotNull(sequenceGenerator);
 	}
 
 	public void testGetName() throws Exception {
 		IType testType = this.createTestSequenceGeneratorWithName();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		SequenceGenerator sequenceGenerator = (SequenceGenerator) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
 		assertEquals(GENERATOR_NAME, sequenceGenerator.getName());
 	}
 
 	public void testSetName() throws Exception {
 		IType testType = this.createTestSequenceGeneratorWithName();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		SequenceGenerator sequenceGenerator = (SequenceGenerator) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
 		assertEquals(GENERATOR_NAME, sequenceGenerator.getName());
 		
 		sequenceGenerator.setName("foo");
@@ -154,19 +154,19 @@ public class SequenceGeneratorTests extends JavaResourceModelTestCase {
 
 	public void testGetSequenceName() throws Exception {
 		IType testType = this.createTestSequenceGeneratorWithSequenceName();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		SequenceGenerator sequenceGenerator = (SequenceGenerator) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
 		assertEquals(GENERATOR_SEQUENCE_NAME, sequenceGenerator.getSequenceName());
 	}
 
 	public void testSetSequenceName() throws Exception {
 		IType testType = this.createTestSequenceGeneratorWithSequenceName();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		SequenceGenerator sequenceGenerator = (SequenceGenerator) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
 		assertEquals(GENERATOR_SEQUENCE_NAME, sequenceGenerator.getSequenceName());
 		
 		sequenceGenerator.setSequenceName("foo");
@@ -182,19 +182,19 @@ public class SequenceGeneratorTests extends JavaResourceModelTestCase {
 
 	public void testGetAllocationSize() throws Exception {
 		IType testType = this.createTestSequenceGeneratorWithAllocationSize();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		SequenceGenerator sequenceGenerator = (SequenceGenerator) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
 		assertEquals(GENERATOR_ALLOCATION_SIZE, sequenceGenerator.getAllocationSize());
 	}
 
 	public void testSetAllocationSize() throws Exception {
 		IType testType = this.createTestSequenceGeneratorWithAllocationSize();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		SequenceGenerator sequenceGenerator = (SequenceGenerator) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
 		assertEquals(GENERATOR_ALLOCATION_SIZE, sequenceGenerator.getAllocationSize());
 		
 		sequenceGenerator.setAllocationSize(Integer.valueOf(500));
@@ -212,19 +212,19 @@ public class SequenceGeneratorTests extends JavaResourceModelTestCase {
 	
 	public void testGetInitialValue() throws Exception {
 		IType testType = this.createTestSequenceGeneratorWithInitialValue();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		SequenceGenerator sequenceGenerator = (SequenceGenerator) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
 		assertEquals(GENERATOR_INITIAL_VALUE, sequenceGenerator.getInitialValue());
 	}
 
 	public void testSetInitialValue() throws Exception {
 		IType testType = this.createTestSequenceGeneratorWithInitialValue();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		SequenceGenerator sequenceGenerator = (SequenceGenerator) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
+		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.annotation(JPA.SEQUENCE_GENERATOR);
 		assertEquals(GENERATOR_INITIAL_VALUE, sequenceGenerator.getInitialValue());
 		
 		sequenceGenerator.setInitialValue(Integer.valueOf(500));

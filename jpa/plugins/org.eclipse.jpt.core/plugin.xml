@@ -36,13 +36,13 @@
 		<factory
 			class="org.eclipse.jpt.core.internal.JpaProjectAdapterFactory"
 			adaptableType="org.eclipse.core.resources.IProject">
-			<adapter type="org.eclipse.jpt.core.internal.IJpaProject"/>
+			<adapter type="org.eclipse.jpt.core.JpaProject"/>
 		</factory>
 		
 		<factory
 			class="org.eclipse.jpt.core.internal.JpaProjectAdapterFactory"
 			adaptableType="org.eclipse.jdt.core.IJavaProject">
-			<adapter type="org.eclipse.jpt.core.internal.IJpaProject"/>
+			<adapter type="org.eclipse.jpt.core.JpaProject"/>
 		</factory>
 		
 	</extension>
@@ -91,7 +91,7 @@
 		point="org.eclipse.wst.common.modulecore.resourceFactories">
 		
 		<resourceFactory
-			class="org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceFactory"
+			class="org.eclipse.jpt.core.resource.persistence.PersistenceResourceFactory"
 			isDefault="true"
 			shortSegment="persistence.xml">
 			<contentTypeBinding
@@ -100,7 +100,7 @@
 		</resourceFactory>
 		
 		<resourceFactory
-			class="org.eclipse.jpt.core.internal.resource.orm.OrmResourceFactory"
+			class="org.eclipse.jpt.core.resource.orm.OrmResourceFactory"
 			isDefault="true"
 			shortSegment="orm.xml">
 			<contentTypeBinding
@@ -215,20 +215,6 @@
 		
 	</extension>
 
-
-	<!-- ***** EMF extensions ***** -->
-
-	<extension
-		point="org.eclipse.emf.ecore.generated_package">
-
-		<package
-			class="org.eclipse.jpt.core.internal.content.java.JpaJavaPackage"
-			genModel="model/old_coreModels.genmodel"
-			uri="jpt.java.xmi">
-		</package>
-
-	</extension>
-	
 	
 	<!-- ***** JPT extensions (eat our own dogfood) ***** -->
 

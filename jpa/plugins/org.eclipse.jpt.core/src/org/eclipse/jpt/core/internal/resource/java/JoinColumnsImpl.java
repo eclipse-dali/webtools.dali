@@ -17,6 +17,12 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.JoinColumns;
+import org.eclipse.jpt.core.resource.java.NestableJoinColumn;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
@@ -27,7 +33,7 @@ public class JoinColumnsImpl extends AbstractAnnotationResource<Member> implemen
 
 	private List<NestableJoinColumn> joinColumns;
 	
-	protected JoinColumnsImpl(JavaResource parent, Member member) {
+	protected JoinColumnsImpl(JavaResourceNode parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.joinColumns = new ArrayList<NestableJoinColumn>();
 	}
@@ -41,7 +47,7 @@ public class JoinColumnsImpl extends AbstractAnnotationResource<Member> implemen
 	}
 
 	public String getNestableAnnotationName() {
-		return JoinColumn.ANNOTATION_NAME;
+		return JoinColumnAnnotation.ANNOTATION_NAME;
 	}
 		
 	public ListIterator<NestableJoinColumn> nestedAnnotations() {
@@ -134,11 +140,11 @@ public class JoinColumnsImpl extends AbstractAnnotationResource<Member> implemen
 			super();
 		}
 
-		public JoinColumns buildAnnotation(JavaPersistentResource parent, Member member) {
+		public JoinColumns buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new JoinColumnsImpl(parent, member);
 		}
 		
-		public JoinColumns buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public JoinColumns buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

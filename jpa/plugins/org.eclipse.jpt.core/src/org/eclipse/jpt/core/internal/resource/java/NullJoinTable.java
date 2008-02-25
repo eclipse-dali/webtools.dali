@@ -10,40 +10,43 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.ListIterator;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 
-public class NullJoinTable extends NullAbstractTable implements JoinTable
+public class NullJoinTable extends NullAbstractTable implements JoinTableAnnotation
 {	
-	protected NullJoinTable(JavaPersistentResource parent) {
+	protected NullJoinTable(JavaResourcePersistentMember parent) {
 		super(parent);
 	}
 
 	public String getAnnotationName() {
-		return JoinTable.ANNOTATION_NAME;
+		return JoinTableAnnotation.ANNOTATION_NAME;
 	}
 
-	public JoinColumn addInverseJoinColumn(int index) {
+	public JoinColumnAnnotation addInverseJoinColumn(int index) {
 		throw new UnsupportedOperationException();
 	}
 
-	public JoinColumn addJoinColumn(int index) {
+	public JoinColumnAnnotation addJoinColumn(int index) {
 		throw new UnsupportedOperationException();
 	}
 
-	public int indexOfInverseJoinColumn(JoinColumn joinColumn) {
+	public int indexOfInverseJoinColumn(JoinColumnAnnotation joinColumn) {
 		throw new UnsupportedOperationException();
 	}
 
-	public int indexOfJoinColumn(JoinColumn joinColumn) {
+	public int indexOfJoinColumn(JoinColumnAnnotation joinColumn) {
 		throw new UnsupportedOperationException();
 	}
 
-	public JoinColumn inverseJoinColumnAt(int index) {
+	public JoinColumnAnnotation inverseJoinColumnAt(int index) {
 		return null;
 	}
 
-	public ListIterator<JoinColumn> inverseJoinColumns() {
+	public ListIterator<JoinColumnAnnotation> inverseJoinColumns() {
 		return EmptyListIterator.instance();
 	}
 
@@ -51,11 +54,11 @@ public class NullJoinTable extends NullAbstractTable implements JoinTable
 		return 0;
 	}
 
-	public JoinColumn joinColumnAt(int index) {
+	public JoinColumnAnnotation joinColumnAt(int index) {
 		return null;
 	}
 
-	public ListIterator<JoinColumn> joinColumns() {
+	public ListIterator<JoinColumnAnnotation> joinColumns() {
 		return EmptyListIterator.instance();
 	}
 

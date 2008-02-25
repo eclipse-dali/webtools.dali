@@ -13,21 +13,21 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.context.base.AccessType;
-import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.base.IPersistentType;
-import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
-import org.eclipse.jpt.core.internal.context.persistence.IClassRef;
-import org.eclipse.jpt.core.internal.resource.java.Embeddable;
-import org.eclipse.jpt.core.internal.resource.java.Entity;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
+import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
+import org.eclipse.jpt.core.resource.java.EntityAnnotation;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -268,11 +268,11 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		classRefs.next();
-		IClassRef classRef = classRefs.next();
+		ClassRef classRef = classRefs.next();
 		
-		IJavaPersistentType javaPersistentType = classRef.getJavaPersistentType();
+		JavaPersistentType javaPersistentType = classRef.getJavaPersistentType();
 		assertEquals(PACKAGE_NAME + ".AnnotationTestTypeChild", javaPersistentType.getName());
 		
 		assertEquals(AccessType.PROPERTY, javaPersistentType.access());
@@ -285,11 +285,11 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		classRefs.next();
-		IClassRef classRef = classRefs.next();
+		ClassRef classRef = classRefs.next();
 		
-		IJavaPersistentType javaPersistentType = classRef.getJavaPersistentType();
+		JavaPersistentType javaPersistentType = classRef.getJavaPersistentType();
 		assertEquals(PACKAGE_NAME + ".AnnotationTestTypeChild", javaPersistentType.getName());
 		
 		assertEquals(AccessType.FIELD, javaPersistentType.access());
@@ -302,11 +302,11 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		classRefs.next();
-		IClassRef classRef = classRefs.next();
+		ClassRef classRef = classRefs.next();
 		
-		IJavaPersistentType javaPersistentType = classRef.getJavaPersistentType();
+		JavaPersistentType javaPersistentType = classRef.getJavaPersistentType();
 		assertEquals(PACKAGE_NAME + ".AnnotationTestTypeChild", javaPersistentType.getName());
 		
 		assertEquals(AccessType.PROPERTY, javaPersistentType.access());
@@ -319,10 +319,10 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		classRefs.next();
-		IClassRef classRef = classRefs.next();
-		IJavaPersistentType javaPersistentType = classRef.getJavaPersistentType();
+		ClassRef classRef = classRefs.next();
+		JavaPersistentType javaPersistentType = classRef.getJavaPersistentType();
 		
 		assertEquals(PACKAGE_NAME + ".AnnotationTestTypeChild", javaPersistentType.getName());
 		
@@ -338,10 +338,10 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);
 
-		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = persistenceUnit().specifiedClassRefs();
 		classRefs.next();
-		IClassRef classRef = classRefs.next();
-		IJavaPersistentType javaPersistentType = classRef.getJavaPersistentType();
+		ClassRef classRef = classRefs.next();
+		JavaPersistentType javaPersistentType = classRef.getJavaPersistentType();
 		
 		assertEquals(PACKAGE_NAME + ".AnnotationTestTypeChild", javaPersistentType.getName());
 		
@@ -349,17 +349,17 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 	}
 
 	public void testAccessXmlNoAccessNoAnnotations() throws Exception {
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntity();
 
-		IJavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
+		JavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
 		assertEquals(AccessType.FIELD, javaPersistentType.access());
 	}
 	
 	public void testAccessXmlEntityAccessNoAnnotations() throws Exception {
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntity();
-		IJavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
+		JavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
 
 		entityPersistentType.getMapping().setSpecifiedAccess(AccessType.FIELD);
 		assertEquals(AccessType.FIELD, javaPersistentType.access());
@@ -369,9 +369,9 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 	}
 	
 	public void testAccessXmlPersistentUnitDefaultsAccessNoAnnotations()  throws Exception {
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntity();
-		IJavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
+		JavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
 
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);
 		assertEquals(AccessType.FIELD, javaPersistentType.access());
@@ -382,9 +382,9 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 	
 	public void testAccessXmlEntityPropertyAccessAndFieldAnnotations() throws Exception {
 		//xml access set to property, field annotations, JavaPersistentType access is property
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityAnnotatedField();
-		IJavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
+		JavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
 
 		entityPersistentType.getMapping().setSpecifiedAccess(AccessType.PROPERTY);
 		assertEquals(AccessType.PROPERTY, javaPersistentType.access());
@@ -392,18 +392,18 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 	
 	public void testAccessXmlEntityFieldAccessAndPropertyAnnotations() throws Exception {
 		//xml access set to field, property annotations, JavaPersistentType access is field
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityAnnotatedMethod();
-		IJavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
+		JavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
 
 		entityPersistentType.getMapping().setSpecifiedAccess(AccessType.FIELD);
 		assertEquals(AccessType.FIELD, javaPersistentType.access());
 	}
 	
 	public void testAccessXmlPersistentUnitDefaultsAccessFieldAnnotations() throws Exception {
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityAnnotatedField();
-		IJavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
+		JavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
 
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
 		assertEquals(AccessType.FIELD, javaPersistentType.access());
@@ -411,12 +411,12 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 
 	//inheritance wins over entity-mappings specified access
 	public void testAccessXmlEntityMappingsAccessWithInheritance() throws Exception {
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		XmlPersistentType childEntityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
+		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType childEntityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
 		createTestEntityAnnotatedMethod();
 		createTestSubType();
-		IJavaPersistentType childJavaPersistentType = childEntityPersistentType.javaPersistentType(); 
+		JavaPersistentType childJavaPersistentType = childEntityPersistentType.javaPersistentType(); 
 
 		entityMappings().setSpecifiedAccess(AccessType.FIELD);
 		assertEquals(AccessType.PROPERTY, entityPersistentType.javaPersistentType().access());
@@ -426,9 +426,9 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 	public void testAccessXmlMetadataCompleteFieldAnnotations() throws Exception {
 		//xml access set to property, so even though there are field annotations, JavaPersistentType
 		//access should be property
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityAnnotatedField();
-		IJavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
+		JavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
 
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
 		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
@@ -439,9 +439,9 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 	public void testAccessNoXmlAccessXmlMetdataCompletePropertyAnnotations() throws Exception {
 		//xml access not set, metadata complete set.  JavaPersistentType access
 		//is field??
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityAnnotatedMethod();
-		IJavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
+		JavaPersistentType javaPersistentType = entityPersistentType.javaPersistentType(); 
 
 		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		assertEquals(AccessType.FIELD, javaPersistentType.access());
@@ -454,12 +454,12 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
-		IClassRef classRef = classRefs.next();
-		IJavaPersistentType rootJavaPersistentType = classRef.getJavaPersistentType();
+		ListIterator<ClassRef> classRefs = persistenceUnit().specifiedClassRefs();
+		ClassRef classRef = classRefs.next();
+		JavaPersistentType rootJavaPersistentType = classRef.getJavaPersistentType();
 		
 		classRef = classRefs.next();
-		IJavaPersistentType childJavaPersistentType = classRef.getJavaPersistentType();
+		JavaPersistentType childJavaPersistentType = classRef.getJavaPersistentType();
 		
 		assertEquals(rootJavaPersistentType, childJavaPersistentType.parentPersistentType());
 		assertNull(rootJavaPersistentType.parentPersistentType());
@@ -473,8 +473,8 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		//annotation it should not be found as the parentPersistentType
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
-		IJavaPersistentType javaPersistentType = classRefs.next().getJavaPersistentType();
+		ListIterator<ClassRef> classRefs = persistenceUnit().specifiedClassRefs();
+		JavaPersistentType javaPersistentType = classRefs.next().getJavaPersistentType();
 		
 		assertNull(javaPersistentType.parentPersistentType());
 	}	
@@ -488,12 +488,12 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild2");
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
-		IClassRef classRef = classRefs.next();
-		IJavaPersistentType rootJavaPersistentType = classRef.getJavaPersistentType();
+		ListIterator<ClassRef> classRefs = persistenceUnit().specifiedClassRefs();
+		ClassRef classRef = classRefs.next();
+		JavaPersistentType rootJavaPersistentType = classRef.getJavaPersistentType();
 		
 		classRef = classRefs.next();
-		IJavaPersistentType childJavaPersistentType = classRef.getJavaPersistentType();
+		JavaPersistentType childJavaPersistentType = classRef.getJavaPersistentType();
 		
 		assertEquals(rootJavaPersistentType, childJavaPersistentType.parentPersistentType());
 		assertNull(rootJavaPersistentType.parentPersistentType());
@@ -507,11 +507,11 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild2");
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
-		IJavaPersistentType rootJavaPersistentType = classRefs.next().getJavaPersistentType();
-		IJavaPersistentType childJavaPersistentType = classRefs.next().getJavaPersistentType();
+		ListIterator<ClassRef> classRefs = persistenceUnit().specifiedClassRefs();
+		JavaPersistentType rootJavaPersistentType = classRefs.next().getJavaPersistentType();
+		JavaPersistentType childJavaPersistentType = classRefs.next().getJavaPersistentType();
 		
-		Iterator<IPersistentType> inheritanceHierarchy = childJavaPersistentType.inheritanceHierarchy();	
+		Iterator<PersistentType> inheritanceHierarchy = childJavaPersistentType.inheritanceHierarchy();	
 		
 		assertEquals(childJavaPersistentType, inheritanceHierarchy.next());
 		assertEquals(rootJavaPersistentType, inheritanceHierarchy.next());
@@ -525,11 +525,11 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild2");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ListIterator<IClassRef> classRefs = persistenceUnit().specifiedClassRefs();
-		IJavaPersistentType childJavaPersistentType = classRefs.next().getJavaPersistentType();
-		IJavaPersistentType rootJavaPersistentType = classRefs.next().getJavaPersistentType();
+		ListIterator<ClassRef> classRefs = persistenceUnit().specifiedClassRefs();
+		JavaPersistentType childJavaPersistentType = classRefs.next().getJavaPersistentType();
+		JavaPersistentType rootJavaPersistentType = classRefs.next().getJavaPersistentType();
 		
-		Iterator<IPersistentType> inheritanceHierarchy = childJavaPersistentType.inheritanceHierarchy();	
+		Iterator<PersistentType> inheritanceHierarchy = childJavaPersistentType.inheritanceHierarchy();	
 		
 		assertEquals(childJavaPersistentType, inheritanceHierarchy.next());
 		assertEquals(rootJavaPersistentType, inheritanceHierarchy.next());
@@ -539,97 +539,97 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().getMapping().getKey());
+		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().getMapping().getKey());
 	}
 	
 	public void testGetMappingNull() throws Exception {
 		createTestType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		assertEquals(IMappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().getMapping().getKey());
+		assertEquals(MappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().getMapping().getKey());
 	}
 	
 	public void testMappingKey() throws Exception {
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
 	}
 	
 	public void testMappingKeyNull() throws Exception {
 		createTestType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		assertEquals(IMappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
 	}
 	
 	public void testSetMappingKey() throws Exception {
 		createTestType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(IMappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
 
-		javaPersistentType().setMappingKey(IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		javaPersistentType().setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		assertNotNull(typeResource.mappingAnnotation());
-		assertTrue(typeResource.mappingAnnotation() instanceof Entity);
+		assertTrue(typeResource.mappingAnnotation() instanceof EntityAnnotation);
 		
-		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
 	}
 	
 	public void testSetMappingKey2() throws Exception {
 		createTestEntityAnnotatedField();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
 
-		javaPersistentType().setMappingKey(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		javaPersistentType().setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		assertNotNull(typeResource.mappingAnnotation());
-		assertTrue(typeResource.mappingAnnotation() instanceof Embeddable);
+		assertTrue(typeResource.mappingAnnotation() instanceof EmbeddableAnnotation);
 		
-		assertEquals(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
 	}
 
 	public void testSetMappingKeyNull() throws Exception {
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
 
-		javaPersistentType().setMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);
+		javaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
 		assertNull(typeResource.mappingAnnotation());
-		assertNull(typeResource.mappingAnnotation(Entity.ANNOTATION_NAME));
+		assertNull(typeResource.mappingAnnotation(EntityAnnotation.ANNOTATION_NAME));
 		
-		assertEquals(IMappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
 	}
 	
 	public void testGetMappingKeyMappingChangeInResourceModel() throws Exception {
 		createTestEntityAnnotatedField();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		typeResource.setMappingAnnotation(Embeddable.ANNOTATION_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		typeResource.setMappingAnnotation(EmbeddableAnnotation.ANNOTATION_NAME);
 				
-		assertEquals(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
 	}
 	
 	public void testGetMappingKeyMappingChangeInResourceModel2() throws Exception {
 		createTestType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(IMappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.NULL_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		typeResource.setMappingAnnotation(Entity.ANNOTATION_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		typeResource.setMappingAnnotation(EntityAnnotation.ANNOTATION_NAME);
 				
-		assertEquals(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
+		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType().mappingKey());
 	}
 
 	public void testIsMapped() throws Exception {
@@ -638,14 +638,14 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 
 		assertTrue(javaPersistentType().isMapped());
 		
-		javaPersistentType().setMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);	
+		javaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);	
 		assertFalse(javaPersistentType().isMapped());	
 	}
 	
 	public void testAttributes() throws Exception {
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		ListIterator<IJavaPersistentAttribute> attributes = javaPersistentType().attributes();
+		ListIterator<JavaPersistentAttribute> attributes = javaPersistentType().attributes();
 		
 		assertEquals("id", attributes.next().getName());
 		assertFalse(attributes.hasNext());
@@ -655,7 +655,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		createTestEntityAnnotatedFieldAndMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		ListIterator<IJavaPersistentAttribute> attributes = javaPersistentType().attributes();
+		ListIterator<JavaPersistentAttribute> attributes = javaPersistentType().attributes();
 		
 		assertEquals("id", attributes.next().getName());
 		assertEquals("name", attributes.next().getName());
@@ -680,7 +680,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		createTestEntityAnnotatedMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IPersistentAttribute attribute = javaPersistentType().attributeNamed("id");
+		PersistentAttribute attribute = javaPersistentType().attributeNamed("id");
 		
 		assertEquals("id", attribute.getName());
 		assertNull(javaPersistentType().attributeNamed("name"));
@@ -691,7 +691,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		createTestEntityAnnotatedField();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IPersistentAttribute attribute = javaPersistentType().attributeNamed("name");
+		PersistentAttribute attribute = javaPersistentType().attributeNamed("name");
 		
 		assertEquals("name", attribute.getName());
 		

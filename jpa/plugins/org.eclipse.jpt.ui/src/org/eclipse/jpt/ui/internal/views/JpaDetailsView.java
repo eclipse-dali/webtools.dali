@@ -10,15 +10,15 @@ package org.eclipse.jpt.ui.internal.views;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.jpt.core.internal.IJpaStructureNode;
-import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
+import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.ui.JpaPlatformUi;
+import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.details.JpaDetailsPage;
+import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.Tracing;
-import org.eclipse.jpt.ui.internal.details.IJpaDetailsPage;
-import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
-import org.eclipse.jpt.ui.internal.selection.IJpaSelection;
+import org.eclipse.jpt.ui.internal.selection.JpaSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -36,17 +36,17 @@ public class JpaDetailsView extends AbstractJpaView
 	 * The current <code>IJpaDetailsPage</code> that was retrieve based on the
 	 * current selection.
 	 */
-	private IJpaDetailsPage<IJpaStructureNode> currentPage;
+	private JpaDetailsPage<JpaStructureNode> currentPage;
 
 	/**
 	 * The current selection used to show the right <code>IJpaDetailsPage</code>.
 	 */
-	private IJpaSelection currentSelection;
+	private JpaSelection currentSelection;
 
 	/**
 	 * key: Object content node id,  value: Composite page.
 	 */
-	private Map<Object, IJpaDetailsPage<? extends IJpaStructureNode>> detailsPages;
+	private Map<Object, JpaDetailsPage<? extends JpaStructureNode>> detailsPages;
 
 	/**
 	 * Creates a new <code>JpaDetailsView</code>.
@@ -55,8 +55,8 @@ public class JpaDetailsView extends AbstractJpaView
 		super(JptUiMessages.JpaDetailsView_viewNotAvailable);
 	}
 
-	private IJpaDetailsPage<? extends IJpaStructureNode> buildDetailsPage(IJpaStructureNode structureNode) {
-		IJpaDetailsProvider detailsProvider = getDetailsProvider(structureNode);
+	private JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(JpaStructureNode structureNode) {
+		JpaDetailsProvider detailsProvider = getDetailsProvider(structureNode);
 
 		if (detailsProvider == null) {
 			return null;
@@ -67,7 +67,7 @@ public class JpaDetailsView extends AbstractJpaView
 		Composite container = getWidgetFactory().createComposite(getPageBook());
 		container.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-		IJpaDetailsPage<? extends IJpaStructureNode> page = detailsProvider.buildDetailsPage(
+		JpaDetailsPage<? extends JpaStructureNode> page = detailsProvider.buildDetailsPage(
 			container,
 			id,
 			getWidgetFactory()
@@ -88,15 +88,15 @@ public class JpaDetailsView extends AbstractJpaView
 
 		detailsPages.clear();
 
-		currentSelection = IJpaSelection.NULL_SELECTION;
+		currentSelection = JpaSelection.NULL_SELECTION;
 		currentPage = null;
 
 		super.dispose();
 	}
 
-	private IJpaDetailsPage<? extends IJpaStructureNode> getDetailsPage(IJpaStructureNode structureNode) {
+	private JpaDetailsPage<? extends JpaStructureNode> getDetailsPage(JpaStructureNode structureNode) {
 		if (detailsPages.containsKey(structureNode.getId())) {
-			IJpaDetailsPage page =  detailsPages.get(structureNode.getId());
+			JpaDetailsPage page =  detailsPages.get(structureNode.getId());
 			
 			if ((page != null) &&
 					(page.getControl().isDisposed())) {
@@ -109,17 +109,17 @@ public class JpaDetailsView extends AbstractJpaView
 		return buildDetailsPage(structureNode);
 	}
 
-	private IJpaDetailsProvider getDetailsProvider(IJpaStructureNode structureNode) {
+	private JpaDetailsProvider getDetailsProvider(JpaStructureNode structureNode) {
 
 		String platformId = structureNode.jpaProject().jpaPlatform().getId();
-		IJpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
+		JpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
 		return jpaPlatformUI.detailsProvider(structureNode);
 
 		//TODO this view and the detailsProviders Map is not created on a per project basis.
 		//the detailsProviders and their fileContentTypes could overlap across project, this would cause problems with storing this map.
 	}
 
-	public IJpaSelection getSelection() {
+	public JpaSelection getSelection() {
 		return currentSelection;
 	}
 
@@ -130,8 +130,8 @@ public class JpaDetailsView extends AbstractJpaView
 	protected void initialize() {
 		super.initialize();
 
-		this.currentSelection = IJpaSelection.NULL_SELECTION;
-		this.detailsPages     = new HashMap<Object, IJpaDetailsPage<? extends IJpaStructureNode>>();
+		this.currentSelection = JpaSelection.NULL_SELECTION;
+		this.detailsPages     = new HashMap<Object, JpaDetailsPage<? extends JpaStructureNode>>();
 	}
 
 	private void log(String message) {
@@ -144,16 +144,16 @@ public class JpaDetailsView extends AbstractJpaView
 	 * (non-Javadoc)
 	 */
 	@Override
-	public void select(IJpaSelection jpaSelection) {
+	public void select(JpaSelection jpaSelection) {
 		if (jpaSelection.equals(currentSelection)) {
 			return;
 		}
 
 		currentSelection = jpaSelection;
 
-		if (jpaSelection != IJpaSelection.NULL_SELECTION) {
-			IJpaStructureNode newNode = jpaSelection.getSelectedNode();
-			IJpaDetailsPage<? extends IJpaStructureNode> newPage = getDetailsPage(newNode);
+		if (jpaSelection != JpaSelection.NULL_SELECTION) {
+			JpaStructureNode newNode = jpaSelection.getSelectedNode();
+			JpaDetailsPage<? extends JpaStructureNode> newPage = getDetailsPage(newNode);
 			setCurrentPage(newPage);
 		}
 		else {
@@ -166,7 +166,7 @@ public class JpaDetailsView extends AbstractJpaView
 	 *
 	 * @param newPage The new page to display
 	 */
-	private void setCurrentPage(IJpaDetailsPage<? extends IJpaStructureNode> page) {
+	private void setCurrentPage(JpaDetailsPage<? extends JpaStructureNode> page) {
 
 		// Unpopulate old page
 		if (currentPage != null) {
@@ -180,7 +180,7 @@ public class JpaDetailsView extends AbstractJpaView
 			}
 		}
 
-		IJpaDetailsPage<IJpaStructureNode> newPage = (IJpaDetailsPage<IJpaStructureNode>) page;
+		JpaDetailsPage<JpaStructureNode> newPage = (JpaDetailsPage<JpaStructureNode>) page;
 
 		// Populate new page
 		if (page != null) {

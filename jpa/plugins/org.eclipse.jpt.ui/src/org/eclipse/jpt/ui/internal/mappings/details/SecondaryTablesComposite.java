@@ -13,10 +13,10 @@ import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
-import org.eclipse.jpt.core.internal.context.base.ITable;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.SecondaryTable;
+import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
@@ -46,7 +46,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IEntity
+ * @see Entity
  * @see EntityComposite - The container of this pane
  * @see AddRemoveListPane
  * @see PrimaryKeyJoinColumnsInSecondaryTableComposite
@@ -55,7 +55,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 1.0
  */
-public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
+public class SecondaryTablesComposite extends AbstractFormPane<Entity>
 {
 	/**
 	 * Creates a new <code>SecondaryTablesComposite</code>.
@@ -63,7 +63,7 @@ public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public SecondaryTablesComposite(AbstractFormPane<? extends IEntity> parentPane,
+	public SecondaryTablesComposite(AbstractFormPane<? extends Entity> parentPane,
 	                                Composite parent) {
 
 		super(parentPane, parent, false);
@@ -76,7 +76,7 @@ public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public SecondaryTablesComposite(PropertyValueModel<? extends IEntity> subjectHolder,
+	public SecondaryTablesComposite(PropertyValueModel<? extends Entity> subjectHolder,
 	                                Composite parent,
 	                                TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -90,7 +90,7 @@ public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 			String name = dialog.getSelectedName();
 			String catalog = dialog.getSelectedCatalog();
 			String schema = dialog.getSelectedSchema();
-			ISecondaryTable secondaryTable = this.subject().addSpecifiedSecondaryTable(index);
+			SecondaryTable secondaryTable = this.subject().addSpecifiedSecondaryTable(index);
 			secondaryTable.setSpecifiedName(name);
 			secondaryTable.setSpecifiedCatalog(catalog);
 			secondaryTable.setSpecifiedSchema(schema);
@@ -99,8 +99,8 @@ public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 		}
 	}
 
-	private WritablePropertyValueModel<ISecondaryTable> buildSecondaryTableHolder() {
-		return new SimplePropertyValueModel<ISecondaryTable>();
+	private WritablePropertyValueModel<SecondaryTable> buildSecondaryTableHolder() {
+		return new SimplePropertyValueModel<SecondaryTable>();
 	}
 
 	private ILabelProvider buildSecondaryTableLabelProvider() {
@@ -108,7 +108,7 @@ public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 			@Override
 			public String getText(Object element) {
 				// TODO display a qualified name instead
-				ISecondaryTable secondaryTable = (ISecondaryTable) element;
+				SecondaryTable secondaryTable = (SecondaryTable) element;
 				if (secondaryTable.getName() != null) {
 					return secondaryTable.getName();
 				}
@@ -137,13 +137,13 @@ public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 
 			@Override
 			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
-				ISecondaryTable secondaryTable = (ISecondaryTable) listSelectionModel.selectedValue();
+				SecondaryTable secondaryTable = (SecondaryTable) listSelectionModel.selectedValue();
 				SecondaryTableDialog dialog = new SecondaryTableDialog(getControl().getShell(), secondaryTable, subject());
 				editSecondaryTableFromDialog(dialog, secondaryTable);
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				IEntity entity = subject();
+				Entity entity = subject();
 				int[] selectedIndices = listSelectionModel.selectedIndices();
 
 				for (int index = selectedIndices.length; --index >= 0; ) {
@@ -153,15 +153,15 @@ public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 		};
 	}
 	
-	private ListValueModel<ISecondaryTable> buildSecondaryTablesListModel() {
-		return new ItemPropertyListValueModelAdapter<ISecondaryTable>(buildSecondaryTablesListHolder(), 
-			ITable.SPECIFIED_NAME_PROPERTY);
+	private ListValueModel<SecondaryTable> buildSecondaryTablesListModel() {
+		return new ItemPropertyListValueModelAdapter<SecondaryTable>(buildSecondaryTablesListHolder(), 
+			Table.SPECIFIED_NAME_PROPERTY);
 	}	
 
-	private ListValueModel<ISecondaryTable> buildSecondaryTablesListHolder() {
-		return new ListAspectAdapter<IEntity, ISecondaryTable>(getSubjectHolder(), IEntity.SPECIFIED_SECONDARY_TABLES_LIST) {
+	private ListValueModel<SecondaryTable> buildSecondaryTablesListHolder() {
+		return new ListAspectAdapter<Entity, SecondaryTable>(getSubjectHolder(), Entity.SPECIFIED_SECONDARY_TABLES_LIST) {
 			@Override
-			protected ListIterator<ISecondaryTable> listIterator_() {
+			protected ListIterator<SecondaryTable> listIterator_() {
 				return subject.secondaryTables();
 			}
 
@@ -172,7 +172,7 @@ public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 		};
 	}
 
-	private void editSecondaryTableDialogOkd(SecondaryTableDialog dialog, ISecondaryTable secondaryTable) {
+	private void editSecondaryTableDialogOkd(SecondaryTableDialog dialog, SecondaryTable secondaryTable) {
 		String name = dialog.getSelectedName();
 		String catalog = dialog.getSelectedCatalog();
 		String schema = dialog.getSelectedSchema();
@@ -200,7 +200,7 @@ public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 		}
 	}
 
-	private void editSecondaryTableFromDialog(SecondaryTableDialog dialog, ISecondaryTable secondaryTable) {
+	private void editSecondaryTableFromDialog(SecondaryTableDialog dialog, SecondaryTable secondaryTable) {
 		if (dialog.open() == Window.OK) {
 			editSecondaryTableDialogOkd(dialog, secondaryTable);
 		}
@@ -214,18 +214,18 @@ public class SecondaryTablesComposite extends AbstractFormPane<IEntity>
 
 		int groupBoxMargin = groupBoxMargin();
 
-		WritablePropertyValueModel<ISecondaryTable> secondaryTableHolder =
+		WritablePropertyValueModel<SecondaryTable> secondaryTableHolder =
 			buildSecondaryTableHolder();
 
 		// Secondary Tables add/remove list pane
-		new AddRemoveListPane<IEntity>(
+		new AddRemoveListPane<Entity>(
 			this,
 			buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
 			buildSecondaryTablesAdapter(),
 			buildSecondaryTablesListModel(),
 			secondaryTableHolder,
 			buildSecondaryTableLabelProvider(),
-			IJpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS//TODO need a help context id for this
+			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS//TODO need a help context id for this
 		);
 
 		// Primary Key Join Columns pane

@@ -11,10 +11,10 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.resource.java.Inheritance;
-import org.eclipse.jpt.core.internal.resource.java.InheritanceType;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.resource.java.Inheritance;
+import org.eclipse.jpt.core.resource.java.InheritanceType;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class InheritanceTests extends JavaResourceModelTestCase {
@@ -55,7 +55,7 @@ public class InheritanceTests extends JavaResourceModelTestCase {
 
 	public void testInheritance() throws Exception {
 		IType testType = this.createTestInheritance();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
 		Inheritance inheritance = (Inheritance) typeResource.annotation(JPA.INHERITANCE);
 		assertNotNull(inheritance);
@@ -63,7 +63,7 @@ public class InheritanceTests extends JavaResourceModelTestCase {
 	
 	public void testGetStrategy() throws Exception {
 		IType testType = this.createTestInheritanceWithStrategy();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
 		Inheritance inheritance = (Inheritance) typeResource.annotation(JPA.INHERITANCE);
 		assertEquals(InheritanceType.JOINED, inheritance.getStrategy());
@@ -71,7 +71,7 @@ public class InheritanceTests extends JavaResourceModelTestCase {
 	
 	public void testSetStrategy() throws Exception {
 		IType testType = this.createTestInheritance();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 
 		Inheritance inheritance = (Inheritance) typeResource.annotation(JPA.INHERITANCE);
 		inheritance.setStrategy(InheritanceType.TABLE_PER_CLASS);

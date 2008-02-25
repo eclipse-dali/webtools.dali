@@ -13,14 +13,14 @@ package org.eclipse.jpt.ui.internal.actions;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
 public class RemovePersistentClassAction
 	implements IObjectActionDelegate
 {
-	private XmlPersistentType persistentType;
+	private OrmPersistentType persistentType;
 	
 	
 	public RemovePersistentClassAction() {
@@ -28,11 +28,11 @@ public class RemovePersistentClassAction
 	}
 	
 	public void run(IAction action) {
-		this.persistentType.entityMappings().removeXmlPersistentType(this.persistentType);
+		this.persistentType.entityMappings().removeOrmPersistentType(this.persistentType);
 	}
 	
 	public void selectionChanged(IAction action, ISelection selection) {
-		this.persistentType = (XmlPersistentType) ((StructuredSelection) selection).getFirstElement();
+		this.persistentType = (OrmPersistentType) ((StructuredSelection) selection).getFirstElement();
 	}
 	
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {

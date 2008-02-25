@@ -12,11 +12,11 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
-import org.eclipse.jpt.core.internal.resource.java.FetchType;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.OneToOne;
+import org.eclipse.jpt.core.resource.java.FetchType;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.OneToOne;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class OneToOneTests extends JavaResourceModelTestCase {
@@ -144,8 +144,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 
 	public void testOneToOne() throws Exception {
 		IType testType = this.createTestOneToOne();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertNotNull(oneToOne);
@@ -153,8 +153,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	
 	public void testGetFetch() throws Exception {
 		IType testType = this.createTestOneToOneWithFetch();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(FetchType.EAGER, oneToOne.getFetch());
@@ -162,8 +162,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 
 	public void testSetFetch() throws Exception {
 		IType testType = this.createTestOneToOneWithFetch();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(FetchType.EAGER, oneToOne.getFetch());
@@ -176,8 +176,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	
 	public void testSetFetchNull() throws Exception {
 		IType testType = this.createTestOneToOneWithFetch();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(FetchType.EAGER, oneToOne.getFetch());
@@ -192,8 +192,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	
 	public void testGetTargetEntity() throws Exception {
 		IType testType = this.createTestOneToOneWithTargetEntity();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(TYPE_NAME, oneToOne.getTargetEntity());
@@ -201,8 +201,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	
 	public void testSetTargetEntity() throws Exception {
 		IType testType = this.createTestOneToOneWithTargetEntity();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(TYPE_NAME, oneToOne.getTargetEntity());
@@ -214,8 +214,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	
 	public void testSetTargetEntityNull() throws Exception {
 		IType testType = this.createTestOneToOneWithTargetEntity();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(TYPE_NAME, oneToOne.getTargetEntity());
@@ -229,8 +229,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	
 	public void testGetFullyQualifiedTargetEntity() throws Exception {
 		IType testType = this.createTestOneToOneWithTargetEntity();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, oneToOne.getFullyQualifiedTargetEntity());
@@ -247,8 +247,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	
 	public void testGetOptional() throws Exception {
 		IType testType = this.createTestOneToOneWithOptional();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertTrue(oneToOne.getOptional());
@@ -256,8 +256,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 
 	public void testSetOptional() throws Exception {
 		IType testType = this.createTestOneToOneWithOptional();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertTrue(oneToOne.getOptional());
@@ -270,8 +270,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	
 	public void testSetOptionalNull() throws Exception {
 		IType testType = this.createTestOneToOneWithOptional();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertTrue(oneToOne.getOptional());
@@ -285,8 +285,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	
 	public void testGetMappedBy() throws Exception {
 		IType testType = this.createTestOneToOneWithMappedBy();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertEquals("foo", oneToOne.getMappedBy());
@@ -294,8 +294,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 
 	public void testGetMappedByNull() throws Exception {
 		IType testType = this.createTestOneToOne();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertEquals(null, oneToOne.getMappedBy());
@@ -303,8 +303,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 
 	public void testSetMappedBy() throws Exception {
 		IType testType = this.createTestOneToOne();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertNull(oneToOne.getMappedBy());
@@ -316,8 +316,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	
 	public void testSetMappedByNull() throws Exception {
 		IType testType = this.createTestOneToOneWithMappedBy();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertEquals("foo", oneToOne.getMappedBy());
@@ -331,8 +331,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 
 	public void testSetCascadeAll() throws Exception {
 		IType testType = this.createTestOneToOne();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertFalse(oneToOne.isCascadeAll());
@@ -346,8 +346,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	
 	public void testSetCascadeMerge() throws Exception {
 		IType testType = this.createTestOneToOne();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertFalse(oneToOne.isCascadeMerge());
@@ -361,8 +361,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	
 	public void testSetCascadePersist() throws Exception {
 		IType testType = this.createTestOneToOne();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertFalse(oneToOne.isCascadePersist());
@@ -376,8 +376,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	
 	public void testSetCascadeRemove() throws Exception {
 		IType testType = this.createTestOneToOne();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertFalse(oneToOne.isCascadeRemove());
@@ -391,8 +391,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 
 	public void testSetCascadeRefresh() throws Exception {
 		IType testType = this.createTestOneToOne();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertFalse(oneToOne.isCascadeRefresh());
@@ -406,8 +406,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 
 	public void testCascadeMoreThanOnce() throws Exception {
 		IType testType = this.createTestOneToOneWithCascade();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertTrue(oneToOne.isCascadeAll());
@@ -431,8 +431,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	
 	public void testDuplicateCascade() throws Exception {
 		IType testType = this.createTestOneToOneWithDuplicateCascade();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertTrue(oneToOne.isCascadeMerge());
@@ -449,8 +449,8 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 	
 	public void testMultipleCascade() throws Exception {
 		IType testType = this.createTestOneToOneWithMultipleCascade();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOne oneToOne = (OneToOne) attributeResource.mappingAnnotation(JPA.ONE_TO_ONE);
 		assertTrue(oneToOne.isCascadeMerge());

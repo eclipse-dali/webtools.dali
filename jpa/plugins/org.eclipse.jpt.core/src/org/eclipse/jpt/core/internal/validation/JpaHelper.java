@@ -10,13 +10,13 @@
 package org.eclipse.jpt.core.internal.validation;
 
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jpt.core.internal.IJpaNode;
+import org.eclipse.jpt.core.JpaNode;
 
 public class JpaHelper extends org.eclipse.wst.validation.internal.operations.WorkbenchContext {
 
 	@Override
 	public IResource getResource(Object obj) {
-		return ((IJpaNode) obj).resource();
+		return ((JpaNode) obj).resource();
 	}
 
 	/*

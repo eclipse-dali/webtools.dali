@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -25,19 +25,32 @@ import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.ContainerAnnotation;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.core.resource.java.NestablePrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.resource.java.NestableSecondaryTable;
+import org.eclipse.jpt.core.resource.java.NestableUniqueConstraint;
+import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
+import org.eclipse.jpt.core.resource.java.UniqueConstraint;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class SecondaryTableImpl extends AbstractTableResource implements NestableSecondaryTable
 {	
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(SecondaryTable.ANNOTATION_NAME);
+	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(SecondaryTableAnnotation.ANNOTATION_NAME);
 	
 	private final List<NestablePrimaryKeyJoinColumn> pkJoinColumns;
 	
 	private final PkJoinColumnsContainerAnnotation pkJoinColumnsContainerAnnotation;
 	
 
-	protected SecondaryTableImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected SecondaryTableImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.pkJoinColumns = new ArrayList<NestablePrimaryKeyJoinColumn>();
 		this.pkJoinColumnsContainerAnnotation = new PkJoinColumnsContainerAnnotation();
@@ -69,7 +82,7 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 	}
 	
 	public String getAnnotationName() {
-		return SecondaryTable.ANNOTATION_NAME;
+		return SecondaryTableAnnotation.ANNOTATION_NAME;
 	}
 	
 	public void moveAnnotation(int newIndex) {
@@ -77,7 +90,7 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 	}
 	
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		SecondaryTable oldSecondaryTable = (SecondaryTable) oldAnnotation;
+		SecondaryTableAnnotation oldSecondaryTable = (SecondaryTableAnnotation) oldAnnotation;
 		setName(oldSecondaryTable.getName());
 		setCatalog(oldSecondaryTable.getCatalog());
 		setSchema(oldSecondaryTable.getSchema());
@@ -85,7 +98,7 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 			NestableUniqueConstraint newUniqueConstraint = addUniqueConstraint(oldSecondaryTable.indexOfUniqueConstraint(uniqueConstraint));
 			newUniqueConstraint.initializeFrom((NestableAnnotation) uniqueConstraint);
 		}
-		for (PrimaryKeyJoinColumn pkJoinColumn : CollectionTools.iterable(oldSecondaryTable.pkJoinColumns())) {
+		for (PrimaryKeyJoinColumnAnnotation pkJoinColumn : CollectionTools.iterable(oldSecondaryTable.pkJoinColumns())) {
 			NestablePrimaryKeyJoinColumn newPkJoinColumn = addPkJoinColumn(oldSecondaryTable.indexOfPkJoinColumn(pkJoinColumn));
 			newPkJoinColumn.initializeFrom((NestableAnnotation) pkJoinColumn);
 		}
@@ -99,8 +112,8 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 	// ************* SecondaryTable implementation *******************
 	
 	
-	public ListIterator<PrimaryKeyJoinColumn> pkJoinColumns() {
-		return new CloneListIterator<PrimaryKeyJoinColumn>(this.pkJoinColumns);
+	public ListIterator<PrimaryKeyJoinColumnAnnotation> pkJoinColumns() {
+		return new CloneListIterator<PrimaryKeyJoinColumnAnnotation>(this.pkJoinColumns);
 	}
 	
 	public int pkJoinColumnsSize() {
@@ -111,13 +124,13 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 		return this.pkJoinColumns.get(index);
 	}
 	
-	public int indexOfPkJoinColumn(PrimaryKeyJoinColumn joinColumn) {
+	public int indexOfPkJoinColumn(PrimaryKeyJoinColumnAnnotation joinColumn) {
 		return this.pkJoinColumns.indexOf(joinColumn);
 	}
 
 	public NestablePrimaryKeyJoinColumn addPkJoinColumn(int index) {
 		NestablePrimaryKeyJoinColumn pkJoinColumn = (NestablePrimaryKeyJoinColumn) ContainerAnnotationTools.addNestedAnnotation(index, this.pkJoinColumnsContainerAnnotation);
-		fireItemAdded(SecondaryTable.PK_JOIN_COLUMNS_LIST, index, pkJoinColumn);
+		fireItemAdded(SecondaryTableAnnotation.PK_JOIN_COLUMNS_LIST, index, pkJoinColumn);
 		return pkJoinColumn;
 	}
 	
@@ -133,13 +146,13 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 	}
 	
 	protected void removePkJoinColumn(NestablePrimaryKeyJoinColumn pkJoinColumn) {
-		removeItemFromList(pkJoinColumn, this.pkJoinColumns, SecondaryTable.PK_JOIN_COLUMNS_LIST);
+		removeItemFromList(pkJoinColumn, this.pkJoinColumns, SecondaryTableAnnotation.PK_JOIN_COLUMNS_LIST);
 	}
 
 	public void movePkJoinColumn(int targetIndex, int sourceIndex) {
 		movePkJoinColumnInternal(targetIndex, sourceIndex);
 		ContainerAnnotationTools.synchAnnotationsAfterMove(targetIndex, sourceIndex, this.pkJoinColumnsContainerAnnotation);
-		fireItemMoved(SecondaryTable.PK_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);
+		fireItemMoved(SecondaryTableAnnotation.PK_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);
 	}
 	
 	protected void movePkJoinColumnInternal(int targetIndex, int sourceIndex) {
@@ -162,11 +175,11 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 	}
 
 	// ********** static methods **********
-	static SecondaryTableImpl createSecondaryTable(JavaResource parent, Member member) {
+	static SecondaryTableImpl createSecondaryTable(JavaResourceNode parent, Member member) {
 		return new SecondaryTableImpl(parent, member, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
-	static SecondaryTableImpl createNestedSecondaryTable(JavaResource parent, Member member, int index, DeclarationAnnotationAdapter secondaryTablesAdapter) {
+	static SecondaryTableImpl createNestedSecondaryTable(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter secondaryTablesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, secondaryTablesAdapter);
 		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
 		return new SecondaryTableImpl(parent, member, idaa, annotationAdapter);
@@ -265,7 +278,7 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 			SecondaryTableImpl.this.updateFromJava(astRoot);
 		}
 		
-		public ITextRange textRange(CompilationUnit astRoot) {
+		public TextRange textRange(CompilationUnit astRoot) {
 			return SecondaryTableImpl.this.textRange(astRoot);
 		}
 		
@@ -293,16 +306,16 @@ public class SecondaryTableImpl extends AbstractTableResource implements Nestabl
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return SecondaryTableImpl.createSecondaryTable(parent, member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 		
 		public String getAnnotationName() {
-			return SecondaryTable.ANNOTATION_NAME;
+			return SecondaryTableAnnotation.ANNOTATION_NAME;
 		}
 	}
 

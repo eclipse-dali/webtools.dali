@@ -11,15 +11,20 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 
-public class NullAssociationOverride extends AbstractResource implements AssociationOverride, Annotation
+public class NullAssociationOverride extends AbstractResource implements AssociationOverrideAnnotation, Annotation
 {	
 	private String name;
 
-	public NullAssociationOverride(JavaResource parent, String name) {
+	public NullAssociationOverride(JavaResourceNode parent, String name) {
 		super(parent);
 		this.name = name;
 	}
@@ -41,7 +46,7 @@ public class NullAssociationOverride extends AbstractResource implements Associa
 	}
 
 	public String getAnnotationName() {
-		return AssociationOverride.ANNOTATION_NAME;
+		return AssociationOverrideAnnotation.ANNOTATION_NAME;
 	}
 
 	public String getName() {
@@ -54,15 +59,15 @@ public class NullAssociationOverride extends AbstractResource implements Associa
 		}		
 	}
 
-	public ListIterator<JoinColumn> joinColumns() {
+	public ListIterator<JoinColumnAnnotation> joinColumns() {
 		return EmptyListIterator.instance();
 	}
 	
-	public JoinColumn joinColumnAt(int index) {
+	public JoinColumnAnnotation joinColumnAt(int index) {
 		return null;
 	}
 	
-	public int indexOfJoinColumn(JoinColumn joinColumn) {
+	public int indexOfJoinColumn(JoinColumnAnnotation joinColumn) {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -70,7 +75,7 @@ public class NullAssociationOverride extends AbstractResource implements Associa
 		return 0;
 	}
 	
-	public JoinColumn addJoinColumn(int index) {
+	public JoinColumnAnnotation addJoinColumn(int index) {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -83,12 +88,12 @@ public class NullAssociationOverride extends AbstractResource implements Associa
 	}
 	
 	@Override
-	public JavaPersistentResource parent() {
-		return (JavaPersistentResource) super.parent();
+	public JavaResourcePersistentMember parent() {
+		return (JavaResourcePersistentMember) super.parent();
 	}
 	
-	protected AssociationOverride createAssociationOverrideResource() {
-		return (AssociationOverride) parent().addAnnotation(getAnnotationName());
+	protected AssociationOverrideAnnotation createAssociationOverrideResource() {
+		return (AssociationOverrideAnnotation) parent().addAnnotation(getAnnotationName());
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {
@@ -100,11 +105,11 @@ public class NullAssociationOverride extends AbstractResource implements Associa
 		return false;
 	}
 	
-	public ITextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange nameTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public ITextRange textRange(CompilationUnit astRoot) {
+	public TextRange textRange(CompilationUnit astRoot) {
 		return null;
 	}
 

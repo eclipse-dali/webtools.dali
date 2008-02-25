@@ -9,16 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
+import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.db.internal.Table;
 
 /**
  * The state object used to create or edit a primary key join column on an
  * secondary table.
  *
- * @see IPrimaryKeyJoinColumn
- * @see ISecondaryTable
+ * @see PrimaryKeyJoinColumn
+ * @see SecondaryTable
  * @see PrimaryKeyJoinColumnInSecondaryTableDialog
  *
  * @version 2.0
@@ -34,8 +34,8 @@ public class PrimaryKeyJoinColumnInSecondaryTableStateObject extends AbstractJoi
 	 * @param joinColumn The join column to edit or <code>null</code> if it is to
 	 * create a new one
 	 */
-	public PrimaryKeyJoinColumnInSecondaryTableStateObject(ISecondaryTable secondaryTable,
-	                                                       IPrimaryKeyJoinColumn joinColumn) {
+	public PrimaryKeyJoinColumnInSecondaryTableStateObject(SecondaryTable secondaryTable,
+	                                                       PrimaryKeyJoinColumn joinColumn) {
 
 		super(secondaryTable, joinColumn);
 	}
@@ -44,8 +44,8 @@ public class PrimaryKeyJoinColumnInSecondaryTableStateObject extends AbstractJoi
 	 * (non-Javadoc)
 	 */
 	@Override
-	public IPrimaryKeyJoinColumn getJoinColumn() {
-		return (IPrimaryKeyJoinColumn) super.getJoinColumn();
+	public PrimaryKeyJoinColumn getJoinColumn() {
+		return (PrimaryKeyJoinColumn) super.getJoinColumn();
 	}
 
 	/*
@@ -60,8 +60,8 @@ public class PrimaryKeyJoinColumnInSecondaryTableStateObject extends AbstractJoi
 	 * (non-Javadoc)
 	 */
 	@Override
-	public ISecondaryTable getOwner() {
-		return (ISecondaryTable) super.getOwner();
+	public SecondaryTable getOwner() {
+		return (SecondaryTable) super.getOwner();
 	}
 
 	/* (non-Javadoc)

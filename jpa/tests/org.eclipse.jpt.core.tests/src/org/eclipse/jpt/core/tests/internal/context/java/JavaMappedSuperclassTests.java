@@ -12,15 +12,15 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.context.base.IEmbeddable;
-import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.IMappedSuperclass;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.Embeddable;
+import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
-import org.eclipse.jpt.core.internal.resource.java.IdClass;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.MappedSuperclass;
+import org.eclipse.jpt.core.resource.java.IdClass;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.MappedSuperclassAnnotation;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -55,14 +55,14 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 				
-		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 		mappedSuperclass.setIdClass("myIdClass");
 		
-		javaPersistentType().setMappingKey(IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
-		assertTrue(javaPersistentType().getMapping() instanceof IEntity);
+		javaPersistentType().setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		assertTrue(javaPersistentType().getMapping() instanceof Entity);
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		assertNull(typeResource.mappingAnnotation(MappedSuperclass.ANNOTATION_NAME));
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		assertNull(typeResource.mappingAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME));
 		assertNotNull(typeResource.annotation(IdClass.ANNOTATION_NAME));
 	}
 
@@ -70,14 +70,14 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 				
-		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 		mappedSuperclass.setIdClass("myIdClass");
 
-		javaPersistentType().setMappingKey(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
-		assertTrue(javaPersistentType().getMapping() instanceof IEmbeddable);
+		javaPersistentType().setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		assertTrue(javaPersistentType().getMapping() instanceof Embeddable);
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		assertNull(typeResource.mappingAnnotation(MappedSuperclass.ANNOTATION_NAME));
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		assertNull(typeResource.mappingAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.annotation(IdClass.ANNOTATION_NAME));
 	}
 	
@@ -85,14 +85,14 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 				
-		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 		mappedSuperclass.setIdClass("myIdClass");
 
-		javaPersistentType().setMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);
+		javaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
 		assertTrue(javaPersistentType().getMapping() instanceof JavaNullTypeMapping);
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		assertNull(typeResource.mappingAnnotation(MappedSuperclass.ANNOTATION_NAME));
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		assertNull(typeResource.mappingAnnotation(MappedSuperclassAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.annotation(IdClass.ANNOTATION_NAME));
 	}
 
@@ -100,14 +100,14 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 	public void testMappedSuperclass() throws Exception {
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		assertTrue(javaPersistentType().getMapping() instanceof IMappedSuperclass);
+		assertTrue(javaPersistentType().getMapping() instanceof MappedSuperclass);
 	}
 	
 	public void testOverridableAttributeNames() throws Exception {
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 		Iterator<String> overridableAttributeNames = mappedSuperclass.overridableAttributeNames();
 		assertEquals("id", overridableAttributeNames.next());
 		assertEquals("name", overridableAttributeNames.next());
@@ -118,7 +118,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 		Iterator<String> overridableAssociationNames = mappedSuperclass.overridableAssociationNames();
 		assertFalse(overridableAssociationNames.hasNext());
 	}
@@ -127,7 +127,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 
 		assertFalse(mappedSuperclass.tableNameIsInvalid(FULLY_QUALIFIED_TYPE_NAME));
 		assertFalse(mappedSuperclass.tableNameIsInvalid("FOO"));
@@ -137,7 +137,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 
 		assertFalse(mappedSuperclass.associatedTables().hasNext());
 	}
@@ -146,7 +146,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 
 		assertFalse(mappedSuperclass.associatedTablesIncludingInherited().hasNext());
 	}
@@ -155,7 +155,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 
 		assertFalse(mappedSuperclass.associatedTableNamesIncludingInherited().hasNext());
 	}
@@ -164,7 +164,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 		Iterator<String> overridableAttributeNames = mappedSuperclass.overridableAttributeNames();
 		assertEquals("id", overridableAttributeNames.next());
 		assertEquals("name", overridableAttributeNames.next());
@@ -176,7 +176,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 		Iterator<String> overridableAssociationNames = mappedSuperclass.overridableAssociationNames();
 		assertFalse(overridableAssociationNames.hasNext());
 	}
@@ -185,25 +185,25 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
-		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY));
-		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY));
-		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY));
-		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY));
-		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY));
-		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY));
-		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY));
-		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY));
-		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY));
-		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY));
+		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
+		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(mappedSuperclass.attributeMappingKeyAllowed(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY));
 	}
 
 	public void testUpdateIdClass() throws Exception {
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 
 		assertNull(mappedSuperclass.getIdClass());
 		assertNull(typeResource.annotation(IdClass.ANNOTATION_NAME));
@@ -234,8 +234,8 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		createTestMappedSuperclass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		IMappedSuperclass mappedSuperclass = (IMappedSuperclass) javaPersistentType().getMapping();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
 
 		assertNull(mappedSuperclass.getIdClass());
 		assertNull(typeResource.annotation(IdClass.ANNOTATION_NAME));

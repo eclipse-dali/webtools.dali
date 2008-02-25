@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.extension.resource;
 
-import org.eclipse.jpt.core.internal.IJpaFactory;
+import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMapping;
 import org.eclipse.jpt.core.internal.content.java.IJavaTypeMappingProvider;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.internal.jdtutility.Type;
  * 
  */
 public class TestTypeMappingProvider
-	implements IJavaTypeMappingProvider
+	implements JavaTypeMappingProvider
 {
 
 	// singleton
@@ -28,7 +28,7 @@ public class TestTypeMappingProvider
 	/**
 	 * Return the singleton.
 	 */
-	public static IJavaTypeMappingProvider instance() {
+	public static JavaTypeMappingProvider instance() {
 		return INSTANCE;
 	}
 
@@ -43,7 +43,7 @@ public class TestTypeMappingProvider
 		return "test";
 	}
 
-	public IJavaTypeMapping buildMapping(Type type, IJpaFactory factory) {
+	public JavaTypeMapping buildMapping(Type type, JpaFactory factory) {
 		return ((TestJpaFactory) factory).createTestTypeMapping(type);
 	}
 

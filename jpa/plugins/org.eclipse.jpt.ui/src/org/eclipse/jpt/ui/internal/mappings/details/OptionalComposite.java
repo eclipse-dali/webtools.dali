@@ -8,8 +8,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.INullable;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.core.context.Nullable;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * This composite simply shows a tri-state check box for the Optional option.
  *
- * @see IBasicMapping
+ * @see BasicMapping
  * @see BasicMappingComposite - A container of this pane
  * @see ManyToOneMappingComposite - A container of this pane
  * @see OneToOneMappingComposite - A container of this pane
@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 1.0
  * @since 2.0
  */
-public class OptionalComposite extends AbstractFormPane<INullable>
+public class OptionalComposite extends AbstractFormPane<Nullable>
 {
 	/**
 	 * Creates a new <code>OptionalComposite</code>.
@@ -38,14 +38,14 @@ public class OptionalComposite extends AbstractFormPane<INullable>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OptionalComposite(AbstractFormPane<? extends INullable> parentPane,
+	public OptionalComposite(AbstractFormPane<? extends Nullable> parentPane,
 	                         Composite parent)
 	{
 		super(parentPane, parent);
 	}
 
 	private WritablePropertyValueModel<Boolean> buildOptionalHolder() {
-		return new PropertyAspectAdapter<INullable, Boolean>(getSubjectHolder(), INullable.SPECIFIED_OPTIONAL_PROPERTY) {
+		return new PropertyAspectAdapter<Nullable, Boolean>(getSubjectHolder(), Nullable.SPECIFIED_OPTIONAL_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.getSpecifiedOptional();
@@ -97,7 +97,7 @@ public class OptionalComposite extends AbstractFormPane<INullable>
 			JptUiMappingsMessages.BasicGeneralSection_optionalLabel,
 			buildOptionalHolder(),
 			buildOptionalStringHolder(),
-			IJpaHelpContextIds.MAPPING_OPTIONAL
+			JpaHelpContextIds.MAPPING_OPTIONAL
 		);
 	}
 }

@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.ui.internal.actions;
 
-import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.JpaProject;
 
 /**
  *  GenerateEntitiesAction
@@ -19,7 +19,7 @@ public class GenerateEntitiesAction extends ProjectAction {
 		super();
 	}
 
-	protected void execute(IJpaProject project) {
+	protected void execute(JpaProject project) {
         this.jpaPlatformUi(project).generateEntities(project, this.getCurrentSelection());
 	}
 }

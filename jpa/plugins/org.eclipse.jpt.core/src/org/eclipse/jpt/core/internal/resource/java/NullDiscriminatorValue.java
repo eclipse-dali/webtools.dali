@@ -10,18 +10,21 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.DiscriminatorValue;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 
 
 public class NullDiscriminatorValue extends AbstractResource implements DiscriminatorValue, Annotation
 {	
-	protected NullDiscriminatorValue(JavaPersistentResource parent) {
+	protected NullDiscriminatorValue(JavaResourcePersistentMember parent) {
 		super(parent);
 	}
 	
 	@Override
-	public JavaPersistentResource parent() {
-		return (JavaPersistentResource) super.parent();
+	public JavaResourcePersistentMember parent() {
+		return (JavaResourcePersistentMember) super.parent();
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -63,11 +66,11 @@ public class NullDiscriminatorValue extends AbstractResource implements Discrimi
 	
 	}
 
-	public ITextRange valueTextRange(CompilationUnit astRoot) {
+	public TextRange valueTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public ITextRange textRange(CompilationUnit astRoot) {
+	public TextRange textRange(CompilationUnit astRoot) {
 		return null;
 	}
 

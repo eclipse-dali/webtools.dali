@@ -17,6 +17,13 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NamedNativeQueries;
+import org.eclipse.jpt.core.resource.java.NamedNativeQueryAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableNamedNativeQuery;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
@@ -27,7 +34,7 @@ public class NamedNativeQueriesImpl extends AbstractAnnotationResource<Type> imp
 
 	private List<NestableNamedNativeQuery> namedNativeQueries;
 	
-	protected NamedNativeQueriesImpl(JavaResource parent, Type type) {
+	protected NamedNativeQueriesImpl(JavaResourceNode parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.namedNativeQueries = new ArrayList<NestableNamedNativeQuery>();
 	}
@@ -41,7 +48,7 @@ public class NamedNativeQueriesImpl extends AbstractAnnotationResource<Type> imp
 	}
 
 	public String getNestableAnnotationName() {
-		return NamedNativeQuery.ANNOTATION_NAME;
+		return NamedNativeQueryAnnotation.ANNOTATION_NAME;
 	}
 
 	public String getElementName() {
@@ -133,11 +140,11 @@ public class NamedNativeQueriesImpl extends AbstractAnnotationResource<Type> imp
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new NamedNativeQueriesImpl(parent, (Type) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

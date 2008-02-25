@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.details;
 
-import org.eclipse.jpt.core.internal.IJpaStructureNode;
-import org.eclipse.jpt.core.internal.context.java.IJavaStructureNodes;
-import org.eclipse.jpt.ui.internal.details.IJpaDetailsPage;
-import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
+import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.context.java.JavaStructureNodes;
+import org.eclipse.jpt.ui.details.JpaDetailsPage;
+import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
@@ -24,7 +24,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @since 1.0
  */
 public class JavaDetailsProvider
-	implements IJpaDetailsProvider
+	implements JpaDetailsProvider
 {
 	/**
 	 * Creates a new <code>JavaDetailsProvider</code>.
@@ -36,16 +36,16 @@ public class JavaDetailsProvider
 	/*
 	 * (non-Javadoc)
 	 */
-	public IJpaDetailsPage<? extends IJpaStructureNode> buildDetailsPage(
+	public JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(
 		Composite parent,
 		Object contentNodeId,
 		TabbedPropertySheetWidgetFactory widgetFactory) {
 
-		if (contentNodeId == IJavaStructureNodes.PERSISTENT_TYPE_ID) {
+		if (contentNodeId == JavaStructureNodes.PERSISTENT_TYPE_ID) {
 			return new JavaPersistentTypeDetailsPage(parent, widgetFactory);
 		}
 
-		if (contentNodeId == IJavaStructureNodes.PERSISTENT_ATTRIBUTE_ID) {
+		if (contentNodeId == JavaStructureNodes.PERSISTENT_ATTRIBUTE_ID) {
 			return new JavaPersistentAttributeDetailsPage(parent, widgetFactory);
 		}
 

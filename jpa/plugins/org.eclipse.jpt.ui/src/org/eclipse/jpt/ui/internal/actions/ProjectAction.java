@@ -15,9 +15,9 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
@@ -74,20 +74,20 @@ public abstract class ProjectAction implements IObjectActionDelegate {
 		return null;
 	}
 
-	protected IJpaPlatformUi jpaPlatformUi(IJpaProject project) {
+	protected JpaPlatformUi jpaPlatformUi(JpaProject project) {
 		String coreJpaPlatformId = project.jpaPlatform().getId();
         return JpaPlatformUiRegistry.instance().jpaPlatform(coreJpaPlatformId); 
 	}
 	
 	protected void execute(IProject project) {
-		IJpaProject jpaProject = JptCorePlugin.jpaProject(project);
+		JpaProject jpaProject = JptCorePlugin.jpaProject(project);
 		if (jpaProject == null) {
 			return;
 		}
 		this.execute(jpaProject);
 	}
 
-	protected void execute(IJpaProject project) {
+	protected void execute(JpaProject project) {
 		throw new UnsupportedOperationException();
 	}
 

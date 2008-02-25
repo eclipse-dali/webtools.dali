@@ -9,12 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
-import org.eclipse.jpt.core.internal.resource.java.Embedded;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.platform.base.JpaBaseContextFactory;
+import org.eclipse.jpt.core.resource.java.Embedded;
 
 public class JavaEmbeddedMappingProvider
-	implements IDefaultJavaAttributeMappingProvider
+	implements DefaultJavaAttributeMappingProvider
 {
 
 	// singleton
@@ -23,7 +26,7 @@ public class JavaEmbeddedMappingProvider
 	/**
 	 * Return the singleton.
 	 */
-	public static IDefaultJavaAttributeMappingProvider instance() {
+	public static DefaultJavaAttributeMappingProvider instance() {
 		return INSTANCE;
 	}
 
@@ -35,18 +38,18 @@ public class JavaEmbeddedMappingProvider
 	}
 
 	public String key() {
-		return IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
+		return MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
 	}
 	
 	public String annotationName() {
 		return Embedded.ANNOTATION_NAME;
 	}
 
-	public IJavaAttributeMapping buildMapping(IJavaPersistentAttribute parent, IJpaBaseContextFactory factory) {
-		return factory.createJavaEmbeddedMapping(parent);
+	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaBaseContextFactory factory) {
+		return factory.buildJavaEmbeddedMapping(parent);
 	}
 	
-	public boolean defaultApplies(IJavaPersistentAttribute persistentAttribute) {
-		return JavaEmbeddedMapping.embeddableFor(persistentAttribute) != null;
+	public boolean defaultApplies(JavaPersistentAttribute persistentAttribute) {
+		return GenericJavaEmbeddedMapping.embeddableFor(persistentAttribute) != null;
 	}
 }

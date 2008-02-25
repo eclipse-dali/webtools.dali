@@ -15,21 +15,21 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="#//AccessType"
         defaultValueLiteral="PROPERTY"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="sequenceGenerators" upperBound="-1"
-        eType="#//SequenceGenerator" containment="true" resolveProxies="false"/>
+        eType="#//XmlSequenceGenerator" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="tableGenerators" upperBound="-1"
-        eType="#//TableGenerator" containment="true" resolveProxies="false"/>
+        eType="#//XmlTableGenerator" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="namedQueries" upperBound="-1"
-        eType="#//NamedQuery" containment="true" resolveProxies="false"/>
+        eType="#//XmlNamedQuery" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="namedNativeQueries" upperBound="-1"
-        eType="#//NamedNativeQuery" containment="true" resolveProxies="false"/>
+        eType="#//XmlNamedNativeQuery" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="sqlResultSetMappings" upperBound="-1"
         eType="#//SqlResultSetMapping" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappedSuperclasses" upperBound="-1"
-        eType="#//MappedSuperclass" containment="true" resolveProxies="false"/>
+        eType="#//XmlMappedSuperclass" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="entities" upperBound="-1"
-        eType="#//Entity" containment="true" resolveProxies="false"/>
+        eType="#//XmlEntity" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="embeddables" upperBound="-1"
-        eType="#//Embeddable" containment="true" resolveProxies="false"/>
+        eType="#//XmlEmbeddable" containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PersistenceUnitMetadata">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlMappingMetadataComplete"
@@ -46,7 +46,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="entityListeners" eType="#//EntityListeners"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TypeMapping" abstract="true">
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractTypeMapping" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="#//AccessType"
@@ -56,7 +56,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" eType="#//Attributes"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MappedSuperclass" eSuperTypes="#//TypeMapping">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="#//AbstractTypeMapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="idClass" eType="#//IdClass"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeDefaultListeners"
@@ -80,29 +80,29 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="postLoad" eType="#//PostLoad"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Entity" eSuperTypes="#//TypeMapping">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="#//AbstractTypeMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="table" eType="#//Table"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="table" eType="#//XmlTable"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="secondaryTables" upperBound="-1"
-        eType="#//SecondaryTable" containment="true" resolveProxies="false"/>
+        eType="#//XmlSecondaryTable" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="primaryKeyJoinColumns"
-        upperBound="-1" eType="#//PrimaryKeyJoinColumn" containment="true" resolveProxies="false"/>
+        upperBound="-1" eType="#//XmlPrimaryKeyJoinColumn" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="idClass" eType="#//IdClass"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="inheritance" eType="#//Inheritance"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="discriminatorValue" eType="#//DiscriminatorValue"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="discriminatorColumn" eType="#//DiscriminatorColumn"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="discriminatorColumn" eType="#//XmlDiscriminatorColumn"
         containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="sequenceGenerator" eType="#//SequenceGenerator"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sequenceGenerator" eType="#//XmlSequenceGenerator"
         containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="tableGenerator" eType="#//TableGenerator"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tableGenerator" eType="#//XmlTableGenerator"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="namedQueries" upperBound="-1"
-        eType="#//NamedQuery" containment="true" resolveProxies="false"/>
+        eType="#//XmlNamedQuery" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="namedNativeQueries" upperBound="-1"
-        eType="#//NamedNativeQuery" containment="true" resolveProxies="false"/>
+        eType="#//XmlNamedNativeQuery" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="sqlResultSetMappings" upperBound="-1"
         eType="#//SqlResultSetMapping" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeDefaultListeners"
@@ -126,82 +126,83 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="postLoad" eType="#//PostLoad"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributeOverrides" upperBound="-1"
-        eType="#//AttributeOverride" containment="true" resolveProxies="false"/>
+        eType="#//XmlAttributeOverride" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="associationOverrides" upperBound="-1"
-        eType="#//AssociationOverride" containment="true" resolveProxies="false"/>
+        eType="#//XmlAssociationOverride" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Embeddable" eSuperTypes="#//TypeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="#//AbstractTypeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="Attributes">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ids" upperBound="-1" eType="#//Id"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ids" upperBound="-1" eType="#//Xmld"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="embeddedIds" upperBound="-1"
-        eType="#//EmbeddedId" containment="true" resolveProxies="false"/>
+        eType="#//XmlEmbeddedId" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="basics" upperBound="-1"
-        eType="#//Basic" containment="true" resolveProxies="false"/>
+        eType="#//XmlBasic" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="versions" upperBound="-1"
-        eType="#//Version" containment="true" resolveProxies="false"/>
+        eType="#//XmlVersion" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="manyToOnes" upperBound="-1"
-        eType="#//ManyToOne" containment="true" resolveProxies="false"/>
+        eType="#//XmlManyToOne" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="oneToManys" upperBound="-1"
-        eType="#//OneToMany" containment="true" resolveProxies="false"/>
+        eType="#//XmlOneToMany" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="oneToOnes" upperBound="-1"
-        eType="#//OneToOne" containment="true" resolveProxies="false"/>
+        eType="#//XmlOneToOne" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="manyToManys" upperBound="-1"
-        eType="#//ManyToMany" containment="true" resolveProxies="false"/>
+        eType="#//XmlManyToMany" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="embeddeds" upperBound="-1"
-        eType="#//Embedded" containment="true" resolveProxies="false"/>
+        eType="#//XmlEmbedded" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="transients" upperBound="-1"
-        eType="#//Transient" containment="true" resolveProxies="false"/>
+        eType="#//XmlTransient" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AttributeMapping" abstract="true" interface="true">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeMapping" abstract="true"
+      interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ColumnMapping" abstract="true" interface="true">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="column" eType="#//Column"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="column" eType="#//XmlColumn"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RelationshipMapping" abstract="true"
-      interface="true" eSuperTypes="#//AttributeMapping">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlRelationshipMapping" abstract="true"
+      interface="true" eSuperTypes="#//XmlAttributeMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetEntity" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fetch" eType="#//FetchType"
         defaultValueLiteral="LAZY"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="joinTable" eType="#//JoinTable"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="joinTable" eType="#//XmlJoinTable"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="cascade" eType="#//CascadeType"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MultiRelationshipMapping" abstract="true"
-      interface="true" eSuperTypes="#//RelationshipMapping">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMultiRelationshipMapping" abstract="true"
+      interface="true" eSuperTypes="#//XmlRelationshipMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mappedBy" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="orderBy" eType="#//OrderBy"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="mapKey" eType="#//MapKey"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SingleRelationshipMapping" abstract="true"
-      interface="true" eSuperTypes="#//RelationshipMapping">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlSingleRelationshipMapping" abstract="true"
+      interface="true" eSuperTypes="#//XmlRelationshipMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="optional" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="joinColumns" upperBound="-1"
-        eType="#//JoinColumn" containment="true" resolveProxies="false"/>
+        eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Id" abstract="true" interface="true"
-      eSuperTypes="#//AttributeMapping #//ColumnMapping">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="generatedValue" eType="#//GeneratedValue"
+  <eClassifiers xsi:type="ecore:EClass" name="Xmld" abstract="true" interface="true"
+      eSuperTypes="#//XmlAttributeMapping #//ColumnMapping">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="generatedValue" eType="#//XmlGeneratedValue"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="temporal" eType="#//TemporalType"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="tableGenerator" eType="#//TableGenerator"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tableGenerator" eType="#//XmlTableGenerator"
         containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="sequenceGenerator" eType="#//SequenceGenerator"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sequenceGenerator" eType="#//XmlSequenceGenerator"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IdImpl" eSuperTypes="#//Id"/>
-  <eClassifiers xsi:type="ecore:EClass" name="EmbeddedId" abstract="true" interface="true"
-      eSuperTypes="#//AttributeMapping">
+  <eClassifiers xsi:type="ecore:EClass" name="IdImpl" eSuperTypes="#//Xmld"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedId" abstract="true" interface="true"
+      eSuperTypes="#//XmlAttributeMapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributeOverrides" upperBound="-1"
-        eType="#//AttributeOverride" containment="true" resolveProxies="false"/>
+        eType="#//XmlAttributeOverride" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EmbeddedIdImpl" eSuperTypes="#//EmbeddedId"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Basic" abstract="true" interface="true"
-      eSuperTypes="#//AttributeMapping #//ColumnMapping">
+  <eClassifiers xsi:type="ecore:EClass" name="EmbeddedIdImpl" eSuperTypes="#//XmlEmbeddedId"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlBasic" abstract="true" interface="true"
+      eSuperTypes="#//XmlAttributeMapping #//ColumnMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fetch" eType="#//FetchType"
         defaultValueLiteral="LAZY"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="optional" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
@@ -209,51 +210,52 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="temporal" eType="#//TemporalType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="enumerated" eType="#//EnumType"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="BasicImpl" eSuperTypes="#//Basic"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Version" abstract="true" interface="true"
-      eSuperTypes="#//AttributeMapping #//ColumnMapping">
+  <eClassifiers xsi:type="ecore:EClass" name="BasicImpl" eSuperTypes="#//XmlBasic"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlVersion" abstract="true" interface="true"
+      eSuperTypes="#//XmlAttributeMapping #//ColumnMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="temporal" eType="#//TemporalType"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="VersionImpl" eSuperTypes="#//Version"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ManyToOne" abstract="true" interface="true"
-      eSuperTypes="#//SingleRelationshipMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ManyToOneImpl" eSuperTypes="#//ManyToOne"/>
-  <eClassifiers xsi:type="ecore:EClass" name="OneToMany" abstract="true" interface="true"
-      eSuperTypes="#//MultiRelationshipMapping">
+  <eClassifiers xsi:type="ecore:EClass" name="VersionImpl" eSuperTypes="#//XmlVersion"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToOne" abstract="true" interface="true"
+      eSuperTypes="#//XmlSingleRelationshipMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ManyToOneImpl" eSuperTypes="#//XmlManyToOne"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany" abstract="true" interface="true"
+      eSuperTypes="#//XmlMultiRelationshipMapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="joinColumns" upperBound="-1"
-        eType="#//JoinColumn" containment="true" resolveProxies="false"/>
+        eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="OneToManyImpl" eSuperTypes="#//OneToMany"/>
-  <eClassifiers xsi:type="ecore:EClass" name="OneToOne" abstract="true" interface="true"
-      eSuperTypes="#//SingleRelationshipMapping">
+  <eClassifiers xsi:type="ecore:EClass" name="OneToManyImpl" eSuperTypes="#//XmlOneToMany"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToOne" abstract="true" interface="true"
+      eSuperTypes="#//XmlSingleRelationshipMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mappedBy" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="primaryKeyJoinColumns"
-        upperBound="-1" eType="#//PrimaryKeyJoinColumn" containment="true" resolveProxies="false"/>
+        upperBound="-1" eType="#//XmlPrimaryKeyJoinColumn" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="OneToOneImpl" eSuperTypes="#//OneToOne"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ManyToMany" abstract="true" interface="true"
-      eSuperTypes="#//MultiRelationshipMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="ManyToManyImpl" eSuperTypes="#//ManyToMany"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Embedded" abstract="true" interface="true"
-      eSuperTypes="#//AttributeMapping">
+  <eClassifiers xsi:type="ecore:EClass" name="OneToOneImpl" eSuperTypes="#//XmlOneToOne"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" abstract="true" interface="true"
+      eSuperTypes="#//XmlMultiRelationshipMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ManyToManyImpl" eSuperTypes="#//XmlManyToMany"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" abstract="true" interface="true"
+      eSuperTypes="#//XmlAttributeMapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributeOverrides" upperBound="-1"
-        eType="#//AttributeOverride" containment="true" resolveProxies="false"/>
+        eType="#//XmlAttributeOverride" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EmbeddedImpl" eSuperTypes="#//Embedded"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Transient" abstract="true" interface="true"
-      eSuperTypes="#//AttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="TransientImpl" eSuperTypes="#//Transient"/>
-  <eClassifiers xsi:type="ecore:EClass" name="AssociationOverride">
+  <eClassifiers xsi:type="ecore:EClass" name="EmbeddedImpl" eSuperTypes="#//XmlEmbedded"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTransient" abstract="true" interface="true"
+      eSuperTypes="#//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TransientImpl" eSuperTypes="#//XmlTransient"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlAssociationOverride">
     <eStructuralFeatures xsi:type="ecore:EReference" name="joinColumns" lowerBound="1"
-        upperBound="-1" eType="#//JoinColumn" containment="true" resolveProxies="false"/>
+        upperBound="-1" eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AttributeOverride" abstract="true" interface="true">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeOverride" abstract="true"
+      interface="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="column" lowerBound="1"
-        eType="#//Column" containment="true" resolveProxies="false"/>
+        eType="#//XmlColumn" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AttributeOverrideImpl" eSuperTypes="#//AttributeOverride"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AttributeOverrideImpl" eSuperTypes="#//XmlAttributeOverride"/>
   <eClassifiers xsi:type="ecore:EClass" name="CascadeType" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeAll" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadePersist" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
@@ -262,29 +264,29 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeRefresh" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CascadeTypeImpl" eSuperTypes="#//CascadeType"/>
-  <eClassifiers xsi:type="ecore:EClass" name="NamedColumn" abstract="true" interface="true">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedColumn" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnDefinition" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AbstractColumn" abstract="true" interface="true"
-      eSuperTypes="#//NamedColumn">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlAbstractColumn" abstract="true" interface="true"
+      eSuperTypes="#//XmlNamedColumn">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="insertable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="nullable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="table" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="unique" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="updatable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Column" abstract="true" interface="true"
-      eSuperTypes="#//AbstractColumn">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlColumn" abstract="true" interface="true"
+      eSuperTypes="#//XmlAbstractColumn">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="precision" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="scale" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ColumnImpl" eSuperTypes="#//Column"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ColumnImpl" eSuperTypes="#//XmlColumn"/>
   <eClassifiers xsi:type="ecore:EClass" name="ColumnResult">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="DiscriminatorColumn" eSuperTypes="#//NamedColumn">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlDiscriminatorColumn" eSuperTypes="#//XmlNamedColumn">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="discriminatorType" eType="#//DiscriminatorType"
         defaultValueLiteral="STRING"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
@@ -327,12 +329,12 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="column" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GeneratedValue" abstract="true" interface="true">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlGeneratedValue" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="generator" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="strategy" eType="#//GenerationType"
         defaultValueLiteral="TABLE"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="GeneratedValueImpl" eSuperTypes="#//GeneratedValue"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GeneratedValueImpl" eSuperTypes="#//XmlGeneratedValue"/>
   <eClassifiers xsi:type="ecore:EClass" name="IdClass">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
@@ -341,19 +343,19 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="strategy" eType="#//InheritanceType"
         defaultValueLiteral="SINGLE_TABLE"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="JoinColumn" abstract="true" interface="true"
-      eSuperTypes="#//AbstractColumn">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlJoinColumn" abstract="true" interface="true"
+      eSuperTypes="#//XmlAbstractColumn">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="referencedColumnName" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="JoinColumnImpl" eSuperTypes="#//JoinColumn"/>
-  <eClassifiers xsi:type="ecore:EClass" name="JoinTable" abstract="true" interface="true"
-      eSuperTypes="#//AbstractTable">
+  <eClassifiers xsi:type="ecore:EClass" name="JoinColumnImpl" eSuperTypes="#//XmlJoinColumn"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlJoinTable" abstract="true" interface="true"
+      eSuperTypes="#//XmlAbstractTable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="joinColumns" upperBound="-1"
-        eType="#//JoinColumn" containment="true" resolveProxies="false"/>
+        eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="inverseJoinColumns" upperBound="-1"
-        eType="#//JoinColumn" containment="true" resolveProxies="false"/>
+        eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="JoinTableImpl" eSuperTypes="#//JoinTable"/>
+  <eClassifiers xsi:type="ecore:EClass" name="JoinTableImpl" eSuperTypes="#//XmlJoinTable"/>
   <eClassifiers xsi:type="ecore:EClass" name="Lob"/>
   <eClassifiers xsi:type="ecore:EClass" name="MapKey" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
@@ -363,13 +365,13 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="hints" upperBound="-1"
-        eType="#//QueryHint" containment="true" resolveProxies="false"/>
+        eType="#//XmlQueryHint" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NamedNativeQuery" eSuperTypes="#//Query">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedNativeQuery" eSuperTypes="#//Query">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="resultClass" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="resultSetMapping" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NamedQuery" eSuperTypes="#//Query"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedQuery" eSuperTypes="#//Query"/>
   <eClassifiers xsi:type="ecore:EClass" name="PostLoad" eSuperTypes="#//EventMethod"/>
   <eClassifiers xsi:type="ecore:EClass" name="PostPersist" eSuperTypes="#//EventMethod"/>
   <eClassifiers xsi:type="ecore:EClass" name="PostRemove" eSuperTypes="#//EventMethod"/>
@@ -377,35 +379,35 @@
   <eClassifiers xsi:type="ecore:EClass" name="PrePersist" eSuperTypes="#//EventMethod"/>
   <eClassifiers xsi:type="ecore:EClass" name="PreRemove" eSuperTypes="#//EventMethod"/>
   <eClassifiers xsi:type="ecore:EClass" name="PreUpdate" eSuperTypes="#//EventMethod"/>
-  <eClassifiers xsi:type="ecore:EClass" name="PrimaryKeyJoinColumn" eSuperTypes="#//NamedColumn">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlPrimaryKeyJoinColumn" eSuperTypes="#//XmlNamedColumn">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="referencedColumnName" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="QueryHint">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlQueryHint">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AbstractTable" abstract="true" interface="true">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlAbstractTable" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="catalog" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="schema" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="uniqueConstraints" upperBound="-1"
         eType="#//UniqueConstraint" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Table" eSuperTypes="#//AbstractTable"/>
-  <eClassifiers xsi:type="ecore:EClass" name="SecondaryTable" eSuperTypes="#//AbstractTable">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTable" eSuperTypes="#//XmlAbstractTable"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlSecondaryTable" eSuperTypes="#//XmlAbstractTable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="primaryKeyJoinColumns"
-        upperBound="-1" eType="#//PrimaryKeyJoinColumn" containment="true" resolveProxies="false"/>
+        upperBound="-1" eType="#//XmlPrimaryKeyJoinColumn" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Generator" abstract="true" interface="true">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlGenerator" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="initialValue" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="allocationSize" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SequenceGenerator" abstract="true" interface="true"
-      eSuperTypes="#//Generator">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlSequenceGenerator" abstract="true"
+      interface="true" eSuperTypes="#//XmlGenerator">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sequenceName" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SequenceGeneratorImpl" eSuperTypes="#//SequenceGenerator"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SequenceGeneratorImpl" eSuperTypes="#//XmlSequenceGenerator"/>
   <eClassifiers xsi:type="ecore:EClass" name="SqlResultSetMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="entityResults" upperBound="-1"
@@ -413,8 +415,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="columnResults" upperBound="-1"
         eType="#//ColumnResult" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TableGenerator" abstract="true" interface="true"
-      eSuperTypes="#//Generator">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTableGenerator" abstract="true" interface="true"
+      eSuperTypes="#//XmlGenerator">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="table" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="catalog" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="schema" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
@@ -424,7 +426,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="uniqueConstraints" upperBound="-1"
         eType="#//UniqueConstraint" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="TableGeneratorImpl" eSuperTypes="#//TableGenerator"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TableGeneratorImpl" eSuperTypes="#//XmlTableGenerator"/>
   <eClassifiers xsi:type="ecore:EClass" name="UniqueConstraint">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnNames" unique="false"
         lowerBound="1" upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>

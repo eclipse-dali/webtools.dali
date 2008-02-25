@@ -10,12 +10,16 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.Temporal;
+import org.eclipse.jpt.core.resource.java.TemporalType;
 
 
 public class NullTemporal extends AbstractResource implements Temporal, Annotation
 {	
-	protected NullTemporal(JavaPersistentResource parent) {
+	protected NullTemporal(JavaResourcePersistentMember parent) {
 		super(parent);
 	}
 
@@ -40,8 +44,8 @@ public class NullTemporal extends AbstractResource implements Temporal, Annotati
 	}
 	
 	@Override
-	public JavaPersistentResource parent() {
-		return (JavaPersistentResource) super.parent();
+	public JavaResourcePersistentMember parent() {
+		return (JavaResourcePersistentMember) super.parent();
 	}
 	
 	protected Temporal createTemporalResource() {
@@ -63,11 +67,11 @@ public class NullTemporal extends AbstractResource implements Temporal, Annotati
 		throw new UnsupportedOperationException();
 	}
 
-	public ITextRange textRange(CompilationUnit astRoot) {
+	public TextRange textRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public ITextRange valueTextRange(CompilationUnit astRoot) {
+	public TextRange valueTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 }

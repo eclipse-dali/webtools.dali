@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.persistence;
 
-import org.eclipse.jpt.core.internal.context.persistence.IPersistence;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistence;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.core.context.persistence.Persistence;
+import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
+import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 public class PersistenceTests extends ContextModelTestCase
@@ -23,14 +23,14 @@ public class PersistenceTests extends ContextModelTestCase
 		super(name);
 	}
 	
-	protected IPersistence persistence() {
+	protected Persistence persistence() {
 		return jpaContent().getPersistenceXml().getPersistence();
 	}
 	
 	public void testUpdateAddPersistenceUnit() throws Exception {
 		PersistenceResource prm = persistenceResource();
 		XmlPersistence xmlPersistence = prm.getPersistence();
-		IPersistence persistence = jpaContent().getPersistenceXml().getPersistence();
+		Persistence persistence = jpaContent().getPersistenceXml().getPersistence();
 		
 		// clear xml persistence units, test that it's clear in context
 		xmlPersistence.getPersistenceUnits().clear();
@@ -54,7 +54,7 @@ public class PersistenceTests extends ContextModelTestCase
 	
 	public void testModifyAddPersistencUnit() {
 		XmlPersistence xmlPersistence = xmlPersistence();
-		IPersistence persistence = persistence();
+		Persistence persistence = persistence();
 		
 		// clear xml persistence units, test that it's clear in context
 		xmlPersistence.getPersistenceUnits().clear();
@@ -74,7 +74,7 @@ public class PersistenceTests extends ContextModelTestCase
 	public void testUpdateRemovePersistenceUnit() throws Exception {
 		PersistenceResource prm = persistenceResource();
 		XmlPersistence xmlPersistence = prm.getPersistence();
-		IPersistence persistence = jpaContent().getPersistenceXml().getPersistence();
+		Persistence persistence = jpaContent().getPersistenceXml().getPersistence();
 		
 		// add a persistence unit and test that there are two existing xml and context persistence unit
 		XmlPersistenceUnit xmlPersistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
@@ -99,7 +99,7 @@ public class PersistenceTests extends ContextModelTestCase
 	
 	public void testModifyRemovePersistenceUnit() {
 		XmlPersistence xmlPersistence = xmlPersistence();
-		IPersistence persistence = persistence();
+		Persistence persistence = persistence();
 		
 		// add a persistence unit and test that there are two existing xml and context persistence unit
 		XmlPersistenceUnit xmlPersistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();

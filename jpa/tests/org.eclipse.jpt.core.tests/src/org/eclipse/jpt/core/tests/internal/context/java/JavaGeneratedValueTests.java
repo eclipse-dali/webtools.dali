@@ -12,13 +12,13 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.context.base.GenerationType;
-import org.eclipse.jpt.core.internal.context.base.IGeneratedValue;
-import org.eclipse.jpt.core.internal.context.base.IIdMapping;
-import org.eclipse.jpt.core.internal.resource.java.GeneratedValue;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.context.GenerationType;
+import org.eclipse.jpt.core.context.GeneratedValue;
+import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.resource.java.GeneratedValueAnnotation;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -66,13 +66,13 @@ public class JavaGeneratedValueTests extends ContextModelTestCase
 		createTestEntityWithGeneratedValue();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IIdMapping idMapping = (IIdMapping) javaPersistentType().attributeNamed("id").getMapping();
+		IdMapping idMapping = (IdMapping) javaPersistentType().attributeNamed("id").getMapping();
 		assertEquals(GENERATOR, idMapping.getGeneratedValue().getGenerator());
 
 		//change resource model sequenceGenerator name, verify the context model is updated
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
-		GeneratedValue generatedValue = (GeneratedValue) attributeResource.annotation(JPA.GENERATED_VALUE);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.annotation(JPA.GENERATED_VALUE);
 		
 		generatedValue.setGenerator("foo");
 		
@@ -83,16 +83,16 @@ public class JavaGeneratedValueTests extends ContextModelTestCase
 		createTestEntityWithGeneratedValue();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IIdMapping idMapping = (IIdMapping) javaPersistentType().attributeNamed("id").getMapping();
+		IdMapping idMapping = (IdMapping) javaPersistentType().attributeNamed("id").getMapping();
 		assertEquals(GENERATOR, idMapping.getGeneratedValue().getGenerator());
 
 		idMapping.getGeneratedValue().setSpecifiedGenerator("foo");
 		
 		assertEquals("foo", idMapping.getGeneratedValue().getGenerator());
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
-		GeneratedValue generatedValue = (GeneratedValue) attributeResource.annotation(JPA.GENERATED_VALUE);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.annotation(JPA.GENERATED_VALUE);
 		
 		assertEquals("foo", generatedValue.getGenerator());
 	}
@@ -101,16 +101,16 @@ public class JavaGeneratedValueTests extends ContextModelTestCase
 		createTestEntityWithGeneratedValue();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IIdMapping idMapping = (IIdMapping) javaPersistentType().attributeNamed("id").getMapping();
+		IdMapping idMapping = (IdMapping) javaPersistentType().attributeNamed("id").getMapping();
 		assertEquals(GENERATOR, idMapping.getGeneratedValue().getGenerator());
 
 		idMapping.getGeneratedValue().setSpecifiedGenerator(null);
 		
 		assertNotNull(idMapping.getGeneratedValue());
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
-		GeneratedValue generatedValue = (GeneratedValue) attributeResource.annotation(JPA.GENERATED_VALUE);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.annotation(JPA.GENERATED_VALUE);
 		
 		assertNotNull(generatedValue);
 	}
@@ -119,41 +119,41 @@ public class JavaGeneratedValueTests extends ContextModelTestCase
 		createTestEntityWithGeneratedValue();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IIdMapping idMapping = (IIdMapping) javaPersistentType().attributeNamed("id").getMapping();
-		assertEquals(IGeneratedValue.DEFAULT_STRATEGY, idMapping.getGeneratedValue().getStrategy());
+		IdMapping idMapping = (IdMapping) javaPersistentType().attributeNamed("id").getMapping();
+		assertEquals(GeneratedValue.DEFAULT_STRATEGY, idMapping.getGeneratedValue().getStrategy());
 
 		//change resource model sequenceGenerator name, verify the context model is updated
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
-		GeneratedValue generatedValue = (GeneratedValue) attributeResource.annotation(JPA.GENERATED_VALUE);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.annotation(JPA.GENERATED_VALUE);
 		
-		generatedValue.setStrategy(org.eclipse.jpt.core.internal.resource.java.GenerationType.IDENTITY);
+		generatedValue.setStrategy(org.eclipse.jpt.core.resource.java.GenerationType.IDENTITY);
 		
 		assertEquals(GenerationType.IDENTITY, idMapping.getGeneratedValue().getStrategy());
-		assertEquals(IGeneratedValue.DEFAULT_STRATEGY, idMapping.getGeneratedValue().getDefaultStrategy());
+		assertEquals(GeneratedValue.DEFAULT_STRATEGY, idMapping.getGeneratedValue().getDefaultStrategy());
 	}
 
 	public void testSetSpecifiedStrategy() throws Exception {
 		createTestEntityWithGeneratedValue();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IIdMapping idMapping = (IIdMapping) javaPersistentType().attributeNamed("id").getMapping();
-		assertEquals(IGeneratedValue.DEFAULT_STRATEGY, idMapping.getGeneratedValue().getStrategy());
+		IdMapping idMapping = (IdMapping) javaPersistentType().attributeNamed("id").getMapping();
+		assertEquals(GeneratedValue.DEFAULT_STRATEGY, idMapping.getGeneratedValue().getStrategy());
 
 		idMapping.getGeneratedValue().setSpecifiedStrategy(GenerationType.IDENTITY);
 		
 		assertEquals(GenerationType.IDENTITY, idMapping.getGeneratedValue().getStrategy());
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
-		GeneratedValue generatedValue = (GeneratedValue) attributeResource.annotation(JPA.GENERATED_VALUE);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
+		GeneratedValueAnnotation generatedValue = (GeneratedValueAnnotation) attributeResource.annotation(JPA.GENERATED_VALUE);
 		
-		assertEquals(org.eclipse.jpt.core.internal.resource.java.GenerationType.IDENTITY, generatedValue.getStrategy());
+		assertEquals(org.eclipse.jpt.core.resource.java.GenerationType.IDENTITY, generatedValue.getStrategy());
 		
 		idMapping.getGeneratedValue().setSpecifiedStrategy(null);
 		
-		assertEquals(IGeneratedValue.DEFAULT_STRATEGY, idMapping.getGeneratedValue().getStrategy());
-		generatedValue = (GeneratedValue) attributeResource.annotation(JPA.GENERATED_VALUE);
+		assertEquals(GeneratedValue.DEFAULT_STRATEGY, idMapping.getGeneratedValue().getStrategy());
+		generatedValue = (GeneratedValueAnnotation) attributeResource.annotation(JPA.GENERATED_VALUE);
 		assertNotNull(generatedValue);
 		assertNull(generatedValue.getStrategy());
 	}

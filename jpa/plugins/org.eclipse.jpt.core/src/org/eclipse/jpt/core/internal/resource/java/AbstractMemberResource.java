@@ -11,16 +11,17 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 
 public abstract class AbstractMemberResource<E extends Member> extends AbstractResource
 {
 	private final E member;
 	
 	
-	protected AbstractMemberResource(JavaResource parent, E member) {
+	protected AbstractMemberResource(JavaResourceNode parent, E member) {
 		super(parent);
 		this.member = member;
 	}
@@ -30,7 +31,7 @@ public abstract class AbstractMemberResource<E extends Member> extends AbstractR
 		return this.member;
 	}
 	
-	protected ITextRange elementTextRange(DeclarationAnnotationElementAdapter<?> elementAdapter, CompilationUnit astRoot) {
+	protected TextRange elementTextRange(DeclarationAnnotationElementAdapter<?> elementAdapter, CompilationUnit astRoot) {
 		return this.elementTextRange(this.member.annotationElementTextRange(elementAdapter, astRoot), astRoot);
 	}
 	
@@ -39,7 +40,7 @@ public abstract class AbstractMemberResource<E extends Member> extends AbstractR
 	 * return the Java object's text range instead (which is usually the
 	 * annotation's text range).
 	 */
-	protected ITextRange elementTextRange(ITextRange elementTextRange, CompilationUnit astRoot) {
+	protected TextRange elementTextRange(TextRange elementTextRange, CompilationUnit astRoot) {
 		return (elementTextRange != null) ? elementTextRange : this.textRange(astRoot);
 	}
 	
@@ -55,7 +56,7 @@ public abstract class AbstractMemberResource<E extends Member> extends AbstractR
 	 * Convenience method. Return whether element's text range is not
 	 * null (meaning the element exists) and the specified position touches it.
 	 */
-	protected boolean elementTouches(ITextRange elementTextRange, int pos) {
+	protected boolean elementTouches(TextRange elementTextRange, int pos) {
 		return (elementTextRange != null) && elementTextRange.touches(pos);
 	}
 }

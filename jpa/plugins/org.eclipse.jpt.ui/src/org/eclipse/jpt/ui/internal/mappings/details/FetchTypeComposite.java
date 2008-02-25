@@ -9,9 +9,9 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.core.internal.context.base.FetchType;
-import org.eclipse.jpt.core.internal.context.base.IFetchable;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.core.context.FetchType;
+import org.eclipse.jpt.core.context.Fetchable;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
  * |        ------------------------------------------------------------------ |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IFetchable
+ * @see Fetchable
  * @see BasicMappingComposite - A container of this widget
  * @see ManyToManyMappingComposite - A container of this widget
  * @see ManyToOneMappingComposite - A container of this widget
@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class FetchTypeComposite extends AbstractFormPane<IFetchable> {
+public class FetchTypeComposite extends AbstractFormPane<Fetchable> {
 
 	/**
 	 * Creates a new <code>FetchTypeComposite</code>.
@@ -44,21 +44,21 @@ public class FetchTypeComposite extends AbstractFormPane<IFetchable> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public FetchTypeComposite(AbstractFormPane<? extends IFetchable> parentPane,
+	public FetchTypeComposite(AbstractFormPane<? extends Fetchable> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent);
 	}
 
-	private EnumFormComboViewer<IFetchable, FetchType> buildFetchTypeCombo(Composite container) {
+	private EnumFormComboViewer<Fetchable, FetchType> buildFetchTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<IFetchable, FetchType>(this, container) {
+		return new EnumFormComboViewer<Fetchable, FetchType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(IFetchable.DEFAULT_FETCH_PROPERTY);
-				propertyNames.add(IFetchable.SPECIFIED_FETCH_PROPERTY);
+				propertyNames.add(Fetchable.DEFAULT_FETCH_PROPERTY);
+				propertyNames.add(Fetchable.SPECIFIED_FETCH_PROPERTY);
 			}
 
 			@Override
@@ -102,7 +102,7 @@ public class FetchTypeComposite extends AbstractFormPane<IFetchable> {
 			container,
 			JptUiMappingsMessages.BasicGeneralSection_fetchLabel,
 			buildFetchTypeCombo(container),
-			IJpaHelpContextIds.MAPPING_FETCH_TYPE
+			JpaHelpContextIds.MAPPING_FETCH_TYPE
 		);
 	}
 }

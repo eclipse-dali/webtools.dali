@@ -12,31 +12,31 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
-import org.eclipse.jpt.core.internal.context.base.IEmbeddedIdMapping;
-import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
-import org.eclipse.jpt.core.internal.context.base.IIdMapping;
-import org.eclipse.jpt.core.internal.context.base.IManyToManyMapping;
-import org.eclipse.jpt.core.internal.context.base.IManyToOneMapping;
-import org.eclipse.jpt.core.internal.context.base.IOneToManyMapping;
-import org.eclipse.jpt.core.internal.context.base.IOneToOneMapping;
-import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.base.ITransientMapping;
-import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
-import org.eclipse.jpt.core.internal.resource.java.Basic;
-import org.eclipse.jpt.core.internal.resource.java.Embedded;
-import org.eclipse.jpt.core.internal.resource.java.EmbeddedId;
-import org.eclipse.jpt.core.internal.resource.java.Id;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.ManyToMany;
-import org.eclipse.jpt.core.internal.resource.java.ManyToOne;
-import org.eclipse.jpt.core.internal.resource.java.OneToMany;
-import org.eclipse.jpt.core.internal.resource.java.OneToOne;
-import org.eclipse.jpt.core.internal.resource.java.Transient;
-import org.eclipse.jpt.core.internal.resource.java.Version;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.BasicMapping;
+import org.eclipse.jpt.core.context.EmbeddedIdMapping;
+import org.eclipse.jpt.core.context.EmbeddedMapping;
+import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.context.ManyToManyMapping;
+import org.eclipse.jpt.core.context.ManyToOneMapping;
+import org.eclipse.jpt.core.context.OneToManyMapping;
+import org.eclipse.jpt.core.context.OneToOneMapping;
+import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.TransientMapping;
+import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.resource.java.Basic;
+import org.eclipse.jpt.core.resource.java.Embedded;
+import org.eclipse.jpt.core.resource.java.EmbeddedId;
+import org.eclipse.jpt.core.resource.java.Id;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.ManyToMany;
+import org.eclipse.jpt.core.resource.java.ManyToOne;
+import org.eclipse.jpt.core.resource.java.OneToMany;
+import org.eclipse.jpt.core.resource.java.OneToOne;
+import org.eclipse.jpt.core.resource.java.Transient;
+import org.eclipse.jpt.core.resource.java.Version;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -79,16 +79,16 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		ITransientMapping transientMapping = (ITransientMapping) persistentAttribute.getMapping();
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-		assertTrue(persistentAttribute.getMapping() instanceof IBasicMapping);
+		persistentAttribute.setSpecifiedMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof BasicMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.mappingAnnotation(Transient.ANNOTATION_NAME));
 		assertNotNull(attributeResource.mappingAnnotation(Basic.ANNOTATION_NAME));
 	}
@@ -97,16 +97,16 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		ITransientMapping transientMapping = (ITransientMapping) persistentAttribute.getMapping();
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
-		assertTrue(persistentAttribute.getMapping() instanceof IBasicMapping);
+		persistentAttribute.setSpecifiedMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof BasicMapping);
 		assertTrue(persistentAttribute.getMapping().isDefault());
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.mappingAnnotation(Transient.ANNOTATION_NAME));
 	}
 	
@@ -114,15 +114,15 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		ITransientMapping transientMapping = (ITransientMapping) persistentAttribute.getMapping();
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
-		assertTrue(persistentAttribute.getMapping() instanceof IVersionMapping);
+		persistentAttribute.setSpecifiedMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof VersionMapping);
 	
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.mappingAnnotation(Transient.ANNOTATION_NAME));
 		assertNotNull(attributeResource.mappingAnnotation(Version.ANNOTATION_NAME));
 	}
@@ -131,15 +131,15 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		ITransientMapping transientMapping = (ITransientMapping) persistentAttribute.getMapping();
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
-		assertTrue(persistentAttribute.getMapping() instanceof IEmbeddedMapping);
+		persistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedMapping);
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.mappingAnnotation(Transient.ANNOTATION_NAME));
 		assertNotNull(attributeResource.mappingAnnotation(Embedded.ANNOTATION_NAME));
 	}
@@ -148,15 +148,15 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		ITransientMapping transientMapping = (ITransientMapping) persistentAttribute.getMapping();
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
-		assertTrue(persistentAttribute.getMapping() instanceof IIdMapping);
+		persistentAttribute.setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof IdMapping);
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.mappingAnnotation(Transient.ANNOTATION_NAME));
 		assertNotNull(attributeResource.mappingAnnotation(Id.ANNOTATION_NAME));
 	}
@@ -165,15 +165,15 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		ITransientMapping transientMapping = (ITransientMapping) persistentAttribute.getMapping();
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
-		assertTrue(persistentAttribute.getMapping() instanceof IEmbeddedIdMapping);
+		persistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedIdMapping);
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.mappingAnnotation(Transient.ANNOTATION_NAME));
 		assertNotNull(attributeResource.mappingAnnotation(EmbeddedId.ANNOTATION_NAME));
 	}
@@ -182,15 +182,15 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		ITransientMapping transientMapping = (ITransientMapping) persistentAttribute.getMapping();
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		assertTrue(persistentAttribute.getMapping() instanceof IOneToOneMapping);
+		persistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof OneToOneMapping);
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.mappingAnnotation(Transient.ANNOTATION_NAME));
 		assertNotNull(attributeResource.mappingAnnotation(OneToOne.ANNOTATION_NAME));
 	}
@@ -199,15 +199,15 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		ITransientMapping transientMapping = (ITransientMapping) persistentAttribute.getMapping();
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-		assertTrue(persistentAttribute.getMapping() instanceof IOneToManyMapping);
+		persistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof OneToManyMapping);
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.mappingAnnotation(Transient.ANNOTATION_NAME));
 		assertNotNull(attributeResource.mappingAnnotation(OneToMany.ANNOTATION_NAME));
 	}
@@ -216,15 +216,15 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		ITransientMapping transientMapping = (ITransientMapping) persistentAttribute.getMapping();
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		assertTrue(persistentAttribute.getMapping() instanceof IManyToOneMapping);
+		persistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof ManyToOneMapping);
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.mappingAnnotation(Transient.ANNOTATION_NAME));
 		assertNotNull(attributeResource.mappingAnnotation(ManyToOne.ANNOTATION_NAME));
 	}
@@ -233,15 +233,15 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		ITransientMapping transientMapping = (ITransientMapping) persistentAttribute.getMapping();
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-		assertTrue(persistentAttribute.getMapping() instanceof IManyToManyMapping);
+		persistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		assertTrue(persistentAttribute.getMapping() instanceof ManyToManyMapping);
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 		assertNull(attributeResource.mappingAnnotation(Transient.ANNOTATION_NAME));
 		assertNotNull(attributeResource.mappingAnnotation(ManyToMany.ANNOTATION_NAME));
 	}
@@ -250,8 +250,8 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		createTestEntityWithTransientMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		IPersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
-		ITransientMapping transientMapping = (ITransientMapping) persistentAttribute.getSpecifiedMapping();
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getSpecifiedMapping();
 
 		assertNotNull(transientMapping);
 	}

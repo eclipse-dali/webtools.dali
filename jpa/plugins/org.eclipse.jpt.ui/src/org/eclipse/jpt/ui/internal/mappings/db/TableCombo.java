@@ -8,10 +8,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.db;
 
-import org.eclipse.jpt.core.internal.IJpaNode;
+import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public abstract class TableCombo<T extends IJpaNode> extends AbstractDatabaseObjectCombo<T>
+public abstract class TableCombo<T extends JpaNode> extends AbstractDatabaseObjectCombo<T>
 {
 	/**
 	 * Creates a new <code>TableCombo</code>.
@@ -58,7 +58,7 @@ public abstract class TableCombo<T extends IJpaNode> extends AbstractDatabaseObj
 	 */
 	public TableCombo(PropertyValueModel<? extends T> subjectHolder,
 	                  Composite parent,
-	                  IWidgetFactory widgetFactory)
+	                  WidgetFactory widgetFactory)
 	{
 		super(subjectHolder, parent, widgetFactory);
 	}

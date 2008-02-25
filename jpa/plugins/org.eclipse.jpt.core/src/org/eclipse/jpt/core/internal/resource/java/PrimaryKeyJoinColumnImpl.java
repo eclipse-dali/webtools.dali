@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
@@ -22,6 +22,14 @@ import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.core.resource.java.NestablePrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 
 public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements NestablePrimaryKeyJoinColumn
 {
@@ -35,17 +43,17 @@ public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements Nes
 
 	private String referencedColumnName;
 	
-	protected PrimaryKeyJoinColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected PrimaryKeyJoinColumnImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.referencedColumnNameDeclarationAdapter = this.buildStringElementAdapter(JPA.PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME);
 		this.referencedColumnNameAdapter = this.buildShortCircuitElementAdapter(this.referencedColumnNameDeclarationAdapter);
 	}
 	
-	protected PrimaryKeyJoinColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
+	protected PrimaryKeyJoinColumnImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
 		this(parent, member, daa, new MemberAnnotationAdapter(member, daa));
 	}
 	
-	protected PrimaryKeyJoinColumnImpl(JavaResource parent, Member member, IndexedDeclarationAnnotationAdapter idaa) {
+	protected PrimaryKeyJoinColumnImpl(JavaResourceNode parent, Member member, IndexedDeclarationAnnotationAdapter idaa) {
 		this(parent, member, idaa, new MemberIndexedAnnotationAdapter(member, idaa));
 	}
 	
@@ -80,7 +88,7 @@ public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements Nes
 	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		super.initializeFrom(oldAnnotation);
-		PrimaryKeyJoinColumn oldColumn = (PrimaryKeyJoinColumn) oldAnnotation;
+		PrimaryKeyJoinColumnAnnotation oldColumn = (PrimaryKeyJoinColumnAnnotation) oldAnnotation;
 		setReferencedColumnName(oldColumn.getReferencedColumnName());
 	}
 	
@@ -109,17 +117,17 @@ public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements Nes
 		return this.elementTouches(this.referencedColumnNameDeclarationAdapter, pos, astRoot);
 	}
 
-	public ITextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
+	public TextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.referencedColumnNameDeclarationAdapter, astRoot);
 	}
 	
 	// ********** static methods **********
 
-	static PrimaryKeyJoinColumnImpl createPrimaryKeyJoinColumn(JavaResource parent, Member member) {
+	static PrimaryKeyJoinColumnImpl createPrimaryKeyJoinColumn(JavaResourceNode parent, Member member) {
 		return new PrimaryKeyJoinColumnImpl(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	
-	static PrimaryKeyJoinColumnImpl createNestedPrimaryKeyJoinColumn(JavaResource parent, Member member, int index, DeclarationAnnotationAdapter pkJoinColumnsAdapter) {
+	static PrimaryKeyJoinColumnImpl createNestedPrimaryKeyJoinColumn(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter pkJoinColumnsAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, pkJoinColumnsAdapter);
 		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
 		return new PrimaryKeyJoinColumnImpl(parent, member, idaa, annotationAdapter);
@@ -130,7 +138,7 @@ public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements Nes
 	}
 
 
-	static NestablePrimaryKeyJoinColumn createSecondaryTablePrimaryKeyJoinColumn(DeclarationAnnotationAdapter secondaryTableAdapter, JavaResource parent, Member member, int index) {
+	static NestablePrimaryKeyJoinColumn createSecondaryTablePrimaryKeyJoinColumn(DeclarationAnnotationAdapter secondaryTableAdapter, JavaResourceNode parent, Member member, int index) {
 		return new PrimaryKeyJoinColumnImpl(parent, member, buildSecondaryTableAnnotationAdapter(secondaryTableAdapter, index));
 	}
 
@@ -158,11 +166,11 @@ public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements Nes
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return PrimaryKeyJoinColumnImpl.createPrimaryKeyJoinColumn(parent, member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

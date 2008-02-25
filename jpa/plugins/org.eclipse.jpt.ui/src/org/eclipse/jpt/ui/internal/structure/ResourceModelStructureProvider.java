@@ -10,15 +10,15 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
 
-import org.eclipse.jpt.core.internal.IResourceModel;
+import org.eclipse.jpt.core.ResourceModel;
 
 public abstract class ResourceModelStructureProvider
-	implements IJpaStructureProvider
+	implements JpaStructureProvider
 {
-	protected IResourceModel resourceModel;
+	protected ResourceModel resourceModel;
 	
 	
-	public ResourceModelStructureProvider(IResourceModel resourceModel) {
+	public ResourceModelStructureProvider(ResourceModel resourceModel) {
 		this.resourceModel = resourceModel;
 	}
 	

@@ -10,38 +10,38 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
 
-import org.eclipse.jpt.core.internal.context.persistence.IClassRef;
-import org.eclipse.jpt.core.internal.context.persistence.IMappingFileRef;
-import org.eclipse.jpt.core.internal.context.persistence.IPersistence;
-import org.eclipse.jpt.core.internal.context.persistence.IPersistenceUnit;
+import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.context.persistence.Persistence;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.jface.AbstractItemLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingContentAndLabelProvider;
-import org.eclipse.jpt.ui.internal.jface.IItemLabelProvider;
-import org.eclipse.jpt.ui.internal.jface.IItemLabelProviderFactory;
+import org.eclipse.jpt.ui.internal.jface.ItemLabelProvider;
+import org.eclipse.jpt.ui.internal.jface.ItemLabelProviderFactory;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 
 public class PersistenceItemLabelProviderFactory
-	implements IItemLabelProviderFactory
+	implements ItemLabelProviderFactory
 {
-	public IItemLabelProvider buildItemLabelProvider(
+	public ItemLabelProvider buildItemLabelProvider(
 			Object item, DelegatingContentAndLabelProvider contentAndLabelProvider) {
-		if (item instanceof IPersistence) {
-			return new PersistenceItemLabelProvider((IPersistence) item, contentAndLabelProvider);
+		if (item instanceof Persistence) {
+			return new PersistenceItemLabelProvider((Persistence) item, contentAndLabelProvider);
 		}
-		else if (item instanceof IPersistenceUnit) {
-			return new PersistenceUnitItemLabelProvider((IPersistenceUnit) item, contentAndLabelProvider);	
+		else if (item instanceof PersistenceUnit) {
+			return new PersistenceUnitItemLabelProvider((PersistenceUnit) item, contentAndLabelProvider);	
 		}
-		else if (item instanceof IMappingFileRef) {
-			return new MappingFileRefItemLabelProvider((IMappingFileRef) item, contentAndLabelProvider);	
+		else if (item instanceof MappingFileRef) {
+			return new MappingFileRefItemLabelProvider((MappingFileRef) item, contentAndLabelProvider);	
 		}
-		else if (item instanceof IClassRef) {
-			return new ClassRefItemLabelProvider((IClassRef) item, contentAndLabelProvider);	
+		else if (item instanceof ClassRef) {
+			return new ClassRefItemLabelProvider((ClassRef) item, contentAndLabelProvider);	
 		}
 		return null;
 	}
@@ -50,7 +50,7 @@ public class PersistenceItemLabelProviderFactory
 	public static class PersistenceItemLabelProvider extends AbstractItemLabelProvider
 	{
 		public PersistenceItemLabelProvider(
-				IPersistence persistence, DelegatingContentAndLabelProvider labelProvider) {
+				Persistence persistence, DelegatingContentAndLabelProvider labelProvider) {
 			super(persistence, labelProvider);
 		}
 		
@@ -69,13 +69,13 @@ public class PersistenceItemLabelProviderFactory
 	public static class PersistenceUnitItemLabelProvider extends AbstractItemLabelProvider
 	{
 		public PersistenceUnitItemLabelProvider(
-				IPersistenceUnit persistenceUnit, DelegatingContentAndLabelProvider labelProvider) {
+				PersistenceUnit persistenceUnit, DelegatingContentAndLabelProvider labelProvider) {
 			super(persistenceUnit, labelProvider);
 		}
 		
 		@Override
 		protected PropertyValueModel<String> buildTextModel() {
-			return new PropertyAspectAdapter<IPersistenceUnit, String>(IPersistenceUnit.NAME_PROPERTY, (IPersistenceUnit) model()) {
+			return new PropertyAspectAdapter<PersistenceUnit, String>(PersistenceUnit.NAME_PROPERTY, (PersistenceUnit) model()) {
 				 @Override
 				protected String buildValue_() {
 					return subject.getName();
@@ -93,13 +93,13 @@ public class PersistenceItemLabelProviderFactory
 	public static class MappingFileRefItemLabelProvider extends AbstractItemLabelProvider
 	{
 		public MappingFileRefItemLabelProvider(
-				IMappingFileRef mappingFileRef, DelegatingContentAndLabelProvider labelProvider) {
+				MappingFileRef mappingFileRef, DelegatingContentAndLabelProvider labelProvider) {
 			super(mappingFileRef, labelProvider);
 		}
 		
 		@Override
 		protected PropertyValueModel<String> buildTextModel() {
-			return new PropertyAspectAdapter<IMappingFileRef, String>(IMappingFileRef.FILE_NAME_PROPERTY, (IMappingFileRef) model()) {
+			return new PropertyAspectAdapter<MappingFileRef, String>(MappingFileRef.FILE_NAME_PROPERTY, (MappingFileRef) model()) {
 				 @Override
 				protected String buildValue_() {
 					return subject.getFileName();
@@ -110,7 +110,7 @@ public class PersistenceItemLabelProviderFactory
 		@Override
 		protected PropertyValueModel<Image> buildImageModel() {
 			Image image = JptUiPlugin.getImage(JptUiIcons.MAPPING_FILE_REF);
-			if (((IMappingFileRef) model()).isVirtual()) {
+			if (((MappingFileRef) model()).isVirtual()) {
 				image = JptUiIcons.ghost(image);
 			}
 			return new StaticPropertyValueModel<Image>(image);
@@ -121,13 +121,13 @@ public class PersistenceItemLabelProviderFactory
 	public static class ClassRefItemLabelProvider extends AbstractItemLabelProvider
 	{
 		public ClassRefItemLabelProvider(
-				IClassRef classRef, DelegatingContentAndLabelProvider labelProvider) {
+				ClassRef classRef, DelegatingContentAndLabelProvider labelProvider) {
 			super(classRef, labelProvider);
 		}
 		
 		@Override
 		protected PropertyValueModel<String> buildTextModel() {
-			return new PropertyAspectAdapter<IClassRef, String>(IClassRef.CLASS_NAME_PROPERTY, (IClassRef) model()) {
+			return new PropertyAspectAdapter<ClassRef, String>(ClassRef.CLASS_NAME_PROPERTY, (ClassRef) model()) {
 				 @Override
 				protected String buildValue_() {
 					return subject.getClassName();
@@ -138,7 +138,7 @@ public class PersistenceItemLabelProviderFactory
 		@Override
 		protected PropertyValueModel<Image> buildImageModel() {
 			Image image = JptUiPlugin.getImage(JptUiIcons.CLASS_REF);
-			if (((IClassRef) model()).isVirtual()) {
+			if (((ClassRef) model()).isVirtual()) {
 				image = JptUiIcons.ghost(image);
 			}
 			return new StaticPropertyValueModel<Image>(image);

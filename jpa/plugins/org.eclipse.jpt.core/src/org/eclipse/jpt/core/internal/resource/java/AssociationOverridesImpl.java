@@ -17,6 +17,12 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
+import org.eclipse.jpt.core.resource.java.AssociationOverrides;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NestableAssociationOverride;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
@@ -26,7 +32,7 @@ public class AssociationOverridesImpl extends AbstractAnnotationResource<Member>
 
 	protected final List<NestableAssociationOverride> associationOverrides;
 	
-	protected AssociationOverridesImpl(JavaResource parent, Member member) {
+	protected AssociationOverridesImpl(JavaResourceNode parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.associationOverrides = new ArrayList<NestableAssociationOverride>();
 	}
@@ -40,7 +46,7 @@ public class AssociationOverridesImpl extends AbstractAnnotationResource<Member>
 	}
 
 	public String getNestableAnnotationName() {
-		return AssociationOverride.ANNOTATION_NAME;
+		return AssociationOverrideAnnotation.ANNOTATION_NAME;
 	}
 		
 	public ListIterator<NestableAssociationOverride> nestedAnnotations() {
@@ -131,11 +137,11 @@ public class AssociationOverridesImpl extends AbstractAnnotationResource<Member>
 			super();
 		}
 
-		public AssociationOverrides buildAnnotation(JavaPersistentResource parent, Member member) {
+		public AssociationOverrides buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new AssociationOverridesImpl(parent, member);
 		}
 		
-		public AssociationOverrides buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public AssociationOverrides buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
+import org.eclipse.jpt.core.context.AbstractJoinColumn;
+import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 
@@ -35,7 +35,7 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 	 * @param owner The owner of the join column to create or where it is located
 	 * @param joinColumn The join column to edit
 	 */
-	public JoinColumnStateObject(Object owner, IJoinColumn joinColumn) {
+	public JoinColumnStateObject(Object owner, JoinColumn joinColumn) {
 		super(owner, joinColumn);
 	}
 
@@ -43,7 +43,7 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 
 	public Boolean getDefaultInsertable() {
 
-		IJoinColumn joinColumn = getJoinColumn();
+		JoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn != null) {
 			return joinColumn.getDefaultInsertable();
@@ -54,7 +54,7 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 
 	public Boolean getDefaultUpdatable() {
 
-		IJoinColumn joinColumn = getJoinColumn();
+		JoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn != null) {
 			return joinColumn.getDefaultUpdatable();
@@ -71,8 +71,8 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 	 * (non-Javadoc)
 	 */
 	@Override
-	public IJoinColumn getJoinColumn() {
-		return (IJoinColumn) super.getJoinColumn();
+	public JoinColumn getJoinColumn() {
+		return (JoinColumn) super.getJoinColumn();
 	}
 
 	/*
@@ -106,12 +106,12 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 	 */
 	@Override
 	protected void initialize(Object owner,
-	                          IAbstractJoinColumn abstractJoinColumn) {
+	                          AbstractJoinColumn abstractJoinColumn) {
 
 		super.initialize(owner, abstractJoinColumn);
 
 		if (abstractJoinColumn != null) {
-			IJoinColumn joinColumn = (IJoinColumn) abstractJoinColumn;
+			JoinColumn joinColumn = (JoinColumn) abstractJoinColumn;
 
 			table      = joinColumn.getSpecifiedTable();
 			insertable = joinColumn.getSpecifiedInsertable();
@@ -139,7 +139,7 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 
 	public String specifiedTableName() {
 
-		IJoinColumn joinColumn = getJoinColumn();
+		JoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn != null) {
 			return joinColumn.getSpecifiedTable();
@@ -156,11 +156,11 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 	 * (non-Javadoc)
 	 */
 	@Override
-	public void updateJoinColumn(IAbstractJoinColumn abstractJoinColumn) {
+	public void updateJoinColumn(AbstractJoinColumn abstractJoinColumn) {
 
 		super.updateJoinColumn(abstractJoinColumn);
 
-		IJoinColumn joinColumn = (IJoinColumn) abstractJoinColumn;
+		JoinColumn joinColumn = (JoinColumn) abstractJoinColumn;
 
 		// Table
 		if (valuesAreDifferent(table, joinColumn.getSpecifiedTable())) {

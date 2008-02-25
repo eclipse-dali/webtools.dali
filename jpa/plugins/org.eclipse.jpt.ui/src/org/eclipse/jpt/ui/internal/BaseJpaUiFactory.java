@@ -9,20 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal;
 
-import org.eclipse.jpt.core.internal.context.base.IBasicMapping;
-import org.eclipse.jpt.core.internal.context.base.IEmbeddable;
-import org.eclipse.jpt.core.internal.context.base.IEmbeddedIdMapping;
-import org.eclipse.jpt.core.internal.context.base.IEmbeddedMapping;
-import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.IIdMapping;
-import org.eclipse.jpt.core.internal.context.base.IManyToManyMapping;
-import org.eclipse.jpt.core.internal.context.base.IManyToOneMapping;
-import org.eclipse.jpt.core.internal.context.base.IMappedSuperclass;
-import org.eclipse.jpt.core.internal.context.base.IOneToManyMapping;
-import org.eclipse.jpt.core.internal.context.base.IOneToOneMapping;
-import org.eclipse.jpt.core.internal.context.base.ITransientMapping;
-import org.eclipse.jpt.core.internal.context.base.IVersionMapping;
-import org.eclipse.jpt.ui.internal.details.IJpaComposite;
+import org.eclipse.jpt.core.context.BasicMapping;
+import org.eclipse.jpt.core.context.Embeddable;
+import org.eclipse.jpt.core.context.EmbeddedIdMapping;
+import org.eclipse.jpt.core.context.EmbeddedMapping;
+import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.context.ManyToManyMapping;
+import org.eclipse.jpt.core.context.ManyToOneMapping;
+import org.eclipse.jpt.core.context.MappedSuperclass;
+import org.eclipse.jpt.core.context.OneToManyMapping;
+import org.eclipse.jpt.core.context.OneToOneMapping;
+import org.eclipse.jpt.core.context.TransientMapping;
+import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.ui.JpaUiFactory;
+import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.BasicMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.EmbeddableComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.EmbeddedIdMappingComposite;
@@ -44,18 +45,18 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * The default implementation of the UI factory required to show the information
  * related to a JPA mapping (type or attribute).
  *
- * @see IJpaUiFactory
+ * @see JpaUiFactory
  *
  * @version 2.0
  * @since 1.0
  */
-public abstract class BaseJpaUiFactory implements IJpaUiFactory
+public abstract class BaseJpaUiFactory implements JpaUiFactory
 {
 	/*
 	 * (non-Javadoc)
 	 */
-	public IJpaComposite<IBasicMapping> createBasicMappingComposite(
-		PropertyValueModel<IBasicMapping> subjectHolder,
+	public JpaComposite<BasicMapping> createBasicMappingComposite(
+		PropertyValueModel<BasicMapping> subjectHolder,
 		Composite parent,
 		TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -65,8 +66,8 @@ public abstract class BaseJpaUiFactory implements IJpaUiFactory
 	/*
 	 * (non-Javadoc)
 	 */
-	public IJpaComposite<IEmbeddable> createEmbeddableComposite(
-		PropertyValueModel<IEmbeddable> subjectHolder,
+	public JpaComposite<Embeddable> createEmbeddableComposite(
+		PropertyValueModel<Embeddable> subjectHolder,
 		Composite parent,
 		TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -76,8 +77,8 @@ public abstract class BaseJpaUiFactory implements IJpaUiFactory
 	/*
 	 * (non-Javadoc)
 	 */
-	public IJpaComposite<IEmbeddedIdMapping> createEmbeddedIdMappingComposite(
-		PropertyValueModel<IEmbeddedIdMapping> subjectHolder,
+	public JpaComposite<EmbeddedIdMapping> createEmbeddedIdMappingComposite(
+		PropertyValueModel<EmbeddedIdMapping> subjectHolder,
 		Composite parent,
 		TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -87,8 +88,8 @@ public abstract class BaseJpaUiFactory implements IJpaUiFactory
 	/*
 	 * (non-Javadoc)
 	 */
-	public IJpaComposite<IEmbeddedMapping> createEmbeddedMappingComposite(
-		PropertyValueModel<IEmbeddedMapping> subjectHolder,
+	public JpaComposite<EmbeddedMapping> createEmbeddedMappingComposite(
+		PropertyValueModel<EmbeddedMapping> subjectHolder,
 		Composite parent,
 		TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -98,8 +99,8 @@ public abstract class BaseJpaUiFactory implements IJpaUiFactory
 	/*
 	 * (non-Javadoc)
 	 */
-	public IJpaComposite<IEntity> createEntityComposite(
-		PropertyValueModel<IEntity> subjectHolder,
+	public JpaComposite<Entity> createEntityComposite(
+		PropertyValueModel<Entity> subjectHolder,
 		Composite parent,
 		TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -109,8 +110,8 @@ public abstract class BaseJpaUiFactory implements IJpaUiFactory
 	/*
 	 * (non-Javadoc)
 	 */
-	public IJpaComposite<IIdMapping> createIdMappingComposite(
-		PropertyValueModel<IIdMapping> subjectHolder,
+	public JpaComposite<IdMapping> createIdMappingComposite(
+		PropertyValueModel<IdMapping> subjectHolder,
 		Composite parent,
 		TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -120,8 +121,8 @@ public abstract class BaseJpaUiFactory implements IJpaUiFactory
 	/*
 	 * (non-Javadoc)
 	 */
-	public IJpaComposite<IManyToManyMapping> createManyToManyMappingComposite(
-		PropertyValueModel<IManyToManyMapping> subjectHolder,
+	public JpaComposite<ManyToManyMapping> createManyToManyMappingComposite(
+		PropertyValueModel<ManyToManyMapping> subjectHolder,
 		Composite parent,
 		TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -131,8 +132,8 @@ public abstract class BaseJpaUiFactory implements IJpaUiFactory
 	/*
 	 * (non-Javadoc)
 	 */
-	public IJpaComposite<IManyToOneMapping> createManyToOneMappingComposite(
-		PropertyValueModel<IManyToOneMapping> subjectHolder,
+	public JpaComposite<ManyToOneMapping> createManyToOneMappingComposite(
+		PropertyValueModel<ManyToOneMapping> subjectHolder,
 		Composite parent,
 		TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -142,8 +143,8 @@ public abstract class BaseJpaUiFactory implements IJpaUiFactory
 	/*
 	 * (non-Javadoc)
 	 */
-	public IJpaComposite<IMappedSuperclass> createMappedSuperclassComposite(
-		PropertyValueModel<IMappedSuperclass> subjectHolder,
+	public JpaComposite<MappedSuperclass> createMappedSuperclassComposite(
+		PropertyValueModel<MappedSuperclass> subjectHolder,
 		Composite parent,
 		TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -153,8 +154,8 @@ public abstract class BaseJpaUiFactory implements IJpaUiFactory
 	/*
 	 * (non-Javadoc)
 	 */
-	public IJpaComposite<IOneToManyMapping> createOneToManyMappingComposite(
-		PropertyValueModel<IOneToManyMapping> subjectHolder,
+	public JpaComposite<OneToManyMapping> createOneToManyMappingComposite(
+		PropertyValueModel<OneToManyMapping> subjectHolder,
 		Composite parent,
 		TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -164,8 +165,8 @@ public abstract class BaseJpaUiFactory implements IJpaUiFactory
 	/*
 	 * (non-Javadoc)
 	 */
-	public IJpaComposite<IOneToOneMapping> createOneToOneMappingComposite(
-		PropertyValueModel<IOneToOneMapping> subjectHolder,
+	public JpaComposite<OneToOneMapping> createOneToOneMappingComposite(
+		PropertyValueModel<OneToOneMapping> subjectHolder,
 		Composite parent,
 		TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -175,8 +176,8 @@ public abstract class BaseJpaUiFactory implements IJpaUiFactory
 	/*
 	 * (non-Javadoc)
 	 */
-	public IJpaComposite<ITransientMapping> createTransientMappingComposite(
-		PropertyValueModel<ITransientMapping> subjectHolder,
+	public JpaComposite<TransientMapping> createTransientMappingComposite(
+		PropertyValueModel<TransientMapping> subjectHolder,
 		Composite parent,
 		TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -186,8 +187,8 @@ public abstract class BaseJpaUiFactory implements IJpaUiFactory
 	/*
 	 * (non-Javadoc)
 	 */
-	public IJpaComposite<IVersionMapping> createVersionMappingComposite(
-		PropertyValueModel<IVersionMapping> subjectHolder,
+	public JpaComposite<VersionMapping> createVersionMappingComposite(
+		PropertyValueModel<VersionMapping> subjectHolder,
 		Composite parent,
 		TabbedPropertySheetWidgetFactory widgetFactory) {
 

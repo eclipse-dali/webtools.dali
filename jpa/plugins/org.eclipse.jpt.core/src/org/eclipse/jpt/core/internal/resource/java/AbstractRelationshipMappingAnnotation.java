@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
@@ -24,10 +24,14 @@ import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitArrayAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleTypeStringExpressionConverter;
+import org.eclipse.jpt.core.resource.java.CascadeType;
+import org.eclipse.jpt.core.resource.java.FetchType;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 
-public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnnotationResource<Attribute> implements RelationshipMapping
+public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnnotationResource<Attribute> implements RelationshipMappingAnnotation
 {
 	// hold this so we can get the 'targetEntity' text range
 	private final DeclarationAnnotationElementAdapter<String> targetEntityDeclarationAdapter;
@@ -52,7 +56,7 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnno
 	
 	private CascadeType[] cascadeTypes;
 	
-	public AbstractRelationshipMappingAnnotation(JavaPersistentAttributeResource parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
+	public AbstractRelationshipMappingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
 		super(parent, attribute, daa);
 		this.targetEntityDeclarationAdapter = targetEntityAdapter();
 		this.targetEntityAdapter = buildAnnotationElementAdapter(this.targetEntityDeclarationAdapter);
@@ -212,15 +216,15 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnno
 		}
 	}
 	
-	public ITextRange targetEntityTextRange(CompilationUnit astRoot) {
+	public TextRange targetEntityTextRange(CompilationUnit astRoot) {
 		return elementTextRange(this.targetEntityDeclarationAdapter, astRoot);
 	}
 	
-	public ITextRange fetchTextRange(CompilationUnit astRoot) {
+	public TextRange fetchTextRange(CompilationUnit astRoot) {
 		return elementTextRange(this.fetchDeclarationAdapter, astRoot);
 	}
 	
-	public ITextRange cascadeTextRange(CompilationUnit astRoot) {
+	public TextRange cascadeTextRange(CompilationUnit astRoot) {
 		return elementTextRange(this.cascadeDeclarationAdapter, astRoot);
 	}
 	

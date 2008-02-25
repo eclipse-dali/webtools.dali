@@ -11,15 +11,16 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.context.base.IOverride;
-import org.eclipse.jpt.core.internal.resource.java.OverrideResource;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.context.BaseOverride;
+import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.resource.java.OverrideAnnotation;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 
-public abstract class JavaOverride<T extends OverrideResource> extends JavaContextModel implements IOverride
+public abstract class JavaOverride<T extends OverrideAnnotation> extends JavaContextModel implements BaseOverride
 {
 
 	protected String name;
@@ -28,7 +29,7 @@ public abstract class JavaOverride<T extends OverrideResource> extends JavaConte
 
 	protected T overrideResource;
 	
-	public JavaOverride(IJavaJpaContextNode parent, Owner owner) {
+	public JavaOverride(JavaJpaContextNode parent, Owner owner) {
 		super(parent);
 		this.owner = owner;
 	}
@@ -64,7 +65,7 @@ public abstract class JavaOverride<T extends OverrideResource> extends JavaConte
 		this.setName_(this.name(overrideResource));
 	}
 
-	protected String name(OverrideResource overrideResource) {
+	protected String name(OverrideAnnotation overrideResource) {
 		return overrideResource.getName();
 	}
 
@@ -77,8 +78,8 @@ public abstract class JavaOverride<T extends OverrideResource> extends JavaConte
 	}
 	
 	@Override
-	public IJavaJpaContextNode parent() {
-		return (IJavaJpaContextNode) super.parent();
+	public JavaJpaContextNode parent() {
+		return (JavaJpaContextNode) super.parent();
 	}
 
 	protected abstract Iterator<String> candidateNames();
@@ -107,8 +108,8 @@ public abstract class JavaOverride<T extends OverrideResource> extends JavaConte
 		return this.overrideResource.nameTouches(pos, astRoot);
 	}
 	
-	public ITextRange validationTextRange(CompilationUnit astRoot) {
-		ITextRange textRange = this.overrideResource.textRange(astRoot);
+	public TextRange validationTextRange(CompilationUnit astRoot) {
+		TextRange textRange = this.overrideResource.textRange(astRoot);
 		return (textRange != null) ? textRange : this.parent().validationTextRange(astRoot);
 	}
 	

@@ -10,10 +10,15 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
+import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 
 
-public class NullAttributeOverride extends AbstractResource implements AttributeOverride, Annotation
+public class NullAttributeOverride extends AbstractResource implements AttributeOverrideAnnotation, Annotation
 {	
 	//TODO should I hold on to the IColumnMapping that this attribute override is built from?
 	//this would make it more similar to the Virtual mappings concept in xml
@@ -23,7 +28,7 @@ public class NullAttributeOverride extends AbstractResource implements Attribute
 	
 	private String name;
 	
-	public NullAttributeOverride(JavaResource parent, String name) {
+	public NullAttributeOverride(JavaResourceNode parent, String name) {
 		super(parent);
 		this.name = name;
 		this.column = new NullAttributeOverrideColumn(this);
@@ -46,7 +51,7 @@ public class NullAttributeOverride extends AbstractResource implements Attribute
 	}
 
 	public String getAnnotationName() {
-		return AttributeOverride.ANNOTATION_NAME;
+		return AttributeOverrideAnnotation.ANNOTATION_NAME;
 	}
 
 	public String getName() {
@@ -59,15 +64,15 @@ public class NullAttributeOverride extends AbstractResource implements Attribute
 		}		
 	}
 
-	public Column getNonNullColumn() {
+	public ColumnAnnotation getNonNullColumn() {
 		return getColumn();
 	}
 	
-	public Column getColumn() {
+	public ColumnAnnotation getColumn() {
 		return this.column;
 	}
 	
-	public Column addColumn() {
+	public ColumnAnnotation addColumn() {
 		throw new UnsupportedOperationException();
 	}
 	
@@ -76,12 +81,12 @@ public class NullAttributeOverride extends AbstractResource implements Attribute
 	}
 	
 	@Override
-	public JavaPersistentResource parent() {
-		return (JavaPersistentResource) super.parent();
+	public JavaResourcePersistentMember parent() {
+		return (JavaResourcePersistentMember) super.parent();
 	}
 	
-	protected AttributeOverride createAttributeOverrideResource() {
-		return (AttributeOverride) parent().addAnnotation(getAnnotationName());
+	protected AttributeOverrideAnnotation createAttributeOverrideResource() {
+		return (AttributeOverrideAnnotation) parent().addAnnotation(getAnnotationName());
 	}
 
 	public void updateFromJava(CompilationUnit astRoot) {
@@ -93,11 +98,11 @@ public class NullAttributeOverride extends AbstractResource implements Attribute
 		return false;
 	}
 	
-	public ITextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange nameTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public ITextRange textRange(CompilationUnit astRoot) {
+	public TextRange textRange(CompilationUnit astRoot) {
 		return null;
 	}
 

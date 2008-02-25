@@ -11,15 +11,15 @@
 package org.eclipse.jpt.ui.internal.structure;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.internal.IJpaStructureNode;
-import org.eclipse.jpt.core.internal.IResourceModel;
-import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.base.IPersistentType;
+import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.ResourceModel;
+import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
-import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProvider;
+import org.eclipse.jpt.ui.internal.jface.TreeItemContentProvider;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 
@@ -27,7 +27,7 @@ import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 public class JavaItemContentProviderFactory extends GeneralJpaMappingItemContentProviderFactory
 {
 	@Override
-	public ITreeItemContentProvider buildItemContentProvider(
+	public TreeItemContentProvider buildItemContentProvider(
 			Object item, DelegatingContentAndLabelProvider contentProvider) {
 		DelegatingTreeContentAndLabelProvider treeContentProvider = (DelegatingTreeContentAndLabelProvider) contentProvider;
 		if (item instanceof JavaResourceModel) {
@@ -37,27 +37,27 @@ public class JavaItemContentProviderFactory extends GeneralJpaMappingItemContent
 	}
 	
 	@Override
-	protected ITreeItemContentProvider buildPersistentTypeItemContentProvider(IPersistentType persistentType, DelegatingTreeContentAndLabelProvider treeContentProvider) {
+	protected TreeItemContentProvider buildPersistentTypeItemContentProvider(PersistentType persistentType, DelegatingTreeContentAndLabelProvider treeContentProvider) {
 		return new PersistentTypeItemContentProvider(persistentType, treeContentProvider);
 	}
 	
-	public static class PersistentTypeItemContentProvider extends AbstractTreeItemContentProvider<IPersistentAttribute>
+	public static class PersistentTypeItemContentProvider extends AbstractTreeItemContentProvider<PersistentAttribute>
 	{
 		public PersistentTypeItemContentProvider(
-				IPersistentType persistentType, DelegatingTreeContentAndLabelProvider contentProvider) {
+				PersistentType persistentType, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(persistentType, contentProvider);
 		}
 		
 		@Override
 		public Object getParent() {
-			return ((IPersistentType) model()).parent();
+			return ((PersistentType) model()).parent();
 		}
 		
 		@Override
-		protected ListValueModel<IPersistentAttribute> buildChildrenModel() {
-			return new ListAspectAdapter<IPersistentType, IPersistentAttribute>(new String[]{IPersistentType.SPECIFIED_ATTRIBUTES_LIST}, (IPersistentType) model()) {
+		protected ListValueModel<PersistentAttribute> buildChildrenModel() {
+			return new ListAspectAdapter<PersistentType, PersistentAttribute>(new String[]{PersistentType.SPECIFIED_ATTRIBUTES_LIST}, (PersistentType) model()) {
 				@Override
-				protected ListIterator<IPersistentAttribute> listIterator_() {
+				protected ListIterator<PersistentAttribute> listIterator_() {
 					return subject.attributes();
 				}
 				
@@ -68,7 +68,7 @@ public class JavaItemContentProviderFactory extends GeneralJpaMappingItemContent
 			};
 		}
 	}
-	public static class JavaResourceModelItemContentProvider extends AbstractTreeItemContentProvider<IJpaStructureNode>
+	public static class JavaResourceModelItemContentProvider extends AbstractTreeItemContentProvider<JpaStructureNode>
 	{
 		public JavaResourceModelItemContentProvider(
 				JavaResourceModel javaResourceModel, DelegatingTreeContentAndLabelProvider contentProvider) {
@@ -81,11 +81,11 @@ public class JavaItemContentProviderFactory extends GeneralJpaMappingItemContent
 		}
 		
 		@Override
-		protected ListValueModel<IJpaStructureNode> buildChildrenModel() {
-			return new ListAspectAdapter<JavaResourceModel, IJpaStructureNode>(
-					IResourceModel.ROOT_STRUCTURE_NODES_LIST, (JavaResourceModel) model()) {
+		protected ListValueModel<JpaStructureNode> buildChildrenModel() {
+			return new ListAspectAdapter<JavaResourceModel, JpaStructureNode>(
+					ResourceModel.ROOT_STRUCTURE_NODES_LIST, (JavaResourceModel) model()) {
 				@Override
-				protected ListIterator<IJpaStructureNode> listIterator_() {
+				protected ListIterator<JpaStructureNode> listIterator_() {
 					return subject.rootStructureNodes();
 				}
 			};

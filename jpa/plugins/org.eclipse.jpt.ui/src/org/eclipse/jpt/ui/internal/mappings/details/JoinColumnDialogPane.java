@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jpt.db.internal.Schema;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -223,7 +223,7 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 			container,
 			JptUiMappingsMessages.JoinColumnDialog_table,
 			buildTableComboSelectionListener(),
-			IJpaHelpContextIds.MAPPING_JOIN_REFERENCED_COLUMN
+			JpaHelpContextIds.MAPPING_JOIN_REFERENCED_COLUMN
 		);
 
 		// Insertable check box
@@ -232,7 +232,7 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 			JptUiMappingsMessages.JoinColumnDialog_insertable,
 			buildInsertableHolder(),
 			buildInsertableStringHolder(),
-			IJpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
+			JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
 		);
 
 		// Updatable check box
@@ -241,7 +241,7 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 			JptUiMappingsMessages.JoinColumnDialog_updatable,
 			buildUpdatableHolder(),
 			buildUpdatableStringHolder(),
-			IJpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
+			JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
 		);
 	}
 

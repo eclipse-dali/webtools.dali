@@ -10,10 +10,10 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.core.internal.context.base.GenerationType;
-import org.eclipse.jpt.core.internal.context.base.IGeneratedValue;
-import org.eclipse.jpt.core.internal.context.base.IIdMapping;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.core.context.GenerationType;
+import org.eclipse.jpt.core.context.GeneratedValue;
+import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
@@ -40,15 +40,15 @@ import org.eclipse.swt.widgets.Composite;
  * |                 --------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IIdMapping
- * @see IGeneratedValue
+ * @see IdMapping
+ * @see GeneratedValue
  * @see GenerationComposite - The parent container
  *
  * @version 2.0
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
+public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 {
 	private PropertyChangeListener generatedValuePropertyChangeListener;
 	private CCombo generatorNameCombo;
@@ -60,7 +60,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public GeneratedValueComposite(AbstractFormPane<? extends IIdMapping> parentPane,
+	public GeneratedValueComposite(AbstractFormPane<? extends IdMapping> parentPane,
 	 	                            Composite parent) {
 
 		super(parentPane, parent);
@@ -75,8 +75,8 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 	private PropertyChangeListener buildGeneratedValuePropertyChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-				disengageListeners((IGeneratedValue) e.oldValue());
-				engageListeners((IGeneratedValue) e.newValue());
+				disengageListeners((GeneratedValue) e.oldValue());
+				engageListeners((GeneratedValue) e.newValue());
 
 				if (!isPopulating()) {
 					setPopulating(true);
@@ -100,7 +100,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 				}
 
 				String generatorName = ((CCombo) e.getSource()).getText();
-				IGeneratedValue generatedValue = subject().getGeneratedValue();
+				GeneratedValue generatedValue = subject().getGeneratedValue();
 
 				if (StringTools.stringIsEmpty(generatorName)) {
 
@@ -141,24 +141,24 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 		};
 	}
 
-	private PropertyValueModel<IGeneratedValue> buildGeneratorValueHolder() {
-		return new PropertyAspectAdapter<IIdMapping, IGeneratedValue>(getSubjectHolder(), IIdMapping.GENERATED_VALUE_PROPERTY) {
+	private PropertyValueModel<GeneratedValue> buildGeneratorValueHolder() {
+		return new PropertyAspectAdapter<IdMapping, GeneratedValue>(getSubjectHolder(), IdMapping.GENERATED_VALUE_PROPERTY) {
 			@Override
-			protected IGeneratedValue buildValue_() {
+			protected GeneratedValue buildValue_() {
 				return subject().getGeneratedValue();
 			}
 		};
 	}
 
-	private EnumFormComboViewer<IGeneratedValue, GenerationType> buildStrategyComboViewer(Composite parent) {
+	private EnumFormComboViewer<GeneratedValue, GenerationType> buildStrategyComboViewer(Composite parent) {
 
-		return new EnumFormComboViewer<IGeneratedValue, GenerationType>(this, buildGeneratorValueHolder(), parent) {
+		return new EnumFormComboViewer<GeneratedValue, GenerationType>(this, buildGeneratorValueHolder(), parent) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(IGeneratedValue.DEFAULT_STRATEGY_PROPERTY);
-				propertyNames.add(IGeneratedValue.SPECIFIED_STRATEGY_PROPERTY);
+				propertyNames.add(GeneratedValue.DEFAULT_STRATEGY_PROPERTY);
+				propertyNames.add(GeneratedValue.SPECIFIED_STRATEGY_PROPERTY);
 			}
 
 			@Override
@@ -192,17 +192,17 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 		};
 	}
 
-	private void disengageListeners(IGeneratedValue generatedValue) {
+	private void disengageListeners(GeneratedValue generatedValue) {
 
 		if (generatedValue != null) {
 
 			generatedValue.removePropertyChangeListener(
-				IGeneratedValue.DEFAULT_GENERATOR_PROPERTY,
+				GeneratedValue.DEFAULT_GENERATOR_PROPERTY,
 				generatorNamePropertyChangeListener
 			);
 
 			generatedValue.removePropertyChangeListener(
-				IGeneratedValue.SPECIFIED_GENERATOR_PROPERTY,
+				GeneratedValue.SPECIFIED_GENERATOR_PROPERTY,
 				generatorNamePropertyChangeListener
 			);
 		}
@@ -212,12 +212,12 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void disengageListeners(IIdMapping subject) {
+	protected void disengageListeners(IdMapping subject) {
 		super.disengageListeners(subject);
 
 		if (subject != null) {
 			subject.removePropertyChangeListener(
-				IIdMapping.GENERATED_VALUE_PROPERTY,
+				IdMapping.GENERATED_VALUE_PROPERTY,
 				generatedValuePropertyChangeListener
 			);
 		}
@@ -232,17 +232,17 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 		populateGeneratorNameCombo();
 	}
 
-	private void engageListeners(IGeneratedValue generatedValue) {
+	private void engageListeners(GeneratedValue generatedValue) {
 
 		if (generatedValue != null) {
 
 			generatedValue.addPropertyChangeListener(
-				IGeneratedValue.DEFAULT_GENERATOR_PROPERTY,
+				GeneratedValue.DEFAULT_GENERATOR_PROPERTY,
 				generatorNamePropertyChangeListener
 			);
 
 			generatedValue.addPropertyChangeListener(
-				IGeneratedValue.SPECIFIED_GENERATOR_PROPERTY,
+				GeneratedValue.SPECIFIED_GENERATOR_PROPERTY,
 				generatorNamePropertyChangeListener
 			);
 		}
@@ -252,12 +252,12 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected void engageListeners(IIdMapping subject) {
+	protected void engageListeners(IdMapping subject) {
 		super.engageListeners(subject);
 
 		if (subject != null) {
 			subject.addPropertyChangeListener(
-				IIdMapping.GENERATED_VALUE_PROPERTY,
+				IdMapping.GENERATED_VALUE_PROPERTY,
 				generatedValuePropertyChangeListener
 			);
 		}
@@ -285,7 +285,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 			container,
 			JptUiMappingsMessages.GeneratedValueComposite_strategy,
 			buildStrategyComboViewer(container),
-			IJpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
+			JpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
 		);
 
 		// Generator Name widgets
@@ -293,7 +293,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 			container,
 			JptUiMappingsMessages.GeneratedValueComposite_generatorName,
 			buildGeneratorNameModifyListener(),
-			IJpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
+			JpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
 		);
 
 		generatorNameCombo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
@@ -304,7 +304,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 			this.generatorNameCombo.setText("");
 		}
 		else {
-			IGeneratedValue generatedValue = subject().getGeneratedValue();
+			GeneratedValue generatedValue = subject().getGeneratedValue();
 
 			if (generatedValue == null) {
 				this.generatorNameCombo.setText("");
@@ -332,8 +332,8 @@ public class GeneratedValueComposite extends AbstractFormPane<IIdMapping>
 		populateGeneratorName();
 	}
 
-	private IGeneratedValue retrieveGeneratedValue() {
-		IGeneratedValue generatedValue = subject().getGeneratedValue();
+	private GeneratedValue retrieveGeneratedValue() {
+		GeneratedValue generatedValue = subject().getGeneratedValue();
 
 		if (generatedValue == null) {
 			setPopulating(true);

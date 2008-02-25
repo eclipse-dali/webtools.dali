@@ -12,10 +12,10 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.TableGenerator;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class TableGeneratorTests extends JavaResourceModelTestCase {
@@ -155,36 +155,36 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 
 	public void testTableGeneratorOnField() throws Exception {
 		IType testType = this.createTestTableGeneratorOnField();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertNotNull(tableGenerator);
 	}
 	
 	public void testTableGeneratorOnType() throws Exception {
 		IType testType = this.createTestTableGeneratorOnType();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		TableGenerator tableGenerator = (TableGenerator) typeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) typeResource.annotation(JPA.TABLE_GENERATOR);
 		assertNotNull(tableGenerator);
 	}
 
 	public void testGetName() throws Exception {
 		IType testType = this.createTestTableGeneratorWithName();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_NAME, tableGenerator.getName());
 	}
 
 	public void testSetName() throws Exception {
 		IType testType = this.createTestTableGeneratorWithName();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_NAME, tableGenerator.getName());
 		
 		tableGenerator.setName("foo");
@@ -200,19 +200,19 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 
 	public void testGetTable() throws Exception {
 		IType testType = this.createTestTableGeneratorWithTable();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_TABLE, tableGenerator.getTable());
 	}
 
 	public void testSetTable() throws Exception {
 		IType testType = this.createTestTableGeneratorWithTable();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_TABLE, tableGenerator.getTable());
 		
 		tableGenerator.setTable("foo");
@@ -228,19 +228,19 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 
 	public void testGetCatalog() throws Exception {
 		IType testType = this.createTestTableGeneratorWithCatalog();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_CATALOG, tableGenerator.getCatalog());
 	}
 
 	public void testSetCatalog() throws Exception {
 		IType testType = this.createTestTableGeneratorWithCatalog();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_CATALOG, tableGenerator.getCatalog());
 		
 		tableGenerator.setCatalog("foo");
@@ -256,19 +256,19 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 
 	public void testGetSchema() throws Exception {
 		IType testType = this.createTestTableGeneratorWithSchema();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_SCHEMA, tableGenerator.getSchema());
 	}
 
 	public void testSetSchema() throws Exception {
 		IType testType = this.createTestTableGeneratorWithSchema();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_SCHEMA, tableGenerator.getSchema());
 		
 		tableGenerator.setSchema("foo");
@@ -284,19 +284,19 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 
 	public void testGetPkColumnName() throws Exception {
 		IType testType = this.createTestTableGeneratorWithPkColumnName();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_PK_COLUMN_NAME, tableGenerator.getPkColumnName());
 	}
 
 	public void testSetPkColumnName() throws Exception {
 		IType testType = this.createTestTableGeneratorWithPkColumnName();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_PK_COLUMN_NAME, tableGenerator.getPkColumnName());
 		
 		tableGenerator.setPkColumnName("foo");
@@ -312,19 +312,19 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 	
 	public void testGetValueColumnName() throws Exception {
 		IType testType = this.createTestTableGeneratorWithValueColumnName();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_VALUE_COLUMN_NAME, tableGenerator.getValueColumnName());
 	}
 
 	public void testSetValueColumnName() throws Exception {
 		IType testType = this.createTestTableGeneratorWithValueColumnName();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_VALUE_COLUMN_NAME, tableGenerator.getValueColumnName());
 		
 		tableGenerator.setValueColumnName("foo");
@@ -340,19 +340,19 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 
 	public void testGetPkColumnValue() throws Exception {
 		IType testType = this.createTestTableGeneratorWithPkColumnValue();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_PK_COLUMN_VALUE, tableGenerator.getPkColumnValue());
 	}
 
 	public void testSetPkColumnValue() throws Exception {
 		IType testType = this.createTestTableGeneratorWithPkColumnValue();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_PK_COLUMN_VALUE, tableGenerator.getPkColumnValue());
 		
 		tableGenerator.setPkColumnValue("foo");
@@ -368,19 +368,19 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 
 	public void testGetAllocationSize() throws Exception {
 		IType testType = this.createTestTableGeneratorWithAllocationSize();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_ALLOCATION_SIZE, tableGenerator.getAllocationSize());
 	}
 
 	public void testSetAllocationSize() throws Exception {
 		IType testType = this.createTestTableGeneratorWithAllocationSize();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_ALLOCATION_SIZE, tableGenerator.getAllocationSize());
 		
 		tableGenerator.setAllocationSize(Integer.valueOf(500));
@@ -398,19 +398,19 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 	
 	public void testGetInitialValue() throws Exception {
 		IType testType = this.createTestTableGeneratorWithInitialValue();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_INITIAL_VALUE, tableGenerator.getInitialValue());
 	}
 
 	public void testSetInitialValue() throws Exception {
 		IType testType = this.createTestTableGeneratorWithInitialValue();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		assertEquals(GENERATOR_INITIAL_VALUE, tableGenerator.getInitialValue());
 		
 		tableGenerator.setInitialValue(Integer.valueOf(500));
@@ -428,10 +428,10 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 	
 	public void testUniqueConstraints() throws Exception {
 		IType testType = this.createTestTableGeneratorOnField();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		
 		assertEquals(0, tableGenerator.uniqueConstraintsSize());
 	}
@@ -439,10 +439,10 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 	public void testUniqueConstraints2() throws Exception {
 		IType testType = this.createTestTableGeneratorOnField();
 		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		
 		tableGenerator.addUniqueConstraint(0);
 		tableGenerator.addUniqueConstraint(1);
@@ -453,10 +453,10 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 	
 	public void testUniqueConstraints3() throws Exception {
 		IType testType = this.createTestTableGeneratorWithUniqueConstraints();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 				
 		assertEquals(3, tableGenerator.uniqueConstraintsSize());
 	}
@@ -464,10 +464,10 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 	public void testAddUniqueConstraint() throws Exception {
 		IType testType = this.createTestTableGeneratorOnField();
 		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		
 		tableGenerator.addUniqueConstraint(0).addColumnName("FOO");
 		tableGenerator.addUniqueConstraint(1);
@@ -483,10 +483,10 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 	
 	public void testRemoveUniqueConstraint() throws Exception {
 		IType testType = this.createTestTableGeneratorWithUniqueConstraints();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		
 		tableGenerator.removeUniqueConstraint(1);
 		assertSourceContains("@TableGenerator(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"BAZ\"})})");
@@ -500,10 +500,10 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 	
 	public void testMoveUniqueConstraint() throws Exception {
 		IType testType = this.createTestTableGeneratorWithUniqueConstraints();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		
 		tableGenerator.moveUniqueConstraint(2, 0);
 		assertSourceContains("@TableGenerator(uniqueConstraints={@UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"})})");
@@ -511,10 +511,10 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 	
 	public void testMoveUniqueConstraint2() throws Exception {
 		IType testType = this.createTestTableGeneratorWithUniqueConstraints();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		TableGenerator tableGenerator = (TableGenerator) attributeResource.annotation(JPA.TABLE_GENERATOR);
+		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.annotation(JPA.TABLE_GENERATOR);
 		
 		tableGenerator.moveUniqueConstraint(0, 2);
 		assertSourceContains("@TableGenerator(uniqueConstraints={@UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"})})");

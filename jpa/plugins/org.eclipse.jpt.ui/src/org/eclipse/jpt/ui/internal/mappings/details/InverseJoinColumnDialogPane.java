@@ -10,10 +10,10 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.IJoinTable;
-import org.eclipse.jpt.core.internal.context.base.IRelationshipMapping;
+import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinTable;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -59,7 +59,7 @@ public class InverseJoinColumnDialogPane extends AbstractJoinColumnDialogPane<Jo
 			return;
 		}
 
-		IJoinColumn joinColumn = subject.getJoinColumn();
+		JoinColumn joinColumn = subject.getJoinColumn();
 
 		// Add the default column name if one exists
 		String defaultName = (joinColumn != null) ? joinColumn.getDefaultName() : null;
@@ -75,7 +75,7 @@ public class InverseJoinColumnDialogPane extends AbstractJoinColumnDialogPane<Jo
 		}
 
 		// Populate the combo with the column names
-		IJoinTable joinTable = subject.getOwner();
+		JoinTable joinTable = subject.getOwner();
 
 		if (joinTable != null) {
 			Table joinDBTable = joinTable.dbTable();
@@ -115,7 +115,7 @@ public class InverseJoinColumnDialogPane extends AbstractJoinColumnDialogPane<Jo
 			return;
 		}
 
-		IJoinColumn joinColumn = subject.getJoinColumn();
+		JoinColumn joinColumn = subject.getJoinColumn();
 
 		// Add the default column name if one exists
 		String defaultReferencedColumnName = (joinColumn != null) ? joinColumn.getDefaultReferencedColumnName() : null;
@@ -131,8 +131,8 @@ public class InverseJoinColumnDialogPane extends AbstractJoinColumnDialogPane<Jo
 		}
 
 		// Populate the combo with the column names
-		IRelationshipMapping relationshipMapping = subject.relationshipMapping();
-		IEntity targetEntity = relationshipMapping.getResolvedTargetEntity();
+		RelationshipMapping relationshipMapping = subject.relationshipMapping();
+		Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
 
 		if (targetEntity != null) {
 			Table referencedDbTable = targetEntity.primaryDbTable();

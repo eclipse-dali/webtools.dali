@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.context.base.IGenerator;
-import org.eclipse.jpt.core.internal.context.base.IIdMapping;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.context.Generator;
+import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -27,8 +27,8 @@ import org.eclipse.swt.widgets.Text;
 /**
  * This is the generic pane for a generator.
  *
- * @see IIdMapping
- * @see IGenerator
+ * @see IdMapping
+ * @see Generator
  * @see SequenceGeneratorComposite - A sub-pane
  * @see TalbeGeneratorComposite - A sub-pane
  *
@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Text;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public abstract class GeneratorComposite<T extends IGenerator> extends AbstractFormPane<IIdMapping>
+public abstract class GeneratorComposite<T extends Generator> extends AbstractFormPane<IdMapping>
 {
 	private PropertyChangeListener generatorChangeListener;
 	private PropertyValueModel<T> generatorHolder;
@@ -49,7 +49,7 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public GeneratorComposite(AbstractFormPane<? extends IIdMapping> parentPane,
+	public GeneratorComposite(AbstractFormPane<? extends IdMapping> parentPane,
                              Composite parent) {
 
 		super(parentPane, parent);
@@ -83,7 +83,7 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 	}
 
 	private PropertyValueModel<T> buildGeneratorHolder() {
-		return new PropertyAspectAdapter<IIdMapping, T>(getSubjectHolder(), propertyName()) {
+		return new PropertyAspectAdapter<IdMapping, T>(getSubjectHolder(), propertyName()) {
 			@Override
 			protected T buildValue_() {
 				return GeneratorComposite.this.generator(subject);
@@ -190,10 +190,10 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 	 * @return The <code>IGenerator</code> or <code>null</code> if it doesn't
 	 * exists
 	 */
-	protected abstract T generator(IIdMapping subject);
+	protected abstract T generator(IdMapping subject);
 
 
-	protected IJpaProject jpaProject() {
+	protected JpaProject jpaProject() {
 		return subject() == null ? null : subject().jpaProject();
 	}
 
@@ -211,12 +211,12 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 
 	protected void installListeners(T generator) {
 		if (generator != null) {
-			generator.addPropertyChangeListener(IGenerator.NAME_PROPERTY, this.namePropertyChangeListener);
+			generator.addPropertyChangeListener(Generator.NAME_PROPERTY, this.namePropertyChangeListener);
 		}
 	}
 
 	private void populateNameViewer() {
-		IGenerator generator = this.generator();
+		Generator generator = this.generator();
 
 		if (generator != null) {
 			String name = generator.getName();
@@ -273,7 +273,7 @@ public abstract class GeneratorComposite<T extends IGenerator> extends AbstractF
 
 	protected void uninstallListeners(T generator) {
 		if (generator != null) {
-			generator.removePropertyChangeListener(IGenerator.NAME_PROPERTY, this.namePropertyChangeListener);
+			generator.removePropertyChangeListener(Generator.NAME_PROPERTY, this.namePropertyChangeListener);
 		}
 	}
 

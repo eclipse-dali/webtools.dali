@@ -12,9 +12,9 @@ package org.eclipse.jpt.ui.internal.platform.generic;
 import java.text.MessageFormat;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.internal.GenericJpaUiFactory;
-import org.eclipse.jpt.ui.internal.IJpaUiFactory;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
 import org.eclipse.swt.widgets.Display;
@@ -27,11 +27,11 @@ public class GenericPlatformUi extends BaseJpaPlatformUi
 	}
 
 	@Override
-	protected IJpaUiFactory createJpaUiFactory() {
+	protected JpaUiFactory createJpaUiFactory() {
 		return new GenericJpaUiFactory();
 	}
 
-	public void generateDDL(IJpaProject project, IStructuredSelection selection) {
+	public void generateDDL(JpaProject project, IStructuredSelection selection) {
 		this.displayNotSupportedMessage(JptUiMessages.GenericPlatformUiDialog_notSupportedMessageTitle, JptUiMessages.GenericPlatformUiDialog_notSupportedMessageText);
 	}
 

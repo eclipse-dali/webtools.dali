@@ -12,14 +12,14 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.context.base.IEmbeddable;
-import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.IMappedSuperclass;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.Embeddable;
+import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
-import org.eclipse.jpt.core.internal.resource.java.Embeddable;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
+import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -54,46 +54,46 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		createTestEmbeddable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 				
-		javaPersistentType().setMappingKey(IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
-		assertTrue(javaPersistentType().getMapping() instanceof IEntity);
+		javaPersistentType().setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
+		assertTrue(javaPersistentType().getMapping() instanceof Entity);
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		assertNull(typeResource.mappingAnnotation(Embeddable.ANNOTATION_NAME));
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		assertNull(typeResource.mappingAnnotation(EmbeddableAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToMappedSuperclass() throws Exception {
 		createTestEmbeddable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 				
-		javaPersistentType().setMappingKey(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
-		assertTrue(javaPersistentType().getMapping() instanceof IMappedSuperclass);
+		javaPersistentType().setMappingKey(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+		assertTrue(javaPersistentType().getMapping() instanceof MappedSuperclass);
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		assertNull(typeResource.mappingAnnotation(Embeddable.ANNOTATION_NAME));
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		assertNull(typeResource.mappingAnnotation(EmbeddableAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testMorphToNull() throws Exception {
 		createTestEmbeddable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		javaPersistentType().setMappingKey(IMappingKeys.NULL_TYPE_MAPPING_KEY);
+		javaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
 		assertTrue(javaPersistentType().getMapping() instanceof JavaNullTypeMapping);
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		assertNull(typeResource.mappingAnnotation(Embeddable.ANNOTATION_NAME));
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		assertNull(typeResource.mappingAnnotation(EmbeddableAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testEmbeddable() throws Exception {
 		createTestEmbeddable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		assertTrue(javaPersistentType().getMapping() instanceof IEmbeddable);
+		assertTrue(javaPersistentType().getMapping() instanceof Embeddable);
 	}
 	
 	public void testOverridableAttributeNames() throws Exception {
 		createTestEmbeddable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		IEmbeddable embeddable = (IEmbeddable) javaPersistentType().getMapping();
+		Embeddable embeddable = (Embeddable) javaPersistentType().getMapping();
 		Iterator<String> overridableAttributeNames = embeddable.overridableAttributeNames();
 		assertFalse(overridableAttributeNames.hasNext());
 	}
@@ -102,7 +102,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		createTestEmbeddable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IEmbeddable embeddable = (IEmbeddable) javaPersistentType().getMapping();
+		Embeddable embeddable = (Embeddable) javaPersistentType().getMapping();
 		Iterator<String> overridableAssociationNames = embeddable.overridableAssociationNames();
 		assertFalse(overridableAssociationNames.hasNext());
 	}
@@ -111,7 +111,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		createTestEmbeddable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IEmbeddable embeddable = (IEmbeddable) javaPersistentType().getMapping();
+		Embeddable embeddable = (Embeddable) javaPersistentType().getMapping();
 
 		assertFalse(embeddable.tableNameIsInvalid(FULLY_QUALIFIED_TYPE_NAME));
 		assertFalse(embeddable.tableNameIsInvalid("FOO"));
@@ -121,17 +121,17 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		createTestEmbeddable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IEmbeddable embeddable = (IEmbeddable) javaPersistentType().getMapping();
-		assertTrue(embeddable.attributeMappingKeyAllowed(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY));
-		assertTrue(embeddable.attributeMappingKeyAllowed(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY));
-		assertFalse(embeddable.attributeMappingKeyAllowed(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY));
-		assertFalse(embeddable.attributeMappingKeyAllowed(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY));
-		assertFalse(embeddable.attributeMappingKeyAllowed(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY));
-		assertFalse(embeddable.attributeMappingKeyAllowed(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY));
-		assertFalse(embeddable.attributeMappingKeyAllowed(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY));
-		assertFalse(embeddable.attributeMappingKeyAllowed(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY));
-		assertFalse(embeddable.attributeMappingKeyAllowed(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY));
-		assertFalse(embeddable.attributeMappingKeyAllowed(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY));
+		Embeddable embeddable = (Embeddable) javaPersistentType().getMapping();
+		assertTrue(embeddable.attributeMappingKeyAllowed(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY));
+		assertTrue(embeddable.attributeMappingKeyAllowed(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY));
+		assertFalse(embeddable.attributeMappingKeyAllowed(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY));
+		assertFalse(embeddable.attributeMappingKeyAllowed(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY));
+		assertFalse(embeddable.attributeMappingKeyAllowed(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY));
+		assertFalse(embeddable.attributeMappingKeyAllowed(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY));
+		assertFalse(embeddable.attributeMappingKeyAllowed(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY));
+		assertFalse(embeddable.attributeMappingKeyAllowed(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY));
+		assertFalse(embeddable.attributeMappingKeyAllowed(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY));
+		assertFalse(embeddable.attributeMappingKeyAllowed(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY));
 	}
 
 
@@ -139,7 +139,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		createTestEmbeddable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IEmbeddable embeddable = (IEmbeddable) javaPersistentType().getMapping();
+		Embeddable embeddable = (Embeddable) javaPersistentType().getMapping();
 
 		assertFalse(embeddable.associatedTables().hasNext());
 	}
@@ -148,7 +148,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		createTestEmbeddable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IEmbeddable embeddable = (IEmbeddable) javaPersistentType().getMapping();
+		Embeddable embeddable = (Embeddable) javaPersistentType().getMapping();
 
 		assertFalse(embeddable.associatedTablesIncludingInherited().hasNext());
 	}
@@ -157,7 +157,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		createTestEmbeddable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IEmbeddable embeddable = (IEmbeddable) javaPersistentType().getMapping();
+		Embeddable embeddable = (Embeddable) javaPersistentType().getMapping();
 
 		assertFalse(embeddable.associatedTableNamesIncludingInherited().hasNext());
 	}
@@ -166,7 +166,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		createTestEmbeddable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		IEmbeddable embeddable = (IEmbeddable) javaPersistentType().getMapping();
+		Embeddable embeddable = (Embeddable) javaPersistentType().getMapping();
 		Iterator<String> overridableAttributeNames = embeddable.overridableAttributeNames();
 		assertFalse(overridableAttributeNames.hasNext());
 	}
@@ -176,7 +176,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 		createTestEmbeddable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IEmbeddable embeddable = (IEmbeddable) javaPersistentType().getMapping();
+		Embeddable embeddable = (Embeddable) javaPersistentType().getMapping();
 		Iterator<String> overridableAssociationNames = embeddable.overridableAssociationNames();
 		assertFalse(overridableAssociationNames.hasNext());
 	}

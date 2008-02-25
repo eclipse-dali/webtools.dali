@@ -11,13 +11,13 @@ package org.eclipse.jpt.core.internal.jdtutility;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Straightforward implementation of ITextRange that adapts an ASTNode.
  */
-public class ASTNodeTextRange implements ITextRange {
+public class ASTNodeTextRange implements TextRange {
 	private final ASTNode astNode;
 
 	public ASTNodeTextRange(ASTNode astNode) {
@@ -58,10 +58,10 @@ public class ASTNodeTextRange implements ITextRange {
 		if (o == this) {
 			return true;
 		}
-		if ( ! (o instanceof ITextRange)) {
+		if ( ! (o instanceof TextRange)) {
 			return false;
 		}
-		ITextRange r = (ITextRange) o;
+		TextRange r = (TextRange) o;
 		return (r.getOffset() == this.getOffset())
 				&& (r.getLength() == this.getLength());
 	}

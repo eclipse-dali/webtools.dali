@@ -11,18 +11,18 @@
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.context.orm.XmlJoinColumn;
-import org.eclipse.jpt.core.internal.context.orm.XmlJoinTable;
-import org.eclipse.jpt.core.internal.context.orm.XmlManyToManyMapping;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
-import org.eclipse.jpt.core.internal.resource.orm.JoinTable;
-import org.eclipse.jpt.core.internal.resource.orm.ManyToMany;
-import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
+import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinColumn;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinTable;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmManyToManyMapping;
+import org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
+import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 public class XmlJoinTableTests extends ContextModelTestCase
@@ -41,12 +41,12 @@ public class XmlJoinTableTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedName() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
-		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) xmlPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		XmlJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
+		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
 		
 		assertNull(xmlJoinTable.getSpecifiedName());
 		assertNull(manyToMany.getJoinTable());
@@ -73,12 +73,12 @@ public class XmlJoinTableTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedName() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
-		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) xmlPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		XmlJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
+		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
 		
 		assertNull(xmlJoinTable.getSpecifiedName());
 		assertNull(manyToMany.getJoinTable());
@@ -97,8 +97,8 @@ public class XmlJoinTableTests extends ContextModelTestCase
 //	public void testUpdateDefaultNameFromJavaTable() throws Exception {
 //		createTestEntity();
 //		
-//		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+//		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+//		XmlEntity xmlEntity = (XmlEntity) ormPersistentType.getMapping();
 //		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
 //		
 //		xmlEntity.javaEntity().getTable().setSpecifiedName("Foo");
@@ -124,8 +124,8 @@ public class XmlJoinTableTests extends ContextModelTestCase
 //	public void testUpdateDefaultNameNoJava() throws Exception {
 //		createTestEntity();
 //		
-//		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-//		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+//		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+//		XmlEntity xmlEntity = (XmlEntity) ormPersistentType.getMapping();
 //		assertEquals("Foo", xmlEntity.getTable().getDefaultName());
 //	}
 //	
@@ -133,10 +133,10 @@ public class XmlJoinTableTests extends ContextModelTestCase
 //		createTestEntity();
 //		createTestSubType();
 //		
-//		XmlPersistentType parentXmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		XmlPersistentType childXmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
-//		XmlEntity parentXmlEntity = (XmlEntity) parentXmlPersistentType.getMapping();
-//		XmlEntity childXmlEntity = (XmlEntity) childXmlPersistentType.getMapping();
+//		OrmPersistentType parentOrmPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+//		OrmPersistentType childOrmPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
+//		XmlEntity parentXmlEntity = (XmlEntity) parentOrmPersistentType.getMapping();
+//		XmlEntity childXmlEntity = (XmlEntity) childOrmPersistentType.getMapping();
 //		
 //		assertEquals(TYPE_NAME, parentXmlEntity.getTable().getDefaultName());
 //		assertEquals(TYPE_NAME, childXmlEntity.getTable().getDefaultName());
@@ -151,12 +151,12 @@ public class XmlJoinTableTests extends ContextModelTestCase
 //	}
 
 	public void testUpdateSpecifiedSchema() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
-		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) xmlPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		XmlJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
+		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
 		
 		assertNull(xmlJoinTable.getSpecifiedSchema());
 		assertNull(manyToMany.getJoinTable());
@@ -184,8 +184,8 @@ public class XmlJoinTableTests extends ContextModelTestCase
 //	public void testUpdateDefaultSchemaFromJavaTable() throws Exception {
 //		createTestEntity();
 //		
-//		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+//		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+//		XmlEntity xmlEntity = (XmlEntity) ormPersistentType.getMapping();
 //		assertNull(xmlEntity.getTable().getDefaultSchema());
 //		
 //		xmlEntity.javaEntity().getTable().setSpecifiedSchema("Foo");
@@ -211,8 +211,8 @@ public class XmlJoinTableTests extends ContextModelTestCase
 //	public void testUpdateDefaultSchemaNoJava() throws Exception {
 //		createTestEntity();
 //		
-//		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-//		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+//		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+//		XmlEntity xmlEntity = (XmlEntity) ormPersistentType.getMapping();
 //		assertNull(xmlEntity.getTable().getDefaultSchema());
 //	}
 //	
@@ -220,10 +220,10 @@ public class XmlJoinTableTests extends ContextModelTestCase
 //		createTestEntity();
 //		createTestSubType();
 //		
-//		XmlPersistentType parentXmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		XmlPersistentType childXmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
-//		XmlEntity parentXmlEntity = (XmlEntity) parentXmlPersistentType.getMapping();
-//		XmlEntity childXmlEntity = (XmlEntity) childXmlPersistentType.getMapping();
+//		OrmPersistentType parentOrmPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+//		OrmPersistentType childOrmPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
+//		XmlEntity parentXmlEntity = (XmlEntity) parentOrmPersistentType.getMapping();
+//		XmlEntity childXmlEntity = (XmlEntity) childOrmPersistentType.getMapping();
 //		
 //		assertNull(parentXmlEntity.getTable().getDefaultSchema());
 //		assertNull(childXmlEntity.getTable().getDefaultSchema());
@@ -240,8 +240,8 @@ public class XmlJoinTableTests extends ContextModelTestCase
 //	public void testUpdateDefaultSchemaFromPersistenceUnitDefaults() throws Exception {
 //		createTestEntity();
 //		
-//		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+//		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+//		XmlEntity xmlEntity = (XmlEntity) ormPersistentType.getMapping();
 //		assertNull(xmlEntity.getTable().getDefaultSchema());
 //		
 //		xmlEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema("FOO");
@@ -269,12 +269,12 @@ public class XmlJoinTableTests extends ContextModelTestCase
 //	}
 
 	public void testModifySpecifiedSchema() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
-		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) xmlPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		XmlJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
+		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
 		
 		assertNull(xmlJoinTable.getSpecifiedSchema());
 		assertNull(manyToMany.getJoinTable());
@@ -291,12 +291,12 @@ public class XmlJoinTableTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedCatalog() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
-		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) xmlPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		XmlJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
+		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
 		
 		assertNull(xmlJoinTable.getSpecifiedCatalog());
 		assertNull(manyToMany.getJoinTable());
@@ -322,12 +322,12 @@ public class XmlJoinTableTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedCatalog() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
-		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) xmlPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		XmlJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
+		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
 		
 		assertNull(xmlJoinTable.getSpecifiedCatalog());
 		assertNull(manyToMany.getJoinTable());
@@ -346,8 +346,8 @@ public class XmlJoinTableTests extends ContextModelTestCase
 //	public void testUpdateDefaultCatalogFromJavaTable() throws Exception {
 //		createTestEntity();
 //		
-//		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+//		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+//		XmlEntity xmlEntity = (XmlEntity) ormPersistentType.getMapping();
 //		assertNull(xmlEntity.getTable().getDefaultCatalog());
 //		
 //		xmlEntity.javaEntity().getTable().setSpecifiedCatalog("Foo");
@@ -373,8 +373,8 @@ public class XmlJoinTableTests extends ContextModelTestCase
 //	public void testUpdateDefaultCatalogNoJava() throws Exception {
 //		createTestEntity();
 //		
-//		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-//		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+//		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+//		XmlEntity xmlEntity = (XmlEntity) ormPersistentType.getMapping();
 //		assertNull(xmlEntity.getTable().getDefaultCatalog());
 //	}
 //	
@@ -382,10 +382,10 @@ public class XmlJoinTableTests extends ContextModelTestCase
 //		createTestEntity();
 //		createTestSubType();
 //		
-//		XmlPersistentType parentXmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		XmlPersistentType childXmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
-//		XmlEntity parentXmlEntity = (XmlEntity) parentXmlPersistentType.getMapping();
-//		XmlEntity childXmlEntity = (XmlEntity) childXmlPersistentType.getMapping();
+//		OrmPersistentType parentOrmPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+//		OrmPersistentType childOrmPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
+//		XmlEntity parentXmlEntity = (XmlEntity) parentOrmPersistentType.getMapping();
+//		XmlEntity childXmlEntity = (XmlEntity) childOrmPersistentType.getMapping();
 //		
 //		assertNull(parentXmlEntity.getTable().getDefaultCatalog());
 //		assertNull(childXmlEntity.getTable().getDefaultCatalog());
@@ -402,8 +402,8 @@ public class XmlJoinTableTests extends ContextModelTestCase
 //	public void testUpdateDefaultCatalogFromPersistenceUnitDefaults() throws Exception {
 //		createTestEntity();
 //		
-//		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+//		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+//		XmlEntity xmlEntity = (XmlEntity) ormPersistentType.getMapping();
 //		assertNull(xmlEntity.getTable().getDefaultCatalog());
 //		
 //		xmlEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("FOO");
@@ -432,8 +432,8 @@ public class XmlJoinTableTests extends ContextModelTestCase
 
 //	
 //	public void testUpdateName() throws Exception {
-//		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-//		XmlEntity xmlEntity = (XmlEntity) xmlPersistentType.getMapping();
+//		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+//		XmlEntity xmlEntity = (XmlEntity) ormPersistentType.getMapping();
 //		Entity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 //		assertEquals("Foo", xmlEntity.getName());
 //		
@@ -454,22 +454,22 @@ public class XmlJoinTableTests extends ContextModelTestCase
 
 
 	public void testAddSpecifiedJoinColumn() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
-		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) xmlPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		XmlJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
+		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
 		
-		XmlJoinColumn joinColumn = xmlJoinTable.addSpecifiedJoinColumn(0);
+		GenericOrmJoinColumn joinColumn = xmlJoinTable.addSpecifiedJoinColumn(0);
 		ormResource().save(null);
 		joinColumn.setSpecifiedName("FOO");
 		ormResource().save(null);
 				
-		JoinTable joinTableResource = manyToMany.getJoinTable();
+		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		assertEquals("FOO", joinTableResource.getJoinColumns().get(0).getName());
 		
-		XmlJoinColumn joinColumn2 = xmlJoinTable.addSpecifiedJoinColumn(0);
+		GenericOrmJoinColumn joinColumn2 = xmlJoinTable.addSpecifiedJoinColumn(0);
 		ormResource().save(null);
 		joinColumn2.setSpecifiedName("BAR");
 		ormResource().save(null);
@@ -477,7 +477,7 @@ public class XmlJoinTableTests extends ContextModelTestCase
 		assertEquals("BAR", joinTableResource.getJoinColumns().get(0).getName());
 		assertEquals("FOO", joinTableResource.getJoinColumns().get(1).getName());
 		
-		XmlJoinColumn joinColumn3 = xmlJoinTable.addSpecifiedJoinColumn(1);
+		GenericOrmJoinColumn joinColumn3 = xmlJoinTable.addSpecifiedJoinColumn(1);
 		ormResource().save(null);
 		joinColumn3.setSpecifiedName("BAZ");
 		ormResource().save(null);
@@ -486,7 +486,7 @@ public class XmlJoinTableTests extends ContextModelTestCase
 		assertEquals("BAZ", joinTableResource.getJoinColumns().get(1).getName());
 		assertEquals("FOO", joinTableResource.getJoinColumns().get(2).getName());
 		
-		ListIterator<XmlJoinColumn> joinColumns = xmlJoinTable.specifiedJoinColumns();
+		ListIterator<GenericOrmJoinColumn> joinColumns = xmlJoinTable.specifiedJoinColumns();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
@@ -498,18 +498,18 @@ public class XmlJoinTableTests extends ContextModelTestCase
 	}
 	
 	public void testRemoveSpecifiedJoinColumn() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
-		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) xmlPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		XmlJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
+		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
 
 		xmlJoinTable.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
 		xmlJoinTable.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
 		xmlJoinTable.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
 		
-		JoinTable joinTableResource = manyToMany.getJoinTable();
+		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		assertEquals(3, joinTableResource.getJoinColumns().size());
 		
 		xmlJoinTable.removeSpecifiedJoinColumn(0);
@@ -526,23 +526,23 @@ public class XmlJoinTableTests extends ContextModelTestCase
 	}
 	
 	public void testMoveSpecifiedJoinColumn() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
-		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) xmlPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		XmlJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
+		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
 
 		xmlJoinTable.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
 		xmlJoinTable.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
 		xmlJoinTable.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
 		
-		JoinTable joinTableResource = manyToMany.getJoinTable();
+		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		assertEquals(3, joinTableResource.getJoinColumns().size());
 		
 		
 		xmlJoinTable.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<XmlJoinColumn> joinColumns = xmlJoinTable.specifiedJoinColumns();
+		ListIterator<GenericOrmJoinColumn> joinColumns = xmlJoinTable.specifiedJoinColumns();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -564,14 +564,14 @@ public class XmlJoinTableTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateInverseJoinColumns() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
-		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) xmlPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		XmlJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
+		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
 		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createJoinTableImpl());
-		JoinTable joinTableResource = manyToMany.getJoinTable();
+		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 	
 		joinTableResource.getInverseJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumnImpl());
 		joinTableResource.getInverseJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumnImpl());
@@ -581,7 +581,7 @@ public class XmlJoinTableTests extends ContextModelTestCase
 		joinTableResource.getInverseJoinColumns().get(1).setName("BAR");
 		joinTableResource.getInverseJoinColumns().get(2).setName("BAZ");
 
-		ListIterator<XmlJoinColumn> joinColumns = xmlJoinTable.specifiedInverseJoinColumns();
+		ListIterator<GenericOrmJoinColumn> joinColumns = xmlJoinTable.specifiedInverseJoinColumns();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
@@ -617,22 +617,22 @@ public class XmlJoinTableTests extends ContextModelTestCase
 	}
 
 	public void testAddSpecifiedInverseJoinColumn() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
-		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) xmlPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		XmlJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
+		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
 		
-		XmlJoinColumn joinColumn = xmlJoinTable.addSpecifiedInverseJoinColumn(0);
+		GenericOrmJoinColumn joinColumn = xmlJoinTable.addSpecifiedInverseJoinColumn(0);
 		ormResource().save(null);
 		joinColumn.setSpecifiedName("FOO");
 		ormResource().save(null);
 				
-		JoinTable joinTableResource = manyToMany.getJoinTable();
+		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		assertEquals("FOO", joinTableResource.getInverseJoinColumns().get(0).getName());
 		
-		XmlJoinColumn joinColumn2 = xmlJoinTable.addSpecifiedInverseJoinColumn(0);
+		GenericOrmJoinColumn joinColumn2 = xmlJoinTable.addSpecifiedInverseJoinColumn(0);
 		ormResource().save(null);
 		joinColumn2.setSpecifiedName("BAR");
 		ormResource().save(null);
@@ -640,7 +640,7 @@ public class XmlJoinTableTests extends ContextModelTestCase
 		assertEquals("BAR", joinTableResource.getInverseJoinColumns().get(0).getName());
 		assertEquals("FOO", joinTableResource.getInverseJoinColumns().get(1).getName());
 		
-		XmlJoinColumn joinColumn3 = xmlJoinTable.addSpecifiedInverseJoinColumn(1);
+		GenericOrmJoinColumn joinColumn3 = xmlJoinTable.addSpecifiedInverseJoinColumn(1);
 		ormResource().save(null);
 		joinColumn3.setSpecifiedName("BAZ");
 		ormResource().save(null);
@@ -649,7 +649,7 @@ public class XmlJoinTableTests extends ContextModelTestCase
 		assertEquals("BAZ", joinTableResource.getInverseJoinColumns().get(1).getName());
 		assertEquals("FOO", joinTableResource.getInverseJoinColumns().get(2).getName());
 		
-		ListIterator<XmlJoinColumn> joinColumns = xmlJoinTable.specifiedInverseJoinColumns();
+		ListIterator<GenericOrmJoinColumn> joinColumns = xmlJoinTable.specifiedInverseJoinColumns();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
@@ -661,18 +661,18 @@ public class XmlJoinTableTests extends ContextModelTestCase
 	}
 	
 	public void testRemoveSpecifiedInverseJoinColumn() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
-		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) xmlPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		XmlJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
+		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
 
 		xmlJoinTable.addSpecifiedInverseJoinColumn(0).setSpecifiedName("FOO");
 		xmlJoinTable.addSpecifiedInverseJoinColumn(1).setSpecifiedName("BAR");
 		xmlJoinTable.addSpecifiedInverseJoinColumn(2).setSpecifiedName("BAZ");
 		
-		JoinTable joinTableResource = manyToMany.getJoinTable();
+		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		assertEquals(3, joinTableResource.getInverseJoinColumns().size());
 		
 		xmlJoinTable.removeSpecifiedInverseJoinColumn(0);
@@ -689,23 +689,23 @@ public class XmlJoinTableTests extends ContextModelTestCase
 	}
 	
 	public void testMoveSpecifiedInverseJoinColumn() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
-		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) xmlPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		XmlJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
+		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
 
 		xmlJoinTable.addSpecifiedInverseJoinColumn(0).setSpecifiedName("FOO");
 		xmlJoinTable.addSpecifiedInverseJoinColumn(1).setSpecifiedName("BAR");
 		xmlJoinTable.addSpecifiedInverseJoinColumn(2).setSpecifiedName("BAZ");
 		
-		JoinTable joinTableResource = manyToMany.getJoinTable();
+		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		assertEquals(3, joinTableResource.getInverseJoinColumns().size());
 		
 		
 		xmlJoinTable.moveSpecifiedInverseJoinColumn(2, 0);
-		ListIterator<XmlJoinColumn> joinColumns = xmlJoinTable.specifiedInverseJoinColumns();
+		ListIterator<GenericOrmJoinColumn> joinColumns = xmlJoinTable.specifiedInverseJoinColumns();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -727,14 +727,14 @@ public class XmlJoinTableTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateJoinColumns() throws Exception {
-		XmlPersistentType xmlPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentAttribute xmlPersistentAttribute = xmlPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		XmlManyToManyMapping xmlManyToManyMapping = (XmlManyToManyMapping) xmlPersistentAttribute.getMapping();
-		ManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentAttribute xmlPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
+		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) xmlPersistentAttribute.getMapping();
+		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		XmlJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
+		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();
 		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createJoinTableImpl());
-		JoinTable joinTableResource = manyToMany.getJoinTable();
+		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 	
 		joinTableResource.getJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumnImpl());
 		joinTableResource.getJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumnImpl());
@@ -744,7 +744,7 @@ public class XmlJoinTableTests extends ContextModelTestCase
 		joinTableResource.getJoinColumns().get(1).setName("BAR");
 		joinTableResource.getJoinColumns().get(2).setName("BAZ");
 
-		ListIterator<XmlJoinColumn> joinColumns = xmlJoinTable.specifiedJoinColumns();
+		ListIterator<GenericOrmJoinColumn> joinColumns = xmlJoinTable.specifiedJoinColumns();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());

@@ -10,10 +10,10 @@
 package org.eclipse.jpt.ui.internal.mappings.db;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.internal.IJpaNode;
+import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public abstract class SequenceCombo<T extends IJpaNode> extends AbstractDatabaseObjectCombo<T>
+public abstract class SequenceCombo<T extends JpaNode> extends AbstractDatabaseObjectCombo<T>
 {
 	/**
 	 * Creates a new <code>SequenceCombo</code>.
@@ -61,7 +61,7 @@ public abstract class SequenceCombo<T extends IJpaNode> extends AbstractDatabase
 	 */
 	public SequenceCombo(PropertyValueModel<? extends T> subjectHolder,
 	                     Composite parent,
-	                     IWidgetFactory widgetFactory)
+	                     WidgetFactory widgetFactory)
 	{
 		super(subjectHolder, parent, widgetFactory);
 	}

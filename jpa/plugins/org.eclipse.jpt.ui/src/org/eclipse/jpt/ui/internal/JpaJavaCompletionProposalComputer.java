@@ -24,9 +24,9 @@ import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.jpt.core.internal.IJpaFile;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.utility.internal.Filter;
@@ -67,7 +67,7 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 			return Collections.emptyList();
 		}
 
-		IJpaFile jpaFile = JptCorePlugin.jpaFile((IFile) cu.getCorrespondingResource());
+		JpaFile jpaFile = JptCorePlugin.jpaFile((IFile) cu.getCorrespondingResource());
 		if (jpaFile == null) {
 			return Collections.emptyList();
 		}

@@ -10,11 +10,12 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.context.base.ICascade;
-import org.eclipse.jpt.core.internal.resource.java.RelationshipMapping;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.context.Cascade;
+import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
+import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 
-public class JavaCascade extends JavaContextModel implements ICascade
+public class JavaCascade extends JavaContextModel implements Cascade
 {
 	protected boolean all;
 
@@ -26,9 +27,9 @@ public class JavaCascade extends JavaContextModel implements ICascade
 
 	protected boolean refresh;
 
-	protected RelationshipMapping relationshipMapping;
+	protected RelationshipMappingAnnotation relationshipMapping;
 
-	protected JavaCascade(IJavaRelationshipMapping parent) {
+	protected JavaCascade(JavaRelationshipMapping parent) {
 		super(parent);
 	}
 
@@ -40,7 +41,7 @@ public class JavaCascade extends JavaContextModel implements ICascade
 		boolean oldAll = this.all;
 		this.all = newAll;
 		this.relationshipMapping.setCascadeAll(newAll);
-		firePropertyChanged(ICascade.ALL_PROPERTY, oldAll, newAll);
+		firePropertyChanged(Cascade.ALL_PROPERTY, oldAll, newAll);
 	}
 
 	public boolean isPersist() {
@@ -51,7 +52,7 @@ public class JavaCascade extends JavaContextModel implements ICascade
 		boolean oldPersist = this.persist;
 		this.persist = newPersist;
 		this.relationshipMapping.setCascadePersist(newPersist);
-		firePropertyChanged(ICascade.PERSIST_PROPERTY, oldPersist, newPersist);
+		firePropertyChanged(Cascade.PERSIST_PROPERTY, oldPersist, newPersist);
 	}
 
 	public boolean isMerge() {
@@ -62,7 +63,7 @@ public class JavaCascade extends JavaContextModel implements ICascade
 		boolean oldMerge = this.merge;
 		this.merge = newMerge;
 		this.relationshipMapping.setCascadeMerge(newMerge);
-		firePropertyChanged(ICascade.MERGE_PROPERTY, oldMerge, newMerge);
+		firePropertyChanged(Cascade.MERGE_PROPERTY, oldMerge, newMerge);
 	}
 
 	public boolean isRemove() {
@@ -73,7 +74,7 @@ public class JavaCascade extends JavaContextModel implements ICascade
 		boolean oldRemove = this.remove;
 		this.remove = newRemove;
 		this.relationshipMapping.setCascadeRemove(newRemove);
-		firePropertyChanged(ICascade.REMOVE_PROPERTY, oldRemove, newRemove);
+		firePropertyChanged(Cascade.REMOVE_PROPERTY, oldRemove, newRemove);
 	}
 
 	public boolean isRefresh() {
@@ -84,14 +85,14 @@ public class JavaCascade extends JavaContextModel implements ICascade
 		boolean oldRefresh = this.refresh;
 		this.refresh = newRefresh;
 		this.relationshipMapping.setCascadeRefresh(newRefresh);
-		firePropertyChanged(ICascade.REFRESH_PROPERTY, oldRefresh, newRefresh);
+		firePropertyChanged(Cascade.REFRESH_PROPERTY, oldRefresh, newRefresh);
 	}
 
-	public ITextRange validationTextRange(CompilationUnit astRoot) {
+	public TextRange validationTextRange(CompilationUnit astRoot) {
 		return this.relationshipMapping.cascadeTextRange(astRoot);
 	}
 	
-	public void initialize(RelationshipMapping relationshipMapping) {
+	public void initialize(RelationshipMappingAnnotation relationshipMapping) {
 		this.relationshipMapping = relationshipMapping;
 		this.all = relationshipMapping.isCascadeAll();
 		this.persist = relationshipMapping.isCascadePersist();
@@ -100,7 +101,7 @@ public class JavaCascade extends JavaContextModel implements ICascade
 		this.refresh = relationshipMapping.isCascadeRefresh();
 	}
 	
-	public void update(RelationshipMapping relationshipMapping) {
+	public void update(RelationshipMappingAnnotation relationshipMapping) {
 		this.relationshipMapping = relationshipMapping;
 		this.setAll(relationshipMapping.isCascadeAll());
 		this.setPersist(relationshipMapping.isCascadePersist());

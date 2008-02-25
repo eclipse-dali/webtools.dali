@@ -9,12 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
-import org.eclipse.jpt.core.internal.resource.java.Basic;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.platform.base.JpaBaseContextFactory;
+import org.eclipse.jpt.core.resource.java.Basic;
 
 public class JavaBasicMappingProvider
-	implements IDefaultJavaAttributeMappingProvider
+	implements DefaultJavaAttributeMappingProvider
 {
 
 	// singleton
@@ -23,7 +26,7 @@ public class JavaBasicMappingProvider
 	/**
 	 * Return the singleton.
 	 */
-	public static IDefaultJavaAttributeMappingProvider instance() {
+	public static DefaultJavaAttributeMappingProvider instance() {
 		return INSTANCE;
 	}
 
@@ -35,18 +38,18 @@ public class JavaBasicMappingProvider
 	}
 
 	public String key() {
-		return IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
+		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
 	
 	public String annotationName() {
 		return Basic.ANNOTATION_NAME;
 	}
 
-	public IJavaAttributeMapping buildMapping(IJavaPersistentAttribute parent, IJpaBaseContextFactory factory) {
-		return factory.createJavaBasicMapping(parent);
+	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaBaseContextFactory factory) {
+		return factory.buildJavaBasicMapping(parent);
 	}
 	
-	public boolean defaultApplies(IJavaPersistentAttribute persistentAttribute) {
+	public boolean defaultApplies(JavaPersistentAttribute persistentAttribute) {
 		return persistentAttribute.getPersistentAttributeResource().typeIsBasic();
 	}
 

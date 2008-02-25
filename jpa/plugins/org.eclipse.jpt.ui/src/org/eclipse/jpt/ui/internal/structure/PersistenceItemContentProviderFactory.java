@@ -13,18 +13,18 @@ package org.eclipse.jpt.ui.internal.structure;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.internal.IJpaStructureNode;
-import org.eclipse.jpt.core.internal.IResourceModel;
-import org.eclipse.jpt.core.internal.context.persistence.IClassRef;
-import org.eclipse.jpt.core.internal.context.persistence.IMappingFileRef;
-import org.eclipse.jpt.core.internal.context.persistence.IPersistence;
-import org.eclipse.jpt.core.internal.context.persistence.IPersistenceUnit;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.ResourceModel;
+import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.context.persistence.Persistence;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.resource.persistence.PersistenceResourceModel;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
-import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProvider;
-import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProviderFactory;
+import org.eclipse.jpt.ui.internal.jface.TreeItemContentProvider;
+import org.eclipse.jpt.ui.internal.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
@@ -34,31 +34,31 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 
 public class PersistenceItemContentProviderFactory
-	implements ITreeItemContentProviderFactory
+	implements TreeItemContentProviderFactory
 {
-	public ITreeItemContentProvider buildItemContentProvider(
+	public TreeItemContentProvider buildItemContentProvider(
 			Object item, DelegatingContentAndLabelProvider contentAndLabelProvider) {
 		DelegatingTreeContentAndLabelProvider treeContentProvider = (DelegatingTreeContentAndLabelProvider) contentAndLabelProvider;
 		if (item instanceof PersistenceResourceModel) {
 			return new PersistenceResourceModelItemContentProvider((PersistenceResourceModel) item, treeContentProvider);
 		}
-		else if (item instanceof IPersistence) {
-			return new PersistenceItemContentProvider((IPersistence) item, treeContentProvider);
+		else if (item instanceof Persistence) {
+			return new PersistenceItemContentProvider((Persistence) item, treeContentProvider);
 		}
-		else if (item instanceof IPersistenceUnit) {
-			return new PersistenceUnitItemContentProvider((IPersistenceUnit) item, treeContentProvider);	
+		else if (item instanceof PersistenceUnit) {
+			return new PersistenceUnitItemContentProvider((PersistenceUnit) item, treeContentProvider);	
 		}
-		else if (item instanceof IMappingFileRef) {
-			return new MappingFileRefItemContentProvider((IMappingFileRef) item, treeContentProvider);	
+		else if (item instanceof MappingFileRef) {
+			return new MappingFileRefItemContentProvider((MappingFileRef) item, treeContentProvider);	
 		}
-		else if (item instanceof IClassRef) {
-			return new ClassRefItemContentProvider((IClassRef) item, treeContentProvider);	
+		else if (item instanceof ClassRef) {
+			return new ClassRefItemContentProvider((ClassRef) item, treeContentProvider);	
 		}
 		return null;
 	}
 	
 	
-	public static class PersistenceResourceModelItemContentProvider extends AbstractTreeItemContentProvider<IJpaStructureNode>
+	public static class PersistenceResourceModelItemContentProvider extends AbstractTreeItemContentProvider<JpaStructureNode>
 	{
 		public PersistenceResourceModelItemContentProvider(
 				PersistenceResourceModel persistenceResourceModel, 
@@ -72,11 +72,11 @@ public class PersistenceItemContentProviderFactory
 		}
 		
 		@Override
-		protected ListValueModel<IJpaStructureNode> buildChildrenModel() {
-			return new ListAspectAdapter<PersistenceResourceModel, IJpaStructureNode>(
-					IResourceModel.ROOT_STRUCTURE_NODES_LIST, (PersistenceResourceModel) model()) {
+		protected ListValueModel<JpaStructureNode> buildChildrenModel() {
+			return new ListAspectAdapter<PersistenceResourceModel, JpaStructureNode>(
+					ResourceModel.ROOT_STRUCTURE_NODES_LIST, (PersistenceResourceModel) model()) {
 				@Override
-				protected ListIterator<IJpaStructureNode> listIterator_() {
+				protected ListIterator<JpaStructureNode> listIterator_() {
 					return subject.rootStructureNodes();
 				}
 			};
@@ -84,10 +84,10 @@ public class PersistenceItemContentProviderFactory
 	}
 	
 	
-	public static class PersistenceItemContentProvider extends AbstractTreeItemContentProvider<IPersistenceUnit>
+	public static class PersistenceItemContentProvider extends AbstractTreeItemContentProvider<PersistenceUnit>
 	{
 		public PersistenceItemContentProvider(
-				IPersistence persistence, DelegatingTreeContentAndLabelProvider contentProvider) {
+				Persistence persistence, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(persistence, contentProvider);
 		}
 		
@@ -100,11 +100,11 @@ public class PersistenceItemContentProviderFactory
 		}
 		
 		@Override
-		protected ListValueModel<IPersistenceUnit> buildChildrenModel() {
-			return new ListAspectAdapter<IPersistence, IPersistenceUnit>(
-					IPersistence.PERSISTENCE_UNITS_LIST, (IPersistence) model()) {
+		protected ListValueModel<PersistenceUnit> buildChildrenModel() {
+			return new ListAspectAdapter<Persistence, PersistenceUnit>(
+					Persistence.PERSISTENCE_UNITS_LIST, (Persistence) model()) {
 				@Override
-				protected ListIterator<IPersistenceUnit> listIterator_() {
+				protected ListIterator<PersistenceUnit> listIterator_() {
 					return subject.persistenceUnits();
 				}
 			};
@@ -112,57 +112,57 @@ public class PersistenceItemContentProviderFactory
 	}
 	
 	
-	public static class PersistenceUnitItemContentProvider extends AbstractTreeItemContentProvider<IJpaStructureNode>
+	public static class PersistenceUnitItemContentProvider extends AbstractTreeItemContentProvider<JpaStructureNode>
 	{
 		public PersistenceUnitItemContentProvider(
-				IPersistenceUnit persistenceUnit, DelegatingTreeContentAndLabelProvider contentProvider) {
+				PersistenceUnit persistenceUnit, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(persistenceUnit, contentProvider);
 		}
 		
 		@Override
-		public Object getParent() {
-			return ((IPersistenceUnit) model()).persistence();
+		public Persistence getParent() {
+			return ((PersistenceUnit) model()).parent();
 		}
 		
 		@Override
-		protected ListValueModel<IJpaStructureNode> buildChildrenModel() {
-			ListValueModel<IJpaStructureNode> specifiedMappingFileLvm = 
-				new ListAspectAdapter<IPersistenceUnit, IJpaStructureNode>(
-						IPersistenceUnit.SPECIFIED_MAPPING_FILE_REF_LIST,
-						(IPersistenceUnit) model()) {
+		protected ListValueModel<JpaStructureNode> buildChildrenModel() {
+			ListValueModel<JpaStructureNode> specifiedMappingFileLvm = 
+				new ListAspectAdapter<PersistenceUnit, JpaStructureNode>(
+						PersistenceUnit.SPECIFIED_MAPPING_FILE_REF_LIST,
+						(PersistenceUnit) model()) {
 					@Override
-					protected ListIterator<IJpaStructureNode> listIterator_() {
-						return new ReadOnlyCompositeListIterator<IJpaStructureNode>(
+					protected ListIterator<JpaStructureNode> listIterator_() {
+						return new ReadOnlyCompositeListIterator<JpaStructureNode>(
 							subject.specifiedMappingFileRefs());
 					}
 				};
 			
-			ListValueModel<IJpaStructureNode> impliedMappingFileLvm = 
-				new CollectionListValueModelAdapter<IJpaStructureNode>(
-					new PropertyCollectionValueModelAdapter<IJpaStructureNode>(
-						new PropertyAspectAdapter<IPersistenceUnit, IJpaStructureNode>(
-								IPersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY,
-								(IPersistenceUnit) model()) {
+			ListValueModel<JpaStructureNode> impliedMappingFileLvm = 
+				new CollectionListValueModelAdapter<JpaStructureNode>(
+					new PropertyCollectionValueModelAdapter<JpaStructureNode>(
+						new PropertyAspectAdapter<PersistenceUnit, JpaStructureNode>(
+								PersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY,
+								(PersistenceUnit) model()) {
 							 @Override
-							protected IJpaStructureNode buildValue_() {
+							protected JpaStructureNode buildValue_() {
 								return subject.getImpliedMappingFileRef();
 							}
 						}));
-			ListValueModel<IJpaStructureNode> classLvm = 
-				new ListAspectAdapter<IPersistenceUnit, IJpaStructureNode>(
-						new String[] {IPersistenceUnit.SPECIFIED_CLASS_REF_LIST, IPersistenceUnit.IMPLIED_CLASS_REF_LIST},
-						(IPersistenceUnit) model()) {
+			ListValueModel<JpaStructureNode> classLvm = 
+				new ListAspectAdapter<PersistenceUnit, JpaStructureNode>(
+						new String[] {PersistenceUnit.SPECIFIED_CLASS_REF_LIST, PersistenceUnit.IMPLIED_CLASS_REF_LIST},
+						(PersistenceUnit) model()) {
 					@Override
-					protected ListIterator<IJpaStructureNode> listIterator_() {
-						return new ReadOnlyCompositeListIterator<IJpaStructureNode>(
+					protected ListIterator<JpaStructureNode> listIterator_() {
+						return new ReadOnlyCompositeListIterator<JpaStructureNode>(
 							subject.classRefs());
 					}
 				};
-			List<ListValueModel<IJpaStructureNode>> list = new ArrayList<ListValueModel<IJpaStructureNode>>();
+			List<ListValueModel<JpaStructureNode>> list = new ArrayList<ListValueModel<JpaStructureNode>>();
 			list.add(specifiedMappingFileLvm);
 			list.add(impliedMappingFileLvm);
 			list.add(classLvm);
-			return new CompositeListValueModel<ListValueModel<IJpaStructureNode>, IJpaStructureNode>(list);
+			return new CompositeListValueModel<ListValueModel<JpaStructureNode>, JpaStructureNode>(list);
 		}
 	}
 	
@@ -171,13 +171,13 @@ public class PersistenceItemContentProviderFactory
 	public static class MappingFileRefItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public MappingFileRefItemContentProvider(
-				IMappingFileRef mappingFileRef, DelegatingTreeContentAndLabelProvider contentProvider) {
+				MappingFileRef mappingFileRef, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(mappingFileRef, contentProvider);
 		}
 		
 		@Override
 		public Object getParent() {
-			return ((IMappingFileRef) model()).persistenceUnit();
+			return ((MappingFileRef) model()).persistenceUnit();
 		}
 		
 		@Override
@@ -191,13 +191,13 @@ public class PersistenceItemContentProviderFactory
 	public static class ClassRefItemContentProvider extends AbstractTreeItemContentProvider
 	{
 		public ClassRefItemContentProvider(
-				IClassRef classRef, DelegatingTreeContentAndLabelProvider contentProvider) {
+				ClassRef classRef, DelegatingTreeContentAndLabelProvider contentProvider) {
 			super(classRef, contentProvider);
 		}
 		
 		@Override
 		public Object getParent() {
-			return ((IClassRef) model()).persistenceUnit();
+			return ((ClassRef) model()).persistenceUnit();
 		}
 		
 		@Override

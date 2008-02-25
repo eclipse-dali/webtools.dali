@@ -27,14 +27,14 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.JptUiPlugin;
-import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.EmbeddableUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.EntityUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.MappedSuperclassUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.EmbeddableUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.EntityUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.MappedSuperclassUiProvider;
+import org.eclipse.jpt.ui.java.details.TypeMappingUiProvider;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -124,7 +124,7 @@ public class AddPersistentClassDialog extends StatusDialog
 			new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					return ((ITypeMappingUiProvider<?>) element).label();
+					return ((TypeMappingUiProvider<?>) element).label();
 				}
 			});
 		this.mappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -181,7 +181,7 @@ public class AddPersistentClassDialog extends StatusDialog
 		return combo;
 	}
 	
-	private IJpaProject getJpaProject() {
+	private JpaProject getJpaProject() {
 		return this.entityMappings.jpaProject();
 	}
 	
@@ -191,7 +191,7 @@ public class AddPersistentClassDialog extends StatusDialog
 	
 	public String getMappingKey() {
 		StructuredSelection selection = (StructuredSelection) this.mappingCombo.getSelection();
-		return (selection.isEmpty()) ? null : ((ITypeMappingUiProvider<?>) selection.getFirstElement()).mappingKey();
+		return (selection.isEmpty()) ? null : ((TypeMappingUiProvider<?>) selection.getFirstElement()).mappingKey();
 	}
 	
 	protected IType chooseType() {
@@ -269,7 +269,7 @@ public class AddPersistentClassDialog extends StatusDialog
 	
 	@Override
 	protected void okPressed() {
-		this.entityMappings.addXmlPersistentType(getMappingKey(), getClassName());
+		this.entityMappings.addOrmPersistentType(getMappingKey(), getClassName());
 		super.okPressed();
 	}
 }

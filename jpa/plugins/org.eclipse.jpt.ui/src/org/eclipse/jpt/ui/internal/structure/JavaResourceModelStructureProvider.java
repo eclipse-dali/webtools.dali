@@ -11,8 +11,8 @@
 package org.eclipse.jpt.ui.internal.structure;
 
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
-import org.eclipse.jpt.ui.internal.jface.IItemLabelProviderFactory;
-import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProviderFactory;
+import org.eclipse.jpt.ui.internal.jface.ItemLabelProviderFactory;
+import org.eclipse.jpt.ui.internal.jface.TreeItemContentProviderFactory;
 
 public class JavaResourceModelStructureProvider
 	extends ResourceModelStructureProvider
@@ -21,11 +21,11 @@ public class JavaResourceModelStructureProvider
 		super(resourceModel);
 	}
 	
-	public ITreeItemContentProviderFactory treeItemContentProviderFactory() {
+	public TreeItemContentProviderFactory treeItemContentProviderFactory() {
 		return new JavaItemContentProviderFactory();
 	}
 	
-	public IItemLabelProviderFactory itemLabelProviderFactory() {
+	public ItemLabelProviderFactory itemLabelProviderFactory() {
 		return new JavaItemLabelProviderFactory();
 	}
 }

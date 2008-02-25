@@ -27,12 +27,12 @@ import org.eclipse.ui.forms.widgets.Section;
  * @version 2.0
  * @since 2.0
  */
-public final class DefaultWidgetFactory implements IWidgetFactory {
+public final class DefaultWidgetFactory implements WidgetFactory {
 
 	/**
 	 * The singleton instance of this <code>IWidgetFactory</code>
 	 */
-	private static final IWidgetFactory INSTANCE = new DefaultWidgetFactory();
+	private static final WidgetFactory INSTANCE = new DefaultWidgetFactory();
 
 	/**
 	 * Creates a new <code>DefaultWidgetFactory</code>.
@@ -46,7 +46,7 @@ public final class DefaultWidgetFactory implements IWidgetFactory {
 	 *
 	 * @return The singleton instance of this <code>IWidgetFactory</code>
 	 */
-	public static IWidgetFactory instance() {
+	public static WidgetFactory instance() {
 		return INSTANCE;
 	}
 

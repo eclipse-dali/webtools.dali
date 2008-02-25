@@ -11,14 +11,18 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jpt.core.internal.IJpaStructureNode;
-import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.context.base.JpaContextNode;
-import org.eclipse.jpt.core.internal.context.persistence.IMappingFileRef;
-import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResource;
+import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmXml;
+import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.OrmResource;
 
-public class OrmXmlImpl extends JpaContextNode
+public class OrmXmlImpl extends AbstractJpaContextNode
 	implements OrmXml
 {
 	protected OrmResource ormResource;
@@ -26,7 +30,7 @@ public class OrmXmlImpl extends JpaContextNode
 	protected EntityMappings entityMappings;
 	
 	
-	public OrmXmlImpl(IMappingFileRef parent) {
+	public OrmXmlImpl(MappingFileRef parent) {
 		super(parent);
 	}
 	
@@ -35,7 +39,7 @@ public class OrmXmlImpl extends JpaContextNode
 		return null;
 	}
 	
-	public XmlPersistentType persistentTypeFor(String fullyQualifiedTypeName) {
+	public OrmPersistentType persistentTypeFor(String fullyQualifiedTypeName) {
 		if (getEntityMappings() != null) {
 			return getEntityMappings().persistentTypeFor(fullyQualifiedTypeName);
 		}
@@ -64,7 +68,7 @@ public class OrmXmlImpl extends JpaContextNode
 			throw new IllegalStateException();
 		}
 		
-		org.eclipse.jpt.core.internal.resource.orm.EntityMappings ormEntityMappings = OrmFactory.eINSTANCE.createEntityMappings();
+		org.eclipse.jpt.core.resource.orm.EntityMappings ormEntityMappings = OrmFactory.eINSTANCE.createEntityMappings();
 		this.entityMappings = createEntityMappings(ormEntityMappings);
 		this.ormResource.getContents().add(ormEntityMappings);
 		firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, null, this.entityMappings);
@@ -78,7 +82,7 @@ public class OrmXmlImpl extends JpaContextNode
 		
 		EntityMappings oldEntityMappings = this.entityMappings;
 		this.entityMappings = null;
-		org.eclipse.jpt.core.internal.resource.orm.EntityMappings ormEntityMappings = this.ormResource.getEntityMappings(); //TODO helper removeEntityMappings method on ormResource??
+		org.eclipse.jpt.core.resource.orm.EntityMappings ormEntityMappings = this.ormResource.getEntityMappings(); //TODO helper removeEntityMappings method on ormResource??
 		this.ormResource.getContents().remove(ormEntityMappings);
 		firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, oldEntityMappings, null);
 	}
@@ -115,8 +119,8 @@ public class OrmXmlImpl extends JpaContextNode
 		}
 	}
 	
-	protected EntityMappings createEntityMappings(org.eclipse.jpt.core.internal.resource.orm.EntityMappings ormEntityMappings) {
-		EntityMappings entityMappings = jpaFactory().createEntityMappings(this);
+	protected EntityMappings createEntityMappings(org.eclipse.jpt.core.resource.orm.EntityMappings ormEntityMappings) {
+		EntityMappings entityMappings = jpaFactory().buildEntityMappings(this);
 		entityMappings.initialize(ormEntityMappings);
 		return entityMappings;
 	}
@@ -124,7 +128,7 @@ public class OrmXmlImpl extends JpaContextNode
 	
 	// *************************************************************************
 	
-	public IJpaStructureNode structureNode(int textOffset) {
+	public JpaStructureNode structureNode(int textOffset) {
 		if (entityMappings.containsOffset(textOffset)) {
 			return entityMappings.structureNode(textOffset);
 		}
@@ -132,11 +136,11 @@ public class OrmXmlImpl extends JpaContextNode
 	}
 	
 	// never actually selected
-	public ITextRange selectionTextRange() {
-		return ITextRange.Empty.instance();
+	public TextRange selectionTextRange() {
+		return TextRange.Empty.instance();
 	}
 	
-	public ITextRange validationTextRange() {
-		return ITextRange.Empty.instance();
+	public TextRange validationTextRange() {
+		return TextRange.Empty.instance();
 	}
 }

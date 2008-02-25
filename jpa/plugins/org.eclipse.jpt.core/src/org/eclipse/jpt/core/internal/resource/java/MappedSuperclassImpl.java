@@ -14,13 +14,18 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.MappedSuperclassAnnotation;
 
 
-public class MappedSuperclassImpl extends AbstractAnnotationResource<Type> implements MappedSuperclass
+public class MappedSuperclassImpl extends AbstractAnnotationResource<Type> implements MappedSuperclassAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	protected MappedSuperclassImpl(JavaPersistentTypeResource parent, Type type) {
+	protected MappedSuperclassImpl(JavaResourcePersistentType parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	
@@ -55,11 +60,11 @@ public class MappedSuperclassImpl extends AbstractAnnotationResource<Type> imple
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
-			return new MappedSuperclassImpl((JavaPersistentTypeResource) parent, (Type) member);
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
+			return new MappedSuperclassImpl((JavaResourcePersistentType) parent, (Type) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

@@ -11,9 +11,10 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.context.base.ITable;
-import org.eclipse.jpt.core.internal.resource.java.Table;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.resource.java.TableAnnotation;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.NameTools;
@@ -36,11 +37,11 @@ public abstract class AbstractJavaTable extends JavaContextModel
 //	protected EList<IUniqueConstraint> uniqueConstraints;
 
 
-	protected AbstractJavaTable(IJavaJpaContextNode parent) {
+	protected AbstractJavaTable(JavaJpaContextNode parent) {
 		super(parent);
 	}
 
-	protected void initializeFromResource(Table table) {
+	protected void initializeFromResource(TableAnnotation table) {
 		this.defaultName = this.defaultName();
 		this.defaultSchema = this.defaultSchema();
 		this.defaultCatalog = this.defaultCatalog();
@@ -53,7 +54,7 @@ public abstract class AbstractJavaTable extends JavaContextModel
 	 * Return the java table resource, do not return null if the java annotation does not exist.
 	 * Use a null resource object instead of null.
 	 */
-	protected abstract Table tableResource();
+	protected abstract TableAnnotation tableResource();
 	
 	/**
 	 * Return the fully qualified annotation name of the java table resource
@@ -72,7 +73,7 @@ public abstract class AbstractJavaTable extends JavaContextModel
 		String oldSpecifiedName = this.specifiedName;
 		this.specifiedName = newSpecifiedName;
 		tableResource().setName(newSpecifiedName);
-		firePropertyChanged(ITable.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
+		firePropertyChanged(Table.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
 	}
 	
 	/**
@@ -84,7 +85,7 @@ public abstract class AbstractJavaTable extends JavaContextModel
 	protected void setSpecifiedName_(String newSpecifiedName) {
 		String oldSpecifiedName = this.specifiedName;
 		this.specifiedName = newSpecifiedName;
-		firePropertyChanged(ITable.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
+		firePropertyChanged(Table.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
 	}
 
 	public String getDefaultName() {
@@ -103,7 +104,7 @@ public abstract class AbstractJavaTable extends JavaContextModel
 		String oldSpecifiedCatalog = this.specifiedCatalog;
 		this.specifiedCatalog = newSpecifiedCatalog;
 		tableResource().setCatalog(newSpecifiedCatalog);
-		firePropertyChanged(ITable.SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
+		firePropertyChanged(Table.SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
 	}
 
 	/**
@@ -115,7 +116,7 @@ public abstract class AbstractJavaTable extends JavaContextModel
 	protected void setSpecifiedCatalog_(String newSpecifiedCatalog) {
 		String oldSpecifiedCatalog = this.specifiedCatalog;
 		this.specifiedCatalog = newSpecifiedCatalog;
-		firePropertyChanged(ITable.SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
+		firePropertyChanged(Table.SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
 	}
 
 	public String getDefaultCatalog() {
@@ -134,7 +135,7 @@ public abstract class AbstractJavaTable extends JavaContextModel
 		String oldSpecifiedSchema = this.specifiedSchema;
 		this.specifiedSchema = newSpecifiedSchema;
 		tableResource().setSchema(newSpecifiedSchema);
-		firePropertyChanged(ITable.SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
+		firePropertyChanged(Table.SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
 	}
 	
 	/**
@@ -146,7 +147,7 @@ public abstract class AbstractJavaTable extends JavaContextModel
 	protected void setSpecifiedSchema_(String newSpecifiedSchema) {
 		String oldSpecifiedSchema = this.specifiedSchema;
 		this.specifiedSchema = newSpecifiedSchema;
-		firePropertyChanged(ITable.SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
+		firePropertyChanged(Table.SPECIFIED_SCHEMA_PROPERTY, oldSpecifiedSchema, newSpecifiedSchema);
 	}
 
 	public String getDefaultSchema() {
@@ -164,8 +165,8 @@ public abstract class AbstractJavaTable extends JavaContextModel
 
 	// ********** ITable implementation **********
 
-	public ITextRange nameTextRange(CompilationUnit astRoot) {
-		ITextRange textRange = tableResource().nameTextRange(astRoot);
+	public TextRange nameTextRange(CompilationUnit astRoot) {
+		TextRange textRange = tableResource().nameTextRange(astRoot);
 		return (textRange != null) ? textRange : this.parent().validationTextRange(astRoot);
 	}
 
@@ -173,8 +174,8 @@ public abstract class AbstractJavaTable extends JavaContextModel
 		return tableResource().nameTouches(pos, astRoot);
 	}
 
-	public ITextRange schemaTextRange(CompilationUnit astRoot) {
-		ITextRange textRange = tableResource().schemaTextRange(astRoot);
+	public TextRange schemaTextRange(CompilationUnit astRoot) {
+		TextRange textRange = tableResource().schemaTextRange(astRoot);
 		return (textRange != null) ? textRange : this.parent().validationTextRange(astRoot);
 	}
 
@@ -182,7 +183,7 @@ public abstract class AbstractJavaTable extends JavaContextModel
 		return tableResource().schemaTouches(pos, astRoot);
 	}
 
-	public ITextRange catalogTextRange(CompilationUnit astRoot) {
+	public TextRange catalogTextRange(CompilationUnit astRoot) {
 		return tableResource().catalogTextRange(astRoot);
 	}
 
@@ -193,19 +194,19 @@ public abstract class AbstractJavaTable extends JavaContextModel
 	protected void setDefaultName(String newDefaultName) {
 		String oldDefaultName = this.defaultName;
 		this.defaultName = newDefaultName;
-		firePropertyChanged(ITable.DEFAULT_NAME_PROPERTY, oldDefaultName, newDefaultName);
+		firePropertyChanged(Table.DEFAULT_NAME_PROPERTY, oldDefaultName, newDefaultName);
 	}
 
 	protected void setDefaultCatalog(String newDefaultCatalog) {
 		String oldDefaultCatalog = this.defaultCatalog;
 		this.defaultCatalog = newDefaultCatalog;
-		firePropertyChanged(ITable.DEFAULT_CATALOG_PROPERTY, oldDefaultCatalog, newDefaultCatalog);
+		firePropertyChanged(Table.DEFAULT_CATALOG_PROPERTY, oldDefaultCatalog, newDefaultCatalog);
 	}
 
 	protected void setDefaultSchema(String newDefaultSchema) {
 		String oldDefaultSchema = this.defaultSchema;
 		this.defaultSchema = newDefaultSchema;
-		firePropertyChanged(ITable.DEFAULT_SCHEMA_PROPERTY, oldDefaultSchema, newDefaultSchema);
+		firePropertyChanged(Table.DEFAULT_SCHEMA_PROPERTY, oldDefaultSchema, newDefaultSchema);
 	}
 
 //	public IUniqueConstraint createUniqueConstraint(int index) {
@@ -216,7 +217,7 @@ public abstract class AbstractJavaTable extends JavaContextModel
 
 
 	
-	protected void update(Table table) {
+	protected void update(TableAnnotation table) {
 		this.setSpecifiedName_(table.getName());
 		this.setSpecifiedSchema_(table.getSchema());
 		this.setSpecifiedCatalog_(table.getCatalog());
@@ -286,12 +287,12 @@ public abstract class AbstractJavaTable extends JavaContextModel
 //	}
 
 	@Override
-	public IJavaJpaContextNode parent() {
-		return (IJavaJpaContextNode) super.parent();
+	public JavaJpaContextNode parent() {
+		return (JavaJpaContextNode) super.parent();
 	}
 	
-	public ITextRange validationTextRange(CompilationUnit astRoot) {
-		ITextRange textRange = tableResource().textRange(astRoot);
+	public TextRange validationTextRange(CompilationUnit astRoot) {
+		TextRange textRange = tableResource().textRange(astRoot);
 		return (textRange != null) ? textRange : this.parent().validationTextRange(astRoot);
 	}
 

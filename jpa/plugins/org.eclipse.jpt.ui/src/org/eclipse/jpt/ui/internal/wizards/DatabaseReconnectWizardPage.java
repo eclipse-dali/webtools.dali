@@ -15,7 +15,7 @@ import java.util.Iterator;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.db.internal.ConnectionListener;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
@@ -24,7 +24,7 @@ import org.eclipse.jpt.db.internal.JptDbPlugin;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -41,12 +41,12 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PlatformUI;
 
 public class DatabaseReconnectWizardPage extends WizardPage {
-	private IJpaProject jpaProject;
+	private JpaProject jpaProject;
 
 	private ConnectionProfile profile;
 	private ConnectionListener connectionListener;
 
-	public DatabaseReconnectWizardPage( IJpaProject jpaProject) {
+	public DatabaseReconnectWizardPage( JpaProject jpaProject) {
 		super( "Database Settings"); //$NON-NLS-1$
 		this.jpaProject = jpaProject;
 		setTitle( JptUiMessages.DatabaseReconnectWizardPage_databaseConnection);
@@ -66,7 +66,7 @@ public class DatabaseReconnectWizardPage extends WizardPage {
 		new DatabaseGroup( composite);
 		Dialog.applyDialogFont( parent);
 		// TODO Add Help - testing
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, IJpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_CONNECTION);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_CONNECTION);
 		return composite;
 	}
 

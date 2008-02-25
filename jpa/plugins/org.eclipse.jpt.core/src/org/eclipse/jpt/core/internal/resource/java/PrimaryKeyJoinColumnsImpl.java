@@ -17,6 +17,12 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NestablePrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumns;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
@@ -27,7 +33,7 @@ public class PrimaryKeyJoinColumnsImpl extends AbstractAnnotationResource<Member
 
 	private List<NestablePrimaryKeyJoinColumn> pkJoinColumns;
 	
-	protected PrimaryKeyJoinColumnsImpl(JavaResource parent, Member member) {
+	protected PrimaryKeyJoinColumnsImpl(JavaResourceNode parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.pkJoinColumns = new ArrayList<NestablePrimaryKeyJoinColumn>();
 	}
@@ -41,7 +47,7 @@ public class PrimaryKeyJoinColumnsImpl extends AbstractAnnotationResource<Member
 	}
 
 	public String getNestableAnnotationName() {
-		return PrimaryKeyJoinColumn.ANNOTATION_NAME;
+		return PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME;
 	}
 
 	public String getElementName() {
@@ -134,11 +140,11 @@ public class PrimaryKeyJoinColumnsImpl extends AbstractAnnotationResource<Member
 			super();
 		}
 
-		public PrimaryKeyJoinColumns buildAnnotation(JavaPersistentResource parent, Member member) {
+		public PrimaryKeyJoinColumns buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new PrimaryKeyJoinColumnsImpl(parent, member);
 		}
 		
-		public PrimaryKeyJoinColumns buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public PrimaryKeyJoinColumns buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

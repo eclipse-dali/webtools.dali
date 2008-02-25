@@ -9,15 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.TableAnnotation;
 
-public class NullTable extends NullAbstractTable implements Table
+
+public class NullTable extends NullAbstractTable implements TableAnnotation
 {	
-	protected NullTable(JavaPersistentResource parent) {
+	protected NullTable(JavaResourcePersistentMember parent) {
 		super(parent);
 	}
 
 	public String getAnnotationName() {
-		return Table.ANNOTATION_NAME;
+		return TableAnnotation.ANNOTATION_NAME;
 	}
 
 

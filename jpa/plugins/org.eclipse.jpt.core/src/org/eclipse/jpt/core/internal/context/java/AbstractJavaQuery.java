@@ -13,28 +13,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
-import org.eclipse.jpt.core.internal.context.base.IQuery;
-import org.eclipse.jpt.core.internal.context.base.IQueryHint;
-import org.eclipse.jpt.core.internal.resource.java.Query;
-import org.eclipse.jpt.core.internal.resource.java.QueryHint;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.context.Query;
+import org.eclipse.jpt.core.context.QueryHint;
+import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.context.java.JavaQuery;
+import org.eclipse.jpt.core.context.java.JavaQueryHint;
+import org.eclipse.jpt.core.resource.java.QueryAnnotation;
+import org.eclipse.jpt.core.resource.java.QueryHintAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 
-public abstract class AbstractJavaQuery<E extends Query> extends JavaContextModel implements IJavaQuery<E>
+public abstract class AbstractJavaQuery<E extends QueryAnnotation> extends JavaContextModel implements JavaQuery<E>
 {
 	protected String name;
 
 	protected String query;
 
-	protected final List<IJavaQueryHint> hints;
+	protected final List<JavaQueryHint> hints;
 
 	protected E queryResource;
 	
-	protected AbstractJavaQuery(IJavaJpaContextNode parent) {
+	protected AbstractJavaQuery(JavaJpaContextNode parent) {
 		super(parent);
-		this.hints = new ArrayList<IJavaQueryHint>();
+		this.hints = new ArrayList<JavaQueryHint>();
 	}
 
 	protected E query() {
@@ -49,7 +52,7 @@ public abstract class AbstractJavaQuery<E extends Query> extends JavaContextMode
 		String oldName = this.name;
 		this.name = newName;
 		this.queryResource.setName(newName);
-		firePropertyChanged(IQuery.NAME_PROPERTY, oldName, newName);
+		firePropertyChanged(Query.NAME_PROPERTY, oldName, newName);
 	}
 
 	public String getQuery() {
@@ -60,47 +63,47 @@ public abstract class AbstractJavaQuery<E extends Query> extends JavaContextMode
 		String oldQuery = this.query;
 		this.query = newQuery;
 		this.queryResource.setQuery(newQuery);
-		firePropertyChanged(IQuery.QUERY_PROPERTY, oldQuery, newQuery);
+		firePropertyChanged(Query.QUERY_PROPERTY, oldQuery, newQuery);
 	}
 
-	public ListIterator<IJavaQueryHint> hints() {
-		return new CloneListIterator<IJavaQueryHint>(this.hints);
+	public ListIterator<JavaQueryHint> hints() {
+		return new CloneListIterator<JavaQueryHint>(this.hints);
 	}
 
 	public int hintsSize() {
 		return this.hints.size();
 	}
 	
-	public IJavaQueryHint addHint(int index) {
-		IJavaQueryHint hint = jpaFactory().createJavaQueryHint(this);
+	public JavaQueryHint addHint(int index) {
+		JavaQueryHint hint = jpaFactory().buildJavaQueryHint(this);
 		this.hints.add(index, hint);
 		this.query().addHint(index);
-		this.fireItemAdded(IQuery.HINTS_LIST, index, hint);
+		this.fireItemAdded(Query.HINTS_LIST, index, hint);
 		return hint;
 	}
 
-	protected void addHint(int index, IJavaQueryHint hint) {
-		addItemToList(index, hint, this.hints, IQuery.HINTS_LIST);
+	protected void addHint(int index, JavaQueryHint hint) {
+		addItemToList(index, hint, this.hints, Query.HINTS_LIST);
 	}
 	
-	public void removeHint(IQueryHint queryHint) {
+	public void removeHint(QueryHint queryHint) {
 		removeHint(this.hints.indexOf(queryHint));
 	}
 	
 	public void removeHint(int index) {
-		IJavaQueryHint removedHint = this.hints.remove(index);
+		JavaQueryHint removedHint = this.hints.remove(index);
 		this.query().removeHint(index);
-		fireItemRemoved(IQuery.HINTS_LIST, index, removedHint);
+		fireItemRemoved(Query.HINTS_LIST, index, removedHint);
 	}
 	
-	protected void removeHint_(IJavaQueryHint hint) {
-		removeItemFromList(hint, this.hints, IQuery.HINTS_LIST);
+	protected void removeHint_(JavaQueryHint hint) {
+		removeItemFromList(hint, this.hints, Query.HINTS_LIST);
 	}
 	
 	public void moveHint(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.hints, targetIndex, sourceIndex);
 		this.query().moveHint(targetIndex, sourceIndex);
-		fireItemMoved(IQuery.HINTS_LIST, targetIndex, sourceIndex);		
+		fireItemMoved(Query.HINTS_LIST, targetIndex, sourceIndex);		
 	}
 	
 	public void initializeFromResource(E queryResource) {
@@ -118,18 +121,18 @@ public abstract class AbstractJavaQuery<E extends Query> extends JavaContextMode
 	}
 
 	protected void initializeQueryHints(E queryResource) {
-		ListIterator<QueryHint> annotations = queryResource.hints();
+		ListIterator<QueryHintAnnotation> annotations = queryResource.hints();
 		
 		while(annotations.hasNext()) {
 			this.hints.add(createQueryHint(annotations.next()));
 		}
 	}
 	protected void updateQueryHints(E queryResource) {
-		ListIterator<IJavaQueryHint> hints = hints();
-		ListIterator<QueryHint> resourceHints = queryResource.hints();
+		ListIterator<JavaQueryHint> hints = hints();
+		ListIterator<QueryHintAnnotation> resourceHints = queryResource.hints();
 		
 		while (hints.hasNext()) {
-			IJavaQueryHint hint = hints.next();
+			JavaQueryHint hint = hints.next();
 			if (resourceHints.hasNext()) {
 				hint.update(resourceHints.next());
 			}
@@ -143,13 +146,13 @@ public abstract class AbstractJavaQuery<E extends Query> extends JavaContextMode
 		}
 	}
 
-	protected IJavaQueryHint createQueryHint(QueryHint hintResource) {
-		IJavaQueryHint queryHint =  jpaFactory().createJavaQueryHint(this);
+	protected JavaQueryHint createQueryHint(QueryHintAnnotation hintResource) {
+		JavaQueryHint queryHint =  jpaFactory().buildJavaQueryHint(this);
 		queryHint.initializeFromResource(hintResource);
 		return queryHint;
 	}
 
-	public ITextRange validationTextRange(CompilationUnit astRoot) {
+	public TextRange validationTextRange(CompilationUnit astRoot) {
 		// TODO Auto-generated method stub
 		return null;
 	}

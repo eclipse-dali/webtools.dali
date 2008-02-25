@@ -19,6 +19,15 @@ import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
+import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableAttributeOverride;
 
 public class AttributeOverrideImpl 
 	extends OverrideImpl
@@ -31,7 +40,7 @@ public class AttributeOverrideImpl
 	private ColumnImpl column;
 	
 	
-	protected AttributeOverrideImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected AttributeOverrideImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.columnAdapter = new MemberAnnotationAdapter(getMember(), ColumnImpl.buildAttributeOverrideAnnotationAdapter(getDeclarationAnnotationAdapter()));
 	}
@@ -46,30 +55,30 @@ public class AttributeOverrideImpl
 	}
 	
 	public String getAnnotationName() {
-		return AttributeOverride.ANNOTATION_NAME;
+		return AttributeOverrideAnnotation.ANNOTATION_NAME;
 	}
 	
 	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		super.initializeFrom(oldAnnotation);
-		AttributeOverride oldAttributeOverride = (AttributeOverride) oldAnnotation;
+		AttributeOverrideAnnotation oldAttributeOverride = (AttributeOverrideAnnotation) oldAnnotation;
 		if (oldAttributeOverride.getColumn() != null) {
-			Column column = addColumn();
+			ColumnAnnotation column = addColumn();
 			((NestableAnnotation) column).initializeFrom((NestableAnnotation) oldAttributeOverride.getColumn());
 		}
 	}
 	
 	//************ AttriubteOverride implementation ****************
 	
-	public Column getNonNullColumn() {
+	public ColumnAnnotation getNonNullColumn() {
 		return (getColumn() != null) ? getColumn() : new NullAttributeOverrideColumn(this);
 	}
 	
-	public Column getColumn() {
+	public ColumnAnnotation getColumn() {
 		return this.column;
 	}
 	
-	public Column addColumn() {
+	public ColumnAnnotation addColumn() {
 		ColumnImpl column = ColumnImpl.createAttributeOverrideColumn(this, getMember(), getDeclarationAnnotationAdapter());
 		column.newAnnotation();
 		setColumn(column);
@@ -84,7 +93,7 @@ public class AttributeOverrideImpl
 	protected void setColumn(ColumnImpl newColumn) {
 		ColumnImpl oldColumn = this.column;
 		this.column = newColumn;
-		firePropertyChanged(AttributeOverride.COLUMN_PROPERTY, oldColumn, newColumn);
+		firePropertyChanged(AttributeOverrideAnnotation.COLUMN_PROPERTY, oldColumn, newColumn);
 	}
 	
 	@Override
@@ -106,11 +115,11 @@ public class AttributeOverrideImpl
 	}
 
 	// ********** static methods **********
-	static AttributeOverrideImpl createAttributeOverride(JavaResource parent, Member member) {
+	static AttributeOverrideImpl createAttributeOverride(JavaResourceNode parent, Member member) {
 		return new AttributeOverrideImpl(parent, member, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
-	static AttributeOverrideImpl createNestedAttributeOverride(JavaResource parent, Member member, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
+	static AttributeOverrideImpl createNestedAttributeOverride(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
 		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
 		return new AttributeOverrideImpl(parent, member, idaa, annotationAdapter);
@@ -139,16 +148,16 @@ public class AttributeOverrideImpl
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return AttributeOverrideImpl.createAttributeOverride(parent, member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 
 		public String getAnnotationName() {
-			return AttributeOverride.ANNOTATION_NAME;
+			return AttributeOverrideAnnotation.ANNOTATION_NAME;
 		}
 	}
 }

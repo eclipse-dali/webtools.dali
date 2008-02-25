@@ -89,7 +89,7 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	 */
 	AbstractEnumComboViewer(PropertyValueModel<? extends T> subjectHolder,
 	                        Composite parent,
-	                        IWidgetFactory widgetFactory) {
+	                        WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}

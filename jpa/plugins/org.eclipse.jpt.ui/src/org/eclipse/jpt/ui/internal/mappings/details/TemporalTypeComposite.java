@@ -9,9 +9,9 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.core.internal.context.base.IColumnMapping;
-import org.eclipse.jpt.core.internal.context.base.TemporalType;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.core.context.ColumnMapping;
+import org.eclipse.jpt.core.context.TemporalType;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
  * |           --------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IColumnMapping
+ * @see ColumnMapping
  * @see BasicMappingComposite - A container of this widget
  * @see IdMappingComposite - A container of this widget
  * @see VersionMappingComposite - A container of this widget
@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class TemporalTypeComposite extends AbstractFormPane<IColumnMapping> {
+public class TemporalTypeComposite extends AbstractFormPane<ColumnMapping> {
 
 	/**
 	 * Creates a new <code>TemporalTypeComposite</code>.
@@ -42,20 +42,20 @@ public class TemporalTypeComposite extends AbstractFormPane<IColumnMapping> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TemporalTypeComposite(AbstractFormPane<? extends IColumnMapping> parentPane,
+	public TemporalTypeComposite(AbstractFormPane<? extends ColumnMapping> parentPane,
 	                             Composite parent) {
 
 		super(parentPane, parent);
 	}
 
-	private EnumFormComboViewer<IColumnMapping, TemporalType> buildTemporalCombo(Composite container) {
+	private EnumFormComboViewer<ColumnMapping, TemporalType> buildTemporalCombo(Composite container) {
 
-		return new EnumFormComboViewer<IColumnMapping, TemporalType>(this, container) {
+		return new EnumFormComboViewer<ColumnMapping, TemporalType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(IColumnMapping.TEMPORAL_PROPERTY);
+				propertyNames.add(ColumnMapping.TEMPORAL_PROPERTY);
 			}
 
 			@Override
@@ -99,7 +99,7 @@ public class TemporalTypeComposite extends AbstractFormPane<IColumnMapping> {
 			container,
 			JptUiMappingsMessages.BasicGeneralSection_temporalLabel,
 			buildTemporalCombo(container),
-			IJpaHelpContextIds.MAPPING_TEMPORAL
+			JpaHelpContextIds.MAPPING_TEMPORAL
 		);
 	}
 }

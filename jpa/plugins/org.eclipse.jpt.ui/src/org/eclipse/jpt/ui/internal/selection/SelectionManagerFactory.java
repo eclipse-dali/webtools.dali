@@ -32,7 +32,7 @@ public class SelectionManagerFactory
 	 * @return The <code>JpaSelectionManager</code> associated with the current
 	 * <code>IWorkbenchWindow</code>
 	 */
-	public static IJpaSelectionManager getSelectionManager(IWorkbenchWindow window) {
+	public static JpaSelectionManager getSelectionManager(IWorkbenchWindow window) {
 		if (INSTANCE == null) {
 			// this is thread safe for now. you never know whats comming
 			synchronized (MUTEX) {
@@ -48,13 +48,13 @@ public class SelectionManagerFactory
 	}
 
 
-	private Map<IWorkbenchWindow, JpaSelectionManager> managers;
+	private Map<IWorkbenchWindow, DefaultJpaSelectionManager> managers;
 
 	private WindowListener windowListener;
 
 
 	private SelectionManagerFactory() {
-		managers = new HashMap<IWorkbenchWindow, JpaSelectionManager>();
+		managers = new HashMap<IWorkbenchWindow, DefaultJpaSelectionManager>();
 		windowListener = new WindowListener();
 	}
 
@@ -67,13 +67,13 @@ public class SelectionManagerFactory
 	 * Returns the JpaSelectionManager for the IWorkbenchWindow.
 	 * Creates a new one if none exists yet.
 	 */
-	private JpaSelectionManager internalGetSelectionManager(IWorkbenchWindow window) {
+	private DefaultJpaSelectionManager internalGetSelectionManager(IWorkbenchWindow window) {
 		if (window == null) {
 			throw new IllegalArgumentException("The IWorkbenchWindow cannot be null");
 		}
 
 		if (! managers.containsKey(window)) {
-			JpaSelectionManager manager = new JpaSelectionManager();
+			DefaultJpaSelectionManager manager = new DefaultJpaSelectionManager();
 			this.managers.put(window, manager);
 			manager.init(window);
 		}
@@ -87,7 +87,7 @@ public class SelectionManagerFactory
 		public void windowOpened(IWorkbenchWindow aWindow) {}
 
 		public void windowClosed(IWorkbenchWindow aWindow) {
-			JpaSelectionManager manager = internalGetSelectionManager(aWindow);
+			DefaultJpaSelectionManager manager = internalGetSelectionManager(aWindow);
 			manager.dispose();
 			managers.remove(aWindow);
 		}

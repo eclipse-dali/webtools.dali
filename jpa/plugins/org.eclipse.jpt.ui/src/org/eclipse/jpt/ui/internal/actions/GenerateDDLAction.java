@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.actions;
 
-import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.JpaProject;
 
 /**
  *  GenerateDDLAction
@@ -20,7 +20,7 @@ public class GenerateDDLAction extends ProjectAction {
 		super();
 	}
 
-	protected void execute(IJpaProject project) {
+	protected void execute(JpaProject project) {
         this.jpaPlatformUi(project).generateDDL(project, this.getCurrentSelection());
 	}
 }

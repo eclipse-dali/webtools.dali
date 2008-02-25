@@ -9,26 +9,31 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.DiscriminatorColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.DiscriminatorType;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 
 
-public class NullDiscriminatorColumn extends NullNamedColumn implements DiscriminatorColumn, Annotation
+
+public class NullDiscriminatorColumn extends NullNamedColumn implements DiscriminatorColumnAnnotation, Annotation
 {	
-	public NullDiscriminatorColumn(JavaPersistentResource parent) {
+	public NullDiscriminatorColumn(JavaResourcePersistentMember parent) {
 		super(parent);
 	}
 	
 	@Override
-	public JavaPersistentResource parent() {
-		return (JavaPersistentResource) super.parent();
+	public JavaResourcePersistentMember parent() {
+		return (JavaResourcePersistentMember) super.parent();
 	}
 
 	public String getAnnotationName() {
-		return DiscriminatorColumn.ANNOTATION_NAME;
+		return DiscriminatorColumnAnnotation.ANNOTATION_NAME;
 	}
 
 	@Override
-	protected DiscriminatorColumn createColumnResource() {
-		return (DiscriminatorColumn) parent().addAnnotation(getAnnotationName());
+	protected DiscriminatorColumnAnnotation createColumnResource() {
+		return (DiscriminatorColumnAnnotation) parent().addAnnotation(getAnnotationName());
 	}
 
 	public DiscriminatorType getDiscriminatorType() {

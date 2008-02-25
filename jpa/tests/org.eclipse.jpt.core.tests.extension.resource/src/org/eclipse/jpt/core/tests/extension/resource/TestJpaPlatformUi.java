@@ -3,66 +3,66 @@ package org.eclipse.jpt.core.tests.extension.resource;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.ui.internal.IJpaPlatformUi;
-import org.eclipse.jpt.ui.internal.IJpaUiFactory;
-import org.eclipse.jpt.ui.internal.details.IJpaDetailsProvider;
-import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.ITypeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.structure.IJpaStructureProvider;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.ui.JpaPlatformUi;
+import org.eclipse.jpt.ui.JpaUiFactory;
+import org.eclipse.jpt.ui.details.JpaDetailsProvider;
+import org.eclipse.jpt.ui.internal.structure.JpaStructureProvider;
+import org.eclipse.jpt.ui.java.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.java.details.TypeMappingUiProvider;
 
-public class TestJpaPlatformUi implements IJpaPlatformUi
+public class TestJpaPlatformUi implements JpaPlatformUi
 {
 	public TestJpaPlatformUi() {
 	// TODO Auto-generated constructor stub
 	}
 
-	public ListIterator<IAttributeMappingUiProvider> defaultJavaAttributeMappingUiProviders() {
+	public ListIterator<AttributeMappingUiProvider> defaultJavaAttributeMappingUiProviders() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IJpaDetailsProvider detailsProvider(String fileContentType) {
+	public JpaDetailsProvider detailsProvider(String fileContentType) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Iterator<IJpaDetailsProvider> detailsProviders() {
+	public Iterator<JpaDetailsProvider> detailsProviders() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IJpaUiFactory getJpaUiFactory() {
+	public JpaUiFactory getJpaUiFactory() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public ListIterator<IAttributeMappingUiProvider> javaAttributeMappingUiProviders() {
+	public ListIterator<AttributeMappingUiProvider> javaAttributeMappingUiProviders() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public ListIterator<ITypeMappingUiProvider> javaTypeMappingUiProviders() {
+	public ListIterator<TypeMappingUiProvider> javaTypeMappingUiProviders() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IJpaStructureProvider structureProvider(String fileContentType) {
+	public JpaStructureProvider structureProvider(String fileContentType) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Iterator<IJpaStructureProvider> structureProviders() {
+	public Iterator<JpaStructureProvider> structureProviders() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void generateDDL(IJpaProject project, IStructuredSelection selection) {
+	public void generateDDL(JpaProject project, IStructuredSelection selection) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void generateEntities(IJpaProject project, IStructuredSelection selection) {
+	public void generateEntities(JpaProject project, IStructuredSelection selection) {
 		// TODO Auto-generated method stub
 		
 	}

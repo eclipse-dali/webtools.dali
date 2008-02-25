@@ -10,27 +10,30 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 
 
-public class NullColumn extends NullAbstractColumn implements Column, Annotation
+public class NullColumn extends NullAbstractColumn implements ColumnAnnotation, Annotation
 {	
-	public NullColumn(JavaPersistentResource parent) {
+	public NullColumn(JavaResourcePersistentMember parent) {
 		super(parent);
 	}
 
 	@Override
-	public JavaPersistentResource parent() {
-		return (JavaPersistentResource) super.parent();
+	public JavaResourcePersistentMember parent() {
+		return (JavaResourcePersistentMember) super.parent();
 	}
 	
 	public String getAnnotationName() {
-		return Column.ANNOTATION_NAME;
+		return ColumnAnnotation.ANNOTATION_NAME;
 	}
 
 	@Override
-	protected Column createColumnResource() {
-		return (Column) parent().addAnnotation(getAnnotationName());
+	protected ColumnAnnotation createColumnResource() {
+		return (ColumnAnnotation) parent().addAnnotation(getAnnotationName());
 	}
 
 	public Integer getLength() {
@@ -63,15 +66,15 @@ public class NullColumn extends NullAbstractColumn implements Column, Annotation
 		}
 	}
 	
-	public ITextRange scaleTextRange(CompilationUnit astRoot) {
+	public TextRange scaleTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	
-	public ITextRange lengthTextRange(CompilationUnit astRoot) {
+	public TextRange lengthTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	
-	public ITextRange precisionTextRange(CompilationUnit astRoot) {
+	public TextRange precisionTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 }

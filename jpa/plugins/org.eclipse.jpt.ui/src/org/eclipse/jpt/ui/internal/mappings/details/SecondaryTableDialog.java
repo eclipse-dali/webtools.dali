@@ -10,9 +10,9 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Iterator;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.context.base.IEntity;
-import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.db.internal.Schema;
@@ -32,8 +32,8 @@ public class SecondaryTableDialog extends Dialog {
 
 	//if creating a new JoinColumn, this will be null,
 	//specify the JoinColumnOwner instead in the appropriate construtor
-	private ISecondaryTable secondaryTable;
-	private IEntity entity;
+	private SecondaryTable secondaryTable;
+	private Entity entity;
 
 	protected Combo nameCombo;
 	protected Combo catalogCombo;
@@ -46,12 +46,12 @@ public class SecondaryTableDialog extends Dialog {
 	private boolean defaultSchemaSelected;
 	private boolean defaultCatalogSelected;
 
-	SecondaryTableDialog(Shell parent, IEntity entity) {
+	SecondaryTableDialog(Shell parent, Entity entity) {
 		super(parent);
 		this.entity = entity;
 	}
 
-	SecondaryTableDialog(Shell parent, ISecondaryTable secondaryTable, IEntity entity) {
+	SecondaryTableDialog(Shell parent, SecondaryTable secondaryTable, Entity entity) {
 		super(parent);
 		this.secondaryTable = secondaryTable;
 		this.entity = entity;
@@ -117,7 +117,7 @@ public class SecondaryTableDialog extends Dialog {
 	}
 
 	private ConnectionProfile getConnectionProfile() {
-		IJpaProject project = (this.secondaryTable == null) ? this.entity.jpaProject() : this.secondaryTable.jpaProject();
+		JpaProject project = (this.secondaryTable == null) ? this.entity.jpaProject() : this.secondaryTable.jpaProject();
 		return project.connectionProfile();
 	}
 
@@ -207,7 +207,7 @@ public class SecondaryTableDialog extends Dialog {
 		return this.catalogCombo;
 	}
 
-	protected ISecondaryTable getSecondaryTable() {
+	protected SecondaryTable getSecondaryTable() {
 		return this.secondaryTable;
 	}
 

@@ -8,8 +8,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.ISecondaryTable;
+import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.ui.internal.widgets.AbstractDialogPane;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -18,8 +18,8 @@ import org.eclipse.swt.widgets.Shell;
  * This dialog is used to either create or edit a joing column that is within
  * a secondary table.
  *
- * @see IPrimaryKeyJoinColumn
- * @see ISecondaryTable
+ * @see PrimaryKeyJoinColumn
+ * @see SecondaryTable
  * @see PrimaryKeyJoinColumnInSecondaryTableStateObject
  * @see AbstractJoinColumnDialogPane
  *
@@ -38,8 +38,8 @@ public class PrimaryKeyJoinColumnInSecondaryTableDialog extends AbstractJoinColu
 	 * this state object is used to create a new one
 	 */
 	public PrimaryKeyJoinColumnInSecondaryTableDialog(Shell parent,
-	                                                  ISecondaryTable secondaryTable,
-	                                                  IPrimaryKeyJoinColumn joinColumn) {
+	                                                  SecondaryTable secondaryTable,
+	                                                  PrimaryKeyJoinColumn joinColumn) {
 
 		super(parent, secondaryTable, joinColumn);
 	}
@@ -70,15 +70,15 @@ public class PrimaryKeyJoinColumnInSecondaryTableDialog extends AbstractJoinColu
 	 * (non-Javadoc)
 	 */
 	@Override
-	public IPrimaryKeyJoinColumn getJoinColumn() {
-		return (IPrimaryKeyJoinColumn) super.getJoinColumn();
+	public PrimaryKeyJoinColumn getJoinColumn() {
+		return (PrimaryKeyJoinColumn) super.getJoinColumn();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected ISecondaryTable getOwner() {
-		return (ISecondaryTable) super.getOwner();
+	protected SecondaryTable getOwner() {
+		return (SecondaryTable) super.getOwner();
 	}
 }

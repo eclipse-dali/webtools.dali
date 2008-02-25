@@ -11,11 +11,11 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaResource;
-import org.eclipse.jpt.core.internal.resource.java.Transient;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.Transient;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class TransientTests extends JavaResourceModelTestCase {
@@ -40,10 +40,10 @@ public class TransientTests extends JavaResourceModelTestCase {
 
 	public void testTransient() throws Exception {
 		IType testType = this.createTestTransient();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		JavaResource mappingAnnotation = attributeResource.mappingAnnotation();
+		JavaResourceNode mappingAnnotation = attributeResource.mappingAnnotation();
 		assertTrue(mappingAnnotation instanceof Transient);
 	}
 

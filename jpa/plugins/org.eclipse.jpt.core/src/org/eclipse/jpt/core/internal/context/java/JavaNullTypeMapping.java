@@ -13,14 +13,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.IMappingKeys;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public class JavaNullTypeMapping extends JavaTypeMapping
+public class JavaNullTypeMapping extends AbstractJavaTypeMapping
 {
-	public JavaNullTypeMapping(IJavaPersistentType parent) {
+	public JavaNullTypeMapping(JavaPersistentType parent) {
 		super(parent);
 	}
 
@@ -29,7 +30,7 @@ public class JavaNullTypeMapping extends JavaTypeMapping
 	}
 	
 	public String getKey() {
-		return IMappingKeys.NULL_TYPE_MAPPING_KEY;
+		return MappingKeys.NULL_TYPE_MAPPING_KEY;
 	}
 	
 	public boolean isMapped() {

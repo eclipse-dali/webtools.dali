@@ -11,11 +11,11 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.resource.java.Entity;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaResource;
-import org.eclipse.jpt.core.internal.resource.java.MappedSuperclass;
+import org.eclipse.jpt.core.resource.java.EntityAnnotation;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.MappedSuperclassAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class MappedSuperclassTests extends JavaResourceModelTestCase {
@@ -56,20 +56,20 @@ public class MappedSuperclassTests extends JavaResourceModelTestCase {
 
 	public void testMappedSuperclass() throws Exception {
 		IType testType = this.createTestMappedSuperclass();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		JavaResource mappingAnnotation = typeResource.mappingAnnotation();
-		assertTrue(mappingAnnotation instanceof MappedSuperclass);
+		JavaResourceNode mappingAnnotation = typeResource.mappingAnnotation();
+		assertTrue(mappingAnnotation instanceof MappedSuperclassAnnotation);
 	}
 	
 	public void testMappedSuperclassAndEntity() throws Exception {
 		IType testType = this.createTestMappedSuperclassAndEntity();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		JavaResource mappingAnnotation = typeResource.mappingAnnotation();
-		assertTrue(mappingAnnotation instanceof Entity);
+		JavaResourceNode mappingAnnotation = typeResource.mappingAnnotation();
+		assertTrue(mappingAnnotation instanceof EntityAnnotation);
 		
-		MappedSuperclass mappedSuperclass = (MappedSuperclass) typeResource.mappingAnnotation(JPA.MAPPED_SUPERCLASS);
+		MappedSuperclassAnnotation mappedSuperclass = (MappedSuperclassAnnotation) typeResource.mappingAnnotation(JPA.MAPPED_SUPERCLASS);
 		assertNotNull(mappedSuperclass);
 	}
 

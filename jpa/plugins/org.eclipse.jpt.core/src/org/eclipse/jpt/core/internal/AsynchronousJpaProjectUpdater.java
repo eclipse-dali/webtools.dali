@@ -12,18 +12,18 @@ package org.eclipse.jpt.core.internal;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * This updater will update the project in a job that executes in a separate
  * thread and allows calls to #update() to return immediately.
  */
-public class AsynchronousJpaProjectUpdater implements IJpaProject.Updater {
-	protected final IJpaProject jpaProject;
+public class AsynchronousJpaProjectUpdater implements JpaProject.Updater {
+	protected final JpaProject jpaProject;
 	protected final UpdateJob job;
 
-	public AsynchronousJpaProjectUpdater(IJpaProject jpaProject) {
+	public AsynchronousJpaProjectUpdater(JpaProject jpaProject) {
 		super();
 		this.jpaProject = jpaProject;
 		this.job = this.buildJob();

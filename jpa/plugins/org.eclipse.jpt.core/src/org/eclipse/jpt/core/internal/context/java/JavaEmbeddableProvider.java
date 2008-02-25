@@ -9,12 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
-import org.eclipse.jpt.core.internal.resource.java.Embeddable;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
+import org.eclipse.jpt.core.internal.platform.base.JpaBaseContextFactory;
+import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
 
 public class JavaEmbeddableProvider
-	implements IJavaTypeMappingProvider
+	implements JavaTypeMappingProvider
 {
 
 	// singleton
@@ -23,7 +26,7 @@ public class JavaEmbeddableProvider
 	/**
 	 * Return the singleton.
 	 */
-	public static IJavaTypeMappingProvider instance() {
+	public static JavaTypeMappingProvider instance() {
 		return INSTANCE;
 	}
 
@@ -35,15 +38,15 @@ public class JavaEmbeddableProvider
 	}
 
 	public String key() {
-		return IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
+		return MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
 	}
 	
 	public String annotationName() {
-		return Embeddable.ANNOTATION_NAME;
+		return EmbeddableAnnotation.ANNOTATION_NAME;
 	}
 
-	public IJavaTypeMapping buildMapping(IJavaPersistentType parent, IJpaBaseContextFactory factory) {
-		return factory.createJavaEmbeddable(parent);
+	public JavaTypeMapping buildMapping(JavaPersistentType parent, JpaBaseContextFactory factory) {
+		return factory.buildJavaEmbeddable(parent);
 	}
 
 }

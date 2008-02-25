@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.actions;
 
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute;
 import org.eclipse.ui.IActionFilter;
 
 public class XmlPersistentAttributeActionFilter 
@@ -35,7 +35,7 @@ public class XmlPersistentAttributeActionFilter
 		else {
 			return false;
 		}
-		return ((XmlPersistentAttribute) target).isVirtual() == booleanValue;
+		return ((OrmPersistentAttribute) target).isVirtual() == booleanValue;
 	}
 	
 	

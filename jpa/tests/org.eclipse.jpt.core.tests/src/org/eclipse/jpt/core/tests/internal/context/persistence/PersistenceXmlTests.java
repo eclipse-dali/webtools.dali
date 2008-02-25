@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.persistence;
 
-import org.eclipse.jpt.core.internal.context.persistence.IPersistenceXml;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 public class PersistenceXmlTests extends ContextModelTestCase
@@ -21,7 +21,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 		super(name);
 	}
 	
-	protected IPersistenceXml persistenceXml() {
+	protected PersistenceXml persistenceXml() {
 		return jpaContent().getPersistenceXml();
 	}
 	
@@ -43,7 +43,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 		prm.getContents().remove(prm.getPersistence());
 		assertNull(prm.getPersistence());
 		
-		IPersistenceXml persistenceXml = persistenceXml();
+		PersistenceXml persistenceXml = persistenceXml();
 		
 		persistenceXml.addPersistence();
 		
@@ -71,7 +71,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 	}
 	
 	public void testModifyRemovePersistence() {
-		IPersistenceXml persistenceXml = persistenceXml();
+		PersistenceXml persistenceXml = persistenceXml();
 		
 		assertNotNull(persistenceXml.getPersistence());
 		

@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IGeneratedValue;
-import org.eclipse.jpt.core.internal.context.base.IIdMapping;
-import org.eclipse.jpt.core.internal.context.base.ISequenceGenerator;
-import org.eclipse.jpt.core.internal.context.base.ITableGenerator;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.core.context.GeneratedValue;
+import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.context.SequenceGenerator;
+import org.eclipse.jpt.core.context.TableGenerator;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -55,7 +55,7 @@ import org.eclipse.swt.widgets.Composite;
  * |     --------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IIdMapping
+ * @see IdMapping
  * @see GeneratedValueComposite
  * @see TableGeneratorComposite
  * @see SequenceGeneratorComposite
@@ -64,7 +64,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class GenerationComposite extends AbstractFormPane<IIdMapping>
+public class GenerationComposite extends AbstractFormPane<IdMapping>
 {
 	private WritablePropertyValueModel<Boolean> sequenceGeneratorExpansionStateHolder;
 	private WritablePropertyValueModel<Boolean> tableGeneratorExpansionStateHolder;
@@ -75,14 +75,14 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public GenerationComposite(AbstractFormPane<? extends IIdMapping> parentPane,
+	public GenerationComposite(AbstractFormPane<? extends IdMapping> parentPane,
 	                           Composite parent)
 	{
 		super(parentPane, parent, false);
 	}
 
 	private WritablePropertyValueModel<Boolean> buildPrimaryKeyGenerationHolder() {
-		return new PropertyAspectAdapter<IIdMapping, Boolean>(getSubjectHolder(), IIdMapping.GENERATED_VALUE_PROPERTY) {
+		return new PropertyAspectAdapter<IdMapping, Boolean>(getSubjectHolder(), IdMapping.GENERATED_VALUE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.getGeneratedValue() != null;
@@ -102,7 +102,7 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildSequenceGeneratorBooleanHolder() {
-		return new PropertyAspectAdapter<IIdMapping, Boolean>(getSubjectHolder(), IIdMapping.SEQUENCE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapter<IdMapping, Boolean>(getSubjectHolder(), IdMapping.SEQUENCE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.getSequenceGenerator() != null;
@@ -113,8 +113,8 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 
 				if (value && (subject.getSequenceGenerator() == null)) {
 
-					ISequenceGenerator sequenceGenerator = subject.addSequenceGenerator();
-					IGeneratedValue generatedValue = subject.getGeneratedValue();
+					SequenceGenerator sequenceGenerator = subject.addSequenceGenerator();
+					GeneratedValue generatedValue = subject.getGeneratedValue();
 
 					if ((generatedValue != null) &&
 					    (generatedValue.getGenerator() != null))
@@ -130,7 +130,7 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 	}
 
  	private WritablePropertyValueModel<Boolean> buildTableGeneratorBooleanHolder() {
-		return new PropertyAspectAdapter<IIdMapping, Boolean>(getSubjectHolder(), IIdMapping.TABLE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapter<IdMapping, Boolean>(getSubjectHolder(), IdMapping.TABLE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.getTableGenerator() != null;
@@ -141,8 +141,8 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 
 				if (value && (subject.getTableGenerator() == null)) {
 
-					ITableGenerator tableGenerator = subject.addTableGenerator();
-					IGeneratedValue generatedValue = subject.getGeneratedValue();
+					TableGenerator tableGenerator = subject.addTableGenerator();
+					GeneratedValue generatedValue = subject.getGeneratedValue();
 
 					if ((generatedValue != null) &&
 					    (generatedValue.getGenerator() != null))
@@ -197,7 +197,7 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 			container,
 			JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration,
 			buildPrimaryKeyGenerationHolder(),
-			IJpaHelpContextIds.MAPPING_PRIMARY_KEY_GENERATION
+			JpaHelpContextIds.MAPPING_PRIMARY_KEY_GENERATION
 		);
 
 		// Generated Value widgets
@@ -234,7 +234,7 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 			container,
 			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
 			buildSequenceGeneratorBooleanHolder(),
-			IJpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR
+			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR
 		);
 
 		// Sequence Generator pane
@@ -257,7 +257,7 @@ public class GenerationComposite extends AbstractFormPane<IIdMapping>
 			container,
 			JptUiMappingsMessages.IdMappingComposite_tableGenerator,
 			buildTableGeneratorBooleanHolder(),
-			IJpaHelpContextIds.MAPPING_TABLE_GENERATOR
+			JpaHelpContextIds.MAPPING_TABLE_GENERATOR
 		);
 
 		new TableGeneratorComposite(

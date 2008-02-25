@@ -12,12 +12,12 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.context.java.IJavaJoinColumn;
-import org.eclipse.jpt.core.internal.context.java.IJavaOneToOneMapping;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.JoinColumn;
+import org.eclipse.jpt.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -121,50 +121,50 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		createTestEntityWithOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IJavaOneToOneMapping oneToOneMapping = (IJavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
+		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 	
-		JoinColumn javaJoinColumn = (JoinColumn) attributeResource.annotation(JoinColumn.ANNOTATION_NAME);
+		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(0, oneToOneMapping.specifiedJoinColumnsSize());
 		assertNull(javaJoinColumn);
 		
 		
 		//set name in the resource model, verify context model updated
-		javaJoinColumn = (JoinColumn) attributeResource.addAnnotation(JoinColumn.ANNOTATION_NAME);
+		javaJoinColumn = (JoinColumnAnnotation) attributeResource.addAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		javaJoinColumn.setName("FOO");	
-		IJavaJoinColumn joinColumn = oneToOneMapping.specifiedJoinColumns().next();
+		JavaJoinColumn joinColumn = oneToOneMapping.specifiedJoinColumns().next();
 		assertEquals("FOO", joinColumn.getSpecifiedName());
 		assertEquals("FOO", javaJoinColumn.getName());
 	
 		//set name to null in the resource model, annotation removed, specified join column removed
 		javaJoinColumn.setName(null);
 		assertEquals(0, oneToOneMapping.specifiedJoinColumnsSize());
-		assertNull(attributeResource.annotation(JoinColumn.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	public void testModifySpecifiedName() throws Exception {
 		createTestEntityWithOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		IJavaOneToOneMapping oneToOneMapping = (IJavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 
 		
-		IJavaJoinColumn joinColumn = oneToOneMapping.addSpecifiedJoinColumn(0);
+		JavaJoinColumn joinColumn = oneToOneMapping.addSpecifiedJoinColumn(0);
 		//set name in the context model, verify resource model modified
 		joinColumn.setSpecifiedName("foo");
-		JoinColumn javaJoinColumn = (JoinColumn) attributeResource.annotation(JoinColumn.ANNOTATION_NAME);
+		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", joinColumn.getSpecifiedName());
 		assertEquals("foo", javaJoinColumn.getName());
 		
 		//set name to null in the context model
 		joinColumn.setSpecifiedName(null);
 		assertNull(joinColumn.getSpecifiedName());
-		assertNull(attributeResource.annotation(JoinColumn.ANNOTATION_NAME));
+		assertNull(attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME));
 	}
 	
 	// <attribute name>_<referenced column name>
@@ -176,8 +176,8 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		
-		IJavaOneToOneMapping oneToOneMapping = (IJavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
-		IJavaJoinColumn defaultJavaJoinColumn = oneToOneMapping.getDefaultJoinColumn();
+		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
+		JavaJoinColumn defaultJavaJoinColumn = oneToOneMapping.getDefaultJoinColumn();
 		
 		assertNull(defaultJavaJoinColumn.getDefaultName());
 //TODO test default join column name
@@ -215,22 +215,22 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		createTestEntityWithOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IJavaOneToOneMapping oneToOneMapping = (IJavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
+		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 	
-		JoinColumn javaJoinColumn = (JoinColumn) attributeResource.annotation(JoinColumn.ANNOTATION_NAME);
+		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(0, oneToOneMapping.specifiedJoinColumnsSize());
 		assertNull(javaJoinColumn);
 		
 		
 		//set referenced column name in the resource model, verify context model updated
-		javaJoinColumn = (JoinColumn) attributeResource.addAnnotation(JoinColumn.ANNOTATION_NAME);
+		javaJoinColumn = (JoinColumnAnnotation) attributeResource.addAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setReferencedColumnName("BAR");
-		IJavaJoinColumn joinColumn = oneToOneMapping.specifiedJoinColumns().next();
+		JavaJoinColumn joinColumn = oneToOneMapping.specifiedJoinColumns().next();
 		assertEquals("BAR", joinColumn.getSpecifiedReferencedColumnName());
 		assertEquals("BAR", javaJoinColumn.getReferencedColumnName());
 	
@@ -244,17 +244,17 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		createTestEntityWithOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		IJavaOneToOneMapping oneToOneMapping = (IJavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 
 		
-		IJavaJoinColumn joinColumn = oneToOneMapping.addSpecifiedJoinColumn(0);
+		JavaJoinColumn joinColumn = oneToOneMapping.addSpecifiedJoinColumn(0);
 		//set referenced column name in the context model, verify resource model modified
 		joinColumn.setSpecifiedName("foo");
 		joinColumn.setSpecifiedReferencedColumnName("BAR");
 		
-		JoinColumn javaJoinColumn = (JoinColumn) attributeResource.annotation(JoinColumn.ANNOTATION_NAME);
+		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		assertEquals("BAR", joinColumn.getSpecifiedReferencedColumnName());
 		assertEquals("BAR", javaJoinColumn.getReferencedColumnName());
 		
@@ -273,22 +273,22 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		createTestEntityWithOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IJavaOneToOneMapping oneToOneMapping = (IJavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
+		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 	
-		JoinColumn javaJoinColumn = (JoinColumn) attributeResource.annotation(JoinColumn.ANNOTATION_NAME);
+		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(0, oneToOneMapping.specifiedJoinColumnsSize());
 		assertNull(javaJoinColumn);
 		
 		
 		//set table in the resource model, verify context model updated
-		javaJoinColumn = (JoinColumn) attributeResource.addAnnotation(JoinColumn.ANNOTATION_NAME);
+		javaJoinColumn = (JoinColumnAnnotation) attributeResource.addAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setTable("BAR");
-		IJavaJoinColumn joinColumn = oneToOneMapping.specifiedJoinColumns().next();
+		JavaJoinColumn joinColumn = oneToOneMapping.specifiedJoinColumns().next();
 		assertEquals("BAR", joinColumn.getSpecifiedTable());
 		assertEquals("BAR", javaJoinColumn.getTable());
 	
@@ -302,17 +302,17 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		createTestEntityWithOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		IJavaOneToOneMapping oneToOneMapping = (IJavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 
 		
-		IJavaJoinColumn joinColumn = oneToOneMapping.addSpecifiedJoinColumn(0);
+		JavaJoinColumn joinColumn = oneToOneMapping.addSpecifiedJoinColumn(0);
 		//set table in the context model, verify resource model modified
 		joinColumn.setSpecifiedName("foo");
 		joinColumn.setSpecifiedTable("BAR");
 		
-		JoinColumn javaJoinColumn = (JoinColumn) attributeResource.annotation(JoinColumn.ANNOTATION_NAME);
+		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		assertEquals("BAR", joinColumn.getSpecifiedTable());
 		assertEquals("BAR", javaJoinColumn.getTable());
 		
@@ -331,22 +331,22 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		createTestEntityWithOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IJavaOneToOneMapping oneToOneMapping = (IJavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
+		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 	
-		JoinColumn javaJoinColumn = (JoinColumn) attributeResource.annotation(JoinColumn.ANNOTATION_NAME);
+		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(0, oneToOneMapping.specifiedJoinColumnsSize());
 		assertNull(javaJoinColumn);
 		
 		
 		//set unique in the resource model, verify context model updated
-		javaJoinColumn = (JoinColumn) attributeResource.addAnnotation(JoinColumn.ANNOTATION_NAME);
+		javaJoinColumn = (JoinColumnAnnotation) attributeResource.addAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setUnique(Boolean.TRUE);
-		IJavaJoinColumn joinColumn = oneToOneMapping.specifiedJoinColumns().next();
+		JavaJoinColumn joinColumn = oneToOneMapping.specifiedJoinColumns().next();
 		assertEquals(Boolean.TRUE, joinColumn.getSpecifiedUnique());
 		assertEquals(Boolean.TRUE, javaJoinColumn.getUnique());
 	
@@ -360,17 +360,17 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		createTestEntityWithOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		IJavaOneToOneMapping oneToOneMapping = (IJavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 
 		
-		IJavaJoinColumn joinColumn = oneToOneMapping.addSpecifiedJoinColumn(0);
+		JavaJoinColumn joinColumn = oneToOneMapping.addSpecifiedJoinColumn(0);
 		//set unique in the context model, verify resource model modified
 		joinColumn.setSpecifiedName("foo");
 		joinColumn.setSpecifiedUnique(Boolean.TRUE);
 		
-		JoinColumn javaJoinColumn = (JoinColumn) attributeResource.annotation(JoinColumn.ANNOTATION_NAME);
+		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		assertEquals(Boolean.TRUE, joinColumn.getSpecifiedUnique());
 		assertEquals(Boolean.TRUE, javaJoinColumn.getUnique());
 		
@@ -384,22 +384,22 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		createTestEntityWithOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IJavaOneToOneMapping oneToOneMapping = (IJavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
+		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 	
-		JoinColumn javaJoinColumn = (JoinColumn) attributeResource.annotation(JoinColumn.ANNOTATION_NAME);
+		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(0, oneToOneMapping.specifiedJoinColumnsSize());
 		assertNull(javaJoinColumn);
 		
 		
 		//set nullable in the resource model, verify context model updated
-		javaJoinColumn = (JoinColumn) attributeResource.addAnnotation(JoinColumn.ANNOTATION_NAME);
+		javaJoinColumn = (JoinColumnAnnotation) attributeResource.addAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setNullable(Boolean.FALSE);
-		IJavaJoinColumn joinColumn = oneToOneMapping.specifiedJoinColumns().next();
+		JavaJoinColumn joinColumn = oneToOneMapping.specifiedJoinColumns().next();
 		assertEquals(Boolean.FALSE, joinColumn.getSpecifiedNullable());
 		assertEquals(Boolean.FALSE, javaJoinColumn.getNullable());
 	
@@ -413,17 +413,17 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		createTestEntityWithOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		IJavaOneToOneMapping oneToOneMapping = (IJavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 
 		
-		IJavaJoinColumn joinColumn = oneToOneMapping.addSpecifiedJoinColumn(0);
+		JavaJoinColumn joinColumn = oneToOneMapping.addSpecifiedJoinColumn(0);
 		//set nullable in the context model, verify resource model modified
 		joinColumn.setSpecifiedName("foo");
 		joinColumn.setSpecifiedNullable(Boolean.FALSE);
 		
-		JoinColumn javaJoinColumn = (JoinColumn) attributeResource.annotation(JoinColumn.ANNOTATION_NAME);
+		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		assertEquals(Boolean.FALSE, joinColumn.getSpecifiedNullable());
 		assertEquals(Boolean.FALSE, javaJoinColumn.getNullable());
 		
@@ -437,22 +437,22 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		createTestEntityWithOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IJavaOneToOneMapping oneToOneMapping = (IJavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
+		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 	
-		JoinColumn javaJoinColumn = (JoinColumn) attributeResource.annotation(JoinColumn.ANNOTATION_NAME);
+		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(0, oneToOneMapping.specifiedJoinColumnsSize());
 		assertNull(javaJoinColumn);
 		
 		
 		//set insertable in the resource model, verify context model updated
-		javaJoinColumn = (JoinColumn) attributeResource.addAnnotation(JoinColumn.ANNOTATION_NAME);
+		javaJoinColumn = (JoinColumnAnnotation) attributeResource.addAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setInsertable(Boolean.FALSE);
-		IJavaJoinColumn joinColumn = oneToOneMapping.specifiedJoinColumns().next();
+		JavaJoinColumn joinColumn = oneToOneMapping.specifiedJoinColumns().next();
 		assertEquals(Boolean.FALSE, joinColumn.getSpecifiedInsertable());
 		assertEquals(Boolean.FALSE, javaJoinColumn.getInsertable());
 	
@@ -466,17 +466,17 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		createTestEntityWithOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		IJavaOneToOneMapping oneToOneMapping = (IJavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 
 		
-		IJavaJoinColumn joinColumn = oneToOneMapping.addSpecifiedJoinColumn(0);
+		JavaJoinColumn joinColumn = oneToOneMapping.addSpecifiedJoinColumn(0);
 		//set insertable in the context model, verify resource model modified
 		joinColumn.setSpecifiedName("foo");
 		joinColumn.setSpecifiedInsertable(Boolean.FALSE);
 		
-		JoinColumn javaJoinColumn = (JoinColumn) attributeResource.annotation(JoinColumn.ANNOTATION_NAME);
+		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		assertEquals(Boolean.FALSE, joinColumn.getSpecifiedInsertable());
 		assertEquals(Boolean.FALSE, javaJoinColumn.getInsertable());
 		
@@ -490,22 +490,22 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		createTestEntityWithOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		IJavaOneToOneMapping oneToOneMapping = (IJavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
+		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
 		
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 	
-		JoinColumn javaJoinColumn = (JoinColumn) attributeResource.annotation(JoinColumn.ANNOTATION_NAME);
+		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(0, oneToOneMapping.specifiedJoinColumnsSize());
 		assertNull(javaJoinColumn);
 		
 		
 		//set updatable in the resource model, verify context model updated
-		javaJoinColumn = (JoinColumn) attributeResource.addAnnotation(JoinColumn.ANNOTATION_NAME);
+		javaJoinColumn = (JoinColumnAnnotation) attributeResource.addAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		javaJoinColumn.setName("FOO");	
 		javaJoinColumn.setUpdatable(Boolean.FALSE);
-		IJavaJoinColumn joinColumn = oneToOneMapping.specifiedJoinColumns().next();
+		JavaJoinColumn joinColumn = oneToOneMapping.specifiedJoinColumns().next();
 		assertEquals(Boolean.FALSE, joinColumn.getSpecifiedUpdatable());
 		assertEquals(Boolean.FALSE, javaJoinColumn.getUpdatable());
 	
@@ -519,17 +519,17 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		createTestEntityWithOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
-		IJavaOneToOneMapping oneToOneMapping = (IJavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
-		JavaPersistentTypeResource typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentAttributeResource attributeResource = typeResource.attributes().next();
+		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) javaPersistentType().attributes().next().getMapping();
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.attributes().next();
 
 		
-		IJavaJoinColumn joinColumn = oneToOneMapping.addSpecifiedJoinColumn(0);
+		JavaJoinColumn joinColumn = oneToOneMapping.addSpecifiedJoinColumn(0);
 		//set updatable in the context model, verify resource model modified
 		joinColumn.setSpecifiedName("foo");
 		joinColumn.setSpecifiedUpdatable(Boolean.FALSE);
 		
-		JoinColumn javaJoinColumn = (JoinColumn) attributeResource.annotation(JoinColumn.ANNOTATION_NAME);
+		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) attributeResource.annotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		assertEquals(Boolean.FALSE, joinColumn.getSpecifiedUpdatable());
 		assertEquals(Boolean.FALSE, javaJoinColumn.getUpdatable());
 		

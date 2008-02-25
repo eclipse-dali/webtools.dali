@@ -18,8 +18,16 @@ import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.DiscriminatorColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.DiscriminatorType;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 
-public class DiscriminatorColumnImpl extends AbstractNamedColumn implements DiscriminatorColumn
+public class DiscriminatorColumnImpl extends AbstractNamedColumn implements DiscriminatorColumnAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	
@@ -36,7 +44,7 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 
 	private Integer length;	
 	
-	protected DiscriminatorColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
+	protected DiscriminatorColumnImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa,  new MemberAnnotationAdapter(member, daa));
 		this.discriminatorTypeAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, DISCRIMINATOR_TYPE_ADAPTER);
 		this.lengthDeclarationAdapter = this.buildIntegerElementAdapter(JPA.DISCRIMINATOR_COLUMN__LENGTH);
@@ -72,7 +80,7 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		super.initializeFrom(oldAnnotation);
-		DiscriminatorColumn oldColumn = (DiscriminatorColumn) oldAnnotation;
+		DiscriminatorColumnAnnotation oldColumn = (DiscriminatorColumnAnnotation) oldAnnotation;
 		setLength(oldColumn.getLength());
 		setDiscriminatorType(oldColumn.getDiscriminatorType());
 	}
@@ -139,11 +147,11 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new DiscriminatorColumnImpl(parent, member, DiscriminatorColumnImpl.DECLARATION_ANNOTATION_ADAPTER);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new NullDiscriminatorColumn(parent);
 		}
 

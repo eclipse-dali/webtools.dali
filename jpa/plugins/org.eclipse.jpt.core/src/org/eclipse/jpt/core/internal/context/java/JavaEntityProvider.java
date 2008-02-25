@@ -9,15 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
-import org.eclipse.jpt.core.internal.resource.java.Entity;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
+import org.eclipse.jpt.core.internal.platform.base.JpaBaseContextFactory;
+import org.eclipse.jpt.core.resource.java.EntityAnnotation;
 
 /**
  * 
  */
 public class JavaEntityProvider
-	implements IJavaTypeMappingProvider
+	implements JavaTypeMappingProvider
 {
 
 	// singleton
@@ -26,7 +29,7 @@ public class JavaEntityProvider
 	/**
 	 * Return the singleton.
 	 */
-	public static IJavaTypeMappingProvider instance() {
+	public static JavaTypeMappingProvider instance() {
 		return INSTANCE;
 	}
 
@@ -38,15 +41,15 @@ public class JavaEntityProvider
 	}
 
 	public String key() {
-		return IMappingKeys.ENTITY_TYPE_MAPPING_KEY;
+		return MappingKeys.ENTITY_TYPE_MAPPING_KEY;
 	}
 	
 	public String annotationName() {
-		return Entity.ANNOTATION_NAME;
+		return EntityAnnotation.ANNOTATION_NAME;
 	}
 
-	public IJavaTypeMapping buildMapping(IJavaPersistentType parent, IJpaBaseContextFactory factory) {
-		return factory.createJavaEntity(parent);
+	public JavaTypeMapping buildMapping(JavaPersistentType parent, JpaBaseContextFactory factory) {
+		return factory.buildJavaEntity(parent);
 	}
 
 }

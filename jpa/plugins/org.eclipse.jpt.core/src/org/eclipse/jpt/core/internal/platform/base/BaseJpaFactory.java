@@ -15,121 +15,122 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.core.internal.IContextModel;
-import org.eclipse.jpt.core.internal.IJpaDataSource;
-import org.eclipse.jpt.core.internal.IJpaFile;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.IResourceModel;
-import org.eclipse.jpt.core.internal.JpaDataSource;
-import org.eclipse.jpt.core.internal.JpaFile;
-import org.eclipse.jpt.core.internal.JpaProject;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.context.base.BaseJpaContent;
-import org.eclipse.jpt.core.internal.context.base.IAbstractJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.IAssociationOverride;
-import org.eclipse.jpt.core.internal.context.base.IAttributeOverride;
-import org.eclipse.jpt.core.internal.context.base.IBaseJpaContent;
-import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.IJpaContextNode;
-import org.eclipse.jpt.core.internal.context.base.INamedColumn;
-import org.eclipse.jpt.core.internal.context.java.IJavaAssociationOverride;
-import org.eclipse.jpt.core.internal.context.java.IJavaAttributeMapping;
-import org.eclipse.jpt.core.internal.context.java.IJavaAttributeOverride;
-import org.eclipse.jpt.core.internal.context.java.IJavaBasicMapping;
-import org.eclipse.jpt.core.internal.context.java.IJavaColumn;
-import org.eclipse.jpt.core.internal.context.java.IJavaDiscriminatorColumn;
-import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddable;
-import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddedIdMapping;
-import org.eclipse.jpt.core.internal.context.java.IJavaEmbeddedMapping;
-import org.eclipse.jpt.core.internal.context.java.IJavaEntity;
-import org.eclipse.jpt.core.internal.context.java.IJavaGeneratedValue;
-import org.eclipse.jpt.core.internal.context.java.IJavaIdMapping;
-import org.eclipse.jpt.core.internal.context.java.IJavaJoinColumn;
-import org.eclipse.jpt.core.internal.context.java.IJavaJoinTable;
-import org.eclipse.jpt.core.internal.context.java.IJavaJpaContextNode;
-import org.eclipse.jpt.core.internal.context.java.IJavaManyToManyMapping;
-import org.eclipse.jpt.core.internal.context.java.IJavaManyToOneMapping;
-import org.eclipse.jpt.core.internal.context.java.IJavaMappedSuperclass;
-import org.eclipse.jpt.core.internal.context.java.IJavaNamedNativeQuery;
-import org.eclipse.jpt.core.internal.context.java.IJavaNamedQuery;
-import org.eclipse.jpt.core.internal.context.java.IJavaOneToManyMapping;
-import org.eclipse.jpt.core.internal.context.java.IJavaOneToOneMapping;
-import org.eclipse.jpt.core.internal.context.java.IJavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.IJavaPersistentType;
-import org.eclipse.jpt.core.internal.context.java.IJavaPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.internal.context.java.IJavaQuery;
-import org.eclipse.jpt.core.internal.context.java.IJavaQueryHint;
-import org.eclipse.jpt.core.internal.context.java.IJavaRelationshipMapping;
-import org.eclipse.jpt.core.internal.context.java.IJavaSecondaryTable;
-import org.eclipse.jpt.core.internal.context.java.IJavaSequenceGenerator;
-import org.eclipse.jpt.core.internal.context.java.IJavaTable;
-import org.eclipse.jpt.core.internal.context.java.IJavaTableGenerator;
-import org.eclipse.jpt.core.internal.context.java.IJavaTransientMapping;
-import org.eclipse.jpt.core.internal.context.java.IJavaTypeMapping;
-import org.eclipse.jpt.core.internal.context.java.IJavaVersionMapping;
-import org.eclipse.jpt.core.internal.context.java.JavaAssociationOverride;
-import org.eclipse.jpt.core.internal.context.java.JavaAttributeOverride;
-import org.eclipse.jpt.core.internal.context.java.JavaBasicMapping;
-import org.eclipse.jpt.core.internal.context.java.JavaColumn;
-import org.eclipse.jpt.core.internal.context.java.JavaDiscriminatorColumn;
-import org.eclipse.jpt.core.internal.context.java.JavaEmbeddable;
-import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedIdMapping;
-import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedMapping;
-import org.eclipse.jpt.core.internal.context.java.JavaEntity;
-import org.eclipse.jpt.core.internal.context.java.JavaGeneratedValue;
-import org.eclipse.jpt.core.internal.context.java.JavaIdMapping;
-import org.eclipse.jpt.core.internal.context.java.JavaJoinColumn;
-import org.eclipse.jpt.core.internal.context.java.JavaJoinTable;
-import org.eclipse.jpt.core.internal.context.java.JavaManyToManyMapping;
-import org.eclipse.jpt.core.internal.context.java.JavaManyToOneMapping;
-import org.eclipse.jpt.core.internal.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.core.internal.context.java.JavaNamedNativeQuery;
-import org.eclipse.jpt.core.internal.context.java.JavaNamedQuery;
-import org.eclipse.jpt.core.internal.context.java.JavaNullAttributeMapping;
+import org.eclipse.jpt.core.ContextModel;
+import org.eclipse.jpt.core.JpaDataSource;
+import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.ResourceModel;
+import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.context.AbstractJoinColumn;
+import org.eclipse.jpt.core.context.AssociationOverride;
+import org.eclipse.jpt.core.context.AttributeOverride;
+import org.eclipse.jpt.core.context.IBaseJpaContent;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.core.context.NamedColumn;
+import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
+import org.eclipse.jpt.core.context.java.JavaBasicMapping;
+import org.eclipse.jpt.core.context.java.JavaColumn;
+import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
+import org.eclipse.jpt.core.context.java.JavaEmbeddable;
+import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
+import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
+import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
+import org.eclipse.jpt.core.context.java.JavaIdMapping;
+import org.eclipse.jpt.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaJoinTable;
+import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
+import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
+import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.core.context.java.JavaNamedNativeQuery;
+import org.eclipse.jpt.core.context.java.JavaNamedQuery;
+import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
+import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaQuery;
+import org.eclipse.jpt.core.context.java.JavaQueryHint;
+import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
+import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
+import org.eclipse.jpt.core.context.java.JavaTable;
+import org.eclipse.jpt.core.context.java.JavaTableGenerator;
+import org.eclipse.jpt.core.context.java.JavaTransientMapping;
+import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.context.java.JavaVersionMapping;
+import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmXml;
+import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
+import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.context.persistence.Persistence;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.core.context.persistence.Property;
+import org.eclipse.jpt.core.internal.GenericJpaDataSource;
+import org.eclipse.jpt.core.internal.GenericJpaFile;
+import org.eclipse.jpt.core.internal.GenericJpaProject;
+import org.eclipse.jpt.core.internal.context.BaseJpaContent;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaAssociationOverride;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaAttributeOverride;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaBasicMapping;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaColumn;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaDiscriminatorColumn;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaEmbeddable;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaEmbeddedIdMapping;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaEmbeddedMapping;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaEntity;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaGeneratedValue;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaIdMapping;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaJoinColumn;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaJoinTable;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaManyToManyMapping;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaManyToOneMapping;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaMappedSuperclass;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaNamedNativeQuery;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaNamedQuery;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaNullAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
-import org.eclipse.jpt.core.internal.context.java.JavaOneToManyMapping;
-import org.eclipse.jpt.core.internal.context.java.JavaOneToOneMapping;
-import org.eclipse.jpt.core.internal.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.context.java.JavaPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.internal.context.java.JavaQueryHint;
-import org.eclipse.jpt.core.internal.context.java.JavaSecondaryTable;
-import org.eclipse.jpt.core.internal.context.java.JavaSequenceGenerator;
-import org.eclipse.jpt.core.internal.context.java.JavaTable;
-import org.eclipse.jpt.core.internal.context.java.JavaTableGenerator;
-import org.eclipse.jpt.core.internal.context.java.JavaTransientMapping;
-import org.eclipse.jpt.core.internal.context.java.JavaVersionMapping;
-import org.eclipse.jpt.core.internal.context.orm.EntityMappings;
-import org.eclipse.jpt.core.internal.context.orm.EntityMappingsImpl;
-import org.eclipse.jpt.core.internal.context.orm.OrmXml;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToManyMapping;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToOneMapping;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaPersistentType;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaQueryHint;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaSecondaryTable;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaSequenceGenerator;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaTable;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaTableGenerator;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaTransientMapping;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaVersionMapping;
+import org.eclipse.jpt.core.internal.context.orm.GenericEntityMappings;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmPersistentType;
+import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitDefaults;
+import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.orm.OrmXmlImpl;
-import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaults;
-import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitDefaultsImpl;
-import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitMetadata;
-import org.eclipse.jpt.core.internal.context.orm.PersistenceUnitMetadataImpl;
-import org.eclipse.jpt.core.internal.context.orm.XmlEmbeddable;
-import org.eclipse.jpt.core.internal.context.orm.XmlEntity;
-import org.eclipse.jpt.core.internal.context.orm.XmlMappedSuperclass;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
-import org.eclipse.jpt.core.internal.context.persistence.ClassRef;
-import org.eclipse.jpt.core.internal.context.persistence.IClassRef;
-import org.eclipse.jpt.core.internal.context.persistence.IMappingFileRef;
-import org.eclipse.jpt.core.internal.context.persistence.IPersistence;
-import org.eclipse.jpt.core.internal.context.persistence.IPersistenceUnit;
-import org.eclipse.jpt.core.internal.context.persistence.IPersistenceXml;
-import org.eclipse.jpt.core.internal.context.persistence.IProperty;
-import org.eclipse.jpt.core.internal.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.internal.context.persistence.Persistence;
-import org.eclipse.jpt.core.internal.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.context.persistence.PersistenceXml;
-import org.eclipse.jpt.core.internal.context.persistence.Property;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddable;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappedSuperclass;
+import org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.persistence.GenericClassRef;
+import org.eclipse.jpt.core.internal.context.persistence.GenericMappingFileRef;
+import org.eclipse.jpt.core.internal.context.persistence.GenericPersistence;
+import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
+import org.eclipse.jpt.core.internal.context.persistence.GeenericPersistenceXml;
+import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
 import org.eclipse.jpt.core.internal.jdtutility.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModel;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.core.resource.orm.OrmResourceModel;
+import org.eclipse.jpt.core.resource.persistence.PersistenceResourceModel;
 
-public abstract class BaseJpaFactory implements IJpaBaseContextFactory
+public abstract class BaseJpaFactory implements JpaBaseContextFactory
 {
 	protected BaseJpaFactory() {
 		super();
@@ -138,16 +139,16 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	// **************** Core objects ******************************************
 	
-	public IJpaProject createJpaProject(IJpaProject.Config config) throws CoreException {
-		return new JpaProject(config);
+	public JpaProject buildJpaProject(JpaProject.Config config) throws CoreException {
+		return new GenericJpaProject(config);
 	}
 	
-	public IJpaDataSource createJpaDataSource(IJpaProject jpaProject, String connectionProfileName) {
-		return new JpaDataSource(jpaProject, connectionProfileName);
+	public JpaDataSource buildJpaDataSource(JpaProject jpaProject, String connectionProfileName) {
+		return new GenericJpaDataSource(jpaProject, connectionProfileName);
 	}
 	
-	public IJpaFile createJpaFile(IJpaProject jpaProject, IFile file, IResourceModel resourceModel) {
-		return new JpaFile(jpaProject, file, resourceModel);
+	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file, ResourceModel resourceModel) {
+		return new GenericJpaFile(jpaProject, file, resourceModel);
 	}
 	
 	
@@ -171,7 +172,7 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 				|| contentTypeId.equals(JptCorePlugin.ORM_XML_CONTENT_TYPE);
 	}
 	
-	public IResourceModel buildResourceModel(IJpaProject jpaProject, IFile file) {
+	public ResourceModel buildResourceModel(JpaProject jpaProject, IFile file) {
 		if (! JavaCore.create(jpaProject.project()).isOnClasspath(file)) {
 			throw new IllegalArgumentException("The file" + file + " is not on the project classpath");
 		}
@@ -183,7 +184,7 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 		return buildResourceModel(jpaProject, file, contentTypeId);
 	}
 	
-	protected IResourceModel buildResourceModel(IJpaProject jpaProject, IFile file, String contentTypeId) {
+	protected ResourceModel buildResourceModel(JpaProject jpaProject, IFile file, String contentTypeId) {
 		if (JavaCore.JAVA_SOURCE_CONTENT_TYPE.equals(contentTypeId)) {
 			return buildJavaResourceModel(jpaProject, file);
 		}
@@ -197,18 +198,18 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 		return null;
 	}
 	
-	protected IResourceModel buildJavaResourceModel(IJpaProject jpaProject, IFile file) {
+	protected ResourceModel buildJavaResourceModel(JpaProject jpaProject, IFile file) {
 		return new JavaResourceModel(
 				file, jpaProject.jpaPlatform().annotationProvider(), 
 				jpaProject.modifySharedDocumentCommandExecutorProvider(),
 				DefaultAnnotationEditFormatter.instance());
 	}
 	
-	protected IResourceModel buildPersistenceResourceModel(IFile file) {
+	protected ResourceModel buildPersistenceResourceModel(IFile file) {
 		return new PersistenceResourceModel(file);
 	}
 	
-	protected IResourceModel buildOrmResourceModel(IFile file) {
+	protected ResourceModel buildOrmResourceModel(IFile file) {
 		return new OrmResourceModel(file);
 	}
 	
@@ -231,195 +232,195 @@ public abstract class BaseJpaFactory implements IJpaBaseContextFactory
 	
 	// **************** Context objects ***************************************
 	
-	public IContextModel buildContextModel(IJpaProject parent) {
+	public ContextModel buildContextModel(JpaProject parent) {
 		return new BaseJpaContent(parent);
 	}
 	
-	public IPersistenceXml createPersistenceXml(IBaseJpaContent parent) {
-		return new PersistenceXml(parent);
+	public PersistenceXml buildPersistenceXml(IBaseJpaContent parent) {
+		return new GeenericPersistenceXml(parent);
 	}
 	
-	public OrmXml createOrmXml(IMappingFileRef parent) {
+	public OrmXml buildOrmXml(MappingFileRef parent) {
 		return new OrmXmlImpl(parent);
 	}
 	
-	public EntityMappings createEntityMappings(OrmXml parent) {
-		return new EntityMappingsImpl(parent);
+	public EntityMappings buildEntityMappings(OrmXml parent) {
+		return new GenericEntityMappings(parent);
 	}
 	
-	public PersistenceUnitMetadata createPersistenceUnitMetadata(EntityMappings parent) {
-		return new PersistenceUnitMetadataImpl(parent);
+	public PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent) {
+		return new GenericPersistenceUnitMetadata(parent);
 	}
 	
-	public PersistenceUnitDefaults createPersistenceUnitDefaults(PersistenceUnitMetadata parent) {
-		return new PersistenceUnitDefaultsImpl(parent);
+	public PersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent) {
+		return new GenericPersistenceUnitDefaults(parent);
 	}
 	
-	public IPersistence createPersistence(IPersistenceXml parent) {
-		return new Persistence(parent);
+	public Persistence buildPersistence(PersistenceXml parent) {
+		return new GenericPersistence(parent);
 	}
 	
-	public IPersistenceUnit createPersistenceUnit(IPersistence parent) {
-		return new PersistenceUnit(parent);
+	public PersistenceUnit buildPersistenceUnit(Persistence parent) {
+		return new GenericPersistenceUnit(parent);
 	}
 	
-	public IMappingFileRef createMappingFileRef(IPersistenceUnit parent) {
-		return new MappingFileRef(parent);
+	public MappingFileRef buildMappingFileRef(PersistenceUnit parent) {
+		return new GenericMappingFileRef(parent);
 	}
 	
-	public IClassRef createClassRef(IPersistenceUnit parent) {
-		return new ClassRef(parent);
+	public ClassRef buildClassRef(PersistenceUnit parent) {
+		return new GenericClassRef(parent);
 	}
 	
-	public IProperty createProperty(IPersistenceUnit parent) {
-		return new Property(parent);
+	public Property buildProperty(PersistenceUnit parent) {
+		return new GenericProperty(parent);
 	}
 	
-	public IJavaPersistentType createJavaPersistentType(IJpaContextNode parent) {
-		return new JavaPersistentType(parent);
+	public JavaPersistentType buildJavaPersistentType(JpaContextNode parent) {
+		return new GenericJavaPersistentType(parent);
 	}
 	
-	public IJavaPersistentAttribute createJavaPersistentAttribute(IJavaPersistentType parent) {
-		return new JavaPersistentAttribute(parent);
+	public JavaPersistentAttribute buildJavaPersistentAttribute(JavaPersistentType parent) {
+		return new GenericJavaPersistentAttribute(parent);
 	}
 	
-	public IJavaTypeMapping createJavaNullTypeMapping(IJavaPersistentType parent) {
+	public JavaTypeMapping buildJavaNullTypeMapping(JavaPersistentType parent) {
 		return new JavaNullTypeMapping(parent);
 	}
 	
-	public IJavaEntity createJavaEntity(IJavaPersistentType parent) {
-		return new JavaEntity(parent);
+	public JavaEntity buildJavaEntity(JavaPersistentType parent) {
+		return new GenericJavaEntity(parent);
 	}
 
-	public IJavaMappedSuperclass createJavaMappedSuperclass(IJavaPersistentType parent) {
-		return new JavaMappedSuperclass(parent);
+	public JavaMappedSuperclass buildJavaMappedSuperclass(JavaPersistentType parent) {
+		return new GenericJavaMappedSuperclass(parent);
 	}
 
-	public IJavaEmbeddable createJavaEmbeddable(IJavaPersistentType parent) {
-		return new JavaEmbeddable(parent);
+	public JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent) {
+		return new GenericJavaEmbeddable(parent);
 	}
 	
-	public IJavaTable createJavaTable(IJavaEntity parent) {
-		return new JavaTable(parent);
+	public JavaTable buildJavaTable(JavaEntity parent) {
+		return new GenericJavaTable(parent);
 	}
 	
-	public IJavaColumn createJavaColumn(IJavaJpaContextNode parent, IJavaColumn.Owner owner) {
-		return new JavaColumn(parent, owner);
+	public JavaColumn buildJavaColumn(JavaJpaContextNode parent, JavaColumn.Owner owner) {
+		return new GenericJavaColumn(parent, owner);
 	}
 	
-	public IJavaDiscriminatorColumn createJavaDiscriminatorColumn(IJavaEntity parent, INamedColumn.Owner owner) {
-		return new JavaDiscriminatorColumn(parent, owner);
+	public JavaDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, NamedColumn.Owner owner) {
+		return new GenericJavaDiscriminatorColumn(parent, owner);
 	}
 	
-	public IJavaJoinColumn createJavaJoinColumn(IJavaJpaContextNode parent, IJoinColumn.Owner owner) {
-		return new JavaJoinColumn(parent, owner);
+	public JavaJoinColumn buildJavaJoinColumn(JavaJpaContextNode parent, JoinColumn.Owner owner) {
+		return new GenericJavaJoinColumn(parent, owner);
 	}
 	
-	public IJavaJoinTable createJavaJoinTable(IJavaRelationshipMapping parent) {
-		return new JavaJoinTable(parent);
+	public JavaJoinTable buildJavaJoinTable(JavaRelationshipMapping parent) {
+		return new GenericJavaJoinTable(parent);
 	}
 	
-	public IJavaSecondaryTable createJavaSecondaryTable(IJavaEntity parent) {
-		return new JavaSecondaryTable(parent);
+	public JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent) {
+		return new GenericJavaSecondaryTable(parent);
 	}
 	
-	public IJavaBasicMapping createJavaBasicMapping(IJavaPersistentAttribute parent) {
-		return new JavaBasicMapping(parent);
+	public JavaBasicMapping buildJavaBasicMapping(JavaPersistentAttribute parent) {
+		return new GenericJavaBasicMapping(parent);
 	}
 	
-	public IJavaEmbeddedIdMapping createJavaEmbeddedIdMapping(IJavaPersistentAttribute parent) {
-		return new JavaEmbeddedIdMapping(parent);
+	public JavaEmbeddedIdMapping buildJavaEmbeddedIdMapping(JavaPersistentAttribute parent) {
+		return new GenericJavaEmbeddedIdMapping(parent);
 	}
 	
-	public IJavaEmbeddedMapping createJavaEmbeddedMapping(IJavaPersistentAttribute parent) {
-		return new JavaEmbeddedMapping(parent);
+	public JavaEmbeddedMapping buildJavaEmbeddedMapping(JavaPersistentAttribute parent) {
+		return new GenericJavaEmbeddedMapping(parent);
 	}
 	
-	public IJavaIdMapping createJavaIdMapping(IJavaPersistentAttribute parent) {
-		return new JavaIdMapping(parent);
+	public JavaIdMapping buildJavaIdMapping(JavaPersistentAttribute parent) {
+		return new GenericJavaIdMapping(parent);
 	}
 	
-	public IJavaManyToManyMapping createJavaManyToManyMapping(IJavaPersistentAttribute parent) {
-		return new JavaManyToManyMapping(parent);
+	public JavaManyToManyMapping buildJavaManyToManyMapping(JavaPersistentAttribute parent) {
+		return new GenericJavaManyToManyMapping(parent);
 	}
 	
-	public IJavaManyToOneMapping createJavaManyToOneMapping(IJavaPersistentAttribute parent) {
-		return new JavaManyToOneMapping(parent);
+	public JavaManyToOneMapping buildJavaManyToOneMapping(JavaPersistentAttribute parent) {
+		return new GenericJavaManyToOneMapping(parent);
 	}
 	
-	public IJavaOneToManyMapping createJavaOneToManyMapping(IJavaPersistentAttribute parent) {
-		return new JavaOneToManyMapping(parent);
+	public JavaOneToManyMapping buildJavaOneToManyMapping(JavaPersistentAttribute parent) {
+		return new GenericJavaOneToManyMapping(parent);
 	}
 	
-	public IJavaOneToOneMapping createJavaOneToOneMapping(IJavaPersistentAttribute parent) {
-		return new JavaOneToOneMapping(parent);
+	public JavaOneToOneMapping buildJavaOneToOneMapping(JavaPersistentAttribute parent) {
+		return new GenericJavaOneToOneMapping(parent);
 	}
 	
-	public IJavaTransientMapping createJavaTransientMapping(IJavaPersistentAttribute parent) {
-		return new JavaTransientMapping(parent);
+	public JavaTransientMapping buildJavaTransientMapping(JavaPersistentAttribute parent) {
+		return new GenericJavaTransientMapping(parent);
 	}
 	
-	public IJavaVersionMapping createJavaVersionMapping(IJavaPersistentAttribute parent) {
-		return new JavaVersionMapping(parent);
+	public JavaVersionMapping buildJavaVersionMapping(JavaPersistentAttribute parent) {
+		return new GenericJavaVersionMapping(parent);
 	}
 	
-	public IJavaAttributeMapping createJavaNullAttributeMapping(IJavaPersistentAttribute parent) {
-		return new JavaNullAttributeMapping(parent);
+	public JavaAttributeMapping buildJavaNullAttributeMapping(JavaPersistentAttribute parent) {
+		return new GenericJavaNullAttributeMapping(parent);
 	}
 	
-	public IJavaSequenceGenerator createJavaSequenceGenerator(IJavaJpaContextNode parent) {
-		return new JavaSequenceGenerator(parent);
+	public JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent) {
+		return new GenericJavaSequenceGenerator(parent);
 	}
 	
-	public IJavaTableGenerator createJavaTableGenerator(IJavaJpaContextNode parent) {
-		return new JavaTableGenerator(parent);
+	public JavaTableGenerator buildJavaTableGenerator(JavaJpaContextNode parent) {
+		return new GenericJavaTableGenerator(parent);
 	}
 	
-	public IJavaGeneratedValue createJavaGeneratedValue(IJavaAttributeMapping parent) {
-		return new JavaGeneratedValue(parent);
+	public JavaGeneratedValue buildJavaGeneratedValue(JavaAttributeMapping parent) {
+		return new GenericJavaGeneratedValue(parent);
 	}
 	
-	public IJavaPrimaryKeyJoinColumn createJavaPrimaryKeyJoinColumn(IJavaJpaContextNode parent, IAbstractJoinColumn.Owner owner) {
-		return new JavaPrimaryKeyJoinColumn(parent, owner);
+	public JavaPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, AbstractJoinColumn.Owner owner) {
+		return new GenericJavaPrimaryKeyJoinColumn(parent, owner);
 	}
 	
-	public IJavaAttributeOverride createJavaAttributeOverride(IJavaJpaContextNode parent, IAttributeOverride.Owner owner) {
-		return new JavaAttributeOverride(parent, owner);
+	public JavaAttributeOverride buildJavaAttributeOverride(JavaJpaContextNode parent, AttributeOverride.Owner owner) {
+		return new GenericJavaAttributeOverride(parent, owner);
 	}
 	
-	public IJavaAssociationOverride createJavaAssociationOverride(IJavaJpaContextNode parent, IAssociationOverride.Owner owner) {
-		return new JavaAssociationOverride(parent, owner);
+	public JavaAssociationOverride buildJavaAssociationOverride(JavaJpaContextNode parent, AssociationOverride.Owner owner) {
+		return new GenericJavaAssociationOverride(parent, owner);
 	}
 	
-	public IJavaNamedQuery createJavaNamedQuery(IJavaJpaContextNode parent) {
-		return new JavaNamedQuery(parent);
+	public JavaNamedQuery buildJavaNamedQuery(JavaJpaContextNode parent) {
+		return new GenericJavaNamedQuery(parent);
 	}
 	
-	public IJavaNamedNativeQuery createJavaNamedNativeQuery(IJavaJpaContextNode parent) {
-		return new JavaNamedNativeQuery(parent);
+	public JavaNamedNativeQuery buildJavaNamedNativeQuery(JavaJpaContextNode parent) {
+		return new GenericJavaNamedNativeQuery(parent);
 	}
 	
-	public IJavaQueryHint createJavaQueryHint(IJavaQuery<?> parent) {
-		return new JavaQueryHint(parent);
+	public JavaQueryHint buildJavaQueryHint(JavaQuery<?> parent) {
+		return new GenericJavaQueryHint(parent);
 	}
 	
-	public XmlPersistentType createXmlPersistentType(EntityMappings parent, String mappingKey) {
-		return new XmlPersistentType(parent, mappingKey);
+	public OrmPersistentType buildOrmPersistentType(EntityMappings parent, String mappingKey) {
+		return new GenericOrmPersistentType(parent, mappingKey);
 	}
 	
-	public XmlEntity createXmlEntity(XmlPersistentType parent) {
-		return new XmlEntity(parent);
+	public GenericOrmEntity buildXmlEntity(OrmPersistentType parent) {
+		return new GenericOrmEntity(parent);
 	}
 	
-	public XmlMappedSuperclass createXmlMappedSuperclass(XmlPersistentType parent) {
-		return new XmlMappedSuperclass(parent);
+	public GenericOrmMappedSuperclass buildXmlMappedSuperclass(OrmPersistentType parent) {
+		return new GenericOrmMappedSuperclass(parent);
 	}
 	
-	public XmlEmbeddable createXmlEmbeddable(XmlPersistentType parent) {
-		return new XmlEmbeddable(parent);
+	public GenericOrmEmbeddable buildXmlEmbeddable(OrmPersistentType parent) {
+		return new GenericOrmEmbeddable(parent);
 	}
 	
-	public XmlPersistentAttribute createXmlPersistentAttribute(XmlPersistentType parent, String mappingKey) {
-		return new XmlPersistentAttribute(parent, mappingKey);
+	public OrmPersistentAttribute buildXmlPersistentAttribute(OrmPersistentType parent, String mappingKey) {
+		return new OrmPersistentAttribute(parent, mappingKey);
 	}
 }

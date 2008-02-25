@@ -10,15 +10,15 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
 import java.util.Iterator;
-import org.eclipse.jpt.core.internal.context.base.IColumn;
-import org.eclipse.jpt.core.internal.context.base.INamedColumn;
+import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.db.internal.Table;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.jpt.ui.internal.widgets.IWidgetFactory;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -48,7 +48,7 @@ import org.eclipse.swt.widgets.Composite;
  * |                                                                           |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IColumn
+ * @see Column
  * @see ColumnCombo
  * @see TableCombo
  * @see BasicMappingComposite - A container of this pane
@@ -61,7 +61,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class ColumnComposite extends AbstractFormPane<IColumn>
+public class ColumnComposite extends AbstractFormPane<Column>
 {
 	private TriStateCheckBox insertableCheckBox;
 	private TriStateCheckBox updatableCheckBox;
@@ -74,7 +74,7 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 	 * @param parent The parent container
 	 */
 	public ColumnComposite(AbstractFormPane<?> parentPane,
-	                       PropertyValueModel<? extends IColumn> subjectHolder,
+	                       PropertyValueModel<? extends Column> subjectHolder,
 	                       Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -91,7 +91,7 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 	 * <code>false</code> to not align them
 	 */
 	public ColumnComposite(AbstractFormPane<?> parentPane,
-	                       PropertyValueModel<? extends IColumn> subjectHolder,
+	                       PropertyValueModel<? extends Column> subjectHolder,
 	                       Composite parent,
 	                       boolean automaticallyAlignWidgets) {
 
@@ -105,22 +105,22 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public ColumnComposite(PropertyValueModel<? extends IColumn> subjectHolder,
+	public ColumnComposite(PropertyValueModel<? extends Column> subjectHolder,
 	                       Composite parent,
-	                       IWidgetFactory widgetFactory) {
+	                       WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private ColumnCombo<IColumn> buildColumnCombo(Composite container) {
+	private ColumnCombo<Column> buildColumnCombo(Composite container) {
 
-		return new ColumnCombo<IColumn>(this, container) {
+		return new ColumnCombo<Column>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(INamedColumn.DEFAULT_NAME_PROPERTY);
-				propertyNames.add(INamedColumn.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(NamedColumn.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(NamedColumn.SPECIFIED_NAME_PROPERTY);
 			}
 
 			@Override
@@ -146,10 +146,10 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildInsertableHolder() {
-		return new PropertyAspectAdapter<IColumn, Boolean>(
+		return new PropertyAspectAdapter<Column, Boolean>(
 			getSubjectHolder(),
-			IColumn.DEFAULT_INSERTABLE_PROPERTY,
-			IColumn.SPECIFIED_INSERTABLE_PROPERTY)
+			Column.DEFAULT_INSERTABLE_PROPERTY,
+			Column.SPECIFIED_INSERTABLE_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -191,15 +191,15 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 		};
 	}
 
-	private TableCombo<IColumn> buildTableCombo(Composite container) {
+	private TableCombo<Column> buildTableCombo(Composite container) {
 
-		return new TableCombo<IColumn>(this, container) {
+		return new TableCombo<Column>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(IColumn.DEFAULT_TABLE_PROPERTY);
-				propertyNames.add(IColumn.SPECIFIED_TABLE_PROPERTY);
+				propertyNames.add(Column.DEFAULT_TABLE_PROPERTY);
+				propertyNames.add(Column.SPECIFIED_TABLE_PROPERTY);
 			}
 
 			@Override
@@ -230,10 +230,10 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildUpdatableHolder() {
-		return new PropertyAspectAdapter<IColumn, Boolean>(
+		return new PropertyAspectAdapter<Column, Boolean>(
 			getSubjectHolder(),
-			IColumn.DEFAULT_UPDATABLE_PROPERTY,
-			IColumn.SPECIFIED_UPDATABLE_PROPERTY)
+			Column.DEFAULT_UPDATABLE_PROPERTY,
+			Column.SPECIFIED_UPDATABLE_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -302,7 +302,7 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 			container,
 			JptUiMappingsMessages.ColumnChooser_label,
 			buildColumnCombo(container),
-			IJpaHelpContextIds.MAPPING_COLUMN
+			JpaHelpContextIds.MAPPING_COLUMN
 		);
 
 		// Table widgets
@@ -310,7 +310,7 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 			container,
 			JptUiMappingsMessages.ColumnTableChooser_label,
 			buildTableCombo(container),
-			IJpaHelpContextIds.MAPPING_COLUMN_TABLE
+			JpaHelpContextIds.MAPPING_COLUMN_TABLE
 		);
 
 		// Insertable widgets
@@ -319,7 +319,7 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 			JptUiMappingsMessages.ColumnComposite_insertable,
 			buildInsertableHolder(),
 			buildInsertableStringHolder(),
-			IJpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
+			JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
 		);
 
 		// Updatable widgets
@@ -328,7 +328,7 @@ public class ColumnComposite extends AbstractFormPane<IColumn>
 			JptUiMappingsMessages.ColumnComposite_updatable,
 			buildUpdatableHolder(),
 			buildUpdatableStringHolder(),
-			IJpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
+			JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
 		);
 	}
 }

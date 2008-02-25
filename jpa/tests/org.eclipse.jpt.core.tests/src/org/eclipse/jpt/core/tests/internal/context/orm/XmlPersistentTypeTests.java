@@ -12,29 +12,29 @@ package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentType;
-import org.eclipse.jpt.core.internal.resource.orm.Basic;
-import org.eclipse.jpt.core.internal.resource.orm.BasicImpl;
-import org.eclipse.jpt.core.internal.resource.orm.Embedded;
-import org.eclipse.jpt.core.internal.resource.orm.EmbeddedIdImpl;
-import org.eclipse.jpt.core.internal.resource.orm.EmbeddedImpl;
-import org.eclipse.jpt.core.internal.resource.orm.Entity;
-import org.eclipse.jpt.core.internal.resource.orm.Id;
-import org.eclipse.jpt.core.internal.resource.orm.IdImpl;
-import org.eclipse.jpt.core.internal.resource.orm.ManyToManyImpl;
-import org.eclipse.jpt.core.internal.resource.orm.ManyToOneImpl;
-import org.eclipse.jpt.core.internal.resource.orm.OneToManyImpl;
-import org.eclipse.jpt.core.internal.resource.orm.OneToOneImpl;
-import org.eclipse.jpt.core.internal.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.internal.resource.orm.Transient;
-import org.eclipse.jpt.core.internal.resource.orm.TransientImpl;
-import org.eclipse.jpt.core.internal.resource.orm.Version;
-import org.eclipse.jpt.core.internal.resource.orm.VersionImpl;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.internal.resource.persistence.XmlMappingFileRef;
+import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.resource.orm.XmlBasic;
+import org.eclipse.jpt.core.resource.orm.BasicImpl;
+import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
+import org.eclipse.jpt.core.resource.orm.EmbeddedIdImpl;
+import org.eclipse.jpt.core.resource.orm.EmbeddedImpl;
+import org.eclipse.jpt.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.core.resource.orm.XmlId;
+import org.eclipse.jpt.core.resource.orm.IdImpl;
+import org.eclipse.jpt.core.resource.orm.ManyToManyImpl;
+import org.eclipse.jpt.core.resource.orm.ManyToOneImpl;
+import org.eclipse.jpt.core.resource.orm.OneToManyImpl;
+import org.eclipse.jpt.core.resource.orm.OneToOneImpl;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlTransient;
+import org.eclipse.jpt.core.resource.orm.TransientImpl;
+import org.eclipse.jpt.core.resource.orm.XmlVersion;
+import org.eclipse.jpt.core.resource.orm.VersionImpl;
+import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 public class XmlPersistentTypeTests extends ContextModelTestCase
@@ -54,7 +54,7 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 	}	
 	
 //	public void testUpdateXmlTypeMapping() throws Exception {
-//		assertFalse(entityMappings().xmlPersistentTypes().hasNext());
+//		assertFalse(entityMappings().ormPersistentTypes().hasNext());
 //		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
 //		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
 //		assertTrue(ormResource().getEntityMappings().getEmbeddables().isEmpty());
@@ -63,8 +63,8 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 //		Embeddable embeddable = OrmFactory.eINSTANCE.createEmbeddable();
 //		ormResource().getEntityMappings().getEmbeddables().add(embeddable);
 //		embeddable.setClassName("model.Foo");
-//		assertTrue(entityMappings().xmlPersistentTypes().hasNext());
-//		assertEquals("model.Foo", entityMappings().xmlPersistentTypes().next().getMapping().getClass_());
+//		assertTrue(entityMappings().ormPersistentTypes().hasNext());
+//		assertEquals("model.Foo", entityMappings().ormPersistentTypes().next().getMapping().getClass_());
 //		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
 //		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
 //		assertFalse(ormResource().getEntityMappings().getEmbeddables().isEmpty());
@@ -74,8 +74,8 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 //		Entity entity = OrmFactory.eINSTANCE.createEntity();
 //		ormResource().getEntityMappings().getEntities().add(entity);
 //		entity.setClassName("model.Foo2");
-//		assertTrue(entityMappings().xmlPersistentTypes().hasNext());
-//		assertEquals("model.Foo2", entityMappings().xmlPersistentTypes().next().getMapping().getClass_());
+//		assertTrue(entityMappings().ormPersistentTypes().hasNext());
+//		assertEquals("model.Foo2", entityMappings().ormPersistentTypes().next().getMapping().getClass_());
 //		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
 //		assertFalse(ormResource().getEntityMappings().getEntities().isEmpty());
 //		assertFalse(ormResource().getEntityMappings().getEmbeddables().isEmpty());
@@ -85,8 +85,8 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 //		MappedSuperclass mappedSuperclass = OrmFactory.eINSTANCE.createMappedSuperclass();
 //		ormResource().getEntityMappings().getMappedSuperclasses().add(mappedSuperclass);
 //		mappedSuperclass.setClassName("model.Foo3");
-//		assertTrue(entityMappings().xmlPersistentTypes().hasNext());
-//		assertEquals("model.Foo3", entityMappings().xmlPersistentTypes().next().getMapping().getClass_());
+//		assertTrue(entityMappings().ormPersistentTypes().hasNext());
+//		assertEquals("model.Foo3", entityMappings().ormPersistentTypes().next().getMapping().getClass_());
 //		assertFalse(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
 //		assertFalse(ormResource().getEntityMappings().getEntities().isEmpty());
 //		assertFalse(ormResource().getEntityMappings().getEmbeddables().isEmpty());
@@ -95,72 +95,72 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 //	
 	
 	public void testMorphXmlTypeMapping() throws Exception {
-		assertFalse(entityMappings().xmlPersistentTypes().hasNext());
+		assertFalse(entityMappings().ormPersistentTypes().hasNext());
 		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
 		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
 		assertTrue(ormResource().getEntityMappings().getEmbeddables().isEmpty());
 		
-		XmlPersistentType embeddablePersistentType = entityMappings().addXmlPersistentType(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		XmlPersistentType mappedSuperclassPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo3");
+		OrmPersistentType embeddablePersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
+		OrmPersistentType mappedSuperclassPersistentType = entityMappings().addOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo3");
 		ormResource().save(null);
 	
-		XmlPersistentType xmlPersistentType = entityMappings().xmlPersistentTypes().next();
-		assertEquals(mappedSuperclassPersistentType, xmlPersistentType);
-		assertEquals(IMappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, xmlPersistentType.getMapping().getKey());
+		OrmPersistentType ormPersistentType = entityMappings().ormPersistentTypes().next();
+		assertEquals(mappedSuperclassPersistentType, ormPersistentType);
+		assertEquals(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, ormPersistentType.getMapping().getKey());
 	
-		xmlPersistentType.setMappingKey(IMappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+		ormPersistentType.setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		ormResource().save(null);
 		assertEquals(0, ormResource().getEntityMappings().getMappedSuperclasses().size());
 		assertEquals(1, ormResource().getEntityMappings().getEntities().size());
 		assertEquals(2, ormResource().getEntityMappings().getEmbeddables().size());
 		
-		Iterator<XmlPersistentType> xmlPersistentTypes = entityMappings().xmlPersistentTypes();
-		//the same XmlPersistentTypes should still be in the context model
-		assertEquals(xmlPersistentTypes.next(), entityPersistentType);
-		assertEquals(xmlPersistentTypes.next(), embeddablePersistentType);
-		assertEquals(xmlPersistentTypes.next(), mappedSuperclassPersistentType);
+		Iterator<OrmPersistentType> ormPersistentTypes = entityMappings().ormPersistentTypes();
+		//the same OrmPersistentTypes should still be in the context model
+		assertEquals(ormPersistentTypes.next(), entityPersistentType);
+		assertEquals(ormPersistentTypes.next(), embeddablePersistentType);
+		assertEquals(ormPersistentTypes.next(), mappedSuperclassPersistentType);
 		
 		assertEquals("model.Foo", ormResource().getEntityMappings().getEmbeddables().get(0).getClassName());
 		assertEquals("model.Foo3", ormResource().getEntityMappings().getEmbeddables().get(1).getClassName());
 	}
 	
 	public void testAddSpecifiedPersistentAttribute() throws Exception {
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
+		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
 		
-		entityPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicAttribute");
+		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicAttribute");
 		ormResource().save(null);
 	
-		Entity entity = ormResource().getEntityMappings().getEntities().get(0);
-		Basic basic = entity.getAttributes().getBasics().get(0);
+		XmlEntity entity = ormResource().getEntityMappings().getEntities().get(0);
+		XmlBasic basic = entity.getAttributes().getBasics().get(0);
 		assertEquals("basicAttribute", basic.getName());
 		
-		entityPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedAttribute");
+		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedAttribute");
 		ormResource().save(null);
 	
-		Embedded embedded = entity.getAttributes().getEmbeddeds().get(0);
+		XmlEmbedded embedded = entity.getAttributes().getEmbeddeds().get(0);
 		assertEquals("embeddedAttribute", embedded.getName());
 		
-		entityPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientAttribute");
+		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientAttribute");
 		ormResource().save(null);
 	
-		Transient transientResource = entity.getAttributes().getTransients().get(0);
+		XmlTransient transientResource = entity.getAttributes().getTransients().get(0);
 		assertEquals("transientAttribute", transientResource.getName());
 
-		entityPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionAttribute");
+		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionAttribute");
 		ormResource().save(null);
 	
-		Version version = entity.getAttributes().getVersions().get(0);
+		XmlVersion version = entity.getAttributes().getVersions().get(0);
 		assertEquals("versionAttribute", version.getName());
 
-		entityPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idAttribute");
+		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idAttribute");
 		ormResource().save(null);
 	
-		Id id = entity.getAttributes().getIds().get(0);
+		XmlId id = entity.getAttributes().getIds().get(0);
 		assertEquals("idAttribute", id.getName());
 		
 		
-		ListIterator<XmlPersistentAttribute> persistentAttributes = entityPersistentType.specifiedAttributes();
+		ListIterator<OrmPersistentAttribute> persistentAttributes = entityPersistentType.specifiedAttributes();
 		assertEquals("idAttribute", persistentAttributes.next().getName());
 		assertEquals("basicAttribute", persistentAttributes.next().getName());
 		assertEquals("versionAttribute", persistentAttributes.next().getName());
@@ -170,16 +170,16 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 	}
 	
 	public void testRemoveSpecifiedPersistentAttribute() throws Exception {
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
+		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
 		
-		entityPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicAttribute");
-		entityPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedAttribute");
-		entityPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionAttribute");
-		entityPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idAttribute");
-		entityPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientAttribute");
+		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicAttribute");
+		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedAttribute");
+		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionAttribute");
+		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idAttribute");
+		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientAttribute");
 		ormResource().save(null);
 	
-		Entity entity = ormResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entity = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals("basicAttribute",  entity.getAttributes().getBasics().get(0).getName());
 		assertEquals("embeddedAttribute",  entity.getAttributes().getEmbeddeds().get(0).getName());
 		assertEquals("versionAttribute",  entity.getAttributes().getVersions().get(0).getName());
@@ -209,10 +209,10 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 	}
 	
 	public void testRemoveId() throws Exception {
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		Entity entity = ormResource().getEntityMappings().getEntities().get(0);
+		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
+		XmlEntity entity = ormResource().getEntityMappings().getEntities().get(0);
 		
-		entityPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idAttribute");
+		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idAttribute");
 		assertEquals("idAttribute",  entity.getAttributes().getIds().get(0).getName());
 
 		entityPersistentType.removeSpecifiedXmlPersistentAttribute(entityPersistentType.attributeNamed("idAttribute"));	
@@ -220,10 +220,10 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 	}
 	
 	public void testRemoveBasic() throws Exception {
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		Entity entity = ormResource().getEntityMappings().getEntities().get(0);
+		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
+		XmlEntity entity = ormResource().getEntityMappings().getEntities().get(0);
 		
-		entityPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicAttribute");
+		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicAttribute");
 		assertEquals("basicAttribute",  entity.getAttributes().getBasics().get(0).getName());
 
 		entityPersistentType.removeSpecifiedXmlPersistentAttribute(entityPersistentType.attributeNamed("basicAttribute"));	
@@ -231,10 +231,10 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 	}
 	
 	public void testRemoveVersion() throws Exception {
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		Entity entity = ormResource().getEntityMappings().getEntities().get(0);
+		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
+		XmlEntity entity = ormResource().getEntityMappings().getEntities().get(0);
 		
-		entityPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionAttribute");
+		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionAttribute");
 		assertEquals("versionAttribute",  entity.getAttributes().getVersions().get(0).getName());
 
 		entityPersistentType.removeSpecifiedXmlPersistentAttribute(entityPersistentType.attributeNamed("versionAttribute"));	
@@ -242,10 +242,10 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 	}
 	
 	public void testRemoveEmbedded() throws Exception {
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		Entity entity = ormResource().getEntityMappings().getEntities().get(0);
+		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
+		XmlEntity entity = ormResource().getEntityMappings().getEntities().get(0);
 		
-		entityPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedAttribute");
+		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedAttribute");
 		assertEquals("embeddedAttribute",  entity.getAttributes().getEmbeddeds().get(0).getName());
 
 		entityPersistentType.removeSpecifiedXmlPersistentAttribute(entityPersistentType.attributeNamed("embeddedAttribute"));	
@@ -253,10 +253,10 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 	}
 	
 	public void testRemoveTransient() throws Exception {
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		Entity entity = ormResource().getEntityMappings().getEntities().get(0);
+		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
+		XmlEntity entity = ormResource().getEntityMappings().getEntities().get(0);
 		
-		entityPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientAttribute");
+		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientAttribute");
 		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
 
 		entityPersistentType.removeSpecifiedXmlPersistentAttribute(entityPersistentType.attributeNamed("transientAttribute"));	
@@ -264,29 +264,29 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 	}
 
 	public void testUpdateSpecifiedPersistentAttributes() throws Exception {
-		XmlPersistentType entityPersistentType = entityMappings().addXmlPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		Entity entity = ormResource().getEntityMappings().getEntities().get(0);
+		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
+		XmlEntity entity = ormResource().getEntityMappings().getEntities().get(0);
 
 		entity.setAttributes(OrmFactory.eINSTANCE.createAttributes());
 		BasicImpl basic = OrmFactory.eINSTANCE.createBasicImpl();
 		entity.getAttributes().getBasics().add(basic);
 		basic.setName("basicAttribute");
 			
-		XmlPersistentAttribute xmlPersistentAttribute = entityPersistentType.attributes().next();
+		OrmPersistentAttribute xmlPersistentAttribute = entityPersistentType.attributes().next();
 		assertEquals("basicAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		
 		EmbeddedImpl embedded = OrmFactory.eINSTANCE.createEmbeddedImpl();
 		entity.getAttributes().getEmbeddeds().add(embedded);
 		embedded.setName("embeddedAttribute");
 		
-		ListIterator<XmlPersistentAttribute> attributes = entityPersistentType.attributes();
+		ListIterator<OrmPersistentAttribute> attributes = entityPersistentType.attributes();
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("basicAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("embeddedAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		assertFalse(attributes.hasNext());
 	
 		VersionImpl version = OrmFactory.eINSTANCE.createVersionImpl();
@@ -296,13 +296,13 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 		attributes = entityPersistentType.attributes();
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("basicAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("versionAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("embeddedAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		assertFalse(attributes.hasNext());
 
 		IdImpl id = OrmFactory.eINSTANCE.createIdImpl();
@@ -312,16 +312,16 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 		attributes = entityPersistentType.attributes();
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("idAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("basicAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("versionAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("embeddedAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		assertFalse(attributes.hasNext());
 		
 		TransientImpl transientResource = OrmFactory.eINSTANCE.createTransientImpl();
@@ -331,19 +331,19 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 		attributes = entityPersistentType.attributes();
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("idAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("basicAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("versionAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("embeddedAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("transientAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		assertFalse(attributes.hasNext());
 		
 		ManyToOneImpl manyToOneResource = OrmFactory.eINSTANCE.createManyToOneImpl();
@@ -353,22 +353,22 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 		attributes = entityPersistentType.attributes();
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("idAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("basicAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("versionAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("manyToOneAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("embeddedAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("transientAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		assertFalse(attributes.hasNext());
 
 		ManyToManyImpl manyToManyResource = OrmFactory.eINSTANCE.createManyToManyImpl();
@@ -378,25 +378,25 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 		attributes = entityPersistentType.attributes();
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("idAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("basicAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("versionAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("manyToOneAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("manyToManyAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("embeddedAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("transientAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		assertFalse(attributes.hasNext());
 		
 		OneToManyImpl oneToManyResource = OrmFactory.eINSTANCE.createOneToManyImpl();
@@ -406,28 +406,28 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 		attributes = entityPersistentType.attributes();
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("idAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("basicAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("versionAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("manyToOneAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("oneToManyAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("manyToManyAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("embeddedAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("transientAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		assertFalse(attributes.hasNext());
 
 		OneToOneImpl oneToOneResource = OrmFactory.eINSTANCE.createOneToOneImpl();
@@ -437,31 +437,31 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 		attributes = entityPersistentType.attributes();
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("idAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("basicAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("versionAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("manyToOneAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("oneToManyAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("oneToOneAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("manyToManyAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("embeddedAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("transientAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		assertFalse(attributes.hasNext());
 
 
@@ -472,34 +472,34 @@ public class XmlPersistentTypeTests extends ContextModelTestCase
 		attributes = entityPersistentType.attributes();
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("idAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.ID_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("embeddedIdAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("basicAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("versionAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("manyToOneAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("oneToManyAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("oneToOneAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("manyToManyAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("embeddedAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		xmlPersistentAttribute = attributes.next();
 		assertEquals("transientAttribute", xmlPersistentAttribute.getName());
-		assertEquals(IMappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
+		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, xmlPersistentAttribute.getMapping().getKey());
 		assertFalse(attributes.hasNext());
 
 		entity.getAttributes().getBasics().remove(0);

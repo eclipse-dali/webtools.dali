@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.internal.context.base.IJoinColumn;
-import org.eclipse.jpt.core.internal.context.base.IJoinTable;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.ui.internal.widgets.AbstractDialogPane;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -35,8 +35,8 @@ public class InverseJoinColumnInJoinTableDialog extends AbstractJoinColumnDialog
 	 * this state object is used to create a new one
 	 */
 	public InverseJoinColumnInJoinTableDialog(Shell parent,
-	                                          IJoinTable joinTable,
-	                                          IJoinColumn joinColumn) {
+	                                          JoinTable joinTable,
+	                                          JoinColumn joinColumn) {
 
 		super(parent, joinTable, joinColumn);
 	}
@@ -67,15 +67,15 @@ public class InverseJoinColumnInJoinTableDialog extends AbstractJoinColumnDialog
 	 * (non-Javadoc)
 	 */
 	@Override
-	public IJoinColumn getJoinColumn() {
-		return (IJoinColumn) super.getJoinColumn();
+	public JoinColumn getJoinColumn() {
+		return (JoinColumn) super.getJoinColumn();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected IJoinTable getOwner() {
-		return (IJoinTable) super.getOwner();
+	protected JoinTable getOwner() {
+		return (JoinTable) super.getOwner();
 	}
 }

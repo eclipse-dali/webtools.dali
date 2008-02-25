@@ -11,10 +11,10 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.MapKey;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.MapKey;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class MapKeyTests extends JavaResourceModelTestCase {
@@ -53,8 +53,8 @@ public class MapKeyTests extends JavaResourceModelTestCase {
 
 	public void testMapKey() throws Exception {
 		IType testType = this.createTestMapKey();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		MapKey mapKey = (MapKey) attributeResource.annotation(JPA.MAP_KEY);
 		assertNotNull(mapKey);
@@ -62,8 +62,8 @@ public class MapKeyTests extends JavaResourceModelTestCase {
 	
 	public void testGetName() throws Exception {
 		IType testType = this.createTestMapKeyWithName();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		MapKey mapKey = (MapKey) attributeResource.annotation(JPA.MAP_KEY);
 		assertEquals("key", mapKey.getName());
@@ -71,8 +71,8 @@ public class MapKeyTests extends JavaResourceModelTestCase {
 	
 	public void testSetName() throws Exception {
 		IType testType = this.createTestMapKey();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 
 		MapKey mapKey = (MapKey) attributeResource.annotation(JPA.MAP_KEY);
 

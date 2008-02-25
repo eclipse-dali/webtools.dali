@@ -30,8 +30,8 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
-import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProvider;
-import org.eclipse.jpt.ui.internal.jface.ITreeItemContentProviderFactory;
+import org.eclipse.jpt.ui.internal.jface.TreeItemContentProvider;
+import org.eclipse.jpt.ui.internal.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -287,10 +287,10 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	}
 
 
-	private static abstract class TreeItemContentProviderFactory
-		implements ITreeItemContentProviderFactory
+	private static abstract class AbstractTreeItemContentProviderFactory
+		implements TreeItemContentProviderFactory
 	{
-		public ITreeItemContentProvider buildItemContentProvider(
+		public TreeItemContentProvider buildItemContentProvider(
 			Object item, DelegatingContentAndLabelProvider contentAndLabelProvider) {
 			return new GenericTreeItemContentProvider(
 				(TreeNode) item, (DelegatingTreeContentAndLabelProvider) contentAndLabelProvider);
@@ -298,17 +298,17 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 	}
 
 
-	private static class ControlTreeItemContentProviderFactory extends TreeItemContentProviderFactory
+	private static class ControlTreeItemContentProviderFactory extends AbstractTreeItemContentProviderFactory
 	{
 
 	}
 
 
 	private static class ViewTreeItemContentProviderFactory
-		extends TreeItemContentProviderFactory
+		extends AbstractTreeItemContentProviderFactory
 	{
 		@Override
-		public ITreeItemContentProvider buildItemContentProvider(
+		public TreeItemContentProvider buildItemContentProvider(
 				Object item, DelegatingContentAndLabelProvider contentAndLabelProvider) {
 			if (item instanceof Parent) {
 				return new ViewTreeParentItemContentProvider(

@@ -14,12 +14,17 @@ import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.Version;
 
 public class VersionImpl extends AbstractAnnotationResource<Attribute> implements Version
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	public VersionImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
+	public VersionImpl(JavaResourcePersistentAttribute parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	
@@ -54,11 +59,11 @@ public class VersionImpl extends AbstractAnnotationResource<Attribute> implement
 			super();
 		}
 		
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
-			return new VersionImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
+			return new VersionImpl((JavaResourcePersistentAttribute) parent, (Attribute) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

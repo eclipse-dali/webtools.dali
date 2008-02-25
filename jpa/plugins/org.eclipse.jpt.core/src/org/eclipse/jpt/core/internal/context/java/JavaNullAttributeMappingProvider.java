@@ -9,7 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.platform.base.JpaBaseContextFactory;
 
 /**
  * This mapping provider implementation is used to create a JavaNullAttributeMapping.
@@ -17,7 +20,7 @@ import org.eclipse.jpt.core.internal.platform.base.IJpaBaseContextFactory;
  * exists on a Java attribute *and* no default mapping applies.
  */
 public class JavaNullAttributeMappingProvider
-	implements IJavaAttributeMappingProvider
+	implements JavaAttributeMappingProvider
 {
 
 	// singleton
@@ -26,7 +29,7 @@ public class JavaNullAttributeMappingProvider
 	/**
 	 * Return the singleton.
 	 */
-	public static IJavaAttributeMappingProvider instance() {
+	public static JavaAttributeMappingProvider instance() {
 		return INSTANCE;
 	}
 
@@ -45,7 +48,7 @@ public class JavaNullAttributeMappingProvider
 		return null;
 	}
 	
-	public IJavaAttributeMapping buildMapping(IJavaPersistentAttribute parent, IJpaBaseContextFactory factory) {
-		return factory.createJavaNullAttributeMapping(parent);
+	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaBaseContextFactory factory) {
+		return factory.buildJavaNullAttributeMapping(parent);
 	}
 }

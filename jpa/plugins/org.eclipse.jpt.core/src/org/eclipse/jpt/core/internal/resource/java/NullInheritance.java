@@ -10,18 +10,22 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.Inheritance;
+import org.eclipse.jpt.core.resource.java.InheritanceType;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 
 
 public class NullInheritance extends AbstractResource implements Inheritance, Annotation
 {	
-	protected NullInheritance(JavaPersistentResource parent) {
+	protected NullInheritance(JavaResourcePersistentMember parent) {
 		super(parent);
 	}
 	
 	@Override
-	public JavaPersistentResource parent() {
-		return (JavaPersistentResource) super.parent();
+	public JavaResourcePersistentMember parent() {
+		return (JavaResourcePersistentMember) super.parent();
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -64,11 +68,11 @@ public class NullInheritance extends AbstractResource implements Inheritance, An
 	
 	}
 
-	public ITextRange strategyTextRange(CompilationUnit astRoot) {
+	public TextRange strategyTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 
-	public ITextRange textRange(CompilationUnit astRoot) {
+	public TextRange textRange(CompilationUnit astRoot) {
 		return null;
 	}
 

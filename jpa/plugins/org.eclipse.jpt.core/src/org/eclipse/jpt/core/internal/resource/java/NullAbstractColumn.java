@@ -10,17 +10,20 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.resource.java.AbstractColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 
 
-public abstract class NullAbstractColumn extends NullNamedColumn implements AbstractColumn, Annotation
+public abstract class NullAbstractColumn extends NullNamedColumn implements AbstractColumnAnnotation, Annotation
 {	
-	protected NullAbstractColumn(JavaResource parent) {
+	protected NullAbstractColumn(JavaResourceNode parent) {
 		super(parent);
 	}
 
 	@Override
-	protected abstract AbstractColumn createColumnResource();
+	protected abstract AbstractColumnAnnotation createColumnResource();
 
 	public String getTable() {
 		return null;
@@ -72,23 +75,23 @@ public abstract class NullAbstractColumn extends NullNamedColumn implements Abst
 		}
 	}
 	
-	public ITextRange tableTextRange(CompilationUnit astRoot) {
+	public TextRange tableTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	
-	public ITextRange uniqueTextRange(CompilationUnit astRoot) {
+	public TextRange uniqueTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	
-	public ITextRange updatableTextRange(CompilationUnit astRoot) {
+	public TextRange updatableTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	
-	public ITextRange insertableTextRange(CompilationUnit astRoot) {
+	public TextRange insertableTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	
-	public ITextRange nullableTextRange(CompilationUnit astRoot) {
+	public TextRange nullableTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	

@@ -19,16 +19,21 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.ContainerAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 
 public abstract class AbstractJavaPersistentResource<E extends Member> extends AbstractMemberResource<E> 
-	implements JavaPersistentResource
+	implements JavaResourcePersistentMember
 {	
 	/**
 	 * stores all annotations(non-mapping) except duplicates, java compiler has an error for duplicates
@@ -42,7 +47,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	
 	private boolean persistable;
 
-	public AbstractJavaPersistentResource(JavaResource parent, E member){
+	public AbstractJavaPersistentResource(JavaResourceNode parent, E member){
 		super(parent, member);
 		this.annotations = new ArrayList<Annotation>();
 		this.mappingAnnotations = new ArrayList<Annotation>();
@@ -128,7 +133,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		return null;
 	}
 	
-	public JavaResource nonNullAnnotation(String annotationName) {
+	public JavaResourceNode nonNullAnnotation(String annotationName) {
 		Annotation annotation = annotation(annotationName);
 		if (annotation == null) {
 			return buildNullAnnotation(annotationName);	
@@ -146,7 +151,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 		return null;
 	}
 
-	public JavaResource nonNullMappingAnnotation(String annotationName) {
+	public JavaResourceNode nonNullMappingAnnotation(String annotationName) {
 		Annotation annotation = mappingAnnotation(annotationName);
 		if (annotation == null) {
 			return buildNullMappingAnnotation(annotationName);	
@@ -498,15 +503,15 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	}
 	
 
-	public ITextRange fullTextRange(CompilationUnit astRoot) {
+	public TextRange fullTextRange(CompilationUnit astRoot) {
 		return this.getMember().textRange(astRoot);
 	}
 
-	public ITextRange textRange(CompilationUnit astRoot) {
+	public TextRange textRange(CompilationUnit astRoot) {
 		return this.fullTextRange(astRoot);
 	}
 
-	public ITextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange nameTextRange(CompilationUnit astRoot) {
 		return this.getMember().nameTextRange(astRoot);
 	}
 

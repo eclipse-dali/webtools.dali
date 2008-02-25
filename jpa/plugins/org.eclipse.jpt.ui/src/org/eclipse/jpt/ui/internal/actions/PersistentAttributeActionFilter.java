@@ -10,8 +10,8 @@
 package org.eclipse.jpt.ui.internal.actions;
 
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.jpt.core.internal.IMappingKeys;
-import org.eclipse.jpt.core.internal.context.base.IPersistentAttribute;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.ui.IActionFilter;
 
 public class PersistentAttributeActionFilter 
@@ -36,7 +36,7 @@ public class PersistentAttributeActionFilter
 			return false;
 		}
 		
-		boolean mapped = ((IPersistentAttribute) target).mappingKey() != IMappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
+		boolean mapped = ((PersistentAttribute) target).mappingKey() != MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
 		return mapped == booleanValue;
 	}
 	

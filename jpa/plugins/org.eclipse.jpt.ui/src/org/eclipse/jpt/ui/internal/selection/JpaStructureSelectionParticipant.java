@@ -14,18 +14,18 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jpt.ui.internal.views.structure.JpaStructureView;
 
 public class JpaStructureSelectionParticipant
-	implements IJpaSelectionParticipant 
+	implements JpaSelectionParticipant 
 {
 	final JpaStructureView structureView;
 	
 	
-	public JpaStructureSelectionParticipant(IJpaSelectionManager selectionManager, JpaStructureView structureView) {
+	public JpaStructureSelectionParticipant(JpaSelectionManager selectionManager, JpaStructureView structureView) {
 		super();
 		this.structureView = structureView;
 		structureView.addSelectionChangedListener(new StructureViewSelectionListener(selectionManager, structureView));
 	}
 
-	public IJpaSelection getSelection() {
+	public JpaSelection getSelection() {
 		return this.structureView.getSelection();
 	}
 	
@@ -47,9 +47,9 @@ public class JpaStructureSelectionParticipant
 	private class StructureViewSelectionListener 
 		implements ISelectionChangedListener
 	{
-		private final IJpaSelectionManager selectionManager;
+		private final JpaSelectionManager selectionManager;
 
-		StructureViewSelectionListener(IJpaSelectionManager selectionManager, JpaStructureView structureView) {
+		StructureViewSelectionListener(JpaSelectionManager selectionManager, JpaStructureView structureView) {
 			super();
 			this.selectionManager = selectionManager;
 		}
@@ -60,7 +60,7 @@ public class JpaStructureSelectionParticipant
 			}
 		}
 
-		private IJpaSelection structureViewSelection() {
+		private JpaSelection structureViewSelection() {
 			return JpaStructureSelectionParticipant.this.structureView.getSelection();
 		}
 	}

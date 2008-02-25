@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.BooleanExpressionConverter;
@@ -21,6 +21,13 @@ import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElement
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.Basic;
+import org.eclipse.jpt.core.resource.java.FetchType;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 
 
 public class BasicImpl extends AbstractAnnotationResource<Attribute> implements Basic
@@ -39,7 +46,7 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 	
 	private FetchType fetch;
 	
-	protected BasicImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
+	protected BasicImpl(JavaResourcePersistentAttribute parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.optionalAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(attribute, OPTIONAL_ADAPTER);
 		this.fetchAdapter = new ShortCircuitAnnotationElementAdapter<String>(attribute, FETCH_ADAPTER);
@@ -77,11 +84,11 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 		firePropertyChanged(FETCH_PROPERTY, oldFetch, newFetch);
 	}
 	
-	public ITextRange fetchTextRange(CompilationUnit astRoot) {
+	public TextRange fetchTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(FETCH_ADAPTER, astRoot);
 	}
 	
-	public ITextRange optionalTextRange(CompilationUnit astRoot) {
+	public TextRange optionalTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(OPTIONAL_ADAPTER, astRoot);
 	}
 
@@ -126,11 +133,11 @@ public class BasicImpl extends AbstractAnnotationResource<Attribute> implements 
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
-			return new BasicImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
+			return new BasicImpl((JavaResourcePersistentAttribute) parent, (Attribute) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new NullBasic(parent);
 		}
 

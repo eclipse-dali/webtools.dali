@@ -19,6 +19,13 @@ import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NestableNamedQuery;
+import org.eclipse.jpt.core.resource.java.NestableQueryHint;
 
 public class NamedQueryImpl extends AbstractNamedQuery
 	implements NestableNamedQuery
@@ -26,7 +33,7 @@ public class NamedQueryImpl extends AbstractNamedQuery
 
 	public static final SimpleDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	protected NamedQueryImpl(JavaResource parent, Type type, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected NamedQueryImpl(JavaResourceNode parent, Type type, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, type, daa, annotationAdapter);
 	}
 
@@ -51,11 +58,11 @@ public class NamedQueryImpl extends AbstractNamedQuery
 	}
 
 	// ********** static methods **********
-	static NamedQueryImpl createNamedQuery(JavaResource parent, Type type) {
+	static NamedQueryImpl createNamedQuery(JavaResourceNode parent, Type type) {
 		return new NamedQueryImpl(parent, type, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(type, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
-	static NamedQueryImpl createNestedNamedQuery(JavaResource parent, Type type, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
+	static NamedQueryImpl createNestedNamedQuery(JavaResourceNode parent, Type type, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
 		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(type, idaa);
 		return new NamedQueryImpl(parent, type, idaa, annotationAdapter);
@@ -84,11 +91,11 @@ public class NamedQueryImpl extends AbstractNamedQuery
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return NamedQueryImpl.createNamedQuery(parent, (Type) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

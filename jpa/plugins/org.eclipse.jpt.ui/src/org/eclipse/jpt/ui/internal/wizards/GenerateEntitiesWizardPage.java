@@ -36,7 +36,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.gen.internal.EntityGenerator;
-import org.eclipse.jpt.ui.internal.IJpaHelpContextIds;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.SWT;
@@ -104,7 +104,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		GridLayout layout = new GridLayout();
 		layout.numColumns = nColumns;
 		composite.setLayout(layout);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, IJpaHelpContextIds.DIALOG_GENERATE_ENTITIES);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, JpaHelpContextIds.DIALOG_GENERATE_ENTITIES);
 		
 		createContainerControls(composite, nColumns);	
 		createPackageControls(composite, nColumns);	
@@ -143,7 +143,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		synchronizeClassesCheckBox.setSelection(!generateEntitiesWizard.getJpaProject().discoversAnnotatedClasses());
 		setSynchronizePersistenceXml(synchronizeClassesCheckBox.getSelection());
 		
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.tableTable.getControl(), IJpaHelpContextIds.DIALOG_GENERATE_ENTITIES_TABLES);
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.tableTable.getControl(), JpaHelpContextIds.DIALOG_GENERATE_ENTITIES_TABLES);
 		
 		setControl(composite);
 		this.setPageComplete( false);

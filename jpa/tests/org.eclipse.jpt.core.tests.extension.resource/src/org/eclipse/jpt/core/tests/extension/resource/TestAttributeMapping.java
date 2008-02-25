@@ -4,7 +4,7 @@ import org.eclipse.jpt.core.internal.content.java.mappings.JavaAttributeMapping;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 
-public class TestAttributeMapping extends JavaAttributeMapping
+public class TestAttributeMapping extends AbstractJavaAttributeMapping
 {
 	public TestAttributeMapping(Attribute attribute) {
 		super(attribute);

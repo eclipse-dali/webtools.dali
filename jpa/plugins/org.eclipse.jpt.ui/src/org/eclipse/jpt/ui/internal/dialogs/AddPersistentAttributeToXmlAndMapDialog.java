@@ -10,20 +10,20 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jpt.core.internal.context.orm.XmlPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.JptUiPlugin;
-import org.eclipse.jpt.ui.internal.java.details.IAttributeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.BasicMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.EmbeddedIdMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.EmbeddedMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.IdMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.ManyToManyMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.ManyToOneMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.OneToManyMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.OneToOneMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.TransientMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.mappings.properties.VersionMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.BasicMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.EmbeddedIdMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.EmbeddedMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.IdMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.ManyToManyMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.ManyToOneMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.OneToManyMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.OneToOneMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.TransientMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.VersionMappingUiProvider;
+import org.eclipse.jpt.ui.java.details.AttributeMappingUiProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -36,11 +36,11 @@ import org.eclipse.swt.widgets.Text;
 
 public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 {
-	private XmlPersistentAttribute unmappedPersistentAttribute;
+	private OrmPersistentAttribute unmappedPersistentAttribute;
 	private Text attributeText;
 	private ComboViewer mappingCombo;
 
-	public AddPersistentAttributeToXmlAndMapDialog(Shell parentShell, XmlPersistentAttribute unmappedPersistentAttribute) {
+	public AddPersistentAttributeToXmlAndMapDialog(Shell parentShell, OrmPersistentAttribute unmappedPersistentAttribute) {
 		super(parentShell);
 		this.unmappedPersistentAttribute = unmappedPersistentAttribute;
 		setTitle(JptUiMessages.AddPersistentAttributeDialog_title);
@@ -95,7 +95,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 			new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					return ((IAttributeMappingUiProvider) element).label();
+					return ((AttributeMappingUiProvider) element).label();
 				}
 			});
 		mappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -149,7 +149,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 
 	public String getMappingKey() {
 		StructuredSelection selection = (StructuredSelection) mappingCombo.getSelection();
-		return (selection.isEmpty()) ? null : ((IAttributeMappingUiProvider) selection.getFirstElement()).attributeMappingKey();
+		return (selection.isEmpty()) ? null : ((AttributeMappingUiProvider) selection.getFirstElement()).attributeMappingKey();
 	}
 
 	private void validate() {

@@ -17,6 +17,12 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
+import org.eclipse.jpt.core.resource.java.AttributeOverrides;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NestableAttributeOverride;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
@@ -26,7 +32,7 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 
 	private final List<NestableAttributeOverride> attributesOverrides;
 	
-	protected AttributeOverridesImpl(JavaResource parent, Member member) {
+	protected AttributeOverridesImpl(JavaResourceNode parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.attributesOverrides = new ArrayList<NestableAttributeOverride>();
 	}
@@ -40,7 +46,7 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 	}
 
 	public String getNestableAnnotationName() {
-		return AttributeOverride.ANNOTATION_NAME;
+		return AttributeOverrideAnnotation.ANNOTATION_NAME;
 	}
 		
 	public ListIterator<NestableAttributeOverride> nestedAnnotations() {
@@ -132,11 +138,11 @@ public class AttributeOverridesImpl extends AbstractAnnotationResource<Member> i
 			super();
 		}
 
-		public AttributeOverrides buildAnnotation(JavaPersistentResource parent, Member member) {
+		public AttributeOverrides buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new AttributeOverridesImpl(parent, member);
 		}
 		
-		public AttributeOverrides buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public AttributeOverrides buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

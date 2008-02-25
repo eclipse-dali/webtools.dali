@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.BooleanExpressionConverter;
@@ -19,6 +19,12 @@ import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.ManyToOne;
 
 
 public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation implements ManyToOne
@@ -37,7 +43,7 @@ public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation impleme
 
 	private Boolean optional;
 
-	protected ManyToOneImpl(JavaPersistentAttributeResource parent, Attribute attribute) {
+	protected ManyToOneImpl(JavaResourcePersistentAttribute parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.optionalAdapter = this.buildBooleanAnnotationElementAdapter(OPTIONAL_ADAPTER);
 	}
@@ -83,7 +89,7 @@ public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation impleme
 		firePropertyChanged(OPTIONAL_PROPERTY, oldOptional, newOptional);
 	}
 
-	public ITextRange optionalTextRange(CompilationUnit astRoot) {
+	public TextRange optionalTextRange(CompilationUnit astRoot) {
 		return elementTextRange(OPTIONAL_ADAPTER, astRoot);
 	}
 
@@ -139,11 +145,11 @@ public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation impleme
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
-			return new ManyToOneImpl((JavaPersistentAttributeResource) parent, (Attribute) member);
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
+			return new ManyToOneImpl((JavaResourcePersistentAttribute) parent, (Attribute) member);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return null;
 		}
 

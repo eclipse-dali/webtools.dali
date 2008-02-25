@@ -12,10 +12,10 @@ package org.eclipse.jpt.ui.internal.platform.base;
 
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.core.internal.IContextModel;
-import org.eclipse.jpt.core.internal.context.persistence.PersistenceXml;
+import org.eclipse.jpt.core.ContextModel;
+import org.eclipse.jpt.core.internal.context.persistence.GeenericPersistenceXml;
+import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
-import org.eclipse.jpt.ui.internal.JptUiPlugin;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
@@ -47,11 +47,11 @@ public class BaseJpaNavigatorLabelProvider extends LabelProvider
 	// **************** ILabelProvider implementation **************************
 	
 	public Image getImage(Object element) {
-		if (element instanceof IContextModel) {
+		if (element instanceof ContextModel) {
 			return JptUiPlugin.getPlugin().getImage(JptUiIcons.JPA_CONTENT);
 		}
 		
-		if (element instanceof PersistenceXml) {
+		if (element instanceof GeenericPersistenceXml) {
 			return JptUiPlugin.getPlugin().getImage(JptUiIcons.JPA_FILE);
 		}
 		
@@ -59,11 +59,11 @@ public class BaseJpaNavigatorLabelProvider extends LabelProvider
 	}
 	
 	public String getText(Object element) {		
-		if (element instanceof IContextModel) {
+		if (element instanceof ContextModel) {
 			return "JPA Content";
 		}
 		
-		if (element instanceof PersistenceXml) {
+		if (element instanceof GeenericPersistenceXml) {
 			return "persistence.xml";
 		}
 		

@@ -11,21 +11,21 @@ package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jpt.core.internal.IJpaProject;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * This updater will update the JPA project immediately and not return until
  * the update and all resulting updates are complete.
  */
-public class SynchronousJpaProjectUpdater implements IJpaProject.Updater {
-	protected final IJpaProject jpaProject;
+public class SynchronousJpaProjectUpdater implements JpaProject.Updater {
+	protected final JpaProject jpaProject;
 	protected boolean updating;
 	protected boolean again;
 
 	protected static final IProgressMonitor NULL_PROGRESS_MONITOR = new NullProgressMonitor();
 
-	public SynchronousJpaProjectUpdater(IJpaProject jpaProject) {
+	public SynchronousJpaProjectUpdater(JpaProject jpaProject) {
 		super();
 		this.jpaProject = jpaProject;
 		this.updating = false;

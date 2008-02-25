@@ -14,17 +14,17 @@ import java.util.Iterator;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
-import org.eclipse.jpt.core.internal.resource.java.AttributeOverride;
-import org.eclipse.jpt.core.internal.resource.java.Basic;
-import org.eclipse.jpt.core.internal.resource.java.Column;
-import org.eclipse.jpt.core.internal.resource.java.Id;
 import org.eclipse.jpt.core.internal.resource.java.IdImpl;
-import org.eclipse.jpt.core.internal.resource.java.JPA;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentAttributeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaPersistentTypeResource;
-import org.eclipse.jpt.core.internal.resource.java.JavaResource;
-import org.eclipse.jpt.core.internal.resource.java.OneToMany;
 import org.eclipse.jpt.core.internal.resource.java.OneToOneImpl;
+import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
+import org.eclipse.jpt.core.resource.java.Basic;
+import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.Id;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.OneToMany;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -339,38 +339,38 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	
 	public void testJavaAttributeAnnotations() throws Exception {
 		IType testType = this.createTestEntityWithColumn();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		assertEquals(1, attributeResource.annotationsSize());
 	}
 
 	public void testJavaAttributeAnnotation() throws Exception {
 		IType testType = this.createTestEntityWithColumn();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		assertNotNull(attributeResource.annotation(JPA.COLUMN));
 	}
 
 	public void testJavaAttributeAnnotationNull() throws Exception {
 		IType testType = this.createTestEntity();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		assertNull(attributeResource.annotation(JPA.TABLE));
 	}
 
 	//This will result in a compilation error, but we assume the first column found
 	public void testDuplicateAnnotations() throws Exception {
 		IType testType = this.createTestEntityMultipleColumns();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
-		Column columnResource = (Column) attributeResource.annotation(JPA.COLUMN);
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		ColumnAnnotation columnResource = (ColumnAnnotation) attributeResource.annotation(JPA.COLUMN);
 		assertEquals("FOO", columnResource.getName());
 	}
 
 	public void testRemoveColumn() throws Exception {
 		IType testType = this.createTestEntityWithColumn();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		attributeResource.removeAnnotation(JPA.COLUMN);
 		
 		assertSourceDoesNotContain("@Column");
@@ -378,10 +378,10 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	
 	public void testRemoveColumnName() throws Exception {
 		IType testType = this.createTestEntityWithColumn();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 
-		Column columnResource = (Column) attributeResource.annotation(JPA.COLUMN);
+		ColumnAnnotation columnResource = (ColumnAnnotation) attributeResource.annotation(JPA.COLUMN);
 		columnResource.setTable(null);
 		assertSourceContains("@Column(name=\"FOO\")");
 
@@ -395,15 +395,15 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	
 	public void testMultipleAttributeMappings() throws Exception {
 		IType testType = this.createTestEntityWithIdAndBasic();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		assertEquals(2, attributeResource.mappingAnnotationsSize());
 		assertEquals(0, attributeResource.annotationsSize());
 		assertNotNull(attributeResource.mappingAnnotation(JPA.BASIC));
 		assertNotNull(attributeResource.mappingAnnotation(JPA.ID));
 		
-		JavaResource javaAttributeMappingAnnotation = attributeResource.mappingAnnotation();
+		JavaResourceNode javaAttributeMappingAnnotation = attributeResource.mappingAnnotation();
 		assertTrue(javaAttributeMappingAnnotation instanceof Basic);
 		assertSourceContains("@Basic");
 		assertSourceContains("@Id");
@@ -419,8 +419,8 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	
 	public void testSetJavaAttributeMappingAnnotation() throws Exception {
 		IType testType = createTestType();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		assertEquals(0, attributeResource.mappingAnnotationsSize());
 		
 		attributeResource.setMappingAnnotation(JPA.ID);
@@ -430,8 +430,8 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 
 	public void testSetJavaAttributeMappingAnnotation2() throws Exception {
 		IType testType = createTestEntityWithColumn();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		assertNull(attributeResource.mappingAnnotation());
 		
 		attributeResource.setMappingAnnotation(JPA.ID);
@@ -443,8 +443,8 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	
 	public void testSetJavaAttributeMappingAnnotation3() throws Exception {
 		IType testType = createTestEntityWithIdColumnGeneratedValue();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		assertTrue(attributeResource.mappingAnnotation() instanceof Id);
 		
 		attributeResource.setMappingAnnotation(JPA.BASIC);
@@ -457,8 +457,8 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	
 	public void testSetJavaAttributeMappingAnnotationNull() throws Exception {
 		IType testType = createTestEntityWithIdColumnGeneratedValue();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		assertTrue(attributeResource.mappingAnnotation() instanceof Id);
 		
 		attributeResource.setMappingAnnotation(null);
@@ -471,9 +471,9 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 
 	public void testAddJavaAttributeAnnotation() throws Exception {
 		IType testType = createTestEntity();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		assertSourceDoesNotContain("@Column");
 		attributeResource.addAnnotation(JPA.COLUMN);
@@ -482,8 +482,8 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	
 	public void testRemoveJavaAttributeAnnotation() throws Exception {
 		IType testType = createTestEntityAnnotatedField();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(testType); 
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		assertSourceContains("@Column");
 		attributeResource.removeAnnotation(JPA.COLUMN);
 		assertSourceDoesNotContain("@Column");
@@ -493,8 +493,8 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	//update source code to change from @Id to @OneToOne and make sure @Column is not removed
 	public void testChangeAttributeMappingInSource() throws Exception {
 		IType jdtType = createTestEntityAnnotatedField();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 	
 		idField().removeAnnotation(((IdImpl) attributeResource.mappingAnnotation()).getDeclarationAnnotationAdapter());
 
@@ -514,50 +514,50 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 
 	public void testJavaAttributeAnnotationsNestable() throws Exception {
 		IType jdtType = createTestEmbeddedWithAttributeOverride();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		assertEquals(1, CollectionTools.size(attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
 		
-		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES).next();
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES).next();
 		
 		assertEquals("FOO", attributeOverride.getName());
 	}
 	
 	public void testJavaAttributeAnnotationsNoNestable() throws Exception {
 		IType jdtType = createTestEntity();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		assertEquals(0, CollectionTools.size(attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
 	}
 	
 	public void testJavaAttributeAnnotationsContainerNoNestable() throws Exception {
 		IType jdtType = createTestEmbeddedWithAttributeOverridesEmpty();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 	
 		assertEquals(0, CollectionTools.size(attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
 	}
 
 	public void testJavaAttributeAnnotationsNestableAndContainer() throws Exception {
 		IType jdtType = createTestEmbeddedWithAttributeOverrideAndAttributeOverrides();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		assertNotNull(attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE));
 		assertNotNull(attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDES));
 		assertEquals(2, CollectionTools.size(attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
 
-		AttributeOverride attributeOverrideResource = (AttributeOverride) attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES).next();	
+		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES).next();	
 		assertEquals("BAR", attributeOverrideResource.getName());
 	}
 			        
 	//			-->>	@AttributeOverride(name="FOO")
 	public void testAddJavaAttributeAnnotationNestableContainer() throws Exception {
 		IType jdtType = createTestEntity();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
-		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("FOO");
 		assertSourceContains("@AttributeOverride(name=\"FOO\")");
 	}
@@ -566,10 +566,10 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	//	@AttributeOverride(name="FOO")		@AttributeOverrides({@AttributeOverride(name="FOO"), @AttributeOverride(name="BAR")})	
 	public void testAddJavaAttributeAnnotationNestableContainer2() throws Exception {
 		IType jdtType = createTestEmbeddedWithAttributeOverride();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.addAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("BAR");
 		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"),@AttributeOverride(name=\"BAR\")})");
 		
@@ -586,10 +586,10 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	//	@AttributeOverrides({@AttributeOverride(name="FOO"), @AttributeOverride(name="BAR")})
 	public void testAddJavaAttributeAnnotationNestableContainer3() throws Exception {
 		IType jdtType = createTestEmbeddedWithAttributeOverrides();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 	
-		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.addAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("BAR");
 		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"),@AttributeOverride(name=\"BAR\")})");
 		
@@ -600,10 +600,10 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	
 	public void testAddJavaAttributeAnnotationNestableContainer5() throws Exception {
 		IType jdtType = createTestEmbeddedWithAttributeOverrides();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("BAR");
 		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"BAR\"),@AttributeOverride(name=\"FOO\")})");
 		
@@ -622,14 +622,14 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	//  @AttributeOverrides({@AttributeOverride(name=\"BAR\"), @AttributeOverride(name=\"BAZ\"), @AttributeOverride(name=\"BOO\")})
 	public void testAddJavaAttributeAnnotationNestableContainer4() throws Exception {
 		IType jdtType = createTestEmbeddedWithAttributeOverrideAndAttributeOverrides();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		assertNotNull(attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDE));
 		assertNotNull(attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDES));
 		assertEquals(2, CollectionTools.size(attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
 
-		AttributeOverride attributeOverride = (AttributeOverride) attributeResource.addAnnotation(2, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(2, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"BAR\"), @AttributeOverride(name=\"BAZ\"),");
 		assertSourceContains("@AttributeOverride})");
 		attributeOverride.setName("BOO");
@@ -638,12 +638,12 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 		assertNotNull(attributeResource.annotation(JPA.ATTRIBUTE_OVERRIDES));
 		assertEquals(3, CollectionTools.size(attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
 
-		Iterator<JavaResource> attributeOverrideAnnotations = attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
-		attributeOverride = (AttributeOverride) attributeOverrideAnnotations.next();	
+		Iterator<JavaResourceNode> attributeOverrideAnnotations = attributeResource.annotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride = (AttributeOverrideAnnotation) attributeOverrideAnnotations.next();	
 		assertEquals("BAR", attributeOverride.getName());
-		attributeOverride = (AttributeOverride) attributeOverrideAnnotations.next();	
+		attributeOverride = (AttributeOverrideAnnotation) attributeOverrideAnnotations.next();	
 		assertEquals("BAZ", attributeOverride.getName());
-		attributeOverride = (AttributeOverride) attributeOverrideAnnotations.next();	
+		attributeOverride = (AttributeOverrideAnnotation) attributeOverrideAnnotations.next();	
 		assertEquals("BOO", attributeOverride.getName());
 		
 		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"BAR\"), @AttributeOverride(name=\"BAZ\"),");
@@ -654,8 +654,8 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	//@AttributeOverride(name="FOO")
 	public void testRemoveJavaAttributeAnnotationNestableContainer() throws Exception {
 		IType jdtType = createTestEmbeddedWithAttributeOverride();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 	
 		attributeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		
@@ -667,8 +667,8 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	//@SecondaryTables(@SecondaryTable(name="FOO"))
 	public void testRemoveJavaAttributeAnnotationNestableContainer2() throws Exception {
 		IType jdtType = createTestEmbeddedWithAttributeOverrides();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 	
 		attributeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		
@@ -678,8 +678,8 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	
 	public void testRemoveJavaAttributeAnnotationIndex() throws Exception {
 		IType jdtType = createTestEmbeddedWith2AttributeOverrides();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 	
 		attributeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE , JPA.ATTRIBUTE_OVERRIDES);
 		
@@ -690,10 +690,10 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	
 	public void testRemoveJavaAttributeAnnotationIndex2() throws Exception {
 		IType jdtType = createTestEmbeddedWith2AttributeOverrides();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 
-		AttributeOverride newAnnotation = (AttributeOverride)attributeResource.addAnnotation(2, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		AttributeOverrideAnnotation newAnnotation = (AttributeOverrideAnnotation)attributeResource.addAnnotation(2, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		newAnnotation.setName("BAZ");
 		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"), @AttributeOverride(name=\"BAR\"),");
 		assertSourceContains("@AttributeOverride(name=\"BAZ\")})");
@@ -704,10 +704,10 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	
 	public void testMoveJavaTypeAnnotation() throws Exception {
 		IType jdtType = createTestEmbeddedWith2AttributeOverrides();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 	
-		AttributeOverride newAnnotation = (AttributeOverride)attributeResource.addAnnotation(2, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		AttributeOverrideAnnotation newAnnotation = (AttributeOverrideAnnotation)attributeResource.addAnnotation(2, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		newAnnotation.setName("BAZ");
 		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"), @AttributeOverride(name=\"BAR\"),");
 		assertSourceContains("@AttributeOverride(name=\"BAZ\")})");
@@ -720,10 +720,10 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	
 	public void testMoveJavaTypeAnnotation2() throws Exception {
 		IType jdtType = createTestEmbeddedWith2AttributeOverrides();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 	
-		AttributeOverride newAnnotation = (AttributeOverride) attributeResource.addAnnotation(2, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		AttributeOverrideAnnotation newAnnotation = (AttributeOverrideAnnotation) attributeResource.addAnnotation(2, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		newAnnotation.setName("BAZ");
 		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"), @AttributeOverride(name=\"BAR\"),");
 		assertSourceContains("@AttributeOverride(name=\"BAZ\")})");
@@ -736,17 +736,17 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	//more detailed tests in JPTToolsTests
 	public void testIsPersistableField() throws Exception {
 		IType jdtType = createTestEntity();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		JavaPersistentAttributeResource attributeResource = typeResource.fields().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		assertTrue(attributeResource.isPersistable());
 	}
 	
 	public void testIsPersistableField2() throws Exception {
 		IType jdtType = createTestEntityWithNonResolvingField();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		Collection<JavaPersistentAttributeResource> attributes = (Collection<JavaPersistentAttributeResource>) ClassTools.fieldValue(typeResource, "attributes");
-		JavaPersistentAttributeResource attributeResource = attributes.iterator().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		Collection<JavaResourcePersistentAttribute> attributes = (Collection<JavaResourcePersistentAttribute>) ClassTools.fieldValue(typeResource, "attributes");
+		JavaResourcePersistentAttribute attributeResource = attributes.iterator().next();
 		
 		assertEquals("foo", attributeResource.getName());
 		assertTrue(attributeResource.isForField());
@@ -760,9 +760,9 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	
 	public void testGetQualifiedTypeName() throws Exception {
 		IType jdtType = createTestEntityWithNonResolvingField();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		Collection<JavaPersistentAttributeResource> attributes = (Collection<JavaPersistentAttributeResource>) ClassTools.fieldValue(typeResource, "attributes");
-		JavaPersistentAttributeResource attributeResource = attributes.iterator().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		Collection<JavaResourcePersistentAttribute> attributes = (Collection<JavaResourcePersistentAttribute>) ClassTools.fieldValue(typeResource, "attributes");
+		JavaResourcePersistentAttribute attributeResource = attributes.iterator().next();
 		
 		assertEquals("foo", attributeResource.getName());
 		assertNull(attributeResource.getQualifiedTypeName());
@@ -777,17 +777,17 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	//more detailed tests in JPTToolsTests
 	public void testIsPersistableMethod() throws Exception {
 		IType jdtType = createTestEntity();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		JavaPersistentAttributeResource attributeResource = typeResource.properties().next();
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentAttribute attributeResource = typeResource.properties().next();
 		
 		assertTrue(attributeResource.isPersistable());		
 	}
 	
 	public void testIsPersistableMethod2() throws Exception {
 		IType jdtType = createTestEntityWithNonResolvingMethod();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
-		Collection<JavaPersistentAttributeResource> attributes = (Collection<JavaPersistentAttributeResource>) ClassTools.fieldValue(typeResource, "attributes");
-		JavaPersistentAttributeResource attributeResource = (JavaPersistentAttributeResource) attributes.toArray()[3];
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
+		Collection<JavaResourcePersistentAttribute> attributes = (Collection<JavaResourcePersistentAttribute>) ClassTools.fieldValue(typeResource, "attributes");
+		JavaResourcePersistentAttribute attributeResource = (JavaResourcePersistentAttribute) attributes.toArray()[3];
 		
 		assertEquals("foo", attributeResource.getName());
 		assertTrue(attributeResource.isForProperty());
@@ -804,16 +804,16 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 	//thing to do with JPA beyond the most basic things that use default column names
 	public void testMultipleVariableDeclarationsPerLine() throws Exception {
 		IType jdtType = createTestEntityMultipleVariableDeclarationsPerLine();
-		JavaPersistentTypeResource typeResource = buildJavaTypeResource(jdtType);
+		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
 		
 		assertEquals(4, CollectionTools.size(typeResource.fields()));
-		Iterator<JavaPersistentAttributeResource> fields = typeResource.fields();
-		JavaPersistentAttributeResource attributeResource = fields.next();
-		Column column = (Column) attributeResource.annotation(JPA.COLUMN);
+		Iterator<JavaResourcePersistentAttribute> fields = typeResource.fields();
+		JavaResourcePersistentAttribute attributeResource = fields.next();
+		ColumnAnnotation column = (ColumnAnnotation) attributeResource.annotation(JPA.COLUMN);
 		assertEquals("baz", column.getName());
 
 		attributeResource = fields.next();
-		column = (Column) attributeResource.annotation(JPA.COLUMN);
+		column = (ColumnAnnotation) attributeResource.annotation(JPA.COLUMN);
 		assertEquals("baz", column.getName());
 	
 	}

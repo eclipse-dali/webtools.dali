@@ -12,9 +12,9 @@ package org.eclipse.jpt.ui.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.jpt.core.internal.IJpaFile;
-import org.eclipse.jpt.core.internal.IJpaProject;
-import org.eclipse.jpt.core.internal.JptCorePlugin;
+import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
@@ -24,7 +24,7 @@ public class JpaFileAdapterFactory
 {
 	@SuppressWarnings("unchecked")
 	private static final Class[] ADAPTER_LIST = 
-			new Class[] { IJpaFile.class };
+			new Class[] { JpaFile.class };
 	
 	@SuppressWarnings("unchecked")
 	public Class[] getAdapterList() {
@@ -44,7 +44,7 @@ public class JpaFileAdapterFactory
 		}
 		
 		IFile file = ((IFileEditorInput) editorInput).getFile();
-		IJpaProject jpaProject = JptCorePlugin.jpaProject(file.getProject());
+		JpaProject jpaProject = JptCorePlugin.jpaProject(file.getProject());
 		
 		if (jpaProject == null) {
 			return null;

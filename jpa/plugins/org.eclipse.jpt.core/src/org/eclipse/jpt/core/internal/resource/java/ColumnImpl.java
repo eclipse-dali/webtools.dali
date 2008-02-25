@@ -10,15 +10,22 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.ITextRange;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.Member;
 import org.eclipse.jpt.core.internal.jdtutility.NestedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 
-public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAnnotation
+public class ColumnImpl extends AbstractColumnImpl implements ColumnAnnotation, NestableAnnotation
 {
 	// this adapter is only used by a Column annotation associated with a mapping annotation (e.g. Basic)
 	public static final DeclarationAnnotationAdapter MAPPING_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -44,7 +51,7 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 	
 	private Integer scale;
 	
-	protected ColumnImpl(JavaResource parent, Member member, DeclarationAnnotationAdapter daa) {
+	protected ColumnImpl(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa);
 		this.lengthDeclarationAdapter = this.buildIntegerElementAdapter(JPA.COLUMN__LENGTH);
 		this.lengthAdapter = this.buildShortCircuitIntegerElementAdapter(this.lengthDeclarationAdapter);
@@ -109,7 +116,7 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		super.initializeFrom(oldAnnotation);
-		Column oldColumn = (Column) oldAnnotation;
+		ColumnAnnotation oldColumn = (ColumnAnnotation) oldAnnotation;
 		setLength(oldColumn.getLength());
 		setPrecision(oldColumn.getPrecision());
 		setScale(oldColumn.getScale());
@@ -149,15 +156,15 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 		firePropertyChanged(SCALE_PROPERTY, oldScale, newScale);
 	}
 	
-	public ITextRange lengthTextRange(CompilationUnit astRoot) {
+	public TextRange lengthTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.lengthDeclarationAdapter, astRoot);
 	}
 	
-	public ITextRange precisionTextRange(CompilationUnit astRoot) {
+	public TextRange precisionTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.precisionDeclarationAdapter, astRoot);
 	}
 	
-	public ITextRange scaleTextRange(CompilationUnit astRoot) {
+	public TextRange scaleTextRange(CompilationUnit astRoot) {
 		return this.elementTextRange(this.scaleDeclarationAdapter, astRoot);
 	}
 
@@ -183,7 +190,7 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 	
 	// ********** static methods **********
 
-	static ColumnImpl createAttributeOverrideColumn(JavaResource parent, Member member, DeclarationAnnotationAdapter attributeOverrideAnnotationAdapter) {
+	static ColumnImpl createAttributeOverrideColumn(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter attributeOverrideAnnotationAdapter) {
 		return new ColumnImpl(parent, member, buildAttributeOverrideAnnotationAdapter(attributeOverrideAnnotationAdapter));
 	}
 
@@ -211,11 +218,11 @@ public class ColumnImpl extends AbstractColumnImpl implements Column, NestableAn
 			super();
 		}
 
-		public Annotation buildAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new ColumnImpl(parent, member, ColumnImpl.MAPPING_DECLARATION_ANNOTATION_ADAPTER);
 		}
 		
-		public Annotation buildNullAnnotation(JavaPersistentResource parent, Member member) {
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
 			return new NullColumn(parent);
 		}
 		

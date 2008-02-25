@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.persistence.translators;
 
-import org.eclipse.jpt.core.internal.resource.persistence.PersistencePackage;
+import org.eclipse.jpt.core.resource.persistence.PersistencePackage;
 
 public interface PersistenceXmlMapper
 {

@@ -8,8 +8,8 @@
  ********************************************************************************/
 package org.eclipse.jpt.ui.internal.views;
 
-import org.eclipse.jpt.ui.internal.selection.IJpaSelection;
-import org.eclipse.jpt.ui.internal.selection.IJpaSelectionManager;
+import org.eclipse.jpt.ui.internal.selection.JpaSelection;
+import org.eclipse.jpt.ui.internal.selection.JpaSelectionManager;
 import org.eclipse.jpt.ui.internal.selection.SelectionManagerFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -25,7 +25,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * This is the abstract implementation of the JPA view. The selection is changed
  * by receiving a <code>IJpaSelection</code>.
  *
- * @see IJpaSelection
+ * @see JpaSelection
  *
  * @version 2.0
  * @since 1.0
@@ -82,7 +82,7 @@ public abstract class AbstractJpaView extends ViewPart
 
 		subcreatePartControl(parent);
 
-		IJpaSelectionManager selectionManager =
+		JpaSelectionManager selectionManager =
 			SelectionManagerFactory.getSelectionManager(getViewSite().getWorkbenchWindow());
 
 		selectionManager.register(this);
@@ -110,7 +110,7 @@ public abstract class AbstractJpaView extends ViewPart
 	 *
 	 * @param jpaSelection The new selection used to update this JPA view
 	 */
-	public abstract void select(IJpaSelection jpaSelection);
+	public abstract void select(JpaSelection jpaSelection);
 
 	/*
 	 * (non-Javadoc)
