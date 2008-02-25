@@ -59,7 +59,7 @@ public class GenericJpaModel
 {
 
 	/** maintain a list of all the current JPA projects */
-	private final ArrayList<IJpaProjectHolder> jpaProjectHolders = new ArrayList<IJpaProjectHolder>();
+	private final ArrayList<JpaProjectHolder> jpaProjectHolders = new ArrayList<JpaProjectHolder>();
 
 
 	// ********** constructor **********
@@ -99,7 +99,7 @@ public class GenericJpaModel
 	public synchronized Iterator<JpaProject> jpaProjects() throws CoreException {
 		// force the CoreException to occur here (instead of later, in Iterator#next())
 		ArrayList<JpaProject> jpaProjects = new ArrayList<JpaProject>(this.jpaProjectHolders.size());
-		for (IJpaProjectHolder holder : this.jpaProjectHolders) {
+		for (JpaProjectHolder holder : this.jpaProjectHolders) {
 			jpaProjects.add(holder.jpaProject());
 		}
 		return jpaProjects.iterator();
@@ -127,8 +127,8 @@ public class GenericJpaModel
 	/**
 	 * never return null
 	 */
-	private IJpaProjectHolder jpaProjectHolder(IProject project) {
-		for (IJpaProjectHolder holder : this.jpaProjectHolders) {
+	private JpaProjectHolder jpaProjectHolder(IProject project) {
+		for (JpaProjectHolder holder : this.jpaProjectHolders) {
 			if (holder.holdsJpaProjectFor(project)) {
 				return holder;
 			}
@@ -299,7 +299,7 @@ public class GenericJpaModel
 	 * because the event could affect multiple projects.
 	 */
 	synchronized void javaElementChanged(ElementChangedEvent event) {
-		for (IJpaProjectHolder jpaProjectHolder : this.jpaProjectHolders) {
+		for (JpaProjectHolder jpaProjectHolder : this.jpaProjectHolders) {
 			jpaProjectHolder.javaElementChanged(event);
 		}
 	}
@@ -324,8 +324,8 @@ public class GenericJpaModel
 	 */
 	synchronized void dispose() {
 		// clone the list to prevent concurrent modification exceptions
-		IJpaProjectHolder[] holders = this.jpaProjectHolders.toArray(new IJpaProjectHolder[this.jpaProjectHolders.size()]);
-		for (IJpaProjectHolder holder : holders) {
+		JpaProjectHolder[] holders = this.jpaProjectHolders.toArray(new JpaProjectHolder[this.jpaProjectHolders.size()]);
+		for (JpaProjectHolder holder : holders) {
 			holder.remove();
 		}
 	}
@@ -357,14 +357,14 @@ public class GenericJpaModel
 	/**
 	 * called by the JPA project holder
 	 */
-	/* private */ void removeJpaProjectHolder(IJpaProjectHolder jpaProjectHolder) {
+	/* private */ void removeJpaProjectHolder(JpaProjectHolder jpaProjectHolder) {
 		this.jpaProjectHolders.remove(jpaProjectHolder);
 	}
 
 
 	// ********** JPA project holders **********
 
-	private interface IJpaProjectHolder {
+	private interface JpaProjectHolder {
 
 		boolean holdsJpaProjectFor(IProject project);
 
@@ -374,16 +374,16 @@ public class GenericJpaModel
 
 		void javaElementChanged(ElementChangedEvent event);
 
-		IJpaProjectHolder buildJpaProjectHolder(GenericJpaModel jpaModel, JpaProject.Config config);
+		JpaProjectHolder buildJpaProjectHolder(GenericJpaModel jpaModel, JpaProject.Config config);
 
 		void remove();
 
 	}
 
-	private static class NullJpaProjectHolder implements IJpaProjectHolder {
-		private static final IJpaProjectHolder INSTANCE = new NullJpaProjectHolder();
+	private static class NullJpaProjectHolder implements JpaProjectHolder {
+		private static final JpaProjectHolder INSTANCE = new NullJpaProjectHolder();
 
-		static IJpaProjectHolder instance() {
+		static JpaProjectHolder instance() {
 			return INSTANCE;
 		}
 
@@ -408,8 +408,8 @@ public class GenericJpaModel
 			// do nothing
 		}
 
-		public IJpaProjectHolder buildJpaProjectHolder(GenericJpaModel jpaModel, Config config) {
-			return new JpaProjectHolder(jpaModel, config);
+		public JpaProjectHolder buildJpaProjectHolder(GenericJpaModel jpaModel, Config config) {
+			return new DefaultJpaProjectHolder(jpaModel, config);
 		}
 
 		public void remove() {
@@ -425,12 +425,12 @@ public class GenericJpaModel
 	/**
 	 * Pair a JPA project config with its lazily-initialized JPA project.
 	 */
-	private static class JpaProjectHolder implements IJpaProjectHolder {
+	private static class DefaultJpaProjectHolder implements JpaProjectHolder {
 		private final GenericJpaModel jpaModel;
 		private final JpaProject.Config config;
 		private JpaProject jpaProject;
 
-		JpaProjectHolder(GenericJpaModel jpaModel, JpaProject.Config config) {
+		DefaultJpaProjectHolder(GenericJpaModel jpaModel, JpaProject.Config config) {
 			super();
 			this.jpaModel = jpaModel;
 			this.config = config;
@@ -465,7 +465,7 @@ public class GenericJpaModel
 			}
 		}
 
-		public IJpaProjectHolder buildJpaProjectHolder(GenericJpaModel jm, Config c) {
+		public JpaProjectHolder buildJpaProjectHolder(GenericJpaModel jm, Config c) {
 			throw new IllegalArgumentException(c.project().getName());
 		}
 
