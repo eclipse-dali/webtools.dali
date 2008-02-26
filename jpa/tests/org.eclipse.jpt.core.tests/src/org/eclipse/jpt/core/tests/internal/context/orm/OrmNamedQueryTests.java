@@ -13,19 +13,19 @@ package org.eclipse.jpt.core.tests.internal.context.orm;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmQueryHint;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmNamedQuery;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmQueryHint;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
-public class XmlNamedQueryTests extends ContextModelTestCase
+public class OrmNamedQueryTests extends ContextModelTestCase
 {
-	public XmlNamedQueryTests(String name) {
+	public OrmNamedQueryTests(String name) {
 		super(name);
 	}
 	
@@ -41,119 +41,119 @@ public class XmlNamedQueryTests extends ContextModelTestCase
 
 	public void testUpdateName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmNamedQuery xmlNamedQuery = xmlEntity.addNamedQuery(0);
+		GenericOrmEntity ormEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
 		XmlNamedQuery namedQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0);
 		
-		assertNull(xmlNamedQuery.getName());
+		assertNull(ormNamedQuery.getName());
 		assertNull(namedQueryResource.getName());
 				
 		//set name in the resource model, verify context model updated
 		namedQueryResource.setName("newName");
-		assertEquals("newName", xmlNamedQuery.getName());
+		assertEquals("newName", ormNamedQuery.getName());
 		assertEquals("newName", namedQueryResource.getName());
 	
 		//set name to null in the resource model
 		namedQueryResource.setName(null);
-		assertNull(xmlNamedQuery.getName());
+		assertNull(ormNamedQuery.getName());
 		assertNull(namedQueryResource.getName());
 	}
 	
 	public void testModifyName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmNamedQuery xmlNamedQuery = xmlEntity.addNamedQuery(0);
+		GenericOrmEntity ormEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
 		XmlNamedQuery namedQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0);
 		
-		assertNull(xmlNamedQuery.getName());
+		assertNull(ormNamedQuery.getName());
 		assertNull(namedQueryResource.getName());
 				
 		//set name in the context model, verify resource model updated
-		xmlNamedQuery.setName("newName");
-		assertEquals("newName", xmlNamedQuery.getName());
+		ormNamedQuery.setName("newName");
+		assertEquals("newName", ormNamedQuery.getName());
 		assertEquals("newName", namedQueryResource.getName());
 	
 		//set name to null in the context model
-		xmlNamedQuery.setName(null);
-		assertNull(xmlNamedQuery.getName());
+		ormNamedQuery.setName(null);
+		assertNull(ormNamedQuery.getName());
 		assertNull(namedQueryResource.getName());
 	}
 	
 	public void testUpdateQuery() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmNamedQuery xmlNamedQuery = xmlEntity.addNamedQuery(0);
+		GenericOrmEntity ormEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
 		XmlNamedQuery namedQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0);
 		
-		assertNull(xmlNamedQuery.getQuery());
+		assertNull(ormNamedQuery.getQuery());
 		assertNull(namedQueryResource.getQuery());
 				
 		//set name in the resource model, verify context model updated
 		namedQueryResource.setQuery("newName");
-		assertEquals("newName", xmlNamedQuery.getQuery());
+		assertEquals("newName", ormNamedQuery.getQuery());
 		assertEquals("newName", namedQueryResource.getQuery());
 	
 		//set name to null in the resource model
 		namedQueryResource.setQuery(null);
-		assertNull(xmlNamedQuery.getQuery());
+		assertNull(ormNamedQuery.getQuery());
 		assertNull(namedQueryResource.getQuery());
 	}
 	
 	public void testModifyQuery() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmNamedQuery xmlNamedQuery = xmlEntity.addNamedQuery(0);
+		GenericOrmEntity ormEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
 		XmlNamedQuery namedQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0);
 		
-		assertNull(xmlNamedQuery.getQuery());
+		assertNull(ormNamedQuery.getQuery());
 		assertNull(namedQueryResource.getQuery());
 				
 		//set name in the context model, verify resource model updated
-		xmlNamedQuery.setQuery("newName");
-		assertEquals("newName", xmlNamedQuery.getQuery());
+		ormNamedQuery.setQuery("newName");
+		assertEquals("newName", ormNamedQuery.getQuery());
 		assertEquals("newName", namedQueryResource.getQuery());
 	
 		//set name to null in the context model
-		xmlNamedQuery.setQuery(null);
-		assertNull(xmlNamedQuery.getQuery());
+		ormNamedQuery.setQuery(null);
+		assertNull(ormNamedQuery.getQuery());
 		assertNull(namedQueryResource.getQuery());
 	}
 	
 	public void testAddHint() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmNamedQuery xmlNamedQuery = xmlEntity.addNamedQuery(0);
+		GenericOrmEntity ormEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
 		XmlNamedQuery namedQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0);
 
-		GenericOrmQueryHint queryHint = xmlNamedQuery.addHint(0);
+		OrmQueryHint queryHint = ormNamedQuery.addHint(0);
 		queryHint.setName("FOO");
 				
 		assertEquals("FOO", namedQueryResource.getHints().get(0).getName());
 		
-		GenericOrmQueryHint queryHint2 = xmlNamedQuery.addHint(0);
+		OrmQueryHint queryHint2 = ormNamedQuery.addHint(0);
 		queryHint2.setName("BAR");
 		
 		assertEquals("BAR", namedQueryResource.getHints().get(0).getName());
 		assertEquals("FOO", namedQueryResource.getHints().get(1).getName());
 		
-		GenericOrmQueryHint queryHint3 = xmlNamedQuery.addHint(1);
+		OrmQueryHint queryHint3 = ormNamedQuery.addHint(1);
 		queryHint3.setName("BAZ");
 		
 		assertEquals("BAR", namedQueryResource.getHints().get(0).getName());
 		assertEquals("BAZ", namedQueryResource.getHints().get(1).getName());
 		assertEquals("FOO", namedQueryResource.getHints().get(2).getName());
 		
-		ListIterator<GenericOrmQueryHint> queryHints = xmlNamedQuery.hints();
+		ListIterator<OrmQueryHint> queryHints = ormNamedQuery.hints();
 		assertEquals(queryHint2, queryHints.next());
 		assertEquals(queryHint3, queryHints.next());
 		assertEquals(queryHint, queryHints.next());
 		
-		queryHints = xmlNamedQuery.hints();
+		queryHints = ormNamedQuery.hints();
 		assertEquals("BAR", queryHints.next().getName());
 		assertEquals("BAZ", queryHints.next().getName());
 		assertEquals("FOO", queryHints.next().getName());
@@ -161,46 +161,46 @@ public class XmlNamedQueryTests extends ContextModelTestCase
 	
 	public void testRemoveHint() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmNamedQuery xmlNamedQuery = xmlEntity.addNamedQuery(0);
+		GenericOrmEntity ormEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
 		XmlNamedQuery namedQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0);
 
-		xmlNamedQuery.addHint(0).setName("FOO");
-		xmlNamedQuery.addHint(1).setName("BAR");
-		xmlNamedQuery.addHint(2).setName("BAZ");
+		ormNamedQuery.addHint(0).setName("FOO");
+		ormNamedQuery.addHint(1).setName("BAR");
+		ormNamedQuery.addHint(2).setName("BAZ");
 		
 		assertEquals(3, namedQueryResource.getHints().size());
 		
-		xmlNamedQuery.removeHint(0);
+		ormNamedQuery.removeHint(0);
 		assertEquals(2, namedQueryResource.getHints().size());
 		assertEquals("BAR", namedQueryResource.getHints().get(0).getName());
 		assertEquals("BAZ", namedQueryResource.getHints().get(1).getName());
 
-		xmlNamedQuery.removeHint(0);
+		ormNamedQuery.removeHint(0);
 		assertEquals(1, namedQueryResource.getHints().size());
 		assertEquals("BAZ", namedQueryResource.getHints().get(0).getName());
 		
-		xmlNamedQuery.removeHint(0);
+		ormNamedQuery.removeHint(0);
 		assertEquals(0, namedQueryResource.getHints().size());
 	}
 	
 	public void testMoveHint() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmNamedQuery xmlNamedQuery = xmlEntity.addNamedQuery(0);
+		GenericOrmEntity ormEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
 		XmlNamedQuery namedQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0);
 
-		xmlNamedQuery.addHint(0).setName("FOO");
-		xmlNamedQuery.addHint(1).setName("BAR");
-		xmlNamedQuery.addHint(2).setName("BAZ");
+		ormNamedQuery.addHint(0).setName("FOO");
+		ormNamedQuery.addHint(1).setName("BAR");
+		ormNamedQuery.addHint(2).setName("BAZ");
 		
 		assertEquals(3, namedQueryResource.getHints().size());
 		
 		
-		xmlNamedQuery.moveHint(2, 0);
-		ListIterator<GenericOrmQueryHint> hints = xmlNamedQuery.hints();
+		ormNamedQuery.moveHint(2, 0);
+		ListIterator<OrmQueryHint> hints = ormNamedQuery.hints();
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
@@ -210,8 +210,8 @@ public class XmlNamedQueryTests extends ContextModelTestCase
 		assertEquals("FOO", namedQueryResource.getHints().get(2).getName());
 
 
-		xmlNamedQuery.moveHint(0, 1);
-		hints = xmlNamedQuery.hints();
+		ormNamedQuery.moveHint(0, 1);
+		hints = ormNamedQuery.hints();
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
@@ -223,8 +223,8 @@ public class XmlNamedQueryTests extends ContextModelTestCase
 	
 	public void testUpdateHints() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmNamedQuery xmlNamedQuery = xmlEntity.addNamedQuery(0);
+		GenericOrmEntity ormEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
 		XmlNamedQuery namedQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0);
 
@@ -236,38 +236,38 @@ public class XmlNamedQueryTests extends ContextModelTestCase
 		namedQueryResource.getHints().get(1).setName("BAR");
 		namedQueryResource.getHints().get(2).setName("BAZ");
 
-		ListIterator<GenericOrmQueryHint> hints = xmlNamedQuery.hints();
+		ListIterator<OrmQueryHint> hints = ormNamedQuery.hints();
 		assertEquals("FOO", hints.next().getName());
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("BAZ", hints.next().getName());
 		assertFalse(hints.hasNext());
 		
 		namedQueryResource.getHints().move(2, 0);
-		hints = xmlNamedQuery.hints();
+		hints = ormNamedQuery.hints();
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
 		assertFalse(hints.hasNext());
 
 		namedQueryResource.getHints().move(0, 1);
-		hints = xmlNamedQuery.hints();
+		hints = ormNamedQuery.hints();
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
 		assertFalse(hints.hasNext());
 
 		namedQueryResource.getHints().remove(1);
-		hints = xmlNamedQuery.hints();
+		hints = ormNamedQuery.hints();
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
 		assertFalse(hints.hasNext());
 
 		namedQueryResource.getHints().remove(1);
-		hints = xmlNamedQuery.hints();
+		hints = ormNamedQuery.hints();
 		assertEquals("BAZ", hints.next().getName());
 		assertFalse(hints.hasNext());
 		
 		namedQueryResource.getHints().remove(0);
-		assertFalse(xmlNamedQuery.hints().hasNext());
+		assertFalse(ormNamedQuery.hints().hasNext());
 	}
 }

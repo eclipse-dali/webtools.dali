@@ -9,14 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
+import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
 
 
 public class GenericOrmNamedNativeQuery extends AbstractOrmQuery<XmlNamedNativeQuery>
-	implements NamedNativeQuery
+	implements OrmNamedNativeQuery
 {
 
 	protected String resultClass;
@@ -24,7 +24,7 @@ public class GenericOrmNamedNativeQuery extends AbstractOrmQuery<XmlNamedNativeQ
 	protected String resultSetMapping;
 
 
-	protected GenericOrmNamedNativeQuery(JpaContextNode parent) {
+	public GenericOrmNamedNativeQuery(JpaContextNode parent) {
 		super(parent);
 	}
 	
@@ -64,10 +64,5 @@ public class GenericOrmNamedNativeQuery extends AbstractOrmQuery<XmlNamedNativeQ
 		this.setResultClass(queryResource.getResultClass());
 		this.setResultSetMapping(queryResource.getResultSetMapping());
 	}
-	
-	@Override
-	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmQueryHint> hints() {
-		return super.hints();
-	}
+
 }

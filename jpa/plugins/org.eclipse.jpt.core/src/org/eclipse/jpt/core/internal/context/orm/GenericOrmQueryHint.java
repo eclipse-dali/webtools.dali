@@ -10,11 +10,13 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.QueryHint;
+import org.eclipse.jpt.core.context.orm.OrmQuery;
+import org.eclipse.jpt.core.context.orm.OrmQueryHint;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
 
 
-public class GenericOrmQueryHint extends AbstractJpaContextNode implements QueryHint
+public class GenericOrmQueryHint extends AbstractJpaContextNode implements OrmQueryHint
 {
 
 	protected String name;
@@ -23,7 +25,7 @@ public class GenericOrmQueryHint extends AbstractJpaContextNode implements Query
 
 	protected XmlQueryHint queryHint;
 	
-	public GenericOrmQueryHint(AbstractOrmQuery<?> parent) {
+	public GenericOrmQueryHint(OrmQuery parent) {
 		super(parent);
 	}
 

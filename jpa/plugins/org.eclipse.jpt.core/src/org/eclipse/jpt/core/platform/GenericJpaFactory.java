@@ -71,9 +71,13 @@ import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
+import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
+import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmQuery;
+import org.eclipse.jpt.core.context.orm.OrmQueryHint;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTable;
@@ -135,9 +139,12 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmGeneratedValue;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinColumn;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinTable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappedSuperclass;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmNamedNativeQuery;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmNamedQuery;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmQueryHint;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmSecondaryTable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmSequenceGenerator;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmTable;
@@ -497,5 +504,17 @@ public class GenericJpaFactory implements JpaFactory
 	
 	public OrmTableGenerator buildOrmTableGenerator(JpaContextNode parent) {
 		return new GenericOrmTableGenerator(parent);
+	}
+	
+	public OrmNamedNativeQuery buildOrmNamedNativeQuery(JpaContextNode parent) {
+		return new GenericOrmNamedNativeQuery(parent);
+	}
+	
+	public OrmNamedQuery buildOrmNamedQuery(JpaContextNode parent) {
+		return new GenericOrmNamedQuery(parent);
+	}
+	
+	public OrmQueryHint buildOrmQueryHint(OrmQuery parent) {
+		return new GenericOrmQueryHint(parent);
 	}
 }

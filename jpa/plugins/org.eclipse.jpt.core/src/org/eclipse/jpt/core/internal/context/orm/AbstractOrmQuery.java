@@ -15,6 +15,8 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.QueryHint;
+import org.eclipse.jpt.core.context.orm.OrmQuery;
+import org.eclipse.jpt.core.context.orm.OrmQueryHint;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlQuery;
@@ -22,20 +24,20 @@ import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 
-public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractJpaContextNode implements Query
+public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractJpaContextNode implements OrmQuery
 {
 
 	protected String name;
 
 	protected String query;
 
-	protected final List<GenericOrmQueryHint> hints;
+	protected final List<OrmQueryHint> hints;
 
 	protected E queryResource;
 	
 	protected AbstractOrmQuery(JpaContextNode parent) {
 		super(parent);
-		this.hints = new ArrayList<GenericOrmQueryHint>();
+		this.hints = new ArrayList<OrmQueryHint>();
 	}
 
 	protected E queryResource() {
@@ -64,24 +66,23 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractJpaCo
 		firePropertyChanged(Query.QUERY_PROPERTY, oldQuery, newQuery);
 	}
 
-	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmQueryHint> hints() {
-		return new CloneListIterator<GenericOrmQueryHint>(this.hints);
+	public ListIterator<OrmQueryHint> hints() {
+		return new CloneListIterator<OrmQueryHint>(this.hints);
 	}
 	
 	public int hintsSize() {
 		return this.hints.size();
 	}
 	
-	public GenericOrmQueryHint addHint(int index) {
-		GenericOrmQueryHint queryHint = new GenericOrmQueryHint(this);
+	public OrmQueryHint addHint(int index) {
+		OrmQueryHint queryHint = jpaFactory().buildOrmQueryHint(this);
 		this.hints.add(index, queryHint);
 		this.queryResource().getHints().add(index, OrmFactory.eINSTANCE.createQueryHint());
 		this.fireItemAdded(Query.HINTS_LIST, index, queryHint);
 		return queryHint;
 	}
 
-	protected void addHint(int index, GenericOrmQueryHint queryHint) {
+	protected void addHint(int index, OrmQueryHint queryHint) {
 		addItemToList(index, queryHint, this.hints, Query.HINTS_LIST);
 	}
 	
@@ -90,12 +91,12 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractJpaCo
 	}
 	
 	public void removeHint(int index) {
-		GenericOrmQueryHint queryHint = this.hints.remove(index);
+		OrmQueryHint queryHint = this.hints.remove(index);
 		this.queryResource.getHints().remove(index);
 		fireItemRemoved(Query.HINTS_LIST, index, queryHint);
 	}
 
-	protected void removeHint_(GenericOrmQueryHint queryHint) {
+	protected void removeHint_(OrmQueryHint queryHint) {
 		removeItemFromList(queryHint, this.hints, Query.HINTS_LIST);
 	}
 	
@@ -119,10 +120,10 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractJpaCo
 		}
 	}
 
-	protected GenericOrmQueryHint createHint(XmlQueryHint queryhint) {
-		GenericOrmQueryHint xmlQueryHint = new GenericOrmQueryHint(this);
-		xmlQueryHint.initialize(queryhint);
-		return xmlQueryHint;
+	protected OrmQueryHint createHint(XmlQueryHint queryHint) {
+		OrmQueryHint ormQueryHint = jpaFactory().buildOrmQueryHint(this);
+		ormQueryHint.initialize(queryHint);
+		return ormQueryHint;
 	}
 	
 	public void update(E queryResource) {
@@ -133,11 +134,11 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractJpaCo
 	}
 	
 	protected void updateHints(E queryResource) {
-		ListIterator<GenericOrmQueryHint> hints = hints();
+		ListIterator<OrmQueryHint> hints = hints();
 		ListIterator<XmlQueryHint> resourceHints = queryResource.getHints().listIterator();
 		
 		while (hints.hasNext()) {
-			GenericOrmQueryHint hint = hints.next();
+			OrmQueryHint hint = hints.next();
 			if (resourceHints.hasNext()) {
 				hint.update(resourceHints.next());
 			}

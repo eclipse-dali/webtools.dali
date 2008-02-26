@@ -16,8 +16,6 @@ import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.context.TableGenerator;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmNamedNativeQuery;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmNamedQuery;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 
 public interface EntityMappings extends JpaContextNode, JpaStructureNode
@@ -93,19 +91,19 @@ public interface EntityMappings extends JpaContextNode, JpaStructureNode
 	void moveTableGenerator(int targetIndex, int sourceIndex);
 		String TABLE_GENERATORS_LIST = "tableGeneratorsList";
 
-	ListIterator<GenericOrmNamedQuery> namedQueries();
+	ListIterator<OrmNamedQuery> namedQueries();
 	int namedQueriesSize();
-	GenericOrmNamedQuery addNamedQuery(int index);
+	OrmNamedQuery addNamedQuery(int index);
 	void removeNamedQuery(int index);
-	void removeNamedQuery(GenericOrmNamedQuery namedQuery);
+	void removeNamedQuery(OrmNamedQuery namedQuery);
 	void moveNamedQuery(int targetIndex, int sourceIndex);
 		String NAMED_QUERIES_LIST = "namedQueriesList";
 
-	ListIterator<GenericOrmNamedNativeQuery> namedNativeQueries();
+	ListIterator<OrmNamedNativeQuery> namedNativeQueries();
 	int namedNativeQueriesSize();
-	GenericOrmNamedNativeQuery addNamedNativeQuery(int index);
+	OrmNamedNativeQuery addNamedNativeQuery(int index);
 	void removeNamedNativeQuery(int index);
-	void removeNamedNativeQuery(GenericOrmNamedNativeQuery namedNativeQuery);
+	void removeNamedNativeQuery(OrmNamedNativeQuery namedNativeQuery);
 	void moveNamedNativeQuery(int targetIndex, int sourceIndex);
 		String NAMED_NATIVE_QUERIES_LIST = "namedNativeQueriesList";
 

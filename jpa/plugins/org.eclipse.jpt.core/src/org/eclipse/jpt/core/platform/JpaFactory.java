@@ -66,9 +66,13 @@ import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
+import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
+import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmQuery;
+import org.eclipse.jpt.core.context.orm.OrmQueryHint;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTable;
@@ -207,6 +211,12 @@ public interface JpaFactory
 	
 	OrmTableGenerator buildOrmTableGenerator(JpaContextNode parent);
 	
+	OrmNamedNativeQuery buildOrmNamedNativeQuery(JpaContextNode parent);
+
+	OrmNamedQuery buildOrmNamedQuery(JpaContextNode parent);
+	
+	OrmQueryHint buildOrmQueryHint(OrmQuery parent);
+
 	// **************** java context objects ***********************************
 	
 	JavaPersistentType buildJavaPersistentType(JpaContextNode parent);

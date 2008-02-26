@@ -19,14 +19,14 @@ import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
+import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappedSuperclass;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmNamedNativeQuery;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmNamedQuery;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
@@ -1573,33 +1573,33 @@ public class XmlEntityTests extends ContextModelTestCase
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
-		GenericOrmNamedQuery namedQuery = xmlEntity.addNamedQuery(0);
+		OrmNamedQuery namedQuery = xmlEntity.addNamedQuery(0);
 		namedQuery.setName("FOO");
 				
 		assertEquals("FOO", entityResource.getNamedQueries().get(0).getName());
 		
-		GenericOrmNamedQuery namedQuery2 = xmlEntity.addNamedQuery(0);
+		OrmNamedQuery namedQuery2 = xmlEntity.addNamedQuery(0);
 		namedQuery2.setName("BAR");
 		
 		assertEquals("BAR", entityResource.getNamedQueries().get(0).getName());
 		assertEquals("FOO", entityResource.getNamedQueries().get(1).getName());
 		
-		GenericOrmNamedQuery namedQuery3 = xmlEntity.addNamedQuery(1);
+		OrmNamedQuery namedQuery3 = xmlEntity.addNamedQuery(1);
 		namedQuery3.setName("BAZ");
 		
 		assertEquals("BAR", entityResource.getNamedQueries().get(0).getName());
 		assertEquals("BAZ", entityResource.getNamedQueries().get(1).getName());
 		assertEquals("FOO", entityResource.getNamedQueries().get(2).getName());
 		
-		ListIterator<GenericOrmNamedQuery> namedQuerys = xmlEntity.namedQueries();
-		assertEquals(namedQuery2, namedQuerys.next());
-		assertEquals(namedQuery3, namedQuerys.next());
-		assertEquals(namedQuery, namedQuerys.next());
+		ListIterator<OrmNamedQuery> namedQueries = xmlEntity.namedQueries();
+		assertEquals(namedQuery2, namedQueries.next());
+		assertEquals(namedQuery3, namedQueries.next());
+		assertEquals(namedQuery, namedQueries.next());
 		
-		namedQuerys = xmlEntity.namedQueries();
-		assertEquals("BAR", namedQuerys.next().getName());
-		assertEquals("BAZ", namedQuerys.next().getName());
-		assertEquals("FOO", namedQuerys.next().getName());
+		namedQueries = xmlEntity.namedQueries();
+		assertEquals("BAR", namedQueries.next().getName());
+		assertEquals("BAZ", namedQueries.next().getName());
+		assertEquals("FOO", namedQueries.next().getName());
 	}
 	
 	public void testRemoveNamedQuery() throws Exception {
@@ -1639,10 +1639,10 @@ public class XmlEntityTests extends ContextModelTestCase
 		
 		
 		xmlEntity.moveNamedQuery(2, 0);
-		ListIterator<GenericOrmNamedQuery> namedQuerys = xmlEntity.namedQueries();
-		assertEquals("BAR", namedQuerys.next().getName());
-		assertEquals("BAZ", namedQuerys.next().getName());
-		assertEquals("FOO", namedQuerys.next().getName());
+		ListIterator<OrmNamedQuery> namedQueries = xmlEntity.namedQueries();
+		assertEquals("BAR", namedQueries.next().getName());
+		assertEquals("BAZ", namedQueries.next().getName());
+		assertEquals("FOO", namedQueries.next().getName());
 
 		assertEquals("BAR", entityResource.getNamedQueries().get(0).getName());
 		assertEquals("BAZ", entityResource.getNamedQueries().get(1).getName());
@@ -1650,10 +1650,10 @@ public class XmlEntityTests extends ContextModelTestCase
 
 
 		xmlEntity.moveNamedQuery(0, 1);
-		namedQuerys = xmlEntity.namedQueries();
-		assertEquals("BAZ", namedQuerys.next().getName());
-		assertEquals("BAR", namedQuerys.next().getName());
-		assertEquals("FOO", namedQuerys.next().getName());
+		namedQueries = xmlEntity.namedQueries();
+		assertEquals("BAZ", namedQueries.next().getName());
+		assertEquals("BAR", namedQueries.next().getName());
+		assertEquals("FOO", namedQueries.next().getName());
 
 		assertEquals("BAZ", entityResource.getNamedQueries().get(0).getName());
 		assertEquals("BAR", entityResource.getNamedQueries().get(1).getName());
@@ -1673,36 +1673,36 @@ public class XmlEntityTests extends ContextModelTestCase
 		entityResource.getNamedQueries().get(1).setName("BAR");
 		entityResource.getNamedQueries().get(2).setName("BAZ");
 
-		ListIterator<GenericOrmNamedQuery> namedQuerys = xmlEntity.namedQueries();
-		assertEquals("FOO", namedQuerys.next().getName());
-		assertEquals("BAR", namedQuerys.next().getName());
-		assertEquals("BAZ", namedQuerys.next().getName());
-		assertFalse(namedQuerys.hasNext());
+		ListIterator<OrmNamedQuery> namedQueries = xmlEntity.namedQueries();
+		assertEquals("FOO", namedQueries.next().getName());
+		assertEquals("BAR", namedQueries.next().getName());
+		assertEquals("BAZ", namedQueries.next().getName());
+		assertFalse(namedQueries.hasNext());
 		
 		entityResource.getNamedQueries().move(2, 0);
-		namedQuerys = xmlEntity.namedQueries();
-		assertEquals("BAR", namedQuerys.next().getName());
-		assertEquals("BAZ", namedQuerys.next().getName());
-		assertEquals("FOO", namedQuerys.next().getName());
-		assertFalse(namedQuerys.hasNext());
+		namedQueries = xmlEntity.namedQueries();
+		assertEquals("BAR", namedQueries.next().getName());
+		assertEquals("BAZ", namedQueries.next().getName());
+		assertEquals("FOO", namedQueries.next().getName());
+		assertFalse(namedQueries.hasNext());
 
 		entityResource.getNamedQueries().move(0, 1);
-		namedQuerys = xmlEntity.namedQueries();
-		assertEquals("BAZ", namedQuerys.next().getName());
-		assertEquals("BAR", namedQuerys.next().getName());
-		assertEquals("FOO", namedQuerys.next().getName());
-		assertFalse(namedQuerys.hasNext());
+		namedQueries = xmlEntity.namedQueries();
+		assertEquals("BAZ", namedQueries.next().getName());
+		assertEquals("BAR", namedQueries.next().getName());
+		assertEquals("FOO", namedQueries.next().getName());
+		assertFalse(namedQueries.hasNext());
 
 		entityResource.getNamedQueries().remove(1);
-		namedQuerys = xmlEntity.namedQueries();
-		assertEquals("BAZ", namedQuerys.next().getName());
-		assertEquals("FOO", namedQuerys.next().getName());
-		assertFalse(namedQuerys.hasNext());
+		namedQueries = xmlEntity.namedQueries();
+		assertEquals("BAZ", namedQueries.next().getName());
+		assertEquals("FOO", namedQueries.next().getName());
+		assertFalse(namedQueries.hasNext());
 
 		entityResource.getNamedQueries().remove(1);
-		namedQuerys = xmlEntity.namedQueries();
-		assertEquals("BAZ", namedQuerys.next().getName());
-		assertFalse(namedQuerys.hasNext());
+		namedQueries = xmlEntity.namedQueries();
+		assertEquals("BAZ", namedQueries.next().getName());
+		assertFalse(namedQueries.hasNext());
 		
 		entityResource.getNamedQueries().remove(0);
 		assertFalse(xmlEntity.namedQueries().hasNext());
@@ -1713,33 +1713,33 @@ public class XmlEntityTests extends ContextModelTestCase
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
-		GenericOrmNamedNativeQuery namedNativeQuery = xmlEntity.addNamedNativeQuery(0);
+		OrmNamedNativeQuery namedNativeQuery = xmlEntity.addNamedNativeQuery(0);
 		namedNativeQuery.setName("FOO");
 				
 		assertEquals("FOO", entityResource.getNamedNativeQueries().get(0).getName());
 		
-		GenericOrmNamedNativeQuery namedNativeQuery2 = xmlEntity.addNamedNativeQuery(0);
+		OrmNamedNativeQuery namedNativeQuery2 = xmlEntity.addNamedNativeQuery(0);
 		namedNativeQuery2.setName("BAR");
 		
 		assertEquals("BAR", entityResource.getNamedNativeQueries().get(0).getName());
 		assertEquals("FOO", entityResource.getNamedNativeQueries().get(1).getName());
 		
-		GenericOrmNamedNativeQuery namedNativeQuery3 = xmlEntity.addNamedNativeQuery(1);
+		OrmNamedNativeQuery namedNativeQuery3 = xmlEntity.addNamedNativeQuery(1);
 		namedNativeQuery3.setName("BAZ");
 		
 		assertEquals("BAR", entityResource.getNamedNativeQueries().get(0).getName());
 		assertEquals("BAZ", entityResource.getNamedNativeQueries().get(1).getName());
 		assertEquals("FOO", entityResource.getNamedNativeQueries().get(2).getName());
 		
-		ListIterator<GenericOrmNamedNativeQuery> namedNativeQuerys = xmlEntity.namedNativeQueries();
-		assertEquals(namedNativeQuery2, namedNativeQuerys.next());
-		assertEquals(namedNativeQuery3, namedNativeQuerys.next());
-		assertEquals(namedNativeQuery, namedNativeQuerys.next());
+		ListIterator<OrmNamedNativeQuery> namedNativeQueries = xmlEntity.namedNativeQueries();
+		assertEquals(namedNativeQuery2, namedNativeQueries.next());
+		assertEquals(namedNativeQuery3, namedNativeQueries.next());
+		assertEquals(namedNativeQuery, namedNativeQueries.next());
 		
-		namedNativeQuerys = xmlEntity.namedNativeQueries();
-		assertEquals("BAR", namedNativeQuerys.next().getName());
-		assertEquals("BAZ", namedNativeQuerys.next().getName());
-		assertEquals("FOO", namedNativeQuerys.next().getName());
+		namedNativeQueries = xmlEntity.namedNativeQueries();
+		assertEquals("BAR", namedNativeQueries.next().getName());
+		assertEquals("BAZ", namedNativeQueries.next().getName());
+		assertEquals("FOO", namedNativeQueries.next().getName());
 	}
 	
 	public void testRemoveNamedNativeQuery() throws Exception {
@@ -1779,10 +1779,10 @@ public class XmlEntityTests extends ContextModelTestCase
 		
 		
 		xmlEntity.moveNamedNativeQuery(2, 0);
-		ListIterator<GenericOrmNamedNativeQuery> namedNativeQuerys = xmlEntity.namedNativeQueries();
-		assertEquals("BAR", namedNativeQuerys.next().getName());
-		assertEquals("BAZ", namedNativeQuerys.next().getName());
-		assertEquals("FOO", namedNativeQuerys.next().getName());
+		ListIterator<OrmNamedNativeQuery> namedNativeQueries = xmlEntity.namedNativeQueries();
+		assertEquals("BAR", namedNativeQueries.next().getName());
+		assertEquals("BAZ", namedNativeQueries.next().getName());
+		assertEquals("FOO", namedNativeQueries.next().getName());
 
 		assertEquals("BAR", entityResource.getNamedNativeQueries().get(0).getName());
 		assertEquals("BAZ", entityResource.getNamedNativeQueries().get(1).getName());
@@ -1790,10 +1790,10 @@ public class XmlEntityTests extends ContextModelTestCase
 
 
 		xmlEntity.moveNamedNativeQuery(0, 1);
-		namedNativeQuerys = xmlEntity.namedNativeQueries();
-		assertEquals("BAZ", namedNativeQuerys.next().getName());
-		assertEquals("BAR", namedNativeQuerys.next().getName());
-		assertEquals("FOO", namedNativeQuerys.next().getName());
+		namedNativeQueries = xmlEntity.namedNativeQueries();
+		assertEquals("BAZ", namedNativeQueries.next().getName());
+		assertEquals("BAR", namedNativeQueries.next().getName());
+		assertEquals("FOO", namedNativeQueries.next().getName());
 
 		assertEquals("BAZ", entityResource.getNamedNativeQueries().get(0).getName());
 		assertEquals("BAR", entityResource.getNamedNativeQueries().get(1).getName());
@@ -1813,36 +1813,36 @@ public class XmlEntityTests extends ContextModelTestCase
 		entityResource.getNamedNativeQueries().get(1).setName("BAR");
 		entityResource.getNamedNativeQueries().get(2).setName("BAZ");
 
-		ListIterator<GenericOrmNamedNativeQuery> namedNativeQuerys = xmlEntity.namedNativeQueries();
-		assertEquals("FOO", namedNativeQuerys.next().getName());
-		assertEquals("BAR", namedNativeQuerys.next().getName());
-		assertEquals("BAZ", namedNativeQuerys.next().getName());
-		assertFalse(namedNativeQuerys.hasNext());
+		ListIterator<OrmNamedNativeQuery> namedNativeQueries = xmlEntity.namedNativeQueries();
+		assertEquals("FOO", namedNativeQueries.next().getName());
+		assertEquals("BAR", namedNativeQueries.next().getName());
+		assertEquals("BAZ", namedNativeQueries.next().getName());
+		assertFalse(namedNativeQueries.hasNext());
 		
 		entityResource.getNamedNativeQueries().move(2, 0);
-		namedNativeQuerys = xmlEntity.namedNativeQueries();
-		assertEquals("BAR", namedNativeQuerys.next().getName());
-		assertEquals("BAZ", namedNativeQuerys.next().getName());
-		assertEquals("FOO", namedNativeQuerys.next().getName());
-		assertFalse(namedNativeQuerys.hasNext());
+		namedNativeQueries = xmlEntity.namedNativeQueries();
+		assertEquals("BAR", namedNativeQueries.next().getName());
+		assertEquals("BAZ", namedNativeQueries.next().getName());
+		assertEquals("FOO", namedNativeQueries.next().getName());
+		assertFalse(namedNativeQueries.hasNext());
 
 		entityResource.getNamedNativeQueries().move(0, 1);
-		namedNativeQuerys = xmlEntity.namedNativeQueries();
-		assertEquals("BAZ", namedNativeQuerys.next().getName());
-		assertEquals("BAR", namedNativeQuerys.next().getName());
-		assertEquals("FOO", namedNativeQuerys.next().getName());
-		assertFalse(namedNativeQuerys.hasNext());
+		namedNativeQueries = xmlEntity.namedNativeQueries();
+		assertEquals("BAZ", namedNativeQueries.next().getName());
+		assertEquals("BAR", namedNativeQueries.next().getName());
+		assertEquals("FOO", namedNativeQueries.next().getName());
+		assertFalse(namedNativeQueries.hasNext());
 
 		entityResource.getNamedNativeQueries().remove(1);
-		namedNativeQuerys = xmlEntity.namedNativeQueries();
-		assertEquals("BAZ", namedNativeQuerys.next().getName());
-		assertEquals("FOO", namedNativeQuerys.next().getName());
-		assertFalse(namedNativeQuerys.hasNext());
+		namedNativeQueries = xmlEntity.namedNativeQueries();
+		assertEquals("BAZ", namedNativeQueries.next().getName());
+		assertEquals("FOO", namedNativeQueries.next().getName());
+		assertFalse(namedNativeQueries.hasNext());
 
 		entityResource.getNamedNativeQueries().remove(1);
-		namedNativeQuerys = xmlEntity.namedNativeQueries();
-		assertEquals("BAZ", namedNativeQuerys.next().getName());
-		assertFalse(namedNativeQuerys.hasNext());
+		namedNativeQueries = xmlEntity.namedNativeQueries();
+		assertEquals("BAZ", namedNativeQueries.next().getName());
+		assertFalse(namedNativeQueries.hasNext());
 		
 		entityResource.getNamedNativeQueries().remove(0);
 		assertFalse(xmlEntity.namedNativeQueries().hasNext());

@@ -9,23 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JpaContextNode;
-import org.eclipse.jpt.core.context.NamedQuery;
+import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 
 
-public class GenericOrmNamedQuery extends AbstractOrmQuery<XmlNamedQuery> implements NamedQuery
+public class GenericOrmNamedQuery extends AbstractOrmQuery<XmlNamedQuery> implements OrmNamedQuery
 {
 
-	protected GenericOrmNamedQuery(JpaContextNode parent) {
+	public GenericOrmNamedQuery(JpaContextNode parent) {
 		super(parent);
 	}
 
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmQueryHint> hints() {
-		return super.hints();
-	}
 }
