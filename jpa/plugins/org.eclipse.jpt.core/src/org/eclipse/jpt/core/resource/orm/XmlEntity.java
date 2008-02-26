@@ -367,8 +367,8 @@ public class XmlEntity extends AbstractTypeMapping
 		super();
 	}
 
-	public EntityMappings entityMappings() {
-		return (EntityMappings) eContainer();
+	public XmlEntityMappings entityMappings() {
+		return (XmlEntityMappings) eContainer();
 	}
 	
 	/**

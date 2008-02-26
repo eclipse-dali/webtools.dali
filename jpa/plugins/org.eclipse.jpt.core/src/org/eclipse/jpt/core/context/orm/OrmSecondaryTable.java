@@ -12,7 +12,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
 
-public interface OrmSecondaryTable extends SecondaryTable
+public interface OrmSecondaryTable extends SecondaryTable, OrmJpaContextNode
 {
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns();

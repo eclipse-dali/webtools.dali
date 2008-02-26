@@ -14,6 +14,8 @@ import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata;
 
 public class GenericPersistenceUnitMetadata extends AbstractJpaContextNode
 	implements PersistenceUnitMetadata
@@ -22,7 +24,7 @@ public class GenericPersistenceUnitMetadata extends AbstractJpaContextNode
 
 	protected final PersistenceUnitDefaults persistenceUnitDefaults;
 
-	protected org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings;
+	protected XmlEntityMappings entityMappings;
 
 	public GenericPersistenceUnitMetadata(EntityMappings parent) {
 		super(parent);
@@ -61,7 +63,7 @@ public class GenericPersistenceUnitMetadata extends AbstractJpaContextNode
 		return this.persistenceUnitDefaults;
 	}
 	
-	public void initialize(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	public void initialize(XmlEntityMappings entityMappings) {
 		this.entityMappings = entityMappings;
 		if (this.persistenceUnitMetadata() != null) {
 			this.xmlMappingMetadataComplete = this.persistenceUnitMetadata().isXmlMappingMetadataComplete();
@@ -69,7 +71,7 @@ public class GenericPersistenceUnitMetadata extends AbstractJpaContextNode
 		this.persistenceUnitDefaults.initialize(entityMappings);
 	}
 	
-	public void update(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	public void update(XmlEntityMappings entityMappings) {
 		this.entityMappings = entityMappings;
 		if (this.persistenceUnitMetadata() != null) {
 			setXmlMappingMetadataComplete_(this.persistenceUnitMetadata().isXmlMappingMetadataComplete());
@@ -80,7 +82,7 @@ public class GenericPersistenceUnitMetadata extends AbstractJpaContextNode
 		this.persistenceUnitDefaults.update(entityMappings);
 	}
 	
-	protected org.eclipse.jpt.core.resource.orm.PersistenceUnitMetadata persistenceUnitMetadata() {
+	protected XmlPersistenceUnitMetadata persistenceUnitMetadata() {
 		return this.entityMappings.getPersistenceUnitMetadata();
 	}
 

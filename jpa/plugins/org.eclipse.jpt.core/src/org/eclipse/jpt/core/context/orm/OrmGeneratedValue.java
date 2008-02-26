@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.context.orm;
 import org.eclipse.jpt.core.context.GeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 
-public interface OrmGeneratedValue extends GeneratedValue
+public interface OrmGeneratedValue extends GeneratedValue, OrmJpaContextNode
 {
 	void initialize(XmlGeneratedValue generatedValue);
 

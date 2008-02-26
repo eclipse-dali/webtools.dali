@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.context.orm;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 
-public interface OrmJoinColumn extends JoinColumn
+public interface OrmJoinColumn extends JoinColumn, OrmJpaContextNode
 {
 	void initializeFrom(JoinColumn oldColumn);
 	

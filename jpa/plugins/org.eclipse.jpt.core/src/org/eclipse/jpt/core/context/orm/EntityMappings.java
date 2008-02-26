@@ -13,11 +13,11 @@ package org.eclipse.jpt.core.context.orm;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.context.TableGenerator;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 
-public interface EntityMappings extends JpaContextNode, JpaStructureNode
+public interface EntityMappings extends OrmJpaContextNode, JpaStructureNode
 {
 	
 	String getVersion();
@@ -120,9 +120,9 @@ public interface EntityMappings extends JpaContextNode, JpaStructureNode
 	
 	// **************** updating ***********************************************
 	
-	void initialize(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings);
+	void initialize(XmlEntityMappings entityMappings);
 	
-	void update(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings);
+	void update(XmlEntityMappings entityMappings);
 	
 	// *************************************************************************
 	

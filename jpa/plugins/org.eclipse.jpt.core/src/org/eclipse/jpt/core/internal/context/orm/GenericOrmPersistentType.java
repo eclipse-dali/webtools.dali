@@ -525,7 +525,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 		this.parentPersistentType = javaPersistentType.parentPersistentType();
 	}
 
-	protected void updatePersistentAttributes(org.eclipse.jpt.core.resource.orm.AbstractTypeMapping typeMapping) {
+	protected void updatePersistentAttributes(AbstractTypeMapping typeMapping) {
 		ListIterator<OrmPersistentAttribute> ormPersistentAttributes = this.specifiedAttributes();
 		if (typeMapping.getAttributes() != null) {
 			this.updateIds(typeMapping.getAttributes(), ormPersistentAttributes);
@@ -638,7 +638,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 		return ormPersistentAttribute;
 	}
 
-	protected void updateIds(org.eclipse.jpt.core.resource.orm.Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
+	protected void updateIds(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
 		for (XmlId id : attributes.getIds()) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(id);
@@ -651,7 +651,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 		}
 	}
 	
-	protected void updateEmbeddedIds(org.eclipse.jpt.core.resource.orm.Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
+	protected void updateEmbeddedIds(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
 		for (XmlEmbeddedId embeddedId : attributes.getEmbeddedIds()) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(embeddedId);
@@ -664,7 +664,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 		}
 	}
 	
-	protected void updateBasics(org.eclipse.jpt.core.resource.orm.Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
+	protected void updateBasics(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
 		for (XmlBasic basic : attributes.getBasics()) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(basic);
@@ -677,7 +677,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 		}
 	}
 	
-	protected void updateVersions(org.eclipse.jpt.core.resource.orm.Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
+	protected void updateVersions(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
 		for (XmlVersion version : attributes.getVersions()) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(version);
@@ -689,7 +689,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 			}
 		}
 	}
-	protected void updateManyToOnes(org.eclipse.jpt.core.resource.orm.Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
+	protected void updateManyToOnes(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
 		for (XmlManyToOne manyToOne : attributes.getManyToOnes()) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(manyToOne);
@@ -701,7 +701,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 			}
 		}
 	}
-	protected void updateOneToManys(org.eclipse.jpt.core.resource.orm.Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
+	protected void updateOneToManys(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
 		for (XmlOneToMany oneToMany : attributes.getOneToManys()) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(oneToMany);
@@ -713,7 +713,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 			}
 		}
 	}
-	protected void updateOneToOnes(org.eclipse.jpt.core.resource.orm.Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
+	protected void updateOneToOnes(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
 		for (XmlOneToOne oneToOne : attributes.getOneToOnes()) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(oneToOne);
@@ -725,7 +725,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 			}
 		}
 	}
-	protected void updateManyToManys(org.eclipse.jpt.core.resource.orm.Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
+	protected void updateManyToManys(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
 		for (XmlManyToMany manyToMany : attributes.getManyToManys()) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(manyToMany);
@@ -738,7 +738,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 		}
 	}
 
-	protected void updateEmbeddeds(org.eclipse.jpt.core.resource.orm.Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
+	protected void updateEmbeddeds(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
 		for (XmlEmbedded embedded : attributes.getEmbeddeds()) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(embedded);
@@ -751,7 +751,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 		}
 	}
 	
-	protected void updateTransients(org.eclipse.jpt.core.resource.orm.Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
+	protected void updateTransients(Attributes attributes, ListIterator<OrmPersistentAttribute> ormPersistentAttributes) {
 		for (XmlTransient transientResource : attributes.getTransients()) {
 			if (ormPersistentAttributes.hasNext()) {
 				ormPersistentAttributes.next().update(transientResource);

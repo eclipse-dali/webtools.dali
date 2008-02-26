@@ -58,6 +58,7 @@ import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
@@ -1471,11 +1472,11 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return this;
 	}
 	
-	public void removeFromResourceModel(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	public void removeFromResourceModel(XmlEntityMappings entityMappings) {
 		entityMappings.getEntities().remove(this.typeMappingResource());
 	}
 	
-	public XmlEntity addToResourceModel(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	public XmlEntity addToResourceModel(XmlEntityMappings entityMappings) {
 		XmlEntity entity = OrmFactory.eINSTANCE.createEntity();
 		persistentType().initialize(entity);
 		entityMappings.getEntities().add(entity);

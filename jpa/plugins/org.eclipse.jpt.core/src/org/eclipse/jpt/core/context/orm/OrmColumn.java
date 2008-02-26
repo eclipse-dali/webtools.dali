@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.AbstractColumn;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 
-public interface OrmColumn extends Column
+public interface OrmColumn extends Column, OrmJpaContextNode
 {
 	
 	Owner owner();

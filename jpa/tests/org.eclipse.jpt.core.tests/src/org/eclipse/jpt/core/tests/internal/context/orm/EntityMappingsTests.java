@@ -158,7 +158,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(ormResource().getEntityMappings().getSchema());
 	
 		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
-		org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults persistenceUnitDefaults = OrmFactory.eINSTANCE.createPersistenceUnitDefaults();
+		org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults persistenceUnitDefaults = OrmFactory.eINSTANCE.createPersistenceUnitDefaults();
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(persistenceUnitDefaults);
 		persistenceUnitDefaults.setSchema("MY_SCHEMA");
 		assertEquals("MY_SCHEMA", entityMappings().getDefaultSchema());
@@ -226,7 +226,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(ormResource().getEntityMappings().getCatalog());
 	
 		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
-		org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults persistenceUnitDefaults = OrmFactory.eINSTANCE.createPersistenceUnitDefaults();
+		org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults persistenceUnitDefaults = OrmFactory.eINSTANCE.createPersistenceUnitDefaults();
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(persistenceUnitDefaults);
 		persistenceUnitDefaults.setCatalog("MY_CATALOG");
 		assertEquals("MY_CATALOG", entityMappings().getDefaultCatalog());
@@ -308,7 +308,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(ormResource().getEntityMappings().getAccess());
 	
 		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
-		org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults persistenceUnitDefaults = OrmFactory.eINSTANCE.createPersistenceUnitDefaults();
+		org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults persistenceUnitDefaults = OrmFactory.eINSTANCE.createPersistenceUnitDefaults();
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(persistenceUnitDefaults);
 		persistenceUnitDefaults.setAccess(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY);
 		assertEquals(AccessType.PROPERTY, entityMappings().getDefaultAccess());

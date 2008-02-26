@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 
-public interface PersistenceUnitMetadata extends JpaContextNode
+public interface PersistenceUnitMetadata extends OrmJpaContextNode
 {
 	boolean isXmlMappingMetadataComplete();
 	void setXmlMappingMetadataComplete(boolean value);
@@ -19,8 +19,8 @@ public interface PersistenceUnitMetadata extends JpaContextNode
 
 	PersistenceUnitDefaults getPersistenceUnitDefaults();
 	
-	void initialize(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings);
+	void initialize(XmlEntityMappings entityMappings);
 	
-	void update(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings);
+	void update(XmlEntityMappings entityMappings);
 
 }

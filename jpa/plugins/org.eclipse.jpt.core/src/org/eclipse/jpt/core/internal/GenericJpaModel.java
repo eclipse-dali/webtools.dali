@@ -32,7 +32,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.JpaProject.Config;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
-import org.eclipse.jpt.core.resource.orm.EntityMappings;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.OrmArtifactEdit;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
@@ -267,7 +267,7 @@ public class GenericJpaModel
 
 		// 202811 - do not add content if it is already present
 		if (resource.getEntityMappings() == null) {
-			EntityMappings entityMappings = OrmFactory.eINSTANCE.createEntityMappings();
+			XmlEntityMappings entityMappings = OrmFactory.eINSTANCE.createEntityMappings();
 			entityMappings.setVersion("1.0");
 			this.resourceContents(resource).add(entityMappings);
 			oae.save(null);

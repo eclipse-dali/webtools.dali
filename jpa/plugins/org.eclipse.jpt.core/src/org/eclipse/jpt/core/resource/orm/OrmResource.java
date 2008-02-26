@@ -35,7 +35,7 @@ public class OrmResource extends JpaXmlResource
 		// TODO Auto-generated method stub	
 	}
 	
-	public EntityMappings getEntityMappings() {
-		return (EntityMappings) getRootObject();
+	public XmlEntityMappings getEntityMappings() {
+		return (XmlEntityMappings) getRootObject();
 	}
 }

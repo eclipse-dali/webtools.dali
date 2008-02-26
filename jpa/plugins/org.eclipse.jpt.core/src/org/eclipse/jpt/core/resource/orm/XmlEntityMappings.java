@@ -29,21 +29,21 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getVersion <em>Version</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getDescription <em>Description</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getPersistenceUnitMetadata <em>Persistence Unit Metadata</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getPackage <em>Package</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getSchema <em>Schema</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getCatalog <em>Catalog</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getAccess <em>Access</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getSequenceGenerators <em>Sequence Generators</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getTableGenerators <em>Table Generators</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getNamedQueries <em>Named Queries</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getNamedNativeQueries <em>Named Native Queries</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getSqlResultSetMappings <em>Sql Result Set Mappings</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getMappedSuperclasses <em>Mapped Superclasses</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getEntities <em>Entities</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getEmbeddables <em>Embeddables</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getVersion <em>Version</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getDescription <em>Description</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getPersistenceUnitMetadata <em>Persistence Unit Metadata</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getPackage <em>Package</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getSchema <em>Schema</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getCatalog <em>Catalog</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getAccess <em>Access</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getSequenceGenerators <em>Sequence Generators</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getTableGenerators <em>Table Generators</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getNamedQueries <em>Named Queries</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getNamedNativeQueries <em>Named Native Queries</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getSqlResultSetMappings <em>Sql Result Set Mappings</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getMappedSuperclasses <em>Mapped Superclasses</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getEntities <em>Entities</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getEmbeddables <em>Embeddables</em>}</li>
  * </ul>
  * </p>
  *
@@ -52,7 +52,7 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * @extends IJpaEObject
  * @generated
  */
-public class EntityMappings extends AbstractJpaEObject implements JpaEObject
+public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 {
 	/**
 	 * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
@@ -111,7 +111,7 @@ public class EntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * @generated
 	 * @ordered
 	 */
-	protected PersistenceUnitMetadata persistenceUnitMetadata;
+	protected XmlPersistenceUnitMetadata persistenceUnitMetadata;
 
 	/**
 	 * The default value of the '{@link #getPackage() <em>Package</em>}' attribute.
@@ -274,7 +274,7 @@ public class EntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected EntityMappings()
+	protected XmlEntityMappings()
 	{
 		super();
 	}
@@ -313,7 +313,7 @@ public class EntityMappings extends AbstractJpaEObject implements JpaEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getVersion <em>Version</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getVersion <em>Version</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Version</em>' attribute.
@@ -333,7 +333,7 @@ public class EntityMappings extends AbstractJpaEObject implements JpaEObject
 	}
 
 	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getVersion <em>Version</em>}' attribute.
+	 * Unsets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getVersion <em>Version</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #isSetVersion()
@@ -352,7 +352,7 @@ public class EntityMappings extends AbstractJpaEObject implements JpaEObject
 	}
 
 	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getVersion <em>Version</em>}' attribute is set.
+	 * Returns whether the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getVersion <em>Version</em>}' attribute is set.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return whether the value of the '<em>Version</em>' attribute is set.
@@ -386,7 +386,7 @@ public class EntityMappings extends AbstractJpaEObject implements JpaEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getDescription <em>Description</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getDescription <em>Description</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Description</em>' attribute.
@@ -410,12 +410,12 @@ public class EntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Persistence Unit Metadata</em>' containment reference.
-	 * @see #setPersistenceUnitMetadata(PersistenceUnitMetadata)
+	 * @see #setPersistenceUnitMetadata(XmlPersistenceUnitMetadata)
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings_PersistenceUnitMetadata()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public PersistenceUnitMetadata getPersistenceUnitMetadata()
+	public XmlPersistenceUnitMetadata getPersistenceUnitMetadata()
 	{
 		return persistenceUnitMetadata;
 	}
@@ -425,9 +425,9 @@ public class EntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetPersistenceUnitMetadata(PersistenceUnitMetadata newPersistenceUnitMetadata, NotificationChain msgs)
+	public NotificationChain basicSetPersistenceUnitMetadata(XmlPersistenceUnitMetadata newPersistenceUnitMetadata, NotificationChain msgs)
 	{
-		PersistenceUnitMetadata oldPersistenceUnitMetadata = persistenceUnitMetadata;
+		XmlPersistenceUnitMetadata oldPersistenceUnitMetadata = persistenceUnitMetadata;
 		persistenceUnitMetadata = newPersistenceUnitMetadata;
 		if (eNotificationRequired())
 		{
@@ -438,14 +438,14 @@ public class EntityMappings extends AbstractJpaEObject implements JpaEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getPersistenceUnitMetadata <em>Persistence Unit Metadata</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getPersistenceUnitMetadata <em>Persistence Unit Metadata</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Persistence Unit Metadata</em>' containment reference.
 	 * @see #getPersistenceUnitMetadata()
 	 * @generated
 	 */
-	public void setPersistenceUnitMetadata(PersistenceUnitMetadata newPersistenceUnitMetadata)
+	public void setPersistenceUnitMetadata(XmlPersistenceUnitMetadata newPersistenceUnitMetadata)
 	{
 		if (newPersistenceUnitMetadata != persistenceUnitMetadata)
 		{
@@ -481,7 +481,7 @@ public class EntityMappings extends AbstractJpaEObject implements JpaEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getPackage <em>Package</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getPackage <em>Package</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Package</em>' attribute.
@@ -516,7 +516,7 @@ public class EntityMappings extends AbstractJpaEObject implements JpaEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getSchema <em>Schema</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getSchema <em>Schema</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Schema</em>' attribute.
@@ -551,7 +551,7 @@ public class EntityMappings extends AbstractJpaEObject implements JpaEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getCatalog <em>Catalog</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getCatalog <em>Catalog</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Catalog</em>' attribute.
@@ -589,7 +589,7 @@ public class EntityMappings extends AbstractJpaEObject implements JpaEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getAccess <em>Access</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getAccess <em>Access</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Access</em>' attribute.
@@ -883,7 +883,7 @@ public class EntityMappings extends AbstractJpaEObject implements JpaEObject
 				setDescription((String)newValue);
 				return;
 			case OrmPackage.ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:
-				setPersistenceUnitMetadata((PersistenceUnitMetadata)newValue);
+				setPersistenceUnitMetadata((XmlPersistenceUnitMetadata)newValue);
 				return;
 			case OrmPackage.ENTITY_MAPPINGS__PACKAGE:
 				setPackage((String)newValue);
@@ -950,7 +950,7 @@ public class EntityMappings extends AbstractJpaEObject implements JpaEObject
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
 			case OrmPackage.ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:
-				setPersistenceUnitMetadata((PersistenceUnitMetadata)null);
+				setPersistenceUnitMetadata((XmlPersistenceUnitMetadata)null);
 				return;
 			case OrmPackage.ENTITY_MAPPINGS__PACKAGE:
 				setPackage(PACKAGE_EDEFAULT);

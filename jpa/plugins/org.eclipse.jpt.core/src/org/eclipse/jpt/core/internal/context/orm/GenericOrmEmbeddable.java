@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.resource.orm.EntityMappings;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -58,11 +58,11 @@ public class GenericOrmEmbeddable extends AbstractOrmTypeMapping<XmlEmbeddable> 
 		return embeddable.getMetadataComplete();
 	}
 	
-	public void removeFromResourceModel(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	public void removeFromResourceModel(XmlEntityMappings entityMappings) {
 		entityMappings.getEmbeddables().remove(this.typeMappingResource());
 	}
 
-	public XmlEmbeddable addToResourceModel(EntityMappings entityMappings) {
+	public XmlEmbeddable addToResourceModel(XmlEntityMappings entityMappings) {
 		XmlEmbeddable embeddable = OrmFactory.eINSTANCE.createEmbeddable();
 		persistentType().initialize(embeddable);
 		entityMappings.getEmbeddables().add(embeddable);

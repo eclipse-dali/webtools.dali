@@ -35,6 +35,7 @@ import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
@@ -46,7 +47,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class GenericEntityMappings extends AbstractJpaContextNode implements EntityMappings
 {
-	protected org.eclipse.jpt.core.resource.orm.EntityMappings xmlEntityMappings;
+	protected XmlEntityMappings xmlEntityMappings;
 	
 	protected String version;
 	
@@ -463,7 +464,7 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 		return getPersistenceUnitMetadata().getPersistenceUnitDefaults();
 	}
 	
-	public void initialize(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	public void initialize(XmlEntityMappings entityMappings) {
 		this.xmlEntityMappings = entityMappings;
 		this.version = entityMappings.getVersion();
 		this.description = entityMappings.getDescription();
@@ -482,13 +483,13 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 		this.initializeNamedNativeQueries(entityMappings);
 	}
 	
-	protected void initializePersistentTypes(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	protected void initializePersistentTypes(XmlEntityMappings entityMappings) {
 		this.initializeMappedSuperclasses(entityMappings);
 		this.initializeEntities(entityMappings);
 		this.initializeEmbeddables(entityMappings);
 	}
 	
-	protected void initializeMappedSuperclasses(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	protected void initializeMappedSuperclasses(XmlEntityMappings entityMappings) {
 		for (XmlMappedSuperclass mappedSuperclass : entityMappings.getMappedSuperclasses()) {
 			OrmPersistentType ormPersistentType = jpaFactory().buildOrmPersistentType(this, MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
 			ormPersistentType.initialize(mappedSuperclass);
@@ -496,7 +497,7 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 		}	
 	}
 	
-	protected void initializeEntities(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	protected void initializeEntities(XmlEntityMappings entityMappings) {
 		for (XmlEntity entity : entityMappings.getEntities()) {
 			OrmPersistentType ormPersistentType = jpaFactory().buildOrmPersistentType(this, MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 			ormPersistentType.initialize(entity);
@@ -504,7 +505,7 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 		}				
 	}
 	
-	protected void initializeEmbeddables(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	protected void initializeEmbeddables(XmlEntityMappings entityMappings) {
 		for (XmlEmbeddable embeddable : entityMappings.getEmbeddables()) {
 			OrmPersistentType ormPersistentType = jpaFactory().buildOrmPersistentType(this, MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 			ormPersistentType.initialize(embeddable);
@@ -512,31 +513,31 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 		}
 	}
 	
-	protected void initializeTableGenerators(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	protected void initializeTableGenerators(XmlEntityMappings entityMappings) {
 		for (XmlTableGenerator tableGenerator : entityMappings.getTableGenerators()) {
 			this.tableGenerators.add(buildTableGenerator(tableGenerator));
 		}
 	}
 	
-	protected void initializeSequenceGenerators(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	protected void initializeSequenceGenerators(XmlEntityMappings entityMappings) {
 		for (XmlSequenceGenerator sequenceGenerator : entityMappings.getSequenceGenerators()) {
 			this.sequenceGenerators.add(buildSequenceGenerator(sequenceGenerator));
 		}
 	}
 	
-	protected void initializeNamedQueries(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	protected void initializeNamedQueries(XmlEntityMappings entityMappings) {
 		for (XmlNamedQuery namedQuery : entityMappings.getNamedQueries()) {
 			this.namedQueries.add(buildNamedQuery(namedQuery));
 		}
 	}
 	
-	protected void initializeNamedNativeQueries(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	protected void initializeNamedNativeQueries(XmlEntityMappings entityMappings) {
 		for (XmlNamedNativeQuery namedNativeQuery : entityMappings.getNamedNativeQueries()) {
 			this.namedNativeQueries.add(buildNamedNativeQuery(namedNativeQuery));
 		}
 	}
 
-	public void update(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	public void update(XmlEntityMappings entityMappings) {
 		this.xmlEntityMappings = entityMappings;
 		this.setDescription(entityMappings.getDescription());
 		this.setPackage(entityMappings.getPackage());
@@ -554,11 +555,11 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 		this.updateNamedNativeQueries(entityMappings);
 	}
 	
-	protected AccessType specifiedAccess(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	protected AccessType specifiedAccess(XmlEntityMappings entityMappings) {
 		return AccessType.fromXmlResourceModel(entityMappings.getAccess());
 	}
 	
-	protected void updatePersistentTypes(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	protected void updatePersistentTypes(XmlEntityMappings entityMappings) {
 		ListIterator<OrmPersistentType> ormPersistentTypes = this.ormPersistentTypes();
 		this.updateMappedSuperclasses(entityMappings, ormPersistentTypes);
 		this.updateEntities(entityMappings, ormPersistentTypes);
@@ -569,7 +570,7 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 		}		
 	}
 	
-	protected void updateMappedSuperclasses(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings, ListIterator<OrmPersistentType> ormPersistentTypes) {
+	protected void updateMappedSuperclasses(XmlEntityMappings entityMappings, ListIterator<OrmPersistentType> ormPersistentTypes) {
 		for (XmlMappedSuperclass mappedSuperclass : entityMappings.getMappedSuperclasses()) {
 			if (ormPersistentTypes.hasNext()) {
 				ormPersistentTypes.next().update(mappedSuperclass);
@@ -582,7 +583,7 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 		}
 	}
 	
-	protected void updateEntities(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings, ListIterator<OrmPersistentType> ormPersistentTypes) {
+	protected void updateEntities(XmlEntityMappings entityMappings, ListIterator<OrmPersistentType> ormPersistentTypes) {
 		for (XmlEntity entity : entityMappings.getEntities()) {
 			if (ormPersistentTypes.hasNext()) {
 				ormPersistentTypes.next().update(entity);
@@ -595,7 +596,7 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 		}
 	}
 	
-	protected void updateEmbeddables(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings, ListIterator<OrmPersistentType> ormPersistentTypes) {
+	protected void updateEmbeddables(XmlEntityMappings entityMappings, ListIterator<OrmPersistentType> ormPersistentTypes) {
 		for (XmlEmbeddable embeddable : entityMappings.getEmbeddables()) {
 			if (ormPersistentTypes.hasNext()) {
 				ormPersistentTypes.next().update(embeddable);
@@ -608,7 +609,7 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 		}
 	}
 	
-	protected void updateTableGenerators(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	protected void updateTableGenerators(XmlEntityMappings entityMappings) {
 		ListIterator<OrmTableGenerator> tableGenerators = tableGenerators();
 		ListIterator<XmlTableGenerator> resourceTableGenerators = entityMappings.getTableGenerators().listIterator();
 		while (tableGenerators.hasNext()) {
@@ -632,7 +633,7 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 		return tableGenerator;
 	}
 
-	protected void updateSequenceGenerators(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	protected void updateSequenceGenerators(XmlEntityMappings entityMappings) {
 		ListIterator<OrmSequenceGenerator> sequenceGenerators = sequenceGenerators();
 		ListIterator<XmlSequenceGenerator> resourceSequenceGenerators = entityMappings.getSequenceGenerators().listIterator();
 		while (sequenceGenerators.hasNext()) {
@@ -656,7 +657,7 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 		return sequenceGenerator;
 	}
 	
-	protected void updateNamedQueries(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	protected void updateNamedQueries(XmlEntityMappings entityMappings) {
 		ListIterator<OrmNamedQuery> namedQueries = namedQueries();
 		ListIterator<XmlNamedQuery> resourceNamedQueries = entityMappings.getNamedQueries().listIterator();
 		
@@ -681,7 +682,7 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 		return ormNamedQuery;
 	}
 
-	protected void updateNamedNativeQueries(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	protected void updateNamedNativeQueries(XmlEntityMappings entityMappings) {
 		ListIterator<OrmNamedNativeQuery> namedNativeQueries = namedNativeQueries();
 		ListIterator<XmlNamedNativeQuery> resourceNamedNativeQueries = entityMappings.getNamedNativeQueries().listIterator();
 		

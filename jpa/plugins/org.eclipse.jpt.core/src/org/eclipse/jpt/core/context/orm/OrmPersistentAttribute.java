@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 
-public interface OrmPersistentAttribute extends PersistentAttribute
+public interface OrmPersistentAttribute extends PersistentAttribute, OrmJpaContextNode
 {
 	
 	/**

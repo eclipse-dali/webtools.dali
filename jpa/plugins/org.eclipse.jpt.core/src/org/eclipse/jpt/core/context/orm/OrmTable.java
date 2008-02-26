@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.context.orm;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 
-public interface OrmTable extends Table
+public interface OrmTable extends Table, OrmJpaContextNode
 {
 	void initialize(XmlEntity entity);
 

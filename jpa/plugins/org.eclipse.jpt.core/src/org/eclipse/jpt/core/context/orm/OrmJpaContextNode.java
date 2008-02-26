@@ -9,12 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.jpt.core.context.TableGenerator;
-import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
+import org.eclipse.jpt.core.context.JpaContextNode;
 
-public interface OrmTableGenerator extends TableGenerator, OrmJpaContextNode
+public interface OrmJpaContextNode extends JpaContextNode
 {
-	void initialize(XmlTableGenerator tableGenerator);
+	//TextRange validationTextRange();
 
-	void update(XmlTableGenerator tableGenerator);
 }

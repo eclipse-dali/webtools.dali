@@ -10,10 +10,10 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.AccessType;
-import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 
 
-public interface PersistenceUnitDefaults extends JpaContextNode
+public interface PersistenceUnitDefaults extends OrmJpaContextNode
 {
 
 	String getSchema();
@@ -33,8 +33,8 @@ public interface PersistenceUnitDefaults extends JpaContextNode
 	void setCascadePersist(boolean value);
 	String CASCADE_PERSIST_PROPERTY = "cascadePersistProperty";
 	
-	void initialize(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings);
+	void initialize(XmlEntityMappings entityMappings);
 	
-	void update(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings);
+	void update(XmlEntityMappings entityMappings);
 
 }

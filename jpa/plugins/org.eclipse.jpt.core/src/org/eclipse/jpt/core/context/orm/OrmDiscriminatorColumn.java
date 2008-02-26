@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.context.orm;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 
-public interface OrmDiscriminatorColumn extends DiscriminatorColumn
+public interface OrmDiscriminatorColumn extends DiscriminatorColumn, OrmJpaContextNode
 {
 	public abstract void initialize(XmlEntity entity);
 

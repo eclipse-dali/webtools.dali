@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.context.orm;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 
-public interface OrmAttributeOverride extends AttributeOverride
+public interface OrmAttributeOverride extends AttributeOverride, OrmJpaContextNode
 {
 	OrmColumn getColumn();
 

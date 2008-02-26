@@ -12,7 +12,7 @@ import org.eclipse.osgi.util.NLS;
 
 public class JptUiOrmMessages
 {
-	private static final String BUNDLE_NAME = "jpt_ui_xml"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "jpt_ui_orm"; //$NON-NLS-1$
 
 
 

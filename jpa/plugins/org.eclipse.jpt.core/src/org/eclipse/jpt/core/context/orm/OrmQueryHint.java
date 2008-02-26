@@ -13,7 +13,7 @@ package org.eclipse.jpt.core.context.orm;
 import org.eclipse.jpt.core.context.QueryHint;
 import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
 
-public interface OrmQueryHint extends QueryHint
+public interface OrmQueryHint extends QueryHint, OrmJpaContextNode
 {
 	void initialize(XmlQueryHint queryHint);
 

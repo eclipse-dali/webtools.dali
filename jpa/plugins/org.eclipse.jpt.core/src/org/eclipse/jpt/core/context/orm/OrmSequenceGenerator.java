@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.context.orm;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 
-public interface OrmSequenceGenerator extends SequenceGenerator
+public interface OrmSequenceGenerator extends SequenceGenerator, OrmJpaContextNode
 {
 	void initialize(XmlSequenceGenerator sequenceGenerator);
 

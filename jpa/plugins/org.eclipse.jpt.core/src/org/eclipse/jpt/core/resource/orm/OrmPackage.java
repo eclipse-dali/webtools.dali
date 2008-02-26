@@ -71,10 +71,10 @@ public class OrmPackage extends EPackageImpl
 	public static final OrmPackage eINSTANCE = org.eclipse.jpt.core.resource.orm.OrmPackage.init();
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.EntityMappings <em>Entity Mappings</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings <em>Entity Mappings</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.resource.orm.EntityMappings
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings()
 	 * @generated
 	 */
@@ -225,10 +225,10 @@ public class OrmPackage extends EPackageImpl
 	public static final int ENTITY_MAPPINGS_FEATURE_COUNT = 15;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitMetadata <em>Persistence Unit Metadata</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata <em>Persistence Unit Metadata</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.resource.orm.PersistenceUnitMetadata
+	 * @see org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPersistenceUnitMetadata()
 	 * @generated
 	 */
@@ -262,10 +262,10 @@ public class OrmPackage extends EPackageImpl
 	public static final int PERSISTENCE_UNIT_METADATA_FEATURE_COUNT = 2;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults <em>Persistence Unit Defaults</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults <em>Persistence Unit Defaults</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults
+	 * @see org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPersistenceUnitDefaults()
 	 * @generated
 	 */
@@ -5980,11 +5980,11 @@ public class OrmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.EntityMappings <em>Entity Mappings</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings <em>Entity Mappings</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Entity Mappings</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityMappings
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings
 	 * @generated
 	 */
 	public EClass getEntityMappings()
@@ -5993,11 +5993,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getVersion <em>Version</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getVersion <em>Version</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Version</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityMappings#getVersion()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getVersion()
 	 * @see #getEntityMappings()
 	 * @generated
 	 */
@@ -6007,11 +6007,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getDescription <em>Description</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getDescription <em>Description</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Description</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityMappings#getDescription()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getDescription()
 	 * @see #getEntityMappings()
 	 * @generated
 	 */
@@ -6021,11 +6021,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getPersistenceUnitMetadata <em>Persistence Unit Metadata</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getPersistenceUnitMetadata <em>Persistence Unit Metadata</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference '<em>Persistence Unit Metadata</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityMappings#getPersistenceUnitMetadata()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getPersistenceUnitMetadata()
 	 * @see #getEntityMappings()
 	 * @generated
 	 */
@@ -6035,11 +6035,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getPackage <em>Package</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getPackage <em>Package</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Package</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityMappings#getPackage()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getPackage()
 	 * @see #getEntityMappings()
 	 * @generated
 	 */
@@ -6049,11 +6049,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getSchema <em>Schema</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getSchema <em>Schema</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Schema</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityMappings#getSchema()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getSchema()
 	 * @see #getEntityMappings()
 	 * @generated
 	 */
@@ -6063,11 +6063,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getCatalog <em>Catalog</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getCatalog <em>Catalog</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Catalog</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityMappings#getCatalog()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getCatalog()
 	 * @see #getEntityMappings()
 	 * @generated
 	 */
@@ -6077,11 +6077,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getAccess <em>Access</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getAccess <em>Access</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Access</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityMappings#getAccess()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getAccess()
 	 * @see #getEntityMappings()
 	 * @generated
 	 */
@@ -6091,11 +6091,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getSequenceGenerators <em>Sequence Generators</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getSequenceGenerators <em>Sequence Generators</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Sequence Generators</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityMappings#getSequenceGenerators()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getSequenceGenerators()
 	 * @see #getEntityMappings()
 	 * @generated
 	 */
@@ -6105,11 +6105,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getTableGenerators <em>Table Generators</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getTableGenerators <em>Table Generators</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Table Generators</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityMappings#getTableGenerators()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getTableGenerators()
 	 * @see #getEntityMappings()
 	 * @generated
 	 */
@@ -6119,11 +6119,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getNamedQueries <em>Named Queries</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getNamedQueries <em>Named Queries</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Named Queries</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityMappings#getNamedQueries()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getNamedQueries()
 	 * @see #getEntityMappings()
 	 * @generated
 	 */
@@ -6133,11 +6133,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getNamedNativeQueries <em>Named Native Queries</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getNamedNativeQueries <em>Named Native Queries</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Named Native Queries</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityMappings#getNamedNativeQueries()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getNamedNativeQueries()
 	 * @see #getEntityMappings()
 	 * @generated
 	 */
@@ -6147,11 +6147,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getSqlResultSetMappings <em>Sql Result Set Mappings</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getSqlResultSetMappings <em>Sql Result Set Mappings</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Sql Result Set Mappings</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityMappings#getSqlResultSetMappings()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getSqlResultSetMappings()
 	 * @see #getEntityMappings()
 	 * @generated
 	 */
@@ -6161,11 +6161,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getMappedSuperclasses <em>Mapped Superclasses</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getMappedSuperclasses <em>Mapped Superclasses</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Mapped Superclasses</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityMappings#getMappedSuperclasses()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getMappedSuperclasses()
 	 * @see #getEntityMappings()
 	 * @generated
 	 */
@@ -6175,11 +6175,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getEntities <em>Entities</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getEntities <em>Entities</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Entities</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityMappings#getEntities()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getEntities()
 	 * @see #getEntityMappings()
 	 * @generated
 	 */
@@ -6189,11 +6189,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.EntityMappings#getEmbeddables <em>Embeddables</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getEmbeddables <em>Embeddables</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Embeddables</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityMappings#getEmbeddables()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getEmbeddables()
 	 * @see #getEntityMappings()
 	 * @generated
 	 */
@@ -6203,11 +6203,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitMetadata <em>Persistence Unit Metadata</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata <em>Persistence Unit Metadata</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Persistence Unit Metadata</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.PersistenceUnitMetadata
+	 * @see org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata
 	 * @generated
 	 */
 	public EClass getPersistenceUnitMetadata()
@@ -6216,11 +6216,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitMetadata#isXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata#isXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Xml Mapping Metadata Complete</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.PersistenceUnitMetadata#isXmlMappingMetadataComplete()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata#isXmlMappingMetadataComplete()
 	 * @see #getPersistenceUnitMetadata()
 	 * @generated
 	 */
@@ -6230,11 +6230,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitMetadata#getPersistenceUnitDefaults <em>Persistence Unit Defaults</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata#getPersistenceUnitDefaults <em>Persistence Unit Defaults</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference '<em>Persistence Unit Defaults</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.PersistenceUnitMetadata#getPersistenceUnitDefaults()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata#getPersistenceUnitDefaults()
 	 * @see #getPersistenceUnitMetadata()
 	 * @generated
 	 */
@@ -6244,11 +6244,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults <em>Persistence Unit Defaults</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults <em>Persistence Unit Defaults</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Persistence Unit Defaults</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults
+	 * @see org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults
 	 * @generated
 	 */
 	public EClass getPersistenceUnitDefaults()
@@ -6257,11 +6257,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#getSchema <em>Schema</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getSchema <em>Schema</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Schema</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#getSchema()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getSchema()
 	 * @see #getPersistenceUnitDefaults()
 	 * @generated
 	 */
@@ -6271,11 +6271,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#getCatalog <em>Catalog</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getCatalog <em>Catalog</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Catalog</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#getCatalog()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getCatalog()
 	 * @see #getPersistenceUnitDefaults()
 	 * @generated
 	 */
@@ -6285,11 +6285,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#getAccess <em>Access</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getAccess <em>Access</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Access</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#getAccess()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getAccess()
 	 * @see #getPersistenceUnitDefaults()
 	 * @generated
 	 */
@@ -6299,11 +6299,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#isCascadePersist <em>Cascade Persist</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#isCascadePersist <em>Cascade Persist</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Cascade Persist</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#isCascadePersist()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#isCascadePersist()
 	 * @see #getPersistenceUnitDefaults()
 	 * @generated
 	 */
@@ -6313,11 +6313,11 @@ public class OrmPackage extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#getEntityListeners <em>Entity Listeners</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getEntityListeners <em>Entity Listeners</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference '<em>Entity Listeners</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#getEntityListeners()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getEntityListeners()
 	 * @see #getPersistenceUnitDefaults()
 	 * @generated
 	 */
@@ -10146,33 +10146,33 @@ public class OrmPackage extends EPackageImpl
 		tableGeneratorImplEClass.getESuperTypes().add(this.getTableGenerator());
 
 		// Initialize classes and features; add operations and parameters
-		initEClass(entityMappingsEClass, EntityMappings.class, "EntityMappings", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getEntityMappings_Version(), this.getVersionType(), "version", "1.0", 1, 1, EntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getEntityMappings_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, EntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntityMappings_PersistenceUnitMetadata(), this.getPersistenceUnitMetadata(), null, "persistenceUnitMetadata", null, 0, 1, EntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getEntityMappings_Package(), theXMLTypePackage.getString(), "package", null, 0, 1, EntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getEntityMappings_Schema(), theXMLTypePackage.getString(), "schema", null, 0, 1, EntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getEntityMappings_Catalog(), theXMLTypePackage.getString(), "catalog", null, 0, 1, EntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getEntityMappings_Access(), this.getAccessType(), "access", "PROPERTY", 0, 1, EntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntityMappings_SequenceGenerators(), this.getSequenceGenerator(), null, "sequenceGenerators", null, 0, -1, EntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntityMappings_TableGenerators(), this.getTableGenerator(), null, "tableGenerators", null, 0, -1, EntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntityMappings_NamedQueries(), this.getNamedQuery(), null, "namedQueries", null, 0, -1, EntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntityMappings_NamedNativeQueries(), this.getNamedNativeQuery(), null, "namedNativeQueries", null, 0, -1, EntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntityMappings_SqlResultSetMappings(), this.getSqlResultSetMapping(), null, "sqlResultSetMappings", null, 0, -1, EntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntityMappings_MappedSuperclasses(), this.getMappedSuperclass(), null, "mappedSuperclasses", null, 0, -1, EntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntityMappings_Entities(), this.getEntity(), null, "entities", null, 0, -1, EntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntityMappings_Embeddables(), this.getEmbeddable(), null, "embeddables", null, 0, -1, EntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(entityMappingsEClass, XmlEntityMappings.class, "EntityMappings", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getEntityMappings_Version(), this.getVersionType(), "version", "1.0", 1, 1, XmlEntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEntityMappings_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, XmlEntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEntityMappings_PersistenceUnitMetadata(), this.getPersistenceUnitMetadata(), null, "persistenceUnitMetadata", null, 0, 1, XmlEntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEntityMappings_Package(), theXMLTypePackage.getString(), "package", null, 0, 1, XmlEntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEntityMappings_Schema(), theXMLTypePackage.getString(), "schema", null, 0, 1, XmlEntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEntityMappings_Catalog(), theXMLTypePackage.getString(), "catalog", null, 0, 1, XmlEntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEntityMappings_Access(), this.getAccessType(), "access", "PROPERTY", 0, 1, XmlEntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEntityMappings_SequenceGenerators(), this.getSequenceGenerator(), null, "sequenceGenerators", null, 0, -1, XmlEntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEntityMappings_TableGenerators(), this.getTableGenerator(), null, "tableGenerators", null, 0, -1, XmlEntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEntityMappings_NamedQueries(), this.getNamedQuery(), null, "namedQueries", null, 0, -1, XmlEntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEntityMappings_NamedNativeQueries(), this.getNamedNativeQuery(), null, "namedNativeQueries", null, 0, -1, XmlEntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEntityMappings_SqlResultSetMappings(), this.getSqlResultSetMapping(), null, "sqlResultSetMappings", null, 0, -1, XmlEntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEntityMappings_MappedSuperclasses(), this.getMappedSuperclass(), null, "mappedSuperclasses", null, 0, -1, XmlEntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEntityMappings_Entities(), this.getEntity(), null, "entities", null, 0, -1, XmlEntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEntityMappings_Embeddables(), this.getEmbeddable(), null, "embeddables", null, 0, -1, XmlEntityMappings.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(persistenceUnitMetadataEClass, PersistenceUnitMetadata.class, "PersistenceUnitMetadata", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getPersistenceUnitMetadata_XmlMappingMetadataComplete(), theXMLTypePackage.getBoolean(), "xmlMappingMetadataComplete", null, 0, 1, PersistenceUnitMetadata.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPersistenceUnitMetadata_PersistenceUnitDefaults(), this.getPersistenceUnitDefaults(), null, "persistenceUnitDefaults", null, 0, 1, PersistenceUnitMetadata.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(persistenceUnitMetadataEClass, XmlPersistenceUnitMetadata.class, "PersistenceUnitMetadata", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getPersistenceUnitMetadata_XmlMappingMetadataComplete(), theXMLTypePackage.getBoolean(), "xmlMappingMetadataComplete", null, 0, 1, XmlPersistenceUnitMetadata.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPersistenceUnitMetadata_PersistenceUnitDefaults(), this.getPersistenceUnitDefaults(), null, "persistenceUnitDefaults", null, 0, 1, XmlPersistenceUnitMetadata.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(persistenceUnitDefaultsEClass, PersistenceUnitDefaults.class, "PersistenceUnitDefaults", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getPersistenceUnitDefaults_Schema(), theXMLTypePackage.getString(), "schema", null, 0, 1, PersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPersistenceUnitDefaults_Catalog(), theXMLTypePackage.getString(), "catalog", null, 0, 1, PersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPersistenceUnitDefaults_Access(), this.getAccessType(), "access", "PROPERTY", 0, 1, PersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPersistenceUnitDefaults_CascadePersist(), theXMLTypePackage.getBoolean(), "cascadePersist", null, 0, 1, PersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPersistenceUnitDefaults_EntityListeners(), this.getEntityListeners(), null, "entityListeners", null, 0, 1, PersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(persistenceUnitDefaultsEClass, XmlPersistenceUnitDefaults.class, "PersistenceUnitDefaults", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getPersistenceUnitDefaults_Schema(), theXMLTypePackage.getString(), "schema", null, 0, 1, XmlPersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPersistenceUnitDefaults_Catalog(), theXMLTypePackage.getString(), "catalog", null, 0, 1, XmlPersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPersistenceUnitDefaults_Access(), this.getAccessType(), "access", "PROPERTY", 0, 1, XmlPersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPersistenceUnitDefaults_CascadePersist(), theXMLTypePackage.getBoolean(), "cascadePersist", null, 0, 1, XmlPersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPersistenceUnitDefaults_EntityListeners(), this.getEntityListeners(), null, "entityListeners", null, 0, 1, XmlPersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(typeMappingEClass, AbstractTypeMapping.class, "TypeMapping", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getTypeMapping_ClassName(), theXMLTypePackage.getString(), "className", null, 1, 1, AbstractTypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -10541,10 +10541,10 @@ public class OrmPackage extends EPackageImpl
 	public interface Literals
 	{
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.EntityMappings <em>Entity Mappings</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings <em>Entity Mappings</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.resource.orm.EntityMappings
+		 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings
 		 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings()
 		 * @generated
 		 */
@@ -10671,10 +10671,10 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference ENTITY_MAPPINGS__EMBEDDABLES = eINSTANCE.getEntityMappings_Embeddables();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitMetadata <em>Persistence Unit Metadata</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata <em>Persistence Unit Metadata</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.resource.orm.PersistenceUnitMetadata
+		 * @see org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata
 		 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPersistenceUnitMetadata()
 		 * @generated
 		 */
@@ -10697,10 +10697,10 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS = eINSTANCE.getPersistenceUnitMetadata_PersistenceUnitDefaults();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults <em>Persistence Unit Defaults</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults <em>Persistence Unit Defaults</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults
+		 * @see org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults
 		 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPersistenceUnitDefaults()
 		 * @generated
 		 */

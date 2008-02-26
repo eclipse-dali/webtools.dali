@@ -3,12 +3,12 @@
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="orm"
     nsURI="jpt.orm.xmi" nsPrefix="org.eclipse.jpt.core.resource.orm">
-  <eClassifiers xsi:type="ecore:EClass" name="EntityMappings">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" lowerBound="1"
         eType="#//VersionType" defaultValueLiteral="1.0" unsettable="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="persistenceUnitMetadata"
-        eType="#//PersistenceUnitMetadata" containment="true" resolveProxies="false"/>
+        eType="#//XmlPersistenceUnitMetadata" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="package" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="schema" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="catalog" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
@@ -31,13 +31,13 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="embeddables" upperBound="-1"
         eType="#//XmlEmbeddable" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PersistenceUnitMetadata">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlPersistenceUnitMetadata">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="xmlMappingMetadataComplete"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="persistenceUnitDefaults"
-        eType="#//PersistenceUnitDefaults" containment="true" resolveProxies="false"/>
+        eType="#//XmlPersistenceUnitDefaults" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PersistenceUnitDefaults">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlPersistenceUnitDefaults">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="schema" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="catalog" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="#//AccessType"

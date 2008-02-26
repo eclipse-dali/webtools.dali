@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 
 public class OrmXmlImpl extends AbstractJpaContextNode
 	implements OrmXml
@@ -68,9 +69,9 @@ public class OrmXmlImpl extends AbstractJpaContextNode
 			throw new IllegalStateException();
 		}
 		
-		org.eclipse.jpt.core.resource.orm.EntityMappings ormEntityMappings = OrmFactory.eINSTANCE.createEntityMappings();
-		this.entityMappings = createEntityMappings(ormEntityMappings);
-		this.ormResource.getContents().add(ormEntityMappings);
+		XmlEntityMappings xmlEntityMappings = OrmFactory.eINSTANCE.createEntityMappings();
+		this.entityMappings = createEntityMappings(xmlEntityMappings);
+		this.ormResource.getContents().add(xmlEntityMappings);
 		firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, null, this.entityMappings);
 		return this.entityMappings;
 	}
@@ -82,8 +83,8 @@ public class OrmXmlImpl extends AbstractJpaContextNode
 		
 		EntityMappings oldEntityMappings = this.entityMappings;
 		this.entityMappings = null;
-		org.eclipse.jpt.core.resource.orm.EntityMappings ormEntityMappings = this.ormResource.getEntityMappings(); //TODO helper removeEntityMappings method on ormResource??
-		this.ormResource.getContents().remove(ormEntityMappings);
+		XmlEntityMappings xmlEntityMappings = this.ormResource.getEntityMappings(); //TODO helper removeEntityMappings method on ormResource??
+		this.ormResource.getContents().remove(xmlEntityMappings);
 		firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, oldEntityMappings, null);
 	}
 	
@@ -119,9 +120,9 @@ public class OrmXmlImpl extends AbstractJpaContextNode
 		}
 	}
 	
-	protected EntityMappings createEntityMappings(org.eclipse.jpt.core.resource.orm.EntityMappings ormEntityMappings) {
+	protected EntityMappings createEntityMappings(XmlEntityMappings xmlEntityMappings) {
 		EntityMappings entityMappings = jpaFactory().buildEntityMappings(this);
-		entityMappings.initialize(ormEntityMappings);
+		entityMappings.initialize(xmlEntityMappings);
 		return entityMappings;
 	}
 	

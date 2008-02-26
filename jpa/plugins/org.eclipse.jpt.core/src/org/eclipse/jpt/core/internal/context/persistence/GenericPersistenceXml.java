@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GeenericPersistenceXml extends AbstractJpaContextNode
+public class GenericPersistenceXml extends AbstractJpaContextNode
 	implements PersistenceXml
 {
 	protected PersistenceResource persistenceResource;
@@ -35,7 +35,7 @@ public class GeenericPersistenceXml extends AbstractJpaContextNode
 	protected Persistence persistence;
 	
 	
-	public GeenericPersistenceXml(IBaseJpaContent baseJpaContent) {
+	public GenericPersistenceXml(IBaseJpaContent baseJpaContent) {
 		super(baseJpaContent);
 	}
 	

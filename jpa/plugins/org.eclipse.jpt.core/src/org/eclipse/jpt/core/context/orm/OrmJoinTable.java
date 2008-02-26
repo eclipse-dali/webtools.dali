@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 
-public interface OrmJoinTable extends JoinTable
+public interface OrmJoinTable extends JoinTable, OrmJpaContextNode
 {
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmJoinColumn> joinColumns();

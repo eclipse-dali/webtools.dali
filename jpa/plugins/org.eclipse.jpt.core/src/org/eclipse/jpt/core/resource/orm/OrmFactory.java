@@ -215,9 +215,9 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EntityMappings createEntityMappings()
+	public XmlEntityMappings createEntityMappings()
 	{
-		EntityMappings entityMappings = new EntityMappings();
+		XmlEntityMappings entityMappings = new XmlEntityMappings();
 		return entityMappings;
 	}
 
@@ -226,9 +226,9 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public PersistenceUnitMetadata createPersistenceUnitMetadata()
+	public XmlPersistenceUnitMetadata createPersistenceUnitMetadata()
 	{
-		PersistenceUnitMetadata persistenceUnitMetadata = new PersistenceUnitMetadata();
+		XmlPersistenceUnitMetadata persistenceUnitMetadata = new XmlPersistenceUnitMetadata();
 		return persistenceUnitMetadata;
 	}
 
@@ -237,9 +237,9 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public PersistenceUnitDefaults createPersistenceUnitDefaults()
+	public XmlPersistenceUnitDefaults createPersistenceUnitDefaults()
 	{
-		PersistenceUnitDefaults persistenceUnitDefaults = new PersistenceUnitDefaults();
+		XmlPersistenceUnitDefaults persistenceUnitDefaults = new XmlPersistenceUnitDefaults();
 		return persistenceUnitDefaults;
 	}
 

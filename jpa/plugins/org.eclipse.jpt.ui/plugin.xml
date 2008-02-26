@@ -31,7 +31,7 @@
 		</factory>
 		
 		<factory
-			adaptableType="org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute"
+			adaptableType="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"
 			class="org.eclipse.jpt.ui.internal.actions.OrmPersistentAttributeActionFilter$Factory">
 			<adapter
 				type="org.eclipse.ui.IActionFilter"/>
@@ -213,7 +213,7 @@
 		</objectContribution>
 				<objectContribution
 			id="org.eclipse.jpt.ui.ormPersistentAttributeActions1"
-			objectClass="org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute">
+			objectClass="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute">
 			
 			<action
 				id="org.eclipse.jpt.ui.addPersistentAttributeToXml"
@@ -235,7 +235,7 @@
 		
 		<objectContribution
 			id="org.eclipse.jpt.ui.ormPersistentAttributeActions2"
-			objectClass="org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute">
+			objectClass="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute">
 			
 			<action
 				id="org.eclipse.jpt.ui.addPersistentAttributeToXmlAndMap"
@@ -258,7 +258,7 @@
 		
 		<objectContribution
 			id="org.eclipse.jpt.ui.ormPersistentAttributeActions3"
-			objectClass="org.eclipse.jpt.core.internal.context.orm.OrmPersistentAttribute">
+			objectClass="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute">
 			
 			<action
 				id="org.eclipse.jpt.ui.removePersistentAttributeFromXml"

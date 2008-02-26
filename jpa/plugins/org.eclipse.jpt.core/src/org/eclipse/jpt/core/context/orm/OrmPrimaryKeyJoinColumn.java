@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.context.orm;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 
-public interface OrmPrimaryKeyJoinColumn extends PrimaryKeyJoinColumn
+public interface OrmPrimaryKeyJoinColumn extends PrimaryKeyJoinColumn, OrmJpaContextNode
 {
 	void initialize(XmlPrimaryKeyJoinColumn column);
 	

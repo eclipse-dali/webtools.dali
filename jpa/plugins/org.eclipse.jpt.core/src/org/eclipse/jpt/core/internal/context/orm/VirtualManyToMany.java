@@ -78,7 +78,7 @@ public class VirtualManyToMany extends AbstractJpaEObject implements XmlManyToMa
 		return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaManyToManyMapping.getFetch());
 	}
 
-	public void setFetch(org.eclipse.jpt.core.resource.orm.FetchType newFetch) {
+	public void setFetch(FetchType newFetch) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
 	}
 

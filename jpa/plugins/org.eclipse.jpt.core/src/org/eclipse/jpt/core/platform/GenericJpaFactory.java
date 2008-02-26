@@ -177,7 +177,7 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmVersionMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.orm.OrmXmlImpl;
-import org.eclipse.jpt.core.internal.context.persistence.GeenericPersistenceXml;
+import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.GenericClassRef;
 import org.eclipse.jpt.core.internal.context.persistence.GenericMappingFileRef;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistence;
@@ -295,7 +295,7 @@ public class GenericJpaFactory implements JpaFactory
 	}
 	
 	public PersistenceXml buildPersistenceXml(IBaseJpaContent parent) {
-		return new GeenericPersistenceXml(parent);
+		return new GenericPersistenceXml(parent);
 	}
 	
 	public OrmXml buildOrmXml(MappingFileRef parent) {

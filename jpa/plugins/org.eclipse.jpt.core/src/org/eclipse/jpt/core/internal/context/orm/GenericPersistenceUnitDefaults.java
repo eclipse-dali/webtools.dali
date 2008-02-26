@@ -14,6 +14,9 @@ import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults;
+import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata;
 
 public class GenericPersistenceUnitDefaults extends AbstractJpaContextNode
 	implements PersistenceUnitDefaults
@@ -26,7 +29,7 @@ public class GenericPersistenceUnitDefaults extends AbstractJpaContextNode
 
 	protected boolean cascadePersist;
 
-	protected org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings;
+	protected XmlEntityMappings entityMappings;
 	
 	public GenericPersistenceUnitDefaults(PersistenceUnitMetadata parent) {
 		super(parent);
@@ -168,7 +171,7 @@ public class GenericPersistenceUnitDefaults extends AbstractJpaContextNode
 		firePropertyChanged(PersistenceUnitDefaults.CASCADE_PERSIST_PROPERTY, oldCascadePersist, newCascadePersist);
 	}
 	
-	public void initialize(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	public void initialize(XmlEntityMappings entityMappings) {
 		this.entityMappings = entityMappings;
 		if (this.persistenceUnitDefaults() != null) {
 			this.access = AccessType.fromXmlResourceModel(this.persistenceUnitDefaults().getAccess());
@@ -179,7 +182,7 @@ public class GenericPersistenceUnitDefaults extends AbstractJpaContextNode
 	}
 	
 	
-	public void update(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	public void update(XmlEntityMappings entityMappings) {
 		this.entityMappings = entityMappings;
 		if (this.persistenceUnitDefaults() != null) {
 			this.setAccess_(AccessType.fromXmlResourceModel(this.persistenceUnitDefaults().getAccess()));
@@ -195,14 +198,14 @@ public class GenericPersistenceUnitDefaults extends AbstractJpaContextNode
 		}
 	}
 	
-	protected org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults persistenceUnitDefaults() {
+	protected XmlPersistenceUnitDefaults persistenceUnitDefaults() {
 		if (persistenceUnitMetadata() != null) {
 			return persistenceUnitMetadata().getPersistenceUnitDefaults();
 		}
 		return null;
 	}
 
-	protected org.eclipse.jpt.core.resource.orm.PersistenceUnitMetadata persistenceUnitMetadata() {
+	protected XmlPersistenceUnitMetadata persistenceUnitMetadata() {
 		return this.entityMappings.getPersistenceUnitMetadata();
 	}
 

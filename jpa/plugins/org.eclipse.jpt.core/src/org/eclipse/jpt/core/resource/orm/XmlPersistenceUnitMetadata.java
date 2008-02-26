@@ -25,8 +25,8 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitMetadata#isXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitMetadata#getPersistenceUnitDefaults <em>Persistence Unit Defaults</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata#isXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata#getPersistenceUnitDefaults <em>Persistence Unit Defaults</em>}</li>
  * </ul>
  * </p>
  *
@@ -35,7 +35,7 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * @extends IJpaEObject
  * @generated
  */
-public class PersistenceUnitMetadata extends AbstractJpaEObject implements JpaEObject
+public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements JpaEObject
 {
 	/**
 	 * The default value of the '{@link #isXmlMappingMetadataComplete() <em>Xml Mapping Metadata Complete</em>}' attribute.
@@ -65,14 +65,14 @@ public class PersistenceUnitMetadata extends AbstractJpaEObject implements JpaEO
 	 * @generated
 	 * @ordered
 	 */
-	protected PersistenceUnitDefaults persistenceUnitDefaults;
+	protected XmlPersistenceUnitDefaults persistenceUnitDefaults;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected PersistenceUnitMetadata()
+	protected XmlPersistenceUnitMetadata()
 	{
 		super();
 	}
@@ -108,7 +108,7 @@ public class PersistenceUnitMetadata extends AbstractJpaEObject implements JpaEO
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitMetadata#isXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata#isXmlMappingMetadataComplete <em>Xml Mapping Metadata Complete</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Xml Mapping Metadata Complete</em>' attribute.
@@ -132,12 +132,12 @@ public class PersistenceUnitMetadata extends AbstractJpaEObject implements JpaEO
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Persistence Unit Defaults</em>' containment reference.
-	 * @see #setPersistenceUnitDefaults(PersistenceUnitDefaults)
+	 * @see #setPersistenceUnitDefaults(XmlPersistenceUnitDefaults)
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPersistenceUnitMetadata_PersistenceUnitDefaults()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public PersistenceUnitDefaults getPersistenceUnitDefaults()
+	public XmlPersistenceUnitDefaults getPersistenceUnitDefaults()
 	{
 		return persistenceUnitDefaults;
 	}
@@ -147,9 +147,9 @@ public class PersistenceUnitMetadata extends AbstractJpaEObject implements JpaEO
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetPersistenceUnitDefaults(PersistenceUnitDefaults newPersistenceUnitDefaults, NotificationChain msgs)
+	public NotificationChain basicSetPersistenceUnitDefaults(XmlPersistenceUnitDefaults newPersistenceUnitDefaults, NotificationChain msgs)
 	{
-		PersistenceUnitDefaults oldPersistenceUnitDefaults = persistenceUnitDefaults;
+		XmlPersistenceUnitDefaults oldPersistenceUnitDefaults = persistenceUnitDefaults;
 		persistenceUnitDefaults = newPersistenceUnitDefaults;
 		if (eNotificationRequired())
 		{
@@ -160,14 +160,14 @@ public class PersistenceUnitMetadata extends AbstractJpaEObject implements JpaEO
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitMetadata#getPersistenceUnitDefaults <em>Persistence Unit Defaults</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata#getPersistenceUnitDefaults <em>Persistence Unit Defaults</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Persistence Unit Defaults</em>' containment reference.
 	 * @see #getPersistenceUnitDefaults()
 	 * @generated
 	 */
-	public void setPersistenceUnitDefaults(PersistenceUnitDefaults newPersistenceUnitDefaults)
+	public void setPersistenceUnitDefaults(XmlPersistenceUnitDefaults newPersistenceUnitDefaults)
 	{
 		if (newPersistenceUnitDefaults != persistenceUnitDefaults)
 		{
@@ -231,7 +231,7 @@ public class PersistenceUnitMetadata extends AbstractJpaEObject implements JpaEO
 				setXmlMappingMetadataComplete(((Boolean)newValue).booleanValue());
 				return;
 			case OrmPackage.PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
-				setPersistenceUnitDefaults((PersistenceUnitDefaults)newValue);
+				setPersistenceUnitDefaults((XmlPersistenceUnitDefaults)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -251,7 +251,7 @@ public class PersistenceUnitMetadata extends AbstractJpaEObject implements JpaEO
 				setXmlMappingMetadataComplete(XML_MAPPING_METADATA_COMPLETE_EDEFAULT);
 				return;
 			case OrmPackage.PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
-				setPersistenceUnitDefaults((PersistenceUnitDefaults)null);
+				setPersistenceUnitDefaults((XmlPersistenceUnitDefaults)null);
 				return;
 		}
 		super.eUnset(featureID);

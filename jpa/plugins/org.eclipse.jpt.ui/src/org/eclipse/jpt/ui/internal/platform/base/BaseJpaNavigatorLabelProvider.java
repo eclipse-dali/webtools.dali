@@ -13,7 +13,7 @@ package org.eclipse.jpt.ui.internal.platform.base;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.core.ContextModel;
-import org.eclipse.jpt.core.internal.context.persistence.GeenericPersistenceXml;
+import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceXml;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.swt.graphics.Image;
@@ -51,7 +51,7 @@ public class BaseJpaNavigatorLabelProvider extends LabelProvider
 			return JptUiPlugin.getPlugin().getImage(JptUiIcons.JPA_CONTENT);
 		}
 		
-		if (element instanceof GeenericPersistenceXml) {
+		if (element instanceof GenericPersistenceXml) {
 			return JptUiPlugin.getPlugin().getImage(JptUiIcons.JPA_FILE);
 		}
 		
@@ -63,7 +63,7 @@ public class BaseJpaNavigatorLabelProvider extends LabelProvider
 			return "JPA Content";
 		}
 		
-		if (element instanceof GeenericPersistenceXml) {
+		if (element instanceof GenericPersistenceXml) {
 			return "persistence.xml";
 		}
 		

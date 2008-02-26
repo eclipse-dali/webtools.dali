@@ -12,7 +12,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 
-public interface OrmAssociationOverride extends AssociationOverride
+public interface OrmAssociationOverride extends AssociationOverride, OrmJpaContextNode
 {
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmJoinColumn> joinColumns();

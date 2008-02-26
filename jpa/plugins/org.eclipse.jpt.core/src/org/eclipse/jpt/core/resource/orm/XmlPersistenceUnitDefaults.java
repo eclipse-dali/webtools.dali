@@ -25,11 +25,11 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#getSchema <em>Schema</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#getCatalog <em>Catalog</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#getAccess <em>Access</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#isCascadePersist <em>Cascade Persist</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#getEntityListeners <em>Entity Listeners</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getSchema <em>Schema</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getCatalog <em>Catalog</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getAccess <em>Access</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#isCascadePersist <em>Cascade Persist</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getEntityListeners <em>Entity Listeners</em>}</li>
  * </ul>
  * </p>
  *
@@ -38,7 +38,7 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * @extends IJpaEObject
  * @generated
  */
-public class PersistenceUnitDefaults extends AbstractJpaEObject implements JpaEObject
+public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements JpaEObject
 {
 	/**
 	 * The default value of the '{@link #getSchema() <em>Schema</em>}' attribute.
@@ -131,7 +131,7 @@ public class PersistenceUnitDefaults extends AbstractJpaEObject implements JpaEO
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected PersistenceUnitDefaults()
+	protected XmlPersistenceUnitDefaults()
 	{
 		super();
 	}
@@ -167,7 +167,7 @@ public class PersistenceUnitDefaults extends AbstractJpaEObject implements JpaEO
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#getSchema <em>Schema</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getSchema <em>Schema</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Schema</em>' attribute.
@@ -202,7 +202,7 @@ public class PersistenceUnitDefaults extends AbstractJpaEObject implements JpaEO
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#getCatalog <em>Catalog</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getCatalog <em>Catalog</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Catalog</em>' attribute.
@@ -240,7 +240,7 @@ public class PersistenceUnitDefaults extends AbstractJpaEObject implements JpaEO
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#getAccess <em>Access</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getAccess <em>Access</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Access</em>' attribute.
@@ -276,7 +276,7 @@ public class PersistenceUnitDefaults extends AbstractJpaEObject implements JpaEO
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#isCascadePersist <em>Cascade Persist</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#isCascadePersist <em>Cascade Persist</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Cascade Persist</em>' attribute.
@@ -328,7 +328,7 @@ public class PersistenceUnitDefaults extends AbstractJpaEObject implements JpaEO
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults#getEntityListeners <em>Entity Listeners</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getEntityListeners <em>Entity Listeners</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Entity Listeners</em>' containment reference.

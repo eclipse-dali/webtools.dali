@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.resource.orm.EntityMappings;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.IdClass;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
@@ -139,11 +139,11 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 		return mappedSuperclass.getMetadataComplete();
 	}
 	
-	public void removeFromResourceModel(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings) {
+	public void removeFromResourceModel(XmlEntityMappings entityMappings) {
 		entityMappings.getMappedSuperclasses().remove(this.typeMappingResource());
 	}
 	
-	public XmlMappedSuperclass addToResourceModel(EntityMappings entityMappings) {
+	public XmlMappedSuperclass addToResourceModel(XmlEntityMappings entityMappings) {
 		XmlMappedSuperclass mappedSuperclass = OrmFactory.eINSTANCE.createMappedSuperclass();
 		persistentType().initialize(mappedSuperclass);
 		entityMappings.getMappedSuperclasses().add(mappedSuperclass);

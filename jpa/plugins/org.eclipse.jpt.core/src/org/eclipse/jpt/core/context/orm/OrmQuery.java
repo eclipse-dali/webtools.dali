@@ -13,7 +13,7 @@ package org.eclipse.jpt.core.context.orm;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.Query;
 
-public interface OrmQuery extends Query
+public interface OrmQuery extends Query, OrmJpaContextNode
 {
 
 	@SuppressWarnings("unchecked")

@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 
 
-public interface OrmAttributeMapping extends AttributeMapping
+public interface OrmAttributeMapping extends AttributeMapping, OrmJpaContextNode
 {
 	OrmPersistentAttribute persistentAttribute();
 

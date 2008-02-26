@@ -83,7 +83,7 @@ public class VirtualManyToOne extends AbstractJpaEObject implements XmlManyToOne
 		return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaManyToOneMapping.getFetch());
 	}
 
-	public void setFetch(org.eclipse.jpt.core.resource.orm.FetchType newFetch) {
+	public void setFetch(FetchType newFetch) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
 	}
 

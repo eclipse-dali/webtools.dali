@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -44,11 +44,11 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 		assertNull(persistenceUnitDefaults.getAccess());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		
-		PersistenceUnitMetadata persistenceUnitMetadata = OrmFactory.eINSTANCE.createPersistenceUnitMetadata();
+		XmlPersistenceUnitMetadata persistenceUnitMetadata = OrmFactory.eINSTANCE.createPersistenceUnitMetadata();
 		ormResource().getEntityMappings().setPersistenceUnitMetadata(persistenceUnitMetadata);
 		assertTrue(persistenceUnitMetadata.isAllFeaturesUnset());
 		
-		org.eclipse.jpt.core.resource.orm.PersistenceUnitDefaults persistenceUnitDefaultsResource = OrmFactory.eINSTANCE.createPersistenceUnitDefaults();
+		org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults persistenceUnitDefaultsResource = OrmFactory.eINSTANCE.createPersistenceUnitDefaults();
 		persistenceUnitMetadata.setPersistenceUnitDefaults(persistenceUnitDefaultsResource);
 		assertTrue(persistenceUnitDefaultsResource.isAllFeaturesUnset());
 		

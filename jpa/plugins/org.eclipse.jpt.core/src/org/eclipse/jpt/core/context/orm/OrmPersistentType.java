@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 
-public interface OrmPersistentType extends PersistentType
+public interface OrmPersistentType extends PersistentType, OrmJpaContextNode
 {
 	/**
 	 * Overriden to return {@link OrmPersistentAttribute}s

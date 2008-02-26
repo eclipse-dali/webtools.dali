@@ -102,7 +102,7 @@ public class VirtualOneToOne extends AbstractJpaEObject implements XmlOneToOne
 		return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaOneToOneMapping.getFetch());
 	}
 
-	public void setFetch(org.eclipse.jpt.core.resource.orm.FetchType newFetch) {
+	public void setFetch(FetchType newFetch) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
 	}
 

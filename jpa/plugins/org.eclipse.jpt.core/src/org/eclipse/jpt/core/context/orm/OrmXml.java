@@ -11,10 +11,9 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
 
-public interface OrmXml extends JpaContextNode, JpaStructureNode
+public interface OrmXml extends OrmJpaContextNode, JpaStructureNode
 {
 	// **************** persistence *******************************************
 	
