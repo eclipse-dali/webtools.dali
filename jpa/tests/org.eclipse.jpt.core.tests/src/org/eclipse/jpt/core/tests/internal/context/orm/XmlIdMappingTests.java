@@ -29,10 +29,10 @@ import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmGeneratedValue;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmIdMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmSequenceGenerator;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmTableGenerator;
+import org.eclipse.jpt.core.internal.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlId;
@@ -535,9 +535,9 @@ public class XmlIdMappingTests extends ContextModelTestCase
 		assertEquals(Integer.valueOf(6), ormColumn.getSpecifiedPrecision());
 		assertEquals(Integer.valueOf(7), ormColumn.getSpecifiedScale());
 		
-		GenericOrmGeneratedValue xmlGeneratedValue = xmlIdMapping.getGeneratedValue();
-		assertEquals("myTableGenerator", xmlGeneratedValue.getSpecifiedGenerator());
-		assertEquals(GenerationType.TABLE, xmlGeneratedValue.getSpecifiedStrategy());
+		OrmGeneratedValue ormGeneratedValue = xmlIdMapping.getGeneratedValue();
+		assertEquals("myTableGenerator", ormGeneratedValue.getSpecifiedGenerator());
+		assertEquals(GenerationType.TABLE, ormGeneratedValue.getSpecifiedStrategy());
 		
 		GenericOrmTableGenerator xmlTableGenerator = xmlIdMapping.getTableGenerator();
 		assertEquals("myTableGenerator", xmlTableGenerator.getName());

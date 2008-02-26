@@ -16,8 +16,8 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmGeneratedValue;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmIdMapping;
+import org.eclipse.jpt.core.internal.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlId;
@@ -27,9 +27,9 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class XmlGeneratedValueTests extends ContextModelTestCase
+public class OrmGeneratedValueTests extends ContextModelTestCase
 {
-	public XmlGeneratedValueTests(String name) {
+	public OrmGeneratedValueTests(String name) {
 		super(name);
 	}
 	
@@ -92,18 +92,18 @@ public class XmlGeneratedValueTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
 		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
-		GenericOrmGeneratedValue xmlGeneratedValue = xmlIdMapping.addGeneratedValue();
+		OrmGeneratedValue ormGeneratedValue = xmlIdMapping.addGeneratedValue();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		XmlGeneratedValue generatedValueResource = idResource.getGeneratedValue();
 		
 		//set generator in the resource model, verify context model updated
 		generatedValueResource.setGenerator("FOO");
-		assertEquals("FOO", xmlGeneratedValue.getSpecifiedGenerator());
+		assertEquals("FOO", ormGeneratedValue.getSpecifiedGenerator());
 		assertEquals("FOO", generatedValueResource.getGenerator());
 	
 		//set name to null in the resource model
 		generatedValueResource.setGenerator(null);
-		assertNull(xmlGeneratedValue.getSpecifiedGenerator());
+		assertNull(ormGeneratedValue.getSpecifiedGenerator());
 		assertNull(generatedValueResource.getGenerator());
 	}
 	
@@ -111,19 +111,19 @@ public class XmlGeneratedValueTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
 		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
-		GenericOrmGeneratedValue xmlGeneratedValue = xmlIdMapping.addGeneratedValue();
+		OrmGeneratedValue ormGeneratedValue = xmlIdMapping.addGeneratedValue();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		XmlGeneratedValue generatedValueResource = idResource.getGeneratedValue();
 		
 		//set name in the context model, verify resource model modified
-		xmlGeneratedValue.setSpecifiedGenerator("FOO");
+		ormGeneratedValue.setSpecifiedGenerator("FOO");
 		assertEquals("FOO", generatedValueResource.getGenerator());
-		assertEquals("FOO", xmlGeneratedValue.getSpecifiedGenerator());
+		assertEquals("FOO", ormGeneratedValue.getSpecifiedGenerator());
 		
 		//set name to null in the context model
-		xmlGeneratedValue.setSpecifiedGenerator(null);
+		ormGeneratedValue.setSpecifiedGenerator(null);
 		assertNull(generatedValueResource.getGenerator());
-		assertNull(xmlGeneratedValue.getSpecifiedGenerator());
+		assertNull(ormGeneratedValue.getSpecifiedGenerator());
 	}
 
 }

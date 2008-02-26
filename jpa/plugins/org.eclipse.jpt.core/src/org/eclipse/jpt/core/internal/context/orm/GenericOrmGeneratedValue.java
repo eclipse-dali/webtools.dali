@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 
-public class GenericOrmGeneratedValue extends AbstractJpaContextNode implements GeneratedValue
+public class GenericOrmGeneratedValue extends AbstractJpaContextNode implements OrmGeneratedValue
 {
 
 	protected GenerationType specifiedStrategy;
@@ -27,10 +27,9 @@ public class GenericOrmGeneratedValue extends AbstractJpaContextNode implements 
 
 	protected XmlGeneratedValue generatedValue;
 	
-	protected GenericOrmGeneratedValue(JpaContextNode parent) {
+	public GenericOrmGeneratedValue(JpaContextNode parent) {
 		super(parent);
 	}
-
 	
 	public GenerationType getStrategy() {
 		return (this.getSpecifiedStrategy() == null) ? this.getDefaultStrategy() : this.getSpecifiedStrategy();

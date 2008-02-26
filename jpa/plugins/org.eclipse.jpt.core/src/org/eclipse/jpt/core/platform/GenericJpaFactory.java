@@ -127,6 +127,7 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmColumn;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmGeneratedValue;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinColumn;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinTable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappedSuperclass;
@@ -138,6 +139,7 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmTable;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.orm.OrmDiscriminatorColumn;
+import org.eclipse.jpt.core.internal.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.internal.context.orm.OrmXmlImpl;
 import org.eclipse.jpt.core.internal.context.persistence.GeenericPersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.GenericClassRef;
@@ -479,5 +481,9 @@ public class GenericJpaFactory implements JpaFactory
 	
 	public OrmColumn buildOrmColumn(JpaContextNode parent, OrmColumn.Owner owner) {
 		return new GenericOrmColumn(parent, owner);
+	}
+	
+	public OrmGeneratedValue buildOrmGeneratedValue(JpaContextNode parent) {
+		return new GenericOrmGeneratedValue(parent);
 	}
 }

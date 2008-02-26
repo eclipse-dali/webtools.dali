@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
+import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.db.internal.Table;
 
@@ -31,7 +32,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 {
 	protected final OrmColumn column;
 
-	protected GenericOrmGeneratedValue generatedValue;
+	protected OrmGeneratedValue generatedValue;
 	
 	protected TemporalType temporal;
 	
@@ -88,11 +89,11 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		firePropertyChanged(ColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 
-	public GenericOrmGeneratedValue addGeneratedValue() {
+	public OrmGeneratedValue addGeneratedValue() {
 		if (getGeneratedValue() != null) {
 			throw new IllegalStateException("gemeratedValue already exists");
 		}
-		this.generatedValue = new GenericOrmGeneratedValue(this);
+		this.generatedValue = jpaFactory().buildOrmGeneratedValue(this);
 		this.attributeMapping().setGeneratedValue(OrmFactory.eINSTANCE.createGeneratedValueImpl());
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, null, this.generatedValue);
 		return this.generatedValue;
@@ -102,18 +103,18 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		if (getGeneratedValue() == null) {
 			throw new IllegalStateException("gemeratedValue does not exist, cannot be removed");
 		}
-		GenericOrmGeneratedValue oldGeneratedValue = this.generatedValue;
+		OrmGeneratedValue oldGeneratedValue = this.generatedValue;
 		this.generatedValue = null;
 		this.attributeMapping().setGeneratedValue(null);
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, oldGeneratedValue, null);
 	}
 	
-	public GenericOrmGeneratedValue getGeneratedValue() {
+	public OrmGeneratedValue getGeneratedValue() {
 		return this.generatedValue;
 	}
 	
-	protected void setGeneratedValue(GenericOrmGeneratedValue newGeneratedValue) {
-		GenericOrmGeneratedValue oldGeneratedValue = this.generatedValue;
+	protected void setGeneratedValue(OrmGeneratedValue newGeneratedValue) {
+		OrmGeneratedValue oldGeneratedValue = this.generatedValue;
 		this.generatedValue = newGeneratedValue;
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, oldGeneratedValue, newGeneratedValue);
 	}
@@ -253,11 +254,15 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	
 	protected void initializeGeneratedValue(XmlId id) {
 		if (id.getGeneratedValue() != null) {
-			this.generatedValue = new GenericOrmGeneratedValue(this);
-			this.generatedValue.initialize(id.getGeneratedValue());
+			this.generatedValue = buildGeneratedValue(id.getGeneratedValue());
 		}
 	}
 	
+	protected OrmGeneratedValue buildGeneratedValue(XmlGeneratedValue xmlGeneratedValue) {
+		OrmGeneratedValue ormGeneratedValue = jpaFactory().buildOrmGeneratedValue(this);
+		ormGeneratedValue.initialize(xmlGeneratedValue);
+		return ormGeneratedValue;
+	}
 	@Override
 	public void update(XmlId id) {
 		super.update(id);
@@ -310,7 +315,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		}
 		else {
 			if (getGeneratedValue() == null) {
-				setGeneratedValue(new GenericOrmGeneratedValue(this));
+				setGeneratedValue(buildGeneratedValue(id.getGeneratedValue()));
 				getGeneratedValue().initialize(id.getGeneratedValue());
 			}
 			else {
