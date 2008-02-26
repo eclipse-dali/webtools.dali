@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPrimaryKeyJoinColumn()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPrimaryKeyJoinColumn()
  * @model kind="class"
  * @generated
  */
@@ -110,7 +110,7 @@ public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNa
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.PRIMARY_KEY_JOIN_COLUMN;
+		return OrmPackage.Literals.XML_PRIMARY_KEY_JOIN_COLUMN;
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNa
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getNamedColumn_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedColumn_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -145,7 +145,7 @@ public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNa
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.PRIMARY_KEY_JOIN_COLUMN__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__NAME, oldName, name));
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNa
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Referenced Column Name</em>' attribute.
 	 * @see #setReferencedColumnName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPrimaryKeyJoinColumn_ReferencedColumnName()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPrimaryKeyJoinColumn_ReferencedColumnName()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -180,7 +180,7 @@ public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNa
 		String oldReferencedColumnName = referencedColumnName;
 		referencedColumnName = newReferencedColumnName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME, oldReferencedColumnName, referencedColumnName));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME, oldReferencedColumnName, referencedColumnName));
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNa
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Column Definition</em>' attribute.
 	 * @see #setColumnDefinition(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getNamedColumn_ColumnDefinition()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedColumn_ColumnDefinition()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -215,7 +215,7 @@ public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNa
 		String oldColumnDefinition = columnDefinition;
 		columnDefinition = newColumnDefinition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION, oldColumnDefinition, columnDefinition));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION, oldColumnDefinition, columnDefinition));
 	}
 
 	/**
@@ -228,11 +228,11 @@ public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNa
 	{
 		switch (featureID)
 		{
-			case OrmPackage.PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION:
+			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION:
 				return getColumnDefinition();
-			case OrmPackage.PRIMARY_KEY_JOIN_COLUMN__NAME:
+			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__NAME:
 				return getName();
-			case OrmPackage.PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
+			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
 				return getReferencedColumnName();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -248,13 +248,13 @@ public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNa
 	{
 		switch (featureID)
 		{
-			case OrmPackage.PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION:
+			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION:
 				setColumnDefinition((String)newValue);
 				return;
-			case OrmPackage.PRIMARY_KEY_JOIN_COLUMN__NAME:
+			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__NAME:
 				setName((String)newValue);
 				return;
-			case OrmPackage.PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
+			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
 				setReferencedColumnName((String)newValue);
 				return;
 		}
@@ -271,13 +271,13 @@ public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNa
 	{
 		switch (featureID)
 		{
-			case OrmPackage.PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION:
+			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION:
 				setColumnDefinition(COLUMN_DEFINITION_EDEFAULT);
 				return;
-			case OrmPackage.PRIMARY_KEY_JOIN_COLUMN__NAME:
+			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case OrmPackage.PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
+			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
 				setReferencedColumnName(REFERENCED_COLUMN_NAME_EDEFAULT);
 				return;
 		}
@@ -294,11 +294,11 @@ public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNa
 	{
 		switch (featureID)
 		{
-			case OrmPackage.PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION:
+			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION:
 				return COLUMN_DEFINITION_EDEFAULT == null ? columnDefinition != null : !COLUMN_DEFINITION_EDEFAULT.equals(columnDefinition);
-			case OrmPackage.PRIMARY_KEY_JOIN_COLUMN__NAME:
+			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case OrmPackage.PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
+			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
 				return REFERENCED_COLUMN_NAME_EDEFAULT == null ? referencedColumnName != null : !REFERENCED_COLUMN_NAME_EDEFAULT.equals(referencedColumnName);
 		}
 		return super.eIsSet(featureID);

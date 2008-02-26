@@ -30,9 +30,9 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPersistenceUnitMetadata()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPersistenceUnitMetadata()
  * @model kind="class"
- * @extends IJpaEObject
+ * @extends JpaEObject
  * @generated
  */
 public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements JpaEObject
@@ -85,7 +85,7 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.PERSISTENCE_UNIT_METADATA;
+		return OrmPackage.Literals.XML_PERSISTENCE_UNIT_METADATA;
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Xml Mapping Metadata Complete</em>' attribute.
 	 * @see #setXmlMappingMetadataComplete(boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPersistenceUnitMetadata_XmlMappingMetadataComplete()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPersistenceUnitMetadata_XmlMappingMetadataComplete()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
@@ -120,7 +120,7 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 		boolean oldXmlMappingMetadataComplete = xmlMappingMetadataComplete;
 		xmlMappingMetadataComplete = newXmlMappingMetadataComplete;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE, oldXmlMappingMetadataComplete, xmlMappingMetadataComplete));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE, oldXmlMappingMetadataComplete, xmlMappingMetadataComplete));
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Persistence Unit Defaults</em>' containment reference.
 	 * @see #setPersistenceUnitDefaults(XmlPersistenceUnitDefaults)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPersistenceUnitMetadata_PersistenceUnitDefaults()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPersistenceUnitMetadata_PersistenceUnitDefaults()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -153,7 +153,7 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 		persistenceUnitDefaults = newPersistenceUnitDefaults;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS, oldPersistenceUnitDefaults, newPersistenceUnitDefaults);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS, oldPersistenceUnitDefaults, newPersistenceUnitDefaults);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -173,14 +173,14 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 		{
 			NotificationChain msgs = null;
 			if (persistenceUnitDefaults != null)
-				msgs = ((InternalEObject)persistenceUnitDefaults).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS, null, msgs);
+				msgs = ((InternalEObject)persistenceUnitDefaults).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS, null, msgs);
 			if (newPersistenceUnitDefaults != null)
-				msgs = ((InternalEObject)newPersistenceUnitDefaults).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS, null, msgs);
+				msgs = ((InternalEObject)newPersistenceUnitDefaults).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS, null, msgs);
 			msgs = basicSetPersistenceUnitDefaults(newPersistenceUnitDefaults, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS, newPersistenceUnitDefaults, newPersistenceUnitDefaults));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS, newPersistenceUnitDefaults, newPersistenceUnitDefaults));
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 	{
 		switch (featureID)
 		{
-			case OrmPackage.PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
+			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
 				return basicSetPersistenceUnitDefaults(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -209,9 +209,9 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 	{
 		switch (featureID)
 		{
-			case OrmPackage.PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
+			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
 				return isXmlMappingMetadataComplete() ? Boolean.TRUE : Boolean.FALSE;
-			case OrmPackage.PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
+			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
 				return getPersistenceUnitDefaults();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -227,10 +227,10 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 	{
 		switch (featureID)
 		{
-			case OrmPackage.PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
+			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
 				setXmlMappingMetadataComplete(((Boolean)newValue).booleanValue());
 				return;
-			case OrmPackage.PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
+			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
 				setPersistenceUnitDefaults((XmlPersistenceUnitDefaults)newValue);
 				return;
 		}
@@ -247,10 +247,10 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 	{
 		switch (featureID)
 		{
-			case OrmPackage.PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
+			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
 				setXmlMappingMetadataComplete(XML_MAPPING_METADATA_COMPLETE_EDEFAULT);
 				return;
-			case OrmPackage.PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
+			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
 				setPersistenceUnitDefaults((XmlPersistenceUnitDefaults)null);
 				return;
 		}
@@ -267,9 +267,9 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 	{
 		switch (featureID)
 		{
-			case OrmPackage.PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
+			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
 				return xmlMappingMetadataComplete != XML_MAPPING_METADATA_COMPLETE_EDEFAULT;
-			case OrmPackage.PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
+			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
 				return persistenceUnitDefaults != null;
 		}
 		return super.eIsSet(featureID);

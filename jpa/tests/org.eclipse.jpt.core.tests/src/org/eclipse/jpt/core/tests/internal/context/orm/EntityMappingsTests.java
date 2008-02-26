@@ -157,8 +157,8 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(entityMappings().getSpecifiedSchema());
 		assertNull(ormResource().getEntityMappings().getSchema());
 	
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
-		org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults persistenceUnitDefaults = OrmFactory.eINSTANCE.createPersistenceUnitDefaults();
+		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
+		org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults persistenceUnitDefaults = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(persistenceUnitDefaults);
 		persistenceUnitDefaults.setSchema("MY_SCHEMA");
 		assertEquals("MY_SCHEMA", entityMappings().getDefaultSchema());
@@ -225,8 +225,8 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(entityMappings().getSpecifiedCatalog());
 		assertNull(ormResource().getEntityMappings().getCatalog());
 	
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
-		org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults persistenceUnitDefaults = OrmFactory.eINSTANCE.createPersistenceUnitDefaults();
+		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
+		org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults persistenceUnitDefaults = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(persistenceUnitDefaults);
 		persistenceUnitDefaults.setCatalog("MY_CATALOG");
 		assertEquals("MY_CATALOG", entityMappings().getDefaultCatalog());
@@ -307,8 +307,8 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(entityMappings().getSpecifiedAccess());
 		assertNull(ormResource().getEntityMappings().getAccess());
 	
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
-		org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults persistenceUnitDefaults = OrmFactory.eINSTANCE.createPersistenceUnitDefaults();
+		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
+		org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults persistenceUnitDefaults = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(persistenceUnitDefaults);
 		persistenceUnitDefaults.setAccess(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY);
 		assertEquals(AccessType.PROPERTY, entityMappings().getDefaultAccess());
@@ -365,7 +365,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertTrue(ormResource().getEntityMappings().getEmbeddables().isEmpty());
 		
 		//add embeddable in the resource model, verify context model updated
-		XmlEmbeddable embeddable = OrmFactory.eINSTANCE.createEmbeddable();
+		XmlEmbeddable embeddable = OrmFactory.eINSTANCE.createXmlEmbeddable();
 		ormResource().getEntityMappings().getEmbeddables().add(embeddable);
 		embeddable.setClassName("model.Foo");
 		assertTrue(entityMappings().ormPersistentTypes().hasNext());
@@ -376,7 +376,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("model.Foo", ormResource().getEntityMappings().getEmbeddables().get(0).getClassName());
 		
 		//add entity in the resource model, verify context model updated
-		XmlEntity entity = OrmFactory.eINSTANCE.createEntity();
+		XmlEntity entity = OrmFactory.eINSTANCE.createXmlEntity();
 		ormResource().getEntityMappings().getEntities().add(entity);
 		entity.setClassName("model.Foo2");
 		assertTrue(entityMappings().ormPersistentTypes().hasNext());
@@ -387,7 +387,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("model.Foo2", ormResource().getEntityMappings().getEntities().get(0).getClassName());
 
 		//add mapped-superclass in the resource model, verify context model updated
-		XmlMappedSuperclass mappedSuperclass = OrmFactory.eINSTANCE.createMappedSuperclass();
+		XmlMappedSuperclass mappedSuperclass = OrmFactory.eINSTANCE.createXmlMappedSuperclass();
 		ormResource().getEntityMappings().getMappedSuperclasses().add(mappedSuperclass);
 		mappedSuperclass.setClassName("model.Foo3");
 		assertTrue(entityMappings().ormPersistentTypes().hasNext());
@@ -897,9 +897,9 @@ public class EntityMappingsTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateNamedQueries() throws Exception {		
-		ormResource().getEntityMappings().getNamedQueries().add(OrmFactory.eINSTANCE.createNamedQuery());
-		ormResource().getEntityMappings().getNamedQueries().add(OrmFactory.eINSTANCE.createNamedQuery());
-		ormResource().getEntityMappings().getNamedQueries().add(OrmFactory.eINSTANCE.createNamedQuery());
+		ormResource().getEntityMappings().getNamedQueries().add(OrmFactory.eINSTANCE.createXmlNamedQuery());
+		ormResource().getEntityMappings().getNamedQueries().add(OrmFactory.eINSTANCE.createXmlNamedQuery());
+		ormResource().getEntityMappings().getNamedQueries().add(OrmFactory.eINSTANCE.createXmlNamedQuery());
 		
 		ormResource().getEntityMappings().getNamedQueries().get(0).setName("FOO");
 		ormResource().getEntityMappings().getNamedQueries().get(1).setName("BAR");
@@ -1021,9 +1021,9 @@ public class EntityMappingsTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateNamedNativeQueries() throws Exception {
-		ormResource().getEntityMappings().getNamedNativeQueries().add(OrmFactory.eINSTANCE.createNamedNativeQuery());
-		ormResource().getEntityMappings().getNamedNativeQueries().add(OrmFactory.eINSTANCE.createNamedNativeQuery());
-		ormResource().getEntityMappings().getNamedNativeQueries().add(OrmFactory.eINSTANCE.createNamedNativeQuery());
+		ormResource().getEntityMappings().getNamedNativeQueries().add(OrmFactory.eINSTANCE.createXmlNamedNativeQuery());
+		ormResource().getEntityMappings().getNamedNativeQueries().add(OrmFactory.eINSTANCE.createXmlNamedNativeQuery());
+		ormResource().getEntityMappings().getNamedNativeQueries().add(OrmFactory.eINSTANCE.createXmlNamedNativeQuery());
 		
 		ormResource().getEntityMappings().getNamedNativeQueries().get(0).setName("FOO");
 		ormResource().getEntityMappings().getNamedNativeQueries().get(1).setName("BAR");

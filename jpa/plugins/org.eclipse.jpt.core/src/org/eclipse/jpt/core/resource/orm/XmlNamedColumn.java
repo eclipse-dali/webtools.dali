@@ -24,9 +24,9 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getNamedColumn()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedColumn()
  * @model kind="class" interface="true" abstract="true"
- * @extends IJpaEObject
+ * @extends JpaEObject
  * @generated
  */
 public interface XmlNamedColumn extends JpaEObject
@@ -41,7 +41,7 @@ public interface XmlNamedColumn extends JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Column Definition</em>' attribute.
 	 * @see #setColumnDefinition(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getNamedColumn_ColumnDefinition()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedColumn_ColumnDefinition()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -67,7 +67,7 @@ public interface XmlNamedColumn extends JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getNamedColumn_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedColumn_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */

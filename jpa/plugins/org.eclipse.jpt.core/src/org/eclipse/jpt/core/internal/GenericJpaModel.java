@@ -267,7 +267,7 @@ public class GenericJpaModel
 
 		// 202811 - do not add content if it is already present
 		if (resource.getEntityMappings() == null) {
-			XmlEntityMappings entityMappings = OrmFactory.eINSTANCE.createEntityMappings();
+			XmlEntityMappings entityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
 			entityMappings.setVersion("1.0");
 			this.resourceContents(resource).add(entityMappings);
 			oae.save(null);

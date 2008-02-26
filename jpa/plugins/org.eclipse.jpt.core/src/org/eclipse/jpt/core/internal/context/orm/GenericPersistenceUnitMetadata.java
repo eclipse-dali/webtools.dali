@@ -46,7 +46,7 @@ public class GenericPersistenceUnitMetadata extends AbstractJpaContextNode
 				}
 			}
 			else if (newXmlMappingMetadataComplete) {
-				this.entityMappings.setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
+				this.entityMappings.setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
 				this.persistenceUnitMetadata().setXmlMappingMetadataComplete(newXmlMappingMetadataComplete);		
 			}
 		}

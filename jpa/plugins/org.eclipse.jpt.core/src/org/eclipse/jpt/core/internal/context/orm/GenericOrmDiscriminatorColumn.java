@@ -129,7 +129,7 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 	
 	@Override
 	protected void addColumnResource() {
-		this.entity.setDiscriminatorColumn(OrmFactory.eINSTANCE.createDiscriminatorColumn());		
+		this.entity.setDiscriminatorColumn(OrmFactory.eINSTANCE.createXmlDiscriminatorColumn());		
 	}
 	
 	@Override

@@ -253,7 +253,7 @@ public class TableGeneratorImpl extends AbstractJpaEObject implements XmlTableGe
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getGenerator_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGenerator_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -288,7 +288,7 @@ public class TableGeneratorImpl extends AbstractJpaEObject implements XmlTableGe
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Table</em>' attribute.
 	 * @see #setTable(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTableGenerator_Table()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTableGenerator_Table()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -323,7 +323,7 @@ public class TableGeneratorImpl extends AbstractJpaEObject implements XmlTableGe
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Catalog</em>' attribute.
 	 * @see #setCatalog(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTableGenerator_Catalog()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTableGenerator_Catalog()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -358,7 +358,7 @@ public class TableGeneratorImpl extends AbstractJpaEObject implements XmlTableGe
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Schema</em>' attribute.
 	 * @see #setSchema(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTableGenerator_Schema()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTableGenerator_Schema()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -393,7 +393,7 @@ public class TableGeneratorImpl extends AbstractJpaEObject implements XmlTableGe
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pk Column Name</em>' attribute.
 	 * @see #setPkColumnName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTableGenerator_PkColumnName()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTableGenerator_PkColumnName()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -428,7 +428,7 @@ public class TableGeneratorImpl extends AbstractJpaEObject implements XmlTableGe
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Value Column Name</em>' attribute.
 	 * @see #setValueColumnName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTableGenerator_ValueColumnName()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTableGenerator_ValueColumnName()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -463,7 +463,7 @@ public class TableGeneratorImpl extends AbstractJpaEObject implements XmlTableGe
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pk Column Value</em>' attribute.
 	 * @see #setPkColumnValue(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTableGenerator_PkColumnValue()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTableGenerator_PkColumnValue()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -498,7 +498,7 @@ public class TableGeneratorImpl extends AbstractJpaEObject implements XmlTableGe
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Initial Value</em>' attribute.
 	 * @see #setInitialValue(Integer)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getGenerator_InitialValue()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGenerator_InitialValue()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.IntObject"
 	 * @generated
 	 */
@@ -533,7 +533,7 @@ public class TableGeneratorImpl extends AbstractJpaEObject implements XmlTableGe
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Allocation Size</em>' attribute.
 	 * @see #setAllocationSize(Integer)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getGenerator_AllocationSize()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGenerator_AllocationSize()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.IntObject"
 	 * @generated
 	 */
@@ -568,7 +568,7 @@ public class TableGeneratorImpl extends AbstractJpaEObject implements XmlTableGe
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Unique Constraints</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTableGenerator_UniqueConstraints()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTableGenerator_UniqueConstraints()
 	 * @model containment="true"
 	 * @generated
 	 */

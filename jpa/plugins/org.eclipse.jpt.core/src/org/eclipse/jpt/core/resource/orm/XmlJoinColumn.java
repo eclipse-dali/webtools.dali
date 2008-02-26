@@ -22,7 +22,7 @@ package org.eclipse.jpt.core.resource.orm;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getJoinColumn()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinColumn()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
@@ -38,7 +38,7 @@ public interface XmlJoinColumn extends XmlAbstractColumn
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Referenced Column Name</em>' attribute.
 	 * @see #setReferencedColumnName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getJoinColumn_ReferencedColumnName()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinColumn_ReferencedColumnName()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */

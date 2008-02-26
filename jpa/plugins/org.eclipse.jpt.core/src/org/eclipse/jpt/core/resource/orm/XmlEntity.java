@@ -55,7 +55,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity()
  * @model kind="class"
  * @generated
  */
@@ -379,7 +379,7 @@ public class XmlEntity extends AbstractTypeMapping
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.ENTITY;
+		return OrmPackage.Literals.XML_ENTITY;
 	}
 
 	/**
@@ -392,7 +392,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -414,7 +414,7 @@ public class XmlEntity extends AbstractTypeMapping
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__NAME, oldName, name));
 	}
 
 	/**
@@ -427,7 +427,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Table</em>' containment reference.
 	 * @see #setTable(XmlTable)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_Table()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_Table()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -447,7 +447,7 @@ public class XmlEntity extends AbstractTypeMapping
 		table = newTable;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__TABLE, oldTable, newTable);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__TABLE, oldTable, newTable);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -467,14 +467,14 @@ public class XmlEntity extends AbstractTypeMapping
 		{
 			NotificationChain msgs = null;
 			if (table != null)
-				msgs = ((InternalEObject)table).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__TABLE, null, msgs);
+				msgs = ((InternalEObject)table).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__TABLE, null, msgs);
 			if (newTable != null)
-				msgs = ((InternalEObject)newTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__TABLE, null, msgs);
+				msgs = ((InternalEObject)newTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__TABLE, null, msgs);
 			msgs = basicSetTable(newTable, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__TABLE, newTable, newTable));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__TABLE, newTable, newTable));
 	}
 
 	/**
@@ -487,7 +487,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Secondary Tables</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_SecondaryTables()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_SecondaryTables()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -495,7 +495,7 @@ public class XmlEntity extends AbstractTypeMapping
 	{
 		if (secondaryTables == null)
 		{
-			secondaryTables = new EObjectContainmentEList<XmlSecondaryTable>(XmlSecondaryTable.class, this, OrmPackage.ENTITY__SECONDARY_TABLES);
+			secondaryTables = new EObjectContainmentEList<XmlSecondaryTable>(XmlSecondaryTable.class, this, OrmPackage.XML_ENTITY__SECONDARY_TABLES);
 		}
 		return secondaryTables;
 	}
@@ -510,7 +510,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Primary Key Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_PrimaryKeyJoinColumns()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_PrimaryKeyJoinColumns()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -518,7 +518,7 @@ public class XmlEntity extends AbstractTypeMapping
 	{
 		if (primaryKeyJoinColumns == null)
 		{
-			primaryKeyJoinColumns = new EObjectContainmentEList<XmlPrimaryKeyJoinColumn>(XmlPrimaryKeyJoinColumn.class, this, OrmPackage.ENTITY__PRIMARY_KEY_JOIN_COLUMNS);
+			primaryKeyJoinColumns = new EObjectContainmentEList<XmlPrimaryKeyJoinColumn>(XmlPrimaryKeyJoinColumn.class, this, OrmPackage.XML_ENTITY__PRIMARY_KEY_JOIN_COLUMNS);
 		}
 		return primaryKeyJoinColumns;
 	}
@@ -533,7 +533,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Id Class</em>' containment reference.
 	 * @see #setIdClass(IdClass)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_IdClass()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_IdClass()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -553,7 +553,7 @@ public class XmlEntity extends AbstractTypeMapping
 		idClass = newIdClass;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__ID_CLASS, oldIdClass, newIdClass);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__ID_CLASS, oldIdClass, newIdClass);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -573,14 +573,14 @@ public class XmlEntity extends AbstractTypeMapping
 		{
 			NotificationChain msgs = null;
 			if (idClass != null)
-				msgs = ((InternalEObject)idClass).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__ID_CLASS, null, msgs);
+				msgs = ((InternalEObject)idClass).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__ID_CLASS, null, msgs);
 			if (newIdClass != null)
-				msgs = ((InternalEObject)newIdClass).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__ID_CLASS, null, msgs);
+				msgs = ((InternalEObject)newIdClass).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__ID_CLASS, null, msgs);
 			msgs = basicSetIdClass(newIdClass, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__ID_CLASS, newIdClass, newIdClass));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__ID_CLASS, newIdClass, newIdClass));
 	}
 
 	/**
@@ -593,7 +593,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Inheritance</em>' containment reference.
 	 * @see #setInheritance(Inheritance)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_Inheritance()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_Inheritance()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -613,7 +613,7 @@ public class XmlEntity extends AbstractTypeMapping
 		inheritance = newInheritance;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__INHERITANCE, oldInheritance, newInheritance);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__INHERITANCE, oldInheritance, newInheritance);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -633,14 +633,14 @@ public class XmlEntity extends AbstractTypeMapping
 		{
 			NotificationChain msgs = null;
 			if (inheritance != null)
-				msgs = ((InternalEObject)inheritance).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__INHERITANCE, null, msgs);
+				msgs = ((InternalEObject)inheritance).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__INHERITANCE, null, msgs);
 			if (newInheritance != null)
-				msgs = ((InternalEObject)newInheritance).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__INHERITANCE, null, msgs);
+				msgs = ((InternalEObject)newInheritance).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__INHERITANCE, null, msgs);
 			msgs = basicSetInheritance(newInheritance, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__INHERITANCE, newInheritance, newInheritance));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__INHERITANCE, newInheritance, newInheritance));
 	}
 
 	/**
@@ -653,8 +653,8 @@ public class XmlEntity extends AbstractTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Discriminator Value</em>' attribute.
 	 * @see #setDiscriminatorValue(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_DiscriminatorValue()
-	 * @model dataType="org.eclipse.jpt.core.internal.resource.orm.DiscriminatorValue"
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_DiscriminatorValue()
+	 * @model dataType="org.eclipse.jpt.core.resource.orm.DiscriminatorValue"
 	 * @generated
 	 */
 	public String getDiscriminatorValue()
@@ -675,7 +675,7 @@ public class XmlEntity extends AbstractTypeMapping
 		String oldDiscriminatorValue = discriminatorValue;
 		discriminatorValue = newDiscriminatorValue;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__DISCRIMINATOR_VALUE, oldDiscriminatorValue, discriminatorValue));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__DISCRIMINATOR_VALUE, oldDiscriminatorValue, discriminatorValue));
 	}
 
 	/**
@@ -688,7 +688,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Discriminator Column</em>' containment reference.
 	 * @see #setDiscriminatorColumn(XmlDiscriminatorColumn)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_DiscriminatorColumn()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_DiscriminatorColumn()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -708,7 +708,7 @@ public class XmlEntity extends AbstractTypeMapping
 		discriminatorColumn = newDiscriminatorColumn;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__DISCRIMINATOR_COLUMN, oldDiscriminatorColumn, newDiscriminatorColumn);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__DISCRIMINATOR_COLUMN, oldDiscriminatorColumn, newDiscriminatorColumn);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -728,14 +728,14 @@ public class XmlEntity extends AbstractTypeMapping
 		{
 			NotificationChain msgs = null;
 			if (discriminatorColumn != null)
-				msgs = ((InternalEObject)discriminatorColumn).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__DISCRIMINATOR_COLUMN, null, msgs);
+				msgs = ((InternalEObject)discriminatorColumn).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__DISCRIMINATOR_COLUMN, null, msgs);
 			if (newDiscriminatorColumn != null)
-				msgs = ((InternalEObject)newDiscriminatorColumn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__DISCRIMINATOR_COLUMN, null, msgs);
+				msgs = ((InternalEObject)newDiscriminatorColumn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__DISCRIMINATOR_COLUMN, null, msgs);
 			msgs = basicSetDiscriminatorColumn(newDiscriminatorColumn, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__DISCRIMINATOR_COLUMN, newDiscriminatorColumn, newDiscriminatorColumn));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__DISCRIMINATOR_COLUMN, newDiscriminatorColumn, newDiscriminatorColumn));
 	}
 
 	/**
@@ -748,7 +748,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Sequence Generator</em>' containment reference.
 	 * @see #setSequenceGenerator(XmlSequenceGenerator)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_SequenceGenerator()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_SequenceGenerator()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -768,7 +768,7 @@ public class XmlEntity extends AbstractTypeMapping
 		sequenceGenerator = newSequenceGenerator;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__SEQUENCE_GENERATOR, oldSequenceGenerator, newSequenceGenerator);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR, oldSequenceGenerator, newSequenceGenerator);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -788,14 +788,14 @@ public class XmlEntity extends AbstractTypeMapping
 		{
 			NotificationChain msgs = null;
 			if (sequenceGenerator != null)
-				msgs = ((InternalEObject)sequenceGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__SEQUENCE_GENERATOR, null, msgs);
+				msgs = ((InternalEObject)sequenceGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR, null, msgs);
 			if (newSequenceGenerator != null)
-				msgs = ((InternalEObject)newSequenceGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__SEQUENCE_GENERATOR, null, msgs);
+				msgs = ((InternalEObject)newSequenceGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR, null, msgs);
 			msgs = basicSetSequenceGenerator(newSequenceGenerator, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__SEQUENCE_GENERATOR, newSequenceGenerator, newSequenceGenerator));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR, newSequenceGenerator, newSequenceGenerator));
 	}
 
 	/**
@@ -808,7 +808,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Table Generator</em>' containment reference.
 	 * @see #setTableGenerator(XmlTableGenerator)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_TableGenerator()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_TableGenerator()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -828,7 +828,7 @@ public class XmlEntity extends AbstractTypeMapping
 		tableGenerator = newTableGenerator;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__TABLE_GENERATOR, oldTableGenerator, newTableGenerator);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__TABLE_GENERATOR, oldTableGenerator, newTableGenerator);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -848,14 +848,14 @@ public class XmlEntity extends AbstractTypeMapping
 		{
 			NotificationChain msgs = null;
 			if (tableGenerator != null)
-				msgs = ((InternalEObject)tableGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__TABLE_GENERATOR, null, msgs);
+				msgs = ((InternalEObject)tableGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__TABLE_GENERATOR, null, msgs);
 			if (newTableGenerator != null)
-				msgs = ((InternalEObject)newTableGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__TABLE_GENERATOR, null, msgs);
+				msgs = ((InternalEObject)newTableGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__TABLE_GENERATOR, null, msgs);
 			msgs = basicSetTableGenerator(newTableGenerator, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__TABLE_GENERATOR, newTableGenerator, newTableGenerator));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__TABLE_GENERATOR, newTableGenerator, newTableGenerator));
 	}
 
 	/**
@@ -868,7 +868,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Named Queries</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_NamedQueries()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_NamedQueries()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -876,7 +876,7 @@ public class XmlEntity extends AbstractTypeMapping
 	{
 		if (namedQueries == null)
 		{
-			namedQueries = new EObjectContainmentEList<XmlNamedQuery>(XmlNamedQuery.class, this, OrmPackage.ENTITY__NAMED_QUERIES);
+			namedQueries = new EObjectContainmentEList<XmlNamedQuery>(XmlNamedQuery.class, this, OrmPackage.XML_ENTITY__NAMED_QUERIES);
 		}
 		return namedQueries;
 	}
@@ -891,7 +891,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Named Native Queries</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_NamedNativeQueries()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_NamedNativeQueries()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -899,7 +899,7 @@ public class XmlEntity extends AbstractTypeMapping
 	{
 		if (namedNativeQueries == null)
 		{
-			namedNativeQueries = new EObjectContainmentEList<XmlNamedNativeQuery>(XmlNamedNativeQuery.class, this, OrmPackage.ENTITY__NAMED_NATIVE_QUERIES);
+			namedNativeQueries = new EObjectContainmentEList<XmlNamedNativeQuery>(XmlNamedNativeQuery.class, this, OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES);
 		}
 		return namedNativeQueries;
 	}
@@ -914,7 +914,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Sql Result Set Mappings</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_SqlResultSetMappings()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_SqlResultSetMappings()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -922,7 +922,7 @@ public class XmlEntity extends AbstractTypeMapping
 	{
 		if (sqlResultSetMappings == null)
 		{
-			sqlResultSetMappings = new EObjectContainmentEList<SqlResultSetMapping>(SqlResultSetMapping.class, this, OrmPackage.ENTITY__SQL_RESULT_SET_MAPPINGS);
+			sqlResultSetMappings = new EObjectContainmentEList<SqlResultSetMapping>(SqlResultSetMapping.class, this, OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS);
 		}
 		return sqlResultSetMappings;
 	}
@@ -937,7 +937,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Exclude Default Listeners</em>' attribute.
 	 * @see #setExcludeDefaultListeners(boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_ExcludeDefaultListeners()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_ExcludeDefaultListeners()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
@@ -959,7 +959,7 @@ public class XmlEntity extends AbstractTypeMapping
 		boolean oldExcludeDefaultListeners = excludeDefaultListeners;
 		excludeDefaultListeners = newExcludeDefaultListeners;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__EXCLUDE_DEFAULT_LISTENERS, oldExcludeDefaultListeners, excludeDefaultListeners));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS, oldExcludeDefaultListeners, excludeDefaultListeners));
 	}
 
 	/**
@@ -972,7 +972,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Exclude Superclass Listeners</em>' attribute.
 	 * @see #setExcludeSuperclassListeners(boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_ExcludeSuperclassListeners()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_ExcludeSuperclassListeners()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
@@ -994,7 +994,7 @@ public class XmlEntity extends AbstractTypeMapping
 		boolean oldExcludeSuperclassListeners = excludeSuperclassListeners;
 		excludeSuperclassListeners = newExcludeSuperclassListeners;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__EXCLUDE_SUPERCLASS_LISTENERS, oldExcludeSuperclassListeners, excludeSuperclassListeners));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS, oldExcludeSuperclassListeners, excludeSuperclassListeners));
 	}
 
 	/**
@@ -1007,7 +1007,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Entity Listeners</em>' containment reference.
 	 * @see #setEntityListeners(EntityListeners)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_EntityListeners()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_EntityListeners()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1027,7 +1027,7 @@ public class XmlEntity extends AbstractTypeMapping
 		entityListeners = newEntityListeners;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__ENTITY_LISTENERS, oldEntityListeners, newEntityListeners);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__ENTITY_LISTENERS, oldEntityListeners, newEntityListeners);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -1047,14 +1047,14 @@ public class XmlEntity extends AbstractTypeMapping
 		{
 			NotificationChain msgs = null;
 			if (entityListeners != null)
-				msgs = ((InternalEObject)entityListeners).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__ENTITY_LISTENERS, null, msgs);
+				msgs = ((InternalEObject)entityListeners).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__ENTITY_LISTENERS, null, msgs);
 			if (newEntityListeners != null)
-				msgs = ((InternalEObject)newEntityListeners).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__ENTITY_LISTENERS, null, msgs);
+				msgs = ((InternalEObject)newEntityListeners).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__ENTITY_LISTENERS, null, msgs);
 			msgs = basicSetEntityListeners(newEntityListeners, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__ENTITY_LISTENERS, newEntityListeners, newEntityListeners));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__ENTITY_LISTENERS, newEntityListeners, newEntityListeners));
 	}
 
 	/**
@@ -1067,7 +1067,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pre Persist</em>' containment reference.
 	 * @see #setPrePersist(PrePersist)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_PrePersist()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_PrePersist()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1087,7 +1087,7 @@ public class XmlEntity extends AbstractTypeMapping
 		prePersist = newPrePersist;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__PRE_PERSIST, oldPrePersist, newPrePersist);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__PRE_PERSIST, oldPrePersist, newPrePersist);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -1107,14 +1107,14 @@ public class XmlEntity extends AbstractTypeMapping
 		{
 			NotificationChain msgs = null;
 			if (prePersist != null)
-				msgs = ((InternalEObject)prePersist).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__PRE_PERSIST, null, msgs);
+				msgs = ((InternalEObject)prePersist).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__PRE_PERSIST, null, msgs);
 			if (newPrePersist != null)
-				msgs = ((InternalEObject)newPrePersist).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__PRE_PERSIST, null, msgs);
+				msgs = ((InternalEObject)newPrePersist).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__PRE_PERSIST, null, msgs);
 			msgs = basicSetPrePersist(newPrePersist, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__PRE_PERSIST, newPrePersist, newPrePersist));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__PRE_PERSIST, newPrePersist, newPrePersist));
 	}
 
 	/**
@@ -1127,7 +1127,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Post Persist</em>' containment reference.
 	 * @see #setPostPersist(PostPersist)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_PostPersist()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_PostPersist()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1147,7 +1147,7 @@ public class XmlEntity extends AbstractTypeMapping
 		postPersist = newPostPersist;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__POST_PERSIST, oldPostPersist, newPostPersist);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__POST_PERSIST, oldPostPersist, newPostPersist);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -1167,14 +1167,14 @@ public class XmlEntity extends AbstractTypeMapping
 		{
 			NotificationChain msgs = null;
 			if (postPersist != null)
-				msgs = ((InternalEObject)postPersist).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__POST_PERSIST, null, msgs);
+				msgs = ((InternalEObject)postPersist).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__POST_PERSIST, null, msgs);
 			if (newPostPersist != null)
-				msgs = ((InternalEObject)newPostPersist).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__POST_PERSIST, null, msgs);
+				msgs = ((InternalEObject)newPostPersist).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__POST_PERSIST, null, msgs);
 			msgs = basicSetPostPersist(newPostPersist, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__POST_PERSIST, newPostPersist, newPostPersist));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__POST_PERSIST, newPostPersist, newPostPersist));
 	}
 
 	/**
@@ -1187,7 +1187,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pre Remove</em>' containment reference.
 	 * @see #setPreRemove(PreRemove)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_PreRemove()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_PreRemove()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1207,7 +1207,7 @@ public class XmlEntity extends AbstractTypeMapping
 		preRemove = newPreRemove;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__PRE_REMOVE, oldPreRemove, newPreRemove);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__PRE_REMOVE, oldPreRemove, newPreRemove);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -1227,14 +1227,14 @@ public class XmlEntity extends AbstractTypeMapping
 		{
 			NotificationChain msgs = null;
 			if (preRemove != null)
-				msgs = ((InternalEObject)preRemove).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__PRE_REMOVE, null, msgs);
+				msgs = ((InternalEObject)preRemove).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__PRE_REMOVE, null, msgs);
 			if (newPreRemove != null)
-				msgs = ((InternalEObject)newPreRemove).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__PRE_REMOVE, null, msgs);
+				msgs = ((InternalEObject)newPreRemove).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__PRE_REMOVE, null, msgs);
 			msgs = basicSetPreRemove(newPreRemove, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__PRE_REMOVE, newPreRemove, newPreRemove));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__PRE_REMOVE, newPreRemove, newPreRemove));
 	}
 
 	/**
@@ -1247,7 +1247,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Post Remove</em>' containment reference.
 	 * @see #setPostRemove(PostRemove)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_PostRemove()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_PostRemove()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1267,7 +1267,7 @@ public class XmlEntity extends AbstractTypeMapping
 		postRemove = newPostRemove;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__POST_REMOVE, oldPostRemove, newPostRemove);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__POST_REMOVE, oldPostRemove, newPostRemove);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -1287,14 +1287,14 @@ public class XmlEntity extends AbstractTypeMapping
 		{
 			NotificationChain msgs = null;
 			if (postRemove != null)
-				msgs = ((InternalEObject)postRemove).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__POST_REMOVE, null, msgs);
+				msgs = ((InternalEObject)postRemove).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__POST_REMOVE, null, msgs);
 			if (newPostRemove != null)
-				msgs = ((InternalEObject)newPostRemove).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__POST_REMOVE, null, msgs);
+				msgs = ((InternalEObject)newPostRemove).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__POST_REMOVE, null, msgs);
 			msgs = basicSetPostRemove(newPostRemove, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__POST_REMOVE, newPostRemove, newPostRemove));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__POST_REMOVE, newPostRemove, newPostRemove));
 	}
 
 	/**
@@ -1307,7 +1307,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pre Update</em>' containment reference.
 	 * @see #setPreUpdate(PreUpdate)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_PreUpdate()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_PreUpdate()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1327,7 +1327,7 @@ public class XmlEntity extends AbstractTypeMapping
 		preUpdate = newPreUpdate;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__PRE_UPDATE, oldPreUpdate, newPreUpdate);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__PRE_UPDATE, oldPreUpdate, newPreUpdate);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -1347,14 +1347,14 @@ public class XmlEntity extends AbstractTypeMapping
 		{
 			NotificationChain msgs = null;
 			if (preUpdate != null)
-				msgs = ((InternalEObject)preUpdate).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__PRE_UPDATE, null, msgs);
+				msgs = ((InternalEObject)preUpdate).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__PRE_UPDATE, null, msgs);
 			if (newPreUpdate != null)
-				msgs = ((InternalEObject)newPreUpdate).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__PRE_UPDATE, null, msgs);
+				msgs = ((InternalEObject)newPreUpdate).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__PRE_UPDATE, null, msgs);
 			msgs = basicSetPreUpdate(newPreUpdate, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__PRE_UPDATE, newPreUpdate, newPreUpdate));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__PRE_UPDATE, newPreUpdate, newPreUpdate));
 	}
 
 	/**
@@ -1367,7 +1367,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Post Update</em>' containment reference.
 	 * @see #setPostUpdate(PostUpdate)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_PostUpdate()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_PostUpdate()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1387,7 +1387,7 @@ public class XmlEntity extends AbstractTypeMapping
 		postUpdate = newPostUpdate;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__POST_UPDATE, oldPostUpdate, newPostUpdate);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__POST_UPDATE, oldPostUpdate, newPostUpdate);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -1407,14 +1407,14 @@ public class XmlEntity extends AbstractTypeMapping
 		{
 			NotificationChain msgs = null;
 			if (postUpdate != null)
-				msgs = ((InternalEObject)postUpdate).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__POST_UPDATE, null, msgs);
+				msgs = ((InternalEObject)postUpdate).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__POST_UPDATE, null, msgs);
 			if (newPostUpdate != null)
-				msgs = ((InternalEObject)newPostUpdate).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__POST_UPDATE, null, msgs);
+				msgs = ((InternalEObject)newPostUpdate).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__POST_UPDATE, null, msgs);
 			msgs = basicSetPostUpdate(newPostUpdate, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__POST_UPDATE, newPostUpdate, newPostUpdate));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__POST_UPDATE, newPostUpdate, newPostUpdate));
 	}
 
 	/**
@@ -1427,7 +1427,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Post Load</em>' containment reference.
 	 * @see #setPostLoad(PostLoad)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_PostLoad()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_PostLoad()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1447,7 +1447,7 @@ public class XmlEntity extends AbstractTypeMapping
 		postLoad = newPostLoad;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__POST_LOAD, oldPostLoad, newPostLoad);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__POST_LOAD, oldPostLoad, newPostLoad);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -1467,14 +1467,14 @@ public class XmlEntity extends AbstractTypeMapping
 		{
 			NotificationChain msgs = null;
 			if (postLoad != null)
-				msgs = ((InternalEObject)postLoad).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__POST_LOAD, null, msgs);
+				msgs = ((InternalEObject)postLoad).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__POST_LOAD, null, msgs);
 			if (newPostLoad != null)
-				msgs = ((InternalEObject)newPostLoad).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY__POST_LOAD, null, msgs);
+				msgs = ((InternalEObject)newPostLoad).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY__POST_LOAD, null, msgs);
 			msgs = basicSetPostLoad(newPostLoad, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY__POST_LOAD, newPostLoad, newPostLoad));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY__POST_LOAD, newPostLoad, newPostLoad));
 	}
 
 	/**
@@ -1487,7 +1487,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attribute Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_AttributeOverrides()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_AttributeOverrides()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1495,7 +1495,7 @@ public class XmlEntity extends AbstractTypeMapping
 	{
 		if (attributeOverrides == null)
 		{
-			attributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.ENTITY__ATTRIBUTE_OVERRIDES);
+			attributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES);
 		}
 		return attributeOverrides;
 	}
@@ -1510,7 +1510,7 @@ public class XmlEntity extends AbstractTypeMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Association Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntity_AssociationOverrides()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_AssociationOverrides()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1518,7 +1518,7 @@ public class XmlEntity extends AbstractTypeMapping
 	{
 		if (associationOverrides == null)
 		{
-			associationOverrides = new EObjectContainmentEList<XmlAssociationOverride>(XmlAssociationOverride.class, this, OrmPackage.ENTITY__ASSOCIATION_OVERRIDES);
+			associationOverrides = new EObjectContainmentEList<XmlAssociationOverride>(XmlAssociationOverride.class, this, OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES);
 		}
 		return associationOverrides;
 	}
@@ -1533,47 +1533,47 @@ public class XmlEntity extends AbstractTypeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ENTITY__TABLE:
+			case OrmPackage.XML_ENTITY__TABLE:
 				return basicSetTable(null, msgs);
-			case OrmPackage.ENTITY__SECONDARY_TABLES:
+			case OrmPackage.XML_ENTITY__SECONDARY_TABLES:
 				return ((InternalEList<?>)getSecondaryTables()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ENTITY__PRIMARY_KEY_JOIN_COLUMNS:
+			case OrmPackage.XML_ENTITY__PRIMARY_KEY_JOIN_COLUMNS:
 				return ((InternalEList<?>)getPrimaryKeyJoinColumns()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ENTITY__ID_CLASS:
+			case OrmPackage.XML_ENTITY__ID_CLASS:
 				return basicSetIdClass(null, msgs);
-			case OrmPackage.ENTITY__INHERITANCE:
+			case OrmPackage.XML_ENTITY__INHERITANCE:
 				return basicSetInheritance(null, msgs);
-			case OrmPackage.ENTITY__DISCRIMINATOR_COLUMN:
+			case OrmPackage.XML_ENTITY__DISCRIMINATOR_COLUMN:
 				return basicSetDiscriminatorColumn(null, msgs);
-			case OrmPackage.ENTITY__SEQUENCE_GENERATOR:
+			case OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR:
 				return basicSetSequenceGenerator(null, msgs);
-			case OrmPackage.ENTITY__TABLE_GENERATOR:
+			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
 				return basicSetTableGenerator(null, msgs);
-			case OrmPackage.ENTITY__NAMED_QUERIES:
+			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
 				return ((InternalEList<?>)getNamedQueries()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ENTITY__NAMED_NATIVE_QUERIES:
+			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
 				return ((InternalEList<?>)getNamedNativeQueries()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ENTITY__SQL_RESULT_SET_MAPPINGS:
+			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				return ((InternalEList<?>)getSqlResultSetMappings()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ENTITY__ENTITY_LISTENERS:
+			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
 				return basicSetEntityListeners(null, msgs);
-			case OrmPackage.ENTITY__PRE_PERSIST:
+			case OrmPackage.XML_ENTITY__PRE_PERSIST:
 				return basicSetPrePersist(null, msgs);
-			case OrmPackage.ENTITY__POST_PERSIST:
+			case OrmPackage.XML_ENTITY__POST_PERSIST:
 				return basicSetPostPersist(null, msgs);
-			case OrmPackage.ENTITY__PRE_REMOVE:
+			case OrmPackage.XML_ENTITY__PRE_REMOVE:
 				return basicSetPreRemove(null, msgs);
-			case OrmPackage.ENTITY__POST_REMOVE:
+			case OrmPackage.XML_ENTITY__POST_REMOVE:
 				return basicSetPostRemove(null, msgs);
-			case OrmPackage.ENTITY__PRE_UPDATE:
+			case OrmPackage.XML_ENTITY__PRE_UPDATE:
 				return basicSetPreUpdate(null, msgs);
-			case OrmPackage.ENTITY__POST_UPDATE:
+			case OrmPackage.XML_ENTITY__POST_UPDATE:
 				return basicSetPostUpdate(null, msgs);
-			case OrmPackage.ENTITY__POST_LOAD:
+			case OrmPackage.XML_ENTITY__POST_LOAD:
 				return basicSetPostLoad(null, msgs);
-			case OrmPackage.ENTITY__ATTRIBUTE_OVERRIDES:
+			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
 				return ((InternalEList<?>)getAttributeOverrides()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ENTITY__ASSOCIATION_OVERRIDES:
+			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
 				return ((InternalEList<?>)getAssociationOverrides()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -1589,55 +1589,55 @@ public class XmlEntity extends AbstractTypeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ENTITY__NAME:
+			case OrmPackage.XML_ENTITY__NAME:
 				return getName();
-			case OrmPackage.ENTITY__TABLE:
+			case OrmPackage.XML_ENTITY__TABLE:
 				return getTable();
-			case OrmPackage.ENTITY__SECONDARY_TABLES:
+			case OrmPackage.XML_ENTITY__SECONDARY_TABLES:
 				return getSecondaryTables();
-			case OrmPackage.ENTITY__PRIMARY_KEY_JOIN_COLUMNS:
+			case OrmPackage.XML_ENTITY__PRIMARY_KEY_JOIN_COLUMNS:
 				return getPrimaryKeyJoinColumns();
-			case OrmPackage.ENTITY__ID_CLASS:
+			case OrmPackage.XML_ENTITY__ID_CLASS:
 				return getIdClass();
-			case OrmPackage.ENTITY__INHERITANCE:
+			case OrmPackage.XML_ENTITY__INHERITANCE:
 				return getInheritance();
-			case OrmPackage.ENTITY__DISCRIMINATOR_VALUE:
+			case OrmPackage.XML_ENTITY__DISCRIMINATOR_VALUE:
 				return getDiscriminatorValue();
-			case OrmPackage.ENTITY__DISCRIMINATOR_COLUMN:
+			case OrmPackage.XML_ENTITY__DISCRIMINATOR_COLUMN:
 				return getDiscriminatorColumn();
-			case OrmPackage.ENTITY__SEQUENCE_GENERATOR:
+			case OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR:
 				return getSequenceGenerator();
-			case OrmPackage.ENTITY__TABLE_GENERATOR:
+			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
 				return getTableGenerator();
-			case OrmPackage.ENTITY__NAMED_QUERIES:
+			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
 				return getNamedQueries();
-			case OrmPackage.ENTITY__NAMED_NATIVE_QUERIES:
+			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
 				return getNamedNativeQueries();
-			case OrmPackage.ENTITY__SQL_RESULT_SET_MAPPINGS:
+			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				return getSqlResultSetMappings();
-			case OrmPackage.ENTITY__EXCLUDE_DEFAULT_LISTENERS:
+			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
 				return isExcludeDefaultListeners() ? Boolean.TRUE : Boolean.FALSE;
-			case OrmPackage.ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
+			case OrmPackage.XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
 				return isExcludeSuperclassListeners() ? Boolean.TRUE : Boolean.FALSE;
-			case OrmPackage.ENTITY__ENTITY_LISTENERS:
+			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
 				return getEntityListeners();
-			case OrmPackage.ENTITY__PRE_PERSIST:
+			case OrmPackage.XML_ENTITY__PRE_PERSIST:
 				return getPrePersist();
-			case OrmPackage.ENTITY__POST_PERSIST:
+			case OrmPackage.XML_ENTITY__POST_PERSIST:
 				return getPostPersist();
-			case OrmPackage.ENTITY__PRE_REMOVE:
+			case OrmPackage.XML_ENTITY__PRE_REMOVE:
 				return getPreRemove();
-			case OrmPackage.ENTITY__POST_REMOVE:
+			case OrmPackage.XML_ENTITY__POST_REMOVE:
 				return getPostRemove();
-			case OrmPackage.ENTITY__PRE_UPDATE:
+			case OrmPackage.XML_ENTITY__PRE_UPDATE:
 				return getPreUpdate();
-			case OrmPackage.ENTITY__POST_UPDATE:
+			case OrmPackage.XML_ENTITY__POST_UPDATE:
 				return getPostUpdate();
-			case OrmPackage.ENTITY__POST_LOAD:
+			case OrmPackage.XML_ENTITY__POST_LOAD:
 				return getPostLoad();
-			case OrmPackage.ENTITY__ATTRIBUTE_OVERRIDES:
+			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
 				return getAttributeOverrides();
-			case OrmPackage.ENTITY__ASSOCIATION_OVERRIDES:
+			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
 				return getAssociationOverrides();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -1654,85 +1654,85 @@ public class XmlEntity extends AbstractTypeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ENTITY__NAME:
+			case OrmPackage.XML_ENTITY__NAME:
 				setName((String)newValue);
 				return;
-			case OrmPackage.ENTITY__TABLE:
+			case OrmPackage.XML_ENTITY__TABLE:
 				setTable((XmlTable)newValue);
 				return;
-			case OrmPackage.ENTITY__SECONDARY_TABLES:
+			case OrmPackage.XML_ENTITY__SECONDARY_TABLES:
 				getSecondaryTables().clear();
 				getSecondaryTables().addAll((Collection<? extends XmlSecondaryTable>)newValue);
 				return;
-			case OrmPackage.ENTITY__PRIMARY_KEY_JOIN_COLUMNS:
+			case OrmPackage.XML_ENTITY__PRIMARY_KEY_JOIN_COLUMNS:
 				getPrimaryKeyJoinColumns().clear();
 				getPrimaryKeyJoinColumns().addAll((Collection<? extends XmlPrimaryKeyJoinColumn>)newValue);
 				return;
-			case OrmPackage.ENTITY__ID_CLASS:
+			case OrmPackage.XML_ENTITY__ID_CLASS:
 				setIdClass((IdClass)newValue);
 				return;
-			case OrmPackage.ENTITY__INHERITANCE:
+			case OrmPackage.XML_ENTITY__INHERITANCE:
 				setInheritance((Inheritance)newValue);
 				return;
-			case OrmPackage.ENTITY__DISCRIMINATOR_VALUE:
+			case OrmPackage.XML_ENTITY__DISCRIMINATOR_VALUE:
 				setDiscriminatorValue((String)newValue);
 				return;
-			case OrmPackage.ENTITY__DISCRIMINATOR_COLUMN:
+			case OrmPackage.XML_ENTITY__DISCRIMINATOR_COLUMN:
 				setDiscriminatorColumn((XmlDiscriminatorColumn)newValue);
 				return;
-			case OrmPackage.ENTITY__SEQUENCE_GENERATOR:
+			case OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR:
 				setSequenceGenerator((XmlSequenceGenerator)newValue);
 				return;
-			case OrmPackage.ENTITY__TABLE_GENERATOR:
+			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
 				setTableGenerator((XmlTableGenerator)newValue);
 				return;
-			case OrmPackage.ENTITY__NAMED_QUERIES:
+			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
 				getNamedQueries().clear();
 				getNamedQueries().addAll((Collection<? extends XmlNamedQuery>)newValue);
 				return;
-			case OrmPackage.ENTITY__NAMED_NATIVE_QUERIES:
+			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
 				getNamedNativeQueries().clear();
 				getNamedNativeQueries().addAll((Collection<? extends XmlNamedNativeQuery>)newValue);
 				return;
-			case OrmPackage.ENTITY__SQL_RESULT_SET_MAPPINGS:
+			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				getSqlResultSetMappings().clear();
 				getSqlResultSetMappings().addAll((Collection<? extends SqlResultSetMapping>)newValue);
 				return;
-			case OrmPackage.ENTITY__EXCLUDE_DEFAULT_LISTENERS:
+			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
 				setExcludeDefaultListeners(((Boolean)newValue).booleanValue());
 				return;
-			case OrmPackage.ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
+			case OrmPackage.XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
 				setExcludeSuperclassListeners(((Boolean)newValue).booleanValue());
 				return;
-			case OrmPackage.ENTITY__ENTITY_LISTENERS:
+			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
 				setEntityListeners((EntityListeners)newValue);
 				return;
-			case OrmPackage.ENTITY__PRE_PERSIST:
+			case OrmPackage.XML_ENTITY__PRE_PERSIST:
 				setPrePersist((PrePersist)newValue);
 				return;
-			case OrmPackage.ENTITY__POST_PERSIST:
+			case OrmPackage.XML_ENTITY__POST_PERSIST:
 				setPostPersist((PostPersist)newValue);
 				return;
-			case OrmPackage.ENTITY__PRE_REMOVE:
+			case OrmPackage.XML_ENTITY__PRE_REMOVE:
 				setPreRemove((PreRemove)newValue);
 				return;
-			case OrmPackage.ENTITY__POST_REMOVE:
+			case OrmPackage.XML_ENTITY__POST_REMOVE:
 				setPostRemove((PostRemove)newValue);
 				return;
-			case OrmPackage.ENTITY__PRE_UPDATE:
+			case OrmPackage.XML_ENTITY__PRE_UPDATE:
 				setPreUpdate((PreUpdate)newValue);
 				return;
-			case OrmPackage.ENTITY__POST_UPDATE:
+			case OrmPackage.XML_ENTITY__POST_UPDATE:
 				setPostUpdate((PostUpdate)newValue);
 				return;
-			case OrmPackage.ENTITY__POST_LOAD:
+			case OrmPackage.XML_ENTITY__POST_LOAD:
 				setPostLoad((PostLoad)newValue);
 				return;
-			case OrmPackage.ENTITY__ATTRIBUTE_OVERRIDES:
+			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
 				getAttributeOverrides().clear();
 				getAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
 				return;
-			case OrmPackage.ENTITY__ASSOCIATION_OVERRIDES:
+			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
 				getAssociationOverrides().clear();
 				getAssociationOverrides().addAll((Collection<? extends XmlAssociationOverride>)newValue);
 				return;
@@ -1750,79 +1750,79 @@ public class XmlEntity extends AbstractTypeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ENTITY__NAME:
+			case OrmPackage.XML_ENTITY__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case OrmPackage.ENTITY__TABLE:
+			case OrmPackage.XML_ENTITY__TABLE:
 				setTable((XmlTable)null);
 				return;
-			case OrmPackage.ENTITY__SECONDARY_TABLES:
+			case OrmPackage.XML_ENTITY__SECONDARY_TABLES:
 				getSecondaryTables().clear();
 				return;
-			case OrmPackage.ENTITY__PRIMARY_KEY_JOIN_COLUMNS:
+			case OrmPackage.XML_ENTITY__PRIMARY_KEY_JOIN_COLUMNS:
 				getPrimaryKeyJoinColumns().clear();
 				return;
-			case OrmPackage.ENTITY__ID_CLASS:
+			case OrmPackage.XML_ENTITY__ID_CLASS:
 				setIdClass((IdClass)null);
 				return;
-			case OrmPackage.ENTITY__INHERITANCE:
+			case OrmPackage.XML_ENTITY__INHERITANCE:
 				setInheritance((Inheritance)null);
 				return;
-			case OrmPackage.ENTITY__DISCRIMINATOR_VALUE:
+			case OrmPackage.XML_ENTITY__DISCRIMINATOR_VALUE:
 				setDiscriminatorValue(DISCRIMINATOR_VALUE_EDEFAULT);
 				return;
-			case OrmPackage.ENTITY__DISCRIMINATOR_COLUMN:
+			case OrmPackage.XML_ENTITY__DISCRIMINATOR_COLUMN:
 				setDiscriminatorColumn((XmlDiscriminatorColumn)null);
 				return;
-			case OrmPackage.ENTITY__SEQUENCE_GENERATOR:
+			case OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR:
 				setSequenceGenerator((XmlSequenceGenerator)null);
 				return;
-			case OrmPackage.ENTITY__TABLE_GENERATOR:
+			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
 				setTableGenerator((XmlTableGenerator)null);
 				return;
-			case OrmPackage.ENTITY__NAMED_QUERIES:
+			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
 				getNamedQueries().clear();
 				return;
-			case OrmPackage.ENTITY__NAMED_NATIVE_QUERIES:
+			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
 				getNamedNativeQueries().clear();
 				return;
-			case OrmPackage.ENTITY__SQL_RESULT_SET_MAPPINGS:
+			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				getSqlResultSetMappings().clear();
 				return;
-			case OrmPackage.ENTITY__EXCLUDE_DEFAULT_LISTENERS:
+			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
 				setExcludeDefaultListeners(EXCLUDE_DEFAULT_LISTENERS_EDEFAULT);
 				return;
-			case OrmPackage.ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
+			case OrmPackage.XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
 				setExcludeSuperclassListeners(EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT);
 				return;
-			case OrmPackage.ENTITY__ENTITY_LISTENERS:
+			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
 				setEntityListeners((EntityListeners)null);
 				return;
-			case OrmPackage.ENTITY__PRE_PERSIST:
+			case OrmPackage.XML_ENTITY__PRE_PERSIST:
 				setPrePersist((PrePersist)null);
 				return;
-			case OrmPackage.ENTITY__POST_PERSIST:
+			case OrmPackage.XML_ENTITY__POST_PERSIST:
 				setPostPersist((PostPersist)null);
 				return;
-			case OrmPackage.ENTITY__PRE_REMOVE:
+			case OrmPackage.XML_ENTITY__PRE_REMOVE:
 				setPreRemove((PreRemove)null);
 				return;
-			case OrmPackage.ENTITY__POST_REMOVE:
+			case OrmPackage.XML_ENTITY__POST_REMOVE:
 				setPostRemove((PostRemove)null);
 				return;
-			case OrmPackage.ENTITY__PRE_UPDATE:
+			case OrmPackage.XML_ENTITY__PRE_UPDATE:
 				setPreUpdate((PreUpdate)null);
 				return;
-			case OrmPackage.ENTITY__POST_UPDATE:
+			case OrmPackage.XML_ENTITY__POST_UPDATE:
 				setPostUpdate((PostUpdate)null);
 				return;
-			case OrmPackage.ENTITY__POST_LOAD:
+			case OrmPackage.XML_ENTITY__POST_LOAD:
 				setPostLoad((PostLoad)null);
 				return;
-			case OrmPackage.ENTITY__ATTRIBUTE_OVERRIDES:
+			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
 				getAttributeOverrides().clear();
 				return;
-			case OrmPackage.ENTITY__ASSOCIATION_OVERRIDES:
+			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
 				getAssociationOverrides().clear();
 				return;
 		}
@@ -1839,55 +1839,55 @@ public class XmlEntity extends AbstractTypeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ENTITY__NAME:
+			case OrmPackage.XML_ENTITY__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case OrmPackage.ENTITY__TABLE:
+			case OrmPackage.XML_ENTITY__TABLE:
 				return table != null;
-			case OrmPackage.ENTITY__SECONDARY_TABLES:
+			case OrmPackage.XML_ENTITY__SECONDARY_TABLES:
 				return secondaryTables != null && !secondaryTables.isEmpty();
-			case OrmPackage.ENTITY__PRIMARY_KEY_JOIN_COLUMNS:
+			case OrmPackage.XML_ENTITY__PRIMARY_KEY_JOIN_COLUMNS:
 				return primaryKeyJoinColumns != null && !primaryKeyJoinColumns.isEmpty();
-			case OrmPackage.ENTITY__ID_CLASS:
+			case OrmPackage.XML_ENTITY__ID_CLASS:
 				return idClass != null;
-			case OrmPackage.ENTITY__INHERITANCE:
+			case OrmPackage.XML_ENTITY__INHERITANCE:
 				return inheritance != null;
-			case OrmPackage.ENTITY__DISCRIMINATOR_VALUE:
+			case OrmPackage.XML_ENTITY__DISCRIMINATOR_VALUE:
 				return DISCRIMINATOR_VALUE_EDEFAULT == null ? discriminatorValue != null : !DISCRIMINATOR_VALUE_EDEFAULT.equals(discriminatorValue);
-			case OrmPackage.ENTITY__DISCRIMINATOR_COLUMN:
+			case OrmPackage.XML_ENTITY__DISCRIMINATOR_COLUMN:
 				return discriminatorColumn != null;
-			case OrmPackage.ENTITY__SEQUENCE_GENERATOR:
+			case OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR:
 				return sequenceGenerator != null;
-			case OrmPackage.ENTITY__TABLE_GENERATOR:
+			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
 				return tableGenerator != null;
-			case OrmPackage.ENTITY__NAMED_QUERIES:
+			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
 				return namedQueries != null && !namedQueries.isEmpty();
-			case OrmPackage.ENTITY__NAMED_NATIVE_QUERIES:
+			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
 				return namedNativeQueries != null && !namedNativeQueries.isEmpty();
-			case OrmPackage.ENTITY__SQL_RESULT_SET_MAPPINGS:
+			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				return sqlResultSetMappings != null && !sqlResultSetMappings.isEmpty();
-			case OrmPackage.ENTITY__EXCLUDE_DEFAULT_LISTENERS:
+			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
 				return excludeDefaultListeners != EXCLUDE_DEFAULT_LISTENERS_EDEFAULT;
-			case OrmPackage.ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
+			case OrmPackage.XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
 				return excludeSuperclassListeners != EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT;
-			case OrmPackage.ENTITY__ENTITY_LISTENERS:
+			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
 				return entityListeners != null;
-			case OrmPackage.ENTITY__PRE_PERSIST:
+			case OrmPackage.XML_ENTITY__PRE_PERSIST:
 				return prePersist != null;
-			case OrmPackage.ENTITY__POST_PERSIST:
+			case OrmPackage.XML_ENTITY__POST_PERSIST:
 				return postPersist != null;
-			case OrmPackage.ENTITY__PRE_REMOVE:
+			case OrmPackage.XML_ENTITY__PRE_REMOVE:
 				return preRemove != null;
-			case OrmPackage.ENTITY__POST_REMOVE:
+			case OrmPackage.XML_ENTITY__POST_REMOVE:
 				return postRemove != null;
-			case OrmPackage.ENTITY__PRE_UPDATE:
+			case OrmPackage.XML_ENTITY__PRE_UPDATE:
 				return preUpdate != null;
-			case OrmPackage.ENTITY__POST_UPDATE:
+			case OrmPackage.XML_ENTITY__POST_UPDATE:
 				return postUpdate != null;
-			case OrmPackage.ENTITY__POST_LOAD:
+			case OrmPackage.XML_ENTITY__POST_LOAD:
 				return postLoad != null;
-			case OrmPackage.ENTITY__ATTRIBUTE_OVERRIDES:
+			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
 				return attributeOverrides != null && !attributeOverrides.isEmpty();
-			case OrmPackage.ENTITY__ASSOCIATION_OVERRIDES:
+			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
 				return associationOverrides != null && !associationOverrides.isEmpty();
 		}
 		return super.eIsSet(featureID);

@@ -47,9 +47,9 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings()
  * @model kind="class"
- * @extends IJpaEObject
+ * @extends JpaEObject
  * @generated
  */
 public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
@@ -287,7 +287,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.ENTITY_MAPPINGS;
+		return OrmPackage.Literals.XML_ENTITY_MAPPINGS;
 	}
 
 	/**
@@ -303,8 +303,8 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * @see #isSetVersion()
 	 * @see #unsetVersion()
 	 * @see #setVersion(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings_Version()
-	 * @model default="1.0" unsettable="true" dataType="org.eclipse.jpt.core.internal.resource.orm.VersionType" required="true"
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_Version()
+	 * @model default="1.0" unsettable="true" dataType="org.eclipse.jpt.core.resource.orm.VersionType" required="true"
 	 * @generated
 	 */
 	public String getVersion()
@@ -329,7 +329,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 		boolean oldVersionESet = versionESet;
 		versionESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY_MAPPINGS__VERSION, oldVersion, version, !oldVersionESet));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_MAPPINGS__VERSION, oldVersion, version, !oldVersionESet));
 	}
 
 	/**
@@ -348,7 +348,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 		version = VERSION_EDEFAULT;
 		versionESet = false;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.ENTITY_MAPPINGS__VERSION, oldVersion, VERSION_EDEFAULT, oldVersionESet));
+			eNotify(new ENotificationImpl(this, Notification.UNSET, OrmPackage.XML_ENTITY_MAPPINGS__VERSION, oldVersion, VERSION_EDEFAULT, oldVersionESet));
 	}
 
 	/**
@@ -376,7 +376,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Description</em>' attribute.
 	 * @see #setDescription(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings_Description()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_Description()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -398,7 +398,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 		String oldDescription = description;
 		description = newDescription;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY_MAPPINGS__DESCRIPTION, oldDescription, description));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION, oldDescription, description));
 	}
 
 	/**
@@ -411,7 +411,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Persistence Unit Metadata</em>' containment reference.
 	 * @see #setPersistenceUnitMetadata(XmlPersistenceUnitMetadata)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings_PersistenceUnitMetadata()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_PersistenceUnitMetadata()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -431,7 +431,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 		persistenceUnitMetadata = newPersistenceUnitMetadata;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA, oldPersistenceUnitMetadata, newPersistenceUnitMetadata);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA, oldPersistenceUnitMetadata, newPersistenceUnitMetadata);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -451,14 +451,14 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 		{
 			NotificationChain msgs = null;
 			if (persistenceUnitMetadata != null)
-				msgs = ((InternalEObject)persistenceUnitMetadata).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA, null, msgs);
+				msgs = ((InternalEObject)persistenceUnitMetadata).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA, null, msgs);
 			if (newPersistenceUnitMetadata != null)
-				msgs = ((InternalEObject)newPersistenceUnitMetadata).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA, null, msgs);
+				msgs = ((InternalEObject)newPersistenceUnitMetadata).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA, null, msgs);
 			msgs = basicSetPersistenceUnitMetadata(newPersistenceUnitMetadata, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA, newPersistenceUnitMetadata, newPersistenceUnitMetadata));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA, newPersistenceUnitMetadata, newPersistenceUnitMetadata));
 	}
 
 	/**
@@ -471,7 +471,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Package</em>' attribute.
 	 * @see #setPackage(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings_Package()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_Package()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -493,7 +493,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 		String oldPackage = package_;
 		package_ = newPackage;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY_MAPPINGS__PACKAGE, oldPackage, package_));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_MAPPINGS__PACKAGE, oldPackage, package_));
 	}
 
 	/**
@@ -506,7 +506,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Schema</em>' attribute.
 	 * @see #setSchema(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings_Schema()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_Schema()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -528,7 +528,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 		String oldSchema = schema;
 		schema = newSchema;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY_MAPPINGS__SCHEMA, oldSchema, schema));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_MAPPINGS__SCHEMA, oldSchema, schema));
 	}
 
 	/**
@@ -541,7 +541,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Catalog</em>' attribute.
 	 * @see #setCatalog(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings_Catalog()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_Catalog()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -563,7 +563,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 		String oldCatalog = catalog;
 		catalog = newCatalog;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY_MAPPINGS__CATALOG, oldCatalog, catalog));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_MAPPINGS__CATALOG, oldCatalog, catalog));
 	}
 
 	/**
@@ -579,7 +579,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * @return the value of the '<em>Access</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.AccessType
 	 * @see #setAccess(AccessType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings_Access()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_Access()
 	 * @model default="PROPERTY"
 	 * @generated
 	 */
@@ -602,7 +602,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 		AccessType oldAccess = access;
 		access = newAccess == null ? ACCESS_EDEFAULT : newAccess;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ENTITY_MAPPINGS__ACCESS, oldAccess, access));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ENTITY_MAPPINGS__ACCESS, oldAccess, access));
 	}
 
 	/**
@@ -615,7 +615,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Sequence Generators</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings_SequenceGenerators()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_SequenceGenerators()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -623,7 +623,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	{
 		if (sequenceGenerators == null)
 		{
-			sequenceGenerators = new EObjectContainmentEList<XmlSequenceGenerator>(XmlSequenceGenerator.class, this, OrmPackage.ENTITY_MAPPINGS__SEQUENCE_GENERATORS);
+			sequenceGenerators = new EObjectContainmentEList<XmlSequenceGenerator>(XmlSequenceGenerator.class, this, OrmPackage.XML_ENTITY_MAPPINGS__SEQUENCE_GENERATORS);
 		}
 		return sequenceGenerators;
 	}
@@ -638,7 +638,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Table Generators</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings_TableGenerators()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_TableGenerators()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -646,7 +646,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	{
 		if (tableGenerators == null)
 		{
-			tableGenerators = new EObjectContainmentEList<XmlTableGenerator>(XmlTableGenerator.class, this, OrmPackage.ENTITY_MAPPINGS__TABLE_GENERATORS);
+			tableGenerators = new EObjectContainmentEList<XmlTableGenerator>(XmlTableGenerator.class, this, OrmPackage.XML_ENTITY_MAPPINGS__TABLE_GENERATORS);
 		}
 		return tableGenerators;
 	}
@@ -661,7 +661,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Named Queries</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings_NamedQueries()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_NamedQueries()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -669,7 +669,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	{
 		if (namedQueries == null)
 		{
-			namedQueries = new EObjectContainmentEList<XmlNamedQuery>(XmlNamedQuery.class, this, OrmPackage.ENTITY_MAPPINGS__NAMED_QUERIES);
+			namedQueries = new EObjectContainmentEList<XmlNamedQuery>(XmlNamedQuery.class, this, OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES);
 		}
 		return namedQueries;
 	}
@@ -684,7 +684,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Named Native Queries</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings_NamedNativeQueries()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_NamedNativeQueries()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -692,7 +692,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	{
 		if (namedNativeQueries == null)
 		{
-			namedNativeQueries = new EObjectContainmentEList<XmlNamedNativeQuery>(XmlNamedNativeQuery.class, this, OrmPackage.ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES);
+			namedNativeQueries = new EObjectContainmentEList<XmlNamedNativeQuery>(XmlNamedNativeQuery.class, this, OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES);
 		}
 		return namedNativeQueries;
 	}
@@ -707,7 +707,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Sql Result Set Mappings</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings_SqlResultSetMappings()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_SqlResultSetMappings()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -715,7 +715,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	{
 		if (sqlResultSetMappings == null)
 		{
-			sqlResultSetMappings = new EObjectContainmentEList<SqlResultSetMapping>(SqlResultSetMapping.class, this, OrmPackage.ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS);
+			sqlResultSetMappings = new EObjectContainmentEList<SqlResultSetMapping>(SqlResultSetMapping.class, this, OrmPackage.XML_ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS);
 		}
 		return sqlResultSetMappings;
 	}
@@ -730,7 +730,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Mapped Superclasses</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings_MappedSuperclasses()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_MappedSuperclasses()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -738,7 +738,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	{
 		if (mappedSuperclasses == null)
 		{
-			mappedSuperclasses = new EObjectContainmentEList<XmlMappedSuperclass>(XmlMappedSuperclass.class, this, OrmPackage.ENTITY_MAPPINGS__MAPPED_SUPERCLASSES);
+			mappedSuperclasses = new EObjectContainmentEList<XmlMappedSuperclass>(XmlMappedSuperclass.class, this, OrmPackage.XML_ENTITY_MAPPINGS__MAPPED_SUPERCLASSES);
 		}
 		return mappedSuperclasses;
 	}
@@ -753,7 +753,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Entities</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings_Entities()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_Entities()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -761,7 +761,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	{
 		if (entities == null)
 		{
-			entities = new EObjectContainmentEList<XmlEntity>(XmlEntity.class, this, OrmPackage.ENTITY_MAPPINGS__ENTITIES);
+			entities = new EObjectContainmentEList<XmlEntity>(XmlEntity.class, this, OrmPackage.XML_ENTITY_MAPPINGS__ENTITIES);
 		}
 		return entities;
 	}
@@ -776,7 +776,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Embeddables</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityMappings_Embeddables()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_Embeddables()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -784,7 +784,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	{
 		if (embeddables == null)
 		{
-			embeddables = new EObjectContainmentEList<XmlEmbeddable>(XmlEmbeddable.class, this, OrmPackage.ENTITY_MAPPINGS__EMBEDDABLES);
+			embeddables = new EObjectContainmentEList<XmlEmbeddable>(XmlEmbeddable.class, this, OrmPackage.XML_ENTITY_MAPPINGS__EMBEDDABLES);
 		}
 		return embeddables;
 	}
@@ -799,23 +799,23 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:
+			case OrmPackage.XML_ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:
 				return basicSetPersistenceUnitMetadata(null, msgs);
-			case OrmPackage.ENTITY_MAPPINGS__SEQUENCE_GENERATORS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__SEQUENCE_GENERATORS:
 				return ((InternalEList<?>)getSequenceGenerators()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ENTITY_MAPPINGS__TABLE_GENERATORS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__TABLE_GENERATORS:
 				return ((InternalEList<?>)getTableGenerators()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ENTITY_MAPPINGS__NAMED_QUERIES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				return ((InternalEList<?>)getNamedQueries()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
 				return ((InternalEList<?>)getNamedNativeQueries()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS:
 				return ((InternalEList<?>)getSqlResultSetMappings()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ENTITY_MAPPINGS__MAPPED_SUPERCLASSES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__MAPPED_SUPERCLASSES:
 				return ((InternalEList<?>)getMappedSuperclasses()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ENTITY_MAPPINGS__ENTITIES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__ENTITIES:
 				return ((InternalEList<?>)getEntities()).basicRemove(otherEnd, msgs);
-			case OrmPackage.ENTITY_MAPPINGS__EMBEDDABLES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__EMBEDDABLES:
 				return ((InternalEList<?>)getEmbeddables()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -831,35 +831,35 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ENTITY_MAPPINGS__VERSION:
+			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
 				return getVersion();
-			case OrmPackage.ENTITY_MAPPINGS__DESCRIPTION:
+			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
 				return getDescription();
-			case OrmPackage.ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:
+			case OrmPackage.XML_ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:
 				return getPersistenceUnitMetadata();
-			case OrmPackage.ENTITY_MAPPINGS__PACKAGE:
+			case OrmPackage.XML_ENTITY_MAPPINGS__PACKAGE:
 				return getPackage();
-			case OrmPackage.ENTITY_MAPPINGS__SCHEMA:
+			case OrmPackage.XML_ENTITY_MAPPINGS__SCHEMA:
 				return getSchema();
-			case OrmPackage.ENTITY_MAPPINGS__CATALOG:
+			case OrmPackage.XML_ENTITY_MAPPINGS__CATALOG:
 				return getCatalog();
-			case OrmPackage.ENTITY_MAPPINGS__ACCESS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
 				return getAccess();
-			case OrmPackage.ENTITY_MAPPINGS__SEQUENCE_GENERATORS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__SEQUENCE_GENERATORS:
 				return getSequenceGenerators();
-			case OrmPackage.ENTITY_MAPPINGS__TABLE_GENERATORS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__TABLE_GENERATORS:
 				return getTableGenerators();
-			case OrmPackage.ENTITY_MAPPINGS__NAMED_QUERIES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				return getNamedQueries();
-			case OrmPackage.ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
 				return getNamedNativeQueries();
-			case OrmPackage.ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS:
 				return getSqlResultSetMappings();
-			case OrmPackage.ENTITY_MAPPINGS__MAPPED_SUPERCLASSES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__MAPPED_SUPERCLASSES:
 				return getMappedSuperclasses();
-			case OrmPackage.ENTITY_MAPPINGS__ENTITIES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__ENTITIES:
 				return getEntities();
-			case OrmPackage.ENTITY_MAPPINGS__EMBEDDABLES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__EMBEDDABLES:
 				return getEmbeddables();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -876,56 +876,56 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ENTITY_MAPPINGS__VERSION:
+			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
 				setVersion((String)newValue);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__DESCRIPTION:
+			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
 				setDescription((String)newValue);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:
+			case OrmPackage.XML_ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:
 				setPersistenceUnitMetadata((XmlPersistenceUnitMetadata)newValue);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__PACKAGE:
+			case OrmPackage.XML_ENTITY_MAPPINGS__PACKAGE:
 				setPackage((String)newValue);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__SCHEMA:
+			case OrmPackage.XML_ENTITY_MAPPINGS__SCHEMA:
 				setSchema((String)newValue);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__CATALOG:
+			case OrmPackage.XML_ENTITY_MAPPINGS__CATALOG:
 				setCatalog((String)newValue);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__ACCESS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
 				setAccess((AccessType)newValue);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__SEQUENCE_GENERATORS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__SEQUENCE_GENERATORS:
 				getSequenceGenerators().clear();
 				getSequenceGenerators().addAll((Collection<? extends XmlSequenceGenerator>)newValue);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__TABLE_GENERATORS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__TABLE_GENERATORS:
 				getTableGenerators().clear();
 				getTableGenerators().addAll((Collection<? extends XmlTableGenerator>)newValue);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__NAMED_QUERIES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				getNamedQueries().clear();
 				getNamedQueries().addAll((Collection<? extends XmlNamedQuery>)newValue);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
 				getNamedNativeQueries().clear();
 				getNamedNativeQueries().addAll((Collection<? extends XmlNamedNativeQuery>)newValue);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS:
 				getSqlResultSetMappings().clear();
 				getSqlResultSetMappings().addAll((Collection<? extends SqlResultSetMapping>)newValue);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__MAPPED_SUPERCLASSES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__MAPPED_SUPERCLASSES:
 				getMappedSuperclasses().clear();
 				getMappedSuperclasses().addAll((Collection<? extends XmlMappedSuperclass>)newValue);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__ENTITIES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__ENTITIES:
 				getEntities().clear();
 				getEntities().addAll((Collection<? extends XmlEntity>)newValue);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__EMBEDDABLES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__EMBEDDABLES:
 				getEmbeddables().clear();
 				getEmbeddables().addAll((Collection<? extends XmlEmbeddable>)newValue);
 				return;
@@ -943,49 +943,49 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ENTITY_MAPPINGS__VERSION:
+			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
 				unsetVersion();
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__DESCRIPTION:
+			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:
+			case OrmPackage.XML_ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:
 				setPersistenceUnitMetadata((XmlPersistenceUnitMetadata)null);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__PACKAGE:
+			case OrmPackage.XML_ENTITY_MAPPINGS__PACKAGE:
 				setPackage(PACKAGE_EDEFAULT);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__SCHEMA:
+			case OrmPackage.XML_ENTITY_MAPPINGS__SCHEMA:
 				setSchema(SCHEMA_EDEFAULT);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__CATALOG:
+			case OrmPackage.XML_ENTITY_MAPPINGS__CATALOG:
 				setCatalog(CATALOG_EDEFAULT);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__ACCESS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
 				setAccess(ACCESS_EDEFAULT);
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__SEQUENCE_GENERATORS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__SEQUENCE_GENERATORS:
 				getSequenceGenerators().clear();
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__TABLE_GENERATORS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__TABLE_GENERATORS:
 				getTableGenerators().clear();
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__NAMED_QUERIES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				getNamedQueries().clear();
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
 				getNamedNativeQueries().clear();
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS:
 				getSqlResultSetMappings().clear();
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__MAPPED_SUPERCLASSES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__MAPPED_SUPERCLASSES:
 				getMappedSuperclasses().clear();
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__ENTITIES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__ENTITIES:
 				getEntities().clear();
 				return;
-			case OrmPackage.ENTITY_MAPPINGS__EMBEDDABLES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__EMBEDDABLES:
 				getEmbeddables().clear();
 				return;
 		}
@@ -1002,35 +1002,35 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ENTITY_MAPPINGS__VERSION:
+			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
 				return isSetVersion();
-			case OrmPackage.ENTITY_MAPPINGS__DESCRIPTION:
+			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
-			case OrmPackage.ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:
+			case OrmPackage.XML_ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:
 				return persistenceUnitMetadata != null;
-			case OrmPackage.ENTITY_MAPPINGS__PACKAGE:
+			case OrmPackage.XML_ENTITY_MAPPINGS__PACKAGE:
 				return PACKAGE_EDEFAULT == null ? package_ != null : !PACKAGE_EDEFAULT.equals(package_);
-			case OrmPackage.ENTITY_MAPPINGS__SCHEMA:
+			case OrmPackage.XML_ENTITY_MAPPINGS__SCHEMA:
 				return SCHEMA_EDEFAULT == null ? schema != null : !SCHEMA_EDEFAULT.equals(schema);
-			case OrmPackage.ENTITY_MAPPINGS__CATALOG:
+			case OrmPackage.XML_ENTITY_MAPPINGS__CATALOG:
 				return CATALOG_EDEFAULT == null ? catalog != null : !CATALOG_EDEFAULT.equals(catalog);
-			case OrmPackage.ENTITY_MAPPINGS__ACCESS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
 				return access != ACCESS_EDEFAULT;
-			case OrmPackage.ENTITY_MAPPINGS__SEQUENCE_GENERATORS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__SEQUENCE_GENERATORS:
 				return sequenceGenerators != null && !sequenceGenerators.isEmpty();
-			case OrmPackage.ENTITY_MAPPINGS__TABLE_GENERATORS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__TABLE_GENERATORS:
 				return tableGenerators != null && !tableGenerators.isEmpty();
-			case OrmPackage.ENTITY_MAPPINGS__NAMED_QUERIES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
 				return namedQueries != null && !namedQueries.isEmpty();
-			case OrmPackage.ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
 				return namedNativeQueries != null && !namedNativeQueries.isEmpty();
-			case OrmPackage.ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS:
+			case OrmPackage.XML_ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS:
 				return sqlResultSetMappings != null && !sqlResultSetMappings.isEmpty();
-			case OrmPackage.ENTITY_MAPPINGS__MAPPED_SUPERCLASSES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__MAPPED_SUPERCLASSES:
 				return mappedSuperclasses != null && !mappedSuperclasses.isEmpty();
-			case OrmPackage.ENTITY_MAPPINGS__ENTITIES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__ENTITIES:
 				return entities != null && !entities.isEmpty();
-			case OrmPackage.ENTITY_MAPPINGS__EMBEDDABLES:
+			case OrmPackage.XML_ENTITY_MAPPINGS__EMBEDDABLES:
 				return embeddables != null && !embeddables.isEmpty();
 		}
 		return super.eIsSet(featureID);

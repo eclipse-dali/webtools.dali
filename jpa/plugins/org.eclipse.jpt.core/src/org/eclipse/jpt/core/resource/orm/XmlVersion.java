@@ -22,7 +22,7 @@ package org.eclipse.jpt.core.resource.orm;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getVersion()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlVersion()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
@@ -40,7 +40,7 @@ public interface XmlVersion extends XmlAttributeMapping, ColumnMapping
 	 * @return the value of the '<em>Temporal</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.TemporalType
 	 * @see #setTemporal(TemporalType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getVersion_Temporal()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlVersion_Temporal()
 	 * @model
 	 * @generated
 	 */

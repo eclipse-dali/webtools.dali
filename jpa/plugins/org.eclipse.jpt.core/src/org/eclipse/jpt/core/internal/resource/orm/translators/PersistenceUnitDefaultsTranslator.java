@@ -42,22 +42,22 @@ public class PersistenceUnitDefaultsTranslator extends Translator
 	}
 	
 	private Translator createSchemaTranslator() {
-		return new Translator(SCHEMA, ORM_PKG.getPersistenceUnitDefaults_Schema());
+		return new Translator(SCHEMA, ORM_PKG.getXmlPersistenceUnitDefaults_Schema());
 	}
 	
 	private Translator createCatalogTranslator() {
-		return new Translator(CATALOG, ORM_PKG.getPersistenceUnitDefaults_Catalog());
+		return new Translator(CATALOG, ORM_PKG.getXmlPersistenceUnitDefaults_Catalog());
 	}
 	
 	private Translator createAccessTranslator() {
-		return new Translator(ACCESS, ORM_PKG.getPersistenceUnitDefaults_Access());
+		return new Translator(ACCESS, ORM_PKG.getXmlPersistenceUnitDefaults_Access());
 	}
 	
 	private Translator createCascadePersistTranslator() {
-		return new EmptyTagBooleanTranslator(CASCADE_PERSIST, ORM_PKG.getPersistenceUnitDefaults_CascadePersist());
+		return new EmptyTagBooleanTranslator(CASCADE_PERSIST, ORM_PKG.getXmlPersistenceUnitDefaults_CascadePersist());
 	}
 	
 	private Translator createEntityListenersTranslator() {
-		return new EntityListenersTranslator(ENTITY_LISTENERS, ORM_PKG.getPersistenceUnitDefaults_EntityListeners());
+		return new EntityListenersTranslator(ENTITY_LISTENERS, ORM_PKG.getXmlPersistenceUnitDefaults_EntityListeners());
 	}
 }

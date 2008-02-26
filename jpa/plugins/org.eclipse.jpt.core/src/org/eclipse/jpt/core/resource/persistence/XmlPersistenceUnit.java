@@ -48,7 +48,7 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  *
  * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlPersistenceUnit()
  * @model kind="class"
- * @extends IJpaEObject
+ * @extends JpaEObject
  * @generated
  */
 public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject

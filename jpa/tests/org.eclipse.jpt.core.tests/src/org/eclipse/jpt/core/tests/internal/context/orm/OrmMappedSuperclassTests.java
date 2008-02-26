@@ -173,7 +173,7 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		assertFalse(ormMappedSuperclass.isDefaultMetadataComplete());
 		assertNull(mappedSuperclassResource.getMetadataComplete());
 		
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
+		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		assertTrue(ormMappedSuperclass.isDefaultMetadataComplete());
 		assertNull(ormMappedSuperclass.getSpecifiedMetadataComplete());
@@ -194,7 +194,7 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		assertFalse(ormMappedSuperclass.isMetadataComplete());
 		assertNull(mappedSuperclassResource.getMetadataComplete());
 		
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
+		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		assertTrue(ormMappedSuperclass.isMetadataComplete());
 		assertNull(ormMappedSuperclass.getSpecifiedMetadataComplete());

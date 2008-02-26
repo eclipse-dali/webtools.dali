@@ -42,7 +42,7 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAttributes()
  * @model kind="class"
- * @extends IJpaEObject
+ * @extends JpaEObject
  * @generated
  */
 public class Attributes extends AbstractJpaEObject implements JpaEObject

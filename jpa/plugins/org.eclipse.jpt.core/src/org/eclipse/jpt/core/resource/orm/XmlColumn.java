@@ -24,7 +24,7 @@ package org.eclipse.jpt.core.resource.orm;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getColumn()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlColumn()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
@@ -40,7 +40,7 @@ public interface XmlColumn extends XmlAbstractColumn
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Length</em>' attribute.
 	 * @see #setLength(Integer)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getColumn_Length()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlColumn_Length()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.IntObject"
 	 * @generated
 	 */
@@ -66,7 +66,7 @@ public interface XmlColumn extends XmlAbstractColumn
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Precision</em>' attribute.
 	 * @see #setPrecision(Integer)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getColumn_Precision()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlColumn_Precision()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.IntObject"
 	 * @generated
 	 */
@@ -92,7 +92,7 @@ public interface XmlColumn extends XmlAbstractColumn
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Scale</em>' attribute.
 	 * @see #setScale(Integer)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getColumn_Scale()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlColumn_Scale()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.IntObject"
 	 * @generated
 	 */

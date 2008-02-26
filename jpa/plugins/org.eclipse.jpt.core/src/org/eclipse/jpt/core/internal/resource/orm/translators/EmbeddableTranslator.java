@@ -42,22 +42,22 @@ public class EmbeddableTranslator extends Translator
 	}
 	
 	private Translator createClassTranslator() {
-		return new Translator(CLASS, ORM_PKG.getTypeMapping_ClassName(), DOM_ATTRIBUTE);
+		return new Translator(CLASS, ORM_PKG.getAbstractTypeMapping_ClassName(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createAccessTranslator() {
-		return new Translator(ACCESS, ORM_PKG.getTypeMapping_Access(), DOM_ATTRIBUTE);
+		return new Translator(ACCESS, ORM_PKG.getAbstractTypeMapping_Access(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createMetadataCompleteTranslator() {
-		return new Translator(METADATA_COMPLETE, ORM_PKG.getTypeMapping_MetadataComplete(), DOM_ATTRIBUTE);
+		return new Translator(METADATA_COMPLETE, ORM_PKG.getAbstractTypeMapping_MetadataComplete(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createDescriptionTranslator() {
-		return new Translator(DESCRIPTION, ORM_PKG.getTypeMapping_Description());
+		return new Translator(DESCRIPTION, ORM_PKG.getAbstractTypeMapping_Description());
 	}
 	
 	private Translator createAttributesTranslator() {
-		return new AttributesTranslator(ATTRIBUTES, ORM_PKG.getTypeMapping_Attributes());
+		return new AttributesTranslator(ATTRIBUTES, ORM_PKG.getAbstractTypeMapping_Attributes());
 	}
 }

@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getMapKey()
  * @model kind="class" interface="true" abstract="true"
- * @extends IJpaEObject
+ * @extends JpaEObject
  * @generated
  */
 public interface MapKey extends JpaEObject

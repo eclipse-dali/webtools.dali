@@ -170,7 +170,7 @@ public class OrmEmbeddableTests extends ContextModelTestCase
 		assertFalse(ormEmbeddable.isDefaultMetadataComplete());
 		assertNull(embeddableResource.getMetadataComplete());
 		
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
+		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		assertTrue(ormEmbeddable.isDefaultMetadataComplete());
 		assertNull(ormEmbeddable.getSpecifiedMetadataComplete());
@@ -190,7 +190,7 @@ public class OrmEmbeddableTests extends ContextModelTestCase
 		assertFalse(ormEmbeddable.isMetadataComplete());
 		assertNull(embeddableResource.getMetadataComplete());
 		
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
+		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		assertTrue(ormEmbeddable.isMetadataComplete());
 		assertNull(ormEmbeddable.getSpecifiedMetadataComplete());

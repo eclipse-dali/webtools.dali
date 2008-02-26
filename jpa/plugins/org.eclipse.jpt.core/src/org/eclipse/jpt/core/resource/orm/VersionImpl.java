@@ -105,7 +105,7 @@ public class VersionImpl extends AbstractJpaEObject implements XmlVersion
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAttributeMapping_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeMapping_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -202,7 +202,7 @@ public class VersionImpl extends AbstractJpaEObject implements XmlVersion
 	 * @return the value of the '<em>Temporal</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.TemporalType
 	 * @see #setTemporal(TemporalType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getVersion_Temporal()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlVersion_Temporal()
 	 * @model
 	 * @generated
 	 */

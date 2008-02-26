@@ -54,42 +54,42 @@ public class TableGeneratorTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getGenerator_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getXmlGenerator_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createTableTranslator() {
-		return new Translator(TABLE, ORM_PKG.getTableGenerator_Table(), DOM_ATTRIBUTE);
+		return new Translator(TABLE, ORM_PKG.getXmlTableGenerator_Table(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createCatalogTranslator() {
-		return new Translator(CATALOG, ORM_PKG.getTableGenerator_Catalog(), DOM_ATTRIBUTE);
+		return new Translator(CATALOG, ORM_PKG.getXmlTableGenerator_Catalog(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createSchemaTranslator() {
-		return new Translator(SCHEMA, ORM_PKG.getTableGenerator_Schema(), DOM_ATTRIBUTE);
+		return new Translator(SCHEMA, ORM_PKG.getXmlTableGenerator_Schema(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createPkColumnNameTranslator() {
-		return new Translator(PK_COLUMN_NAME, ORM_PKG.getTableGenerator_PkColumnName(), DOM_ATTRIBUTE);
+		return new Translator(PK_COLUMN_NAME, ORM_PKG.getXmlTableGenerator_PkColumnName(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createValueColumnNameTranslator() {
-		return new Translator(VALUE_COLUMN_NAME, ORM_PKG.getTableGenerator_ValueColumnName(), DOM_ATTRIBUTE);
+		return new Translator(VALUE_COLUMN_NAME, ORM_PKG.getXmlTableGenerator_ValueColumnName(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createPkColumnValueTranslator() {
-		return new Translator(PK_COLUMN_VALUE, ORM_PKG.getTableGenerator_PkColumnValue(), DOM_ATTRIBUTE);
+		return new Translator(PK_COLUMN_VALUE, ORM_PKG.getXmlTableGenerator_PkColumnValue(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createInitialValueTranslator() {
-		return new Translator(INITIAL_VALUE, ORM_PKG.getGenerator_InitialValue(), DOM_ATTRIBUTE);
+		return new Translator(INITIAL_VALUE, ORM_PKG.getXmlGenerator_InitialValue(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createAllocationSizeTranslator() {
-		return new Translator(ALLOCATION_SIZE, ORM_PKG.getGenerator_AllocationSize(), DOM_ATTRIBUTE);
+		return new Translator(ALLOCATION_SIZE, ORM_PKG.getXmlGenerator_AllocationSize(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createUniqueConstraintTranslator() {
-		return new UniqueConstraintTranslator(UNIQUE_CONSTRAINT, ORM_PKG.getTableGenerator_UniqueConstraints());
+		return new UniqueConstraintTranslator(UNIQUE_CONSTRAINT, ORM_PKG.getXmlTableGenerator_UniqueConstraints());
 	}
 }

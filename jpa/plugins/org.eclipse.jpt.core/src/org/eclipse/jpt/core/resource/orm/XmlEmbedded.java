@@ -23,7 +23,7 @@ import org.eclipse.emf.common.util.EList;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEmbedded()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEmbedded()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
@@ -39,7 +39,7 @@ public interface XmlEmbedded extends XmlAttributeMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attribute Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEmbedded_AttributeOverrides()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEmbedded_AttributeOverrides()
 	 * @model containment="true"
 	 * @generated
 	 */

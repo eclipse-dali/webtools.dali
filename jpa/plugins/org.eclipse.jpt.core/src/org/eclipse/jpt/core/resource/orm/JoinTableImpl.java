@@ -146,7 +146,7 @@ public class JoinTableImpl extends AbstractJpaEObject implements XmlJoinTable
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractTable_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractTable_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -181,7 +181,7 @@ public class JoinTableImpl extends AbstractJpaEObject implements XmlJoinTable
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Catalog</em>' attribute.
 	 * @see #setCatalog(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractTable_Catalog()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractTable_Catalog()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -216,7 +216,7 @@ public class JoinTableImpl extends AbstractJpaEObject implements XmlJoinTable
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Schema</em>' attribute.
 	 * @see #setSchema(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractTable_Schema()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractTable_Schema()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -251,7 +251,7 @@ public class JoinTableImpl extends AbstractJpaEObject implements XmlJoinTable
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Unique Constraints</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractTable_UniqueConstraints()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractTable_UniqueConstraints()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -274,7 +274,7 @@ public class JoinTableImpl extends AbstractJpaEObject implements XmlJoinTable
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getJoinTable_JoinColumns()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTable_JoinColumns()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -297,7 +297,7 @@ public class JoinTableImpl extends AbstractJpaEObject implements XmlJoinTable
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Inverse Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getJoinTable_InverseJoinColumns()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTable_InverseJoinColumns()
 	 * @model containment="true"
 	 * @generated
 	 */

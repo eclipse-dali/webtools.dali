@@ -93,7 +93,7 @@ public class GeneratedValueImpl extends AbstractJpaEObject implements XmlGenerat
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Generator</em>' attribute.
 	 * @see #setGenerator(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getGeneratedValue_Generator()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGeneratedValue_Generator()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -131,7 +131,7 @@ public class GeneratedValueImpl extends AbstractJpaEObject implements XmlGenerat
 	 * @return the value of the '<em>Strategy</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.GenerationType
 	 * @see #setStrategy(GenerationType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getGeneratedValue_Strategy()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGeneratedValue_Strategy()
 	 * @model default="TABLE"
 	 * @generated
 	 */

@@ -32,9 +32,9 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTypeMapping()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractTypeMapping()
  * @model kind="class" abstract="true"
- * @extends IJpaEObject
+ * @extends JpaEObject
  * @generated
  */
 public abstract class AbstractTypeMapping extends AbstractJpaEObject implements JpaEObject
@@ -143,7 +143,7 @@ public abstract class AbstractTypeMapping extends AbstractJpaEObject implements 
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.TYPE_MAPPING;
+		return OrmPackage.Literals.ABSTRACT_TYPE_MAPPING;
 	}
 
 	/**
@@ -156,7 +156,7 @@ public abstract class AbstractTypeMapping extends AbstractJpaEObject implements 
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Class Name</em>' attribute.
 	 * @see #setClassName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTypeMapping_ClassName()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractTypeMapping_ClassName()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -178,7 +178,7 @@ public abstract class AbstractTypeMapping extends AbstractJpaEObject implements 
 		String oldClassName = className;
 		className = newClassName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.TYPE_MAPPING__CLASS_NAME, oldClassName, className));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_TYPE_MAPPING__CLASS_NAME, oldClassName, className));
 	}
 
 	/**
@@ -194,7 +194,7 @@ public abstract class AbstractTypeMapping extends AbstractJpaEObject implements 
 	 * @return the value of the '<em>Access</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.AccessType
 	 * @see #setAccess(AccessType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTypeMapping_Access()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractTypeMapping_Access()
 	 * @model default="PROPERTY"
 	 * @generated
 	 */
@@ -217,7 +217,7 @@ public abstract class AbstractTypeMapping extends AbstractJpaEObject implements 
 		AccessType oldAccess = access;
 		access = newAccess == null ? ACCESS_EDEFAULT : newAccess;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.TYPE_MAPPING__ACCESS, oldAccess, access));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_TYPE_MAPPING__ACCESS, oldAccess, access));
 	}
 
 	/**
@@ -230,7 +230,7 @@ public abstract class AbstractTypeMapping extends AbstractJpaEObject implements 
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Metadata Complete</em>' attribute.
 	 * @see #setMetadataComplete(Boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTypeMapping_MetadataComplete()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractTypeMapping_MetadataComplete()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -252,7 +252,7 @@ public abstract class AbstractTypeMapping extends AbstractJpaEObject implements 
 		Boolean oldMetadataComplete = metadataComplete;
 		metadataComplete = newMetadataComplete;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.TYPE_MAPPING__METADATA_COMPLETE, oldMetadataComplete, metadataComplete));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_TYPE_MAPPING__METADATA_COMPLETE, oldMetadataComplete, metadataComplete));
 	}
 
 	/**
@@ -265,7 +265,7 @@ public abstract class AbstractTypeMapping extends AbstractJpaEObject implements 
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Description</em>' attribute.
 	 * @see #setDescription(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTypeMapping_Description()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractTypeMapping_Description()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -287,7 +287,7 @@ public abstract class AbstractTypeMapping extends AbstractJpaEObject implements 
 		String oldDescription = description;
 		description = newDescription;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.TYPE_MAPPING__DESCRIPTION, oldDescription, description));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_TYPE_MAPPING__DESCRIPTION, oldDescription, description));
 	}
 
 	/**
@@ -300,7 +300,7 @@ public abstract class AbstractTypeMapping extends AbstractJpaEObject implements 
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attributes</em>' containment reference.
 	 * @see #setAttributes(Attributes)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTypeMapping_Attributes()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractTypeMapping_Attributes()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -320,7 +320,7 @@ public abstract class AbstractTypeMapping extends AbstractJpaEObject implements 
 		attributes = newAttributes;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.TYPE_MAPPING__ATTRIBUTES, oldAttributes, newAttributes);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_TYPE_MAPPING__ATTRIBUTES, oldAttributes, newAttributes);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -340,14 +340,14 @@ public abstract class AbstractTypeMapping extends AbstractJpaEObject implements 
 		{
 			NotificationChain msgs = null;
 			if (attributes != null)
-				msgs = ((InternalEObject)attributes).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.TYPE_MAPPING__ATTRIBUTES, null, msgs);
+				msgs = ((InternalEObject)attributes).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ABSTRACT_TYPE_MAPPING__ATTRIBUTES, null, msgs);
 			if (newAttributes != null)
-				msgs = ((InternalEObject)newAttributes).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.TYPE_MAPPING__ATTRIBUTES, null, msgs);
+				msgs = ((InternalEObject)newAttributes).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ABSTRACT_TYPE_MAPPING__ATTRIBUTES, null, msgs);
 			msgs = basicSetAttributes(newAttributes, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.TYPE_MAPPING__ATTRIBUTES, newAttributes, newAttributes));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_TYPE_MAPPING__ATTRIBUTES, newAttributes, newAttributes));
 	}
 
 	/**
@@ -360,7 +360,7 @@ public abstract class AbstractTypeMapping extends AbstractJpaEObject implements 
 	{
 		switch (featureID)
 		{
-			case OrmPackage.TYPE_MAPPING__ATTRIBUTES:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__ATTRIBUTES:
 				return basicSetAttributes(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -376,15 +376,15 @@ public abstract class AbstractTypeMapping extends AbstractJpaEObject implements 
 	{
 		switch (featureID)
 		{
-			case OrmPackage.TYPE_MAPPING__CLASS_NAME:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__CLASS_NAME:
 				return getClassName();
-			case OrmPackage.TYPE_MAPPING__ACCESS:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__ACCESS:
 				return getAccess();
-			case OrmPackage.TYPE_MAPPING__METADATA_COMPLETE:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__METADATA_COMPLETE:
 				return getMetadataComplete();
-			case OrmPackage.TYPE_MAPPING__DESCRIPTION:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__DESCRIPTION:
 				return getDescription();
-			case OrmPackage.TYPE_MAPPING__ATTRIBUTES:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__ATTRIBUTES:
 				return getAttributes();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -400,19 +400,19 @@ public abstract class AbstractTypeMapping extends AbstractJpaEObject implements 
 	{
 		switch (featureID)
 		{
-			case OrmPackage.TYPE_MAPPING__CLASS_NAME:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__CLASS_NAME:
 				setClassName((String)newValue);
 				return;
-			case OrmPackage.TYPE_MAPPING__ACCESS:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__ACCESS:
 				setAccess((AccessType)newValue);
 				return;
-			case OrmPackage.TYPE_MAPPING__METADATA_COMPLETE:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__METADATA_COMPLETE:
 				setMetadataComplete((Boolean)newValue);
 				return;
-			case OrmPackage.TYPE_MAPPING__DESCRIPTION:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__DESCRIPTION:
 				setDescription((String)newValue);
 				return;
-			case OrmPackage.TYPE_MAPPING__ATTRIBUTES:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__ATTRIBUTES:
 				setAttributes((Attributes)newValue);
 				return;
 		}
@@ -429,19 +429,19 @@ public abstract class AbstractTypeMapping extends AbstractJpaEObject implements 
 	{
 		switch (featureID)
 		{
-			case OrmPackage.TYPE_MAPPING__CLASS_NAME:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__CLASS_NAME:
 				setClassName(CLASS_NAME_EDEFAULT);
 				return;
-			case OrmPackage.TYPE_MAPPING__ACCESS:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__ACCESS:
 				setAccess(ACCESS_EDEFAULT);
 				return;
-			case OrmPackage.TYPE_MAPPING__METADATA_COMPLETE:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__METADATA_COMPLETE:
 				setMetadataComplete(METADATA_COMPLETE_EDEFAULT);
 				return;
-			case OrmPackage.TYPE_MAPPING__DESCRIPTION:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__DESCRIPTION:
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
-			case OrmPackage.TYPE_MAPPING__ATTRIBUTES:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__ATTRIBUTES:
 				setAttributes((Attributes)null);
 				return;
 		}
@@ -458,15 +458,15 @@ public abstract class AbstractTypeMapping extends AbstractJpaEObject implements 
 	{
 		switch (featureID)
 		{
-			case OrmPackage.TYPE_MAPPING__CLASS_NAME:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__CLASS_NAME:
 				return CLASS_NAME_EDEFAULT == null ? className != null : !CLASS_NAME_EDEFAULT.equals(className);
-			case OrmPackage.TYPE_MAPPING__ACCESS:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__ACCESS:
 				return access != ACCESS_EDEFAULT;
-			case OrmPackage.TYPE_MAPPING__METADATA_COMPLETE:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__METADATA_COMPLETE:
 				return METADATA_COMPLETE_EDEFAULT == null ? metadataComplete != null : !METADATA_COMPLETE_EDEFAULT.equals(metadataComplete);
-			case OrmPackage.TYPE_MAPPING__DESCRIPTION:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
-			case OrmPackage.TYPE_MAPPING__ATTRIBUTES:
+			case OrmPackage.ABSTRACT_TYPE_MAPPING__ATTRIBUTES:
 				return attributes != null;
 		}
 		return super.eIsSet(featureID);

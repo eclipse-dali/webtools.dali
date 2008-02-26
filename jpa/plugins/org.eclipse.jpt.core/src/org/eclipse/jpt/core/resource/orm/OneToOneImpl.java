@@ -199,7 +199,7 @@ public class OneToOneImpl extends AbstractJpaEObject implements XmlOneToOne
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAttributeMapping_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeMapping_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -234,7 +234,7 @@ public class OneToOneImpl extends AbstractJpaEObject implements XmlOneToOne
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Target Entity</em>' attribute.
 	 * @see #setTargetEntity(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getRelationshipMapping_TargetEntity()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping_TargetEntity()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -272,7 +272,7 @@ public class OneToOneImpl extends AbstractJpaEObject implements XmlOneToOne
 	 * @return the value of the '<em>Fetch</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.FetchType
 	 * @see #setFetch(FetchType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getRelationshipMapping_Fetch()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping_Fetch()
 	 * @model default="LAZY"
 	 * @generated
 	 */
@@ -308,7 +308,7 @@ public class OneToOneImpl extends AbstractJpaEObject implements XmlOneToOne
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Optional</em>' attribute.
 	 * @see #setOptional(Boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getSingleRelationshipMapping_Optional()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSingleRelationshipMapping_Optional()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -343,7 +343,7 @@ public class OneToOneImpl extends AbstractJpaEObject implements XmlOneToOne
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Mapped By</em>' attribute.
 	 * @see #setMappedBy(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getOneToOne_MappedBy()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToOne_MappedBy()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -378,7 +378,7 @@ public class OneToOneImpl extends AbstractJpaEObject implements XmlOneToOne
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Primary Key Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getOneToOne_PrimaryKeyJoinColumns()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToOne_PrimaryKeyJoinColumns()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -401,7 +401,7 @@ public class OneToOneImpl extends AbstractJpaEObject implements XmlOneToOne
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getSingleRelationshipMapping_JoinColumns()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSingleRelationshipMapping_JoinColumns()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -424,7 +424,7 @@ public class OneToOneImpl extends AbstractJpaEObject implements XmlOneToOne
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Table</em>' containment reference.
 	 * @see #setJoinTable(XmlJoinTable)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getRelationshipMapping_JoinTable()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping_JoinTable()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -484,7 +484,7 @@ public class OneToOneImpl extends AbstractJpaEObject implements XmlOneToOne
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cascade</em>' containment reference.
 	 * @see #setCascade(CascadeType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getRelationshipMapping_Cascade()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping_Cascade()
 	 * @model containment="true"
 	 * @generated
 	 */

@@ -53,66 +53,66 @@ public class MappedSuperclassTranslator extends Translator
 	}
 	
 	private Translator createClassTranslator() {
-		return new Translator(CLASS, ORM_PKG.getTypeMapping_ClassName(), DOM_ATTRIBUTE);
+		return new Translator(CLASS, ORM_PKG.getAbstractTypeMapping_ClassName(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createAccessTranslator() {
-		return new Translator(ACCESS, ORM_PKG.getTypeMapping_Access(), DOM_ATTRIBUTE);
+		return new Translator(ACCESS, ORM_PKG.getAbstractTypeMapping_Access(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createMetadataCompleteTranslator() {
-		return new Translator(METADATA_COMPLETE, ORM_PKG.getTypeMapping_MetadataComplete(), DOM_ATTRIBUTE);
+		return new Translator(METADATA_COMPLETE, ORM_PKG.getAbstractTypeMapping_MetadataComplete(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createDescriptionTranslator() {
-		return new Translator(DESCRIPTION, ORM_PKG.getTypeMapping_Description());
+		return new Translator(DESCRIPTION, ORM_PKG.getAbstractTypeMapping_Description());
 	}
 	
 	private Translator createIdClassTranslator() {
-		return new IdClassTranslator(ID_CLASS, ORM_PKG.getMappedSuperclass_IdClass());
+		return new IdClassTranslator(ID_CLASS, ORM_PKG.getXmlMappedSuperclass_IdClass());
 	}
 	
 	private Translator createExcludeDefaultListenersTranslator() {
-		return new EmptyTagBooleanTranslator(EXCLUDE_DEFAULT_LISTENERS, ORM_PKG.getMappedSuperclass_ExcludeDefaultListeners());
+		return new EmptyTagBooleanTranslator(EXCLUDE_DEFAULT_LISTENERS, ORM_PKG.getXmlMappedSuperclass_ExcludeDefaultListeners());
 	}
 	
 	private Translator createExcludeSuperclassListenersTranslator() {
-		return new EmptyTagBooleanTranslator(EXCLUDE_SUPERCLASS_LISTENERS, ORM_PKG.getMappedSuperclass_ExcludeSuperclassListeners());
+		return new EmptyTagBooleanTranslator(EXCLUDE_SUPERCLASS_LISTENERS, ORM_PKG.getXmlMappedSuperclass_ExcludeSuperclassListeners());
 	}
 	
 	private Translator createEntityListenersTranslator() {
-		return new EntityListenersTranslator(ENTITY_LISTENERS, ORM_PKG.getMappedSuperclass_EntityListeners());
+		return new EntityListenersTranslator(ENTITY_LISTENERS, ORM_PKG.getXmlMappedSuperclass_EntityListeners());
 	}
 	
 	private Translator createPrePersistTranslator() {
-		return new EventMethodTranslator(PRE_PERSIST, ORM_PKG.getMappedSuperclass_PrePersist());
+		return new EventMethodTranslator(PRE_PERSIST, ORM_PKG.getXmlMappedSuperclass_PrePersist());
 	}
 	
 	private Translator createPostPersistTranslator() {
-		return new EventMethodTranslator(POST_PERSIST, ORM_PKG.getMappedSuperclass_PostPersist());
+		return new EventMethodTranslator(POST_PERSIST, ORM_PKG.getXmlMappedSuperclass_PostPersist());
 	}
 	
 	private Translator createPreRemoveTranslator() {
-		return new EventMethodTranslator(PRE_REMOVE, ORM_PKG.getMappedSuperclass_PreRemove());
+		return new EventMethodTranslator(PRE_REMOVE, ORM_PKG.getXmlMappedSuperclass_PreRemove());
 	}
 	
 	private Translator createPostRemoveTranslator() {
-		return new EventMethodTranslator(POST_REMOVE, ORM_PKG.getMappedSuperclass_PostRemove());
+		return new EventMethodTranslator(POST_REMOVE, ORM_PKG.getXmlMappedSuperclass_PostRemove());
 	}
 	
 	private Translator createPreUpdateTranslator() {
-		return new EventMethodTranslator(PRE_UPDATE, ORM_PKG.getMappedSuperclass_PreUpdate());
+		return new EventMethodTranslator(PRE_UPDATE, ORM_PKG.getXmlMappedSuperclass_PreUpdate());
 	}
 	
 	private Translator createPostUpdateTranslator() {
-		return new EventMethodTranslator(POST_UPDATE, ORM_PKG.getMappedSuperclass_PostUpdate());
+		return new EventMethodTranslator(POST_UPDATE, ORM_PKG.getXmlMappedSuperclass_PostUpdate());
 	}
 	
 	private Translator createPostLoadTranslator() {
-		return new EventMethodTranslator(POST_LOAD, ORM_PKG.getMappedSuperclass_PostLoad());
+		return new EventMethodTranslator(POST_LOAD, ORM_PKG.getXmlMappedSuperclass_PostLoad());
 	}
 	
 	private Translator createAttributesTranslator() {
-		return new AttributesTranslator(ATTRIBUTES, ORM_PKG.getTypeMapping_Attributes());
+		return new AttributesTranslator(ATTRIBUTES, ORM_PKG.getAbstractTypeMapping_Attributes());
 	}
 }

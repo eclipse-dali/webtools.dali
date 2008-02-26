@@ -32,7 +32,7 @@ import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getSecondaryTable()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSecondaryTable()
  * @model kind="class"
  * @generated
  */
@@ -129,7 +129,7 @@ public class XmlSecondaryTable extends AbstractJpaEObject implements XmlAbstract
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.SECONDARY_TABLE;
+		return OrmPackage.Literals.XML_SECONDARY_TABLE;
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class XmlSecondaryTable extends AbstractJpaEObject implements XmlAbstract
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractTable_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractTable_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -164,7 +164,7 @@ public class XmlSecondaryTable extends AbstractJpaEObject implements XmlAbstract
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.SECONDARY_TABLE__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SECONDARY_TABLE__NAME, oldName, name));
 	}
 
 	/**
@@ -177,7 +177,7 @@ public class XmlSecondaryTable extends AbstractJpaEObject implements XmlAbstract
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Catalog</em>' attribute.
 	 * @see #setCatalog(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractTable_Catalog()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractTable_Catalog()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -199,7 +199,7 @@ public class XmlSecondaryTable extends AbstractJpaEObject implements XmlAbstract
 		String oldCatalog = catalog;
 		catalog = newCatalog;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.SECONDARY_TABLE__CATALOG, oldCatalog, catalog));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SECONDARY_TABLE__CATALOG, oldCatalog, catalog));
 	}
 
 	/**
@@ -212,7 +212,7 @@ public class XmlSecondaryTable extends AbstractJpaEObject implements XmlAbstract
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Schema</em>' attribute.
 	 * @see #setSchema(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractTable_Schema()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractTable_Schema()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -234,7 +234,7 @@ public class XmlSecondaryTable extends AbstractJpaEObject implements XmlAbstract
 		String oldSchema = schema;
 		schema = newSchema;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.SECONDARY_TABLE__SCHEMA, oldSchema, schema));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SECONDARY_TABLE__SCHEMA, oldSchema, schema));
 	}
 
 	/**
@@ -247,7 +247,7 @@ public class XmlSecondaryTable extends AbstractJpaEObject implements XmlAbstract
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Unique Constraints</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractTable_UniqueConstraints()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractTable_UniqueConstraints()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -255,7 +255,7 @@ public class XmlSecondaryTable extends AbstractJpaEObject implements XmlAbstract
 	{
 		if (uniqueConstraints == null)
 		{
-			uniqueConstraints = new EObjectContainmentEList<UniqueConstraint>(UniqueConstraint.class, this, OrmPackage.SECONDARY_TABLE__UNIQUE_CONSTRAINTS);
+			uniqueConstraints = new EObjectContainmentEList<UniqueConstraint>(UniqueConstraint.class, this, OrmPackage.XML_SECONDARY_TABLE__UNIQUE_CONSTRAINTS);
 		}
 		return uniqueConstraints;
 	}
@@ -270,7 +270,7 @@ public class XmlSecondaryTable extends AbstractJpaEObject implements XmlAbstract
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Primary Key Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getSecondaryTable_PrimaryKeyJoinColumns()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSecondaryTable_PrimaryKeyJoinColumns()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -278,7 +278,7 @@ public class XmlSecondaryTable extends AbstractJpaEObject implements XmlAbstract
 	{
 		if (primaryKeyJoinColumns == null)
 		{
-			primaryKeyJoinColumns = new EObjectContainmentEList<XmlPrimaryKeyJoinColumn>(XmlPrimaryKeyJoinColumn.class, this, OrmPackage.SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS);
+			primaryKeyJoinColumns = new EObjectContainmentEList<XmlPrimaryKeyJoinColumn>(XmlPrimaryKeyJoinColumn.class, this, OrmPackage.XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS);
 		}
 		return primaryKeyJoinColumns;
 	}
@@ -293,9 +293,9 @@ public class XmlSecondaryTable extends AbstractJpaEObject implements XmlAbstract
 	{
 		switch (featureID)
 		{
-			case OrmPackage.SECONDARY_TABLE__UNIQUE_CONSTRAINTS:
+			case OrmPackage.XML_SECONDARY_TABLE__UNIQUE_CONSTRAINTS:
 				return ((InternalEList<?>)getUniqueConstraints()).basicRemove(otherEnd, msgs);
-			case OrmPackage.SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS:
+			case OrmPackage.XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS:
 				return ((InternalEList<?>)getPrimaryKeyJoinColumns()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -311,15 +311,15 @@ public class XmlSecondaryTable extends AbstractJpaEObject implements XmlAbstract
 	{
 		switch (featureID)
 		{
-			case OrmPackage.SECONDARY_TABLE__NAME:
+			case OrmPackage.XML_SECONDARY_TABLE__NAME:
 				return getName();
-			case OrmPackage.SECONDARY_TABLE__CATALOG:
+			case OrmPackage.XML_SECONDARY_TABLE__CATALOG:
 				return getCatalog();
-			case OrmPackage.SECONDARY_TABLE__SCHEMA:
+			case OrmPackage.XML_SECONDARY_TABLE__SCHEMA:
 				return getSchema();
-			case OrmPackage.SECONDARY_TABLE__UNIQUE_CONSTRAINTS:
+			case OrmPackage.XML_SECONDARY_TABLE__UNIQUE_CONSTRAINTS:
 				return getUniqueConstraints();
-			case OrmPackage.SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS:
+			case OrmPackage.XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS:
 				return getPrimaryKeyJoinColumns();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -336,20 +336,20 @@ public class XmlSecondaryTable extends AbstractJpaEObject implements XmlAbstract
 	{
 		switch (featureID)
 		{
-			case OrmPackage.SECONDARY_TABLE__NAME:
+			case OrmPackage.XML_SECONDARY_TABLE__NAME:
 				setName((String)newValue);
 				return;
-			case OrmPackage.SECONDARY_TABLE__CATALOG:
+			case OrmPackage.XML_SECONDARY_TABLE__CATALOG:
 				setCatalog((String)newValue);
 				return;
-			case OrmPackage.SECONDARY_TABLE__SCHEMA:
+			case OrmPackage.XML_SECONDARY_TABLE__SCHEMA:
 				setSchema((String)newValue);
 				return;
-			case OrmPackage.SECONDARY_TABLE__UNIQUE_CONSTRAINTS:
+			case OrmPackage.XML_SECONDARY_TABLE__UNIQUE_CONSTRAINTS:
 				getUniqueConstraints().clear();
 				getUniqueConstraints().addAll((Collection<? extends UniqueConstraint>)newValue);
 				return;
-			case OrmPackage.SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS:
+			case OrmPackage.XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS:
 				getPrimaryKeyJoinColumns().clear();
 				getPrimaryKeyJoinColumns().addAll((Collection<? extends XmlPrimaryKeyJoinColumn>)newValue);
 				return;
@@ -367,19 +367,19 @@ public class XmlSecondaryTable extends AbstractJpaEObject implements XmlAbstract
 	{
 		switch (featureID)
 		{
-			case OrmPackage.SECONDARY_TABLE__NAME:
+			case OrmPackage.XML_SECONDARY_TABLE__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case OrmPackage.SECONDARY_TABLE__CATALOG:
+			case OrmPackage.XML_SECONDARY_TABLE__CATALOG:
 				setCatalog(CATALOG_EDEFAULT);
 				return;
-			case OrmPackage.SECONDARY_TABLE__SCHEMA:
+			case OrmPackage.XML_SECONDARY_TABLE__SCHEMA:
 				setSchema(SCHEMA_EDEFAULT);
 				return;
-			case OrmPackage.SECONDARY_TABLE__UNIQUE_CONSTRAINTS:
+			case OrmPackage.XML_SECONDARY_TABLE__UNIQUE_CONSTRAINTS:
 				getUniqueConstraints().clear();
 				return;
-			case OrmPackage.SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS:
+			case OrmPackage.XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS:
 				getPrimaryKeyJoinColumns().clear();
 				return;
 		}
@@ -396,15 +396,15 @@ public class XmlSecondaryTable extends AbstractJpaEObject implements XmlAbstract
 	{
 		switch (featureID)
 		{
-			case OrmPackage.SECONDARY_TABLE__NAME:
+			case OrmPackage.XML_SECONDARY_TABLE__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case OrmPackage.SECONDARY_TABLE__CATALOG:
+			case OrmPackage.XML_SECONDARY_TABLE__CATALOG:
 				return CATALOG_EDEFAULT == null ? catalog != null : !CATALOG_EDEFAULT.equals(catalog);
-			case OrmPackage.SECONDARY_TABLE__SCHEMA:
+			case OrmPackage.XML_SECONDARY_TABLE__SCHEMA:
 				return SCHEMA_EDEFAULT == null ? schema != null : !SCHEMA_EDEFAULT.equals(schema);
-			case OrmPackage.SECONDARY_TABLE__UNIQUE_CONSTRAINTS:
+			case OrmPackage.XML_SECONDARY_TABLE__UNIQUE_CONSTRAINTS:
 				return uniqueConstraints != null && !uniqueConstraints.isEmpty();
-			case OrmPackage.SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS:
+			case OrmPackage.XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS:
 				return primaryKeyJoinColumns != null && !primaryKeyJoinColumns.isEmpty();
 		}
 		return super.eIsSet(featureID);

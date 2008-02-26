@@ -35,7 +35,7 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  *
  * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlProperties()
  * @model kind="class"
- * @extends IJpaEObject
+ * @extends JpaEObject
  * @generated
  */
 public class XmlProperties extends AbstractJpaEObject implements JpaEObject

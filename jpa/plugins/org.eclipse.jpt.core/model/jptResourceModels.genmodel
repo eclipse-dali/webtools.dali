@@ -4,13 +4,12 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.jpt.core/src"
     creationCommands="false" creationIcons="false" editDirectory="" editorDirectory=""
     modelPluginID="org.eclipse.jpt.core" modelName="Core" editPluginClass="" editorPluginClass=""
-    rootExtendsInterface="org.eclipse.jpt.core.internal.resource.common.IJpaEObject"
-    rootExtendsClass="org.eclipse.jpt.core.internal.resource.common.JpaEObject" suppressInterfaces="true"
-    testsDirectory="" testSuiteClass="" importerID="org.eclipse.emf.importer.ecore"
+    rootExtendsInterface="org.eclipse.jpt.core.resource.common.JpaEObject" rootExtendsClass="org.eclipse.jpt.core.resource.common.AbstractJpaEObject"
+    suppressInterfaces="true" testsDirectory="" testSuiteClass="" importerID="org.eclipse.emf.importer.ecore"
     complianceLevel="5.0" copyrightFields="false" usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore">
   <foreignModel>orm.ecore</foreignModel>
   <foreignModel>persistence.ecore</foreignModel>
-  <genPackages prefix="Orm" basePackage="org.eclipse.jpt.core.internal.resource" disposableProviderFactory="true"
+  <genPackages prefix="Orm" basePackage="org.eclipse.jpt.core.resource" disposableProviderFactory="true"
       ecorePackage="orm.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="orm.ecore#//AccessType">
       <genEnumLiterals ecoreEnumLiteral="orm.ecore#//AccessType/PROPERTY"/>
@@ -158,11 +157,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlSingleRelationshipMapping/optional"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlSingleRelationshipMapping/joinColumns"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="orm.ecore#//Xmld">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Xmld/generatedValue"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Xmld/temporal"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Xmld/tableGenerator"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Xmld/sequenceGenerator"/>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlId">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlId/generatedValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlId/temporal"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlId/tableGenerator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlId/sequenceGenerator"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//IdImpl"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlEmbeddedId">
@@ -291,10 +290,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//MapKey/name"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//MapKeyImpl"/>
-    <genClasses image="false" ecoreClass="orm.ecore#//Query">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Query/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//Query/query"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Query/hints"/>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlQuery">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlQuery/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlQuery/query"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlQuery/hints"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlNamedNativeQuery">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlNamedNativeQuery/resultClass"/>
@@ -353,8 +352,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//UniqueConstraint/columnNames"/>
     </genClasses>
   </genPackages>
-  <genPackages prefix="Persistence" basePackage="org.eclipse.jpt.core.internal.resource"
-      disposableProviderFactory="true" ecorePackage="persistence.ecore#/">
+  <genPackages prefix="Persistence" basePackage="org.eclipse.jpt.core.resource" disposableProviderFactory="true"
+      ecorePackage="persistence.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="persistence.ecore#//XmlPersistenceUnitTransactionType">
       <genEnumLiterals ecoreEnumLiteral="persistence.ecore#//XmlPersistenceUnitTransactionType/JTA"/>
       <genEnumLiterals ecoreEnumLiteral="persistence.ecore#//XmlPersistenceUnitTransactionType/RESOURCE_LOCAL"/>

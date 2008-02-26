@@ -79,12 +79,12 @@ public class OrmFactory extends EFactoryImpl
 	{
 		switch (eClass.getClassifierID())
 		{
-			case OrmPackage.ENTITY_MAPPINGS: return (EObject)createEntityMappings();
-			case OrmPackage.PERSISTENCE_UNIT_METADATA: return (EObject)createPersistenceUnitMetadata();
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS: return (EObject)createPersistenceUnitDefaults();
-			case OrmPackage.MAPPED_SUPERCLASS: return (EObject)createMappedSuperclass();
-			case OrmPackage.ENTITY: return (EObject)createEntity();
-			case OrmPackage.EMBEDDABLE: return (EObject)createEmbeddable();
+			case OrmPackage.XML_ENTITY_MAPPINGS: return (EObject)createXmlEntityMappings();
+			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA: return (EObject)createXmlPersistenceUnitMetadata();
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS: return (EObject)createXmlPersistenceUnitDefaults();
+			case OrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
+			case OrmPackage.XML_ENTITY: return (EObject)createXmlEntity();
+			case OrmPackage.XML_EMBEDDABLE: return (EObject)createXmlEmbeddable();
 			case OrmPackage.ATTRIBUTES: return (EObject)createAttributes();
 			case OrmPackage.ID_IMPL: return (EObject)createIdImpl();
 			case OrmPackage.EMBEDDED_ID_IMPL: return (EObject)createEmbeddedIdImpl();
@@ -96,12 +96,12 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.MANY_TO_MANY_IMPL: return (EObject)createManyToManyImpl();
 			case OrmPackage.EMBEDDED_IMPL: return (EObject)createEmbeddedImpl();
 			case OrmPackage.TRANSIENT_IMPL: return (EObject)createTransientImpl();
-			case OrmPackage.ASSOCIATION_OVERRIDE: return (EObject)createAssociationOverride();
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE: return (EObject)createXmlAssociationOverride();
 			case OrmPackage.ATTRIBUTE_OVERRIDE_IMPL: return (EObject)createAttributeOverrideImpl();
 			case OrmPackage.CASCADE_TYPE_IMPL: return (EObject)createCascadeTypeImpl();
 			case OrmPackage.COLUMN_IMPL: return (EObject)createColumnImpl();
 			case OrmPackage.COLUMN_RESULT: return (EObject)createColumnResult();
-			case OrmPackage.DISCRIMINATOR_COLUMN: return (EObject)createDiscriminatorColumn();
+			case OrmPackage.XML_DISCRIMINATOR_COLUMN: return (EObject)createXmlDiscriminatorColumn();
 			case OrmPackage.ENTITY_LISTENERS: return (EObject)createEntityListeners();
 			case OrmPackage.ENTITY_LISTENER: return (EObject)createEntityListener();
 			case OrmPackage.ENTITY_RESULT: return (EObject)createEntityResult();
@@ -114,8 +114,8 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.JOIN_TABLE_IMPL: return (EObject)createJoinTableImpl();
 			case OrmPackage.LOB: return (EObject)createLob();
 			case OrmPackage.MAP_KEY_IMPL: return (EObject)createMapKeyImpl();
-			case OrmPackage.NAMED_NATIVE_QUERY: return (EObject)createNamedNativeQuery();
-			case OrmPackage.NAMED_QUERY: return (EObject)createNamedQuery();
+			case OrmPackage.XML_NAMED_NATIVE_QUERY: return (EObject)createXmlNamedNativeQuery();
+			case OrmPackage.XML_NAMED_QUERY: return (EObject)createXmlNamedQuery();
 			case OrmPackage.POST_LOAD: return (EObject)createPostLoad();
 			case OrmPackage.POST_PERSIST: return (EObject)createPostPersist();
 			case OrmPackage.POST_REMOVE: return (EObject)createPostRemove();
@@ -123,10 +123,10 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.PRE_PERSIST: return (EObject)createPrePersist();
 			case OrmPackage.PRE_REMOVE: return (EObject)createPreRemove();
 			case OrmPackage.PRE_UPDATE: return (EObject)createPreUpdate();
-			case OrmPackage.PRIMARY_KEY_JOIN_COLUMN: return (EObject)createPrimaryKeyJoinColumn();
-			case OrmPackage.QUERY_HINT: return (EObject)createQueryHint();
-			case OrmPackage.TABLE: return (EObject)createTable();
-			case OrmPackage.SECONDARY_TABLE: return (EObject)createSecondaryTable();
+			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN: return (EObject)createXmlPrimaryKeyJoinColumn();
+			case OrmPackage.XML_QUERY_HINT: return (EObject)createXmlQueryHint();
+			case OrmPackage.XML_TABLE: return (EObject)createXmlTable();
+			case OrmPackage.XML_SECONDARY_TABLE: return (EObject)createXmlSecondaryTable();
 			case OrmPackage.SEQUENCE_GENERATOR_IMPL: return (EObject)createSequenceGeneratorImpl();
 			case OrmPackage.SQL_RESULT_SET_MAPPING: return (EObject)createSqlResultSetMapping();
 			case OrmPackage.TABLE_GENERATOR_IMPL: return (EObject)createTableGeneratorImpl();
@@ -215,10 +215,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlEntityMappings createEntityMappings()
+	public XmlEntityMappings createXmlEntityMappings()
 	{
-		XmlEntityMappings entityMappings = new XmlEntityMappings();
-		return entityMappings;
+		XmlEntityMappings xmlEntityMappings = new XmlEntityMappings();
+		return xmlEntityMappings;
 	}
 
 	/**
@@ -226,10 +226,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlPersistenceUnitMetadata createPersistenceUnitMetadata()
+	public XmlPersistenceUnitMetadata createXmlPersistenceUnitMetadata()
 	{
-		XmlPersistenceUnitMetadata persistenceUnitMetadata = new XmlPersistenceUnitMetadata();
-		return persistenceUnitMetadata;
+		XmlPersistenceUnitMetadata xmlPersistenceUnitMetadata = new XmlPersistenceUnitMetadata();
+		return xmlPersistenceUnitMetadata;
 	}
 
 	/**
@@ -237,10 +237,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlPersistenceUnitDefaults createPersistenceUnitDefaults()
+	public XmlPersistenceUnitDefaults createXmlPersistenceUnitDefaults()
 	{
-		XmlPersistenceUnitDefaults persistenceUnitDefaults = new XmlPersistenceUnitDefaults();
-		return persistenceUnitDefaults;
+		XmlPersistenceUnitDefaults xmlPersistenceUnitDefaults = new XmlPersistenceUnitDefaults();
+		return xmlPersistenceUnitDefaults;
 	}
 
 	/**
@@ -248,10 +248,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlMappedSuperclass createMappedSuperclass()
+	public XmlMappedSuperclass createXmlMappedSuperclass()
 	{
-		XmlMappedSuperclass mappedSuperclass = new XmlMappedSuperclass();
-		return mappedSuperclass;
+		XmlMappedSuperclass xmlMappedSuperclass = new XmlMappedSuperclass();
+		return xmlMappedSuperclass;
 	}
 
 	/**
@@ -259,10 +259,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlEntity createEntity()
+	public XmlEntity createXmlEntity()
 	{
-		XmlEntity entity = new XmlEntity();
-		return entity;
+		XmlEntity xmlEntity = new XmlEntity();
+		return xmlEntity;
 	}
 
 	/**
@@ -270,10 +270,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlEmbeddable createEmbeddable()
+	public XmlEmbeddable createXmlEmbeddable()
 	{
-		XmlEmbeddable embeddable = new XmlEmbeddable();
-		return embeddable;
+		XmlEmbeddable xmlEmbeddable = new XmlEmbeddable();
+		return xmlEmbeddable;
 	}
 
 	/**
@@ -402,10 +402,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlAssociationOverride createAssociationOverride()
+	public XmlAssociationOverride createXmlAssociationOverride()
 	{
-		XmlAssociationOverride associationOverride = new XmlAssociationOverride();
-		return associationOverride;
+		XmlAssociationOverride xmlAssociationOverride = new XmlAssociationOverride();
+		return xmlAssociationOverride;
 	}
 
 	/**
@@ -457,10 +457,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlDiscriminatorColumn createDiscriminatorColumn()
+	public XmlDiscriminatorColumn createXmlDiscriminatorColumn()
 	{
-		XmlDiscriminatorColumn discriminatorColumn = new XmlDiscriminatorColumn();
-		return discriminatorColumn;
+		XmlDiscriminatorColumn xmlDiscriminatorColumn = new XmlDiscriminatorColumn();
+		return xmlDiscriminatorColumn;
 	}
 
 	/**
@@ -589,32 +589,32 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public XmlNamedNativeQuery createXmlNamedNativeQuery()
+	{
+		XmlNamedNativeQuery xmlNamedNativeQuery = new XmlNamedNativeQuery();
+		return xmlNamedNativeQuery;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlNamedQuery createXmlNamedQuery()
+	{
+		XmlNamedQuery xmlNamedQuery = new XmlNamedQuery();
+		return xmlNamedQuery;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EventMethod createEventMethod()
 	{
 		EventMethod eventMethod = new EventMethod();
 		return eventMethod;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlNamedNativeQuery createNamedNativeQuery()
-	{
-		XmlNamedNativeQuery namedNativeQuery = new XmlNamedNativeQuery();
-		return namedNativeQuery;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlNamedQuery createNamedQuery()
-	{
-		XmlNamedQuery namedQuery = new XmlNamedQuery();
-		return namedQuery;
 	}
 
 	/**
@@ -699,10 +699,43 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlQueryHint createQueryHint()
+	public XmlPrimaryKeyJoinColumn createXmlPrimaryKeyJoinColumn()
 	{
-		XmlQueryHint queryHint = new XmlQueryHint();
-		return queryHint;
+		XmlPrimaryKeyJoinColumn xmlPrimaryKeyJoinColumn = new XmlPrimaryKeyJoinColumn();
+		return xmlPrimaryKeyJoinColumn;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlQueryHint createXmlQueryHint()
+	{
+		XmlQueryHint xmlQueryHint = new XmlQueryHint();
+		return xmlQueryHint;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlTable createXmlTable()
+	{
+		XmlTable xmlTable = new XmlTable();
+		return xmlTable;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlSecondaryTable createXmlSecondaryTable()
+	{
+		XmlSecondaryTable xmlSecondaryTable = new XmlSecondaryTable();
+		return xmlSecondaryTable;
 	}
 
 	/**
@@ -732,43 +765,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlPrimaryKeyJoinColumn createPrimaryKeyJoinColumn()
-	{
-		XmlPrimaryKeyJoinColumn primaryKeyJoinColumn = new XmlPrimaryKeyJoinColumn();
-		return primaryKeyJoinColumn;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlSecondaryTable createSecondaryTable()
-	{
-		XmlSecondaryTable secondaryTable = new XmlSecondaryTable();
-		return secondaryTable;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public SequenceGeneratorImpl createSequenceGeneratorImpl()
 	{
 		SequenceGeneratorImpl sequenceGeneratorImpl = new SequenceGeneratorImpl();
 		return sequenceGeneratorImpl;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlTable createTable()
-	{
-		XmlTable table = new XmlTable();
-		return table;
 	}
 
 	/**

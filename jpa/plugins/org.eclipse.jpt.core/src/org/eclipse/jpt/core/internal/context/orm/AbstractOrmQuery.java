@@ -77,7 +77,7 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractJpaCo
 	public OrmQueryHint addHint(int index) {
 		OrmQueryHint queryHint = jpaFactory().buildOrmQueryHint(this);
 		this.hints.add(index, queryHint);
-		this.queryResource().getHints().add(index, OrmFactory.eINSTANCE.createQueryHint());
+		this.queryResource().getHints().add(index, OrmFactory.eINSTANCE.createXmlQueryHint());
 		this.fireItemAdded(Query.HINTS_LIST, index, queryHint);
 		return queryHint;
 	}

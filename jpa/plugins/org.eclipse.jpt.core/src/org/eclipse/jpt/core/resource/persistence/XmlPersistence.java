@@ -38,7 +38,7 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  *
  * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlPersistence()
  * @model kind="class"
- * @extends IJpaEObject
+ * @extends JpaEObject
  * @generated
  */
 public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
@@ -105,7 +105,7 @@ public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
 	 * @return the value of the '<em>Version</em>' attribute.
 	 * @see #setVersion(String)
 	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlPersistence_Version()
-	 * @model unique="false" dataType="org.eclipse.jpt.core.internal.resource.persistence.XmlVersion" required="true"
+	 * @model unique="false" dataType="org.eclipse.jpt.core.resource.persistence.XmlVersion" required="true"
 	 * @generated
 	 */
 	public String getVersion()

@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EClass;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEmbeddable()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEmbeddable()
  * @model kind="class"
  * @generated
  */
@@ -51,7 +51,7 @@ public class XmlEmbeddable extends AbstractTypeMapping
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.EMBEDDABLE;
+		return OrmPackage.Literals.XML_EMBEDDABLE;
 	}
 
 } // Embeddable

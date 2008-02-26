@@ -89,7 +89,7 @@ public class AttributeOverrideImpl extends AbstractJpaEObject implements XmlAttr
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Column</em>' containment reference.
 	 * @see #setColumn(XmlColumn)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAttributeOverride_Column()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeOverride_Column()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -149,7 +149,7 @@ public class AttributeOverrideImpl extends AbstractJpaEObject implements XmlAttr
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAttributeOverride_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeOverride_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */

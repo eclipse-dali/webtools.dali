@@ -52,34 +52,34 @@ public class ManyToManyTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getAttributeMapping_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getXmlAttributeMapping_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createTargetEntityTranslator() {
-		return new Translator(TARGET_ENTITY, ORM_PKG.getRelationshipMapping_TargetEntity(), DOM_ATTRIBUTE);
+		return new Translator(TARGET_ENTITY, ORM_PKG.getXmlRelationshipMapping_TargetEntity(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createFetchTranslator() {
-		return new Translator(FETCH, ORM_PKG.getRelationshipMapping_Fetch(), DOM_ATTRIBUTE);
+		return new Translator(FETCH, ORM_PKG.getXmlRelationshipMapping_Fetch(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createMappedByTranslator() {
-		return new Translator(MAPPED_BY, ORM_PKG.getMultiRelationshipMapping_MappedBy(), DOM_ATTRIBUTE);
+		return new Translator(MAPPED_BY, ORM_PKG.getXmlMultiRelationshipMapping_MappedBy(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createOrderByTranslator() {
-		return new Translator(ORDER_BY, ORM_PKG.getMultiRelationshipMapping_OrderBy());
+		return new Translator(ORDER_BY, ORM_PKG.getXmlMultiRelationshipMapping_OrderBy());
 	}
 	
 	private Translator createMapKeyTranslator() {
-		return new MapKeyTranslator(MAP_KEY, ORM_PKG.getMultiRelationshipMapping_MapKey());
+		return new MapKeyTranslator(MAP_KEY, ORM_PKG.getXmlMultiRelationshipMapping_MapKey());
 	}
 	
 	private Translator createJoinTableTranslator() {
-		return new JoinTableTranslator(JOIN_TABLE, ORM_PKG.getRelationshipMapping_JoinTable());
+		return new JoinTableTranslator(JOIN_TABLE, ORM_PKG.getXmlRelationshipMapping_JoinTable());
 	}
 	
 	private Translator createCascadeTranslator() {
-		return new CascadeTypeTranslator(CASCADE, ORM_PKG.getRelationshipMapping_Cascade());
+		return new CascadeTypeTranslator(CASCADE, ORM_PKG.getXmlRelationshipMapping_Cascade());
 	}
 }

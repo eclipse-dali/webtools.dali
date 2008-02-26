@@ -199,7 +199,7 @@ public class OneToManyImpl extends AbstractJpaEObject implements XmlOneToMany
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAttributeMapping_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeMapping_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -234,7 +234,7 @@ public class OneToManyImpl extends AbstractJpaEObject implements XmlOneToMany
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Target Entity</em>' attribute.
 	 * @see #setTargetEntity(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getRelationshipMapping_TargetEntity()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping_TargetEntity()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -272,7 +272,7 @@ public class OneToManyImpl extends AbstractJpaEObject implements XmlOneToMany
 	 * @return the value of the '<em>Fetch</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.FetchType
 	 * @see #setFetch(FetchType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getRelationshipMapping_Fetch()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping_Fetch()
 	 * @model default="LAZY"
 	 * @generated
 	 */
@@ -308,7 +308,7 @@ public class OneToManyImpl extends AbstractJpaEObject implements XmlOneToMany
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Mapped By</em>' attribute.
 	 * @see #setMappedBy(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getMultiRelationshipMapping_MappedBy()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMultiRelationshipMapping_MappedBy()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -343,8 +343,8 @@ public class OneToManyImpl extends AbstractJpaEObject implements XmlOneToMany
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Order By</em>' attribute.
 	 * @see #setOrderBy(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getMultiRelationshipMapping_OrderBy()
-	 * @model dataType="org.eclipse.jpt.core.internal.resource.orm.OrderBy"
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMultiRelationshipMapping_OrderBy()
+	 * @model dataType="org.eclipse.jpt.core.resource.orm.OrderBy"
 	 * @generated
 	 */
 	public String getOrderBy()
@@ -378,7 +378,7 @@ public class OneToManyImpl extends AbstractJpaEObject implements XmlOneToMany
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Map Key</em>' containment reference.
 	 * @see #setMapKey(MapKey)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getMultiRelationshipMapping_MapKey()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMultiRelationshipMapping_MapKey()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -438,7 +438,7 @@ public class OneToManyImpl extends AbstractJpaEObject implements XmlOneToMany
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Table</em>' containment reference.
 	 * @see #setJoinTable(XmlJoinTable)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getRelationshipMapping_JoinTable()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping_JoinTable()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -498,7 +498,7 @@ public class OneToManyImpl extends AbstractJpaEObject implements XmlOneToMany
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getOneToMany_JoinColumns()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToMany_JoinColumns()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -521,7 +521,7 @@ public class OneToManyImpl extends AbstractJpaEObject implements XmlOneToMany
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cascade</em>' containment reference.
 	 * @see #setCascade(CascadeType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getRelationshipMapping_Cascade()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping_Cascade()
 	 * @model containment="true"
 	 * @generated
 	 */

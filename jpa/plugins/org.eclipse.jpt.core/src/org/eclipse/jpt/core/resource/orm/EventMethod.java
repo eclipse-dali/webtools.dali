@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEventMethod()
  * @model kind="class"
- * @extends IJpaEObject
+ * @extends JpaEObject
  * @generated
  */
 public class EventMethod extends AbstractJpaEObject implements JpaEObject

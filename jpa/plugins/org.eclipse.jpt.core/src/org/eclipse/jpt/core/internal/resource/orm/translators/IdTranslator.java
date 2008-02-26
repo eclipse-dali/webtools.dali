@@ -50,7 +50,7 @@ public class IdTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getAttributeMapping_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getXmlAttributeMapping_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createColumnTranslator() {
@@ -58,18 +58,18 @@ public class IdTranslator extends Translator
 	}
 	
 	private Translator createGeneratedValueTranslator() {
-		return new GeneratedValueTranslator(GENERATED_VALUE, ORM_PKG.getId_GeneratedValue());
+		return new GeneratedValueTranslator(GENERATED_VALUE, ORM_PKG.getXmlId_GeneratedValue());
 	}
 	
 	private Translator createTemporalTranslator() {
-		return new Translator(TEMPORAL, ORM_PKG.getId_Temporal());
+		return new Translator(TEMPORAL, ORM_PKG.getXmlId_Temporal());
 	}
 	
 	private Translator createTableGeneratorTranslator() {
-		return new TableGeneratorTranslator(TABLE_GENERATOR, ORM_PKG.getId_TableGenerator());
+		return new TableGeneratorTranslator(TABLE_GENERATOR, ORM_PKG.getXmlId_TableGenerator());
 	}
 	
 	private Translator createSequenceGeneratorTranslator() {
-		return new SequenceGeneratorTranslator(SEQUENCE_GENERATOR, ORM_PKG.getId_SequenceGenerator());
+		return new SequenceGeneratorTranslator(SEQUENCE_GENERATOR, ORM_PKG.getXmlId_SequenceGenerator());
 	}
 }

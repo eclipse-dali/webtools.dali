@@ -91,7 +91,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 	public OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
 		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
-		this.secondaryTable.getPrimaryKeyJoinColumns().add(index, OrmFactory.eINSTANCE.createPrimaryKeyJoinColumn());
+		this.secondaryTable.getPrimaryKeyJoinColumns().add(index, OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
 		this.fireItemAdded(SecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
 		return primaryKeyJoinColumn;
 	}

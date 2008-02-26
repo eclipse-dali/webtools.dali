@@ -48,7 +48,7 @@ public class VersionTranslator extends Translator
 	}
 
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getAttributeMapping_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getXmlAttributeMapping_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createColumnTranslator() {
@@ -56,6 +56,6 @@ public class VersionTranslator extends Translator
 	}
 	
 	private Translator createTemporalTranslator() {
-		return new Translator(TEMPORAL, ORM_PKG.getVersion_Temporal());
+		return new Translator(TEMPORAL, ORM_PKG.getXmlVersion_Temporal());
 	}
 }

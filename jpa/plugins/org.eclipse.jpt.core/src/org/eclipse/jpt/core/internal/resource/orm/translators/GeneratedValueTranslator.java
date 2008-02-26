@@ -46,10 +46,10 @@ public class GeneratedValueTranslator extends Translator
 	}
 	
 	protected Translator createStrategyTranslator() {
-		return new Translator(STRATEGY, ORM_PKG.getGeneratedValue_Strategy(), DOM_ATTRIBUTE);
+		return new Translator(STRATEGY, ORM_PKG.getXmlGeneratedValue_Strategy(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createGeneratorTranslator() {
-		return new Translator(GENERATOR, ORM_PKG.getGeneratedValue_Generator(), DOM_ATTRIBUTE);
+		return new Translator(GENERATOR, ORM_PKG.getXmlGeneratedValue_Generator(), DOM_ATTRIBUTE);
 	}
 }

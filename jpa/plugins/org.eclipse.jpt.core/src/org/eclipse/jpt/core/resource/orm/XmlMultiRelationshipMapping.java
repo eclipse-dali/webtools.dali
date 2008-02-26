@@ -24,7 +24,7 @@ package org.eclipse.jpt.core.resource.orm;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getMultiRelationshipMapping()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMultiRelationshipMapping()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
@@ -40,8 +40,8 @@ public interface XmlMultiRelationshipMapping extends XmlRelationshipMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Order By</em>' attribute.
 	 * @see #setOrderBy(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getMultiRelationshipMapping_OrderBy()
-	 * @model dataType="org.eclipse.jpt.core.internal.resource.orm.OrderBy"
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMultiRelationshipMapping_OrderBy()
+	 * @model dataType="org.eclipse.jpt.core.resource.orm.OrderBy"
 	 * @generated
 	 */
 	String getOrderBy();
@@ -66,7 +66,7 @@ public interface XmlMultiRelationshipMapping extends XmlRelationshipMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Map Key</em>' containment reference.
 	 * @see #setMapKey(MapKey)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getMultiRelationshipMapping_MapKey()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMultiRelationshipMapping_MapKey()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -92,7 +92,7 @@ public interface XmlMultiRelationshipMapping extends XmlRelationshipMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Mapped By</em>' attribute.
 	 * @see #setMappedBy(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getMultiRelationshipMapping_MappedBy()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMultiRelationshipMapping_MappedBy()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */

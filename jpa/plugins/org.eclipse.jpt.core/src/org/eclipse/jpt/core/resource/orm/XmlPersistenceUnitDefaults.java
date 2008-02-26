@@ -33,9 +33,9 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPersistenceUnitDefaults()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPersistenceUnitDefaults()
  * @model kind="class"
- * @extends IJpaEObject
+ * @extends JpaEObject
  * @generated
  */
 public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements JpaEObject
@@ -144,7 +144,7 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.PERSISTENCE_UNIT_DEFAULTS;
+		return OrmPackage.Literals.XML_PERSISTENCE_UNIT_DEFAULTS;
 	}
 
 	/**
@@ -157,7 +157,7 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Schema</em>' attribute.
 	 * @see #setSchema(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPersistenceUnitDefaults_Schema()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPersistenceUnitDefaults_Schema()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -179,7 +179,7 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 		String oldSchema = schema;
 		schema = newSchema;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.PERSISTENCE_UNIT_DEFAULTS__SCHEMA, oldSchema, schema));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__SCHEMA, oldSchema, schema));
 	}
 
 	/**
@@ -192,7 +192,7 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Catalog</em>' attribute.
 	 * @see #setCatalog(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPersistenceUnitDefaults_Catalog()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPersistenceUnitDefaults_Catalog()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -214,7 +214,7 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 		String oldCatalog = catalog;
 		catalog = newCatalog;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CATALOG, oldCatalog, catalog));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CATALOG, oldCatalog, catalog));
 	}
 
 	/**
@@ -230,7 +230,7 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 	 * @return the value of the '<em>Access</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.AccessType
 	 * @see #setAccess(AccessType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPersistenceUnitDefaults_Access()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPersistenceUnitDefaults_Access()
 	 * @model default="PROPERTY"
 	 * @generated
 	 */
@@ -253,7 +253,7 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 		AccessType oldAccess = access;
 		access = newAccess == null ? ACCESS_EDEFAULT : newAccess;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ACCESS, oldAccess, access));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS, oldAccess, access));
 	}
 
 	/**
@@ -266,7 +266,7 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cascade Persist</em>' attribute.
 	 * @see #setCascadePersist(boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPersistenceUnitDefaults_CascadePersist()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPersistenceUnitDefaults_CascadePersist()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
@@ -288,7 +288,7 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 		boolean oldCascadePersist = cascadePersist;
 		cascadePersist = newCascadePersist;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST, oldCascadePersist, cascadePersist));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST, oldCascadePersist, cascadePersist));
 	}
 
 	/**
@@ -301,7 +301,7 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Entity Listeners</em>' containment reference.
 	 * @see #setEntityListeners(EntityListeners)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPersistenceUnitDefaults_EntityListeners()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPersistenceUnitDefaults_EntityListeners()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -321,7 +321,7 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 		entityListeners = newEntityListeners;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS, oldEntityListeners, newEntityListeners);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS, oldEntityListeners, newEntityListeners);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -341,14 +341,14 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 		{
 			NotificationChain msgs = null;
 			if (entityListeners != null)
-				msgs = ((InternalEObject)entityListeners).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS, null, msgs);
+				msgs = ((InternalEObject)entityListeners).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS, null, msgs);
 			if (newEntityListeners != null)
-				msgs = ((InternalEObject)newEntityListeners).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS, null, msgs);
+				msgs = ((InternalEObject)newEntityListeners).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS, null, msgs);
 			msgs = basicSetEntityListeners(newEntityListeners, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS, newEntityListeners, newEntityListeners));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS, newEntityListeners, newEntityListeners));
 	}
 
 	/**
@@ -361,7 +361,7 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 	{
 		switch (featureID)
 		{
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
 				return basicSetEntityListeners(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -377,15 +377,15 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 	{
 		switch (featureID)
 		{
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__SCHEMA:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__SCHEMA:
 				return getSchema();
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CATALOG:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CATALOG:
 				return getCatalog();
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ACCESS:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS:
 				return getAccess();
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
 				return isCascadePersist() ? Boolean.TRUE : Boolean.FALSE;
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
 				return getEntityListeners();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -401,19 +401,19 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 	{
 		switch (featureID)
 		{
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__SCHEMA:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__SCHEMA:
 				setSchema((String)newValue);
 				return;
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CATALOG:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CATALOG:
 				setCatalog((String)newValue);
 				return;
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ACCESS:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS:
 				setAccess((AccessType)newValue);
 				return;
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
 				setCascadePersist(((Boolean)newValue).booleanValue());
 				return;
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
 				setEntityListeners((EntityListeners)newValue);
 				return;
 		}
@@ -430,19 +430,19 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 	{
 		switch (featureID)
 		{
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__SCHEMA:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__SCHEMA:
 				setSchema(SCHEMA_EDEFAULT);
 				return;
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CATALOG:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CATALOG:
 				setCatalog(CATALOG_EDEFAULT);
 				return;
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ACCESS:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS:
 				setAccess(ACCESS_EDEFAULT);
 				return;
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
 				setCascadePersist(CASCADE_PERSIST_EDEFAULT);
 				return;
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
 				setEntityListeners((EntityListeners)null);
 				return;
 		}
@@ -459,15 +459,15 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 	{
 		switch (featureID)
 		{
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__SCHEMA:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__SCHEMA:
 				return SCHEMA_EDEFAULT == null ? schema != null : !SCHEMA_EDEFAULT.equals(schema);
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CATALOG:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CATALOG:
 				return CATALOG_EDEFAULT == null ? catalog != null : !CATALOG_EDEFAULT.equals(catalog);
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ACCESS:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS:
 				return access != ACCESS_EDEFAULT;
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
 				return cascadePersist != CASCADE_PERSIST_EDEFAULT;
-			case OrmPackage.PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
 				return entityListeners != null;
 		}
 		return super.eIsSet(featureID);

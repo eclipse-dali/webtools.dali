@@ -274,7 +274,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	public OrmSecondaryTable addSpecifiedSecondaryTable(int index) {
 		OrmSecondaryTable secondaryTable =  jpaFactory().buildOrmSecondaryTable(this);
 		this.specifiedSecondaryTables.add(index, secondaryTable);
-		XmlSecondaryTable secondaryTableResource = OrmFactory.eINSTANCE.createSecondaryTable();
+		XmlSecondaryTable secondaryTableResource = OrmFactory.eINSTANCE.createXmlSecondaryTable();
 		secondaryTable.initialize(secondaryTableResource);
 		typeMappingResource().getSecondaryTables().add(index, secondaryTableResource);
 		fireItemAdded(Entity.SPECIFIED_SECONDARY_TABLES_LIST, index, secondaryTable);
@@ -564,7 +564,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	public OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
 		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
-		this.typeMappingResource().getPrimaryKeyJoinColumns().add(index, OrmFactory.eINSTANCE.createPrimaryKeyJoinColumn());
+		this.typeMappingResource().getPrimaryKeyJoinColumns().add(index, OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
 		this.fireItemAdded(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
 		return primaryKeyJoinColumn;
 	}
@@ -682,7 +682,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	public OrmAssociationOverride addSpecifiedAssociationOverride(int index) {
 		OrmAssociationOverride associationOverride = jpaFactory().buildOrmAssociationOverride(this, createAssociationOverrideOwner());
 		this.specifiedAssociationOverrides.add(index, associationOverride);
-		this.typeMappingResource().getAssociationOverrides().add(index, OrmFactory.eINSTANCE.createAssociationOverride());
+		this.typeMappingResource().getAssociationOverrides().add(index, OrmFactory.eINSTANCE.createXmlAssociationOverride());
 		this.fireItemAdded(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
 		return associationOverride;
 	}
@@ -722,7 +722,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	public OrmNamedQuery addNamedQuery(int index) {
 		OrmNamedQuery namedQuery = jpaFactory().buildOrmNamedQuery(this);
 		this.namedQueries.add(index, namedQuery);
-		this.typeMappingResource().getNamedQueries().add(index, OrmFactory.eINSTANCE.createNamedQuery());
+		this.typeMappingResource().getNamedQueries().add(index, OrmFactory.eINSTANCE.createXmlNamedQuery());
 		this.fireItemAdded(Entity.NAMED_QUERIES_LIST, index, namedQuery);
 		return namedQuery;
 	}
@@ -762,7 +762,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	public OrmNamedNativeQuery addNamedNativeQuery(int index) {
 		OrmNamedNativeQuery namedNativeQuery = jpaFactory().buildOrmNamedNativeQuery(this);
 		this.namedNativeQueries.add(index, namedNativeQuery);
-		this.typeMappingResource().getNamedNativeQueries().add(index, OrmFactory.eINSTANCE.createNamedNativeQuery());
+		this.typeMappingResource().getNamedNativeQueries().add(index, OrmFactory.eINSTANCE.createXmlNamedNativeQuery());
 		this.fireItemAdded(Entity.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
 		return namedNativeQuery;
 	}
@@ -1477,7 +1477,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	public XmlEntity addToResourceModel(XmlEntityMappings entityMappings) {
-		XmlEntity entity = OrmFactory.eINSTANCE.createEntity();
+		XmlEntity entity = OrmFactory.eINSTANCE.createXmlEntity();
 		persistentType().initialize(entity);
 		entityMappings.getEntities().add(entity);
 		return entity;

@@ -42,22 +42,22 @@ public class SecondaryTableTranslator extends Translator
 	}
 
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getAbstractTable_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getXmlAbstractTable_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createCatalogTranslator() {
-		return new Translator(CATALOG, ORM_PKG.getAbstractTable_Catalog(), DOM_ATTRIBUTE);
+		return new Translator(CATALOG, ORM_PKG.getXmlAbstractTable_Catalog(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createSchemaTranslator() {
-		return new Translator(SCHEMA, ORM_PKG.getAbstractTable_Schema(), DOM_ATTRIBUTE);
+		return new Translator(SCHEMA, ORM_PKG.getXmlAbstractTable_Schema(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createPrimaryKeyJoinColumnsTranslator() {
-		return new PrimaryKeyJoinColumnTranslator(PRIMARY_KEY_JOIN_COLUMN, ORM_PKG.getSecondaryTable_PrimaryKeyJoinColumns());
+		return new PrimaryKeyJoinColumnTranslator(PRIMARY_KEY_JOIN_COLUMN, ORM_PKG.getXmlSecondaryTable_PrimaryKeyJoinColumns());
 	}
 	
 	private Translator createUniqueConstraintTranslator() {
-		return new UniqueConstraintTranslator(UNIQUE_CONSTRAINT, ORM_PKG.getAbstractTable_UniqueConstraints());
+		return new UniqueConstraintTranslator(UNIQUE_CONSTRAINT, ORM_PKG.getXmlAbstractTable_UniqueConstraints());
 	}
 }

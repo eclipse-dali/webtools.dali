@@ -47,10 +47,10 @@ public class EmbeddedIdTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getAttributeMapping_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getXmlAttributeMapping_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createAttributeOverrideTranslator() {
-		return new AttributeOverrideTranslator(ATTRIBUTE_OVERRIDE, ORM_PKG.getEmbeddedId_AttributeOverrides());
+		return new AttributeOverrideTranslator(ATTRIBUTE_OVERRIDE, ORM_PKG.getXmlEmbeddedId_AttributeOverrides());
 	}	
 }

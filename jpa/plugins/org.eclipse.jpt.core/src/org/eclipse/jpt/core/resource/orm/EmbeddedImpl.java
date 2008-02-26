@@ -93,7 +93,7 @@ public class EmbeddedImpl extends AbstractJpaEObject implements XmlEmbedded
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAttributeMapping_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeMapping_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -128,7 +128,7 @@ public class EmbeddedImpl extends AbstractJpaEObject implements XmlEmbedded
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attribute Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEmbedded_AttributeOverrides()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEmbedded_AttributeOverrides()
 	 * @model containment="true"
 	 * @generated
 	 */

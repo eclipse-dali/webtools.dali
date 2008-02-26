@@ -25,7 +25,7 @@ package org.eclipse.jpt.core.resource.orm;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getId()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlId()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
@@ -41,7 +41,7 @@ public interface XmlId extends XmlAttributeMapping, ColumnMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Generated Value</em>' containment reference.
 	 * @see #setGeneratedValue(XmlGeneratedValue)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getId_GeneratedValue()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlId_GeneratedValue()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -69,7 +69,7 @@ public interface XmlId extends XmlAttributeMapping, ColumnMapping
 	 * @return the value of the '<em>Temporal</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.TemporalType
 	 * @see #setTemporal(TemporalType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getId_Temporal()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlId_Temporal()
 	 * @model
 	 * @generated
 	 */
@@ -96,7 +96,7 @@ public interface XmlId extends XmlAttributeMapping, ColumnMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Table Generator</em>' containment reference.
 	 * @see #setTableGenerator(XmlTableGenerator)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getId_TableGenerator()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlId_TableGenerator()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -122,7 +122,7 @@ public interface XmlId extends XmlAttributeMapping, ColumnMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Sequence Generator</em>' containment reference.
 	 * @see #setSequenceGenerator(XmlSequenceGenerator)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getId_SequenceGenerator()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlId_SequenceGenerator()
 	 * @model containment="true"
 	 * @generated
 	 */

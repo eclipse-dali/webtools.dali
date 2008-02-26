@@ -39,10 +39,10 @@ public class AssociationOverrideTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getAssociationOverride_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getXmlAssociationOverride_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createJoinColumnTranslator() {
-		return new JoinColumnTranslator(JOIN_COLUMN, ORM_PKG.getAssociationOverride_JoinColumns());
+		return new JoinColumnTranslator(JOIN_COLUMN, ORM_PKG.getXmlAssociationOverride_JoinColumns());
 	}
 }

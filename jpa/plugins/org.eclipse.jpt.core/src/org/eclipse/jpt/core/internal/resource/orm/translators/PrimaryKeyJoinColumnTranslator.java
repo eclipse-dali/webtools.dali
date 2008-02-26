@@ -41,14 +41,14 @@ public class PrimaryKeyJoinColumnTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getNamedColumn_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getXmlNamedColumn_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createReferencedColumnNameTranslator() {
-		return new Translator(REFERENCED_COLUMN_NAME, ORM_PKG.getPrimaryKeyJoinColumn_ReferencedColumnName(), DOM_ATTRIBUTE);
+		return new Translator(REFERENCED_COLUMN_NAME, ORM_PKG.getXmlPrimaryKeyJoinColumn_ReferencedColumnName(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createColumnDefinitionTranslator() {
-		return new Translator(COLUMN_DEFINITION, ORM_PKG.getNamedColumn_ColumnDefinition(), DOM_ATTRIBUTE);
+		return new Translator(COLUMN_DEFINITION, ORM_PKG.getXmlNamedColumn_ColumnDefinition(), DOM_ATTRIBUTE);
 	}
 }

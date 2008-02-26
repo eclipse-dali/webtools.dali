@@ -26,7 +26,7 @@ package org.eclipse.jpt.core.resource.orm;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getBasic()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlBasic()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
@@ -45,7 +45,7 @@ public interface XmlBasic extends XmlAttributeMapping, ColumnMapping
 	 * @return the value of the '<em>Fetch</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.FetchType
 	 * @see #setFetch(FetchType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getBasic_Fetch()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlBasic_Fetch()
 	 * @model default="LAZY"
 	 * @generated
 	 */
@@ -72,7 +72,7 @@ public interface XmlBasic extends XmlAttributeMapping, ColumnMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Optional</em>' attribute.
 	 * @see #setOptional(Boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getBasic_Optional()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlBasic_Optional()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -98,7 +98,7 @@ public interface XmlBasic extends XmlAttributeMapping, ColumnMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Lob</em>' attribute.
 	 * @see #setLob(boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getBasic_Lob()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlBasic_Lob()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.Boolean"
 	 * @generated
 	 */
@@ -126,7 +126,7 @@ public interface XmlBasic extends XmlAttributeMapping, ColumnMapping
 	 * @return the value of the '<em>Temporal</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.TemporalType
 	 * @see #setTemporal(TemporalType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getBasic_Temporal()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlBasic_Temporal()
 	 * @model
 	 * @generated
 	 */
@@ -155,7 +155,7 @@ public interface XmlBasic extends XmlAttributeMapping, ColumnMapping
 	 * @return the value of the '<em>Enumerated</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.EnumType
 	 * @see #setEnumerated(EnumType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getBasic_Enumerated()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlBasic_Enumerated()
 	 * @model
 	 * @generated
 	 */

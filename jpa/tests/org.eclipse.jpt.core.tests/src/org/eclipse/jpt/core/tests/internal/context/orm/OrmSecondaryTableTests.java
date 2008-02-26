@@ -97,7 +97,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 				
 		//set name in the resource model, verify context model updated
-		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createSecondaryTable());
+		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTable());
 		entityResource.getSecondaryTables().get(0).setName("FOO");
 		OrmSecondaryTable secondaryTable = ormEntity.specifiedSecondaryTables().next();
 		assertEquals("FOO", secondaryTable.getSpecifiedName());
@@ -153,7 +153,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 				
 		//set schema in the resource model, verify context model updated
-		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createSecondaryTable());
+		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTable());
 		entityResource.getSecondaryTables().get(0).setSchema("FOO");
 		OrmSecondaryTable secondaryTable = ormEntity.specifiedSecondaryTables().next();
 		assertEquals("FOO", secondaryTable.getSpecifiedSchema());
@@ -260,7 +260,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 				
 		//set catalog in the resource model, verify context model updated
-		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createSecondaryTable());
+		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTable());
 		entityResource.getSecondaryTables().get(0).setCatalog("FOO");
 		OrmSecondaryTable secondaryTable = ormEntity.specifiedSecondaryTables().next();
 		assertEquals("FOO", secondaryTable.getSpecifiedCatalog());
@@ -451,9 +451,9 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		XmlSecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
 		
-		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createPrimaryKeyJoinColumn());
-		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createPrimaryKeyJoinColumn());
-		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createPrimaryKeyJoinColumn());
+		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
+		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
+		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
 		
 		secondaryTableResource.getPrimaryKeyJoinColumns().get(0).setName("FOO");
 		secondaryTableResource.getPrimaryKeyJoinColumns().get(1).setName("BAR");

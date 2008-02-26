@@ -25,9 +25,9 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getGenerator()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGenerator()
  * @model kind="class" interface="true" abstract="true"
- * @extends IJpaEObject
+ * @extends JpaEObject
  * @generated
  */
 public interface XmlGenerator extends JpaEObject
@@ -42,7 +42,7 @@ public interface XmlGenerator extends JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getGenerator_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGenerator_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -68,7 +68,7 @@ public interface XmlGenerator extends JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Initial Value</em>' attribute.
 	 * @see #setInitialValue(Integer)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getGenerator_InitialValue()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGenerator_InitialValue()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.IntObject"
 	 * @generated
 	 */
@@ -94,7 +94,7 @@ public interface XmlGenerator extends JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Allocation Size</em>' attribute.
 	 * @see #setAllocationSize(Integer)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getGenerator_AllocationSize()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGenerator_AllocationSize()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.IntObject"
 	 * @generated
 	 */

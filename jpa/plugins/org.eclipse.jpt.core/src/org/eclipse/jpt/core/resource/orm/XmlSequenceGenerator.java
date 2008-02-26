@@ -22,7 +22,7 @@ package org.eclipse.jpt.core.resource.orm;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getSequenceGenerator()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSequenceGenerator()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
@@ -38,7 +38,7 @@ public interface XmlSequenceGenerator extends XmlGenerator
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Sequence Name</em>' attribute.
 	 * @see #setSequenceName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getSequenceGenerator_SequenceName()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSequenceGenerator_SequenceName()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */

@@ -16,7 +16,7 @@ package org.eclipse.jpt.core.resource.orm;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTransient()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTransient()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */

@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTable()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTable()
  * @model kind="class"
  * @generated
  */
@@ -114,7 +114,7 @@ public class XmlTable extends AbstractJpaEObject implements XmlAbstractTable
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.TABLE;
+		return OrmPackage.Literals.XML_TABLE;
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class XmlTable extends AbstractJpaEObject implements XmlAbstractTable
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractTable_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractTable_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -149,7 +149,7 @@ public class XmlTable extends AbstractJpaEObject implements XmlAbstractTable
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.TABLE__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_TABLE__NAME, oldName, name));
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class XmlTable extends AbstractJpaEObject implements XmlAbstractTable
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Catalog</em>' attribute.
 	 * @see #setCatalog(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractTable_Catalog()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractTable_Catalog()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -184,7 +184,7 @@ public class XmlTable extends AbstractJpaEObject implements XmlAbstractTable
 		String oldCatalog = catalog;
 		catalog = newCatalog;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.TABLE__CATALOG, oldCatalog, catalog));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_TABLE__CATALOG, oldCatalog, catalog));
 	}
 
 	/**
@@ -197,7 +197,7 @@ public class XmlTable extends AbstractJpaEObject implements XmlAbstractTable
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Schema</em>' attribute.
 	 * @see #setSchema(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractTable_Schema()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractTable_Schema()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -219,7 +219,7 @@ public class XmlTable extends AbstractJpaEObject implements XmlAbstractTable
 		String oldSchema = schema;
 		schema = newSchema;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.TABLE__SCHEMA, oldSchema, schema));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_TABLE__SCHEMA, oldSchema, schema));
 	}
 
 	/**
@@ -232,7 +232,7 @@ public class XmlTable extends AbstractJpaEObject implements XmlAbstractTable
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Unique Constraints</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractTable_UniqueConstraints()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractTable_UniqueConstraints()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -240,7 +240,7 @@ public class XmlTable extends AbstractJpaEObject implements XmlAbstractTable
 	{
 		if (uniqueConstraints == null)
 		{
-			uniqueConstraints = new EObjectContainmentEList<UniqueConstraint>(UniqueConstraint.class, this, OrmPackage.TABLE__UNIQUE_CONSTRAINTS);
+			uniqueConstraints = new EObjectContainmentEList<UniqueConstraint>(UniqueConstraint.class, this, OrmPackage.XML_TABLE__UNIQUE_CONSTRAINTS);
 		}
 		return uniqueConstraints;
 	}
@@ -255,7 +255,7 @@ public class XmlTable extends AbstractJpaEObject implements XmlAbstractTable
 	{
 		switch (featureID)
 		{
-			case OrmPackage.TABLE__UNIQUE_CONSTRAINTS:
+			case OrmPackage.XML_TABLE__UNIQUE_CONSTRAINTS:
 				return ((InternalEList<?>)getUniqueConstraints()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -271,13 +271,13 @@ public class XmlTable extends AbstractJpaEObject implements XmlAbstractTable
 	{
 		switch (featureID)
 		{
-			case OrmPackage.TABLE__NAME:
+			case OrmPackage.XML_TABLE__NAME:
 				return getName();
-			case OrmPackage.TABLE__CATALOG:
+			case OrmPackage.XML_TABLE__CATALOG:
 				return getCatalog();
-			case OrmPackage.TABLE__SCHEMA:
+			case OrmPackage.XML_TABLE__SCHEMA:
 				return getSchema();
-			case OrmPackage.TABLE__UNIQUE_CONSTRAINTS:
+			case OrmPackage.XML_TABLE__UNIQUE_CONSTRAINTS:
 				return getUniqueConstraints();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -294,16 +294,16 @@ public class XmlTable extends AbstractJpaEObject implements XmlAbstractTable
 	{
 		switch (featureID)
 		{
-			case OrmPackage.TABLE__NAME:
+			case OrmPackage.XML_TABLE__NAME:
 				setName((String)newValue);
 				return;
-			case OrmPackage.TABLE__CATALOG:
+			case OrmPackage.XML_TABLE__CATALOG:
 				setCatalog((String)newValue);
 				return;
-			case OrmPackage.TABLE__SCHEMA:
+			case OrmPackage.XML_TABLE__SCHEMA:
 				setSchema((String)newValue);
 				return;
-			case OrmPackage.TABLE__UNIQUE_CONSTRAINTS:
+			case OrmPackage.XML_TABLE__UNIQUE_CONSTRAINTS:
 				getUniqueConstraints().clear();
 				getUniqueConstraints().addAll((Collection<? extends UniqueConstraint>)newValue);
 				return;
@@ -321,16 +321,16 @@ public class XmlTable extends AbstractJpaEObject implements XmlAbstractTable
 	{
 		switch (featureID)
 		{
-			case OrmPackage.TABLE__NAME:
+			case OrmPackage.XML_TABLE__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case OrmPackage.TABLE__CATALOG:
+			case OrmPackage.XML_TABLE__CATALOG:
 				setCatalog(CATALOG_EDEFAULT);
 				return;
-			case OrmPackage.TABLE__SCHEMA:
+			case OrmPackage.XML_TABLE__SCHEMA:
 				setSchema(SCHEMA_EDEFAULT);
 				return;
-			case OrmPackage.TABLE__UNIQUE_CONSTRAINTS:
+			case OrmPackage.XML_TABLE__UNIQUE_CONSTRAINTS:
 				getUniqueConstraints().clear();
 				return;
 		}
@@ -347,13 +347,13 @@ public class XmlTable extends AbstractJpaEObject implements XmlAbstractTable
 	{
 		switch (featureID)
 		{
-			case OrmPackage.TABLE__NAME:
+			case OrmPackage.XML_TABLE__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case OrmPackage.TABLE__CATALOG:
+			case OrmPackage.XML_TABLE__CATALOG:
 				return CATALOG_EDEFAULT == null ? catalog != null : !CATALOG_EDEFAULT.equals(catalog);
-			case OrmPackage.TABLE__SCHEMA:
+			case OrmPackage.XML_TABLE__SCHEMA:
 				return SCHEMA_EDEFAULT == null ? schema != null : !SCHEMA_EDEFAULT.equals(schema);
-			case OrmPackage.TABLE__UNIQUE_CONSTRAINTS:
+			case OrmPackage.XML_TABLE__UNIQUE_CONSTRAINTS:
 				return uniqueConstraints != null && !uniqueConstraints.isEmpty();
 		}
 		return super.eIsSet(featureID);

@@ -24,7 +24,7 @@ import org.eclipse.emf.common.util.EList;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getOneToOne()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToOne()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
@@ -40,7 +40,7 @@ public interface XmlOneToOne extends XmlSingleRelationshipMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Mapped By</em>' attribute.
 	 * @see #setMappedBy(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getOneToOne_MappedBy()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToOne_MappedBy()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -66,7 +66,7 @@ public interface XmlOneToOne extends XmlSingleRelationshipMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Primary Key Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getOneToOne_PrimaryKeyJoinColumns()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToOne_PrimaryKeyJoinColumns()
 	 * @model containment="true"
 	 * @generated
 	 */

@@ -137,7 +137,7 @@ public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequ
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getGenerator_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGenerator_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -172,7 +172,7 @@ public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequ
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Sequence Name</em>' attribute.
 	 * @see #setSequenceName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getSequenceGenerator_SequenceName()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSequenceGenerator_SequenceName()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -207,7 +207,7 @@ public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequ
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Initial Value</em>' attribute.
 	 * @see #setInitialValue(Integer)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getGenerator_InitialValue()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGenerator_InitialValue()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.IntObject"
 	 * @generated
 	 */
@@ -242,7 +242,7 @@ public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequ
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Allocation Size</em>' attribute.
 	 * @see #setAllocationSize(Integer)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getGenerator_AllocationSize()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGenerator_AllocationSize()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.IntObject"
 	 * @generated
 	 */

@@ -54,9 +54,9 @@ public class GenericPersistenceUnitDefaults extends AbstractJpaContextNode
 			}
 			else {
 				if (persistenceUnitMetadata() == null) {
-					this.entityMappings.setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
+					this.entityMappings.setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
 				}
-				persistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createPersistenceUnitDefaults());
+				persistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
 				persistenceUnitDefaults().setAccess(AccessType.toXmlResourceModel(newAccess));
 			}
 		}
@@ -88,9 +88,9 @@ public class GenericPersistenceUnitDefaults extends AbstractJpaContextNode
 			}
 			else {
 				if (persistenceUnitMetadata() == null) {
-					this.entityMappings.setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
+					this.entityMappings.setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
 				}
-				persistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createPersistenceUnitDefaults());
+				persistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
 				persistenceUnitDefaults().setCatalog(newCatalog);
 			}
 		}
@@ -122,9 +122,9 @@ public class GenericPersistenceUnitDefaults extends AbstractJpaContextNode
 			}
 			else {
 				if (persistenceUnitMetadata() == null) {
-					this.entityMappings.setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
+					this.entityMappings.setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
 				}
-				persistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createPersistenceUnitDefaults());
+				persistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
 				persistenceUnitDefaults().setSchema(newSchema);
 			}
 		}
@@ -156,9 +156,9 @@ public class GenericPersistenceUnitDefaults extends AbstractJpaContextNode
 			}
 			else if (newCascadePersist) {
 				if (persistenceUnitMetadata() == null) {
-					this.entityMappings.setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
+					this.entityMappings.setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
 				}
-				persistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createPersistenceUnitDefaults());
+				persistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
 				persistenceUnitDefaults().setCascadePersist(newCascadePersist);
 			}
 		}

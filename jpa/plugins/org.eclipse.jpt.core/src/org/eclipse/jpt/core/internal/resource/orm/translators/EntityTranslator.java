@@ -67,122 +67,122 @@ public class EntityTranslator extends Translator
 	}
 
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getEntity_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getXmlEntity_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createClassTranslator() {
-		return new Translator(CLASS, ORM_PKG.getTypeMapping_ClassName(), DOM_ATTRIBUTE);
+		return new Translator(CLASS, ORM_PKG.getAbstractTypeMapping_ClassName(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createAccessTranslator() {
-		return new Translator(ACCESS, ORM_PKG.getTypeMapping_Access(), DOM_ATTRIBUTE);
+		return new Translator(ACCESS, ORM_PKG.getAbstractTypeMapping_Access(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createMetadataCompleteTranslator() {
-		return new Translator(METADATA_COMPLETE, ORM_PKG.getTypeMapping_MetadataComplete(), DOM_ATTRIBUTE);
+		return new Translator(METADATA_COMPLETE, ORM_PKG.getAbstractTypeMapping_MetadataComplete(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createDescriptionTranslator() {
-		return new Translator(DESCRIPTION, ORM_PKG.getTypeMapping_Description());
+		return new Translator(DESCRIPTION, ORM_PKG.getAbstractTypeMapping_Description());
 	}
 	
 	private Translator createTableTranslator() {
-		return new TableTranslator(TABLE, ORM_PKG.getEntity_Table());
+		return new TableTranslator(TABLE, ORM_PKG.getXmlEntity_Table());
 	}
 	
 	private Translator createSecondaryTableTranslator() {
-		return new SecondaryTableTranslator(SECONDARY_TABLE, ORM_PKG.getEntity_SecondaryTables());
+		return new SecondaryTableTranslator(SECONDARY_TABLE, ORM_PKG.getXmlEntity_SecondaryTables());
 	}	
 	
 	private Translator createPrimaryKeyJoinColumnTranslator() {
-		return new PrimaryKeyJoinColumnTranslator(PRIMARY_KEY_JOIN_COLUMN, ORM_PKG.getEntity_PrimaryKeyJoinColumns());
+		return new PrimaryKeyJoinColumnTranslator(PRIMARY_KEY_JOIN_COLUMN, ORM_PKG.getXmlEntity_PrimaryKeyJoinColumns());
 	}
 	
 	private Translator createIdClassTranslator() {
-		return new IdClassTranslator(ID_CLASS, ORM_PKG.getEntity_IdClass());
+		return new IdClassTranslator(ID_CLASS, ORM_PKG.getXmlEntity_IdClass());
 	}
 	
 	private Translator createInheritanceTranslator() {
-		return new InheritanceTranslator(INHERITANCE, ORM_PKG.getEntity_Inheritance());
+		return new InheritanceTranslator(INHERITANCE, ORM_PKG.getXmlEntity_Inheritance());
 	}
 	
 	private Translator createDiscriminatorValueTranslator() {
-		return new Translator(DISCRIMINATOR_VALUE, ORM_PKG.getEntity_DiscriminatorValue());
+		return new Translator(DISCRIMINATOR_VALUE, ORM_PKG.getXmlEntity_DiscriminatorValue());
 	}
 	
 	private Translator createDiscriminatorColumnTranslator() {
-		return new DiscriminatorColumnTranslator(DISCRIMINATOR_COLUMN, ORM_PKG.getEntity_DiscriminatorColumn());
+		return new DiscriminatorColumnTranslator(DISCRIMINATOR_COLUMN, ORM_PKG.getXmlEntity_DiscriminatorColumn());
 	}
 	
 	private Translator createSequenceGeneratorTranslator() {
-		return new SequenceGeneratorTranslator(SEQUENCE_GENERATOR, ORM_PKG.getEntity_SequenceGenerator());
+		return new SequenceGeneratorTranslator(SEQUENCE_GENERATOR, ORM_PKG.getXmlEntity_SequenceGenerator());
 	}
 	
 	private Translator createTableGeneratorTranslator() {
-		return new TableGeneratorTranslator(TABLE_GENERATOR, ORM_PKG.getEntity_TableGenerator());
+		return new TableGeneratorTranslator(TABLE_GENERATOR, ORM_PKG.getXmlEntity_TableGenerator());
 	}
 	
 	private Translator createNamedQueryTranslator() {
-		return new NamedQueryTranslator(NAMED_QUERY, ORM_PKG.getEntity_NamedQueries());
+		return new NamedQueryTranslator(NAMED_QUERY, ORM_PKG.getXmlEntity_NamedQueries());
 	}
 	
 	private Translator createNamedNativeQueryTranslator() {
-		return new NamedNativeQueryTranslator(NAMED_NATIVE_QUERY, ORM_PKG.getEntity_NamedNativeQueries());
+		return new NamedNativeQueryTranslator(NAMED_NATIVE_QUERY, ORM_PKG.getXmlEntity_NamedNativeQueries());
 	}
 	
 	private Translator createSqlResultSetMappingTranslator() {
-		return new SqlResultSetMappingTranslator(SQL_RESULT_SET_MAPPING, ORM_PKG.getEntity_SqlResultSetMappings());
+		return new SqlResultSetMappingTranslator(SQL_RESULT_SET_MAPPING, ORM_PKG.getXmlEntity_SqlResultSetMappings());
 	}
 	
 	private Translator createExcludeDefaultListenersTranslator() {
-		return new EmptyTagBooleanTranslator(EXCLUDE_DEFAULT_LISTENERS, ORM_PKG.getEntity_ExcludeDefaultListeners());
+		return new EmptyTagBooleanTranslator(EXCLUDE_DEFAULT_LISTENERS, ORM_PKG.getXmlEntity_ExcludeDefaultListeners());
 	}
 	
 	private Translator createExcludeSuperclassListenersTranslator() {
-		return new EmptyTagBooleanTranslator(EXCLUDE_SUPERCLASS_LISTENERS, ORM_PKG.getEntity_ExcludeSuperclassListeners());
+		return new EmptyTagBooleanTranslator(EXCLUDE_SUPERCLASS_LISTENERS, ORM_PKG.getXmlEntity_ExcludeSuperclassListeners());
 	}
 	
 	private Translator createEntityListenersTranslator() {
-		return new EntityListenersTranslator(ENTITY_LISTENERS, ORM_PKG.getEntity_EntityListeners());
+		return new EntityListenersTranslator(ENTITY_LISTENERS, ORM_PKG.getXmlEntity_EntityListeners());
 	}
 	
 	private Translator createPrePersistTranslator() {
-		return new EventMethodTranslator(PRE_PERSIST, ORM_PKG.getEntity_PrePersist());
+		return new EventMethodTranslator(PRE_PERSIST, ORM_PKG.getXmlEntity_PrePersist());
 	}
 	
 	private Translator createPostPersistTranslator() {
-		return new EventMethodTranslator(POST_PERSIST, ORM_PKG.getEntity_PostPersist());
+		return new EventMethodTranslator(POST_PERSIST, ORM_PKG.getXmlEntity_PostPersist());
 	}
 	
 	private Translator createPreRemoveTranslator() {
-		return new EventMethodTranslator(PRE_REMOVE, ORM_PKG.getEntity_PreRemove());
+		return new EventMethodTranslator(PRE_REMOVE, ORM_PKG.getXmlEntity_PreRemove());
 	}
 	
 	private Translator createPostRemoveTranslator() {
-		return new EventMethodTranslator(POST_REMOVE, ORM_PKG.getEntity_PostRemove());
+		return new EventMethodTranslator(POST_REMOVE, ORM_PKG.getXmlEntity_PostRemove());
 	}
 	
 	private Translator createPreUpdateTranslator() {
-		return new EventMethodTranslator(PRE_UPDATE, ORM_PKG.getEntity_PreUpdate());
+		return new EventMethodTranslator(PRE_UPDATE, ORM_PKG.getXmlEntity_PreUpdate());
 	}
 	
 	private Translator createPostUpdateTranslator() {
-		return new EventMethodTranslator(POST_UPDATE, ORM_PKG.getEntity_PostUpdate());
+		return new EventMethodTranslator(POST_UPDATE, ORM_PKG.getXmlEntity_PostUpdate());
 	}
 	
 	private Translator createPostLoadTranslator() {
-		return new EventMethodTranslator(POST_LOAD, ORM_PKG.getEntity_PostLoad());
+		return new EventMethodTranslator(POST_LOAD, ORM_PKG.getXmlEntity_PostLoad());
 	}
 	
 	private Translator createAttributeOverrideTranslator() {
-		return new AttributeOverrideTranslator(ATTRIBUTE_OVERRIDE, ORM_PKG.getEntity_AttributeOverrides());
+		return new AttributeOverrideTranslator(ATTRIBUTE_OVERRIDE, ORM_PKG.getXmlEntity_AttributeOverrides());
 	}
 	
 	private Translator createAssociationOverrideTranslator() {
-		return new AssociationOverrideTranslator(ASSOCIATION_OVERRIDE, ORM_PKG.getEntity_AssociationOverrides());
+		return new AssociationOverrideTranslator(ASSOCIATION_OVERRIDE, ORM_PKG.getXmlEntity_AssociationOverrides());
 	}
 	
 	private Translator createAttributesTranslator() {
-		return new AttributesTranslator(ATTRIBUTES, ORM_PKG.getTypeMapping_Attributes());
+		return new AttributesTranslator(ATTRIBUTES, ORM_PKG.getAbstractTypeMapping_Attributes());
 	}
 }

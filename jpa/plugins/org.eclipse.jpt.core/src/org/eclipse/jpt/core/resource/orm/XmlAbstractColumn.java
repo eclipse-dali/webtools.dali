@@ -26,7 +26,7 @@ package org.eclipse.jpt.core.resource.orm;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractColumn()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractColumn()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
@@ -42,7 +42,7 @@ public interface XmlAbstractColumn extends XmlNamedColumn
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Insertable</em>' attribute.
 	 * @see #setInsertable(Boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractColumn_Insertable()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractColumn_Insertable()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -68,7 +68,7 @@ public interface XmlAbstractColumn extends XmlNamedColumn
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Nullable</em>' attribute.
 	 * @see #setNullable(Boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractColumn_Nullable()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractColumn_Nullable()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -94,7 +94,7 @@ public interface XmlAbstractColumn extends XmlNamedColumn
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Table</em>' attribute.
 	 * @see #setTable(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractColumn_Table()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractColumn_Table()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -120,7 +120,7 @@ public interface XmlAbstractColumn extends XmlNamedColumn
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Unique</em>' attribute.
 	 * @see #setUnique(Boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractColumn_Unique()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractColumn_Unique()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -146,7 +146,7 @@ public interface XmlAbstractColumn extends XmlNamedColumn
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Updatable</em>' attribute.
 	 * @see #setUpdatable(Boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractColumn_Updatable()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractColumn_Updatable()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */

@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getDiscriminatorColumn()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlDiscriminatorColumn()
  * @model kind="class"
  * @generated
  */
@@ -127,7 +127,7 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.DISCRIMINATOR_COLUMN;
+		return OrmPackage.Literals.XML_DISCRIMINATOR_COLUMN;
 	}
 
 	/**
@@ -140,7 +140,7 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Column Definition</em>' attribute.
 	 * @see #setColumnDefinition(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getNamedColumn_ColumnDefinition()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedColumn_ColumnDefinition()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -162,7 +162,7 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 		String oldColumnDefinition = columnDefinition;
 		columnDefinition = newColumnDefinition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.DISCRIMINATOR_COLUMN__COLUMN_DEFINITION, oldColumnDefinition, columnDefinition));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION, oldColumnDefinition, columnDefinition));
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 	 * @return the value of the '<em>Discriminator Type</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.DiscriminatorType
 	 * @see #setDiscriminatorType(DiscriminatorType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getDiscriminatorColumn_DiscriminatorType()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlDiscriminatorColumn_DiscriminatorType()
 	 * @model default="STRING"
 	 * @generated
 	 */
@@ -201,7 +201,7 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 		DiscriminatorType oldDiscriminatorType = discriminatorType;
 		discriminatorType = newDiscriminatorType == null ? DISCRIMINATOR_TYPE_EDEFAULT : newDiscriminatorType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE, oldDiscriminatorType, discriminatorType));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE, oldDiscriminatorType, discriminatorType));
 	}
 
 	/**
@@ -214,7 +214,7 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Length</em>' attribute.
 	 * @see #setLength(Integer)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getDiscriminatorColumn_Length()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlDiscriminatorColumn_Length()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.IntObject"
 	 * @generated
 	 */
@@ -236,7 +236,7 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 		Integer oldLength = length;
 		length = newLength;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.DISCRIMINATOR_COLUMN__LENGTH, oldLength, length));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_DISCRIMINATOR_COLUMN__LENGTH, oldLength, length));
 	}
 
 	/**
@@ -249,7 +249,7 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getNamedColumn_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedColumn_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -271,7 +271,7 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.DISCRIMINATOR_COLUMN__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_DISCRIMINATOR_COLUMN__NAME, oldName, name));
 	}
 
 	/**
@@ -284,13 +284,13 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 	{
 		switch (featureID)
 		{
-			case OrmPackage.DISCRIMINATOR_COLUMN__COLUMN_DEFINITION:
+			case OrmPackage.XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION:
 				return getColumnDefinition();
-			case OrmPackage.DISCRIMINATOR_COLUMN__NAME:
+			case OrmPackage.XML_DISCRIMINATOR_COLUMN__NAME:
 				return getName();
-			case OrmPackage.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
+			case OrmPackage.XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
 				return getDiscriminatorType();
-			case OrmPackage.DISCRIMINATOR_COLUMN__LENGTH:
+			case OrmPackage.XML_DISCRIMINATOR_COLUMN__LENGTH:
 				return getLength();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -306,16 +306,16 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 	{
 		switch (featureID)
 		{
-			case OrmPackage.DISCRIMINATOR_COLUMN__COLUMN_DEFINITION:
+			case OrmPackage.XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION:
 				setColumnDefinition((String)newValue);
 				return;
-			case OrmPackage.DISCRIMINATOR_COLUMN__NAME:
+			case OrmPackage.XML_DISCRIMINATOR_COLUMN__NAME:
 				setName((String)newValue);
 				return;
-			case OrmPackage.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
+			case OrmPackage.XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
 				setDiscriminatorType((DiscriminatorType)newValue);
 				return;
-			case OrmPackage.DISCRIMINATOR_COLUMN__LENGTH:
+			case OrmPackage.XML_DISCRIMINATOR_COLUMN__LENGTH:
 				setLength((Integer)newValue);
 				return;
 		}
@@ -332,16 +332,16 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 	{
 		switch (featureID)
 		{
-			case OrmPackage.DISCRIMINATOR_COLUMN__COLUMN_DEFINITION:
+			case OrmPackage.XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION:
 				setColumnDefinition(COLUMN_DEFINITION_EDEFAULT);
 				return;
-			case OrmPackage.DISCRIMINATOR_COLUMN__NAME:
+			case OrmPackage.XML_DISCRIMINATOR_COLUMN__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case OrmPackage.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
+			case OrmPackage.XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
 				setDiscriminatorType(DISCRIMINATOR_TYPE_EDEFAULT);
 				return;
-			case OrmPackage.DISCRIMINATOR_COLUMN__LENGTH:
+			case OrmPackage.XML_DISCRIMINATOR_COLUMN__LENGTH:
 				setLength(LENGTH_EDEFAULT);
 				return;
 		}
@@ -358,13 +358,13 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 	{
 		switch (featureID)
 		{
-			case OrmPackage.DISCRIMINATOR_COLUMN__COLUMN_DEFINITION:
+			case OrmPackage.XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION:
 				return COLUMN_DEFINITION_EDEFAULT == null ? columnDefinition != null : !COLUMN_DEFINITION_EDEFAULT.equals(columnDefinition);
-			case OrmPackage.DISCRIMINATOR_COLUMN__NAME:
+			case OrmPackage.XML_DISCRIMINATOR_COLUMN__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case OrmPackage.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
+			case OrmPackage.XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
 				return discriminatorType != DISCRIMINATOR_TYPE_EDEFAULT;
-			case OrmPackage.DISCRIMINATOR_COLUMN__LENGTH:
+			case OrmPackage.XML_DISCRIMINATOR_COLUMN__LENGTH:
 				return LENGTH_EDEFAULT == null ? length != null : !LENGTH_EDEFAULT.equals(length);
 		}
 		return super.eIsSet(featureID);

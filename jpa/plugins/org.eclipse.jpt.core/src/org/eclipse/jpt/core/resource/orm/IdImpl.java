@@ -135,7 +135,7 @@ public class IdImpl extends AbstractJpaEObject implements XmlId
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAttributeMapping_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeMapping_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -230,7 +230,7 @@ public class IdImpl extends AbstractJpaEObject implements XmlId
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Generated Value</em>' containment reference.
 	 * @see #setGeneratedValue(XmlGeneratedValue)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getId_GeneratedValue()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlId_GeneratedValue()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -292,7 +292,7 @@ public class IdImpl extends AbstractJpaEObject implements XmlId
 	 * @return the value of the '<em>Temporal</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.TemporalType
 	 * @see #setTemporal(TemporalType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getId_Temporal()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlId_Temporal()
 	 * @model
 	 * @generated
 	 */
@@ -328,7 +328,7 @@ public class IdImpl extends AbstractJpaEObject implements XmlId
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Table Generator</em>' containment reference.
 	 * @see #setTableGenerator(XmlTableGenerator)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getId_TableGenerator()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlId_TableGenerator()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -388,7 +388,7 @@ public class IdImpl extends AbstractJpaEObject implements XmlId
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Sequence Generator</em>' containment reference.
 	 * @see #setSequenceGenerator(XmlSequenceGenerator)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getId_SequenceGenerator()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlId_SequenceGenerator()
 	 * @model containment="true"
 	 * @generated
 	 */

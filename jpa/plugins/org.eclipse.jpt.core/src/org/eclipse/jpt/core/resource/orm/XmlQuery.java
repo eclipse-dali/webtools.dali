@@ -26,9 +26,9 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getQuery()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQuery()
  * @model kind="class" interface="true" abstract="true"
- * @extends IJpaEObject
+ * @extends JpaEObject
  * @generated
  */
 public interface XmlQuery extends JpaEObject
@@ -43,7 +43,7 @@ public interface XmlQuery extends JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getQuery_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQuery_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -69,7 +69,7 @@ public interface XmlQuery extends JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Query</em>' attribute.
 	 * @see #setQuery(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getQuery_Query()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQuery_Query()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -95,7 +95,7 @@ public interface XmlQuery extends JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Hints</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getQuery_Hints()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQuery_Hints()
 	 * @model containment="true"
 	 * @generated
 	 */

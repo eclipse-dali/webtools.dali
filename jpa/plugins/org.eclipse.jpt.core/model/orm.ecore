@@ -132,7 +132,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="#//AbstractTypeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="Attributes">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ids" upperBound="-1" eType="#//Xmld"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ids" upperBound="-1" eType="#//XmlId"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="embeddedIds" upperBound="-1"
         eType="#//XmlEmbeddedId" containment="true" resolveProxies="false"/>
@@ -184,7 +184,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="joinColumns" upperBound="-1"
         eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Xmld" abstract="true" interface="true"
+  <eClassifiers xsi:type="ecore:EClass" name="XmlId" abstract="true" interface="true"
       eSuperTypes="#//XmlAttributeMapping #//ColumnMapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="generatedValue" eType="#//XmlGeneratedValue"
         containment="true" resolveProxies="false"/>
@@ -194,7 +194,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="sequenceGenerator" eType="#//XmlSequenceGenerator"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IdImpl" eSuperTypes="#//Xmld"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IdImpl" eSuperTypes="#//XmlId"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedId" abstract="true" interface="true"
       eSuperTypes="#//XmlAttributeMapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributeOverrides" upperBound="-1"
@@ -361,17 +361,17 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MapKeyImpl" eSuperTypes="#//MapKey"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Query" abstract="true" interface="true">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlQuery" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="query" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="hints" upperBound="-1"
         eType="#//XmlQueryHint" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedNativeQuery" eSuperTypes="#//Query">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedNativeQuery" eSuperTypes="#//XmlQuery">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="resultClass" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="resultSetMapping" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedQuery" eSuperTypes="#//Query"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedQuery" eSuperTypes="#//XmlQuery"/>
   <eClassifiers xsi:type="ecore:EClass" name="PostLoad" eSuperTypes="#//EventMethod"/>
   <eClassifiers xsi:type="ecore:EClass" name="PostPersist" eSuperTypes="#//EventMethod"/>
   <eClassifiers xsi:type="ecore:EClass" name="PostRemove" eSuperTypes="#//EventMethod"/>

@@ -23,7 +23,7 @@ public class EntityMappingsTranslator extends RootTranslator
 	
 	
 	public EntityMappingsTranslator() {
-		super(ENTITY_MAPPINGS, ORM_PKG.getEntityMappings());
+		super(ENTITY_MAPPINGS, ORM_PKG.getXmlEntityMappings());
 	}
 	
 	@Override
@@ -59,62 +59,62 @@ public class EntityMappingsTranslator extends RootTranslator
 	}	
 	
 	private Translator createVersionTranslator() {
-		return new Translator(VERSION, ORM_PKG.getEntityMappings_Version(), DOM_ATTRIBUTE);
+		return new Translator(VERSION, ORM_PKG.getXmlEntityMappings_Version(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createDescriptionTranslator() {
-		return new Translator(DESCRIPTION, ORM_PKG.getEntityMappings_Description());
+		return new Translator(DESCRIPTION, ORM_PKG.getXmlEntityMappings_Description());
 	}
 	
 	private Translator createPersistenceUnitMetadataTranslator() {
-		return new PersistenceUnitMetadataTranslator(PERSISTENCE_UNIT_METADATA, ORM_PKG.getEntityMappings_PersistenceUnitMetadata());
+		return new PersistenceUnitMetadataTranslator(PERSISTENCE_UNIT_METADATA, ORM_PKG.getXmlEntityMappings_PersistenceUnitMetadata());
 	}
 	
 	private Translator createPackageTranslator() {
-		return new Translator(PACKAGE, ORM_PKG.getEntityMappings_Package());
+		return new Translator(PACKAGE, ORM_PKG.getXmlEntityMappings_Package());
 	}
 	
 	private Translator createSchemaTranslator() {
-		return new Translator(SCHEMA, ORM_PKG.getEntityMappings_Schema());
+		return new Translator(SCHEMA, ORM_PKG.getXmlEntityMappings_Schema());
 	}
 	
 	private Translator createCatalogTranslator() {
-		return new Translator(CATALOG, ORM_PKG.getEntityMappings_Catalog());
+		return new Translator(CATALOG, ORM_PKG.getXmlEntityMappings_Catalog());
 	}
 	
 	private Translator createAccessTranslator() {
-		return new Translator(ACCESS, ORM_PKG.getEntityMappings_Access());
+		return new Translator(ACCESS, ORM_PKG.getXmlEntityMappings_Access());
 	}
 	
 	private Translator createSequenceGeneratorTranslator() {
-		return new SequenceGeneratorTranslator(SEQUENCE_GENERATOR, ORM_PKG.getEntityMappings_SequenceGenerators());
+		return new SequenceGeneratorTranslator(SEQUENCE_GENERATOR, ORM_PKG.getXmlEntityMappings_SequenceGenerators());
 	}
 	
 	private Translator createTableGeneratorTranslator() {
-		return new TableGeneratorTranslator(TABLE_GENERATOR, ORM_PKG.getEntityMappings_TableGenerators());
+		return new TableGeneratorTranslator(TABLE_GENERATOR, ORM_PKG.getXmlEntityMappings_TableGenerators());
 	}
 	
 	private Translator createNamedQueryTranslator() {
-		return new NamedQueryTranslator(NAMED_QUERY, ORM_PKG.getEntityMappings_NamedQueries());
+		return new NamedQueryTranslator(NAMED_QUERY, ORM_PKG.getXmlEntityMappings_NamedQueries());
 	}
 	
 	private Translator createNamedNativeQueryTranslator() {
-		return new NamedNativeQueryTranslator(NAMED_NATIVE_QUERY, ORM_PKG.getEntityMappings_NamedNativeQueries());
+		return new NamedNativeQueryTranslator(NAMED_NATIVE_QUERY, ORM_PKG.getXmlEntityMappings_NamedNativeQueries());
 	}
 	
 	private Translator createSqlResultSetMappingTranslator() {
-		return new SqlResultSetMappingTranslator(SQL_RESULT_SET_MAPPING, ORM_PKG.getEntityMappings_SqlResultSetMappings());
+		return new SqlResultSetMappingTranslator(SQL_RESULT_SET_MAPPING, ORM_PKG.getXmlEntityMappings_SqlResultSetMappings());
 	}
 	
 	private Translator createMappedSuperclassTranslator() {
-		return new MappedSuperclassTranslator(MAPPED_SUPERCLASS, ORM_PKG.getEntityMappings_MappedSuperclasses());
+		return new MappedSuperclassTranslator(MAPPED_SUPERCLASS, ORM_PKG.getXmlEntityMappings_MappedSuperclasses());
 	}
 	
 	private Translator createEntityTranslator() {
-		return new EntityTranslator(ENTITY, ORM_PKG.getEntityMappings_Entities());
+		return new EntityTranslator(ENTITY, ORM_PKG.getXmlEntityMappings_Entities());
 	}
 	
 	private Translator createEmbeddableTranslator() {
-		return new EmbeddableTranslator(EMBEDDABLE, ORM_PKG.getEntityMappings_Embeddables());
+		return new EmbeddableTranslator(EMBEDDABLE, ORM_PKG.getXmlEntityMappings_Embeddables());
 	}
 }

@@ -34,9 +34,9 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAssociationOverride()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAssociationOverride()
  * @model kind="class"
- * @extends IJpaEObject
+ * @extends JpaEObject
  * @generated
  */
 public class XmlAssociationOverride extends AbstractJpaEObject implements JpaEObject
@@ -89,7 +89,7 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements JpaEOb
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.ASSOCIATION_OVERRIDE;
+		return OrmPackage.Literals.XML_ASSOCIATION_OVERRIDE;
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements JpaEOb
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAssociationOverride_JoinColumns()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAssociationOverride_JoinColumns()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -110,7 +110,7 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements JpaEOb
 	{
 		if (joinColumns == null)
 		{
-			joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.ASSOCIATION_OVERRIDE__JOIN_COLUMNS);
+			joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_ASSOCIATION_OVERRIDE__JOIN_COLUMNS);
 		}
 		return joinColumns;
 	}
@@ -125,7 +125,7 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements JpaEOb
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAssociationOverride_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAssociationOverride_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -147,7 +147,7 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements JpaEOb
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ASSOCIATION_OVERRIDE__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ASSOCIATION_OVERRIDE__NAME, oldName, name));
 	}
 
 	/**
@@ -160,7 +160,7 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements JpaEOb
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
 				return ((InternalEList<?>)getJoinColumns()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -176,9 +176,9 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements JpaEOb
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
 				return getJoinColumns();
-			case OrmPackage.ASSOCIATION_OVERRIDE__NAME:
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE__NAME:
 				return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -195,11 +195,11 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements JpaEOb
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
 				getJoinColumns().clear();
 				getJoinColumns().addAll((Collection<? extends XmlJoinColumn>)newValue);
 				return;
-			case OrmPackage.ASSOCIATION_OVERRIDE__NAME:
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE__NAME:
 				setName((String)newValue);
 				return;
 		}
@@ -216,10 +216,10 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements JpaEOb
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
 				getJoinColumns().clear();
 				return;
-			case OrmPackage.ASSOCIATION_OVERRIDE__NAME:
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE__NAME:
 				setName(NAME_EDEFAULT);
 				return;
 		}
@@ -236,9 +236,9 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements JpaEOb
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
 				return joinColumns != null && !joinColumns.isEmpty();
-			case OrmPackage.ASSOCIATION_OVERRIDE__NAME:
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);

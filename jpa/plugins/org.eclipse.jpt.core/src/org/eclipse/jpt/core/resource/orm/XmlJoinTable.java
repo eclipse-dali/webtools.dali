@@ -24,7 +24,7 @@ import org.eclipse.emf.common.util.EList;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getJoinTable()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTable()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
@@ -40,7 +40,7 @@ public interface XmlJoinTable extends XmlAbstractTable
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getJoinTable_JoinColumns()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTable_JoinColumns()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -56,7 +56,7 @@ public interface XmlJoinTable extends XmlAbstractTable
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Inverse Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getJoinTable_InverseJoinColumns()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTable_InverseJoinColumns()
 	 * @model containment="true"
 	 * @generated
 	 */

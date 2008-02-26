@@ -41,18 +41,18 @@ public class DiscriminatorColumnTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getNamedColumn_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getXmlNamedColumn_Name(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createDiscrminiatorTypeTranslator() {
-		return new Translator(DISCRIMINATOR_TYPE, ORM_PKG.getDiscriminatorColumn_DiscriminatorType(), DOM_ATTRIBUTE);
+		return new Translator(DISCRIMINATOR_TYPE, ORM_PKG.getXmlDiscriminatorColumn_DiscriminatorType(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createColumnDefinitionTranslator() {
-		return new Translator(COLUMN_DEFINITION, ORM_PKG.getNamedColumn_ColumnDefinition(), DOM_ATTRIBUTE);
+		return new Translator(COLUMN_DEFINITION, ORM_PKG.getXmlNamedColumn_ColumnDefinition(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createLengthTranslator() {
-		return new Translator(LENGTH, ORM_PKG.getDiscriminatorColumn_Length(), DOM_ATTRIBUTE);
+		return new Translator(LENGTH, ORM_PKG.getXmlDiscriminatorColumn_Length(), DOM_ATTRIBUTE);
 	}
 }

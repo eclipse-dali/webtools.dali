@@ -46,10 +46,10 @@ public class AttributeOverrideTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getAttributeOverride_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getXmlAttributeOverride_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createColumnTranslator() {
-		return new ColumnTranslator(COLUMN, ORM_PKG.getAttributeOverride_Column());
+		return new ColumnTranslator(COLUMN, ORM_PKG.getXmlAttributeOverride_Column());
 	}
 }

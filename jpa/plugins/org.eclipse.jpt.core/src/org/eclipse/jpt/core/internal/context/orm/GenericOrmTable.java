@@ -50,7 +50,7 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 	
 	@Override
 	protected void addTableResource() {
-		this.entity.setTable(OrmFactory.eINSTANCE.createTable());
+		this.entity.setTable(OrmFactory.eINSTANCE.createXmlTable());
 		
 	}
 	

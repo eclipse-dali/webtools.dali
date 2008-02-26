@@ -381,7 +381,7 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 	public OrmNamedQuery addNamedQuery(int index) {
 		OrmNamedQuery namedQuery = jpaFactory().buildOrmNamedQuery(this);
 		this.namedQueries.add(index, namedQuery);
-		this.xmlEntityMappings.getNamedQueries().add(index, OrmFactory.eINSTANCE.createNamedQuery());
+		this.xmlEntityMappings.getNamedQueries().add(index, OrmFactory.eINSTANCE.createXmlNamedQuery());
 		this.fireItemAdded(EntityMappings.NAMED_QUERIES_LIST, index, namedQuery);
 		return namedQuery;
 	}
@@ -420,7 +420,7 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 	public OrmNamedNativeQuery addNamedNativeQuery(int index) {
 		OrmNamedNativeQuery namedNativeQuery = jpaFactory().buildOrmNamedNativeQuery(this);
 		this.namedNativeQueries.add(index, namedNativeQuery);
-		this.xmlEntityMappings.getNamedNativeQueries().add(index, OrmFactory.eINSTANCE.createNamedNativeQuery());
+		this.xmlEntityMappings.getNamedNativeQueries().add(index, OrmFactory.eINSTANCE.createXmlNamedNativeQuery());
 		this.fireItemAdded(EntityMappings.NAMED_QUERIES_LIST, index, namedNativeQuery);
 		return namedNativeQuery;
 	}

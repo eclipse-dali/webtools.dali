@@ -144,7 +144,7 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 	}
 	
 	public XmlMappedSuperclass addToResourceModel(XmlEntityMappings entityMappings) {
-		XmlMappedSuperclass mappedSuperclass = OrmFactory.eINSTANCE.createMappedSuperclass();
+		XmlMappedSuperclass mappedSuperclass = OrmFactory.eINSTANCE.createXmlMappedSuperclass();
 		persistentType().initialize(mappedSuperclass);
 		entityMappings.getMappedSuperclasses().add(mappedSuperclass);
 		return mappedSuperclass;

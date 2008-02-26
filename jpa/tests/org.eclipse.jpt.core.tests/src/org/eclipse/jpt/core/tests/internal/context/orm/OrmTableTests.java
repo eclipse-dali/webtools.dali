@@ -97,7 +97,7 @@ public class OrmTableTests extends ContextModelTestCase
 		assertNull(entityResource.getTable());
 		
 		//set name in the resource model, verify context model updated
-		entityResource.setTable(OrmFactory.eINSTANCE.createTable());
+		entityResource.setTable(OrmFactory.eINSTANCE.createXmlTable());
 		entityResource.getTable().setName("FOO");
 		assertEquals("FOO", ormTable.getSpecifiedName());
 		assertEquals("FOO", entityResource.getTable().getName());
@@ -199,7 +199,7 @@ public class OrmTableTests extends ContextModelTestCase
 		assertNull(entityResource.getTable());
 		
 		//set schema in the resource model, verify context model updated
-		entityResource.setTable(OrmFactory.eINSTANCE.createTable());
+		entityResource.setTable(OrmFactory.eINSTANCE.createXmlTable());
 		entityResource.getTable().setSchema("FOO");
 		assertEquals("FOO", ormTable.getSpecifiedSchema());
 		assertEquals("FOO", entityResource.getTable().getSchema());
@@ -333,7 +333,7 @@ public class OrmTableTests extends ContextModelTestCase
 		assertNull(entityResource.getTable());
 		
 		//set Catalog in the resource model, verify context model updated
-		entityResource.setTable(OrmFactory.eINSTANCE.createTable());
+		entityResource.setTable(OrmFactory.eINSTANCE.createXmlTable());
 		entityResource.getTable().setCatalog("FOO");
 		assertEquals("FOO", ormTable.getSpecifiedCatalog());
 		assertEquals("FOO", entityResource.getTable().getCatalog());

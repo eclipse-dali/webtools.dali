@@ -25,7 +25,7 @@ package org.eclipse.jpt.core.resource.orm;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getRelationshipMapping()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
@@ -41,7 +41,7 @@ public interface XmlRelationshipMapping extends XmlAttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Target Entity</em>' attribute.
 	 * @see #setTargetEntity(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getRelationshipMapping_TargetEntity()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping_TargetEntity()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -70,7 +70,7 @@ public interface XmlRelationshipMapping extends XmlAttributeMapping
 	 * @return the value of the '<em>Fetch</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.FetchType
 	 * @see #setFetch(FetchType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getRelationshipMapping_Fetch()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping_Fetch()
 	 * @model default="LAZY"
 	 * @generated
 	 */
@@ -97,7 +97,7 @@ public interface XmlRelationshipMapping extends XmlAttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cascade</em>' containment reference.
 	 * @see #setCascade(CascadeType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getRelationshipMapping_Cascade()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping_Cascade()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -123,7 +123,7 @@ public interface XmlRelationshipMapping extends XmlAttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Table</em>' containment reference.
 	 * @see #setJoinTable(XmlJoinTable)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getRelationshipMapping_JoinTable()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping_JoinTable()
 	 * @model containment="true"
 	 * @generated
 	 */

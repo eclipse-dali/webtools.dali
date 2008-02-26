@@ -52,15 +52,15 @@ public class BasicTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getAttributeMapping_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getXmlAttributeMapping_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createFetchTranslator() {
-		return new Translator(FETCH, ORM_PKG.getBasic_Fetch(), DOM_ATTRIBUTE);
+		return new Translator(FETCH, ORM_PKG.getXmlBasic_Fetch(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createOptionalTranslator() {
-		return new BooleanTranslator(OPTIONAL, ORM_PKG.getBasic_Optional(), DOM_ATTRIBUTE);
+		return new BooleanTranslator(OPTIONAL, ORM_PKG.getXmlBasic_Optional(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createColumnTranslator() {
@@ -68,14 +68,14 @@ public class BasicTranslator extends Translator
 	}
 	
 	private Translator createLobTranslator() {
-		return new EmptyTagBooleanTranslator(LOB, ORM_PKG.getBasic_Lob());
+		return new EmptyTagBooleanTranslator(LOB, ORM_PKG.getXmlBasic_Lob());
 	}
 	
 	private Translator createTemporalTranslator() {
-		return new Translator(TEMPORAL, ORM_PKG.getBasic_Temporal());
+		return new Translator(TEMPORAL, ORM_PKG.getXmlBasic_Temporal());
 	}
 	
 	private Translator createEnumeratedTranslator() {
-		return new Translator(ENUMERATED, ORM_PKG.getBasic_Enumerated());
+		return new Translator(ENUMERATED, ORM_PKG.getXmlBasic_Enumerated());
 	}
 }

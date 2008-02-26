@@ -28,9 +28,9 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getQueryHint()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQueryHint()
  * @model kind="class"
- * @extends IJpaEObject
+ * @extends JpaEObject
  * @generated
  */
 public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
@@ -93,7 +93,7 @@ public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.QUERY_HINT;
+		return OrmPackage.Literals.XML_QUERY_HINT;
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getQueryHint_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQueryHint_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -128,7 +128,7 @@ public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.QUERY_HINT__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_QUERY_HINT__NAME, oldName, name));
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Value</em>' attribute.
 	 * @see #setValue(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getQueryHint_Value()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQueryHint_Value()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -163,7 +163,7 @@ public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
 		String oldValue = value;
 		value = newValue;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.QUERY_HINT__VALUE, oldValue, value));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_QUERY_HINT__VALUE, oldValue, value));
 	}
 
 	/**
@@ -176,9 +176,9 @@ public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.QUERY_HINT__NAME:
+			case OrmPackage.XML_QUERY_HINT__NAME:
 				return getName();
-			case OrmPackage.QUERY_HINT__VALUE:
+			case OrmPackage.XML_QUERY_HINT__VALUE:
 				return getValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -194,10 +194,10 @@ public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.QUERY_HINT__NAME:
+			case OrmPackage.XML_QUERY_HINT__NAME:
 				setName((String)newValue);
 				return;
-			case OrmPackage.QUERY_HINT__VALUE:
+			case OrmPackage.XML_QUERY_HINT__VALUE:
 				setValue((String)newValue);
 				return;
 		}
@@ -214,10 +214,10 @@ public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.QUERY_HINT__NAME:
+			case OrmPackage.XML_QUERY_HINT__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case OrmPackage.QUERY_HINT__VALUE:
+			case OrmPackage.XML_QUERY_HINT__VALUE:
 				setValue(VALUE_EDEFAULT);
 				return;
 		}
@@ -234,9 +234,9 @@ public class XmlQueryHint extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.QUERY_HINT__NAME:
+			case OrmPackage.XML_QUERY_HINT__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case OrmPackage.QUERY_HINT__VALUE:
+			case OrmPackage.XML_QUERY_HINT__VALUE:
 				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
 		}
 		return super.eIsSet(featureID);

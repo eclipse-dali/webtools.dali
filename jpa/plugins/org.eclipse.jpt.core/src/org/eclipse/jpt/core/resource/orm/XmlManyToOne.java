@@ -16,7 +16,7 @@ package org.eclipse.jpt.core.resource.orm;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getManyToOne()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlManyToOne()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */

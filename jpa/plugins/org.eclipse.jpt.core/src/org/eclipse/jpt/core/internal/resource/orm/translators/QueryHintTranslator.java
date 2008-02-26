@@ -39,10 +39,10 @@ public class QueryHintTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getQueryHint_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getXmlQueryHint_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createValueTranslator() {
-		return new Translator(VALUE, ORM_PKG.getQueryHint_Value(), DOM_ATTRIBUTE);
+		return new Translator(VALUE, ORM_PKG.getXmlQueryHint_Value(), DOM_ATTRIBUTE);
 	}
 }

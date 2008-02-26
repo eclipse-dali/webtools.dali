@@ -30,7 +30,7 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getFieldResult()
  * @model kind="class"
- * @extends IJpaEObject
+ * @extends JpaEObject
  * @generated
  */
 public class FieldResult extends AbstractJpaEObject implements JpaEObject

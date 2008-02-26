@@ -54,34 +54,34 @@ public class JoinColumnTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getNamedColumn_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getXmlNamedColumn_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createReferencedColumnNameTranslator() {
-		return new Translator(REFERENCED_COLUMN_NAME, ORM_PKG.getJoinColumn_ReferencedColumnName(), DOM_ATTRIBUTE);
+		return new Translator(REFERENCED_COLUMN_NAME, ORM_PKG.getXmlJoinColumn_ReferencedColumnName(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createUniqueTranslator() {
-		return new BooleanTranslator(UNIQUE, ORM_PKG.getAbstractColumn_Unique(), DOM_ATTRIBUTE);
+		return new BooleanTranslator(UNIQUE, ORM_PKG.getXmlAbstractColumn_Unique(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createNullableTranslator() {
-		return new BooleanTranslator(NULLABLE, ORM_PKG.getAbstractColumn_Nullable(), DOM_ATTRIBUTE);
+		return new BooleanTranslator(NULLABLE, ORM_PKG.getXmlAbstractColumn_Nullable(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createInsertableTranslator() {
-		return new BooleanTranslator(INSERTABLE, ORM_PKG.getAbstractColumn_Insertable(), DOM_ATTRIBUTE);
+		return new BooleanTranslator(INSERTABLE, ORM_PKG.getXmlAbstractColumn_Insertable(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createUpdatableTranslator() {
-		return new BooleanTranslator(UPDATABLE, ORM_PKG.getAbstractColumn_Updatable(), DOM_ATTRIBUTE);
+		return new BooleanTranslator(UPDATABLE, ORM_PKG.getXmlAbstractColumn_Updatable(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createColumnDefinitionTranslator() {
-		return new Translator(COLUMN_DEFINITION, ORM_PKG.getNamedColumn_ColumnDefinition(), DOM_ATTRIBUTE);
+		return new Translator(COLUMN_DEFINITION, ORM_PKG.getXmlNamedColumn_ColumnDefinition(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createTableTranslator() {
-		return new Translator(TABLE, ORM_PKG.getAbstractColumn_Table(), DOM_ATTRIBUTE);
+		return new Translator(TABLE, ORM_PKG.getXmlAbstractColumn_Table(), DOM_ATTRIBUTE);
 	}
 }

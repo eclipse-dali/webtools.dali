@@ -69,7 +69,7 @@ public class OrmXmlImpl extends AbstractJpaContextNode
 			throw new IllegalStateException();
 		}
 		
-		XmlEntityMappings xmlEntityMappings = OrmFactory.eINSTANCE.createEntityMappings();
+		XmlEntityMappings xmlEntityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
 		this.entityMappings = createEntityMappings(xmlEntityMappings);
 		this.ormResource.getContents().add(xmlEntityMappings);
 		firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, null, this.entityMappings);

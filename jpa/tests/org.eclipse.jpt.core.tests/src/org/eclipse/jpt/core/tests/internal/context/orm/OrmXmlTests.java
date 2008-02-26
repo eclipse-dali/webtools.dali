@@ -50,7 +50,7 @@ public class OrmXmlTests extends ContextModelTestCase
 		
 		assertNull(ormXml().getEntityMappings());
 		
-		ormResource.getContents().add(OrmFactory.eINSTANCE.createEntityMappings());
+		ormResource.getContents().add(OrmFactory.eINSTANCE.createXmlEntityMappings());
 		
 		assertNotNull(ormXml().getEntityMappings());
 		

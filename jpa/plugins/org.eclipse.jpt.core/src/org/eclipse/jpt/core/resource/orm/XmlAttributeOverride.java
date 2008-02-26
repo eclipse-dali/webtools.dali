@@ -24,9 +24,9 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAttributeOverride()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeOverride()
  * @model kind="class" interface="true" abstract="true"
- * @extends IJpaEObject
+ * @extends JpaEObject
  * @generated
  */
 public interface XmlAttributeOverride extends JpaEObject
@@ -41,7 +41,7 @@ public interface XmlAttributeOverride extends JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Column</em>' containment reference.
 	 * @see #setColumn(XmlColumn)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAttributeOverride_Column()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeOverride_Column()
 	 * @model containment="true" required="true"
 	 * @generated
 	 */
@@ -67,7 +67,7 @@ public interface XmlAttributeOverride extends JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAttributeOverride_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeOverride_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */

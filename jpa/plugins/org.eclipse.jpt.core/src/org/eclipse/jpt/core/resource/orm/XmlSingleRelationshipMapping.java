@@ -24,7 +24,7 @@ import org.eclipse.emf.common.util.EList;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getSingleRelationshipMapping()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSingleRelationshipMapping()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
@@ -40,7 +40,7 @@ public interface XmlSingleRelationshipMapping extends XmlRelationshipMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Optional</em>' attribute.
 	 * @see #setOptional(Boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getSingleRelationshipMapping_Optional()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSingleRelationshipMapping_Optional()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -66,7 +66,7 @@ public interface XmlSingleRelationshipMapping extends XmlRelationshipMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getSingleRelationshipMapping_JoinColumns()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSingleRelationshipMapping_JoinColumns()
 	 * @model containment="true"
 	 * @generated
 	 */

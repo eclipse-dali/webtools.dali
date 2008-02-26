@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getNamedQuery()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedQuery()
  * @model kind="class"
  * @generated
  */
@@ -100,7 +100,7 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.NAMED_QUERY;
+		return OrmPackage.Literals.XML_NAMED_QUERY;
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getQuery_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQuery_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -135,7 +135,7 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.NAMED_QUERY__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_NAMED_QUERY__NAME, oldName, name));
 	}
 
 	/**
@@ -148,7 +148,7 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Query</em>' attribute.
 	 * @see #setQuery(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getQuery_Query()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQuery_Query()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -170,7 +170,7 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 		String oldQuery = query;
 		query = newQuery;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.NAMED_QUERY__QUERY, oldQuery, query));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_NAMED_QUERY__QUERY, oldQuery, query));
 	}
 
 	/**
@@ -183,7 +183,7 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Hints</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getQuery_Hints()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQuery_Hints()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -191,7 +191,7 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	{
 		if (hints == null)
 		{
-			hints = new EObjectContainmentEList<XmlQueryHint>(XmlQueryHint.class, this, OrmPackage.NAMED_QUERY__HINTS);
+			hints = new EObjectContainmentEList<XmlQueryHint>(XmlQueryHint.class, this, OrmPackage.XML_NAMED_QUERY__HINTS);
 		}
 		return hints;
 	}
@@ -206,7 +206,7 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	{
 		switch (featureID)
 		{
-			case OrmPackage.NAMED_QUERY__HINTS:
+			case OrmPackage.XML_NAMED_QUERY__HINTS:
 				return ((InternalEList<?>)getHints()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -222,11 +222,11 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	{
 		switch (featureID)
 		{
-			case OrmPackage.NAMED_QUERY__NAME:
+			case OrmPackage.XML_NAMED_QUERY__NAME:
 				return getName();
-			case OrmPackage.NAMED_QUERY__QUERY:
+			case OrmPackage.XML_NAMED_QUERY__QUERY:
 				return getQuery();
-			case OrmPackage.NAMED_QUERY__HINTS:
+			case OrmPackage.XML_NAMED_QUERY__HINTS:
 				return getHints();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -243,13 +243,13 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	{
 		switch (featureID)
 		{
-			case OrmPackage.NAMED_QUERY__NAME:
+			case OrmPackage.XML_NAMED_QUERY__NAME:
 				setName((String)newValue);
 				return;
-			case OrmPackage.NAMED_QUERY__QUERY:
+			case OrmPackage.XML_NAMED_QUERY__QUERY:
 				setQuery((String)newValue);
 				return;
-			case OrmPackage.NAMED_QUERY__HINTS:
+			case OrmPackage.XML_NAMED_QUERY__HINTS:
 				getHints().clear();
 				getHints().addAll((Collection<? extends XmlQueryHint>)newValue);
 				return;
@@ -267,13 +267,13 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	{
 		switch (featureID)
 		{
-			case OrmPackage.NAMED_QUERY__NAME:
+			case OrmPackage.XML_NAMED_QUERY__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case OrmPackage.NAMED_QUERY__QUERY:
+			case OrmPackage.XML_NAMED_QUERY__QUERY:
 				setQuery(QUERY_EDEFAULT);
 				return;
-			case OrmPackage.NAMED_QUERY__HINTS:
+			case OrmPackage.XML_NAMED_QUERY__HINTS:
 				getHints().clear();
 				return;
 		}
@@ -290,11 +290,11 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	{
 		switch (featureID)
 		{
-			case OrmPackage.NAMED_QUERY__NAME:
+			case OrmPackage.XML_NAMED_QUERY__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case OrmPackage.NAMED_QUERY__QUERY:
+			case OrmPackage.XML_NAMED_QUERY__QUERY:
 				return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
-			case OrmPackage.NAMED_QUERY__HINTS:
+			case OrmPackage.XML_NAMED_QUERY__HINTS:
 				return hints != null && !hints.isEmpty();
 		}
 		return super.eIsSet(featureID);

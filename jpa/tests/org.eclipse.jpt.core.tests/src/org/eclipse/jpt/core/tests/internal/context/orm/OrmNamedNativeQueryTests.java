@@ -228,9 +228,9 @@ public class OrmNamedNativeQueryTests extends ContextModelTestCase
 		
 		XmlNamedNativeQuery namedNativeQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
 
-		namedNativeQueryResource.getHints().add(OrmFactory.eINSTANCE.createQueryHint());
-		namedNativeQueryResource.getHints().add(OrmFactory.eINSTANCE.createQueryHint());
-		namedNativeQueryResource.getHints().add(OrmFactory.eINSTANCE.createQueryHint());
+		namedNativeQueryResource.getHints().add(OrmFactory.eINSTANCE.createXmlQueryHint());
+		namedNativeQueryResource.getHints().add(OrmFactory.eINSTANCE.createXmlQueryHint());
+		namedNativeQueryResource.getHints().add(OrmFactory.eINSTANCE.createXmlQueryHint());
 		
 		namedNativeQueryResource.getHints().get(0).setName("FOO");
 		namedNativeQueryResource.getHints().get(1).setName("BAR");

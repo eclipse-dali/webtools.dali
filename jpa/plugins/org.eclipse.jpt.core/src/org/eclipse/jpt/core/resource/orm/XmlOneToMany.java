@@ -23,7 +23,7 @@ import org.eclipse.emf.common.util.EList;
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getOneToMany()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToMany()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
@@ -39,7 +39,7 @@ public interface XmlOneToMany extends XmlMultiRelationshipMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getOneToMany_JoinColumns()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToMany_JoinColumns()
 	 * @model containment="true"
 	 * @generated
 	 */
