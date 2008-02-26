@@ -98,7 +98,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 	protected boolean discriminatorValueAllowed;
 
-	protected final GenericOrmDiscriminatorColumn discriminatorColumn;
+	protected final OrmDiscriminatorColumn discriminatorColumn;
 
 	protected GenericOrmSequenceGenerator sequenceGenerator;
 
@@ -132,8 +132,8 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		this.namedNativeQueries = new ArrayList<GenericOrmNamedNativeQuery>();
 	}
 	
-	protected GenericOrmDiscriminatorColumn createXmlDiscriminatorColumn() {
-		return new GenericOrmDiscriminatorColumn(this, buildDiscriminatorColumnOwner());
+	protected OrmDiscriminatorColumn createXmlDiscriminatorColumn() {
+		return jpaFactory().buildOrmDiscriminatorColumn(this, buildDiscriminatorColumnOwner());
 	}
 	
 	protected NamedColumn.Owner buildDiscriminatorColumnOwner() {
@@ -428,7 +428,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		typeMappingResource().setInheritance(null);
 	}
 
-	public GenericOrmDiscriminatorColumn getDiscriminatorColumn() {
+	public OrmDiscriminatorColumn getDiscriminatorColumn() {
 		return this.discriminatorColumn;
 	}
 

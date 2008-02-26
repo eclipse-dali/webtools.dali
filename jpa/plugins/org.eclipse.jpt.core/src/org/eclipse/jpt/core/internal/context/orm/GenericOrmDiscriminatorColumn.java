@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.resource.orm.XmlDiscriminatorColumn;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 
 public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDiscriminatorColumn>
-	implements DiscriminatorColumn
+	implements OrmDiscriminatorColumn
 {
 
 	protected DiscriminatorType specifiedDiscriminatorType;
@@ -32,16 +32,9 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 
 	protected XmlEntity entity;
 	
-	protected GenericOrmDiscriminatorColumn(JpaContextNode parent, Owner owner) {
+	public GenericOrmDiscriminatorColumn(JpaContextNode parent, Owner owner) {
 		super(parent, owner);
 	}
-
-//	@Override
-//	protected void addInsignificantXmlFeatureIdsTo(Set<Integer> insignificantXmlFeatureIds) {
-//		super.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);
-//		insignificantXmlFeatureIds.add(JpaCoreMappingsPackage.IDISCRIMINATOR_COLUMN__LENGTH);
-//		insignificantXmlFeatureIds.add(JpaCoreMappingsPackage.IDISCRIMINATOR_COLUMN__DEFAULT_LENGTH);
-//	}
 
 	public DiscriminatorType getDiscriminatorType() {
 		return (this.getSpecifiedDiscriminatorType() == null) ? this.getDefaultDiscriminatorType() : this.getSpecifiedDiscriminatorType();

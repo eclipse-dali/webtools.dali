@@ -16,8 +16,8 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
+import org.eclipse.jpt.core.internal.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
@@ -27,9 +27,9 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class XmlDiscriminatorColumnTests extends ContextModelTestCase
+public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 {
-	public XmlDiscriminatorColumnTests(String name) {
+	public OrmDiscriminatorColumnTests(String name) {
 		super(name);
 	}
 	
@@ -90,53 +90,53 @@ public class XmlDiscriminatorColumnTests extends ContextModelTestCase
 	
 	public void testUpdateSpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmDiscriminatorColumn xmlColumn = xmlEntity.getDiscriminatorColumn();
+		GenericOrmEntity ormEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
-		assertNull(xmlColumn.getSpecifiedName());
+		assertNull(ormColumn.getSpecifiedName());
 		assertNull(entityResource.getDiscriminatorColumn());
 		
 		//set name in the resource model, verify context model updated
 		entityResource.setDiscriminatorColumn(OrmFactory.eINSTANCE.createDiscriminatorColumn());
 		entityResource.getDiscriminatorColumn().setName("FOO");
 		ormResource().save(null);
-		assertEquals("FOO", xmlColumn.getSpecifiedName());
+		assertEquals("FOO", ormColumn.getSpecifiedName());
 		assertEquals("FOO", entityResource.getDiscriminatorColumn().getName());
 	
 		//set name to null in the resource model
 		entityResource.getDiscriminatorColumn().setName(null);
-		assertNull(xmlColumn.getSpecifiedName());
+		assertNull(ormColumn.getSpecifiedName());
 		assertNull(entityResource.getDiscriminatorColumn().getName());
 		
 		entityResource.getDiscriminatorColumn().setName("FOO");
-		assertEquals("FOO", xmlColumn.getSpecifiedName());
+		assertEquals("FOO", ormColumn.getSpecifiedName());
 		assertEquals("FOO", entityResource.getDiscriminatorColumn().getName());
 
 		entityResource.setDiscriminatorColumn(null);
-		assertNull(xmlColumn.getSpecifiedName());
+		assertNull(ormColumn.getSpecifiedName());
 		assertNull(entityResource.getDiscriminatorColumn());
 	}
 	
 	public void testModifySpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmDiscriminatorColumn xmlColumn = xmlEntity.getDiscriminatorColumn();
+		GenericOrmEntity ormEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
-		assertNull(xmlColumn.getSpecifiedName());
+		assertNull(ormColumn.getSpecifiedName());
 		assertNull(entityResource.getDiscriminatorColumn());
 		
 		//set name in the context model, verify resource model modified
-		xmlColumn.setSpecifiedName("foo");
-		assertEquals("foo", xmlColumn.getSpecifiedName());
+		ormColumn.setSpecifiedName("foo");
+		assertEquals("foo", ormColumn.getSpecifiedName());
 		assertEquals("foo", entityResource.getDiscriminatorColumn().getName());
 		
 		//set name to null in the context model
-		xmlColumn.setSpecifiedName(null);
-		assertNull(xmlColumn.getSpecifiedName());
+		ormColumn.setSpecifiedName(null);
+		assertNull(ormColumn.getSpecifiedName());
 		assertNull(entityResource.getDiscriminatorColumn());
 	}
 	
@@ -144,35 +144,35 @@ public class XmlDiscriminatorColumnTests extends ContextModelTestCase
 //		createTestEntity();
 //		
 //		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		XmlEntity xmlEntity = (XmlEntity) ormPersistentType.getMapping();
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
+//		XmlEntity ormEntity = (XmlEntity) ormPersistentType.getMapping();
+//		assertEquals(TYPE_NAME, ormEntity.getTable().getDefaultName());
 //		
-//		xmlEntity.javaEntity().getTable().setSpecifiedName("Foo");
-//		assertEquals("Foo", xmlEntity.getTable().getDefaultName());
+//		ormEntity.javaEntity().getTable().setSpecifiedName("Foo");
+//		assertEquals("Foo", ormEntity.getTable().getDefaultName());
 //		
-//		xmlEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
+//		ormEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+//		assertEquals(TYPE_NAME, ormEntity.getTable().getDefaultName());
 //
-//		xmlEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-//		xmlEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
+//		ormEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+//		ormEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
+//		assertEquals(TYPE_NAME, ormEntity.getTable().getDefaultName());
 //	
-//		xmlEntity.setSpecifiedMetadataComplete(null);
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
+//		ormEntity.setSpecifiedMetadataComplete(null);
+//		assertEquals(TYPE_NAME, ormEntity.getTable().getDefaultName());
 //		
-//		xmlEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
-//		assertEquals("Foo", xmlEntity.getTable().getDefaultName());
+//		ormEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
+//		assertEquals("Foo", ormEntity.getTable().getDefaultName());
 //		
-//		xmlEntity.getTable().setSpecifiedName("Bar");
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
+//		ormEntity.getTable().setSpecifiedName("Bar");
+//		assertEquals(TYPE_NAME, ormEntity.getTable().getDefaultName());
 //	}
 //	
 //	public void testUpdateDefaultNameNoJava() throws Exception {
 //		createTestEntity();
 //		
 //		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-//		XmlEntity xmlEntity = (XmlEntity) ormPersistentType.getMapping();
-//		assertEquals("Foo", xmlEntity.getTable().getDefaultName());
+//		XmlEntity ormEntity = (XmlEntity) ormPersistentType.getMapping();
+//		assertEquals("Foo", ormEntity.getTable().getDefaultName());
 //	}
 //	
 //	public void testUpdateDefaultNameFromParent() throws Exception {
@@ -198,156 +198,156 @@ public class XmlDiscriminatorColumnTests extends ContextModelTestCase
 	
 	public void testUpdateSpecifiedLength() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmDiscriminatorColumn xmlColumn = xmlEntity.getDiscriminatorColumn();
+		GenericOrmEntity ormEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
-		assertNull(xmlColumn.getSpecifiedLength());
+		assertNull(ormColumn.getSpecifiedLength());
 		assertNull(entityResource.getDiscriminatorColumn());
 		
 		//set name in the resource model, verify context model updated
 		entityResource.setDiscriminatorColumn(OrmFactory.eINSTANCE.createDiscriminatorColumn());
 		entityResource.getDiscriminatorColumn().setLength(Integer.valueOf(8));
-		assertEquals(Integer.valueOf(8), xmlColumn.getSpecifiedLength());
+		assertEquals(Integer.valueOf(8), ormColumn.getSpecifiedLength());
 		assertEquals(Integer.valueOf(8), entityResource.getDiscriminatorColumn().getLength());
 	
 		//set name to null in the resource model
 		entityResource.getDiscriminatorColumn().setLength(null);
-		assertNull(xmlColumn.getSpecifiedLength());
+		assertNull(ormColumn.getSpecifiedLength());
 		assertNull(entityResource.getDiscriminatorColumn().getLength());
 		
 		entityResource.getDiscriminatorColumn().setLength(Integer.valueOf(11));
-		assertEquals(Integer.valueOf(11), xmlColumn.getSpecifiedLength());
+		assertEquals(Integer.valueOf(11), ormColumn.getSpecifiedLength());
 		assertEquals(Integer.valueOf(11), entityResource.getDiscriminatorColumn().getLength());
 
 		entityResource.setDiscriminatorColumn(null);
-		assertNull(xmlColumn.getSpecifiedLength());
+		assertNull(ormColumn.getSpecifiedLength());
 		assertNull(entityResource.getDiscriminatorColumn());
 	}
 	
 	public void testModifySpecifiedLength() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmDiscriminatorColumn xmlColumn = xmlEntity.getDiscriminatorColumn();
+		GenericOrmEntity ormEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
-		assertNull(xmlColumn.getSpecifiedLength());
+		assertNull(ormColumn.getSpecifiedLength());
 		assertNull(entityResource.getDiscriminatorColumn());
 		
 		//set name in the context model, verify resource model modified
-		xmlColumn.setSpecifiedLength(Integer.valueOf(7));
-		assertEquals(Integer.valueOf(7), xmlColumn.getSpecifiedLength());
+		ormColumn.setSpecifiedLength(Integer.valueOf(7));
+		assertEquals(Integer.valueOf(7), ormColumn.getSpecifiedLength());
 		assertEquals(Integer.valueOf(7), entityResource.getDiscriminatorColumn().getLength());
 		
 		//set name to null in the context model
-		xmlColumn.setSpecifiedLength(null);
-		assertNull(xmlColumn.getSpecifiedLength());
+		ormColumn.setSpecifiedLength(null);
+		assertNull(ormColumn.getSpecifiedLength());
 		assertNull(entityResource.getDiscriminatorColumn());
 	}
 
 	public void testUpdateSpecifiedColumnDefinition() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmDiscriminatorColumn xmlColumn = xmlEntity.getDiscriminatorColumn();
+		GenericOrmEntity ormEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
-		assertNull(xmlColumn.getColumnDefinition());
+		assertNull(ormColumn.getColumnDefinition());
 		assertNull(entityResource.getDiscriminatorColumn());
 		
 		//set name in the resource model, verify context model updated
 		entityResource.setDiscriminatorColumn(OrmFactory.eINSTANCE.createDiscriminatorColumn());
 		entityResource.getDiscriminatorColumn().setColumnDefinition("FOO");
 		ormResource().save(null);
-		assertEquals("FOO", xmlColumn.getColumnDefinition());
+		assertEquals("FOO", ormColumn.getColumnDefinition());
 		assertEquals("FOO", entityResource.getDiscriminatorColumn().getColumnDefinition());
 	
 		//set name to null in the resource model
 		entityResource.getDiscriminatorColumn().setColumnDefinition(null);
-		assertNull(xmlColumn.getColumnDefinition());
+		assertNull(ormColumn.getColumnDefinition());
 		assertNull(entityResource.getDiscriminatorColumn().getColumnDefinition());
 		
 		entityResource.getDiscriminatorColumn().setColumnDefinition("FOO");
-		assertEquals("FOO", xmlColumn.getColumnDefinition());
+		assertEquals("FOO", ormColumn.getColumnDefinition());
 		assertEquals("FOO", entityResource.getDiscriminatorColumn().getColumnDefinition());
 
 		entityResource.setDiscriminatorColumn(null);
-		assertNull(xmlColumn.getColumnDefinition());
+		assertNull(ormColumn.getColumnDefinition());
 		assertNull(entityResource.getDiscriminatorColumn());
 	}
 	
 	public void testModifySpecifiedColumnDefinition() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmDiscriminatorColumn xmlColumn = xmlEntity.getDiscriminatorColumn();
+		GenericOrmEntity ormEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
-		assertNull(xmlColumn.getColumnDefinition());
+		assertNull(ormColumn.getColumnDefinition());
 		assertNull(entityResource.getDiscriminatorColumn());
 		
 		//set name in the context model, verify resource model modified
-		xmlColumn.setColumnDefinition("foo");
-		assertEquals("foo", xmlColumn.getColumnDefinition());
+		ormColumn.setColumnDefinition("foo");
+		assertEquals("foo", ormColumn.getColumnDefinition());
 		assertEquals("foo", entityResource.getDiscriminatorColumn().getColumnDefinition());
 		
 		//set name to null in the context model
-		xmlColumn.setColumnDefinition(null);
-		assertNull(xmlColumn.getColumnDefinition());
+		ormColumn.setColumnDefinition(null);
+		assertNull(ormColumn.getColumnDefinition());
 		assertNull(entityResource.getDiscriminatorColumn());
 	}
 	
 	public void testUpdateSpecifiedDiscriminatorType() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmDiscriminatorColumn xmlColumn = xmlEntity.getDiscriminatorColumn();
+		GenericOrmEntity ormEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
-		assertNull(xmlColumn.getSpecifiedDiscriminatorType());
+		assertNull(ormColumn.getSpecifiedDiscriminatorType());
 		assertNull(entityResource.getDiscriminatorColumn());
 		
 		//set discriminator type in the resource model, verify context model updated
 		entityResource.setDiscriminatorColumn(OrmFactory.eINSTANCE.createDiscriminatorColumn());
 		entityResource.getDiscriminatorColumn().setDiscriminatorType(org.eclipse.jpt.core.resource.orm.DiscriminatorType.STRING);
 		ormResource().save(null);
-		assertEquals(DiscriminatorType.STRING, xmlColumn.getSpecifiedDiscriminatorType());
+		assertEquals(DiscriminatorType.STRING, ormColumn.getSpecifiedDiscriminatorType());
 		assertEquals(org.eclipse.jpt.core.resource.orm.DiscriminatorType.STRING, entityResource.getDiscriminatorColumn().getDiscriminatorType());
 	
 		//set discriminator type to null in the resource model
 		entityResource.getDiscriminatorColumn().setDiscriminatorType(null);
-		assertNull(xmlColumn.getSpecifiedDiscriminatorType());
+		assertNull(ormColumn.getSpecifiedDiscriminatorType());
 		assertNull(entityResource.getDiscriminatorColumn().getDiscriminatorType());
 		
 		entityResource.getDiscriminatorColumn().setDiscriminatorType(org.eclipse.jpt.core.resource.orm.DiscriminatorType.CHAR);
-		assertEquals(DiscriminatorType.CHAR, xmlColumn.getSpecifiedDiscriminatorType());
+		assertEquals(DiscriminatorType.CHAR, ormColumn.getSpecifiedDiscriminatorType());
 		assertEquals(org.eclipse.jpt.core.resource.orm.DiscriminatorType.CHAR, entityResource.getDiscriminatorColumn().getDiscriminatorType());
 
 		entityResource.setDiscriminatorColumn(null);
-		assertNull(xmlColumn.getSpecifiedDiscriminatorType());
+		assertNull(ormColumn.getSpecifiedDiscriminatorType());
 		assertNull(entityResource.getDiscriminatorColumn());
 	}
 	
 	public void testModifySpecifiedDiscriminatorType() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmDiscriminatorColumn xmlColumn = xmlEntity.getDiscriminatorColumn();
+		GenericOrmEntity ormEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
-		assertNull(xmlColumn.getSpecifiedDiscriminatorType());
+		assertNull(ormColumn.getSpecifiedDiscriminatorType());
 		assertNull(entityResource.getDiscriminatorColumn());
 		
 		//set discriminator type in the context model, verify resource model modified
-		xmlColumn.setSpecifiedDiscriminatorType(DiscriminatorType.STRING);
-		assertEquals(DiscriminatorType.STRING, xmlColumn.getSpecifiedDiscriminatorType());
+		ormColumn.setSpecifiedDiscriminatorType(DiscriminatorType.STRING);
+		assertEquals(DiscriminatorType.STRING, ormColumn.getSpecifiedDiscriminatorType());
 		assertEquals(org.eclipse.jpt.core.resource.orm.DiscriminatorType.STRING, entityResource.getDiscriminatorColumn().getDiscriminatorType());
 		
 		//set discriminator type to null in the context model
-		xmlColumn.setSpecifiedDiscriminatorType(null);
-		assertNull(xmlColumn.getSpecifiedDiscriminatorType());
+		ormColumn.setSpecifiedDiscriminatorType(null);
+		assertNull(ormColumn.getSpecifiedDiscriminatorType());
 		assertNull(entityResource.getDiscriminatorColumn());
 	}
 }

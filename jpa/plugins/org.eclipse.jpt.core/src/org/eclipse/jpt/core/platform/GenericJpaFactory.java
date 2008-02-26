@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.context.IBaseJpaContent;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.NamedColumn;
+import org.eclipse.jpt.core.context.NamedColumn.Owner;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
@@ -122,6 +123,7 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericEntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmAssociationOverride;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmAttributeOverride;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinColumn;
@@ -134,6 +136,7 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmSecondaryTable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmTable;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitMetadata;
+import org.eclipse.jpt.core.internal.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.orm.OrmXmlImpl;
 import org.eclipse.jpt.core.internal.context.persistence.GeenericPersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.GenericClassRef;
@@ -467,5 +470,9 @@ public class GenericJpaFactory implements JpaFactory
 	
 	public OrmAssociationOverride buildOrmAssociationOverride(JpaContextNode parent, AssociationOverride.Owner owner) {
 		return new GenericOrmAssociationOverride(parent, owner);
+	}
+	
+	public OrmDiscriminatorColumn buildOrmDiscriminatorColumn(GenericOrmEntity parent, Owner owner) {
+		return new GenericOrmDiscriminatorColumn(parent, owner);
 	}
 }

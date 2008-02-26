@@ -81,6 +81,7 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappedSuperclass;
+import org.eclipse.jpt.core.internal.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 
 /**
@@ -192,6 +193,8 @@ public interface JpaFactory
 	
 	OrmAssociationOverride buildOrmAssociationOverride(JpaContextNode parent, AssociationOverride.Owner owner);
 
+	OrmDiscriminatorColumn buildOrmDiscriminatorColumn(GenericOrmEntity parent, NamedColumn.Owner owner);
+	
 	// **************** java context objects ***********************************
 	
 	JavaPersistentType buildJavaPersistentType(JpaContextNode parent);
