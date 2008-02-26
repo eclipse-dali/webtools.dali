@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.MultiRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
+import org.eclipse.jpt.core.context.orm.OrmMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -23,7 +24,7 @@ import org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping;
 
 public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRelationshipMapping>
 	extends AbstractOrmRelationshipMapping<T>
-	implements MultiRelationshipMapping
+	implements OrmMultiRelationshipMapping
 {
 
 	protected String mappedBy;
@@ -46,7 +47,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 	}
 
 	@Override
-	public void initializeFromXmlMulitRelationshipMapping(AbstractOrmMultiRelationshipMapping<? extends XmlMultiRelationshipMapping> oldMapping) {
+	public void initializeFromXmlMulitRelationshipMapping(OrmMultiRelationshipMapping oldMapping) {
 		super.initializeFromXmlMulitRelationshipMapping(oldMapping);
 		getJoinTable().initializeFrom(oldMapping.getJoinTable());
 	}

@@ -9,26 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.ManyToOneMapping;
-import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 
 
 public class GenericOrmManyToOneMapping extends AbstractOrmSingleRelationshipMapping<XmlManyToOne>
-	implements ManyToOneMapping
+	implements OrmManyToOneMapping
 {
 
-	protected GenericOrmManyToOneMapping(OrmPersistentAttribute parent) {
+	public GenericOrmManyToOneMapping(OrmPersistentAttribute parent) {
 		super(parent);
 	}
 
-	@Override
 	public int xmlSequence() {
 		return 3;
 	}
@@ -42,18 +39,15 @@ public class GenericOrmManyToOneMapping extends AbstractOrmSingleRelationshipMap
 		return true;
 	}
 	
-	@Override
-	protected void initializeOn(AbstractOrmAttributeMapping<? extends XmlAttributeMapping> newMapping) {
-		newMapping.initializeFromXmlManyToOneMapping(this);
+	public void initializeOn(OrmAttributeMapping newMapping) {
+		newMapping.initializeFromOrmManyToOneMapping(this);
 	}
 
 	@Override
 	public boolean isOverridableAssociationMapping() {
 		return true;
 	}
-	
-	
-	@Override
+		
 	public XmlManyToOne addToResourceModel(AbstractTypeMapping typeMapping) {
 		XmlManyToOne manyToOne = OrmFactory.eINSTANCE.createManyToOneImpl();
 		persistentAttribute().initialize(manyToOne);
@@ -61,31 +55,10 @@ public class GenericOrmManyToOneMapping extends AbstractOrmSingleRelationshipMap
 		return manyToOne;
 	}
 	
-	@Override
 	public void removeFromResourceModel(AbstractTypeMapping typeMapping) {
 		typeMapping.getAttributes().getManyToOnes().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
 		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public ListIterator<OrmJoinColumn> joinColumns() {
-		return super.joinColumns();
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public ListIterator<OrmJoinColumn> specifiedJoinColumns() {
-		// TODO Auto-generated method stub
-		return super.specifiedJoinColumns();
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public ListIterator<OrmJoinColumn> defaultJoinColumns() {
-		// TODO Auto-generated method stub
-		return super.defaultJoinColumns();
 	}
 }

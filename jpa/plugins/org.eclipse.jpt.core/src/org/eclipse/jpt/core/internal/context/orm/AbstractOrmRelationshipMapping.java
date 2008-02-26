@@ -13,14 +13,14 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Fetchable;
-import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 
 public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMapping> extends AbstractOrmAttributeMapping<T>
-	implements RelationshipMapping
+	implements OrmRelationshipMapping
 {
 	
 	protected String specifiedTargetEntity;
@@ -107,7 +107,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 
 
 	@Override
-	public void initializeFromXmlRelationshipMapping(AbstractOrmRelationshipMapping<? extends XmlRelationshipMapping> oldMapping) {
+	public void initializeFromXmlRelationshipMapping(OrmRelationshipMapping oldMapping) {
 		super.initializeFromXmlRelationshipMapping(oldMapping);
 		setSpecifiedTargetEntity(oldMapping.getSpecifiedTargetEntity());
 		setSpecifiedFetch(oldMapping.getSpecifiedFetch());

@@ -22,12 +22,14 @@ import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaEmbeddedMapping;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -38,7 +40,7 @@ import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 
-public class GenericOrmEmbeddedIdMapping extends AbstractOrmAttributeMapping<XmlEmbeddedId> implements EmbeddedIdMapping
+public class GenericOrmEmbeddedIdMapping extends AbstractOrmAttributeMapping<XmlEmbeddedId> implements OrmEmbeddedIdMapping
 {
 	protected final List<OrmAttributeOverride> specifiedAttributeOverrides;
 	
@@ -46,20 +48,19 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmAttributeMapping<Xml
 
 	private Embeddable embeddable;
 	
-	protected GenericOrmEmbeddedIdMapping(OrmPersistentAttribute parent) {
+	public GenericOrmEmbeddedIdMapping(OrmPersistentAttribute parent) {
 		super(parent);
 		this.specifiedAttributeOverrides = new ArrayList<OrmAttributeOverride>();
 		this.defaultAttributeOverrides = new ArrayList<OrmAttributeOverride>();
 	}
 
-	@Override
-	protected void initializeOn(AbstractOrmAttributeMapping<? extends XmlAttributeMapping> newMapping) {
-		newMapping.initializeFromXmlEmbeddedIdMapping(this);
+	public void initializeOn(OrmAttributeMapping newMapping) {
+		newMapping.initializeFromOrmEmbeddedIdMapping(this);
 	}
 
 	@Override
-	public void initializeFromXmlEmbeddedMapping(GenericOrmEmbeddedMapping oldMapping) {
-		super.initializeFromXmlEmbeddedMapping(oldMapping);
+	public void initializeFromOrmEmbeddedMapping(OrmEmbeddedMapping oldMapping) {
+		super.initializeFromOrmEmbeddedMapping(oldMapping);
 		int index = 0;
 		for (AttributeOverride attributeOverride : CollectionTools.iterable(oldMapping.specifiedAttributeOverrides())) {
 			OrmAttributeOverride newAttributeOverride = addSpecifiedAttributeOverride(index++);
@@ -68,7 +69,6 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmAttributeMapping<Xml
 		}
 	}
 	
-	@Override
 	public int xmlSequence() {
 		return 7;
 	}
@@ -304,7 +304,6 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmAttributeMapping<Xml
 		}
 	}
 
-	@Override
 	public XmlEmbeddedId addToResourceModel(AbstractTypeMapping typeMapping) {
 		XmlEmbeddedId embeddedId = OrmFactory.eINSTANCE.createEmbeddedIdImpl();
 		persistentAttribute().initialize(embeddedId);
@@ -312,7 +311,6 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmAttributeMapping<Xml
 		return embeddedId;
 	}
 	
-	@Override
 	public void removeFromResourceModel(AbstractTypeMapping typeMapping) {
 		typeMapping.getAttributes().getEmbeddedIds().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {

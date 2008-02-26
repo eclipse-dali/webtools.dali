@@ -14,9 +14,9 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
+import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmManyToManyMapping;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
@@ -42,10 +42,10 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 	public void testUpdateSpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();		
 		OrmJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -75,10 +75,10 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 	public void testModifySpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();		
 		OrmJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -100,10 +100,10 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 	public void testUpdateSpecifiedReferencedColumnName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();		
 		OrmJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -134,10 +134,10 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 	public void testModifySpecifiedReferencedColumnName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();		
 		OrmJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -216,10 +216,10 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 	public void testUpdateSpecifiedColumnDefinition() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();		
 		OrmJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -249,10 +249,10 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 	public void testModifySpecifiedColumnDefinition() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();		
 		OrmJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -274,10 +274,10 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 	public void testUpdateSpecifiedTable() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();		
 		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -307,10 +307,10 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 	public void testModifySpecifiedTable() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();		
 		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -332,10 +332,10 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 	public void testUpdateSpecifiedNullable() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();		
 		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -365,10 +365,10 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 	public void testModifySpecifiedNullable() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();		
 		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -390,10 +390,10 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 	public void testUpdateSpecifiedUpdatable() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();		
 		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -423,10 +423,10 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 	public void testModifySpecifiedUpdatable() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();		
 		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -448,10 +448,10 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 	public void testUpdateSpecifiedInsertable() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();		
 		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -481,10 +481,10 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 	public void testModifySpecifiedInsertable() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();		
 		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -506,10 +506,10 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 	public void testUpdateSpecifiedUnique() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();		
 		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
@@ -539,10 +539,10 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 	public void testModifySpecifiedUnique() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
-		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();		
 		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);

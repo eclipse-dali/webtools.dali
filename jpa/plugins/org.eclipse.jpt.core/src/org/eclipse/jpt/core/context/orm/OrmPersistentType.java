@@ -12,8 +12,6 @@ package org.eclipse.jpt.core.context.orm;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
@@ -82,7 +80,7 @@ public interface OrmPersistentType extends PersistentType
 	void setPersistentAttributeVirtual(OrmPersistentAttribute ormPersistentAttribute, boolean virtual);
 		
 	//******************* mapping morphing *******************
-	void changeMapping(OrmPersistentAttribute ormPersistentAttribute, AbstractOrmAttributeMapping<? extends XmlAttributeMapping> oldMapping, AbstractOrmAttributeMapping<? extends XmlAttributeMapping> newMapping);
+	void changeMapping(OrmPersistentAttribute ormPersistentAttribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping);
 	
 	
 	//******************* initialization/updating *******************

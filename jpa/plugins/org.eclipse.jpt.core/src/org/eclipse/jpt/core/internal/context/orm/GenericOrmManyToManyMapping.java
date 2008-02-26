@@ -11,19 +11,19 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.core.context.NonOwningMapping;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 
 public class GenericOrmManyToManyMapping extends AbstractOrmMultiRelationshipMapping<XmlManyToMany>
-	implements ManyToManyMapping
+	implements OrmManyToManyMapping
 {
 
-	protected GenericOrmManyToManyMapping(OrmPersistentAttribute parent) {
+	public GenericOrmManyToManyMapping(OrmPersistentAttribute parent) {
 		super(parent);
 	}
 
@@ -31,9 +31,8 @@ public class GenericOrmManyToManyMapping extends AbstractOrmMultiRelationshipMap
 		return MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	@Override
-	protected void initializeOn(AbstractOrmAttributeMapping<? extends XmlAttributeMapping> newMapping) {
-		newMapping.initializeFromXmlManyToManyMapping(this);
+	public void initializeOn(OrmAttributeMapping newMapping) {
+		newMapping.initializeFromOrmManyToManyMapping(this);
 	}
 
 	@Override
@@ -42,7 +41,6 @@ public class GenericOrmManyToManyMapping extends AbstractOrmMultiRelationshipMap
 		setMappedBy(oldMapping.getMappedBy());
 	}
 
-	@Override
 	public int xmlSequence() {
 		return 6;
 	}
@@ -54,7 +52,6 @@ public class GenericOrmManyToManyMapping extends AbstractOrmMultiRelationshipMap
 		return (mappedByKey == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 	}
 	
-	@Override
 	public XmlManyToMany addToResourceModel(AbstractTypeMapping typeMapping) {
 		XmlManyToMany manyToMany = OrmFactory.eINSTANCE.createManyToManyImpl();
 		persistentAttribute().initialize(manyToMany);
@@ -62,7 +59,6 @@ public class GenericOrmManyToManyMapping extends AbstractOrmMultiRelationshipMap
 		return manyToMany;
 	}
 	
-	@Override
 	public void removeFromResourceModel(AbstractTypeMapping typeMapping) {
 		typeMapping.getAttributes().getManyToManys().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {

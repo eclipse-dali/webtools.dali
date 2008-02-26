@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.platform.JpaFactory;
 
@@ -37,7 +38,7 @@ public class OrmBasicMappingProvider implements OrmAttributeMappingProvider
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public GenericOrmBasicMapping buildAttributeMapping(JpaFactory factory, OrmPersistentAttribute parent) {
-		return new GenericOrmBasicMapping(parent);
+	public OrmBasicMapping buildAttributeMapping(JpaFactory factory, OrmPersistentAttribute parent) {
+		return factory.buildOrmBasicMapping(parent);
 	}
 }

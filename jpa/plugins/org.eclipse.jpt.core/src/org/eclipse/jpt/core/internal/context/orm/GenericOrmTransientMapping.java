@@ -10,27 +10,25 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.TransientMapping;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
 
 
-public class GenericOrmTransientMapping extends AbstractOrmAttributeMapping<XmlTransient> implements TransientMapping
+public class GenericOrmTransientMapping extends AbstractOrmAttributeMapping<XmlTransient> implements OrmTransientMapping
 {
 	
-	protected GenericOrmTransientMapping(OrmPersistentAttribute parent) {
+	public GenericOrmTransientMapping(OrmPersistentAttribute parent) {
 		super(parent);
 	}
 
-	@Override
-	protected void initializeOn(AbstractOrmAttributeMapping<? extends XmlAttributeMapping> newMapping) {
-		newMapping.initializeFromXmlTransientMapping(this);
+	public void initializeOn(OrmAttributeMapping newMapping) {
+		newMapping.initializeFromOrmTransientMapping(this);
 	}
 
-	@Override
 	public int xmlSequence() {
 		return 8;
 	}
@@ -39,7 +37,6 @@ public class GenericOrmTransientMapping extends AbstractOrmAttributeMapping<XmlT
 		return MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	@Override
 	public XmlTransient addToResourceModel(AbstractTypeMapping typeMapping) {
 		XmlTransient transientResource = OrmFactory.eINSTANCE.createTransientImpl();
 		persistentAttribute().initialize(transientResource);
@@ -47,7 +44,6 @@ public class GenericOrmTransientMapping extends AbstractOrmAttributeMapping<XmlT
 		return transientResource;
 	}
 	
-	@Override
 	public void removeFromResourceModel(AbstractTypeMapping typeMapping) {
 		typeMapping.getAttributes().getTransients().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {

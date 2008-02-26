@@ -65,26 +65,38 @@ import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
+import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
+import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
+import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryHint;
+import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
+import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
+import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
@@ -130,20 +142,28 @@ import org.eclipse.jpt.core.internal.context.java.GenericJavaTableGenerator;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaTransientMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaVersionMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
-import org.eclipse.jpt.core.internal.context.orm.AbstractOrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericEntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmAssociationOverride;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmAttributeOverride;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmBasicMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmColumn;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddable;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddedIdMapping;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmGeneratedValue;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmIdMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinColumn;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinTable;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmManyToManyMapping;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmManyToOneMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappedSuperclass;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmNamedNativeQuery;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmNamedQuery;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmNullAttributeMapping;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToManyMapping;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToOneMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmPrimaryKeyJoinColumn;
@@ -152,6 +172,8 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmSecondaryTable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmSequenceGenerator;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmTable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmTableGenerator;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmTransientMapping;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmVersionMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.orm.OrmXmlImpl;
@@ -164,7 +186,6 @@ import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
 import org.eclipse.jpt.core.internal.jdtutility.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.resource.orm.OrmResourceModel;
-import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResourceModel;
 
 public class GenericJpaFactory implements JpaFactory
@@ -473,7 +494,7 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericOrmPrimaryKeyJoinColumn(parent, owner);
 	}
 	
-	public OrmJoinTable buildOrmJoinTable(AbstractOrmRelationshipMapping<? extends XmlRelationshipMapping> parent) {
+	public OrmJoinTable buildOrmJoinTable(OrmRelationshipMapping parent) {
 		return new GenericOrmJoinTable(parent);
 	}
 	
@@ -519,5 +540,49 @@ public class GenericJpaFactory implements JpaFactory
 	
 	public OrmQueryHint buildOrmQueryHint(OrmQuery parent) {
 		return new GenericOrmQueryHint(parent);
+	}
+	
+	public OrmBasicMapping buildOrmBasicMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmBasicMapping(parent);
+	}
+	
+	public OrmEmbeddedMapping buildOrmEmbeddedMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmEmbeddedMapping(parent);
+	}
+	
+	public OrmEmbeddedIdMapping buildOrmEmbeddedIdMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmEmbeddedIdMapping(parent);
+	}
+	
+	public OrmIdMapping buildOrmIdMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmIdMapping(parent);
+	}
+	
+	public OrmManyToManyMapping buildOrmManyToManyMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmManyToManyMapping(parent);
+	}
+	
+	public OrmManyToOneMapping buildOrmManyToOneMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmManyToOneMapping(parent);
+	}
+	
+	public OrmOneToManyMapping buildOrmOneToManyMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmOneToManyMapping(parent);
+	}
+	
+	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmOneToOneMapping(parent);
+	}
+	
+	public OrmTransientMapping buildOrmTransientMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmTransientMapping(parent);
+	}
+	
+	public OrmVersionMapping buildOrmVersionMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmVersionMapping(parent);
+	}
+	
+	public OrmAttributeMapping buildOrmNullAttributeMapping(OrmPersistentAttribute parent) {
+		return new GenericOrmNullAttributeMapping(parent);
 	}
 }

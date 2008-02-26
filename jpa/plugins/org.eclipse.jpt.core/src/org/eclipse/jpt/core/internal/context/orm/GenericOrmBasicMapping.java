@@ -19,19 +19,20 @@ import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Fetchable;
 import org.eclipse.jpt.core.context.Nullable;
 import org.eclipse.jpt.core.context.TemporalType;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.db.internal.Table;
 
 
 public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic>
-	implements BasicMapping, OrmColumnMapping
+	implements OrmBasicMapping
 {
 	protected final OrmColumn column;
 	
@@ -45,7 +46,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	
 	protected boolean lob;
 	
-	protected GenericOrmBasicMapping(OrmPersistentAttribute parent) {
+	public GenericOrmBasicMapping(OrmPersistentAttribute parent) {
 		super(parent);
 		this.column = jpaFactory().buildOrmColumn(this, this);
 	}
@@ -163,9 +164,8 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	@Override
-	protected void initializeOn(AbstractOrmAttributeMapping<? extends XmlAttributeMapping> newMapping) {
-		newMapping.initializeFromXmlBasicMapping(this);
+	public void initializeOn(OrmAttributeMapping newMapping) {
+		newMapping.initializeFromOrmBasicMapping(this);
 	}
 
 
@@ -176,7 +176,6 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 		getColumn().initializeFrom(oldMapping.getColumn());
 	}
 
-	@Override
 	public int xmlSequence() {
 		return 1;
 	}
@@ -249,7 +248,6 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 		return basic.isLob();
 	}
 	
-	@Override
 	public XmlBasic addToResourceModel(AbstractTypeMapping typeMapping) {
 		XmlBasic basic = OrmFactory.eINSTANCE.createBasicImpl();
 		persistentAttribute().initialize(basic);
@@ -257,7 +255,6 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 		return basic;
 	}
 	
-	@Override
 	public void removeFromResourceModel(AbstractTypeMapping typeMapping) {
 		typeMapping.getAttributes().getBasics().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {

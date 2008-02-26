@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.Cascade;
+import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -32,7 +33,7 @@ public class OrmCascade extends AbstractJpaContextNode implements Cascade
 	
 	protected XmlRelationshipMapping relationshipMapping;
 	
-	protected OrmCascade(AbstractOrmRelationshipMapping<? extends XmlRelationshipMapping> parent) {
+	protected OrmCascade(OrmRelationshipMapping parent) {
 		super(parent);
 	}
 	

@@ -15,13 +15,23 @@ import java.util.List;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
+import org.eclipse.jpt.core.context.orm.OrmIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
+import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
@@ -40,7 +50,7 @@ public class GenericOrmPersistentAttribute extends AbstractJpaContextNode
 
 	protected List<OrmAttributeMappingProvider> attributeMappingProviders;
 
-	protected AbstractOrmAttributeMapping<? extends XmlAttributeMapping> attributeMapping;
+	protected OrmAttributeMapping attributeMapping;
 	
 	public GenericOrmPersistentAttribute(OrmPersistentType parent, String mappingKey) {
 		super(parent);
@@ -72,7 +82,7 @@ public class GenericOrmPersistentAttribute extends AbstractJpaContextNode
 		return OrmNullAttributeMappingProvider.instance();
 	}
 
-	protected AbstractOrmAttributeMapping<? extends XmlAttributeMapping> buildAttributeMapping(String key) {
+	protected OrmAttributeMapping buildAttributeMapping(String key) {
 		return this.attributeMappingProvider(key).buildAttributeMapping(jpaFactory(), this);
 	}
 	
@@ -88,11 +98,11 @@ public class GenericOrmPersistentAttribute extends AbstractJpaContextNode
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 
-	public AbstractOrmAttributeMapping getSpecifiedMapping() {
+	public OrmAttributeMapping getSpecifiedMapping() {
 		return this.attributeMapping;
 	}
 	
-	public AbstractOrmAttributeMapping<? extends XmlAttributeMapping> getMapping() {
+	public OrmAttributeMapping getMapping() {
 		return this.attributeMapping;
 	}
 
@@ -108,7 +118,7 @@ public class GenericOrmPersistentAttribute extends AbstractJpaContextNode
 		if (this.mappingKey() == newMappingKey) {
 			return;
 		}
-		AbstractOrmAttributeMapping<? extends XmlAttributeMapping> oldMapping = getMapping();
+		OrmAttributeMapping oldMapping = getMapping();
 		this.attributeMapping = buildAttributeMapping(newMappingKey);
 		persistentType().changeMapping(this, oldMapping, this.attributeMapping);
 		firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, oldMapping, this.attributeMapping);
@@ -118,7 +128,7 @@ public class GenericOrmPersistentAttribute extends AbstractJpaContextNode
 		if (this.mappingKey() == newMappingKey) {
 			return;
 		}
-		AbstractOrmAttributeMapping<? extends XmlAttributeMapping> oldMapping = getMapping();
+		OrmAttributeMapping oldMapping = getMapping();
 		this.attributeMapping = buildAttributeMapping(newMappingKey);
 		firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, oldMapping, this.attributeMapping);
 	}
@@ -182,138 +192,138 @@ public class GenericOrmPersistentAttribute extends AbstractJpaContextNode
 	//I am trying to take adavantage of generics here, but it sure is
 	//leading to a lot of duplicated code. - KFM
 	public void initialize(XmlBasic basic) {
-		((GenericOrmBasicMapping) getMapping()).initialize(basic);
+		((OrmBasicMapping) getMapping()).initialize(basic);
 	}
 	
 	public void initialize(XmlEmbedded embedded) {
-		((GenericOrmEmbeddedMapping) getMapping()).initialize(embedded);
+		((OrmEmbeddedMapping) getMapping()).initialize(embedded);
 	}
 	
 	public void initialize(XmlVersion version) {
-		((GenericOrmVersionMapping) getMapping()).initialize(version);
+		((OrmVersionMapping) getMapping()).initialize(version);
 	}
 	
 	public void initialize(XmlManyToOne manyToOne) {
-		((GenericOrmManyToOneMapping) getMapping()).initialize(manyToOne);
+		((OrmManyToOneMapping) getMapping()).initialize(manyToOne);
 	}
 	
 	public void initialize(XmlOneToMany oneToMany) {
-		((GenericOrmOneToManyMapping) getMapping()).initialize(oneToMany);
+		((OrmOneToManyMapping) getMapping()).initialize(oneToMany);
 	}
 	
 	public void initialize(XmlOneToOne oneToOne) {
-		((GenericOrmOneToOneMapping) getMapping()).initialize(oneToOne);
+		((OrmOneToOneMapping) getMapping()).initialize(oneToOne);
 	}
 	
 	public void initialize(XmlManyToMany manyToMany) {
-		((GenericOrmManyToManyMapping) getMapping()).initialize(manyToMany);
+		((OrmManyToManyMapping) getMapping()).initialize(manyToMany);
 	}
 	
 	public void initialize(XmlId id) {
-		((GenericOrmIdMapping) getMapping()).initialize(id);
+		((OrmIdMapping) getMapping()).initialize(id);
 	}
 	
 	public void initialize(XmlEmbeddedId embeddedId) {
-		((GenericOrmEmbeddedIdMapping) getMapping()).initialize(embeddedId);
+		((OrmEmbeddedIdMapping) getMapping()).initialize(embeddedId);
 	}
 	
 	public void initialize(XmlTransient transientResource) {
-		((GenericOrmTransientMapping) getMapping()).initialize(transientResource);
+		((OrmTransientMapping) getMapping()).initialize(transientResource);
 	}
 		
 	public void update(XmlId id) {
 		if (mappingKey() == MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) {
-			((GenericOrmIdMapping) getMapping()).update(id);
+			((OrmIdMapping) getMapping()).update(id);
 		}
 		else {
 			setSpecifiedMappingKey_(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
-			((GenericOrmIdMapping) getMapping()).initialize(id);				
+			((OrmIdMapping) getMapping()).initialize(id);				
 		}
 	}
 	
 	public void update(XmlEmbeddedId embeddedId) {
 		if (mappingKey() == MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) {
-			((GenericOrmEmbeddedIdMapping) getMapping()).update(embeddedId);
+			((OrmEmbeddedIdMapping) getMapping()).update(embeddedId);
 		}
 		else {
 			setSpecifiedMappingKey_(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
-			((GenericOrmEmbeddedIdMapping) getMapping()).initialize(embeddedId);				
+			((OrmEmbeddedIdMapping) getMapping()).initialize(embeddedId);				
 		}
 	}
 
 	public void update(XmlBasic basic) {
 		if (mappingKey() == MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY) {
-			((GenericOrmBasicMapping) getMapping()).update(basic);
+			((OrmBasicMapping) getMapping()).update(basic);
 		}
 		else {
 			setSpecifiedMappingKey_(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
-			((GenericOrmBasicMapping) getMapping()).initialize(basic);				
+			((OrmBasicMapping) getMapping()).initialize(basic);				
 		}
 	}
 	
 	public void update(XmlVersion version) {
 		if (mappingKey() == MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY) {
-			((GenericOrmVersionMapping) getMapping()).update(version);
+			((OrmVersionMapping) getMapping()).update(version);
 		}
 		else {
 			setSpecifiedMappingKey_(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
-			((GenericOrmVersionMapping) getMapping()).initialize(version);				
+			((OrmVersionMapping) getMapping()).initialize(version);				
 		}
 	}
 	public void update(XmlManyToOne manyToOne) {
 		if (mappingKey() == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
-			((GenericOrmManyToOneMapping) getMapping()).update(manyToOne);
+			((OrmManyToOneMapping) getMapping()).update(manyToOne);
 		}
 		else {
 			setSpecifiedMappingKey_(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-			((GenericOrmManyToOneMapping) getMapping()).initialize(manyToOne);				
+			((OrmManyToOneMapping) getMapping()).initialize(manyToOne);				
 		}
 	}
 	public void update(XmlOneToMany oneToMany) {
 		if (mappingKey() == MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
-			((GenericOrmOneToManyMapping) getMapping()).update(oneToMany);
+			((OrmOneToManyMapping) getMapping()).update(oneToMany);
 		}
 		else {
 			setSpecifiedMappingKey_(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-			((GenericOrmOneToManyMapping) getMapping()).initialize(oneToMany);				
+			((OrmOneToManyMapping) getMapping()).initialize(oneToMany);				
 		}
 	}
 	public void update(XmlOneToOne oneToOne) {
 		if (mappingKey() == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY) {
-			((GenericOrmOneToOneMapping) getMapping()).update(oneToOne);
+			((OrmOneToOneMapping) getMapping()).update(oneToOne);
 		}
 		else {
 			setSpecifiedMappingKey_(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-			((GenericOrmOneToOneMapping) getMapping()).initialize(oneToOne);				
+			((OrmOneToOneMapping) getMapping()).initialize(oneToOne);				
 		}
 	}
 	public void update(XmlManyToMany manyToMany) {
 		if (mappingKey() == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY) {
-			((GenericOrmManyToManyMapping) getMapping()).update(manyToMany);
+			((OrmManyToManyMapping) getMapping()).update(manyToMany);
 		}
 		else {
 			setSpecifiedMappingKey_(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
-			((GenericOrmManyToManyMapping) getMapping()).initialize(manyToMany);				
+			((OrmManyToManyMapping) getMapping()).initialize(manyToMany);				
 		}
 	}
 
 	public void update(XmlEmbedded embedded) {
 		if (mappingKey() == MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY) {
-			((GenericOrmEmbeddedMapping) getMapping()).update(embedded);
+			((OrmEmbeddedMapping) getMapping()).update(embedded);
 		}
 		else {
 			setSpecifiedMappingKey_(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
-			((GenericOrmEmbeddedMapping) getMapping()).initialize(embedded);				
+			((OrmEmbeddedMapping) getMapping()).initialize(embedded);				
 		}
 	}
 	
 	public void update(XmlTransient transientResource) {
 		if (mappingKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
-			((GenericOrmTransientMapping) getMapping()).update(transientResource);
+			((OrmTransientMapping) getMapping()).update(transientResource);
 		}
 		else {
 			setSpecifiedMappingKey_(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
-			((GenericOrmTransientMapping) getMapping()).initialize(transientResource);				
+			((OrmTransientMapping) getMapping()).initialize(transientResource);				
 		}
 	}
 	
@@ -325,14 +335,14 @@ public class GenericOrmPersistentAttribute extends AbstractJpaContextNode
 		if (isVirtual()) {
 			return false;
 		}
-		return attributeMapping.containsOffset(textOffset);
+		return this.attributeMapping.contains(textOffset);
 	}
 	
 	public TextRange selectionTextRange() {
 		if (isVirtual()) {
 			return persistentType().selectionTextRange();
 		}
-		return attributeMapping.selectionTextRange();
+		return this.attributeMapping.selectionTextRange();
 	}
 	
 	

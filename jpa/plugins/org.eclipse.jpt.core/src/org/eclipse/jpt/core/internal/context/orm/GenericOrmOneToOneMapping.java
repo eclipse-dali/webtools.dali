@@ -9,35 +9,32 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.NonOwningMapping;
-import org.eclipse.jpt.core.context.OneToOneMapping;
-import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 
 
 public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapping<XmlOneToOne>
-	implements OneToOneMapping
+	implements OrmOneToOneMapping
 {
 	
 	protected String mappedBy;
 
 
-	protected GenericOrmOneToOneMapping(OrmPersistentAttribute parent) {
+	public GenericOrmOneToOneMapping(OrmPersistentAttribute parent) {
 		super(parent);
 	}
 
-	@Override
-	protected void initializeOn(AbstractOrmAttributeMapping<? extends XmlAttributeMapping> newMapping) {
-		newMapping.initializeFromXmlOneToOneMapping(this);
+	public void initializeOn(OrmAttributeMapping newMapping) {
+		newMapping.initializeFromOrmOneToOneMapping(this);
 	}
 
 	@Override
@@ -81,7 +78,6 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 //		return (mappedByNode == null) ? validationTextRange() : buildTextRange(mappedByNode);
 	}
 
-	@Override
 	public int xmlSequence() {
 		return 5;
 	}
@@ -95,7 +91,6 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 		return true;
 	}
 	
-	@Override
 	public XmlOneToOne addToResourceModel(AbstractTypeMapping typeMapping) {
 		XmlOneToOne oneToOne = OrmFactory.eINSTANCE.createOneToOneImpl();
 		persistentAttribute().initialize(oneToOne);
@@ -103,7 +98,6 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 		return oneToOne;
 	}
 	
-	@Override
 	public void removeFromResourceModel(AbstractTypeMapping typeMapping) {
 		typeMapping.getAttributes().getOneToOnes().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
@@ -121,25 +115,5 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 	public void update(XmlOneToOne oneToOne) {
 		super.update(oneToOne);
 		this.setMappedBy_(oneToOne.getMappedBy());
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public ListIterator<OrmJoinColumn> joinColumns() {
-		return super.joinColumns();
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public ListIterator<OrmJoinColumn> specifiedJoinColumns() {
-		// TODO Auto-generated method stub
-		return super.specifiedJoinColumns();
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public ListIterator<OrmJoinColumn> defaultJoinColumns() {
-		// TODO Auto-generated method stub
-		return super.defaultJoinColumns();
 	}
 }

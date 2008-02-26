@@ -15,9 +15,9 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
+import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmIdMapping;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlId;
@@ -91,8 +91,8 @@ public class OrmGeneratedValueTests extends ContextModelTestCase
 	public void testUpdateSpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
-		OrmGeneratedValue ormGeneratedValue = xmlIdMapping.addGeneratedValue();
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
+		OrmGeneratedValue ormGeneratedValue = ormIdMapping.addGeneratedValue();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		XmlGeneratedValue generatedValueResource = idResource.getGeneratedValue();
 		
@@ -110,8 +110,8 @@ public class OrmGeneratedValueTests extends ContextModelTestCase
 	public void testModifySpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
-		OrmGeneratedValue ormGeneratedValue = xmlIdMapping.addGeneratedValue();
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
+		OrmGeneratedValue ormGeneratedValue = ormIdMapping.addGeneratedValue();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		XmlGeneratedValue generatedValueResource = idResource.getGeneratedValue();
 		

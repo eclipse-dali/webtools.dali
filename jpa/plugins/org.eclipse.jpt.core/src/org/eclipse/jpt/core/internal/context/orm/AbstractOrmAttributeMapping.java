@@ -10,34 +10,42 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.TextRange;
-import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
+import org.eclipse.jpt.core.context.orm.OrmIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
+import org.eclipse.jpt.core.context.orm.OrmMultiRelationshipMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
+import org.eclipse.jpt.core.context.orm.OrmSingleRelationshipMapping;
+import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping;
-import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
-import org.eclipse.jpt.core.resource.orm.XmlSingleRelationshipMapping;
 
 
 public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping> extends AbstractJpaContextNode
-	implements AttributeMapping
+	implements OrmAttributeMapping
 {
 	protected String name;
-		public static final String NAME_PROPERTY = "nameProperty";
 	
 	protected T attributeMapping;
 
 	protected JavaPersistentAttribute javaPersistentAttribute;
-		public static final String JAVA_PERSISTENT_ATTRIBUTE_PROPERTY = "javaPersistentAttributeProperty";
 	
 	protected AbstractOrmAttributeMapping(OrmPersistentAttribute parent) {
 		super(parent);
-	}
+	}	
 	
 	public JavaPersistentAttribute getJavaPersistentAttribute() {
 		return this.javaPersistentAttribute;
@@ -46,7 +54,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	protected void setJavaPersistentAttribute(JavaPersistentAttribute newJavaPersistentAttribute) {
 		JavaPersistentAttribute oldJavaPersistentAttribute = this.javaPersistentAttribute;
 		this.javaPersistentAttribute = newJavaPersistentAttribute;
-		firePropertyChanged(JAVA_PERSISTENT_ATTRIBUTE_PROPERTY, oldJavaPersistentAttribute, newJavaPersistentAttribute);
+		firePropertyChanged(OrmAttributeMapping.JAVA_PERSISTENT_ATTRIBUTE_PROPERTY, oldJavaPersistentAttribute, newJavaPersistentAttribute);
 		
 	}
 
@@ -58,14 +66,14 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		String oldName = this.name;
 		this.name = newName;
 		this.attributeMapping.setName(newName);
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
+		firePropertyChanged(OrmAttributeMapping.NAME_PROPERTY, oldName, newName);
 		persistentAttribute().nameChanged(oldName, newName);
 	}
 
 	protected void setName_(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
+		firePropertyChanged(OrmAttributeMapping.NAME_PROPERTY, oldName, newName);
 		persistentAttribute().nameChanged(oldName, newName);
 	}
 	
@@ -81,95 +89,72 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return false;
 	}
 	
-	/**
-	 * IMPORTANT:  See XmlAttributeMapping class comment.
-	 * Subclasses should override this method to call the
-	 * appropriate initializeFrom___Mapping() method.
-	 */
-	protected abstract void initializeOn(AbstractOrmAttributeMapping<? extends XmlAttributeMapping> newMapping);
-
-	public void initializeFromXmlAttributeMapping(AbstractOrmAttributeMapping<? extends XmlAttributeMapping> oldMapping) {
+	public void initializeFromOrmAttributeMapping(OrmAttributeMapping oldMapping) {
 		setName(oldMapping.getName());
 	}
 
 	public void initializeFromXmlColumnMapping(OrmColumnMapping oldMapping) {
-		initializeFromXmlAttributeMapping((AbstractOrmAttributeMapping) oldMapping);
+		initializeFromOrmAttributeMapping((OrmAttributeMapping) oldMapping);
 	}
 
 	public void initializeFromXmlNonOwningMapping(NonOwningMapping oldMapping) {
-		initializeFromXmlAttributeMapping((AbstractOrmAttributeMapping) oldMapping);
+		initializeFromOrmAttributeMapping((OrmAttributeMapping) oldMapping);
 	}
 
-	public void initializeFromXmlBasicMapping(GenericOrmBasicMapping oldMapping) {
+	public void initializeFromOrmBasicMapping(OrmBasicMapping oldMapping) {
 		initializeFromXmlColumnMapping(oldMapping);
 	}
 
-	public void initializeFromXmlIdMapping(GenericOrmIdMapping oldMapping) {
+	public void initializeFromOrmIdMapping(OrmIdMapping oldMapping) {
 		initializeFromXmlColumnMapping(oldMapping);
 	}
 
-	public void initializeFromXmlTransientMapping(GenericOrmTransientMapping oldMapping) {
-		initializeFromXmlAttributeMapping(oldMapping);
+	public void initializeFromOrmTransientMapping(OrmTransientMapping oldMapping) {
+		initializeFromOrmAttributeMapping(oldMapping);
 	}
 
-	public void initializeFromXmlEmbeddedMapping(GenericOrmEmbeddedMapping oldMapping) {
-		initializeFromXmlAttributeMapping(oldMapping);
+	public void initializeFromOrmEmbeddedMapping(OrmEmbeddedMapping oldMapping) {
+		initializeFromOrmAttributeMapping(oldMapping);
 	}
 
-	public void initializeFromXmlEmbeddedIdMapping(GenericOrmEmbeddedIdMapping oldMapping) {
-		initializeFromXmlAttributeMapping(oldMapping);
+	public void initializeFromOrmEmbeddedIdMapping(OrmEmbeddedIdMapping oldMapping) {
+		initializeFromOrmAttributeMapping(oldMapping);
 	}
 
-	public void initializeFromXmlVersionMapping(GenericOrmVersionMapping oldMapping) {
+	public void initializeFromOrmVersionMapping(OrmVersionMapping oldMapping) {
 		initializeFromXmlColumnMapping(oldMapping);
 	}
 
-	public void initializeFromXmlRelationshipMapping(AbstractOrmRelationshipMapping<? extends XmlRelationshipMapping> oldMapping) {
-		initializeFromXmlAttributeMapping(oldMapping);
+	public void initializeFromXmlRelationshipMapping(OrmRelationshipMapping oldMapping) {
+		initializeFromOrmAttributeMapping(oldMapping);
 	}
 
-	public void initializeFromXmlMulitRelationshipMapping(AbstractOrmMultiRelationshipMapping<? extends XmlMultiRelationshipMapping> oldMapping) {
+	public void initializeFromXmlMulitRelationshipMapping(OrmMultiRelationshipMapping oldMapping) {
 		initializeFromXmlRelationshipMapping(oldMapping);
 	}
 
-	public void initializeFromXmlSingleRelationshipMapping(AbstractOrmSingleRelationshipMapping<? extends XmlSingleRelationshipMapping> oldMapping) {
+	public void initializeFromXmlSingleRelationshipMapping(OrmSingleRelationshipMapping oldMapping) {
 		initializeFromXmlRelationshipMapping(oldMapping);
 	}
 
-	public void initializeFromXmlOneToManyMapping(GenericOrmOneToManyMapping oldMapping) {
+	public void initializeFromOrmOneToManyMapping(OrmOneToManyMapping oldMapping) {
 		initializeFromXmlNonOwningMapping(oldMapping);
 		initializeFromXmlMulitRelationshipMapping(oldMapping);
 	}
 
-	public void initializeFromXmlManyToOneMapping(GenericOrmManyToOneMapping oldMapping) {
+	public void initializeFromOrmManyToOneMapping(OrmManyToOneMapping oldMapping) {
 		initializeFromXmlSingleRelationshipMapping(oldMapping);
 	}
 
-	public void initializeFromXmlOneToOneMapping(GenericOrmOneToOneMapping oldMapping) {
+	public void initializeFromOrmOneToOneMapping(OrmOneToOneMapping oldMapping) {
 		initializeFromXmlNonOwningMapping(oldMapping);
 		initializeFromXmlSingleRelationshipMapping(oldMapping);
 	}
 
-	public void initializeFromXmlManyToManyMapping(GenericOrmManyToManyMapping oldMapping) {
+	public void initializeFromOrmManyToManyMapping(OrmManyToManyMapping oldMapping) {
 		initializeFromXmlNonOwningMapping(oldMapping);
 		initializeFromXmlMulitRelationshipMapping(oldMapping);
 	}
-	
-	/**
-	 * Attributes are a sequence in the orm schema. We must keep
-	 * the list of attributes in the appropriate order so the wtp xml 
-	 * translators will write them to the xml in that order and they
-	 * will adhere to the schema.  
-	 * 
-	 * Each concrete subclass of XmlAttributeMapping must implement this
-	 * method and return an int that matches it's order in the schema
-	 * @return
-	 */
-	public abstract int xmlSequence();
-
-//	public void refreshDefaults(DefaultsContext defaultsContext) {
-//	// do nothing
-//	}
 
 	public String primaryKeyColumnName() {
 		return null;
@@ -200,9 +185,6 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	public boolean isIdMapping() {
 		return false;
 	}
-	public abstract void removeFromResourceModel(org.eclipse.jpt.core.resource.orm.AbstractTypeMapping typeMapping);
-	
-	public abstract T addToResourceModel(org.eclipse.jpt.core.resource.orm.AbstractTypeMapping typeMapping);
 
 	protected T attributeMapping() {
 		return this.attributeMapping;
@@ -228,11 +210,11 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return null;
 	}
 	
-	public boolean containsOffset(int textOffset) {
-		return attributeMapping.containsOffset(textOffset);
+	public boolean contains(int textOffset) {
+		return this.attributeMapping.containsOffset(textOffset);
 	}
 	
 	public TextRange selectionTextRange() {
-		return attributeMapping.selectionTextRange();
+		return this.attributeMapping.selectionTextRange();
 	}
 }

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.platform.JpaFactory;
@@ -37,7 +38,7 @@ public class OrmNullAttributeMappingProvider implements OrmAttributeMappingProvi
 		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public GenericOrmNullAttributeMapping buildAttributeMapping(JpaFactory factory, OrmPersistentAttribute parent) {
-		return new GenericOrmNullAttributeMapping(parent);
+	public OrmAttributeMapping buildAttributeMapping(JpaFactory factory, OrmPersistentAttribute parent) {
+		return factory.buildOrmNullAttributeMapping(parent);
 	}
 }

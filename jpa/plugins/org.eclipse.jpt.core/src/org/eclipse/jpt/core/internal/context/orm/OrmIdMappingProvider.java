@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.platform.JpaFactory;
 
@@ -36,7 +37,7 @@ public class OrmIdMappingProvider implements OrmAttributeMappingProvider
 		return MappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public GenericOrmIdMapping buildAttributeMapping(JpaFactory factory, OrmPersistentAttribute parent) {
-		return new GenericOrmIdMapping(parent);
+	public OrmIdMapping buildAttributeMapping(JpaFactory factory, OrmPersistentAttribute parent) {
+		return factory.buildOrmIdMapping(parent);
 	}
 }

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
@@ -17,31 +18,27 @@ import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 public class GenericOrmNullAttributeMapping extends AbstractOrmAttributeMapping<XmlAttributeMapping>
 {
 
-	protected GenericOrmNullAttributeMapping(OrmPersistentAttribute parent) {
+	public GenericOrmNullAttributeMapping(OrmPersistentAttribute parent) {
 		super(parent);
 	}
 
-	@Override
 	public int xmlSequence() {
 		return -1;
 	}
 
-	@Override
-	protected void initializeOn(AbstractOrmAttributeMapping<? extends XmlAttributeMapping> newMapping) {
-		newMapping.initializeFromXmlAttributeMapping(this);
+	public void initializeOn(OrmAttributeMapping newMapping) {
+		newMapping.initializeFromOrmAttributeMapping(this);
 	}
 
 	public String getKey() {
 		return null;
 	}
 	
-	@Override
 	//TODO throwing an exception correct here?
 	public XmlAttributeMapping addToResourceModel(AbstractTypeMapping typeMapping) {
 		throw new UnsupportedOperationException();
 	}
-	
-	@Override
+
 	public void removeFromResourceModel(AbstractTypeMapping typeMapping) {
 		throw new UnsupportedOperationException();
 	}

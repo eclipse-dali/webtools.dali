@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmTransientMapping;
+import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
@@ -33,9 +33,9 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class XmlTransientMappingTests extends ContextModelTestCase
+public class OrmTransientMappingTests extends ContextModelTestCase
 {
-	public XmlTransientMappingTests(String name) {
+	public OrmTransientMappingTests(String name) {
 		super(name);
 	}
 	
@@ -79,7 +79,7 @@ public class XmlTransientMappingTests extends ContextModelTestCase
 	public void testUpdateName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientMapping");
-		GenericOrmTransientMapping xmlTransientnMapping = (GenericOrmTransientMapping) ormPersistentAttribute.getMapping();
+		OrmTransientMapping xmlTransientnMapping = (OrmTransientMapping) ormPersistentAttribute.getMapping();
 		XmlTransient transientResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getTransients().get(0);
 		
 		assertEquals("transientMapping", xmlTransientnMapping.getName());
@@ -99,7 +99,7 @@ public class XmlTransientMappingTests extends ContextModelTestCase
 	public void testModifyName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientMapping");
-		GenericOrmTransientMapping xmlTransientnMapping = (GenericOrmTransientMapping) ormPersistentAttribute.getMapping();
+		OrmTransientMapping xmlTransientnMapping = (OrmTransientMapping) ormPersistentAttribute.getMapping();
 		XmlTransient transientResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getTransients().get(0);
 		
 		assertEquals("transientMapping", xmlTransientnMapping.getName());
@@ -125,9 +125,9 @@ public class XmlTransientMappingTests extends ContextModelTestCase
 		assertEquals(2, ormPersistentType.virtualAttributesSize());
 		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
-		GenericOrmTransientMapping xmlTransientMapping = (GenericOrmTransientMapping) ormPersistentAttribute.getMapping();
+		OrmTransientMapping ormTransientMapping = (OrmTransientMapping) ormPersistentAttribute.getMapping();
 		
-		assertEquals("foo", xmlTransientMapping.getName());
+		assertEquals("foo", ormTransientMapping.getName());
 	}
 	
 	//@Basic(fetch=FetchType.LAZY, optional=false)
@@ -143,8 +143,8 @@ public class XmlTransientMappingTests extends ContextModelTestCase
 		assertEquals(2, ormPersistentType.virtualAttributesSize());		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		
-		GenericOrmTransientMapping xmlTransientMapping = (GenericOrmTransientMapping) ormPersistentAttribute.getMapping();	
-		assertEquals("id", xmlTransientMapping.getName());
+		OrmTransientMapping ormTransientMapping = (OrmTransientMapping) ormPersistentAttribute.getMapping();	
+		assertEquals("id", ormTransientMapping.getName());
 	}
 	
 	public void testVirtualMappingMetadataCompleteTrue() throws Exception {
@@ -154,8 +154,8 @@ public class XmlTransientMappingTests extends ContextModelTestCase
 		assertEquals(2, ormPersistentType.virtualAttributesSize());		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		
-		GenericOrmTransientMapping xmlTransientMapping = (GenericOrmTransientMapping) ormPersistentAttribute.getMapping();	
-		assertEquals("id", xmlTransientMapping.getName());
+		OrmTransientMapping ormTransientMapping = (OrmTransientMapping) ormPersistentAttribute.getMapping();	
+		assertEquals("id", ormTransientMapping.getName());
 	}
 	
 	public void testSpecifiedMapping() throws Exception {
@@ -166,9 +166,9 @@ public class XmlTransientMappingTests extends ContextModelTestCase
 		assertEquals(1, ormPersistentType.virtualAttributesSize());
 		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
-		GenericOrmTransientMapping xmlTransientMapping = (GenericOrmTransientMapping) ormPersistentAttribute.getMapping();
+		OrmTransientMapping ormTransientMapping = (OrmTransientMapping) ormPersistentAttribute.getMapping();
 		
-		assertEquals("id", xmlTransientMapping.getName());
+		assertEquals("id", ormTransientMapping.getName());
 	}
 	
 	public void testTransientMorphToIdMapping() throws Exception {

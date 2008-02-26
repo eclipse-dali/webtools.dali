@@ -26,7 +26,7 @@ import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 
-public abstract class AbstractOrmTypeMapping<E extends AbstractTypeMapping> extends AbstractJpaContextNode implements OrmTypeMapping
+public abstract class AbstractOrmTypeMapping<T extends AbstractTypeMapping> extends AbstractJpaContextNode implements OrmTypeMapping
 {
 
 	protected String class_;
@@ -41,7 +41,7 @@ public abstract class AbstractOrmTypeMapping<E extends AbstractTypeMapping> exte
 
 	protected JavaPersistentType javaPersistentType;
 
-	protected E typeMapping;
+	protected T typeMapping;
 	
 	protected AbstractOrmTypeMapping(OrmPersistentType parent) {
 		super(parent);
@@ -193,7 +193,7 @@ public abstract class AbstractOrmTypeMapping<E extends AbstractTypeMapping> exte
 		return EmptyIterator.instance();
 	}
 
-	public E typeMappingResource() {
+	public T typeMappingResource() {
 		return this.typeMapping;
 	}
 	
@@ -257,7 +257,7 @@ public abstract class AbstractOrmTypeMapping<E extends AbstractTypeMapping> exte
 		return javaPersistentType;
 	}
 
-	public void initialize(E typeMapping) {
+	public void initialize(T typeMapping) {
 		this.typeMapping = typeMapping;
 		this.class_ = typeMapping.getClassName();
 		this.initializeJavaPersistentType();
@@ -267,7 +267,7 @@ public abstract class AbstractOrmTypeMapping<E extends AbstractTypeMapping> exte
 		this.defaultAccess = this.defaultAccess();
 	}
 	
-	public void update(E typeMapping) {
+	public void update(T typeMapping) {
 		this.typeMapping = typeMapping;
 		this.setClass(typeMapping.getClassName());
 		this.updateJavaPersistentType();

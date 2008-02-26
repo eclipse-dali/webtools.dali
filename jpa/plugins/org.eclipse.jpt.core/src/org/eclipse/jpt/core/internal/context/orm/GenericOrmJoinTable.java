@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
+import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
@@ -48,7 +49,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 	
 	protected XmlRelationshipMapping relationshipMappingResource;
 	
-	public GenericOrmJoinTable(AbstractOrmRelationshipMapping<? extends XmlRelationshipMapping> parent) {
+	public GenericOrmJoinTable(OrmRelationshipMapping parent) {
 		super(parent);
 		this.specifiedJoinColumns = new ArrayList<OrmJoinColumn>();
 		this.defaultJoinColumns = new ArrayList<OrmJoinColumn>();
@@ -57,8 +58,8 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 	}
 	
 	@Override
-	public AbstractOrmRelationshipMapping<? extends XmlRelationshipMapping> parent() {
-		return (AbstractOrmRelationshipMapping<? extends XmlRelationshipMapping>) super.parent();
+	public OrmRelationshipMapping parent() {
+		return (OrmRelationshipMapping) super.parent();
 	}
 	
 	public void initializeFrom(JoinTable oldJoinTable) {
@@ -286,7 +287,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		fireItemMoved(JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 
-	public AbstractOrmRelationshipMapping<? extends XmlRelationshipMapping> relationshipMapping() {
+	public OrmRelationshipMapping relationshipMapping() {
 		return parent();
 	}
 

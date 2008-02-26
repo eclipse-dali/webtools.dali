@@ -33,12 +33,12 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class XmlEmbeddedIdMappingTests extends ContextModelTestCase
+public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 {
 	private static final String ATTRIBUTE_OVERRIDE_NAME = "city";
 	private static final String ATTRIBUTE_OVERRIDE_COLUMN_NAME = "E_CITY";
 
-	public XmlEmbeddedIdMappingTests(String name) {
+	public OrmEmbeddedIdMappingTests(String name) {
 		super(name);
 	}
 	

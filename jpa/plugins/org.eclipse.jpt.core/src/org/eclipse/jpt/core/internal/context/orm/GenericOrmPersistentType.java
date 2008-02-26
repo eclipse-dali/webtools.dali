@@ -34,6 +34,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
@@ -170,7 +171,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 		return getMapping().getAccess();
 	}
 	
-	public void changeMapping(OrmPersistentAttribute ormPersistentAttribute, AbstractOrmAttributeMapping<? extends XmlAttributeMapping> oldMapping, AbstractOrmAttributeMapping<? extends XmlAttributeMapping> newMapping) {
+	public void changeMapping(OrmPersistentAttribute ormPersistentAttribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping) {
 		int sourceIndex = this.specifiedPersistentAttributes.indexOf(ormPersistentAttribute);
 		this.specifiedPersistentAttributes.remove(sourceIndex);
 		oldMapping.removeFromResourceModel(getMapping().typeMappingResource());
@@ -191,7 +192,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 			return;
 		}
 		if (virtual) {	
-			OrmPersistentAttribute virtualPersistentAttribute = createVirtualPersistentAttribute(ormPersistentAttribute.getMapping().javaPersistentAttribute());
+			OrmPersistentAttribute virtualPersistentAttribute = createVirtualPersistentAttribute(ormPersistentAttribute.getMapping().getJavaPersistentAttribute());
 			this.virtualPersistentAttributes.add(virtualPersistentAttribute);
 			this.removeSpecifiedPersistentAttribute(ormPersistentAttribute);
 			fireItemAdded(VIRTUAL_ATTRIBUTES_LIST, virtualAttributesSize(), virtualPersistentAttribute);

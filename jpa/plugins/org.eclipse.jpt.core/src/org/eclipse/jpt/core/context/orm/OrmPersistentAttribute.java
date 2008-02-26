@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
@@ -26,14 +25,14 @@ public interface OrmPersistentAttribute extends PersistentAttribute
 {
 	
 	/**
-	 * Overriden to return {@link AbstractOrmAttributeMapping}s
+	 * Overriden to return {@link OrmAttributeMapping}s
 	 */
-	AbstractOrmAttributeMapping<?> getMapping();
+	OrmAttributeMapping getMapping();
 	
 	/**
-	 * Overriden to return {@link AbstractOrmAttributeMapping}s
+	 * Overriden to return {@link OrmAttributeMapping}s
 	 */
-	AbstractOrmAttributeMapping<?> getSpecifiedMapping();
+	OrmAttributeMapping getSpecifiedMapping();
 	
 	/**
 	 * Overriden to return {@link OrmTypeMapping}s

@@ -14,31 +14,30 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.TemporalType;
-import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.db.internal.Table;
 
 
 public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVersion>
-	implements VersionMapping, OrmColumnMapping
+	implements OrmVersionMapping
 {
 	protected final OrmColumn column;
 
 	protected TemporalType temporal;
 	
-	protected GenericOrmVersionMapping(OrmPersistentAttribute parent) {
+	public GenericOrmVersionMapping(OrmPersistentAttribute parent) {
 		super(parent);
 		this.column = jpaFactory().buildOrmColumn(this, this);
 	}
 
-	@Override
 	public int xmlSequence() {
 		return 2;
 	}
@@ -46,9 +45,9 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	public String getKey() {
 		return MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
 	}
-	@Override
-	protected void initializeOn(AbstractOrmAttributeMapping<? extends XmlAttributeMapping> newMapping) {
-		newMapping.initializeFromXmlVersionMapping(this);
+	
+	public void initializeOn(OrmAttributeMapping newMapping) {
+		newMapping.initializeFromOrmVersionMapping(this);
 	}
 
 	@Override
@@ -79,7 +78,6 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 		firePropertyChanged(ColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 
-	@Override
 	public XmlVersion addToResourceModel(AbstractTypeMapping typeMapping) {
 		XmlVersion version = OrmFactory.eINSTANCE.createVersionImpl();
 		persistentAttribute().initialize(version);
@@ -87,7 +85,6 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 		return version;
 	}
 	
-	@Override
 	public void removeFromResourceModel(AbstractTypeMapping typeMapping) {
 		typeMapping.getAttributes().getVersions().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {

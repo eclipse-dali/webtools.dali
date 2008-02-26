@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.context.SingleRelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmSingleRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlSingleRelationshipMapping;
@@ -33,7 +34,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 
 public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRelationshipMapping>
-	extends AbstractOrmRelationshipMapping<T> implements SingleRelationshipMapping
+	extends AbstractOrmRelationshipMapping<T> implements OrmSingleRelationshipMapping
 {
 	
 	protected final List<OrmJoinColumn> specifiedJoinColumns;
@@ -51,7 +52,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	}
 	
 	@Override
-	public void initializeFromXmlSingleRelationshipMapping(AbstractOrmSingleRelationshipMapping<? extends XmlSingleRelationshipMapping> oldMapping) {
+	public void initializeFromXmlSingleRelationshipMapping(OrmSingleRelationshipMapping oldMapping) {
 		super.initializeFromXmlSingleRelationshipMapping(oldMapping);
 		int index = 0;
 		for (JoinColumn joinColumn : CollectionTools.iterable(oldMapping.specifiedJoinColumns())) {
@@ -65,7 +66,6 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	}
 
 	//***************** ISingleRelationshipMapping implementation *****************
-	@SuppressWarnings("unchecked")
 	public ListIterator<OrmJoinColumn> joinColumns() {
 		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumns() : this.specifiedJoinColumns();
 	}
@@ -74,13 +74,12 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumnsSize() : this.specifiedJoinColumnsSize();
 	}
 	
-	public JoinColumn getDefaultJoinColumn() {
+	public OrmJoinColumn getDefaultJoinColumn() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<OrmJoinColumn> defaultJoinColumns() {
 		return new CloneListIterator<OrmJoinColumn>(this.defaultJoinColumns);
 	}
@@ -89,7 +88,6 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 		return this.defaultJoinColumns.size();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<OrmJoinColumn> specifiedJoinColumns() {
 		return new CloneListIterator<OrmJoinColumn>(this.specifiedJoinColumns);
 	}

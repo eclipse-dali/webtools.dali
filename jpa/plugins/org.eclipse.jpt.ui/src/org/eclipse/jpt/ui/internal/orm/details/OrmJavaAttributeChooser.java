@@ -9,8 +9,7 @@
 package org.eclipse.jpt.ui.internal.orm.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
@@ -26,7 +25,7 @@ import org.eclipse.swt.widgets.Text;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class OrmJavaAttributeChooser extends AbstractFormPane<AbstractOrmAttributeMapping<? extends XmlAttributeMapping>>
+public class OrmJavaAttributeChooser extends AbstractFormPane<OrmAttributeMapping>
 {
 	private Text text;
 
@@ -38,7 +37,7 @@ public class OrmJavaAttributeChooser extends AbstractFormPane<AbstractOrmAttribu
 	 * @param parent The parent container
 	 */
 	public OrmJavaAttributeChooser(AbstractFormPane<?> parentPane,
-	                               PropertyValueModel<? extends AbstractOrmAttributeMapping<? extends XmlAttributeMapping>> subjectHolder,
+	                               PropertyValueModel<OrmAttributeMapping> subjectHolder,
 	                               Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -50,7 +49,7 @@ public class OrmJavaAttributeChooser extends AbstractFormPane<AbstractOrmAttribu
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
-		propertyNames.add(AbstractOrmAttributeMapping.NAME_PROPERTY);
+		propertyNames.add(OrmAttributeMapping.NAME_PROPERTY);
 	}
 
 	private ModifyListener buildNameModifyListener() {
@@ -88,7 +87,7 @@ public class OrmJavaAttributeChooser extends AbstractFormPane<AbstractOrmAttribu
 
 	private void populateText() {
 
-		AbstractOrmAttributeMapping<?> subject = subject();
+		OrmAttributeMapping subject = subject();
 		text.setText("");
 
 		if (subject == null) {
@@ -111,7 +110,7 @@ public class OrmJavaAttributeChooser extends AbstractFormPane<AbstractOrmAttribu
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
 
-		if (propertyName == AbstractOrmAttributeMapping.NAME_PROPERTY) {
+		if (propertyName == OrmAttributeMapping.NAME_PROPERTY) {
 			populateText();
 		}
 	}

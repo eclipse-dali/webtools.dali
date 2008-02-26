@@ -28,7 +28,7 @@ import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmVersionMapping;
+import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
@@ -36,9 +36,9 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class XmlVersionMappingTests extends ContextModelTestCase
+public class OrmVersionMappingTests extends ContextModelTestCase
 {
-	public XmlVersionMappingTests(String name) {
+	public OrmVersionMappingTests(String name) {
 		super(name);
 	}
 	
@@ -106,107 +106,107 @@ public class XmlVersionMappingTests extends ContextModelTestCase
 	public void testUpdateName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionMapping");
-		GenericOrmVersionMapping xmlVersionMapping = (GenericOrmVersionMapping) ormPersistentAttribute.getMapping();
+		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		XmlVersion versionResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
 		
-		assertEquals("versionMapping", xmlVersionMapping.getName());
+		assertEquals("versionMapping", ormVersionMapping.getName());
 		assertEquals("versionMapping", versionResource.getName());
 				
 		//set name in the resource model, verify context model updated
 		versionResource.setName("newName");
-		assertEquals("newName", xmlVersionMapping.getName());
+		assertEquals("newName", ormVersionMapping.getName());
 		assertEquals("newName", versionResource.getName());
 	
 		//set name to null in the resource model
 		versionResource.setName(null);
-		assertNull(xmlVersionMapping.getName());
+		assertNull(ormVersionMapping.getName());
 		assertNull(versionResource.getName());
 	}
 	
 	public void testModifyName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionMapping");
-		GenericOrmVersionMapping xmlVersionMapping = (GenericOrmVersionMapping) ormPersistentAttribute.getMapping();
+		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		XmlVersion versionResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
 		
-		assertEquals("versionMapping", xmlVersionMapping.getName());
+		assertEquals("versionMapping", ormVersionMapping.getName());
 		assertEquals("versionMapping", versionResource.getName());
 				
 		//set name in the context model, verify resource model updated
-		xmlVersionMapping.setName("newName");
-		assertEquals("newName", xmlVersionMapping.getName());
+		ormVersionMapping.setName("newName");
+		assertEquals("newName", ormVersionMapping.getName());
 		assertEquals("newName", versionResource.getName());
 	
 		//set name to null in the context model
-		xmlVersionMapping.setName(null);
-		assertNull(xmlVersionMapping.getName());
+		ormVersionMapping.setName(null);
+		assertNull(ormVersionMapping.getName());
 		assertNull(versionResource.getName());
 	}	
 	
 	public void testUpdateTemporal() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionMapping");
-		GenericOrmVersionMapping xmlVersionMapping = (GenericOrmVersionMapping) ormPersistentAttribute.getMapping();
+		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		XmlVersion versionResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
 		ormResource().save(null);
 		
-		assertNull(xmlVersionMapping.getTemporal());
+		assertNull(ormVersionMapping.getTemporal());
 		assertNull(versionResource.getTemporal());
 				
 		//set temporal in the resource model, verify context model updated
 		versionResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.DATE);
 		ormResource().save(null);
-		assertEquals(TemporalType.DATE, xmlVersionMapping.getTemporal());
+		assertEquals(TemporalType.DATE, ormVersionMapping.getTemporal());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.DATE, versionResource.getTemporal());
 	
 		versionResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIME);
 		ormResource().save(null);
-		assertEquals(TemporalType.TIME, xmlVersionMapping.getTemporal());
+		assertEquals(TemporalType.TIME, ormVersionMapping.getTemporal());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIME, versionResource.getTemporal());
 
 		versionResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP);
 		ormResource().save(null);
-		assertEquals(TemporalType.TIMESTAMP, xmlVersionMapping.getTemporal());
+		assertEquals(TemporalType.TIMESTAMP, ormVersionMapping.getTemporal());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP, versionResource.getTemporal());
 
 		//set temporal to null in the resource model
 		versionResource.setTemporal(null);
 		ormResource().save(null);
-		assertNull(xmlVersionMapping.getTemporal());
+		assertNull(ormVersionMapping.getTemporal());
 		assertNull(versionResource.getTemporal());
 	}
 	
 	public void testModifyTemporal() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionMapping");
-		GenericOrmVersionMapping xmlVersionMapping = (GenericOrmVersionMapping) ormPersistentAttribute.getMapping();
+		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		XmlVersion versionResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
 		ormResource().save(null);
 		
-		assertNull(xmlVersionMapping.getTemporal());
+		assertNull(ormVersionMapping.getTemporal());
 		assertNull(versionResource.getTemporal());
 				
 		//set temporal in the context model, verify resource model updated
-		xmlVersionMapping.setTemporal(TemporalType.DATE);
+		ormVersionMapping.setTemporal(TemporalType.DATE);
 		ormResource().save(null);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.DATE, versionResource.getTemporal());
-		assertEquals(TemporalType.DATE, xmlVersionMapping.getTemporal());
+		assertEquals(TemporalType.DATE, ormVersionMapping.getTemporal());
 	
-		xmlVersionMapping.setTemporal(TemporalType.TIME);
+		ormVersionMapping.setTemporal(TemporalType.TIME);
 		ormResource().save(null);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIME, versionResource.getTemporal());
-		assertEquals(TemporalType.TIME, xmlVersionMapping.getTemporal());
+		assertEquals(TemporalType.TIME, ormVersionMapping.getTemporal());
 
-		xmlVersionMapping.setTemporal(TemporalType.TIMESTAMP);
+		ormVersionMapping.setTemporal(TemporalType.TIMESTAMP);
 		ormResource().save(null);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP, versionResource.getTemporal());
-		assertEquals(TemporalType.TIMESTAMP, xmlVersionMapping.getTemporal());
+		assertEquals(TemporalType.TIMESTAMP, ormVersionMapping.getTemporal());
 
 		//set temporal to null in the context model
-		xmlVersionMapping.setTemporal(null);
+		ormVersionMapping.setTemporal(null);
 		ormResource().save(null);
 		assertNull(versionResource.getTemporal());
-		assertNull(xmlVersionMapping.getTemporal());
+		assertNull(ormVersionMapping.getTemporal());
 	}
 	
 	//TODO test defaults
@@ -220,13 +220,13 @@ public class XmlVersionMappingTests extends ContextModelTestCase
 		assertEquals(2, ormPersistentType.virtualAttributesSize());
 		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
-		GenericOrmVersionMapping xmlVersionMapping = (GenericOrmVersionMapping) ormPersistentAttribute.getMapping();
+		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		
-		assertEquals("foo", xmlVersionMapping.getName());
-		assertNull(xmlVersionMapping.getTemporal());
+		assertEquals("foo", ormVersionMapping.getName());
+		assertNull(ormVersionMapping.getTemporal());
 
 		
-		OrmColumn ormColumn = xmlVersionMapping.getColumn();
+		OrmColumn ormColumn = ormVersionMapping.getColumn();
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(ormColumn.getSpecifiedUnique());
 		assertNull(ormColumn.getSpecifiedNullable());
@@ -263,11 +263,11 @@ public class XmlVersionMappingTests extends ContextModelTestCase
 		assertEquals(2, ormPersistentType.virtualAttributesSize());		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		
-		GenericOrmVersionMapping xmlVersionMapping = (GenericOrmVersionMapping) ormPersistentAttribute.getMapping();	
-		assertEquals("id", xmlVersionMapping.getName());
-		assertEquals(TemporalType.TIMESTAMP, xmlVersionMapping.getTemporal());
+		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();	
+		assertEquals("id", ormVersionMapping.getName());
+		assertEquals(TemporalType.TIMESTAMP, ormVersionMapping.getTemporal());
 		
-		OrmColumn ormColumn = xmlVersionMapping.getColumn();
+		OrmColumn ormColumn = ormVersionMapping.getColumn();
 		assertEquals("MY_COLUMN", ormColumn.getSpecifiedName());
 		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUnique());
 		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedNullable());
@@ -287,11 +287,11 @@ public class XmlVersionMappingTests extends ContextModelTestCase
 		assertEquals(2, ormPersistentType.virtualAttributesSize());		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		
-		GenericOrmVersionMapping xmlVersionMapping = (GenericOrmVersionMapping) ormPersistentAttribute.getMapping();	
-		assertEquals("id", xmlVersionMapping.getName());
-		assertNull(xmlVersionMapping.getTemporal());
+		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();	
+		assertEquals("id", ormVersionMapping.getName());
+		assertNull(ormVersionMapping.getTemporal());
 		
-		OrmColumn ormColumn = xmlVersionMapping.getColumn();
+		OrmColumn ormColumn = ormVersionMapping.getColumn();
 		assertEquals("id", ormColumn.getSpecifiedName());
 		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUnique());
 		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedNullable());
@@ -312,12 +312,12 @@ public class XmlVersionMappingTests extends ContextModelTestCase
 		assertEquals(1, ormPersistentType.virtualAttributesSize());
 		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
-		GenericOrmVersionMapping xmlVersionMapping = (GenericOrmVersionMapping) ormPersistentAttribute.getMapping();
+		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		
-		assertEquals("id", xmlVersionMapping.getName());
-		assertNull(xmlVersionMapping.getTemporal());
+		assertEquals("id", ormVersionMapping.getName());
+		assertNull(ormVersionMapping.getTemporal());
 		
-		OrmColumn ormColumn = xmlVersionMapping.getColumn();
+		OrmColumn ormColumn = ormVersionMapping.getColumn();
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(ormColumn.getSpecifiedUnique());
 		assertNull(ormColumn.getSpecifiedNullable());

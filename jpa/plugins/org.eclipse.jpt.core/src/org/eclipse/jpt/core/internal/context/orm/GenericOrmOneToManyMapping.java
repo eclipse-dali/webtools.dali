@@ -12,19 +12,19 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.NonOwningMapping;
-import org.eclipse.jpt.core.context.OneToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 
 
 public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapping<XmlOneToMany>
-	implements OneToManyMapping
+	implements OrmOneToManyMapping
 {
 
-	protected GenericOrmOneToManyMapping(OrmPersistentAttribute parent) {
+	public GenericOrmOneToManyMapping(OrmPersistentAttribute parent) {
 		super(parent);
 	}
 
@@ -32,9 +32,8 @@ public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapp
 		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	@Override
-	protected void initializeOn(AbstractOrmAttributeMapping<? extends XmlAttributeMapping> newMapping) {
-		newMapping.initializeFromXmlOneToManyMapping(this);
+	public void initializeOn(OrmAttributeMapping newMapping) {
+		newMapping.initializeFromOrmOneToManyMapping(this);
 	}
 
 	@Override
@@ -43,7 +42,6 @@ public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapp
 		setMappedBy(oldMapping.getMappedBy());
 	}
 
-	@Override
 	public int xmlSequence() {
 		return 4;
 	}
@@ -55,7 +53,6 @@ public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapp
 		return (mappedByKey == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 	}
 	
-	@Override
 	public XmlOneToMany addToResourceModel(AbstractTypeMapping typeMapping) {
 		XmlOneToMany oneToMany = OrmFactory.eINSTANCE.createOneToManyImpl();
 		persistentAttribute().initialize(oneToMany);
@@ -63,7 +60,6 @@ public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapp
 		return oneToMany;
 	}
 	
-	@Override
 	public void removeFromResourceModel(AbstractTypeMapping typeMapping) {
 		typeMapping.getAttributes().getOneToManys().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {

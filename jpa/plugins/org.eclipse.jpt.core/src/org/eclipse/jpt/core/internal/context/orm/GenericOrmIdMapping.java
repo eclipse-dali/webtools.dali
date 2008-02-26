@@ -13,17 +13,17 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.ColumnMapping;
-import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.TemporalType;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
+import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlId;
@@ -33,7 +33,7 @@ import org.eclipse.jpt.db.internal.Table;
 
 
 public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
-	implements IdMapping, OrmColumnMapping
+	implements OrmIdMapping
 {
 	protected final OrmColumn column;
 
@@ -45,7 +45,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	protected OrmSequenceGenerator sequenceGenerator;
 
 	
-	protected GenericOrmIdMapping(OrmPersistentAttribute parent) {
+	public GenericOrmIdMapping(OrmPersistentAttribute parent) {
 		super(parent);
 		this.column = jpaFactory().buildOrmColumn(this, this);
 	}
@@ -55,14 +55,12 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		return MappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	@Override
 	public int xmlSequence() {
 		return 0;
 	}
 
-	@Override
-	protected void initializeOn(AbstractOrmAttributeMapping<? extends XmlAttributeMapping> newMapping) {
-		newMapping.initializeFromXmlIdMapping(this);
+	public void initializeOn(OrmAttributeMapping newMapping) {
+		newMapping.initializeFromOrmIdMapping(this);
 	}
 
 	@Override
@@ -200,7 +198,6 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		return true;
 	}
 	
-	@Override
 	public XmlId addToResourceModel(AbstractTypeMapping typeMapping) {
 		XmlId id = OrmFactory.eINSTANCE.createIdImpl();
 		persistentAttribute().initialize(id);
@@ -208,7 +205,6 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		return id;
 	}
 	
-	@Override
 	public void removeFromResourceModel(AbstractTypeMapping typeMapping) {
 		typeMapping.getAttributes().getIds().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {

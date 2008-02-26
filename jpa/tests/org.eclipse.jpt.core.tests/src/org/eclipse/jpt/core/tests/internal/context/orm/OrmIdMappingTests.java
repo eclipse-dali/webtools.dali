@@ -28,11 +28,11 @@ import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
+import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmIdMapping;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlId;
@@ -41,9 +41,9 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class XmlIdMappingTests extends ContextModelTestCase
+public class OrmIdMappingTests extends ContextModelTestCase
 {
-	public XmlIdMappingTests(String name) {
+	public OrmIdMappingTests(String name) {
 		super(name);
 	}
 	
@@ -150,107 +150,107 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	public void testUpdateName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertEquals("idMapping", xmlIdMapping.getName());
+		assertEquals("idMapping", ormIdMapping.getName());
 		assertEquals("idMapping", idResource.getName());
 				
 		//set name in the resource model, verify context model updated
 		idResource.setName("newName");
-		assertEquals("newName", xmlIdMapping.getName());
+		assertEquals("newName", ormIdMapping.getName());
 		assertEquals("newName", idResource.getName());
 	
 		//set name to null in the resource model
 		idResource.setName(null);
-		assertNull(xmlIdMapping.getName());
+		assertNull(ormIdMapping.getName());
 		assertNull(idResource.getName());
 	}
 	
 	public void testModifyName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertEquals("idMapping", xmlIdMapping.getName());
+		assertEquals("idMapping", ormIdMapping.getName());
 		assertEquals("idMapping", idResource.getName());
 				
 		//set name in the context model, verify resource model updated
-		xmlIdMapping.setName("newName");
-		assertEquals("newName", xmlIdMapping.getName());
+		ormIdMapping.setName("newName");
+		assertEquals("newName", ormIdMapping.getName());
 		assertEquals("newName", idResource.getName());
 	
 		//set name to null in the context model
-		xmlIdMapping.setName(null);
-		assertNull(xmlIdMapping.getName());
+		ormIdMapping.setName(null);
+		assertNull(ormIdMapping.getName());
 		assertNull(idResource.getName());
 	}
 	
 	public void testUpdateTemporal() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		ormResource().save(null);
 		
-		assertNull(xmlIdMapping.getTemporal());
+		assertNull(ormIdMapping.getTemporal());
 		assertNull(idResource.getTemporal());
 				
 		//set temporal in the resource model, verify context model updated
 		idResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.DATE);
 		ormResource().save(null);
-		assertEquals(TemporalType.DATE, xmlIdMapping.getTemporal());
+		assertEquals(TemporalType.DATE, ormIdMapping.getTemporal());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.DATE, idResource.getTemporal());
 	
 		idResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIME);
 		ormResource().save(null);
-		assertEquals(TemporalType.TIME, xmlIdMapping.getTemporal());
+		assertEquals(TemporalType.TIME, ormIdMapping.getTemporal());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIME, idResource.getTemporal());
 
 		idResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP);
 		ormResource().save(null);
-		assertEquals(TemporalType.TIMESTAMP, xmlIdMapping.getTemporal());
+		assertEquals(TemporalType.TIMESTAMP, ormIdMapping.getTemporal());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP, idResource.getTemporal());
 
 		//set temporal to null in the resource model
 		idResource.setTemporal(null);
 		ormResource().save(null);
-		assertNull(xmlIdMapping.getTemporal());
+		assertNull(ormIdMapping.getTemporal());
 		assertNull(idResource.getTemporal());
 	}
 	
 	public void testModifyTemporal() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		ormResource().save(null);
 		
-		assertNull(xmlIdMapping.getTemporal());
+		assertNull(ormIdMapping.getTemporal());
 		assertNull(idResource.getTemporal());
 				
 		//set temporal in the context model, verify resource model updated
-		xmlIdMapping.setTemporal(TemporalType.DATE);
+		ormIdMapping.setTemporal(TemporalType.DATE);
 		ormResource().save(null);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.DATE, idResource.getTemporal());
-		assertEquals(TemporalType.DATE, xmlIdMapping.getTemporal());
+		assertEquals(TemporalType.DATE, ormIdMapping.getTemporal());
 	
-		xmlIdMapping.setTemporal(TemporalType.TIME);
+		ormIdMapping.setTemporal(TemporalType.TIME);
 		ormResource().save(null);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIME, idResource.getTemporal());
-		assertEquals(TemporalType.TIME, xmlIdMapping.getTemporal());
+		assertEquals(TemporalType.TIME, ormIdMapping.getTemporal());
 
-		xmlIdMapping.setTemporal(TemporalType.TIMESTAMP);
+		ormIdMapping.setTemporal(TemporalType.TIMESTAMP);
 		ormResource().save(null);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP, idResource.getTemporal());
-		assertEquals(TemporalType.TIMESTAMP, xmlIdMapping.getTemporal());
+		assertEquals(TemporalType.TIMESTAMP, ormIdMapping.getTemporal());
 
 		//set temporal to null in the context model
-		xmlIdMapping.setTemporal(null);
+		ormIdMapping.setTemporal(null);
 		ormResource().save(null);
 		assertNull(idResource.getTemporal());
-		assertNull(xmlIdMapping.getTemporal());
+		assertNull(ormIdMapping.getTemporal());
 	}
 	
 	//TODO test defaults
@@ -260,20 +260,20 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	public void testAddSequenceGenerator() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertNull(xmlIdMapping.getSequenceGenerator());
+		assertNull(ormIdMapping.getSequenceGenerator());
 		assertNull(idResource.getSequenceGenerator());
 		
-		xmlIdMapping.addSequenceGenerator();
+		ormIdMapping.addSequenceGenerator();
 		
 		assertNotNull(idResource.getSequenceGenerator());
-		assertNotNull(xmlIdMapping.getSequenceGenerator());
+		assertNotNull(ormIdMapping.getSequenceGenerator());
 				
 		//try adding another sequence generator, should get an IllegalStateException
 		try {
-			xmlIdMapping.addSequenceGenerator();
+			ormIdMapping.addSequenceGenerator();
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -283,24 +283,24 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	public void testRemoveSequenceGenerator() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertNull(xmlIdMapping.getSequenceGenerator());
+		assertNull(ormIdMapping.getSequenceGenerator());
 		assertNull(idResource.getSequenceGenerator());
 
-		xmlIdMapping.addSequenceGenerator();
+		ormIdMapping.addSequenceGenerator();
 		assertNotNull(idResource.getSequenceGenerator());
-		assertNotNull(xmlIdMapping.getSequenceGenerator());
+		assertNotNull(ormIdMapping.getSequenceGenerator());
 
-		xmlIdMapping.removeSequenceGenerator();
+		ormIdMapping.removeSequenceGenerator();
 		
-		assertNull(xmlIdMapping.getSequenceGenerator());
+		assertNull(ormIdMapping.getSequenceGenerator());
 		assertNull(idResource.getSequenceGenerator());
 
 		//try removing the sequence generator again, should get an IllegalStateException
 		try {
-			xmlIdMapping.removeSequenceGenerator();		
+			ormIdMapping.removeSequenceGenerator();		
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -310,39 +310,39 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	public void testUpdateSequenceGenerator() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertNull(xmlIdMapping.getSequenceGenerator());
+		assertNull(ormIdMapping.getSequenceGenerator());
 		assertNull(idResource.getSequenceGenerator());
 		
 		idResource.setSequenceGenerator(OrmFactory.eINSTANCE.createSequenceGeneratorImpl());
 				
-		assertNotNull(xmlIdMapping.getSequenceGenerator());
+		assertNotNull(ormIdMapping.getSequenceGenerator());
 		assertNotNull(idResource.getSequenceGenerator());
 				
 		idResource.setSequenceGenerator(null);
-		assertNull(xmlIdMapping.getSequenceGenerator());
+		assertNull(ormIdMapping.getSequenceGenerator());
 		assertNull(idResource.getSequenceGenerator());
 	}
 	
 	public void testAddTableGenerator() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertNull(xmlIdMapping.getTableGenerator());
+		assertNull(ormIdMapping.getTableGenerator());
 		assertNull(idResource.getTableGenerator());
 		
-		xmlIdMapping.addTableGenerator();
+		ormIdMapping.addTableGenerator();
 		
 		assertNotNull(idResource.getTableGenerator());
-		assertNotNull(xmlIdMapping.getTableGenerator());
+		assertNotNull(ormIdMapping.getTableGenerator());
 				
 		//try adding another table generator, should get an IllegalStateException
 		try {
-			xmlIdMapping.addTableGenerator();
+			ormIdMapping.addTableGenerator();
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -352,24 +352,24 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	public void testRemoveTableGenerator() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertNull(xmlIdMapping.getTableGenerator());
+		assertNull(ormIdMapping.getTableGenerator());
 		assertNull(idResource.getTableGenerator());
 
-		xmlIdMapping.addTableGenerator();
+		ormIdMapping.addTableGenerator();
 		assertNotNull(idResource.getTableGenerator());
-		assertNotNull(xmlIdMapping.getTableGenerator());
+		assertNotNull(ormIdMapping.getTableGenerator());
 
-		xmlIdMapping.removeTableGenerator();
+		ormIdMapping.removeTableGenerator();
 		
-		assertNull(xmlIdMapping.getTableGenerator());
+		assertNull(ormIdMapping.getTableGenerator());
 		assertNull(idResource.getTableGenerator());
 
 		//try removing the table generator again, should get an IllegalStateException
 		try {
-			xmlIdMapping.removeTableGenerator();		
+			ormIdMapping.removeTableGenerator();		
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -379,39 +379,39 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	public void testUpdateTableGenerator() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertNull(xmlIdMapping.getTableGenerator());
+		assertNull(ormIdMapping.getTableGenerator());
 		assertNull(idResource.getTableGenerator());
 		
 		idResource.setTableGenerator(OrmFactory.eINSTANCE.createTableGeneratorImpl());
 				
-		assertNotNull(xmlIdMapping.getTableGenerator());
+		assertNotNull(ormIdMapping.getTableGenerator());
 		assertNotNull(idResource.getTableGenerator());
 				
 		idResource.setTableGenerator(null);
-		assertNull(xmlIdMapping.getTableGenerator());
+		assertNull(ormIdMapping.getTableGenerator());
 		assertNull(idResource.getTableGenerator());
 	}
 
 	public void testAddGeneratedValue() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertNull(xmlIdMapping.getGeneratedValue());
+		assertNull(ormIdMapping.getGeneratedValue());
 		assertNull(idResource.getGeneratedValue());
 		
-		xmlIdMapping.addGeneratedValue();
+		ormIdMapping.addGeneratedValue();
 		
 		assertNotNull(idResource.getGeneratedValue());
-		assertNotNull(xmlIdMapping.getGeneratedValue());
+		assertNotNull(ormIdMapping.getGeneratedValue());
 				
 		//try adding another sequence generator, should get an IllegalStateException
 		try {
-			xmlIdMapping.addGeneratedValue();
+			ormIdMapping.addGeneratedValue();
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -421,24 +421,24 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	public void testRemoveGeneratedValue() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertNull(xmlIdMapping.getGeneratedValue());
+		assertNull(ormIdMapping.getGeneratedValue());
 		assertNull(idResource.getGeneratedValue());
 
-		xmlIdMapping.addGeneratedValue();
+		ormIdMapping.addGeneratedValue();
 		assertNotNull(idResource.getGeneratedValue());
-		assertNotNull(xmlIdMapping.getGeneratedValue());
+		assertNotNull(ormIdMapping.getGeneratedValue());
 
-		xmlIdMapping.removeGeneratedValue();
+		ormIdMapping.removeGeneratedValue();
 		
-		assertNull(xmlIdMapping.getGeneratedValue());
+		assertNull(ormIdMapping.getGeneratedValue());
 		assertNull(idResource.getGeneratedValue());
 
 		//try removing the sequence generator again, should get an IllegalStateException
 		try {
-			xmlIdMapping.removeGeneratedValue();		
+			ormIdMapping.removeGeneratedValue();		
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -448,19 +448,19 @@ public class XmlIdMappingTests extends ContextModelTestCase
 	public void testUpdateGeneratedValue() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertNull(xmlIdMapping.getGeneratedValue());
+		assertNull(ormIdMapping.getGeneratedValue());
 		assertNull(idResource.getGeneratedValue());
 		
 		idResource.setGeneratedValue(OrmFactory.eINSTANCE.createGeneratedValueImpl());
 				
-		assertNotNull(xmlIdMapping.getGeneratedValue());
+		assertNotNull(ormIdMapping.getGeneratedValue());
 		assertNotNull(idResource.getGeneratedValue());
 				
 		idResource.setGeneratedValue(null);
-		assertNull(xmlIdMapping.getGeneratedValue());
+		assertNull(ormIdMapping.getGeneratedValue());
 		assertNull(idResource.getGeneratedValue());
 	}
 	
@@ -473,16 +473,16 @@ public class XmlIdMappingTests extends ContextModelTestCase
 		assertEquals(2, ormPersistentType.virtualAttributesSize());
 		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		
-		assertEquals("foo", xmlIdMapping.getName());
-		assertNull(xmlIdMapping.getTemporal());
-		assertNull(xmlIdMapping.getGeneratedValue());
-		assertNull(xmlIdMapping.getSequenceGenerator());
-		assertNull(xmlIdMapping.getTableGenerator());
+		assertEquals("foo", ormIdMapping.getName());
+		assertNull(ormIdMapping.getTemporal());
+		assertNull(ormIdMapping.getGeneratedValue());
+		assertNull(ormIdMapping.getSequenceGenerator());
+		assertNull(ormIdMapping.getTableGenerator());
 
 		
-		OrmColumn ormColumn = xmlIdMapping.getColumn();
+		OrmColumn ormColumn = ormIdMapping.getColumn();
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(ormColumn.getSpecifiedUnique());
 		assertNull(ormColumn.getSpecifiedNullable());
@@ -519,11 +519,11 @@ public class XmlIdMappingTests extends ContextModelTestCase
 		assertEquals(2, ormPersistentType.virtualAttributesSize());		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();	
-		assertEquals("id", xmlIdMapping.getName());
-		assertEquals(TemporalType.TIMESTAMP, xmlIdMapping.getTemporal());
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();	
+		assertEquals("id", ormIdMapping.getName());
+		assertEquals(TemporalType.TIMESTAMP, ormIdMapping.getTemporal());
 		
-		OrmColumn ormColumn = xmlIdMapping.getColumn();
+		OrmColumn ormColumn = ormIdMapping.getColumn();
 		assertEquals("MY_COLUMN", ormColumn.getSpecifiedName());
 		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUnique());
 		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedNullable());
@@ -535,11 +535,11 @@ public class XmlIdMappingTests extends ContextModelTestCase
 		assertEquals(Integer.valueOf(6), ormColumn.getSpecifiedPrecision());
 		assertEquals(Integer.valueOf(7), ormColumn.getSpecifiedScale());
 		
-		OrmGeneratedValue ormGeneratedValue = xmlIdMapping.getGeneratedValue();
+		OrmGeneratedValue ormGeneratedValue = ormIdMapping.getGeneratedValue();
 		assertEquals("myTableGenerator", ormGeneratedValue.getSpecifiedGenerator());
 		assertEquals(GenerationType.TABLE, ormGeneratedValue.getSpecifiedStrategy());
 		
-		OrmTableGenerator ormTableGenerator = xmlIdMapping.getTableGenerator();
+		OrmTableGenerator ormTableGenerator = ormIdMapping.getTableGenerator();
 		assertEquals("myTableGenerator", ormTableGenerator.getName());
 		assertEquals("myTable", ormTableGenerator.getSpecifiedTable());
 		assertEquals("myCatalog", ormTableGenerator.getSpecifiedCatalog());
@@ -550,7 +550,7 @@ public class XmlIdMappingTests extends ContextModelTestCase
 		assertEquals(Integer.valueOf(1), ormTableGenerator.getSpecifiedInitialValue());
 		assertEquals(Integer.valueOf(1), ormTableGenerator.getSpecifiedAllocationSize());
 
-		OrmSequenceGenerator ormSequenceGenerator = xmlIdMapping.getSequenceGenerator();
+		OrmSequenceGenerator ormSequenceGenerator = ormIdMapping.getSequenceGenerator();
 		assertEquals("mySequenceGenerator", ormSequenceGenerator.getName());
 	}
 	
@@ -561,14 +561,14 @@ public class XmlIdMappingTests extends ContextModelTestCase
 		assertEquals(2, ormPersistentType.virtualAttributesSize());		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();	
-		assertEquals("id", xmlIdMapping.getName());
-		assertNull(xmlIdMapping.getTemporal());
-		assertNull(xmlIdMapping.getGeneratedValue());
-		assertNull(xmlIdMapping.getSequenceGenerator());
-		assertNull(xmlIdMapping.getTableGenerator());
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();	
+		assertEquals("id", ormIdMapping.getName());
+		assertNull(ormIdMapping.getTemporal());
+		assertNull(ormIdMapping.getGeneratedValue());
+		assertNull(ormIdMapping.getSequenceGenerator());
+		assertNull(ormIdMapping.getTableGenerator());
 		
-		OrmColumn ormColumn = xmlIdMapping.getColumn();
+		OrmColumn ormColumn = ormIdMapping.getColumn();
 		assertEquals("id", ormColumn.getSpecifiedName());
 		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUnique());
 		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedNullable());
@@ -589,15 +589,15 @@ public class XmlIdMappingTests extends ContextModelTestCase
 		assertEquals(1, ormPersistentType.virtualAttributesSize());
 		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
-		GenericOrmIdMapping xmlIdMapping = (GenericOrmIdMapping) ormPersistentAttribute.getMapping();
+		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		
-		assertEquals("id", xmlIdMapping.getName());
-		assertNull(xmlIdMapping.getTemporal());
-		assertNull(xmlIdMapping.getGeneratedValue());
-		assertNull(xmlIdMapping.getSequenceGenerator());
-		assertNull(xmlIdMapping.getTableGenerator());
+		assertEquals("id", ormIdMapping.getName());
+		assertNull(ormIdMapping.getTemporal());
+		assertNull(ormIdMapping.getGeneratedValue());
+		assertNull(ormIdMapping.getSequenceGenerator());
+		assertNull(ormIdMapping.getTableGenerator());
 		
-		OrmColumn ormColumn = xmlIdMapping.getColumn();
+		OrmColumn ormColumn = ormIdMapping.getColumn();
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(ormColumn.getSpecifiedUnique());
 		assertNull(ormColumn.getSpecifiedNullable());
