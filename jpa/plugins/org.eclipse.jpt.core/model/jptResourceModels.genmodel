@@ -10,7 +10,7 @@
   <foreignModel>orm.ecore</foreignModel>
   <foreignModel>persistence.ecore</foreignModel>
   <genPackages prefix="Orm" basePackage="org.eclipse.jpt.core.resource" disposableProviderFactory="true"
-      ecorePackage="orm.ecore#/">
+      adapterFactory="false" ecorePackage="orm.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="orm.ecore#//AccessType">
       <genEnumLiterals ecoreEnumLiteral="orm.ecore#//AccessType/PROPERTY"/>
       <genEnumLiterals ecoreEnumLiteral="orm.ecore#//AccessType/FIELD"/>
@@ -353,7 +353,7 @@
     </genClasses>
   </genPackages>
   <genPackages prefix="Persistence" basePackage="org.eclipse.jpt.core.resource" disposableProviderFactory="true"
-      ecorePackage="persistence.ecore#/">
+      adapterFactory="false" ecorePackage="persistence.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="persistence.ecore#//XmlPersistenceUnitTransactionType">
       <genEnumLiterals ecoreEnumLiteral="persistence.ecore#//XmlPersistenceUnitTransactionType/JTA"/>
       <genEnumLiterals ecoreEnumLiteral="persistence.ecore#//XmlPersistenceUnitTransactionType/RESOURCE_LOCAL"/>
