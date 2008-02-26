@@ -32,7 +32,7 @@ import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class GenericOrmAssociationOverride extends AbstractJpaContextNode
-	implements AssociationOverride, OrmAssociationOverride
+	implements OrmAssociationOverride
 {
 
 	protected String name;
