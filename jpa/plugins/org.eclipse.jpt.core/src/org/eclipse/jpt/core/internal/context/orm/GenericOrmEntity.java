@@ -39,10 +39,13 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
+import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTable;
+import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaEntity;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -56,6 +59,8 @@ import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
+import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
+import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -100,9 +105,9 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 	protected final OrmDiscriminatorColumn discriminatorColumn;
 
-	protected GenericOrmSequenceGenerator sequenceGenerator;
+	protected OrmSequenceGenerator sequenceGenerator;
 
-	protected GenericOrmTableGenerator tableGenerator;
+	protected OrmTableGenerator tableGenerator;
 
 	protected final List<OrmAttributeOverride> specifiedAttributeOverrides;
 	
@@ -432,11 +437,11 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return this.discriminatorColumn;
 	}
 
-	public GenericOrmSequenceGenerator addSequenceGenerator() {
+	public OrmSequenceGenerator addSequenceGenerator() {
 		if (getSequenceGenerator() != null) {
 			throw new IllegalStateException("sequenceGenerator already exists");
 		}
-		this.sequenceGenerator = new GenericOrmSequenceGenerator(this);
+		this.sequenceGenerator = jpaFactory().buildOrmSequenceGenerator(this);
 		typeMappingResource().setSequenceGenerator(OrmFactory.eINSTANCE.createSequenceGeneratorImpl());
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
 		return this.sequenceGenerator;
@@ -446,27 +451,27 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		if (getSequenceGenerator() == null) {
 			throw new IllegalStateException("sequenceGenerator does not exist, cannot be removed");
 		}
-		GenericOrmSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
+		OrmSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
 		this.sequenceGenerator = null;
 		this.typeMappingResource().setSequenceGenerator(null);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, null);
 	}
 	
-	public GenericOrmSequenceGenerator getSequenceGenerator() {
+	public OrmSequenceGenerator getSequenceGenerator() {
 		return this.sequenceGenerator;
 	}
 
-	protected void setSequenceGenerator(GenericOrmSequenceGenerator newSequenceGenerator) {
-		GenericOrmSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
+	protected void setSequenceGenerator(OrmSequenceGenerator newSequenceGenerator) {
+		OrmSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
 		this.sequenceGenerator = newSequenceGenerator;
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, newSequenceGenerator);
 	}
 
-	public GenericOrmTableGenerator addTableGenerator() {
+	public OrmTableGenerator addTableGenerator() {
 		if (getTableGenerator() != null) {
 			throw new IllegalStateException("tableGenerator already exists");
 		}
-		this.tableGenerator = new GenericOrmTableGenerator(this);
+		this.tableGenerator = jpaFactory().buildOrmTableGenerator(this);
 		typeMappingResource().setTableGenerator(OrmFactory.eINSTANCE.createTableGeneratorImpl());
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
 		return this.tableGenerator;
@@ -476,18 +481,18 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		if (getTableGenerator() == null) {
 			throw new IllegalStateException("tableGenerator does not exist, cannot be removed");
 		}
-		GenericOrmTableGenerator oldTableGenerator = this.tableGenerator;
+		OrmTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = null;
 		this.typeMappingResource().setTableGenerator(null);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, null);
 	}
 	
-	public GenericOrmTableGenerator getTableGenerator() {
+	public OrmTableGenerator getTableGenerator() {
 		return this.tableGenerator;
 	}
 
-	protected void setTableGenerator(GenericOrmTableGenerator newTableGenerator) {
-		GenericOrmTableGenerator oldTableGenerator = this.tableGenerator;
+	protected void setTableGenerator(OrmTableGenerator newTableGenerator) {
+		OrmTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = newTableGenerator;
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, newTableGenerator);
 	}
@@ -1038,18 +1043,28 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	protected void initializeTableGenerator(XmlEntity entity) {
 		if (entity.getTableGenerator() != null) {
-			this.tableGenerator = new GenericOrmTableGenerator(this);
-			this.tableGenerator.initialize(entity.getTableGenerator());
+			this.tableGenerator = buildTableGenerator(entity.getTableGenerator());
 		}
 	}
 	
+	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator tableGeneratorResource) {
+		OrmTableGenerator tableGenerator = jpaFactory().buildOrmTableGenerator(this);
+		tableGenerator.initialize(tableGeneratorResource);
+		return tableGenerator;
+	}
+
 	protected void initializeSequenceGenerator(XmlEntity entity) {
 		if (entity.getSequenceGenerator() != null) {
-			this.sequenceGenerator = new GenericOrmSequenceGenerator(this);
-			this.sequenceGenerator.initialize(entity.getSequenceGenerator());
+			this.sequenceGenerator = buildSequenceGenerator(entity.getSequenceGenerator());
 		}
 	}
 	
+	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator xmlSequenceGenerator) {
+		OrmSequenceGenerator sequenceGenerator = jpaFactory().buildOrmSequenceGenerator(this);
+		sequenceGenerator.initialize(xmlSequenceGenerator);
+		return sequenceGenerator;
+	}
+
 	protected void initializeSpecifiedPrimaryKeyJoinColumns(XmlEntity entity) {
 		for (XmlPrimaryKeyJoinColumn primaryKeyJoinColumn : entity.getPrimaryKeyJoinColumns()) {
 			this.specifiedPrimaryKeyJoinColumns.add(createPrimaryKeyJoinColumn(primaryKeyJoinColumn));
@@ -1207,8 +1222,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 		else {
 			if (getTableGenerator() == null) {
-				setTableGenerator(new GenericOrmTableGenerator(this));
-				getTableGenerator().initialize(entity.getTableGenerator());
+				setTableGenerator(buildTableGenerator(entity.getTableGenerator()));
 			}
 			else {
 				getTableGenerator().update(entity.getTableGenerator());
@@ -1224,8 +1238,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 		else {
 			if (getSequenceGenerator() == null) {
-				setSequenceGenerator(new GenericOrmSequenceGenerator(this));
-				getSequenceGenerator().initialize(entity.getSequenceGenerator());
+				setSequenceGenerator(buildSequenceGenerator(entity.getSequenceGenerator()));
 			}
 			else {
 				getSequenceGenerator().update(entity.getSequenceGenerator());

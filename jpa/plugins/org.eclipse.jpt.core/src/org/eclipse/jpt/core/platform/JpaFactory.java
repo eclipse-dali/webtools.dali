@@ -62,13 +62,17 @@ import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
+import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
+import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
+import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTable;
+import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
@@ -82,8 +86,6 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappedSuperclass;
-import org.eclipse.jpt.core.internal.context.orm.OrmDiscriminatorColumn;
-import org.eclipse.jpt.core.internal.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 
 /**
@@ -200,6 +202,10 @@ public interface JpaFactory
 	OrmColumn buildOrmColumn(JpaContextNode parent, OrmColumn.Owner owner);
 	
 	OrmGeneratedValue buildOrmGeneratedValue(JpaContextNode parent);
+	
+	OrmSequenceGenerator buildOrmSequenceGenerator(JpaContextNode parent);
+	
+	OrmTableGenerator buildOrmTableGenerator(JpaContextNode parent);
 	
 	// **************** java context objects ***********************************
 	

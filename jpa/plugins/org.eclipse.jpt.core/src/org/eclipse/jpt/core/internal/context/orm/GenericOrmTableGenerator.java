@@ -10,12 +10,12 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.JpaContextNode;
-import org.eclipse.jpt.core.context.TableGenerator;
+import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 
-public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGenerator> implements TableGenerator
+public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGenerator> implements OrmTableGenerator
 {
 	protected String specifiedTable;
 	protected String defaultTable;
@@ -38,7 +38,7 @@ public class GenericOrmTableGenerator extends AbstractOrmGenerator<XmlTableGener
 //	protected EList<IUniqueConstraint> uniqueConstraints;
 
 	
-	protected GenericOrmTableGenerator(JpaContextNode parent) {
+	public GenericOrmTableGenerator(JpaContextNode parent) {
 		super(parent);
 	}
 

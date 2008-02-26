@@ -7,14 +7,14 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.context.orm;
+package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.jpt.core.context.DiscriminatorColumn;
-import org.eclipse.jpt.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.core.context.GeneratedValue;
+import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 
-public interface OrmDiscriminatorColumn extends DiscriminatorColumn
+public interface OrmGeneratedValue extends GeneratedValue
 {
-	public abstract void initialize(XmlEntity entity);
+	void initialize(XmlGeneratedValue generatedValue);
 
-	public abstract void update(XmlEntity entity);
+	void update(XmlGeneratedValue generatedValue);
 }

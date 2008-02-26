@@ -17,13 +17,18 @@ import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.TemporalType;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
+import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
+import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlId;
+import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
+import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.db.internal.Table;
 
 
@@ -36,8 +41,8 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	
 	protected TemporalType temporal;
 	
-	protected GenericOrmTableGenerator tableGenerator;
-	protected GenericOrmSequenceGenerator sequenceGenerator;
+	protected OrmTableGenerator tableGenerator;
+	protected OrmSequenceGenerator sequenceGenerator;
 
 	
 	protected GenericOrmIdMapping(OrmPersistentAttribute parent) {
@@ -119,11 +124,11 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, oldGeneratedValue, newGeneratedValue);
 	}
 
-	public GenericOrmSequenceGenerator addSequenceGenerator() {
+	public OrmSequenceGenerator addSequenceGenerator() {
 		if (getSequenceGenerator() != null) {
 			throw new IllegalStateException("sequenceGenerator already exists");
 		}
-		this.sequenceGenerator = new GenericOrmSequenceGenerator(this);
+		this.sequenceGenerator = jpaFactory().buildOrmSequenceGenerator(this);
 		this.attributeMapping().setSequenceGenerator(OrmFactory.eINSTANCE.createSequenceGeneratorImpl());
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
 		return this.sequenceGenerator;
@@ -133,27 +138,27 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		if (getSequenceGenerator() == null) {
 			throw new IllegalStateException("sequenceGenerator does not exist, cannot be removed");
 		}
-		GenericOrmSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
+		OrmSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
 		this.sequenceGenerator = null;
 		this.attributeMapping().setSequenceGenerator(null);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, null);
 	}
 	
-	public GenericOrmSequenceGenerator getSequenceGenerator() {
+	public OrmSequenceGenerator getSequenceGenerator() {
 		return this.sequenceGenerator;
 	}
 
-	protected void setSequenceGenerator(GenericOrmSequenceGenerator newSequenceGenerator) {
-		GenericOrmSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
+	protected void setSequenceGenerator(OrmSequenceGenerator newSequenceGenerator) {
+		OrmSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
 		this.sequenceGenerator = newSequenceGenerator;
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, newSequenceGenerator);
 	}
 
-	public GenericOrmTableGenerator addTableGenerator() {
+	public OrmTableGenerator addTableGenerator() {
 		if (getTableGenerator() != null) {
 			throw new IllegalStateException("tableGenerator already exists");
 		}
-		this.tableGenerator = new GenericOrmTableGenerator(this);
+		this.tableGenerator = jpaFactory().buildOrmTableGenerator(this);
 		this.attributeMapping().setTableGenerator(OrmFactory.eINSTANCE.createTableGeneratorImpl());
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
 		return this.tableGenerator;
@@ -163,18 +168,18 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		if (getTableGenerator() == null) {
 			throw new IllegalStateException("tableGenerator does not exist, cannot be removed");
 		}
-		GenericOrmTableGenerator oldTableGenerator = this.tableGenerator;
+		OrmTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = null;
 		this.attributeMapping().setTableGenerator(null);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldTableGenerator, null);	
 	}
 	
-	public GenericOrmTableGenerator getTableGenerator() {
+	public OrmTableGenerator getTableGenerator() {
 		return this.tableGenerator;
 	}
 
-	protected void setTableGenerator(GenericOrmTableGenerator newTableGenerator) {
-		GenericOrmTableGenerator oldTableGenerator = this.tableGenerator;
+	protected void setTableGenerator(OrmTableGenerator newTableGenerator) {
+		OrmTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = newTableGenerator;
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, newTableGenerator);
 	}
@@ -240,18 +245,28 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	
 	protected void initializeSequenceGenerator(XmlId id) {
 		if (id.getSequenceGenerator() != null) {
-			this.sequenceGenerator = new GenericOrmSequenceGenerator(this);
-			this.sequenceGenerator.initialize(id.getSequenceGenerator());
+			this.sequenceGenerator = buildSequenceGenerator(id.getSequenceGenerator());
 		}
 	}
 	
+	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator xmlSequenceGenerator) {
+		OrmSequenceGenerator sequenceGenerator = jpaFactory().buildOrmSequenceGenerator(this);
+		sequenceGenerator.initialize(xmlSequenceGenerator);
+		return sequenceGenerator;
+	}
+
 	protected void initializeTableGenerator(XmlId id) {
 		if (id.getTableGenerator() != null) {
-			this.tableGenerator = new GenericOrmTableGenerator(this);
-			this.tableGenerator.initialize(id.getTableGenerator());
+			this.tableGenerator = buildTableGenerator(id.getTableGenerator());
 		}
 	}
 	
+	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator tableGeneratorResource) {
+		OrmTableGenerator tableGenerator = jpaFactory().buildOrmTableGenerator(this);
+		tableGenerator.initialize(tableGeneratorResource);
+		return tableGenerator;
+	}
+
 	protected void initializeGeneratedValue(XmlId id) {
 		if (id.getGeneratedValue() != null) {
 			this.generatedValue = buildGeneratedValue(id.getGeneratedValue());
@@ -281,8 +296,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		}
 		else {
 			if (getSequenceGenerator() == null) {
-				setSequenceGenerator(new GenericOrmSequenceGenerator(this));
-				getSequenceGenerator().initialize(id.getSequenceGenerator());
+				setSequenceGenerator(buildSequenceGenerator(id.getSequenceGenerator()));
 			}
 			else {
 				getSequenceGenerator().update(id.getSequenceGenerator());
@@ -298,8 +312,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		}
 		else {
 			if (getTableGenerator() == null) {
-				setTableGenerator(new GenericOrmTableGenerator(this));
-				getTableGenerator().initialize(id.getTableGenerator());
+				setTableGenerator(buildTableGenerator(id.getTableGenerator()));
 			}
 			else {
 				getTableGenerator().update(id.getTableGenerator());

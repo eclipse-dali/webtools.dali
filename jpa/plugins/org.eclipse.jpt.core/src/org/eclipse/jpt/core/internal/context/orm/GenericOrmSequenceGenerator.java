@@ -10,19 +10,19 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.JpaContextNode;
-import org.eclipse.jpt.core.context.SequenceGenerator;
+import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 
 
 public class GenericOrmSequenceGenerator extends AbstractOrmGenerator<XmlSequenceGenerator>
-	implements SequenceGenerator
+	implements OrmSequenceGenerator
 {
 
 	protected String specifiedSequenceName;
 
 	protected String defaultSequenceName;
 
-	protected GenericOrmSequenceGenerator(JpaContextNode parent) {
+	public GenericOrmSequenceGenerator(JpaContextNode parent) {
 		super(parent);
 	}
 

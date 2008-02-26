@@ -27,12 +27,12 @@ import org.eclipse.jpt.core.context.TemporalType;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
+import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
+import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmIdMapping;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmSequenceGenerator;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmTableGenerator;
-import org.eclipse.jpt.core.internal.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlId;
@@ -539,19 +539,19 @@ public class XmlIdMappingTests extends ContextModelTestCase
 		assertEquals("myTableGenerator", ormGeneratedValue.getSpecifiedGenerator());
 		assertEquals(GenerationType.TABLE, ormGeneratedValue.getSpecifiedStrategy());
 		
-		GenericOrmTableGenerator xmlTableGenerator = xmlIdMapping.getTableGenerator();
-		assertEquals("myTableGenerator", xmlTableGenerator.getName());
-		assertEquals("myTable", xmlTableGenerator.getSpecifiedTable());
-		assertEquals("myCatalog", xmlTableGenerator.getSpecifiedCatalog());
-		assertEquals("mySchema", xmlTableGenerator.getSpecifiedSchema());
-		assertEquals("myPkColumnName", xmlTableGenerator.getSpecifiedPkColumnName());
-		assertEquals("myPkColumnValue", xmlTableGenerator.getSpecifiedPkColumnValue());
-		assertEquals("myValueColumnName", xmlTableGenerator.getSpecifiedValueColumnName());
-		assertEquals(Integer.valueOf(1), xmlTableGenerator.getSpecifiedInitialValue());
-		assertEquals(Integer.valueOf(1), xmlTableGenerator.getSpecifiedAllocationSize());
+		OrmTableGenerator ormTableGenerator = xmlIdMapping.getTableGenerator();
+		assertEquals("myTableGenerator", ormTableGenerator.getName());
+		assertEquals("myTable", ormTableGenerator.getSpecifiedTable());
+		assertEquals("myCatalog", ormTableGenerator.getSpecifiedCatalog());
+		assertEquals("mySchema", ormTableGenerator.getSpecifiedSchema());
+		assertEquals("myPkColumnName", ormTableGenerator.getSpecifiedPkColumnName());
+		assertEquals("myPkColumnValue", ormTableGenerator.getSpecifiedPkColumnValue());
+		assertEquals("myValueColumnName", ormTableGenerator.getSpecifiedValueColumnName());
+		assertEquals(Integer.valueOf(1), ormTableGenerator.getSpecifiedInitialValue());
+		assertEquals(Integer.valueOf(1), ormTableGenerator.getSpecifiedAllocationSize());
 
-		GenericOrmSequenceGenerator xmlSequenceGenerator = xmlIdMapping.getSequenceGenerator();
-		assertEquals("mySequenceGenerator", xmlSequenceGenerator.getName());
+		OrmSequenceGenerator ormSequenceGenerator = xmlIdMapping.getSequenceGenerator();
+		assertEquals("mySequenceGenerator", ormSequenceGenerator.getName());
 	}
 	
 	public void testVirtualMappingMetadataCompleteTrue() throws Exception {

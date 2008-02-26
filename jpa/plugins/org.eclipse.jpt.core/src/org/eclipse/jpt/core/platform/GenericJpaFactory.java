@@ -67,13 +67,17 @@ import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
+import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
+import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
+import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTable;
+import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
@@ -135,11 +139,11 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmSecondaryTable;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmSequenceGenerator;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmTable;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmTableGenerator;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitMetadata;
-import org.eclipse.jpt.core.internal.context.orm.OrmDiscriminatorColumn;
-import org.eclipse.jpt.core.internal.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.internal.context.orm.OrmXmlImpl;
 import org.eclipse.jpt.core.internal.context.persistence.GeenericPersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.GenericClassRef;
@@ -485,5 +489,13 @@ public class GenericJpaFactory implements JpaFactory
 	
 	public OrmGeneratedValue buildOrmGeneratedValue(JpaContextNode parent) {
 		return new GenericOrmGeneratedValue(parent);
+	}
+	
+	public OrmSequenceGenerator buildOrmSequenceGenerator(JpaContextNode parent) {
+		return new GenericOrmSequenceGenerator(parent);
+	}
+	
+	public OrmTableGenerator buildOrmTableGenerator(JpaContextNode parent) {
+		return new GenericOrmTableGenerator(parent);
 	}
 }

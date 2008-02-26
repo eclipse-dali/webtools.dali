@@ -22,9 +22,9 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class XmlTableGeneratorTests extends ContextModelTestCase
+public class OrmTableGeneratorTests extends ContextModelTestCase
 {
-	public XmlTableGeneratorTests(String name) {
+	public OrmTableGeneratorTests(String name) {
 		super(name);
 	}
 	
