@@ -28,7 +28,6 @@ import org.eclipse.jpt.core.context.IBaseJpaContent;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.NamedColumn;
-import org.eclipse.jpt.core.context.NamedColumn.Owner;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
@@ -67,6 +66,7 @@ import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
@@ -123,6 +123,7 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericEntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmAssociationOverride;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmAttributeOverride;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmColumn;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
@@ -472,7 +473,11 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericOrmAssociationOverride(parent, owner);
 	}
 	
-	public OrmDiscriminatorColumn buildOrmDiscriminatorColumn(GenericOrmEntity parent, Owner owner) {
+	public OrmDiscriminatorColumn buildOrmDiscriminatorColumn(GenericOrmEntity parent, NamedColumn.Owner owner) {
 		return new GenericOrmDiscriminatorColumn(parent, owner);
+	}
+	
+	public OrmColumn buildOrmColumn(JpaContextNode parent, OrmColumn.Owner owner) {
+		return new GenericOrmColumn(parent, owner);
 	}
 }

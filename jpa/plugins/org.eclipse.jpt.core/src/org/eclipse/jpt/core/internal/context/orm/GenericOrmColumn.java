@@ -22,7 +22,7 @@ public class GenericOrmColumn extends AbstractOrmColumn<XmlColumn> implements Or
 
 	protected Integer specifiedScale;
 
-	protected GenericOrmColumn(JpaContextNode parent, OrmColumn.Owner owner) {
+	public GenericOrmColumn(JpaContextNode parent, OrmColumn.Owner owner) {
 		super(parent, owner);
 	}
 	
@@ -37,15 +37,6 @@ public class GenericOrmColumn extends AbstractOrmColumn<XmlColumn> implements Or
 		setSpecifiedPrecision(oldColumn.getSpecifiedPrecision());
 		setSpecifiedScale(oldColumn.getSpecifiedScale());
 	}
-//
-//	@Override
-//	protected void addInsignificantXmlFeatureIdsTo(Set<Integer> insignificantXmlFeatureIds) {
-//		super.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);
-//		insignificantXmlFeatureIds.add(JpaCoreMappingsPackage.ICOLUMN__LENGTH);
-//		insignificantXmlFeatureIds.add(JpaCoreMappingsPackage.ICOLUMN__SCALE);
-//		insignificantXmlFeatureIds.add(JpaCoreMappingsPackage.ICOLUMN__PRECISION);
-//	}
-
 
 	public Integer getLength() {
 		return (this.getSpecifiedLength() == null) ? getDefaultLength() : this.getSpecifiedLength();
@@ -163,13 +154,11 @@ public class GenericOrmColumn extends AbstractOrmColumn<XmlColumn> implements Or
 	@Override
 	protected void addColumnResource() {
 		owner().addColumnResource();
-		//this.columnMapping.setColumn(OrmFactory.eINSTANCE.createColumnImpl());
 	}
 	
 	@Override
 	protected void removeColumnResource() {
 		owner().removeColumnResource();
-		//this.columnMapping.setColumn(null);
 	}
 	
 	@Override

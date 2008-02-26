@@ -40,7 +40,7 @@ public class GenericOrmAttributeOverride extends AbstractJpaContextNode
 	public GenericOrmAttributeOverride(JpaContextNode parent, AttributeOverride.Owner owner) {
 		super(parent);
 		this.owner = owner;
-		this.column = new GenericOrmColumn(this, this);
+		this.column = jpaFactory().buildOrmColumn(this, this);
 	}
 
 	public Owner owner() {

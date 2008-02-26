@@ -22,9 +22,9 @@ import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
-public class XmlCascadeTests extends ContextModelTestCase
+public class OrmCascadeTests extends ContextModelTestCase
 {
-	public XmlCascadeTests(String name) {
+	public OrmCascadeTests(String name) {
 		super(name);
 	}
 	

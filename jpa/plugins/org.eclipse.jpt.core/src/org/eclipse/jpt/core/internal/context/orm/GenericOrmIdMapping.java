@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.TemporalType;
+import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
@@ -28,7 +29,7 @@ import org.eclipse.jpt.db.internal.Table;
 public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	implements IdMapping, OrmColumnMapping
 {
-	protected final GenericOrmColumn column;
+	protected final OrmColumn column;
 
 	protected GenericOrmGeneratedValue generatedValue;
 	
@@ -40,7 +41,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	
 	protected GenericOrmIdMapping(OrmPersistentAttribute parent) {
 		super(parent);
-		this.column = new GenericOrmColumn(this, this);
+		this.column = jpaFactory().buildOrmColumn(this, this);
 	}
 
 
@@ -66,7 +67,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	}
 
 	
-	public GenericOrmColumn getColumn() {
+	public OrmColumn getColumn() {
 		return this.column;
 	}
 

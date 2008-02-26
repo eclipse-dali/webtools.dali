@@ -25,9 +25,9 @@ import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.TemporalType;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmColumn;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmVersionMapping;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
@@ -226,28 +226,28 @@ public class XmlVersionMappingTests extends ContextModelTestCase
 		assertNull(xmlVersionMapping.getTemporal());
 
 		
-		GenericOrmColumn xmlColumn = xmlVersionMapping.getColumn();
-		assertNull(xmlColumn.getSpecifiedName());
-		assertNull(xmlColumn.getSpecifiedUnique());
-		assertNull(xmlColumn.getSpecifiedNullable());
-		assertNull(xmlColumn.getSpecifiedInsertable());
-		assertNull(xmlColumn.getSpecifiedUpdatable());
-		assertNull(xmlColumn.getColumnDefinition());
-		assertNull(xmlColumn.getSpecifiedTable());
-		assertNull(xmlColumn.getSpecifiedLength());
-		assertNull(xmlColumn.getSpecifiedPrecision());
-		assertNull(xmlColumn.getSpecifiedScale());
+		OrmColumn ormColumn = xmlVersionMapping.getColumn();
+		assertNull(ormColumn.getSpecifiedName());
+		assertNull(ormColumn.getSpecifiedUnique());
+		assertNull(ormColumn.getSpecifiedNullable());
+		assertNull(ormColumn.getSpecifiedInsertable());
+		assertNull(ormColumn.getSpecifiedUpdatable());
+		assertNull(ormColumn.getColumnDefinition());
+		assertNull(ormColumn.getSpecifiedTable());
+		assertNull(ormColumn.getSpecifiedLength());
+		assertNull(ormColumn.getSpecifiedPrecision());
+		assertNull(ormColumn.getSpecifiedScale());
 		
-		assertEquals("foo", xmlColumn.getDefaultName());
-		assertEquals(Boolean.FALSE, xmlColumn.getDefaultUnique());
-		assertEquals(Boolean.TRUE, xmlColumn.getDefaultNullable());
-		assertEquals(Boolean.TRUE, xmlColumn.getDefaultInsertable());
-		assertEquals(Boolean.TRUE, xmlColumn.getDefaultUpdatable());
-		assertEquals(null, xmlColumn.getColumnDefinition());
-		assertEquals(TYPE_NAME, xmlColumn.getDefaultTable());
-		assertEquals(Integer.valueOf(255), xmlColumn.getDefaultLength());
-		assertEquals(Integer.valueOf(0), xmlColumn.getDefaultPrecision());
-		assertEquals(Integer.valueOf(0), xmlColumn.getDefaultScale());
+		assertEquals("foo", ormColumn.getDefaultName());
+		assertEquals(Boolean.FALSE, ormColumn.getDefaultUnique());
+		assertEquals(Boolean.TRUE, ormColumn.getDefaultNullable());
+		assertEquals(Boolean.TRUE, ormColumn.getDefaultInsertable());
+		assertEquals(Boolean.TRUE, ormColumn.getDefaultUpdatable());
+		assertEquals(null, ormColumn.getColumnDefinition());
+		assertEquals(TYPE_NAME, ormColumn.getDefaultTable());
+		assertEquals(Integer.valueOf(255), ormColumn.getDefaultLength());
+		assertEquals(Integer.valueOf(0), ormColumn.getDefaultPrecision());
+		assertEquals(Integer.valueOf(0), ormColumn.getDefaultScale());
 	}
 	
 	//@Basic(fetch=FetchType.LAZY, optional=false)
@@ -267,17 +267,17 @@ public class XmlVersionMappingTests extends ContextModelTestCase
 		assertEquals("id", xmlVersionMapping.getName());
 		assertEquals(TemporalType.TIMESTAMP, xmlVersionMapping.getTemporal());
 		
-		GenericOrmColumn xmlColumn = xmlVersionMapping.getColumn();
-		assertEquals("MY_COLUMN", xmlColumn.getSpecifiedName());
-		assertEquals(Boolean.TRUE, xmlColumn.getSpecifiedUnique());
-		assertEquals(Boolean.FALSE, xmlColumn.getSpecifiedNullable());
-		assertEquals(Boolean.FALSE, xmlColumn.getSpecifiedInsertable());
-		assertEquals(Boolean.FALSE, xmlColumn.getSpecifiedUpdatable());
-		assertEquals("COLUMN_DEFINITION", xmlColumn.getColumnDefinition());
-		assertEquals("MY_TABLE", xmlColumn.getSpecifiedTable());
-		assertEquals(Integer.valueOf(5), xmlColumn.getSpecifiedLength());
-		assertEquals(Integer.valueOf(6), xmlColumn.getSpecifiedPrecision());
-		assertEquals(Integer.valueOf(7), xmlColumn.getSpecifiedScale());
+		OrmColumn ormColumn = xmlVersionMapping.getColumn();
+		assertEquals("MY_COLUMN", ormColumn.getSpecifiedName());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUnique());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedNullable());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUpdatable());
+		assertEquals("COLUMN_DEFINITION", ormColumn.getColumnDefinition());
+		assertEquals("MY_TABLE", ormColumn.getSpecifiedTable());
+		assertEquals(Integer.valueOf(5), ormColumn.getSpecifiedLength());
+		assertEquals(Integer.valueOf(6), ormColumn.getSpecifiedPrecision());
+		assertEquals(Integer.valueOf(7), ormColumn.getSpecifiedScale());
 	}
 	
 	public void testVirtualMappingMetadataCompleteTrue() throws Exception {
@@ -291,17 +291,17 @@ public class XmlVersionMappingTests extends ContextModelTestCase
 		assertEquals("id", xmlVersionMapping.getName());
 		assertNull(xmlVersionMapping.getTemporal());
 		
-		GenericOrmColumn xmlColumn = xmlVersionMapping.getColumn();
-		assertEquals("id", xmlColumn.getSpecifiedName());
-		assertEquals(Boolean.FALSE, xmlColumn.getSpecifiedUnique());
-		assertEquals(Boolean.TRUE, xmlColumn.getSpecifiedNullable());
-		assertEquals(Boolean.TRUE, xmlColumn.getSpecifiedInsertable());
-		assertEquals(Boolean.TRUE, xmlColumn.getSpecifiedUpdatable());
-		assertNull(xmlColumn.getColumnDefinition());
-		assertEquals(TYPE_NAME, xmlColumn.getSpecifiedTable());
-		assertEquals(Integer.valueOf(255), xmlColumn.getSpecifiedLength());
-		assertEquals(Integer.valueOf(0), xmlColumn.getSpecifiedPrecision());
-		assertEquals(Integer.valueOf(0), xmlColumn.getSpecifiedScale());
+		OrmColumn ormColumn = xmlVersionMapping.getColumn();
+		assertEquals("id", ormColumn.getSpecifiedName());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUnique());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedNullable());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUpdatable());
+		assertNull(ormColumn.getColumnDefinition());
+		assertEquals(TYPE_NAME, ormColumn.getSpecifiedTable());
+		assertEquals(Integer.valueOf(255), ormColumn.getSpecifiedLength());
+		assertEquals(Integer.valueOf(0), ormColumn.getSpecifiedPrecision());
+		assertEquals(Integer.valueOf(0), ormColumn.getSpecifiedScale());
 	}
 	
 	public void testSpecifiedMapping() throws Exception {
@@ -317,28 +317,28 @@ public class XmlVersionMappingTests extends ContextModelTestCase
 		assertEquals("id", xmlVersionMapping.getName());
 		assertNull(xmlVersionMapping.getTemporal());
 		
-		GenericOrmColumn xmlColumn = xmlVersionMapping.getColumn();
-		assertNull(xmlColumn.getSpecifiedName());
-		assertNull(xmlColumn.getSpecifiedUnique());
-		assertNull(xmlColumn.getSpecifiedNullable());
-		assertNull(xmlColumn.getSpecifiedInsertable());
-		assertNull(xmlColumn.getSpecifiedUpdatable());
-		assertNull(xmlColumn.getColumnDefinition());
-		assertNull(xmlColumn.getSpecifiedTable());
-		assertNull(xmlColumn.getSpecifiedLength());
-		assertNull(xmlColumn.getSpecifiedPrecision());
-		assertNull(xmlColumn.getSpecifiedScale());
+		OrmColumn ormColumn = xmlVersionMapping.getColumn();
+		assertNull(ormColumn.getSpecifiedName());
+		assertNull(ormColumn.getSpecifiedUnique());
+		assertNull(ormColumn.getSpecifiedNullable());
+		assertNull(ormColumn.getSpecifiedInsertable());
+		assertNull(ormColumn.getSpecifiedUpdatable());
+		assertNull(ormColumn.getColumnDefinition());
+		assertNull(ormColumn.getSpecifiedTable());
+		assertNull(ormColumn.getSpecifiedLength());
+		assertNull(ormColumn.getSpecifiedPrecision());
+		assertNull(ormColumn.getSpecifiedScale());
 		
-		assertEquals("id", xmlColumn.getDefaultName());
-		assertEquals(Boolean.FALSE, xmlColumn.getDefaultUnique());
-		assertEquals(Boolean.TRUE, xmlColumn.getDefaultNullable());
-		assertEquals(Boolean.TRUE, xmlColumn.getDefaultInsertable());
-		assertEquals(Boolean.TRUE, xmlColumn.getDefaultUpdatable());
-		assertEquals(null, xmlColumn.getColumnDefinition());
-		assertEquals(TYPE_NAME, xmlColumn.getDefaultTable());
-		assertEquals(Integer.valueOf(255), xmlColumn.getDefaultLength());
-		assertEquals(Integer.valueOf(0), xmlColumn.getDefaultPrecision());
-		assertEquals(Integer.valueOf(0), xmlColumn.getDefaultScale());
+		assertEquals("id", ormColumn.getDefaultName());
+		assertEquals(Boolean.FALSE, ormColumn.getDefaultUnique());
+		assertEquals(Boolean.TRUE, ormColumn.getDefaultNullable());
+		assertEquals(Boolean.TRUE, ormColumn.getDefaultInsertable());
+		assertEquals(Boolean.TRUE, ormColumn.getDefaultUpdatable());
+		assertEquals(null, ormColumn.getColumnDefinition());
+		assertEquals(TYPE_NAME, ormColumn.getDefaultTable());
+		assertEquals(Integer.valueOf(255), ormColumn.getDefaultLength());
+		assertEquals(Integer.valueOf(0), ormColumn.getDefaultPrecision());
+		assertEquals(Integer.valueOf(0), ormColumn.getDefaultScale());
 	}
 	
 	public void testVersionMorphToIdMapping() throws Exception {

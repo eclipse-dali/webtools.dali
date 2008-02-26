@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.TemporalType;
 import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
@@ -28,13 +29,13 @@ import org.eclipse.jpt.db.internal.Table;
 public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVersion>
 	implements VersionMapping, OrmColumnMapping
 {
-	protected final GenericOrmColumn column;
+	protected final OrmColumn column;
 
 	protected TemporalType temporal;
 	
 	protected GenericOrmVersionMapping(OrmPersistentAttribute parent) {
 		super(parent);
-		this.column = new GenericOrmColumn(this, this);
+		this.column = jpaFactory().buildOrmColumn(this, this);
 	}
 
 	@Override
@@ -57,7 +58,7 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 		getColumn().initializeFrom(oldMapping.getColumn());
 	}
 
-	public GenericOrmColumn getColumn() {
+	public OrmColumn getColumn() {
 		return this.column;
 	}
 

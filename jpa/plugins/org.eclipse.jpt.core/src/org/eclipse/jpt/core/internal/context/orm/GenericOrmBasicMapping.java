@@ -47,7 +47,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	
 	protected GenericOrmBasicMapping(OrmPersistentAttribute parent) {
 		super(parent);
-		this.column = new GenericOrmColumn(this, this);
+		this.column = jpaFactory().buildOrmColumn(this, this);
 	}
 
 	public FetchType getFetch() {
