@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -70,20 +71,20 @@ public class GenericOrmManyToOneMapping extends AbstractOrmSingleRelationshipMap
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public ListIterator<GenericOrmJoinColumn> joinColumns() {
+	public ListIterator<OrmJoinColumn> joinColumns() {
 		return super.joinColumns();
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public ListIterator<GenericOrmJoinColumn> specifiedJoinColumns() {
+	public ListIterator<OrmJoinColumn> specifiedJoinColumns() {
 		// TODO Auto-generated method stub
 		return super.specifiedJoinColumns();
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public ListIterator<GenericOrmJoinColumn> defaultJoinColumns() {
+	public ListIterator<OrmJoinColumn> defaultJoinColumns() {
 		// TODO Auto-generated method stub
 		return super.defaultJoinColumns();
 	}

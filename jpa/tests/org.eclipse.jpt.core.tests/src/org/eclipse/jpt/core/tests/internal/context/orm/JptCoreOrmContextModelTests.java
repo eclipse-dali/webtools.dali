@@ -27,8 +27,8 @@ public class JptCoreOrmContextModelTests extends TestCase
 		suite.addTestSuite(PersistenceUnitMetadataTests.class);
 		suite.addTestSuite(PersistenceUnitDefaultsTests.class);
 		suite.addTestSuite(OrmPersistentTypeTests.class);
-		suite.addTestSuite(XmlAssociationOverrideTests.class);
-		suite.addTestSuite(XmlAttributeOverrideTests.class);
+		suite.addTestSuite(OrmAssociationOverrideTests.class);
+		suite.addTestSuite(OrmAttributeOverrideTests.class);
 		suite.addTestSuite(XmlBasicMappingTests.class);
 		suite.addTestSuite(XmlCascadeTests.class);
 		suite.addTestSuite(XmlColumnTests.class);
@@ -39,8 +39,8 @@ public class JptCoreOrmContextModelTests extends TestCase
 		suite.addTestSuite(XmlEmbeddedIdMappingTests.class);
 		suite.addTestSuite(XmlEntityTests.class);
 		suite.addTestSuite(XmlGeneratedValueTests.class);
-		suite.addTestSuite(XmlJoinColumnTests.class);
-		suite.addTestSuite(XmlJoinTableTests.class);
+		suite.addTestSuite(OrmJoinColumnTests.class);
+		suite.addTestSuite(OrmJoinTableTests.class);
 		suite.addTestSuite(XmlMappedSuperclassTests.class);
 		suite.addTestSuite(XmlManyToManyMappingTests.class);
 		suite.addTestSuite(XmlManyToOneMappingTests.class);
@@ -48,12 +48,12 @@ public class JptCoreOrmContextModelTests extends TestCase
 		suite.addTestSuite(XmlNamedNativeQueryTests.class);
 		suite.addTestSuite(XmlOneToManyMappingTests.class);
 		suite.addTestSuite(XmlOneToOneMappingTests.class);
-		suite.addTestSuite(XmlPrimaryKeyJoinColumnTests.class);
+		suite.addTestSuite(OrmPrimaryKeyJoinColumnTests.class);
 		suite.addTestSuite(XmlQueryHintTests.class);
-		suite.addTestSuite(XmlSecondaryTableTests.class);
+		suite.addTestSuite(OrmSecondaryTableTests.class);
 		suite.addTestSuite(XmlSequenceGeneratorTests.class);
 		suite.addTestSuite(XmlTableGeneratorTests.class);
-		suite.addTestSuite(XmlTableTests.class);
+		suite.addTestSuite(OrmTableTests.class);
 		suite.addTestSuite(XmlTransientMappingTests.class);
 		suite.addTestSuite(XmlVersionMappingTests.class);
 		return suite;

@@ -37,7 +37,12 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
+import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
+import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaEntity;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -71,17 +76,17 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 	protected String idClass;
 
-	protected final GenericOrmTable table;
+	protected final OrmTable table;
 
-	protected final List<GenericOrmSecondaryTable> specifiedSecondaryTables;
+	protected final List<OrmSecondaryTable> specifiedSecondaryTables;
 	
-	protected final List<GenericOrmSecondaryTable> virtualSecondaryTables;
+	protected final List<OrmSecondaryTable> virtualSecondaryTables;
 	//TODO this might need to move to IEntity, for the UI
 		public static final String VIRTUAL_SECONDARY_TABLES_LIST = "virtualSecondaryTablesList";
 	
-	protected final List<GenericOrmPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns;
+	protected final List<OrmPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns;
 	
-	protected final List<GenericOrmPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns;
+	protected final List<OrmPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns;
 
 	protected InheritanceType specifiedInheritanceStrategy;
 	
@@ -99,13 +104,13 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 	protected GenericOrmTableGenerator tableGenerator;
 
-	protected final List<GenericOrmAttributeOverride> specifiedAttributeOverrides;
+	protected final List<OrmAttributeOverride> specifiedAttributeOverrides;
 	
-	protected final List<GenericOrmAttributeOverride> defaultAttributeOverrides;
+	protected final List<OrmAttributeOverride> defaultAttributeOverrides;
 
-	protected final List<GenericOrmAssociationOverride> specifiedAssociationOverrides;
+	protected final List<OrmAssociationOverride> specifiedAssociationOverrides;
 
-	protected final List<GenericOrmAssociationOverride> defaultAssociationOverrides;
+	protected final List<OrmAssociationOverride> defaultAssociationOverrides;
 
 	protected final List<GenericOrmNamedQuery> namedQueries;
 
@@ -113,16 +118,16 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 	public GenericOrmEntity(OrmPersistentType parent) {
 		super(parent);
-		this.table = new GenericOrmTable(this);
-		this.specifiedSecondaryTables = new ArrayList<GenericOrmSecondaryTable>();
-		this.virtualSecondaryTables = new ArrayList<GenericOrmSecondaryTable>();
+		this.table = jpaFactory().buildOrmTable(this);
+		this.specifiedSecondaryTables = new ArrayList<OrmSecondaryTable>();
+		this.virtualSecondaryTables = new ArrayList<OrmSecondaryTable>();
 		this.discriminatorColumn = createXmlDiscriminatorColumn();
-		this.specifiedPrimaryKeyJoinColumns = new ArrayList<GenericOrmPrimaryKeyJoinColumn>();
-		this.defaultPrimaryKeyJoinColumns = new ArrayList<GenericOrmPrimaryKeyJoinColumn>();
-		this.specifiedAttributeOverrides = new ArrayList<GenericOrmAttributeOverride>();
-		this.defaultAttributeOverrides = new ArrayList<GenericOrmAttributeOverride>();
-		this.specifiedAssociationOverrides = new ArrayList<GenericOrmAssociationOverride>();
-		this.defaultAssociationOverrides = new ArrayList<GenericOrmAssociationOverride>();
+		this.specifiedPrimaryKeyJoinColumns = new ArrayList<OrmPrimaryKeyJoinColumn>();
+		this.defaultPrimaryKeyJoinColumns = new ArrayList<OrmPrimaryKeyJoinColumn>();
+		this.specifiedAttributeOverrides = new ArrayList<OrmAttributeOverride>();
+		this.defaultAttributeOverrides = new ArrayList<OrmAttributeOverride>();
+		this.specifiedAssociationOverrides = new ArrayList<OrmAssociationOverride>();
+		this.defaultAssociationOverrides = new ArrayList<OrmAssociationOverride>();
 		this.namedQueries = new ArrayList<GenericOrmNamedQuery>();
 		this.namedNativeQueries = new ArrayList<GenericOrmNamedNativeQuery>();
 	}
@@ -217,12 +222,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		firePropertyChanged(DEFAULT_NAME_PROPERTY, oldDefaultName, newDefaultName);
 	}
 
-	public GenericOrmTable getTable() {
+	public OrmTable getTable() {
 		return this.table;
 	}
 
 	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmSecondaryTable> secondaryTables() {
+	public ListIterator<OrmSecondaryTable> secondaryTables() {
 		if (specifiedSecondaryTablesSize() > 0) {
 			return specifiedSecondaryTables();
 		}
@@ -236,33 +241,33 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return virtualSecondaryTablesSize();
 	}
 	
-	public ListIterator<GenericOrmSecondaryTable> virtualSecondaryTables() {
-		return new CloneListIterator<GenericOrmSecondaryTable>(this.virtualSecondaryTables);
+	public ListIterator<OrmSecondaryTable> virtualSecondaryTables() {
+		return new CloneListIterator<OrmSecondaryTable>(this.virtualSecondaryTables);
 	}
 
 	public int virtualSecondaryTablesSize() {
 		return this.virtualSecondaryTables.size();
 	}
 	
-	protected void addVirtualSecondaryTable(GenericOrmSecondaryTable secondaryTable) {
+	protected void addVirtualSecondaryTable(OrmSecondaryTable secondaryTable) {
 		addItemToList(secondaryTable, this.virtualSecondaryTables, GenericOrmEntity.VIRTUAL_SECONDARY_TABLES_LIST);
 	}
 	
-	protected void removeVirtualSecondaryTable(GenericOrmSecondaryTable secondaryTable) {
+	protected void removeVirtualSecondaryTable(OrmSecondaryTable secondaryTable) {
 		removeItemFromList(secondaryTable, this.virtualSecondaryTables, GenericOrmEntity.VIRTUAL_SECONDARY_TABLES_LIST);
 	}
 
 	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmSecondaryTable> specifiedSecondaryTables() {
-		return new CloneListIterator<GenericOrmSecondaryTable>(this.specifiedSecondaryTables);
+	public ListIterator<OrmSecondaryTable> specifiedSecondaryTables() {
+		return new CloneListIterator<OrmSecondaryTable>(this.specifiedSecondaryTables);
 	}
 
 	public int specifiedSecondaryTablesSize() {
 		return this.specifiedSecondaryTables.size();
 	}
 	
-	public GenericOrmSecondaryTable addSpecifiedSecondaryTable(int index) {
-		GenericOrmSecondaryTable secondaryTable = new GenericOrmSecondaryTable(this);
+	public OrmSecondaryTable addSpecifiedSecondaryTable(int index) {
+		OrmSecondaryTable secondaryTable =  jpaFactory().buildOrmSecondaryTable(this);
 		this.specifiedSecondaryTables.add(index, secondaryTable);
 		XmlSecondaryTable secondaryTableResource = OrmFactory.eINSTANCE.createSecondaryTable();
 		secondaryTable.initialize(secondaryTableResource);
@@ -271,7 +276,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return secondaryTable;
 	}
 	
-	protected void addSpecifiedSecondaryTable(int index, GenericOrmSecondaryTable secondaryTable) {
+	protected void addSpecifiedSecondaryTable(int index, OrmSecondaryTable secondaryTable) {
 		addItemToList(index, secondaryTable, this.specifiedSecondaryTables, Entity.SPECIFIED_SECONDARY_TABLES_LIST);
 	}
 	
@@ -280,12 +285,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	public void removeSpecifiedSecondaryTable(int index) {
-		GenericOrmSecondaryTable removedSecondaryTable = this.specifiedSecondaryTables.remove(index);
+		OrmSecondaryTable removedSecondaryTable = this.specifiedSecondaryTables.remove(index);
 		typeMappingResource().getSecondaryTables().remove(index);
 		fireItemRemoved(Entity.SPECIFIED_SECONDARY_TABLES_LIST, index, removedSecondaryTable);
 	}
 	
-	protected void removeSpecifiedSecondaryTable_(GenericOrmSecondaryTable secondaryTable) {
+	protected void removeSpecifiedSecondaryTable_(OrmSecondaryTable secondaryTable) {
 		removeItemFromList(secondaryTable, this.specifiedSecondaryTables, Entity.SPECIFIED_SECONDARY_TABLES_LIST);
 	}
 	
@@ -307,12 +312,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return containsSecondaryTable(name, virtualSecondaryTables());
 	}
 	
-	public boolean containsVirtualSecondaryTable(GenericOrmSecondaryTable secondaryTable) {
+	public boolean containsVirtualSecondaryTable(OrmSecondaryTable secondaryTable) {
 		return this.virtualSecondaryTables.contains(secondaryTable);
 	}
 
-	protected boolean containsSecondaryTable(String name, ListIterator<GenericOrmSecondaryTable> secondaryTables) {
-		for (GenericOrmSecondaryTable secondaryTable : CollectionTools.iterable(secondaryTables)) {
+	protected boolean containsSecondaryTable(String name, ListIterator<OrmSecondaryTable> secondaryTables) {
+		for (OrmSecondaryTable secondaryTable : CollectionTools.iterable(secondaryTables)) {
 			String secondaryTableName = secondaryTable.getName();
 			if (secondaryTableName != null && secondaryTableName.equals(name)) {
 				return true;
@@ -522,9 +527,8 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		firePropertyChanged(Entity.DISCRIMINATOR_VALUE_ALLOWED_PROPERTY, oldDiscriminatorValueAllowed, newDiscriminatorValueAllowed);
 	}
 
-	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns() {
-		return new CloneListIterator<GenericOrmPrimaryKeyJoinColumn>(this.defaultPrimaryKeyJoinColumns);
+	public ListIterator<OrmPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns() {
+		return new CloneListIterator<OrmPrimaryKeyJoinColumn>(this.defaultPrimaryKeyJoinColumns);
 	}
 	
 	public int defaultPrimaryKeyJoinColumnsSize() {
@@ -537,7 +541,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
+	public ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
 		return this.specifiedPrimaryKeyJoinColumns.isEmpty() ? this.defaultPrimaryKeyJoinColumns() : this.specifiedPrimaryKeyJoinColumns();
 	}
 	
@@ -546,16 +550,16 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns() {
-		return new CloneListIterator<GenericOrmPrimaryKeyJoinColumn>(this.specifiedPrimaryKeyJoinColumns);
+	public ListIterator<OrmPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns() {
+		return new CloneListIterator<OrmPrimaryKeyJoinColumn>(this.specifiedPrimaryKeyJoinColumns);
 	}
 
 	public int specifiedPrimaryKeyJoinColumnsSize() {
 		return this.specifiedPrimaryKeyJoinColumns.size();
 	}
 
-	public GenericOrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
-		GenericOrmPrimaryKeyJoinColumn primaryKeyJoinColumn = new GenericOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+	public OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
+		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
 		this.typeMappingResource().getPrimaryKeyJoinColumns().add(index, OrmFactory.eINSTANCE.createPrimaryKeyJoinColumn());
 		this.fireItemAdded(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
@@ -566,7 +570,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
-	protected void addSpecifiedPrimaryKeyJoinColumn(int index, GenericOrmPrimaryKeyJoinColumn primaryKeyJoinColumn) {
+	protected void addSpecifiedPrimaryKeyJoinColumn(int index, OrmPrimaryKeyJoinColumn primaryKeyJoinColumn) {
 		addItemToList(index, primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
@@ -575,12 +579,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	public void removeSpecifiedPrimaryKeyJoinColumn(int index) {
-		GenericOrmPrimaryKeyJoinColumn removedPrimaryKeyJoinColumn = this.specifiedPrimaryKeyJoinColumns.remove(index);
+		OrmPrimaryKeyJoinColumn removedPrimaryKeyJoinColumn = this.specifiedPrimaryKeyJoinColumns.remove(index);
 		this.typeMappingResource().getPrimaryKeyJoinColumns().remove(index);
 		fireItemRemoved(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
 	}
 
-	protected void removeSpecifiedPrimaryKeyJoinColumn_(GenericOrmPrimaryKeyJoinColumn primaryKeyJoinColumn) {
+	protected void removeSpecifiedPrimaryKeyJoinColumn_(OrmPrimaryKeyJoinColumn primaryKeyJoinColumn) {
 		removeItemFromList(primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
@@ -591,8 +595,8 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmAttributeOverride> attributeOverrides() {
-		return new CompositeListIterator<GenericOrmAttributeOverride>(specifiedAttributeOverrides(), defaultAttributeOverrides());
+	public ListIterator<OrmAttributeOverride> attributeOverrides() {
+		return new CompositeListIterator<OrmAttributeOverride>(specifiedAttributeOverrides(), defaultAttributeOverrides());
 	}
 
 	public int attributeOverridesSize() {
@@ -600,8 +604,8 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmAttributeOverride> defaultAttributeOverrides() {
-		return new CloneListIterator<GenericOrmAttributeOverride>(this.defaultAttributeOverrides);
+	public ListIterator<OrmAttributeOverride> defaultAttributeOverrides() {
+		return new CloneListIterator<OrmAttributeOverride>(this.defaultAttributeOverrides);
 	}
 	
 	public int defaultAttributeOverridesSize() {
@@ -609,23 +613,23 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmAttributeOverride> specifiedAttributeOverrides() {
-		return new CloneListIterator<GenericOrmAttributeOverride>(this.specifiedAttributeOverrides);
+	public ListIterator<OrmAttributeOverride> specifiedAttributeOverrides() {
+		return new CloneListIterator<OrmAttributeOverride>(this.specifiedAttributeOverrides);
 	}
 
 	public int specifiedAttributeOverridesSize() {
 		return this.specifiedAttributeOverrides.size();
 	}
 
-	public GenericOrmAttributeOverride addSpecifiedAttributeOverride(int index) {
-		GenericOrmAttributeOverride attributeOverride = new GenericOrmAttributeOverride(this, createAttributeOverrideOwner());
+	public OrmAttributeOverride addSpecifiedAttributeOverride(int index) {
+		OrmAttributeOverride attributeOverride = jpaFactory().buildOrmAttributeOverride(this, createAttributeOverrideOwner());
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
 		this.typeMappingResource().getAttributeOverrides().add(index, OrmFactory.eINSTANCE.createAttributeOverrideImpl());
 		this.fireItemAdded(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
 	}
 
-	protected void addSpecifiedAttributeOverride(int index, GenericOrmAttributeOverride attributeOverride) {
+	protected void addSpecifiedAttributeOverride(int index, OrmAttributeOverride attributeOverride) {
 		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
@@ -634,12 +638,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	public void removeSpecifiedAttributeOverride(int index) {
-		GenericOrmAttributeOverride removedAttributeOverride = this.specifiedAttributeOverrides.remove(index);
+		OrmAttributeOverride removedAttributeOverride = this.specifiedAttributeOverrides.remove(index);
 		this.typeMappingResource().getAttributeOverrides().remove(index);
 		fireItemRemoved(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, removedAttributeOverride);
 	}
 	
-	protected void removeSpecifiedAttributeOverride_(GenericOrmAttributeOverride attributeOverride) {
+	protected void removeSpecifiedAttributeOverride_(OrmAttributeOverride attributeOverride) {
 		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
@@ -650,8 +654,8 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 
 	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmAssociationOverride> associationOverrides() {
-		return new CompositeListIterator<GenericOrmAssociationOverride>(specifiedAssociationOverrides(), defaultAssociationOverrides());
+	public ListIterator<OrmAssociationOverride> associationOverrides() {
+		return new CompositeListIterator<OrmAssociationOverride>(specifiedAssociationOverrides(), defaultAssociationOverrides());
 	}
 
 	public int associationOverridesSize() {
@@ -659,8 +663,8 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 
 	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmAssociationOverride> defaultAssociationOverrides() {
-		return new CloneListIterator<GenericOrmAssociationOverride>(this.defaultAssociationOverrides);
+	public ListIterator<OrmAssociationOverride> defaultAssociationOverrides() {
+		return new CloneListIterator<OrmAssociationOverride>(this.defaultAssociationOverrides);
 	}
 	
 	public int defaultAssociationOverridesSize() {
@@ -668,23 +672,23 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmAssociationOverride> specifiedAssociationOverrides() {
-		return new CloneListIterator<GenericOrmAssociationOverride>(this.specifiedAssociationOverrides);
+	public ListIterator<OrmAssociationOverride> specifiedAssociationOverrides() {
+		return new CloneListIterator<OrmAssociationOverride>(this.specifiedAssociationOverrides);
 	}
 
 	public int specifiedAssociationOverridesSize() {
 		return this.specifiedAssociationOverrides.size();
 	}
 
-	public GenericOrmAssociationOverride addSpecifiedAssociationOverride(int index) {
-		GenericOrmAssociationOverride associationOverride = new GenericOrmAssociationOverride(this, createAssociationOverrideOwner());
+	public OrmAssociationOverride addSpecifiedAssociationOverride(int index) {
+		OrmAssociationOverride associationOverride = jpaFactory().buildOrmAssociationOverride(this, createAssociationOverrideOwner());
 		this.specifiedAssociationOverrides.add(index, associationOverride);
 		this.typeMappingResource().getAssociationOverrides().add(index, OrmFactory.eINSTANCE.createAssociationOverride());
 		this.fireItemAdded(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
 		return associationOverride;
 	}
 
-	protected void addSpecifiedAssociationOverride(int index, GenericOrmAssociationOverride associationOverride) {
+	protected void addSpecifiedAssociationOverride(int index, OrmAssociationOverride associationOverride) {
 		addItemToList(index, associationOverride, this.specifiedAssociationOverrides, Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
 	}
 	
@@ -693,12 +697,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	public void removeSpecifiedAssociationOverride(int index) {
-		GenericOrmAssociationOverride removedAssociationOverride = this.specifiedAssociationOverrides.remove(index);
+		OrmAssociationOverride removedAssociationOverride = this.specifiedAssociationOverrides.remove(index);
 		this.typeMappingResource().getAssociationOverrides().remove(index);
 		fireItemRemoved(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, removedAssociationOverride);
 	}
 	
-	protected void removeSpecifiedAssociationOverride_(GenericOrmAssociationOverride associationOverride) {
+	protected void removeSpecifiedAssociationOverride_(OrmAssociationOverride associationOverride) {
 		removeItemFromList(associationOverride, this.specifiedAssociationOverrides, Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
 	}
 	
@@ -1132,11 +1136,11 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	protected void updateSpecifiedSecondaryTables(XmlEntity entity) {
-		ListIterator<GenericOrmSecondaryTable> secondaryTables = specifiedSecondaryTables();
+		ListIterator<OrmSecondaryTable> secondaryTables = specifiedSecondaryTables();
 		ListIterator<XmlSecondaryTable> resourceSecondaryTables = entity.getSecondaryTables().listIterator();
 		
 		while (secondaryTables.hasNext()) {
-			GenericOrmSecondaryTable secondaryTable = secondaryTables.next();
+			OrmSecondaryTable secondaryTable = secondaryTables.next();
 			if (resourceSecondaryTables.hasNext()) {
 				secondaryTable.update(resourceSecondaryTables.next());
 			}
@@ -1152,19 +1156,20 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	//if any secondary-tables are specified in the xml file, then all of the java secondaryTables are overriden
 	protected void updateVirtualSecondaryTables() {
-		ListIterator<GenericOrmSecondaryTable> secondaryTables = virtualSecondaryTables();
+		ListIterator<OrmSecondaryTable> secondaryTables = virtualSecondaryTables();
 		ListIterator<JavaSecondaryTable> javaSecondaryTables = EmptyListIterator.instance();
 		
 		if (javaEntity() != null && !isMetadataComplete() && specifiedSecondaryTablesSize() == 0) {
 			javaSecondaryTables = javaEntity().secondaryTables();
 		}
 		while (secondaryTables.hasNext()) {
-			GenericOrmSecondaryTable virtualSecondaryTable = secondaryTables.next();
+			OrmSecondaryTable virtualSecondaryTable = secondaryTables.next();
 			if (javaSecondaryTables.hasNext()) {
 				JavaSecondaryTable javaSecondaryTable = javaSecondaryTables.next();
-				virtualSecondaryTable.setDefaultName(javaSecondaryTable.getName());
-				virtualSecondaryTable.setDefaultCatalog(javaSecondaryTable.getCatalog());
-				virtualSecondaryTable.setDefaultSchema(javaSecondaryTable.getSchema());
+				//TODO
+				//virtualSecondaryTable.setDefaultName(javaSecondaryTable.getName());
+				//virtualSecondaryTable.setDefaultCatalog(javaSecondaryTable.getCatalog());
+				//virtualSecondaryTable.setDefaultSchema(javaSecondaryTable.getSchema());
 				//TODO what about pkJoinColumns?
 			}
 			else {
@@ -1178,17 +1183,18 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 	}
 
-	protected GenericOrmSecondaryTable createSecondaryTable(XmlSecondaryTable secondaryTable) {
-		GenericOrmSecondaryTable xmlSecondaryTable = new GenericOrmSecondaryTable(this);
-		xmlSecondaryTable.initialize(secondaryTable);
-		return xmlSecondaryTable;
+	protected OrmSecondaryTable createSecondaryTable(XmlSecondaryTable secondaryTable) {
+		OrmSecondaryTable ormSecondaryTable = jpaFactory().buildOrmSecondaryTable(this);
+		ormSecondaryTable.initialize(secondaryTable);
+		return ormSecondaryTable;
 	}
 	
-	protected GenericOrmSecondaryTable createVirtualSecondaryTable(JavaSecondaryTable javaSecondaryTable) {
-		GenericOrmSecondaryTable virutalSecondaryTable = new GenericOrmSecondaryTable(this);
-		virutalSecondaryTable.setDefaultName(javaSecondaryTable.getName());
-		virutalSecondaryTable.setDefaultCatalog(javaSecondaryTable.getCatalog());
-		virutalSecondaryTable.setDefaultSchema(javaSecondaryTable.getSchema());		
+	protected OrmSecondaryTable createVirtualSecondaryTable(JavaSecondaryTable javaSecondaryTable) {
+		OrmSecondaryTable virutalSecondaryTable = jpaFactory().buildOrmSecondaryTable(this);
+		//TODO
+//		virutalSecondaryTable.setDefaultName(javaSecondaryTable.getName());
+//		virutalSecondaryTable.setDefaultCatalog(javaSecondaryTable.getCatalog());
+//		virutalSecondaryTable.setDefaultSchema(javaSecondaryTable.getSchema());		
 		//TODO what about primaryKeyJoinColumns, would you want to see those in the orm.xml ui??
 		return virutalSecondaryTable;
 	}
@@ -1247,11 +1253,11 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	protected void updateSpecifiedPrimaryKeyJoinColumns(XmlEntity entity) {
-		ListIterator<GenericOrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = specifiedPrimaryKeyJoinColumns();
+		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = specifiedPrimaryKeyJoinColumns();
 		ListIterator<XmlPrimaryKeyJoinColumn> resourcePrimaryKeyJoinColumns = entity.getPrimaryKeyJoinColumns().listIterator();
 		
 		while (primaryKeyJoinColumns.hasNext()) {
-			GenericOrmPrimaryKeyJoinColumn primaryKeyJoinColumn = primaryKeyJoinColumns.next();
+			OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = primaryKeyJoinColumns.next();
 			if (resourcePrimaryKeyJoinColumns.hasNext()) {
 				primaryKeyJoinColumn.update(resourcePrimaryKeyJoinColumns.next());
 			}
@@ -1265,18 +1271,18 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 	}
 	
-	protected GenericOrmPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn primaryKeyJoinColumn) {
-		GenericOrmPrimaryKeyJoinColumn xmlPrimaryKeyJoinColumn = new GenericOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
-		xmlPrimaryKeyJoinColumn.initialize(primaryKeyJoinColumn);
-		return xmlPrimaryKeyJoinColumn;
+	protected OrmPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn primaryKeyJoinColumn) {
+		OrmPrimaryKeyJoinColumn ormPrimaryKeyJoinColumn = jpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
+		ormPrimaryKeyJoinColumn.initialize(primaryKeyJoinColumn);
+		return ormPrimaryKeyJoinColumn;
 	}
 
 	protected void updateSpecifiedAttributeOverrides(XmlEntity entity) {
-		ListIterator<GenericOrmAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
+		ListIterator<OrmAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
 		ListIterator<XmlAttributeOverride> resourceAttributeOverrides = entity.getAttributeOverrides().listIterator();
 		
 		while (attributeOverrides.hasNext()) {
-			GenericOrmAttributeOverride attributeOverride = attributeOverrides.next();
+			OrmAttributeOverride attributeOverride = attributeOverrides.next();
 			if (resourceAttributeOverrides.hasNext()) {
 				attributeOverride.update(resourceAttributeOverrides.next());
 			}
@@ -1290,10 +1296,10 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 	}
 	
-	protected GenericOrmAttributeOverride createAttributeOverride(XmlAttributeOverride attributeOverride) {
-		GenericOrmAttributeOverride xmlAttributeOverride = new GenericOrmAttributeOverride(this, createAttributeOverrideOwner());
-		xmlAttributeOverride.initialize(attributeOverride);
-		return xmlAttributeOverride;
+	protected OrmAttributeOverride createAttributeOverride(XmlAttributeOverride attributeOverride) {
+		OrmAttributeOverride ormAttributeOverride = jpaFactory().buildOrmAttributeOverride(this, createAttributeOverrideOwner());
+		ormAttributeOverride.initialize(attributeOverride);
+		return ormAttributeOverride;
 	}
 
 	protected AttributeOverride.Owner createAttributeOverrideOwner() {
@@ -1301,11 +1307,11 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 
 	protected void updateSpecifiedAssociationOverrides(XmlEntity entity) {
-		ListIterator<GenericOrmAssociationOverride> associationOverrides = specifiedAssociationOverrides();
+		ListIterator<OrmAssociationOverride> associationOverrides = specifiedAssociationOverrides();
 		ListIterator<XmlAssociationOverride> resourceAssociationOverrides = entity.getAssociationOverrides().listIterator();
 		
 		while (associationOverrides.hasNext()) {
-			GenericOrmAssociationOverride associationOverride = associationOverrides.next();
+			OrmAssociationOverride associationOverride = associationOverrides.next();
 			if (resourceAssociationOverrides.hasNext()) {
 				associationOverride.update(resourceAssociationOverrides.next());
 			}
@@ -1319,10 +1325,10 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 	}
 	
-	protected GenericOrmAssociationOverride createAssociationOverride(XmlAssociationOverride associationOverride) {
-		GenericOrmAssociationOverride xmlAssociationOverride = new GenericOrmAssociationOverride(this, createAssociationOverrideOwner());
-		xmlAssociationOverride.initialize(associationOverride);
-		return xmlAssociationOverride;
+	protected OrmAssociationOverride createAssociationOverride(XmlAssociationOverride associationOverride) {
+		OrmAssociationOverride ormAssociationOverride = jpaFactory().buildOrmAssociationOverride(this, createAssociationOverrideOwner());
+		ormAssociationOverride.initialize(associationOverride);
+		return ormAssociationOverride;
 	}
 
 	protected AssociationOverride.Owner createAssociationOverrideOwner() {
@@ -1407,15 +1413,15 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		addIdMessages(messages, astRoot);
 		
 		
-		for (GenericOrmSecondaryTable context : specifiedSecondaryTables) {
+		for (OrmSecondaryTable context : specifiedSecondaryTables) {
 			context.addToMessages(messages, astRoot);
 		}
 
-		for (Iterator<GenericOrmAttributeOverride> stream = this.attributeOverrides(); stream.hasNext();) {
+		for (Iterator<OrmAttributeOverride> stream = this.attributeOverrides(); stream.hasNext();) {
 			stream.next().addToMessages(messages, astRoot);
 		}
 		
-		for (Iterator<GenericOrmAssociationOverride> stream = this.associationOverrides(); stream.hasNext();) {
+		for (Iterator<OrmAssociationOverride> stream = this.associationOverrides(); stream.hasNext();) {
 			stream.next().addToMessages(messages, astRoot);
 		}
 	

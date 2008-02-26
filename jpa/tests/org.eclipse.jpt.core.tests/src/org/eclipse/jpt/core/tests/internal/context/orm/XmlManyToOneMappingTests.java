@@ -16,9 +16,9 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.FetchType;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinColumn;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmManyToOneMapping;
 import org.eclipse.jpt.core.internal.context.orm.OrmCascade;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -311,14 +311,14 @@ public class XmlManyToOneMappingTests extends ContextModelTestCase
 		GenericOrmManyToOneMapping xmlManyToOneMapping = (GenericOrmManyToOneMapping) ormPersistentAttribute.getMapping();
 		XmlManyToOne manyToOneResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
 		
-		GenericOrmJoinColumn joinColumn = xmlManyToOneMapping.addSpecifiedJoinColumn(0);
+		OrmJoinColumn joinColumn = xmlManyToOneMapping.addSpecifiedJoinColumn(0);
 		ormResource().save(null);
 		joinColumn.setSpecifiedName("FOO");
 		ormResource().save(null);
 				
 		assertEquals("FOO", manyToOneResource.getJoinColumns().get(0).getName());
 		
-		GenericOrmJoinColumn joinColumn2 = xmlManyToOneMapping.addSpecifiedJoinColumn(0);
+		OrmJoinColumn joinColumn2 = xmlManyToOneMapping.addSpecifiedJoinColumn(0);
 		ormResource().save(null);
 		joinColumn2.setSpecifiedName("BAR");
 		ormResource().save(null);
@@ -326,7 +326,7 @@ public class XmlManyToOneMappingTests extends ContextModelTestCase
 		assertEquals("BAR", manyToOneResource.getJoinColumns().get(0).getName());
 		assertEquals("FOO", manyToOneResource.getJoinColumns().get(1).getName());
 		
-		GenericOrmJoinColumn joinColumn3 = xmlManyToOneMapping.addSpecifiedJoinColumn(1);
+		OrmJoinColumn joinColumn3 = xmlManyToOneMapping.addSpecifiedJoinColumn(1);
 		ormResource().save(null);
 		joinColumn3.setSpecifiedName("BAZ");
 		ormResource().save(null);
@@ -335,7 +335,7 @@ public class XmlManyToOneMappingTests extends ContextModelTestCase
 		assertEquals("BAZ", manyToOneResource.getJoinColumns().get(1).getName());
 		assertEquals("FOO", manyToOneResource.getJoinColumns().get(2).getName());
 		
-		ListIterator<GenericOrmJoinColumn> joinColumns = xmlManyToOneMapping.specifiedJoinColumns();
+		ListIterator<OrmJoinColumn> joinColumns = xmlManyToOneMapping.specifiedJoinColumns();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
@@ -385,7 +385,7 @@ public class XmlManyToOneMappingTests extends ContextModelTestCase
 		
 		
 		xmlManyToOneMapping.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<GenericOrmJoinColumn> joinColumns = xmlManyToOneMapping.specifiedJoinColumns();
+		ListIterator<OrmJoinColumn> joinColumns = xmlManyToOneMapping.specifiedJoinColumns();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -457,15 +457,15 @@ public class XmlManyToOneMappingTests extends ContextModelTestCase
 		assertEquals(Boolean.FALSE, xmlManyToOneMapping.getSpecifiedOptional());
 		assertEquals("Address", xmlManyToOneMapping.getSpecifiedTargetEntity());
 
-		GenericOrmJoinColumn xmlJoinColumn = xmlManyToOneMapping.specifiedJoinColumns().next();
-		assertEquals("MY_COLUMN", xmlJoinColumn.getSpecifiedName());
-		assertEquals("MY_REFERENCED_COLUMN", xmlJoinColumn.getSpecifiedReferencedColumnName());
-		assertEquals(Boolean.TRUE, xmlJoinColumn.getSpecifiedUnique());
-		assertEquals(Boolean.FALSE, xmlJoinColumn.getSpecifiedNullable());
-		assertEquals(Boolean.FALSE, xmlJoinColumn.getSpecifiedInsertable());
-		assertEquals(Boolean.FALSE, xmlJoinColumn.getSpecifiedUpdatable());
-		assertEquals("COLUMN_DEFINITION", xmlJoinColumn.getColumnDefinition());
-		assertEquals("MY_TABLE", xmlJoinColumn.getSpecifiedTable());
+		OrmJoinColumn ormJoinColumn = xmlManyToOneMapping.specifiedJoinColumns().next();
+		assertEquals("MY_COLUMN", ormJoinColumn.getSpecifiedName());
+		assertEquals("MY_REFERENCED_COLUMN", ormJoinColumn.getSpecifiedReferencedColumnName());
+		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUnique());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedNullable());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUpdatable());
+		assertEquals("COLUMN_DEFINITION", ormJoinColumn.getColumnDefinition());
+		assertEquals("MY_TABLE", ormJoinColumn.getSpecifiedTable());
 
 		OrmCascade xmlCascade = xmlManyToOneMapping.getCascade();
 		assertTrue(xmlCascade.isAll());
@@ -493,16 +493,16 @@ public class XmlManyToOneMappingTests extends ContextModelTestCase
 		assertEquals("test.Address", xmlManyToOneMapping.getSpecifiedTargetEntity());
 		
 		//TODO default join columns in xml one-to-one
-//		XmlJoinColumn xmlJoinColumn = xmlManyToOneMapping.specifiedJoinColumns().next();
+//		XmlJoinColumn ormJoinColumn = xmlManyToOneMapping.specifiedJoinColumns().next();
 //		//TODO java default columns name in JavaSingleRelationshipMapping.JoinColumnOwner
-//		//assertEquals("address", xmlJoinColumn.getSpecifiedName());
-//		//assertEquals("address", xmlJoinColumn.getSpecifiedReferencedColumnName());
-//		assertEquals(Boolean.FALSE, xmlJoinColumn.getSpecifiedUnique());
-//		assertEquals(Boolean.TRUE, xmlJoinColumn.getSpecifiedNullable());
-//		assertEquals(Boolean.TRUE, xmlJoinColumn.getSpecifiedInsertable());
-//		assertEquals(Boolean.TRUE, xmlJoinColumn.getSpecifiedUpdatable());
-//		assertNull(xmlJoinColumn.getColumnDefinition());
-//		assertEquals(TYPE_NAME, xmlJoinColumn.getSpecifiedTable());
+//		//assertEquals("address", ormJoinColumn.getSpecifiedName());
+//		//assertEquals("address", ormJoinColumn.getSpecifiedReferencedColumnName());
+//		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUnique());
+//		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedNullable());
+//		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedInsertable());
+//		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUpdatable());
+//		assertNull(ormJoinColumn.getColumnDefinition());
+//		assertEquals(TYPE_NAME, ormJoinColumn.getSpecifiedTable());
 
 		OrmCascade xmlCascade = xmlManyToOneMapping.getCascade();
 		assertFalse(xmlCascade.isAll());
@@ -537,24 +537,24 @@ public class XmlManyToOneMappingTests extends ContextModelTestCase
 		assertFalse(xmlManyToOneMapping.specifiedJoinColumns().hasNext());
 		
 		//TODO default join columns for specified xmlManyToOne mapping
-//		XmlJoinColumn xmlJoinColumn = xmlManyToOneMapping.defaultJoinColumns().next();
-//		assertNull(xmlJoinColumn.getSpecifiedName());
-//		assertNull(xmlJoinColumn.getSpecifiedReferencedColumnName());
-//		assertNull(xmlJoinColumn.getSpecifiedUnique());
-//		assertNull(xmlJoinColumn.getSpecifiedNullable());
-//		assertNull(xmlJoinColumn.getSpecifiedInsertable());
-//		assertNull(xmlJoinColumn.getSpecifiedUpdatable());
-//		assertNull(xmlJoinColumn.getColumnDefinition());
-//		assertNull(xmlJoinColumn.getSpecifiedTable());
+//		XmlJoinColumn ormJoinColumn = xmlManyToOneMapping.defaultJoinColumns().next();
+//		assertNull(ormJoinColumn.getSpecifiedName());
+//		assertNull(ormJoinColumn.getSpecifiedReferencedColumnName());
+//		assertNull(ormJoinColumn.getSpecifiedUnique());
+//		assertNull(ormJoinColumn.getSpecifiedNullable());
+//		assertNull(ormJoinColumn.getSpecifiedInsertable());
+//		assertNull(ormJoinColumn.getSpecifiedUpdatable());
+//		assertNull(ormJoinColumn.getColumnDefinition());
+//		assertNull(ormJoinColumn.getSpecifiedTable());
 //		
-//		assertEquals("address", xmlJoinColumn.getDefaultName());
-//		assertEquals("address", xmlJoinColumn.getDefaultReferencedColumnName());
-//		assertEquals(Boolean.FALSE, xmlJoinColumn.getDefaultUnique());
-//		assertEquals(Boolean.TRUE, xmlJoinColumn.getDefaultNullable());
-//		assertEquals(Boolean.TRUE, xmlJoinColumn.getDefaultInsertable());
-//		assertEquals(Boolean.TRUE, xmlJoinColumn.getDefaultUpdatable());
-//		assertEquals(null, xmlJoinColumn.getColumnDefinition());
-//		assertEquals(TYPE_NAME, xmlJoinColumn.getDefaultTable());
+//		assertEquals("address", ormJoinColumn.getDefaultName());
+//		assertEquals("address", ormJoinColumn.getDefaultReferencedColumnName());
+//		assertEquals(Boolean.FALSE, ormJoinColumn.getDefaultUnique());
+//		assertEquals(Boolean.TRUE, ormJoinColumn.getDefaultNullable());
+//		assertEquals(Boolean.TRUE, ormJoinColumn.getDefaultInsertable());
+//		assertEquals(Boolean.TRUE, ormJoinColumn.getDefaultUpdatable());
+//		assertEquals(null, ormJoinColumn.getColumnDefinition());
+//		assertEquals(TYPE_NAME, ormJoinColumn.getDefaultTable());
 
 		OrmCascade xmlCascade = xmlManyToOneMapping.getCascade();
 		assertFalse(xmlCascade.isAll());

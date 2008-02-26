@@ -64,8 +64,15 @@ import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
+import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
+import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
@@ -111,12 +118,20 @@ import org.eclipse.jpt.core.internal.context.java.GenericJavaTableGenerator;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaTransientMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaVersionMapping;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericEntityMappings;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmAssociationOverride;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmAttributeOverride;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinColumn;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinTable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappedSuperclass;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmPersistentType;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmSecondaryTable;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmTable;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.orm.OrmXmlImpl;
@@ -129,6 +144,7 @@ import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
 import org.eclipse.jpt.core.internal.jdtutility.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.resource.orm.OrmResourceModel;
+import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResourceModel;
 
 public class GenericJpaFactory implements JpaFactory
@@ -423,5 +439,33 @@ public class GenericJpaFactory implements JpaFactory
 	
 	public OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, String mappingKey) {
 		return new GenericOrmPersistentAttribute(parent, mappingKey);
+	}
+	
+	public OrmTable buildOrmTable(GenericOrmEntity parent) {
+		return new GenericOrmTable(parent);
+	}
+	
+	public OrmSecondaryTable buildOrmSecondaryTable(GenericOrmEntity parent) {
+		return new GenericOrmSecondaryTable(parent);
+	}
+	
+	public OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(JpaContextNode parent, AbstractJoinColumn.Owner owner) {
+		return new GenericOrmPrimaryKeyJoinColumn(parent, owner);
+	}
+	
+	public OrmJoinTable buildOrmJoinTable(AbstractOrmRelationshipMapping<? extends XmlRelationshipMapping> parent) {
+		return new GenericOrmJoinTable(parent);
+	}
+	
+	public OrmJoinColumn buildOrmJoinColumn(JpaContextNode parent, JoinColumn.Owner owner) {
+		return new GenericOrmJoinColumn(parent, owner);
+	}
+	
+	public OrmAttributeOverride buildOrmAttributeOverride(JpaContextNode parent, AttributeOverride.Owner owner) {
+		return new GenericOrmAttributeOverride(parent, owner);
+	}
+	
+	public OrmAssociationOverride buildOrmAssociationOverride(JpaContextNode parent, AssociationOverride.Owner owner) {
+		return new GenericOrmAssociationOverride(parent, owner);
 	}
 }

@@ -22,6 +22,8 @@ import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
@@ -30,25 +32,25 @@ import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class GenericOrmAssociationOverride extends AbstractJpaContextNode
-	implements AssociationOverride
+	implements AssociationOverride, OrmAssociationOverride
 {
 
 	protected String name;
 
-	protected final List<GenericOrmJoinColumn> specifiedJoinColumns;
+	protected final List<OrmJoinColumn> specifiedJoinColumns;
 
-	protected final List<GenericOrmJoinColumn> defaultJoinColumns;
+	protected final List<OrmJoinColumn> defaultJoinColumns;
 
 	private final AssociationOverride.Owner owner;
 
 	protected XmlAssociationOverride associationOverride;
 
 
-	protected GenericOrmAssociationOverride(JpaContextNode parent, AssociationOverride.Owner owner) {
+	public GenericOrmAssociationOverride(JpaContextNode parent, AssociationOverride.Owner owner) {
 		super(parent);
 		this.owner = owner;
-		this.specifiedJoinColumns = new ArrayList<GenericOrmJoinColumn>();
-		this.defaultJoinColumns = new ArrayList<GenericOrmJoinColumn>();
+		this.specifiedJoinColumns = new ArrayList<OrmJoinColumn>();
+		this.defaultJoinColumns = new ArrayList<OrmJoinColumn>();
 	}
 	
 	public Owner owner() {
@@ -68,8 +70,8 @@ public class GenericOrmAssociationOverride extends AbstractJpaContextNode
 		firePropertyChanged(BaseOverride.NAME_PROPERTY, oldName, newName);
 	}
 
-	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmJoinColumn> joinColumns() {
+
+	public ListIterator<OrmJoinColumn> joinColumns() {
 		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumns() : this.specifiedJoinColumns();
 	}
 	
@@ -77,26 +79,24 @@ public class GenericOrmAssociationOverride extends AbstractJpaContextNode
 		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumnsSize() : this.specifiedJoinColumnsSize();
 	}
 	
-	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmJoinColumn> defaultJoinColumns() {
-		return new CloneListIterator<GenericOrmJoinColumn>(this.defaultJoinColumns);
+	public ListIterator<OrmJoinColumn> defaultJoinColumns() {
+		return new CloneListIterator<OrmJoinColumn>(this.defaultJoinColumns);
 	}
 	
 	public int defaultJoinColumnsSize() {
 		return this.defaultJoinColumns.size();
 	}
 	
-	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmJoinColumn> specifiedJoinColumns() {
-		return new CloneListIterator<GenericOrmJoinColumn>(this.specifiedJoinColumns);
+	public ListIterator<OrmJoinColumn> specifiedJoinColumns() {
+		return new CloneListIterator<OrmJoinColumn>(this.specifiedJoinColumns);
 	}
 	
 	public int specifiedJoinColumnsSize() {
 		return this.specifiedJoinColumns.size();
 	}
 	
-	public GenericOrmJoinColumn addSpecifiedJoinColumn(int index) {
-		GenericOrmJoinColumn joinColumn = new GenericOrmJoinColumn(this, createJoinColumnOwner());
+	public OrmJoinColumn addSpecifiedJoinColumn(int index) {
+		OrmJoinColumn joinColumn = jpaFactory().buildOrmJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
 		this.associationOverride.getJoinColumns().add(index, OrmFactory.eINSTANCE.createJoinColumnImpl());
 		this.fireItemAdded(AssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
@@ -107,17 +107,17 @@ public class GenericOrmAssociationOverride extends AbstractJpaContextNode
 		return new JoinColumnOwner();
 	}
 
-	protected void addSpecifiedJoinColumn(int index, GenericOrmJoinColumn joinColumn) {
+	protected void addSpecifiedJoinColumn(int index, OrmJoinColumn joinColumn) {
 		addItemToList(index, joinColumn, this.specifiedJoinColumns, AssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST);
 	}
 	
 	public void removeSpecifiedJoinColumn(int index) {
-		GenericOrmJoinColumn removedJoinColumn = this.specifiedJoinColumns.remove(index);
+		OrmJoinColumn removedJoinColumn = this.specifiedJoinColumns.remove(index);
 		this.associationOverride.getJoinColumns().remove(index);
 		fireItemRemoved(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 	}
 
-	protected void removeSpecifiedJoinColumn(GenericOrmJoinColumn joinColumn) {
+	protected void removeSpecifiedJoinColumn(OrmJoinColumn joinColumn) {
 		removeItemFromList(joinColumn, this.specifiedJoinColumns, AssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST);
 	}
 	
@@ -133,7 +133,6 @@ public class GenericOrmAssociationOverride extends AbstractJpaContextNode
 	public boolean isVirtual() {
 		return owner().isVirtual(this);
 	}
-	
 	
 	public void initialize(XmlAssociationOverride associationOverride) {
 		this.associationOverride = associationOverride;
@@ -154,11 +153,11 @@ public class GenericOrmAssociationOverride extends AbstractJpaContextNode
 	}	
 	
 	protected void updateSpecifiedJoinColumns(XmlAssociationOverride associationOverride) {
-		ListIterator<GenericOrmJoinColumn> joinColumns = specifiedJoinColumns();
+		ListIterator<OrmJoinColumn> joinColumns = specifiedJoinColumns();
 		ListIterator<XmlJoinColumn> resourceJoinColumns = associationOverride.getJoinColumns().listIterator();
 		
 		while (joinColumns.hasNext()) {
-			GenericOrmJoinColumn joinColumn = joinColumns.next();
+			OrmJoinColumn joinColumn = joinColumns.next();
 			if (resourceJoinColumns.hasNext()) {
 				joinColumn.update(resourceJoinColumns.next());
 			}
@@ -172,13 +171,13 @@ public class GenericOrmAssociationOverride extends AbstractJpaContextNode
 		}
 	}
 	
-	protected GenericOrmJoinColumn createJoinColumn(XmlJoinColumn joinColumn) {
-		GenericOrmJoinColumn xmlJoinColumn = new GenericOrmJoinColumn(this, new JoinColumnOwner());
-		xmlJoinColumn.initialize(joinColumn);
-		return xmlJoinColumn;
+	protected OrmJoinColumn createJoinColumn(XmlJoinColumn joinColumn) {
+		OrmJoinColumn ormJoinColumn = jpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner());
+		ormJoinColumn.initialize(joinColumn);
+		return ormJoinColumn;
 	}
 
-	public class JoinColumnOwner implements JoinColumn.Owner
+	class JoinColumnOwner implements JoinColumn.Owner
 	{
 
 		public JoinColumnOwner() {

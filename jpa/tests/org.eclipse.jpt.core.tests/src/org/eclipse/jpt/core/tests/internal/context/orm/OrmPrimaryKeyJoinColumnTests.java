@@ -15,8 +15,8 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
@@ -26,9 +26,9 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class XmlPrimaryKeyJoinColumnTests extends ContextModelTestCase
+public class OrmPrimaryKeyJoinColumnTests extends ContextModelTestCase
 {
-	public XmlPrimaryKeyJoinColumnTests(String name) {
+	public OrmPrimaryKeyJoinColumnTests(String name) {
 		super(name);
 	}
 	
@@ -90,28 +90,28 @@ public class XmlPrimaryKeyJoinColumnTests extends ContextModelTestCase
 	public void testUpdateSpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmPrimaryKeyJoinColumn xmlPrimaryKeyJoinColumn = xmlEntity.addSpecifiedPrimaryKeyJoinColumn(0);
+		OrmPrimaryKeyJoinColumn ormPrimaryKeyJoinColumn = xmlEntity.addSpecifiedPrimaryKeyJoinColumn(0);
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		XmlPrimaryKeyJoinColumn primaryKeyJoinColumnResource = entityResource.getPrimaryKeyJoinColumns().get(0);
 		
-		assertNull(xmlPrimaryKeyJoinColumn.getSpecifiedName());
+		assertNull(ormPrimaryKeyJoinColumn.getSpecifiedName());
 		assertNull(primaryKeyJoinColumnResource.getName());
 		
 		//set name in the resource model, verify context model updated
 		primaryKeyJoinColumnResource.setName("FOO");
 		ormResource().save(null);
-		assertEquals("FOO", xmlPrimaryKeyJoinColumn.getSpecifiedName());
+		assertEquals("FOO", ormPrimaryKeyJoinColumn.getSpecifiedName());
 		assertEquals("FOO", primaryKeyJoinColumnResource.getName());
 	
 		//set name to null in the resource model
 		primaryKeyJoinColumnResource.setName(null);
 		ormResource().save(null);
-		assertNull(xmlPrimaryKeyJoinColumn.getSpecifiedName());
+		assertNull(ormPrimaryKeyJoinColumn.getSpecifiedName());
 		assertNull(primaryKeyJoinColumnResource.getName());
 		
 		primaryKeyJoinColumnResource.setName("FOO");
-		assertEquals("FOO", xmlPrimaryKeyJoinColumn.getSpecifiedName());
+		assertEquals("FOO", ormPrimaryKeyJoinColumn.getSpecifiedName());
 		assertEquals("FOO", primaryKeyJoinColumnResource.getName());
 
 		entityResource.getPrimaryKeyJoinColumns().remove(0);
@@ -123,49 +123,49 @@ public class XmlPrimaryKeyJoinColumnTests extends ContextModelTestCase
 	public void testModifySpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmPrimaryKeyJoinColumn xmlPrimaryKeyJoinColumn = xmlEntity.addSpecifiedPrimaryKeyJoinColumn(0);
+		OrmPrimaryKeyJoinColumn ormPrimaryKeyJoinColumn = xmlEntity.addSpecifiedPrimaryKeyJoinColumn(0);
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		XmlPrimaryKeyJoinColumn primaryKeyJoinColumnResource = entityResource.getPrimaryKeyJoinColumns().get(0);
 
-		assertNull(xmlPrimaryKeyJoinColumn.getSpecifiedName());
+		assertNull(ormPrimaryKeyJoinColumn.getSpecifiedName());
 		assertNull(primaryKeyJoinColumnResource.getName());
 		
 		//set name in the context model, verify resource model modified
-		xmlPrimaryKeyJoinColumn.setSpecifiedName("foo");
-		assertEquals("foo", xmlPrimaryKeyJoinColumn.getSpecifiedName());
+		ormPrimaryKeyJoinColumn.setSpecifiedName("foo");
+		assertEquals("foo", ormPrimaryKeyJoinColumn.getSpecifiedName());
 		assertEquals("foo", primaryKeyJoinColumnResource.getName());
 		
 		//set name to null in the context model
-		xmlPrimaryKeyJoinColumn.setSpecifiedName(null);
-		assertNull(xmlPrimaryKeyJoinColumn.getSpecifiedName());
+		ormPrimaryKeyJoinColumn.setSpecifiedName(null);
+		assertNull(ormPrimaryKeyJoinColumn.getSpecifiedName());
 		assertNull(entityResource.getPrimaryKeyJoinColumns().get(0).getName());
 	}
 	
 	public void testUpdateSpecifiedReferencedColumnName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmPrimaryKeyJoinColumn xmlPrimaryKeyJoinColumn = xmlEntity.addSpecifiedPrimaryKeyJoinColumn(0);
+		OrmPrimaryKeyJoinColumn ormPrimaryKeyJoinColumn = xmlEntity.addSpecifiedPrimaryKeyJoinColumn(0);
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		XmlPrimaryKeyJoinColumn primaryKeyJoinColumnResource = entityResource.getPrimaryKeyJoinColumns().get(0);
 		
-		assertNull(xmlPrimaryKeyJoinColumn.getSpecifiedReferencedColumnName());
+		assertNull(ormPrimaryKeyJoinColumn.getSpecifiedReferencedColumnName());
 		assertNull(primaryKeyJoinColumnResource.getReferencedColumnName());
 		
 		//set name in the resource model, verify context model updated
 		primaryKeyJoinColumnResource.setReferencedColumnName("FOO");
 		ormResource().save(null);
-		assertEquals("FOO", xmlPrimaryKeyJoinColumn.getSpecifiedReferencedColumnName());
+		assertEquals("FOO", ormPrimaryKeyJoinColumn.getSpecifiedReferencedColumnName());
 		assertEquals("FOO", primaryKeyJoinColumnResource.getReferencedColumnName());
 	
 		//set name to null in the resource model
 		primaryKeyJoinColumnResource.setReferencedColumnName(null);
-		assertNull(xmlPrimaryKeyJoinColumn.getSpecifiedReferencedColumnName());
+		assertNull(ormPrimaryKeyJoinColumn.getSpecifiedReferencedColumnName());
 		assertNull(primaryKeyJoinColumnResource.getReferencedColumnName());
 		
 		primaryKeyJoinColumnResource.setReferencedColumnName("FOO");
-		assertEquals("FOO", xmlPrimaryKeyJoinColumn.getSpecifiedReferencedColumnName());
+		assertEquals("FOO", ormPrimaryKeyJoinColumn.getSpecifiedReferencedColumnName());
 		assertEquals("FOO", primaryKeyJoinColumnResource.getReferencedColumnName());
 
 		entityResource.getPrimaryKeyJoinColumns().remove(0);
@@ -176,22 +176,22 @@ public class XmlPrimaryKeyJoinColumnTests extends ContextModelTestCase
 	public void testModifySpecifiedReferencedColumnName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmPrimaryKeyJoinColumn xmlPrimaryKeyJoinColumn = xmlEntity.addSpecifiedPrimaryKeyJoinColumn(0);
+		OrmPrimaryKeyJoinColumn ormPrimaryKeyJoinColumn = xmlEntity.addSpecifiedPrimaryKeyJoinColumn(0);
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		XmlPrimaryKeyJoinColumn primaryKeyJoinColumnResource = entityResource.getPrimaryKeyJoinColumns().get(0);
 
-		assertNull(xmlPrimaryKeyJoinColumn.getSpecifiedReferencedColumnName());
+		assertNull(ormPrimaryKeyJoinColumn.getSpecifiedReferencedColumnName());
 		assertNull(primaryKeyJoinColumnResource.getReferencedColumnName());
 		
 		//set name in the context model, verify resource model modified
-		xmlPrimaryKeyJoinColumn.setSpecifiedReferencedColumnName("foo");
-		assertEquals("foo", xmlPrimaryKeyJoinColumn.getSpecifiedReferencedColumnName());
+		ormPrimaryKeyJoinColumn.setSpecifiedReferencedColumnName("foo");
+		assertEquals("foo", ormPrimaryKeyJoinColumn.getSpecifiedReferencedColumnName());
 		assertEquals("foo", primaryKeyJoinColumnResource.getReferencedColumnName());
 		
 		//set name to null in the context model
-		xmlPrimaryKeyJoinColumn.setSpecifiedReferencedColumnName(null);
-		assertNull(xmlPrimaryKeyJoinColumn.getSpecifiedReferencedColumnName());
+		ormPrimaryKeyJoinColumn.setSpecifiedReferencedColumnName(null);
+		assertNull(ormPrimaryKeyJoinColumn.getSpecifiedReferencedColumnName());
 		assertNull(entityResource.getPrimaryKeyJoinColumns().get(0).getReferencedColumnName());
 	}
 
@@ -255,26 +255,26 @@ public class XmlPrimaryKeyJoinColumnTests extends ContextModelTestCase
 	public void testUpdateSpecifiedColumnDefinition() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmPrimaryKeyJoinColumn xmlPrimaryKeyJoinColumn = xmlEntity.addSpecifiedPrimaryKeyJoinColumn(0);
+		OrmPrimaryKeyJoinColumn ormPrimaryKeyJoinColumn = xmlEntity.addSpecifiedPrimaryKeyJoinColumn(0);
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		XmlPrimaryKeyJoinColumn primaryKeyJoinColumnResource = entityResource.getPrimaryKeyJoinColumns().get(0);
 		
-		assertNull(xmlPrimaryKeyJoinColumn.getColumnDefinition());
+		assertNull(ormPrimaryKeyJoinColumn.getColumnDefinition());
 		assertNull(primaryKeyJoinColumnResource.getColumnDefinition());
 		
 		//set name in the resource model, verify context model updated
 		primaryKeyJoinColumnResource.setColumnDefinition("FOO");
-		assertEquals("FOO", xmlPrimaryKeyJoinColumn.getColumnDefinition());
+		assertEquals("FOO", ormPrimaryKeyJoinColumn.getColumnDefinition());
 		assertEquals("FOO", primaryKeyJoinColumnResource.getColumnDefinition());
 	
 		//set name to null in the resource model
 		primaryKeyJoinColumnResource.setColumnDefinition(null);
-		assertNull(xmlPrimaryKeyJoinColumn.getColumnDefinition());
+		assertNull(ormPrimaryKeyJoinColumn.getColumnDefinition());
 		assertNull(primaryKeyJoinColumnResource.getColumnDefinition());
 		
 		primaryKeyJoinColumnResource.setColumnDefinition("FOO");
-		assertEquals("FOO", xmlPrimaryKeyJoinColumn.getColumnDefinition());
+		assertEquals("FOO", ormPrimaryKeyJoinColumn.getColumnDefinition());
 		assertEquals("FOO", primaryKeyJoinColumnResource.getColumnDefinition());
 
 		entityResource.getPrimaryKeyJoinColumns().remove(0);
@@ -285,22 +285,22 @@ public class XmlPrimaryKeyJoinColumnTests extends ContextModelTestCase
 	public void testModifySpecifiedColumnDefinition() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmPrimaryKeyJoinColumn xmlPrimaryKeyJoinColumn = xmlEntity.addSpecifiedPrimaryKeyJoinColumn(0);
+		OrmPrimaryKeyJoinColumn ormPrimaryKeyJoinColumn = xmlEntity.addSpecifiedPrimaryKeyJoinColumn(0);
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		XmlPrimaryKeyJoinColumn primaryKeyJoinColumnResource = entityResource.getPrimaryKeyJoinColumns().get(0);
 
-		assertNull(xmlPrimaryKeyJoinColumn.getColumnDefinition());
+		assertNull(ormPrimaryKeyJoinColumn.getColumnDefinition());
 		assertNull(primaryKeyJoinColumnResource.getColumnDefinition());
 		
 		//set name in the context model, verify resource model modified
-		xmlPrimaryKeyJoinColumn.setColumnDefinition("foo");
-		assertEquals("foo", xmlPrimaryKeyJoinColumn.getColumnDefinition());
+		ormPrimaryKeyJoinColumn.setColumnDefinition("foo");
+		assertEquals("foo", ormPrimaryKeyJoinColumn.getColumnDefinition());
 		assertEquals("foo", primaryKeyJoinColumnResource.getColumnDefinition());
 		
 		//set name to null in the context model
-		xmlPrimaryKeyJoinColumn.setColumnDefinition(null);
-		assertNull(xmlPrimaryKeyJoinColumn.getColumnDefinition());
+		ormPrimaryKeyJoinColumn.setColumnDefinition(null);
+		assertNull(ormPrimaryKeyJoinColumn.getColumnDefinition());
 		assertNull(entityResource.getPrimaryKeyJoinColumns().get(0).getColumnDefinition());
 	}
 	

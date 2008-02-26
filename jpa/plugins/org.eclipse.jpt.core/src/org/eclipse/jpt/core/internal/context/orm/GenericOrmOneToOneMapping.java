@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.OneToOneMapping;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -124,20 +125,20 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public ListIterator<GenericOrmJoinColumn> joinColumns() {
+	public ListIterator<OrmJoinColumn> joinColumns() {
 		return super.joinColumns();
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public ListIterator<GenericOrmJoinColumn> specifiedJoinColumns() {
+	public ListIterator<OrmJoinColumn> specifiedJoinColumns() {
 		// TODO Auto-generated method stub
 		return super.specifiedJoinColumns();
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public ListIterator<GenericOrmJoinColumn> defaultJoinColumns() {
+	public ListIterator<OrmJoinColumn> defaultJoinColumns() {
 		// TODO Auto-generated method stub
 		return super.defaultJoinColumns();
 	}

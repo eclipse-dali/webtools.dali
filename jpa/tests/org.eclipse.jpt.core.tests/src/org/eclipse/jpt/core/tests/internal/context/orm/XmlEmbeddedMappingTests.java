@@ -26,10 +26,10 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmAttributeOverride;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmColumn;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddedMapping;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -199,14 +199,14 @@ public class XmlEmbeddedMappingTests extends ContextModelTestCase
 		GenericOrmEmbeddedMapping xmlEmbeddedMapping = (GenericOrmEmbeddedMapping) ormPersistentAttribute.getMapping();
 		XmlEmbedded embeddedResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
 		
-		GenericOrmAttributeOverride attributeOverride = xmlEmbeddedMapping.addSpecifiedAttributeOverride(0);
+		OrmAttributeOverride attributeOverride = xmlEmbeddedMapping.addSpecifiedAttributeOverride(0);
 		ormResource().save(null);
 		attributeOverride.setName("FOO");
 		ormResource().save(null);
 				
 		assertEquals("FOO", embeddedResource.getAttributeOverrides().get(0).getName());
 		
-		GenericOrmAttributeOverride attributeOverride2 = xmlEmbeddedMapping.addSpecifiedAttributeOverride(0);
+		OrmAttributeOverride attributeOverride2 = xmlEmbeddedMapping.addSpecifiedAttributeOverride(0);
 		ormResource().save(null);
 		attributeOverride2.setName("BAR");
 		ormResource().save(null);
@@ -214,7 +214,7 @@ public class XmlEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals("BAR", embeddedResource.getAttributeOverrides().get(0).getName());
 		assertEquals("FOO", embeddedResource.getAttributeOverrides().get(1).getName());
 		
-		GenericOrmAttributeOverride attributeOverride3 = xmlEmbeddedMapping.addSpecifiedAttributeOverride(1);
+		OrmAttributeOverride attributeOverride3 = xmlEmbeddedMapping.addSpecifiedAttributeOverride(1);
 		ormResource().save(null);
 		attributeOverride3.setName("BAZ");
 		ormResource().save(null);
@@ -223,7 +223,7 @@ public class XmlEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals("BAZ", embeddedResource.getAttributeOverrides().get(1).getName());
 		assertEquals("FOO", embeddedResource.getAttributeOverrides().get(2).getName());
 		
-		ListIterator<GenericOrmAttributeOverride> attributeOverrides = xmlEmbeddedMapping.specifiedAttributeOverrides();
+		ListIterator<OrmAttributeOverride> attributeOverrides = xmlEmbeddedMapping.specifiedAttributeOverrides();
 		assertEquals(attributeOverride2, attributeOverrides.next());
 		assertEquals(attributeOverride3, attributeOverrides.next());
 		assertEquals(attributeOverride, attributeOverrides.next());
@@ -273,7 +273,7 @@ public class XmlEmbeddedMappingTests extends ContextModelTestCase
 		
 		
 		xmlEmbeddedMapping.moveSpecifiedAttributeOverride(2, 0);
-		ListIterator<GenericOrmAttributeOverride> attributeOverrides = xmlEmbeddedMapping.specifiedAttributeOverrides();
+		ListIterator<OrmAttributeOverride> attributeOverrides = xmlEmbeddedMapping.specifiedAttributeOverrides();
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
@@ -308,7 +308,7 @@ public class XmlEmbeddedMappingTests extends ContextModelTestCase
 		embeddedResource.getAttributeOverrides().get(1).setName("BAR");
 		embeddedResource.getAttributeOverrides().get(2).setName("BAZ");
 
-		ListIterator<GenericOrmAttributeOverride> attributeOverrides = xmlEmbeddedMapping.specifiedAttributeOverrides();
+		ListIterator<OrmAttributeOverride> attributeOverrides = xmlEmbeddedMapping.specifiedAttributeOverrides();
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
@@ -378,12 +378,12 @@ public class XmlEmbeddedMappingTests extends ContextModelTestCase
 
 		assertEquals(4, xmlEmbeddedMapping.specifiedAttributeOverridesSize());
 		assertEquals(0, xmlEmbeddedMapping.defaultAttributeOverridesSize());
-		ListIterator<GenericOrmAttributeOverride> xmlAttributeOverrides = xmlEmbeddedMapping.specifiedAttributeOverrides();
+		ListIterator<OrmAttributeOverride> ormAttributeOverrides = xmlEmbeddedMapping.specifiedAttributeOverrides();
 
-		GenericOrmAttributeOverride xmlAttributeOverride = xmlAttributeOverrides.next();
-		assertEquals(ATTRIBUTE_OVERRIDE_NAME, xmlAttributeOverride.getName());
-		GenericOrmColumn xmlColumn = xmlAttributeOverride.getColumn();
-		assertEquals(ATTRIBUTE_OVERRIDE_COLUMN_NAME, xmlColumn.getSpecifiedName());
+		OrmAttributeOverride ormAttributeOverride = ormAttributeOverrides.next();
+		assertEquals(ATTRIBUTE_OVERRIDE_NAME, ormAttributeOverride.getName());
+		OrmColumn ormColumn = ormAttributeOverride.getColumn();
+		assertEquals(ATTRIBUTE_OVERRIDE_COLUMN_NAME, ormColumn.getSpecifiedName());
 //		assertEquals(Boolean.TRUE, xmlColumn.getSpecifiedUnique());
 //		assertEquals(Boolean.FALSE, xmlColumn.getSpecifiedNullable());
 //		assertEquals(Boolean.FALSE, xmlColumn.getSpecifiedInsertable());
@@ -394,20 +394,20 @@ public class XmlEmbeddedMappingTests extends ContextModelTestCase
 //		assertEquals(Integer.valueOf(6), xmlColumn.getSpecifiedPrecision());
 //		assertEquals(Integer.valueOf(7), xmlColumn.getSpecifiedScale());
 		
-		xmlAttributeOverride = xmlAttributeOverrides.next();
-		assertEquals("id", xmlAttributeOverride.getName());
-		xmlColumn = xmlAttributeOverride.getColumn();
-		assertEquals("id", xmlColumn.getSpecifiedName());
+		ormAttributeOverride = ormAttributeOverrides.next();
+		assertEquals("id", ormAttributeOverride.getName());
+		ormColumn = ormAttributeOverride.getColumn();
+		assertEquals("id", ormColumn.getSpecifiedName());
 
-		xmlAttributeOverride = xmlAttributeOverrides.next();
-		assertEquals("state", xmlAttributeOverride.getName());
-		xmlColumn = xmlAttributeOverride.getColumn();
-		assertEquals("A_STATE", xmlColumn.getSpecifiedName());
+		ormAttributeOverride = ormAttributeOverrides.next();
+		assertEquals("state", ormAttributeOverride.getName());
+		ormColumn = ormAttributeOverride.getColumn();
+		assertEquals("A_STATE", ormColumn.getSpecifiedName());
 
-		xmlAttributeOverride = xmlAttributeOverrides.next();
-		assertEquals("zip", xmlAttributeOverride.getName());
-		xmlColumn = xmlAttributeOverride.getColumn();
-		assertEquals("zip", xmlColumn.getSpecifiedName());
+		ormAttributeOverride = ormAttributeOverrides.next();
+		assertEquals("zip", ormAttributeOverride.getName());
+		ormColumn = ormAttributeOverride.getColumn();
+		assertEquals("zip", ormColumn.getSpecifiedName());
 
 	}
 	
@@ -427,11 +427,11 @@ public class XmlEmbeddedMappingTests extends ContextModelTestCase
 		//TODO
 //		assertEquals(4, xmlEmbeddedMapping.specifiedAttributeOverridesSize());
 //		assertEquals(0, CollectionTools.size(xmlEmbeddedMapping.defaultAttributeOverrides()));
-//		ListIterator<XmlAttributeOverride> xmlAttributeOverrides = xmlEmbeddedMapping.specifiedAttributeOverrides();
+//		ListIterator<XmlAttributeOverride> ormAttributeOverrides = xmlEmbeddedMapping.specifiedAttributeOverrides();
 //
-//		XmlAttributeOverride xmlAttributeOverride = xmlAttributeOverrides.next();
-//		assertEquals(ATTRIBUTE_OVERRIDE_NAME, xmlAttributeOverride.getName());
-//		XmlColumn xmlColumn = xmlAttributeOverride.getColumn();
+//		XmlAttributeOverride ormAttributeOverride = ormAttributeOverrides.next();
+//		assertEquals(ATTRIBUTE_OVERRIDE_NAME, ormAttributeOverride.getName());
+//		XmlColumn xmlColumn = ormAttributeOverride.getColumn();
 //		assertEquals("city", xmlColumn.getSpecifiedName());
 ////		assertEquals(Boolean.TRUE, xmlColumn.getSpecifiedUnique());
 ////		assertEquals(Boolean.FALSE, xmlColumn.getSpecifiedNullable());
@@ -443,19 +443,19 @@ public class XmlEmbeddedMappingTests extends ContextModelTestCase
 ////		assertEquals(Integer.valueOf(6), xmlColumn.getSpecifiedPrecision());
 ////		assertEquals(Integer.valueOf(7), xmlColumn.getSpecifiedScale());
 //		
-//		xmlAttributeOverride = xmlAttributeOverrides.next();
-//		assertEquals("id", xmlAttributeOverride.getName());
-//		xmlColumn = xmlAttributeOverride.getColumn();
+//		ormAttributeOverride = ormAttributeOverrides.next();
+//		assertEquals("id", ormAttributeOverride.getName());
+//		xmlColumn = ormAttributeOverride.getColumn();
 //		assertEquals("id", xmlColumn.getSpecifiedName());
 //
-//		xmlAttributeOverride = xmlAttributeOverrides.next();
-//		assertEquals("state", xmlAttributeOverride.getName());
-//		xmlColumn = xmlAttributeOverride.getColumn();
+//		ormAttributeOverride = ormAttributeOverrides.next();
+//		assertEquals("state", ormAttributeOverride.getName());
+//		xmlColumn = ormAttributeOverride.getColumn();
 //		assertEquals("state", xmlColumn.getSpecifiedName());
 //
-//		xmlAttributeOverride = xmlAttributeOverrides.next();
-//		assertEquals("zip", xmlAttributeOverride.getName());
-//		xmlColumn = xmlAttributeOverride.getColumn();
+//		ormAttributeOverride = ormAttributeOverrides.next();
+//		assertEquals("zip", ormAttributeOverride.getName());
+//		xmlColumn = ormAttributeOverride.getColumn();
 //		assertEquals("zip", xmlColumn.getSpecifiedName());
 	}
 	
@@ -477,11 +477,11 @@ public class XmlEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals(0, xmlEmbeddedMapping.specifiedAttributeOverridesSize());
 		//TODO
 //		assertEquals(4, CollectionTools.size(xmlEmbeddedMapping.defaultAttributeOverrides()));
-//		ListIterator<XmlAttributeOverride> xmlAttributeOverrides = xmlEmbeddedMapping.defaultAttributeOverrides();
+//		ListIterator<XmlAttributeOverride> ormAttributeOverrides = xmlEmbeddedMapping.defaultAttributeOverrides();
 //
-//		XmlAttributeOverride xmlAttributeOverride = xmlAttributeOverrides.next();
-//		assertEquals(ATTRIBUTE_OVERRIDE_NAME, xmlAttributeOverride.getName());
-//		XmlColumn xmlColumn = xmlAttributeOverride.getColumn();
+//		XmlAttributeOverride ormAttributeOverride = ormAttributeOverrides.next();
+//		assertEquals(ATTRIBUTE_OVERRIDE_NAME, ormAttributeOverride.getName());
+//		XmlColumn xmlColumn = ormAttributeOverride.getColumn();
 //		assertEquals("city", xmlColumn.getDefaultName());
 ////		assertEquals(Boolean.TRUE, xmlColumn.getSpecifiedUnique());
 ////		assertEquals(Boolean.FALSE, xmlColumn.getSpecifiedNullable());
@@ -493,19 +493,19 @@ public class XmlEmbeddedMappingTests extends ContextModelTestCase
 ////		assertEquals(Integer.valueOf(6), xmlColumn.getSpecifiedPrecision());
 ////		assertEquals(Integer.valueOf(7), xmlColumn.getSpecifiedScale());
 //		
-//		xmlAttributeOverride = xmlAttributeOverrides.next();
-//		assertEquals("id", xmlAttributeOverride.getName());
-//		xmlColumn = xmlAttributeOverride.getColumn();
+//		ormAttributeOverride = ormAttributeOverrides.next();
+//		assertEquals("id", ormAttributeOverride.getName());
+//		xmlColumn = ormAttributeOverride.getColumn();
 //		assertEquals("id", xmlColumn.getDefaultName());
 //
-//		xmlAttributeOverride = xmlAttributeOverrides.next();
-//		assertEquals("state", xmlAttributeOverride.getName());
-//		xmlColumn = xmlAttributeOverride.getColumn();
+//		ormAttributeOverride = ormAttributeOverrides.next();
+//		assertEquals("state", ormAttributeOverride.getName());
+//		xmlColumn = ormAttributeOverride.getColumn();
 //		assertEquals("state", xmlColumn.getDefaultName());
 //
-//		xmlAttributeOverride = xmlAttributeOverrides.next();
-//		assertEquals("zip", xmlAttributeOverride.getName());
-//		xmlColumn = xmlAttributeOverride.getColumn();
+//		ormAttributeOverride = ormAttributeOverrides.next();
+//		assertEquals("zip", ormAttributeOverride.getName());
+//		xmlColumn = ormAttributeOverride.getColumn();
 //		assertEquals("zip", xmlColumn.getDefaultName());
 	}
 	

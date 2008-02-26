@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.MultiRelationshipMapping;
+import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -35,13 +36,13 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 
 	protected boolean isCustomOrdering;
 
-	protected final GenericOrmJoinTable joinTable;
+	protected final OrmJoinTable joinTable;
 
 	protected String mapKey;
 
 	protected AbstractOrmMultiRelationshipMapping(OrmPersistentAttribute parent) {
 		super(parent);
-		this.joinTable = new GenericOrmJoinTable(this);
+		this.joinTable = jpaFactory().buildOrmJoinTable(this);
 	}
 
 	@Override
@@ -157,7 +158,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 //		return (mappedByNode == null) ? validationTextRange() : buildTextRange(mappedByNode);
 //	}
 	
-	public GenericOrmJoinTable getJoinTable() {
+	public OrmJoinTable getJoinTable() {
 		return this.joinTable;
 	}
 

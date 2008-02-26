@@ -12,10 +12,10 @@ package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinColumn;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinTable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmManyToManyMapping;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
@@ -24,9 +24,9 @@ import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
-public class XmlJoinColumnTests extends ContextModelTestCase
+public class OrmJoinColumnTests extends ContextModelTestCase
 {
-	public XmlJoinColumnTests(String name) {
+	public OrmJoinColumnTests(String name) {
 		super(name);
 	}
 	
@@ -45,8 +45,8 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();		
-		GenericOrmJoinColumn joinColumn = xmlJoinTable.addSpecifiedJoinColumn(0);
+		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
 				
@@ -68,7 +68,7 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		assertEquals("FOO", joinColumnResource.getName());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(xmlJoinTable.joinColumns().hasNext());
+		assertFalse(ormJoinTable.joinColumns().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -78,8 +78,8 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();		
-		GenericOrmJoinColumn joinColumn = xmlJoinTable.addSpecifiedJoinColumn(0);
+		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
 				
@@ -103,8 +103,8 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();		
-		GenericOrmJoinColumn joinColumn = xmlJoinTable.addSpecifiedJoinColumn(0);
+		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
 				
@@ -127,7 +127,7 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		assertEquals("FOO", joinColumnResource.getReferencedColumnName());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(xmlJoinTable.joinColumns().hasNext());
+		assertFalse(ormJoinTable.joinColumns().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -137,8 +137,8 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();		
-		GenericOrmJoinColumn joinColumn = xmlJoinTable.addSpecifiedJoinColumn(0);
+		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
 				
@@ -219,8 +219,8 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();		
-		GenericOrmJoinColumn joinColumn = xmlJoinTable.addSpecifiedJoinColumn(0);
+		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
 		
@@ -242,7 +242,7 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		assertEquals("FOO", joinColumnResource.getColumnDefinition());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(xmlJoinTable.joinColumns().hasNext());
+		assertFalse(ormJoinTable.joinColumns().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -252,8 +252,8 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();		
-		GenericOrmJoinColumn joinColumn = xmlJoinTable.addSpecifiedJoinColumn(0);
+		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
 		
@@ -277,30 +277,30 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();		
-		GenericOrmJoinColumn xmlJoinColumn = xmlJoinTable.addSpecifiedJoinColumn(0);
+		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
 
-		assertNull(xmlJoinColumn.getSpecifiedTable());
+		assertNull(ormJoinColumn.getSpecifiedTable());
 		assertNull(joinColumnResource.getTable());
 		
 		//set table in the resource model, verify context model updated
 		joinColumnResource.setTable("FOO");
-		assertEquals("FOO", xmlJoinColumn.getSpecifiedTable());
+		assertEquals("FOO", ormJoinColumn.getSpecifiedTable());
 		assertEquals("FOO", joinColumnResource.getTable());
 	
 		//set table to null in the resource model
 		joinColumnResource.setTable(null);
-		assertNull(xmlJoinColumn.getSpecifiedTable());
+		assertNull(ormJoinColumn.getSpecifiedTable());
 		assertNull(joinColumnResource.getTable());
 		
 		joinColumnResource.setTable("FOO");
-		assertEquals("FOO", xmlJoinColumn.getSpecifiedTable());
+		assertEquals("FOO", ormJoinColumn.getSpecifiedTable());
 		assertEquals("FOO", joinColumnResource.getTable());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(xmlJoinTable.joinColumns().hasNext());
+		assertFalse(ormJoinTable.joinColumns().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -310,22 +310,22 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();		
-		GenericOrmJoinColumn xmlJoinColumn = xmlJoinTable.addSpecifiedJoinColumn(0);
+		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
 
-		assertNull(xmlJoinColumn.getSpecifiedTable());
+		assertNull(ormJoinColumn.getSpecifiedTable());
 		assertNull(joinColumnResource.getTable());
 		
 		//set table in the context model, verify resource model modified
-		xmlJoinColumn.setSpecifiedTable("foo");
-		assertEquals("foo", xmlJoinColumn.getSpecifiedTable());
+		ormJoinColumn.setSpecifiedTable("foo");
+		assertEquals("foo", ormJoinColumn.getSpecifiedTable());
 		assertEquals("foo", joinColumnResource.getTable());
 		
 		//set table to null in the context model
-		xmlJoinColumn.setSpecifiedTable(null);
-		assertNull(xmlJoinColumn.getSpecifiedTable());
+		ormJoinColumn.setSpecifiedTable(null);
+		assertNull(ormJoinColumn.getSpecifiedTable());
 		assertNull(joinTableResource.getJoinColumns().get(0).getTable());
 	}
 
@@ -335,30 +335,30 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();		
-		GenericOrmJoinColumn xmlJoinColumn = xmlJoinTable.addSpecifiedJoinColumn(0);
+		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
 
-		assertNull(xmlJoinColumn.getSpecifiedNullable());
+		assertNull(ormJoinColumn.getSpecifiedNullable());
 		assertNull(joinColumnResource.getNullable());
 		
 		//set nullable in the resource model, verify context model updated
 		joinColumnResource.setNullable(Boolean.TRUE);
-		assertEquals(Boolean.TRUE, xmlJoinColumn.getSpecifiedNullable());
+		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedNullable());
 		assertEquals(Boolean.TRUE, joinColumnResource.getNullable());
 	
 		//set nullable to null in the resource model
 		joinColumnResource.setNullable(null);
-		assertNull(xmlJoinColumn.getSpecifiedNullable());
+		assertNull(ormJoinColumn.getSpecifiedNullable());
 		assertNull(joinColumnResource.getNullable());
 		
 		joinColumnResource.setNullable(Boolean.FALSE);
-		assertEquals(Boolean.FALSE, xmlJoinColumn.getSpecifiedNullable());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedNullable());
 		assertEquals(Boolean.FALSE, joinColumnResource.getNullable());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(xmlJoinTable.joinColumns().hasNext());
+		assertFalse(ormJoinTable.joinColumns().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -368,22 +368,22 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();		
-		GenericOrmJoinColumn xmlJoinColumn = xmlJoinTable.addSpecifiedJoinColumn(0);
+		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
 
-		assertNull(xmlJoinColumn.getSpecifiedNullable());
+		assertNull(ormJoinColumn.getSpecifiedNullable());
 		assertNull(joinColumnResource.getNullable());
 		
 		//set nullable in the context model, verify resource model modified
-		xmlJoinColumn.setSpecifiedNullable(Boolean.FALSE);
-		assertEquals(Boolean.FALSE, xmlJoinColumn.getSpecifiedNullable());
+		ormJoinColumn.setSpecifiedNullable(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedNullable());
 		assertEquals(Boolean.FALSE, joinColumnResource.getNullable());
 		
 		//set nullable to null in the context model
-		xmlJoinColumn.setSpecifiedNullable(null);
-		assertNull(xmlJoinColumn.getSpecifiedNullable());
+		ormJoinColumn.setSpecifiedNullable(null);
+		assertNull(ormJoinColumn.getSpecifiedNullable());
 		assertNull(joinTableResource.getJoinColumns().get(0).getNullable());
 	}
 
@@ -393,30 +393,30 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();		
-		GenericOrmJoinColumn xmlJoinColumn = xmlJoinTable.addSpecifiedJoinColumn(0);
+		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
 
-		assertNull(xmlJoinColumn.getSpecifiedUpdatable());
+		assertNull(ormJoinColumn.getSpecifiedUpdatable());
 		assertNull(joinColumnResource.getUpdatable());
 		
 		//set updatable in the resource model, verify context model updated
 		joinColumnResource.setUpdatable(Boolean.TRUE);
-		assertEquals(Boolean.TRUE, xmlJoinColumn.getSpecifiedUpdatable());
+		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUpdatable());
 		assertEquals(Boolean.TRUE, joinColumnResource.getUpdatable());
 	
 		//set updatable to null in the resource model
 		joinColumnResource.setUpdatable(null);
-		assertNull(xmlJoinColumn.getSpecifiedUpdatable());
+		assertNull(ormJoinColumn.getSpecifiedUpdatable());
 		assertNull(joinColumnResource.getUpdatable());
 		
 		joinColumnResource.setUpdatable(Boolean.FALSE);
-		assertEquals(Boolean.FALSE, xmlJoinColumn.getSpecifiedUpdatable());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUpdatable());
 		assertEquals(Boolean.FALSE, joinColumnResource.getUpdatable());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(xmlJoinTable.joinColumns().hasNext());
+		assertFalse(ormJoinTable.joinColumns().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -426,22 +426,22 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();		
-		GenericOrmJoinColumn xmlJoinColumn = xmlJoinTable.addSpecifiedJoinColumn(0);
+		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
 
-		assertNull(xmlJoinColumn.getSpecifiedUpdatable());
+		assertNull(ormJoinColumn.getSpecifiedUpdatable());
 		assertNull(joinColumnResource.getUpdatable());
 		
 		//set updatable in the context model, verify resource model modified
-		xmlJoinColumn.setSpecifiedUpdatable(Boolean.FALSE);
-		assertEquals(Boolean.FALSE, xmlJoinColumn.getSpecifiedUpdatable());
+		ormJoinColumn.setSpecifiedUpdatable(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUpdatable());
 		assertEquals(Boolean.FALSE, joinColumnResource.getUpdatable());
 		
 		//set updatable to null in the context model
-		xmlJoinColumn.setSpecifiedUpdatable(null);
-		assertNull(xmlJoinColumn.getSpecifiedUpdatable());
+		ormJoinColumn.setSpecifiedUpdatable(null);
+		assertNull(ormJoinColumn.getSpecifiedUpdatable());
 		assertNull(joinTableResource.getJoinColumns().get(0).getUpdatable());
 	}
 
@@ -451,30 +451,30 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();		
-		GenericOrmJoinColumn xmlJoinColumn = xmlJoinTable.addSpecifiedJoinColumn(0);
+		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
 
-		assertNull(xmlJoinColumn.getSpecifiedInsertable());
+		assertNull(ormJoinColumn.getSpecifiedInsertable());
 		assertNull(joinColumnResource.getInsertable());
 		
 		//set insertable in the resource model, verify context model updated
 		joinColumnResource.setInsertable(Boolean.TRUE);
-		assertEquals(Boolean.TRUE, xmlJoinColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedInsertable());
 		assertEquals(Boolean.TRUE, joinColumnResource.getInsertable());
 	
 		//set insertable to null in the resource model
 		joinColumnResource.setInsertable(null);
-		assertNull(xmlJoinColumn.getSpecifiedInsertable());
+		assertNull(ormJoinColumn.getSpecifiedInsertable());
 		assertNull(joinColumnResource.getInsertable());
 		
 		joinColumnResource.setInsertable(Boolean.FALSE);
-		assertEquals(Boolean.FALSE, xmlJoinColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedInsertable());
 		assertEquals(Boolean.FALSE, joinColumnResource.getInsertable());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(xmlJoinTable.joinColumns().hasNext());
+		assertFalse(ormJoinTable.joinColumns().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -484,22 +484,22 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();		
-		GenericOrmJoinColumn xmlJoinColumn = xmlJoinTable.addSpecifiedJoinColumn(0);
+		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
 
-		assertNull(xmlJoinColumn.getSpecifiedInsertable());
+		assertNull(ormJoinColumn.getSpecifiedInsertable());
 		assertNull(joinColumnResource.getInsertable());
 		
 		//set insertable in the context model, verify resource model modified
-		xmlJoinColumn.setSpecifiedInsertable(Boolean.FALSE);
-		assertEquals(Boolean.FALSE, xmlJoinColumn.getSpecifiedInsertable());
+		ormJoinColumn.setSpecifiedInsertable(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedInsertable());
 		assertEquals(Boolean.FALSE, joinColumnResource.getInsertable());
 		
 		//set insertable to null in the context model
-		xmlJoinColumn.setSpecifiedInsertable(null);
-		assertNull(xmlJoinColumn.getSpecifiedInsertable());
+		ormJoinColumn.setSpecifiedInsertable(null);
+		assertNull(ormJoinColumn.getSpecifiedInsertable());
 		assertNull(joinTableResource.getJoinColumns().get(0).getInsertable());
 	}
 	
@@ -509,30 +509,30 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();		
-		GenericOrmJoinColumn xmlJoinColumn = xmlJoinTable.addSpecifiedJoinColumn(0);
+		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
 
-		assertNull(xmlJoinColumn.getSpecifiedUnique());
+		assertNull(ormJoinColumn.getSpecifiedUnique());
 		assertNull(joinColumnResource.getUnique());
 		
 		//set unique in the resource model, verify context model updated
 		joinColumnResource.setUnique(Boolean.TRUE);
-		assertEquals(Boolean.TRUE, xmlJoinColumn.getSpecifiedUnique());
+		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUnique());
 		assertEquals(Boolean.TRUE, joinColumnResource.getUnique());
 	
 		//set unique to null in the resource model
 		joinColumnResource.setUnique(null);
-		assertNull(xmlJoinColumn.getSpecifiedUnique());
+		assertNull(ormJoinColumn.getSpecifiedUnique());
 		assertNull(joinColumnResource.getUnique());
 		
 		joinColumnResource.setUnique(Boolean.FALSE);
-		assertEquals(Boolean.FALSE, xmlJoinColumn.getSpecifiedUnique());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUnique());
 		assertEquals(Boolean.FALSE, joinColumnResource.getUnique());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(xmlJoinTable.joinColumns().hasNext());
+		assertFalse(ormJoinTable.joinColumns().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -542,22 +542,22 @@ public class XmlJoinColumnTests extends ContextModelTestCase
 		GenericOrmManyToManyMapping xmlManyToManyMapping = (GenericOrmManyToManyMapping) ormPersistentAttribute.getMapping();
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
-		GenericOrmJoinTable xmlJoinTable = xmlManyToManyMapping.getJoinTable();		
-		GenericOrmJoinColumn xmlJoinColumn = xmlJoinTable.addSpecifiedJoinColumn(0);
+		OrmJoinTable ormJoinTable = xmlManyToManyMapping.getJoinTable();		
+		OrmJoinColumn ormJoinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		XmlJoinColumn joinColumnResource = joinTableResource.getJoinColumns().get(0);
 
-		assertNull(xmlJoinColumn.getSpecifiedUnique());
+		assertNull(ormJoinColumn.getSpecifiedUnique());
 		assertNull(joinColumnResource.getUnique());
 		
 		//set unique in the context model, verify resource model modified
-		xmlJoinColumn.setSpecifiedUnique(Boolean.FALSE);
-		assertEquals(Boolean.FALSE, xmlJoinColumn.getSpecifiedUnique());
+		ormJoinColumn.setSpecifiedUnique(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUnique());
 		assertEquals(Boolean.FALSE, joinColumnResource.getUnique());
 		
 		//set unique to null in the context model
-		xmlJoinColumn.setSpecifiedUnique(null);
-		assertNull(xmlJoinColumn.getSpecifiedUnique());
+		ormJoinColumn.setSpecifiedUnique(null);
+		assertNull(ormJoinColumn.getSpecifiedUnique());
 		assertNull(joinTableResource.getJoinColumns().get(0).getUnique());
 	}
 

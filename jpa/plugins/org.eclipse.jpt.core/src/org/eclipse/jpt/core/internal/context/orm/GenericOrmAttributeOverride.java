@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -24,7 +25,7 @@ import org.eclipse.jpt.db.internal.Table;
 
 
 public class GenericOrmAttributeOverride extends AbstractJpaContextNode
-	implements AttributeOverride, OrmColumn.Owner
+	implements OrmAttributeOverride, OrmColumn.Owner
 {
 
 	protected String name;
@@ -34,9 +35,9 @@ public class GenericOrmAttributeOverride extends AbstractJpaContextNode
 	protected XmlAttributeOverride attributeOverride;
 	
 
-	protected final GenericOrmColumn column;
+	protected final OrmColumn column;
 
-	protected GenericOrmAttributeOverride(JpaContextNode parent, AttributeOverride.Owner owner) {
+	public GenericOrmAttributeOverride(JpaContextNode parent, AttributeOverride.Owner owner) {
 		super(parent);
 		this.owner = owner;
 		this.column = new GenericOrmColumn(this, this);
@@ -63,7 +64,7 @@ public class GenericOrmAttributeOverride extends AbstractJpaContextNode
 		firePropertyChanged(BaseOverride.NAME_PROPERTY, oldName, newName);
 	}
 
-	public GenericOrmColumn getColumn() {
+	public OrmColumn getColumn() {
 		return this.column;
 	}
 

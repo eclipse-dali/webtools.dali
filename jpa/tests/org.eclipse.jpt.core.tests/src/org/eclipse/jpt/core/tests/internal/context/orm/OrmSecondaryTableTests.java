@@ -17,9 +17,9 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmSecondaryTable;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
@@ -30,9 +30,9 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class XmlSecondaryTableTests extends ContextModelTestCase
+public class OrmSecondaryTableTests extends ContextModelTestCase
 {
-	public XmlSecondaryTableTests(String name) {
+	public OrmSecondaryTableTests(String name) {
 		super(name);
 	}
 	
@@ -99,7 +99,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 		//set name in the resource model, verify context model updated
 		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createSecondaryTable());
 		entityResource.getSecondaryTables().get(0).setName("FOO");
-		GenericOrmSecondaryTable secondaryTable = xmlEntity.specifiedSecondaryTables().next();
+		OrmSecondaryTable secondaryTable = xmlEntity.specifiedSecondaryTables().next();
 		assertEquals("FOO", secondaryTable.getSpecifiedName());
 		assertEquals("FOO", entityResource.getSecondaryTables().get(0).getName());
 	
@@ -119,7 +119,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		
 		//set name in the context model, verify resource model modified
-		GenericOrmSecondaryTable secondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
+		OrmSecondaryTable secondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
 		secondaryTable.setSpecifiedName("foo");
 		
 		assertEquals("foo", secondaryTable.getSpecifiedName());
@@ -142,7 +142,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
 		
 		xmlEntity.javaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
-		GenericOrmSecondaryTable secondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
+		OrmSecondaryTable secondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
 		secondaryTable.setSpecifiedName("FOO");
 		assertNull(secondaryTable.getDefaultName());
 	}
@@ -155,7 +155,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 		//set schema in the resource model, verify context model updated
 		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createSecondaryTable());
 		entityResource.getSecondaryTables().get(0).setSchema("FOO");
-		GenericOrmSecondaryTable secondaryTable = xmlEntity.specifiedSecondaryTables().next();
+		OrmSecondaryTable secondaryTable = xmlEntity.specifiedSecondaryTables().next();
 		assertEquals("FOO", secondaryTable.getSpecifiedSchema());
 		assertEquals("FOO", entityResource.getSecondaryTables().get(0).getSchema());
 	
@@ -175,7 +175,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		
 		//set schema in the context model, verify resource model modified
-		GenericOrmSecondaryTable secondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
+		OrmSecondaryTable secondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
 		secondaryTable.setSpecifiedSchema("foo");
 		
 		assertEquals("foo", secondaryTable.getSpecifiedSchema());
@@ -201,7 +201,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 		SecondaryTable javaSecondaryTable = xmlEntity.javaEntity().addSpecifiedSecondaryTable(0);
 		javaSecondaryTable.setSpecifiedName("FOO");
 		javaSecondaryTable.setSpecifiedSchema("BAR");
-		GenericOrmSecondaryTable secondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
+		OrmSecondaryTable secondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
 		secondaryTable.setSpecifiedName("FOO");
 		assertNull(secondaryTable.getDefaultSchema());
 	}
@@ -232,26 +232,26 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 		
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmSecondaryTable xmlSecondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
-		xmlSecondaryTable.setSpecifiedName("FOO");
-		assertNull(xmlSecondaryTable.getDefaultSchema());
+		OrmSecondaryTable ormSecondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
+		ormSecondaryTable.setSpecifiedName("FOO");
+		assertNull(ormSecondaryTable.getDefaultSchema());
 		
 		xmlEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema("FOO");
-		assertEquals("FOO", xmlSecondaryTable.getDefaultSchema());
+		assertEquals("FOO", ormSecondaryTable.getDefaultSchema());
 		
 		xmlEntity.entityMappings().setSpecifiedSchema("BAR");
-		assertEquals("BAR", xmlSecondaryTable.getDefaultSchema());
+		assertEquals("BAR", ormSecondaryTable.getDefaultSchema());
 		
 		SecondaryTable javaSecondaryTable = xmlEntity.javaEntity().addSpecifiedSecondaryTable(0);
 		javaSecondaryTable.setSpecifiedName("FOO");
 		javaSecondaryTable.setSpecifiedSchema("JAVA_SCHEMA");
-		assertEquals("BAR", xmlSecondaryTable.getDefaultSchema()); //schema is not defaulted from underlying java
+		assertEquals("BAR", ormSecondaryTable.getDefaultSchema()); //schema is not defaulted from underlying java
 		
 		xmlEntity.entityMappings().setSpecifiedSchema(null);
-		assertEquals("FOO", xmlSecondaryTable.getDefaultSchema());
+		assertEquals("FOO", ormSecondaryTable.getDefaultSchema());
 
 		xmlEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema(null);
-		assertNull(xmlSecondaryTable.getDefaultSchema());
+		assertNull(ormSecondaryTable.getDefaultSchema());
 	}
 	
 	public void testUpdateSpecifiedCatalog() throws Exception {
@@ -262,7 +262,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 		//set catalog in the resource model, verify context model updated
 		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createSecondaryTable());
 		entityResource.getSecondaryTables().get(0).setCatalog("FOO");
-		GenericOrmSecondaryTable secondaryTable = xmlEntity.specifiedSecondaryTables().next();
+		OrmSecondaryTable secondaryTable = xmlEntity.specifiedSecondaryTables().next();
 		assertEquals("FOO", secondaryTable.getSpecifiedCatalog());
 		assertEquals("FOO", entityResource.getSecondaryTables().get(0).getCatalog());
 	
@@ -282,7 +282,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		
 		//set catalog in the context model, verify resource model modified
-		GenericOrmSecondaryTable secondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
+		OrmSecondaryTable secondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
 		secondaryTable.setSpecifiedCatalog("foo");
 		
 		assertEquals("foo", secondaryTable.getSpecifiedCatalog());
@@ -308,7 +308,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 		SecondaryTable javaSecondaryTable = xmlEntity.javaEntity().addSpecifiedSecondaryTable(0);
 		javaSecondaryTable.setSpecifiedName("FOO");
 		javaSecondaryTable.setSpecifiedCatalog("BAR");
-		GenericOrmSecondaryTable secondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
+		OrmSecondaryTable secondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
 		secondaryTable.setSpecifiedName("FOO");
 		assertNull(secondaryTable.getDefaultCatalog());
 	}
@@ -318,43 +318,43 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 		
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmSecondaryTable xmlSecondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
-		xmlSecondaryTable.setSpecifiedName("FOO");
-		assertNull(xmlSecondaryTable.getDefaultCatalog());
+		OrmSecondaryTable ormSecondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
+		ormSecondaryTable.setSpecifiedName("FOO");
+		assertNull(ormSecondaryTable.getDefaultCatalog());
 		
 		xmlEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("FOO");
-		assertEquals("FOO", xmlSecondaryTable.getDefaultCatalog());
+		assertEquals("FOO", ormSecondaryTable.getDefaultCatalog());
 		
 		xmlEntity.entityMappings().setSpecifiedCatalog("BAR");
-		assertEquals("BAR", xmlSecondaryTable.getDefaultCatalog());
+		assertEquals("BAR", ormSecondaryTable.getDefaultCatalog());
 		
 		SecondaryTable javaSecondaryTable = xmlEntity.javaEntity().addSpecifiedSecondaryTable(0);
 		javaSecondaryTable.setSpecifiedName("FOO");
 		javaSecondaryTable.setSpecifiedCatalog("JAVA_CATALOG");
-		assertEquals("BAR", xmlSecondaryTable.getDefaultCatalog()); //schema is not defaulted from underlying java
+		assertEquals("BAR", ormSecondaryTable.getDefaultCatalog()); //schema is not defaulted from underlying java
 		
 		xmlEntity.entityMappings().setSpecifiedCatalog(null);
-		assertEquals("FOO", xmlSecondaryTable.getDefaultCatalog());
+		assertEquals("FOO", ormSecondaryTable.getDefaultCatalog());
 
 		xmlEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog(null);
-		assertNull(xmlSecondaryTable.getDefaultCatalog());
+		assertNull(ormSecondaryTable.getDefaultCatalog());
 	}
 	
 	public void testAddSpecifiedPrimaryKeyJoinColumn() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
-		GenericOrmSecondaryTable xmlSecondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
+		OrmSecondaryTable ormSecondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		XmlSecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
 		
-		GenericOrmPrimaryKeyJoinColumn primaryKeyJoinColumn = xmlSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
+		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = ormSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
 		ormResource().save(null);
 		primaryKeyJoinColumn.setSpecifiedName("FOO");
 		ormResource().save(null);
 				
 		assertEquals("FOO", secondaryTableResource.getPrimaryKeyJoinColumns().get(0).getName());
 		
-		GenericOrmPrimaryKeyJoinColumn primaryKeyJoinColumn2 = xmlSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
+		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn2 = ormSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
 		ormResource().save(null);
 		primaryKeyJoinColumn2.setSpecifiedName("BAR");
 		ormResource().save(null);
@@ -362,7 +362,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 		assertEquals("BAR", secondaryTableResource.getPrimaryKeyJoinColumns().get(0).getName());
 		assertEquals("FOO", secondaryTableResource.getPrimaryKeyJoinColumns().get(1).getName());
 		
-		GenericOrmPrimaryKeyJoinColumn primaryKeyJoinColumn3 = xmlSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(1);
+		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn3 = ormSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(1);
 		ormResource().save(null);
 		primaryKeyJoinColumn3.setSpecifiedName("BAZ");
 		ormResource().save(null);
@@ -371,12 +371,12 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 		assertEquals("BAZ", secondaryTableResource.getPrimaryKeyJoinColumns().get(1).getName());
 		assertEquals("FOO", secondaryTableResource.getPrimaryKeyJoinColumns().get(2).getName());
 		
-		ListIterator<GenericOrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
+		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = ormSecondaryTable.specifiedPrimaryKeyJoinColumns();
 		assertEquals(primaryKeyJoinColumn2, primaryKeyJoinColumns.next());
 		assertEquals(primaryKeyJoinColumn3, primaryKeyJoinColumns.next());
 		assertEquals(primaryKeyJoinColumn, primaryKeyJoinColumns.next());
 		
-		primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
+		primaryKeyJoinColumns = ormSecondaryTable.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
@@ -385,45 +385,45 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 	public void testRemoveSpecifiedPrimaryKeyJoinColumn() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
-		GenericOrmSecondaryTable xmlSecondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
+		OrmSecondaryTable ormSecondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		XmlSecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
 
-		xmlSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
-		xmlSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
-		xmlSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
+		ormSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
+		ormSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
+		ormSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
 		
 		assertEquals(3, secondaryTableResource.getPrimaryKeyJoinColumns().size());
 		
-		xmlSecondaryTable.removeSpecifiedPrimaryKeyJoinColumn(0);
+		ormSecondaryTable.removeSpecifiedPrimaryKeyJoinColumn(0);
 		assertEquals(2, secondaryTableResource.getPrimaryKeyJoinColumns().size());
 		assertEquals("BAR", secondaryTableResource.getPrimaryKeyJoinColumns().get(0).getName());
 		assertEquals("BAZ", secondaryTableResource.getPrimaryKeyJoinColumns().get(1).getName());
 
-		xmlSecondaryTable.removeSpecifiedPrimaryKeyJoinColumn(0);
+		ormSecondaryTable.removeSpecifiedPrimaryKeyJoinColumn(0);
 		assertEquals(1, secondaryTableResource.getPrimaryKeyJoinColumns().size());
 		assertEquals("BAZ", secondaryTableResource.getPrimaryKeyJoinColumns().get(0).getName());
 		
-		xmlSecondaryTable.removeSpecifiedPrimaryKeyJoinColumn(0);
+		ormSecondaryTable.removeSpecifiedPrimaryKeyJoinColumn(0);
 		assertEquals(0, secondaryTableResource.getPrimaryKeyJoinColumns().size());
 	}
 	
 	public void testMoveSpecifiedPrimaryKeyJoinColumn() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
-		GenericOrmSecondaryTable xmlSecondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
+		OrmSecondaryTable ormSecondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		XmlSecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
 
-		xmlSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
-		xmlSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
-		xmlSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
+		ormSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
+		ormSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
+		ormSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
 		
 		assertEquals(3, secondaryTableResource.getPrimaryKeyJoinColumns().size());
 		
 		
-		xmlSecondaryTable.moveSpecifiedPrimaryKeyJoinColumn(2, 0);
-		ListIterator<GenericOrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
+		ormSecondaryTable.moveSpecifiedPrimaryKeyJoinColumn(2, 0);
+		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = ormSecondaryTable.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
@@ -433,8 +433,8 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 		assertEquals("FOO", secondaryTableResource.getPrimaryKeyJoinColumns().get(2).getName());
 
 
-		xmlSecondaryTable.moveSpecifiedPrimaryKeyJoinColumn(0, 1);
-		primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
+		ormSecondaryTable.moveSpecifiedPrimaryKeyJoinColumn(0, 1);
+		primaryKeyJoinColumns = ormSecondaryTable.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
@@ -447,7 +447,7 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 	public void testUpdatePrimaryKeyJoinColumns() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
-		GenericOrmSecondaryTable xmlSecondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
+		OrmSecondaryTable ormSecondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		XmlSecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
 		
@@ -459,39 +459,39 @@ public class XmlSecondaryTableTests extends ContextModelTestCase
 		secondaryTableResource.getPrimaryKeyJoinColumns().get(1).setName("BAR");
 		secondaryTableResource.getPrimaryKeyJoinColumns().get(2).setName("BAZ");
 
-		ListIterator<GenericOrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
+		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = ormSecondaryTable.specifiedPrimaryKeyJoinColumns();
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertFalse(primaryKeyJoinColumns.hasNext());
 		
 		secondaryTableResource.getPrimaryKeyJoinColumns().move(2, 0);
-		primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
+		primaryKeyJoinColumns = ormSecondaryTable.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
 		assertFalse(primaryKeyJoinColumns.hasNext());
 
 		secondaryTableResource.getPrimaryKeyJoinColumns().move(0, 1);
-		primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
+		primaryKeyJoinColumns = ormSecondaryTable.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
 		assertFalse(primaryKeyJoinColumns.hasNext());
 
 		secondaryTableResource.getPrimaryKeyJoinColumns().remove(1);
-		primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
+		primaryKeyJoinColumns = ormSecondaryTable.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
 		assertFalse(primaryKeyJoinColumns.hasNext());
 
 		secondaryTableResource.getPrimaryKeyJoinColumns().remove(1);
-		primaryKeyJoinColumns = xmlSecondaryTable.specifiedPrimaryKeyJoinColumns();
+		primaryKeyJoinColumns = ormSecondaryTable.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertFalse(primaryKeyJoinColumns.hasNext());
 		
 		secondaryTableResource.getPrimaryKeyJoinColumns().remove(0);
-		assertFalse(xmlSecondaryTable.specifiedPrimaryKeyJoinColumns().hasNext());
+		assertFalse(ormSecondaryTable.specifiedPrimaryKeyJoinColumns().hasNext());
 	}
 
 }

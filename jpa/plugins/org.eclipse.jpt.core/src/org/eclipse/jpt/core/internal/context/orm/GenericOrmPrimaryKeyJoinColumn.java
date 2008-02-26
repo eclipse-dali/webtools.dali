@@ -13,13 +13,13 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.JpaContextNode;
-import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
 
 public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPrimaryKeyJoinColumn>
-	implements PrimaryKeyJoinColumn
+	implements OrmPrimaryKeyJoinColumn
 {
 	protected String specifiedReferencedColumnName;
 
@@ -27,7 +27,7 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 
 	protected XmlPrimaryKeyJoinColumn primaryKeyJoinColumn;
 	
-	protected GenericOrmPrimaryKeyJoinColumn(JpaContextNode parent, AbstractJoinColumn.Owner owner) {
+	public GenericOrmPrimaryKeyJoinColumn(JpaContextNode parent, AbstractJoinColumn.Owner owner) {
 		super(parent, owner);
 	}
 
@@ -107,11 +107,6 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 //		IDOMNode referencedColumnNameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.REFERENCED_COLUMN_NAME);
 //		return (referencedColumnNameNode == null) ? validationTextRange() : buildTextRange(referencedColumnNameNode);
 //	}
-//
-//	public void refreshDefaults(DefaultsContext defaultsContext) {
-//		setDefaultReferencedColumnName((String) defaultsContext.getDefault(GenericJpaPlatform.DEFAULT_JOIN_COLUMN_REFERENCED_COLUMN_NAME_KEY));
-//		setDefaultName((String) defaultsContext.getDefault(GenericJpaPlatform.DEFAULT_JOIN_COLUMN_NAME_KEY));
-//	}
 
 		
 	public boolean isVirtual() {
@@ -119,7 +114,7 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	}
 	
 	@Override
-	protected void initialize(XmlPrimaryKeyJoinColumn column) {
+	public void initialize(XmlPrimaryKeyJoinColumn column) {
 		this.primaryKeyJoinColumn = column;
 		super.initialize(column);
 		this.specifiedReferencedColumnName = column.getReferencedColumnName();
@@ -127,7 +122,7 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	}
 	
 	@Override
-	protected void update(XmlPrimaryKeyJoinColumn column) {
+	public void update(XmlPrimaryKeyJoinColumn column) {
 		this.primaryKeyJoinColumn = column;
 		super.update(column);
 		this.setSpecifiedReferencedColumnName(column.getReferencedColumnName());

@@ -13,11 +13,12 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
 
-public class GenericOrmJoinColumn extends AbstractOrmColumn<XmlJoinColumn> implements JoinColumn
+public class GenericOrmJoinColumn extends AbstractOrmColumn<XmlJoinColumn> implements OrmJoinColumn
 {
 
 	protected String specifiedReferencedColumnName;
@@ -26,7 +27,7 @@ public class GenericOrmJoinColumn extends AbstractOrmColumn<XmlJoinColumn> imple
 
 	protected XmlJoinColumn joinColumn;
 
-	protected GenericOrmJoinColumn(JpaContextNode parent, JoinColumn.Owner owner) {
+	public GenericOrmJoinColumn(JpaContextNode parent, JoinColumn.Owner owner) {
 		super(parent, owner);
 	}
 
@@ -126,7 +127,7 @@ public class GenericOrmJoinColumn extends AbstractOrmColumn<XmlJoinColumn> imple
 	
 	
 	@Override
-	protected void initialize(XmlJoinColumn column) {
+	public void initialize(XmlJoinColumn column) {
 		this.joinColumn = column;
 		super.initialize(column);
 		this.specifiedReferencedColumnName = column.getReferencedColumnName();
@@ -134,7 +135,7 @@ public class GenericOrmJoinColumn extends AbstractOrmColumn<XmlJoinColumn> imple
 	}
 	
 	@Override
-	protected void update(XmlJoinColumn column) {
+	public void update(XmlJoinColumn column) {
 		this.joinColumn = column;
 		super.update(column);
 		this.setSpecifiedReferencedColumnName_(column.getReferencedColumnName());

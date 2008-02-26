@@ -16,8 +16,8 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmTable;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
@@ -27,9 +27,9 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class XmlTableTests extends ContextModelTestCase
+public class OrmTableTests extends ContextModelTestCase
 {
-	public XmlTableTests(String name) {
+	public OrmTableTests(String name) {
 		super(name);
 	}
 	
@@ -91,46 +91,46 @@ public class XmlTableTests extends ContextModelTestCase
 	public void testUpdateSpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmTable xmlTable = xmlEntity.getTable();
+		OrmTable ormTable = xmlEntity.getTable();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertNull(xmlTable.getSpecifiedName());
+		assertNull(ormTable.getSpecifiedName());
 		assertNull(entityResource.getTable());
 		
 		//set name in the resource model, verify context model updated
 		entityResource.setTable(OrmFactory.eINSTANCE.createTable());
 		entityResource.getTable().setName("FOO");
-		assertEquals("FOO", xmlTable.getSpecifiedName());
+		assertEquals("FOO", ormTable.getSpecifiedName());
 		assertEquals("FOO", entityResource.getTable().getName());
 	
 		//set name to null in the resource model
 		entityResource.getTable().setName(null);
-		assertNull(xmlTable.getSpecifiedName());
+		assertNull(ormTable.getSpecifiedName());
 		assertNull(entityResource.getTable().getName());
 		
 		entityResource.getTable().setName("FOO");
-		assertEquals("FOO", xmlTable.getSpecifiedName());
+		assertEquals("FOO", ormTable.getSpecifiedName());
 		assertEquals("FOO", entityResource.getTable().getName());
 
 		entityResource.setTable(null);
-		assertNull(xmlTable.getSpecifiedName());
+		assertNull(ormTable.getSpecifiedName());
 		assertNull(entityResource.getTable());
 	}
 	
 	public void testModifySpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmTable xmlTable = ((GenericOrmEntity) ormPersistentType.getMapping()).getTable();
+		OrmTable ormTable = ((GenericOrmEntity) ormPersistentType.getMapping()).getTable();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertNull(xmlTable.getSpecifiedName());
+		assertNull(ormTable.getSpecifiedName());
 		assertNull(entityResource.getTable());
 		
 		//set name in the context model, verify resource model modified
-		xmlTable.setSpecifiedName("foo");
-		assertEquals("foo", xmlTable.getSpecifiedName());
+		ormTable.setSpecifiedName("foo");
+		assertEquals("foo", ormTable.getSpecifiedName());
 		assertEquals("foo", entityResource.getTable().getName());
 		
 		//set name to null in the context model
-		xmlTable.setSpecifiedName(null);
-		assertNull(xmlTable.getSpecifiedName());
+		ormTable.setSpecifiedName(null);
+		assertNull(ormTable.getSpecifiedName());
 		assertNull(entityResource.getTable());
 	}
 	
@@ -193,28 +193,28 @@ public class XmlTableTests extends ContextModelTestCase
 	public void testUpdateSpecifiedSchema() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmTable xmlTable = xmlEntity.getTable();
+		OrmTable ormTable = xmlEntity.getTable();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertNull(xmlTable.getSpecifiedSchema());
+		assertNull(ormTable.getSpecifiedSchema());
 		assertNull(entityResource.getTable());
 		
 		//set schema in the resource model, verify context model updated
 		entityResource.setTable(OrmFactory.eINSTANCE.createTable());
 		entityResource.getTable().setSchema("FOO");
-		assertEquals("FOO", xmlTable.getSpecifiedSchema());
+		assertEquals("FOO", ormTable.getSpecifiedSchema());
 		assertEquals("FOO", entityResource.getTable().getSchema());
 	
 		//set Schema to null in the resource model
 		entityResource.getTable().setSchema(null);
-		assertNull(xmlTable.getSpecifiedSchema());
+		assertNull(ormTable.getSpecifiedSchema());
 		assertNull(entityResource.getTable().getSchema());
 		
 		entityResource.getTable().setSchema("FOO");
-		assertEquals("FOO", xmlTable.getSpecifiedSchema());
+		assertEquals("FOO", ormTable.getSpecifiedSchema());
 		assertEquals("FOO", entityResource.getTable().getSchema());
 
 		entityResource.setTable(null);
-		assertNull(xmlTable.getSpecifiedSchema());
+		assertNull(ormTable.getSpecifiedSchema());
 		assertNull(entityResource.getTable());
 	}
 	
@@ -308,66 +308,66 @@ public class XmlTableTests extends ContextModelTestCase
 	public void testModifySpecifiedSchema() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmTable xmlTable = xmlEntity.getTable();
+		OrmTable ormTable = xmlEntity.getTable();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertNull(xmlTable.getSpecifiedSchema());
+		assertNull(ormTable.getSpecifiedSchema());
 		assertNull(entityResource.getTable());
 		
 		//set Schema in the context model, verify resource model modified
-		xmlTable.setSpecifiedSchema("foo");
-		assertEquals("foo", xmlTable.getSpecifiedSchema());
+		ormTable.setSpecifiedSchema("foo");
+		assertEquals("foo", ormTable.getSpecifiedSchema());
 		assertEquals("foo", entityResource.getTable().getSchema());
 		
 		//set Schema to null in the context model
-		xmlTable.setSpecifiedSchema(null);
-		assertNull(xmlTable.getSpecifiedSchema());
+		ormTable.setSpecifiedSchema(null);
+		assertNull(ormTable.getSpecifiedSchema());
 		assertNull(entityResource.getTable());
 	}
 	
 	public void testUpdateSpecifiedCatalog() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmTable xmlTable = xmlEntity.getTable();
+		OrmTable ormTable = xmlEntity.getTable();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertNull(xmlTable.getSpecifiedCatalog());
+		assertNull(ormTable.getSpecifiedCatalog());
 		assertNull(entityResource.getTable());
 		
 		//set Catalog in the resource model, verify context model updated
 		entityResource.setTable(OrmFactory.eINSTANCE.createTable());
 		entityResource.getTable().setCatalog("FOO");
-		assertEquals("FOO", xmlTable.getSpecifiedCatalog());
+		assertEquals("FOO", ormTable.getSpecifiedCatalog());
 		assertEquals("FOO", entityResource.getTable().getCatalog());
 	
 		//set Catalog to null in the resource model
 		entityResource.getTable().setCatalog(null);
-		assertNull(xmlTable.getSpecifiedCatalog());
+		assertNull(ormTable.getSpecifiedCatalog());
 		assertNull(entityResource.getTable().getCatalog());
 		
 		entityResource.getTable().setCatalog("FOO");
-		assertEquals("FOO", xmlTable.getSpecifiedCatalog());
+		assertEquals("FOO", ormTable.getSpecifiedCatalog());
 		assertEquals("FOO", entityResource.getTable().getCatalog());
 
 		entityResource.setTable(null);
-		assertNull(xmlTable.getSpecifiedCatalog());
+		assertNull(ormTable.getSpecifiedCatalog());
 		assertNull(entityResource.getTable());
 	}
 	
 	public void testModifySpecifiedCatalog() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		GenericOrmTable xmlTable = xmlEntity.getTable();
+		OrmTable ormTable = xmlEntity.getTable();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertNull(xmlTable.getSpecifiedCatalog());
+		assertNull(ormTable.getSpecifiedCatalog());
 		assertNull(entityResource.getTable());
 		
 		//set Catalog in the context model, verify resource model modified
-		xmlTable.setSpecifiedCatalog("foo");
-		assertEquals("foo", xmlTable.getSpecifiedCatalog());
+		ormTable.setSpecifiedCatalog("foo");
+		assertEquals("foo", ormTable.getSpecifiedCatalog());
 		assertEquals("foo", entityResource.getTable().getCatalog());
 		
 		//set Catalog to null in the context model
-		xmlTable.setSpecifiedCatalog(null);
-		assertNull(xmlTable.getSpecifiedCatalog());
+		ormTable.setSpecifiedCatalog(null);
+		assertNull(ormTable.getSpecifiedCatalog());
 		assertNull(entityResource.getTable());
 	}
 	

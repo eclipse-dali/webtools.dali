@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.Nullable;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.SingleRelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
@@ -35,16 +36,16 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	extends AbstractOrmRelationshipMapping<T> implements SingleRelationshipMapping
 {
 	
-	protected final List<GenericOrmJoinColumn> specifiedJoinColumns;
+	protected final List<OrmJoinColumn> specifiedJoinColumns;
 
-	protected final List<GenericOrmJoinColumn> defaultJoinColumns;
+	protected final List<OrmJoinColumn> defaultJoinColumns;
 
 	protected Boolean specifiedOptional;
 
 	protected AbstractOrmSingleRelationshipMapping(OrmPersistentAttribute parent) {
 		super(parent);
-		this.specifiedJoinColumns = new ArrayList<GenericOrmJoinColumn>();
-		this.defaultJoinColumns = new ArrayList<GenericOrmJoinColumn>();
+		this.specifiedJoinColumns = new ArrayList<OrmJoinColumn>();
+		this.defaultJoinColumns = new ArrayList<OrmJoinColumn>();
 
 		//this.getDefaultJoinColumns().add(this.createJoinColumn(new JoinColumnOwner(this)));
 	}
@@ -54,7 +55,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 		super.initializeFromXmlSingleRelationshipMapping(oldMapping);
 		int index = 0;
 		for (JoinColumn joinColumn : CollectionTools.iterable(oldMapping.specifiedJoinColumns())) {
-			GenericOrmJoinColumn newJoinColumn = addSpecifiedJoinColumn(index++);
+			OrmJoinColumn newJoinColumn = addSpecifiedJoinColumn(index++);
 			newJoinColumn.initializeFrom(joinColumn);
 		}
 	}
@@ -65,7 +66,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 
 	//***************** ISingleRelationshipMapping implementation *****************
 	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmJoinColumn> joinColumns() {
+	public ListIterator<OrmJoinColumn> joinColumns() {
 		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumns() : this.specifiedJoinColumns();
 	}
 
@@ -80,8 +81,8 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	
 	
 	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmJoinColumn> defaultJoinColumns() {
-		return new CloneListIterator<GenericOrmJoinColumn>(this.defaultJoinColumns);
+	public ListIterator<OrmJoinColumn> defaultJoinColumns() {
+		return new CloneListIterator<OrmJoinColumn>(this.defaultJoinColumns);
 	}
 
 	public int defaultJoinColumnsSize() {
@@ -89,8 +90,8 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ListIterator<GenericOrmJoinColumn> specifiedJoinColumns() {
-		return new CloneListIterator<GenericOrmJoinColumn>(this.specifiedJoinColumns);
+	public ListIterator<OrmJoinColumn> specifiedJoinColumns() {
+		return new CloneListIterator<OrmJoinColumn>(this.specifiedJoinColumns);
 	}
 
 	public int specifiedJoinColumnsSize() {
@@ -101,15 +102,15 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 		return !this.specifiedJoinColumns.isEmpty();
 	}
 
-	public GenericOrmJoinColumn addSpecifiedJoinColumn(int index) {
-		GenericOrmJoinColumn joinColumn = new GenericOrmJoinColumn(this, new JoinColumnOwner());
+	public OrmJoinColumn addSpecifiedJoinColumn(int index) {
+		OrmJoinColumn joinColumn = jpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
 		this.attributeMapping().getJoinColumns().add(index, OrmFactory.eINSTANCE.createJoinColumnImpl());
 		this.fireItemAdded(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		return joinColumn;
 	}
 
-	protected void addSpecifiedJoinColumn(int index, GenericOrmJoinColumn joinColumn) {
+	protected void addSpecifiedJoinColumn(int index, OrmJoinColumn joinColumn) {
 		addItemToList(index, joinColumn, this.specifiedJoinColumns, SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST);
 	}
 
@@ -118,12 +119,12 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	}
 	
 	public void removeSpecifiedJoinColumn(int index) {
-		GenericOrmJoinColumn removedJoinColumn = this.specifiedJoinColumns.remove(index);
+		OrmJoinColumn removedJoinColumn = this.specifiedJoinColumns.remove(index);
 		this.attributeMapping().getJoinColumns().remove(index);
 		fireItemRemoved(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 	}
 
-	protected void removeSpecifiedJoinColumn_(GenericOrmJoinColumn joinColumn) {
+	protected void removeSpecifiedJoinColumn_(OrmJoinColumn joinColumn) {
 		removeItemFromList(joinColumn, this.specifiedJoinColumns, SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST);
 	}
 	
@@ -179,10 +180,10 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 		}
 	}
 	
-	protected GenericOrmJoinColumn createJoinColumn(XmlJoinColumn joinColumn) {
-		GenericOrmJoinColumn xmlJoinColumn = new GenericOrmJoinColumn(this, new JoinColumnOwner());
-		xmlJoinColumn.initialize(joinColumn);
-		return xmlJoinColumn;
+	protected OrmJoinColumn createJoinColumn(XmlJoinColumn joinColumn) {
+		OrmJoinColumn ormJoinColumn = jpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner());
+		ormJoinColumn.initialize(joinColumn);
+		return ormJoinColumn;
 	}	
 
 	@Override
@@ -193,14 +194,14 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	}
 	
 	protected void updateSpecifiedJoinColumns(T singleRelationshipMapping) {
-		ListIterator<GenericOrmJoinColumn> joinColumns = specifiedJoinColumns();
+		ListIterator<OrmJoinColumn> joinColumns = specifiedJoinColumns();
 		ListIterator<XmlJoinColumn> resourceJoinColumns = EmptyListIterator.instance();
 		if (singleRelationshipMapping != null) {
 			resourceJoinColumns = singleRelationshipMapping.getJoinColumns().listIterator();
 		}
 		
 		while (joinColumns.hasNext()) {
-			GenericOrmJoinColumn joinColumn = joinColumns.next();
+			OrmJoinColumn joinColumn = joinColumns.next();
 			if (resourceJoinColumns.hasNext()) {
 				joinColumn.update(resourceJoinColumns.next());
 			}
