@@ -13,7 +13,6 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
@@ -35,7 +34,7 @@ public interface OrmPersistentType extends PersistentType
 	/**
 	 * Overriden to return an {@link OrmTypeMapping}
 	 */
-	OrmTypeMapping<? extends AbstractTypeMapping> getMapping();
+	OrmTypeMapping getMapping();
 
 	//******************* specified attributes *******************
 

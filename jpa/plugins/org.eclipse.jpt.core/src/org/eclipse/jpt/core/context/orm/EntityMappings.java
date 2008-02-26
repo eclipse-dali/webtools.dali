@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.context.TableGenerator;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 
 public interface EntityMappings extends JpaContextNode, JpaStructureNode
 {
@@ -117,7 +116,7 @@ public interface EntityMappings extends JpaContextNode, JpaStructureNode
 	 */
 	OrmPersistentType persistentTypeFor(String fullyQualifiedTypeName);
 	
-	void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping<? extends AbstractTypeMapping> oldMapping, OrmTypeMapping<? extends AbstractTypeMapping> newMapping);
+	void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping);
 	
 	// **************** updating ***********************************************
 	

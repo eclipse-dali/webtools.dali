@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.Iterator;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.orm.EntityMappings;
@@ -26,7 +26,7 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 
 public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMappedSuperclass>
-	implements MappedSuperclass
+	implements OrmMappedSuperclass
 {
 	protected String idClass;
 	

@@ -34,6 +34,9 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
+import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
@@ -75,7 +78,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 
 	protected final Collection<OrmTypeMappingProvider> typeMappingProviders;
 
-	protected OrmTypeMapping<? extends AbstractTypeMapping> ormTypeMapping;
+	protected OrmTypeMapping ormTypeMapping;
 	
 	protected PersistentType parentPersistentType;
 	
@@ -105,7 +108,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 		return false;
 	}
 	
-	protected OrmTypeMapping<? extends AbstractTypeMapping> buildOrmTypeMapping(String key) {
+	protected OrmTypeMapping buildOrmTypeMapping(String key) {
 		return typeMappingProvider(key).buildTypeMapping(jpaFactory(), this);
 	}
 
@@ -126,7 +129,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 		throw new IllegalArgumentException();
 	}
 
-	public OrmTypeMapping<? extends AbstractTypeMapping> getMapping() {
+	public OrmTypeMapping getMapping() {
 		return this.ormTypeMapping;
 	}
 
@@ -134,7 +137,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 		if (this.mappingKey() == newMappingKey) {
 			return;
 		}
-		OrmTypeMapping<? extends AbstractTypeMapping> oldMapping = getMapping();
+		OrmTypeMapping oldMapping = getMapping();
 		this.ormTypeMapping = buildOrmTypeMapping(newMappingKey);
 		entityMappings().changeMapping(this, oldMapping, this.ormTypeMapping);
 		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.ormTypeMapping);
@@ -144,7 +147,7 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 		if (this.mappingKey() == newMappingKey) {
 			return;
 		}
-		OrmTypeMapping<? extends AbstractTypeMapping> oldMapping = getMapping();
+		OrmTypeMapping oldMapping = getMapping();
 		this.ormTypeMapping = buildOrmTypeMapping(newMappingKey);
 		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.ormTypeMapping);
 	}
@@ -370,19 +373,19 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 	//I am trying to take adavantage of generics here, but it sure is
 	//leading to a lot of duplicated code. - KFM
 	public void initialize(XmlEntity entity) {
-		((GenericOrmEntity) getMapping()).initialize(entity);
+		((OrmEntity) getMapping()).initialize(entity);
 		this.initializeParentPersistentType();	
 		this.initializePersistentAttributes(entity);
 	}
 	
 	public void initialize(XmlMappedSuperclass mappedSuperclass) {
-		((GenericOrmMappedSuperclass) getMapping()).initialize(mappedSuperclass);
+		((OrmMappedSuperclass) getMapping()).initialize(mappedSuperclass);
 		this.initializeParentPersistentType();
 		this.initializePersistentAttributes(mappedSuperclass);
 	}
 		
 	public void initialize(XmlEmbeddable embeddable) {
-		((GenericOrmEmbeddable) getMapping()).initialize(embeddable);
+		((OrmEmbeddable) getMapping()).initialize(embeddable);
 		this.initializeParentPersistentType();		
 		this.initializePersistentAttributes(embeddable);
 	}
@@ -477,11 +480,11 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 
 	public void update(XmlEntity entity) {
 		if (mappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
-			((GenericOrmEntity) getMapping()).update(entity);
+			((OrmEntity) getMapping()).update(entity);
 		}
 		else {
 			setMappingKey_(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
-			((GenericOrmEntity) getMapping()).initialize(entity);					
+			((OrmEntity) getMapping()).initialize(entity);					
 		}
 		this.updateParentPersistentType();
 		this.updatePersistentAttributes(entity);
@@ -489,11 +492,11 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 	
 	public void update(XmlMappedSuperclass mappedSuperclass) {
 		if (mappingKey() == MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY) {
-			((GenericOrmMappedSuperclass) getMapping()).update(mappedSuperclass);
+			((OrmMappedSuperclass) getMapping()).update(mappedSuperclass);
 		}
 		else {
 			setMappingKey_(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
-			((GenericOrmMappedSuperclass) getMapping()).initialize(mappedSuperclass);
+			((OrmMappedSuperclass) getMapping()).initialize(mappedSuperclass);
 		}
 		this.updateParentPersistentType();
 		this.updatePersistentAttributes(mappedSuperclass);
@@ -501,11 +504,11 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 	
 	public void update(XmlEmbeddable embeddable) {
 		if (mappingKey() == MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
-			((GenericOrmEmbeddable) getMapping()).update(embeddable);
+			((OrmEmbeddable) getMapping()).update(embeddable);
 		}
 		else {
 			setMappingKey_(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
-			((GenericOrmEmbeddable) getMapping()).initialize(embeddable);				
+			((OrmEmbeddable) getMapping()).initialize(embeddable);				
 		}
 		this.updateParentPersistentType();
 		this.updatePersistentAttributes(embeddable);

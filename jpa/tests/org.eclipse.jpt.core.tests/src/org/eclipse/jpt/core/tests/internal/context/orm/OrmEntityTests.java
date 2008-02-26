@@ -19,14 +19,14 @@ import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
+import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddable;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappedSuperclass;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
@@ -38,9 +38,9 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class XmlEntityTests extends ContextModelTestCase
+public class OrmEntityTests extends ContextModelTestCase
 {
-	public XmlEntityTests(String name) {
+	public OrmEntityTests(String name) {
 		super(name);
 	}
 	
@@ -137,37 +137,37 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	public void testUpdateSpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertNull(xmlEntity.getSpecifiedName());
+		assertNull(ormEntity.getSpecifiedName());
 		assertNull(entityResource.getName());
 		
 		//set name in the resource model, verify context model updated
 		entityResource.setName("foo");
-		assertEquals("foo", xmlEntity.getSpecifiedName());
+		assertEquals("foo", ormEntity.getSpecifiedName());
 		assertEquals("foo", entityResource.getName());
 	
 		//set name to null in the resource model
 		entityResource.setName(null);
-		assertNull(xmlEntity.getSpecifiedName());
+		assertNull(ormEntity.getSpecifiedName());
 		assertNull(entityResource.getName());
 	}
 	
 	public void testModifySpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertNull(xmlEntity.getSpecifiedName());
+		assertNull(ormEntity.getSpecifiedName());
 		assertNull(entityResource.getName());
 		
 		//set name in the context model, verify resource model modified
-		xmlEntity.setSpecifiedName("foo");
-		assertEquals("foo", xmlEntity.getSpecifiedName());
+		ormEntity.setSpecifiedName("foo");
+		assertEquals("foo", ormEntity.getSpecifiedName());
 		assertEquals("foo", entityResource.getName());
 		
 		//set name to null in the context model
-		xmlEntity.setSpecifiedName(null);
-		assertNull(xmlEntity.getSpecifiedName());
+		ormEntity.setSpecifiedName(null);
+		assertNull(ormEntity.getSpecifiedName());
 		assertNull(entityResource.getName());
 	}
 
@@ -175,141 +175,141 @@ public class XmlEntityTests extends ContextModelTestCase
 		createTestEntityFieldAccess();
 		
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertEquals(TYPE_NAME, xmlEntity.getDefaultName());
+		assertEquals(TYPE_NAME, ormEntity.getDefaultName());
 		
-		xmlEntity.javaEntity().setSpecifiedName("Foo");
+		ormEntity.javaEntity().setSpecifiedName("Foo");
 		//xml default name is not affect by what is specified in java
-		assertEquals(TYPE_NAME, xmlEntity.getDefaultName());
+		assertEquals(TYPE_NAME, ormEntity.getDefaultName());
 		
 		//set class in the resource model, verify context model updated
 		entityResource.setClassName("com.Bar");
-		assertEquals("Bar", xmlEntity.getDefaultName());
+		assertEquals("Bar", ormEntity.getDefaultName());
 		
 		//set class to null in the resource model
 		entityResource.setClassName(null);
-		assertNull(xmlEntity.getDefaultName());
+		assertNull(ormEntity.getDefaultName());
 	}
 	
 	public void testUpdateName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertEquals("Foo", xmlEntity.getName());
+		assertEquals("Foo", ormEntity.getName());
 		
 		//set class in the resource model, verify context model updated
 		entityResource.setClassName("com.Bar");
-		assertEquals("Bar", xmlEntity.getName());
+		assertEquals("Bar", ormEntity.getName());
 		
 		entityResource.setName("Baz");
-		assertEquals("Baz", xmlEntity.getName());
+		assertEquals("Baz", ormEntity.getName());
 		
 		//set class to null in the resource model
 		entityResource.setClassName(null);
-		assertEquals("Baz", xmlEntity.getName());
+		assertEquals("Baz", ormEntity.getName());
 		
 		entityResource.setName(null);
-		assertNull(xmlEntity.getName());
+		assertNull(ormEntity.getName());
 	}
 
 	public void testUpdateClass() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertEquals("model.Foo", xmlEntity.getClass_());
+		assertEquals("model.Foo", ormEntity.getClass_());
 		assertEquals("model.Foo", entityResource.getClassName());
 		
 		//set class in the resource model, verify context model updated
 		entityResource.setClassName("com.Bar");
-		assertEquals("com.Bar", xmlEntity.getClass_());
+		assertEquals("com.Bar", ormEntity.getClass_());
 		assertEquals("com.Bar", entityResource.getClassName());
 	
 		//set class to null in the resource model
 		entityResource.setClassName(null);
-		assertNull(xmlEntity.getClass_());
+		assertNull(ormEntity.getClass_());
 		assertNull(entityResource.getClassName());
 	}
 	
 	public void testModifyClass() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertEquals("model.Foo", xmlEntity.getClass_());
+		assertEquals("model.Foo", ormEntity.getClass_());
 		assertEquals("model.Foo", entityResource.getClassName());
 		
 		//set class in the context model, verify resource model modified
-		xmlEntity.setClass("com.Bar");
-		assertEquals("com.Bar", xmlEntity.getClass_());
+		ormEntity.setClass("com.Bar");
+		assertEquals("com.Bar", ormEntity.getClass_());
 		assertEquals("com.Bar", entityResource.getClassName());
 		
 		//set class to null in the context model
-		xmlEntity.setClass(null);
-		assertNull(xmlEntity.getClass_());
+		ormEntity.setClass(null);
+		assertNull(ormEntity.getClass_());
 		assertNull(entityResource.getClassName());
 	}
 	//TODO add tests for setting the className when the package is set on entity-mappings
 	
 	public void testUpdateSpecifiedAccess() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertNull(xmlEntity.getSpecifiedAccess());
+		assertNull(ormEntity.getSpecifiedAccess());
 		assertNull(entityResource.getAccess());
 		
 		//set access in the resource model, verify context model updated
 		entityResource.setAccess(org.eclipse.jpt.core.resource.orm.AccessType.FIELD);
 		ormResource().save(null);
-		assertEquals(AccessType.FIELD, xmlEntity.getSpecifiedAccess());
+		assertEquals(AccessType.FIELD, ormEntity.getSpecifiedAccess());
 		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.FIELD, entityResource.getAccess());
 	
 		//set access to null in the resource model
 		entityResource.setAccess(null);
-		assertNull(xmlEntity.getSpecifiedAccess());
+		assertNull(ormEntity.getSpecifiedAccess());
 		assertNull(entityResource.getAccess());
 	}
 	
 	public void testModifySpecifiedAccess() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertNull(xmlEntity.getSpecifiedAccess());
+		assertNull(ormEntity.getSpecifiedAccess());
 		assertNull(entityResource.getAccess());
 		
 		//set access in the context model, verify resource model modified
-		xmlEntity.setSpecifiedAccess(AccessType.PROPERTY);
-		assertEquals(AccessType.PROPERTY, xmlEntity.getSpecifiedAccess());
+		ormEntity.setSpecifiedAccess(AccessType.PROPERTY);
+		assertEquals(AccessType.PROPERTY, ormEntity.getSpecifiedAccess());
 		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY, entityResource.getAccess());
 		
 		//set access to null in the context model
-		xmlEntity.setSpecifiedAccess(null);
-		assertNull(xmlEntity.getSpecifiedAccess());
+		ormEntity.setSpecifiedAccess(null);
+		assertNull(ormEntity.getSpecifiedAccess());
 		assertNull(entityResource.getAccess());
 	}
 	
 	public void testUpdateDefaultAccessFromPersistenceUnitDefaults() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertNull(xmlEntity.getSpecifiedAccess());
-		assertNull(xmlEntity.getDefaultAccess());
+		assertNull(ormEntity.getSpecifiedAccess());
+		assertNull(ormEntity.getDefaultAccess());
 		assertNull(entityResource.getAccess());
 		
 		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createPersistenceUnitDefaults());
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(org.eclipse.jpt.core.resource.orm.AccessType.FIELD);
-		assertEquals(AccessType.FIELD, xmlEntity.getDefaultAccess());
-		assertNull(xmlEntity.getSpecifiedAccess());
+		assertEquals(AccessType.FIELD, ormEntity.getDefaultAccess());
+		assertNull(ormEntity.getSpecifiedAccess());
 		assertNull(entityResource.getAccess());
 		
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY);
-		assertEquals(AccessType.PROPERTY, xmlEntity.getDefaultAccess());
-		assertNull(xmlEntity.getSpecifiedAccess());
+		assertEquals(AccessType.PROPERTY, ormEntity.getDefaultAccess());
+		assertNull(ormEntity.getSpecifiedAccess());
 		assertNull(entityResource.getAccess());
 		
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);
-		assertNull(xmlEntity.getSpecifiedAccess());
-		assertNull(xmlEntity.getDefaultAccess());
+		assertNull(ormEntity.getSpecifiedAccess());
+		assertNull(ormEntity.getDefaultAccess());
 		assertNull(entityResource.getAccess());
 	}
 	
@@ -317,192 +317,192 @@ public class XmlEntityTests extends ContextModelTestCase
 		createTestEntityDefaultFieldAccess();
 
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		//java has no annotations, so defaultAccess in xml is null
-		assertNull(xmlEntity.getDefaultAccess());
+		assertNull(ormEntity.getDefaultAccess());
 		
 		entityMappings().setSpecifiedAccess(AccessType.FIELD);
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);		
 		//entityMappings access wins over persistence-unit-defaults access
-		assertEquals(AccessType.FIELD, xmlEntity.getDefaultAccess());
+		assertEquals(AccessType.FIELD, ormEntity.getDefaultAccess());
 		
 		entityMappings().setSpecifiedAccess(null);		
 		//persistence-unit-defaults access used now
-		assertEquals(AccessType.PROPERTY, xmlEntity.getDefaultAccess());
+		assertEquals(AccessType.PROPERTY, ormEntity.getDefaultAccess());
 		
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);
-		assertNull(xmlEntity.getDefaultAccess());
+		assertNull(ormEntity.getDefaultAccess());
 		
 		ormPersistentType.javaPersistentType().attributeNamed("id").setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		//java has annotations on fields now, that should win in all cases
-		assertEquals(AccessType.FIELD, xmlEntity.getDefaultAccess());
+		assertEquals(AccessType.FIELD, ormEntity.getDefaultAccess());
 		
 		entityMappings().setSpecifiedAccess(AccessType.PROPERTY);
 		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
-		assertEquals(AccessType.FIELD, xmlEntity.getDefaultAccess());
+		assertEquals(AccessType.FIELD, ormEntity.getDefaultAccess());
 
 		ormPersistentType.javaPersistentType().attributeNamed("id").setSpecifiedMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
-		assertEquals(AccessType.PROPERTY, xmlEntity.getDefaultAccess());
+		assertEquals(AccessType.PROPERTY, ormEntity.getDefaultAccess());
 	}
 
 	public void testUpdateDefaultAccessFromJavaFieldAccess() throws Exception {
 		createTestEntityFieldAccess();
 
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		assertEquals(AccessType.FIELD, xmlEntity.getDefaultAccess());
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+		assertEquals(AccessType.FIELD, ormEntity.getDefaultAccess());
 		
-		xmlEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
-		assertNull(xmlEntity.getDefaultAccess());
+		ormEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		assertNull(ormEntity.getDefaultAccess());
 		
-		xmlEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
-		assertEquals(AccessType.FIELD, xmlEntity.getDefaultAccess());
+		ormEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
+		assertEquals(AccessType.FIELD, ormEntity.getDefaultAccess());
 
 		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertNull(xmlEntity.getDefaultAccess());
+		assertNull(ormEntity.getDefaultAccess());
 		
-		xmlEntity.setSpecifiedMetadataComplete(null);
-		assertNull(xmlEntity.getDefaultAccess());
+		ormEntity.setSpecifiedMetadataComplete(null);
+		assertNull(ormEntity.getDefaultAccess());
 		
 		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
-		assertEquals(AccessType.FIELD, xmlEntity.getDefaultAccess());
+		assertEquals(AccessType.FIELD, ormEntity.getDefaultAccess());
 	}
 	
 	public void testUpdateDefaultAccessFromJavaPropertyAccess() throws Exception {
 		createTestEntityPropertyAccess();
 
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		assertEquals(AccessType.PROPERTY, xmlEntity.getDefaultAccess());
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+		assertEquals(AccessType.PROPERTY, ormEntity.getDefaultAccess());
 		
-		xmlEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
-		assertNull(xmlEntity.getDefaultAccess());
+		ormEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		assertNull(ormEntity.getDefaultAccess());
 		
-		xmlEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
-		assertEquals(AccessType.PROPERTY, xmlEntity.getDefaultAccess());
+		ormEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
+		assertEquals(AccessType.PROPERTY, ormEntity.getDefaultAccess());
 
 		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertNull(xmlEntity.getDefaultAccess());
+		assertNull(ormEntity.getDefaultAccess());
 		
-		xmlEntity.setSpecifiedMetadataComplete(null);
-		assertNull(xmlEntity.getDefaultAccess());
+		ormEntity.setSpecifiedMetadataComplete(null);
+		assertNull(ormEntity.getDefaultAccess());
 		
 		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
-		assertEquals(AccessType.PROPERTY, xmlEntity.getDefaultAccess());
+		assertEquals(AccessType.PROPERTY, ormEntity.getDefaultAccess());
 	}
 	
 	public void testUpdateDefaultAccessNoUnderlyingJava() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		assertNull(xmlEntity.getDefaultAccess());
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+		assertNull(ormEntity.getDefaultAccess());
 	}
 		
 	public void testUpdateSpecifiedMetadataComplete() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertNull(xmlEntity.getSpecifiedMetadataComplete());
+		assertNull(ormEntity.getSpecifiedMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 		
 		//set metadata-complete in the resource model, verify context model updated
 		entityResource.setMetadataComplete(true);
 		ormResource().save(null);
-		assertTrue(xmlEntity.getSpecifiedMetadataComplete());
+		assertTrue(ormEntity.getSpecifiedMetadataComplete());
 		assertTrue(entityResource.getMetadataComplete());
 	
 		//set access to false in the resource model
 		entityResource.setMetadataComplete(false);
 		ormResource().save(null);
-		assertFalse(xmlEntity.getSpecifiedMetadataComplete());
+		assertFalse(ormEntity.getSpecifiedMetadataComplete());
 		assertFalse(entityResource.getMetadataComplete());
 		
 		entityResource.setMetadataComplete(null);
 		ormResource().save(null);
-		assertNull(xmlEntity.getSpecifiedMetadataComplete());
+		assertNull(ormEntity.getSpecifiedMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 	}
 	
 	public void testModifySpecifiedMetadataComplete() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertNull(xmlEntity.getSpecifiedMetadataComplete());
+		assertNull(ormEntity.getSpecifiedMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 		
 		//set access in the context model, verify resource model modified
-		xmlEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
-		assertTrue(xmlEntity.getSpecifiedMetadataComplete());
-		assertTrue(entityResource.getMetadataComplete());
+		ormEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		assertTrue(ormEntity.getSpecifiedMetadataComplete().booleanValue());
+		assertTrue(entityResource.getMetadataComplete().booleanValue());
 		
 		//set access to null in the context model
-		xmlEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
-		assertFalse(xmlEntity.getSpecifiedMetadataComplete());
-		assertFalse(entityResource.getMetadataComplete());
+		ormEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
+		assertFalse(ormEntity.getSpecifiedMetadataComplete().booleanValue());
+		assertFalse(entityResource.getMetadataComplete().booleanValue());
 		
-		xmlEntity.setSpecifiedMetadataComplete(null);
-		assertNull(xmlEntity.getSpecifiedMetadataComplete());
+		ormEntity.setSpecifiedMetadataComplete(null);
+		assertNull(ormEntity.getSpecifiedMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 	}
 	
 	public void testUpdateDefaultMetadataComplete() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertNull(xmlEntity.getSpecifiedMetadataComplete());
-		assertFalse(xmlEntity.isDefaultMetadataComplete());
+		assertNull(ormEntity.getSpecifiedMetadataComplete());
+		assertFalse(ormEntity.isDefaultMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 		
 		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertTrue(xmlEntity.isDefaultMetadataComplete());
-		assertNull(xmlEntity.getSpecifiedMetadataComplete());
+		assertTrue(ormEntity.isDefaultMetadataComplete());
+		assertNull(ormEntity.getSpecifiedMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 		
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
-		assertNull(xmlEntity.getSpecifiedMetadataComplete());
-		assertFalse(xmlEntity.isDefaultMetadataComplete());
+		assertNull(ormEntity.getSpecifiedMetadataComplete());
+		assertFalse(ormEntity.isDefaultMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 		
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		xmlEntity.setSpecifiedMetadataComplete(false);
-		assertFalse(xmlEntity.getSpecifiedMetadataComplete());
-		assertTrue(xmlEntity.isDefaultMetadataComplete());
-		assertTrue(xmlEntity.isMetadataComplete());
+		ormEntity.setSpecifiedMetadataComplete(false);
+		assertFalse(ormEntity.getSpecifiedMetadataComplete());
+		assertTrue(ormEntity.isDefaultMetadataComplete());
+		assertTrue(ormEntity.isMetadataComplete());
 	}
 
 	public void testUpdateMetadataComplete() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertNull(xmlEntity.getSpecifiedMetadataComplete());
-		assertFalse(xmlEntity.isMetadataComplete());
+		assertNull(ormEntity.getSpecifiedMetadataComplete());
+		assertFalse(ormEntity.isMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 		
 		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createPersistenceUnitMetadata());
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertTrue(xmlEntity.isMetadataComplete());
-		assertNull(xmlEntity.getSpecifiedMetadataComplete());
+		assertTrue(ormEntity.isMetadataComplete());
+		assertNull(ormEntity.getSpecifiedMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 		
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
-		assertFalse(xmlEntity.isMetadataComplete());
-		assertNull(xmlEntity.getSpecifiedMetadataComplete());
+		assertFalse(ormEntity.isMetadataComplete());
+		assertNull(ormEntity.getSpecifiedMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 	}
 	
 	
 	public void testUpdateInheritanceStrategy() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertEquals(InheritanceType.SINGLE_TABLE, xmlEntity.getInheritanceStrategy());
+		assertEquals(InheritanceType.SINGLE_TABLE, ormEntity.getInheritanceStrategy());
 		assertNull(entityResource.getInheritance());
 
 		//set inheritance strategy in the resource model, verify context model updated
 		entityResource.setInheritance(OrmFactory.eINSTANCE.createInheritance());
 		entityResource.getInheritance().setStrategy(org.eclipse.jpt.core.resource.orm.InheritanceType.TABLE_PER_CLASS);
 		
-		assertEquals(InheritanceType.TABLE_PER_CLASS, xmlEntity.getInheritanceStrategy());		
+		assertEquals(InheritanceType.TABLE_PER_CLASS, ormEntity.getInheritanceStrategy());		
 		assertEquals(org.eclipse.jpt.core.resource.orm.InheritanceType.TABLE_PER_CLASS, entityResource.getInheritance().getStrategy());		
 	}
 	
@@ -510,32 +510,32 @@ public class XmlEntityTests extends ContextModelTestCase
 		createTestEntityDefaultFieldAccess();
 
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		//no inheritance strategy specified in java so single-table is default
-		assertEquals(InheritanceType.SINGLE_TABLE, xmlEntity.getDefaultInheritanceStrategy());
+		assertEquals(InheritanceType.SINGLE_TABLE, ormEntity.getDefaultInheritanceStrategy());
 		
-		xmlEntity.javaEntity().setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
-		assertEquals(InheritanceType.JOINED, xmlEntity.getDefaultInheritanceStrategy());
+		ormEntity.javaEntity().setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		assertEquals(InheritanceType.JOINED, ormEntity.getDefaultInheritanceStrategy());
 			
-		xmlEntity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
+		ormEntity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
 		ormResource().save(null);
 		//inheritance tag exists in xml, so it overrides anything in java
-		assertEquals(InheritanceType.SINGLE_TABLE, xmlEntity.getDefaultInheritanceStrategy());
+		assertEquals(InheritanceType.SINGLE_TABLE, ormEntity.getDefaultInheritanceStrategy());
 
-		xmlEntity.setSpecifiedInheritanceStrategy(null);		
+		ormEntity.setSpecifiedInheritanceStrategy(null);		
 		ormResource().save(null);
-		assertEquals(InheritanceType.JOINED, xmlEntity.getDefaultInheritanceStrategy());
+		assertEquals(InheritanceType.JOINED, ormEntity.getDefaultInheritanceStrategy());
 
-		xmlEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		ormEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
 		ormResource().save(null);
-		assertEquals(InheritanceType.SINGLE_TABLE, xmlEntity.getDefaultInheritanceStrategy());
+		assertEquals(InheritanceType.SINGLE_TABLE, ormEntity.getDefaultInheritanceStrategy());
 		
-		xmlEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
-		assertEquals(InheritanceType.JOINED, xmlEntity.getDefaultInheritanceStrategy());
+		ormEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
+		assertEquals(InheritanceType.JOINED, ormEntity.getDefaultInheritanceStrategy());
 		
-		xmlEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		//this setting overrides the false meta-data complete found on xmlEntity
-		assertEquals(InheritanceType.SINGLE_TABLE, xmlEntity.getDefaultInheritanceStrategy());
+		ormEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		//this setting overrides the false meta-data complete found on ormEntity
+		assertEquals(InheritanceType.SINGLE_TABLE, ormEntity.getDefaultInheritanceStrategy());
 	}
 	
 	public void testUpdateDefaultInheritanceStrategyFromParent() throws Exception {
@@ -544,8 +544,8 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 		OrmPersistentType parentPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentType childPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
-		GenericOrmEntity parentXmlEntity = (GenericOrmEntity) parentPersistentType.getMapping();
-		GenericOrmEntity childXmlEntity = (GenericOrmEntity) childPersistentType.getMapping();
+		OrmEntity parentXmlEntity = (OrmEntity) parentPersistentType.getMapping();
+		OrmEntity childXmlEntity = (OrmEntity) childPersistentType.getMapping();
 		
 		assertEquals(parentXmlEntity, childXmlEntity.parentEntity());
 		assertEquals(InheritanceType.SINGLE_TABLE, childXmlEntity.getDefaultInheritanceStrategy());
@@ -571,62 +571,62 @@ public class XmlEntityTests extends ContextModelTestCase
 
 	public void testUpdateSpecifiedInheritanceStrategy() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertNull(xmlEntity.getSpecifiedInheritanceStrategy());
+		assertNull(ormEntity.getSpecifiedInheritanceStrategy());
 		assertNull(entityResource.getInheritance());
 		
 		//set strategy in the resource model, verify context model updated
 		entityResource.setInheritance(OrmFactory.eINSTANCE.createInheritance());
 		entityResource.getInheritance().setStrategy(org.eclipse.jpt.core.resource.orm.InheritanceType.JOINED);
-		assertEquals(InheritanceType.JOINED, xmlEntity.getSpecifiedInheritanceStrategy());
+		assertEquals(InheritanceType.JOINED, ormEntity.getSpecifiedInheritanceStrategy());
 		assertEquals(org.eclipse.jpt.core.resource.orm.InheritanceType.JOINED, entityResource.getInheritance().getStrategy());
 	
 		//set strategy to null in the resource model
 		entityResource.getInheritance().setStrategy(null);
-		assertNull(xmlEntity.getSpecifiedInheritanceStrategy());
+		assertNull(ormEntity.getSpecifiedInheritanceStrategy());
 		assertNull(entityResource.getInheritance().getStrategy());
 		
 		entityResource.getInheritance().setStrategy(org.eclipse.jpt.core.resource.orm.InheritanceType.SINGLE_TABLE);
-		assertEquals(InheritanceType.SINGLE_TABLE, xmlEntity.getSpecifiedInheritanceStrategy());
+		assertEquals(InheritanceType.SINGLE_TABLE, ormEntity.getSpecifiedInheritanceStrategy());
 		assertEquals(org.eclipse.jpt.core.resource.orm.InheritanceType.SINGLE_TABLE, entityResource.getInheritance().getStrategy());
 
 		entityResource.setInheritance(null);
-		assertNull(xmlEntity.getSpecifiedInheritanceStrategy());
+		assertNull(ormEntity.getSpecifiedInheritanceStrategy());
 		assertNull(entityResource.getInheritance());
 	}
 	
 	public void testModifySpecifiedInheritanceStrategy() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		assertNull(xmlEntity.getSpecifiedInheritanceStrategy());
+		assertNull(ormEntity.getSpecifiedInheritanceStrategy());
 		assertNull(entityResource.getInheritance());
 		
 		//set strategy in the context model, verify resource model modified
-		xmlEntity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
-		assertEquals(InheritanceType.TABLE_PER_CLASS, xmlEntity.getSpecifiedInheritanceStrategy());
+		ormEntity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
+		assertEquals(InheritanceType.TABLE_PER_CLASS, ormEntity.getSpecifiedInheritanceStrategy());
 		assertEquals(org.eclipse.jpt.core.resource.orm.InheritanceType.TABLE_PER_CLASS, entityResource.getInheritance().getStrategy());
 		
 		//set strategy to null in the context model
-		xmlEntity.setSpecifiedInheritanceStrategy(null);
-		assertNull(xmlEntity.getSpecifiedInheritanceStrategy());
+		ormEntity.setSpecifiedInheritanceStrategy(null);
+		assertNull(ormEntity.getSpecifiedInheritanceStrategy());
 		assertNull(entityResource.getInheritance());	
 	}
 	
 	public void testAddSpecifiedSecondaryTable() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
-		OrmSecondaryTable secondaryTable = xmlEntity.addSpecifiedSecondaryTable(0);
+		OrmSecondaryTable secondaryTable = ormEntity.addSpecifiedSecondaryTable(0);
 		ormResource().save(null);
 		secondaryTable.setSpecifiedName("FOO");
 		ormResource().save(null);
 				
 		assertEquals("FOO", entityResource.getSecondaryTables().get(0).getName());
 		
-		OrmSecondaryTable secondaryTable2 = xmlEntity.addSpecifiedSecondaryTable(0);
+		OrmSecondaryTable secondaryTable2 = ormEntity.addSpecifiedSecondaryTable(0);
 		ormResource().save(null);
 		secondaryTable2.setSpecifiedName("BAR");
 		ormResource().save(null);
@@ -634,7 +634,7 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals("BAR", entityResource.getSecondaryTables().get(0).getName());
 		assertEquals("FOO", entityResource.getSecondaryTables().get(1).getName());
 		
-		OrmSecondaryTable secondaryTable3 = xmlEntity.addSpecifiedSecondaryTable(1);
+		OrmSecondaryTable secondaryTable3 = ormEntity.addSpecifiedSecondaryTable(1);
 		ormResource().save(null);
 		secondaryTable3.setSpecifiedName("BAZ");
 		ormResource().save(null);
@@ -643,12 +643,12 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals("BAZ", entityResource.getSecondaryTables().get(1).getName());
 		assertEquals("FOO", entityResource.getSecondaryTables().get(2).getName());
 		
-		ListIterator<OrmSecondaryTable> secondaryTables = xmlEntity.specifiedSecondaryTables();
+		ListIterator<OrmSecondaryTable> secondaryTables = ormEntity.specifiedSecondaryTables();
 		assertEquals(secondaryTable2, secondaryTables.next());
 		assertEquals(secondaryTable3, secondaryTables.next());
 		assertEquals(secondaryTable, secondaryTables.next());
 		
-		secondaryTables = xmlEntity.specifiedSecondaryTables();
+		secondaryTables = ormEntity.specifiedSecondaryTables();
 		assertEquals("BAR", secondaryTables.next().getName());
 		assertEquals("BAZ", secondaryTables.next().getName());
 		assertEquals("FOO", secondaryTables.next().getName());
@@ -656,42 +656,42 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	public void testRemoveSpecifiedSecondaryTable() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 
-		xmlEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
-		xmlEntity.addSpecifiedSecondaryTable(1).setSpecifiedName("BAR");
-		xmlEntity.addSpecifiedSecondaryTable(2).setSpecifiedName("BAZ");
+		ormEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
+		ormEntity.addSpecifiedSecondaryTable(1).setSpecifiedName("BAR");
+		ormEntity.addSpecifiedSecondaryTable(2).setSpecifiedName("BAZ");
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals(3, entityResource.getSecondaryTables().size());
 		
-		xmlEntity.removeSpecifiedSecondaryTable(0);
+		ormEntity.removeSpecifiedSecondaryTable(0);
 		assertEquals(2, entityResource.getSecondaryTables().size());
 		assertEquals("BAR", entityResource.getSecondaryTables().get(0).getName());
 		assertEquals("BAZ", entityResource.getSecondaryTables().get(1).getName());
 
-		xmlEntity.removeSpecifiedSecondaryTable(0);
+		ormEntity.removeSpecifiedSecondaryTable(0);
 		assertEquals(1, entityResource.getSecondaryTables().size());
 		assertEquals("BAZ", entityResource.getSecondaryTables().get(0).getName());
 		
-		xmlEntity.removeSpecifiedSecondaryTable(0);
+		ormEntity.removeSpecifiedSecondaryTable(0);
 		assertEquals(0, entityResource.getSecondaryTables().size());
 	}
 	
 	public void testMoveSpecifiedSecondaryTable() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 
-		xmlEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
-		xmlEntity.addSpecifiedSecondaryTable(1).setSpecifiedName("BAR");
-		xmlEntity.addSpecifiedSecondaryTable(2).setSpecifiedName("BAZ");
+		ormEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
+		ormEntity.addSpecifiedSecondaryTable(1).setSpecifiedName("BAR");
+		ormEntity.addSpecifiedSecondaryTable(2).setSpecifiedName("BAZ");
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals(3, entityResource.getSecondaryTables().size());
 		
 		
-		xmlEntity.moveSpecifiedSecondaryTable(2, 0);
-		ListIterator<OrmSecondaryTable> secondaryTables = xmlEntity.specifiedSecondaryTables();
+		ormEntity.moveSpecifiedSecondaryTable(2, 0);
+		ListIterator<OrmSecondaryTable> secondaryTables = ormEntity.specifiedSecondaryTables();
 		assertEquals("BAR", secondaryTables.next().getName());
 		assertEquals("BAZ", secondaryTables.next().getName());
 		assertEquals("FOO", secondaryTables.next().getName());
@@ -701,8 +701,8 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals("FOO", entityResource.getSecondaryTables().get(2).getName());
 
 
-		xmlEntity.moveSpecifiedSecondaryTable(0, 1);
-		secondaryTables = xmlEntity.specifiedSecondaryTables();
+		ormEntity.moveSpecifiedSecondaryTable(0, 1);
+		secondaryTables = ormEntity.specifiedSecondaryTables();
 		assertEquals("BAZ", secondaryTables.next().getName());
 		assertEquals("BAR", secondaryTables.next().getName());
 		assertEquals("FOO", secondaryTables.next().getName());
@@ -714,7 +714,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	public void testUpdateSecondaryTables() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createSecondaryTable());
@@ -725,43 +725,43 @@ public class XmlEntityTests extends ContextModelTestCase
 		entityResource.getSecondaryTables().get(1).setName("BAR");
 		entityResource.getSecondaryTables().get(2).setName("BAZ");
 
-		ListIterator<OrmSecondaryTable> secondaryTables = xmlEntity.specifiedSecondaryTables();
+		ListIterator<OrmSecondaryTable> secondaryTables = ormEntity.specifiedSecondaryTables();
 		assertEquals("FOO", secondaryTables.next().getName());
 		assertEquals("BAR", secondaryTables.next().getName());
 		assertEquals("BAZ", secondaryTables.next().getName());
 		assertFalse(secondaryTables.hasNext());
 		
 		entityResource.getSecondaryTables().move(2, 0);
-		secondaryTables = xmlEntity.specifiedSecondaryTables();
+		secondaryTables = ormEntity.specifiedSecondaryTables();
 		assertEquals("BAR", secondaryTables.next().getName());
 		assertEquals("BAZ", secondaryTables.next().getName());
 		assertEquals("FOO", secondaryTables.next().getName());
 		assertFalse(secondaryTables.hasNext());
 
 		entityResource.getSecondaryTables().move(0, 1);
-		secondaryTables = xmlEntity.specifiedSecondaryTables();
+		secondaryTables = ormEntity.specifiedSecondaryTables();
 		assertEquals("BAZ", secondaryTables.next().getName());
 		assertEquals("BAR", secondaryTables.next().getName());
 		assertEquals("FOO", secondaryTables.next().getName());
 		assertFalse(secondaryTables.hasNext());
 
 		entityResource.getSecondaryTables().remove(1);
-		secondaryTables = xmlEntity.specifiedSecondaryTables();
+		secondaryTables = ormEntity.specifiedSecondaryTables();
 		assertEquals("BAZ", secondaryTables.next().getName());
 		assertEquals("FOO", secondaryTables.next().getName());
 		assertFalse(secondaryTables.hasNext());
 
 		entityResource.getSecondaryTables().remove(1);
-		secondaryTables = xmlEntity.specifiedSecondaryTables();
+		secondaryTables = ormEntity.specifiedSecondaryTables();
 		assertEquals("BAZ", secondaryTables.next().getName());
 		assertFalse(secondaryTables.hasNext());
 		
 		entityResource.getSecondaryTables().remove(0);
-		assertFalse(xmlEntity.specifiedSecondaryTables().hasNext());
+		assertFalse(ormEntity.specifiedSecondaryTables().hasNext());
 	}
 	
 	//test adding 2 secondary tables to java entity
-	//override one in xmlEntity, verify other one still exists as a default
+	//override one in ormEntity, verify other one still exists as a default
 	//change xml-mapping-metadata complete setting in both locations and verify defaults from java are gone
 	public void testDefaultSecondaryTables() throws Exception {
 		createTestEntityDefaultFieldAccess();
@@ -769,10 +769,10 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 		OrmPersistentType parentPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentType childPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
-		GenericOrmEntity parentXmlEntity = (GenericOrmEntity) parentPersistentType.getMapping();
-		GenericOrmEntity childXmlEntity = (GenericOrmEntity) childPersistentType.getMapping();
+		OrmEntity parentOrmEntity = (OrmEntity) parentPersistentType.getMapping();
+		OrmEntity childOrmEntity = (OrmEntity) childPersistentType.getMapping();
 		
-		childXmlEntity.javaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
+		childOrmEntity.javaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
 		
 //		assertEquals("FOO", childXmlEntity.virtualSecondaryTables().next().getName());
 //		assertEquals("FOO", childXmlEntity.secondaryTables().next().getName());
@@ -853,7 +853,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	public void testMakeEntityEmbeddable() throws Exception {
 		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity entity = (GenericOrmEntity) entityPersistentType.getMapping();
+		OrmEntity entity = (OrmEntity) entityPersistentType.getMapping();
 		entity.setSpecifiedAccess(AccessType.PROPERTY);
 		entity.setSpecifiedDiscriminatorValue("DISC_VALUE");
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
@@ -869,17 +869,17 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals(Boolean.TRUE, embeddable.getMetadataComplete());
 		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY, embeddable.getAccess());
 		
-		GenericOrmEmbeddable xmlEmbeddable = (GenericOrmEmbeddable) entityPersistentType.getMapping();
-		assertEquals("model.Foo", xmlEmbeddable.getClass_());
-		assertEquals(Boolean.TRUE, xmlEmbeddable.getSpecifiedMetadataComplete());
-		assertEquals(AccessType.PROPERTY, xmlEmbeddable.getSpecifiedAccess());
+		OrmEmbeddable ormEmbeddable = (OrmEmbeddable) entityPersistentType.getMapping();
+		assertEquals("model.Foo", ormEmbeddable.getClass_());
+		assertEquals(Boolean.TRUE, ormEmbeddable.getSpecifiedMetadataComplete());
+		assertEquals(AccessType.PROPERTY, ormEmbeddable.getSpecifiedAccess());
 	}
 	
 	//TODO test that attribute mappings are not removed when changing type mapping.
 	public void testMakeEntityEmbeddable2() throws Exception {
 		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		GenericOrmEntity entity = (GenericOrmEntity) entityPersistentType.getMapping();
+		OrmEntity entity = (OrmEntity) entityPersistentType.getMapping();
 		entity.setSpecifiedAccess(AccessType.PROPERTY);
 		entity.setSpecifiedDiscriminatorValue("DISC_VALUE");
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
@@ -897,16 +897,16 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY, embeddable.getAccess());
 //		assertEquals("basicMapping", embeddable.getAttributes().getBasics().get(0).getName());
 		
-		GenericOrmEmbeddable xmlEmbeddable = (GenericOrmEmbeddable) entityPersistentType.getMapping();
-		assertEquals("model.Foo", xmlEmbeddable.getClass_());
-		assertEquals(Boolean.TRUE, xmlEmbeddable.getSpecifiedMetadataComplete());
-		assertEquals(AccessType.PROPERTY, xmlEmbeddable.getSpecifiedAccess());
-//		assertEquals("basicMapping", xmlEmbeddable.persistentType().attributes().next().getName());
+		OrmEmbeddable ormEmbeddable = (OrmEmbeddable) entityPersistentType.getMapping();
+		assertEquals("model.Foo", ormEmbeddable.getClass_());
+		assertEquals(Boolean.TRUE, ormEmbeddable.getSpecifiedMetadataComplete());
+		assertEquals(AccessType.PROPERTY, ormEmbeddable.getSpecifiedAccess());
+//		assertEquals("basicMapping", ormEmbeddable.persistentType().attributes().next().getName());
 	}
 	
 	public void testMakeEntityMappedSuperclass() throws Exception {
 		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity entity = (GenericOrmEntity) entityPersistentType.getMapping();
+		OrmEntity entity = (OrmEntity) entityPersistentType.getMapping();
 		entity.setSpecifiedAccess(AccessType.PROPERTY);
 		entity.setSpecifiedDiscriminatorValue("DISC_VALUE");
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
@@ -922,16 +922,16 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals(Boolean.TRUE, mappedSuperclass.getMetadataComplete());
 		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY, mappedSuperclass.getAccess());
 		
-		GenericOrmMappedSuperclass xmlMappedSuperclass = (GenericOrmMappedSuperclass) entityPersistentType.getMapping();
-		assertEquals("model.Foo", xmlMappedSuperclass.getClass_());
-		assertEquals(Boolean.TRUE, xmlMappedSuperclass.getSpecifiedMetadataComplete());
-		assertEquals(AccessType.PROPERTY, xmlMappedSuperclass.getSpecifiedAccess());
+		OrmMappedSuperclass ormMappedSuperclass = (OrmMappedSuperclass) entityPersistentType.getMapping();
+		assertEquals("model.Foo", ormMappedSuperclass.getClass_());
+		assertEquals(Boolean.TRUE, ormMappedSuperclass.getSpecifiedMetadataComplete());
+		assertEquals(AccessType.PROPERTY, ormMappedSuperclass.getSpecifiedAccess());
 	}
 	
 	public void testMakeEntityMappedSuperclass2() throws Exception {
 		entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
 		OrmPersistentType entityPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity entity = (GenericOrmEntity) entityPersistentType.getMapping();
+		OrmEntity entity = (OrmEntity) entityPersistentType.getMapping();
 		entity.setSpecifiedAccess(AccessType.PROPERTY);
 		entity.setSpecifiedDiscriminatorValue("DISC_VALUE");
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
@@ -947,29 +947,29 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals(Boolean.TRUE, mappedSuperclass.getMetadataComplete());
 		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY, mappedSuperclass.getAccess());
 		
-		GenericOrmMappedSuperclass xmlMappedSuperclass = (GenericOrmMappedSuperclass) entityPersistentType.getMapping();
-		assertEquals("model.Foo", xmlMappedSuperclass.getClass_());
-		assertEquals(Boolean.TRUE, xmlMappedSuperclass.getSpecifiedMetadataComplete());
-		assertEquals(AccessType.PROPERTY, xmlMappedSuperclass.getSpecifiedAccess());
+		OrmMappedSuperclass ormMappedSuperclass = (OrmMappedSuperclass) entityPersistentType.getMapping();
+		assertEquals("model.Foo", ormMappedSuperclass.getClass_());
+		assertEquals(Boolean.TRUE, ormMappedSuperclass.getSpecifiedMetadataComplete());
+		assertEquals(AccessType.PROPERTY, ormMappedSuperclass.getSpecifiedAccess());
 	}
 
 	
 	public void testAddSequenceGenerator() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		
-		assertNull(xmlEntity.getSequenceGenerator());
+		assertNull(ormEntity.getSequenceGenerator());
 		assertNull(entityResource.getSequenceGenerator());
 		
-		xmlEntity.addSequenceGenerator();
+		ormEntity.addSequenceGenerator();
 		
 		assertNotNull(entityResource.getSequenceGenerator());
-		assertNotNull(xmlEntity.getSequenceGenerator());
+		assertNotNull(ormEntity.getSequenceGenerator());
 				
 		//try adding another sequence generator, should get an IllegalStateException
 		try {
-			xmlEntity.addSequenceGenerator();
+			ormEntity.addSequenceGenerator();
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -978,24 +978,24 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	public void testRemoveSequenceGenerator() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		
-		assertNull(xmlEntity.getSequenceGenerator());
+		assertNull(ormEntity.getSequenceGenerator());
 		assertNull(entityResource.getSequenceGenerator());
 
-		xmlEntity.addSequenceGenerator();
+		ormEntity.addSequenceGenerator();
 		assertNotNull(entityResource.getSequenceGenerator());
-		assertNotNull(xmlEntity.getSequenceGenerator());
+		assertNotNull(ormEntity.getSequenceGenerator());
 
-		xmlEntity.removeSequenceGenerator();
+		ormEntity.removeSequenceGenerator();
 		
-		assertNull(xmlEntity.getSequenceGenerator());
+		assertNull(ormEntity.getSequenceGenerator());
 		assertNull(entityResource.getSequenceGenerator());
 
 		//try removing the sequence generator again, should get an IllegalStateException
 		try {
-			xmlEntity.removeSequenceGenerator();		
+			ormEntity.removeSequenceGenerator();		
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -1004,38 +1004,38 @@ public class XmlEntityTests extends ContextModelTestCase
 
 	public void testUpdateSequenceGenerator() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		
-		assertNull(xmlEntity.getSequenceGenerator());
+		assertNull(ormEntity.getSequenceGenerator());
 		assertNull(entityResource.getSequenceGenerator());
 		
 		entityResource.setSequenceGenerator(OrmFactory.eINSTANCE.createSequenceGeneratorImpl());
 				
-		assertNotNull(xmlEntity.getSequenceGenerator());
+		assertNotNull(ormEntity.getSequenceGenerator());
 		assertNotNull(entityResource.getSequenceGenerator());
 				
 		entityResource.setSequenceGenerator(null);
-		assertNull(xmlEntity.getSequenceGenerator());
+		assertNull(ormEntity.getSequenceGenerator());
 		assertNull(entityResource.getSequenceGenerator());
 	}
 	
 	public void testAddTableGenerator() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		
-		assertNull(xmlEntity.getTableGenerator());
+		assertNull(ormEntity.getTableGenerator());
 		assertNull(entityResource.getTableGenerator());
 		
-		xmlEntity.addTableGenerator();
+		ormEntity.addTableGenerator();
 		
 		assertNotNull(entityResource.getTableGenerator());
-		assertNotNull(xmlEntity.getTableGenerator());
+		assertNotNull(ormEntity.getTableGenerator());
 				
 		//try adding another table generator, should get an IllegalStateException
 		try {
-			xmlEntity.addTableGenerator();
+			ormEntity.addTableGenerator();
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -1044,24 +1044,24 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	public void testRemoveTableGenerator() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		
-		assertNull(xmlEntity.getTableGenerator());
+		assertNull(ormEntity.getTableGenerator());
 		assertNull(entityResource.getTableGenerator());
 
-		xmlEntity.addTableGenerator();
+		ormEntity.addTableGenerator();
 		assertNotNull(entityResource.getTableGenerator());
-		assertNotNull(xmlEntity.getTableGenerator());
+		assertNotNull(ormEntity.getTableGenerator());
 
-		xmlEntity.removeTableGenerator();
+		ormEntity.removeTableGenerator();
 		
-		assertNull(xmlEntity.getTableGenerator());
+		assertNull(ormEntity.getTableGenerator());
 		assertNull(entityResource.getTableGenerator());
 
 		//try removing the table generator again, should get an IllegalStateException
 		try {
-			xmlEntity.removeTableGenerator();		
+			ormEntity.removeTableGenerator();		
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -1070,112 +1070,112 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	public void testUpdateTableGenerator() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		
-		assertNull(xmlEntity.getTableGenerator());
+		assertNull(ormEntity.getTableGenerator());
 		assertNull(entityResource.getTableGenerator());
 		
 		entityResource.setTableGenerator(OrmFactory.eINSTANCE.createTableGeneratorImpl());
 				
-		assertNotNull(xmlEntity.getTableGenerator());
+		assertNotNull(ormEntity.getTableGenerator());
 		assertNotNull(entityResource.getTableGenerator());
 				
 		entityResource.setTableGenerator(null);
-		assertNull(xmlEntity.getTableGenerator());
+		assertNull(ormEntity.getTableGenerator());
 		assertNull(entityResource.getTableGenerator());
 	}
 	
 	public void testUpdateDiscriminatorColumn() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		
-		assertNotNull(xmlEntity.getDiscriminatorColumn());
+		assertNotNull(ormEntity.getDiscriminatorColumn());
 
 		entityResource.setDiscriminatorColumn(OrmFactory.eINSTANCE.createDiscriminatorColumn());
 		entityResource.getDiscriminatorColumn().setName("FOO");
 		
-		assertEquals("FOO", xmlEntity.getDiscriminatorColumn().getSpecifiedName());
+		assertEquals("FOO", ormEntity.getDiscriminatorColumn().getSpecifiedName());
 		assertEquals("FOO", entityResource.getDiscriminatorColumn().getName());
 		
 		entityResource.getDiscriminatorColumn().setName(null);
 		
-		assertNull(xmlEntity.getDiscriminatorColumn().getSpecifiedName());
+		assertNull(ormEntity.getDiscriminatorColumn().getSpecifiedName());
 		assertNull(entityResource.getDiscriminatorColumn().getName());
 
 		entityResource.setDiscriminatorColumn(null);
 		
-		assertNotNull(xmlEntity.getDiscriminatorColumn());
+		assertNotNull(ormEntity.getDiscriminatorColumn());
 	}
 	
 	public void testUpdateDiscriminatorValue() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		
-		assertNull(xmlEntity.getSpecifiedDiscriminatorValue());
+		assertNull(ormEntity.getSpecifiedDiscriminatorValue());
 		assertNull(entityResource.getDiscriminatorValue());
 
 		entityResource.setDiscriminatorValue("FOO");
 		
-		assertEquals("FOO", xmlEntity.getSpecifiedDiscriminatorValue());
+		assertEquals("FOO", ormEntity.getSpecifiedDiscriminatorValue());
 		assertEquals("FOO", entityResource.getDiscriminatorValue());
 		
 		entityResource.setDiscriminatorValue(null);
 		
-		assertNull(xmlEntity.getSpecifiedDiscriminatorValue());
+		assertNull(ormEntity.getSpecifiedDiscriminatorValue());
 		assertNull(entityResource.getDiscriminatorValue());
 	}
 	
 	public void testModifyDiscriminatorValue() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		
-		assertNull(xmlEntity.getSpecifiedDiscriminatorValue());
+		assertNull(ormEntity.getSpecifiedDiscriminatorValue());
 		assertNull(entityResource.getDiscriminatorValue());
 
-		xmlEntity.setSpecifiedDiscriminatorValue("FOO");
+		ormEntity.setSpecifiedDiscriminatorValue("FOO");
 		
-		assertEquals("FOO", xmlEntity.getSpecifiedDiscriminatorValue());
+		assertEquals("FOO", ormEntity.getSpecifiedDiscriminatorValue());
 		assertEquals("FOO", entityResource.getDiscriminatorValue());
 		
-		xmlEntity.setSpecifiedDiscriminatorValue(null);
+		ormEntity.setSpecifiedDiscriminatorValue(null);
 		
-		assertNull(xmlEntity.getSpecifiedDiscriminatorValue());
+		assertNull(ormEntity.getSpecifiedDiscriminatorValue());
 		assertNull(entityResource.getDiscriminatorValue());
 	}
 	
 	public void testAddSpecifiedPrimaryKeyJoinColumn() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
-		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = xmlEntity.addSpecifiedPrimaryKeyJoinColumn(0);
+		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = ormEntity.addSpecifiedPrimaryKeyJoinColumn(0);
 		primaryKeyJoinColumn.setSpecifiedName("FOO");
 				
 		assertEquals("FOO", entityResource.getPrimaryKeyJoinColumns().get(0).getName());
 		
-		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn2 = xmlEntity.addSpecifiedPrimaryKeyJoinColumn(0);
+		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn2 = ormEntity.addSpecifiedPrimaryKeyJoinColumn(0);
 		primaryKeyJoinColumn2.setSpecifiedName("BAR");
 		
 		assertEquals("BAR", entityResource.getPrimaryKeyJoinColumns().get(0).getName());
 		assertEquals("FOO", entityResource.getPrimaryKeyJoinColumns().get(1).getName());
 		
-		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn3 = xmlEntity.addSpecifiedPrimaryKeyJoinColumn(1);
+		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn3 = ormEntity.addSpecifiedPrimaryKeyJoinColumn(1);
 		primaryKeyJoinColumn3.setSpecifiedName("BAZ");
 		
 		assertEquals("BAR", entityResource.getPrimaryKeyJoinColumns().get(0).getName());
 		assertEquals("BAZ", entityResource.getPrimaryKeyJoinColumns().get(1).getName());
 		assertEquals("FOO", entityResource.getPrimaryKeyJoinColumns().get(2).getName());
 		
-		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = xmlEntity.specifiedPrimaryKeyJoinColumns();
+		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = ormEntity.specifiedPrimaryKeyJoinColumns();
 		assertEquals(primaryKeyJoinColumn2, primaryKeyJoinColumns.next());
 		assertEquals(primaryKeyJoinColumn3, primaryKeyJoinColumns.next());
 		assertEquals(primaryKeyJoinColumn, primaryKeyJoinColumns.next());
 		
-		primaryKeyJoinColumns = xmlEntity.specifiedPrimaryKeyJoinColumns();
+		primaryKeyJoinColumns = ormEntity.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
@@ -1183,42 +1183,42 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	public void testRemoveSpecifiedPrimaryKeyJoinColumn() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 
-		xmlEntity.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
-		xmlEntity.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
-		xmlEntity.addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
+		ormEntity.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
+		ormEntity.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
+		ormEntity.addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals(3, entityResource.getPrimaryKeyJoinColumns().size());
 		
-		xmlEntity.removeSpecifiedPrimaryKeyJoinColumn(0);
+		ormEntity.removeSpecifiedPrimaryKeyJoinColumn(0);
 		assertEquals(2, entityResource.getPrimaryKeyJoinColumns().size());
 		assertEquals("BAR", entityResource.getPrimaryKeyJoinColumns().get(0).getName());
 		assertEquals("BAZ", entityResource.getPrimaryKeyJoinColumns().get(1).getName());
 
-		xmlEntity.removeSpecifiedPrimaryKeyJoinColumn(0);
+		ormEntity.removeSpecifiedPrimaryKeyJoinColumn(0);
 		assertEquals(1, entityResource.getPrimaryKeyJoinColumns().size());
 		assertEquals("BAZ", entityResource.getPrimaryKeyJoinColumns().get(0).getName());
 		
-		xmlEntity.removeSpecifiedPrimaryKeyJoinColumn(0);
+		ormEntity.removeSpecifiedPrimaryKeyJoinColumn(0);
 		assertEquals(0, entityResource.getPrimaryKeyJoinColumns().size());
 	}
 	
 	public void testMoveSpecifiedPrimaryKeyJoinColumn() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 
-		xmlEntity.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
-		xmlEntity.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
-		xmlEntity.addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
+		ormEntity.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
+		ormEntity.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
+		ormEntity.addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals(3, entityResource.getPrimaryKeyJoinColumns().size());
 		
 		
-		xmlEntity.moveSpecifiedPrimaryKeyJoinColumn(2, 0);
-		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = xmlEntity.specifiedPrimaryKeyJoinColumns();
+		ormEntity.moveSpecifiedPrimaryKeyJoinColumn(2, 0);
+		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = ormEntity.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
@@ -1228,8 +1228,8 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals("FOO", entityResource.getPrimaryKeyJoinColumns().get(2).getName());
 
 
-		xmlEntity.moveSpecifiedPrimaryKeyJoinColumn(0, 1);
-		primaryKeyJoinColumns = xmlEntity.specifiedPrimaryKeyJoinColumns();
+		ormEntity.moveSpecifiedPrimaryKeyJoinColumn(0, 1);
+		primaryKeyJoinColumns = ormEntity.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
@@ -1241,7 +1241,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	public void testUpdatePrimaryKeyJoinColumns() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		entityResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createPrimaryKeyJoinColumn());
@@ -1252,70 +1252,70 @@ public class XmlEntityTests extends ContextModelTestCase
 		entityResource.getPrimaryKeyJoinColumns().get(1).setName("BAR");
 		entityResource.getPrimaryKeyJoinColumns().get(2).setName("BAZ");
 
-		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = xmlEntity.specifiedPrimaryKeyJoinColumns();
+		ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = ormEntity.specifiedPrimaryKeyJoinColumns();
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertFalse(primaryKeyJoinColumns.hasNext());
 		
 		entityResource.getPrimaryKeyJoinColumns().move(2, 0);
-		primaryKeyJoinColumns = xmlEntity.specifiedPrimaryKeyJoinColumns();
+		primaryKeyJoinColumns = ormEntity.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
 		assertFalse(primaryKeyJoinColumns.hasNext());
 
 		entityResource.getPrimaryKeyJoinColumns().move(0, 1);
-		primaryKeyJoinColumns = xmlEntity.specifiedPrimaryKeyJoinColumns();
+		primaryKeyJoinColumns = ormEntity.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertEquals("BAR", primaryKeyJoinColumns.next().getName());
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
 		assertFalse(primaryKeyJoinColumns.hasNext());
 
 		entityResource.getPrimaryKeyJoinColumns().remove(1);
-		primaryKeyJoinColumns = xmlEntity.specifiedPrimaryKeyJoinColumns();
+		primaryKeyJoinColumns = ormEntity.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertEquals("FOO", primaryKeyJoinColumns.next().getName());
 		assertFalse(primaryKeyJoinColumns.hasNext());
 
 		entityResource.getPrimaryKeyJoinColumns().remove(1);
-		primaryKeyJoinColumns = xmlEntity.specifiedPrimaryKeyJoinColumns();
+		primaryKeyJoinColumns = ormEntity.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getName());
 		assertFalse(primaryKeyJoinColumns.hasNext());
 		
 		entityResource.getPrimaryKeyJoinColumns().remove(0);
-		assertFalse(xmlEntity.specifiedPrimaryKeyJoinColumns().hasNext());
+		assertFalse(ormEntity.specifiedPrimaryKeyJoinColumns().hasNext());
 	}
 	
 	public void testAddSpecifiedAttributeOverride() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
-		OrmAttributeOverride attributeOverride = xmlEntity.addSpecifiedAttributeOverride(0);
+		OrmAttributeOverride attributeOverride = ormEntity.addSpecifiedAttributeOverride(0);
 		attributeOverride.setName("FOO");
 				
 		assertEquals("FOO", entityResource.getAttributeOverrides().get(0).getName());
 		
-		OrmAttributeOverride attributeOverride2 = xmlEntity.addSpecifiedAttributeOverride(0);
+		OrmAttributeOverride attributeOverride2 = ormEntity.addSpecifiedAttributeOverride(0);
 		attributeOverride2.setName("BAR");
 		
 		assertEquals("BAR", entityResource.getAttributeOverrides().get(0).getName());
 		assertEquals("FOO", entityResource.getAttributeOverrides().get(1).getName());
 		
-		OrmAttributeOverride attributeOverride3 = xmlEntity.addSpecifiedAttributeOverride(1);
+		OrmAttributeOverride attributeOverride3 = ormEntity.addSpecifiedAttributeOverride(1);
 		attributeOverride3.setName("BAZ");
 		
 		assertEquals("BAR", entityResource.getAttributeOverrides().get(0).getName());
 		assertEquals("BAZ", entityResource.getAttributeOverrides().get(1).getName());
 		assertEquals("FOO", entityResource.getAttributeOverrides().get(2).getName());
 		
-		ListIterator<OrmAttributeOverride> attributeOverrides = xmlEntity.specifiedAttributeOverrides();
+		ListIterator<OrmAttributeOverride> attributeOverrides = ormEntity.specifiedAttributeOverrides();
 		assertEquals(attributeOverride2, attributeOverrides.next());
 		assertEquals(attributeOverride3, attributeOverrides.next());
 		assertEquals(attributeOverride, attributeOverrides.next());
 		
-		attributeOverrides = xmlEntity.specifiedAttributeOverrides();
+		attributeOverrides = ormEntity.specifiedAttributeOverrides();
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
@@ -1323,42 +1323,42 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	public void testRemoveSpecifiedAttributeOverride() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 
-		xmlEntity.addSpecifiedAttributeOverride(0).setName("FOO");
-		xmlEntity.addSpecifiedAttributeOverride(1).setName("BAR");
-		xmlEntity.addSpecifiedAttributeOverride(2).setName("BAZ");
+		ormEntity.addSpecifiedAttributeOverride(0).setName("FOO");
+		ormEntity.addSpecifiedAttributeOverride(1).setName("BAR");
+		ormEntity.addSpecifiedAttributeOverride(2).setName("BAZ");
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals(3, entityResource.getAttributeOverrides().size());
 		
-		xmlEntity.removeSpecifiedAttributeOverride(0);
+		ormEntity.removeSpecifiedAttributeOverride(0);
 		assertEquals(2, entityResource.getAttributeOverrides().size());
 		assertEquals("BAR", entityResource.getAttributeOverrides().get(0).getName());
 		assertEquals("BAZ", entityResource.getAttributeOverrides().get(1).getName());
 
-		xmlEntity.removeSpecifiedAttributeOverride(0);
+		ormEntity.removeSpecifiedAttributeOverride(0);
 		assertEquals(1, entityResource.getAttributeOverrides().size());
 		assertEquals("BAZ", entityResource.getAttributeOverrides().get(0).getName());
 		
-		xmlEntity.removeSpecifiedAttributeOverride(0);
+		ormEntity.removeSpecifiedAttributeOverride(0);
 		assertEquals(0, entityResource.getAttributeOverrides().size());
 	}
 	
 	public void testMoveSpecifiedAttributeOverride() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 
-		xmlEntity.addSpecifiedAttributeOverride(0).setName("FOO");
-		xmlEntity.addSpecifiedAttributeOverride(1).setName("BAR");
-		xmlEntity.addSpecifiedAttributeOverride(2).setName("BAZ");
+		ormEntity.addSpecifiedAttributeOverride(0).setName("FOO");
+		ormEntity.addSpecifiedAttributeOverride(1).setName("BAR");
+		ormEntity.addSpecifiedAttributeOverride(2).setName("BAZ");
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals(3, entityResource.getAttributeOverrides().size());
 		
 		
-		xmlEntity.moveSpecifiedAttributeOverride(2, 0);
-		ListIterator<OrmAttributeOverride> attributeOverrides = xmlEntity.specifiedAttributeOverrides();
+		ormEntity.moveSpecifiedAttributeOverride(2, 0);
+		ListIterator<OrmAttributeOverride> attributeOverrides = ormEntity.specifiedAttributeOverrides();
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
@@ -1368,8 +1368,8 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals("FOO", entityResource.getAttributeOverrides().get(2).getName());
 
 
-		xmlEntity.moveSpecifiedAttributeOverride(0, 1);
-		attributeOverrides = xmlEntity.specifiedAttributeOverrides();
+		ormEntity.moveSpecifiedAttributeOverride(0, 1);
+		attributeOverrides = ormEntity.specifiedAttributeOverrides();
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
@@ -1381,7 +1381,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	public void testUpdateAttributeOverrides() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverrideImpl());
@@ -1392,70 +1392,70 @@ public class XmlEntityTests extends ContextModelTestCase
 		entityResource.getAttributeOverrides().get(1).setName("BAR");
 		entityResource.getAttributeOverrides().get(2).setName("BAZ");
 
-		ListIterator<OrmAttributeOverride> attributeOverrides = xmlEntity.specifiedAttributeOverrides();
+		ListIterator<OrmAttributeOverride> attributeOverrides = ormEntity.specifiedAttributeOverrides();
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 		
 		entityResource.getAttributeOverrides().move(2, 0);
-		attributeOverrides = xmlEntity.specifiedAttributeOverrides();
+		attributeOverrides = ormEntity.specifiedAttributeOverrides();
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 
 		entityResource.getAttributeOverrides().move(0, 1);
-		attributeOverrides = xmlEntity.specifiedAttributeOverrides();
+		attributeOverrides = ormEntity.specifiedAttributeOverrides();
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("BAR", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 
 		entityResource.getAttributeOverrides().remove(1);
-		attributeOverrides = xmlEntity.specifiedAttributeOverrides();
+		attributeOverrides = ormEntity.specifiedAttributeOverrides();
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertEquals("FOO", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 
 		entityResource.getAttributeOverrides().remove(1);
-		attributeOverrides = xmlEntity.specifiedAttributeOverrides();
+		attributeOverrides = ormEntity.specifiedAttributeOverrides();
 		assertEquals("BAZ", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 		
 		entityResource.getAttributeOverrides().remove(0);
-		assertFalse(xmlEntity.specifiedAttributeOverrides().hasNext());
+		assertFalse(ormEntity.specifiedAttributeOverrides().hasNext());
 	}
 	
 	public void testAddSpecifiedAssociationOverride() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
-		OrmAssociationOverride associationOverride = xmlEntity.addSpecifiedAssociationOverride(0);
+		OrmAssociationOverride associationOverride = ormEntity.addSpecifiedAssociationOverride(0);
 		associationOverride.setName("FOO");
 				
 		assertEquals("FOO", entityResource.getAssociationOverrides().get(0).getName());
 		
-		OrmAssociationOverride associationOverride2 = xmlEntity.addSpecifiedAssociationOverride(0);
+		OrmAssociationOverride associationOverride2 = ormEntity.addSpecifiedAssociationOverride(0);
 		associationOverride2.setName("BAR");
 		
 		assertEquals("BAR", entityResource.getAssociationOverrides().get(0).getName());
 		assertEquals("FOO", entityResource.getAssociationOverrides().get(1).getName());
 		
-		OrmAssociationOverride associationOverride3 = xmlEntity.addSpecifiedAssociationOverride(1);
+		OrmAssociationOverride associationOverride3 = ormEntity.addSpecifiedAssociationOverride(1);
 		associationOverride3.setName("BAZ");
 		
 		assertEquals("BAR", entityResource.getAssociationOverrides().get(0).getName());
 		assertEquals("BAZ", entityResource.getAssociationOverrides().get(1).getName());
 		assertEquals("FOO", entityResource.getAssociationOverrides().get(2).getName());
 		
-		ListIterator<OrmAssociationOverride> associationOverrides = xmlEntity.specifiedAssociationOverrides();
+		ListIterator<OrmAssociationOverride> associationOverrides = ormEntity.specifiedAssociationOverrides();
 		assertEquals(associationOverride2, associationOverrides.next());
 		assertEquals(associationOverride3, associationOverrides.next());
 		assertEquals(associationOverride, associationOverrides.next());
 		
-		associationOverrides = xmlEntity.specifiedAssociationOverrides();
+		associationOverrides = ormEntity.specifiedAssociationOverrides();
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertEquals("FOO", associationOverrides.next().getName());
@@ -1463,42 +1463,42 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	public void testRemoveSpecifiedAssociationOverride() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 
-		xmlEntity.addSpecifiedAssociationOverride(0).setName("FOO");
-		xmlEntity.addSpecifiedAssociationOverride(1).setName("BAR");
-		xmlEntity.addSpecifiedAssociationOverride(2).setName("BAZ");
+		ormEntity.addSpecifiedAssociationOverride(0).setName("FOO");
+		ormEntity.addSpecifiedAssociationOverride(1).setName("BAR");
+		ormEntity.addSpecifiedAssociationOverride(2).setName("BAZ");
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals(3, entityResource.getAssociationOverrides().size());
 		
-		xmlEntity.removeSpecifiedAssociationOverride(0);
+		ormEntity.removeSpecifiedAssociationOverride(0);
 		assertEquals(2, entityResource.getAssociationOverrides().size());
 		assertEquals("BAR", entityResource.getAssociationOverrides().get(0).getName());
 		assertEquals("BAZ", entityResource.getAssociationOverrides().get(1).getName());
 
-		xmlEntity.removeSpecifiedAssociationOverride(0);
+		ormEntity.removeSpecifiedAssociationOverride(0);
 		assertEquals(1, entityResource.getAssociationOverrides().size());
 		assertEquals("BAZ", entityResource.getAssociationOverrides().get(0).getName());
 		
-		xmlEntity.removeSpecifiedAssociationOverride(0);
+		ormEntity.removeSpecifiedAssociationOverride(0);
 		assertEquals(0, entityResource.getAssociationOverrides().size());
 	}
 	
 	public void testMoveSpecifiedAssociationOverride() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 
-		xmlEntity.addSpecifiedAssociationOverride(0).setName("FOO");
-		xmlEntity.addSpecifiedAssociationOverride(1).setName("BAR");
-		xmlEntity.addSpecifiedAssociationOverride(2).setName("BAZ");
+		ormEntity.addSpecifiedAssociationOverride(0).setName("FOO");
+		ormEntity.addSpecifiedAssociationOverride(1).setName("BAR");
+		ormEntity.addSpecifiedAssociationOverride(2).setName("BAZ");
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals(3, entityResource.getAssociationOverrides().size());
 		
 		
-		xmlEntity.moveSpecifiedAssociationOverride(2, 0);
-		ListIterator<OrmAssociationOverride> associationOverrides = xmlEntity.specifiedAssociationOverrides();
+		ormEntity.moveSpecifiedAssociationOverride(2, 0);
+		ListIterator<OrmAssociationOverride> associationOverrides = ormEntity.specifiedAssociationOverrides();
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertEquals("FOO", associationOverrides.next().getName());
@@ -1508,8 +1508,8 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals("FOO", entityResource.getAssociationOverrides().get(2).getName());
 
 
-		xmlEntity.moveSpecifiedAssociationOverride(0, 1);
-		associationOverrides = xmlEntity.specifiedAssociationOverrides();
+		ormEntity.moveSpecifiedAssociationOverride(0, 1);
+		associationOverrides = ormEntity.specifiedAssociationOverrides();
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("FOO", associationOverrides.next().getName());
@@ -1521,7 +1521,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	public void testUpdateAssociationOverrides() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createAssociationOverride());
@@ -1532,71 +1532,71 @@ public class XmlEntityTests extends ContextModelTestCase
 		entityResource.getAssociationOverrides().get(1).setName("BAR");
 		entityResource.getAssociationOverrides().get(2).setName("BAZ");
 
-		ListIterator<OrmAssociationOverride> associationOverrides = xmlEntity.specifiedAssociationOverrides();
+		ListIterator<OrmAssociationOverride> associationOverrides = ormEntity.specifiedAssociationOverrides();
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 		
 		entityResource.getAssociationOverrides().move(2, 0);
-		associationOverrides = xmlEntity.specifiedAssociationOverrides();
+		associationOverrides = ormEntity.specifiedAssociationOverrides();
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 
 		entityResource.getAssociationOverrides().move(0, 1);
-		associationOverrides = xmlEntity.specifiedAssociationOverrides();
+		associationOverrides = ormEntity.specifiedAssociationOverrides();
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertEquals("BAR", associationOverrides.next().getName());
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 
 		entityResource.getAssociationOverrides().remove(1);
-		associationOverrides = xmlEntity.specifiedAssociationOverrides();
+		associationOverrides = ormEntity.specifiedAssociationOverrides();
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertEquals("FOO", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 
 		entityResource.getAssociationOverrides().remove(1);
-		associationOverrides = xmlEntity.specifiedAssociationOverrides();
+		associationOverrides = ormEntity.specifiedAssociationOverrides();
 		assertEquals("BAZ", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 		
 		entityResource.getAssociationOverrides().remove(0);
-		assertFalse(xmlEntity.specifiedAssociationOverrides().hasNext());
+		assertFalse(ormEntity.specifiedAssociationOverrides().hasNext());
 	}
 
 	
 	public void testAddNamedQuery() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
-		OrmNamedQuery namedQuery = xmlEntity.addNamedQuery(0);
+		OrmNamedQuery namedQuery = ormEntity.addNamedQuery(0);
 		namedQuery.setName("FOO");
 				
 		assertEquals("FOO", entityResource.getNamedQueries().get(0).getName());
 		
-		OrmNamedQuery namedQuery2 = xmlEntity.addNamedQuery(0);
+		OrmNamedQuery namedQuery2 = ormEntity.addNamedQuery(0);
 		namedQuery2.setName("BAR");
 		
 		assertEquals("BAR", entityResource.getNamedQueries().get(0).getName());
 		assertEquals("FOO", entityResource.getNamedQueries().get(1).getName());
 		
-		OrmNamedQuery namedQuery3 = xmlEntity.addNamedQuery(1);
+		OrmNamedQuery namedQuery3 = ormEntity.addNamedQuery(1);
 		namedQuery3.setName("BAZ");
 		
 		assertEquals("BAR", entityResource.getNamedQueries().get(0).getName());
 		assertEquals("BAZ", entityResource.getNamedQueries().get(1).getName());
 		assertEquals("FOO", entityResource.getNamedQueries().get(2).getName());
 		
-		ListIterator<OrmNamedQuery> namedQueries = xmlEntity.namedQueries();
+		ListIterator<OrmNamedQuery> namedQueries = ormEntity.namedQueries();
 		assertEquals(namedQuery2, namedQueries.next());
 		assertEquals(namedQuery3, namedQueries.next());
 		assertEquals(namedQuery, namedQueries.next());
 		
-		namedQueries = xmlEntity.namedQueries();
+		namedQueries = ormEntity.namedQueries();
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
@@ -1604,42 +1604,42 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	public void testRemoveNamedQuery() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 
-		xmlEntity.addNamedQuery(0).setName("FOO");
-		xmlEntity.addNamedQuery(1).setName("BAR");
-		xmlEntity.addNamedQuery(2).setName("BAZ");
+		ormEntity.addNamedQuery(0).setName("FOO");
+		ormEntity.addNamedQuery(1).setName("BAR");
+		ormEntity.addNamedQuery(2).setName("BAZ");
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals(3, entityResource.getNamedQueries().size());
 		
-		xmlEntity.removeNamedQuery(0);
+		ormEntity.removeNamedQuery(0);
 		assertEquals(2, entityResource.getNamedQueries().size());
 		assertEquals("BAR", entityResource.getNamedQueries().get(0).getName());
 		assertEquals("BAZ", entityResource.getNamedQueries().get(1).getName());
 
-		xmlEntity.removeNamedQuery(0);
+		ormEntity.removeNamedQuery(0);
 		assertEquals(1, entityResource.getNamedQueries().size());
 		assertEquals("BAZ", entityResource.getNamedQueries().get(0).getName());
 		
-		xmlEntity.removeNamedQuery(0);
+		ormEntity.removeNamedQuery(0);
 		assertEquals(0, entityResource.getNamedQueries().size());
 	}
 	
 	public void testMoveNamedQuery() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 
-		xmlEntity.addNamedQuery(0).setName("FOO");
-		xmlEntity.addNamedQuery(1).setName("BAR");
-		xmlEntity.addNamedQuery(2).setName("BAZ");
+		ormEntity.addNamedQuery(0).setName("FOO");
+		ormEntity.addNamedQuery(1).setName("BAR");
+		ormEntity.addNamedQuery(2).setName("BAZ");
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals(3, entityResource.getNamedQueries().size());
 		
 		
-		xmlEntity.moveNamedQuery(2, 0);
-		ListIterator<OrmNamedQuery> namedQueries = xmlEntity.namedQueries();
+		ormEntity.moveNamedQuery(2, 0);
+		ListIterator<OrmNamedQuery> namedQueries = ormEntity.namedQueries();
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
@@ -1649,8 +1649,8 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals("FOO", entityResource.getNamedQueries().get(2).getName());
 
 
-		xmlEntity.moveNamedQuery(0, 1);
-		namedQueries = xmlEntity.namedQueries();
+		ormEntity.moveNamedQuery(0, 1);
+		namedQueries = ormEntity.namedQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
@@ -1662,7 +1662,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	public void testUpdateNamedQueries() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		entityResource.getNamedQueries().add(OrmFactory.eINSTANCE.createNamedQuery());
@@ -1673,70 +1673,70 @@ public class XmlEntityTests extends ContextModelTestCase
 		entityResource.getNamedQueries().get(1).setName("BAR");
 		entityResource.getNamedQueries().get(2).setName("BAZ");
 
-		ListIterator<OrmNamedQuery> namedQueries = xmlEntity.namedQueries();
+		ListIterator<OrmNamedQuery> namedQueries = ormEntity.namedQueries();
 		assertEquals("FOO", namedQueries.next().getName());
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		
 		entityResource.getNamedQueries().move(2, 0);
-		namedQueries = xmlEntity.namedQueries();
+		namedQueries = ormEntity.namedQueries();
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 
 		entityResource.getNamedQueries().move(0, 1);
-		namedQueries = xmlEntity.namedQueries();
+		namedQueries = ormEntity.namedQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 
 		entityResource.getNamedQueries().remove(1);
-		namedQueries = xmlEntity.namedQueries();
+		namedQueries = ormEntity.namedQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 
 		entityResource.getNamedQueries().remove(1);
-		namedQueries = xmlEntity.namedQueries();
+		namedQueries = ormEntity.namedQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		
 		entityResource.getNamedQueries().remove(0);
-		assertFalse(xmlEntity.namedQueries().hasNext());
+		assertFalse(ormEntity.namedQueries().hasNext());
 	}
 	
 	public void testAddNamedNativeQuery() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
-		OrmNamedNativeQuery namedNativeQuery = xmlEntity.addNamedNativeQuery(0);
+		OrmNamedNativeQuery namedNativeQuery = ormEntity.addNamedNativeQuery(0);
 		namedNativeQuery.setName("FOO");
 				
 		assertEquals("FOO", entityResource.getNamedNativeQueries().get(0).getName());
 		
-		OrmNamedNativeQuery namedNativeQuery2 = xmlEntity.addNamedNativeQuery(0);
+		OrmNamedNativeQuery namedNativeQuery2 = ormEntity.addNamedNativeQuery(0);
 		namedNativeQuery2.setName("BAR");
 		
 		assertEquals("BAR", entityResource.getNamedNativeQueries().get(0).getName());
 		assertEquals("FOO", entityResource.getNamedNativeQueries().get(1).getName());
 		
-		OrmNamedNativeQuery namedNativeQuery3 = xmlEntity.addNamedNativeQuery(1);
+		OrmNamedNativeQuery namedNativeQuery3 = ormEntity.addNamedNativeQuery(1);
 		namedNativeQuery3.setName("BAZ");
 		
 		assertEquals("BAR", entityResource.getNamedNativeQueries().get(0).getName());
 		assertEquals("BAZ", entityResource.getNamedNativeQueries().get(1).getName());
 		assertEquals("FOO", entityResource.getNamedNativeQueries().get(2).getName());
 		
-		ListIterator<OrmNamedNativeQuery> namedNativeQueries = xmlEntity.namedNativeQueries();
+		ListIterator<OrmNamedNativeQuery> namedNativeQueries = ormEntity.namedNativeQueries();
 		assertEquals(namedNativeQuery2, namedNativeQueries.next());
 		assertEquals(namedNativeQuery3, namedNativeQueries.next());
 		assertEquals(namedNativeQuery, namedNativeQueries.next());
 		
-		namedNativeQueries = xmlEntity.namedNativeQueries();
+		namedNativeQueries = ormEntity.namedNativeQueries();
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
@@ -1744,42 +1744,42 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	public void testRemoveNamedNativeQuery() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 
-		xmlEntity.addNamedNativeQuery(0).setName("FOO");
-		xmlEntity.addNamedNativeQuery(1).setName("BAR");
-		xmlEntity.addNamedNativeQuery(2).setName("BAZ");
+		ormEntity.addNamedNativeQuery(0).setName("FOO");
+		ormEntity.addNamedNativeQuery(1).setName("BAR");
+		ormEntity.addNamedNativeQuery(2).setName("BAZ");
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals(3, entityResource.getNamedNativeQueries().size());
 		
-		xmlEntity.removeNamedNativeQuery(0);
+		ormEntity.removeNamedNativeQuery(0);
 		assertEquals(2, entityResource.getNamedNativeQueries().size());
 		assertEquals("BAR", entityResource.getNamedNativeQueries().get(0).getName());
 		assertEquals("BAZ", entityResource.getNamedNativeQueries().get(1).getName());
 
-		xmlEntity.removeNamedNativeQuery(0);
+		ormEntity.removeNamedNativeQuery(0);
 		assertEquals(1, entityResource.getNamedNativeQueries().size());
 		assertEquals("BAZ", entityResource.getNamedNativeQueries().get(0).getName());
 		
-		xmlEntity.removeNamedNativeQuery(0);
+		ormEntity.removeNamedNativeQuery(0);
 		assertEquals(0, entityResource.getNamedNativeQueries().size());
 	}
 	
 	public void testMoveNamedNativeQuery() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 
-		xmlEntity.addNamedNativeQuery(0).setName("FOO");
-		xmlEntity.addNamedNativeQuery(1).setName("BAR");
-		xmlEntity.addNamedNativeQuery(2).setName("BAZ");
+		ormEntity.addNamedNativeQuery(0).setName("FOO");
+		ormEntity.addNamedNativeQuery(1).setName("BAR");
+		ormEntity.addNamedNativeQuery(2).setName("BAZ");
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals(3, entityResource.getNamedNativeQueries().size());
 		
 		
-		xmlEntity.moveNamedNativeQuery(2, 0);
-		ListIterator<OrmNamedNativeQuery> namedNativeQueries = xmlEntity.namedNativeQueries();
+		ormEntity.moveNamedNativeQuery(2, 0);
+		ListIterator<OrmNamedNativeQuery> namedNativeQueries = ormEntity.namedNativeQueries();
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
@@ -1789,8 +1789,8 @@ public class XmlEntityTests extends ContextModelTestCase
 		assertEquals("FOO", entityResource.getNamedNativeQueries().get(2).getName());
 
 
-		xmlEntity.moveNamedNativeQuery(0, 1);
-		namedNativeQueries = xmlEntity.namedNativeQueries();
+		ormEntity.moveNamedNativeQuery(0, 1);
+		namedNativeQueries = ormEntity.namedNativeQueries();
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
@@ -1802,7 +1802,7 @@ public class XmlEntityTests extends ContextModelTestCase
 	
 	public void testUpdateNamedNativeQueries() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		entityResource.getNamedNativeQueries().add(OrmFactory.eINSTANCE.createNamedNativeQuery());
@@ -1813,62 +1813,62 @@ public class XmlEntityTests extends ContextModelTestCase
 		entityResource.getNamedNativeQueries().get(1).setName("BAR");
 		entityResource.getNamedNativeQueries().get(2).setName("BAZ");
 
-		ListIterator<OrmNamedNativeQuery> namedNativeQueries = xmlEntity.namedNativeQueries();
+		ListIterator<OrmNamedNativeQuery> namedNativeQueries = ormEntity.namedNativeQueries();
 		assertEquals("FOO", namedNativeQueries.next().getName());
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertFalse(namedNativeQueries.hasNext());
 		
 		entityResource.getNamedNativeQueries().move(2, 0);
-		namedNativeQueries = xmlEntity.namedNativeQueries();
+		namedNativeQueries = ormEntity.namedNativeQueries();
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
 		assertFalse(namedNativeQueries.hasNext());
 
 		entityResource.getNamedNativeQueries().move(0, 1);
-		namedNativeQueries = xmlEntity.namedNativeQueries();
+		namedNativeQueries = ormEntity.namedNativeQueries();
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
 		assertFalse(namedNativeQueries.hasNext());
 
 		entityResource.getNamedNativeQueries().remove(1);
-		namedNativeQueries = xmlEntity.namedNativeQueries();
+		namedNativeQueries = ormEntity.namedNativeQueries();
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
 		assertFalse(namedNativeQueries.hasNext());
 
 		entityResource.getNamedNativeQueries().remove(1);
-		namedNativeQueries = xmlEntity.namedNativeQueries();
+		namedNativeQueries = ormEntity.namedNativeQueries();
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertFalse(namedNativeQueries.hasNext());
 		
 		entityResource.getNamedNativeQueries().remove(0);
-		assertFalse(xmlEntity.namedNativeQueries().hasNext());
+		assertFalse(ormEntity.namedNativeQueries().hasNext());
 	}
 	
 	public void testUpdateIdClass() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
-		assertNull(xmlEntity.getIdClass());
+		assertNull(ormEntity.getIdClass());
 		assertNull(entityResource.getIdClass());
 		
 		entityResource.setIdClass(OrmFactory.eINSTANCE.createIdClass());
 		
-		assertNull(xmlEntity.getIdClass());
+		assertNull(ormEntity.getIdClass());
 		assertNotNull(entityResource.getIdClass());
 		
 		entityResource.getIdClass().setClassName("model.Foo");
-		assertEquals("model.Foo", xmlEntity.getIdClass());
+		assertEquals("model.Foo", ormEntity.getIdClass());
 		assertEquals("model.Foo", entityResource.getIdClass().getClassName());
 		
 		//test setting  @IdClass value to null, id-class tag is not removed
 		entityResource.getIdClass().setClassName(null);
-		assertNull(xmlEntity.getIdClass());
+		assertNull(ormEntity.getIdClass());
 		assertNotNull(entityResource.getIdClass());
 		
 		//reset @IdClass value and then remove id-class tag
@@ -1876,25 +1876,25 @@ public class XmlEntityTests extends ContextModelTestCase
 		entityResource.getIdClass().setClassName("model.Foo");
 		entityResource.setIdClass(null);
 		
-		assertNull(xmlEntity.getIdClass());
+		assertNull(ormEntity.getIdClass());
 		assertNull(entityResource.getIdClass());
 	}
 	
 	public void testModifyIdClass() throws Exception {
 		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) persistentType.getMapping();
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
-		assertNull(xmlEntity.getIdClass());
+		assertNull(ormEntity.getIdClass());
 		assertNull(entityResource.getIdClass());
 			
-		xmlEntity.setIdClass("model.Foo");
+		ormEntity.setIdClass("model.Foo");
 		assertEquals("model.Foo", entityResource.getIdClass().getClassName());
-		assertEquals("model.Foo", xmlEntity.getIdClass());
+		assertEquals("model.Foo", ormEntity.getIdClass());
 		
-		xmlEntity.setIdClass(null);
-		assertNull(xmlEntity.getIdClass());
+		ormEntity.setIdClass(null);
+		assertNull(ormEntity.getIdClass());
 		assertNull(entityResource.getIdClass());
 	}
 

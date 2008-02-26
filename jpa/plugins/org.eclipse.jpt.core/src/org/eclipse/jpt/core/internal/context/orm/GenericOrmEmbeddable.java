@@ -10,8 +10,8 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.orm.EntityMappings;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 
-public class GenericOrmEmbeddable extends AbstractOrmTypeMapping<XmlEmbeddable> implements Embeddable
+public class GenericOrmEmbeddable extends AbstractOrmTypeMapping<XmlEmbeddable> implements OrmEmbeddable
 {
 	public GenericOrmEmbeddable(OrmPersistentType parent) {
 		super(parent);

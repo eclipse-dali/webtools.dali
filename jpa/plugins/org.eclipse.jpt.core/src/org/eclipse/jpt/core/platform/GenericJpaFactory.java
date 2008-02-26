@@ -68,9 +68,12 @@ import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
+import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
@@ -442,15 +445,15 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericOrmPersistentType(parent, mappingKey);
 	}
 	
-	public GenericOrmEntity buildXmlEntity(OrmPersistentType parent) {
+	public OrmEntity buildOrmEntity(OrmPersistentType parent) {
 		return new GenericOrmEntity(parent);
 	}
 	
-	public GenericOrmMappedSuperclass buildXmlMappedSuperclass(OrmPersistentType parent) {
+	public OrmMappedSuperclass buildOrmMappedSuperclass(OrmPersistentType parent) {
 		return new GenericOrmMappedSuperclass(parent);
 	}
 	
-	public GenericOrmEmbeddable buildXmlEmbeddable(OrmPersistentType parent) {
+	public OrmEmbeddable buildOrmEmbeddable(OrmPersistentType parent) {
 		return new GenericOrmEmbeddable(parent);
 	}
 	
@@ -458,11 +461,11 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericOrmPersistentAttribute(parent, mappingKey);
 	}
 	
-	public OrmTable buildOrmTable(GenericOrmEntity parent) {
+	public OrmTable buildOrmTable(OrmEntity parent) {
 		return new GenericOrmTable(parent);
 	}
 	
-	public OrmSecondaryTable buildOrmSecondaryTable(GenericOrmEntity parent) {
+	public OrmSecondaryTable buildOrmSecondaryTable(OrmEntity parent) {
 		return new GenericOrmSecondaryTable(parent);
 	}
 	
@@ -486,7 +489,7 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericOrmAssociationOverride(parent, owner);
 	}
 	
-	public OrmDiscriminatorColumn buildOrmDiscriminatorColumn(GenericOrmEntity parent, NamedColumn.Owner owner) {
+	public OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, NamedColumn.Owner owner) {
 		return new GenericOrmDiscriminatorColumn(parent, owner);
 	}
 	

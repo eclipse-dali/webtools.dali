@@ -10,13 +10,12 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.platform.JpaFactory;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 
 
 public interface OrmTypeMappingProvider
 {
 	String key();
 	
-	OrmTypeMapping<? extends AbstractTypeMapping> buildTypeMapping(JpaFactory factory, OrmPersistentType parent);
+	OrmTypeMapping buildTypeMapping(JpaFactory factory, OrmPersistentType parent);
 	
 }

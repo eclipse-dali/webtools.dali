@@ -273,7 +273,7 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 		removeItemFromList(ormPersistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
 	}
 
-	public void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping<? extends AbstractTypeMapping> oldMapping, OrmTypeMapping<? extends AbstractTypeMapping> newMapping) {
+	public void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping) {
 		int sourceIndex = this.persistentTypes.indexOf(ormPersistentType);
 		this.persistentTypes.remove(sourceIndex);
 		oldMapping.removeFromResourceModel(this.xmlEntityMappings);

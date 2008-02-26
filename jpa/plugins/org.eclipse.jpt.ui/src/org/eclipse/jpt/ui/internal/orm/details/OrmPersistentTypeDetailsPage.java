@@ -17,7 +17,6 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.details.PersistentTypeDetailsPage;
 import org.eclipse.jpt.ui.internal.java.details.EmbeddableUiProvider;
@@ -69,10 +68,10 @@ public class OrmPersistentTypeDetailsPage extends PersistentTypeDetailsPage<OrmP
 		providers.add(EmbeddableUiProvider.instance());
 	}
 
-	private PropertyValueModel<OrmTypeMapping<? extends AbstractTypeMapping>> buildMappingHolder() {
-		return new PropertyAspectAdapter<OrmPersistentType,  OrmTypeMapping<? extends AbstractTypeMapping>>(getSubjectHolder(), PersistentType.MAPPING_PROPERTY) {
+	private PropertyValueModel<OrmTypeMapping> buildMappingHolder() {
+		return new PropertyAspectAdapter<OrmPersistentType,  OrmTypeMapping>(getSubjectHolder(), PersistentType.MAPPING_PROPERTY) {
 			@Override
-			protected OrmTypeMapping<? extends AbstractTypeMapping> buildValue_() {
+			protected OrmTypeMapping buildValue_() {
 				return subject.getMapping();
 			}
 		};

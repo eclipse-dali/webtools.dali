@@ -175,7 +175,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return null;
 	}
 
-	public OrmTypeMapping<?> typeMapping() {
+	public OrmTypeMapping typeMapping() {
 		return this.persistentAttribute().typeMapping();
 	}
 

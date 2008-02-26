@@ -40,6 +40,7 @@ import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
@@ -75,7 +76,7 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implements Entity
+public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implements OrmEntity
 {
 	protected String specifiedName;
 
@@ -88,8 +89,6 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	protected final List<OrmSecondaryTable> specifiedSecondaryTables;
 	
 	protected final List<OrmSecondaryTable> virtualSecondaryTables;
-	//TODO this might need to move to IEntity, for the UI
-		public static final String VIRTUAL_SECONDARY_TABLES_LIST = "virtualSecondaryTablesList";
 	
 	protected final List<OrmPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns;
 	
@@ -233,7 +232,6 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return this.table;
 	}
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<OrmSecondaryTable> secondaryTables() {
 		if (specifiedSecondaryTablesSize() > 0) {
 			return specifiedSecondaryTables();
@@ -257,14 +255,13 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	protected void addVirtualSecondaryTable(OrmSecondaryTable secondaryTable) {
-		addItemToList(secondaryTable, this.virtualSecondaryTables, GenericOrmEntity.VIRTUAL_SECONDARY_TABLES_LIST);
+		addItemToList(secondaryTable, this.virtualSecondaryTables, OrmEntity.VIRTUAL_SECONDARY_TABLES_LIST);
 	}
 	
 	protected void removeVirtualSecondaryTable(OrmSecondaryTable secondaryTable) {
-		removeItemFromList(secondaryTable, this.virtualSecondaryTables, GenericOrmEntity.VIRTUAL_SECONDARY_TABLES_LIST);
+		removeItemFromList(secondaryTable, this.virtualSecondaryTables, OrmEntity.VIRTUAL_SECONDARY_TABLES_LIST);
 	}
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<OrmSecondaryTable> specifiedSecondaryTables() {
 		return new CloneListIterator<OrmSecondaryTable>(this.specifiedSecondaryTables);
 	}
@@ -542,12 +539,11 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return this.defaultPrimaryKeyJoinColumns.size();
 	}
 
-	public PrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn() {
+	public OrmPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
 		return this.specifiedPrimaryKeyJoinColumns.isEmpty() ? this.defaultPrimaryKeyJoinColumns() : this.specifiedPrimaryKeyJoinColumns();
 	}
@@ -556,7 +552,6 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return this.specifiedPrimaryKeyJoinColumns.isEmpty() ? this.defaultPrimaryKeyJoinColumnsSize() : this.specifiedPrimaryKeyJoinColumnsSize();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<OrmPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns() {
 		return new CloneListIterator<OrmPrimaryKeyJoinColumn>(this.specifiedPrimaryKeyJoinColumns);
 	}
@@ -610,7 +605,6 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return this.specifiedAttributeOverridesSize() + this.defaultAttributeOverridesSize();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<OrmAttributeOverride> defaultAttributeOverrides() {
 		return new CloneListIterator<OrmAttributeOverride>(this.defaultAttributeOverrides);
 	}
@@ -619,7 +613,6 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return this.defaultAttributeOverrides.size();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<OrmAttributeOverride> specifiedAttributeOverrides() {
 		return new CloneListIterator<OrmAttributeOverride>(this.specifiedAttributeOverrides);
 	}
@@ -669,7 +662,6 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return this.specifiedAssociationOverridesSize() + this.defaultAssociationOverridesSize();
 	}
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<OrmAssociationOverride> defaultAssociationOverrides() {
 		return new CloneListIterator<OrmAssociationOverride>(this.defaultAssociationOverrides);
 	}
@@ -678,7 +670,6 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return this.defaultAssociationOverrides.size();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<OrmAssociationOverride> specifiedAssociationOverrides() {
 		return new CloneListIterator<OrmAssociationOverride>(this.specifiedAssociationOverrides);
 	}
@@ -719,7 +710,6 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		fireItemMoved(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<OrmNamedQuery> namedQueries() {
 		return new CloneListIterator<OrmNamedQuery>(this.namedQueries);
 	}
@@ -760,7 +750,6 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		fireItemMoved(Entity.NAMED_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<OrmNamedNativeQuery> namedNativeQueries() {
 		return new CloneListIterator<OrmNamedNativeQuery>(this.namedNativeQueries);
 	}

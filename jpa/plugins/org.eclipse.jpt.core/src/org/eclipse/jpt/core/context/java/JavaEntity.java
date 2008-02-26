@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.context.java;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 
 public interface JavaEntity extends JavaTypeMapping, Entity
 {
@@ -36,7 +35,7 @@ public interface JavaEntity extends JavaTypeMapping, Entity
 	JavaPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns();
-	PrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
+	JavaPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaAttributeOverride> attributeOverrides();
@@ -61,4 +60,5 @@ public interface JavaEntity extends JavaTypeMapping, Entity
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaNamedNativeQuery> namedNativeQueries();
 	JavaNamedNativeQuery addNamedNativeQuery(int index);
+
 }

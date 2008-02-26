@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.orm.details;
 import java.util.Collection;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
@@ -33,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class AccessTypeComposite extends AbstractFormPane<OrmTypeMapping<? extends AbstractTypeMapping>> {
+public class AccessTypeComposite extends AbstractFormPane<OrmTypeMapping> {
 
 	/**
 	 * Creates a new <code>AccessTypeComposite</code>.
@@ -43,15 +42,15 @@ public class AccessTypeComposite extends AbstractFormPane<OrmTypeMapping<? exten
 	 * @param parent The parent container
 	 */
 	public AccessTypeComposite(AbstractFormPane<?> parentPane,
-	                           PropertyValueModel<? extends OrmTypeMapping<? extends AbstractTypeMapping>> subjectHolder,
+	                           PropertyValueModel<? extends OrmTypeMapping> subjectHolder,
 	                           Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
 	}
 
-	private EnumFormComboViewer<OrmTypeMapping<? extends AbstractTypeMapping>, AccessType> buildAccessTypeComboViewer(Composite container) {
+	private EnumFormComboViewer<OrmTypeMapping, AccessType> buildAccessTypeComboViewer(Composite container) {
 
-		return new EnumFormComboViewer<OrmTypeMapping<? extends AbstractTypeMapping>, AccessType>(this, container) {
+		return new EnumFormComboViewer<OrmTypeMapping, AccessType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -97,7 +96,7 @@ public class AccessTypeComposite extends AbstractFormPane<OrmTypeMapping<? exten
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		EnumFormComboViewer<OrmTypeMapping<? extends AbstractTypeMapping>, AccessType> comboViewer =
+		EnumFormComboViewer<OrmTypeMapping, AccessType> comboViewer =
 			buildAccessTypeComboViewer(container);
 
 		buildLabeledComposite(

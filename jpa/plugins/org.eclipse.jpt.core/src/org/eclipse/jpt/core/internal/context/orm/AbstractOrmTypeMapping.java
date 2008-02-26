@@ -26,7 +26,7 @@ import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 
-public abstract class AbstractOrmTypeMapping<E extends AbstractTypeMapping> extends AbstractJpaContextNode implements OrmTypeMapping<E>
+public abstract class AbstractOrmTypeMapping<E extends AbstractTypeMapping> extends AbstractJpaContextNode implements OrmTypeMapping
 {
 
 	protected String class_;
@@ -132,7 +132,7 @@ public abstract class AbstractOrmTypeMapping<E extends AbstractTypeMapping> exte
 	 * fromthe old ITypeMapping (oldMapping)
 	 * @param oldMapping
 	 */
-	public void initializeFrom(OrmTypeMapping<? extends AbstractTypeMapping> oldMapping) {
+	public void initializeFrom(OrmTypeMapping oldMapping) {
 		this.setClass(oldMapping.getClass_());
 		this.setSpecifiedAccess(oldMapping.getSpecifiedAccess());
 		this.setSpecifiedMetadataComplete(oldMapping.getSpecifiedMetadataComplete());

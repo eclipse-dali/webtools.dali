@@ -13,8 +13,8 @@ package org.eclipse.jpt.core.tests.internal.context.orm;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
@@ -38,15 +38,15 @@ public class OrmAttributeOverrideTests extends ContextModelTestCase
 	
 	public void testUpdateName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		OrmAttributeOverride ormAttributeOverride = xmlEntity.addSpecifiedAttributeOverride(0);
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+		OrmAttributeOverride ormAttributeOverride = ormEntity.addSpecifiedAttributeOverride(0);
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		XmlAttributeOverride attributeOverrideResource = entityResource.getAttributeOverrides().get(0);
 		
 		assertNull(ormAttributeOverride.getName());
 		assertNull(attributeOverrideResource.getName());
-		assertTrue(xmlEntity.attributeOverrides().hasNext());
+		assertTrue(ormEntity.attributeOverrides().hasNext());
 		assertFalse(entityResource.getAttributeOverrides().isEmpty());
 		
 		//set name in the resource model, verify context model updated
@@ -67,14 +67,14 @@ public class OrmAttributeOverrideTests extends ContextModelTestCase
 
 		entityResource.getAttributeOverrides().remove(0);
 		ormResource().save(null);
-		assertFalse(xmlEntity.attributeOverrides().hasNext());
+		assertFalse(ormEntity.attributeOverrides().hasNext());
 		assertTrue(entityResource.getAttributeOverrides().isEmpty());
 	}
 	
 	public void testModifyName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		OrmAttributeOverride ormAttributeOverride = xmlEntity.addSpecifiedAttributeOverride(0);
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+		OrmAttributeOverride ormAttributeOverride = ormEntity.addSpecifiedAttributeOverride(0);
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		XmlAttributeOverride attributeOverrideResource = entityResource.getAttributeOverrides().get(0);

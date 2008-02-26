@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 
-public interface OrmTypeMapping<E extends AbstractTypeMapping> extends TypeMapping
+public interface OrmTypeMapping extends TypeMapping
 {
 	String JAVA_PERSISTENT_TYPE_PROPERTY = "javaPersistentTypeProperty";
 
@@ -54,11 +54,11 @@ public interface OrmTypeMapping<E extends AbstractTypeMapping> extends TypeMappi
 
 	void removeFromResourceModel(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings);
 		
-	E addToResourceModel(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings);
+	AbstractTypeMapping addToResourceModel(org.eclipse.jpt.core.resource.orm.EntityMappings entityMappings);
 
-	void initializeFrom(OrmTypeMapping<? extends AbstractTypeMapping> oldMapping);
+	void initializeFrom(OrmTypeMapping oldMapping);
 
-	E typeMappingResource();
+	AbstractTypeMapping typeMappingResource();
 	
 	JavaPersistentType getJavaPersistentType();
 

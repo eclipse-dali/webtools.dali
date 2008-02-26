@@ -17,8 +17,8 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
@@ -154,18 +154,18 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntity();
 		
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		JavaEntity javaEntity = xmlEntity.javaEntity();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+		JavaEntity javaEntity = ormEntity.javaEntity();
 		
 		assertNull(javaEntity.getTable().getDefaultSchema());
 		
-		xmlEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema("FOO");
+		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema("FOO");
 		assertEquals("FOO", javaEntity.getTable().getDefaultSchema());
 		
-		xmlEntity.entityMappings().setSpecifiedSchema("BAR");
+		ormEntity.entityMappings().setSpecifiedSchema("BAR");
 		assertEquals("BAR", javaEntity.getTable().getDefaultSchema());
 		
-		xmlEntity.getTable().setSpecifiedSchema("XML_SCHEMA");
+		ormEntity.getTable().setSpecifiedSchema("XML_SCHEMA");
 		assertEquals("BAR", javaEntity.getTable().getDefaultSchema());
 
 		entityMappings().removeOrmPersistentType(0);
@@ -271,18 +271,18 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntity();
 		
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		GenericOrmEntity xmlEntity = (GenericOrmEntity) ormPersistentType.getMapping();
-		JavaEntity javaEntity = xmlEntity.javaEntity();
+		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+		JavaEntity javaEntity = ormEntity.javaEntity();
 		
 		assertNull(javaEntity.getTable().getDefaultCatalog());
 		
-		xmlEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("FOO");
+		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("FOO");
 		assertEquals("FOO", javaEntity.getTable().getDefaultCatalog());
 		
-		xmlEntity.entityMappings().setSpecifiedCatalog("BAR");
+		ormEntity.entityMappings().setSpecifiedCatalog("BAR");
 		assertEquals("BAR", javaEntity.getTable().getDefaultCatalog());
 		
-		xmlEntity.getTable().setSpecifiedCatalog("XML_CATALOG");
+		ormEntity.getTable().setSpecifiedCatalog("XML_CATALOG");
 		assertEquals("BAR", javaEntity.getTable().getDefaultCatalog());
 
 		entityMappings().removeOrmPersistentType(0);

@@ -38,7 +38,7 @@ public interface OrmPersistentAttribute extends PersistentAttribute
 	/**
 	 * Overriden to return {@link OrmTypeMapping}s
 	 */
-	OrmTypeMapping<?> typeMapping();
+	OrmTypeMapping typeMapping();
 	
 	/**
 	 * Overriden to return {@link OrmPersistentType}s

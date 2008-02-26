@@ -63,9 +63,12 @@ import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
+import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
@@ -87,9 +90,6 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmRelationshipMapping;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddable;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappedSuperclass;
 import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 
 /**
@@ -179,17 +179,17 @@ public interface JpaFactory
 	
 	OrmPersistentType buildOrmPersistentType(EntityMappings parent, String mappingKey);
 	
-	GenericOrmEntity buildXmlEntity(OrmPersistentType parent);
+	OrmEntity buildOrmEntity(OrmPersistentType parent);
 	
-	GenericOrmMappedSuperclass buildXmlMappedSuperclass(OrmPersistentType parent);
+	OrmMappedSuperclass buildOrmMappedSuperclass(OrmPersistentType parent);
 	
-	GenericOrmEmbeddable buildXmlEmbeddable(OrmPersistentType parent);
+	OrmEmbeddable buildOrmEmbeddable(OrmPersistentType parent);
 	
 	OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, String mappingKey);
 	
-	OrmTable buildOrmTable(GenericOrmEntity parent);
+	OrmTable buildOrmTable(OrmEntity parent);
 	
-	OrmSecondaryTable buildOrmSecondaryTable(GenericOrmEntity parent);
+	OrmSecondaryTable buildOrmSecondaryTable(OrmEntity parent);
 	
 	OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(JpaContextNode parent, AbstractJoinColumn.Owner owner);
 	
@@ -201,7 +201,7 @@ public interface JpaFactory
 	
 	OrmAssociationOverride buildOrmAssociationOverride(JpaContextNode parent, AssociationOverride.Owner owner);
 
-	OrmDiscriminatorColumn buildOrmDiscriminatorColumn(GenericOrmEntity parent, NamedColumn.Owner owner);
+	OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, NamedColumn.Owner owner);
 	
 	OrmColumn buildOrmColumn(JpaContextNode parent, OrmColumn.Owner owner);
 	

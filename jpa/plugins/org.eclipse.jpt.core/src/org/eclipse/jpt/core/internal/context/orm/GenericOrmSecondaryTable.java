@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.resource.orm.XmlAbstractTable;
@@ -38,7 +39,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 	
 	protected final List<OrmPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns;
 
-	public GenericOrmSecondaryTable(GenericOrmEntity parent) {
+	public GenericOrmSecondaryTable(OrmEntity parent) {
 		super(parent);
 		this.specifiedPrimaryKeyJoinColumns = new ArrayList<OrmPrimaryKeyJoinColumn>();
 		this.defaultPrimaryKeyJoinColumns = new ArrayList<OrmPrimaryKeyJoinColumn>();
@@ -46,11 +47,11 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 	}
 	
 	@Override
-	public GenericOrmEntity parent() {
-		return (GenericOrmEntity) super.parent();
+	public OrmEntity parent() {
+		return (OrmEntity) super.parent();
 	}
 	
-	public GenericOrmEntity xmlEntity() {
+	public OrmEntity ormEntity() {
 		return parent();
 	}
 
@@ -125,7 +126,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 
 	
 	public boolean isVirtual() {
-		return xmlEntity().containsVirtualSecondaryTable(this);
+		return ormEntity().containsVirtualSecondaryTable(this);
 	}
 	
 	@Override
@@ -212,7 +213,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 		}
 
 		public TypeMapping typeMapping() {
-			return GenericOrmSecondaryTable.this.xmlEntity();
+			return GenericOrmSecondaryTable.this.ormEntity();
 		}
 
 		public Table dbTable(String tableName) {
@@ -235,7 +236,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 			if (joinColumnsSize() != 1) {
 				return null;
 			}
-			return xmlEntity().parentEntity().primaryKeyColumnName();
+			return ormEntity().parentEntity().primaryKeyColumnName();
 
 		}
 	}

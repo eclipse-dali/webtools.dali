@@ -10,17 +10,16 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.platform.JpaFactory;
-import org.eclipse.jpt.core.resource.orm.XmlEntity;
 
 
 public class OrmEntityProvider implements OrmTypeMappingProvider
 {	
-	public OrmTypeMapping<XmlEntity> buildTypeMapping(JpaFactory factory, OrmPersistentType parent) {
-		return factory.buildXmlEntity(parent);
+	public OrmEntity buildTypeMapping(JpaFactory factory, OrmPersistentType parent) {
+		return factory.buildOrmEntity(parent);
 	}
 
 	public String key() {

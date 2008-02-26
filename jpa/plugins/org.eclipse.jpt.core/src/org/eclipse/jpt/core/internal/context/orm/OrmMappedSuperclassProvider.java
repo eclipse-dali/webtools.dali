@@ -10,17 +10,16 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.platform.JpaFactory;
-import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 
 
 public class OrmMappedSuperclassProvider implements OrmTypeMappingProvider
 {	
-	public OrmTypeMapping<XmlMappedSuperclass> buildTypeMapping(JpaFactory factory, OrmPersistentType parent) {
-		return factory.buildXmlMappedSuperclass(parent);
+	public OrmMappedSuperclass buildTypeMapping(JpaFactory factory, OrmPersistentType parent) {
+		return factory.buildOrmMappedSuperclass(parent);
 	}
 
 	public String key() {

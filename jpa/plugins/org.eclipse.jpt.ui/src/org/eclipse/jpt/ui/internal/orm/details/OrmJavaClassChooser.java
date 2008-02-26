@@ -25,7 +25,6 @@ import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
@@ -61,7 +60,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class OrmJavaClassChooser extends AbstractFormPane<OrmTypeMapping<?>> {
+public class OrmJavaClassChooser extends AbstractFormPane<OrmTypeMapping> {
 
 	private JavaTypeCompletionProcessor javaTypeCompletionProcessor;
 	private Text text;
@@ -74,7 +73,7 @@ public class OrmJavaClassChooser extends AbstractFormPane<OrmTypeMapping<?>> {
 	 * @param parent The parent container
 	 */
 	public OrmJavaClassChooser(AbstractFormPane<?> parentPane,
-	                           PropertyValueModel<? extends OrmTypeMapping<? extends AbstractTypeMapping>> subjectHolder,
+	                           PropertyValueModel<? extends OrmTypeMapping> subjectHolder,
 	                           Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -87,7 +86,7 @@ public class OrmJavaClassChooser extends AbstractFormPane<OrmTypeMapping<?>> {
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmJavaClassChooser(PropertyValueModel<? extends OrmTypeMapping<? extends AbstractTypeMapping>> subjectHolder,
+	public OrmJavaClassChooser(PropertyValueModel<? extends OrmTypeMapping> subjectHolder,
 	                           Composite parent,
 	                           TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -230,7 +229,7 @@ public class OrmJavaClassChooser extends AbstractFormPane<OrmTypeMapping<?>> {
 
 	private void populateText() {
 
-		OrmTypeMapping<?> subject = subject();
+		OrmTypeMapping subject = subject();
 		text.setText("");
 
 		if (subject == null) {

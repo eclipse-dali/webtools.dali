@@ -10,7 +10,6 @@ package org.eclipse.jpt.ui.internal.orm.details;
 
 import java.util.Collection;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
@@ -29,7 +28,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * @version 2.0
  * @since 2.0
  */
-public class MetaDataCompleteComboViewer extends AbstractFormPane<OrmTypeMapping<? extends AbstractTypeMapping>>
+public class MetaDataCompleteComboViewer extends AbstractFormPane<OrmTypeMapping>
 {
 	/**
 	 * Creates a new <code>MetaDataCompleteComboViewer</code>.
@@ -39,7 +38,7 @@ public class MetaDataCompleteComboViewer extends AbstractFormPane<OrmTypeMapping
 	 * @param parent The parent container
 	 */
 	public MetaDataCompleteComboViewer(AbstractFormPane<?> parentPane,
-	                                   PropertyValueModel<? extends OrmTypeMapping<? extends AbstractTypeMapping>> subjectHolder,
+	                                   PropertyValueModel<? extends OrmTypeMapping> subjectHolder,
 	                                   Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -52,16 +51,16 @@ public class MetaDataCompleteComboViewer extends AbstractFormPane<OrmTypeMapping
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public MetaDataCompleteComboViewer(PropertyValueModel<? extends OrmTypeMapping<? extends AbstractTypeMapping>> subjectHolder,
+	public MetaDataCompleteComboViewer(PropertyValueModel<? extends OrmTypeMapping> subjectHolder,
 	                                   Composite parent,
 	                                   TabbedPropertySheetWidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private EnumFormComboViewer<OrmTypeMapping<? extends AbstractTypeMapping>, Boolean> buildEnumTypeCombo(Composite container) {
+	private EnumFormComboViewer<OrmTypeMapping, Boolean> buildEnumTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<OrmTypeMapping<? extends AbstractTypeMapping>, Boolean>(this, container) {
+		return new EnumFormComboViewer<OrmTypeMapping, Boolean>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {

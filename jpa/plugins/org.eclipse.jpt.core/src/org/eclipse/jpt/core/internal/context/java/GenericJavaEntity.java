@@ -686,7 +686,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		return (this.defaultPrimaryKeyJoinColumn == null) ? 0 : 1;
 	}
 
-	public PrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
+	public JavaPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
 		JavaPrimaryKeyJoinColumn oldDefaultPkJoinColumn = this.getDefaultPrimaryKeyJoinColumn();
 		if (oldDefaultPkJoinColumn != null) {
 			//null the default join column now if one already exists.

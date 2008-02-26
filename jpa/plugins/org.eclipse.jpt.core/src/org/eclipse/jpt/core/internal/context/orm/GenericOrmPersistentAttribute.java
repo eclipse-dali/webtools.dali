@@ -131,7 +131,7 @@ public class GenericOrmPersistentAttribute extends AbstractJpaContextNode
 		return (OrmPersistentType) parent();
 	}
 
-	public OrmTypeMapping<?> typeMapping() {
+	public OrmTypeMapping typeMapping() {
 		return persistentType().getMapping();
 	}
 
