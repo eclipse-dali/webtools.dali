@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
 
@@ -33,11 +31,6 @@ public interface AbstractJoinColumn extends NamedColumn
 	 * Return whether the reference column is found on the datasource
 	 */
 	boolean isReferencedColumnResolved();
-
-	/**
-	 * Return the (best guess) text location of the referenced column name
-	 */
-	TextRange referencedColumnNameTextRange(CompilationUnit astRoot);
 
 	boolean isVirtual();
 

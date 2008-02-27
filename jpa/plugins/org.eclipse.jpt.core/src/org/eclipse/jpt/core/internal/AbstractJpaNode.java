@@ -12,11 +12,9 @@ package org.eclipse.jpt.core.internal;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaPlatform;
@@ -26,7 +24,6 @@ import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.utility.internal.node.Node;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * 
@@ -150,15 +147,6 @@ public abstract class AbstractJpaNode
 		nonUpdateAspectNames.add(HAS_BRANCH_PROBLEMS_PROPERTY);
 	// when you override this method, don't forget to include:
 	//	super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
-	}
-	
-	// ********** validation **********
-	
-	/**
-	 * All subclass implementations {@link #addToMessages(List<IMessage>)} 
-	 * should be preceded by a "super" call to this method
-	 */
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 	}
 
 }

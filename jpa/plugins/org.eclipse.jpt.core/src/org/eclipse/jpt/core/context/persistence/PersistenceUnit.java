@@ -11,13 +11,11 @@ package org.eclipse.jpt.core.context.persistence;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AccessType;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 
-public interface PersistenceUnit extends JpaContextNode, JpaStructureNode
+public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructureNode
 {
 	// **************** parent *************************************************
 	
@@ -457,6 +455,5 @@ public interface PersistenceUnit extends JpaContextNode, JpaStructureNode
 	 * the given text offset
 	 */
 	boolean containsOffset(int textOffset);
-	
-	TextRange validationTextRange();
+
 }

@@ -9,19 +9,20 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.persistence;
 
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 
 
-public class GenericProperty extends AbstractJpaContextNode
+public class GenericProperty extends AbstractPersistenceJpaContextNode
 	implements Property
 {
 	protected String name;
 	
 	protected String value;
 	
+	protected XmlProperty property;
 	
 	public GenericProperty(PersistenceUnit parent) {
 		super(parent);
@@ -30,12 +31,13 @@ public class GenericProperty extends AbstractJpaContextNode
 	// **************** name ***************************************************
 	
 	public String getName() {
-		return name;
+		return this.name;
 	}
 	
 	public void setName(String newName) {
-		String oldName = name;
-		name = newName;
+		String oldName = this.name;
+		this.name = newName;
+		this.property.setName(newName);
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
@@ -43,12 +45,13 @@ public class GenericProperty extends AbstractJpaContextNode
 	// **************** value **************************************************
 	
 	public String getValue() {
-		return value;
+		return this.value;
 	}
 	
 	public void setValue(String newValue) {
-		String oldValue = value;
-		value = newValue;
+		String oldValue = this.value;
+		this.value = newValue;
+		this.property.setValue(newValue);
 		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
 	
@@ -56,15 +59,22 @@ public class GenericProperty extends AbstractJpaContextNode
 	// **************** updating ***********************************************
 	
 	public void initialize(XmlProperty property) {
-		name = property.getName();
-		value = property.getValue();
+		this.property = property;
+		this.name = property.getName();
+		this.value = property.getValue();
 	}
 	
 	public void update(XmlProperty property) {
+		this.property = property;
 		setName(property.getName());
 		setValue(property.getValue());
 	}
 	
+	// **************** validation ***********************************************
+	
+	public TextRange validationTextRange() {
+		return this.property.validationTextRange();
+	}
 	
 	// **************** toString
 	@Override

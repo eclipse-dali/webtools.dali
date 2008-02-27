@@ -31,7 +31,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.ContextModel;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFile;
@@ -455,16 +454,13 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	 * persistence unit level.  */
 	private boolean okToContinueValidation = true;
 	
-	
-	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
+	public void addToMessages(List<IMessage> messages) {
 		//start with the project - then down
 		//project validation
 		addProjectLevelMessages(messages);
 		
 		//context model validation
-		contextModel().addToMessages(messages, astRoot);
+		contextModel().addToMessages(messages);
 	}
 
 	protected void addProjectLevelMessages(List<IMessage> messages) {

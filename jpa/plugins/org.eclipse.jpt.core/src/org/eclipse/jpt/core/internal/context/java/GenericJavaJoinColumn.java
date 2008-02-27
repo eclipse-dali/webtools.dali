@@ -14,7 +14,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
@@ -36,7 +35,7 @@ public class GenericJavaJoinColumn extends AbstractJavaColumn<JoinColumnAnnotati
 
 	protected JoinColumnAnnotation joinColumn;
 	
-	public GenericJavaJoinColumn(JavaJpaContextNode parent, JoinColumn.Owner owner) {
+	public GenericJavaJoinColumn(JavaJpaContextNode parent, JavaJoinColumn.Owner owner) {
 		super(parent, owner);
 	}
 
@@ -78,8 +77,8 @@ public class GenericJavaJoinColumn extends AbstractJavaColumn<JoinColumnAnnotati
 
 
 	@Override
-	public JoinColumn.Owner owner() {
-		return (JoinColumn.Owner) super.owner();
+	public JavaJoinColumn.Owner owner() {
+		return (JavaJoinColumn.Owner) super.owner();
 	}
 
 	public boolean isVirtual() {

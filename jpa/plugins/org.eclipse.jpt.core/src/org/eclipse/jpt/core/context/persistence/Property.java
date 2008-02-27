@@ -10,10 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.context.persistence;
 
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 
-public interface Property extends JpaContextNode
+public interface Property extends PersistenceJpaContextNode
 {
 	// **************** name ***************************************************
 	

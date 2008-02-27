@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
-
 
 public interface BaseOverride extends JpaContextNode
 {
@@ -40,7 +37,5 @@ public interface BaseOverride extends JpaContextNode
 		 * embeddable.
 		 */
 		boolean isVirtual(BaseOverride override);
-
-		TextRange validationTextRange(CompilationUnit astRoot);
 	}
 }

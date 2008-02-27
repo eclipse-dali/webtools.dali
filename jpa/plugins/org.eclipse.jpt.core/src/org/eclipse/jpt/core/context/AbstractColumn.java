@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
-
 
 public interface AbstractColumn extends NamedColumn
 {
@@ -64,11 +61,6 @@ public interface AbstractColumn extends NamedColumn
 	Boolean getSpecifiedUpdatable();
 	void setSpecifiedUpdatable(Boolean newSpecifiedUpdatable);
 		String SPECIFIED_UPDATABLE_PROPERTY = "specifiedUpdatableProperty";
-
-	/**
-	 * Return the (best guess) text location of the column's table.
-	 */
-	TextRange tableTextRange(CompilationUnit astRoot);
 	
 	//TODO not sure we really need/want this to be public.  This
 	//is used by ColumnComposite to get a list of possible associated tables, but

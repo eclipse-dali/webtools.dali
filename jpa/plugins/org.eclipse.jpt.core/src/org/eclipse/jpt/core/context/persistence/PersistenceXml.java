@@ -11,10 +11,9 @@
 package org.eclipse.jpt.core.context.persistence;
 
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 
-public interface PersistenceXml extends JpaContextNode, JpaStructureNode
+public interface PersistenceXml extends PersistenceJpaContextNode, JpaStructureNode
 {
 	// **************** persistence *******************************************
 	

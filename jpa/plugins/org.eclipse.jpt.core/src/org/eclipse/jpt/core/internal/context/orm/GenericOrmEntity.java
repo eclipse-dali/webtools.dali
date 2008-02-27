@@ -13,9 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
@@ -147,10 +145,6 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return new NamedColumn.Owner(){
 			public org.eclipse.jpt.db.internal.Table dbTable(String tableName) {
 				return GenericOrmEntity.this.dbTable(tableName);
-			}
-
-			public TextRange validationTextRange(CompilationUnit astRoot) {
-				return GenericOrmEntity.this.validationTextRange(astRoot);
 			}
 
 			public TypeMapping typeMapping() {
@@ -1412,39 +1406,39 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	//**********  Validation **************************
 	
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
-		table.addToMessages(messages, astRoot);	
-		addIdMessages(messages, astRoot);
-		
-		
-		for (OrmSecondaryTable context : specifiedSecondaryTables) {
-			context.addToMessages(messages, astRoot);
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
+		getTable().addToMessages(messages);	
+		addIdMessages(messages);
+		//TODO what about virtual secondary tables??		
+		for (OrmSecondaryTable secondaryTable : CollectionTools.iterable(specifiedSecondaryTables())) {
+			secondaryTable.addToMessages(messages);
 		}
 
 		for (Iterator<OrmAttributeOverride> stream = this.attributeOverrides(); stream.hasNext();) {
-			stream.next().addToMessages(messages, astRoot);
+			stream.next().addToMessages(messages);
 		}
 		
 		for (Iterator<OrmAssociationOverride> stream = this.associationOverrides(); stream.hasNext();) {
-			stream.next().addToMessages(messages, astRoot);
+			stream.next().addToMessages(messages);
 		}
 	
 	}
 	
-	protected void addIdMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		addNoIdMessage(messages, astRoot);
+	protected void addIdMessages(List<IMessage> messages) {
+		addNoIdMessage(messages);
 		
 	}
 	
-	protected void addNoIdMessage(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void addNoIdMessage(List<IMessage> messages) {
 		if (entityHasNoId()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.ENTITY_NO_ID,
 					new String[] {this.getName()},
-					this, this.validationTextRange(astRoot))
+					this, 
+					this.validationTextRange())
 			);
 		}
 	}
@@ -1460,12 +1454,6 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 			}
 		}
 		return false;
-	}
-	
-	
-	public TextRange validationTextRange(CompilationUnit astRoot) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	public TypeMapping typeMapping() {
@@ -1491,10 +1479,6 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	class PrimaryKeyJoinColumnOwner implements AbstractJoinColumn.Owner
 	{
-		public TextRange validationTextRange(CompilationUnit astRoot) {
-			return GenericOrmEntity.this.validationTextRange(astRoot);
-		}
-
 		public TypeMapping typeMapping() {
 			return GenericOrmEntity.this;
 		}
@@ -1548,11 +1532,6 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		public TypeMapping typeMapping() {
 			return GenericOrmEntity.this;
 		}
-
-		public TextRange validationTextRange(CompilationUnit astRoot) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 		
 	}
 
@@ -1580,11 +1559,5 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		public TypeMapping typeMapping() {
 			return GenericOrmEntity.this;
 		}
-
-		public TextRange validationTextRange(CompilationUnit astRoot) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
 	}
 }

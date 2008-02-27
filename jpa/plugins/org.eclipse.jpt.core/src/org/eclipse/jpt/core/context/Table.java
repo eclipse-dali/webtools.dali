@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.db.internal.Schema;
 
 public interface Table extends JpaContextNode
@@ -66,11 +64,6 @@ public interface Table extends JpaContextNode
 	 */
 	boolean isResolved();
 
-	TextRange nameTextRange(CompilationUnit astRoot);
-
-	TextRange schemaTextRange(CompilationUnit astRoot);
-	
-	TextRange catalogTextRange(CompilationUnit astRoot);
 
 //
 //	class UniqueConstraintOwner implements IUniqueConstraint.Owner

@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.AssociationOverride;
@@ -24,14 +23,13 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class GenericOrmAssociationOverride extends AbstractJpaContextNode
+public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 	implements OrmAssociationOverride
 {
 
@@ -177,6 +175,11 @@ public class GenericOrmAssociationOverride extends AbstractJpaContextNode
 		return ormJoinColumn;
 	}
 
+	public TextRange validationTextRange() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	class JoinColumnOwner implements JoinColumn.Owner
 	{
 
@@ -217,11 +220,6 @@ public class GenericOrmAssociationOverride extends AbstractJpaContextNode
 		 */
 		public boolean tableIsAllowed() {
 			return true;
-		}
-
-		public TextRange validationTextRange(CompilationUnit astRoot) {
-			// TODO Auto-generated method stub
-			return null;
 		}
 
 		public TypeMapping typeMapping() {

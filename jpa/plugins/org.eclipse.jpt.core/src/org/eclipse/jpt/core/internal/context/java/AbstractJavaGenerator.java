@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.GeneratorAnnotation;
 
 
-public abstract class AbstractJavaGenerator<T extends GeneratorAnnotation> extends JavaContextModel implements JavaGenerator<T>
+public abstract class AbstractJavaGenerator<T extends GeneratorAnnotation> extends AbstractJavaJpaContextNode implements JavaGenerator<T>
 {
 	protected String name;
 

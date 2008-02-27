@@ -24,7 +24,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 
-public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> extends JavaContextModel
+public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation> extends AbstractJavaJpaContextNode
 	implements JavaNamedColumn
 {
 

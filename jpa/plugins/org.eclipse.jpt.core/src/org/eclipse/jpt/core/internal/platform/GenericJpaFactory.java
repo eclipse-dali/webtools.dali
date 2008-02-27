@@ -29,6 +29,7 @@ import org.eclipse.jpt.core.context.IBaseJpaContent;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.NamedColumn;
+import org.eclipse.jpt.core.context.java.JavaAbstractJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
@@ -47,6 +48,7 @@ import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
@@ -178,11 +180,11 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmVersionMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.orm.OrmXmlImpl;
-import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.GenericClassRef;
 import org.eclipse.jpt.core.internal.context.persistence.GenericMappingFileRef;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistence;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
+import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
 import org.eclipse.jpt.core.internal.jdtutility.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
@@ -367,11 +369,11 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericJavaColumn(parent, owner);
 	}
 	
-	public JavaDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, NamedColumn.Owner owner) {
+	public JavaDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, JavaNamedColumn.Owner owner) {
 		return new GenericJavaDiscriminatorColumn(parent, owner);
 	}
 	
-	public JavaJoinColumn buildJavaJoinColumn(JavaJpaContextNode parent, JoinColumn.Owner owner) {
+	public JavaJoinColumn buildJavaJoinColumn(JavaJpaContextNode parent, JavaJoinColumn.Owner owner) {
 		return new GenericJavaJoinColumn(parent, owner);
 	}
 	
@@ -439,7 +441,7 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericJavaGeneratedValue(parent);
 	}
 	
-	public JavaPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, AbstractJoinColumn.Owner owner) {
+	public JavaPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, JavaAbstractJoinColumn.Owner owner) {
 		return new GenericJavaPrimaryKeyJoinColumn(parent, owner);
 	}
 	

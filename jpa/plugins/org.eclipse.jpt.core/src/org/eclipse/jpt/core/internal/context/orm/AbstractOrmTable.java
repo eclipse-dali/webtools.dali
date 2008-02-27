@@ -9,16 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.Table;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAbstractTable;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.utility.internal.NameTools;
 
-public abstract class AbstractOrmTable extends AbstractJpaContextNode implements Table
+public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode implements Table
 {
 	protected String specifiedName;
 
@@ -186,21 +184,20 @@ public abstract class AbstractOrmTable extends AbstractJpaContextNode implements
 //	}
 
 
-	public TextRange nameTextRange(CompilationUnit astRoot) {
+	public TextRange nameTextRange() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	public TextRange catalogTextRange(CompilationUnit astRoot) {
+	public TextRange catalogTextRange() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	public TextRange schemaTextRange(CompilationUnit astRoot) {
+	public TextRange schemaTextRange() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
 //	public ITextRange nameTextRange() {
 //		if (node == null) {
 //			return owner.validationTextRange();
@@ -216,15 +213,10 @@ public abstract class AbstractOrmTable extends AbstractJpaContextNode implements
 //		IDOMNode schemaNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.SCHEMA);
 //		return (schemaNode == null) ? validationTextRange() : buildTextRange(schemaNode);
 //	}
-//
-//	@Override
-//	public ITextRange validationTextRange() {
-//		return (node == null) ? owner.validationTextRange() : super.validationTextRange();
-//	}
-//
-//	public Owner getOwner() {
-//		return owner;
-//	}
+	
+	public TextRange validationTextRange() {
+		return this.table().validationTextRange();
+	}
 
 	public org.eclipse.jpt.db.internal.Table dbTable() {
 		Schema schema = this.dbSchema();

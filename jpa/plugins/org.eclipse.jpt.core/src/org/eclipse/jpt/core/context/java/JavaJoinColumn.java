@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.context.java;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 
-public interface JavaJoinColumn extends JoinColumn, JavaNamedColumn
+public interface JavaJoinColumn extends JoinColumn, JavaAbstractJoinColumn, JavaAbstractColumn
 {
 	void initializeFromResource(JoinColumnAnnotation joinColumn);
 	
@@ -20,4 +20,14 @@ public interface JavaJoinColumn extends JoinColumn, JavaNamedColumn
 	
 	void update(JoinColumnAnnotation joinColumn);
 
+	Owner owner();
+	
+	/**
+	 * interface allowing join columns to be used in multiple places
+	 * (e.g. 1:1 mappings and join tables)
+	 */
+	interface Owner extends JoinColumn.Owner, JavaAbstractJoinColumn.Owner, JavaAbstractColumn.Owner
+	{
+
+	}
 }

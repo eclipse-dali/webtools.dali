@@ -9,9 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.TemporalType;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
@@ -102,11 +100,6 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 
 	public Table dbTable(String tableName) {
 		return typeMapping().dbTable(tableName);
-	}
-
-	public TextRange validationTextRange(CompilationUnit astRoot) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	@Override

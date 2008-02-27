@@ -23,7 +23,7 @@ import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.Filter;
 
 
-public class GenericJavaAttributeOverride extends JavaOverride<AttributeOverrideAnnotation>
+public class GenericJavaAttributeOverride extends AbstractJavaOverride<AttributeOverrideAnnotation>
 	implements JavaAttributeOverride
 {
 

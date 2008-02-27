@@ -10,17 +10,19 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public abstract class JavaContextModel extends AbstractJpaContextNode implements JavaJpaContextNode
+public abstract class AbstractJavaJpaContextNode extends AbstractJpaContextNode implements JavaJpaContextNode
 {
 	// ********** constructor **********
 
-	protected JavaContextModel(JpaNode parent) {
+	protected AbstractJavaJpaContextNode(JpaNode parent) {
 		super(parent);
 	}
 
@@ -43,6 +45,16 @@ public abstract class JavaContextModel extends AbstractJpaContextNode implements
 	 */
 	public Iterator<String> connectedCandidateValuesFor(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		return null;
+	}
+	
+	// ********** validation **********
+	
+	/**
+	 * All subclass implementations {@link #addToMessages(List, CompilationUnit))} 
+	 * should be preceded by a "super" call to this method
+	 */
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		
 	}
 
 }

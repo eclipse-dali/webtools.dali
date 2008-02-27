@@ -13,8 +13,12 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.internal.emfutility.DOMUtilities;
+import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.common.JpaEObject;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
  * <!-- begin-user-doc -->
@@ -493,6 +497,23 @@ public abstract class AbstractTypeMapping extends AbstractJpaEObject implements 
 		result.append(description);
 		result.append(')');
 		return result.toString();
+	}
+	
+
+	public TextRange classTextRange() {
+		IDOMNode classNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.CLASS);
+		if (classNode != null) {
+			return buildTextRange(classNode);
+		}
+		return validationTextRange();
+	}
+
+	public TextRange attributesTextRange() {
+		IDOMNode attributesNode = (IDOMNode) DOMUtilities.getNodeChild(node, OrmXmlMapper.ATTRIBUTES);
+		if (attributesNode != null) {
+			return buildTextRange(attributesNode);
+		}
+		return validationTextRange();
 	}
 
 } // TypeMapping

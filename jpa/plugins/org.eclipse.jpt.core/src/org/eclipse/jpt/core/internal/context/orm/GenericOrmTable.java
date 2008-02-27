@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.java.JavaEntity;
@@ -128,10 +127,10 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 	
 	//******* Validation *******************************
 	
+	//******* Validation *******************************
+	
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
-		
+	public void addToMessages(List<IMessage> messages) {
 		boolean doContinue = isConnected();
 		String schema = this.getSchema();
 		
@@ -141,7 +140,7 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
 						new String[] {schema, this.getName()}, 
-						this, this.schemaTextRange(astRoot))
+						this, this.schemaTextRange())
 				);
 			doContinue = false;
 		}
@@ -152,7 +151,7 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.TABLE_UNRESOLVED_NAME,
 						new String[] {this.getName()}, 
-						this, this.nameTextRange(astRoot))
+						this, this.nameTextRange())
 				);
 		}
 	}

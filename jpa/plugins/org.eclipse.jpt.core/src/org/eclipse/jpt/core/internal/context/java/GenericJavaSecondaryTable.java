@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.java.JavaAbstractJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
@@ -251,7 +252,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 		return primaryKeyJoinColumn;
 	}
 	
-	protected AbstractJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
+	protected JavaAbstractJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 	
@@ -277,7 +278,7 @@ public class GenericJavaSecondaryTable extends AbstractJavaTable
 		return false;
 	}
 	
-	class PrimaryKeyJoinColumnOwner implements AbstractJoinColumn.Owner
+	class PrimaryKeyJoinColumnOwner implements JavaAbstractJoinColumn.Owner
 	{
 		public TextRange validationTextRange(CompilationUnit astRoot) {
 			return GenericJavaSecondaryTable.this.validationTextRange(astRoot);

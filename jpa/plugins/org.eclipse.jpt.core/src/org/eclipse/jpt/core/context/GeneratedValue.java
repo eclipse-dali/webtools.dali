@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
-
 
 public interface GeneratedValue extends JpaContextNode
 {
@@ -31,8 +28,4 @@ public interface GeneratedValue extends JpaContextNode
 		String SPECIFIED_GENERATOR_PROPERTY = "specifiedGeneratorProperty";
 		String DEFAULT_GENERATOR_PROPERTY = "defaultGeneratorProperty";
 
-	/**
-	 * Return the (best guess) text location of the generator.
-	 */
-	TextRange generatorTextRange(CompilationUnit astRoot);
 }

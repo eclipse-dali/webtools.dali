@@ -26,7 +26,6 @@ import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
-import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.context.PersistentAttribute;
@@ -36,10 +35,12 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.java.JavaAbstractJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
@@ -150,7 +151,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		this.defaultAssociationOverrides = new ArrayList<JavaAssociationOverride>();
 	}
 	
-	protected AbstractJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
+	protected JavaAbstractJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 	
@@ -158,8 +159,8 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		return jpaFactory().buildJavaDiscriminatorColumn(this, buildDiscriminatorColumnOwner());
 	}
 	
-	protected NamedColumn.Owner buildDiscriminatorColumnOwner() {
-		return new NamedColumn.Owner(){
+	protected JavaNamedColumn.Owner buildDiscriminatorColumnOwner() {
+		return new JavaNamedColumn.Owner(){
 			public org.eclipse.jpt.db.internal.Table dbTable(String tableName) {
 				return GenericJavaEntity.this.dbTable(tableName);
 			}
@@ -1658,11 +1659,11 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 		
-		addTableMessages(messages, astRoot);
+		getTable().addToMessages(messages, astRoot);
 		addIdMessages(messages, astRoot);
 		
-		for (JavaSecondaryTable context : specifiedSecondaryTables) {
-			context.addToMessages(messages, astRoot);
+		for (Iterator<JavaSecondaryTable> stream = this.specifiedSecondaryTables(); stream.hasNext();) {
+			stream.next().addToMessages(messages, astRoot);
 		}
 
 		for (Iterator<JavaAttributeOverride> stream = this.attributeOverrides(); stream.hasNext();) {
@@ -1675,36 +1676,8 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		
 	}
 	
-	protected void addTableMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		boolean doContinue = table.isConnected();
-		String schema = table.getSchema();
-		
-		if (doContinue && ! table.hasResolvedSchema()) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
-						new String[] {schema, table.getName()}, 
-						table, table.schemaTextRange(astRoot))
-				);
-			doContinue = false;
-		}
-		
-		if (doContinue && ! table.isResolved()) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.TABLE_UNRESOLVED_NAME,
-						new String[] {table.getName()}, 
-						table, table.nameTextRange(astRoot))
-				);
-		}
-	}
-	
-	
 	protected void addIdMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		addNoIdMessage(messages, astRoot);
-		
 	}
 	
 	protected void addNoIdMessage(List<IMessage> messages, CompilationUnit astRoot) {
@@ -1732,7 +1705,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		return false;
 	}
 	
-	class PrimaryKeyJoinColumnOwner implements AbstractJoinColumn.Owner
+	class PrimaryKeyJoinColumnOwner implements JavaAbstractJoinColumn.Owner
 	{
 		public TextRange validationTextRange(CompilationUnit astRoot) {
 			return GenericJavaEntity.this.validationTextRange(astRoot);

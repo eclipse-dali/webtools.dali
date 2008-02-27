@@ -7,14 +7,14 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.context.orm;
+package org.eclipse.jpt.core.context.persistence;
 
 import java.util.List;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public interface OrmJpaContextNode extends JpaContextNode
+public interface PersistenceJpaContextNode extends JpaContextNode
 {
 	// **************** validation **************************************
 

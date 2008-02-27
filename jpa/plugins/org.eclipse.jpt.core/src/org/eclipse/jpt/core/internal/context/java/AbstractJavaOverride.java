@@ -20,7 +20,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 
-public abstract class JavaOverride<T extends OverrideAnnotation> extends JavaContextModel implements BaseOverride
+public abstract class AbstractJavaOverride<T extends OverrideAnnotation> extends AbstractJavaJpaContextNode implements BaseOverride
 {
 
 	protected String name;
@@ -29,7 +29,7 @@ public abstract class JavaOverride<T extends OverrideAnnotation> extends JavaCon
 
 	protected T overrideResource;
 	
-	public JavaOverride(JavaJpaContextNode parent, Owner owner) {
+	public AbstractJavaOverride(JavaJpaContextNode parent, Owner owner) {
 		super(parent);
 		this.owner = owner;
 	}

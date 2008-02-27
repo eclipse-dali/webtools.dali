@@ -12,10 +12,9 @@ package org.eclipse.jpt.core.context.persistence;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 
-public interface Persistence extends JpaContextNode, JpaStructureNode
+public interface Persistence extends PersistenceJpaContextNode, JpaStructureNode
 {
 	// **************** persistence units **************************************
 	

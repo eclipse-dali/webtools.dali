@@ -26,7 +26,7 @@ import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public abstract class AbstractJavaAttributeMapping extends JavaContextModel
+public abstract class AbstractJavaAttributeMapping extends AbstractJavaJpaContextNode
 	implements JavaAttributeMapping
 {
 	protected JavaResourcePersistentAttribute persistentAttributeResource;

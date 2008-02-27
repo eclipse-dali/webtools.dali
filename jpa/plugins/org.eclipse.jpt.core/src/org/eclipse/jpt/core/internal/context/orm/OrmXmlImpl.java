@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.List;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.TextRange;
@@ -18,12 +19,12 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class OrmXmlImpl extends AbstractJpaContextNode
+public class OrmXmlImpl extends AbstractOrmJpaContextNode
 	implements OrmXml
 {
 	protected OrmResource ormResource;
@@ -143,5 +144,14 @@ public class OrmXmlImpl extends AbstractJpaContextNode
 	
 	public TextRange validationTextRange() {
 		return TextRange.Empty.instance();
+	}
+	
+	
+	@Override
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
+		if (getEntityMappings() != null) {
+			getEntityMappings().addToMessages(messages);
+		}
 	}
 }

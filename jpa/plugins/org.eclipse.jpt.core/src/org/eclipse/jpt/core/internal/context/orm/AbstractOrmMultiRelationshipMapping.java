@@ -9,7 +9,6 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.FetchType;
@@ -244,7 +243,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 //		return JavaMultiRelationshipMapping.javaDefaultTargetEntityFromContainer(typeBinding);
 //	}
 	
-	public TextRange mappedByTextRange(CompilationUnit astRoot) {
+	public TextRange mappedByTextRange() {
 		// TODO Auto-generated method stub
 		return null;
 	}

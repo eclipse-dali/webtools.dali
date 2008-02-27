@@ -11,16 +11,17 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -28,7 +29,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * persistence resource model object XmlJavaClassRef.
  * XmlJavaClassRef corresponds to the class tag in the persistence.xml
  */
-public class GenericClassRef extends AbstractJpaContextNode 
+public class GenericClassRef extends AbstractPersistenceJpaContextNode 
 	implements ClassRef
 {
 	protected XmlJavaClassRef xmlJavaClassRef;
@@ -145,16 +146,43 @@ public class GenericClassRef extends AbstractJpaContextNode
 	
 	// *************************************************************************
 
+	// ************************* validation *********************************
+
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
-		
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
+		addUnspecifiedClassMessage(messages);
+		addUnresolvedClassMessage(messages);
 		//classRef might have been empty
-		if(javaPersistentType != null){
-			javaPersistentType.addToMessages(messages, astRoot);
+		if(getJavaPersistentType() != null){
+			getJavaPersistentType().addToMessages(messages);
 		}
 	}
 	
+	protected void addUnspecifiedClassMessage(List<IMessage> messages) {
+		if (StringTools.stringIsEmpty(getClassName())) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_CLASS,
+					this, validationTextRange())
+			);
+		}
+	}
+	
+	protected void addUnresolvedClassMessage(List<IMessage> messages) {
+		if (! StringTools.stringIsEmpty(getClassName()) && getJavaPersistentType() == null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,
+					new String[] {getClassName()}, 
+					this, 
+					this.validationTextRange())
+			);
+		}
+	}
+
 	public JpaStructureNode structureNode(int textOffset) {
 		return this;
 	}
@@ -163,18 +191,18 @@ public class GenericClassRef extends AbstractJpaContextNode
 		if (isVirtual()) {
 			return false;
 		}
-		return xmlJavaClassRef.containsOffset(textOffset);
+		return this.xmlJavaClassRef.containsOffset(textOffset);
 	}
 	
 	public TextRange selectionTextRange() {
 		if (isVirtual()) {
 			return null;
 		}
-		return xmlJavaClassRef.selectionTextRange();
+		return this.xmlJavaClassRef.selectionTextRange();
 	}
 	
 	public TextRange validationTextRange() {
-		return xmlJavaClassRef.validationTextRange();
+		return this.xmlJavaClassRef.validationTextRange();
 	}
 	
 	@Override

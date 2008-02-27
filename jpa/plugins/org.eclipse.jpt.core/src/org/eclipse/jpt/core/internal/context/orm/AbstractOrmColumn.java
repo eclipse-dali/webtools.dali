@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AbstractColumn;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAbstractColumn;
@@ -246,11 +244,7 @@ public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends Abs
 	protected String tableName() {
 		return this.getTable();
 	}
-	
-	public TextRange tableTextRange(CompilationUnit astRoot) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 //
 //	public ITextRange tableTextRange() {
 //		if (node == null) {

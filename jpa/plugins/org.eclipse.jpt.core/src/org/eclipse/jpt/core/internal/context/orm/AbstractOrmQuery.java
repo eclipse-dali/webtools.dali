@@ -12,19 +12,19 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.QueryHint;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryHint;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlQuery;
 import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 
-public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractJpaContextNode implements OrmQuery
+public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJpaContextNode implements OrmQuery
 {
 
 	protected String name;
@@ -152,5 +152,8 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractJpaCo
 		}
 	}
 
+	public TextRange validationTextRange() {
+		return this.queryResource.validationTextRange();
+	}
 
 }

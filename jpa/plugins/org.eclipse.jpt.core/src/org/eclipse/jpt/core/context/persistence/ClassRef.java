@@ -11,12 +11,10 @@
 package org.eclipse.jpt.core.context.persistence;
 
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.TextRange;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 
-public interface ClassRef extends JpaContextNode, JpaStructureNode
+public interface ClassRef extends PersistenceJpaContextNode, JpaStructureNode
 {
 	/**
 	 * Return true if the IClassRef matches the fullyQualfiedTypeName
@@ -82,5 +80,4 @@ public interface ClassRef extends JpaContextNode, JpaStructureNode
 	 */
 	boolean containsOffset(int textOffset);
 	
-	TextRange validationTextRange();
 }

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.List;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -30,11 +31,14 @@ import org.eclipse.jpt.core.context.orm.OrmSingleRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping> extends AbstractJpaContextNode
+public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping> extends AbstractOrmJpaContextNode
 	implements OrmAttributeMapping
 {
 	protected String name;
@@ -217,4 +221,61 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	public TextRange selectionTextRange() {
 		return this.attributeMapping.selectionTextRange();
 	}
+	
+	
+	public TextRange validationTextRange() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public TextRange nameTextRange() {
+		return this.attributeMapping.nameTextRange();
+	}
+	
+	@Override
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
+		addUnspecifiedAttributeMessage(messages);
+		addUnresolvedAttributeMessage(messages);
+		addInvalidMappingMessage(messages);
+	}
+	
+	protected void addUnspecifiedAttributeMessage(List<IMessage> messages) {
+		if (StringTools.stringIsEmpty(getName())) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME,
+					this, 
+					validationTextRange())
+			);
+		}
+	}
+	
+	protected void addUnresolvedAttributeMessage(List<IMessage> messages) {
+		if (! StringTools.stringIsEmpty(getName())
+				&& javaPersistentAttribute() == null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,
+					new String[] {getName(), persistentAttribute().persistentType().getMapping().getClass_()},
+					this, nameTextRange())
+			);
+		}
+	}
+	
+	protected void addInvalidMappingMessage(List<IMessage> messages) {
+		if (! typeMapping().attributeMappingKeyAllowed(getKey())) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
+					new String[] {getName()},
+					this, 
+					validationTextRange())
+			);
+		}
+	}
+	
 }

@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
@@ -482,11 +480,6 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 			return null;
 		}
 		
-		public TextRange validationTextRange(CompilationUnit astRoot) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
 		public int joinColumnsSize() {
 			return GenericOrmJoinTable.this.inverseJoinColumnsSize();
 		}
@@ -550,11 +543,6 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		}
 		
 		public String defaultTableName() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		public TextRange validationTextRange(CompilationUnit astRoot) {
 			// TODO Auto-generated method stub
 			return null;
 		}

@@ -9,14 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.QueryHint;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryHint;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
 
 
-public class GenericOrmQueryHint extends AbstractJpaContextNode implements OrmQueryHint
+public class GenericOrmQueryHint extends AbstractOrmJpaContextNode implements OrmQueryHint
 {
 
 	protected String name;
@@ -61,5 +61,9 @@ public class GenericOrmQueryHint extends AbstractJpaContextNode implements OrmQu
 		this.queryHint = queryHint;
 		this.setName(queryHint.getName());
 		this.setValue(queryHint.getValue());
+	}
+	
+	public TextRange validationTextRange() {
+		return this.queryHint.validationTextRange();
 	}
 }

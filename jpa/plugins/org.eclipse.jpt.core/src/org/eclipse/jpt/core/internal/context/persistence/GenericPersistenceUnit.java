@@ -18,7 +18,6 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.TextRange;
@@ -33,7 +32,6 @@ import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.core.context.persistence.Property;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmArtifactEdit;
@@ -48,7 +46,6 @@ import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -56,7 +53,7 @@ import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericPersistenceUnit extends AbstractJpaContextNode
+public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	implements PersistenceUnit
 {
 	protected XmlPersistenceUnit xmlPersistenceUnit;
@@ -1016,22 +1013,18 @@ public class GenericPersistenceUnit extends AbstractJpaContextNode
 	// ********** Validation ***********************************************
 	
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
-		
-		addMappingFileMessages(messages, astRoot);	
-		addClassMessages(messages, astRoot);	
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
+		addMappingFileMessages(messages);	
+		addClassMessages(messages);	
 	}
 	
-	protected void addMappingFileMessages(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void addMappingFileMessages(List<IMessage> messages) {
 		addMultipleMetadataMessages(messages);
-		addUnspecifiedMappingFileMessages(messages);
-		addUnresolvedMappingFileMessages(messages);
-		addInvalidMappingFileContentMessage(messages);
 		addDuplicateMappingFileMessages(messages);
 		
 		for (Iterator<MappingFileRef> stream =  mappingFileRefs(); stream.hasNext();) {
-			stream.next().addToMessages(messages, astRoot);
+			stream.next().addToMessages(messages);
 		}
 	}
 	
@@ -1053,10 +1046,10 @@ public class GenericPersistenceUnit extends AbstractJpaContextNode
 	protected void addDuplicateMappingFileMessages(List<IMessage> messages) {
 		HashBag<String> fileBag = new HashBag<String>(
 				CollectionTools.collection(
-						new TransformationIterator(this.mappingFileRefs()) {
+						new TransformationIterator<MappingFileRef, String>(this.mappingFileRefs()) {
 							@Override
-							protected Object transform(Object next) {
-								return ((MappingFileRef) next).getFileName();
+							protected String transform(MappingFileRef mappingFileRef) {
+								return mappingFileRef.getFileName();
 							}
 						}
 				)
@@ -1068,79 +1061,19 @@ public class GenericPersistenceUnit extends AbstractJpaContextNode
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_MAPPING_FILE,
 						new String[] {mappingFileRef.getFileName()}, 
-						mappingFileRef) //, mappingFileRef.validationTextRange())
+						mappingFileRef/*, 
+						mappingFileRef.validationTextRange()*/)
 				);
 			}
 		}
 	}
-	
-	protected void addUnspecifiedMappingFileMessages(List<IMessage> messages) {
-		for (MappingFileRef mappingFileRef : CollectionTools.collection(this.mappingFileRefs())) {
-			if (mappingFileRef.getFileName() == null || mappingFileRef.getFileName().equals("")) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE,
-						mappingFileRef) //, mappingFileRef.validationTextRange())
-				);
-			}
-		}
-	}
-	
-	protected void addUnresolvedMappingFileMessages(List<IMessage> messages) {
-		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
-			MappingFileRef mappingFileRef = stream.next();
-			if (! (mappingFileRef.getFileName() == null || mappingFileRef.getFileName().equals(""))
-					&& mappingFileRef.getOrmXml() == null) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
-						new String[] {mappingFileRef.getFileName()}, 
-						mappingFileRef) //, mappingFileRef.validationTextRange()) 
-				);
-			}
-		}
-	}
-	
-	protected void addInvalidMappingFileContentMessage(List<IMessage> messages) {
-		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
-			MappingFileRef mappingFileRef = (MappingFileRef) stream.next();
-			if (mappingFileRef.getOrmXml() != null 
-					&& mappingFileRef.getOrmXml().getEntityMappings() == null) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE,
-						new String[] {mappingFileRef.getFileName()}, 
-						mappingFileRef) //, mappingFileRef.validationTextRange())
-				);
-			}
-		} 
-	}
-	
-	
-	protected void addClassMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		addUnspecifiedClassMessages(messages);
-		addUnresolvedClassMessages(messages);
+		
+	protected void addClassMessages(List<IMessage> messages) {
 //		addInvalidOrRedundantClassMessages(messages);
 		addDuplicateClassMessages(messages);
 		
 		for (ClassRef classRef : CollectionTools.collection(classRefs())) {
-				classRef.addToMessages(messages, astRoot);
-		}
-	}
-	
-	protected void addUnspecifiedClassMessages(List<IMessage> messages) {
-		for (ClassRef javaClassRef : CollectionTools.collection(this.classRefs())) {
-			if (javaClassRef.getJavaPersistentType() == null) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_CLASS,
-						javaClassRef, javaClassRef.validationTextRange())
-				);
-			}
+				classRef.addToMessages(messages);
 		}
 	}
 	
@@ -1171,28 +1104,14 @@ public class GenericPersistenceUnit extends AbstractJpaContextNode
 //		}
 //	}
 	
-	protected void addUnresolvedClassMessages(List<IMessage> messages) {
-		for (ClassRef javaClassRef : specifiedClassRefs) {
-			String javaClass = javaClassRef.getClassName();
-			if (! StringTools.stringIsEmpty(javaClass) && javaClassRef.getJavaPersistentType() == null) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,
-						new String[] {javaClass}, 
-						javaClassRef, javaClassRef.validationTextRange())
-				);
-			}
-		}
-	}
 	
 	protected void addDuplicateClassMessages(List<IMessage> messages) {
-		HashBag<String> classNameBag = new HashBag(
+		HashBag<String> classNameBag = new HashBag<String>(
 				CollectionTools.collection(
-						new TransformationIterator(this.classRefs()) {
+						new TransformationIterator<ClassRef, String>(this.classRefs()) {
 							@Override
-							protected Object transform(Object next) {
-								return ((ClassRef) next).getClassName();
+							protected String transform(ClassRef classRef) {
+								return classRef.getClassName();
 							}
 						}
 				)
@@ -1205,12 +1124,13 @@ public class GenericPersistenceUnit extends AbstractJpaContextNode
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
 						new String[] {javaClassRef.getClassName()}, 
-						javaClassRef, javaClassRef.validationTextRange())
+						javaClassRef, 
+						javaClassRef.validationTextRange())
 				);
 			}
 		}
 	}
-	
+		
 	
 	private Collection<PersistenceUnitDefaults> persistenceUnitDefaultsForValidation() {
 		ArrayList<PersistenceUnitDefaults> puDefaults = new ArrayList<PersistenceUnitDefaults>();

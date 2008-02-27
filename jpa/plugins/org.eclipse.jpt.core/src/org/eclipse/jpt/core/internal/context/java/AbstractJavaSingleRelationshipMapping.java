@@ -270,7 +270,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		return joinColumn;
 	}
 	
-	protected JoinColumn.Owner createJoinColumnOwner() {
+	protected JavaJoinColumn.Owner createJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 	
@@ -356,7 +356,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	}
 	
 
-	public class JoinColumnOwner implements JoinColumn.Owner
+	public class JoinColumnOwner implements JavaJoinColumn.Owner
 	{
 
 		public JoinColumnOwner() {

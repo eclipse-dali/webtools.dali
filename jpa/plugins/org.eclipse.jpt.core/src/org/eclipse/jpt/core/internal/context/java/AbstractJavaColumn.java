@@ -13,6 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AbstractColumn;
+import org.eclipse.jpt.core.context.java.JavaAbstractColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.AbstractColumnAnnotation;
 import org.eclipse.jpt.utility.internal.Filter;
@@ -21,7 +22,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> extends AbstractJavaNamedColumn<T>
-	implements AbstractColumn
+	implements JavaAbstractColumn
 {
 
 	protected String specifiedTable;
@@ -36,7 +37,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 	
 	protected Boolean specifiedUpdatable;
 
-	protected AbstractJavaColumn(JavaJpaContextNode parent, AbstractColumn.Owner owner) {
+	protected AbstractJavaColumn(JavaJpaContextNode parent, JavaAbstractColumn.Owner owner) {
 		super(parent, owner);
 	}
 	
@@ -52,8 +53,8 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 	}
 	
 	@Override
-	public AbstractColumn.Owner owner() {
-		return (AbstractColumn.Owner) super.owner();
+	public JavaAbstractColumn.Owner owner() {
+		return (JavaAbstractColumn.Owner) super.owner();
 	}
 
 	//************** IAbstractColumn implementation *******************

@@ -7,18 +7,21 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core;
+package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jpt.core.JpaNode;
+import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
+import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public interface ContextModel
+public abstract class AbstractOrmJpaContextNode extends AbstractJpaContextNode implements OrmJpaContextNode
 {
-	/**
-	 * Update the context model with the content of the JPA project
-	 */
-	void update(IProgressMonitor monitor);
+	// ********** constructor **********
+
+	protected AbstractOrmJpaContextNode(JpaNode parent) {
+		super(parent);
+	}
 	
 	// ********** validation **********
 	
@@ -26,5 +29,8 @@ public interface ContextModel
 	 * All subclass implementations {@link #addToMessages(List<IMessage>)} 
 	 * should be preceded by a "super" call to this method
 	 */
-	public void addToMessages(List<IMessage> messages);
+	public void addToMessages(List<IMessage> messages) {
+		
+	}
+
 }

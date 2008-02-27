@@ -13,9 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.ColumnMapping;
@@ -146,11 +144,6 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmAttributeMapping<Xml
 
 	public ColumnMapping columnMapping(String attributeName) {
 		return GenericJavaEmbeddedMapping.columnMapping(attributeName, embeddable());
-	}
-
-	public TextRange validationTextRange(CompilationUnit astRoot) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 //

@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 
-public class JavaCascade extends JavaContextModel implements Cascade
+public class JavaCascade extends AbstractJavaJpaContextNode implements Cascade
 {
 	protected boolean all;
 

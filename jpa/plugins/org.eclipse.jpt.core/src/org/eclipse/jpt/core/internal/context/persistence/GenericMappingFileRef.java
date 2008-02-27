@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.persistence;
 
+import java.util.List;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.TextRange;
@@ -19,12 +20,15 @@ import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmArtifactEdit;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericMappingFileRef extends AbstractJpaContextNode 
+public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode 
 	implements MappingFileRef
 {
 	protected XmlMappingFileRef xmlMappingFileRef;
@@ -171,26 +175,79 @@ public class GenericMappingFileRef extends AbstractJpaContextNode
 	}
 	
 	public boolean containsOffset(int textOffset) {
-		if (xmlMappingFileRef == null) {
+		if (this.xmlMappingFileRef == null) {
 			return false;
 		}
-		return xmlMappingFileRef.containsOffset(textOffset);
+		return this.xmlMappingFileRef.containsOffset(textOffset);
 	}
 	
 	public TextRange selectionTextRange() {
 		if (isVirtual()) {
 			return null;
 		}
-		return xmlMappingFileRef.selectionTextRange();
+		return this.xmlMappingFileRef.selectionTextRange();
 	}
 	
 	public TextRange validationTextRange() {
 		if (isVirtual()) {
 			return persistenceUnit().validationTextRange();
 		}
-		return xmlMappingFileRef.validationTextRange();
+		return this.xmlMappingFileRef.validationTextRange();
 	}
 	
+	//**************** Validation *************************
+	
+	@Override
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
+		this.addUnspecifiedMappingFileMessage(messages);
+		this.addUnresolvedMappingFileMessage(messages);
+		this.addInvalidMappingFileContentMessage(messages);
+		if (getOrmXml() != null) {
+			getOrmXml().addToMessages(messages);
+		}
+	}
+	
+	
+	protected void addUnspecifiedMappingFileMessage(List<IMessage> messages) {
+		if (StringTools.stringIsEmpty(getFileName())) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE,
+					this, 
+					validationTextRange())
+			);
+		}
+	}
+	
+	protected void addUnresolvedMappingFileMessage(List<IMessage> messages) {
+		if (!StringTools.stringIsEmpty(getFileName()) && getOrmXml() == null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
+					new String[] {getFileName()}, 
+					this, 
+					validationTextRange()) 
+			);
+		}
+	}
+	
+	protected void addInvalidMappingFileContentMessage(List<IMessage> messages) {
+		if (getOrmXml() != null 
+				&& getOrmXml().getEntityMappings() == null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE,
+					new String[] {getFileName()}, 
+					this,
+					validationTextRange())
+			);
+		}
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);

@@ -28,6 +28,8 @@ import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinColumn;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
@@ -36,6 +38,7 @@ import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinTable
 {
@@ -362,11 +365,11 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		return null;
 	}
 
-	protected JoinColumn.Owner createJoinColumnOwner() {
+	protected JavaJoinColumn.Owner createJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 	
-	protected JoinColumn.Owner createInverseJoinColumnOwner() {
+	protected JavaJoinColumn.Owner createInverseJoinColumnOwner() {
 		return new InverseJoinColumnOwner();
 	}
 
@@ -508,12 +511,89 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		return joinColumn;
 	}
 
-	
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		boolean doContinue = isConnected();
+		String schema = getSchema();
+		
+		if (doContinue && ! hasResolvedSchema()) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
+						new String[] {schema, getName()}, 
+						this, 
+						schemaTextRange(astRoot))
+				);
+			doContinue = false;
+		}
+		
+		if (doContinue && !isResolved()) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
+						new String[] {getName()}, 
+						this, 
+						nameTextRange(astRoot))
+				);
+			doContinue = false;
+		}
+		
+		for (Iterator<JavaJoinColumn> stream = joinColumns(); stream.hasNext(); ) {
+			JavaJoinColumn joinColumn = stream.next();
+			
+			if (doContinue && ! joinColumn.isResolved()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
+						new String[] {joinColumn.getName()}, 
+						joinColumn, joinColumn.nameTextRange(astRoot))
+				);
+			}
+			
+			if (doContinue && ! joinColumn.isReferencedColumnResolved()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
+						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
+						joinColumn, joinColumn.referencedColumnNameTextRange(astRoot))
+				);
+			}
+		}
+		
+		for (Iterator<JavaJoinColumn> stream = inverseJoinColumns(); stream.hasNext(); ) {
+			JavaJoinColumn joinColumn = stream.next();
+			
+			if (doContinue && ! joinColumn.isResolved()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
+						new String[] {joinColumn.getName()}, 
+						joinColumn, joinColumn.nameTextRange(astRoot))
+				);
+			}
+			
+			if (doContinue && ! joinColumn.isReferencedColumnResolved()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
+						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
+						joinColumn, joinColumn.referencedColumnNameTextRange(astRoot))
+				);
+			}
+		}
+	}		
 	
 	/**
 	 * just a little common behavior
 	 */
-	abstract class AbstractJoinColumnOwner implements JoinColumn.Owner
+	abstract class AbstractJoinColumnOwner implements JavaJoinColumn.Owner
 	{
 		AbstractJoinColumnOwner() {
 			super();

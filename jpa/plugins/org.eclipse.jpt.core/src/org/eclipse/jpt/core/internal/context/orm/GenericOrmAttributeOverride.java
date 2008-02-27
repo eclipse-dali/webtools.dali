@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseOverride;
@@ -17,14 +16,13 @@ import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.db.internal.Table;
 
 
-public class GenericOrmAttributeOverride extends AbstractJpaContextNode
+public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 	implements OrmAttributeOverride, OrmColumn.Owner
 {
 
@@ -68,11 +66,6 @@ public class GenericOrmAttributeOverride extends AbstractJpaContextNode
 		return this.column;
 	}
 
-	public TextRange validationTextRange(CompilationUnit astRoot) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public TypeMapping typeMapping() {
 		return owner().typeMapping();
 	}
@@ -102,6 +95,11 @@ public class GenericOrmAttributeOverride extends AbstractJpaContextNode
 //		}
 //		return super.validationTextRange();
 //	}
+	public TextRange validationTextRange() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	//***************** IXmlColumn.Owner implementation ****************
 	

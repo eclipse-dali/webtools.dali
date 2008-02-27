@@ -9,7 +9,6 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Fetchable;
@@ -191,11 +190,6 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 //	protected String buildReferenceEntityTypeName(ITypeBinding typeBinding) {
 //		return JavaRelationshipMapping.buildReferenceEntityTypeName(typeBinding);
 //	}
-	
-	public String fullyQualifiedTargetEntity(CompilationUnit astRoot) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 		
 	public Entity getEntity() {
 		// TODO Auto-generated method stub

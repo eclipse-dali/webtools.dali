@@ -39,7 +39,7 @@ import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericJavaPersistentType extends JavaContextModel implements JavaPersistentType
+public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implements JavaPersistentType
 {
 	protected String name;
 	
@@ -469,16 +469,15 @@ public class GenericJavaPersistentType extends JavaContextModel implements JavaP
 	}
 
 	//*************** Validation ******************************************
+	public void addToMessages(List<IMessage> messages) {
+		//get astRoot here to pass down
+		addToMessages(messages, this.persistentTypeResource.getMember().astRoot());	
+	}
+	
 	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
-	
-		//get astRoot here to pass down
-		astRoot = persistentTypeResource.getMember().astRoot();
-		mapping.addToMessages(messages, astRoot);
-		
+		this.mapping.addToMessages(messages, astRoot);	
 		addAttributeMessages(messages, astRoot);
-		
 	}
 	
 	protected void addAttributeMessages(List<IMessage> messages, CompilationUnit astRoot) {

@@ -28,7 +28,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericJavaPersistentAttribute extends JavaContextModel
+public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	implements JavaPersistentAttribute
 {
 	protected String name;

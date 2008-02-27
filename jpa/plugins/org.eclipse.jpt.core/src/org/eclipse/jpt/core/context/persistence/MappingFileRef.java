@@ -11,13 +11,12 @@
 package org.eclipse.jpt.core.context.persistence;
 
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 
-public interface MappingFileRef extends JpaContextNode, JpaStructureNode
+public interface MappingFileRef extends PersistenceJpaContextNode, JpaStructureNode
 {
 	/**
 	 * Return whether this mapping file ref is represented by an entry in the
@@ -73,4 +72,5 @@ public interface MappingFileRef extends JpaContextNode, JpaStructureNode
 	 * the given text offset
 	 */
 	boolean containsOffset(int textOffset);
+
 }

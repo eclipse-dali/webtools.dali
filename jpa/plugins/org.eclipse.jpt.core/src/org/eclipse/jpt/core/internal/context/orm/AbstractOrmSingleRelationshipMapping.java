@@ -11,8 +11,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
@@ -269,11 +267,6 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 		}
 		
 		public String defaultColumnName() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		public TextRange validationTextRange(CompilationUnit astRoot) {
 			// TODO Auto-generated method stub
 			return null;
 		}

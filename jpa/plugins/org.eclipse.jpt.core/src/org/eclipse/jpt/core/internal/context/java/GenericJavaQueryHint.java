@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.context.java.JavaQuery;
 import org.eclipse.jpt.core.context.java.JavaQueryHint;
 import org.eclipse.jpt.core.resource.java.QueryHintAnnotation;
 
-public class GenericJavaQueryHint extends JavaContextModel implements JavaQueryHint
+public class GenericJavaQueryHint extends AbstractJavaJpaContextNode implements JavaQueryHint
 {
 	protected String name;
 

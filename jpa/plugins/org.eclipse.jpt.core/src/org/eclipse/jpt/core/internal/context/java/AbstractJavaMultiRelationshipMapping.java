@@ -12,12 +12,12 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.MultiRelationshipMapping;
 import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -370,92 +370,17 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 	//******** Validation ***********************************
 	
+	public abstract TextRange mappedByTextRange(CompilationUnit astRoot);
+	
 	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 		
 		if (this.isJoinTableSpecified() || isRelationshipOwner()) {
-			addJoinTableMessages(messages, astRoot);
+			getJoinTable().addToMessages(messages, astRoot);
 		}
 		if (this.getMappedBy() != null) {
 			addMappedByMessages(messages, astRoot);
-		}
-	}
-	
-	protected void addJoinTableMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		JavaJoinTable joinTable = this.getJoinTable();
-		
-		boolean doContinue = joinTable.isConnected();
-		String schema = joinTable.getSchema();
-		
-		if (doContinue && ! joinTable.hasResolvedSchema()) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
-						new String[] {schema, joinTable.getName()}, 
-						joinTable, joinTable.schemaTextRange(astRoot))
-				);
-			doContinue = false;
-		}
-		
-		if (doContinue && ! joinTable.isResolved()) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
-						new String[] {joinTable.getName()}, 
-						joinTable, joinTable.nameTextRange(astRoot))
-				);
-			doContinue = false;
-		}
-		
-		for (Iterator<JavaJoinColumn> stream = joinTable.joinColumns(); stream.hasNext(); ) {
-			JavaJoinColumn joinColumn = stream.next();
-			
-			if (doContinue && ! joinColumn.isResolved()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
-						new String[] {joinColumn.getName()}, 
-						joinColumn, joinColumn.nameTextRange(astRoot))
-				);
-			}
-			
-			if (doContinue && ! joinColumn.isReferencedColumnResolved()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-						joinColumn, joinColumn.referencedColumnNameTextRange(astRoot))
-				);
-			}
-		}
-		
-		for (Iterator<JavaJoinColumn> stream = joinTable.inverseJoinColumns(); stream.hasNext(); ) {
-			JavaJoinColumn joinColumn = stream.next();
-			
-			if (doContinue && ! joinColumn.isResolved()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
-						new String[] {joinColumn.getName()}, 
-						joinColumn, joinColumn.nameTextRange(astRoot))
-				);
-			}
-			
-			if (doContinue && ! joinColumn.isReferencedColumnResolved()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-						joinColumn, joinColumn.referencedColumnNameTextRange(astRoot))
-				);
-			}
 		}
 	}
 	
@@ -487,7 +412,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
 						new String[] {mappedBy}, 
-						this, this.mappedByTextRange(astRoot))
+						this, 
+						this.mappedByTextRange(astRoot))
 				);
 			return;
 		}
@@ -498,7 +424,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
 						new String[] {mappedBy}, 
-						this, this.mappedByTextRange(astRoot))
+						this, 
+						this.mappedByTextRange(astRoot))
 				);
 			return;
 		}
@@ -516,7 +443,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
-						this, this.mappedByTextRange(astRoot))
+						this, 
+						this.mappedByTextRange(astRoot))
 				);
 		}
 	}

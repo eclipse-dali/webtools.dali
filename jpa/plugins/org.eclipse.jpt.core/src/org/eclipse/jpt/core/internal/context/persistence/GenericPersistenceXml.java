@@ -12,14 +12,12 @@ package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.IBaseJpaContent;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
@@ -27,7 +25,7 @@ import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericPersistenceXml extends AbstractJpaContextNode
+public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 	implements PersistenceXml
 {
 	protected PersistenceResource persistenceResource;
@@ -149,20 +147,18 @@ public class GenericPersistenceXml extends AbstractJpaContextNode
 	// **************** validation *********************************************
 	
 	private boolean okToContinueValidation = true;
-	
+
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
-		
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
 		addInvalidPersistenceXmlContentMessage(messages);
 		
 		if (okToContinueValidation){
-			getPersistence().addToMessages(messages, astRoot);
+			getPersistence().addToMessages(messages);
 		}
 	}
 	
 	protected void addInvalidPersistenceXmlContentMessage(List<IMessage> messages) {
-
 		if (this.persistence == null) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -173,5 +169,5 @@ public class GenericPersistenceXml extends AbstractJpaContextNode
 			okToContinueValidation = false;
 		}
 	}
-	
+
 }

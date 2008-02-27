@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
@@ -31,7 +30,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class GenericJavaAssociationOverride extends JavaOverride<AssociationOverrideAnnotation>
+public class GenericJavaAssociationOverride extends AbstractJavaOverride<AssociationOverrideAnnotation>
 	implements JavaAssociationOverride
 {
 
@@ -84,7 +83,7 @@ public class GenericJavaAssociationOverride extends JavaOverride<AssociationOver
 		return joinColumn;
 	}
 	
-	protected JoinColumn.Owner createJoinColumnOwner() {
+	protected JavaJoinColumn.Owner createJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 
@@ -179,7 +178,7 @@ public class GenericJavaAssociationOverride extends JavaOverride<AssociationOver
 		return joinColumn;
 	}
 
-	public class JoinColumnOwner implements JoinColumn.Owner
+	public class JoinColumnOwner implements JavaJoinColumn.Owner
 	{
 
 		public JoinColumnOwner() {

@@ -12,10 +12,10 @@ package org.eclipse.jpt.core.context.java;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 
-public interface JavaPrimaryKeyJoinColumn extends PrimaryKeyJoinColumn, JavaNamedColumn
+public interface JavaPrimaryKeyJoinColumn extends PrimaryKeyJoinColumn, JavaAbstractJoinColumn
 {
 	void initializeFromResource(PrimaryKeyJoinColumnAnnotation primaryKeyJoinColumn);
 	
 	void update(PrimaryKeyJoinColumnAnnotation primaryKeyJoinColumn);
-
+	
 }

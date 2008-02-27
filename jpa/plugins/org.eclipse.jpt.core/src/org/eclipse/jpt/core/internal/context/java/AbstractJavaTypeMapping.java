@@ -21,7 +21,7 @@ import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 
-public abstract class AbstractJavaTypeMapping extends JavaContextModel
+public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	implements JavaTypeMapping
 {
 	protected JavaResourcePersistentType persistentTypeResource;

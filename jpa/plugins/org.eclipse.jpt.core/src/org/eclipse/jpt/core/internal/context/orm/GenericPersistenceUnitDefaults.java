@@ -9,16 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults;
 import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata;
 
-public class GenericPersistenceUnitDefaults extends AbstractJpaContextNode
+public class GenericPersistenceUnitDefaults extends AbstractOrmJpaContextNode
 	implements PersistenceUnitDefaults
 {
 	protected String schema;
@@ -209,4 +209,10 @@ public class GenericPersistenceUnitDefaults extends AbstractJpaContextNode
 		return this.entityMappings.getPersistenceUnitMetadata();
 	}
 
+	public TextRange validationTextRange() {
+		if (persistenceUnitDefaults() != null) {
+			return persistenceUnitDefaults().validationTextRange();
+		}
+		return this.entityMappings.validationTextRange();
+	}
 }

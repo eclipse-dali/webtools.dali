@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
 
@@ -48,11 +46,6 @@ public interface NamedColumn extends JpaContextNode
 	 */
 	boolean isResolved();
 
-	/**
-	 * Return the (best guess) text location of the column's name.
-	 */
-	TextRange nameTextRange(CompilationUnit astRoot);
-
 	Owner owner();
 	/**
 	 * interface allowing columns to be used in multiple places
@@ -64,12 +57,6 @@ public interface NamedColumn extends JpaContextNode
 		 * Return the type mapping that contains the column.
 		 */
 		TypeMapping typeMapping();
-
-		/**
-		 * Return the column owner's text range. This can be returned by the
-		 * column when its annotation is not present.
-		 */
-		TextRange validationTextRange(CompilationUnit astRoot);
 
 		/**
 		 * Return the wrapper for the datasource table for the given table name

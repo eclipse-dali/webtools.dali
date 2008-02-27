@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
@@ -118,11 +116,6 @@ public class GenericOrmJoinColumn extends AbstractOrmColumn<XmlJoinColumn> imple
 	protected void removeColumnResource() {
 		//joinColumns are part of a collection, the pk-join-column element will be removed/added
 		//when the XmlJoinColumn is removed/added to the XmlEntity collection
-	}
-
-	public TextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	

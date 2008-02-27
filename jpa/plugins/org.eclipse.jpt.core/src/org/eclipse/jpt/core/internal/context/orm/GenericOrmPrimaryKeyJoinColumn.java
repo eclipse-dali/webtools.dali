@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
@@ -96,10 +94,6 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 		return dbReferencedColumn() != null;
 	}
 
-	public TextRange referencedColumnNameTextRange(CompilationUnit astRoot) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 //	public ITextRange referencedColumnNameTextRange() {
 //		if (node == null) {
 //			return owner.validationTextRange();

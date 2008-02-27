@@ -13,7 +13,6 @@ package org.eclipse.jpt.core.internal.context;
 import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.IBaseJpaContent;
@@ -151,15 +150,13 @@ public class BaseJpaContent extends AbstractJpaContextNode
 	 * persistence unit level.  */
 	private boolean okToContinueValidation = true;
 	
-	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
+	public void addToMessages(List<IMessage> messages) {
 		addNoPersistenceXmlMessage(messages);
 		//TODO - multiple persistence unit message
 		addOrphanedJavaClassMessages(messages);
 		
 		if(okToContinueValidation) {
-			getPersistenceXml().addToMessages(messages, astRoot);
+			getPersistenceXml().addToMessages(messages);
 		}
 		
 	}

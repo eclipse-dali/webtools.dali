@@ -10,8 +10,6 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.Iterator;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
 
 public interface NonOwningMapping extends RelationshipMapping
 {
@@ -23,5 +21,4 @@ public interface NonOwningMapping extends RelationshipMapping
 
 	boolean mappedByIsValid(AttributeMapping mappedByMapping);
 
-	TextRange mappedByTextRange(CompilationUnit astRoot);
 }

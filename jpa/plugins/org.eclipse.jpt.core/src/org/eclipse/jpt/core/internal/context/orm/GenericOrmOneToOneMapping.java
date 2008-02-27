@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AttributeMapping;
@@ -69,7 +68,7 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 		return (mappedByKey == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 	}
 
-	public TextRange mappedByTextRange(CompilationUnit astRoot) {
+	public TextRange mappedByTextRange() {
 		return null;
 //		if (node == null) {
 //			return typeMapping().validationTextRange();

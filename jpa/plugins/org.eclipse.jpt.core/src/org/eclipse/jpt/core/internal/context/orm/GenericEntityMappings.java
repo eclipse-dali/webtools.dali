@@ -30,7 +30,6 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
@@ -43,9 +42,10 @@ import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public class GenericEntityMappings extends AbstractJpaContextNode implements EntityMappings
+public class GenericEntityMappings extends AbstractOrmJpaContextNode implements EntityMappings
 {
 	protected XmlEntityMappings xmlEntityMappings;
 	
@@ -728,5 +728,17 @@ public class GenericEntityMappings extends AbstractJpaContextNode implements Ent
 	
 	public TextRange selectionTextRange() {
 		return xmlEntityMappings.selectionTextRange();
+	}
+	
+	public TextRange validationTextRange() {
+		return null;
+	}
+	
+	@Override
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
+		for (OrmPersistentType ormPersistentType : CollectionTools.iterable(this.ormPersistentTypes())) {
+			ormPersistentType.addToMessages(messages);
+		}
 	}
 }

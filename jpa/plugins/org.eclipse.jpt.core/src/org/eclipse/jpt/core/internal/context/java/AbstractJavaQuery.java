@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 
-public abstract class AbstractJavaQuery<E extends QueryAnnotation> extends JavaContextModel implements JavaQuery<E>
+public abstract class AbstractJavaQuery<E extends QueryAnnotation> extends AbstractJavaJpaContextNode implements JavaQuery<E>
 {
 	protected String name;
 

@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.JpaContextNode;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlGenerator;
 
 
-public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends AbstractJpaContextNode implements Generator
+public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends AbstractOrmJpaContextNode implements Generator
 {
 
 	protected String name;
@@ -144,5 +144,7 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 		return generatorResource.getAllocationSize();
 	}
 
-
+	public TextRange validationTextRange() {
+		return this.generatorResource().validationTextRange();
+	}
 }

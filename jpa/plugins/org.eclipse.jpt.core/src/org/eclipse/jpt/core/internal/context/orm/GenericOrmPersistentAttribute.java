@@ -31,7 +31,6 @@ import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
@@ -42,9 +41,10 @@ import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public class GenericOrmPersistentAttribute extends AbstractJpaContextNode
+public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 	implements OrmPersistentAttribute
 {
 
@@ -345,7 +345,19 @@ public class GenericOrmPersistentAttribute extends AbstractJpaContextNode
 		return this.attributeMapping.selectionTextRange();
 	}
 	
+	@Override
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
+		getMapping().addToMessages(messages);
+	}
+
 	
+	public TextRange validationTextRange() {
+		if (isVirtual()) {
+			return persistentType().validationTextRange();
+		}
+		return this.attributeMapping.validationTextRange();
+	}	
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);

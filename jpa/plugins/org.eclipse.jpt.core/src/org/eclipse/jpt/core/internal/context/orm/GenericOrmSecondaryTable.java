@@ -12,8 +12,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.SecondaryTable;
@@ -207,10 +205,6 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 	
 	class PrimaryKeyJoinColumnOwner implements AbstractJoinColumn.Owner
 	{
-		public TextRange validationTextRange(CompilationUnit astRoot) {
-			//TODO textRange
-			return null;//return GenericOrmSecondaryTable.this.validationTextRange(astRoot);
-		}
 
 		public TypeMapping typeMapping() {
 			return GenericOrmSecondaryTable.this.ormEntity();

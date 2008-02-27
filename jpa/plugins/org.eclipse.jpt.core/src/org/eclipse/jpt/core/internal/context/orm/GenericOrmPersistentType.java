@@ -43,7 +43,6 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -69,9 +68,10 @@ import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public class GenericOrmPersistentType extends AbstractJpaContextNode implements OrmPersistentType
+public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implements OrmPersistentType
 {
 	protected final List<OrmPersistentAttribute> specifiedPersistentAttributes;
 
@@ -798,5 +798,22 @@ public class GenericOrmPersistentType extends AbstractJpaContextNode implements 
 	
 	public TextRange selectionTextRange() {
 		return this.ormTypeMapping.selectionTextRange();
+	}
+	
+	//******************** validation **********************
+	
+	@Override
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
+
+		getMapping().addToMessages(messages);
+		
+		for (OrmPersistentAttribute persistentAttribute : CollectionTools.iterable(this.attributes())) {
+			persistentAttribute.addToMessages(messages);
+		}
+	}
+	
+	public TextRange validationTextRange() {
+		return this.ormTypeMapping.validationTextRange();
 	}
 }

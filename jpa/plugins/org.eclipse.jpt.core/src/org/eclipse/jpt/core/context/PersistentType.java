@@ -10,8 +10,10 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public interface PersistentType extends JpaContextNode, JpaStructureNode
@@ -88,5 +90,11 @@ public interface PersistentType extends JpaContextNode, JpaStructureNode
 	Iterator<PersistentType> inheritanceHierarchy();
 	
 	
+	// **************** validation **************************************
+
+	/**
+	 * Add to the list of current validation messages
+	 */
+	void addToMessages(List<IMessage> messages);
 
 }

@@ -273,6 +273,6 @@ public class GenericJpaPlatform implements JpaPlatform
 	// **************** Validation *********************************************
 	
 	public void addToMessages(JpaProject project, List<IMessage> messages) {
-		project.addToMessages(messages, null);
+		project.addToMessages(messages);
 	}
 }

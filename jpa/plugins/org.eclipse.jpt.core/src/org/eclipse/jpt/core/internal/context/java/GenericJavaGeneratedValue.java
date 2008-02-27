@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
 import org.eclipse.jpt.core.resource.java.GeneratedValueAnnotation;
 
 
-public class GenericJavaGeneratedValue extends JavaContextModel implements JavaGeneratedValue
+public class GenericJavaGeneratedValue extends AbstractJavaJpaContextNode implements JavaGeneratedValue
 {
 	protected GenerationType strategy;
 

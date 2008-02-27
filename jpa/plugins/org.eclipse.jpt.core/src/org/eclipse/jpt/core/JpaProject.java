@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core;
 
 import java.util.Iterator;
+import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
@@ -177,7 +178,11 @@ public interface JpaProject extends JpaNode {
 	 */
 	Iterator<IMessage> validationMessages();
 
-	
+	/**
+	 * Add to the list of current validation messages
+	 */
+	void addToMessages(List<IMessage> messages);
+
 
 	// **************** support for modifying shared documents *****************
 

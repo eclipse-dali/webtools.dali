@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
+import java.util.List;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AccessType;
@@ -18,15 +19,18 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public abstract class AbstractOrmTypeMapping<T extends AbstractTypeMapping> extends AbstractJpaContextNode implements OrmTypeMapping
+public abstract class AbstractOrmTypeMapping<T extends AbstractTypeMapping> extends AbstractOrmJpaContextNode implements OrmTypeMapping
 {
 
 	protected String class_;
@@ -151,22 +155,6 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractTypeMapping> exte
 	public Schema dbSchema() {
 		return null;
 	}
-
-//	public ITextRange classTextRange() {
-//		IDOMNode classNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.CLASS);
-//		if (classNode != null) {
-//			return buildTextRange(classNode);
-//		}
-//		return validationTextRange();
-//	}
-//
-//	public ITextRange attributesTextRange() {
-//		IDOMNode attributesNode = (IDOMNode) DOMUtilities.getNodeChild(node, OrmXmlMapper.ATTRIBUTES);
-//		if (attributesNode != null) {
-//			return buildTextRange(attributesNode);
-//		}
-//		return validationTextRange();
-//	}
 
 	/**
 	 * @see TypeMapping#attributeMappingKeyAllowed(String)
@@ -295,11 +283,60 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractTypeMapping> exte
 	public TextRange selectionTextRange() {
 		return this.typeMapping.selectionTextRange();
 	}
+	
+	public TextRange classTextRange() {
+		return this.typeMapping.classTextRange();
+	}
+	
+	public TextRange attributesTextRange() {
+		return this.typeMapping.attributesTextRange();
+	}
 
 	public boolean containsOffset(int textOffset) {
 		if (typeMapping == null) {
 			return false;
 		}
 		return typeMapping.containsOffset(textOffset);
+	}
+	
+	//************************* validation ************************
+	@Override
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
+		addClassMessages(messages);
+	}
+	protected void addClassMessages(List<IMessage> messages) {
+		addUnspecifiedClassMessage(messages);
+		addUnresolvedClassMessage(messages);
+	}
+	
+	protected void addUnspecifiedClassMessage(List<IMessage> messages) {
+		if (StringTools.stringIsEmpty(getClass_())) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CLASS,
+					this, 
+					this.classTextRange())
+			);
+		}
+	}
+	
+	protected void addUnresolvedClassMessage(List<IMessage> messages) {
+		if (! StringTools.stringIsEmpty(getClass_())
+				&& getJavaPersistentType() == null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENT_TYPE_UNRESOLVED_CLASS,
+					new String[] {getClass_()},
+					this, 
+					this.classTextRange())
+			);
+		}
+	}
+
+	public TextRange validationTextRange() {
+		return this.typeMapping.validationTextRange();
 	}
 }

@@ -10,19 +10,30 @@
 package org.eclipse.jpt.core.context.java;
 
 import java.util.Iterator;
+import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public interface JavaJpaContextNode extends JpaContextNode
 {
-	TextRange validationTextRange(CompilationUnit astRoot);
 	
 	/**
 	 * Return the Java code-completion proposals for the specified position
 	 * in the source code.
 	 */
 	Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot);
+	
+
+	// ******************** validation ***************************8
+	
+	/**
+	 * Adds to the list of current validation messages
+	 */
+	void addToMessages(List<IMessage> messages, CompilationUnit astRoot);
+
+	TextRange validationTextRange(CompilationUnit astRoot);
 
 }

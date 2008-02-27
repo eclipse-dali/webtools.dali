@@ -14,14 +14,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
@@ -31,7 +29,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericPersistence extends AbstractJpaContextNode
+public class GenericPersistence extends AbstractPersistenceJpaContextNode
 	implements Persistence
 {	
 	protected XmlPersistence xmlPersistence;
@@ -172,38 +170,39 @@ public class GenericPersistence extends AbstractJpaContextNode
 
 
 	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		super.addToMessages(messages, astRoot);
-		
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
 		//persistence root validation
 		addNoPersistenceUnitMessage(messages);
 		addMultiplePersistenceUnitMessage(messages);
 		
 		
 		//persistence unit validation
-		for (PersistenceUnit pu : persistenceUnits){
-			pu.addToMessages(messages, astRoot);
+		for (PersistenceUnit pu : CollectionTools.iterable(persistenceUnits())){
+			pu.addToMessages(messages);
 		}
 	}
 	
 	protected void addNoPersistenceUnitMessage(List<IMessage> messages) {
-		if (persistenceUnits.size() == 0) {
+		if (persistenceUnitsSize() == 0) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENCE_NO_PERSISTENCE_UNIT,
-						this, this.validationTextRange())
+						this, 
+						this.validationTextRange())
 				);
 		}
 	}
 	
 	protected void addMultiplePersistenceUnitMessage(List<IMessage> messages) {
-		if (persistenceUnits.size() > 1) {
+		if (persistenceUnitsSize() > 1) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
+				DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS,
-						this, this.validationTextRange())
+						this, 
+						this.validationTextRange())
 				);
 		}
 	}

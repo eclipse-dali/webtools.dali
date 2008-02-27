@@ -9,11 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
-import org.eclipse.jpt.core.context.AbstractColumn;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 
-public interface JavaColumn extends JavaNamedColumn, Column
+public interface JavaColumn extends Column, JavaAbstractColumn
 {
 	void initializeFromResource(ColumnAnnotation columnResource);
 	
@@ -26,7 +25,7 @@ public interface JavaColumn extends JavaNamedColumn, Column
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)
 	 */
-	interface Owner extends AbstractColumn.Owner
+	interface Owner extends JavaAbstractColumn.Owner
 	{
 		ColumnAnnotation columnResource();
 	}
