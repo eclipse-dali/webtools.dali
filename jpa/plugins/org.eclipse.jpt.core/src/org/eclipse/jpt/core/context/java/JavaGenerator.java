@@ -10,12 +10,8 @@
 package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jpt.core.context.Generator;
-import org.eclipse.jpt.core.resource.java.GeneratorAnnotation;
 
-public interface JavaGenerator<T extends GeneratorAnnotation> extends Generator, JavaJpaContextNode
+public interface JavaGenerator extends Generator, JavaJpaContextNode
 {
-	void initializeFromResource(T generator);
-	
-	void update(T generator);
 
 }

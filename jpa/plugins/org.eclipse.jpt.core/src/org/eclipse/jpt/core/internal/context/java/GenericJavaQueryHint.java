@@ -24,7 +24,7 @@ public class GenericJavaQueryHint extends AbstractJavaJpaContextNode implements 
 
 	protected QueryHintAnnotation queryHint;
 	
-	public GenericJavaQueryHint(JavaQuery<?> parent) {
+	public GenericJavaQueryHint(JavaQuery parent) {
 		super(parent);
 	}
 

@@ -9,24 +9,29 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaNamedQuery;
-import org.eclipse.jpt.core.context.java.JavaQueryHint;
 import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
 
 
 
-public class GenericJavaNamedQuery extends AbstractJavaQuery<NamedQueryAnnotation> implements JavaNamedQuery
+public class GenericJavaNamedQuery extends AbstractJavaQuery implements JavaNamedQuery
 {
 	
 	public GenericJavaNamedQuery(JavaJpaContextNode parent) {
 		super(parent);
 	}
-
-	@SuppressWarnings("unchecked")
+	
 	@Override
-	public ListIterator<JavaQueryHint> hints() {
-		return super.hints();
+	protected NamedQueryAnnotation query() {
+		return (NamedQueryAnnotation) super.query();
+	}
+
+	public void initializeFromResource(NamedQueryAnnotation queryResource) {
+		super.initializeFromResource(queryResource);
+	}
+	
+	public void update(NamedQueryAnnotation queryResource) {
+		super.update(queryResource);
 	}
 }

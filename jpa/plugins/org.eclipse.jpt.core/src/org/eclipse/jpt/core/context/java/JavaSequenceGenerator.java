@@ -12,7 +12,10 @@ package org.eclipse.jpt.core.context.java;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 
-public interface JavaSequenceGenerator extends JavaGenerator<SequenceGeneratorAnnotation>, SequenceGenerator
+public interface JavaSequenceGenerator extends JavaGenerator, SequenceGenerator
 {
+	void initializeFromResource(SequenceGeneratorAnnotation generator);
+	
+	void update(SequenceGeneratorAnnotation generator);
 
 }

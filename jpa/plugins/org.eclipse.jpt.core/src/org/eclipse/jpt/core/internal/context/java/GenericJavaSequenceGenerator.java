@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 
 
-public class GenericJavaSequenceGenerator extends AbstractJavaGenerator<SequenceGeneratorAnnotation>
+public class GenericJavaSequenceGenerator extends AbstractJavaGenerator
 	implements JavaSequenceGenerator
 {
 	protected String specifiedSequenceName;
@@ -25,6 +25,10 @@ public class GenericJavaSequenceGenerator extends AbstractJavaGenerator<Sequence
 	}
 
 	@Override
+	protected SequenceGeneratorAnnotation generatorResource() {
+		return (SequenceGeneratorAnnotation) super.generatorResource();
+	}
+
 	public void initializeFromResource(SequenceGeneratorAnnotation sequenceGenerator) {
 		super.initializeFromResource(sequenceGenerator);
 		this.specifiedSequenceName = this.specifiedSequenceName(sequenceGenerator);
@@ -59,7 +63,6 @@ public class GenericJavaSequenceGenerator extends AbstractJavaGenerator<Sequence
 		return null;
 	}
 
-	@Override
 	public void update(SequenceGeneratorAnnotation sequenceGenerator) {
 		super.update(sequenceGenerator);
 		this.setSpecifiedSequenceName_(this.specifiedSequenceName(sequenceGenerator)); 

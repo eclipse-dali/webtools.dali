@@ -311,5 +311,5 @@ public interface JpaFactory
 	
 	JavaNamedNativeQuery buildJavaNamedNativeQuery(JavaJpaContextNode parent);
 	
-	JavaQueryHint buildJavaQueryHint(JavaQuery<?> parent);
+	JavaQueryHint buildJavaQueryHint(JavaQuery parent);
 }

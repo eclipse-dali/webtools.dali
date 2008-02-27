@@ -17,7 +17,7 @@ import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 
 
-public class GenericJavaTableGenerator extends AbstractJavaGenerator<TableGeneratorAnnotation>
+public class GenericJavaTableGenerator extends AbstractJavaGenerator
 	implements JavaTableGenerator
 {
 
@@ -52,6 +52,10 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator<TableGenera
 	}
 
 	@Override
+	protected TableGeneratorAnnotation generatorResource() {
+		return (TableGeneratorAnnotation) super.generatorResource();
+	}
+	
 	public void initializeFromResource(TableGeneratorAnnotation tableGenerator) {
 		super.initializeFromResource(tableGenerator);
 		this.specifiedTable = this.specifiedTable(tableGenerator);
@@ -234,7 +238,6 @@ public class GenericJavaTableGenerator extends AbstractJavaGenerator<TableGenera
 
 
 	// ********** java resource model -> context model model **********
-	@Override
 	public void update(TableGeneratorAnnotation tableGenerator) {
 		super.update(tableGenerator);
 		this.setSpecifiedTable_(this.specifiedTable(tableGenerator));

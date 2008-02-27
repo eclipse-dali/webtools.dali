@@ -461,7 +461,7 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericJavaNamedNativeQuery(parent);
 	}
 	
-	public JavaQueryHint buildJavaQueryHint(JavaQuery<?> parent) {
+	public JavaQueryHint buildJavaQueryHint(JavaQuery parent) {
 		return new GenericJavaQueryHint(parent);
 	}
 	

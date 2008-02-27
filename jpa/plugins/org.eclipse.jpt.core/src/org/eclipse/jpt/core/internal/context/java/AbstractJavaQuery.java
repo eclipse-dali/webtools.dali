@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 
-public abstract class AbstractJavaQuery<E extends QueryAnnotation> extends AbstractJavaJpaContextNode implements JavaQuery<E>
+public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode implements JavaQuery
 {
 	protected String name;
 
@@ -33,14 +33,14 @@ public abstract class AbstractJavaQuery<E extends QueryAnnotation> extends Abstr
 
 	protected final List<JavaQueryHint> hints;
 
-	protected E queryResource;
+	protected QueryAnnotation queryResource;
 	
 	protected AbstractJavaQuery(JavaJpaContextNode parent) {
 		super(parent);
 		this.hints = new ArrayList<JavaQueryHint>();
 	}
 
-	protected E query() {
+	protected QueryAnnotation query() {
 		return this.queryResource;
 	}
 	
@@ -106,28 +106,29 @@ public abstract class AbstractJavaQuery<E extends QueryAnnotation> extends Abstr
 		fireItemMoved(Query.HINTS_LIST, targetIndex, sourceIndex);		
 	}
 	
-	public void initializeFromResource(E queryResource) {
+	protected void initializeFromResource(QueryAnnotation queryResource) {
 		this.queryResource = queryResource;
 		this.name = queryResource.getName();
 		this.query = queryResource.getQuery();
 		this.initializeQueryHints(queryResource);
 	}
 
-	public void update(E queryResource) {
+	protected void update(QueryAnnotation queryResource) {
 		this.queryResource = queryResource;
 		this.setName(queryResource.getName());
 		this.setQuery(queryResource.getQuery());
 		this.updateQueryHints(queryResource);
 	}
 
-	protected void initializeQueryHints(E queryResource) {
+	protected void initializeQueryHints(QueryAnnotation queryResource) {
 		ListIterator<QueryHintAnnotation> annotations = queryResource.hints();
 		
 		while(annotations.hasNext()) {
 			this.hints.add(createQueryHint(annotations.next()));
 		}
 	}
-	protected void updateQueryHints(E queryResource) {
+	
+	protected void updateQueryHints(QueryAnnotation queryResource) {
 		ListIterator<JavaQueryHint> hints = hints();
 		ListIterator<QueryHintAnnotation> resourceHints = queryResource.hints();
 		

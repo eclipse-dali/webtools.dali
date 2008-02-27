@@ -20,26 +20,26 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 
-public abstract class AbstractJavaOverride<T extends OverrideAnnotation> extends AbstractJavaJpaContextNode implements BaseOverride
+public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode implements BaseOverride
 {
 
 	protected String name;
 
 	protected final Owner owner;
 
-	protected T overrideResource;
+	protected OverrideAnnotation overrideResource;
 	
 	public AbstractJavaOverride(JavaJpaContextNode parent, Owner owner) {
 		super(parent);
 		this.owner = owner;
 	}
 	
-	public void initializeFromResource(T overrideResource) {
+	protected void initializeFromResource(OverrideAnnotation overrideResource) {
 		this.overrideResource = overrideResource;
 		this.name = this.name(overrideResource);
 	}
 
-	protected T getOverrideResource() {
+	protected OverrideAnnotation getOverrideResource() {
 		return this.overrideResource;
 	}
 	
@@ -60,7 +60,7 @@ public abstract class AbstractJavaOverride<T extends OverrideAnnotation> extends
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 
-	public void update(T overrideResource) {
+	protected void update(OverrideAnnotation overrideResource) {
 		this.overrideResource = overrideResource;
 		this.setName_(this.name(overrideResource));
 	}

@@ -9,10 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
 
-public interface JavaNamedQuery extends NamedQuery, JavaQuery<NamedQueryAnnotation>
+public interface JavaNamedQuery extends NamedQuery, JavaQuery
 {
+	ListIterator<JavaQueryHint> hints();
+
+	void initializeFromResource(NamedQueryAnnotation queryResource);
+	
+	void update(NamedQueryAnnotation queryResource);
 
 }

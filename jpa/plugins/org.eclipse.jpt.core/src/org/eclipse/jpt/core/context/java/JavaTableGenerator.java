@@ -12,7 +12,10 @@ package org.eclipse.jpt.core.context.java;
 import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 
-public interface JavaTableGenerator extends JavaGenerator<TableGeneratorAnnotation>, TableGenerator
+public interface JavaTableGenerator extends JavaGenerator, TableGenerator
 {
+	void initializeFromResource(TableGeneratorAnnotation generator);
+	
+	void update(TableGeneratorAnnotation generator);
 
 }

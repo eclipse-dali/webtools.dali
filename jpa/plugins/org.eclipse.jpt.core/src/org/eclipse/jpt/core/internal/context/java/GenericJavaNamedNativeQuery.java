@@ -9,15 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaNamedNativeQuery;
-import org.eclipse.jpt.core.context.java.JavaQueryHint;
 import org.eclipse.jpt.core.resource.java.NamedNativeQueryAnnotation;
 
 
-public class GenericJavaNamedNativeQuery extends AbstractJavaQuery<NamedNativeQueryAnnotation>
+public class GenericJavaNamedNativeQuery extends AbstractJavaQuery
 	implements JavaNamedNativeQuery
 {
 
@@ -29,6 +27,11 @@ public class GenericJavaNamedNativeQuery extends AbstractJavaQuery<NamedNativeQu
 		super(parent);
 	}
 
+	@Override
+	protected NamedNativeQueryAnnotation query() {
+		return (NamedNativeQueryAnnotation) super.query();
+	}
+	
 	public String getResultClass() {
 		return this.resultClass;
 	}
@@ -51,24 +54,16 @@ public class GenericJavaNamedNativeQuery extends AbstractJavaQuery<NamedNativeQu
 		firePropertyChanged(NamedNativeQuery.RESULT_SET_MAPPING_PROPERTY, oldResultSetMapping, newResultSetMapping);
 	}
 
-	@Override
 	public void initializeFromResource(NamedNativeQueryAnnotation queryResource) {
 		super.initializeFromResource(queryResource);
 		this.resultClass = queryResource.getResultClass();
 		this.resultSetMapping = queryResource.getResultSetMapping();
 	}
 	
-	@Override
 	public void update(NamedNativeQueryAnnotation queryResource) {
 		super.update(queryResource);
 		this.setResultClass(queryResource.getResultClass());
 		this.setResultSetMapping(queryResource.getResultSetMapping());
 	}
-	
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public ListIterator<JavaQueryHint> hints() {
-		return super.hints();
-	}
+
 }

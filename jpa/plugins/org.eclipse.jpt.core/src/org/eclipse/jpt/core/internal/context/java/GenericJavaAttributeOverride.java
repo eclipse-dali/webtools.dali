@@ -23,7 +23,7 @@ import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.Filter;
 
 
-public class GenericJavaAttributeOverride extends AbstractJavaOverride<AttributeOverrideAnnotation>
+public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	implements JavaAttributeOverride
 {
 
@@ -33,6 +33,11 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride<Attribute
 	public GenericJavaAttributeOverride(JavaJpaContextNode parent, AttributeOverride.Owner owner) {
 		super(parent, owner);
 		this.column = jpaFactory().buildJavaColumn(this, this);
+	}
+	
+	@Override
+	protected AttributeOverrideAnnotation getOverrideResource() {
+		return (AttributeOverrideAnnotation) super.getOverrideResource();
 	}
 	
 	@Override
@@ -91,13 +96,11 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride<Attribute
 	}
 	
 	//************* java resource model -> java context model **************	
-	@Override
 	public void initializeFromResource(AttributeOverrideAnnotation attributeOverrideResource) {
 		super.initializeFromResource(attributeOverrideResource);
 		this.column.initializeFromResource(this.columnResource());
 	}
 
-	@Override
 	public void update(AttributeOverrideAnnotation attributeOverrideResource) {
 		super.update(attributeOverrideResource);
 		this.column.update(this.columnResource());		

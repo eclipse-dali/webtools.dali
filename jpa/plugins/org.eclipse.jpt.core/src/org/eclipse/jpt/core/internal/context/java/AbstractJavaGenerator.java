@@ -12,12 +12,11 @@ package org.eclipse.jpt.core.internal.context.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.Generator;
-import org.eclipse.jpt.core.context.java.JavaGenerator;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.GeneratorAnnotation;
 
 
-public abstract class AbstractJavaGenerator<T extends GeneratorAnnotation> extends AbstractJavaJpaContextNode implements JavaGenerator<T>
+public abstract class AbstractJavaGenerator extends AbstractJavaJpaContextNode implements Generator
 {
 	protected String name;
 
@@ -25,20 +24,20 @@ public abstract class AbstractJavaGenerator<T extends GeneratorAnnotation> exten
 	
 	protected Integer specifiedAllocationSize;
 
-	protected T generatorResource;
+	protected GeneratorAnnotation generatorResource;
 	
 	protected AbstractJavaGenerator(JavaJpaContextNode parent) {
 		super(parent);
 	}
 
-	public void initializeFromResource(T generatorResource) {
+	public void initializeFromResource(GeneratorAnnotation generatorResource) {
 		this.generatorResource = generatorResource;
 		this.name = this.name(generatorResource);
 		this.specifiedInitialValue = this.specifiedInitialValue(generatorResource);
 		this.specifiedAllocationSize = this.specifiedAllocationSize(generatorResource);
 	}
 	
-	protected T generatorResource() {
+	protected GeneratorAnnotation generatorResource() {
 		return this.generatorResource;
 	}
 	
@@ -62,13 +61,13 @@ public abstract class AbstractJavaGenerator<T extends GeneratorAnnotation> exten
 		String oldName = this.name;
 		this.name = newName;
 		generatorResource().setName(newName);
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
+		firePropertyChanged(Generator.NAME_PROPERTY, oldName, newName);
 	}
 
 	protected void setName_(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
+		firePropertyChanged(Generator.NAME_PROPERTY, oldName, newName);
 	}
 
 	public Integer getInitialValue() {
@@ -83,13 +82,13 @@ public abstract class AbstractJavaGenerator<T extends GeneratorAnnotation> exten
 		Integer oldSpecifiedInitialValue = this.specifiedInitialValue;
 		this.specifiedInitialValue = newSpecifiedInitialValue;
 		generatorResource().setInitialValue(newSpecifiedInitialValue);
-		firePropertyChanged(SPECIFIED_INITIAL_VALUE_PROPERTY, oldSpecifiedInitialValue, newSpecifiedInitialValue);
+		firePropertyChanged(Generator.SPECIFIED_INITIAL_VALUE_PROPERTY, oldSpecifiedInitialValue, newSpecifiedInitialValue);
 	}
 
 	protected void setSpecifiedInitialValue_(Integer newSpecifiedInitialValue) {
 		Integer oldSpecifiedInitialValue = this.specifiedInitialValue;
 		this.specifiedInitialValue = newSpecifiedInitialValue;
-		firePropertyChanged(SPECIFIED_INITIAL_VALUE_PROPERTY, oldSpecifiedInitialValue, newSpecifiedInitialValue);
+		firePropertyChanged(Generator.SPECIFIED_INITIAL_VALUE_PROPERTY, oldSpecifiedInitialValue, newSpecifiedInitialValue);
 	}
 
 	public Integer getAllocationSize() {
@@ -104,13 +103,13 @@ public abstract class AbstractJavaGenerator<T extends GeneratorAnnotation> exten
 		Integer oldSpecifiedAllocationSize = this.specifiedAllocationSize;
 		this.specifiedAllocationSize = newSpecifiedAllocationSize;
 		generatorResource().setAllocationSize(newSpecifiedAllocationSize);
-		firePropertyChanged(SPECIFIED_ALLOCATION_SIZE_PROPERTY, oldSpecifiedAllocationSize, newSpecifiedAllocationSize);
+		firePropertyChanged(Generator.SPECIFIED_ALLOCATION_SIZE_PROPERTY, oldSpecifiedAllocationSize, newSpecifiedAllocationSize);
 	}
 
 	protected void setSpecifiedAllocationSize_(Integer newSpecifiedAllocationSize) {
 		Integer oldSpecifiedAllocationSize = this.specifiedAllocationSize;
 		this.specifiedAllocationSize = newSpecifiedAllocationSize;
-		firePropertyChanged(SPECIFIED_ALLOCATION_SIZE_PROPERTY, oldSpecifiedAllocationSize, newSpecifiedAllocationSize);
+		firePropertyChanged(Generator.SPECIFIED_ALLOCATION_SIZE_PROPERTY, oldSpecifiedAllocationSize, newSpecifiedAllocationSize);
 	}
 
 	public Integer getDefaultAllocationSize() {
@@ -126,7 +125,7 @@ public abstract class AbstractJavaGenerator<T extends GeneratorAnnotation> exten
 		return this.generatorResource.textRange(astRoot);
 	}
 
-	public void update(T generatorResource) {
+	protected void update(GeneratorAnnotation generatorResource) {
 		this.generatorResource = generatorResource;
 		this.setName_(this.name(generatorResource));
 		this.setSpecifiedInitialValue_(this.specifiedInitialValue(generatorResource));
