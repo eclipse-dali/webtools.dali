@@ -15,11 +15,11 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
+import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.ResourceModelListener;
 import org.eclipse.jpt.core.internal.AbstractResourceModel;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
-import org.eclipse.jpt.core.internal.platform.JpaAnnotationProvider;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 

@@ -7,15 +7,10 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.platform;
+package org.eclipse.jpt.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jpt.core.ContextModel;
-import org.eclipse.jpt.core.JpaDataSource;
-import org.eclipse.jpt.core.JpaFile;
-import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
@@ -101,6 +96,7 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.context.persistence.Property;
+import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 
 /**
  * Use JpaFactory to create any core (e.g. JpaProject), resource 

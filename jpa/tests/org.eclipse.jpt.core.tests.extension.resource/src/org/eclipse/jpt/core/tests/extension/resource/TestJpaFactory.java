@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.tests.extension.resource;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.core.platform.GenericJpaFactory;
+import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 
 public class TestJpaFactory extends GenericJpaFactory
 {

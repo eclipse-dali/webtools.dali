@@ -8,7 +8,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.internal.platform;
+package org.eclipse.jpt.core;
 
 import java.util.Iterator;
 import java.util.ListIterator;

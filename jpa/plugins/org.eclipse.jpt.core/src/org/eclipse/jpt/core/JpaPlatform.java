@@ -7,17 +7,14 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.platform;
+package org.eclipse.jpt.core;
 
 import java.util.List;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.jpt.core.JpaFile;
-import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
-import org.eclipse.jpt.core.internal.platform.JpaAnnotationProvider;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**

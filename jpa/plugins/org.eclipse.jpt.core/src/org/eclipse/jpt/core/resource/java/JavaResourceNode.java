@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.TextRange;
-import org.eclipse.jpt.core.internal.platform.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitResource;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;

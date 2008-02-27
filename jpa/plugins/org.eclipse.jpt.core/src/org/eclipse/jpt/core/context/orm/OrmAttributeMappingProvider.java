@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.jpt.core.platform.JpaFactory;
+import org.eclipse.jpt.core.JpaFactory;
 
 public interface OrmAttributeMappingProvider
 {

@@ -11,9 +11,9 @@ package org.eclipse.jpt.ui;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.platform.JpaPlatform;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.internal.structure.JpaStructureProvider;
 import org.eclipse.ui.navigator.ICommonContentProvider;

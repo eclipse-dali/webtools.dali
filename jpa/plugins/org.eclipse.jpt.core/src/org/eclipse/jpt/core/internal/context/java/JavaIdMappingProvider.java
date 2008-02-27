@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.platform.JpaFactory;
 import org.eclipse.jpt.core.resource.java.Id;
 
 public class JavaIdMappingProvider

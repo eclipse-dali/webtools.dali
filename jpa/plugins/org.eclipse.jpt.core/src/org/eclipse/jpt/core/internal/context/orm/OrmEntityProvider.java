@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
-import org.eclipse.jpt.core.platform.JpaFactory;
 
 
 public class OrmEntityProvider implements OrmTypeMappingProvider

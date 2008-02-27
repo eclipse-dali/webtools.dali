@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.platform;
+package org.eclipse.jpt.core.internal.platform;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,7 +15,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jpt.core.JpaAnnotationProvider;
+import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
@@ -40,7 +43,6 @@ import org.eclipse.jpt.core.internal.context.java.JavaOneToManyMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaOneToOneMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingProvider;
-import org.eclipse.jpt.core.internal.platform.JpaAnnotationProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;

@@ -8,16 +8,16 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.platform;
+package org.eclipse.jpt.core.internal.platform;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
-import org.eclipse.jpt.core.internal.platform.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.resource.java.AssociationOverrideImpl.AssociationOverrideAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AssociationOverridesImpl.AssociationOverridesAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverrideImpl.AttributeOverrideAnnotationDefinition;

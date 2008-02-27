@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.platform.JpaPlatform;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**

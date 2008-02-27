@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
-import org.eclipse.jpt.core.platform.JpaFactory;
+import org.eclipse.jpt.core.JpaFactory;
 
 /**
  * Map a string key to a type mapping and its corresponding

@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.platform;
+package org.eclipse.jpt.core.internal.platform;
 
 import java.io.IOException;
 import org.eclipse.core.resources.IFile;
@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.ContextModel;
 import org.eclipse.jpt.core.JpaDataSource;
+import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;

@@ -1,10 +1,10 @@
 package org.eclipse.jpt.core.tests.extension.resource;
 
+import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
 import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.platform.JpaFactory;
 
 public class TestAttributeMappingProvider
 	implements JavaAttributeMappingProvider

@@ -224,7 +224,7 @@
 		<jpaPlatform
 			id="generic"
 			label="%GENERIC_PLATFORM_LABEL"
-			class="org.eclipse.jpt.core.platform.GenericJpaPlatform"/>
+			class="org.eclipse.jpt.core.internal.platform.GenericJpaPlatform"/>
 		
 	</extension>
 	
