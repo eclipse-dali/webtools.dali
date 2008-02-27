@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
@@ -65,4 +66,10 @@ public class VirtualVersion extends AbstractJpaEObject implements XmlVersion
 		this.javaVersionMapping = javaVersionMapping;
 		this.column.update(javaVersionMapping.getColumn());
 	}
+	
+	
+	public TextRange nameTextRange() {
+		return null;
+	}
+
 }

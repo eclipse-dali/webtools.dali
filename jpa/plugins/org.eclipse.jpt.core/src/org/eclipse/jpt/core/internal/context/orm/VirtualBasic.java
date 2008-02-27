@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.EnumType;
@@ -111,5 +112,9 @@ public class VirtualBasic extends AbstractJpaEObject implements XmlBasic
 	public void update(JavaBasicMapping javaBasicMapping) {
 		this.javaBasicMapping = javaBasicMapping;
 		this.column.update(javaBasicMapping.getColumn());
+	}
+	
+	public TextRange nameTextRange() {
+		return null;
 	}
 }

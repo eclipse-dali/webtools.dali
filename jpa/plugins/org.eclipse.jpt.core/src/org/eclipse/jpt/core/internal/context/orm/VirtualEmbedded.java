@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ListIterator;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
@@ -95,6 +96,10 @@ public class VirtualEmbedded extends AbstractJpaEObject implements XmlEmbedded
 		while(virtualAttributeOverrides.hasNext()) {
 			this.virtualAttributeOverrides.remove(virtualAttributeOverrides.next());
 		}
+	}
+	
+	public TextRange nameTextRange() {
+		return null;
 	}
 
 }

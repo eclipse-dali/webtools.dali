@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
@@ -40,4 +41,10 @@ public class VirtualTransient extends AbstractJpaEObject implements XmlTransient
 	public void update(JavaTransientMapping javaTransientMapping) {
 		this.javaTransientMapping = javaTransientMapping;
 	}
+	
+	
+	public TextRange nameTextRange() {
+		return null;
+	}
+
 }

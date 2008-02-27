@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.resource.common.JpaEObject;
 
 /**
@@ -56,4 +57,6 @@ public interface XmlAttributeMapping extends JpaEObject
 	 */
 	void setName(String value);
 
+	TextRange nameTextRange();
+	
 } // AttributeMapping

@@ -14,7 +14,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,28 +25,8 @@ import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
  * @model kind="class"
  * @generated
  */
-public class VersionImpl extends AbstractJpaEObject implements XmlVersion
+public class VersionImpl extends AbstractXmlAttributeMapping implements XmlVersion
 {
-	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
-
 	/**
 	 * The cached value of the '{@link #getColumn() <em>Column</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -93,41 +72,6 @@ public class VersionImpl extends AbstractJpaEObject implements XmlVersion
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.VERSION_IMPL;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeMapping_Name()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
-	 * @generated
-	 */
-	public String getName()
-	{
-		return name;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.VersionImpl#getName <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Name</em>' attribute.
-	 * @see #getName()
-	 * @generated
-	 */
-	public void setName(String newName)
-	{
-		String oldName = name;
-		name = newName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.VERSION_IMPL__NAME, oldName, name));
 	}
 
 	/**
@@ -254,8 +198,6 @@ public class VersionImpl extends AbstractJpaEObject implements XmlVersion
 	{
 		switch (featureID)
 		{
-			case OrmPackage.VERSION_IMPL__NAME:
-				return getName();
 			case OrmPackage.VERSION_IMPL__COLUMN:
 				return getColumn();
 			case OrmPackage.VERSION_IMPL__TEMPORAL:
@@ -274,9 +216,6 @@ public class VersionImpl extends AbstractJpaEObject implements XmlVersion
 	{
 		switch (featureID)
 		{
-			case OrmPackage.VERSION_IMPL__NAME:
-				setName((String)newValue);
-				return;
 			case OrmPackage.VERSION_IMPL__COLUMN:
 				setColumn((XmlColumn)newValue);
 				return;
@@ -297,9 +236,6 @@ public class VersionImpl extends AbstractJpaEObject implements XmlVersion
 	{
 		switch (featureID)
 		{
-			case OrmPackage.VERSION_IMPL__NAME:
-				setName(NAME_EDEFAULT);
-				return;
 			case OrmPackage.VERSION_IMPL__COLUMN:
 				setColumn((XmlColumn)null);
 				return;
@@ -320,8 +256,6 @@ public class VersionImpl extends AbstractJpaEObject implements XmlVersion
 	{
 		switch (featureID)
 		{
-			case OrmPackage.VERSION_IMPL__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.VERSION_IMPL__COLUMN:
 				return column != null;
 			case OrmPackage.VERSION_IMPL__TEMPORAL:
@@ -346,6 +280,14 @@ public class VersionImpl extends AbstractJpaEObject implements XmlVersion
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlVersion.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.VERSION_IMPL__TEMPORAL: return OrmPackage.XML_VERSION__TEMPORAL;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -365,6 +307,14 @@ public class VersionImpl extends AbstractJpaEObject implements XmlVersion
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlVersion.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_VERSION__TEMPORAL: return OrmPackage.VERSION_IMPL__TEMPORAL;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -379,9 +329,7 @@ public class VersionImpl extends AbstractJpaEObject implements XmlVersion
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
-		result.append(", temporal: ");
+		result.append(" (temporal: ");
 		result.append(temporal);
 		result.append(')');
 		return result.toString();

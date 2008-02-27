@@ -14,7 +14,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,28 +25,8 @@ import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
  * @model kind="class"
  * @generated
  */
-public class ManyToManyImpl extends AbstractJpaEObject implements XmlManyToMany
+public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlManyToMany
 {
-	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
-
 	/**
 	 * The default value of the '{@link #getTargetEntity() <em>Target Entity</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -173,41 +152,6 @@ public class ManyToManyImpl extends AbstractJpaEObject implements XmlManyToMany
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.MANY_TO_MANY_IMPL;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeMapping_Name()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
-	 * @generated
-	 */
-	public String getName()
-	{
-		return name;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.ManyToManyImpl#getName <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Name</em>' attribute.
-	 * @see #getName()
-	 * @generated
-	 */
-	public void setName(String newName)
-	{
-		String oldName = name;
-		name = newName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.MANY_TO_MANY_IMPL__NAME, oldName, name));
 	}
 
 	/**
@@ -564,8 +508,6 @@ public class ManyToManyImpl extends AbstractJpaEObject implements XmlManyToMany
 	{
 		switch (featureID)
 		{
-			case OrmPackage.MANY_TO_MANY_IMPL__NAME:
-				return getName();
 			case OrmPackage.MANY_TO_MANY_IMPL__TARGET_ENTITY:
 				return getTargetEntity();
 			case OrmPackage.MANY_TO_MANY_IMPL__FETCH:
@@ -594,9 +536,6 @@ public class ManyToManyImpl extends AbstractJpaEObject implements XmlManyToMany
 	{
 		switch (featureID)
 		{
-			case OrmPackage.MANY_TO_MANY_IMPL__NAME:
-				setName((String)newValue);
-				return;
 			case OrmPackage.MANY_TO_MANY_IMPL__TARGET_ENTITY:
 				setTargetEntity((String)newValue);
 				return;
@@ -632,9 +571,6 @@ public class ManyToManyImpl extends AbstractJpaEObject implements XmlManyToMany
 	{
 		switch (featureID)
 		{
-			case OrmPackage.MANY_TO_MANY_IMPL__NAME:
-				setName(NAME_EDEFAULT);
-				return;
 			case OrmPackage.MANY_TO_MANY_IMPL__TARGET_ENTITY:
 				setTargetEntity(TARGET_ENTITY_EDEFAULT);
 				return;
@@ -670,8 +606,6 @@ public class ManyToManyImpl extends AbstractJpaEObject implements XmlManyToMany
 	{
 		switch (featureID)
 		{
-			case OrmPackage.MANY_TO_MANY_IMPL__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.MANY_TO_MANY_IMPL__TARGET_ENTITY:
 				return TARGET_ENTITY_EDEFAULT == null ? targetEntity != null : !TARGET_ENTITY_EDEFAULT.equals(targetEntity);
 			case OrmPackage.MANY_TO_MANY_IMPL__FETCH:
@@ -696,14 +630,90 @@ public class ManyToManyImpl extends AbstractJpaEObject implements XmlManyToMany
 	 * @generated
 	 */
 	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlRelationshipMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.MANY_TO_MANY_IMPL__TARGET_ENTITY: return OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY;
+				case OrmPackage.MANY_TO_MANY_IMPL__FETCH: return OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH;
+				case OrmPackage.MANY_TO_MANY_IMPL__JOIN_TABLE: return OrmPackage.XML_RELATIONSHIP_MAPPING__JOIN_TABLE;
+				case OrmPackage.MANY_TO_MANY_IMPL__CASCADE: return OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlMultiRelationshipMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.MANY_TO_MANY_IMPL__MAPPED_BY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY;
+				case OrmPackage.MANY_TO_MANY_IMPL__ORDER_BY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY;
+				case OrmPackage.MANY_TO_MANY_IMPL__MAP_KEY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlManyToMany.class)
+		{
+			switch (derivedFeatureID)
+			{
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlRelationshipMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY: return OrmPackage.MANY_TO_MANY_IMPL__TARGET_ENTITY;
+				case OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH: return OrmPackage.MANY_TO_MANY_IMPL__FETCH;
+				case OrmPackage.XML_RELATIONSHIP_MAPPING__JOIN_TABLE: return OrmPackage.MANY_TO_MANY_IMPL__JOIN_TABLE;
+				case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE: return OrmPackage.MANY_TO_MANY_IMPL__CASCADE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlMultiRelationshipMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY: return OrmPackage.MANY_TO_MANY_IMPL__MAPPED_BY;
+				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY: return OrmPackage.MANY_TO_MANY_IMPL__ORDER_BY;
+				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY: return OrmPackage.MANY_TO_MANY_IMPL__MAP_KEY;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlManyToMany.class)
+		{
+			switch (baseFeatureID)
+			{
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public String toString()
 	{
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
-		result.append(", targetEntity: ");
+		result.append(" (targetEntity: ");
 		result.append(targetEntity);
 		result.append(", fetch: ");
 		result.append(fetch);

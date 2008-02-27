@@ -14,7 +14,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,28 +25,8 @@ import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
  * @model kind="class"
  * @generated
  */
-public class BasicImpl extends AbstractJpaEObject implements XmlBasic
+public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 {
-	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
-
 	/**
 	 * The cached value of the '{@link #getColumn() <em>Column</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -165,41 +144,6 @@ public class BasicImpl extends AbstractJpaEObject implements XmlBasic
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.BASIC_IMPL;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeMapping_Name()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
-	 * @generated
-	 */
-	public String getName()
-	{
-		return name;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.BasicImpl#getName <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Name</em>' attribute.
-	 * @see #getName()
-	 * @generated
-	 */
-	public void setName(String newName)
-	{
-		String oldName = name;
-		name = newName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.BASIC_IMPL__NAME, oldName, name));
 	}
 
 	/**
@@ -473,8 +417,6 @@ public class BasicImpl extends AbstractJpaEObject implements XmlBasic
 	{
 		switch (featureID)
 		{
-			case OrmPackage.BASIC_IMPL__NAME:
-				return getName();
 			case OrmPackage.BASIC_IMPL__COLUMN:
 				return getColumn();
 			case OrmPackage.BASIC_IMPL__FETCH:
@@ -501,9 +443,6 @@ public class BasicImpl extends AbstractJpaEObject implements XmlBasic
 	{
 		switch (featureID)
 		{
-			case OrmPackage.BASIC_IMPL__NAME:
-				setName((String)newValue);
-				return;
 			case OrmPackage.BASIC_IMPL__COLUMN:
 				setColumn((XmlColumn)newValue);
 				return;
@@ -536,9 +475,6 @@ public class BasicImpl extends AbstractJpaEObject implements XmlBasic
 	{
 		switch (featureID)
 		{
-			case OrmPackage.BASIC_IMPL__NAME:
-				setName(NAME_EDEFAULT);
-				return;
 			case OrmPackage.BASIC_IMPL__COLUMN:
 				setColumn((XmlColumn)null);
 				return;
@@ -571,8 +507,6 @@ public class BasicImpl extends AbstractJpaEObject implements XmlBasic
 	{
 		switch (featureID)
 		{
-			case OrmPackage.BASIC_IMPL__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.BASIC_IMPL__COLUMN:
 				return column != null;
 			case OrmPackage.BASIC_IMPL__FETCH:
@@ -605,6 +539,18 @@ public class BasicImpl extends AbstractJpaEObject implements XmlBasic
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlBasic.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.BASIC_IMPL__FETCH: return OrmPackage.XML_BASIC__FETCH;
+				case OrmPackage.BASIC_IMPL__OPTIONAL: return OrmPackage.XML_BASIC__OPTIONAL;
+				case OrmPackage.BASIC_IMPL__LOB: return OrmPackage.XML_BASIC__LOB;
+				case OrmPackage.BASIC_IMPL__TEMPORAL: return OrmPackage.XML_BASIC__TEMPORAL;
+				case OrmPackage.BASIC_IMPL__ENUMERATED: return OrmPackage.XML_BASIC__ENUMERATED;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -624,6 +570,18 @@ public class BasicImpl extends AbstractJpaEObject implements XmlBasic
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlBasic.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_BASIC__FETCH: return OrmPackage.BASIC_IMPL__FETCH;
+				case OrmPackage.XML_BASIC__OPTIONAL: return OrmPackage.BASIC_IMPL__OPTIONAL;
+				case OrmPackage.XML_BASIC__LOB: return OrmPackage.BASIC_IMPL__LOB;
+				case OrmPackage.XML_BASIC__TEMPORAL: return OrmPackage.BASIC_IMPL__TEMPORAL;
+				case OrmPackage.XML_BASIC__ENUMERATED: return OrmPackage.BASIC_IMPL__ENUMERATED;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -638,9 +596,7 @@ public class BasicImpl extends AbstractJpaEObject implements XmlBasic
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
-		result.append(", fetch: ");
+		result.append(" (fetch: ");
 		result.append(fetch);
 		result.append(", optional: ");
 		result.append(optional);

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
@@ -125,6 +126,10 @@ public class VirtualId extends AbstractJpaEObject implements XmlId
 		this.virtualGeneratedValue.update(javaIdMapping.getGeneratedValue());
 		this.virtualTableGenerator.update(javaIdMapping.getTableGenerator());
 		this.virtualSequenceGenerator.update(javaIdMapping.getSequenceGenerator());
+	}
+	
+	public TextRange nameTextRange() {
+		return null;
 	}
 
 }

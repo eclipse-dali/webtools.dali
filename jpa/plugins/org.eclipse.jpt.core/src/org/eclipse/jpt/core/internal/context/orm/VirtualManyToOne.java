@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ListIterator;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
@@ -167,4 +168,9 @@ public class VirtualManyToOne extends AbstractJpaEObject implements XmlManyToOne
 			this.virtualJoinColumns.remove(virtualJoinColumns.next());
 		}
 	}
+	
+	public TextRange nameTextRange() {
+		return null;
+	}
+
 }

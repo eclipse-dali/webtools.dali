@@ -10,15 +10,12 @@
 package org.eclipse.jpt.core.resource.orm;
 
 import java.util.Collection;
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,28 +27,8 @@ import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
  * @model kind="class"
  * @generated
  */
-public class EmbeddedIdImpl extends AbstractJpaEObject implements XmlEmbeddedId
+public class EmbeddedIdImpl extends AbstractXmlAttributeMapping implements XmlEmbeddedId
 {
-	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
-
 	/**
 	 * The cached value of the '{@link #getAttributeOverrides() <em>Attribute Overrides</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -81,41 +58,6 @@ public class EmbeddedIdImpl extends AbstractJpaEObject implements XmlEmbeddedId
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.EMBEDDED_ID_IMPL;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeMapping_Name()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
-	 * @generated
-	 */
-	public String getName()
-	{
-		return name;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.EmbeddedIdImpl#getName <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Name</em>' attribute.
-	 * @see #getName()
-	 * @generated
-	 */
-	public void setName(String newName)
-	{
-		String oldName = name;
-		name = newName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.EMBEDDED_ID_IMPL__NAME, oldName, name));
 	}
 
 	/**
@@ -167,8 +109,6 @@ public class EmbeddedIdImpl extends AbstractJpaEObject implements XmlEmbeddedId
 	{
 		switch (featureID)
 		{
-			case OrmPackage.EMBEDDED_ID_IMPL__NAME:
-				return getName();
 			case OrmPackage.EMBEDDED_ID_IMPL__ATTRIBUTE_OVERRIDES:
 				return getAttributeOverrides();
 		}
@@ -186,9 +126,6 @@ public class EmbeddedIdImpl extends AbstractJpaEObject implements XmlEmbeddedId
 	{
 		switch (featureID)
 		{
-			case OrmPackage.EMBEDDED_ID_IMPL__NAME:
-				setName((String)newValue);
-				return;
 			case OrmPackage.EMBEDDED_ID_IMPL__ATTRIBUTE_OVERRIDES:
 				getAttributeOverrides().clear();
 				getAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
@@ -207,9 +144,6 @@ public class EmbeddedIdImpl extends AbstractJpaEObject implements XmlEmbeddedId
 	{
 		switch (featureID)
 		{
-			case OrmPackage.EMBEDDED_ID_IMPL__NAME:
-				setName(NAME_EDEFAULT);
-				return;
 			case OrmPackage.EMBEDDED_ID_IMPL__ATTRIBUTE_OVERRIDES:
 				getAttributeOverrides().clear();
 				return;
@@ -227,8 +161,6 @@ public class EmbeddedIdImpl extends AbstractJpaEObject implements XmlEmbeddedId
 	{
 		switch (featureID)
 		{
-			case OrmPackage.EMBEDDED_ID_IMPL__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.EMBEDDED_ID_IMPL__ATTRIBUTE_OVERRIDES:
 				return attributeOverrides != null && !attributeOverrides.isEmpty();
 		}
@@ -241,15 +173,36 @@ public class EmbeddedIdImpl extends AbstractJpaEObject implements XmlEmbeddedId
 	 * @generated
 	 */
 	@Override
-	public String toString()
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
-		if (eIsProxy()) return super.toString();
+		if (baseClass == XmlEmbeddedId.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.EMBEDDED_ID_IMPL__ATTRIBUTE_OVERRIDES: return OrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_OVERRIDES;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
 
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
-		result.append(')');
-		return result.toString();
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlEmbeddedId.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_OVERRIDES: return OrmPackage.EMBEDDED_ID_IMPL__ATTRIBUTE_OVERRIDES;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 } // EmbeddedId

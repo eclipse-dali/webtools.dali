@@ -14,7 +14,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,28 +25,8 @@ import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
  * @model kind="class"
  * @generated
  */
-public class IdImpl extends AbstractJpaEObject implements XmlId
+public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 {
-	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
-
 	/**
 	 * The cached value of the '{@link #getColumn() <em>Column</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -123,41 +102,6 @@ public class IdImpl extends AbstractJpaEObject implements XmlId
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.ID_IMPL;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeMapping_Name()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
-	 * @generated
-	 */
-	public String getName()
-	{
-		return name;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.IdImpl#getName <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Name</em>' attribute.
-	 * @see #getName()
-	 * @generated
-	 */
-	public void setName(String newName)
-	{
-		String oldName = name;
-		name = newName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ID_IMPL__NAME, oldName, name));
 	}
 
 	/**
@@ -470,8 +414,6 @@ public class IdImpl extends AbstractJpaEObject implements XmlId
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ID_IMPL__NAME:
-				return getName();
 			case OrmPackage.ID_IMPL__COLUMN:
 				return getColumn();
 			case OrmPackage.ID_IMPL__GENERATED_VALUE:
@@ -496,9 +438,6 @@ public class IdImpl extends AbstractJpaEObject implements XmlId
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ID_IMPL__NAME:
-				setName((String)newValue);
-				return;
 			case OrmPackage.ID_IMPL__COLUMN:
 				setColumn((XmlColumn)newValue);
 				return;
@@ -528,9 +467,6 @@ public class IdImpl extends AbstractJpaEObject implements XmlId
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ID_IMPL__NAME:
-				setName(NAME_EDEFAULT);
-				return;
 			case OrmPackage.ID_IMPL__COLUMN:
 				setColumn((XmlColumn)null);
 				return;
@@ -560,8 +496,6 @@ public class IdImpl extends AbstractJpaEObject implements XmlId
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ID_IMPL__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.ID_IMPL__COLUMN:
 				return column != null;
 			case OrmPackage.ID_IMPL__GENERATED_VALUE:
@@ -592,6 +526,17 @@ public class IdImpl extends AbstractJpaEObject implements XmlId
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlId.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.ID_IMPL__GENERATED_VALUE: return OrmPackage.XML_ID__GENERATED_VALUE;
+				case OrmPackage.ID_IMPL__TEMPORAL: return OrmPackage.XML_ID__TEMPORAL;
+				case OrmPackage.ID_IMPL__TABLE_GENERATOR: return OrmPackage.XML_ID__TABLE_GENERATOR;
+				case OrmPackage.ID_IMPL__SEQUENCE_GENERATOR: return OrmPackage.XML_ID__SEQUENCE_GENERATOR;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -611,6 +556,17 @@ public class IdImpl extends AbstractJpaEObject implements XmlId
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlId.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_ID__GENERATED_VALUE: return OrmPackage.ID_IMPL__GENERATED_VALUE;
+				case OrmPackage.XML_ID__TEMPORAL: return OrmPackage.ID_IMPL__TEMPORAL;
+				case OrmPackage.XML_ID__TABLE_GENERATOR: return OrmPackage.ID_IMPL__TABLE_GENERATOR;
+				case OrmPackage.XML_ID__SEQUENCE_GENERATOR: return OrmPackage.ID_IMPL__SEQUENCE_GENERATOR;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -625,9 +581,7 @@ public class IdImpl extends AbstractJpaEObject implements XmlId
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
-		result.append(", temporal: ");
+		result.append(" (temporal: ");
 		result.append(temporal);
 		result.append(')');
 		return result.toString();
