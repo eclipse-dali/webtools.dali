@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.persistence;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaStructureNode;
@@ -26,7 +24,8 @@ import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class GenericPersistence extends AbstractPersistenceJpaContextNode
@@ -34,12 +33,13 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 {	
 	protected XmlPersistence xmlPersistence;
 	
-	protected final List<PersistenceUnit> persistenceUnits;
+	// the implementation here is a single persistence unit, although the API
+	// is for a list.  we will want to support multiple persistence units soon.
+	protected PersistenceUnit persistenceUnit;
 	
 	
 	public GenericPersistence(PersistenceXml parent) {
 		super(parent);
-		this.persistenceUnits = new ArrayList<PersistenceUnit>();
 	}
 	
 	public String getId() {
@@ -50,50 +50,55 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 	// **************** persistence units **************************************
 	
 	public ListIterator<PersistenceUnit> persistenceUnits() {
-		return new CloneListIterator<PersistenceUnit>(persistenceUnits);
+		if (persistenceUnit == null) {
+			return EmptyListIterator.instance();
+		}
+		else {
+			return new SingleElementListIterator<PersistenceUnit>(persistenceUnit);
+		}
 	}
 	
 	public int persistenceUnitsSize() {
-		return persistenceUnits.size();
+		return (persistenceUnit == null) ? 0 : 1;
 	}
 	
 	public PersistenceUnit addPersistenceUnit() {
-		return addPersistenceUnit(persistenceUnits.size());
+		return addPersistenceUnit(persistenceUnitsSize());
 	}
 	
 	public PersistenceUnit addPersistenceUnit(int index) {
+		if (index > 0 || persistenceUnit != null) {
+			throw new IllegalStateException("This implementation does not support multiple persistence units.");
+		}
 		XmlPersistenceUnit xmlPersistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = createPersistenceUnit(xmlPersistenceUnit);
-		persistenceUnits.add(index, persistenceUnit);
+		persistenceUnit = createPersistenceUnit(xmlPersistenceUnit);
 		xmlPersistence.getPersistenceUnits().add(xmlPersistenceUnit);
 		fireItemAdded(PERSISTENCE_UNITS_LIST, index, persistenceUnit);
 		return persistenceUnit;
 	}
 	
 	public void removePersistenceUnit(PersistenceUnit persistenceUnit) {
-		removePersistenceUnit(persistenceUnits.indexOf(persistenceUnit));
+		removePersistenceUnit(0);
 	}
 	
 	public void removePersistenceUnit(int index) {
-		PersistenceUnit persistenceUnit = persistenceUnits.remove(index);
+		if (index > 0 ) {
+			throw new IllegalArgumentException(new Integer(index).toString());
+		}
+		PersistenceUnit oldPersistenceUnit = persistenceUnit;
+		persistenceUnit = null;
 		xmlPersistence.getPersistenceUnits().remove(index);
-		fireItemRemoved(PERSISTENCE_UNITS_LIST, index, persistenceUnit);
+		fireItemRemoved(PERSISTENCE_UNITS_LIST, index, oldPersistenceUnit);
 	}
 	
-	protected void addPersistenceUnit_(PersistenceUnit persistenceUnit) {
-		addPersistenceUnit_(persistenceUnits.size(), persistenceUnit);
+	protected void addPersistenceUnit_(PersistenceUnit newPersistenceUnit) {
+		persistenceUnit = newPersistenceUnit;
+		fireItemAdded(PERSISTENCE_UNITS_LIST, 0, persistenceUnit);
 	}
 	
-	protected void addPersistenceUnit_(int index, PersistenceUnit persistenceUnit) {
-		addItemToList(index, persistenceUnit, persistenceUnits, PERSISTENCE_UNITS_LIST);
-	}
-	
-	protected void removePersistenceUnit_(PersistenceUnit persistenceUnit) {
-		removePersistenceUnit_(persistenceUnits.indexOf(persistenceUnit));
-	}
-	
-	protected void removePersistenceUnit_(int index) {
-		removeItemFromList(index, persistenceUnits, PERSISTENCE_UNITS_LIST);
+	protected void removePersistenceUnit_(PersistenceUnit oldPersistenceUnit) {
+		persistenceUnit = null;
+		fireItemRemoved(PERSISTENCE_UNITS_LIST, 0, oldPersistenceUnit);
 	}
 	
 	
@@ -105,28 +110,31 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected void initializePersistenceUnits(XmlPersistence persistence) {
-		for (XmlPersistenceUnit xmlPersistenceUnit : persistence.getPersistenceUnits()) {
-			this.persistenceUnits.add(createPersistenceUnit(xmlPersistenceUnit));
+		// only adding one here, until we support multiple persistence units
+		if (xmlPersistence.getPersistenceUnits().size() > 0) {
+			persistenceUnit = createPersistenceUnit(persistence.getPersistenceUnits().get(0));
 		}
 	}
-
+	
 	public void update(XmlPersistence persistence) {
 		this.xmlPersistence = persistence;
-		Iterator<PersistenceUnit> stream = persistenceUnits();
-		Iterator<XmlPersistenceUnit> stream2 = persistence.getPersistenceUnits().iterator();
-		
-		while (stream.hasNext()) {
-			PersistenceUnit persistenceUnit = stream.next();
-			if (stream2.hasNext()) {
-				persistenceUnit.update(stream2.next());
+		XmlPersistenceUnit xmlPersistenceUnit = null;
+		if (persistence.getPersistenceUnits().size() > 0) {
+			xmlPersistenceUnit = persistence.getPersistenceUnits().get(0);
+		}
+				
+		if (persistenceUnit != null) {
+			if (xmlPersistenceUnit != null) {
+				persistenceUnit.update(xmlPersistenceUnit);
 			}
 			else {
 				removePersistenceUnit_(persistenceUnit);
 			}
 		}
-		
-		while (stream2.hasNext()) {
-			addPersistenceUnit_(createPersistenceUnit(stream2.next()));
+		else {
+			if (xmlPersistenceUnit != null) {
+				addPersistenceUnit_(createPersistenceUnit(xmlPersistenceUnit));
+			}
 		}
 	}
 	
@@ -174,17 +182,20 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 		super.addToMessages(messages);
 		//persistence root validation
 		addNoPersistenceUnitMessage(messages);
+		
+		// note to neil (or whomever): extraneous persistence units can be
+		// accessed through the XmlPersistence resource object
 		addMultiplePersistenceUnitMessage(messages);
 		
 		
 		//persistence unit validation
-		for (PersistenceUnit pu : CollectionTools.iterable(persistenceUnits())){
-			pu.addToMessages(messages);
+		if (persistenceUnit != null) {
+			persistenceUnit.addToMessages(messages);
 		}
 	}
 	
 	protected void addNoPersistenceUnitMessage(List<IMessage> messages) {
-		if (persistenceUnitsSize() == 0) {
+		if (persistenceUnit == null) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -196,7 +207,7 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected void addMultiplePersistenceUnitMessage(List<IMessage> messages) {
-		if (persistenceUnitsSize() > 1) {
+		if (xmlPersistence.getPersistenceUnits().size() > 1) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
