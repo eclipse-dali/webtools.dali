@@ -400,8 +400,8 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 					}
 				}) {
 			@Override
-			protected boolean accept(JavaResourcePersistentType o) {
-				return o.isPersisted();
+			protected boolean accept(JavaResourcePersistentType persistentType) {
+				return persistentType == null ? false : persistentType.isPersisted();
 			}
 		};
 	}
