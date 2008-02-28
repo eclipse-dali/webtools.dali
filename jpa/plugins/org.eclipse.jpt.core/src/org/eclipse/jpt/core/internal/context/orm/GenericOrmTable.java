@@ -10,18 +10,17 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
-
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmTable;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.resource.orm.XmlAbstractTable;
-import org.eclipse.jpt.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.core.resource.orm.XmlTable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class GenericOrmTable extends AbstractOrmTable implements OrmTable
@@ -38,7 +37,7 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 	}
 	
 	@Override
-	protected XmlAbstractTable table() {
+	protected XmlTable table() {
 		return this.entity.getTable();
 	}
 	
@@ -140,7 +139,8 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
 						new String[] {schema, this.getName()}, 
-						this, this.schemaTextRange())
+						this,
+						this.schemaTextRange())
 				);
 			doContinue = false;
 		}
@@ -151,7 +151,8 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.TABLE_UNRESOLVED_NAME,
 						new String[] {this.getName()}, 
-						this, this.nameTextRange())
+						this, 
+						this.nameTextRange())
 				);
 		}
 	}

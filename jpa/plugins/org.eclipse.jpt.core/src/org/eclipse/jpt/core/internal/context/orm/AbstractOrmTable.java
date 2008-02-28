@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.TextRange;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.Table;
-import org.eclipse.jpt.core.resource.orm.XmlAbstractTable;
+import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
+import org.eclipse.jpt.core.resource.orm.XmlBaseTable;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.utility.internal.NameTools;
 
@@ -32,10 +32,15 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	
 //	protected EList<IUniqueConstraint> uniqueConstraints;
 
-	protected AbstractOrmTable(JpaContextNode parent) {
+	protected AbstractOrmTable(OrmJpaContextNode parent) {
 		super(parent);
 	}
 
+	@Override
+	public OrmJpaContextNode parent() {
+		return (OrmJpaContextNode) super.parent();
+	}
+	
 	public void initializeFrom(Table oldTable) {
 		setSpecifiedName(oldTable.getSpecifiedName());
 		setSpecifiedCatalog(oldTable.getSpecifiedCatalog());
@@ -51,7 +56,10 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 		return this.specifiedName;
 	}
 	
-	protected abstract XmlAbstractTable table();
+	/**
+	 * Return null if no table resource element exists
+	 */
+	protected abstract XmlBaseTable table();
 
 	protected abstract void removeTableResource();
 	
@@ -183,41 +191,6 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 //		return uniqueConstraints;
 //	}
 
-
-	public TextRange nameTextRange() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public TextRange catalogTextRange() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public TextRange schemaTextRange() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-//	public ITextRange nameTextRange() {
-//		if (node == null) {
-//			return owner.validationTextRange();
-//		}
-//		IDOMNode nameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.NAME);
-//		return (nameNode == null) ? validationTextRange() : buildTextRange(nameNode);
-//	}
-//
-//	public ITextRange schemaTextRange() {
-//		if (node == null) {
-//			return owner.validationTextRange();
-//		}
-//		IDOMNode schemaNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.SCHEMA);
-//		return (schemaNode == null) ? validationTextRange() : buildTextRange(schemaNode);
-//	}
-	
-	public TextRange validationTextRange() {
-		return this.table().validationTextRange();
-	}
-
 	public org.eclipse.jpt.db.internal.Table dbTable() {
 		Schema schema = this.dbSchema();
 		return (schema == null) ? null : schema.tableNamed(getName());
@@ -234,16 +207,8 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	public boolean isResolved() {
 		return dbTable() != null;
 	}
-//
-//	public IUniqueConstraint createUniqueConstraint(int index) {
-//		return createXmlJavaUniqueConstraint(index);
-//	}
-//
-//	protected XmlUniqueConstraint createXmlJavaUniqueConstraint(int index) {
-//		return OrmFactory.eINSTANCE.createXmlUniqueConstraint();
-//	}
 	
-	protected void initialize(XmlAbstractTable table) {
+	protected void initialize(XmlBaseTable table) {
 		this.specifiedName = this.specifiedName(table);
 		this.specifiedSchema = this.specifiedSchema(table);
 		this.specifiedCatalog = this.specifiedCatalog(table);
@@ -252,7 +217,7 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 		this.defaultCatalog = this.defaultCatalog();
 	}
 	
-	protected void update(XmlAbstractTable table) {
+	protected void update(XmlBaseTable table) {
 		this.setSpecifiedName_(this.specifiedName(table));
 		this.setSpecifiedSchema_(this.specifiedSchema(table));
 		this.setSpecifiedCatalog_(this.specifiedCatalog(table));
@@ -261,15 +226,15 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 		this.setDefaultCatalog(this.defaultCatalog());
 	}
 
-	protected String specifiedName(XmlAbstractTable table) {
+	protected String specifiedName(XmlBaseTable table) {
 		return table == null ? null : table.getName();
 	}
 	
-	protected String specifiedSchema(XmlAbstractTable table) {
+	protected String specifiedSchema(XmlBaseTable table) {
 		return table == null ? null : table.getSchema();
 	}
 	
-	protected String specifiedCatalog(XmlAbstractTable table) {
+	protected String specifiedCatalog(XmlBaseTable table) {
 		return table == null ? null : table.getCatalog();
 	}
 	
@@ -283,6 +248,32 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 		return NameTools.buildQualifiedDatabaseObjectName(this.getCatalog(), this.getSchema(), this.getName());
 	}
 
+	protected TextRange nameTextRange() {
+		if (table() != null) {
+			return table().nameTextRange();
+		}
+		return this.parent().validationTextRange(); 
+	}
+	
+	protected TextRange catalogTextRange() {
+		if (table() != null) {
+			return table().catalogTextRange();
+		}
+		return this.parent().validationTextRange(); 
+	}
+	
+	protected TextRange schemaTextRange() {
+		if (table() != null) {
+			return table().schemaTextRange();
+		}
+		return this.parent().validationTextRange(); 
+	}
+	
+	public TextRange validationTextRange() {
+		return this.table().validationTextRange();
+	}
+
+	
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);

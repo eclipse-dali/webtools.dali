@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.GeneratedValue;
 import org.eclipse.jpt.core.context.GenerationType;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
+import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 
 public class GenericOrmGeneratedValue extends AbstractOrmJpaContextNode implements OrmGeneratedValue
@@ -26,7 +26,7 @@ public class GenericOrmGeneratedValue extends AbstractOrmJpaContextNode implemen
 
 	protected XmlGeneratedValue generatedValue;
 	
-	public GenericOrmGeneratedValue(JpaContextNode parent) {
+	public GenericOrmGeneratedValue(OrmJpaContextNode parent) {
 		super(parent);
 	}
 	

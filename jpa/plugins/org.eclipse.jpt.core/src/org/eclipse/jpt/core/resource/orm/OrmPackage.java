@@ -3909,14 +3909,14 @@ public class OrmPackage extends EPackageImpl
 	public static final int JOIN_COLUMN_IMPL_FEATURE_COUNT = XML_JOIN_COLUMN_FEATURE_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlAbstractTable <em>Xml Abstract Table</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlBaseTable <em>Xml Base Table</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.resource.orm.XmlAbstractTable
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractTable()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlBaseTable
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlBaseTable()
 	 * @generated
 	 */
-	public static final int XML_ABSTRACT_TABLE = 73;
+	public static final int XML_BASE_TABLE = 74;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3925,7 +3925,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ABSTRACT_TABLE__NAME = 0;
+	public static final int XML_BASE_TABLE__NAME = 0;
 
 	/**
 	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
@@ -3934,7 +3934,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ABSTRACT_TABLE__CATALOG = 1;
+	public static final int XML_BASE_TABLE__CATALOG = 1;
 
 	/**
 	 * The feature id for the '<em><b>Schema</b></em>' attribute.
@@ -3943,7 +3943,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ABSTRACT_TABLE__SCHEMA = 2;
+	public static final int XML_BASE_TABLE__SCHEMA = 2;
 
 	/**
 	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
@@ -3952,16 +3952,16 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ABSTRACT_TABLE__UNIQUE_CONSTRAINTS = 3;
+	public static final int XML_BASE_TABLE__UNIQUE_CONSTRAINTS = 3;
 
 	/**
-	 * The number of structural features of the '<em>Xml Abstract Table</em>' class.
+	 * The number of structural features of the '<em>Xml Base Table</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ABSTRACT_TABLE_FEATURE_COUNT = 4;
+	public static final int XML_BASE_TABLE_FEATURE_COUNT = 4;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlJoinTable <em>Xml Join Table</em>}' class.
@@ -3980,7 +3980,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_JOIN_TABLE__NAME = XML_ABSTRACT_TABLE__NAME;
+	public static final int XML_JOIN_TABLE__NAME = XML_BASE_TABLE__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
@@ -3989,7 +3989,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_JOIN_TABLE__CATALOG = XML_ABSTRACT_TABLE__CATALOG;
+	public static final int XML_JOIN_TABLE__CATALOG = XML_BASE_TABLE__CATALOG;
 
 	/**
 	 * The feature id for the '<em><b>Schema</b></em>' attribute.
@@ -3998,7 +3998,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_JOIN_TABLE__SCHEMA = XML_ABSTRACT_TABLE__SCHEMA;
+	public static final int XML_JOIN_TABLE__SCHEMA = XML_BASE_TABLE__SCHEMA;
 
 	/**
 	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
@@ -4007,7 +4007,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_JOIN_TABLE__UNIQUE_CONSTRAINTS = XML_ABSTRACT_TABLE__UNIQUE_CONSTRAINTS;
+	public static final int XML_JOIN_TABLE__UNIQUE_CONSTRAINTS = XML_BASE_TABLE__UNIQUE_CONSTRAINTS;
 
 	/**
 	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
@@ -4016,7 +4016,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_JOIN_TABLE__JOIN_COLUMNS = XML_ABSTRACT_TABLE_FEATURE_COUNT + 0;
+	public static final int XML_JOIN_TABLE__JOIN_COLUMNS = XML_BASE_TABLE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Inverse Join Columns</b></em>' containment reference list.
@@ -4025,7 +4025,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS = XML_ABSTRACT_TABLE_FEATURE_COUNT + 1;
+	public static final int XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS = XML_BASE_TABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Xml Join Table</em>' class.
@@ -4034,7 +4034,62 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_JOIN_TABLE_FEATURE_COUNT = XML_ABSTRACT_TABLE_FEATURE_COUNT + 2;
+	public static final int XML_JOIN_TABLE_FEATURE_COUNT = XML_BASE_TABLE_FEATURE_COUNT + 2;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlBaseTable <em>Abstract Xml Base Table</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.resource.orm.AbstractXmlBaseTable
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlBaseTable()
+	 * @generated
+	 */
+	public static final int ABSTRACT_XML_BASE_TABLE = 73;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_XML_BASE_TABLE__NAME = XML_BASE_TABLE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_XML_BASE_TABLE__CATALOG = XML_BASE_TABLE__CATALOG;
+
+	/**
+	 * The feature id for the '<em><b>Schema</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_XML_BASE_TABLE__SCHEMA = XML_BASE_TABLE__SCHEMA;
+
+	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_XML_BASE_TABLE__UNIQUE_CONSTRAINTS = XML_BASE_TABLE__UNIQUE_CONSTRAINTS;
+
+	/**
+	 * The number of structural features of the '<em>Abstract Xml Base Table</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_XML_BASE_TABLE_FEATURE_COUNT = XML_BASE_TABLE_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.JoinTableImpl <em>Join Table Impl</em>}' class.
@@ -4053,7 +4108,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JOIN_TABLE_IMPL__NAME = XML_JOIN_TABLE__NAME;
+	public static final int JOIN_TABLE_IMPL__NAME = ABSTRACT_XML_BASE_TABLE__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
@@ -4062,7 +4117,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JOIN_TABLE_IMPL__CATALOG = XML_JOIN_TABLE__CATALOG;
+	public static final int JOIN_TABLE_IMPL__CATALOG = ABSTRACT_XML_BASE_TABLE__CATALOG;
 
 	/**
 	 * The feature id for the '<em><b>Schema</b></em>' attribute.
@@ -4071,7 +4126,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JOIN_TABLE_IMPL__SCHEMA = XML_JOIN_TABLE__SCHEMA;
+	public static final int JOIN_TABLE_IMPL__SCHEMA = ABSTRACT_XML_BASE_TABLE__SCHEMA;
 
 	/**
 	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
@@ -4080,7 +4135,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JOIN_TABLE_IMPL__UNIQUE_CONSTRAINTS = XML_JOIN_TABLE__UNIQUE_CONSTRAINTS;
+	public static final int JOIN_TABLE_IMPL__UNIQUE_CONSTRAINTS = ABSTRACT_XML_BASE_TABLE__UNIQUE_CONSTRAINTS;
 
 	/**
 	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
@@ -4089,7 +4144,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JOIN_TABLE_IMPL__JOIN_COLUMNS = XML_JOIN_TABLE__JOIN_COLUMNS;
+	public static final int JOIN_TABLE_IMPL__JOIN_COLUMNS = ABSTRACT_XML_BASE_TABLE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Inverse Join Columns</b></em>' containment reference list.
@@ -4098,7 +4153,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JOIN_TABLE_IMPL__INVERSE_JOIN_COLUMNS = XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS;
+	public static final int JOIN_TABLE_IMPL__INVERSE_JOIN_COLUMNS = ABSTRACT_XML_BASE_TABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Join Table Impl</em>' class.
@@ -4107,7 +4162,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int JOIN_TABLE_IMPL_FEATURE_COUNT = XML_JOIN_TABLE_FEATURE_COUNT + 0;
+	public static final int JOIN_TABLE_IMPL_FEATURE_COUNT = ABSTRACT_XML_BASE_TABLE_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Lob</em>' class.
@@ -4607,7 +4662,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTable()
 	 * @generated
 	 */
-	public static final int XML_TABLE = 74;
+	public static final int XML_TABLE = 75;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4616,7 +4671,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TABLE__NAME = XML_ABSTRACT_TABLE__NAME;
+	public static final int XML_TABLE__NAME = ABSTRACT_XML_BASE_TABLE__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
@@ -4625,7 +4680,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TABLE__CATALOG = XML_ABSTRACT_TABLE__CATALOG;
+	public static final int XML_TABLE__CATALOG = ABSTRACT_XML_BASE_TABLE__CATALOG;
 
 	/**
 	 * The feature id for the '<em><b>Schema</b></em>' attribute.
@@ -4634,7 +4689,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TABLE__SCHEMA = XML_ABSTRACT_TABLE__SCHEMA;
+	public static final int XML_TABLE__SCHEMA = ABSTRACT_XML_BASE_TABLE__SCHEMA;
 
 	/**
 	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
@@ -4643,7 +4698,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TABLE__UNIQUE_CONSTRAINTS = XML_ABSTRACT_TABLE__UNIQUE_CONSTRAINTS;
+	public static final int XML_TABLE__UNIQUE_CONSTRAINTS = ABSTRACT_XML_BASE_TABLE__UNIQUE_CONSTRAINTS;
 
 	/**
 	 * The number of structural features of the '<em>Xml Table</em>' class.
@@ -4652,7 +4707,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_TABLE_FEATURE_COUNT = XML_ABSTRACT_TABLE_FEATURE_COUNT + 0;
+	public static final int XML_TABLE_FEATURE_COUNT = ABSTRACT_XML_BASE_TABLE_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlSecondaryTable <em>Xml Secondary Table</em>}' class.
@@ -4662,7 +4717,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSecondaryTable()
 	 * @generated
 	 */
-	public static final int XML_SECONDARY_TABLE = 75;
+	public static final int XML_SECONDARY_TABLE = 76;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4671,7 +4726,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_SECONDARY_TABLE__NAME = XML_ABSTRACT_TABLE__NAME;
+	public static final int XML_SECONDARY_TABLE__NAME = ABSTRACT_XML_BASE_TABLE__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
@@ -4680,7 +4735,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_SECONDARY_TABLE__CATALOG = XML_ABSTRACT_TABLE__CATALOG;
+	public static final int XML_SECONDARY_TABLE__CATALOG = ABSTRACT_XML_BASE_TABLE__CATALOG;
 
 	/**
 	 * The feature id for the '<em><b>Schema</b></em>' attribute.
@@ -4689,7 +4744,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_SECONDARY_TABLE__SCHEMA = XML_ABSTRACT_TABLE__SCHEMA;
+	public static final int XML_SECONDARY_TABLE__SCHEMA = ABSTRACT_XML_BASE_TABLE__SCHEMA;
 
 	/**
 	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
@@ -4698,7 +4753,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_SECONDARY_TABLE__UNIQUE_CONSTRAINTS = XML_ABSTRACT_TABLE__UNIQUE_CONSTRAINTS;
+	public static final int XML_SECONDARY_TABLE__UNIQUE_CONSTRAINTS = ABSTRACT_XML_BASE_TABLE__UNIQUE_CONSTRAINTS;
 
 	/**
 	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
@@ -4707,7 +4762,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS = XML_ABSTRACT_TABLE_FEATURE_COUNT + 0;
+	public static final int XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS = ABSTRACT_XML_BASE_TABLE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Secondary Table</em>' class.
@@ -4716,7 +4771,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_SECONDARY_TABLE_FEATURE_COUNT = XML_ABSTRACT_TABLE_FEATURE_COUNT + 1;
+	public static final int XML_SECONDARY_TABLE_FEATURE_COUNT = ABSTRACT_XML_BASE_TABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlGenerator <em>Xml Generator</em>}' class.
@@ -4726,7 +4781,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGenerator()
 	 * @generated
 	 */
-	public static final int XML_GENERATOR = 76;
+	public static final int XML_GENERATOR = 77;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4772,7 +4827,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSequenceGenerator()
 	 * @generated
 	 */
-	public static final int XML_SEQUENCE_GENERATOR = 77;
+	public static final int XML_SEQUENCE_GENERATOR = 78;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4827,7 +4882,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getSqlResultSetMapping()
 	 * @generated
 	 */
-	public static final int SQL_RESULT_SET_MAPPING = 79;
+	public static final int SQL_RESULT_SET_MAPPING = 80;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.SequenceGeneratorImpl <em>Sequence Generator Impl</em>}' class.
@@ -4837,7 +4892,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getSequenceGeneratorImpl()
 	 * @generated
 	 */
-	public static final int SEQUENCE_GENERATOR_IMPL = 78;
+	public static final int SEQUENCE_GENERATOR_IMPL = 79;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4928,7 +4983,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTableGenerator()
 	 * @generated
 	 */
-	public static final int XML_TABLE_GENERATOR = 80;
+	public static final int XML_TABLE_GENERATOR = 81;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5037,7 +5092,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTableGeneratorImpl()
 	 * @generated
 	 */
-	public static final int TABLE_GENERATOR_IMPL = 81;
+	public static final int TABLE_GENERATOR_IMPL = 82;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5146,7 +5201,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getUniqueConstraint()
 	 * @generated
 	 */
-	public static final int UNIQUE_CONSTRAINT = 82;
+	public static final int UNIQUE_CONSTRAINT = 83;
 
 	/**
 	 * The feature id for the '<em><b>Column Names</b></em>' attribute list.
@@ -5174,7 +5229,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAccessType()
 	 * @generated
 	 */
-	public static final int ACCESS_TYPE = 83;
+	public static final int ACCESS_TYPE = 84;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.DiscriminatorType <em>Discriminator Type</em>}' enum.
@@ -5184,7 +5239,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getDiscriminatorType()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_TYPE = 84;
+	public static final int DISCRIMINATOR_TYPE = 85;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.EnumType <em>Enum Type</em>}' enum.
@@ -5194,7 +5249,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEnumType()
 	 * @generated
 	 */
-	public static final int ENUM_TYPE = 85;
+	public static final int ENUM_TYPE = 86;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.FetchType <em>Fetch Type</em>}' enum.
@@ -5204,7 +5259,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getFetchType()
 	 * @generated
 	 */
-	public static final int FETCH_TYPE = 86;
+	public static final int FETCH_TYPE = 87;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.GenerationType <em>Generation Type</em>}' enum.
@@ -5214,7 +5269,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getGenerationType()
 	 * @generated
 	 */
-	public static final int GENERATION_TYPE = 87;
+	public static final int GENERATION_TYPE = 88;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.InheritanceType <em>Inheritance Type</em>}' enum.
@@ -5224,7 +5279,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getInheritanceType()
 	 * @generated
 	 */
-	public static final int INHERITANCE_TYPE = 88;
+	public static final int INHERITANCE_TYPE = 89;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.TemporalType <em>Temporal Type</em>}' enum.
@@ -5234,7 +5289,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTemporalType()
 	 * @generated
 	 */
-	public static final int TEMPORAL_TYPE = 89;
+	public static final int TEMPORAL_TYPE = 90;
 
 	/**
 	 * The meta object id for the '<em>Discriminator Value</em>' data type.
@@ -5244,7 +5299,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getDiscriminatorValue()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_VALUE = 90;
+	public static final int DISCRIMINATOR_VALUE = 91;
 
 	/**
 	 * The meta object id for the '<em>Enumerated</em>' data type.
@@ -5254,7 +5309,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEnumerated()
 	 * @generated
 	 */
-	public static final int ENUMERATED = 91;
+	public static final int ENUMERATED = 92;
 
 	/**
 	 * The meta object id for the '<em>Order By</em>' data type.
@@ -5264,7 +5319,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getOrderBy()
 	 * @generated
 	 */
-	public static final int ORDER_BY = 92;
+	public static final int ORDER_BY = 93;
 
 	/**
 	 * The meta object id for the '<em>Version Type</em>' data type.
@@ -5274,7 +5329,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getVersionType()
 	 * @generated
 	 */
-	public static final int VERSION_TYPE = 93;
+	public static final int VERSION_TYPE = 94;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -5792,7 +5847,14 @@ public class OrmPackage extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass xmlAbstractTableEClass = null;
+	private EClass abstractXmlBaseTableEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlBaseTableEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -9269,76 +9331,90 @@ public class OrmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.XmlAbstractTable <em>Xml Abstract Table</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlBaseTable <em>Abstract Xml Base Table</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Abstract Table</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlAbstractTable
+	 * @return the meta object for class '<em>Abstract Xml Base Table</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.AbstractXmlBaseTable
 	 * @generated
 	 */
-	public EClass getXmlAbstractTable()
+	public EClass getAbstractXmlBaseTable()
 	{
-		return xmlAbstractTableEClass;
+		return abstractXmlBaseTableEClass;
 	}
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlAbstractTable#getName <em>Name</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.XmlBaseTable <em>Xml Base Table</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Base Table</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlBaseTable
+	 * @generated
+	 */
+	public EClass getXmlBaseTable()
+	{
+		return xmlBaseTableEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlBaseTable#getName <em>Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlAbstractTable#getName()
-	 * @see #getXmlAbstractTable()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlBaseTable#getName()
+	 * @see #getXmlBaseTable()
 	 * @generated
 	 */
-	public EAttribute getXmlAbstractTable_Name()
+	public EAttribute getXmlBaseTable_Name()
 	{
-		return (EAttribute)xmlAbstractTableEClass.getEStructuralFeatures().get(0);
+		return (EAttribute)xmlBaseTableEClass.getEStructuralFeatures().get(0);
 	}
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlAbstractTable#getCatalog <em>Catalog</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlBaseTable#getCatalog <em>Catalog</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Catalog</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlAbstractTable#getCatalog()
-	 * @see #getXmlAbstractTable()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlBaseTable#getCatalog()
+	 * @see #getXmlBaseTable()
 	 * @generated
 	 */
-	public EAttribute getXmlAbstractTable_Catalog()
+	public EAttribute getXmlBaseTable_Catalog()
 	{
-		return (EAttribute)xmlAbstractTableEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)xmlBaseTableEClass.getEStructuralFeatures().get(1);
 	}
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlAbstractTable#getSchema <em>Schema</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlBaseTable#getSchema <em>Schema</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Schema</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlAbstractTable#getSchema()
-	 * @see #getXmlAbstractTable()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlBaseTable#getSchema()
+	 * @see #getXmlBaseTable()
 	 * @generated
 	 */
-	public EAttribute getXmlAbstractTable_Schema()
+	public EAttribute getXmlBaseTable_Schema()
 	{
-		return (EAttribute)xmlAbstractTableEClass.getEStructuralFeatures().get(2);
+		return (EAttribute)xmlBaseTableEClass.getEStructuralFeatures().get(2);
 	}
 
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.XmlAbstractTable#getUniqueConstraints <em>Unique Constraints</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.XmlBaseTable#getUniqueConstraints <em>Unique Constraints</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Unique Constraints</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlAbstractTable#getUniqueConstraints()
-	 * @see #getXmlAbstractTable()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlBaseTable#getUniqueConstraints()
+	 * @see #getXmlBaseTable()
 	 * @generated
 	 */
-	public EReference getXmlAbstractTable_UniqueConstraints()
+	public EReference getXmlBaseTable_UniqueConstraints()
 	{
-		return (EReference)xmlAbstractTableEClass.getEStructuralFeatures().get(3);
+		return (EReference)xmlBaseTableEClass.getEStructuralFeatures().get(3);
 	}
 
 
@@ -10179,11 +10255,13 @@ public class OrmPackage extends EPackageImpl
 		createEAttribute(xmlQueryHintEClass, XML_QUERY_HINT__NAME);
 		createEAttribute(xmlQueryHintEClass, XML_QUERY_HINT__VALUE);
 
-		xmlAbstractTableEClass = createEClass(XML_ABSTRACT_TABLE);
-		createEAttribute(xmlAbstractTableEClass, XML_ABSTRACT_TABLE__NAME);
-		createEAttribute(xmlAbstractTableEClass, XML_ABSTRACT_TABLE__CATALOG);
-		createEAttribute(xmlAbstractTableEClass, XML_ABSTRACT_TABLE__SCHEMA);
-		createEReference(xmlAbstractTableEClass, XML_ABSTRACT_TABLE__UNIQUE_CONSTRAINTS);
+		abstractXmlBaseTableEClass = createEClass(ABSTRACT_XML_BASE_TABLE);
+
+		xmlBaseTableEClass = createEClass(XML_BASE_TABLE);
+		createEAttribute(xmlBaseTableEClass, XML_BASE_TABLE__NAME);
+		createEAttribute(xmlBaseTableEClass, XML_BASE_TABLE__CATALOG);
+		createEAttribute(xmlBaseTableEClass, XML_BASE_TABLE__SCHEMA);
+		createEReference(xmlBaseTableEClass, XML_BASE_TABLE__UNIQUE_CONSTRAINTS);
 
 		xmlTableEClass = createEClass(XML_TABLE);
 
@@ -10316,7 +10394,8 @@ public class OrmPackage extends EPackageImpl
 		generatedValueImplEClass.getESuperTypes().add(this.getXmlGeneratedValue());
 		xmlJoinColumnEClass.getESuperTypes().add(this.getXmlAbstractColumn());
 		joinColumnImplEClass.getESuperTypes().add(this.getXmlJoinColumn());
-		xmlJoinTableEClass.getESuperTypes().add(this.getXmlAbstractTable());
+		xmlJoinTableEClass.getESuperTypes().add(this.getXmlBaseTable());
+		joinTableImplEClass.getESuperTypes().add(this.getAbstractXmlBaseTable());
 		joinTableImplEClass.getESuperTypes().add(this.getXmlJoinTable());
 		mapKeyImplEClass.getESuperTypes().add(this.getMapKey());
 		xmlNamedNativeQueryEClass.getESuperTypes().add(this.getXmlQuery());
@@ -10329,8 +10408,9 @@ public class OrmPackage extends EPackageImpl
 		preRemoveEClass.getESuperTypes().add(this.getEventMethod());
 		preUpdateEClass.getESuperTypes().add(this.getEventMethod());
 		xmlPrimaryKeyJoinColumnEClass.getESuperTypes().add(this.getXmlNamedColumn());
-		xmlTableEClass.getESuperTypes().add(this.getXmlAbstractTable());
-		xmlSecondaryTableEClass.getESuperTypes().add(this.getXmlAbstractTable());
+		abstractXmlBaseTableEClass.getESuperTypes().add(this.getXmlBaseTable());
+		xmlTableEClass.getESuperTypes().add(this.getAbstractXmlBaseTable());
+		xmlSecondaryTableEClass.getESuperTypes().add(this.getAbstractXmlBaseTable());
 		xmlSequenceGeneratorEClass.getESuperTypes().add(this.getXmlGenerator());
 		sequenceGeneratorImplEClass.getESuperTypes().add(this.getXmlSequenceGenerator());
 		xmlTableGeneratorEClass.getESuperTypes().add(this.getXmlGenerator());
@@ -10635,11 +10715,13 @@ public class OrmPackage extends EPackageImpl
 		initEAttribute(getXmlQueryHint_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, XmlQueryHint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlQueryHint_Value(), theXMLTypePackage.getString(), "value", null, 1, 1, XmlQueryHint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(xmlAbstractTableEClass, XmlAbstractTable.class, "XmlAbstractTable", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlAbstractTable_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlAbstractTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlAbstractTable_Catalog(), theXMLTypePackage.getString(), "catalog", null, 0, 1, XmlAbstractTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlAbstractTable_Schema(), theXMLTypePackage.getString(), "schema", null, 0, 1, XmlAbstractTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlAbstractTable_UniqueConstraints(), this.getUniqueConstraint(), null, "uniqueConstraints", null, 0, -1, XmlAbstractTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(abstractXmlBaseTableEClass, AbstractXmlBaseTable.class, "AbstractXmlBaseTable", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(xmlBaseTableEClass, XmlBaseTable.class, "XmlBaseTable", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlBaseTable_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlBaseTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlBaseTable_Catalog(), theXMLTypePackage.getString(), "catalog", null, 0, 1, XmlBaseTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlBaseTable_Schema(), theXMLTypePackage.getString(), "schema", null, 0, 1, XmlBaseTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlBaseTable_UniqueConstraints(), this.getUniqueConstraint(), null, "uniqueConstraints", null, 0, -1, XmlBaseTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlTableEClass, XmlTable.class, "XmlTable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -12680,14 +12762,24 @@ public class OrmPackage extends EPackageImpl
 		public static final EAttribute XML_QUERY_HINT__VALUE = eINSTANCE.getXmlQueryHint_Value();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlAbstractTable <em>Xml Abstract Table</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlBaseTable <em>Abstract Xml Base Table</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.resource.orm.XmlAbstractTable
-		 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractTable()
+		 * @see org.eclipse.jpt.core.resource.orm.AbstractXmlBaseTable
+		 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlBaseTable()
 		 * @generated
 		 */
-		public static final EClass XML_ABSTRACT_TABLE = eINSTANCE.getXmlAbstractTable();
+		public static final EClass ABSTRACT_XML_BASE_TABLE = eINSTANCE.getAbstractXmlBaseTable();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlBaseTable <em>Xml Base Table</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.resource.orm.XmlBaseTable
+		 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlBaseTable()
+		 * @generated
+		 */
+		public static final EClass XML_BASE_TABLE = eINSTANCE.getXmlBaseTable();
 
 		/**
 		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
@@ -12695,7 +12787,7 @@ public class OrmPackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute XML_ABSTRACT_TABLE__NAME = eINSTANCE.getXmlAbstractTable_Name();
+		public static final EAttribute XML_BASE_TABLE__NAME = eINSTANCE.getXmlBaseTable_Name();
 
 		/**
 		 * The meta object literal for the '<em><b>Catalog</b></em>' attribute feature.
@@ -12703,7 +12795,7 @@ public class OrmPackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute XML_ABSTRACT_TABLE__CATALOG = eINSTANCE.getXmlAbstractTable_Catalog();
+		public static final EAttribute XML_BASE_TABLE__CATALOG = eINSTANCE.getXmlBaseTable_Catalog();
 
 		/**
 		 * The meta object literal for the '<em><b>Schema</b></em>' attribute feature.
@@ -12711,7 +12803,7 @@ public class OrmPackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute XML_ABSTRACT_TABLE__SCHEMA = eINSTANCE.getXmlAbstractTable_Schema();
+		public static final EAttribute XML_BASE_TABLE__SCHEMA = eINSTANCE.getXmlBaseTable_Schema();
 
 		/**
 		 * The meta object literal for the '<em><b>Unique Constraints</b></em>' containment reference list feature.
@@ -12719,7 +12811,7 @@ public class OrmPackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EReference XML_ABSTRACT_TABLE__UNIQUE_CONSTRAINTS = eINSTANCE.getXmlAbstractTable_UniqueConstraints();
+		public static final EReference XML_BASE_TABLE__UNIQUE_CONSTRAINTS = eINSTANCE.getXmlBaseTable_UniqueConstraints();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlTable <em>Xml Table</em>}' class.

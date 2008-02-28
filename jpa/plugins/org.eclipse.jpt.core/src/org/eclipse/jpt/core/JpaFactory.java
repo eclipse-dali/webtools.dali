@@ -70,6 +70,7 @@ import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
+import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
@@ -215,29 +216,29 @@ public interface JpaFactory
 	
 	OrmSecondaryTable buildOrmSecondaryTable(OrmEntity parent);
 	
-	OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(JpaContextNode parent, AbstractJoinColumn.Owner owner);
+	OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(OrmJpaContextNode parent, AbstractJoinColumn.Owner owner);
 	
 	OrmJoinTable buildOrmJoinTable(OrmRelationshipMapping parent);
 	
-	OrmJoinColumn buildOrmJoinColumn(JpaContextNode parent, JoinColumn.Owner owner);
+	OrmJoinColumn buildOrmJoinColumn(OrmJpaContextNode parent, JoinColumn.Owner owner);
 	
-	OrmAttributeOverride buildOrmAttributeOverride(JpaContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride);
+	OrmAttributeOverride buildOrmAttributeOverride(OrmJpaContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride);
 	
-	OrmAssociationOverride buildOrmAssociationOverride(JpaContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride associationOverride);
+	OrmAssociationOverride buildOrmAssociationOverride(OrmJpaContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride associationOverride);
 
 	OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, NamedColumn.Owner owner);
 	
-	OrmColumn buildOrmColumn(JpaContextNode parent, OrmColumn.Owner owner);
+	OrmColumn buildOrmColumn(OrmJpaContextNode parent, OrmColumn.Owner owner);
 	
-	OrmGeneratedValue buildOrmGeneratedValue(JpaContextNode parent);
+	OrmGeneratedValue buildOrmGeneratedValue(OrmJpaContextNode parent);
 	
-	OrmSequenceGenerator buildOrmSequenceGenerator(JpaContextNode parent);
+	OrmSequenceGenerator buildOrmSequenceGenerator(OrmJpaContextNode parent);
 	
-	OrmTableGenerator buildOrmTableGenerator(JpaContextNode parent);
+	OrmTableGenerator buildOrmTableGenerator(OrmJpaContextNode parent);
 	
-	OrmNamedNativeQuery buildOrmNamedNativeQuery(JpaContextNode parent);
+	OrmNamedNativeQuery buildOrmNamedNativeQuery(OrmJpaContextNode parent);
 
-	OrmNamedQuery buildOrmNamedQuery(JpaContextNode parent);
+	OrmNamedQuery buildOrmNamedQuery(OrmJpaContextNode parent);
 	
 	OrmQueryHint buildOrmQueryHint(OrmQuery parent);
 

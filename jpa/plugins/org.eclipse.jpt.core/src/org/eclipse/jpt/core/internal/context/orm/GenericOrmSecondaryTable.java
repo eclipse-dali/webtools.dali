@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
-import org.eclipse.jpt.core.resource.orm.XmlAbstractTable;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
@@ -140,7 +139,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 	}
 
 	@Override
-	protected XmlAbstractTable table() {
+	protected XmlSecondaryTable table() {
 		return this.secondaryTable;
 	}
 

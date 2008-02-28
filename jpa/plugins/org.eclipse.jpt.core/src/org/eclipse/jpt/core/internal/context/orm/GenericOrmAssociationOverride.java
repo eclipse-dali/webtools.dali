@@ -18,11 +18,11 @@ import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
@@ -44,7 +44,7 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 	protected XmlAssociationOverride associationOverride;
 
 
-	public GenericOrmAssociationOverride(JpaContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride associationOverride) {
+	public GenericOrmAssociationOverride(OrmJpaContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride associationOverride) {
 		super(parent);
 		this.owner = owner;
 		this.specifiedJoinColumns = new ArrayList<OrmJoinColumn>();

@@ -81,6 +81,7 @@ import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
+import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
@@ -508,7 +509,7 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericOrmSecondaryTable(parent);
 	}
 	
-	public OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(JpaContextNode parent, AbstractJoinColumn.Owner owner) {
+	public OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(OrmJpaContextNode parent, AbstractJoinColumn.Owner owner) {
 		return new GenericOrmPrimaryKeyJoinColumn(parent, owner);
 	}
 	
@@ -516,15 +517,15 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericOrmJoinTable(parent);
 	}
 	
-	public OrmJoinColumn buildOrmJoinColumn(JpaContextNode parent, JoinColumn.Owner owner) {
+	public OrmJoinColumn buildOrmJoinColumn(OrmJpaContextNode parent, JoinColumn.Owner owner) {
 		return new GenericOrmJoinColumn(parent, owner);
 	}
 	
-	public OrmAttributeOverride buildOrmAttributeOverride(JpaContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride) {
+	public OrmAttributeOverride buildOrmAttributeOverride(OrmJpaContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride) {
 		return new GenericOrmAttributeOverride(parent, owner, xmlAttributeOverride);
 	}
 	
-	public OrmAssociationOverride buildOrmAssociationOverride(JpaContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride xmlAssociationOverride) {
+	public OrmAssociationOverride buildOrmAssociationOverride(OrmJpaContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride xmlAssociationOverride) {
 		return new GenericOrmAssociationOverride(parent, owner, xmlAssociationOverride);
 	}
 	
@@ -532,27 +533,27 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericOrmDiscriminatorColumn(parent, owner);
 	}
 	
-	public OrmColumn buildOrmColumn(JpaContextNode parent, OrmColumn.Owner owner) {
+	public OrmColumn buildOrmColumn(OrmJpaContextNode parent, OrmColumn.Owner owner) {
 		return new GenericOrmColumn(parent, owner);
 	}
 	
-	public OrmGeneratedValue buildOrmGeneratedValue(JpaContextNode parent) {
+	public OrmGeneratedValue buildOrmGeneratedValue(OrmJpaContextNode parent) {
 		return new GenericOrmGeneratedValue(parent);
 	}
 	
-	public OrmSequenceGenerator buildOrmSequenceGenerator(JpaContextNode parent) {
+	public OrmSequenceGenerator buildOrmSequenceGenerator(OrmJpaContextNode parent) {
 		return new GenericOrmSequenceGenerator(parent);
 	}
 	
-	public OrmTableGenerator buildOrmTableGenerator(JpaContextNode parent) {
+	public OrmTableGenerator buildOrmTableGenerator(OrmJpaContextNode parent) {
 		return new GenericOrmTableGenerator(parent);
 	}
 	
-	public OrmNamedNativeQuery buildOrmNamedNativeQuery(JpaContextNode parent) {
+	public OrmNamedNativeQuery buildOrmNamedNativeQuery(OrmJpaContextNode parent) {
 		return new GenericOrmNamedNativeQuery(parent);
 	}
 	
-	public OrmNamedQuery buildOrmNamedQuery(JpaContextNode parent) {
+	public OrmNamedQuery buildOrmNamedQuery(OrmJpaContextNode parent) {
 		return new GenericOrmNamedQuery(parent);
 	}
 	

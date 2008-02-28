@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.UniqueConstraint;
@@ -79,6 +80,18 @@ public class VirtualJoinTable extends AbstractJpaEObject implements XmlJoinTable
 	
 	public void update(JavaJoinTable javaJoinTable) {
 		this.javaJoinTable = javaJoinTable;
+	}
+	
+	public TextRange nameTextRange() {
+		return null;
+	}
+	
+	public TextRange catalogTextRange() {
+		return null;
+	}
+	
+	public TextRange schemaTextRange() {
+		return null;
 	}
 
 }

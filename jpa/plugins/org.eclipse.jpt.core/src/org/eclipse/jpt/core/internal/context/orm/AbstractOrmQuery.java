@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.TextRange;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.QueryHint;
+import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryHint;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -35,7 +35,7 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 
 	protected E queryResource;
 	
-	protected AbstractOrmQuery(JpaContextNode parent) {
+	protected AbstractOrmQuery(OrmJpaContextNode parent) {
 		super(parent);
 		this.hints = new ArrayList<OrmQueryHint>();
 	}

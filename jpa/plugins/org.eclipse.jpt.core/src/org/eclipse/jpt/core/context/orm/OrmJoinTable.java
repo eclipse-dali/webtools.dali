@@ -15,6 +15,8 @@ import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 
 public interface OrmJoinTable extends JoinTable, OrmJpaContextNode
 {
+	OrmRelationshipMapping parent();
+	
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmJoinColumn> joinColumns();
 

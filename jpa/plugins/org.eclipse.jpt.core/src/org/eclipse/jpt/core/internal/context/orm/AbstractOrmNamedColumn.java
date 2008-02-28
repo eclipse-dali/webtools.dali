@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.TextRange;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.NamedColumn;
+import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlNamedColumn;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
@@ -28,7 +28,7 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 
 	protected String columnDefinition;
 
-	protected AbstractOrmNamedColumn(JpaContextNode parent, Owner owner) {
+	protected AbstractOrmNamedColumn(OrmJpaContextNode parent, Owner owner) {
 		super(parent);
 		this.owner = owner;
 	}

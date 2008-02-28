@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.AbstractColumn;
-import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAbstractColumn;
 
 
@@ -29,7 +29,7 @@ public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends Abs
 	
 	protected Boolean specifiedUpdatable;
 
-	protected AbstractOrmColumn(JpaContextNode parent, AbstractColumn.Owner owner) {
+	protected AbstractOrmColumn(OrmJpaContextNode parent, AbstractColumn.Owner owner) {
 		super(parent, owner);
 	}
 	

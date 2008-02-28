@@ -14,6 +14,8 @@ import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
 
 public interface OrmSecondaryTable extends SecondaryTable, OrmJpaContextNode
 {
+	OrmEntity parent();
+	
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns();
 	

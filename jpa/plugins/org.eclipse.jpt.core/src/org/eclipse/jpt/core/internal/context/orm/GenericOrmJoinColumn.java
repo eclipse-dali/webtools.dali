@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
@@ -25,7 +25,7 @@ public class GenericOrmJoinColumn extends AbstractOrmColumn<XmlJoinColumn> imple
 
 	protected XmlJoinColumn joinColumn;
 
-	public GenericOrmJoinColumn(JpaContextNode parent, JoinColumn.Owner owner) {
+	public GenericOrmJoinColumn(OrmJpaContextNode parent, JoinColumn.Owner owner) {
 		super(parent, owner);
 	}
 

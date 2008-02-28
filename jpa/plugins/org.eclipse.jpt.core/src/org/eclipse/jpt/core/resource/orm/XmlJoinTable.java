@@ -28,7 +28,7 @@ import org.eclipse.emf.common.util.EList;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlJoinTable extends XmlAbstractTable
+public interface XmlJoinTable extends XmlBaseTable
 {
 	/**
 	 * Returns the value of the '<em><b>Join Columns</b></em>' containment reference list.

@@ -315,11 +315,12 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlQueryHint/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlQueryHint/value"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="orm.ecore#//XmlAbstractTable">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAbstractTable/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAbstractTable/catalog"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAbstractTable/schema"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlAbstractTable/uniqueConstraints"/>
+    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlBaseTable"/>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlBaseTable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBaseTable/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBaseTable/catalog"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBaseTable/schema"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlBaseTable/uniqueConstraints"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlTable"/>
     <genClasses ecoreClass="orm.ecore#//XmlSecondaryTable">

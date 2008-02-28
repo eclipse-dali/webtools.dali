@@ -12,10 +12,10 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseOverride;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
+import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
@@ -35,7 +35,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 
 	protected final OrmColumn column;
 
-	public GenericOrmAttributeOverride(JpaContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride) {
+	public GenericOrmAttributeOverride(OrmJpaContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride) {
 		super(parent);
 		this.owner = owner;
 		this.column = jpaFactory().buildOrmColumn(this, this);
