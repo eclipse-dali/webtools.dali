@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.persistence;
 
-import org.eclipse.jpt.core.context.IBaseJpaContent;
+import org.eclipse.jpt.core.context.BaseJpaContent;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -27,7 +27,7 @@ public class BaseJpaContentTests extends ContextModelTestCase
 		
 		assertFalse(pr.exists());
 		
-		IBaseJpaContent baseJpaContent = (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
+		BaseJpaContent baseJpaContent = (BaseJpaContent) getJavaProject().getJpaProject().contextModel();
 		assertNull(baseJpaContent.getPersistenceXml());
 		
 		baseJpaContent.addPersistenceXml();
@@ -46,7 +46,7 @@ public class BaseJpaContentTests extends ContextModelTestCase
 	}
 	
 	public void testModifyRemovePersistenceXml() throws Exception {
-		IBaseJpaContent baseJpaContent = (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
+		BaseJpaContent baseJpaContent = (BaseJpaContent) getJavaProject().getJpaProject().contextModel();
 		
 		assertNotNull(baseJpaContent.getPersistenceXml());
 		
@@ -73,7 +73,7 @@ public class BaseJpaContentTests extends ContextModelTestCase
 		
 		assertFalse(pr.exists());
 		
-		IBaseJpaContent baseJpaContent = (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
+		BaseJpaContent baseJpaContent = (BaseJpaContent) getJavaProject().getJpaProject().contextModel();
 		assertNull(baseJpaContent.getPersistenceXml());
 		
 		pr.getContents().add(PersistenceFactory.eINSTANCE.createXmlPersistence());
@@ -83,7 +83,7 @@ public class BaseJpaContentTests extends ContextModelTestCase
 	
 	public void testUpdateRemovePersistenceXml() throws Exception {
 		PersistenceResource pr = persistenceResource();
-		IBaseJpaContent baseJpaContent = (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
+		BaseJpaContent baseJpaContent = (BaseJpaContent) getJavaProject().getJpaProject().contextModel();
 		
 		assertNotNull(baseJpaContent.getPersistenceXml());
 		

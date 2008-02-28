@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
-import org.eclipse.jpt.core.context.IBaseJpaContent;
+import org.eclipse.jpt.core.context.BaseJpaContent;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.NamedColumn;
@@ -174,7 +174,7 @@ public interface JpaFactory
 	
 	// **************** persistence context objects ****************************
 	
-	PersistenceXml buildPersistenceXml(IBaseJpaContent parent, PersistenceResource persistenceResource);
+	PersistenceXml buildPersistenceXml(BaseJpaContent parent, PersistenceResource persistenceResource);
 	
 	Persistence buildPersistence(PersistenceXml parent, XmlPersistence xmlPersistence);
 	

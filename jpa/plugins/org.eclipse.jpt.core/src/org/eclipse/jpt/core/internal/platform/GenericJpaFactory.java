@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
-import org.eclipse.jpt.core.context.IBaseJpaContent;
+import org.eclipse.jpt.core.context.BaseJpaContent;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.NamedColumn;
@@ -113,7 +113,7 @@ import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.GenericJpaDataSource;
 import org.eclipse.jpt.core.internal.GenericJpaFile;
 import org.eclipse.jpt.core.internal.GenericJpaProject;
-import org.eclipse.jpt.core.internal.context.BaseJpaContent;
+import org.eclipse.jpt.core.internal.context.GenericJpaContent;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaAssociationOverride;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaAttributeOverride;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaBasicMapping;
@@ -306,17 +306,17 @@ public class GenericJpaFactory implements JpaFactory
 	// **************** Context objects ***************************************
 	
 	public ContextModel buildContextModel(JpaProject parent) {
-		return new BaseJpaContent(parent);
+		return new GenericJpaContent(parent);
 	}
 	
-	public PersistenceXml buildPersistenceXml(IBaseJpaContent parent, PersistenceResource persistenceResource) {
+	public PersistenceXml buildPersistenceXml(BaseJpaContent parent, PersistenceResource persistenceResource) {
 		return new GenericPersistenceXml(parent, persistenceResource);
 	}
-	
+
 	public OrmXml buildOrmXml(MappingFileRef parent, OrmResource ormResource) {
 		return new OrmXmlImpl(parent, ormResource);
 	}
-	
+
 	public EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
 		return new GenericEntityMappings(parent, xmlEntityMappings);
 	}

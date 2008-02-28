@@ -14,7 +14,7 @@ import java.util.List;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.TextRange;
-import org.eclipse.jpt.core.context.IBaseJpaContent;
+import org.eclipse.jpt.core.context.BaseJpaContent;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
@@ -33,7 +33,7 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 	protected Persistence persistence;
 	
 	
-	public GenericPersistenceXml(IBaseJpaContent baseJpaContent, PersistenceResource persistenceResource) {
+	public GenericPersistenceXml(BaseJpaContent baseJpaContent, PersistenceResource persistenceResource) {
 		super(baseJpaContent);
 		this.initialize(persistenceResource);
 	}

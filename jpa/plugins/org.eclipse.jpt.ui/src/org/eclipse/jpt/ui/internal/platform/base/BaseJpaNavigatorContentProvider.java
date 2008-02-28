@@ -11,7 +11,7 @@
 package org.eclipse.jpt.ui.internal.platform.base;
 
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jpt.core.context.IBaseJpaContent;
+import org.eclipse.jpt.core.context.BaseJpaContent;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.eclipse.ui.navigator.ICommonContentProvider;
@@ -23,8 +23,8 @@ public class BaseJpaNavigatorContentProvider implements ICommonContentProvider
 	}
 
 	public Object[] getChildren(Object parentElement) {
-		if (parentElement instanceof IBaseJpaContent) {
-			IBaseJpaContent baseJpaContent = (IBaseJpaContent) parentElement;
+		if (parentElement instanceof BaseJpaContent) {
+			BaseJpaContent baseJpaContent = (BaseJpaContent) parentElement;
 			if (baseJpaContent.getPersistenceXml() != null) {
 				return new Object[] {baseJpaContent.getPersistenceXml()};
 			}
@@ -39,7 +39,7 @@ public class BaseJpaNavigatorContentProvider implements ICommonContentProvider
 	}
 
 	public boolean hasChildren(Object element) {
-		return element instanceof IBaseJpaContent;
+		return element instanceof BaseJpaContent;
 	}
 
 	public Object[] getElements(Object inputElement) {

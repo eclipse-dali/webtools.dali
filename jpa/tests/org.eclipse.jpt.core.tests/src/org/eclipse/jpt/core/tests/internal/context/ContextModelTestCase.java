@@ -20,7 +20,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.IBaseJpaContent;
+import org.eclipse.jpt.core.context.BaseJpaContent;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
@@ -167,8 +167,8 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		xmlPersistenceUnit.getClasses().remove(xmlJavaClassRefToRemove);
 	}
 
-	protected IBaseJpaContent jpaContent() {
-		return (IBaseJpaContent) getJavaProject().getJpaProject().contextModel();
+	protected BaseJpaContent jpaContent() {
+		return (BaseJpaContent) getJavaProject().getJpaProject().contextModel();
 	}
 	
 	@Override
