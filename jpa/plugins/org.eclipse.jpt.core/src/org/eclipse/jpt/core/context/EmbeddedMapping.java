@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,9 +11,17 @@ package org.eclipse.jpt.core.context;
 
 import java.util.ListIterator;
 
+/**
+ * 
+ * 
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ */
 public interface EmbeddedMapping extends AttributeMapping, AttributeOverride.Owner
 {
-	// **************** attribute overrides **************************************
 
 	/**
 	 * Return a list iterator of the attribute overrides whether specified or default.
@@ -71,57 +79,4 @@ public interface EmbeddedMapping extends AttributeMapping, AttributeOverride.Own
 	 */
 	void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex);
 
-		
-//	IEmbeddable embeddable();
-//
-//	IAttributeOverride createAttributeOverride(int index);
-//
-//	Iterator<String> allOverridableAttributeNames();
-//
-//	IAttributeOverride attributeOverrideNamed(String name);
-//
-//	boolean containsAttributeOverride(String name);
-//
-//	boolean containsSpecifiedAttributeOverride(String name);
-//
-//
-//	class AttributeOverrideOwner implements Owner
-//	{
-//		private IEmbedded embedded;
-//
-//		public AttributeOverrideOwner(IEmbedded embedded) {
-//			this.embedded = embedded;
-//		}
-//
-//		public ITypeMapping getTypeMapping() {
-//			return this.embedded.typeMapping();
-//		}
-//
-//		public IAttributeMapping attributeMapping(String attributeName) {
-//			return (IAttributeMapping) columnMapping(attributeName);
-//		}
-//
-//		private IColumnMapping columnMapping(String name) {
-//			IEmbeddable embeddable = this.embedded.embeddable();
-//			if (embeddable != null) {
-//				for (Iterator<IPersistentAttribute> stream = embeddable.getPersistentType().allAttributes(); stream.hasNext();) {
-//					IPersistentAttribute persAttribute = stream.next();
-//					if (persAttribute.getName().equals(name)) {
-//						if (persAttribute.getMapping() instanceof IColumnMapping) {
-//							return (IColumnMapping) persAttribute.getMapping();
-//						}
-//					}
-//				}
-//			}
-//			return null;
-//		}
-//
-//		public boolean isVirtual(IOverride override) {
-//			return embedded.getDefaultAttributeOverrides().contains(override);
-//		}
-//
-//		public ITextRange validationTextRange() {
-//			return embedded.validationTextRange();
-//		}
-//	}
 }

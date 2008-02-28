@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -11,6 +11,15 @@ package org.eclipse.jpt.core.context;
 
 import java.util.ListIterator;
 
+/**
+ * 
+ * 
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ */
 public interface Entity extends TypeMapping
 {
 	// **************** name **************************************
@@ -386,55 +395,5 @@ public interface Entity extends TypeMapping
 	 * (i.e. the primary key is composed of multiple columns).
 	 */
 	String primaryKeyColumnName();
-
-//	/**
-//	 * Return the name of the entity's primary key attribute.
-//	 * Return null if the entity's primary key is "compound"
-//	 * (i.e. the primary key is composed of multiple columns).
-//	 */
-//	String primaryKeyAttributeName();
-//
-//	IAttributeOverride attributeOverrideNamed(String name);
-//
-//	boolean containsAttributeOverride(String name);
-//
-//	boolean containsSpecifiedAttributeOverride(String name);
-//
-//	boolean containsAssociationOverride(String name);
-//
-//	boolean containsSpecifiedAssociationOverride(String name);
-//
-//	boolean containsSecondaryTable(String name);
-//
-//	boolean containsSpecifiedSecondaryTable(String name);
-//
-//	boolean containsSpecifiedPrimaryKeyJoinColumns();
-
-
-
-//
-//
-//	class AssociationOverrideOwner extends OverrideOwner
-//	{
-//		public AssociationOverrideOwner(IEntity entity) {
-//			super(entity);
-//		}
-//
-//		public IAttributeMapping attributeMapping(String attributeName) {
-//			for (Iterator<IPersistentAttribute> stream = this.entity.getPersistentType().allAttributes(); stream.hasNext();) {
-//				IPersistentAttribute persAttribute = stream.next();
-//				if (attributeName.equals(persAttribute.getName())) {
-//					return persAttribute.getMapping();
-//				}
-//			}
-//			return null;
-//		}
-//
-//		public boolean isVirtual(IOverride override) {
-//			return entity.getDefaultAssociationOverrides().contains(override);
-//		}
-//	}
-//
-//
 
 }

@@ -15,7 +15,12 @@ package org.eclipse.jpt.core.context;
  * From the JPA spec:
  * 		Whether the value of the field or property may be null. This is a hint 
  * 		and is disregarded for primitive types; it may be used in schema generation.
- * @author kamoore
+ * 
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface Nullable extends AttributeMapping
 {

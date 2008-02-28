@@ -15,7 +15,15 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 
-
+/**
+ * 
+ * 
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ */
 public interface OrmAttributeMapping extends AttributeMapping, OrmJpaContextNode
 {
 	OrmPersistentAttribute persistentAttribute();
