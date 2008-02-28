@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-
-
+/**
+ * 
+ * 
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ */
 public enum InheritanceType {
 
 
@@ -18,56 +25,61 @@ public enum InheritanceType {
 	JOINED,
 	TABLE_PER_CLASS;
 
+
 	public static InheritanceType fromJavaResourceModel(org.eclipse.jpt.core.resource.java.InheritanceType javaInheritanceType) {
-		if (javaInheritanceType == org.eclipse.jpt.core.resource.java.InheritanceType.SINGLE_TABLE) {
-			return SINGLE_TABLE;
+		switch (javaInheritanceType) {
+			case SINGLE_TABLE:
+				return SINGLE_TABLE;
+			case JOINED:
+				return JOINED;
+			case TABLE_PER_CLASS:
+				return TABLE_PER_CLASS;
+			default:
+				throw new IllegalArgumentException("unknown inheritance type: " + javaInheritanceType);
 		}
-		else if (javaInheritanceType == org.eclipse.jpt.core.resource.java.InheritanceType.JOINED) {
-			return JOINED;
-		}
-		else if (javaInheritanceType == org.eclipse.jpt.core.resource.java.InheritanceType.TABLE_PER_CLASS) {
-			return TABLE_PER_CLASS;
-		}
-		return null;
 	}
 	
 	public static org.eclipse.jpt.core.resource.java.InheritanceType toJavaResourceModel(InheritanceType inheritanceType) {
-		if (inheritanceType == SINGLE_TABLE)  {
-			return org.eclipse.jpt.core.resource.java.InheritanceType.SINGLE_TABLE;
+		switch (inheritanceType) {
+			case SINGLE_TABLE:
+				return org.eclipse.jpt.core.resource.java.InheritanceType.SINGLE_TABLE;
+			case JOINED:
+				return org.eclipse.jpt.core.resource.java.InheritanceType.JOINED;
+			case TABLE_PER_CLASS:
+				return org.eclipse.jpt.core.resource.java.InheritanceType.TABLE_PER_CLASS;
+			default:
+				throw new IllegalArgumentException("unknown inheritance type: " + inheritanceType);
 		}
-		else if (inheritanceType == JOINED) {
-			return org.eclipse.jpt.core.resource.java.InheritanceType.JOINED;
-		}
-		else if (inheritanceType == TABLE_PER_CLASS) {
-			return org.eclipse.jpt.core.resource.java.InheritanceType.TABLE_PER_CLASS;
-		}
-		return null;
 	}
 	
 
 	public static InheritanceType fromOrmResourceModel(org.eclipse.jpt.core.resource.orm.InheritanceType ormInheritanceType) {
-		if (ormInheritanceType == org.eclipse.jpt.core.resource.orm.InheritanceType.SINGLE_TABLE) {
-			return SINGLE_TABLE;
+		if (ormInheritanceType == null) {
+			return null;
 		}
-		else if (ormInheritanceType == org.eclipse.jpt.core.resource.orm.InheritanceType.JOINED) {
-			return JOINED;
+		switch (ormInheritanceType) {
+			case SINGLE_TABLE:
+				return SINGLE_TABLE;
+			case JOINED:
+				return JOINED;
+			case TABLE_PER_CLASS:
+				return TABLE_PER_CLASS;
+			default:
+				throw new IllegalArgumentException("unknown inheritance type: " + ormInheritanceType);
 		}
-		else if (ormInheritanceType == org.eclipse.jpt.core.resource.orm.InheritanceType.TABLE_PER_CLASS) {
-			return TABLE_PER_CLASS;
-		}
-		return null;
 	}
 	
 	public static org.eclipse.jpt.core.resource.orm.InheritanceType toOrmResourceModel(InheritanceType inheritanceType) {
-		if (inheritanceType == SINGLE_TABLE)  {
-			return org.eclipse.jpt.core.resource.orm.InheritanceType.SINGLE_TABLE;
+		switch (inheritanceType) {
+			case SINGLE_TABLE:
+				return org.eclipse.jpt.core.resource.orm.InheritanceType.SINGLE_TABLE;
+			case JOINED:
+				return org.eclipse.jpt.core.resource.orm.InheritanceType.JOINED;
+			case TABLE_PER_CLASS:
+				return org.eclipse.jpt.core.resource.orm.InheritanceType.TABLE_PER_CLASS;
+			default:
+				throw new IllegalArgumentException("unknown inheritance type: " + inheritanceType);
 		}
-		else if (inheritanceType == JOINED) {
-			return org.eclipse.jpt.core.resource.orm.InheritanceType.JOINED;
-		}
-		else if (inheritanceType == TABLE_PER_CLASS) {
-			return org.eclipse.jpt.core.resource.orm.InheritanceType.TABLE_PER_CLASS;
-		}
-		return null;
 	}
+
 }
