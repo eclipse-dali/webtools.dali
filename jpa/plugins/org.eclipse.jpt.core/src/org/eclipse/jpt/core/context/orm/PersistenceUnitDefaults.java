@@ -33,7 +33,6 @@ public interface PersistenceUnitDefaults extends OrmJpaContextNode
 	void setCascadePersist(boolean value);
 	String CASCADE_PERSIST_PROPERTY = "cascadePersistProperty";
 	
-	void initialize(XmlEntityMappings entityMappings);
 	
 	void update(XmlEntityMappings entityMappings);
 

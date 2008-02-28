@@ -15,7 +15,5 @@ public interface OrmAttributeOverride extends AttributeOverride, OrmJpaContextNo
 {
 	OrmColumn getColumn();
 
-	void initialize(XmlAttributeOverride attributeOverride);
-
 	void update(XmlAttributeOverride attributeOverride);
 }

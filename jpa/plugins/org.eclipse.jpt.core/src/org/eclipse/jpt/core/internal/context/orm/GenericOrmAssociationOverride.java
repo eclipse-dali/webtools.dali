@@ -44,11 +44,12 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 	protected XmlAssociationOverride associationOverride;
 
 
-	public GenericOrmAssociationOverride(JpaContextNode parent, AssociationOverride.Owner owner) {
+	public GenericOrmAssociationOverride(JpaContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride associationOverride) {
 		super(parent);
 		this.owner = owner;
 		this.specifiedJoinColumns = new ArrayList<OrmJoinColumn>();
 		this.defaultJoinColumns = new ArrayList<OrmJoinColumn>();
+		this.initialize(associationOverride);
 	}
 	
 	public Owner owner() {
@@ -132,7 +133,7 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 		return owner().isVirtual(this);
 	}
 	
-	public void initialize(XmlAssociationOverride associationOverride) {
+	protected void initialize(XmlAssociationOverride associationOverride) {
 		this.associationOverride = associationOverride;
 		this.name = associationOverride.getName();
 		initializeSpecifiedJoinColumns(associationOverride);

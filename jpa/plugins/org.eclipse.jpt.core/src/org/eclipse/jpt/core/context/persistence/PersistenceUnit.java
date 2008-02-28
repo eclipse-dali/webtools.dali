@@ -437,8 +437,6 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	
 	// **************** updating ***********************************************
 	
-	void initialize(XmlPersistenceUnit persistenceUnit);
-	
 	void update(XmlPersistenceUnit persistenceUnit);
 	
 	

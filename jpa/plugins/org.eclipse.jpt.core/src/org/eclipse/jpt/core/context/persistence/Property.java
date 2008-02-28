@@ -33,8 +33,6 @@ public interface Property extends PersistenceJpaContextNode
 	
 	
 	// **************** updating ***********************************************
-	
-	void initialize(XmlProperty property);
-	
+		
 	void update(XmlProperty property);
 }

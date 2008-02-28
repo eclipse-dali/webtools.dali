@@ -18,9 +18,7 @@ public interface PersistenceUnitMetadata extends OrmJpaContextNode
 		String XML_MAPPING_METADATA_COMPLETE_PROPERTY = "xmlMappingMetadataCompleteProperty";
 
 	PersistenceUnitDefaults getPersistenceUnitDefaults();
-	
-	void initialize(XmlEntityMappings entityMappings);
-	
+		
 	void update(XmlEntityMappings entityMappings);
 
 }

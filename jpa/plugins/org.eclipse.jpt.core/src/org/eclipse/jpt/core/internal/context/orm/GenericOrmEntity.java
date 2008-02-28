@@ -617,9 +617,10 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 
 	public OrmAttributeOverride addSpecifiedAttributeOverride(int index) {
-		OrmAttributeOverride attributeOverride = jpaFactory().buildOrmAttributeOverride(this, createAttributeOverrideOwner());
+		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createAttributeOverrideImpl();
+		OrmAttributeOverride attributeOverride = buildAttributeOverride(xmlAttributeOverride);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
-		this.typeMappingResource().getAttributeOverrides().add(index, OrmFactory.eINSTANCE.createAttributeOverrideImpl());
+		this.typeMappingResource().getAttributeOverrides().add(index, xmlAttributeOverride);
 		this.fireItemAdded(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
 	}
@@ -674,9 +675,10 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 
 	public OrmAssociationOverride addSpecifiedAssociationOverride(int index) {
-		OrmAssociationOverride associationOverride = jpaFactory().buildOrmAssociationOverride(this, createAssociationOverrideOwner());
+		XmlAssociationOverride xmlAssociationOverride = OrmFactory.eINSTANCE.createXmlAssociationOverride();
+		OrmAssociationOverride associationOverride = buildAssociationOverride(xmlAssociationOverride);
 		this.specifiedAssociationOverrides.add(index, associationOverride);
-		this.typeMappingResource().getAssociationOverrides().add(index, OrmFactory.eINSTANCE.createXmlAssociationOverride());
+		this.typeMappingResource().getAssociationOverrides().add(index, xmlAssociationOverride);
 		this.fireItemAdded(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
 		return associationOverride;
 	}
@@ -1059,13 +1061,13 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	protected void initializeSpecifiedAttributeOverrides(XmlEntity entity) {
 		for (XmlAttributeOverride attributeOverride : entity.getAttributeOverrides()) {
-			this.specifiedAttributeOverrides.add(createAttributeOverride(attributeOverride));
+			this.specifiedAttributeOverrides.add(buildAttributeOverride(attributeOverride));
 		}
 	}
 	
 	protected void initializeSpecifiedAssociationOverrides(XmlEntity entity) {
 		for (XmlAssociationOverride associationOverride : entity.getAssociationOverrides()) {
-			this.specifiedAssociationOverrides.add(createAssociationOverride(associationOverride));
+			this.specifiedAssociationOverrides.add(buildAssociationOverride(associationOverride));
 		}
 	}
 	
@@ -1291,14 +1293,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 		
 		while (resourceAttributeOverrides.hasNext()) {
-			addSpecifiedAttributeOverride(specifiedAttributeOverridesSize(), createAttributeOverride(resourceAttributeOverrides.next()));
+			addSpecifiedAttributeOverride(specifiedAttributeOverridesSize(), buildAttributeOverride(resourceAttributeOverrides.next()));
 		}
 	}
 	
-	protected OrmAttributeOverride createAttributeOverride(XmlAttributeOverride attributeOverride) {
-		OrmAttributeOverride ormAttributeOverride = jpaFactory().buildOrmAttributeOverride(this, createAttributeOverrideOwner());
-		ormAttributeOverride.initialize(attributeOverride);
-		return ormAttributeOverride;
+	protected OrmAttributeOverride buildAttributeOverride(XmlAttributeOverride attributeOverride) {
+		return jpaFactory().buildOrmAttributeOverride(this, createAttributeOverrideOwner(), attributeOverride);
 	}
 
 	protected AttributeOverride.Owner createAttributeOverrideOwner() {
@@ -1320,14 +1320,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 		
 		while (resourceAssociationOverrides.hasNext()) {
-			addSpecifiedAssociationOverride(specifiedAssociationOverridesSize(), createAssociationOverride(resourceAssociationOverrides.next()));
+			addSpecifiedAssociationOverride(specifiedAssociationOverridesSize(), buildAssociationOverride(resourceAssociationOverrides.next()));
 		}
 	}
 	
-	protected OrmAssociationOverride createAssociationOverride(XmlAssociationOverride associationOverride) {
-		OrmAssociationOverride ormAssociationOverride = jpaFactory().buildOrmAssociationOverride(this, createAssociationOverrideOwner());
-		ormAssociationOverride.initialize(associationOverride);
-		return ormAssociationOverride;
+	protected OrmAssociationOverride buildAssociationOverride(XmlAssociationOverride associationOverride) {
+		return jpaFactory().buildOrmAssociationOverride(this, createAssociationOverrideOwner(), associationOverride);
 	}
 
 	protected AssociationOverride.Owner createAssociationOverrideOwner() {

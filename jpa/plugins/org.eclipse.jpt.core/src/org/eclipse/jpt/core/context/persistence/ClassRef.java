@@ -61,11 +61,7 @@ public interface ClassRef extends PersistenceJpaContextNode, JpaStructureNode
 	JavaPersistentType getJavaPersistentType();
 	
 	
-	// **************** initialize/update **************************************
-	
-	void initialize(XmlJavaClassRef classRef);
-	
-	void initialize(String className);
+	// **************** update **************************************
 	
 	void update(XmlJavaClassRef classRef);
 	

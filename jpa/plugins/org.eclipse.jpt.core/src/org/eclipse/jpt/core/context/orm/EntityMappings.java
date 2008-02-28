@@ -119,9 +119,7 @@ public interface EntityMappings extends OrmJpaContextNode, JpaStructureNode
 	void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping);
 	
 	// **************** updating ***********************************************
-	
-	void initialize(XmlEntityMappings entityMappings);
-	
+		
 	void update(XmlEntityMappings entityMappings);
 	
 	// *************************************************************************

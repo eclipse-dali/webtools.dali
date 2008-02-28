@@ -220,7 +220,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractTypeMapping> exte
 	protected void initializeJavaPersistentType() {
 		JavaResourcePersistentType persistentTypeResource = jpaProject().javaPersistentTypeResource(getClass_());
 		if (persistentTypeResource != null) {
-			this.javaPersistentType = createJavaPersistentType(persistentTypeResource);
+			this.javaPersistentType = buildJavaPersistentType(persistentTypeResource);
 		}	
 	}
 
@@ -234,15 +234,13 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractTypeMapping> exte
 				getJavaPersistentType().update(persistentTypeResource);
 			}
 			else {
-				setJavaPersistentType(createJavaPersistentType(persistentTypeResource));
+				setJavaPersistentType(buildJavaPersistentType(persistentTypeResource));
 			}
 		}		
 	}
 	
-	protected JavaPersistentType createJavaPersistentType(JavaResourcePersistentType persistentTypeResource) {
-		JavaPersistentType javaPersistentType = jpaFactory().buildJavaPersistentType(this);
-		javaPersistentType.initializeFromResource(persistentTypeResource);
-		return javaPersistentType;
+	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType resourcePersistentType) {
+		return jpaFactory().buildJavaPersistentType(this, resourcePersistentType);
 	}
 
 	public void initialize(T typeMapping) {

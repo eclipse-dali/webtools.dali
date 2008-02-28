@@ -99,6 +99,17 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.orm.OrmResource;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
+import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
+import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
+import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 
 /**
  * Use JpaFactory to create any core (e.g. JpaProject), resource 
@@ -162,28 +173,33 @@ public interface JpaFactory
 	
 	// **************** persistence context objects ****************************
 	
-	PersistenceXml buildPersistenceXml(IBaseJpaContent parent);
+	PersistenceXml buildPersistenceXml(IBaseJpaContent parent, PersistenceResource persistenceResource);
 	
-	Persistence buildPersistence(PersistenceXml parent);
+	Persistence buildPersistence(PersistenceXml parent, XmlPersistence xmlPersistence);
 	
-	PersistenceUnit buildPersistenceUnit(Persistence parent);
+	PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit persistenceUnit);
 	
-	MappingFileRef buildMappingFileRef(PersistenceUnit parent);
+	/**
+	 * xmlMappingFileRef is allowed to be null, this would be used for the implied mapping file ref
+	 */
+	MappingFileRef buildMappingFileRef(PersistenceUnit parent, XmlMappingFileRef xmlMappingFileRef);
 	
-	ClassRef buildClassRef(PersistenceUnit parent);
+	ClassRef buildClassRef(PersistenceUnit parent, XmlJavaClassRef xmlClassRef);
 	
-	Property buildProperty(PersistenceUnit parent);
+	ClassRef buildClassRef(PersistenceUnit parent, String className);
+
+	Property buildProperty(PersistenceUnit parent, XmlProperty property);
 	
 	
 	// **************** orm context objects ************************************
 	
-	OrmXml buildOrmXml(MappingFileRef parent);
+	OrmXml buildOrmXml(MappingFileRef parent, OrmResource ormResource);
 
-	EntityMappings buildEntityMappings(OrmXml parent);
+	EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings entityMappings);
 	
-	PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent);
+	PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent, XmlEntityMappings entityMappings);
 	
-	PersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent);
+	PersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent, XmlEntityMappings entityMappings);
 	
 	OrmPersistentType buildOrmPersistentType(EntityMappings parent, String mappingKey);
 	
@@ -205,9 +221,9 @@ public interface JpaFactory
 	
 	OrmJoinColumn buildOrmJoinColumn(JpaContextNode parent, JoinColumn.Owner owner);
 	
-	OrmAttributeOverride buildOrmAttributeOverride(JpaContextNode parent, AttributeOverride.Owner owner);
+	OrmAttributeOverride buildOrmAttributeOverride(JpaContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride);
 	
-	OrmAssociationOverride buildOrmAssociationOverride(JpaContextNode parent, AssociationOverride.Owner owner);
+	OrmAssociationOverride buildOrmAssociationOverride(JpaContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride associationOverride);
 
 	OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, NamedColumn.Owner owner);
 	
@@ -249,7 +265,7 @@ public interface JpaFactory
 	
 	// **************** java context objects ***********************************
 	
-	JavaPersistentType buildJavaPersistentType(JpaContextNode parent);
+	JavaPersistentType buildJavaPersistentType(JpaContextNode parent, JavaResourcePersistentType resourcePersistentType);
 	
 	JavaEntity buildJavaEntity(JavaPersistentType parent);
 	

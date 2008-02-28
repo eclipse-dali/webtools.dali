@@ -31,14 +31,16 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode 
 	implements MappingFileRef
 {
+	//this is null for the implied mappingFileRef case
 	protected XmlMappingFileRef xmlMappingFileRef;
 	
 	protected String fileName;
 	
 	protected OrmXml ormXml;
 	
-	public GenericMappingFileRef(PersistenceUnit parent) {
+	public GenericMappingFileRef(PersistenceUnit parent, XmlMappingFileRef mappingFileRef) {
 		super(parent);
+		this.initialize(mappingFileRef);
 	}
 	
 	public String getId() {
@@ -81,11 +83,10 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 	
 	// **************** updating ***********************************************
 	
-	public void initialize(XmlMappingFileRef mappingFileRef) {
-		xmlMappingFileRef = mappingFileRef;
+	protected void initialize(XmlMappingFileRef mappingFileRef) {
+		this.xmlMappingFileRef = mappingFileRef;
 		initializeFileName();
 		initializeOrmXml();
-		
 	}
 	
 	protected void initializeFileName() {
@@ -103,17 +104,16 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 			OrmResource ormResource = oae.getResource(fileName);
 			
 			if (ormResource != null && ormResource.exists()) {
-				ormXml = createOrmXml(ormResource);
+				ormXml = buildOrmXml(ormResource);
 			}
 			oae.dispose();
 		}
 	}
-	
+
 	public void update(XmlMappingFileRef mappingFileRef) {
 		xmlMappingFileRef = mappingFileRef;
 		updateFileName();
 		updateOrmXml();
-		
 	}
 	
 	protected void updateFileName() {
@@ -134,7 +134,7 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 					ormXml.update(ormResource);
 				}
 				else {
-					setOrmXml(createOrmXml(ormResource));
+					setOrmXml(buildOrmXml(ormResource));
 				}
 			}
 			else {
@@ -147,10 +147,8 @@ public class GenericMappingFileRef extends AbstractPersistenceJpaContextNode
 		}
 	}
 	
-	protected OrmXml createOrmXml(OrmResource ormResource) {
-		OrmXml ormXml = jpaFactory().buildOrmXml(this);
-		ormXml.initialize(ormResource);
-		return ormXml;
+	protected OrmXml buildOrmXml(OrmResource ormResource) {
+		return jpaFactory().buildOrmXml(this, ormResource);
 	}
 	
 	

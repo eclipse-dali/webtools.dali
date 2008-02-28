@@ -51,7 +51,5 @@ public interface OrmXml extends OrmJpaContextNode, JpaStructureNode
 
 	// **************** updating **********************************************
 	
-	void initialize(OrmResource ormResource);
-	
 	void update(OrmResource ormResource);
 }

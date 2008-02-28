@@ -31,8 +31,9 @@ public class GenericPersistenceUnitDefaults extends AbstractOrmJpaContextNode
 
 	protected XmlEntityMappings entityMappings;
 	
-	public GenericPersistenceUnitDefaults(PersistenceUnitMetadata parent) {
+	public GenericPersistenceUnitDefaults(PersistenceUnitMetadata parent, XmlEntityMappings xmlEntityMappings) {
 		super(parent);
+		this.initialize(xmlEntityMappings);
 	}
 
 	public AccessType getAccess() {
@@ -171,7 +172,7 @@ public class GenericPersistenceUnitDefaults extends AbstractOrmJpaContextNode
 		firePropertyChanged(PersistenceUnitDefaults.CASCADE_PERSIST_PROPERTY, oldCascadePersist, newCascadePersist);
 	}
 	
-	public void initialize(XmlEntityMappings entityMappings) {
+	protected void initialize(XmlEntityMappings entityMappings) {
 		this.entityMappings = entityMappings;
 		if (this.persistenceUnitDefaults() != null) {
 			this.access = AccessType.fromXmlResourceModel(this.persistenceUnitDefaults().getAccess());

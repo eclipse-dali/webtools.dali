@@ -32,6 +32,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public class GenericClassRef extends AbstractPersistenceJpaContextNode 
 	implements ClassRef
 {
+	//this is null for the implied classRef case
 	protected XmlJavaClassRef xmlJavaClassRef;
 	
 	protected String className;
@@ -39,8 +40,14 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 	protected JavaPersistentType javaPersistentType;
 	
 	
-	public GenericClassRef(PersistenceUnit parent) {
+	public GenericClassRef(PersistenceUnit parent, XmlJavaClassRef classRef) {
 		super(parent);
+		initialize(classRef);
+	}
+	
+	public GenericClassRef(PersistenceUnit parent, String className) {
+		super(parent);
+		initialize(className);
 	}
 	
 	public String getId() {
@@ -92,13 +99,13 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 	
 	// **************** updating ***********************************************
 	
-	public void initialize(XmlJavaClassRef classRef) {
+	protected void initialize(XmlJavaClassRef classRef) {
 		this.xmlJavaClassRef = classRef;
 		this.className = classRef.getJavaClass();
 		initializeJavaPersistentType();
 	}
 	
-	public void initialize(String className) {
+	protected void initialize(String className) {
 		this.className = className;
 		initializeJavaPersistentType();
 	}
@@ -106,10 +113,10 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 	protected void initializeJavaPersistentType() {
 		JavaResourcePersistentType persistentTypeResource = jpaProject().javaPersistentTypeResource(getClassName());
 		if (persistentTypeResource != null) {
-			this.javaPersistentType = createJavaPersistentType(persistentTypeResource);
+			this.javaPersistentType = buildJavaPersistentType(persistentTypeResource);
 		}				
 	}
-	
+
 	public void update(XmlJavaClassRef classRef) {
 		this.xmlJavaClassRef = classRef;
 		setClassName_(classRef.getJavaClass());
@@ -132,15 +139,13 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 				getJavaPersistentType().update(persistentTypeResource);
 			}
 			else {
-				setJavaPersistentType(createJavaPersistentType(persistentTypeResource));
+				setJavaPersistentType(buildJavaPersistentType(persistentTypeResource));
 			}
 		}		
 	}
 	
-	protected JavaPersistentType createJavaPersistentType(JavaResourcePersistentType persistentTypeResource) {
-		JavaPersistentType javaPersistentType = jpaFactory().buildJavaPersistentType(this);
-		javaPersistentType.initializeFromResource(persistentTypeResource);
-		return javaPersistentType;
+	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType resourcePersistentType) {
+		return jpaFactory().buildJavaPersistentType(this, resourcePersistentType);
 	}
 	
 	
@@ -202,6 +207,9 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 	}
 	
 	public TextRange validationTextRange() {
+		if (isVirtual()) {
+			return null;
+		}
 		return this.xmlJavaClassRef.validationTextRange();
 	}
 	

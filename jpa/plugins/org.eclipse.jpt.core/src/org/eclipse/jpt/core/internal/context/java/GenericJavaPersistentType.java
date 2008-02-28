@@ -51,49 +51,26 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 
 	protected PersistentType parentPersistentType;
 
-	protected JavaResourcePersistentType persistentTypeResource;
+	protected JavaResourcePersistentType resourcePersistentType;
 
-	public GenericJavaPersistentType(JpaContextNode parent) {
+	public GenericJavaPersistentType(JpaContextNode parent, JavaResourcePersistentType resourcePersistentType) {
 		super(parent);
 		this.attributes = new ArrayList<JavaPersistentAttribute>();
+		this.initialize(resourcePersistentType);
 	}
+	
+	@Override
+	public IResource resource() {
+		return this.resourcePersistentType.resourceModel().resource().getCompilationUnit().getResource();
+	}
+
+	//****************** JpaStructureNode implementation *******************
 	
 	public String getId() {
 		return JavaStructureNodes.PERSISTENT_TYPE_ID;
 	}
 	
-	public void initializeFromResource(JavaResourcePersistentType persistentTypeResource) {
-		this.persistentTypeResource = persistentTypeResource;
-		this.parentPersistentType = this.parentPersistentType(persistentTypeResource);
-		this.access = this.access(persistentTypeResource);
-		this.name = this.name(persistentTypeResource);
-		this.initializeMapping(persistentTypeResource);
-		this.initializePersistentAttributes(persistentTypeResource);
-	}
-	
-	protected void initializeMapping(JavaResourcePersistentType persistentTypeResource) {
-		this.mapping  = jpaPlatform().buildJavaTypeMappingFromAnnotation(this.javaMappingAnnotationName(persistentTypeResource), this);
-		this.mapping.initializeFromResource(persistentTypeResource);
-	}
-	
-	protected void initializePersistentAttributes(JavaResourcePersistentType persistentTypeResource) {
-		Iterator<JavaResourcePersistentAttribute> resourceAttributes = persistentTypeResource.fields();
-		if (access() == AccessType.PROPERTY) {
-			resourceAttributes = persistentTypeResource.properties();
-		}		
-		
-		while (resourceAttributes.hasNext()) {
-			this.attributes.add(createAttribute(resourceAttributes.next()));
-		}
-	}
-	
-	@Override
-	public IResource resource() {
-		return this.persistentTypeResource.resourceModel().resource().getCompilationUnit().getResource();
-	}
-
-	
-	//****************** IPersistentType implementation *******************
+	//****************** PersistentType implementation *******************
 	public String getName() {
 		return this.name;
 	}
@@ -120,7 +97,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		JavaTypeMapping newMapping = createJavaTypeMappingFromMappingKey(key);
 	
 		this.mapping = newMapping;	
-		this.persistentTypeResource.setMappingAnnotation(newMapping.annotationName());
+		this.resourcePersistentType.setMappingAnnotation(newMapping.annotationName());
 		firePropertyChanged(PersistentType.MAPPING_PROPERTY, oldMapping, newMapping);
 	
 		if (oldMapping != null) {
@@ -130,7 +107,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 			}
 			
 			for (String annotationName : annotationsToRemove) {
-				this.persistentTypeResource.removeAnnotation(annotationName);
+				this.resourcePersistentType.removeAnnotation(annotationName);
 			}
 		}
 	}
@@ -241,7 +218,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	
 	public JpaStructureNode structureNode(int offset) {
 		//TODO astRoot, possibly get this instead of rebuilding it
-		CompilationUnit astRoot = this.persistentTypeResource.getMember().astRoot(); 
+		CompilationUnit astRoot = this.resourcePersistentType.getMember().astRoot(); 
 		
 		for (Iterator<JavaPersistentAttribute> i = attributes(); i.hasNext();) {
 			JavaPersistentAttribute persistentAttribute = i.next();
@@ -269,7 +246,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 
 
 	public TextRange fullTextRange(CompilationUnit astRoot) {
-		return this.persistentTypeResource.textRange(astRoot);
+		return this.resourcePersistentType.textRange(astRoot);
 	}
 
 	public TextRange validationTextRange(CompilationUnit astRoot) {
@@ -277,11 +254,11 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 
 	public TextRange selectionTextRange(CompilationUnit astRoot) {
-		return this.persistentTypeResource.nameTextRange(astRoot);
+		return this.resourcePersistentType.nameTextRange(astRoot);
 	}
 	
 	public TextRange selectionTextRange() {
-		return this.selectionTextRange(this.persistentTypeResource.getMember().astRoot());
+		return this.selectionTextRange(this.resourcePersistentType.getMember().astRoot());
 	}
 	
 	
@@ -300,25 +277,50 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 
 	public boolean hasAnyAttributeMappingAnnotations() {
-		if (this.persistentTypeResource.hasAnyAttributeAnnotations()) {
+		if (this.resourcePersistentType.hasAnyAttributeAnnotations()) {
 			return true;
 		}
 		return false;
 	}
 	
 	// ******************** Updating **********************
-	public void update(JavaResourcePersistentType persistentTypeResource) {
-		this.persistentTypeResource = persistentTypeResource;
-		this.persistentTypeResource.resourceModel().addRootStructureNode(this);
-		updateParentPersistentType(persistentTypeResource);
-		updateAccess(persistentTypeResource);
-		updateName(persistentTypeResource);
-		updateMapping(persistentTypeResource);
-		updatePersistentAttributes(persistentTypeResource);
+	protected void initialize(JavaResourcePersistentType resourcePersistentType) {
+		this.resourcePersistentType = resourcePersistentType;
+		this.parentPersistentType = this.parentPersistentType(resourcePersistentType);
+		this.access = this.access(resourcePersistentType);
+		this.name = this.name(resourcePersistentType);
+		this.initializeMapping(resourcePersistentType);
+		this.initializePersistentAttributes(resourcePersistentType);
 	}
 	
-	protected void updateAccess(JavaResourcePersistentType persistentTypeResource) {
-		this.setAccess(this.access(persistentTypeResource));
+	protected void initializeMapping(JavaResourcePersistentType persistentTypeResource) {
+		this.mapping  = jpaPlatform().buildJavaTypeMappingFromAnnotation(this.javaMappingAnnotationName(persistentTypeResource), this);
+		this.mapping.initializeFromResource(persistentTypeResource);
+	}
+	
+	protected void initializePersistentAttributes(JavaResourcePersistentType persistentTypeResource) {
+		Iterator<JavaResourcePersistentAttribute> resourceAttributes = persistentTypeResource.fields();
+		if (access() == AccessType.PROPERTY) {
+			resourceAttributes = persistentTypeResource.properties();
+		}		
+		
+		while (resourceAttributes.hasNext()) {
+			this.attributes.add(createAttribute(resourceAttributes.next()));
+		}
+	}
+
+	public void update(JavaResourcePersistentType resourcePersistentType) {
+		this.resourcePersistentType = resourcePersistentType;
+		this.resourcePersistentType.resourceModel().addRootStructureNode(this);
+		updateParentPersistentType(resourcePersistentType);
+		updateAccess(resourcePersistentType);
+		updateName(resourcePersistentType);
+		updateMapping(resourcePersistentType);
+		updatePersistentAttributes(resourcePersistentType);
+	}
+	
+	protected void updateAccess(JavaResourcePersistentType resourcePersistentType) {
+		this.setAccess(this.access(resourcePersistentType));
 	}
 
 	/**
@@ -330,7 +332,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	 * 		If still null check the persistence-unit default Access
 	 * 		Default to FIELD if all else fails.
 	 */
-	protected AccessType access(JavaResourcePersistentType persistentTypeResource) {
+	protected AccessType access(JavaResourcePersistentType resourcePersistentType) {
 		AccessType javaAccess = null;
 		boolean metadataComplete = false;
 		if (ormPersistentType() != null) {
@@ -338,7 +340,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 			metadataComplete = ormPersistentType().getMapping().isMetadataComplete();
 		}
 		if (javaAccess == null && !metadataComplete) {
-			javaAccess = AccessType.fromJavaResourceModel(persistentTypeResource.getAccess());
+			javaAccess = AccessType.fromJavaResourceModel(resourcePersistentType.getAccess());
 		}
 		if (javaAccess == null) {
 			if (parentPersistentType() != null) {
@@ -363,21 +365,21 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		return javaAccess;
 	}
 	
-	protected void updateName(JavaResourcePersistentType persistentTypeResource) {
-		this.setName(this.name(persistentTypeResource));	
+	protected void updateName(JavaResourcePersistentType resourcePersistentType) {
+		this.setName(this.name(resourcePersistentType));	
 	}
 	
-	protected String name(JavaResourcePersistentType persistentTypeResource) {
-		return persistentTypeResource.getQualifiedName();
+	protected String name(JavaResourcePersistentType resourcePersistentType) {
+		return resourcePersistentType.getQualifiedName();
 	}
 	
-	protected void updateMapping(JavaResourcePersistentType persistentTypeResource) {
-		String javaMappingAnnotationName = this.javaMappingAnnotationName(persistentTypeResource);
+	protected void updateMapping(JavaResourcePersistentType resourcePersistentType) {
+		String javaMappingAnnotationName = this.javaMappingAnnotationName(resourcePersistentType);
 		if (getMapping().annotationName() != javaMappingAnnotationName) {
-			setMapping(createJavaTypeMappingFromAnnotation(javaMappingAnnotationName, persistentTypeResource));
+			setMapping(createJavaTypeMappingFromAnnotation(javaMappingAnnotationName, resourcePersistentType));
 		}
 		else {
-			getMapping().update(persistentTypeResource);
+			getMapping().update(resourcePersistentType);
 		}
 	}
 	
@@ -385,25 +387,25 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		return jpaPlatform().buildJavaTypeMappingFromMappingKey(key, this);
 	}
 	
-	protected JavaTypeMapping createJavaTypeMappingFromAnnotation(String annotationName, JavaResourcePersistentType persistentTypeResource) {
+	protected JavaTypeMapping createJavaTypeMappingFromAnnotation(String annotationName, JavaResourcePersistentType resourcePersistentType) {
 		JavaTypeMapping mapping = jpaPlatform().buildJavaTypeMappingFromAnnotation(annotationName, this);
-		mapping.initializeFromResource(persistentTypeResource);
+		mapping.initializeFromResource(resourcePersistentType);
 		return mapping;
 	}
 
-	protected String javaMappingAnnotationName(JavaResourcePersistentType typeResource) {
-		Annotation mappingAnnotation = (Annotation) typeResource.mappingAnnotation();
+	protected String javaMappingAnnotationName(JavaResourcePersistentType resourcePersistentType) {
+		Annotation mappingAnnotation = (Annotation) resourcePersistentType.mappingAnnotation();
 		if (mappingAnnotation != null) {
 			return mappingAnnotation.getAnnotationName();
 		}
 		return null;
 	}
 
-	protected void updatePersistentAttributes(JavaResourcePersistentType persistentTypeResource) {
+	protected void updatePersistentAttributes(JavaResourcePersistentType resourcePersistentType) {
 		ListIterator<JavaPersistentAttribute> contextAttributes = attributes();
-		Iterator<JavaResourcePersistentAttribute> resourceAttributes = persistentTypeResource.fields();
+		Iterator<JavaResourcePersistentAttribute> resourceAttributes = resourcePersistentType.fields();
 		if (access() == AccessType.PROPERTY) {
-			resourceAttributes = persistentTypeResource.properties();
+			resourceAttributes = resourcePersistentType.properties();
 		}		
 		
 		while (contextAttributes.hasNext()) {
@@ -457,9 +459,9 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		if (possibleParent != null) {
 			return possibleParent;
 		}
-		JavaResourcePersistentType javaPersistentTypeResource = jpaProject().javaPersistentTypeResource(fullyQualifiedTypeName);
-		if (javaPersistentTypeResource != null) {
-			return possibleParent(javaPersistentTypeResource.getSuperClassQualifiedName());
+		JavaResourcePersistentType resourcePersistentType = jpaProject().javaPersistentTypeResource(fullyQualifiedTypeName);
+		if (resourcePersistentType != null) {
+			return possibleParent(resourcePersistentType.getSuperClassQualifiedName());
 		}
 		return null;		
 	}
@@ -471,7 +473,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	//*************** Validation ******************************************
 	public void addToMessages(List<IMessage> messages) {
 		//get astRoot here to pass down
-		addToMessages(messages, this.persistentTypeResource.getMember().astRoot());	
+		addToMessages(messages, this.resourcePersistentType.getMember().astRoot());	
 	}
 	
 	@Override

@@ -32,8 +32,9 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 	protected EntityMappings entityMappings;
 	
 	
-	public OrmXmlImpl(MappingFileRef parent) {
+	public OrmXmlImpl(MappingFileRef parent, OrmResource ormResource) {
 		super(parent);
+		this.initialize(ormResource);
 	}
 	
 	public String getId() {
@@ -71,7 +72,7 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 		}
 		
 		XmlEntityMappings xmlEntityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
-		this.entityMappings = createEntityMappings(xmlEntityMappings);
+		this.entityMappings = buildEntityMappings(xmlEntityMappings);
 		this.ormResource.getContents().add(xmlEntityMappings);
 		firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, null, this.entityMappings);
 		return this.entityMappings;
@@ -97,10 +98,10 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 	}
 	// **************** updating ***********************************************
 	
-	public void initialize(OrmResource ormResource) {
+	protected void initialize(OrmResource ormResource) {
 		this.ormResource = ormResource;
 		if (ormResource.getEntityMappings() != null) {
-			this.entityMappings = createEntityMappings(ormResource.getEntityMappings());
+			this.entityMappings = buildEntityMappings(ormResource.getEntityMappings());
 		}
 	}
 
@@ -111,7 +112,7 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 				this.entityMappings.update(ormResource.getEntityMappings());
 			}
 			else {
-				setEntityMappings(createEntityMappings(ormResource.getEntityMappings()));
+				setEntityMappings(buildEntityMappings(ormResource.getEntityMappings()));
 			}
 			ormResource.resourceModel().addRootStructureNode(getEntityMappings());
 		}
@@ -121,10 +122,8 @@ public class OrmXmlImpl extends AbstractOrmJpaContextNode
 		}
 	}
 	
-	protected EntityMappings createEntityMappings(XmlEntityMappings xmlEntityMappings) {
-		EntityMappings entityMappings = jpaFactory().buildEntityMappings(this);
-		entityMappings.initialize(xmlEntityMappings);
-		return entityMappings;
+	protected EntityMappings buildEntityMappings(XmlEntityMappings xmlEntityMappings) {
+		return jpaFactory().buildEntityMappings(this, xmlEntityMappings);
 	}
 	
 	

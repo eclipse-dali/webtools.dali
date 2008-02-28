@@ -44,7 +44,5 @@ public interface PersistenceXml extends PersistenceJpaContextNode, JpaStructureN
 	
 	// **************** updating **********************************************
 	
-	void initialize(PersistenceResource persistenceResource);
-	
 	void update(PersistenceResource persistenceResource);
 }

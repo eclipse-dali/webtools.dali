@@ -188,8 +188,19 @@ import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
 import org.eclipse.jpt.core.internal.jdtutility.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.core.resource.orm.OrmResourceModel;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResourceModel;
+import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
+import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
+import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
+import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 
 public class GenericJpaFactory implements JpaFactory
 {
@@ -297,48 +308,52 @@ public class GenericJpaFactory implements JpaFactory
 		return new BaseJpaContent(parent);
 	}
 	
-	public PersistenceXml buildPersistenceXml(IBaseJpaContent parent) {
-		return new GenericPersistenceXml(parent);
+	public PersistenceXml buildPersistenceXml(IBaseJpaContent parent, PersistenceResource persistenceResource) {
+		return new GenericPersistenceXml(parent, persistenceResource);
 	}
 	
-	public OrmXml buildOrmXml(MappingFileRef parent) {
-		return new OrmXmlImpl(parent);
+	public OrmXml buildOrmXml(MappingFileRef parent, OrmResource ormResource) {
+		return new OrmXmlImpl(parent, ormResource);
 	}
 	
-	public EntityMappings buildEntityMappings(OrmXml parent) {
-		return new GenericEntityMappings(parent);
+	public EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
+		return new GenericEntityMappings(parent, xmlEntityMappings);
 	}
 	
-	public PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent) {
-		return new GenericPersistenceUnitMetadata(parent);
+	public PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent, XmlEntityMappings xmlEntityMappings) {
+		return new GenericPersistenceUnitMetadata(parent, xmlEntityMappings);
 	}
 	
-	public PersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent) {
-		return new GenericPersistenceUnitDefaults(parent);
+	public PersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent, XmlEntityMappings xmlEntityMappings) {
+		return new GenericPersistenceUnitDefaults(parent, xmlEntityMappings);
 	}
 	
-	public Persistence buildPersistence(PersistenceXml parent) {
-		return new GenericPersistence(parent);
+	public Persistence buildPersistence(PersistenceXml parent, XmlPersistence xmlPersistence) {
+		return new GenericPersistence(parent, xmlPersistence);
 	}
 	
-	public PersistenceUnit buildPersistenceUnit(Persistence parent) {
-		return new GenericPersistenceUnit(parent);
+	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit persistenceUnit) {
+		return new GenericPersistenceUnit(parent, persistenceUnit);
 	}
 	
-	public MappingFileRef buildMappingFileRef(PersistenceUnit parent) {
-		return new GenericMappingFileRef(parent);
+	public MappingFileRef buildMappingFileRef(PersistenceUnit parent, XmlMappingFileRef xmlMappingFileRef) {
+		return new GenericMappingFileRef(parent, xmlMappingFileRef);
 	}
 	
-	public ClassRef buildClassRef(PersistenceUnit parent) {
-		return new GenericClassRef(parent);
+	public ClassRef buildClassRef(PersistenceUnit parent, XmlJavaClassRef classRef) {
+		return new GenericClassRef(parent, classRef);
 	}
 	
-	public Property buildProperty(PersistenceUnit parent) {
-		return new GenericProperty(parent);
+	public ClassRef buildClassRef(PersistenceUnit parent, String className) {
+		return new GenericClassRef(parent, className);
 	}
 	
-	public JavaPersistentType buildJavaPersistentType(JpaContextNode parent) {
-		return new GenericJavaPersistentType(parent);
+	public Property buildProperty(PersistenceUnit parent, XmlProperty xmlProperty) {
+		return new GenericProperty(parent, xmlProperty);
+	}
+	
+	public JavaPersistentType buildJavaPersistentType(JpaContextNode parent, JavaResourcePersistentType resourcePersistentType) {
+		return new GenericJavaPersistentType(parent, resourcePersistentType);
 	}
 	
 	public JavaPersistentAttribute buildJavaPersistentAttribute(JavaPersistentType parent) {
@@ -505,12 +520,12 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericOrmJoinColumn(parent, owner);
 	}
 	
-	public OrmAttributeOverride buildOrmAttributeOverride(JpaContextNode parent, AttributeOverride.Owner owner) {
-		return new GenericOrmAttributeOverride(parent, owner);
+	public OrmAttributeOverride buildOrmAttributeOverride(JpaContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride) {
+		return new GenericOrmAttributeOverride(parent, owner, xmlAttributeOverride);
 	}
 	
-	public OrmAssociationOverride buildOrmAssociationOverride(JpaContextNode parent, AssociationOverride.Owner owner) {
-		return new GenericOrmAssociationOverride(parent, owner);
+	public OrmAssociationOverride buildOrmAssociationOverride(JpaContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride xmlAssociationOverride) {
+		return new GenericOrmAssociationOverride(parent, owner, xmlAssociationOverride);
 	}
 	
 	public OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, NamedColumn.Owner owner) {

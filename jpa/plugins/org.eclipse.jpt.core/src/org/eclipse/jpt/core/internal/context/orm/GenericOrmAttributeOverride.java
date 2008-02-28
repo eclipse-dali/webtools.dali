@@ -35,10 +35,11 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 
 	protected final OrmColumn column;
 
-	public GenericOrmAttributeOverride(JpaContextNode parent, AttributeOverride.Owner owner) {
+	public GenericOrmAttributeOverride(JpaContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride) {
 		super(parent);
 		this.owner = owner;
 		this.column = jpaFactory().buildOrmColumn(this, this);
+		this.initialize(xmlAttributeOverride);
 	}
 
 	public Owner owner() {
@@ -118,7 +119,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 	
 	//***************** updating ****************
 	
-	public void initialize(XmlAttributeOverride attributeOverride) {
+	protected void initialize(XmlAttributeOverride attributeOverride) {
 		this.attributeOverride = attributeOverride;
 		this.name = attributeOverride.getName();
 		this.column.initialize(attributeOverride.getColumn());

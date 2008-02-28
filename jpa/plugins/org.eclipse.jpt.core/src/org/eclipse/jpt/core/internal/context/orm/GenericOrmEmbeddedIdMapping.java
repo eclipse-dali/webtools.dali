@@ -75,7 +75,6 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmAttributeMapping<Xml
 		return MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<OrmAttributeOverride> attributeOverrides() {
 		//TODO attribute overrides
 		return EmptyListIterator.instance();
@@ -86,7 +85,6 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmAttributeMapping<Xml
 		return 0;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<OrmAttributeOverride> defaultAttributeOverrides() {
 		return new CloneListIterator<OrmAttributeOverride>(this.defaultAttributeOverrides);
 	}
@@ -95,7 +93,6 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmAttributeMapping<Xml
 		return this.defaultAttributeOverrides.size();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<OrmAttributeOverride> specifiedAttributeOverrides() {
 		return new CloneListIterator<OrmAttributeOverride>(this.specifiedAttributeOverrides);
 	}
@@ -105,11 +102,10 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmAttributeMapping<Xml
 	}
 
 	public OrmAttributeOverride addSpecifiedAttributeOverride(int index) {
-		OrmAttributeOverride attributeOverride = jpaFactory().buildOrmAttributeOverride(this, this);
+		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createAttributeOverrideImpl();
+		OrmAttributeOverride attributeOverride = buildAttributeOverride(xmlAttributeOverride);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
-		XmlAttributeOverride attributeOverrideResource = OrmFactory.eINSTANCE.createAttributeOverrideImpl();
-		this.attributeMapping().getAttributeOverrides().add(index, attributeOverrideResource);
-		attributeOverride.initialize(attributeOverrideResource);
+		this.attributeMapping().getAttributeOverrides().add(index, xmlAttributeOverride);
 		this.fireItemAdded(EmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
 	}
@@ -261,14 +257,12 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmAttributeMapping<Xml
 	
 	protected void initializeSpecifiedAttributeOverrides(XmlEmbeddedId embeddedId) {
 		for (XmlAttributeOverride attributeOverride : embeddedId.getAttributeOverrides()) {
-			this.specifiedAttributeOverrides.add(createAttributeOverride(attributeOverride));
+			this.specifiedAttributeOverrides.add(buildAttributeOverride(attributeOverride));
 		}
 	}
 
-	protected OrmAttributeOverride createAttributeOverride(XmlAttributeOverride attributeOverride) {
-		OrmAttributeOverride ormAttributeOverride = jpaFactory().buildOrmAttributeOverride(this, this);
-		ormAttributeOverride.initialize(attributeOverride);
-		return ormAttributeOverride;
+	protected OrmAttributeOverride buildAttributeOverride(XmlAttributeOverride attributeOverride) {
+		return jpaFactory().buildOrmAttributeOverride(this, this, attributeOverride);
 	}
 
 	
@@ -293,7 +287,7 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmAttributeMapping<Xml
 		}
 		
 		while (resourceAttributeOverrides.hasNext()) {
-			addSpecifiedAttributeOverride(specifiedAttributeOverridesSize(), createAttributeOverride(resourceAttributeOverrides.next()));
+			addSpecifiedAttributeOverride(specifiedAttributeOverridesSize(), buildAttributeOverride(resourceAttributeOverrides.next()));
 		}
 	}
 

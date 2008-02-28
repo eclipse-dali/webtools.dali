@@ -45,7 +45,7 @@ public class BaseJpaContent extends AbstractJpaContextNode
 		PersistenceResource pr = pae.getResource();
 		
 		if (pr.exists()) {
-			this.persistenceXml = this.createPersistenceXml(pr);
+			this.persistenceXml = this.buildPersistenceXml(pr);
 		}
 		
 		pae.dispose();
@@ -80,7 +80,7 @@ public class BaseJpaContent extends AbstractJpaContextNode
 		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForWrite(this.jpaProject().project());
 		PersistenceResource pr = pae.createDefaultResource();
 		pae.dispose();
-		PersistenceXml px = this.createPersistenceXml(pr);
+		PersistenceXml px = this.buildPersistenceXml(pr);
 		this.setPersistenceXml(px);
 		return px;
 	}
@@ -116,7 +116,7 @@ public class BaseJpaContent extends AbstractJpaContextNode
 				this.persistenceXml.update(pr);
 			}
 			else {
-				setPersistenceXml(createPersistenceXml(pr));
+				setPersistenceXml(buildPersistenceXml(pr));
 			}
 		}
 		else {
@@ -126,10 +126,8 @@ public class BaseJpaContent extends AbstractJpaContextNode
 		pae.dispose();
 	}
 
-	protected PersistenceXml createPersistenceXml(PersistenceResource persistenceResource) {
-		PersistenceXml px = this.jpaFactory().buildPersistenceXml(this);
-		px.initialize(persistenceResource);
-		return px;
+	protected PersistenceXml buildPersistenceXml(PersistenceResource persistenceResource) {
+		return this.jpaFactory().buildPersistenceXml(this, persistenceResource);
 	}
 	
 	

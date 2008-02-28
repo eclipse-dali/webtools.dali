@@ -33,8 +33,9 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 	protected Persistence persistence;
 	
 	
-	public GenericPersistenceXml(IBaseJpaContent baseJpaContent) {
+	public GenericPersistenceXml(IBaseJpaContent baseJpaContent, PersistenceResource persistenceResource) {
 		super(baseJpaContent);
+		this.initialize(persistenceResource);
 	}
 	
 	public String getId() {
@@ -59,7 +60,7 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 		}
 		
 		XmlPersistence xmlPersistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
-		persistence = createPersistence(xmlPersistence);
+		persistence = buildPersistence(xmlPersistence);
 		persistenceResource.getContents().add(xmlPersistence);
 		firePropertyChanged(PERSISTENCE_PROPERTY, null, persistence);
 		return persistence;
@@ -86,10 +87,10 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 	
 	// **************** updating ***********************************************
 	
-	public void initialize(PersistenceResource persistenceResource) {
+	protected void initialize(PersistenceResource persistenceResource) {
 		this.persistenceResource = persistenceResource;
 		if (persistenceResource.getPersistence() != null) {
-			this.persistence = createPersistence(persistenceResource.getPersistence());
+			this.persistence = buildPersistence(persistenceResource.getPersistence());
 		}
 	}
 
@@ -103,7 +104,7 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 				this.persistence.update(persistenceResource.getPersistence());
 			}
 			else {
-				setPersistence_(createPersistence(persistenceResource.getPersistence()));
+				setPersistence_(buildPersistence(persistenceResource.getPersistence()));
 			}
 			persistenceResource.resourceModel().addRootStructureNode(getPersistence());
 		}
@@ -112,10 +113,8 @@ public class GenericPersistenceXml extends AbstractPersistenceJpaContextNode
 		}
 	}
 	
-	protected Persistence createPersistence(XmlPersistence xmlPersistence) {
-		Persistence persistence = jpaFactory().buildPersistence(this);
-		persistence.initialize(xmlPersistence);
-		return persistence;
+	protected Persistence buildPersistence(XmlPersistence xmlPersistence) {
+		return jpaFactory().buildPersistence(this, xmlPersistence);
 	}
 	
 	

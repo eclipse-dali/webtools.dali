@@ -52,8 +52,6 @@ public interface MappingFileRef extends PersistenceJpaContextNode, JpaStructureN
 	
 	// **************** udpating ***********************************************
 	
-	void initialize(XmlMappingFileRef mappingFileRef);
-	
 	void update(XmlMappingFileRef mappingFileRef);
 	
 	

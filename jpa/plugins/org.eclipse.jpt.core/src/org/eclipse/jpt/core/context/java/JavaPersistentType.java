@@ -29,14 +29,13 @@ public interface JavaPersistentType extends PersistentType, JavaJpaContextNode
 	 */
 	PersistentAttribute resolveAttribute(String attributeName);
 	
-	void initializeFromResource(JavaResourcePersistentType persistentTypeResource);
-
-	void update(JavaResourcePersistentType persistentTypeResource);
-	
 	/**
 	 * Return whether any attribute in this persistent type contains a mapping annotation
 	 * @return
 	 */
 	boolean hasAnyAttributeMappingAnnotations();
+
+	
+	void update(JavaResourcePersistentType persistentTypeResource);
 
 }

@@ -26,9 +26,10 @@ public class GenericPersistenceUnitMetadata extends AbstractOrmJpaContextNode
 
 	protected XmlEntityMappings entityMappings;
 
-	public GenericPersistenceUnitMetadata(EntityMappings parent) {
+	public GenericPersistenceUnitMetadata(EntityMappings parent, XmlEntityMappings xmlEntityMappings) {
 		super(parent);
-		this.persistenceUnitDefaults = jpaFactory().buildPersistenceUnitDefaults(this);
+		this.persistenceUnitDefaults = jpaFactory().buildPersistenceUnitDefaults(this, xmlEntityMappings);
+		this.initialize(xmlEntityMappings);
 	}
 
 	public boolean isXmlMappingMetadataComplete() {
@@ -63,12 +64,11 @@ public class GenericPersistenceUnitMetadata extends AbstractOrmJpaContextNode
 		return this.persistenceUnitDefaults;
 	}
 	
-	public void initialize(XmlEntityMappings entityMappings) {
+	protected void initialize(XmlEntityMappings entityMappings) {
 		this.entityMappings = entityMappings;
 		if (this.persistenceUnitMetadata() != null) {
 			this.xmlMappingMetadataComplete = this.persistenceUnitMetadata().isXmlMappingMetadataComplete();
 		}
-		this.persistenceUnitDefaults.initialize(entityMappings);
 	}
 	
 	public void update(XmlEntityMappings entityMappings) {

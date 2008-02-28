@@ -24,8 +24,9 @@ public class GenericProperty extends AbstractPersistenceJpaContextNode
 	
 	protected XmlProperty property;
 	
-	public GenericProperty(PersistenceUnit parent) {
+	public GenericProperty(PersistenceUnit parent, XmlProperty property) {
 		super(parent);
+		this.initialize(property);
 	}
 	
 	// **************** name ***************************************************
@@ -58,7 +59,7 @@ public class GenericProperty extends AbstractPersistenceJpaContextNode
 	
 	// **************** updating ***********************************************
 	
-	public void initialize(XmlProperty property) {
+	protected void initialize(XmlProperty property) {
 		this.property = property;
 		this.name = property.getName();
 		this.value = property.getValue();

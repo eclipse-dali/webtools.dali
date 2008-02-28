@@ -36,10 +36,10 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 	// the implementation here is a single persistence unit, although the API
 	// is for a list.  we will want to support multiple persistence units soon.
 	protected PersistenceUnit persistenceUnit;
-	
-	
-	public GenericPersistence(PersistenceXml parent) {
+
+	public GenericPersistence(PersistenceXml parent, XmlPersistence xmlPersistence) {
 		super(parent);
+		this.initialize(xmlPersistence);
 	}
 	
 	public String getId() {
@@ -104,7 +104,7 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 	
 	// **************** updating ***********************************************
 	
-	public void initialize(XmlPersistence xmlPersistence) {
+	protected void initialize(XmlPersistence xmlPersistence) {
 		this.xmlPersistence = xmlPersistence;
 		initializePersistenceUnits(xmlPersistence);
 	}
@@ -139,9 +139,7 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected PersistenceUnit createPersistenceUnit(XmlPersistenceUnit xmlPersistenceUnit) {
-		PersistenceUnit persistenceUnit = jpaFactory().buildPersistenceUnit(this);
-		persistenceUnit.initialize(xmlPersistenceUnit);
-		return persistenceUnit;
+		return jpaFactory().buildPersistenceUnit(this, xmlPersistenceUnit);
 	}
 	
 	

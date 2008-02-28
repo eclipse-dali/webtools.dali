@@ -59,9 +59,7 @@ public interface Persistence extends PersistenceJpaContextNode, JpaStructureNode
 	
 	
 	// **************** updating ***********************************************
-	
-	void initialize(XmlPersistence xmlPersistence);
-	
+		
 	void update(XmlPersistence persistence);
 	
 	

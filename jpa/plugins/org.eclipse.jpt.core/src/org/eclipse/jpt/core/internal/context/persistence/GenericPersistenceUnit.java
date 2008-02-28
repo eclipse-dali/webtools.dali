@@ -91,14 +91,16 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	protected AccessType defaultAccess;
 	protected boolean defaultCascadePersist;
 	
-	public GenericPersistenceUnit(Persistence parent) {
+	public GenericPersistenceUnit(Persistence parent, XmlPersistenceUnit persistenceUnit) {
 		super(parent);
 		this.transactionType = PersistenceUnitTransactionType.DEFAULT;
 		this.specifiedMappingFileRefs = new ArrayList<MappingFileRef>();
 		this.specifiedClassRefs = new ArrayList<ClassRef>();
 		this.impliedClassRefs = new ArrayList<ClassRef>();
 		this.properties = new ArrayList<Property>();
+		this.initialize(persistenceUnit);
 	}
+	
 	public String getId() {
 		return PersistenceStructureNodes.PERSISTENCE_UNIT_ID;
 	}
@@ -268,7 +270,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	public MappingFileRef addSpecifiedMappingFileRef(int index) {
 		XmlMappingFileRef xmlMappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
-		MappingFileRef mappingFileRef = createMappingFileRef(xmlMappingFileRef);
+		MappingFileRef mappingFileRef = buildMappingFileRef(xmlMappingFileRef);
 		specifiedMappingFileRefs.add(index, mappingFileRef);
 		this.xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
 		fireItemAdded(SPECIFIED_MAPPING_FILE_REF_LIST, index, mappingFileRef);
@@ -312,7 +314,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		if (impliedMappingFileRef != null) {
 			throw new IllegalStateException("The implied mapping file ref is already set.");
 		}
-		MappingFileRef mappingFileRef = createMappingFileRef(null);
+		MappingFileRef mappingFileRef = buildMappingFileRef(null);
 		impliedMappingFileRef = mappingFileRef;
 		firePropertyChanged(IMPLIED_MAPPING_FILE_REF_PROPERTY, null, mappingFileRef);
 		return mappingFileRef;
@@ -355,7 +357,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	public ClassRef addSpecifiedClassRef(int index) {
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
-		ClassRef classRef = createClassRef(xmlClassRef);
+		ClassRef classRef = buildClassRef(xmlClassRef);
 		this.specifiedClassRefs.add(index, classRef);
 		this.xmlPersistenceUnit.getClasses().add(xmlClassRef);
 		fireItemAdded(SPECIFIED_CLASS_REF_LIST, index, classRef);
@@ -404,7 +406,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	public ClassRef addImpliedClassRef(int index, String className) {
-		ClassRef classRef = createClassRef(className);
+		ClassRef classRef = buildClassRef(className);
 		addItemToList(classRef, impliedClassRefs, IMPLIED_CLASS_REF_LIST);
 		return classRef;
 	}
@@ -560,7 +562,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	protected Property addXmlProperty(XmlProperty xmlProperty) {
 
-		Property property = createProperty(xmlProperty);
+		Property property = buildProperty(xmlProperty);
 		int index = this.properties.size();
 		this.properties.add(index, property);
 		
@@ -675,7 +677,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	// **************** updating ***********************************************
 	
-	public void initialize(XmlPersistenceUnit xmlPersistenceUnit) {
+	protected void initialize(XmlPersistenceUnit xmlPersistenceUnit) {
 		this.xmlPersistenceUnit = xmlPersistenceUnit;
 		this.name = xmlPersistenceUnit.getName();
 		initializeMappingFileRefs(xmlPersistenceUnit);
@@ -685,22 +687,22 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	protected void initializeMappingFileRefs(XmlPersistenceUnit xmlPersistenceUnit) {
 		for (XmlMappingFileRef xmlMappingFileRef : xmlPersistenceUnit.getMappingFiles()) {
-			specifiedMappingFileRefs.add(createMappingFileRef(xmlMappingFileRef));
+			specifiedMappingFileRefs.add(buildMappingFileRef(xmlMappingFileRef));
 		}
 		if (! impliedMappingFileIsSpecified() && impliedMappingFileExists()) {
-			impliedMappingFileRef = createMappingFileRef(null);
+			impliedMappingFileRef = buildMappingFileRef(null);
 		}
 	}
 	
 	protected void initializeClassRefs(XmlPersistenceUnit xmlPersistenceUnit) {
 		for (XmlJavaClassRef xmlJavaClassRef : xmlPersistenceUnit.getClasses()) {
-			specifiedClassRefs.add(createClassRef(xmlJavaClassRef));
+			specifiedClassRefs.add(buildClassRef(xmlJavaClassRef));
 		}
 		
 		if (jpaProject().discoversAnnotatedClasses() && ! getExcludeUnlistedClasses()) {
 			for (IType type : CollectionTools.iterable(jpaProject().annotatedClasses())) {
 				if (! classIsSpecified(type.getFullyQualifiedName())) {
-					impliedClassRefs.add(createClassRef(type.getFullyQualifiedName()));
+					impliedClassRefs.add(buildClassRef(type.getFullyQualifiedName()));
 				}
 			}
 		}
@@ -712,7 +714,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 			return;
 		}
 		for (XmlProperty xmlProperty : xmlProperties.getProperties()) {
-			this.properties.add(createProperty(xmlProperty));
+			this.properties.add(buildProperty(xmlProperty));
 		}
 	}
 	
@@ -797,7 +799,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		}
 		
 		while (stream2.hasNext()) {
-			addSpecifiedMappingFileRef_(createMappingFileRef(stream2.next()));
+			addSpecifiedMappingFileRef_(buildMappingFileRef(stream2.next()));
 		}
 		
 		if (impliedMappingFileIsSpecified()) {
@@ -838,10 +840,8 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		return exists;
 	}
 	
-	protected MappingFileRef createMappingFileRef(XmlMappingFileRef xmlMappingFileRef) {
-		MappingFileRef mappingFileRef = jpaFactory().buildMappingFileRef(this);
-		mappingFileRef.initialize(xmlMappingFileRef);
-		return mappingFileRef;
+	protected MappingFileRef buildMappingFileRef(XmlMappingFileRef xmlMappingFileRef) {
+		return jpaFactory().buildMappingFileRef(this, xmlMappingFileRef);
 	}
 	
 	protected void updateClassRefs(XmlPersistenceUnit persistenceUnit) {
@@ -859,7 +859,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		}
 		
 		while (stream2.hasNext()) {
-			addSpecifiedClassRef_(createClassRef(stream2.next()));
+			addSpecifiedClassRef_(buildClassRef(stream2.next()));
 		}
 		
 		Iterator<ClassRef> impliedRefs = impliedClassRefs();
@@ -896,16 +896,12 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		}
 	}
 	
-	protected ClassRef createClassRef(XmlJavaClassRef xmlClassRef) {
-		ClassRef classRef = jpaFactory().buildClassRef(this);
-		classRef.initialize(xmlClassRef);
-		return classRef;
+	protected ClassRef buildClassRef(XmlJavaClassRef xmlClassRef) {
+		return jpaFactory().buildClassRef(this, xmlClassRef);
 	}
 	
-	protected ClassRef createClassRef(String className) {
-		ClassRef classRef = jpaFactory().buildClassRef(this);
-		classRef.initialize(className);
-		return classRef;
+	protected ClassRef buildClassRef(String className) {
+		return jpaFactory().buildClassRef(this, className);
 	}
 	
 	protected boolean classIsSpecified(String className) {
@@ -950,14 +946,12 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		}
 		
 		while (stream2.hasNext()) {
-			addProperty_(createProperty(stream2.next()));
+			addProperty_(buildProperty(stream2.next()));
 		}
 	}
 	
-	protected Property createProperty(XmlProperty xmlProperty) {
-		Property property = jpaFactory().buildProperty(this);
-		property.initialize(xmlProperty);
-		return property;
+	protected Property buildProperty(XmlProperty xmlProperty) {
+		return jpaFactory().buildProperty(this, xmlProperty);
 	}
 		
 	protected void updatePersistenceUnitDefaults() {

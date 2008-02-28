@@ -80,14 +80,15 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	protected final List<OrmNamedNativeQuery> namedNativeQueries;
 
 
-	public GenericEntityMappings(OrmXml parent) {
+	public GenericEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
 		super(parent);
-		this.persistenceUnitMetadata = jpaFactory().buildPersistenceUnitMetadata(this);
+		this.persistenceUnitMetadata = jpaFactory().buildPersistenceUnitMetadata(this, xmlEntityMappings);
 		this.persistentTypes = new ArrayList<OrmPersistentType>();
 		this.sequenceGenerators = new ArrayList<OrmSequenceGenerator>();
 		this.tableGenerators = new ArrayList<OrmTableGenerator>();
 		this.namedQueries = new ArrayList<OrmNamedQuery>();
 		this.namedNativeQueries = new ArrayList<OrmNamedNativeQuery>();
+		this.initialize(xmlEntityMappings);
 	}
 	
 	public String getId() {
@@ -464,7 +465,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		return getPersistenceUnitMetadata().getPersistenceUnitDefaults();
 	}
 	
-	public void initialize(XmlEntityMappings entityMappings) {
+	protected void initialize(XmlEntityMappings entityMappings) {
 		this.xmlEntityMappings = entityMappings;
 		this.version = entityMappings.getVersion();
 		this.description = entityMappings.getDescription();
@@ -472,7 +473,6 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		this.specifiedSchema = entityMappings.getSchema();
 		this.specifiedCatalog = entityMappings.getCatalog();
 		this.specifiedAccess = this.specifiedAccess(entityMappings);
-		this.persistenceUnitMetadata.initialize(entityMappings);
 		this.defaultAccess = persistenceUnit().getDefaultAccess();
 		this.defaultCatalog = persistenceUnit().getDefaultCatalog();
 		this.defaultSchema = persistenceUnit().getDefaultSchema();

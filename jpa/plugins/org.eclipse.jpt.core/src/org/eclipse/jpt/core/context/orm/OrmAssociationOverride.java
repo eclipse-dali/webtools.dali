@@ -25,7 +25,5 @@ public interface OrmAssociationOverride extends AssociationOverride, OrmJpaConte
 
 	OrmJoinColumn addSpecifiedJoinColumn(int index);
 
-	void initialize(XmlAssociationOverride associationOverride);
-
 	void update(XmlAssociationOverride associationOverride);
 }
