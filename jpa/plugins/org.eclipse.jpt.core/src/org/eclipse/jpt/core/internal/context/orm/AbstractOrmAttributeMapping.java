@@ -224,8 +224,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	
 	
 	public TextRange validationTextRange() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.attributeMapping.validationTextRange();
 	}
 	
 	public TextRange nameTextRange() {
@@ -264,7 +263,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 			);
 		}
 	}
-	
+	//TODO validation message - i think more info is needed in this message.  include type mapping type?
 	protected void addInvalidMappingMessage(List<IMessage> messages) {
 		if (! typeMapping().attributeMappingKeyAllowed(getKey())) {
 			messages.add(
