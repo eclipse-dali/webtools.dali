@@ -70,11 +70,20 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmAttributeMapping<Xml
 	public int xmlSequence() {
 		return 7;
 	}
-
+	
+	//*************** AttributeMapping implementation *********************
+	
 	public String getKey() {
 		return MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY;
 	}
+	
+	@Override
+	public boolean isIdMapping() {
+		return true;
+	}
 
+	
+	//*************** EmbeddedIdMapping implementation *********************
 	public ListIterator<OrmAttributeOverride> attributeOverrides() {
 		//TODO attribute overrides
 		return EmptyListIterator.instance();
