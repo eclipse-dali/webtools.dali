@@ -25,6 +25,9 @@ public enum FetchType {
 	
 
 	public static FetchType fromJavaResourceModel(org.eclipse.jpt.core.resource.java.FetchType javaFetchType) {
+		if (javaFetchType == null) {
+			return null;
+		}
 		switch (javaFetchType) {
 			case EAGER:
 				return EAGER;
@@ -36,6 +39,9 @@ public enum FetchType {
 	}
 
 	public static org.eclipse.jpt.core.resource.java.FetchType toJavaResourceModel(FetchType fetchType) {
+		if (fetchType == null) {
+			return null;
+		}
 		switch (fetchType) {
 			case EAGER:
 				return org.eclipse.jpt.core.resource.java.FetchType.EAGER;
@@ -62,6 +68,9 @@ public enum FetchType {
 	}
 	
 	public static org.eclipse.jpt.core.resource.orm.FetchType toOrmResourceModel(FetchType fetchType) {
+		if (fetchType == null) {
+			return null;
+		}
 		switch (fetchType) {
 			case EAGER:
 				return org.eclipse.jpt.core.resource.orm.FetchType.EAGER;

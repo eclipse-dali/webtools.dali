@@ -26,6 +26,9 @@ public enum TemporalType {
 	
 
 	public static TemporalType fromJavaResourceModel(org.eclipse.jpt.core.resource.java.TemporalType javaTemporalType) {
+		if (javaTemporalType == null) {
+			return null;
+		}
 		switch (javaTemporalType) {
 			case DATE:
 				return DATE;
@@ -39,6 +42,9 @@ public enum TemporalType {
 	}
 	
 	public static org.eclipse.jpt.core.resource.java.TemporalType toJavaResourceModel(TemporalType temporalType) {
+		if (temporalType == null) {
+			return null;
+		}
 		switch (temporalType) {
 			case DATE:
 				return org.eclipse.jpt.core.resource.java.TemporalType.DATE;
@@ -69,6 +75,9 @@ public enum TemporalType {
 	}
 	
 	public static org.eclipse.jpt.core.resource.orm.TemporalType toOrmResourceModel(TemporalType temporalType) {
+		if (temporalType == null) {
+			return null;
+		}
 		switch (temporalType) {
 			case DATE:
 				return org.eclipse.jpt.core.resource.orm.TemporalType.DATE;

@@ -26,6 +26,9 @@ public enum DiscriminatorType {
 	
 
 	public static DiscriminatorType fromJavaResourceModel(org.eclipse.jpt.core.resource.java.DiscriminatorType javaDiscriminatorType) {
+		if (javaDiscriminatorType == null) {
+			return null;
+		}
 		switch (javaDiscriminatorType) {
 			case STRING:
 				return STRING;
@@ -39,6 +42,9 @@ public enum DiscriminatorType {
 	}
 	
 	public static org.eclipse.jpt.core.resource.java.DiscriminatorType toJavaResourceModel(DiscriminatorType discriminatorType) {
+		if (discriminatorType == null) {
+			return null;
+		}
 		switch (discriminatorType) {
 			case STRING:
 				return org.eclipse.jpt.core.resource.java.DiscriminatorType.STRING;
@@ -68,6 +74,9 @@ public enum DiscriminatorType {
 	}
 	
 	public static org.eclipse.jpt.core.resource.orm.DiscriminatorType toOrmResourceModel(DiscriminatorType discriminatorType) {
+		if (discriminatorType == null) {
+			return null;
+		}
 		switch (discriminatorType) {
 			case STRING:
 				return org.eclipse.jpt.core.resource.orm.DiscriminatorType.STRING;

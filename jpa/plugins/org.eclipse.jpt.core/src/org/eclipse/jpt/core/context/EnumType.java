@@ -25,6 +25,9 @@ public enum EnumType {
 	
 
 	public static EnumType fromJavaResourceModel(org.eclipse.jpt.core.resource.java.EnumType javaEnumType) {
+		if (javaEnumType == null) {
+			return null;
+		}
 		switch (javaEnumType) {
 			case ORDINAL:
 				return ORDINAL;
@@ -36,6 +39,9 @@ public enum EnumType {
 	}
 	
 	public static org.eclipse.jpt.core.resource.java.EnumType toJavaResourceModel(EnumType enumType) {
+		if (enumType == null) {
+			return null;
+		}
 		switch (enumType) {
 			case ORDINAL:
 				return org.eclipse.jpt.core.resource.java.EnumType.ORDINAL;
@@ -62,6 +68,9 @@ public enum EnumType {
 	}
 	
 	public static org.eclipse.jpt.core.resource.orm.EnumType toOrmResourceModel(EnumType enumType) {
+		if (enumType == null) {
+			return null;
+		}
 		switch (enumType) {
 			case ORDINAL:
 				return org.eclipse.jpt.core.resource.orm.EnumType.ORDINAL;

@@ -25,6 +25,9 @@ public enum AccessType {
 
 
 	public static AccessType fromJavaResourceModel(org.eclipse.jpt.core.resource.java.AccessType javaAccessType) {
+		if (javaAccessType == null) {
+			return null;
+		}
 		switch (javaAccessType) {
 			case FIELD:
 				return FIELD;
@@ -50,6 +53,9 @@ public enum AccessType {
 	}
 	
 	public static org.eclipse.jpt.core.resource.orm.AccessType toXmlResourceModel(AccessType accessType) {
+		if (accessType == null) {
+			return null;
+		}
 		switch (accessType) {
 			case FIELD:
 				return org.eclipse.jpt.core.resource.orm.AccessType.FIELD;

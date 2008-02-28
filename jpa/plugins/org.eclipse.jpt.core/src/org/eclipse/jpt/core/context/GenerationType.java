@@ -27,6 +27,9 @@ public enum GenerationType {
 	
 
 	public static GenerationType fromJavaResourceModel(org.eclipse.jpt.core.resource.java.GenerationType javaGenerationType) {
+		if (javaGenerationType == null) {
+			return null;
+		}
 		switch (javaGenerationType) {
 			case TABLE:
 				return TABLE;
@@ -42,6 +45,9 @@ public enum GenerationType {
 	}
 	
 	public static org.eclipse.jpt.core.resource.java.GenerationType toJavaResourceModel(GenerationType generationType) {
+		if (generationType == null) {
+			return null;
+		}
 		switch (generationType) {
 			case TABLE:
 				return org.eclipse.jpt.core.resource.java.GenerationType.TABLE;
@@ -75,6 +81,9 @@ public enum GenerationType {
 	}
 	
 	public static org.eclipse.jpt.core.resource.orm.GenerationType toOrmResourceModel(GenerationType generationType) {
+		if (generationType == null) {
+			return null;
+		}
 		switch (generationType) {
 			case TABLE:
 				return org.eclipse.jpt.core.resource.orm.GenerationType.TABLE;

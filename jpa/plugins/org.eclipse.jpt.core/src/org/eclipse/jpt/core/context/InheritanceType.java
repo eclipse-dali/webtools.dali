@@ -27,6 +27,9 @@ public enum InheritanceType {
 
 
 	public static InheritanceType fromJavaResourceModel(org.eclipse.jpt.core.resource.java.InheritanceType javaInheritanceType) {
+		if (javaInheritanceType == null) {
+			return null;
+		}
 		switch (javaInheritanceType) {
 			case SINGLE_TABLE:
 				return SINGLE_TABLE;
@@ -40,6 +43,9 @@ public enum InheritanceType {
 	}
 	
 	public static org.eclipse.jpt.core.resource.java.InheritanceType toJavaResourceModel(InheritanceType inheritanceType) {
+		if (inheritanceType == null) {
+			return null;
+		}
 		switch (inheritanceType) {
 			case SINGLE_TABLE:
 				return org.eclipse.jpt.core.resource.java.InheritanceType.SINGLE_TABLE;
@@ -70,6 +76,9 @@ public enum InheritanceType {
 	}
 	
 	public static org.eclipse.jpt.core.resource.orm.InheritanceType toOrmResourceModel(InheritanceType inheritanceType) {
+		if (inheritanceType == null) {
+			return null;
+		}
 		switch (inheritanceType) {
 			case SINGLE_TABLE:
 				return org.eclipse.jpt.core.resource.orm.InheritanceType.SINGLE_TABLE;
