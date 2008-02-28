@@ -408,7 +408,7 @@ public abstract class AbstractXmlBaseTable extends AbstractJpaEObject implements
 	}
 	
 	public TextRange schemaTextRange() {
-		IDOMNode schemaNode = (IDOMNode) DOMUtilities.getChildAttributeNode(this.node, OrmXmlMapper.SCALE);
+		IDOMNode schemaNode = (IDOMNode) DOMUtilities.getChildAttributeNode(this.node, OrmXmlMapper.SCHEMA);
 		return (schemaNode == null) ? validationTextRange() : buildTextRange(schemaNode);
 	}
 
