@@ -19,12 +19,15 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public class GenericOrmSecondaryTable extends AbstractOrmTable
@@ -200,6 +203,45 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 	@Override
 	protected String defaultSchema() {
 		return entityMappings().getSchema();
+	}
+	
+	
+	@Override
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
+		addTableMessages(messages);
+		
+		for (OrmPrimaryKeyJoinColumn pkJoinColumn : CollectionTools.iterable(this.primaryKeyJoinColumns())) {
+			pkJoinColumn.addToMessages(messages);
+		}
+	}
+	
+	protected void addTableMessages(List<IMessage> messages) {
+		boolean doContinue = isConnected();
+		String schema = getSchema();
+		
+		if (doContinue && ! hasResolvedSchema()) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_SCHEMA,
+						new String[] {schema, getName()}, 
+						this,
+						schemaTextRange())
+				);
+			doContinue = false;
+		}
+		
+		if (doContinue && ! isResolved()) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_NAME,
+						new String[] {getName()}, 
+						this, 
+						nameTextRange())
+				);
+		}
 	}
 	
 	class PrimaryKeyJoinColumnOwner implements AbstractJoinColumn.Owner

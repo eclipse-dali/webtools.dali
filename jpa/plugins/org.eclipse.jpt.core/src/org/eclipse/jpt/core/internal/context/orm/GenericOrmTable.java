@@ -124,12 +124,11 @@ public class GenericOrmTable extends AbstractOrmTable implements OrmTable
 		return entityMappings().getCatalog();
 	}
 	
-	//******* Validation *******************************
-	
-	//******* Validation *******************************
+	//*********** Validation *******************************
 	
 	@Override
 	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
 		boolean doContinue = isConnected();
 		String schema = this.getSchema();
 		

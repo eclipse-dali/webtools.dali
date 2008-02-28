@@ -25,6 +25,8 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
@@ -32,6 +34,7 @@ import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTable
@@ -389,6 +392,78 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		return ormJoinColumn;
 	}
 	
+	/** used internally as a mechanism to short circuit continued message adding */
+	private boolean doContinue;
+
+	@Override
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
+		this.addTableMessages(messages);
+		
+		if (doContinue) {
+			for (OrmJoinColumn joinColumn : CollectionTools.iterable(joinColumns())) {
+				joinColumn.addToMessages(messages);
+			}
+			
+			for (OrmJoinColumn joinColumn : CollectionTools.iterable(inverseJoinColumns())) {
+				joinColumn.addToMessages(messages);
+			}
+		}
+	}
+	
+	protected void addTableMessages(List<IMessage> messages) {
+		doContinue = isConnected();
+		String schema = getSchema();
+		OrmRelationshipMapping mapping = relationshipMapping();
+	
+		if (doContinue && ! hasResolvedSchema()) {
+			if (mapping.persistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA,
+						new String[] {mapping.getName(), schema, getName()}, 
+						this, 
+						schemaTextRange())
+				);
+				
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
+						new String[] {schema, getName()}, 
+						this, 
+						schemaTextRange())
+				);
+			}
+			doContinue = false;
+		}
+		
+		if (doContinue && ! isResolved()) {
+			if (mapping.persistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME,
+						new String[] {mapping.getName(), getName()}, 
+						this, 
+						nameTextRange())
+				);
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
+						new String[] {getName()}, 
+						this, 
+						nameTextRange())
+				);
+			}
+		}
+	}
 	/**
 	 * just a little common behavior
 	 */
