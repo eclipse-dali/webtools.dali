@@ -828,8 +828,8 @@ public class EntityGenerator {
 				}
 			}
 
-			this.printEqualsMethodOn(this.pkName(), this.table().primaryKeyColumns(), pw);
-			this.printHashCodeMethodOn(this.table().primaryKeyColumns(), pw);
+			this.printPrimaryKeyEqualsMethodOn(this.pkName(), this.table().primaryKeyColumns(), pw);
+			this.printPrimaryKeyHashCodeMethodOn(this.table().primaryKeyColumns(), pw);
 		pw.undent();
 
 		pw.print('}');
@@ -879,7 +879,7 @@ public class EntityGenerator {
 		pw.printGetterAndSetter(propertyName, column.primaryKeyJavaTypeDeclaration(), this.config.methodVisibility());
 	}
 
-	private void printEqualsMethodOn(String className, Iterator<Column> columns, EntitySourceWriter pw) {
+	private void printPrimaryKeyEqualsMethodOn(String className, Iterator<Column> columns, EntitySourceWriter pw) {
 		pw.printAnnotation("java.lang.Override");
 		pw.println();
 
@@ -911,7 +911,7 @@ public class EntityGenerator {
 			pw.print("return ");
 			pw.indent();
 				while (columns.hasNext()) {
-					this.printEqualsClauseOn(columns.next(), pw);
+					this.printPrimaryKeyEqualsClauseOn(columns.next(), pw);
 					if (columns.hasNext()) {
 						pw.println();
 						pw.print("&& ");
@@ -926,9 +926,9 @@ public class EntityGenerator {
 		pw.println();
 	}
 
-	private void printEqualsClauseOn(Column column, EntitySourceWriter pw) {
+	private void printPrimaryKeyEqualsClauseOn(Column column, EntitySourceWriter pw) {
 		String fieldName = this.genTable.fieldNameFor(column);
-		JavaType javaType = column.javaType();
+		JavaType javaType = column.primaryKeyJavaType();
 		if (javaType.isPrimitive()) {
 			this.printPrimitiveEqualsClauseOn(fieldName, pw);
 		} else {
@@ -952,7 +952,7 @@ public class EntityGenerator {
 		pw.print(')');
 	}
 
-	private void printHashCodeMethodOn(Iterator<Column> columns, EntitySourceWriter pw) {
+	private void printPrimaryKeyHashCodeMethodOn(Iterator<Column> columns, EntitySourceWriter pw) {
 		pw.printAnnotation("java.lang.Override");
 		pw.println();
 
@@ -961,7 +961,7 @@ public class EntityGenerator {
 			pw.print("return ");
 			pw.indent();
 				while (columns.hasNext()) {
-					this.printHashCodeClauseOn(columns.next(), pw);
+					this.printPrimaryKeyHashCodeClauseOn(columns.next(), pw);
 					if (columns.hasNext()) {
 						pw.println();
 						pw.print("^ ");
@@ -976,9 +976,9 @@ public class EntityGenerator {
 		pw.println();
 	}
 
-	private void printHashCodeClauseOn(Column column, EntitySourceWriter pw) {
+	private void printPrimaryKeyHashCodeClauseOn(Column column, EntitySourceWriter pw) {
 		String fieldName = this.genTable.fieldNameFor(column);
-		JavaType javaType = column.javaType();
+		JavaType javaType = column.primaryKeyJavaType();
 		if (javaType.isPrimitive()) {
 			this.printPrimitiveHashCodeClauseOn(javaType.elementTypeName(), fieldName, pw);
 		} else {
