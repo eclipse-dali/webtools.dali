@@ -37,7 +37,7 @@ import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
-public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResource<Type> implements JavaResourcePersistentType
+public class JavaResourcePersistentTypeImpl extends AbstractJavaResourcePersistentMember<Type> implements JavaResourcePersistentType
 {	
 	/**
 	 * store all member types including those that aren't persistable so we can include validation errors.
@@ -56,7 +56,7 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	
 	private boolean isAbstract;
 	
-	public JavaPersistentTypeResourceImpl(JavaResourceNode parent, Type type){
+	public JavaResourcePersistentTypeImpl(JavaResourceNode parent, Type type){
 		super(parent, type);
 		this.nestedTypes = new ArrayList<JavaResourcePersistentType>(); 
 		this.attributes = new ArrayList<JavaResourcePersistentAttribute>();
@@ -76,7 +76,7 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	
 	protected void initializeNestedTypes(CompilationUnit astRoot) {
 		for (IType declaredType : getMember().declaredTypes()) {
-			this.nestedTypes.add(createJavaPersistentType(declaredType, astRoot));
+			this.nestedTypes.add(buildJavaResourcePersistentType(declaredType, astRoot));
 		}
 	}
 	
@@ -188,7 +188,7 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 	}
 	
 	protected JavaResourcePersistentType addNestedType(IType nestedType, CompilationUnit astRoot) {
-		JavaResourcePersistentType persistentType = createJavaPersistentType(nestedType, astRoot);
+		JavaResourcePersistentType persistentType = buildJavaResourcePersistentType(nestedType, astRoot);
 		addNestedType(persistentType);
 		return persistentType;
 	}
@@ -201,11 +201,11 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		removeItemFromCollection(nestedType, this.nestedTypes, NESTED_TYPES_COLLECTION);
 	}
 	
-	protected JavaResourcePersistentType createJavaPersistentType(IType nestedType, CompilationUnit astRoot) {
-		return createJavaPersistentType(this, nestedType, modifySharedDocumentCommandExecutorProvider(), annotationEditFormatter(), astRoot);
+	protected JavaResourcePersistentType buildJavaResourcePersistentType(IType nestedType, CompilationUnit astRoot) {
+		return buildJavaResourcePersistentType(this, nestedType, modifySharedDocumentCommandExecutorProvider(), annotationEditFormatter(), astRoot);
 	}
 
-	public static JavaResourcePersistentType createJavaPersistentType(
+	public static JavaResourcePersistentType buildJavaResourcePersistentType(
 		JavaResourceNode parent, 
 		IType nestedType, 
 		CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
@@ -213,7 +213,7 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		CompilationUnit astRoot) {
 		
 		Type type = new Type(nestedType, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
-		JavaPersistentTypeResourceImpl javaPersistentType = new JavaPersistentTypeResourceImpl(parent, type);
+		JavaResourcePersistentTypeImpl javaPersistentType = new JavaResourcePersistentTypeImpl(parent, type);
 		javaPersistentType.initialize(astRoot);
 		return javaPersistentType;	
 	}
@@ -268,7 +268,7 @@ public class JavaPersistentTypeResourceImpl extends AbstractJavaPersistentResour
 		else {
 			throw new IllegalArgumentException();
 		}
-		JavaResourcePersistentAttribute javaPersistentAttribute = new JavaPersistentAttributeResourceImpl(this, attribute);
+		JavaResourcePersistentAttribute javaPersistentAttribute = new JavaResourcePersistentAttributeImpl(this, attribute);
 		javaPersistentAttribute.initialize(astRoot);
 		return javaPersistentAttribute;
 	}

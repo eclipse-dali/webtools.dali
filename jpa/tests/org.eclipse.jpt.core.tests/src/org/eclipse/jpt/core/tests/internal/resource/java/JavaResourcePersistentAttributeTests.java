@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.resource.java.IdImpl;
 import org.eclipse.jpt.core.internal.resource.java.OneToOneImpl;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
@@ -30,9 +29,9 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
-public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestCase {
+public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestCase {
 	
-	public JavaPersistentAttributeResourceTests(String name) {
+	public JavaResourcePersistentAttributeTests(String name) {
 		super(name);
 	}
 		
@@ -388,8 +387,6 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 		columnResource.setName(null);
 		assertSourceDoesNotContain("@Column");
 		
-		//TODO should I be calling this in the test?  where should the IElementChangedListener be set up?
-		typeResource.updateFromJava(JDTTools.buildASTRoot(jdtType()));
 		assertNull(typeResource.annotation(JPA.TABLE));
 	}
 	
@@ -502,9 +499,6 @@ public class JavaPersistentAttributeResourceTests extends JavaResourceModelTestC
 		jdtType.getCompilationUnit().createImport("javax.persistence.OneToOne", null, new NullProgressMonitor());
 		
 		idField().newMarkerAnnotation(OneToOneImpl.DECLARATION_ANNOTATION_ADAPTER);
-		
-		typeResource.updateFromJava(JDTTools.buildASTRoot(jdtType));
-		
 		
 		assertNotNull(attributeResource.annotation(JPA.COLUMN));
 		assertNull(attributeResource.mappingAnnotation(JPA.ID));

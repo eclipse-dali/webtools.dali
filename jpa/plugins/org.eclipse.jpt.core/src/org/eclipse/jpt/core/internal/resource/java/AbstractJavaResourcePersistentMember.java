@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 
-public abstract class AbstractJavaPersistentResource<E extends Member> extends AbstractMemberResource<E> 
+public abstract class AbstractJavaResourcePersistentMember<E extends Member> extends AbstractMemberResource<E> 
 	implements JavaResourcePersistentMember
 {	
 	/**
@@ -47,7 +47,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	
 	private boolean persistable;
 
-	public AbstractJavaPersistentResource(JavaResourceNode parent, E member){
+	public AbstractJavaResourcePersistentMember(JavaResourceNode parent, E member){
 		super(parent, member);
 		this.annotations = new ArrayList<Annotation>();
 		this.mappingAnnotations = new ArrayList<Annotation>();
@@ -250,9 +250,13 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	}
 	
 	protected void removeAnnotation(Annotation annotation) {
-		removeItemFromCollection(annotation, this.annotations, ANNOTATIONS_COLLECTION);
+		removeAnnotation_(annotation);
 		//TODO looks odd that we remove the annotation here, but in addAnnotation(Annotation) we don't do the same
 		annotation.removeAnnotation();
+	}
+	
+	protected void removeAnnotation_(Annotation annotation) {
+		removeItemFromCollection(annotation, this.annotations, ANNOTATIONS_COLLECTION);
 	}
 	
 	protected void addMappingAnnotation(String mappingAnnotationName) {
@@ -270,8 +274,12 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	}
 	
 	protected void removeMappingAnnotation(Annotation annotation) {
-		removeItemFromCollection(annotation, this.mappingAnnotations, MAPPING_ANNOTATIONS_COLLECTION);
+		removeMappingAnnotation_(annotation);
 		annotation.removeAnnotation();
+	}
+	
+	protected void removeMappingAnnotation_(Annotation annotation) {
+		removeItemFromCollection(annotation, this.mappingAnnotations, MAPPING_ANNOTATIONS_COLLECTION);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -411,7 +419,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	protected void removeAnnotationsNotInSource(CompilationUnit astRoot) {
 		for (Annotation annotation : CollectionTools.iterable(annotations())) {
 			if (annotation.jdtAnnotation(astRoot) == null) {
-				removeAnnotation(annotation);
+				removeAnnotation_(annotation);
 			}
 		}		
 	}
@@ -419,7 +427,7 @@ public abstract class AbstractJavaPersistentResource<E extends Member> extends A
 	protected void removeMappingAnnotationsNotInSource(CompilationUnit astRoot) {
 		for (Annotation mappingAnnotation : CollectionTools.iterable(mappingAnnotations())) {
 			if (mappingAnnotation.jdtAnnotation(astRoot) == null) {
-				removeMappingAnnotation(mappingAnnotation);
+				removeMappingAnnotation_(mappingAnnotation);
 			}
 		}	
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.resource.java.EmbeddableImpl;
 import org.eclipse.jpt.core.internal.resource.java.EntityImpl;
 import org.eclipse.jpt.core.resource.java.AccessType;
@@ -30,9 +29,9 @@ import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
+public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 	
-	public JavaPersistentTypeResourceTests(String name) {
+	public JavaResourcePersistentTypeTests(String name) {
 		super(name);
 	}
 	
@@ -530,8 +529,6 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 		tableResource.setName(null);
 		assertSourceDoesNotContain("@Table");
 		
-		//TODO should I be calling this in the test?  where should the IElementChangedListener be set up?
-		typeResource.updateFromJava(JDTTools.buildASTRoot(jdtType()));
 		assertNull(typeResource.annotation(JPA.TABLE));
 	}
 	
@@ -610,9 +607,6 @@ public class JavaPersistentTypeResourceTests extends JavaResourceModelTestCase {
 		jdtType.getCompilationUnit().createImport("javax.persistence.Embeddable", null, new NullProgressMonitor());
 		
 		testType().newMarkerAnnotation(EmbeddableImpl.DECLARATION_ANNOTATION_ADAPTER);
-		
-		typeResource.updateFromJava(JDTTools.buildASTRoot(jdtType));
-		
 		
 		assertNotNull(typeResource.annotation(JPA.TABLE));
 		assertNull(typeResource.mappingAnnotation(JPA.ENTITY));

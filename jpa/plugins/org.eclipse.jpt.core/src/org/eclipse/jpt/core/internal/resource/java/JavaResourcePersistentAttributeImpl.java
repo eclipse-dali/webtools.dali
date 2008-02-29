@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,8 +25,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
-public class JavaPersistentAttributeResourceImpl
-	extends AbstractJavaPersistentResource<Attribute>
+public class JavaResourcePersistentAttributeImpl
+	extends AbstractJavaResourcePersistentMember<Attribute>
 	implements JavaResourcePersistentAttribute
 {
 
@@ -40,7 +40,7 @@ public class JavaPersistentAttributeResourceImpl
 	
 	private String qualifiedReferenceEntityElementTypeName;
 	
-	public JavaPersistentAttributeResourceImpl(JavaResourcePersistentType parent, Attribute attribute){
+	public JavaResourcePersistentAttributeImpl(JavaResourcePersistentType parent, Attribute attribute){
 		super(parent, attribute);
 	}
 
