@@ -75,7 +75,7 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 	public void initialize(CompilationUnit astRoot) {
 		IType iType = this.compilationUnit.findPrimaryType();
 		if (iType != null) {
-			this.persistentType = createJavaPersistentType(iType, astRoot);
+			this.persistentType = buildJavaResourcePersistentType(iType, astRoot);
 		}
 	}
 	
@@ -146,13 +146,25 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 		firePropertyChanged(PERSISTENT_TYPE_PROPERTY, oldPersistentType, newPersistentType);
 	}
 	
-	private JavaResourcePersistentType createJavaPersistentType(IType iType, CompilationUnit astRoot) {
+	private JavaResourcePersistentType buildJavaResourcePersistentType(IType iType, CompilationUnit astRoot) {
+		//TODO put this hook in to avoid the NPE that we get trying to initialize a persistentTypeResource
+		//from an annotation type.  Entered bug #    to handle the bigger issue of when we need to 
+		//not build a persistent type(annotation types) and when we need to have validation instead(final types)
+		try {
+			if (iType.isAnnotation()) {
+				return null;
+			}
+		}
+		catch (JavaModelException e) {
+			throw new RuntimeException(e);
+		}
+
 		return 
-		JavaPersistentTypeResourceImpl.createJavaPersistentType(this, 
-			iType, 
-			modifySharedDocumentCommandExecutorProvider(), 
-			annotationEditFormatter(), 
-			astRoot);
+			JavaResourcePersistentTypeImpl.buildJavaResourcePersistentType(this, 
+				iType, 
+				modifySharedDocumentCommandExecutorProvider(), 
+				annotationEditFormatter(), 
+				astRoot);
 	}
 	
 	public void updateFromJava(CompilationUnit astRoot) {
@@ -162,7 +174,7 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 		}
 		else {
 			if (getPersistentType() == null) {
-				setPersistentType(createJavaPersistentType(iType, astRoot));
+				setPersistentType(buildJavaResourcePersistentType(iType, astRoot));
 			}
 			else {
 				getPersistentType().updateFromJava(astRoot);
