@@ -122,7 +122,10 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 	}
 	
 	public JavaResourcePersistentType javaPersistentTypeResource(String fullyQualifiedTypeName) {
-		return getPersistentType().javaPersistentTypeResource(fullyQualifiedTypeName);
+		if (getPersistentType() != null) {
+			return getPersistentType().javaPersistentTypeResource(fullyQualifiedTypeName);
+		} 
+		return null;
 	}
 
 	/**
