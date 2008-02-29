@@ -47,6 +47,7 @@ public class AsynchronousJpaProjectUpdater implements JpaProject.Updater {
 	 */
 	public void dispose() {
 		this.job.setShouldSchedule(false);
+		this.job.cancel();
 		try {
 			this.job.join();
 		} catch (InterruptedException ex) {
