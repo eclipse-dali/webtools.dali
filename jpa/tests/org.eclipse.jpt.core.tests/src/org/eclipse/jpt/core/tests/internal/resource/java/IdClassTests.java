@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.resource.java.IdClass;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -89,9 +88,7 @@ public class IdClassTests extends JavaResourceModelTestCase {
 		idClass.setValue(null);
 		
 		assertSourceDoesNotContain("@IdClass");
-		
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
-		
+				
 		idClass = (IdClass) typeResource.annotation(JPA.ID_CLASS);
 		assertNull(idClass);
 	}
@@ -106,13 +103,9 @@ public class IdClassTests extends JavaResourceModelTestCase {
 
 
 		idClass.setValue(TYPE_NAME);
-		
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
-		
-		assertEquals(FULLY_QUALIFIED_TYPE_NAME, idClass.getFullyQualifiedClass());
 				
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, idClass.getFullyQualifiedClass());				
 		assertSourceContains("@IdClass(" + TYPE_NAME + ".class)");
-
 	}
 
 }

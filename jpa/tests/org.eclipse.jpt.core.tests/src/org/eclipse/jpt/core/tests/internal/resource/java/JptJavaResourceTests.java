@@ -21,8 +21,8 @@ public class JptJavaResourceTests {
 	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptJavaResourceTests.class.getName());
 		suite.addTestSuite(JpaCompilationUnitResourceTests.class);
-		suite.addTestSuite(JavaPersistentTypeResourceTests.class);
-		suite.addTestSuite(JavaPersistentAttributeResourceTests.class);
+		suite.addTestSuite(JavaResourcePersistentTypeTests.class);
+		suite.addTestSuite(JavaResourcePersistentAttributeTests.class);
 		suite.addTestSuite(JPTToolsTests.class);
 		
 		suite.addTestSuite(AssociationOverrideTests.class);

@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AssociationOverrides;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -206,7 +205,6 @@ public class AssociationOverridesTests extends JavaResourceModelTestCase {
 		
 		associationOverride.addJoinColumn(0);
 		associationOverride.addJoinColumn(1);
-		associationOverride.updateFromJava(JDTTools.buildASTRoot(testType));
 		
 		assertEquals(2, associationOverride.joinColumnsSize());
 	}

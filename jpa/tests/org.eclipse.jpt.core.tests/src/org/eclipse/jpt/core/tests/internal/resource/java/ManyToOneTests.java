@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.resource.java.FetchType;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -225,7 +224,6 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		
 		assertSourceContains("@ManyToOne(targetEntity=Foo.class)");
 		
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertEquals("Foo", manyToOne.getTargetEntity());
 		
 		assertNull(manyToOne.getFullyQualifiedTargetEntity());
@@ -280,7 +278,6 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		manyToOne.setCascadeAll(true);
 		assertSourceContains("@ManyToOne(cascade=ALL)");
 		
-		manyToOne.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(manyToOne.isCascadeAll());
 	}
 	
@@ -295,7 +292,6 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		manyToOne.setCascadeMerge(true);
 		assertSourceContains("@ManyToOne(cascade=MERGE)");
 		
-		manyToOne.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(manyToOne.isCascadeMerge());
 	}
 	
@@ -310,7 +306,6 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		manyToOne.setCascadePersist(true);
 		assertSourceContains("@ManyToOne(cascade=PERSIST)");
 		
-		manyToOne.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(manyToOne.isCascadePersist());
 	}
 	
@@ -325,7 +320,6 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		manyToOne.setCascadeRemove(true);
 		assertSourceContains("@ManyToOne(cascade=REMOVE)");
 		
-		manyToOne.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(manyToOne.isCascadeRemove());
 	}
 
@@ -340,7 +334,6 @@ public class ManyToOneTests extends JavaResourceModelTestCase {
 		manyToOne.setCascadeRefresh(true);
 		assertSourceContains("@ManyToOne(cascade=REFRESH)");
 		
-		manyToOne.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(manyToOne.isCascadeRefresh());
 	}
 

@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -301,7 +300,6 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		
 		secondaryTable.addUniqueConstraint(0);
 		secondaryTable.addUniqueConstraint(1);
-		secondaryTable.updateFromJava(JDTTools.buildASTRoot(testType));
 		
 		assertEquals(2, secondaryTable.uniqueConstraintsSize());
 	}
@@ -451,7 +449,6 @@ public class SecondaryTablesTests extends JavaResourceModelTestCase {
 		
 		table.addPkJoinColumn(0);
 		table.addPkJoinColumn(1);
-		table.updateFromJava(JDTTools.buildASTRoot(testType));
 		
 		assertEquals(2, table.pkJoinColumnsSize());
 	}

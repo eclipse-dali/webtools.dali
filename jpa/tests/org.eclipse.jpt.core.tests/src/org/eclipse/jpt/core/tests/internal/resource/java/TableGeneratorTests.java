@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -446,7 +445,6 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		
 		tableGenerator.addUniqueConstraint(0);
 		tableGenerator.addUniqueConstraint(1);
-		tableGenerator.updateFromJava(JDTTools.buildASTRoot(testType));
 		
 		assertEquals(2, tableGenerator.uniqueConstraintsSize());
 	}

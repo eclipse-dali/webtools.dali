@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.resource.java.FetchType;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -225,7 +224,6 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		
 		assertSourceContains("@OneToMany(targetEntity=Foo.class)");
 		
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertEquals("Foo", oneToMany.getTargetEntity());
 		
 		assertNull(oneToMany.getFullyQualifiedTargetEntity());
@@ -289,7 +287,6 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		oneToMany.setCascadeAll(true);
 		assertSourceContains("@OneToMany(cascade=ALL)");
 		
-		oneToMany.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(oneToMany.isCascadeAll());
 	}
 	
@@ -304,7 +301,6 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		oneToMany.setCascadeMerge(true);
 		assertSourceContains("@OneToMany(cascade=MERGE)");
 		
-		oneToMany.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(oneToMany.isCascadeMerge());
 	}
 	
@@ -319,7 +315,6 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		oneToMany.setCascadePersist(true);
 		assertSourceContains("@OneToMany(cascade=PERSIST)");
 		
-		oneToMany.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(oneToMany.isCascadePersist());
 	}
 	
@@ -334,7 +329,6 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		oneToMany.setCascadeRemove(true);
 		assertSourceContains("@OneToMany(cascade=REMOVE)");
 		
-		oneToMany.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(oneToMany.isCascadeRemove());
 	}
 
@@ -349,7 +343,6 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		oneToMany.setCascadeRefresh(true);
 		assertSourceContains("@OneToMany(cascade=REFRESH)");
 		
-		oneToMany.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(oneToMany.isCascadeRefresh());
 	}
 

@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.resource.java.FetchType;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -239,7 +238,6 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		
 		assertSourceContains("@OneToOne(targetEntity=Foo.class)");
 		
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertEquals("Foo", oneToOne.getTargetEntity());
 		
 		assertNull(oneToOne.getFullyQualifiedTargetEntity());
@@ -340,7 +338,6 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		oneToOne.setCascadeAll(true);
 		assertSourceContains("@OneToOne(cascade=ALL)");
 		
-		oneToOne.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(oneToOne.isCascadeAll());
 	}
 	
@@ -355,7 +352,6 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		oneToOne.setCascadeMerge(true);
 		assertSourceContains("@OneToOne(cascade=MERGE)");
 		
-		oneToOne.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(oneToOne.isCascadeMerge());
 	}
 	
@@ -370,7 +366,6 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		oneToOne.setCascadePersist(true);
 		assertSourceContains("@OneToOne(cascade=PERSIST)");
 		
-		oneToOne.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(oneToOne.isCascadePersist());
 	}
 	
@@ -385,7 +380,6 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		oneToOne.setCascadeRemove(true);
 		assertSourceContains("@OneToOne(cascade=REMOVE)");
 		
-		oneToOne.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(oneToOne.isCascadeRemove());
 	}
 
@@ -400,7 +394,6 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		oneToOne.setCascadeRefresh(true);
 		assertSourceContains("@OneToOne(cascade=REFRESH)");
 		
-		oneToOne.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(oneToOne.isCascadeRefresh());
 	}
 

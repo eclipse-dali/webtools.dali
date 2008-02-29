@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.NamedNativeQueryAnnotation;
@@ -203,7 +202,6 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		assertNull(namedQuery.getFullyQualifiedResultClass());
 
 		namedQuery.setResultClass(TYPE_NAME);		
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, namedQuery.getFullyQualifiedResultClass());				
 		assertSourceContains("@NamedNativeQuery(resultClass=" + TYPE_NAME + ".class)");
@@ -252,7 +250,6 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 		
 		namedQuery.addHint(0);
 		namedQuery.addHint(1);
-		namedQuery.updateFromJava(JDTTools.buildASTRoot(testType));
 		
 		assertEquals(2, namedQuery.hintsSize());
 	}

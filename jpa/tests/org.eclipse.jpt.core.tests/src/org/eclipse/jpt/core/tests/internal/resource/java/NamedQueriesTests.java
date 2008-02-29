@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -196,7 +195,6 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 		
 		namedQuery.addHint(0);
 		namedQuery.addHint(1);
-		namedQuery.updateFromJava(JDTTools.buildASTRoot(testType));
 		
 		assertEquals(2, namedQuery.hintsSize());
 	}

@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.resource.java.FetchType;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -225,7 +224,6 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		
 		assertSourceContains("@ManyToMany(targetEntity=Foo.class)");
 		
-		typeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertEquals("Foo", manyToMany.getTargetEntity());
 		
 		assertNull(manyToMany.getFullyQualifiedTargetEntity());
@@ -288,7 +286,6 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		manyToMany.setCascadeAll(true);
 		assertSourceContains("@ManyToMany(cascade=ALL)");
 		
-		manyToMany.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(manyToMany.isCascadeAll());
 	}
 	
@@ -303,7 +300,6 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		manyToMany.setCascadeMerge(true);
 		assertSourceContains("@ManyToMany(cascade=MERGE)");
 		
-		manyToMany.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(manyToMany.isCascadeMerge());
 	}
 	
@@ -318,7 +314,6 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		manyToMany.setCascadePersist(true);
 		assertSourceContains("@ManyToMany(cascade=PERSIST)");
 		
-		manyToMany.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(manyToMany.isCascadePersist());
 	}
 	
@@ -333,7 +328,6 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		manyToMany.setCascadeRemove(true);
 		assertSourceContains("@ManyToMany(cascade=REMOVE)");
 		
-		manyToMany.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(manyToMany.isCascadeRemove());
 	}
 
@@ -348,7 +342,6 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		manyToMany.setCascadeRefresh(true);
 		assertSourceContains("@ManyToMany(cascade=REFRESH)");
 		
-		manyToMany.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertTrue(manyToMany.isCascadeRefresh());
 	}
 

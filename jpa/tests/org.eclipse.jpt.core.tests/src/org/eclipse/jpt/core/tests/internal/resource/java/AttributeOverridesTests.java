@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverrides;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
@@ -181,8 +180,6 @@ public class AttributeOverridesTests extends JavaResourceModelTestCase {
 		assertSourceContains("@AttributeOverrides(@AttributeOverride(name=\"" + ATTRIBUTE_OVERRIDE_NAME + "\", column = @Column(name=\"Foo\")))");
 		
 		column.setName(null);
-		//TODO should I have to update from java before column is set to null??
-		attributeResource.updateFromJava(JDTTools.buildASTRoot(testType));
 		assertNull(attributeOverride.getColumn());
 		assertSourceContains("@AttributeOverride(name=\"" + ATTRIBUTE_OVERRIDE_NAME + "\")");
 	}
