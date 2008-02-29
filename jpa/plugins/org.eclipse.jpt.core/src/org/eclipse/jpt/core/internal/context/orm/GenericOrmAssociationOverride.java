@@ -17,7 +17,6 @@ import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
@@ -102,7 +101,7 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 		return joinColumn;
 	}
 	
-	protected JoinColumn.Owner createJoinColumnOwner() {
+	protected OrmJoinColumn.Owner createJoinColumnOwner() {
 		return new JoinColumnOwner();
 	}
 
@@ -181,7 +180,7 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 		return null;
 	}
 
-	class JoinColumnOwner implements JoinColumn.Owner
+	class JoinColumnOwner implements OrmJoinColumn.Owner
 	{
 
 		public JoinColumnOwner() {
@@ -242,6 +241,11 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 
 		public int joinColumnsSize() {
 			return GenericOrmAssociationOverride.this.joinColumnsSize();
+		}
+		
+		public TextRange validationTextRange() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 
 	}

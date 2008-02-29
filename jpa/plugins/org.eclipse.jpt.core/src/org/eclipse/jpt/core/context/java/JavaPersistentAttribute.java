@@ -33,11 +33,11 @@ public interface JavaPersistentAttribute extends PersistentAttribute, JavaJpaCon
 	
 	JavaPersistentType persistentType();
 	
-	void initializeFromResource(JavaResourcePersistentAttribute persistentAttributeResource);
+	void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute);
 
-	void update(JavaResourcePersistentAttribute persistentAttributeResource);
+	void update(JavaResourcePersistentAttribute resourcePersistentAttribute);
 	
-	JavaResourcePersistentAttribute getPersistentAttributeResource();
+	JavaResourcePersistentAttribute getResourcePersistentAttribute();
 	
 	/**
 	 * Return whether the attribute contains the given offset into the text file.

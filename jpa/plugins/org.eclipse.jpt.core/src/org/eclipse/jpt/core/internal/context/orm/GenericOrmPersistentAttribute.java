@@ -350,14 +350,14 @@ public class GenericOrmPersistentAttribute extends AbstractOrmJpaContextNode
 		super.addToMessages(messages);
 		getMapping().addToMessages(messages);
 	}
-
 	
 	public TextRange validationTextRange() {
 		if (isVirtual()) {
-			return persistentType().validationTextRange();
+			return persistentType().getMapping().attributesTextRange();
 		}
 		return this.attributeMapping.validationTextRange();
-	}	
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);

@@ -12,10 +12,12 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.orm.OrmAbstractJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
@@ -96,7 +98,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 		return primaryKeyJoinColumn;
 	}
 	
-	protected AbstractJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
+	protected OrmAbstractJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
@@ -244,7 +246,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 		}
 	}
 	
-	class PrimaryKeyJoinColumnOwner implements AbstractJoinColumn.Owner
+	class PrimaryKeyJoinColumnOwner implements OrmAbstractJoinColumn.Owner
 	{
 
 		public TypeMapping typeMapping() {
@@ -272,7 +274,11 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 				return null;
 			}
 			return ormEntity().parentEntity().primaryKeyColumnName();
-
+		}
+		
+		public TextRange validationTextRange() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	}
 }

@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
+import org.eclipse.jpt.core.TextRange;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -167,5 +169,11 @@ public interface XmlAbstractColumn extends XmlNamedColumn
 	 * @generated
 	 */
 	void setUpdatable(Boolean value);
+	
+	/**
+	 * Return the {@link TextRange} for the table attibute.  If the table attibute 
+	 * does not exist return the {@link TextRange} for the *table element.
+	 */
+	TextRange tableTextRange();
 
 } // AbstractColumn

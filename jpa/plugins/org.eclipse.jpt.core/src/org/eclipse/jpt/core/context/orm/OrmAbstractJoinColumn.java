@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.context.AbstractJoinColumn;
 
 /**
  * 
@@ -21,9 +21,22 @@ import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmPrimaryKeyJoinColumn extends PrimaryKeyJoinColumn, OrmAbstractJoinColumn
+public interface OrmAbstractJoinColumn extends AbstractJoinColumn, OrmNamedColumn
 {
-	void initialize(XmlPrimaryKeyJoinColumn column);
+
+	/**
+	 * Return the (best guess) text location of the referenced column name
+	 */
+	TextRange referencedColumnNameTextRange();
+
 	
-	void update(XmlPrimaryKeyJoinColumn column);
+	Owner owner();
+	/**
+	 * interface allowing join columns to be used in multiple places
+	 * (e.g. 1:1 mappings and join tables)
+	 */
+	interface Owner extends AbstractJoinColumn.Owner, OrmNamedColumn.Owner
+	{
+
+	}
 }

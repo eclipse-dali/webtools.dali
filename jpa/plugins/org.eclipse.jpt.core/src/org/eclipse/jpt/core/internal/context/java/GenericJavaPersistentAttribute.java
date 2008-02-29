@@ -63,7 +63,7 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		this.specifiedMapping = createJavaAttributeMappingFromAnnotation(javaMappingAnnotationName, persistentAttributeResource);
 	}
 	
-	public JavaResourcePersistentAttribute getPersistentAttributeResource() {
+	public JavaResourcePersistentAttribute getResourcePersistentAttribute() {
 		return this.persistentAttributeResource;
 	}
 	

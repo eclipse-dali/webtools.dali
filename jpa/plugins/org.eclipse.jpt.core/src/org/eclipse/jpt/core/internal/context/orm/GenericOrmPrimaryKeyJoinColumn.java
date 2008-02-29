@@ -9,7 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.AbstractJoinColumn;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.context.orm.OrmAbstractJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
@@ -25,7 +26,7 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 
 	protected XmlPrimaryKeyJoinColumn primaryKeyJoinColumn;
 	
-	public GenericOrmPrimaryKeyJoinColumn(OrmJpaContextNode parent, AbstractJoinColumn.Owner owner) {
+	public GenericOrmPrimaryKeyJoinColumn(OrmJpaContextNode parent, OrmAbstractJoinColumn.Owner owner) {
 		super(parent, owner);
 	}
 
@@ -72,8 +73,8 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	}
 
 	@Override
-	public AbstractJoinColumn.Owner owner() {
-		return (AbstractJoinColumn.Owner) this.owner;
+	public OrmAbstractJoinColumn.Owner owner() {
+		return (OrmAbstractJoinColumn.Owner) this.owner;
 	}
 
 	public Column dbReferencedColumn() {
@@ -94,13 +95,12 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 		return dbReferencedColumn() != null;
 	}
 
-//	public ITextRange referencedColumnNameTextRange() {
-//		if (node == null) {
-//			return owner.validationTextRange();
-//		}
-//		IDOMNode referencedColumnNameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.REFERENCED_COLUMN_NAME);
-//		return (referencedColumnNameNode == null) ? validationTextRange() : buildTextRange(referencedColumnNameNode);
-//	}
+	public TextRange referencedColumnNameTextRange() {
+		if (columnResource() != null) {
+			return columnResource().referencedColumnNameTextRange();
+		}
+		return this.parent().validationTextRange(); 
+	}
 
 		
 	public boolean isVirtual() {

@@ -75,5 +75,9 @@ public interface OrmTypeMapping extends TypeMapping, OrmJpaContextNode
 
 	TextRange selectionTextRange();
 
+	TextRange attributesTextRange();
+	
 	boolean containsOffset(int textOffset);
+	
+	OrmPersistentType persistentType();
 }

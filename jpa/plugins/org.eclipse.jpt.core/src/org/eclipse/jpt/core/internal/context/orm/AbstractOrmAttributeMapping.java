@@ -10,6 +10,9 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.jdt.core.Flags;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -33,6 +36,7 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -168,15 +172,6 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return this.persistentAttribute().typeMapping();
 	}
 
-//	@Override
-//	public ITextRange validationTextRange() {
-//		return (this.isVirtual()) ? this.getPersistentType().attributesTextRange() : super.validationTextRange();
-//	}
-//
-//	public ITextRange nameTextRange() {
-//		IDOMNode nameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.NAME);
-//		return (nameNode != null) ? this.buildTextRange(nameNode) : this.validationTextRange();
-//	}
 
 	public boolean isOverridableAttributeMapping() {
 		return false;
@@ -214,17 +209,21 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return null;
 	}
 	
+	
+	protected boolean entityOwned() {
+		return typeMapping().getKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY;
+	}
+
 	public boolean contains(int textOffset) {
 		return this.attributeMapping.containsOffset(textOffset);
 	}
 	
 	public TextRange selectionTextRange() {
 		return this.attributeMapping.selectionTextRange();
-	}
-	
+	}	
 	
 	public TextRange validationTextRange() {
-		return this.attributeMapping.validationTextRange();
+		return (this.persistentAttribute().isVirtual()) ? this.typeMapping().attributesTextRange() : this.attributeMapping.validationTextRange();
 	}
 	
 	public TextRange nameTextRange() {
@@ -234,9 +233,14 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	@Override
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
+		addAttributeMessages(messages);
+		addInvalidMappingMessage(messages);
+	}
+	
+	protected void addAttributeMessages(List<IMessage> messages) {
 		addUnspecifiedAttributeMessage(messages);
 		addUnresolvedAttributeMessage(messages);
-		addInvalidMappingMessage(messages);
+		addModifierMessages(messages);
 	}
 	
 	protected void addUnspecifiedAttributeMessage(List<IMessage> messages) {
@@ -259,10 +263,60 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,
 					new String[] {getName(), persistentAttribute().persistentType().getMapping().getClass_()},
-					this, nameTextRange())
+					this, 
+					nameTextRange())
 			);
 		}
 	}
+	
+	protected void addModifierMessages(List<IMessage> messages) {
+		if (getKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
+			return;
+		}
+		
+		if (getJavaPersistentAttribute() == null) {
+			return;
+		}
+		JavaResourcePersistentAttribute resourcePersistentAttribute = getJavaPersistentAttribute().getResourcePersistentAttribute();
+		if (resourcePersistentAttribute== null) {
+			return;
+		}
+
+		if (resourcePersistentAttribute.isForField()) {
+			int flags;
+			try {
+				flags = resourcePersistentAttribute.getMember().getJdtMember().getFlags();
+			} catch (JavaModelException jme) { 
+				/* no error to log, in that case */ 
+				return;
+			}
+			//TODO validation : need to have a validation message for final methods as well.
+			//From the JPA spec : No methods or persistent instance variables of the entity class may be final.
+			if (Flags.isFinal(flags)) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD,
+						new String[] {getName()},
+						persistentAttribute(),
+						persistentAttribute().validationTextRange())
+				);
+			}
+			
+			if (Flags.isPublic(flags)) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD,
+						new String[] {getName()},
+						persistentAttribute(), 
+						persistentAttribute().validationTextRange())
+				);
+				
+			}
+		}
+	}
+
 	//TODO validation message - i think more info is needed in this message.  include type mapping type?
 	protected void addInvalidMappingMessage(List<IMessage> messages) {
 		if (! typeMapping().attributeMappingKeyAllowed(getKey())) {

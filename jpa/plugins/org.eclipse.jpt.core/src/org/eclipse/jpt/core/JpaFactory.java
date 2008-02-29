@@ -11,13 +11,10 @@ package org.eclipse.jpt.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseJpaContent;
-import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JpaContextNode;
-import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.java.JavaAbstractJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -56,6 +53,7 @@ import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmAbstractJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
@@ -74,6 +72,7 @@ import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
+import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
@@ -216,17 +215,17 @@ public interface JpaFactory
 	
 	OrmSecondaryTable buildOrmSecondaryTable(OrmEntity parent);
 	
-	OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(OrmJpaContextNode parent, AbstractJoinColumn.Owner owner);
+	OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(OrmJpaContextNode parent, OrmAbstractJoinColumn.Owner owner);
 	
 	OrmJoinTable buildOrmJoinTable(OrmRelationshipMapping parent);
 	
-	OrmJoinColumn buildOrmJoinColumn(OrmJpaContextNode parent, JoinColumn.Owner owner);
+	OrmJoinColumn buildOrmJoinColumn(OrmJpaContextNode parent, OrmJoinColumn.Owner owner);
 	
 	OrmAttributeOverride buildOrmAttributeOverride(OrmJpaContextNode parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride);
 	
 	OrmAssociationOverride buildOrmAssociationOverride(OrmJpaContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride associationOverride);
 
-	OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, NamedColumn.Owner owner);
+	OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmNamedColumn.Owner owner);
 	
 	OrmColumn buildOrmColumn(OrmJpaContextNode parent, OrmColumn.Owner owner);
 	

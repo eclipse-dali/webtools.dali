@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -37,48 +36,8 @@ import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
  * @model kind="class"
  * @generated
  */
-public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNamedColumn
+public class XmlDiscriminatorColumn extends AbstractXmlNamedColumn
 {
-	/**
-	 * The default value of the '{@link #getColumnDefinition() <em>Column Definition</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getColumnDefinition()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String COLUMN_DEFINITION_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getColumnDefinition() <em>Column Definition</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getColumnDefinition()
-	 * @generated
-	 * @ordered
-	 */
-	protected String columnDefinition = COLUMN_DEFINITION_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
-
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
 	 * we don't want a default for enums, just null if the tag does not exist
@@ -134,41 +93,6 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.XML_DISCRIMINATOR_COLUMN;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Column Definition</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Column Definition</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Column Definition</em>' attribute.
-	 * @see #setColumnDefinition(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedColumn_ColumnDefinition()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	public String getColumnDefinition()
-	{
-		return columnDefinition;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlDiscriminatorColumn#getColumnDefinition <em>Column Definition</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Column Definition</em>' attribute.
-	 * @see #getColumnDefinition()
-	 * @generated
-	 */
-	public void setColumnDefinition(String newColumnDefinition)
-	{
-		String oldColumnDefinition = columnDefinition;
-		columnDefinition = newColumnDefinition;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION, oldColumnDefinition, columnDefinition));
 	}
 
 	/**
@@ -246,41 +170,6 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedColumn_Name()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	public String getName()
-	{
-		return name;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlDiscriminatorColumn#getName <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Name</em>' attribute.
-	 * @see #getName()
-	 * @generated
-	 */
-	public void setName(String newName)
-	{
-		String oldName = name;
-		name = newName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_DISCRIMINATOR_COLUMN__NAME, oldName, name));
-	}
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -290,10 +179,6 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION:
-				return getColumnDefinition();
-			case OrmPackage.XML_DISCRIMINATOR_COLUMN__NAME:
-				return getName();
 			case OrmPackage.XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
 				return getDiscriminatorType();
 			case OrmPackage.XML_DISCRIMINATOR_COLUMN__LENGTH:
@@ -312,12 +197,6 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION:
-				setColumnDefinition((String)newValue);
-				return;
-			case OrmPackage.XML_DISCRIMINATOR_COLUMN__NAME:
-				setName((String)newValue);
-				return;
 			case OrmPackage.XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
 				setDiscriminatorType((DiscriminatorType)newValue);
 				return;
@@ -338,12 +217,6 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION:
-				setColumnDefinition(COLUMN_DEFINITION_EDEFAULT);
-				return;
-			case OrmPackage.XML_DISCRIMINATOR_COLUMN__NAME:
-				setName(NAME_EDEFAULT);
-				return;
 			case OrmPackage.XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
 				setDiscriminatorType(DISCRIMINATOR_TYPE_EDEFAULT);
 				return;
@@ -364,10 +237,6 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_DISCRIMINATOR_COLUMN__COLUMN_DEFINITION:
-				return COLUMN_DEFINITION_EDEFAULT == null ? columnDefinition != null : !COLUMN_DEFINITION_EDEFAULT.equals(columnDefinition);
-			case OrmPackage.XML_DISCRIMINATOR_COLUMN__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE:
 				return discriminatorType != DISCRIMINATOR_TYPE_EDEFAULT;
 			case OrmPackage.XML_DISCRIMINATOR_COLUMN__LENGTH:
@@ -387,11 +256,7 @@ public class XmlDiscriminatorColumn extends AbstractJpaEObject implements XmlNam
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (columnDefinition: ");
-		result.append(columnDefinition);
-		result.append(", name: ");
-		result.append(name);
-		result.append(", discriminatorType: ");
+		result.append(" (discriminatorType: ");
 		result.append(discriminatorType);
 		result.append(", length: ");
 		result.append(length);

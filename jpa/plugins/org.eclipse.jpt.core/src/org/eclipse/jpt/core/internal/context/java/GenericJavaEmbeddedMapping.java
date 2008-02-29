@@ -345,7 +345,7 @@ public class GenericJavaEmbeddedMapping extends AbstractJavaAttributeMapping imp
 	//******* static methods *********
 	
 	public static Embeddable embeddableFor(JavaPersistentAttribute persistentAttribute) {
-		String qualifiedTypeName = persistentAttribute.getPersistentAttributeResource().getQualifiedTypeName();
+		String qualifiedTypeName = persistentAttribute.getResourcePersistentAttribute().getQualifiedTypeName();
 		if (qualifiedTypeName == null) {
 			return null;
 		}

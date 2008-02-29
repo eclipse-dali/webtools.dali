@@ -12,7 +12,10 @@ package org.eclipse.jpt.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.internal.emfutility.DOMUtilities;
+import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,48 +39,8 @@ import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
  * @model kind="class"
  * @generated
  */
-public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNamedColumn
+public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn
 {
-	/**
-	 * The default value of the '{@link #getColumnDefinition() <em>Column Definition</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getColumnDefinition()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String COLUMN_DEFINITION_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getColumnDefinition() <em>Column Definition</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getColumnDefinition()
-	 * @generated
-	 * @ordered
-	 */
-	protected String columnDefinition = COLUMN_DEFINITION_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
-
 	/**
 	 * The default value of the '{@link #getReferencedColumnName() <em>Referenced Column Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -120,41 +83,6 @@ public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNa
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedColumn_Name()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	public String getName()
-	{
-		return name;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn#getName <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Name</em>' attribute.
-	 * @see #getName()
-	 * @generated
-	 */
-	public void setName(String newName)
-	{
-		String oldName = name;
-		name = newName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__NAME, oldName, name));
-	}
-
-	/**
 	 * Returns the value of the '<em><b>Referenced Column Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -190,41 +118,6 @@ public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNa
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Column Definition</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Column Definition</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Column Definition</em>' attribute.
-	 * @see #setColumnDefinition(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedColumn_ColumnDefinition()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	public String getColumnDefinition()
-	{
-		return columnDefinition;
-	}
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn#getColumnDefinition <em>Column Definition</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Column Definition</em>' attribute.
-	 * @see #getColumnDefinition()
-	 * @generated
-	 */
-	public void setColumnDefinition(String newColumnDefinition)
-	{
-		String oldColumnDefinition = columnDefinition;
-		columnDefinition = newColumnDefinition;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION, oldColumnDefinition, columnDefinition));
-	}
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -234,10 +127,6 @@ public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNa
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION:
-				return getColumnDefinition();
-			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__NAME:
-				return getName();
 			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
 				return getReferencedColumnName();
 		}
@@ -254,12 +143,6 @@ public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNa
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION:
-				setColumnDefinition((String)newValue);
-				return;
-			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__NAME:
-				setName((String)newValue);
-				return;
 			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
 				setReferencedColumnName((String)newValue);
 				return;
@@ -277,12 +160,6 @@ public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNa
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION:
-				setColumnDefinition(COLUMN_DEFINITION_EDEFAULT);
-				return;
-			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__NAME:
-				setName(NAME_EDEFAULT);
-				return;
 			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
 				setReferencedColumnName(REFERENCED_COLUMN_NAME_EDEFAULT);
 				return;
@@ -300,10 +177,6 @@ public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNa
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__COLUMN_DEFINITION:
-				return COLUMN_DEFINITION_EDEFAULT == null ? columnDefinition != null : !COLUMN_DEFINITION_EDEFAULT.equals(columnDefinition);
-			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
 				return REFERENCED_COLUMN_NAME_EDEFAULT == null ? referencedColumnName != null : !REFERENCED_COLUMN_NAME_EDEFAULT.equals(referencedColumnName);
 		}
@@ -321,14 +194,16 @@ public class XmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlNa
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (columnDefinition: ");
-		result.append(columnDefinition);
-		result.append(", name: ");
-		result.append(name);
-		result.append(", referencedColumnName: ");
+		result.append(" (referencedColumnName: ");
 		result.append(referencedColumnName);
 		result.append(')');
 		return result.toString();
 	}
+	
+	public TextRange referencedColumnNameTextRange() {
+		IDOMNode referencedColumnNameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(this.node, OrmXmlMapper.REFERENCED_COLUMN_NAME);
+		return (referencedColumnNameNode == null) ? validationTextRange() : buildTextRange(referencedColumnNameNode);
+	}
+
 
 } // PrimaryKeyJoinColumn

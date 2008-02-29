@@ -22,13 +22,10 @@ import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.ResourceModel;
-import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseJpaContent;
-import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JpaContextNode;
-import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.java.JavaAbstractJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -67,6 +64,7 @@ import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmAbstractJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
@@ -85,6 +83,7 @@ import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
+import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
@@ -312,11 +311,11 @@ public class GenericJpaFactory implements JpaFactory
 	public PersistenceXml buildPersistenceXml(BaseJpaContent parent, PersistenceResource persistenceResource) {
 		return new GenericPersistenceXml(parent, persistenceResource);
 	}
-
+	
 	public OrmXml buildOrmXml(MappingFileRef parent, OrmResource ormResource) {
 		return new OrmXmlImpl(parent, ormResource);
 	}
-
+	
 	public EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
 		return new GenericEntityMappings(parent, xmlEntityMappings);
 	}
@@ -509,7 +508,7 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericOrmSecondaryTable(parent);
 	}
 	
-	public OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(OrmJpaContextNode parent, AbstractJoinColumn.Owner owner) {
+	public OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(OrmJpaContextNode parent, OrmAbstractJoinColumn.Owner owner) {
 		return new GenericOrmPrimaryKeyJoinColumn(parent, owner);
 	}
 	
@@ -517,7 +516,7 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericOrmJoinTable(parent);
 	}
 	
-	public OrmJoinColumn buildOrmJoinColumn(OrmJpaContextNode parent, JoinColumn.Owner owner) {
+	public OrmJoinColumn buildOrmJoinColumn(OrmJpaContextNode parent, OrmJoinColumn.Owner owner) {
 		return new GenericOrmJoinColumn(parent, owner);
 	}
 	
@@ -529,7 +528,7 @@ public class GenericJpaFactory implements JpaFactory
 		return new GenericOrmAssociationOverride(parent, owner, xmlAssociationOverride);
 	}
 	
-	public OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, NamedColumn.Owner owner) {
+	public OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmNamedColumn.Owner owner) {
 		return new GenericOrmDiscriminatorColumn(parent, owner);
 	}
 	

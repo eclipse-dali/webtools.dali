@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
@@ -212,7 +213,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	}
 
 	
-	public class JoinColumnOwner implements JoinColumn.Owner
+	public class JoinColumnOwner implements OrmJoinColumn.Owner
 	{
 
 		public JoinColumnOwner() {
@@ -273,6 +274,11 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 
 		public int joinColumnsSize() {
 			return AbstractOrmSingleRelationshipMapping.this.joinColumnsSize();
+		}
+		
+		public TextRange validationTextRange() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	}
 }

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.jpt.core.context.AbstractColumn;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 
@@ -22,7 +21,7 @@ import org.eclipse.jpt.core.resource.orm.XmlColumn;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmColumn extends Column, OrmJpaContextNode
+public interface OrmColumn extends Column, OrmAbstractColumn
 {
 	
 	Owner owner();
@@ -35,7 +34,7 @@ public interface OrmColumn extends Column, OrmJpaContextNode
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)
 	 */
-	interface Owner extends AbstractColumn.Owner
+	interface Owner extends OrmAbstractColumn.Owner
 	{
 		XmlColumn columnResource();
 		

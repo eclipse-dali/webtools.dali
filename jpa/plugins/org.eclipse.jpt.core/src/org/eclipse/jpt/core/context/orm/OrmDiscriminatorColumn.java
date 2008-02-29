@@ -21,9 +21,9 @@ import org.eclipse.jpt.core.resource.orm.XmlEntity;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmDiscriminatorColumn extends DiscriminatorColumn, OrmJpaContextNode
+public interface OrmDiscriminatorColumn extends DiscriminatorColumn, OrmNamedColumn
 {
-	public abstract void initialize(XmlEntity entity);
+	void initialize(XmlEntity entity);
 
-	public abstract void update(XmlEntity entity);
+	void update(XmlEntity entity);
 }

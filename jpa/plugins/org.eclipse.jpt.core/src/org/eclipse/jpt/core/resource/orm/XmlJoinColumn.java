@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
+import org.eclipse.jpt.core.TextRange;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -59,5 +61,7 @@ public interface XmlJoinColumn extends XmlAbstractColumn
 	 * @generated
 	 */
 	void setReferencedColumnName(String value);
+	
+	TextRange referencedColumnNameTextRange();
 
 } // JoinColumn

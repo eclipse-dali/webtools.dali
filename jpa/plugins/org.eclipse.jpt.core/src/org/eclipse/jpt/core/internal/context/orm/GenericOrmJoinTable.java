@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
@@ -467,7 +468,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 	/**
 	 * just a little common behavior
 	 */
-	abstract class AbstractJoinColumnOwner implements JoinColumn.Owner
+	abstract class AbstractJoinColumnOwner implements OrmJoinColumn.Owner
 	{
 		AbstractJoinColumnOwner() {
 			super();
@@ -494,10 +495,11 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		public boolean tableIsAllowed() {
 			return false;
 		}
-//
-//		public ITextRange validationTextRange() {
-//			return this.joinTable.validationTextRange();
-//		}
+
+		public TextRange validationTextRange() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 
 		public org.eclipse.jpt.db.internal.Table dbTable(String tableName) {
 			if (GenericOrmJoinTable.this.getName() == null) {

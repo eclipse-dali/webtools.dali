@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
@@ -25,7 +26,7 @@ public class GenericOrmJoinColumn extends AbstractOrmColumn<XmlJoinColumn> imple
 
 	protected XmlJoinColumn joinColumn;
 
-	public GenericOrmJoinColumn(OrmJpaContextNode parent, JoinColumn.Owner owner) {
+	public GenericOrmJoinColumn(OrmJpaContextNode parent, OrmJoinColumn.Owner owner) {
 		super(parent, owner);
 	}
 
@@ -70,8 +71,8 @@ public class GenericOrmJoinColumn extends AbstractOrmColumn<XmlJoinColumn> imple
 	}
 	
 	@Override
-	public JoinColumn.Owner owner() {
-		return (JoinColumn.Owner) this.owner;
+	public OrmJoinColumn.Owner owner() {
+		return (OrmJoinColumn.Owner) this.owner;
 	}
 
 	public Table dbReferencedColumnTable() {
@@ -86,20 +87,14 @@ public class GenericOrmJoinColumn extends AbstractOrmColumn<XmlJoinColumn> imple
 	public boolean isReferencedColumnResolved() {
 		return dbReferencedColumn() != null;
 	}
-//
-//	public ITextRange referencedColumnNameTextRange() {
-//		if (node == null) {
-//			return owner.validationTextRange();
-//		}
-//		IDOMNode referencedColumnNameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.REFERENCED_COLUMN_NAME);
-//		return (referencedColumnNameNode == null) ? validationTextRange() : buildTextRange(referencedColumnNameNode);
-//	}
-//
-//	public void refreshDefaults(DefaultsContext defaultsContext) {
-//		setDefaultReferencedColumnName((String) defaultsContext.getDefault(GenericJpaPlatform.DEFAULT_JOIN_COLUMN_REFERENCED_COLUMN_NAME_KEY));
-//		setDefaultName((String) defaultsContext.getDefault(GenericJpaPlatform.DEFAULT_JOIN_COLUMN_NAME_KEY));
-//		setDefaultTable((String) defaultsContext.getDefault(GenericJpaPlatform.DEFAULT_JOIN_COLUMN_TABLE_KEY));
-//	}
+
+	public TextRange referencedColumnNameTextRange() {
+		if (columnResource() != null) {
+			return columnResource().referencedColumnNameTextRange();
+		}
+		return this.parent().validationTextRange(); 
+	}
+
 
 	@Override
 	protected XmlJoinColumn columnResource() {

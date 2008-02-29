@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.List;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.ColumnMapping;
@@ -22,11 +23,14 @@ import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic>
@@ -267,6 +271,69 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	
 	public void removeColumnResource() {
 		this.attributeMapping().setColumn(null);
+	}
+	
+	// ****************** validation ****************
+	
+	@Override
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
+		if (entityOwned()) {
+			addColumnMessages(messages);
+		}
+	}
+	
+	protected void addColumnMessages(List<IMessage> messages) {
+		OrmColumn column = getColumn();
+		String table = column.getTable();
+		boolean doContinue = isConnected();
+		
+		if (doContinue && typeMapping().tableNameIsInvalid(table)) {
+			if (persistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_TABLE,
+						new String[] {getName(), table, column.getName()},
+						column, 
+						column.tableTextRange())
+				);
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
+						new String[] {table, column.getName()}, 
+						column, 
+						column.tableTextRange())
+				);
+			}
+			doContinue = false;
+		}
+		
+		if (doContinue && ! column.isResolved()) {
+			if (persistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
+						new String[] {getName(), column.getName()}, 
+						column, 
+						column.nameTextRange())
+				);
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
+						new String[] {column.getName()}, 
+						column, 
+						column.nameTextRange())
+				);
+			}
+		}
 	}
 
 }

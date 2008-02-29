@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
@@ -138,5 +139,13 @@ public class VirtualColumn extends AbstractJpaEObject implements XmlColumn
 	
 	public void update(JavaColumn javaColumn) {
 		this.javaColumn = javaColumn;
+	}
+	
+	public TextRange nameTextRange() {
+		return null;
+	}
+	
+	public TextRange tableTextRange() {
+		return null;
 	}
 }

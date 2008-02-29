@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
@@ -22,7 +23,6 @@ import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
-import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.context.PersistentAttribute;
@@ -35,10 +35,12 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.core.context.orm.OrmAbstractJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
+import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
@@ -126,7 +128,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		this.table = jpaFactory().buildOrmTable(this);
 		this.specifiedSecondaryTables = new ArrayList<OrmSecondaryTable>();
 		this.virtualSecondaryTables = new ArrayList<OrmSecondaryTable>();
-		this.discriminatorColumn = createXmlDiscriminatorColumn();
+		this.discriminatorColumn = buildDiscriminatorColumn();
 		this.specifiedPrimaryKeyJoinColumns = new ArrayList<OrmPrimaryKeyJoinColumn>();
 		this.defaultPrimaryKeyJoinColumns = new ArrayList<OrmPrimaryKeyJoinColumn>();
 		this.specifiedAttributeOverrides = new ArrayList<OrmAttributeOverride>();
@@ -137,12 +139,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		this.namedNativeQueries = new ArrayList<OrmNamedNativeQuery>();
 	}
 	
-	protected OrmDiscriminatorColumn createXmlDiscriminatorColumn() {
+	protected OrmDiscriminatorColumn buildDiscriminatorColumn() {
 		return jpaFactory().buildOrmDiscriminatorColumn(this, buildDiscriminatorColumnOwner());
 	}
 	
-	protected NamedColumn.Owner buildDiscriminatorColumnOwner() {
-		return new NamedColumn.Owner(){
+	protected OrmNamedColumn.Owner buildDiscriminatorColumnOwner() {
+		return new OrmNamedColumn.Owner(){
 			public org.eclipse.jpt.db.internal.Table dbTable(String tableName) {
 				return GenericOrmEntity.this.dbTable(tableName);
 			}
@@ -155,6 +157,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 				//TODO default column name from java here or in XmlDiscriminatorColumn?
 				return DiscriminatorColumn.DEFAULT_NAME;
 			}
+			
+			public TextRange validationTextRange() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
 		};
 	}
 
@@ -563,7 +571,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return primaryKeyJoinColumn;
 	}
 	
-	protected AbstractJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
+	protected OrmAbstractJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
 		return new PrimaryKeyJoinColumnOwner();
 	}
 
@@ -1475,7 +1483,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		sb.append(getName());
 	}
 	
-	class PrimaryKeyJoinColumnOwner implements AbstractJoinColumn.Owner
+	class PrimaryKeyJoinColumnOwner implements OrmAbstractJoinColumn.Owner
 	{
 		public TypeMapping typeMapping() {
 			return GenericOrmEntity.this;
@@ -1503,6 +1511,11 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 				return null;
 			}
 			return GenericOrmEntity.this.parentEntity().primaryKeyColumnName();
+		}
+		
+		public TextRange validationTextRange() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	}
 	

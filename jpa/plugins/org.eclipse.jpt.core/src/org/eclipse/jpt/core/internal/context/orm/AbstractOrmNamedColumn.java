@@ -12,13 +12,14 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
+import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
 import org.eclipse.jpt.core.resource.orm.XmlNamedColumn;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
 
 
 public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends AbstractOrmJpaContextNode
-	implements NamedColumn
+	implements OrmNamedColumn
 {
 	protected Owner owner;
 	
@@ -31,6 +32,11 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 	protected AbstractOrmNamedColumn(OrmJpaContextNode parent, Owner owner) {
 		super(parent);
 		this.owner = owner;
+	}
+
+	@Override
+	public OrmJpaContextNode parent() {
+		return (OrmJpaContextNode) super.parent();
 	}
 	
 	public void initializeFrom(NamedColumn oldColumn) {
@@ -142,17 +148,14 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 	}
 
 	public TextRange nameTextRange() {
-		// TODO Auto-generated method stub
-		return null;
+		if (columnResource() != null) {
+			TextRange textRange = columnResource().nameTextRange();
+			if (textRange != null) {
+				return textRange;
+			}
+		}
+		return this.parent().validationTextRange(); 
 	}
-	
-//	public ITextRange nameTextRange() {
-//		if (node == null) {
-//			return owner.validationTextRange();
-//		}
-//		IDOMNode nameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.NAME);
-//		return (nameNode == null) ? validationTextRange() : buildTextRange(nameNode);
-//	}
 
 	public TextRange validationTextRange() {
 		return columnResource().validationTextRange();

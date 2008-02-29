@@ -9,13 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AbstractColumn;
+import org.eclipse.jpt.core.context.orm.OrmAbstractColumn;
 import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAbstractColumn;
 
 
 public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends AbstractOrmNamedColumn<T>
-	implements AbstractColumn
+	implements OrmAbstractColumn
 {
 	protected String specifiedTable;
 	
@@ -29,7 +31,7 @@ public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends Abs
 	
 	protected Boolean specifiedUpdatable;
 
-	protected AbstractOrmColumn(OrmJpaContextNode parent, AbstractColumn.Owner owner) {
+	protected AbstractOrmColumn(OrmJpaContextNode parent, OrmAbstractColumn.Owner owner) {
 		super(parent, owner);
 	}
 	
@@ -43,8 +45,8 @@ public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends Abs
 	}
 	
 	@Override
-	public AbstractColumn.Owner owner() {
-		return (AbstractColumn.Owner) super.owner();
+	public OrmAbstractColumn.Owner owner() {
+		return (OrmAbstractColumn.Owner) super.owner();
 	}
 	
 //	@Override
@@ -245,14 +247,16 @@ public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends Abs
 		return this.getTable();
 	}
 
-//
-//	public ITextRange tableTextRange() {
-//		if (node == null) {
-//			return owner.validationTextRange();
-//		}
-//		IDOMNode tableNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.ENTITY__TABLE);
-//		return (tableNode == null) ? validationTextRange() : buildTextRange(tableNode);
-//	}
+
+	public TextRange tableTextRange() {
+		if (columnResource() != null) {
+			TextRange textRange = columnResource().tableTextRange();
+			if (textRange != null) {
+				return textRange;
+			}
+		}
+		return this.parent().validationTextRange(); 
+	}
 	
 	@Override
 	protected void initialize(T column) {

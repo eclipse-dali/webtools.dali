@@ -221,6 +221,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlNamedColumn/columnDefinition"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlNamedColumn/name"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlNamedColumn"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlAbstractColumn">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAbstractColumn/insertable"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAbstractColumn/nullable"/>
@@ -228,6 +229,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAbstractColumn/unique"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAbstractColumn/updatable"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlAbstractColumn"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlColumn">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlColumn/length"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlColumn/precision"/>

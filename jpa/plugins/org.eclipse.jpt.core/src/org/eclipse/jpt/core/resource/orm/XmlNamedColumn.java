@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.resource.common.JpaEObject;
 
 /**
@@ -88,5 +89,11 @@ public interface XmlNamedColumn extends JpaEObject
 	 * @generated
 	 */
 	void setName(String value);
+
+	/**
+	 * Return the {@link TextRange} for the name attibute.  If the name attibute 
+	 * does not exist return the {@link TextRange} for the *table element.
+	 */
+	TextRange nameTextRange();
 
 } // NamedColumn
