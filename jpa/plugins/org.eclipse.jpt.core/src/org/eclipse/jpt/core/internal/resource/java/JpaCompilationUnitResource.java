@@ -154,7 +154,7 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 		//from an annotation type.  Entered bug #    to handle the bigger issue of when we need to 
 		//not build a persistent type(annotation types) and when we need to have validation instead(final types)
 		try {
-			if (iType.isAnnotation()) {
+			if (iType.isAnnotation() || iType.isEnum()) {
 				return null;
 			}
 		}
