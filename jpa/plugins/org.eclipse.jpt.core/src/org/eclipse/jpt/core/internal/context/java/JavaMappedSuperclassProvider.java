@@ -11,8 +11,8 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
 import org.eclipse.jpt.core.resource.java.MappedSuperclassAnnotation;
 
@@ -45,7 +45,7 @@ public class JavaMappedSuperclassProvider
 		return MappedSuperclassAnnotation.ANNOTATION_NAME;
 	}
 
-	public JavaTypeMapping buildMapping(JavaPersistentType parent, JpaFactory factory) {
+	public JavaMappedSuperclass buildMapping(JavaPersistentType parent, JpaFactory factory) {
 		return factory.buildJavaMappedSuperclass(parent);
 	}
 
