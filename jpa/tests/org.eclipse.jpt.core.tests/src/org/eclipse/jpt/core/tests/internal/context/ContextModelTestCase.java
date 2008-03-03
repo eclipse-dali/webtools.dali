@@ -36,6 +36,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
 public abstract class ContextModelTestCase extends AnnotationTestCase
@@ -80,12 +81,12 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	
 	@Override
 	protected TestJavaProject buildJavaProject(boolean autoBuild) throws Exception {
-		return buildJpaProject(BASE_PROJECT_NAME, autoBuild);
+		return buildJpaProject(BASE_PROJECT_NAME, autoBuild, null);
 	}
 	
-	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild) 
+	protected TestJpaProject buildJpaProject(String projectName, boolean autoBuild, IDataModel jpaConfig) 
 			throws Exception {
-		return TestJpaProject.buildJpaProject(projectName, autoBuild);
+		return TestJpaProject.buildJpaProject(projectName, autoBuild, jpaConfig);
 	}
 	
 	protected JpaProject jpaProject() {

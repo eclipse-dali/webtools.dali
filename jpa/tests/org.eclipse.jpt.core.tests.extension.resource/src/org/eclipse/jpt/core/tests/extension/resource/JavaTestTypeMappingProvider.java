@@ -1,29 +1,26 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.extension.resource;
 
 import org.eclipse.jpt.core.JpaFactory;
-import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
-import org.eclipse.jpt.core.internal.jdtutility.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
 
 /**
  * 
  */
-public class TestTypeMappingProvider
+public class JavaTestTypeMappingProvider
 	implements JavaTypeMappingProvider
 {
-
 	// singleton
-	private static final TestTypeMappingProvider INSTANCE = new TestTypeMappingProvider();
+	private static final JavaTestTypeMappingProvider INSTANCE = new JavaTestTypeMappingProvider();
 
 	/**
 	 * Return the singleton.
@@ -35,20 +32,20 @@ public class TestTypeMappingProvider
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private TestTypeMappingProvider() {
+	private JavaTestTypeMappingProvider() {
 		super();
 	}
 
 	public String key() {
-		return "test";
+		return JavaTestTypeMapping.TEST_TYPE_MAPPING_KEY;
+	}
+	
+	public String annotationName() {
+		return JavaTestTypeMapping.TEST_TYPE_ANNOTATION_NAME;
 	}
 
-	public JavaTypeMapping buildMapping(Type type, JpaFactory factory) {
-		return ((TestJpaFactory) factory).createTestTypeMapping(type);
-	}
-
-	public DeclarationAnnotationAdapter declarationAnnotationAdapter() {
-		return null;
+	public JavaTestTypeMapping buildMapping(JavaPersistentType parent, JpaFactory factory) {
+		return ((TestJpaFactory) factory).buildJavaTestTypeMapping(parent);
 	}
 
 }

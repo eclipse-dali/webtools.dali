@@ -9,28 +9,29 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.extension.resource;
 
+import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 
 public class TestJpaFactory extends GenericJpaFactory
 {
 	@Override
-	public JavaEntity createJavaEntity(Type type) {
-		return new TestJavaEntity(type);
+	public JavaEntity buildJavaEntity(JavaPersistentType parent) {
+		return new TestJavaEntity(parent);
 	}
 	
 	@Override
-	public IJavaBasic createJavaBasic(Attribute attribute) {
-		return new TestJavaBasic(attribute);
+	public JavaBasicMapping buildJavaBasicMapping(JavaPersistentAttribute parent) {
+		return new TestJavaBasicMapping(parent);
 	}
 	
-	public TestTypeMapping createTestTypeMapping(Type type) {
-		return new TestTypeMapping(type);
+	public JavaTestTypeMapping buildJavaTestTypeMapping(JavaPersistentType parent) {
+		return new JavaTestTypeMapping(parent);
 	}
 	
-	public TestAttributeMapping createTestAttributeMapping(Attribute attribute) {
-		return new TestAttributeMapping(attribute);
+	public JavaTestAttributeMapping buildJavaTestAttributeMapping(JavaPersistentAttribute parent) {
+		return new JavaTestAttributeMapping(parent);
 	}
 }

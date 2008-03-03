@@ -30,11 +30,15 @@ public class TestJpaProject extends TestJavaProject {
 
 	// ********** builders **********
 
-	public static TestJpaProject buildJpaProject(String baseProjectName, boolean autoBuild)
+	public static TestJpaProject buildJpaProject(String baseProjectName, boolean autoBuild, IDataModel jpaConfig)
 			throws CoreException {
-		return new TestJpaProject(uniqueProjectName(baseProjectName), autoBuild);
+		return new TestJpaProject(uniqueProjectName(baseProjectName), autoBuild, jpaConfig);
 	}
 
+	public static TestJpaProject buildJpaProject(String baseProjectName, boolean autoBuild)
+			throws CoreException {
+		return buildJpaProject(baseProjectName, autoBuild, null);
+	}
 
 	// ********** constructors/initialization **********
 

@@ -9,12 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.extension.resource;
 
-import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaEntity;
+import org.eclipse.jpt.ui.JpaUiFactory;
+import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 
-public class TestJavaEntity extends GenericJavaEntity
+/**
+ * The default implementation of the UI factory required to show the information
+ * related to a JPA mapping (type or attribute).
+ *
+ * @see JpaUiFactory
+ *
+ * @version 1.0
+ * @since 1.0
+ */
+public class TestJpaUiFactory extends BaseJpaUiFactory
 {
-	protected TestJavaEntity(JavaPersistentType parent) {
-		super(parent);
-	}
+
 }

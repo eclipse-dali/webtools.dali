@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.extension.resource;
 
-import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaEntity;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaBasicMapping;
 
-public class TestJavaEntity extends GenericJavaEntity
+public class TestJavaBasicMapping extends GenericJavaBasicMapping
 {
-	protected TestJavaEntity(JavaPersistentType parent) {
+	public TestJavaBasicMapping(JavaPersistentAttribute parent) {
 		super(parent);
 	}
 }
