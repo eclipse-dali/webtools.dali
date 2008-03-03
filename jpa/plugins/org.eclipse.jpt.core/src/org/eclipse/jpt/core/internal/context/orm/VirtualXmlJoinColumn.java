@@ -14,13 +14,13 @@ import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 
-public class VirtualJoinColumn extends AbstractJpaEObject implements XmlJoinColumn
+public class VirtualXmlJoinColumn extends AbstractJpaEObject implements XmlJoinColumn
 {	
 	protected JavaJoinColumn javaJoinColumn;
 
 	protected boolean metadataComplete;
 
-	protected VirtualJoinColumn(JavaJoinColumn javaJoinColumn, boolean metadataComplete) {
+	protected VirtualXmlJoinColumn(JavaJoinColumn javaJoinColumn, boolean metadataComplete) {
 		super();
 		this.javaJoinColumn = javaJoinColumn;
 		this.metadataComplete = metadataComplete;

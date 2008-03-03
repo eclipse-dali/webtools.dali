@@ -15,6 +15,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
@@ -31,9 +32,11 @@ public class VirtualEmbeddedId extends AbstractJpaEObject implements XmlEmbedded
 
 	protected EList<XmlAttributeOverride> virtualAttributeOverrides;
 	
-
-	public VirtualEmbeddedId(JavaEmbeddedIdMapping javaEmbeddedIdMapping, boolean metadataComplete) {
+	protected OrmTypeMapping ormTypeMapping;
+	
+	public VirtualEmbeddedId(OrmTypeMapping ormTypeMapping, JavaEmbeddedIdMapping javaEmbeddedIdMapping, boolean metadataComplete) {
 		super();
+		this.ormTypeMapping = ormTypeMapping;
 		this.javaEmbeddedIdMapping = javaEmbeddedIdMapping;
 		this.metadataComplete = metadataComplete;
 		this.initializeAttributeOverrides(javaEmbeddedIdMapping);
@@ -50,7 +53,7 @@ public class VirtualEmbeddedId extends AbstractJpaEObject implements XmlEmbedded
 		}
 		
 		while (javaAttributesOverrides.hasNext()) {
-			this.virtualAttributeOverrides.add(new VirtualAttributeOverride(javaAttributesOverrides.next(), this.metadataComplete));
+			this.virtualAttributeOverrides.add(new VirtualAttributeOverride(ormTypeMapping, javaAttributesOverrides.next(), this.metadataComplete));
 		}
 	}
 	
@@ -89,7 +92,7 @@ public class VirtualEmbeddedId extends AbstractJpaEObject implements XmlEmbedded
 				virtualAttributeOverride.update(javaAttributeOverride);
 			}
 			else {
-				this.virtualAttributeOverrides.add(new VirtualAttributeOverride(javaAttributeOverride, this.metadataComplete));
+				this.virtualAttributeOverrides.add(new VirtualAttributeOverride(ormTypeMapping, javaAttributeOverride, this.metadataComplete));
 			}
 		}
 		

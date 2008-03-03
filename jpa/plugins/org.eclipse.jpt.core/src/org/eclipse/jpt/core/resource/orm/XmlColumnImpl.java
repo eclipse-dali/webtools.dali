@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * @model kind="class"
  * @generated
  */
-public class ColumnImpl extends AbstractXmlAbstractColumn implements XmlColumn
+public class XmlColumnImpl extends AbstractXmlAbstractColumn implements XmlColumn
 {
 	/**
 	 * The default value of the '{@link #getLength() <em>Length</em>}' attribute.
@@ -96,7 +96,7 @@ public class ColumnImpl extends AbstractXmlAbstractColumn implements XmlColumn
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ColumnImpl()
+	protected XmlColumnImpl()
 	{
 		super();
 	}
@@ -132,7 +132,7 @@ public class ColumnImpl extends AbstractXmlAbstractColumn implements XmlColumn
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.ColumnImpl#getLength <em>Length</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlColumnImpl#getLength <em>Length</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Length</em>' attribute.
@@ -167,7 +167,7 @@ public class ColumnImpl extends AbstractXmlAbstractColumn implements XmlColumn
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.ColumnImpl#getPrecision <em>Precision</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlColumnImpl#getPrecision <em>Precision</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Precision</em>' attribute.
@@ -202,7 +202,7 @@ public class ColumnImpl extends AbstractXmlAbstractColumn implements XmlColumn
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.ColumnImpl#getScale <em>Scale</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlColumnImpl#getScale <em>Scale</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Scale</em>' attribute.

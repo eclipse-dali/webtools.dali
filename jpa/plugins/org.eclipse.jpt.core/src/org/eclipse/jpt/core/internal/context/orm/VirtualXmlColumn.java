@@ -11,18 +11,33 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaColumn;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 
-public class VirtualColumn extends AbstractJpaEObject implements XmlColumn
+/**
+ * A virtual column is used to represent the XmlColumn resource object
+ * within a virtual mapping.  A virtual mapping is one which is not specified
+ * in the orm.xml file, but is implied from the underlying java.  Virtual column
+ * is not used when the mapping is specified in the orm.xml, but the column tag does not exist.
+ * 
+ * A virtual column delegates to the underlying java column for its state.  The metadataComplete
+ * flag determines whether it will get specified or default information from the java column
+ *
+ */
+public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 {
 	
 	protected JavaColumn javaColumn;
 
 	protected boolean metadataComplete;
 
-	protected VirtualColumn(JavaColumn javaColumn, boolean metadataComplete) {
+	protected OrmTypeMapping ormTypeMapping;
+	
+	
+	protected VirtualXmlColumn(OrmTypeMapping ormTypeMapping, JavaColumn javaColumn, boolean metadataComplete) {
 		super();
+		this.ormTypeMapping = ormTypeMapping;
 		this.javaColumn = javaColumn;
 		this.metadataComplete = metadataComplete;
 	}
@@ -105,10 +120,12 @@ public class VirtualColumn extends AbstractJpaEObject implements XmlColumn
 	}
 
 	public String getTable() {
-		if (this.metadataComplete) {
-			return this.javaColumn.getDefaultTable();
+		if (!this.metadataComplete) {
+			if (this.javaColumn.getSpecifiedTable() != null) {
+				return this.javaColumn.getSpecifiedTable();
+			}	
 		}
-		return this.javaColumn.getTable();
+		return this.ormTypeMapping.tableName();
 	}
 
 	public void setTable(String value) {

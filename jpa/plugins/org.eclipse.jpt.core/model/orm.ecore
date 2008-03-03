@@ -288,7 +288,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="precision" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="scale" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ColumnImpl" eSuperTypes="#//AbstractXmlAbstractColumn #//XmlColumn"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlColumnImpl" eSuperTypes="#//AbstractXmlAbstractColumn #//XmlColumn"/>
   <eClassifiers xsi:type="ecore:EClass" name="ColumnResult">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
@@ -353,7 +353,7 @@
       eSuperTypes="#//XmlAbstractColumn">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="referencedColumnName" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="JoinColumnImpl" eSuperTypes="#//AbstractXmlAbstractColumn #//XmlJoinColumn"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlJoinColumnImpl" eSuperTypes="#//AbstractXmlAbstractColumn #//XmlJoinColumn"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlJoinTable" abstract="true" interface="true"
       eSuperTypes="#//XmlBaseTable">
     <eStructuralFeatures xsi:type="ecore:EReference" name="joinColumns" upperBound="-1"
@@ -361,7 +361,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="inverseJoinColumns" upperBound="-1"
         eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="JoinTableImpl" eSuperTypes="#//AbstractXmlBaseTable #//XmlJoinTable"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlJoinTableImpl" eSuperTypes="#//AbstractXmlBaseTable #//XmlJoinTable"/>
   <eClassifiers xsi:type="ecore:EClass" name="Lob"/>
   <eClassifiers xsi:type="ecore:EClass" name="MapKey" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>

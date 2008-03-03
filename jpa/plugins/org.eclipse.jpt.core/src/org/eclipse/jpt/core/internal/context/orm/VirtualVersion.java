@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
@@ -24,15 +25,15 @@ public class VirtualVersion extends AbstractJpaEObject implements XmlVersion
 {
 	JavaVersionMapping javaVersionMapping;
 
-	protected final VirtualColumn column;
+	protected final VirtualXmlColumn column;
 
 	protected boolean metadataComplete;
 	
-	public VirtualVersion(JavaVersionMapping javaVersionMapping, boolean metadataComplete) {
+	public VirtualVersion(OrmTypeMapping ormTypeMapping, JavaVersionMapping javaVersionMapping, boolean metadataComplete) {
 		super();
 		this.javaVersionMapping = javaVersionMapping;
 		this.metadataComplete = metadataComplete;
-		this.column = new VirtualColumn(javaVersionMapping.getColumn(), metadataComplete);
+		this.column = new VirtualXmlColumn(ormTypeMapping, javaVersionMapping.getColumn(), metadataComplete);
 	}
 
 	public String getName() {

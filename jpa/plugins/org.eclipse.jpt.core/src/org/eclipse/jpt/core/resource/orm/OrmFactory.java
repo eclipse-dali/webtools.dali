@@ -441,9 +441,9 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ColumnImpl createColumnImpl()
+	public XmlColumnImpl createColumnImpl()
 	{
-		ColumnImpl columnImpl = new ColumnImpl();
+		XmlColumnImpl columnImpl = new XmlColumnImpl();
 		return columnImpl;
 	}
 
@@ -551,9 +551,9 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public JoinColumnImpl createJoinColumnImpl()
+	public XmlJoinColumnImpl createJoinColumnImpl()
 	{
-		JoinColumnImpl joinColumnImpl = new JoinColumnImpl();
+		XmlJoinColumnImpl joinColumnImpl = new XmlJoinColumnImpl();
 		return joinColumnImpl;
 	}
 
@@ -562,9 +562,9 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public JoinTableImpl createJoinTableImpl()
+	public XmlJoinTableImpl createJoinTableImpl()
 	{
-		JoinTableImpl joinTableImpl = new JoinTableImpl();
+		XmlJoinTableImpl joinTableImpl = new XmlJoinTableImpl();
 		return joinTableImpl;
 	}
 

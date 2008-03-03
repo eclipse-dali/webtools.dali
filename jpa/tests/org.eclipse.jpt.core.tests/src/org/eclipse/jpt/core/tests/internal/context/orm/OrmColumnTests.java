@@ -11,11 +11,15 @@
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -200,62 +204,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertNull(ormColumn.getColumnDefinition());
 		assertNull(basic.getColumn());
 	}
-//	public void testUpdateDefaultNameFromJavaTable() throws Exception {
-//		createTestEntity();
-//		
-//		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		XmlEntity xmlEntity = (XmlEntity) ormPersistentType.getMapping();
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-//		
-//		xmlEntity.javaEntity().getTable().setSpecifiedName("Foo");
-//		assertEquals("Foo", xmlEntity.getTable().getDefaultName());
-//		
-//		xmlEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-//
-//		xmlEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-//		xmlEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-//	
-//		xmlEntity.setSpecifiedMetadataComplete(null);
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-//		
-//		xmlEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
-//		assertEquals("Foo", xmlEntity.getTable().getDefaultName());
-//		
-//		xmlEntity.getTable().setSpecifiedName("Bar");
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-//	}
-//	
-//	public void testUpdateDefaultNameNoJava() throws Exception {
-//		createTestEntity();
-//		
-//		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-//		XmlEntity xmlEntity = (XmlEntity) ormPersistentType.getMapping();
-//		assertEquals("Foo", xmlEntity.getTable().getDefaultName());
-//	}
-//	
-//	public void testUpdateDefaultNameFromParent() throws Exception {
-//		createTestEntity();
-//		createTestSubType();
-//		
-//		OrmPersistentType parentOrmPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		OrmPersistentType childOrmPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
-//		XmlEntity parentXmlEntity = (XmlEntity) parentOrmPersistentType.getMapping();
-//		XmlEntity childXmlEntity = (XmlEntity) childOrmPersistentType.getMapping();
-//		
-//		assertEquals(TYPE_NAME, parentXmlEntity.getTable().getDefaultName());
-//		assertEquals(TYPE_NAME, childXmlEntity.getTable().getDefaultName());
-//		
-//		parentXmlEntity.getTable().setSpecifiedName("FOO");
-//		assertEquals(TYPE_NAME, parentXmlEntity.getTable().getDefaultName());
-//		assertEquals("FOO", childXmlEntity.getTable().getDefaultName());
-//
-//		parentXmlEntity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
-//		assertEquals(TYPE_NAME, parentXmlEntity.getTable().getDefaultName());
-//		assertEquals("AnnotationTestTypeChild", childXmlEntity.getTable().getDefaultName());
-//	}
-	
+
 	public void testUpdateSpecifiedTable() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
@@ -695,4 +644,208 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertNull(ormColumn.getSpecifiedLength());
 		assertNull(basic.getColumn());
 	}
+	
+	public void testVirtualColumnDefaults() throws Exception {
+		createTestEntity();
+
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		ListIterator<OrmPersistentAttribute> attributes = ormPersistentType.virtualAttributes();
+		attributes.next();	
+		
+		//virtual attrubte in orm.xml, java attribute has no Column annotation
+		OrmPersistentAttribute namePersistentAttribute = attributes.next();
+		OrmBasicMapping nameVirtualMapping = (OrmBasicMapping) namePersistentAttribute.getMapping();		
+		OrmColumn ormColumn = nameVirtualMapping.getColumn();
+		assertEquals("name", ormColumn.getSpecifiedName());
+		assertEquals(TYPE_NAME, ormColumn.getSpecifiedTable());
+		assertEquals(null, ormColumn.getColumnDefinition());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUpdatable());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedNullable());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUnique());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getSpecifiedLength());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getSpecifiedPrecision());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getSpecifiedScale());
+	
+		//set Column annotation in Java
+		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.javaPersistentType().attributeNamed("name").getMapping();
+		javaBasicMapping.getColumn().setSpecifiedName("FOO");		
+		javaBasicMapping.getColumn().setSpecifiedTable("FOO_TABLE");
+		javaBasicMapping.getColumn().setColumnDefinition("COLUMN_DEFINITION");
+		javaBasicMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);	
+		javaBasicMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);	
+		javaBasicMapping.getColumn().setSpecifiedNullable(Boolean.FALSE);	
+		javaBasicMapping.getColumn().setSpecifiedUnique(Boolean.TRUE);	
+		javaBasicMapping.getColumn().setSpecifiedLength(new Integer(45));
+		javaBasicMapping.getColumn().setSpecifiedPrecision(new Integer(46));
+		javaBasicMapping.getColumn().setSpecifiedScale(new Integer(47));
+
+		assertEquals("FOO", ormColumn.getSpecifiedName());
+		assertEquals("FOO_TABLE", ormColumn.getSpecifiedTable());
+		assertEquals("COLUMN_DEFINITION", ormColumn.getColumnDefinition());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUpdatable());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedNullable());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUnique());
+		assertEquals(Integer.valueOf(45), ormColumn.getSpecifiedLength());
+		assertEquals(Integer.valueOf(46), ormColumn.getSpecifiedPrecision());
+		assertEquals(Integer.valueOf(47), ormColumn.getSpecifiedScale());
+
+	
+		//set metadata-complete, orm.xml virtual column ignores java column annotation
+		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
+		assertEquals("name", ormColumn.getSpecifiedName());
+		assertEquals(TYPE_NAME, ormColumn.getSpecifiedTable());
+		assertEquals(null, ormColumn.getColumnDefinition());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUpdatable());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedNullable());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUnique());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getSpecifiedLength());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getSpecifiedPrecision());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getSpecifiedScale());
+	
+		ormPersistentType.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.FALSE);
+		assertEquals("name", ormColumn.getSpecifiedName());
+		assertEquals(TYPE_NAME, ormColumn.getSpecifiedTable());
+		assertEquals(null, ormColumn.getColumnDefinition());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUpdatable());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedNullable());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUnique());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getSpecifiedLength());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getSpecifiedPrecision());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getSpecifiedScale());
+	
+		ormPersistentType.getMapping().setSpecifiedMetadataComplete(null);
+		assertEquals("name", ormColumn.getSpecifiedName());
+		assertEquals(TYPE_NAME, ormColumn.getSpecifiedTable());
+		assertEquals(null, ormColumn.getColumnDefinition());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUpdatable());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedNullable());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUnique());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getSpecifiedLength());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getSpecifiedPrecision());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getSpecifiedScale());
+		
+		//set metadata-complete false, orm.xml virtual column gets setting from java annotation
+		ormPersistentType.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
+		assertEquals("FOO", ormColumn.getSpecifiedName());
+		assertEquals("FOO_TABLE", ormColumn.getSpecifiedTable());
+		assertEquals("COLUMN_DEFINITION", ormColumn.getColumnDefinition());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUpdatable());
+		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedNullable());
+		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUnique());
+		assertEquals(Integer.valueOf(45), ormColumn.getSpecifiedLength());
+		assertEquals(Integer.valueOf(46), ormColumn.getSpecifiedPrecision());
+		assertEquals(Integer.valueOf(47), ormColumn.getSpecifiedScale());
+	}
+	
+	public void testNullColumnDefaults() throws Exception {
+		createTestEntity();
+
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute namePersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "name");
+
+		OrmBasicMapping nameVirtualMapping = (OrmBasicMapping) namePersistentAttribute.getMapping();		
+		OrmColumn ormColumn = nameVirtualMapping.getColumn();
+	
+		//set Column annotation in Java
+		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.javaPersistentType().attributeNamed("name").getMapping();
+		javaBasicMapping.getColumn().setSpecifiedName("FOO");		
+		javaBasicMapping.getColumn().setSpecifiedTable("FOO_TABLE");
+		javaBasicMapping.getColumn().setColumnDefinition("COLUMN_DEFINITION");
+		javaBasicMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);	
+		javaBasicMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);	
+		javaBasicMapping.getColumn().setSpecifiedNullable(Boolean.FALSE);	
+		javaBasicMapping.getColumn().setSpecifiedUnique(Boolean.TRUE);	
+		javaBasicMapping.getColumn().setSpecifiedLength(new Integer(45));
+		javaBasicMapping.getColumn().setSpecifiedPrecision(new Integer(46));
+		javaBasicMapping.getColumn().setSpecifiedScale(new Integer(47));
+
+	
+		assertEquals("name", ormColumn.getDefaultName());
+		assertEquals(TYPE_NAME, ormColumn.getDefaultTable());
+		assertEquals(Boolean.TRUE, ormColumn.getDefaultInsertable());
+		assertEquals(Boolean.TRUE, ormColumn.getDefaultUpdatable());
+		assertEquals(Boolean.TRUE, ormColumn.getDefaultNullable());
+		assertEquals(Boolean.FALSE, ormColumn.getDefaultUnique());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getDefaultLength());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getDefaultScale());
+		assertNull(ormColumn.getSpecifiedName());
+		assertNull(ormColumn.getSpecifiedTable());
+		assertNull(ormColumn.getColumnDefinition());
+		assertNull(ormColumn.getSpecifiedInsertable());
+		assertNull(ormColumn.getSpecifiedUpdatable());
+		assertNull(ormColumn.getSpecifiedNullable());
+		assertNull(ormColumn.getSpecifiedUnique());
+		assertNull(ormColumn.getSpecifiedLength());
+		assertNull(ormColumn.getSpecifiedPrecision());
+		assertNull(ormColumn.getSpecifiedScale());
+	}
+
+	public void testVirtualColumnTable() throws Exception {
+		createTestEntity();
+
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		ListIterator<OrmPersistentAttribute> attributes = ormPersistentType.virtualAttributes();
+		attributes.next();	
+		
+		//virtual attribute in orm.xml, java attribute has no Column annotation
+		OrmPersistentAttribute namePersistentAttribute = attributes.next();
+		OrmBasicMapping nameVirtualMapping = (OrmBasicMapping) namePersistentAttribute.getMapping();	
+		OrmColumn ormColumn = nameVirtualMapping.getColumn();
+		
+		assertEquals(TYPE_NAME, ormColumn.getSpecifiedTable());
+	
+		((OrmEntity) ormPersistentType.getMapping()).getTable().setSpecifiedName("ORM_TABLE");
+		assertEquals("ORM_TABLE", ormColumn.getSpecifiedTable());
+		
+		//set Column table element in Java
+		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.javaPersistentType().attributeNamed("name").getMapping();
+		javaBasicMapping.getColumn().setSpecifiedTable("JAVA_TABLE");	
+		assertEquals("JAVA_TABLE", ormColumn.getSpecifiedTable());
+		
+		//make name persistent attribute not virtual
+		namePersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "name");
+		nameVirtualMapping = (OrmBasicMapping) namePersistentAttribute.getMapping();	
+		ormColumn = nameVirtualMapping.getColumn();
+		assertNull(ormColumn.getSpecifiedTable());
+		assertEquals("ORM_TABLE", ormColumn.getDefaultTable());
+		
+	}
+
+//public void testUpdateDefaultNameNoJava() throws Exception {
+//	createTestEntity();
+//	
+//	OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+//	XmlEntity xmlEntity = (XmlEntity) ormPersistentType.getMapping();
+//	assertEquals("Foo", xmlEntity.getTable().getDefaultName());
+//}
+//
+//public void testUpdateDefaultNameFromParent() throws Exception {
+//	createTestEntity();
+//	createTestSubType();
+//	
+//	OrmPersistentType parentOrmPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+//	OrmPersistentType childOrmPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
+//	XmlEntity parentXmlEntity = (XmlEntity) parentOrmPersistentType.getMapping();
+//	XmlEntity childXmlEntity = (XmlEntity) childOrmPersistentType.getMapping();
+//	
+//	assertEquals(TYPE_NAME, parentXmlEntity.getTable().getDefaultName());
+//	assertEquals(TYPE_NAME, childXmlEntity.getTable().getDefaultName());
+//	
+//	parentXmlEntity.getTable().setSpecifiedName("FOO");
+//	assertEquals(TYPE_NAME, parentXmlEntity.getTable().getDefaultName());
+//	assertEquals("FOO", childXmlEntity.getTable().getDefaultName());
+//
+//	parentXmlEntity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+//	assertEquals(TYPE_NAME, parentXmlEntity.getTable().getDefaultName());
+//	assertEquals("AnnotationTestTypeChild", childXmlEntity.getTable().getDefaultName());
+//}
+
 }

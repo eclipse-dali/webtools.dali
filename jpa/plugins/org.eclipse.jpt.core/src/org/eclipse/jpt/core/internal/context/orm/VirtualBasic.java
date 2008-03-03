@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.EnumType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
@@ -26,15 +27,15 @@ public class VirtualBasic extends AbstractJpaEObject implements XmlBasic
 {
 	JavaBasicMapping javaBasicMapping;
 
-	protected final VirtualColumn column;
+	protected final VirtualXmlColumn column;
 
 	protected boolean metadataComplete;
-	
-	public VirtualBasic(JavaBasicMapping javaBasicMapping, boolean metadataComplete) {
+		
+	public VirtualBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping, boolean metadataComplete) {
 		super();
 		this.javaBasicMapping = javaBasicMapping;
 		this.metadataComplete = metadataComplete;
-		this.column = new VirtualColumn(javaBasicMapping.getColumn(), metadataComplete);
+		this.column = new VirtualXmlColumn(ormTypeMapping, javaBasicMapping.getColumn(), metadataComplete);
 	}
 
 	public String getName() {

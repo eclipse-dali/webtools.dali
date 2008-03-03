@@ -33,7 +33,7 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
  * @model kind="class"
  * @generated
  */
-public class JoinColumnImpl extends AbstractXmlAbstractColumn implements XmlJoinColumn
+public class XmlJoinColumnImpl extends AbstractXmlAbstractColumn implements XmlJoinColumn
 {
 	/**
 	 * The default value of the '{@link #getReferencedColumnName() <em>Referenced Column Name</em>}' attribute.
@@ -60,7 +60,7 @@ public class JoinColumnImpl extends AbstractXmlAbstractColumn implements XmlJoin
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected JoinColumnImpl()
+	protected XmlJoinColumnImpl()
 	{
 		super();
 	}
@@ -96,7 +96,7 @@ public class JoinColumnImpl extends AbstractXmlAbstractColumn implements XmlJoin
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.JoinColumnImpl#getReferencedColumnName <em>Referenced Column Name</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlJoinColumnImpl#getReferencedColumnName <em>Referenced Column Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Referenced Column Name</em>' attribute.

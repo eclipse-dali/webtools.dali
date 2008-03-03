@@ -65,7 +65,7 @@ public class VirtualManyToOne extends AbstractJpaEObject implements XmlManyToOne
 		}
 		
 		while (javaJoinColumns.hasNext()) {
-			this.virtualJoinColumns.add(new VirtualJoinColumn(javaJoinColumns.next(), this.metadataComplete));
+			this.virtualJoinColumns.add(new VirtualXmlJoinColumn(javaJoinColumns.next(), this.metadataComplete));
 		}
 	}
 	
@@ -156,11 +156,11 @@ public class VirtualManyToOne extends AbstractJpaEObject implements XmlManyToOne
 		while (javaJoinColumns.hasNext()) {
 			JavaJoinColumn javaJoinColumn = javaJoinColumns.next();
 			if (virtualJoinColumns.hasNext()) {
-				VirtualJoinColumn virtualJoinColumn = (VirtualJoinColumn) virtualJoinColumns.next();
+				VirtualXmlJoinColumn virtualJoinColumn = (VirtualXmlJoinColumn) virtualJoinColumns.next();
 				virtualJoinColumn.update(javaJoinColumn);
 			}
 			else {
-				this.virtualJoinColumns.add(new VirtualJoinColumn(javaJoinColumn, this.metadataComplete));
+				this.virtualJoinColumns.add(new VirtualXmlJoinColumn(javaJoinColumn, this.metadataComplete));
 			}
 		}
 		

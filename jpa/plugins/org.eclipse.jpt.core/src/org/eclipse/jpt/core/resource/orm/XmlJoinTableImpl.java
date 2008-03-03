@@ -33,7 +33,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @model kind="class"
  * @generated
  */
-public class JoinTableImpl extends AbstractXmlBaseTable implements XmlJoinTable
+public class XmlJoinTableImpl extends AbstractXmlBaseTable implements XmlJoinTable
 {
 	/**
 	 * The cached value of the '{@link #getJoinColumns() <em>Join Columns</em>}' containment reference list.
@@ -59,7 +59,7 @@ public class JoinTableImpl extends AbstractXmlBaseTable implements XmlJoinTable
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected JoinTableImpl()
+	protected XmlJoinTableImpl()
 	{
 		super();
 	}

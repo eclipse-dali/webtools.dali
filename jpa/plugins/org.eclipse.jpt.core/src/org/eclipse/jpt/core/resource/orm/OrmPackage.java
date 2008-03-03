@@ -3280,10 +3280,10 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_COLUMN_FEATURE_COUNT = XML_ABSTRACT_COLUMN_FEATURE_COUNT + 3;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.ColumnImpl <em>Column Impl</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlColumnImpl <em>Column Impl</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.resource.orm.ColumnImpl
+	 * @see org.eclipse.jpt.core.resource.orm.XmlColumnImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getColumnImpl()
 	 * @generated
 	 */
@@ -3943,10 +3943,10 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_JOIN_COLUMN_FEATURE_COUNT = XML_ABSTRACT_COLUMN_FEATURE_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.JoinColumnImpl <em>Join Column Impl</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlJoinColumnImpl <em>Join Column Impl</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.resource.orm.JoinColumnImpl
+	 * @see org.eclipse.jpt.core.resource.orm.XmlJoinColumnImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getJoinColumnImpl()
 	 * @generated
 	 */
@@ -4217,10 +4217,10 @@ public class OrmPackage extends EPackageImpl
 	public static final int ABSTRACT_XML_BASE_TABLE_FEATURE_COUNT = XML_BASE_TABLE_FEATURE_COUNT + 0;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.JoinTableImpl <em>Join Table Impl</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlJoinTableImpl <em>Join Table Impl</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.resource.orm.JoinTableImpl
+	 * @see org.eclipse.jpt.core.resource.orm.XmlJoinTableImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getJoinTableImpl()
 	 * @generated
 	 */
@@ -8588,11 +8588,11 @@ public class OrmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.ColumnImpl <em>Column Impl</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.XmlColumnImpl <em>Column Impl</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Column Impl</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.ColumnImpl
+	 * @see org.eclipse.jpt.core.resource.orm.XmlColumnImpl
 	 * @generated
 	 */
 	public EClass getColumnImpl()
@@ -9062,11 +9062,11 @@ public class OrmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.JoinColumnImpl <em>Join Column Impl</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.XmlJoinColumnImpl <em>Join Column Impl</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Join Column Impl</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.JoinColumnImpl
+	 * @see org.eclipse.jpt.core.resource.orm.XmlJoinColumnImpl
 	 * @generated
 	 */
 	public EClass getJoinColumnImpl()
@@ -9120,11 +9120,11 @@ public class OrmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.JoinTableImpl <em>Join Table Impl</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.XmlJoinTableImpl <em>Join Table Impl</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Join Table Impl</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.JoinTableImpl
+	 * @see org.eclipse.jpt.core.resource.orm.XmlJoinTableImpl
 	 * @generated
 	 */
 	public EClass getJoinTableImpl()
@@ -10799,7 +10799,7 @@ public class OrmPackage extends EPackageImpl
 		initEAttribute(getXmlColumn_Precision(), theXMLTypePackage.getIntObject(), "precision", null, 0, 1, XmlColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlColumn_Scale(), theXMLTypePackage.getIntObject(), "scale", null, 0, 1, XmlColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(columnImplEClass, ColumnImpl.class, "ColumnImpl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(columnImplEClass, XmlColumnImpl.class, "ColumnImpl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(columnResultEClass, ColumnResult.class, "ColumnResult", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getColumnResult_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, ColumnResult.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -10848,13 +10848,13 @@ public class OrmPackage extends EPackageImpl
 		initEClass(xmlJoinColumnEClass, XmlJoinColumn.class, "XmlJoinColumn", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlJoinColumn_ReferencedColumnName(), theXMLTypePackage.getString(), "referencedColumnName", null, 0, 1, XmlJoinColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(joinColumnImplEClass, JoinColumnImpl.class, "JoinColumnImpl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(joinColumnImplEClass, XmlJoinColumnImpl.class, "JoinColumnImpl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlJoinTableEClass, XmlJoinTable.class, "XmlJoinTable", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlJoinTable_JoinColumns(), this.getXmlJoinColumn(), null, "joinColumns", null, 0, -1, XmlJoinTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlJoinTable_InverseJoinColumns(), this.getXmlJoinColumn(), null, "inverseJoinColumns", null, 0, -1, XmlJoinTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(joinTableImplEClass, JoinTableImpl.class, "JoinTableImpl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(joinTableImplEClass, XmlJoinTableImpl.class, "JoinTableImpl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(lobEClass, Lob.class, "Lob", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -12380,10 +12380,10 @@ public class OrmPackage extends EPackageImpl
 		public static final EAttribute XML_COLUMN__SCALE = eINSTANCE.getXmlColumn_Scale();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.ColumnImpl <em>Column Impl</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlColumnImpl <em>Column Impl</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.resource.orm.ColumnImpl
+		 * @see org.eclipse.jpt.core.resource.orm.XmlColumnImpl
 		 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getColumnImpl()
 		 * @generated
 		 */
@@ -12676,10 +12676,10 @@ public class OrmPackage extends EPackageImpl
 		public static final EAttribute XML_JOIN_COLUMN__REFERENCED_COLUMN_NAME = eINSTANCE.getXmlJoinColumn_ReferencedColumnName();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.JoinColumnImpl <em>Join Column Impl</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlJoinColumnImpl <em>Join Column Impl</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.resource.orm.JoinColumnImpl
+		 * @see org.eclipse.jpt.core.resource.orm.XmlJoinColumnImpl
 		 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getJoinColumnImpl()
 		 * @generated
 		 */
@@ -12712,10 +12712,10 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS = eINSTANCE.getXmlJoinTable_InverseJoinColumns();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.JoinTableImpl <em>Join Table Impl</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlJoinTableImpl <em>Join Table Impl</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.resource.orm.JoinTableImpl
+		 * @see org.eclipse.jpt.core.resource.orm.XmlJoinTableImpl
 		 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getJoinTableImpl()
 		 * @generated
 		 */

@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.TemporalType;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
@@ -29,7 +30,7 @@ public class VirtualId extends AbstractJpaEObject implements XmlId
 
 	protected boolean metadataComplete;
 
-	protected final VirtualColumn column;
+	protected final VirtualXmlColumn column;
 
 	protected final VirtualGeneratedValue virtualGeneratedValue;
 	
@@ -39,11 +40,11 @@ public class VirtualId extends AbstractJpaEObject implements XmlId
 	
 
 		
-	public VirtualId(JavaIdMapping javaIdMapping, boolean metadataComplete) {
+	public VirtualId(OrmTypeMapping ormTypeMapping, JavaIdMapping javaIdMapping, boolean metadataComplete) {
 		super();
 		this.javaIdMapping = javaIdMapping;
 		this.metadataComplete = metadataComplete;
-		this.column = new VirtualColumn(javaIdMapping.getColumn(), metadataComplete);
+		this.column = new VirtualXmlColumn(ormTypeMapping, javaIdMapping.getColumn(), metadataComplete);
 		this.virtualGeneratedValue = new VirtualGeneratedValue(javaIdMapping.getGeneratedValue(), metadataComplete);
 		this.virtualTableGenerator = new VirtualTableGenerator(javaIdMapping.getTableGenerator(), metadataComplete);
 		this.virtualSequenceGenerator = new VirtualSequenceGenerator(javaIdMapping.getSequenceGenerator(), metadataComplete);
