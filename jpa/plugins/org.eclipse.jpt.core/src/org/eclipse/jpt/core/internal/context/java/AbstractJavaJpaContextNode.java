@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.JpaNode;
+import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.utility.internal.Filter;
@@ -22,7 +22,7 @@ public abstract class AbstractJavaJpaContextNode extends AbstractJpaContextNode 
 {
 	// ********** constructor **********
 
-	protected AbstractJavaJpaContextNode(JpaNode parent) {
+	protected AbstractJavaJpaContextNode(JpaContextNode parent) {
 		super(parent);
 	}
 
