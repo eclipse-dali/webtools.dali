@@ -15,6 +15,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
@@ -97,7 +98,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 				
 		//set name in the resource model, verify context model updated
-		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTable());
+		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTableImpl());
 		entityResource.getSecondaryTables().get(0).setName("FOO");
 		OrmSecondaryTable secondaryTable = ormEntity.specifiedSecondaryTables().next();
 		assertEquals("FOO", secondaryTable.getSpecifiedName());
@@ -153,7 +154,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 				
 		//set schema in the resource model, verify context model updated
-		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTable());
+		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTableImpl());
 		entityResource.getSecondaryTables().get(0).setSchema("FOO");
 		OrmSecondaryTable secondaryTable = ormEntity.specifiedSecondaryTables().next();
 		assertEquals("FOO", secondaryTable.getSpecifiedSchema());
@@ -206,27 +207,27 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		assertNull(secondaryTable.getDefaultSchema());
 	}
 
-//	public void testUpdateDefaultSchemaFromParent() throws Exception {
-//		createTestEntity();
-//		createTestSubType();
-//		
-//		OrmPersistentType parentOrmPersistentType = entityMappings().addOrmPersistentType(FULLY_QUALIFIED_TYPE_NAME, IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
-//		OrmPersistentType childOrmPersistentType = entityMappings().addOrmPersistentType(PACKAGE_NAME + ".AnnotationTestTypeChild", IMappingKeys.ENTITY_TYPE_MAPPING_KEY);
-//		XmlEntity parentXmlEntity = (XmlEntity) parentOrmPersistentType.getMapping();
-//		XmlEntity childXmlEntity = (XmlEntity) childOrmPersistentType.getMapping();
-//		
-//		assertNull(parentXmlEntity.getTable().getDefaultSchema());
-//		assertNull(childXmlEntity.getTable().getDefaultSchema());
-//		
-//		parentXmlEntity.getTable().setSpecifiedSchema("FOO");
-//		assertNull(parentXmlEntity.getTable().getDefaultSchema());
-//		assertEquals("FOO", childXmlEntity.getTable().getDefaultSchema());
-//
-//		parentXmlEntity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
-//		assertNull(parentXmlEntity.getTable().getDefaultSchema());
-//		assertNull(childXmlEntity.getTable().getDefaultSchema());
-//	}
-//	
+	public void testUpdateDefaultSchemaFromParent() throws Exception {
+		createTestEntity();
+		createTestSubType();
+		
+		OrmPersistentType parentOrmPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType childOrmPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
+		OrmEntity parentOrmEntity = (OrmEntity) parentOrmPersistentType.getMapping();
+		OrmEntity childOrmEntity = (OrmEntity) childOrmPersistentType.getMapping();
+		
+		assertNull(parentOrmEntity.getTable().getDefaultSchema());
+		assertNull(childOrmEntity.getTable().getDefaultSchema());
+		
+		parentOrmEntity.getTable().setSpecifiedSchema("FOO");
+		assertNull(parentOrmEntity.getTable().getDefaultSchema());
+		assertEquals("FOO", childOrmEntity.getTable().getDefaultSchema());
+
+		parentOrmEntity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
+		assertNull(parentOrmEntity.getTable().getDefaultSchema());
+		assertNull(childOrmEntity.getTable().getDefaultSchema());
+	}
+	
 	public void testUpdateDefaultSchemaFromPersistenceUnitDefaults() throws Exception {
 		createTestEntity();
 		
@@ -260,7 +261,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 				
 		//set catalog in the resource model, verify context model updated
-		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTable());
+		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTableImpl());
 		entityResource.getSecondaryTables().get(0).setCatalog("FOO");
 		OrmSecondaryTable secondaryTable = ormEntity.specifiedSecondaryTables().next();
 		assertEquals("FOO", secondaryTable.getSpecifiedCatalog());

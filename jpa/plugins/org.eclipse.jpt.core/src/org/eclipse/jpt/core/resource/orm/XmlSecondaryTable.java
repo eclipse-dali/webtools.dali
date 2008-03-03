@@ -9,13 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
-import java.util.Collection;
-import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,41 +30,11 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * </p>
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSecondaryTable()
- * @model kind="class"
+ * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public class XmlSecondaryTable extends AbstractXmlBaseTable
+public interface XmlSecondaryTable extends XmlBaseTable
 {
-	/**
-	 * The cached value of the '{@link #getPrimaryKeyJoinColumns() <em>Primary Key Join Columns</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPrimaryKeyJoinColumns()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlPrimaryKeyJoinColumn> primaryKeyJoinColumns;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected XmlSecondaryTable()
-	{
-		super();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EClass eStaticClass()
-	{
-		return OrmPackage.Literals.XML_SECONDARY_TABLE;
-	}
 
 	/**
 	 * Returns the value of the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
@@ -86,97 +50,6 @@ public class XmlSecondaryTable extends AbstractXmlBaseTable
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns()
-	{
-		if (primaryKeyJoinColumns == null)
-		{
-			primaryKeyJoinColumns = new EObjectContainmentEList<XmlPrimaryKeyJoinColumn>(XmlPrimaryKeyJoinColumn.class, this, OrmPackage.XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS);
-		}
-		return primaryKeyJoinColumns;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
-	{
-		switch (featureID)
-		{
-			case OrmPackage.XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS:
-				return ((InternalEList<?>)getPrimaryKeyJoinColumns()).basicRemove(otherEnd, msgs);
-		}
-		return super.eInverseRemove(otherEnd, featureID, msgs);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Object eGet(int featureID, boolean resolve, boolean coreType)
-	{
-		switch (featureID)
-		{
-			case OrmPackage.XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS:
-				return getPrimaryKeyJoinColumns();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public void eSet(int featureID, Object newValue)
-	{
-		switch (featureID)
-		{
-			case OrmPackage.XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS:
-				getPrimaryKeyJoinColumns().clear();
-				getPrimaryKeyJoinColumns().addAll((Collection<? extends XmlPrimaryKeyJoinColumn>)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eUnset(int featureID)
-	{
-		switch (featureID)
-		{
-			case OrmPackage.XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS:
-				getPrimaryKeyJoinColumns().clear();
-				return;
-		}
-		super.eUnset(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public boolean eIsSet(int featureID)
-	{
-		switch (featureID)
-		{
-			case OrmPackage.XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS:
-				return primaryKeyJoinColumns != null && !primaryKeyJoinColumns.isEmpty();
-		}
-		return super.eIsSet(featureID);
-	}
+	EList<XmlPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
 
 } // SecondaryTable

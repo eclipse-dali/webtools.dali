@@ -276,7 +276,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	public OrmSecondaryTable addSpecifiedSecondaryTable(int index) {
 		OrmSecondaryTable secondaryTable =  jpaFactory().buildOrmSecondaryTable(this);
 		this.specifiedSecondaryTables.add(index, secondaryTable);
-		XmlSecondaryTable secondaryTableResource = OrmFactory.eINSTANCE.createXmlSecondaryTable();
+		XmlSecondaryTable secondaryTableResource = OrmFactory.eINSTANCE.createXmlSecondaryTableImpl();
 		secondaryTable.initialize(secondaryTableResource);
 		typeMappingResource().getSecondaryTables().add(index, secondaryTableResource);
 		fireItemAdded(Entity.SPECIFIED_SECONDARY_TABLES_LIST, index, secondaryTable);
@@ -1030,9 +1030,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		while(javaSecondaryTables.hasNext()) {
 			JavaSecondaryTable javaSecondaryTable = javaSecondaryTables.next();
 			if (javaSecondaryTable.getName() != null) {
-				//TODO calling setters during initialize in createVirtualSecondaryTable
-				//I think this is going to be a problem
-				this.virtualSecondaryTables.add(createVirtualSecondaryTable(javaSecondaryTable));
+				this.virtualSecondaryTables.add(buildVirtualSecondaryTable(javaSecondaryTable));
 			}
 		}
 	}	
@@ -1177,11 +1175,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 			OrmSecondaryTable virtualSecondaryTable = secondaryTables.next();
 			if (javaSecondaryTables.hasNext()) {
 				JavaSecondaryTable javaSecondaryTable = javaSecondaryTables.next();
-				//TODO
-				//virtualSecondaryTable.setDefaultName(javaSecondaryTable.getName());
-				//virtualSecondaryTable.setDefaultCatalog(javaSecondaryTable.getCatalog());
-				//virtualSecondaryTable.setDefaultSchema(javaSecondaryTable.getSchema());
-				//TODO what about pkJoinColumns?
+				virtualSecondaryTable.update(new VirtualXmlSecondaryTable(javaSecondaryTable));
 			}
 			else {
 				removeVirtualSecondaryTable(virtualSecondaryTable);
@@ -1190,7 +1184,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		
 		while (javaSecondaryTables.hasNext()) {
 			JavaSecondaryTable javaSecondaryTable = javaSecondaryTables.next();
-			addVirtualSecondaryTable(createVirtualSecondaryTable(javaSecondaryTable));
+			addVirtualSecondaryTable(buildVirtualSecondaryTable(javaSecondaryTable));
 		}
 	}
 
@@ -1200,14 +1194,11 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return ormSecondaryTable;
 	}
 	
-	protected OrmSecondaryTable createVirtualSecondaryTable(JavaSecondaryTable javaSecondaryTable) {
-		OrmSecondaryTable virutalSecondaryTable = jpaFactory().buildOrmSecondaryTable(this);
-		//TODO
-//		virutalSecondaryTable.setDefaultName(javaSecondaryTable.getName());
-//		virutalSecondaryTable.setDefaultCatalog(javaSecondaryTable.getCatalog());
-//		virutalSecondaryTable.setDefaultSchema(javaSecondaryTable.getSchema());		
-		//TODO what about primaryKeyJoinColumns, would you want to see those in the orm.xml ui??
-		return virutalSecondaryTable;
+	protected OrmSecondaryTable buildVirtualSecondaryTable(JavaSecondaryTable javaSecondaryTable) {
+		OrmSecondaryTable virtualSecondaryTable = jpaFactory().buildOrmSecondaryTable(this);
+		VirtualXmlSecondaryTable virtualXmlSecondaryTable = new VirtualXmlSecondaryTable(javaSecondaryTable);
+		virtualSecondaryTable.initialize(virtualXmlSecondaryTable);
+		return virtualSecondaryTable;
 	}
 	
 	protected void updateTableGenerator(XmlEntity entity) {

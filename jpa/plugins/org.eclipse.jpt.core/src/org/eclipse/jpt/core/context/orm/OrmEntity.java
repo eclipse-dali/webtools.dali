@@ -42,6 +42,7 @@ public interface OrmEntity extends Entity, OrmTypeMapping
 	OrmSecondaryTable addSpecifiedSecondaryTable(int index);
 
 	ListIterator<OrmSecondaryTable> virtualSecondaryTables();
+	int virtualSecondaryTablesSize();
 	boolean containsVirtualSecondaryTable(OrmSecondaryTable secondaryTable);
 	//TODO this might need to move to IEntity, for the UI
 	String VIRTUAL_SECONDARY_TABLES_LIST = "virtualSecondaryTablesList";

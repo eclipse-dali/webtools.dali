@@ -717,9 +717,9 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTable());
-		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTable());
-		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTable());
+		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTableImpl());
+		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTableImpl());
+		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTableImpl());
 		
 		entityResource.getSecondaryTables().get(0).setName("FOO");
 		entityResource.getSecondaryTables().get(1).setName("BAR");
@@ -774,68 +774,68 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		childOrmEntity.javaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
 		
-//		assertEquals("FOO", childXmlEntity.virtualSecondaryTables().next().getName());
-//		assertEquals("FOO", childXmlEntity.secondaryTables().next().getName());
-//		assertEquals(0, childXmlEntity.specifiedSecondaryTablesSize());
-//		assertEquals(1, childXmlEntity.virtualSecondaryTablesSize());
-//		assertEquals(1, childXmlEntity.secondaryTablesSize());
-//	
-//		childXmlEntity.javaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("BAR");
-//		ListIterator<OrmSecondaryTable> virtualSecondaryTables = childXmlEntity.virtualSecondaryTables();
-//		ListIterator<OrmSecondaryTable> secondaryTables = childXmlEntity.secondaryTables();
-//		assertEquals("BAR", virtualSecondaryTables.next().getName());
-//		assertEquals("FOO", virtualSecondaryTables.next().getName());
-//		assertEquals("BAR", secondaryTables.next().getName());
-//		assertEquals("FOO", secondaryTables.next().getName());
-//		assertEquals(0, childXmlEntity.specifiedSecondaryTablesSize());
-//		assertEquals(2, childXmlEntity.virtualSecondaryTablesSize());
-//		assertEquals(2, childXmlEntity.secondaryTablesSize());
-//		
-//		childXmlEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("BAZ");
-//		virtualSecondaryTables = childXmlEntity.virtualSecondaryTables();
-//		secondaryTables = childXmlEntity.secondaryTables();
-//		assertFalse(virtualSecondaryTables.hasNext());
-//		assertEquals("BAZ", secondaryTables.next().getName());
-//		assertEquals(1, childXmlEntity.specifiedSecondaryTablesSize());
-//		assertEquals(0, childXmlEntity.virtualSecondaryTablesSize());
-//		assertEquals(1, childXmlEntity.secondaryTablesSize());
-//		
-//		childXmlEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
-//		virtualSecondaryTables = childXmlEntity.virtualSecondaryTables();
-//		secondaryTables = childXmlEntity.secondaryTables();
-//		assertFalse(virtualSecondaryTables.hasNext());
-//		assertEquals("FOO", secondaryTables.next().getName());
-//		assertEquals("BAZ", secondaryTables.next().getName());
-//		assertFalse(secondaryTables.hasNext());
-//		assertEquals(2, childXmlEntity.specifiedSecondaryTablesSize());
-//		assertEquals(0, childXmlEntity.virtualSecondaryTablesSize());
-//		assertEquals(2, childXmlEntity.secondaryTablesSize());
-//		
-//		//add a specified secondary table to the parent, this will not affect virtual secondaryTables in child
-//		parentXmlEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("PARENT_TABLE");
-//		virtualSecondaryTables = childXmlEntity.virtualSecondaryTables();
-//		secondaryTables = childXmlEntity.secondaryTables();
-//		assertFalse(virtualSecondaryTables.hasNext());
-//		assertEquals("FOO", secondaryTables.next().getName());
-//		assertEquals("BAZ", secondaryTables.next().getName());
-//		assertFalse(secondaryTables.hasNext());
-//		assertEquals(2, childXmlEntity.specifiedSecondaryTablesSize());
-//		assertEquals(0, childXmlEntity.virtualSecondaryTablesSize());
-//		assertEquals(2, childXmlEntity.secondaryTablesSize());
-//		
-//		childXmlEntity.removeSpecifiedSecondaryTable(0);
-//		childXmlEntity.removeSpecifiedSecondaryTable(0);
-//		virtualSecondaryTables = childXmlEntity.virtualSecondaryTables();
-//		secondaryTables = childXmlEntity.secondaryTables();
-//		assertEquals("BAR", virtualSecondaryTables.next().getName());
-//		assertEquals("FOO", virtualSecondaryTables.next().getName());
-//		assertFalse(virtualSecondaryTables.hasNext());
-//		assertEquals("BAR", secondaryTables.next().getName());
-//		assertEquals("FOO", secondaryTables.next().getName());
-//		assertFalse(secondaryTables.hasNext());
-//		assertEquals(0, childXmlEntity.specifiedSecondaryTablesSize());
-//		assertEquals(2, childXmlEntity.virtualSecondaryTablesSize());
-//		assertEquals(2, childXmlEntity.secondaryTablesSize());
+		assertEquals("FOO", childOrmEntity.virtualSecondaryTables().next().getName());
+		assertEquals("FOO", childOrmEntity.secondaryTables().next().getName());
+		assertEquals(0, childOrmEntity.specifiedSecondaryTablesSize());
+		assertEquals(1, childOrmEntity.virtualSecondaryTablesSize());
+		assertEquals(1, childOrmEntity.secondaryTablesSize());
+	
+		childOrmEntity.javaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("BAR");
+		ListIterator<OrmSecondaryTable> virtualSecondaryTables = childOrmEntity.virtualSecondaryTables();
+		ListIterator<OrmSecondaryTable> secondaryTables = childOrmEntity.secondaryTables();
+		assertEquals("BAR", virtualSecondaryTables.next().getName());
+		assertEquals("FOO", virtualSecondaryTables.next().getName());
+		assertEquals("BAR", secondaryTables.next().getName());
+		assertEquals("FOO", secondaryTables.next().getName());
+		assertEquals(0, childOrmEntity.specifiedSecondaryTablesSize());
+		assertEquals(2, childOrmEntity.virtualSecondaryTablesSize());
+		assertEquals(2, childOrmEntity.secondaryTablesSize());
+		
+		childOrmEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("BAZ");
+		virtualSecondaryTables = childOrmEntity.virtualSecondaryTables();
+		secondaryTables = childOrmEntity.secondaryTables();
+		assertFalse(virtualSecondaryTables.hasNext());
+		assertEquals("BAZ", secondaryTables.next().getName());
+		assertEquals(1, childOrmEntity.specifiedSecondaryTablesSize());
+		assertEquals(0, childOrmEntity.virtualSecondaryTablesSize());
+		assertEquals(1, childOrmEntity.secondaryTablesSize());
+		
+		childOrmEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
+		virtualSecondaryTables = childOrmEntity.virtualSecondaryTables();
+		secondaryTables = childOrmEntity.secondaryTables();
+		assertFalse(virtualSecondaryTables.hasNext());
+		assertEquals("FOO", secondaryTables.next().getName());
+		assertEquals("BAZ", secondaryTables.next().getName());
+		assertFalse(secondaryTables.hasNext());
+		assertEquals(2, childOrmEntity.specifiedSecondaryTablesSize());
+		assertEquals(0, childOrmEntity.virtualSecondaryTablesSize());
+		assertEquals(2, childOrmEntity.secondaryTablesSize());
+		
+		//add a specified secondary table to the parent, this will not affect virtual secondaryTables in child
+		parentOrmEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("PARENT_TABLE");
+		virtualSecondaryTables = childOrmEntity.virtualSecondaryTables();
+		secondaryTables = childOrmEntity.secondaryTables();
+		assertFalse(virtualSecondaryTables.hasNext());
+		assertEquals("FOO", secondaryTables.next().getName());
+		assertEquals("BAZ", secondaryTables.next().getName());
+		assertFalse(secondaryTables.hasNext());
+		assertEquals(2, childOrmEntity.specifiedSecondaryTablesSize());
+		assertEquals(0, childOrmEntity.virtualSecondaryTablesSize());
+		assertEquals(2, childOrmEntity.secondaryTablesSize());
+		
+		childOrmEntity.removeSpecifiedSecondaryTable(0);
+		childOrmEntity.removeSpecifiedSecondaryTable(0);
+		virtualSecondaryTables = childOrmEntity.virtualSecondaryTables();
+		secondaryTables = childOrmEntity.secondaryTables();
+		assertEquals("BAR", virtualSecondaryTables.next().getName());
+		assertEquals("FOO", virtualSecondaryTables.next().getName());
+		assertFalse(virtualSecondaryTables.hasNext());
+		assertEquals("BAR", secondaryTables.next().getName());
+		assertEquals("FOO", secondaryTables.next().getName());
+		assertFalse(secondaryTables.hasNext());
+		assertEquals(0, childOrmEntity.specifiedSecondaryTablesSize());
+		assertEquals(2, childOrmEntity.virtualSecondaryTablesSize());
+		assertEquals(2, childOrmEntity.secondaryTablesSize());
 	}
 
 	//test that inherited tables don't show up in this list

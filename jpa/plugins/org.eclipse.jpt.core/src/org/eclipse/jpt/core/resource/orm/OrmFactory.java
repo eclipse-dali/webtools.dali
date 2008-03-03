@@ -132,7 +132,7 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN: return (EObject)createXmlPrimaryKeyJoinColumn();
 			case OrmPackage.XML_QUERY_HINT: return (EObject)createXmlQueryHint();
 			case OrmPackage.XML_TABLE: return (EObject)createXmlTable();
-			case OrmPackage.XML_SECONDARY_TABLE: return (EObject)createXmlSecondaryTable();
+			case OrmPackage.XML_SECONDARY_TABLE_IMPL: return (EObject)createXmlSecondaryTableImpl();
 			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL: return (EObject)createXmlSequenceGeneratorImpl();
 			case OrmPackage.SQL_RESULT_SET_MAPPING: return (EObject)createSqlResultSetMapping();
 			case OrmPackage.XML_TABLE_GENERATOR_IMPL: return (EObject)createXmlTableGeneratorImpl();
@@ -738,10 +738,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlSecondaryTable createXmlSecondaryTable()
+	public XmlSecondaryTableImpl createXmlSecondaryTableImpl()
 	{
-		XmlSecondaryTable xmlSecondaryTable = new XmlSecondaryTable();
-		return xmlSecondaryTable;
+		XmlSecondaryTableImpl xmlSecondaryTableImpl = new XmlSecondaryTableImpl();
+		return xmlSecondaryTableImpl;
 	}
 
 	/**

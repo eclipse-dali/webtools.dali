@@ -4851,7 +4851,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_SECONDARY_TABLE__NAME = ABSTRACT_XML_BASE_TABLE__NAME;
+	public static final int XML_SECONDARY_TABLE__NAME = XML_BASE_TABLE__NAME;
 
 	/**
 	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
@@ -4860,7 +4860,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_SECONDARY_TABLE__CATALOG = ABSTRACT_XML_BASE_TABLE__CATALOG;
+	public static final int XML_SECONDARY_TABLE__CATALOG = XML_BASE_TABLE__CATALOG;
 
 	/**
 	 * The feature id for the '<em><b>Schema</b></em>' attribute.
@@ -4869,7 +4869,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_SECONDARY_TABLE__SCHEMA = ABSTRACT_XML_BASE_TABLE__SCHEMA;
+	public static final int XML_SECONDARY_TABLE__SCHEMA = XML_BASE_TABLE__SCHEMA;
 
 	/**
 	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
@@ -4878,7 +4878,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_SECONDARY_TABLE__UNIQUE_CONSTRAINTS = ABSTRACT_XML_BASE_TABLE__UNIQUE_CONSTRAINTS;
+	public static final int XML_SECONDARY_TABLE__UNIQUE_CONSTRAINTS = XML_BASE_TABLE__UNIQUE_CONSTRAINTS;
 
 	/**
 	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
@@ -4887,7 +4887,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS = ABSTRACT_XML_BASE_TABLE_FEATURE_COUNT + 0;
+	public static final int XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS = XML_BASE_TABLE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Secondary Table</em>' class.
@@ -4896,7 +4896,71 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_SECONDARY_TABLE_FEATURE_COUNT = ABSTRACT_XML_BASE_TABLE_FEATURE_COUNT + 1;
+	public static final int XML_SECONDARY_TABLE_FEATURE_COUNT = XML_BASE_TABLE_FEATURE_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlSecondaryTableImpl <em>Xml Secondary Table Impl</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.resource.orm.XmlSecondaryTableImpl
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSecondaryTableImpl()
+	 * @generated
+	 */
+	public static final int XML_SECONDARY_TABLE_IMPL = 79;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_SECONDARY_TABLE_IMPL__NAME = ABSTRACT_XML_BASE_TABLE__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_SECONDARY_TABLE_IMPL__CATALOG = ABSTRACT_XML_BASE_TABLE__CATALOG;
+
+	/**
+	 * The feature id for the '<em><b>Schema</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_SECONDARY_TABLE_IMPL__SCHEMA = ABSTRACT_XML_BASE_TABLE__SCHEMA;
+
+	/**
+	 * The feature id for the '<em><b>Unique Constraints</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_SECONDARY_TABLE_IMPL__UNIQUE_CONSTRAINTS = ABSTRACT_XML_BASE_TABLE__UNIQUE_CONSTRAINTS;
+
+	/**
+	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_SECONDARY_TABLE_IMPL__PRIMARY_KEY_JOIN_COLUMNS = ABSTRACT_XML_BASE_TABLE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Secondary Table Impl</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_SECONDARY_TABLE_IMPL_FEATURE_COUNT = ABSTRACT_XML_BASE_TABLE_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlGenerator <em>Xml Generator</em>}' class.
@@ -4906,7 +4970,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGenerator()
 	 * @generated
 	 */
-	public static final int XML_GENERATOR = 79;
+	public static final int XML_GENERATOR = 80;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4952,7 +5016,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSequenceGenerator()
 	 * @generated
 	 */
-	public static final int XML_SEQUENCE_GENERATOR = 80;
+	public static final int XML_SEQUENCE_GENERATOR = 81;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5007,7 +5071,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSequenceGeneratorImpl()
 	 * @generated
 	 */
-	public static final int XML_SEQUENCE_GENERATOR_IMPL = 81;
+	public static final int XML_SEQUENCE_GENERATOR_IMPL = 82;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5062,7 +5126,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getSqlResultSetMapping()
 	 * @generated
 	 */
-	public static final int SQL_RESULT_SET_MAPPING = 82;
+	public static final int SQL_RESULT_SET_MAPPING = 83;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5108,7 +5172,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTableGenerator()
 	 * @generated
 	 */
-	public static final int XML_TABLE_GENERATOR = 83;
+	public static final int XML_TABLE_GENERATOR = 84;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5217,7 +5281,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTableGeneratorImpl()
 	 * @generated
 	 */
-	public static final int XML_TABLE_GENERATOR_IMPL = 84;
+	public static final int XML_TABLE_GENERATOR_IMPL = 85;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5326,7 +5390,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getUniqueConstraint()
 	 * @generated
 	 */
-	public static final int UNIQUE_CONSTRAINT = 85;
+	public static final int UNIQUE_CONSTRAINT = 86;
 
 	/**
 	 * The feature id for the '<em><b>Column Names</b></em>' attribute list.
@@ -5354,7 +5418,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAccessType()
 	 * @generated
 	 */
-	public static final int ACCESS_TYPE = 86;
+	public static final int ACCESS_TYPE = 87;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.DiscriminatorType <em>Discriminator Type</em>}' enum.
@@ -5364,7 +5428,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getDiscriminatorType()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_TYPE = 87;
+	public static final int DISCRIMINATOR_TYPE = 88;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.EnumType <em>Enum Type</em>}' enum.
@@ -5374,7 +5438,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEnumType()
 	 * @generated
 	 */
-	public static final int ENUM_TYPE = 88;
+	public static final int ENUM_TYPE = 89;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.FetchType <em>Fetch Type</em>}' enum.
@@ -5384,7 +5448,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getFetchType()
 	 * @generated
 	 */
-	public static final int FETCH_TYPE = 89;
+	public static final int FETCH_TYPE = 90;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.GenerationType <em>Generation Type</em>}' enum.
@@ -5394,7 +5458,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getGenerationType()
 	 * @generated
 	 */
-	public static final int GENERATION_TYPE = 90;
+	public static final int GENERATION_TYPE = 91;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.InheritanceType <em>Inheritance Type</em>}' enum.
@@ -5404,7 +5468,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getInheritanceType()
 	 * @generated
 	 */
-	public static final int INHERITANCE_TYPE = 91;
+	public static final int INHERITANCE_TYPE = 92;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.TemporalType <em>Temporal Type</em>}' enum.
@@ -5414,7 +5478,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTemporalType()
 	 * @generated
 	 */
-	public static final int TEMPORAL_TYPE = 92;
+	public static final int TEMPORAL_TYPE = 93;
 
 	/**
 	 * The meta object id for the '<em>Discriminator Value</em>' data type.
@@ -5424,7 +5488,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getDiscriminatorValue()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_VALUE = 93;
+	public static final int DISCRIMINATOR_VALUE = 94;
 
 	/**
 	 * The meta object id for the '<em>Enumerated</em>' data type.
@@ -5434,7 +5498,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEnumerated()
 	 * @generated
 	 */
-	public static final int ENUMERATED = 94;
+	public static final int ENUMERATED = 95;
 
 	/**
 	 * The meta object id for the '<em>Order By</em>' data type.
@@ -5444,7 +5508,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getOrderBy()
 	 * @generated
 	 */
-	public static final int ORDER_BY = 95;
+	public static final int ORDER_BY = 96;
 
 	/**
 	 * The meta object id for the '<em>Version Type</em>' data type.
@@ -5454,7 +5518,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getVersionType()
 	 * @generated
 	 */
-	public static final int VERSION_TYPE = 96;
+	public static final int VERSION_TYPE = 97;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -6008,6 +6072,13 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlSecondaryTableEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlSecondaryTableImplEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -9629,6 +9700,20 @@ public class OrmPackage extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.XmlSecondaryTableImpl <em>Xml Secondary Table Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Secondary Table Impl</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlSecondaryTableImpl
+	 * @generated
+	 */
+	public EClass getXmlSecondaryTableImpl()
+	{
+		return xmlSecondaryTableImplEClass;
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.XmlGenerator <em>Xml Generator</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -10439,6 +10524,8 @@ public class OrmPackage extends EPackageImpl
 		xmlSecondaryTableEClass = createEClass(XML_SECONDARY_TABLE);
 		createEReference(xmlSecondaryTableEClass, XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS);
 
+		xmlSecondaryTableImplEClass = createEClass(XML_SECONDARY_TABLE_IMPL);
+
 		xmlGeneratorEClass = createEClass(XML_GENERATOR);
 		createEAttribute(xmlGeneratorEClass, XML_GENERATOR__NAME);
 		createEAttribute(xmlGeneratorEClass, XML_GENERATOR__INITIAL_VALUE);
@@ -10586,7 +10673,9 @@ public class OrmPackage extends EPackageImpl
 		xmlPrimaryKeyJoinColumnEClass.getESuperTypes().add(this.getAbstractXmlNamedColumn());
 		abstractXmlBaseTableEClass.getESuperTypes().add(this.getXmlBaseTable());
 		xmlTableEClass.getESuperTypes().add(this.getAbstractXmlBaseTable());
-		xmlSecondaryTableEClass.getESuperTypes().add(this.getAbstractXmlBaseTable());
+		xmlSecondaryTableEClass.getESuperTypes().add(this.getXmlBaseTable());
+		xmlSecondaryTableImplEClass.getESuperTypes().add(this.getAbstractXmlBaseTable());
+		xmlSecondaryTableImplEClass.getESuperTypes().add(this.getXmlSecondaryTable());
 		xmlSequenceGeneratorEClass.getESuperTypes().add(this.getXmlGenerator());
 		xmlSequenceGeneratorImplEClass.getESuperTypes().add(this.getXmlSequenceGenerator());
 		xmlTableGeneratorEClass.getESuperTypes().add(this.getXmlGenerator());
@@ -10905,8 +10994,10 @@ public class OrmPackage extends EPackageImpl
 
 		initEClass(xmlTableEClass, XmlTable.class, "XmlTable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(xmlSecondaryTableEClass, XmlSecondaryTable.class, "XmlSecondaryTable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(xmlSecondaryTableEClass, XmlSecondaryTable.class, "XmlSecondaryTable", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlSecondaryTable_PrimaryKeyJoinColumns(), this.getXmlPrimaryKeyJoinColumn(), null, "primaryKeyJoinColumns", null, 0, -1, XmlSecondaryTable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlSecondaryTableImplEClass, XmlSecondaryTableImpl.class, "XmlSecondaryTableImpl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlGeneratorEClass, XmlGenerator.class, "XmlGenerator", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlGenerator_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, XmlGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -13040,6 +13131,16 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS = eINSTANCE.getXmlSecondaryTable_PrimaryKeyJoinColumns();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlSecondaryTableImpl <em>Xml Secondary Table Impl</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.resource.orm.XmlSecondaryTableImpl
+		 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSecondaryTableImpl()
+		 * @generated
+		 */
+		public static final EClass XML_SECONDARY_TABLE_IMPL = eINSTANCE.getXmlSecondaryTableImpl();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlGenerator <em>Xml Generator</em>}' class.
