@@ -20,7 +20,9 @@ public class JptJavaResourceTests {
 	
 	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptJavaResourceTests.class.getName());
-		suite.addTestSuite(JpaCompilationUnitResourceTests.class);
+		if (all) {
+			suite.addTestSuite(JpaCompilationUnitResourceTests.class);
+		}
 		suite.addTestSuite(JavaResourcePersistentTypeTests.class);
 		suite.addTestSuite(JavaResourcePersistentAttributeTests.class);
 		suite.addTestSuite(JPTToolsTests.class);

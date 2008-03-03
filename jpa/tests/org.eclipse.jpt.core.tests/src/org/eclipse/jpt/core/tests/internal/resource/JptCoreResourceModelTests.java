@@ -24,8 +24,10 @@ public class JptCoreResourceModelTests extends TestCase
 	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptCoreResourceModelTests.class.getName());
 		suite.addTest(JptJavaResourceTests.suite(all));
-		suite.addTestSuite(OrmModelTests.class);
-		suite.addTestSuite(PersistenceModelTests.class);
+		if (all) {
+			suite.addTestSuite(OrmModelTests.class);
+			suite.addTestSuite(PersistenceModelTests.class);
+		}
 		return suite;
 	}
 
