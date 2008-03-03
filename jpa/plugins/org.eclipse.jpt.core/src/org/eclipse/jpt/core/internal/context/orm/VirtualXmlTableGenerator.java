@@ -15,14 +15,14 @@ import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.UniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 
-public class VirtualTableGenerator extends AbstractJpaEObject implements XmlTableGenerator
+public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlTableGenerator
 {
 	JavaTableGenerator javaTableGenerator;
 
 	protected boolean metadataComplete;
 	
 		
-	public VirtualTableGenerator(JavaTableGenerator javaTableGenerator, boolean metadataComplete) {
+	public VirtualXmlTableGenerator(JavaTableGenerator javaTableGenerator, boolean metadataComplete) {
 		super();
 		this.javaTableGenerator = javaTableGenerator;
 		this.metadataComplete = metadataComplete;

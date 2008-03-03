@@ -26,7 +26,7 @@ public class IdTranslator extends Translator
 	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return OrmFactory.eINSTANCE.createIdImpl();
+		return OrmFactory.eINSTANCE.createXmlIdImpl();
 	}
 
 	@Override

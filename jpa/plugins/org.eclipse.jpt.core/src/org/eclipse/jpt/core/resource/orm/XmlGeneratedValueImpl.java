@@ -26,11 +26,11 @@ import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getGeneratedValueImpl()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGeneratedValueImpl()
  * @model kind="class"
  * @generated
  */
-public class GeneratedValueImpl extends AbstractJpaEObject implements XmlGeneratedValue
+public class XmlGeneratedValueImpl extends AbstractJpaEObject implements XmlGeneratedValue
 {
 	/**
 	 * The default value of the '{@link #getGenerator() <em>Generator</em>}' attribute.
@@ -73,7 +73,7 @@ public class GeneratedValueImpl extends AbstractJpaEObject implements XmlGenerat
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected GeneratedValueImpl()
+	protected XmlGeneratedValueImpl()
 	{
 		super();
 	}
@@ -86,7 +86,7 @@ public class GeneratedValueImpl extends AbstractJpaEObject implements XmlGenerat
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.GENERATED_VALUE_IMPL;
+		return OrmPackage.Literals.XML_GENERATED_VALUE_IMPL;
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class GeneratedValueImpl extends AbstractJpaEObject implements XmlGenerat
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.GeneratedValueImpl#getGenerator <em>Generator</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlGeneratedValueImpl#getGenerator <em>Generator</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Generator</em>' attribute.
@@ -121,7 +121,7 @@ public class GeneratedValueImpl extends AbstractJpaEObject implements XmlGenerat
 		String oldGenerator = generator;
 		generator = newGenerator;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.GENERATED_VALUE_IMPL__GENERATOR, oldGenerator, generator));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_GENERATED_VALUE_IMPL__GENERATOR, oldGenerator, generator));
 	}
 
 	/**
@@ -147,7 +147,7 @@ public class GeneratedValueImpl extends AbstractJpaEObject implements XmlGenerat
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.GeneratedValueImpl#getStrategy <em>Strategy</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlGeneratedValueImpl#getStrategy <em>Strategy</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Strategy</em>' attribute.
@@ -160,7 +160,7 @@ public class GeneratedValueImpl extends AbstractJpaEObject implements XmlGenerat
 		GenerationType oldStrategy = strategy;
 		strategy = newStrategy == null ? STRATEGY_EDEFAULT : newStrategy;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.GENERATED_VALUE_IMPL__STRATEGY, oldStrategy, strategy));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_GENERATED_VALUE_IMPL__STRATEGY, oldStrategy, strategy));
 	}
 
 	/**
@@ -173,9 +173,9 @@ public class GeneratedValueImpl extends AbstractJpaEObject implements XmlGenerat
 	{
 		switch (featureID)
 		{
-			case OrmPackage.GENERATED_VALUE_IMPL__GENERATOR:
+			case OrmPackage.XML_GENERATED_VALUE_IMPL__GENERATOR:
 				return getGenerator();
-			case OrmPackage.GENERATED_VALUE_IMPL__STRATEGY:
+			case OrmPackage.XML_GENERATED_VALUE_IMPL__STRATEGY:
 				return getStrategy();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -191,10 +191,10 @@ public class GeneratedValueImpl extends AbstractJpaEObject implements XmlGenerat
 	{
 		switch (featureID)
 		{
-			case OrmPackage.GENERATED_VALUE_IMPL__GENERATOR:
+			case OrmPackage.XML_GENERATED_VALUE_IMPL__GENERATOR:
 				setGenerator((String)newValue);
 				return;
-			case OrmPackage.GENERATED_VALUE_IMPL__STRATEGY:
+			case OrmPackage.XML_GENERATED_VALUE_IMPL__STRATEGY:
 				setStrategy((GenerationType)newValue);
 				return;
 		}
@@ -211,10 +211,10 @@ public class GeneratedValueImpl extends AbstractJpaEObject implements XmlGenerat
 	{
 		switch (featureID)
 		{
-			case OrmPackage.GENERATED_VALUE_IMPL__GENERATOR:
+			case OrmPackage.XML_GENERATED_VALUE_IMPL__GENERATOR:
 				setGenerator(GENERATOR_EDEFAULT);
 				return;
-			case OrmPackage.GENERATED_VALUE_IMPL__STRATEGY:
+			case OrmPackage.XML_GENERATED_VALUE_IMPL__STRATEGY:
 				setStrategy(STRATEGY_EDEFAULT);
 				return;
 		}
@@ -231,9 +231,9 @@ public class GeneratedValueImpl extends AbstractJpaEObject implements XmlGenerat
 	{
 		switch (featureID)
 		{
-			case OrmPackage.GENERATED_VALUE_IMPL__GENERATOR:
+			case OrmPackage.XML_GENERATED_VALUE_IMPL__GENERATOR:
 				return GENERATOR_EDEFAULT == null ? generator != null : !GENERATOR_EDEFAULT.equals(generator);
-			case OrmPackage.GENERATED_VALUE_IMPL__STRATEGY:
+			case OrmPackage.XML_GENERATED_VALUE_IMPL__STRATEGY:
 				return strategy != STRATEGY_EDEFAULT;
 		}
 		return super.eIsSet(featureID);

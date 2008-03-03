@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.resource.orm.XmlVersion;
  * VirtualVersion is an implementation of Version used when there is 
  * no tag in the orm.xml and an underlying javaVersionMapping exists.
  */
-public class VirtualVersion extends AbstractJpaEObject implements XmlVersion
+public class VirtualXmlVersion extends AbstractJpaEObject implements XmlVersion
 {
 	JavaVersionMapping javaVersionMapping;
 
@@ -29,7 +29,7 @@ public class VirtualVersion extends AbstractJpaEObject implements XmlVersion
 
 	protected boolean metadataComplete;
 	
-	public VirtualVersion(OrmTypeMapping ormTypeMapping, JavaVersionMapping javaVersionMapping, boolean metadataComplete) {
+	public VirtualXmlVersion(OrmTypeMapping ormTypeMapping, JavaVersionMapping javaVersionMapping, boolean metadataComplete) {
 		super();
 		this.javaVersionMapping = javaVersionMapping;
 		this.metadataComplete = metadataComplete;

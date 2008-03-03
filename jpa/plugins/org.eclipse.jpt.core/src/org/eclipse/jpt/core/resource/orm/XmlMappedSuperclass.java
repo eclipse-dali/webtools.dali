@@ -47,7 +47,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * @model kind="class"
  * @generated
  */
-public class XmlMappedSuperclass extends AbstractTypeMapping
+public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 {
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it

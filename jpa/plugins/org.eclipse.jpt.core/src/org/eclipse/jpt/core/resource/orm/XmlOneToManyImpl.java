@@ -31,11 +31,11 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getOneToManyImpl()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToManyImpl()
  * @model kind="class"
  * @generated
  */
-public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOneToMany
+public class XmlOneToManyImpl extends AbstractXmlAttributeMapping implements XmlOneToMany
 {
 	/**
 	 * The default value of the '{@link #getTargetEntity() <em>Target Entity</em>}' attribute.
@@ -158,7 +158,7 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected OneToManyImpl()
+	protected XmlOneToManyImpl()
 	{
 		super();
 	}
@@ -171,7 +171,7 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.ONE_TO_MANY_IMPL;
+		return OrmPackage.Literals.XML_ONE_TO_MANY_IMPL;
 	}
 
 	/**
@@ -194,7 +194,7 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.OneToManyImpl#getTargetEntity <em>Target Entity</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlOneToManyImpl#getTargetEntity <em>Target Entity</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Target Entity</em>' attribute.
@@ -206,7 +206,7 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 		String oldTargetEntity = targetEntity;
 		targetEntity = newTargetEntity;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ONE_TO_MANY_IMPL__TARGET_ENTITY, oldTargetEntity, targetEntity));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_MANY_IMPL__TARGET_ENTITY, oldTargetEntity, targetEntity));
 	}
 
 	/**
@@ -232,7 +232,7 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.OneToManyImpl#getFetch <em>Fetch</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlOneToManyImpl#getFetch <em>Fetch</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Fetch</em>' attribute.
@@ -245,7 +245,7 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 		FetchType oldFetch = fetch;
 		fetch = newFetch == null ? FETCH_EDEFAULT : newFetch;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ONE_TO_MANY_IMPL__FETCH, oldFetch, fetch));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_MANY_IMPL__FETCH, oldFetch, fetch));
 	}
 
 	/**
@@ -268,7 +268,7 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.OneToManyImpl#getMappedBy <em>Mapped By</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlOneToManyImpl#getMappedBy <em>Mapped By</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Mapped By</em>' attribute.
@@ -280,7 +280,7 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 		String oldMappedBy = mappedBy;
 		mappedBy = newMappedBy;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ONE_TO_MANY_IMPL__MAPPED_BY, oldMappedBy, mappedBy));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_MANY_IMPL__MAPPED_BY, oldMappedBy, mappedBy));
 	}
 
 	/**
@@ -303,7 +303,7 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.OneToManyImpl#getOrderBy <em>Order By</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlOneToManyImpl#getOrderBy <em>Order By</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Order By</em>' attribute.
@@ -315,7 +315,7 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 		String oldOrderBy = orderBy;
 		orderBy = newOrderBy;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ONE_TO_MANY_IMPL__ORDER_BY, oldOrderBy, orderBy));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_MANY_IMPL__ORDER_BY, oldOrderBy, orderBy));
 	}
 
 	/**
@@ -348,14 +348,14 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 		mapKey = newMapKey;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ONE_TO_MANY_IMPL__MAP_KEY, oldMapKey, newMapKey);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_MANY_IMPL__MAP_KEY, oldMapKey, newMapKey);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.OneToManyImpl#getMapKey <em>Map Key</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlOneToManyImpl#getMapKey <em>Map Key</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Map Key</em>' containment reference.
@@ -368,14 +368,14 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 		{
 			NotificationChain msgs = null;
 			if (mapKey != null)
-				msgs = ((InternalEObject)mapKey).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ONE_TO_MANY_IMPL__MAP_KEY, null, msgs);
+				msgs = ((InternalEObject)mapKey).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ONE_TO_MANY_IMPL__MAP_KEY, null, msgs);
 			if (newMapKey != null)
-				msgs = ((InternalEObject)newMapKey).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ONE_TO_MANY_IMPL__MAP_KEY, null, msgs);
+				msgs = ((InternalEObject)newMapKey).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ONE_TO_MANY_IMPL__MAP_KEY, null, msgs);
 			msgs = basicSetMapKey(newMapKey, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ONE_TO_MANY_IMPL__MAP_KEY, newMapKey, newMapKey));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_MANY_IMPL__MAP_KEY, newMapKey, newMapKey));
 	}
 
 	/**
@@ -408,14 +408,14 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 		joinTable = newJoinTable;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ONE_TO_MANY_IMPL__JOIN_TABLE, oldJoinTable, newJoinTable);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_TABLE, oldJoinTable, newJoinTable);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.OneToManyImpl#getJoinTable <em>Join Table</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlOneToManyImpl#getJoinTable <em>Join Table</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Join Table</em>' containment reference.
@@ -428,14 +428,14 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 		{
 			NotificationChain msgs = null;
 			if (joinTable != null)
-				msgs = ((InternalEObject)joinTable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ONE_TO_MANY_IMPL__JOIN_TABLE, null, msgs);
+				msgs = ((InternalEObject)joinTable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_TABLE, null, msgs);
 			if (newJoinTable != null)
-				msgs = ((InternalEObject)newJoinTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ONE_TO_MANY_IMPL__JOIN_TABLE, null, msgs);
+				msgs = ((InternalEObject)newJoinTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_TABLE, null, msgs);
 			msgs = basicSetJoinTable(newJoinTable, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ONE_TO_MANY_IMPL__JOIN_TABLE, newJoinTable, newJoinTable));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_TABLE, newJoinTable, newJoinTable));
 	}
 
 	/**
@@ -456,7 +456,7 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 	{
 		if (joinColumns == null)
 		{
-			joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.ONE_TO_MANY_IMPL__JOIN_COLUMNS);
+			joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_COLUMNS);
 		}
 		return joinColumns;
 	}
@@ -491,14 +491,14 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 		cascade = newCascade;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ONE_TO_MANY_IMPL__CASCADE, oldCascade, newCascade);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_MANY_IMPL__CASCADE, oldCascade, newCascade);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.OneToManyImpl#getCascade <em>Cascade</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlOneToManyImpl#getCascade <em>Cascade</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Cascade</em>' containment reference.
@@ -511,14 +511,14 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 		{
 			NotificationChain msgs = null;
 			if (cascade != null)
-				msgs = ((InternalEObject)cascade).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ONE_TO_MANY_IMPL__CASCADE, null, msgs);
+				msgs = ((InternalEObject)cascade).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ONE_TO_MANY_IMPL__CASCADE, null, msgs);
 			if (newCascade != null)
-				msgs = ((InternalEObject)newCascade).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ONE_TO_MANY_IMPL__CASCADE, null, msgs);
+				msgs = ((InternalEObject)newCascade).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ONE_TO_MANY_IMPL__CASCADE, null, msgs);
 			msgs = basicSetCascade(newCascade, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ONE_TO_MANY_IMPL__CASCADE, newCascade, newCascade));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_MANY_IMPL__CASCADE, newCascade, newCascade));
 	}
 
 	/**
@@ -531,13 +531,13 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ONE_TO_MANY_IMPL__JOIN_TABLE:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_TABLE:
 				return basicSetJoinTable(null, msgs);
-			case OrmPackage.ONE_TO_MANY_IMPL__CASCADE:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__CASCADE:
 				return basicSetCascade(null, msgs);
-			case OrmPackage.ONE_TO_MANY_IMPL__MAP_KEY:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__MAP_KEY:
 				return basicSetMapKey(null, msgs);
-			case OrmPackage.ONE_TO_MANY_IMPL__JOIN_COLUMNS:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_COLUMNS:
 				return ((InternalEList<?>)getJoinColumns()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -553,21 +553,21 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ONE_TO_MANY_IMPL__TARGET_ENTITY:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__TARGET_ENTITY:
 				return getTargetEntity();
-			case OrmPackage.ONE_TO_MANY_IMPL__FETCH:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__FETCH:
 				return getFetch();
-			case OrmPackage.ONE_TO_MANY_IMPL__JOIN_TABLE:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_TABLE:
 				return getJoinTable();
-			case OrmPackage.ONE_TO_MANY_IMPL__CASCADE:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__CASCADE:
 				return getCascade();
-			case OrmPackage.ONE_TO_MANY_IMPL__MAPPED_BY:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__MAPPED_BY:
 				return getMappedBy();
-			case OrmPackage.ONE_TO_MANY_IMPL__ORDER_BY:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__ORDER_BY:
 				return getOrderBy();
-			case OrmPackage.ONE_TO_MANY_IMPL__MAP_KEY:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__MAP_KEY:
 				return getMapKey();
-			case OrmPackage.ONE_TO_MANY_IMPL__JOIN_COLUMNS:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_COLUMNS:
 				return getJoinColumns();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -584,28 +584,28 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ONE_TO_MANY_IMPL__TARGET_ENTITY:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__TARGET_ENTITY:
 				setTargetEntity((String)newValue);
 				return;
-			case OrmPackage.ONE_TO_MANY_IMPL__FETCH:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__FETCH:
 				setFetch((FetchType)newValue);
 				return;
-			case OrmPackage.ONE_TO_MANY_IMPL__JOIN_TABLE:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_TABLE:
 				setJoinTable((XmlJoinTable)newValue);
 				return;
-			case OrmPackage.ONE_TO_MANY_IMPL__CASCADE:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__CASCADE:
 				setCascade((CascadeType)newValue);
 				return;
-			case OrmPackage.ONE_TO_MANY_IMPL__MAPPED_BY:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__MAPPED_BY:
 				setMappedBy((String)newValue);
 				return;
-			case OrmPackage.ONE_TO_MANY_IMPL__ORDER_BY:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__ORDER_BY:
 				setOrderBy((String)newValue);
 				return;
-			case OrmPackage.ONE_TO_MANY_IMPL__MAP_KEY:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__MAP_KEY:
 				setMapKey((MapKey)newValue);
 				return;
-			case OrmPackage.ONE_TO_MANY_IMPL__JOIN_COLUMNS:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_COLUMNS:
 				getJoinColumns().clear();
 				getJoinColumns().addAll((Collection<? extends XmlJoinColumn>)newValue);
 				return;
@@ -623,28 +623,28 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ONE_TO_MANY_IMPL__TARGET_ENTITY:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__TARGET_ENTITY:
 				setTargetEntity(TARGET_ENTITY_EDEFAULT);
 				return;
-			case OrmPackage.ONE_TO_MANY_IMPL__FETCH:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__FETCH:
 				setFetch(FETCH_EDEFAULT);
 				return;
-			case OrmPackage.ONE_TO_MANY_IMPL__JOIN_TABLE:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_TABLE:
 				setJoinTable((XmlJoinTable)null);
 				return;
-			case OrmPackage.ONE_TO_MANY_IMPL__CASCADE:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__CASCADE:
 				setCascade((CascadeType)null);
 				return;
-			case OrmPackage.ONE_TO_MANY_IMPL__MAPPED_BY:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__MAPPED_BY:
 				setMappedBy(MAPPED_BY_EDEFAULT);
 				return;
-			case OrmPackage.ONE_TO_MANY_IMPL__ORDER_BY:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__ORDER_BY:
 				setOrderBy(ORDER_BY_EDEFAULT);
 				return;
-			case OrmPackage.ONE_TO_MANY_IMPL__MAP_KEY:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__MAP_KEY:
 				setMapKey((MapKey)null);
 				return;
-			case OrmPackage.ONE_TO_MANY_IMPL__JOIN_COLUMNS:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_COLUMNS:
 				getJoinColumns().clear();
 				return;
 		}
@@ -661,21 +661,21 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ONE_TO_MANY_IMPL__TARGET_ENTITY:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__TARGET_ENTITY:
 				return TARGET_ENTITY_EDEFAULT == null ? targetEntity != null : !TARGET_ENTITY_EDEFAULT.equals(targetEntity);
-			case OrmPackage.ONE_TO_MANY_IMPL__FETCH:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__FETCH:
 				return fetch != FETCH_EDEFAULT;
-			case OrmPackage.ONE_TO_MANY_IMPL__JOIN_TABLE:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_TABLE:
 				return joinTable != null;
-			case OrmPackage.ONE_TO_MANY_IMPL__CASCADE:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__CASCADE:
 				return cascade != null;
-			case OrmPackage.ONE_TO_MANY_IMPL__MAPPED_BY:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__MAPPED_BY:
 				return MAPPED_BY_EDEFAULT == null ? mappedBy != null : !MAPPED_BY_EDEFAULT.equals(mappedBy);
-			case OrmPackage.ONE_TO_MANY_IMPL__ORDER_BY:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__ORDER_BY:
 				return ORDER_BY_EDEFAULT == null ? orderBy != null : !ORDER_BY_EDEFAULT.equals(orderBy);
-			case OrmPackage.ONE_TO_MANY_IMPL__MAP_KEY:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__MAP_KEY:
 				return mapKey != null;
-			case OrmPackage.ONE_TO_MANY_IMPL__JOIN_COLUMNS:
+			case OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_COLUMNS:
 				return joinColumns != null && !joinColumns.isEmpty();
 		}
 		return super.eIsSet(featureID);
@@ -693,10 +693,10 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.ONE_TO_MANY_IMPL__TARGET_ENTITY: return OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY;
-				case OrmPackage.ONE_TO_MANY_IMPL__FETCH: return OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH;
-				case OrmPackage.ONE_TO_MANY_IMPL__JOIN_TABLE: return OrmPackage.XML_RELATIONSHIP_MAPPING__JOIN_TABLE;
-				case OrmPackage.ONE_TO_MANY_IMPL__CASCADE: return OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE;
+				case OrmPackage.XML_ONE_TO_MANY_IMPL__TARGET_ENTITY: return OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY;
+				case OrmPackage.XML_ONE_TO_MANY_IMPL__FETCH: return OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH;
+				case OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_TABLE: return OrmPackage.XML_RELATIONSHIP_MAPPING__JOIN_TABLE;
+				case OrmPackage.XML_ONE_TO_MANY_IMPL__CASCADE: return OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE;
 				default: return -1;
 			}
 		}
@@ -704,9 +704,9 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.ONE_TO_MANY_IMPL__MAPPED_BY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY;
-				case OrmPackage.ONE_TO_MANY_IMPL__ORDER_BY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY;
-				case OrmPackage.ONE_TO_MANY_IMPL__MAP_KEY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY;
+				case OrmPackage.XML_ONE_TO_MANY_IMPL__MAPPED_BY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY;
+				case OrmPackage.XML_ONE_TO_MANY_IMPL__ORDER_BY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY;
+				case OrmPackage.XML_ONE_TO_MANY_IMPL__MAP_KEY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY;
 				default: return -1;
 			}
 		}
@@ -714,7 +714,7 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.ONE_TO_MANY_IMPL__JOIN_COLUMNS: return OrmPackage.XML_ONE_TO_MANY__JOIN_COLUMNS;
+				case OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_COLUMNS: return OrmPackage.XML_ONE_TO_MANY__JOIN_COLUMNS;
 				default: return -1;
 			}
 		}
@@ -733,10 +733,10 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY: return OrmPackage.ONE_TO_MANY_IMPL__TARGET_ENTITY;
-				case OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH: return OrmPackage.ONE_TO_MANY_IMPL__FETCH;
-				case OrmPackage.XML_RELATIONSHIP_MAPPING__JOIN_TABLE: return OrmPackage.ONE_TO_MANY_IMPL__JOIN_TABLE;
-				case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE: return OrmPackage.ONE_TO_MANY_IMPL__CASCADE;
+				case OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY: return OrmPackage.XML_ONE_TO_MANY_IMPL__TARGET_ENTITY;
+				case OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH: return OrmPackage.XML_ONE_TO_MANY_IMPL__FETCH;
+				case OrmPackage.XML_RELATIONSHIP_MAPPING__JOIN_TABLE: return OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_TABLE;
+				case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE: return OrmPackage.XML_ONE_TO_MANY_IMPL__CASCADE;
 				default: return -1;
 			}
 		}
@@ -744,9 +744,9 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY: return OrmPackage.ONE_TO_MANY_IMPL__MAPPED_BY;
-				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY: return OrmPackage.ONE_TO_MANY_IMPL__ORDER_BY;
-				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY: return OrmPackage.ONE_TO_MANY_IMPL__MAP_KEY;
+				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY: return OrmPackage.XML_ONE_TO_MANY_IMPL__MAPPED_BY;
+				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY: return OrmPackage.XML_ONE_TO_MANY_IMPL__ORDER_BY;
+				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY: return OrmPackage.XML_ONE_TO_MANY_IMPL__MAP_KEY;
 				default: return -1;
 			}
 		}
@@ -754,7 +754,7 @@ public class OneToManyImpl extends AbstractXmlAttributeMapping implements XmlOne
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_ONE_TO_MANY__JOIN_COLUMNS: return OrmPackage.ONE_TO_MANY_IMPL__JOIN_COLUMNS;
+				case OrmPackage.XML_ONE_TO_MANY__JOIN_COLUMNS: return OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_COLUMNS;
 				default: return -1;
 			}
 		}

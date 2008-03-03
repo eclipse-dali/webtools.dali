@@ -27,11 +27,11 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getIdImpl()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlIdImpl()
  * @model kind="class"
  * @generated
  */
-public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
+public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 {
 	/**
 	 * The cached value of the '{@link #getColumn() <em>Column</em>}' containment reference.
@@ -94,7 +94,7 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected IdImpl()
+	protected XmlIdImpl()
 	{
 		super();
 	}
@@ -107,7 +107,7 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.ID_IMPL;
+		return OrmPackage.Literals.XML_ID_IMPL;
 	}
 
 	/**
@@ -140,14 +140,14 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 		column = newColumn;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ID_IMPL__COLUMN, oldColumn, newColumn);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID_IMPL__COLUMN, oldColumn, newColumn);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.IdImpl#getColumn <em>Column</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlIdImpl#getColumn <em>Column</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Column</em>' containment reference.
@@ -160,14 +160,14 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 		{
 			NotificationChain msgs = null;
 			if (column != null)
-				msgs = ((InternalEObject)column).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ID_IMPL__COLUMN, null, msgs);
+				msgs = ((InternalEObject)column).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ID_IMPL__COLUMN, null, msgs);
 			if (newColumn != null)
-				msgs = ((InternalEObject)newColumn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ID_IMPL__COLUMN, null, msgs);
+				msgs = ((InternalEObject)newColumn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ID_IMPL__COLUMN, null, msgs);
 			msgs = basicSetColumn(newColumn, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ID_IMPL__COLUMN, newColumn, newColumn));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID_IMPL__COLUMN, newColumn, newColumn));
 	}
 
 	/**
@@ -200,14 +200,14 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 		generatedValue = newGeneratedValue;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ID_IMPL__GENERATED_VALUE, oldGeneratedValue, newGeneratedValue);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID_IMPL__GENERATED_VALUE, oldGeneratedValue, newGeneratedValue);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.IdImpl#getGeneratedValue <em>Generated Value</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlIdImpl#getGeneratedValue <em>Generated Value</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Generated Value</em>' containment reference.
@@ -220,14 +220,14 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 		{
 			NotificationChain msgs = null;
 			if (generatedValue != null)
-				msgs = ((InternalEObject)generatedValue).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ID_IMPL__GENERATED_VALUE, null, msgs);
+				msgs = ((InternalEObject)generatedValue).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ID_IMPL__GENERATED_VALUE, null, msgs);
 			if (newGeneratedValue != null)
-				msgs = ((InternalEObject)newGeneratedValue).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ID_IMPL__GENERATED_VALUE, null, msgs);
+				msgs = ((InternalEObject)newGeneratedValue).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ID_IMPL__GENERATED_VALUE, null, msgs);
 			msgs = basicSetGeneratedValue(newGeneratedValue, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ID_IMPL__GENERATED_VALUE, newGeneratedValue, newGeneratedValue));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID_IMPL__GENERATED_VALUE, newGeneratedValue, newGeneratedValue));
 	}
 
 	/**
@@ -252,7 +252,7 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.IdImpl#getTemporal <em>Temporal</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlIdImpl#getTemporal <em>Temporal</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Temporal</em>' attribute.
@@ -265,7 +265,7 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 		TemporalType oldTemporal = temporal;
 		temporal = newTemporal == null ? TEMPORAL_EDEFAULT : newTemporal;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ID_IMPL__TEMPORAL, oldTemporal, temporal));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID_IMPL__TEMPORAL, oldTemporal, temporal));
 	}
 
 	/**
@@ -298,14 +298,14 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 		tableGenerator = newTableGenerator;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ID_IMPL__TABLE_GENERATOR, oldTableGenerator, newTableGenerator);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID_IMPL__TABLE_GENERATOR, oldTableGenerator, newTableGenerator);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.IdImpl#getTableGenerator <em>Table Generator</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlIdImpl#getTableGenerator <em>Table Generator</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Table Generator</em>' containment reference.
@@ -318,14 +318,14 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 		{
 			NotificationChain msgs = null;
 			if (tableGenerator != null)
-				msgs = ((InternalEObject)tableGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ID_IMPL__TABLE_GENERATOR, null, msgs);
+				msgs = ((InternalEObject)tableGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ID_IMPL__TABLE_GENERATOR, null, msgs);
 			if (newTableGenerator != null)
-				msgs = ((InternalEObject)newTableGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ID_IMPL__TABLE_GENERATOR, null, msgs);
+				msgs = ((InternalEObject)newTableGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ID_IMPL__TABLE_GENERATOR, null, msgs);
 			msgs = basicSetTableGenerator(newTableGenerator, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ID_IMPL__TABLE_GENERATOR, newTableGenerator, newTableGenerator));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID_IMPL__TABLE_GENERATOR, newTableGenerator, newTableGenerator));
 	}
 
 	/**
@@ -358,14 +358,14 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 		sequenceGenerator = newSequenceGenerator;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ID_IMPL__SEQUENCE_GENERATOR, oldSequenceGenerator, newSequenceGenerator);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR, oldSequenceGenerator, newSequenceGenerator);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.IdImpl#getSequenceGenerator <em>Sequence Generator</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlIdImpl#getSequenceGenerator <em>Sequence Generator</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Sequence Generator</em>' containment reference.
@@ -378,14 +378,14 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 		{
 			NotificationChain msgs = null;
 			if (sequenceGenerator != null)
-				msgs = ((InternalEObject)sequenceGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ID_IMPL__SEQUENCE_GENERATOR, null, msgs);
+				msgs = ((InternalEObject)sequenceGenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR, null, msgs);
 			if (newSequenceGenerator != null)
-				msgs = ((InternalEObject)newSequenceGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ID_IMPL__SEQUENCE_GENERATOR, null, msgs);
+				msgs = ((InternalEObject)newSequenceGenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR, null, msgs);
 			msgs = basicSetSequenceGenerator(newSequenceGenerator, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ID_IMPL__SEQUENCE_GENERATOR, newSequenceGenerator, newSequenceGenerator));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR, newSequenceGenerator, newSequenceGenerator));
 	}
 
 	/**
@@ -398,13 +398,13 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ID_IMPL__COLUMN:
+			case OrmPackage.XML_ID_IMPL__COLUMN:
 				return basicSetColumn(null, msgs);
-			case OrmPackage.ID_IMPL__GENERATED_VALUE:
+			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
 				return basicSetGeneratedValue(null, msgs);
-			case OrmPackage.ID_IMPL__TABLE_GENERATOR:
+			case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR:
 				return basicSetTableGenerator(null, msgs);
-			case OrmPackage.ID_IMPL__SEQUENCE_GENERATOR:
+			case OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR:
 				return basicSetSequenceGenerator(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -420,15 +420,15 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ID_IMPL__COLUMN:
+			case OrmPackage.XML_ID_IMPL__COLUMN:
 				return getColumn();
-			case OrmPackage.ID_IMPL__GENERATED_VALUE:
+			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
 				return getGeneratedValue();
-			case OrmPackage.ID_IMPL__TEMPORAL:
+			case OrmPackage.XML_ID_IMPL__TEMPORAL:
 				return getTemporal();
-			case OrmPackage.ID_IMPL__TABLE_GENERATOR:
+			case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR:
 				return getTableGenerator();
-			case OrmPackage.ID_IMPL__SEQUENCE_GENERATOR:
+			case OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR:
 				return getSequenceGenerator();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -444,19 +444,19 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ID_IMPL__COLUMN:
+			case OrmPackage.XML_ID_IMPL__COLUMN:
 				setColumn((XmlColumn)newValue);
 				return;
-			case OrmPackage.ID_IMPL__GENERATED_VALUE:
+			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
 				setGeneratedValue((XmlGeneratedValue)newValue);
 				return;
-			case OrmPackage.ID_IMPL__TEMPORAL:
+			case OrmPackage.XML_ID_IMPL__TEMPORAL:
 				setTemporal((TemporalType)newValue);
 				return;
-			case OrmPackage.ID_IMPL__TABLE_GENERATOR:
+			case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR:
 				setTableGenerator((XmlTableGenerator)newValue);
 				return;
-			case OrmPackage.ID_IMPL__SEQUENCE_GENERATOR:
+			case OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR:
 				setSequenceGenerator((XmlSequenceGenerator)newValue);
 				return;
 		}
@@ -473,19 +473,19 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ID_IMPL__COLUMN:
+			case OrmPackage.XML_ID_IMPL__COLUMN:
 				setColumn((XmlColumn)null);
 				return;
-			case OrmPackage.ID_IMPL__GENERATED_VALUE:
+			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
 				setGeneratedValue((XmlGeneratedValue)null);
 				return;
-			case OrmPackage.ID_IMPL__TEMPORAL:
+			case OrmPackage.XML_ID_IMPL__TEMPORAL:
 				setTemporal(TEMPORAL_EDEFAULT);
 				return;
-			case OrmPackage.ID_IMPL__TABLE_GENERATOR:
+			case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR:
 				setTableGenerator((XmlTableGenerator)null);
 				return;
-			case OrmPackage.ID_IMPL__SEQUENCE_GENERATOR:
+			case OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR:
 				setSequenceGenerator((XmlSequenceGenerator)null);
 				return;
 		}
@@ -502,15 +502,15 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ID_IMPL__COLUMN:
+			case OrmPackage.XML_ID_IMPL__COLUMN:
 				return column != null;
-			case OrmPackage.ID_IMPL__GENERATED_VALUE:
+			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
 				return generatedValue != null;
-			case OrmPackage.ID_IMPL__TEMPORAL:
+			case OrmPackage.XML_ID_IMPL__TEMPORAL:
 				return temporal != TEMPORAL_EDEFAULT;
-			case OrmPackage.ID_IMPL__TABLE_GENERATOR:
+			case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR:
 				return tableGenerator != null;
-			case OrmPackage.ID_IMPL__SEQUENCE_GENERATOR:
+			case OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR:
 				return sequenceGenerator != null;
 		}
 		return super.eIsSet(featureID);
@@ -528,7 +528,7 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.ID_IMPL__COLUMN: return OrmPackage.COLUMN_MAPPING__COLUMN;
+				case OrmPackage.XML_ID_IMPL__COLUMN: return OrmPackage.COLUMN_MAPPING__COLUMN;
 				default: return -1;
 			}
 		}
@@ -536,10 +536,10 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.ID_IMPL__GENERATED_VALUE: return OrmPackage.XML_ID__GENERATED_VALUE;
-				case OrmPackage.ID_IMPL__TEMPORAL: return OrmPackage.XML_ID__TEMPORAL;
-				case OrmPackage.ID_IMPL__TABLE_GENERATOR: return OrmPackage.XML_ID__TABLE_GENERATOR;
-				case OrmPackage.ID_IMPL__SEQUENCE_GENERATOR: return OrmPackage.XML_ID__SEQUENCE_GENERATOR;
+				case OrmPackage.XML_ID_IMPL__GENERATED_VALUE: return OrmPackage.XML_ID__GENERATED_VALUE;
+				case OrmPackage.XML_ID_IMPL__TEMPORAL: return OrmPackage.XML_ID__TEMPORAL;
+				case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR: return OrmPackage.XML_ID__TABLE_GENERATOR;
+				case OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR: return OrmPackage.XML_ID__SEQUENCE_GENERATOR;
 				default: return -1;
 			}
 		}
@@ -558,7 +558,7 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.COLUMN_MAPPING__COLUMN: return OrmPackage.ID_IMPL__COLUMN;
+				case OrmPackage.COLUMN_MAPPING__COLUMN: return OrmPackage.XML_ID_IMPL__COLUMN;
 				default: return -1;
 			}
 		}
@@ -566,10 +566,10 @@ public class IdImpl extends AbstractXmlAttributeMapping implements XmlId
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_ID__GENERATED_VALUE: return OrmPackage.ID_IMPL__GENERATED_VALUE;
-				case OrmPackage.XML_ID__TEMPORAL: return OrmPackage.ID_IMPL__TEMPORAL;
-				case OrmPackage.XML_ID__TABLE_GENERATOR: return OrmPackage.ID_IMPL__TABLE_GENERATOR;
-				case OrmPackage.XML_ID__SEQUENCE_GENERATOR: return OrmPackage.ID_IMPL__SEQUENCE_GENERATOR;
+				case OrmPackage.XML_ID__GENERATED_VALUE: return OrmPackage.XML_ID_IMPL__GENERATED_VALUE;
+				case OrmPackage.XML_ID__TEMPORAL: return OrmPackage.XML_ID_IMPL__TEMPORAL;
+				case OrmPackage.XML_ID__TABLE_GENERATOR: return OrmPackage.XML_ID_IMPL__TABLE_GENERATOR;
+				case OrmPackage.XML_ID__SEQUENCE_GENERATOR: return OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR;
 				default: return -1;
 			}
 		}

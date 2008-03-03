@@ -14,14 +14,14 @@ import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.GenerationType;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 
-public class VirtualGeneratedValue extends AbstractJpaEObject implements XmlGeneratedValue
+public class VirtualXmlGeneratedValue extends AbstractJpaEObject implements XmlGeneratedValue
 {
 	JavaGeneratedValue javaGeneratedValue;
 
 	protected boolean metadataComplete;
 	
 		
-	public VirtualGeneratedValue(JavaGeneratedValue javaGeneratedValue, boolean metadataComplete) {
+	public VirtualXmlGeneratedValue(JavaGeneratedValue javaGeneratedValue, boolean metadataComplete) {
 		super();
 		this.javaGeneratedValue = javaGeneratedValue;
 		this.metadataComplete = metadataComplete;

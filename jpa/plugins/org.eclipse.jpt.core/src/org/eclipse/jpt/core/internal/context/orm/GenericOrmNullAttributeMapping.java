@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 
 
@@ -35,11 +35,11 @@ public class GenericOrmNullAttributeMapping extends AbstractOrmAttributeMapping<
 	}
 	
 	//TODO throwing an exception correct here?
-	public XmlAttributeMapping addToResourceModel(AbstractTypeMapping typeMapping) {
+	public XmlAttributeMapping addToResourceModel(AbstractXmlTypeMapping typeMapping) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void removeFromResourceModel(AbstractTypeMapping typeMapping) {
+	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
 		throw new UnsupportedOperationException();
 	}
 }

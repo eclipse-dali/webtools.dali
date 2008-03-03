@@ -26,7 +26,7 @@ public class OneToManyTranslator extends Translator
 	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return OrmFactory.eINSTANCE.createOneToManyImpl();
+		return OrmFactory.eINSTANCE.createXmlOneToManyImpl();
 	}
 
 	@Override

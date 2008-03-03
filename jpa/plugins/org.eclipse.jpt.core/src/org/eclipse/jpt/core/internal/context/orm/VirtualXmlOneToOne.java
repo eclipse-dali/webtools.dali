@@ -29,7 +29,7 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
  * VirtualOneToOne is an implementation of OneToOne used when there is 
  * no tag in the orm.xml and an underlying javaOneToOneMapping exists.
  */
-public class VirtualOneToOne extends AbstractJpaEObject implements XmlOneToOne
+public class VirtualXmlOneToOne extends AbstractJpaEObject implements XmlOneToOne
 {
 	JavaOneToOneMapping javaOneToOneMapping;
 
@@ -43,7 +43,7 @@ public class VirtualOneToOne extends AbstractJpaEObject implements XmlOneToOne
 	
 //	protected EList<PrimaryKeyJoinColumn> virtualPrimaryKeyJoinColumns;
 
-	public VirtualOneToOne(JavaOneToOneMapping javaOneToOneMapping, boolean metadataComplete) {
+	public VirtualXmlOneToOne(JavaOneToOneMapping javaOneToOneMapping, boolean metadataComplete) {
 		super();
 		this.javaOneToOneMapping = javaOneToOneMapping;
 		this.metadataComplete = metadataComplete;

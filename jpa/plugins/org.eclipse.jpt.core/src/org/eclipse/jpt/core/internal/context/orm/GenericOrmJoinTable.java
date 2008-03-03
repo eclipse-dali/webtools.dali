@@ -138,7 +138,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 	
 	@Override
 	protected void addTableResource() {
-		this.relationshipMappingResource.setJoinTable(OrmFactory.eINSTANCE.createJoinTableImpl());
+		this.relationshipMappingResource.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTableImpl());
 		
 	}
 
@@ -189,7 +189,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		}
 		OrmJoinColumn joinColumn = jpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
-		this.table().getJoinColumns().add(index, OrmFactory.eINSTANCE.createJoinColumnImpl());
+		this.table().getJoinColumns().add(index, OrmFactory.eINSTANCE.createXmlJoinColumnImpl());
 		this.fireItemAdded(JoinTable.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		return joinColumn;
 	}
@@ -263,7 +263,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		}
 		OrmJoinColumn joinColumn = jpaFactory().buildOrmJoinColumn(this, new InverseJoinColumnOwner());
 		this.specifiedInverseJoinColumns.add(index, joinColumn);
-		this.table().getInverseJoinColumns().add(index, OrmFactory.eINSTANCE.createJoinColumnImpl());
+		this.table().getInverseJoinColumns().add(index, OrmFactory.eINSTANCE.createXmlJoinColumnImpl());
 		this.fireItemAdded(JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, index, joinColumn);
 		return joinColumn;
 	}

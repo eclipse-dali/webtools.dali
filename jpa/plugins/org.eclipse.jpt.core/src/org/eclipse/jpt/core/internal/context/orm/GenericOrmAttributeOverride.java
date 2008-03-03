@@ -109,7 +109,7 @@ public class GenericOrmAttributeOverride extends AbstractOrmJpaContextNode
 	}
 	
 	public void addColumnResource() {
-		this.attributeOverride.setColumn(OrmFactory.eINSTANCE.createColumnImpl());
+		this.attributeOverride.setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
 	}
 	
 	public void removeColumnResource() {

@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.resource.orm.XmlColumn;
  * VirtualBasic is an implementation of Basic used when there is 
  * no tag in the orm.xml and an underlying javaBasicMapping exists.
  */
-public class VirtualBasic extends AbstractJpaEObject implements XmlBasic
+public class VirtualXmlBasic extends AbstractJpaEObject implements XmlBasic
 {
 	JavaBasicMapping javaBasicMapping;
 
@@ -31,7 +31,7 @@ public class VirtualBasic extends AbstractJpaEObject implements XmlBasic
 
 	protected boolean metadataComplete;
 		
-	public VirtualBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping, boolean metadataComplete) {
+	public VirtualXmlBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping, boolean metadataComplete) {
 		super();
 		this.javaBasicMapping = javaBasicMapping;
 		this.metadataComplete = metadataComplete;

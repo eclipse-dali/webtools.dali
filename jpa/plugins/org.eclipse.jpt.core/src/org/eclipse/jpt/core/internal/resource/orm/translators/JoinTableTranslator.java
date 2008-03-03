@@ -26,7 +26,7 @@ public class JoinTableTranslator extends Translator
 	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return OrmFactory.eINSTANCE.createJoinTableImpl();
+		return OrmFactory.eINSTANCE.createXmlJoinTableImpl();
 	}
 
 	@Override

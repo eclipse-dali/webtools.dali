@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
@@ -245,14 +245,14 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 		return basic.isLob();
 	}
 	
-	public XmlBasic addToResourceModel(AbstractTypeMapping typeMapping) {
-		XmlBasic basic = OrmFactory.eINSTANCE.createBasicImpl();
+	public XmlBasic addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+		XmlBasic basic = OrmFactory.eINSTANCE.createXmlBasicImpl();
 		persistentAttribute().initialize(basic);
 		typeMapping.getAttributes().getBasics().add(basic);
 		return basic;
 	}
 	
-	public void removeFromResourceModel(AbstractTypeMapping typeMapping) {
+	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getBasics().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
@@ -266,7 +266,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	}
 	
 	public void addColumnResource() {
-		this.attributeMapping().setColumn(OrmFactory.eINSTANCE.createColumnImpl());
+		this.attributeMapping().setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
 	}
 	
 	public void removeColumnResource() {

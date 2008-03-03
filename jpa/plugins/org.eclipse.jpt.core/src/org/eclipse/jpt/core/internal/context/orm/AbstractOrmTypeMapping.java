@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.db.internal.Table;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -30,7 +30,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public abstract class AbstractOrmTypeMapping<T extends AbstractTypeMapping> extends AbstractOrmJpaContextNode implements OrmTypeMapping
+public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> extends AbstractOrmJpaContextNode implements OrmTypeMapping
 {
 
 	protected String class_;
@@ -263,7 +263,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractTypeMapping> exte
 		this.setDefaultAccess(this.defaultAccess());
 	}
 	
-	protected Boolean metadataComplete(AbstractTypeMapping typeMapping) {
+	protected Boolean metadataComplete(AbstractXmlTypeMapping typeMapping) {
 		return typeMapping.getMetadataComplete();
 	}
 

@@ -24,13 +24,13 @@ import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
  * VirtualOneToMany is an implementation of OneToMany used when there is 
  * no tag in the orm.xml and an underlying javaOneToManyMapping exists.
  */
-public class VirtualOneToMany extends AbstractJpaEObject implements XmlOneToMany
+public class VirtualXmlOneToMany extends AbstractJpaEObject implements XmlOneToMany
 {
 	JavaOneToManyMapping javaOneToManyMapping;
 
 	protected boolean metadataComplete;
 	
-	protected final VirtualJoinTable virtualJoinTable;
+	protected final VirtualXmlJoinTable virtualJoinTable;
 	
 	protected final VirtualCascadeType virtualCascadeType;
 	
@@ -39,13 +39,13 @@ public class VirtualOneToMany extends AbstractJpaEObject implements XmlOneToMany
 	//TODO joinColumns not yet supported in the context model
 //	protected EList<JoinColumn> virtualJoinColumns;
 
-	public VirtualOneToMany(JavaOneToManyMapping javaOneToManyMapping, boolean metadataComplete) {
+	public VirtualXmlOneToMany(JavaOneToManyMapping javaOneToManyMapping, boolean metadataComplete) {
 		super();
 		this.javaOneToManyMapping = javaOneToManyMapping;
 		this.metadataComplete = metadataComplete;
 //		this.initializeJoinColumns(javaOneToManyMapping);
 		this.virtualCascadeType = new VirtualCascadeType(javaOneToManyMapping.getCascade(), this.metadataComplete);
-		this.virtualJoinTable = new VirtualJoinTable(javaOneToManyMapping.getJoinTable(), metadataComplete);
+		this.virtualJoinTable = new VirtualXmlJoinTable(javaOneToManyMapping.getJoinTable(), metadataComplete);
 		this.mapKey = new VirtualMapKey(javaOneToManyMapping, metadataComplete);
 	}
 	

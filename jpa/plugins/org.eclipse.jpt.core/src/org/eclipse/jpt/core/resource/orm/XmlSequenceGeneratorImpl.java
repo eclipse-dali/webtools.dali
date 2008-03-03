@@ -26,11 +26,11 @@ import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getSequenceGeneratorImpl()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSequenceGeneratorImpl()
  * @model kind="class"
  * @generated
  */
-public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequenceGenerator
+public class XmlSequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequenceGenerator
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -117,7 +117,7 @@ public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequ
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected SequenceGeneratorImpl()
+	protected XmlSequenceGeneratorImpl()
 	{
 		super();
 	}
@@ -130,7 +130,7 @@ public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequ
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.SEQUENCE_GENERATOR_IMPL;
+		return OrmPackage.Literals.XML_SEQUENCE_GENERATOR_IMPL;
 	}
 
 	/**
@@ -153,7 +153,7 @@ public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequ
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.SequenceGeneratorImpl#getName <em>Name</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlSequenceGeneratorImpl#getName <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Name</em>' attribute.
@@ -165,7 +165,7 @@ public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequ
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.SEQUENCE_GENERATOR_IMPL__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__NAME, oldName, name));
 	}
 
 	/**
@@ -188,7 +188,7 @@ public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequ
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.SequenceGeneratorImpl#getSequenceName <em>Sequence Name</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlSequenceGeneratorImpl#getSequenceName <em>Sequence Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Sequence Name</em>' attribute.
@@ -200,7 +200,7 @@ public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequ
 		String oldSequenceName = sequenceName;
 		sequenceName = newSequenceName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.SEQUENCE_GENERATOR_IMPL__SEQUENCE_NAME, oldSequenceName, sequenceName));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__SEQUENCE_NAME, oldSequenceName, sequenceName));
 	}
 
 	/**
@@ -223,7 +223,7 @@ public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequ
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.SequenceGeneratorImpl#getInitialValue <em>Initial Value</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlSequenceGeneratorImpl#getInitialValue <em>Initial Value</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Initial Value</em>' attribute.
@@ -235,7 +235,7 @@ public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequ
 		Integer oldInitialValue = initialValue;
 		initialValue = newInitialValue;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.SEQUENCE_GENERATOR_IMPL__INITIAL_VALUE, oldInitialValue, initialValue));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__INITIAL_VALUE, oldInitialValue, initialValue));
 	}
 
 	/**
@@ -258,7 +258,7 @@ public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequ
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.SequenceGeneratorImpl#getAllocationSize <em>Allocation Size</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlSequenceGeneratorImpl#getAllocationSize <em>Allocation Size</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Allocation Size</em>' attribute.
@@ -270,7 +270,7 @@ public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequ
 		Integer oldAllocationSize = allocationSize;
 		allocationSize = newAllocationSize;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.SEQUENCE_GENERATOR_IMPL__ALLOCATION_SIZE, oldAllocationSize, allocationSize));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__ALLOCATION_SIZE, oldAllocationSize, allocationSize));
 	}
 
 	/**
@@ -283,13 +283,13 @@ public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequ
 	{
 		switch (featureID)
 		{
-			case OrmPackage.SEQUENCE_GENERATOR_IMPL__NAME:
+			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__NAME:
 				return getName();
-			case OrmPackage.SEQUENCE_GENERATOR_IMPL__INITIAL_VALUE:
+			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__INITIAL_VALUE:
 				return getInitialValue();
-			case OrmPackage.SEQUENCE_GENERATOR_IMPL__ALLOCATION_SIZE:
+			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__ALLOCATION_SIZE:
 				return getAllocationSize();
-			case OrmPackage.SEQUENCE_GENERATOR_IMPL__SEQUENCE_NAME:
+			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__SEQUENCE_NAME:
 				return getSequenceName();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -305,16 +305,16 @@ public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequ
 	{
 		switch (featureID)
 		{
-			case OrmPackage.SEQUENCE_GENERATOR_IMPL__NAME:
+			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__NAME:
 				setName((String)newValue);
 				return;
-			case OrmPackage.SEQUENCE_GENERATOR_IMPL__INITIAL_VALUE:
+			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__INITIAL_VALUE:
 				setInitialValue((Integer)newValue);
 				return;
-			case OrmPackage.SEQUENCE_GENERATOR_IMPL__ALLOCATION_SIZE:
+			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__ALLOCATION_SIZE:
 				setAllocationSize((Integer)newValue);
 				return;
-			case OrmPackage.SEQUENCE_GENERATOR_IMPL__SEQUENCE_NAME:
+			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__SEQUENCE_NAME:
 				setSequenceName((String)newValue);
 				return;
 		}
@@ -331,16 +331,16 @@ public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequ
 	{
 		switch (featureID)
 		{
-			case OrmPackage.SEQUENCE_GENERATOR_IMPL__NAME:
+			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case OrmPackage.SEQUENCE_GENERATOR_IMPL__INITIAL_VALUE:
+			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__INITIAL_VALUE:
 				setInitialValue(INITIAL_VALUE_EDEFAULT);
 				return;
-			case OrmPackage.SEQUENCE_GENERATOR_IMPL__ALLOCATION_SIZE:
+			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__ALLOCATION_SIZE:
 				setAllocationSize(ALLOCATION_SIZE_EDEFAULT);
 				return;
-			case OrmPackage.SEQUENCE_GENERATOR_IMPL__SEQUENCE_NAME:
+			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__SEQUENCE_NAME:
 				setSequenceName(SEQUENCE_NAME_EDEFAULT);
 				return;
 		}
@@ -357,13 +357,13 @@ public class SequenceGeneratorImpl extends AbstractJpaEObject implements XmlSequ
 	{
 		switch (featureID)
 		{
-			case OrmPackage.SEQUENCE_GENERATOR_IMPL__NAME:
+			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case OrmPackage.SEQUENCE_GENERATOR_IMPL__INITIAL_VALUE:
+			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__INITIAL_VALUE:
 				return INITIAL_VALUE_EDEFAULT == null ? initialValue != null : !INITIAL_VALUE_EDEFAULT.equals(initialValue);
-			case OrmPackage.SEQUENCE_GENERATOR_IMPL__ALLOCATION_SIZE:
+			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__ALLOCATION_SIZE:
 				return ALLOCATION_SIZE_EDEFAULT == null ? allocationSize != null : !ALLOCATION_SIZE_EDEFAULT.equals(allocationSize);
-			case OrmPackage.SEQUENCE_GENERATOR_IMPL__SEQUENCE_NAME:
+			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL__SEQUENCE_NAME:
 				return SEQUENCE_NAME_EDEFAULT == null ? sequenceName != null : !SEQUENCE_NAME_EDEFAULT.equals(sequenceName);
 		}
 		return super.eIsSet(featureID);

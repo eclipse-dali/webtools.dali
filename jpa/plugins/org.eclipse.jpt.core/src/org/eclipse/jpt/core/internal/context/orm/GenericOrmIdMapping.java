@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
@@ -95,7 +95,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 			throw new IllegalStateException("gemeratedValue already exists");
 		}
 		this.generatedValue = jpaFactory().buildOrmGeneratedValue(this);
-		this.attributeMapping().setGeneratedValue(OrmFactory.eINSTANCE.createGeneratedValueImpl());
+		this.attributeMapping().setGeneratedValue(OrmFactory.eINSTANCE.createXmlGeneratedValueImpl());
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, null, this.generatedValue);
 		return this.generatedValue;
 	}
@@ -125,7 +125,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 			throw new IllegalStateException("sequenceGenerator already exists");
 		}
 		this.sequenceGenerator = jpaFactory().buildOrmSequenceGenerator(this);
-		this.attributeMapping().setSequenceGenerator(OrmFactory.eINSTANCE.createSequenceGeneratorImpl());
+		this.attributeMapping().setSequenceGenerator(OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl());
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
 		return this.sequenceGenerator;
 	}
@@ -155,7 +155,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 			throw new IllegalStateException("tableGenerator already exists");
 		}
 		this.tableGenerator = jpaFactory().buildOrmTableGenerator(this);
-		this.attributeMapping().setTableGenerator(OrmFactory.eINSTANCE.createTableGeneratorImpl());
+		this.attributeMapping().setTableGenerator(OrmFactory.eINSTANCE.createXmlTableGeneratorImpl());
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
 		return this.tableGenerator;
 	}
@@ -196,14 +196,14 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		return true;
 	}
 	
-	public XmlId addToResourceModel(AbstractTypeMapping typeMapping) {
-		XmlId id = OrmFactory.eINSTANCE.createIdImpl();
+	public XmlId addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+		XmlId id = OrmFactory.eINSTANCE.createXmlIdImpl();
 		persistentAttribute().initialize(id);
 		typeMapping.getAttributes().getIds().add(id);
 		return id;
 	}
 	
-	public void removeFromResourceModel(AbstractTypeMapping typeMapping) {
+	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getIds().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
@@ -338,7 +338,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	}
 	
 	public void addColumnResource() {
-		this.attributeMapping().setColumn(OrmFactory.eINSTANCE.createColumnImpl());
+		this.attributeMapping().setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
 	}
 	
 	public void removeColumnResource() {

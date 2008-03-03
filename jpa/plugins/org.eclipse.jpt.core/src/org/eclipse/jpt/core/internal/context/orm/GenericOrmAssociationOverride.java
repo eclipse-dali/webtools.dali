@@ -96,7 +96,7 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 	public OrmJoinColumn addSpecifiedJoinColumn(int index) {
 		OrmJoinColumn joinColumn = jpaFactory().buildOrmJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
-		this.associationOverride.getJoinColumns().add(index, OrmFactory.eINSTANCE.createJoinColumnImpl());
+		this.associationOverride.getJoinColumns().add(index, OrmFactory.eINSTANCE.createXmlJoinColumnImpl());
 		this.fireItemAdded(AssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		return joinColumn;
 	}

@@ -27,7 +27,7 @@ public class TransientTranslator extends Translator
 	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return OrmFactory.eINSTANCE.createTransientImpl();
+		return OrmFactory.eINSTANCE.createXmlTransientImpl();
 	}
 
 	@Override

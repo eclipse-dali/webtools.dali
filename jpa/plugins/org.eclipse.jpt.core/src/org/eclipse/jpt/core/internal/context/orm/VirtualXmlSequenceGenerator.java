@@ -13,14 +13,14 @@ import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 
-public class VirtualSequenceGenerator extends AbstractJpaEObject implements XmlSequenceGenerator
+public class VirtualXmlSequenceGenerator extends AbstractJpaEObject implements XmlSequenceGenerator
 {
 	JavaSequenceGenerator javaSequenceGenerator;
 
 	protected boolean metadataComplete;
 	
 		
-	public VirtualSequenceGenerator(JavaSequenceGenerator javaSequenceGenerator, boolean metadataComplete) {
+	public VirtualXmlSequenceGenerator(JavaSequenceGenerator javaSequenceGenerator, boolean metadataComplete) {
 		super();
 		this.javaSequenceGenerator = javaSequenceGenerator;
 		this.metadataComplete = metadataComplete;

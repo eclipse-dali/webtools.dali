@@ -53,7 +53,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		
 		
 		//set name in the resource model, verify context model updated
-		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createJoinTableImpl());
+		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTableImpl());
 		manyToMany.getJoinTable().setName("FOO");
 		assertEquals("FOO", ormJoinTable.getSpecifiedName());
 		assertEquals("FOO", manyToMany.getJoinTable().getName());
@@ -162,7 +162,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		assertNull(manyToMany.getJoinTable());
 		
 		//set schema in the resource model, verify context model updated
-		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createJoinTableImpl());
+		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTableImpl());
 		manyToMany.getJoinTable().setSchema("FOO");
 		assertEquals("FOO", ormJoinTable.getSpecifiedSchema());
 		assertEquals("FOO", manyToMany.getJoinTable().getSchema());
@@ -302,7 +302,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		assertNull(manyToMany.getJoinTable());
 		
 		//set Catalog in the resource model, verify context model updated
-		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createJoinTableImpl());
+		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTableImpl());
 		manyToMany.getJoinTable().setCatalog("FOO");
 		assertEquals("FOO", ormJoinTable.getSpecifiedCatalog());
 		assertEquals("FOO", manyToMany.getJoinTable().getCatalog());
@@ -570,12 +570,12 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
 		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();
-		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createJoinTableImpl());
+		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTableImpl());
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 	
-		joinTableResource.getInverseJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumnImpl());
-		joinTableResource.getInverseJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumnImpl());
-		joinTableResource.getInverseJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumnImpl());
+		joinTableResource.getInverseJoinColumns().add(OrmFactory.eINSTANCE.createXmlJoinColumnImpl());
+		joinTableResource.getInverseJoinColumns().add(OrmFactory.eINSTANCE.createXmlJoinColumnImpl());
+		joinTableResource.getInverseJoinColumns().add(OrmFactory.eINSTANCE.createXmlJoinColumnImpl());
 		
 		joinTableResource.getInverseJoinColumns().get(0).setName("FOO");
 		joinTableResource.getInverseJoinColumns().get(1).setName("BAR");
@@ -733,12 +733,12 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		XmlManyToMany manyToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToManys().get(0);
 
 		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();
-		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createJoinTableImpl());
+		manyToMany.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTableImpl());
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 	
-		joinTableResource.getJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumnImpl());
-		joinTableResource.getJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumnImpl());
-		joinTableResource.getJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumnImpl());
+		joinTableResource.getJoinColumns().add(OrmFactory.eINSTANCE.createXmlJoinColumnImpl());
+		joinTableResource.getJoinColumns().add(OrmFactory.eINSTANCE.createXmlJoinColumnImpl());
+		joinTableResource.getJoinColumns().add(OrmFactory.eINSTANCE.createXmlJoinColumnImpl());
 		
 		joinTableResource.getJoinColumns().get(0).setName("FOO");
 		joinTableResource.getJoinColumns().get(1).setName("BAR");

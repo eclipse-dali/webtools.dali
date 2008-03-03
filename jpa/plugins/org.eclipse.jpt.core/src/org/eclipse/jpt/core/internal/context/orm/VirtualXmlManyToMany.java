@@ -24,13 +24,13 @@ import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
  * VirtualManyToMany is an implementation of ManyToMany used when there is 
  * no tag in the orm.xml and an underlying javaManyToManyMapping exists.
  */
-public class VirtualManyToMany extends AbstractJpaEObject implements XmlManyToMany
+public class VirtualXmlManyToMany extends AbstractJpaEObject implements XmlManyToMany
 {
 	JavaManyToManyMapping javaManyToManyMapping;
 
 	protected boolean metadataComplete;
 	
-	protected final VirtualJoinTable virtualJoinTable;
+	protected final VirtualXmlJoinTable virtualJoinTable;
 	
 	protected final VirtualCascadeType virtualCascadeType;
 	
@@ -39,13 +39,13 @@ public class VirtualManyToMany extends AbstractJpaEObject implements XmlManyToMa
 	//TODO joinColumns not yet supported in the context model
 //	protected EList<JoinColumn> virtualJoinColumns;
 
-	public VirtualManyToMany(JavaManyToManyMapping javaManyToManyMapping, boolean metadataComplete) {
+	public VirtualXmlManyToMany(JavaManyToManyMapping javaManyToManyMapping, boolean metadataComplete) {
 		super();
 		this.javaManyToManyMapping = javaManyToManyMapping;
 		this.metadataComplete = metadataComplete;
 //		this.initializeJoinColumns(javaOneToManyMapping);
 		this.virtualCascadeType = new VirtualCascadeType(javaManyToManyMapping.getCascade(), this.metadataComplete);
-		this.virtualJoinTable = new VirtualJoinTable(javaManyToManyMapping.getJoinTable(), metadataComplete);
+		this.virtualJoinTable = new VirtualXmlJoinTable(javaManyToManyMapping.getJoinTable(), metadataComplete);
 		this.mapKey = new VirtualMapKey(javaManyToManyMapping, metadataComplete);
 	}
 	

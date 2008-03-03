@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getJoinTableImpl()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTableImpl()
  * @model kind="class"
  * @generated
  */
@@ -72,7 +72,7 @@ public class XmlJoinTableImpl extends AbstractXmlBaseTable implements XmlJoinTab
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.JOIN_TABLE_IMPL;
+		return OrmPackage.Literals.XML_JOIN_TABLE_IMPL;
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class XmlJoinTableImpl extends AbstractXmlBaseTable implements XmlJoinTab
 	{
 		if (joinColumns == null)
 		{
-			joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.JOIN_TABLE_IMPL__JOIN_COLUMNS);
+			joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE_IMPL__JOIN_COLUMNS);
 		}
 		return joinColumns;
 	}
@@ -116,7 +116,7 @@ public class XmlJoinTableImpl extends AbstractXmlBaseTable implements XmlJoinTab
 	{
 		if (inverseJoinColumns == null)
 		{
-			inverseJoinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.JOIN_TABLE_IMPL__INVERSE_JOIN_COLUMNS);
+			inverseJoinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE_IMPL__INVERSE_JOIN_COLUMNS);
 		}
 		return inverseJoinColumns;
 	}
@@ -131,9 +131,9 @@ public class XmlJoinTableImpl extends AbstractXmlBaseTable implements XmlJoinTab
 	{
 		switch (featureID)
 		{
-			case OrmPackage.JOIN_TABLE_IMPL__JOIN_COLUMNS:
+			case OrmPackage.XML_JOIN_TABLE_IMPL__JOIN_COLUMNS:
 				return ((InternalEList<?>)getJoinColumns()).basicRemove(otherEnd, msgs);
-			case OrmPackage.JOIN_TABLE_IMPL__INVERSE_JOIN_COLUMNS:
+			case OrmPackage.XML_JOIN_TABLE_IMPL__INVERSE_JOIN_COLUMNS:
 				return ((InternalEList<?>)getInverseJoinColumns()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -149,9 +149,9 @@ public class XmlJoinTableImpl extends AbstractXmlBaseTable implements XmlJoinTab
 	{
 		switch (featureID)
 		{
-			case OrmPackage.JOIN_TABLE_IMPL__JOIN_COLUMNS:
+			case OrmPackage.XML_JOIN_TABLE_IMPL__JOIN_COLUMNS:
 				return getJoinColumns();
-			case OrmPackage.JOIN_TABLE_IMPL__INVERSE_JOIN_COLUMNS:
+			case OrmPackage.XML_JOIN_TABLE_IMPL__INVERSE_JOIN_COLUMNS:
 				return getInverseJoinColumns();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -168,11 +168,11 @@ public class XmlJoinTableImpl extends AbstractXmlBaseTable implements XmlJoinTab
 	{
 		switch (featureID)
 		{
-			case OrmPackage.JOIN_TABLE_IMPL__JOIN_COLUMNS:
+			case OrmPackage.XML_JOIN_TABLE_IMPL__JOIN_COLUMNS:
 				getJoinColumns().clear();
 				getJoinColumns().addAll((Collection<? extends XmlJoinColumn>)newValue);
 				return;
-			case OrmPackage.JOIN_TABLE_IMPL__INVERSE_JOIN_COLUMNS:
+			case OrmPackage.XML_JOIN_TABLE_IMPL__INVERSE_JOIN_COLUMNS:
 				getInverseJoinColumns().clear();
 				getInverseJoinColumns().addAll((Collection<? extends XmlJoinColumn>)newValue);
 				return;
@@ -190,10 +190,10 @@ public class XmlJoinTableImpl extends AbstractXmlBaseTable implements XmlJoinTab
 	{
 		switch (featureID)
 		{
-			case OrmPackage.JOIN_TABLE_IMPL__JOIN_COLUMNS:
+			case OrmPackage.XML_JOIN_TABLE_IMPL__JOIN_COLUMNS:
 				getJoinColumns().clear();
 				return;
-			case OrmPackage.JOIN_TABLE_IMPL__INVERSE_JOIN_COLUMNS:
+			case OrmPackage.XML_JOIN_TABLE_IMPL__INVERSE_JOIN_COLUMNS:
 				getInverseJoinColumns().clear();
 				return;
 		}
@@ -210,9 +210,9 @@ public class XmlJoinTableImpl extends AbstractXmlBaseTable implements XmlJoinTab
 	{
 		switch (featureID)
 		{
-			case OrmPackage.JOIN_TABLE_IMPL__JOIN_COLUMNS:
+			case OrmPackage.XML_JOIN_TABLE_IMPL__JOIN_COLUMNS:
 				return joinColumns != null && !joinColumns.isEmpty();
-			case OrmPackage.JOIN_TABLE_IMPL__INVERSE_JOIN_COLUMNS:
+			case OrmPackage.XML_JOIN_TABLE_IMPL__INVERSE_JOIN_COLUMNS:
 				return inverseJoinColumns != null && !inverseJoinColumns.isEmpty();
 		}
 		return super.eIsSet(featureID);
@@ -230,8 +230,8 @@ public class XmlJoinTableImpl extends AbstractXmlBaseTable implements XmlJoinTab
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.JOIN_TABLE_IMPL__JOIN_COLUMNS: return OrmPackage.XML_JOIN_TABLE__JOIN_COLUMNS;
-				case OrmPackage.JOIN_TABLE_IMPL__INVERSE_JOIN_COLUMNS: return OrmPackage.XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS;
+				case OrmPackage.XML_JOIN_TABLE_IMPL__JOIN_COLUMNS: return OrmPackage.XML_JOIN_TABLE__JOIN_COLUMNS;
+				case OrmPackage.XML_JOIN_TABLE_IMPL__INVERSE_JOIN_COLUMNS: return OrmPackage.XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS;
 				default: return -1;
 			}
 		}
@@ -250,8 +250,8 @@ public class XmlJoinTableImpl extends AbstractXmlBaseTable implements XmlJoinTab
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_JOIN_TABLE__JOIN_COLUMNS: return OrmPackage.JOIN_TABLE_IMPL__JOIN_COLUMNS;
-				case OrmPackage.XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS: return OrmPackage.JOIN_TABLE_IMPL__INVERSE_JOIN_COLUMNS;
+				case OrmPackage.XML_JOIN_TABLE__JOIN_COLUMNS: return OrmPackage.XML_JOIN_TABLE_IMPL__JOIN_COLUMNS;
+				case OrmPackage.XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS: return OrmPackage.XML_JOIN_TABLE_IMPL__INVERSE_JOIN_COLUMNS;
 				default: return -1;
 			}
 		}

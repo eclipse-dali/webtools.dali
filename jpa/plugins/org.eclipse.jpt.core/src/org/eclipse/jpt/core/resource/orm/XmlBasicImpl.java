@@ -27,11 +27,11 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getBasicImpl()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlBasicImpl()
  * @model kind="class"
  * @generated
  */
-public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
+public class XmlBasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 {
 	/**
 	 * The cached value of the '{@link #getColumn() <em>Column</em>}' containment reference.
@@ -136,7 +136,7 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected BasicImpl()
+	protected XmlBasicImpl()
 	{
 		super();
 	}
@@ -149,7 +149,7 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.BASIC_IMPL;
+		return OrmPackage.Literals.XML_BASIC_IMPL;
 	}
 
 	/**
@@ -182,14 +182,14 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 		column = newColumn;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.BASIC_IMPL__COLUMN, oldColumn, newColumn);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_BASIC_IMPL__COLUMN, oldColumn, newColumn);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.BasicImpl#getColumn <em>Column</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlBasicImpl#getColumn <em>Column</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Column</em>' containment reference.
@@ -202,14 +202,14 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 		{
 			NotificationChain msgs = null;
 			if (column != null)
-				msgs = ((InternalEObject)column).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.BASIC_IMPL__COLUMN, null, msgs);
+				msgs = ((InternalEObject)column).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_BASIC_IMPL__COLUMN, null, msgs);
 			if (newColumn != null)
-				msgs = ((InternalEObject)newColumn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.BASIC_IMPL__COLUMN, null, msgs);
+				msgs = ((InternalEObject)newColumn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_BASIC_IMPL__COLUMN, null, msgs);
 			msgs = basicSetColumn(newColumn, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.BASIC_IMPL__COLUMN, newColumn, newColumn));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_BASIC_IMPL__COLUMN, newColumn, newColumn));
 	}
 
 	/**
@@ -235,7 +235,7 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.BasicImpl#getFetch <em>Fetch</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlBasicImpl#getFetch <em>Fetch</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Fetch</em>' attribute.
@@ -248,7 +248,7 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 		FetchType oldFetch = fetch;
 		fetch = newFetch == null ? FETCH_EDEFAULT : newFetch;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.BASIC_IMPL__FETCH, oldFetch, fetch));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_BASIC_IMPL__FETCH, oldFetch, fetch));
 	}
 
 	/**
@@ -271,7 +271,7 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.BasicImpl#getOptional <em>Optional</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlBasicImpl#getOptional <em>Optional</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Optional</em>' attribute.
@@ -283,7 +283,7 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 		Boolean oldOptional = optional;
 		optional = newOptional;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.BASIC_IMPL__OPTIONAL, oldOptional, optional));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_BASIC_IMPL__OPTIONAL, oldOptional, optional));
 	}
 
 	/**
@@ -306,7 +306,7 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.BasicImpl#isLob <em>Lob</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlBasicImpl#isLob <em>Lob</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Lob</em>' attribute.
@@ -318,7 +318,7 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 		boolean oldLob = lob;
 		lob = newLob;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.BASIC_IMPL__LOB, oldLob, lob));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_BASIC_IMPL__LOB, oldLob, lob));
 	}
 
 	/**
@@ -343,7 +343,7 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.BasicImpl#getTemporal <em>Temporal</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlBasicImpl#getTemporal <em>Temporal</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Temporal</em>' attribute.
@@ -356,7 +356,7 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 		TemporalType oldTemporal = temporal;
 		temporal = newTemporal == null ? TEMPORAL_EDEFAULT : newTemporal;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.BASIC_IMPL__TEMPORAL, oldTemporal, temporal));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_BASIC_IMPL__TEMPORAL, oldTemporal, temporal));
 	}
 
 	/**
@@ -381,7 +381,7 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.BasicImpl#getEnumerated <em>Enumerated</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlBasicImpl#getEnumerated <em>Enumerated</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Enumerated</em>' attribute.
@@ -394,7 +394,7 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 		EnumType oldEnumerated = enumerated;
 		enumerated = newEnumerated == null ? ENUMERATED_EDEFAULT : newEnumerated;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.BASIC_IMPL__ENUMERATED, oldEnumerated, enumerated));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_BASIC_IMPL__ENUMERATED, oldEnumerated, enumerated));
 	}
 
 	/**
@@ -407,7 +407,7 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 	{
 		switch (featureID)
 		{
-			case OrmPackage.BASIC_IMPL__COLUMN:
+			case OrmPackage.XML_BASIC_IMPL__COLUMN:
 				return basicSetColumn(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -423,17 +423,17 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 	{
 		switch (featureID)
 		{
-			case OrmPackage.BASIC_IMPL__COLUMN:
+			case OrmPackage.XML_BASIC_IMPL__COLUMN:
 				return getColumn();
-			case OrmPackage.BASIC_IMPL__FETCH:
+			case OrmPackage.XML_BASIC_IMPL__FETCH:
 				return getFetch();
-			case OrmPackage.BASIC_IMPL__OPTIONAL:
+			case OrmPackage.XML_BASIC_IMPL__OPTIONAL:
 				return getOptional();
-			case OrmPackage.BASIC_IMPL__LOB:
+			case OrmPackage.XML_BASIC_IMPL__LOB:
 				return isLob() ? Boolean.TRUE : Boolean.FALSE;
-			case OrmPackage.BASIC_IMPL__TEMPORAL:
+			case OrmPackage.XML_BASIC_IMPL__TEMPORAL:
 				return getTemporal();
-			case OrmPackage.BASIC_IMPL__ENUMERATED:
+			case OrmPackage.XML_BASIC_IMPL__ENUMERATED:
 				return getEnumerated();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -449,22 +449,22 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 	{
 		switch (featureID)
 		{
-			case OrmPackage.BASIC_IMPL__COLUMN:
+			case OrmPackage.XML_BASIC_IMPL__COLUMN:
 				setColumn((XmlColumn)newValue);
 				return;
-			case OrmPackage.BASIC_IMPL__FETCH:
+			case OrmPackage.XML_BASIC_IMPL__FETCH:
 				setFetch((FetchType)newValue);
 				return;
-			case OrmPackage.BASIC_IMPL__OPTIONAL:
+			case OrmPackage.XML_BASIC_IMPL__OPTIONAL:
 				setOptional((Boolean)newValue);
 				return;
-			case OrmPackage.BASIC_IMPL__LOB:
+			case OrmPackage.XML_BASIC_IMPL__LOB:
 				setLob(((Boolean)newValue).booleanValue());
 				return;
-			case OrmPackage.BASIC_IMPL__TEMPORAL:
+			case OrmPackage.XML_BASIC_IMPL__TEMPORAL:
 				setTemporal((TemporalType)newValue);
 				return;
-			case OrmPackage.BASIC_IMPL__ENUMERATED:
+			case OrmPackage.XML_BASIC_IMPL__ENUMERATED:
 				setEnumerated((EnumType)newValue);
 				return;
 		}
@@ -481,22 +481,22 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 	{
 		switch (featureID)
 		{
-			case OrmPackage.BASIC_IMPL__COLUMN:
+			case OrmPackage.XML_BASIC_IMPL__COLUMN:
 				setColumn((XmlColumn)null);
 				return;
-			case OrmPackage.BASIC_IMPL__FETCH:
+			case OrmPackage.XML_BASIC_IMPL__FETCH:
 				setFetch(FETCH_EDEFAULT);
 				return;
-			case OrmPackage.BASIC_IMPL__OPTIONAL:
+			case OrmPackage.XML_BASIC_IMPL__OPTIONAL:
 				setOptional(OPTIONAL_EDEFAULT);
 				return;
-			case OrmPackage.BASIC_IMPL__LOB:
+			case OrmPackage.XML_BASIC_IMPL__LOB:
 				setLob(LOB_EDEFAULT);
 				return;
-			case OrmPackage.BASIC_IMPL__TEMPORAL:
+			case OrmPackage.XML_BASIC_IMPL__TEMPORAL:
 				setTemporal(TEMPORAL_EDEFAULT);
 				return;
-			case OrmPackage.BASIC_IMPL__ENUMERATED:
+			case OrmPackage.XML_BASIC_IMPL__ENUMERATED:
 				setEnumerated(ENUMERATED_EDEFAULT);
 				return;
 		}
@@ -513,17 +513,17 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 	{
 		switch (featureID)
 		{
-			case OrmPackage.BASIC_IMPL__COLUMN:
+			case OrmPackage.XML_BASIC_IMPL__COLUMN:
 				return column != null;
-			case OrmPackage.BASIC_IMPL__FETCH:
+			case OrmPackage.XML_BASIC_IMPL__FETCH:
 				return fetch != FETCH_EDEFAULT;
-			case OrmPackage.BASIC_IMPL__OPTIONAL:
+			case OrmPackage.XML_BASIC_IMPL__OPTIONAL:
 				return OPTIONAL_EDEFAULT == null ? optional != null : !OPTIONAL_EDEFAULT.equals(optional);
-			case OrmPackage.BASIC_IMPL__LOB:
+			case OrmPackage.XML_BASIC_IMPL__LOB:
 				return lob != LOB_EDEFAULT;
-			case OrmPackage.BASIC_IMPL__TEMPORAL:
+			case OrmPackage.XML_BASIC_IMPL__TEMPORAL:
 				return temporal != TEMPORAL_EDEFAULT;
-			case OrmPackage.BASIC_IMPL__ENUMERATED:
+			case OrmPackage.XML_BASIC_IMPL__ENUMERATED:
 				return enumerated != ENUMERATED_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
@@ -541,7 +541,7 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.BASIC_IMPL__COLUMN: return OrmPackage.COLUMN_MAPPING__COLUMN;
+				case OrmPackage.XML_BASIC_IMPL__COLUMN: return OrmPackage.COLUMN_MAPPING__COLUMN;
 				default: return -1;
 			}
 		}
@@ -549,11 +549,11 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.BASIC_IMPL__FETCH: return OrmPackage.XML_BASIC__FETCH;
-				case OrmPackage.BASIC_IMPL__OPTIONAL: return OrmPackage.XML_BASIC__OPTIONAL;
-				case OrmPackage.BASIC_IMPL__LOB: return OrmPackage.XML_BASIC__LOB;
-				case OrmPackage.BASIC_IMPL__TEMPORAL: return OrmPackage.XML_BASIC__TEMPORAL;
-				case OrmPackage.BASIC_IMPL__ENUMERATED: return OrmPackage.XML_BASIC__ENUMERATED;
+				case OrmPackage.XML_BASIC_IMPL__FETCH: return OrmPackage.XML_BASIC__FETCH;
+				case OrmPackage.XML_BASIC_IMPL__OPTIONAL: return OrmPackage.XML_BASIC__OPTIONAL;
+				case OrmPackage.XML_BASIC_IMPL__LOB: return OrmPackage.XML_BASIC__LOB;
+				case OrmPackage.XML_BASIC_IMPL__TEMPORAL: return OrmPackage.XML_BASIC__TEMPORAL;
+				case OrmPackage.XML_BASIC_IMPL__ENUMERATED: return OrmPackage.XML_BASIC__ENUMERATED;
 				default: return -1;
 			}
 		}
@@ -572,7 +572,7 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.COLUMN_MAPPING__COLUMN: return OrmPackage.BASIC_IMPL__COLUMN;
+				case OrmPackage.COLUMN_MAPPING__COLUMN: return OrmPackage.XML_BASIC_IMPL__COLUMN;
 				default: return -1;
 			}
 		}
@@ -580,11 +580,11 @@ public class BasicImpl extends AbstractXmlAttributeMapping implements XmlBasic
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_BASIC__FETCH: return OrmPackage.BASIC_IMPL__FETCH;
-				case OrmPackage.XML_BASIC__OPTIONAL: return OrmPackage.BASIC_IMPL__OPTIONAL;
-				case OrmPackage.XML_BASIC__LOB: return OrmPackage.BASIC_IMPL__LOB;
-				case OrmPackage.XML_BASIC__TEMPORAL: return OrmPackage.BASIC_IMPL__TEMPORAL;
-				case OrmPackage.XML_BASIC__ENUMERATED: return OrmPackage.BASIC_IMPL__ENUMERATED;
+				case OrmPackage.XML_BASIC__FETCH: return OrmPackage.XML_BASIC_IMPL__FETCH;
+				case OrmPackage.XML_BASIC__OPTIONAL: return OrmPackage.XML_BASIC_IMPL__OPTIONAL;
+				case OrmPackage.XML_BASIC__LOB: return OrmPackage.XML_BASIC_IMPL__LOB;
+				case OrmPackage.XML_BASIC__TEMPORAL: return OrmPackage.XML_BASIC_IMPL__TEMPORAL;
+				case OrmPackage.XML_BASIC__ENUMERATED: return OrmPackage.XML_BASIC_IMPL__ENUMERATED;
 				default: return -1;
 			}
 		}

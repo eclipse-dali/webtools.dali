@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaEmbeddedMapping;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
@@ -103,7 +103,7 @@ public class GenericOrmEmbeddedMapping extends AbstractOrmAttributeMapping<XmlEm
 	}
 
 	public OrmAttributeOverride addSpecifiedAttributeOverride(int index) {
-		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createAttributeOverrideImpl();
+		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl();
 		OrmAttributeOverride attributeOverride = buildAttributeOverride(xmlAttributeOverride);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
 		this.attributeMapping().getAttributeOverrides().add(index, xmlAttributeOverride);
@@ -305,14 +305,14 @@ public class GenericOrmEmbeddedMapping extends AbstractOrmAttributeMapping<XmlEm
 		}
 	}
 
-	public XmlEmbedded addToResourceModel(AbstractTypeMapping typeMapping) {
-		XmlEmbedded embedded = OrmFactory.eINSTANCE.createEmbeddedImpl();
+	public XmlEmbedded addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+		XmlEmbedded embedded = OrmFactory.eINSTANCE.createXmlEmbeddedImpl();
 		persistentAttribute().initialize(embedded);
 		typeMapping.getAttributes().getEmbeddeds().add(embedded);
 		return embedded;
 	}
 	
-	public void removeFromResourceModel(AbstractTypeMapping typeMapping) {
+	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getEmbeddeds().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);

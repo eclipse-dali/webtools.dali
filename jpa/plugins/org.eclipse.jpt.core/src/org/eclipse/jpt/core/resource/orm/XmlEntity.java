@@ -65,7 +65,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends AbstractTypeMapping
+public class XmlEntity extends AbstractXmlTypeMapping
 {
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it

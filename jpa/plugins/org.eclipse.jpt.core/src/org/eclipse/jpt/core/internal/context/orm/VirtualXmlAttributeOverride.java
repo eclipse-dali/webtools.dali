@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 
-public class VirtualAttributeOverride extends AbstractJpaEObject implements XmlAttributeOverride
+public class VirtualXmlAttributeOverride extends AbstractJpaEObject implements XmlAttributeOverride
 {
 	
 	protected JavaAttributeOverride javaAttributeOverride;
@@ -24,7 +24,7 @@ public class VirtualAttributeOverride extends AbstractJpaEObject implements XmlA
 
 	protected boolean metadataComplete;
 
-	protected VirtualAttributeOverride(OrmTypeMapping ormTypeMapping, JavaAttributeOverride javaAttributeOverride, boolean metadataComplete) {
+	protected VirtualXmlAttributeOverride(OrmTypeMapping ormTypeMapping, JavaAttributeOverride javaAttributeOverride, boolean metadataComplete) {
 		super();
 		this.javaAttributeOverride = javaAttributeOverride;
 		this.metadataComplete = metadataComplete;

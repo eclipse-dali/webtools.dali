@@ -53,19 +53,19 @@ public class MappedSuperclassTranslator extends Translator
 	}
 	
 	private Translator createClassTranslator() {
-		return new Translator(CLASS, ORM_PKG.getAbstractTypeMapping_ClassName(), DOM_ATTRIBUTE);
+		return new Translator(CLASS, ORM_PKG.getAbstractXmlTypeMapping_ClassName(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createAccessTranslator() {
-		return new Translator(ACCESS, ORM_PKG.getAbstractTypeMapping_Access(), DOM_ATTRIBUTE);
+		return new Translator(ACCESS, ORM_PKG.getAbstractXmlTypeMapping_Access(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createMetadataCompleteTranslator() {
-		return new Translator(METADATA_COMPLETE, ORM_PKG.getAbstractTypeMapping_MetadataComplete(), DOM_ATTRIBUTE);
+		return new Translator(METADATA_COMPLETE, ORM_PKG.getAbstractXmlTypeMapping_MetadataComplete(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createDescriptionTranslator() {
-		return new Translator(DESCRIPTION, ORM_PKG.getAbstractTypeMapping_Description());
+		return new Translator(DESCRIPTION, ORM_PKG.getAbstractXmlTypeMapping_Description());
 	}
 	
 	private Translator createIdClassTranslator() {
@@ -113,6 +113,6 @@ public class MappedSuperclassTranslator extends Translator
 	}
 	
 	private Translator createAttributesTranslator() {
-		return new AttributesTranslator(ATTRIBUTES, ORM_PKG.getAbstractTypeMapping_Attributes());
+		return new AttributesTranslator(ATTRIBUTES, ORM_PKG.getAbstractXmlTypeMapping_Attributes());
 	}
 }

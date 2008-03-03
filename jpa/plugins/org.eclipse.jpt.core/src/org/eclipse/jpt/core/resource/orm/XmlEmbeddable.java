@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.EClass;
  * @model kind="class"
  * @generated
  */
-public class XmlEmbeddable extends AbstractTypeMapping
+public class XmlEmbeddable extends AbstractXmlTypeMapping
 {
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it

@@ -102,7 +102,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	public OrmJoinColumn addSpecifiedJoinColumn(int index) {
 		OrmJoinColumn joinColumn = jpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
-		this.attributeMapping().getJoinColumns().add(index, OrmFactory.eINSTANCE.createJoinColumnImpl());
+		this.attributeMapping().getJoinColumns().add(index, OrmFactory.eINSTANCE.createXmlJoinColumnImpl());
 		this.fireItemAdded(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		return joinColumn;
 	}

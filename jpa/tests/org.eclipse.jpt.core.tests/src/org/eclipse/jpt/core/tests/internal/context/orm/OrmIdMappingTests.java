@@ -316,7 +316,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertNull(ormIdMapping.getSequenceGenerator());
 		assertNull(idResource.getSequenceGenerator());
 		
-		idResource.setSequenceGenerator(OrmFactory.eINSTANCE.createSequenceGeneratorImpl());
+		idResource.setSequenceGenerator(OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl());
 				
 		assertNotNull(ormIdMapping.getSequenceGenerator());
 		assertNotNull(idResource.getSequenceGenerator());
@@ -385,7 +385,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertNull(ormIdMapping.getTableGenerator());
 		assertNull(idResource.getTableGenerator());
 		
-		idResource.setTableGenerator(OrmFactory.eINSTANCE.createTableGeneratorImpl());
+		idResource.setTableGenerator(OrmFactory.eINSTANCE.createXmlTableGeneratorImpl());
 				
 		assertNotNull(ormIdMapping.getTableGenerator());
 		assertNotNull(idResource.getTableGenerator());
@@ -454,7 +454,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertNull(ormIdMapping.getGeneratedValue());
 		assertNull(idResource.getGeneratedValue());
 		
-		idResource.setGeneratedValue(OrmFactory.eINSTANCE.createGeneratedValueImpl());
+		idResource.setGeneratedValue(OrmFactory.eINSTANCE.createXmlGeneratedValueImpl());
 				
 		assertNotNull(ormIdMapping.getGeneratedValue());
 		assertNotNull(idResource.getGeneratedValue());

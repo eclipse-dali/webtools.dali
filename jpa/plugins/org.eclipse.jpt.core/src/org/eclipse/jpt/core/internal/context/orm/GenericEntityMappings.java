@@ -30,7 +30,7 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
@@ -230,7 +230,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 			// adds short name if package name is specified
 			className = className.substring(getPackage().length() + 1);
 		}
-		AbstractTypeMapping typeMapping = persistentType.getMapping().addToResourceModel(this.xmlEntityMappings);
+		AbstractXmlTypeMapping typeMapping = persistentType.getMapping().addToResourceModel(this.xmlEntityMappings);
 		typeMapping.setClassName(className);
 		fireItemAdded(PERSISTENT_TYPES_LIST, index, persistentType);
 		return persistentType;
@@ -298,7 +298,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	public SequenceGenerator addSequenceGenerator(int index) {
 		OrmSequenceGenerator ormSequenceGenerator = jpaFactory().buildOrmSequenceGenerator(this);
 		this.sequenceGenerators.add(index, ormSequenceGenerator);
-		XmlSequenceGenerator sequenceGenerator = OrmFactory.eINSTANCE.createSequenceGeneratorImpl();
+		XmlSequenceGenerator sequenceGenerator = OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
 		ormSequenceGenerator.initialize(sequenceGenerator);
 		this.xmlEntityMappings.getSequenceGenerators().add(index, sequenceGenerator);
 		fireItemAdded(SEQUENCE_GENERATORS_LIST, index, ormSequenceGenerator);
@@ -340,7 +340,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	public TableGenerator addTableGenerator(int index) {
 		OrmTableGenerator xmlTableGenerator = jpaFactory().buildOrmTableGenerator(this);
 		this.tableGenerators.add(index, xmlTableGenerator);
-		XmlTableGenerator tableGenerator = OrmFactory.eINSTANCE.createTableGeneratorImpl();
+		XmlTableGenerator tableGenerator = OrmFactory.eINSTANCE.createXmlTableGeneratorImpl();
 		xmlTableGenerator.initialize(tableGenerator);
 		this.xmlEntityMappings.getTableGenerators().add(index, tableGenerator);
 		fireItemAdded(TABLE_GENERATORS_LIST, index, xmlTableGenerator);

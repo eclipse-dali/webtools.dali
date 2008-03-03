@@ -27,7 +27,7 @@ public class BasicTranslator extends Translator
 	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return OrmFactory.eINSTANCE.createBasicImpl();
+		return OrmFactory.eINSTANCE.createXmlBasicImpl();
 	}
 
 	@Override

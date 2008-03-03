@@ -17,14 +17,14 @@ import org.eclipse.jpt.core.resource.orm.UniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 
-public class VirtualJoinTable extends AbstractJpaEObject implements XmlJoinTable
+public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTable
 {
 	
 	protected JavaJoinTable javaJoinTable;
 
 	protected boolean metadataComplete;
 
-	protected VirtualJoinTable(JavaJoinTable javaJoinTable, boolean metadataComplete) {
+	protected VirtualXmlJoinTable(JavaJoinTable javaJoinTable, boolean metadataComplete) {
 		super();
 		this.javaJoinTable = javaJoinTable;
 		this.metadataComplete = metadataComplete;

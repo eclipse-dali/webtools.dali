@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 
 /**
@@ -65,11 +65,11 @@ public interface OrmTypeMapping extends TypeMapping, OrmJpaContextNode
 
 	void removeFromResourceModel(XmlEntityMappings entityMappings);
 		
-	AbstractTypeMapping addToResourceModel(XmlEntityMappings entityMappings);
+	AbstractXmlTypeMapping addToResourceModel(XmlEntityMappings entityMappings);
 
 	void initializeFrom(OrmTypeMapping oldMapping);
 
-	AbstractTypeMapping typeMappingResource();
+	AbstractXmlTypeMapping typeMappingResource();
 	
 	JavaPersistentType getJavaPersistentType();
 

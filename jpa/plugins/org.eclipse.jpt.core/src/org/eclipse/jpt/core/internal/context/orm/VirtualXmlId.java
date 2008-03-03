@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
  * VirtualId is an implementation of Id used when there is 
  * no tag in the orm.xml and an underlying javaIdMapping exists.
  */
-public class VirtualId extends AbstractJpaEObject implements XmlId
+public class VirtualXmlId extends AbstractJpaEObject implements XmlId
 {
 	JavaIdMapping javaIdMapping;
 
@@ -32,22 +32,22 @@ public class VirtualId extends AbstractJpaEObject implements XmlId
 
 	protected final VirtualXmlColumn column;
 
-	protected final VirtualGeneratedValue virtualGeneratedValue;
+	protected final VirtualXmlGeneratedValue virtualGeneratedValue;
 	
-	protected final VirtualTableGenerator virtualTableGenerator;
+	protected final VirtualXmlTableGenerator virtualTableGenerator;
 	
-	protected final VirtualSequenceGenerator virtualSequenceGenerator;
+	protected final VirtualXmlSequenceGenerator virtualSequenceGenerator;
 	
 
 		
-	public VirtualId(OrmTypeMapping ormTypeMapping, JavaIdMapping javaIdMapping, boolean metadataComplete) {
+	public VirtualXmlId(OrmTypeMapping ormTypeMapping, JavaIdMapping javaIdMapping, boolean metadataComplete) {
 		super();
 		this.javaIdMapping = javaIdMapping;
 		this.metadataComplete = metadataComplete;
 		this.column = new VirtualXmlColumn(ormTypeMapping, javaIdMapping.getColumn(), metadataComplete);
-		this.virtualGeneratedValue = new VirtualGeneratedValue(javaIdMapping.getGeneratedValue(), metadataComplete);
-		this.virtualTableGenerator = new VirtualTableGenerator(javaIdMapping.getTableGenerator(), metadataComplete);
-		this.virtualSequenceGenerator = new VirtualSequenceGenerator(javaIdMapping.getSequenceGenerator(), metadataComplete);
+		this.virtualGeneratedValue = new VirtualXmlGeneratedValue(javaIdMapping.getGeneratedValue(), metadataComplete);
+		this.virtualTableGenerator = new VirtualXmlTableGenerator(javaIdMapping.getTableGenerator(), metadataComplete);
+		this.virtualSequenceGenerator = new VirtualXmlSequenceGenerator(javaIdMapping.getSequenceGenerator(), metadataComplete);
 	}
 
 	public String getName() {

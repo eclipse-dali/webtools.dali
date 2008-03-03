@@ -23,18 +23,18 @@ import org.eclipse.emf.ecore.EClass;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTransientImpl()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTransientImpl()
  * @model kind="class"
  * @generated
  */
-public class TransientImpl extends AbstractXmlAttributeMapping implements XmlTransient
+public class XmlTransientImpl extends AbstractXmlAttributeMapping implements XmlTransient
 {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected TransientImpl()
+	protected XmlTransientImpl()
 	{
 		super();
 	}
@@ -47,7 +47,7 @@ public class TransientImpl extends AbstractXmlAttributeMapping implements XmlTra
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.TRANSIENT_IMPL;
+		return OrmPackage.Literals.XML_TRANSIENT_IMPL;
 	}
 
 } // Transient

@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaEmbeddedMapping;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
@@ -111,7 +111,7 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmAttributeMapping<Xml
 	}
 
 	public OrmAttributeOverride addSpecifiedAttributeOverride(int index) {
-		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createAttributeOverrideImpl();
+		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl();
 		OrmAttributeOverride attributeOverride = buildAttributeOverride(xmlAttributeOverride);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
 		this.attributeMapping().getAttributeOverrides().add(index, xmlAttributeOverride);
@@ -300,14 +300,14 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmAttributeMapping<Xml
 		}
 	}
 
-	public XmlEmbeddedId addToResourceModel(AbstractTypeMapping typeMapping) {
-		XmlEmbeddedId embeddedId = OrmFactory.eINSTANCE.createEmbeddedIdImpl();
+	public XmlEmbeddedId addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+		XmlEmbeddedId embeddedId = OrmFactory.eINSTANCE.createXmlEmbeddedIdImpl();
 		persistentAttribute().initialize(embeddedId);
 		typeMapping.getAttributes().getEmbeddedIds().add(embeddedId);
 		return embeddedId;
 	}
 	
-	public void removeFromResourceModel(AbstractTypeMapping typeMapping) {
+	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getEmbeddedIds().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);

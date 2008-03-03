@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.context.orm;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 
 /**
@@ -48,9 +48,9 @@ public interface OrmAttributeMapping extends AttributeMapping, OrmJpaContextNode
 	 */
 	int xmlSequence();
 
-	void removeFromResourceModel(AbstractTypeMapping typeMapping);
+	void removeFromResourceModel(AbstractXmlTypeMapping typeMapping);
 	
-	XmlAttributeMapping addToResourceModel(AbstractTypeMapping typeMapping);
+	XmlAttributeMapping addToResourceModel(AbstractXmlTypeMapping typeMapping);
 
 
 	void initializeOn(OrmAttributeMapping newMapping);

@@ -206,9 +206,9 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		
 		XmlAssociationOverride associationOverrideResource = ormResource().getEntityMappings().getEntities().get(0).getAssociationOverrides().get(0);
 	
-		associationOverrideResource.getJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumnImpl());
-		associationOverrideResource.getJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumnImpl());
-		associationOverrideResource.getJoinColumns().add(OrmFactory.eINSTANCE.createJoinColumnImpl());
+		associationOverrideResource.getJoinColumns().add(OrmFactory.eINSTANCE.createXmlJoinColumnImpl());
+		associationOverrideResource.getJoinColumns().add(OrmFactory.eINSTANCE.createXmlJoinColumnImpl());
+		associationOverrideResource.getJoinColumns().add(OrmFactory.eINSTANCE.createXmlJoinColumnImpl());
 		
 		associationOverrideResource.getJoinColumns().get(0).setName("FOO");
 		associationOverrideResource.getJoinColumns().get(1).setName("BAR");

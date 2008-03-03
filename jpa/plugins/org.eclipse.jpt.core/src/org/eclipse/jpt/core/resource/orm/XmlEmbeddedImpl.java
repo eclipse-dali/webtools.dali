@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Embedded Id</b></em>'.
+ * A representation of the model object '<em><b>Embedded</b></em>'.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -29,11 +29,11 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEmbeddedIdImpl()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEmbeddedImpl()
  * @model kind="class"
  * @generated
  */
-public class EmbeddedIdImpl extends AbstractXmlAttributeMapping implements XmlEmbeddedId
+public class XmlEmbeddedImpl extends AbstractXmlAttributeMapping implements XmlEmbedded
 {
 	/**
 	 * The cached value of the '{@link #getAttributeOverrides() <em>Attribute Overrides</em>}' containment reference list.
@@ -50,7 +50,7 @@ public class EmbeddedIdImpl extends AbstractXmlAttributeMapping implements XmlEm
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected EmbeddedIdImpl()
+	protected XmlEmbeddedImpl()
 	{
 		super();
 	}
@@ -63,7 +63,7 @@ public class EmbeddedIdImpl extends AbstractXmlAttributeMapping implements XmlEm
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.EMBEDDED_ID_IMPL;
+		return OrmPackage.Literals.XML_EMBEDDED_IMPL;
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class EmbeddedIdImpl extends AbstractXmlAttributeMapping implements XmlEm
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attribute Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEmbeddedId_AttributeOverrides()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEmbedded_AttributeOverrides()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -84,7 +84,7 @@ public class EmbeddedIdImpl extends AbstractXmlAttributeMapping implements XmlEm
 	{
 		if (attributeOverrides == null)
 		{
-			attributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.EMBEDDED_ID_IMPL__ATTRIBUTE_OVERRIDES);
+			attributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.XML_EMBEDDED_IMPL__ATTRIBUTE_OVERRIDES);
 		}
 		return attributeOverrides;
 	}
@@ -99,7 +99,7 @@ public class EmbeddedIdImpl extends AbstractXmlAttributeMapping implements XmlEm
 	{
 		switch (featureID)
 		{
-			case OrmPackage.EMBEDDED_ID_IMPL__ATTRIBUTE_OVERRIDES:
+			case OrmPackage.XML_EMBEDDED_IMPL__ATTRIBUTE_OVERRIDES:
 				return ((InternalEList<?>)getAttributeOverrides()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -115,7 +115,7 @@ public class EmbeddedIdImpl extends AbstractXmlAttributeMapping implements XmlEm
 	{
 		switch (featureID)
 		{
-			case OrmPackage.EMBEDDED_ID_IMPL__ATTRIBUTE_OVERRIDES:
+			case OrmPackage.XML_EMBEDDED_IMPL__ATTRIBUTE_OVERRIDES:
 				return getAttributeOverrides();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -132,7 +132,7 @@ public class EmbeddedIdImpl extends AbstractXmlAttributeMapping implements XmlEm
 	{
 		switch (featureID)
 		{
-			case OrmPackage.EMBEDDED_ID_IMPL__ATTRIBUTE_OVERRIDES:
+			case OrmPackage.XML_EMBEDDED_IMPL__ATTRIBUTE_OVERRIDES:
 				getAttributeOverrides().clear();
 				getAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
 				return;
@@ -150,7 +150,7 @@ public class EmbeddedIdImpl extends AbstractXmlAttributeMapping implements XmlEm
 	{
 		switch (featureID)
 		{
-			case OrmPackage.EMBEDDED_ID_IMPL__ATTRIBUTE_OVERRIDES:
+			case OrmPackage.XML_EMBEDDED_IMPL__ATTRIBUTE_OVERRIDES:
 				getAttributeOverrides().clear();
 				return;
 		}
@@ -167,7 +167,7 @@ public class EmbeddedIdImpl extends AbstractXmlAttributeMapping implements XmlEm
 	{
 		switch (featureID)
 		{
-			case OrmPackage.EMBEDDED_ID_IMPL__ATTRIBUTE_OVERRIDES:
+			case OrmPackage.XML_EMBEDDED_IMPL__ATTRIBUTE_OVERRIDES:
 				return attributeOverrides != null && !attributeOverrides.isEmpty();
 		}
 		return super.eIsSet(featureID);
@@ -181,11 +181,11 @@ public class EmbeddedIdImpl extends AbstractXmlAttributeMapping implements XmlEm
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlEmbeddedId.class)
+		if (baseClass == XmlEmbedded.class)
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.EMBEDDED_ID_IMPL__ATTRIBUTE_OVERRIDES: return OrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_OVERRIDES;
+				case OrmPackage.XML_EMBEDDED_IMPL__ATTRIBUTE_OVERRIDES: return OrmPackage.XML_EMBEDDED__ATTRIBUTE_OVERRIDES;
 				default: return -1;
 			}
 		}
@@ -200,15 +200,15 @@ public class EmbeddedIdImpl extends AbstractXmlAttributeMapping implements XmlEm
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlEmbeddedId.class)
+		if (baseClass == XmlEmbedded.class)
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_OVERRIDES: return OrmPackage.EMBEDDED_ID_IMPL__ATTRIBUTE_OVERRIDES;
+				case OrmPackage.XML_EMBEDDED__ATTRIBUTE_OVERRIDES: return OrmPackage.XML_EMBEDDED_IMPL__ATTRIBUTE_OVERRIDES;
 				default: return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
-} // EmbeddedId
+} // Embedded

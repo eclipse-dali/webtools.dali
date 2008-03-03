@@ -14,10 +14,11 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Version</b></em>'.
+ * A representation of the model object '<em><b>Attribute Override</b></em>'.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -27,11 +28,11 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getVersionImpl()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeOverrideImpl()
  * @model kind="class"
  * @generated
  */
-public class VersionImpl extends AbstractXmlAttributeMapping implements XmlVersion
+public class XmlAttributeOverrideImpl extends AbstractJpaEObject implements XmlAttributeOverride
 {
 	/**
 	 * The cached value of the '{@link #getColumn() <em>Column</em>}' containment reference.
@@ -44,27 +45,31 @@ public class VersionImpl extends AbstractXmlAttributeMapping implements XmlVersi
 	protected XmlColumn column;
 
 	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
-	 */
-	protected static final TemporalType TEMPORAL_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getTemporal() <em>Temporal</em>}' attribute.
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getTemporal()
+	 * @see #getName()
 	 * @generated
 	 * @ordered
 	 */
-	protected TemporalType temporal = TEMPORAL_EDEFAULT;
+	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected VersionImpl()
+	protected XmlAttributeOverrideImpl()
 	{
 		super();
 	}
@@ -77,7 +82,7 @@ public class VersionImpl extends AbstractXmlAttributeMapping implements XmlVersi
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.VERSION_IMPL;
+		return OrmPackage.Literals.XML_ATTRIBUTE_OVERRIDE_IMPL;
 	}
 
 	/**
@@ -90,8 +95,8 @@ public class VersionImpl extends AbstractXmlAttributeMapping implements XmlVersi
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Column</em>' containment reference.
 	 * @see #setColumn(XmlColumn)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getColumnMapping_Column()
-	 * @model containment="true"
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeOverride_Column()
+	 * @model containment="true" required="true"
 	 * @generated
 	 */
 	public XmlColumn getColumn()
@@ -110,14 +115,14 @@ public class VersionImpl extends AbstractXmlAttributeMapping implements XmlVersi
 		column = newColumn;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.VERSION_IMPL__COLUMN, oldColumn, newColumn);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ATTRIBUTE_OVERRIDE_IMPL__COLUMN, oldColumn, newColumn);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.VersionImpl#getColumn <em>Column</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlAttributeOverrideImpl#getColumn <em>Column</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Column</em>' containment reference.
@@ -130,52 +135,49 @@ public class VersionImpl extends AbstractXmlAttributeMapping implements XmlVersi
 		{
 			NotificationChain msgs = null;
 			if (column != null)
-				msgs = ((InternalEObject)column).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.VERSION_IMPL__COLUMN, null, msgs);
+				msgs = ((InternalEObject)column).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ATTRIBUTE_OVERRIDE_IMPL__COLUMN, null, msgs);
 			if (newColumn != null)
-				msgs = ((InternalEObject)newColumn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.VERSION_IMPL__COLUMN, null, msgs);
+				msgs = ((InternalEObject)newColumn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_ATTRIBUTE_OVERRIDE_IMPL__COLUMN, null, msgs);
 			msgs = basicSetColumn(newColumn, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.VERSION_IMPL__COLUMN, newColumn, newColumn));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ATTRIBUTE_OVERRIDE_IMPL__COLUMN, newColumn, newColumn));
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Temporal</b></em>' attribute.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.core.resource.orm.TemporalType}.
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Temporal</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Temporal</em>' attribute.
-	 * @see org.eclipse.jpt.core.resource.orm.TemporalType
-	 * @see #setTemporal(TemporalType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlVersion_Temporal()
-	 * @model
+	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeOverride_Name()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
-	public TemporalType getTemporal()
+	public String getName()
 	{
-		return temporal;
+		return name;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.VersionImpl#getTemporal <em>Temporal</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlAttributeOverrideImpl#getName <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Temporal</em>' attribute.
-	 * @see org.eclipse.jpt.core.resource.orm.TemporalType
-	 * @see #getTemporal()
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
 	 * @generated
 	 */
-	public void setTemporal(TemporalType newTemporal)
+	public void setName(String newName)
 	{
-		TemporalType oldTemporal = temporal;
-		temporal = newTemporal == null ? TEMPORAL_EDEFAULT : newTemporal;
+		String oldName = name;
+		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.VERSION_IMPL__TEMPORAL, oldTemporal, temporal));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ATTRIBUTE_OVERRIDE_IMPL__NAME, oldName, name));
 	}
 
 	/**
@@ -188,7 +190,7 @@ public class VersionImpl extends AbstractXmlAttributeMapping implements XmlVersi
 	{
 		switch (featureID)
 		{
-			case OrmPackage.VERSION_IMPL__COLUMN:
+			case OrmPackage.XML_ATTRIBUTE_OVERRIDE_IMPL__COLUMN:
 				return basicSetColumn(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -204,10 +206,10 @@ public class VersionImpl extends AbstractXmlAttributeMapping implements XmlVersi
 	{
 		switch (featureID)
 		{
-			case OrmPackage.VERSION_IMPL__COLUMN:
+			case OrmPackage.XML_ATTRIBUTE_OVERRIDE_IMPL__COLUMN:
 				return getColumn();
-			case OrmPackage.VERSION_IMPL__TEMPORAL:
-				return getTemporal();
+			case OrmPackage.XML_ATTRIBUTE_OVERRIDE_IMPL__NAME:
+				return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -222,11 +224,11 @@ public class VersionImpl extends AbstractXmlAttributeMapping implements XmlVersi
 	{
 		switch (featureID)
 		{
-			case OrmPackage.VERSION_IMPL__COLUMN:
+			case OrmPackage.XML_ATTRIBUTE_OVERRIDE_IMPL__COLUMN:
 				setColumn((XmlColumn)newValue);
 				return;
-			case OrmPackage.VERSION_IMPL__TEMPORAL:
-				setTemporal((TemporalType)newValue);
+			case OrmPackage.XML_ATTRIBUTE_OVERRIDE_IMPL__NAME:
+				setName((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -242,11 +244,11 @@ public class VersionImpl extends AbstractXmlAttributeMapping implements XmlVersi
 	{
 		switch (featureID)
 		{
-			case OrmPackage.VERSION_IMPL__COLUMN:
+			case OrmPackage.XML_ATTRIBUTE_OVERRIDE_IMPL__COLUMN:
 				setColumn((XmlColumn)null);
 				return;
-			case OrmPackage.VERSION_IMPL__TEMPORAL:
-				setTemporal(TEMPORAL_EDEFAULT);
+			case OrmPackage.XML_ATTRIBUTE_OVERRIDE_IMPL__NAME:
+				setName(NAME_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -262,66 +264,12 @@ public class VersionImpl extends AbstractXmlAttributeMapping implements XmlVersi
 	{
 		switch (featureID)
 		{
-			case OrmPackage.VERSION_IMPL__COLUMN:
+			case OrmPackage.XML_ATTRIBUTE_OVERRIDE_IMPL__COLUMN:
 				return column != null;
-			case OrmPackage.VERSION_IMPL__TEMPORAL:
-				return temporal != TEMPORAL_EDEFAULT;
+			case OrmPackage.XML_ATTRIBUTE_OVERRIDE_IMPL__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
-	{
-		if (baseClass == ColumnMapping.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case OrmPackage.VERSION_IMPL__COLUMN: return OrmPackage.COLUMN_MAPPING__COLUMN;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlVersion.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case OrmPackage.VERSION_IMPL__TEMPORAL: return OrmPackage.XML_VERSION__TEMPORAL;
-				default: return -1;
-			}
-		}
-		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
-	{
-		if (baseClass == ColumnMapping.class)
-		{
-			switch (baseFeatureID)
-			{
-				case OrmPackage.COLUMN_MAPPING__COLUMN: return OrmPackage.VERSION_IMPL__COLUMN;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlVersion.class)
-		{
-			switch (baseFeatureID)
-			{
-				case OrmPackage.XML_VERSION__TEMPORAL: return OrmPackage.VERSION_IMPL__TEMPORAL;
-				default: return -1;
-			}
-		}
-		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**
@@ -335,10 +283,10 @@ public class VersionImpl extends AbstractXmlAttributeMapping implements XmlVersi
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (temporal: ");
-		result.append(temporal);
+		result.append(" (name: ");
+		result.append(name);
 		result.append(')');
 		return result.toString();
 	}
 
-} // Version
+} // AttributeOverride

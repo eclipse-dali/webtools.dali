@@ -25,7 +25,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getColumnImpl()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlColumnImpl()
  * @model kind="class"
  * @generated
  */
@@ -109,7 +109,7 @@ public class XmlColumnImpl extends AbstractXmlAbstractColumn implements XmlColum
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.COLUMN_IMPL;
+		return OrmPackage.Literals.XML_COLUMN_IMPL;
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class XmlColumnImpl extends AbstractXmlAbstractColumn implements XmlColum
 		Integer oldLength = length;
 		length = newLength;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.COLUMN_IMPL__LENGTH, oldLength, length));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_COLUMN_IMPL__LENGTH, oldLength, length));
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class XmlColumnImpl extends AbstractXmlAbstractColumn implements XmlColum
 		Integer oldPrecision = precision;
 		precision = newPrecision;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.COLUMN_IMPL__PRECISION, oldPrecision, precision));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_COLUMN_IMPL__PRECISION, oldPrecision, precision));
 	}
 
 	/**
@@ -214,7 +214,7 @@ public class XmlColumnImpl extends AbstractXmlAbstractColumn implements XmlColum
 		Integer oldScale = scale;
 		scale = newScale;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.COLUMN_IMPL__SCALE, oldScale, scale));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_COLUMN_IMPL__SCALE, oldScale, scale));
 	}
 
 	/**
@@ -227,11 +227,11 @@ public class XmlColumnImpl extends AbstractXmlAbstractColumn implements XmlColum
 	{
 		switch (featureID)
 		{
-			case OrmPackage.COLUMN_IMPL__LENGTH:
+			case OrmPackage.XML_COLUMN_IMPL__LENGTH:
 				return getLength();
-			case OrmPackage.COLUMN_IMPL__PRECISION:
+			case OrmPackage.XML_COLUMN_IMPL__PRECISION:
 				return getPrecision();
-			case OrmPackage.COLUMN_IMPL__SCALE:
+			case OrmPackage.XML_COLUMN_IMPL__SCALE:
 				return getScale();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -247,13 +247,13 @@ public class XmlColumnImpl extends AbstractXmlAbstractColumn implements XmlColum
 	{
 		switch (featureID)
 		{
-			case OrmPackage.COLUMN_IMPL__LENGTH:
+			case OrmPackage.XML_COLUMN_IMPL__LENGTH:
 				setLength((Integer)newValue);
 				return;
-			case OrmPackage.COLUMN_IMPL__PRECISION:
+			case OrmPackage.XML_COLUMN_IMPL__PRECISION:
 				setPrecision((Integer)newValue);
 				return;
-			case OrmPackage.COLUMN_IMPL__SCALE:
+			case OrmPackage.XML_COLUMN_IMPL__SCALE:
 				setScale((Integer)newValue);
 				return;
 		}
@@ -270,13 +270,13 @@ public class XmlColumnImpl extends AbstractXmlAbstractColumn implements XmlColum
 	{
 		switch (featureID)
 		{
-			case OrmPackage.COLUMN_IMPL__LENGTH:
+			case OrmPackage.XML_COLUMN_IMPL__LENGTH:
 				setLength(LENGTH_EDEFAULT);
 				return;
-			case OrmPackage.COLUMN_IMPL__PRECISION:
+			case OrmPackage.XML_COLUMN_IMPL__PRECISION:
 				setPrecision(PRECISION_EDEFAULT);
 				return;
-			case OrmPackage.COLUMN_IMPL__SCALE:
+			case OrmPackage.XML_COLUMN_IMPL__SCALE:
 				setScale(SCALE_EDEFAULT);
 				return;
 		}
@@ -293,11 +293,11 @@ public class XmlColumnImpl extends AbstractXmlAbstractColumn implements XmlColum
 	{
 		switch (featureID)
 		{
-			case OrmPackage.COLUMN_IMPL__LENGTH:
+			case OrmPackage.XML_COLUMN_IMPL__LENGTH:
 				return LENGTH_EDEFAULT == null ? length != null : !LENGTH_EDEFAULT.equals(length);
-			case OrmPackage.COLUMN_IMPL__PRECISION:
+			case OrmPackage.XML_COLUMN_IMPL__PRECISION:
 				return PRECISION_EDEFAULT == null ? precision != null : !PRECISION_EDEFAULT.equals(precision);
-			case OrmPackage.COLUMN_IMPL__SCALE:
+			case OrmPackage.XML_COLUMN_IMPL__SCALE:
 				return SCALE_EDEFAULT == null ? scale != null : !SCALE_EDEFAULT.equals(scale);
 		}
 		return super.eIsSet(featureID);
@@ -315,9 +315,9 @@ public class XmlColumnImpl extends AbstractXmlAbstractColumn implements XmlColum
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.COLUMN_IMPL__LENGTH: return OrmPackage.XML_COLUMN__LENGTH;
-				case OrmPackage.COLUMN_IMPL__PRECISION: return OrmPackage.XML_COLUMN__PRECISION;
-				case OrmPackage.COLUMN_IMPL__SCALE: return OrmPackage.XML_COLUMN__SCALE;
+				case OrmPackage.XML_COLUMN_IMPL__LENGTH: return OrmPackage.XML_COLUMN__LENGTH;
+				case OrmPackage.XML_COLUMN_IMPL__PRECISION: return OrmPackage.XML_COLUMN__PRECISION;
+				case OrmPackage.XML_COLUMN_IMPL__SCALE: return OrmPackage.XML_COLUMN__SCALE;
 				default: return -1;
 			}
 		}
@@ -336,9 +336,9 @@ public class XmlColumnImpl extends AbstractXmlAbstractColumn implements XmlColum
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_COLUMN__LENGTH: return OrmPackage.COLUMN_IMPL__LENGTH;
-				case OrmPackage.XML_COLUMN__PRECISION: return OrmPackage.COLUMN_IMPL__PRECISION;
-				case OrmPackage.XML_COLUMN__SCALE: return OrmPackage.COLUMN_IMPL__SCALE;
+				case OrmPackage.XML_COLUMN__LENGTH: return OrmPackage.XML_COLUMN_IMPL__LENGTH;
+				case OrmPackage.XML_COLUMN__PRECISION: return OrmPackage.XML_COLUMN_IMPL__PRECISION;
+				case OrmPackage.XML_COLUMN__SCALE: return OrmPackage.XML_COLUMN_IMPL__SCALE;
 				default: return -1;
 			}
 		}

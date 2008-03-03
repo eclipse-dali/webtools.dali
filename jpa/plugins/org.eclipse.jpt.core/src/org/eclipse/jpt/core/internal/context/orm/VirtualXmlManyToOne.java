@@ -28,7 +28,7 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
  * VirtualManyToOne is an implementation of ManyToOne used when there is 
  * no tag in the orm.xml and an underlying javaManyToOneMapping exists.
  */
-public class VirtualManyToOne extends AbstractJpaEObject implements XmlManyToOne
+public class VirtualXmlManyToOne extends AbstractJpaEObject implements XmlManyToOne
 {
 	JavaManyToOneMapping javaManyToOneMapping;
 
@@ -40,7 +40,7 @@ public class VirtualManyToOne extends AbstractJpaEObject implements XmlManyToOne
 	
 	protected EList<XmlJoinColumn> virtualJoinColumns;
 
-	public VirtualManyToOne(JavaManyToOneMapping javaManyToOneMapping, boolean metadataComplete) {
+	public VirtualXmlManyToOne(JavaManyToOneMapping javaManyToOneMapping, boolean metadataComplete) {
 		super();
 		this.javaManyToOneMapping = javaManyToOneMapping;
 		this.metadataComplete = metadataComplete;

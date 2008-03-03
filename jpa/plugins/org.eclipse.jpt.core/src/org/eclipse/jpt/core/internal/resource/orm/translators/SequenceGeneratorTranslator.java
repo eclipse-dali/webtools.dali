@@ -26,7 +26,7 @@ public class SequenceGeneratorTranslator extends Translator
 	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return OrmFactory.eINSTANCE.createSequenceGeneratorImpl();
+		return OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
 	}
 
 	@Override

@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 
@@ -90,14 +90,14 @@ public class GenericOrmOneToOneMapping extends AbstractOrmSingleRelationshipMapp
 		return true;
 	}
 	
-	public XmlOneToOne addToResourceModel(AbstractTypeMapping typeMapping) {
-		XmlOneToOne oneToOne = OrmFactory.eINSTANCE.createOneToOneImpl();
+	public XmlOneToOne addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+		XmlOneToOne oneToOne = OrmFactory.eINSTANCE.createXmlOneToOneImpl();
 		persistentAttribute().initialize(oneToOne);
 		typeMapping.getAttributes().getOneToOnes().add(oneToOne);
 		return oneToOne;
 	}
 	
-	public void removeFromResourceModel(AbstractTypeMapping typeMapping) {
+	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getOneToOnes().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);

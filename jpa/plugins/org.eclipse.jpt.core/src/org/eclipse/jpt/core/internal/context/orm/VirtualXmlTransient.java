@@ -18,13 +18,13 @@ import org.eclipse.jpt.core.resource.orm.XmlTransient;
  * VirtualTransient is an implementation of Transient used when there is 
  * no tag in the orm.xml and an underlying javaTransientMapping exists.
  */
-public class VirtualTransient extends AbstractJpaEObject implements XmlTransient
+public class VirtualXmlTransient extends AbstractJpaEObject implements XmlTransient
 {
 	JavaTransientMapping javaTransientMapping;
 
 	protected boolean metadataComplete;
 	
-	public VirtualTransient(JavaTransientMapping javaTransientMapping, boolean metadataComplete) {
+	public VirtualXmlTransient(JavaTransientMapping javaTransientMapping, boolean metadataComplete) {
 		super();
 		this.javaTransientMapping = javaTransientMapping;
 		this.metadataComplete = metadataComplete;

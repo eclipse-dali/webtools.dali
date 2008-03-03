@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 
@@ -52,14 +52,14 @@ public class GenericOrmManyToManyMapping extends AbstractOrmMultiRelationshipMap
 		return (mappedByKey == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 	}
 	
-	public XmlManyToMany addToResourceModel(AbstractTypeMapping typeMapping) {
-		XmlManyToMany manyToMany = OrmFactory.eINSTANCE.createManyToManyImpl();
+	public XmlManyToMany addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+		XmlManyToMany manyToMany = OrmFactory.eINSTANCE.createXmlManyToManyImpl();
 		persistentAttribute().initialize(manyToMany);
 		typeMapping.getAttributes().getManyToManys().add(manyToMany);
 		return manyToMany;
 	}
 	
-	public void removeFromResourceModel(AbstractTypeMapping typeMapping) {
+	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getManyToManys().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);

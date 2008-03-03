@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
-import org.eclipse.jpt.core.resource.orm.AbstractTypeMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
@@ -76,14 +76,14 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 		firePropertyChanged(ColumnMapping.TEMPORAL_PROPERTY, oldTemporal, newTemporal);
 	}
 
-	public XmlVersion addToResourceModel(AbstractTypeMapping typeMapping) {
-		XmlVersion version = OrmFactory.eINSTANCE.createVersionImpl();
+	public XmlVersion addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+		XmlVersion version = OrmFactory.eINSTANCE.createXmlVersionImpl();
 		persistentAttribute().initialize(version);
 		typeMapping.getAttributes().getVersions().add(version);
 		return version;
 	}
 	
-	public void removeFromResourceModel(AbstractTypeMapping typeMapping) {
+	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getVersions().remove(this.attributeMapping());
 		if (typeMapping.getAttributes().isAllFeaturesUnset()) {
 			typeMapping.setAttributes(null);
@@ -127,7 +127,7 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	}
 	
 	public void addColumnResource() {
-		this.attributeMapping().setColumn(OrmFactory.eINSTANCE.createColumnImpl());
+		this.attributeMapping().setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
 	}
 	
 	public void removeColumnResource() {

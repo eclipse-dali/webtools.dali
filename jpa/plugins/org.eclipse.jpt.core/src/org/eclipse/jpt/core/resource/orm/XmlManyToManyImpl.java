@@ -27,11 +27,11 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getManyToManyImpl()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlManyToManyImpl()
  * @model kind="class"
  * @generated
  */
-public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlManyToMany
+public class XmlManyToManyImpl extends AbstractXmlAttributeMapping implements XmlManyToMany
 {
 	/**
 	 * The default value of the '{@link #getTargetEntity() <em>Target Entity</em>}' attribute.
@@ -144,7 +144,7 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ManyToManyImpl()
+	protected XmlManyToManyImpl()
 	{
 		super();
 	}
@@ -157,7 +157,7 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.MANY_TO_MANY_IMPL;
+		return OrmPackage.Literals.XML_MANY_TO_MANY_IMPL;
 	}
 
 	/**
@@ -180,7 +180,7 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.ManyToManyImpl#getTargetEntity <em>Target Entity</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlManyToManyImpl#getTargetEntity <em>Target Entity</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Target Entity</em>' attribute.
@@ -192,7 +192,7 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 		String oldTargetEntity = targetEntity;
 		targetEntity = newTargetEntity;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.MANY_TO_MANY_IMPL__TARGET_ENTITY, oldTargetEntity, targetEntity));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MANY_TO_MANY_IMPL__TARGET_ENTITY, oldTargetEntity, targetEntity));
 	}
 
 	/**
@@ -218,7 +218,7 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.ManyToManyImpl#getFetch <em>Fetch</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlManyToManyImpl#getFetch <em>Fetch</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Fetch</em>' attribute.
@@ -231,7 +231,7 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 		FetchType oldFetch = fetch;
 		fetch = newFetch == null ? FETCH_EDEFAULT : newFetch;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.MANY_TO_MANY_IMPL__FETCH, oldFetch, fetch));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MANY_TO_MANY_IMPL__FETCH, oldFetch, fetch));
 	}
 
 	/**
@@ -254,7 +254,7 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.ManyToManyImpl#getMappedBy <em>Mapped By</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlManyToManyImpl#getMappedBy <em>Mapped By</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Mapped By</em>' attribute.
@@ -266,7 +266,7 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 		String oldMappedBy = mappedBy;
 		mappedBy = newMappedBy;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.MANY_TO_MANY_IMPL__MAPPED_BY, oldMappedBy, mappedBy));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MANY_TO_MANY_IMPL__MAPPED_BY, oldMappedBy, mappedBy));
 	}
 
 	/**
@@ -289,7 +289,7 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.ManyToManyImpl#getOrderBy <em>Order By</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlManyToManyImpl#getOrderBy <em>Order By</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Order By</em>' attribute.
@@ -301,7 +301,7 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 		String oldOrderBy = orderBy;
 		orderBy = newOrderBy;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.MANY_TO_MANY_IMPL__ORDER_BY, oldOrderBy, orderBy));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MANY_TO_MANY_IMPL__ORDER_BY, oldOrderBy, orderBy));
 	}
 
 	/**
@@ -334,14 +334,14 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 		mapKey = newMapKey;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.MANY_TO_MANY_IMPL__MAP_KEY, oldMapKey, newMapKey);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MANY_TO_MANY_IMPL__MAP_KEY, oldMapKey, newMapKey);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.ManyToManyImpl#getMapKey <em>Map Key</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlManyToManyImpl#getMapKey <em>Map Key</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Map Key</em>' containment reference.
@@ -354,14 +354,14 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 		{
 			NotificationChain msgs = null;
 			if (mapKey != null)
-				msgs = ((InternalEObject)mapKey).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.MANY_TO_MANY_IMPL__MAP_KEY, null, msgs);
+				msgs = ((InternalEObject)mapKey).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MANY_TO_MANY_IMPL__MAP_KEY, null, msgs);
 			if (newMapKey != null)
-				msgs = ((InternalEObject)newMapKey).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.MANY_TO_MANY_IMPL__MAP_KEY, null, msgs);
+				msgs = ((InternalEObject)newMapKey).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MANY_TO_MANY_IMPL__MAP_KEY, null, msgs);
 			msgs = basicSetMapKey(newMapKey, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.MANY_TO_MANY_IMPL__MAP_KEY, newMapKey, newMapKey));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MANY_TO_MANY_IMPL__MAP_KEY, newMapKey, newMapKey));
 	}
 
 	/**
@@ -394,14 +394,14 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 		joinTable = newJoinTable;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.MANY_TO_MANY_IMPL__JOIN_TABLE, oldJoinTable, newJoinTable);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE, oldJoinTable, newJoinTable);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.ManyToManyImpl#getJoinTable <em>Join Table</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlManyToManyImpl#getJoinTable <em>Join Table</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Join Table</em>' containment reference.
@@ -414,14 +414,14 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 		{
 			NotificationChain msgs = null;
 			if (joinTable != null)
-				msgs = ((InternalEObject)joinTable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.MANY_TO_MANY_IMPL__JOIN_TABLE, null, msgs);
+				msgs = ((InternalEObject)joinTable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE, null, msgs);
 			if (newJoinTable != null)
-				msgs = ((InternalEObject)newJoinTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.MANY_TO_MANY_IMPL__JOIN_TABLE, null, msgs);
+				msgs = ((InternalEObject)newJoinTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE, null, msgs);
 			msgs = basicSetJoinTable(newJoinTable, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.MANY_TO_MANY_IMPL__JOIN_TABLE, newJoinTable, newJoinTable));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE, newJoinTable, newJoinTable));
 	}
 
 	/**
@@ -454,14 +454,14 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 		cascade = newCascade;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.MANY_TO_MANY_IMPL__CASCADE, oldCascade, newCascade);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MANY_TO_MANY_IMPL__CASCADE, oldCascade, newCascade);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.ManyToManyImpl#getCascade <em>Cascade</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlManyToManyImpl#getCascade <em>Cascade</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Cascade</em>' containment reference.
@@ -474,14 +474,14 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 		{
 			NotificationChain msgs = null;
 			if (cascade != null)
-				msgs = ((InternalEObject)cascade).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.MANY_TO_MANY_IMPL__CASCADE, null, msgs);
+				msgs = ((InternalEObject)cascade).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MANY_TO_MANY_IMPL__CASCADE, null, msgs);
 			if (newCascade != null)
-				msgs = ((InternalEObject)newCascade).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.MANY_TO_MANY_IMPL__CASCADE, null, msgs);
+				msgs = ((InternalEObject)newCascade).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MANY_TO_MANY_IMPL__CASCADE, null, msgs);
 			msgs = basicSetCascade(newCascade, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.MANY_TO_MANY_IMPL__CASCADE, newCascade, newCascade));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MANY_TO_MANY_IMPL__CASCADE, newCascade, newCascade));
 	}
 
 	/**
@@ -494,11 +494,11 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 	{
 		switch (featureID)
 		{
-			case OrmPackage.MANY_TO_MANY_IMPL__JOIN_TABLE:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE:
 				return basicSetJoinTable(null, msgs);
-			case OrmPackage.MANY_TO_MANY_IMPL__CASCADE:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__CASCADE:
 				return basicSetCascade(null, msgs);
-			case OrmPackage.MANY_TO_MANY_IMPL__MAP_KEY:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__MAP_KEY:
 				return basicSetMapKey(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -514,19 +514,19 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 	{
 		switch (featureID)
 		{
-			case OrmPackage.MANY_TO_MANY_IMPL__TARGET_ENTITY:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__TARGET_ENTITY:
 				return getTargetEntity();
-			case OrmPackage.MANY_TO_MANY_IMPL__FETCH:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__FETCH:
 				return getFetch();
-			case OrmPackage.MANY_TO_MANY_IMPL__JOIN_TABLE:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE:
 				return getJoinTable();
-			case OrmPackage.MANY_TO_MANY_IMPL__CASCADE:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__CASCADE:
 				return getCascade();
-			case OrmPackage.MANY_TO_MANY_IMPL__MAPPED_BY:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__MAPPED_BY:
 				return getMappedBy();
-			case OrmPackage.MANY_TO_MANY_IMPL__ORDER_BY:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__ORDER_BY:
 				return getOrderBy();
-			case OrmPackage.MANY_TO_MANY_IMPL__MAP_KEY:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__MAP_KEY:
 				return getMapKey();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -542,25 +542,25 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 	{
 		switch (featureID)
 		{
-			case OrmPackage.MANY_TO_MANY_IMPL__TARGET_ENTITY:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__TARGET_ENTITY:
 				setTargetEntity((String)newValue);
 				return;
-			case OrmPackage.MANY_TO_MANY_IMPL__FETCH:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__FETCH:
 				setFetch((FetchType)newValue);
 				return;
-			case OrmPackage.MANY_TO_MANY_IMPL__JOIN_TABLE:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE:
 				setJoinTable((XmlJoinTable)newValue);
 				return;
-			case OrmPackage.MANY_TO_MANY_IMPL__CASCADE:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__CASCADE:
 				setCascade((CascadeType)newValue);
 				return;
-			case OrmPackage.MANY_TO_MANY_IMPL__MAPPED_BY:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__MAPPED_BY:
 				setMappedBy((String)newValue);
 				return;
-			case OrmPackage.MANY_TO_MANY_IMPL__ORDER_BY:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__ORDER_BY:
 				setOrderBy((String)newValue);
 				return;
-			case OrmPackage.MANY_TO_MANY_IMPL__MAP_KEY:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__MAP_KEY:
 				setMapKey((MapKey)newValue);
 				return;
 		}
@@ -577,25 +577,25 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 	{
 		switch (featureID)
 		{
-			case OrmPackage.MANY_TO_MANY_IMPL__TARGET_ENTITY:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__TARGET_ENTITY:
 				setTargetEntity(TARGET_ENTITY_EDEFAULT);
 				return;
-			case OrmPackage.MANY_TO_MANY_IMPL__FETCH:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__FETCH:
 				setFetch(FETCH_EDEFAULT);
 				return;
-			case OrmPackage.MANY_TO_MANY_IMPL__JOIN_TABLE:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE:
 				setJoinTable((XmlJoinTable)null);
 				return;
-			case OrmPackage.MANY_TO_MANY_IMPL__CASCADE:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__CASCADE:
 				setCascade((CascadeType)null);
 				return;
-			case OrmPackage.MANY_TO_MANY_IMPL__MAPPED_BY:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__MAPPED_BY:
 				setMappedBy(MAPPED_BY_EDEFAULT);
 				return;
-			case OrmPackage.MANY_TO_MANY_IMPL__ORDER_BY:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__ORDER_BY:
 				setOrderBy(ORDER_BY_EDEFAULT);
 				return;
-			case OrmPackage.MANY_TO_MANY_IMPL__MAP_KEY:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__MAP_KEY:
 				setMapKey((MapKey)null);
 				return;
 		}
@@ -612,19 +612,19 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 	{
 		switch (featureID)
 		{
-			case OrmPackage.MANY_TO_MANY_IMPL__TARGET_ENTITY:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__TARGET_ENTITY:
 				return TARGET_ENTITY_EDEFAULT == null ? targetEntity != null : !TARGET_ENTITY_EDEFAULT.equals(targetEntity);
-			case OrmPackage.MANY_TO_MANY_IMPL__FETCH:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__FETCH:
 				return fetch != FETCH_EDEFAULT;
-			case OrmPackage.MANY_TO_MANY_IMPL__JOIN_TABLE:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE:
 				return joinTable != null;
-			case OrmPackage.MANY_TO_MANY_IMPL__CASCADE:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__CASCADE:
 				return cascade != null;
-			case OrmPackage.MANY_TO_MANY_IMPL__MAPPED_BY:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__MAPPED_BY:
 				return MAPPED_BY_EDEFAULT == null ? mappedBy != null : !MAPPED_BY_EDEFAULT.equals(mappedBy);
-			case OrmPackage.MANY_TO_MANY_IMPL__ORDER_BY:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__ORDER_BY:
 				return ORDER_BY_EDEFAULT == null ? orderBy != null : !ORDER_BY_EDEFAULT.equals(orderBy);
-			case OrmPackage.MANY_TO_MANY_IMPL__MAP_KEY:
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__MAP_KEY:
 				return mapKey != null;
 		}
 		return super.eIsSet(featureID);
@@ -642,10 +642,10 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.MANY_TO_MANY_IMPL__TARGET_ENTITY: return OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY;
-				case OrmPackage.MANY_TO_MANY_IMPL__FETCH: return OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH;
-				case OrmPackage.MANY_TO_MANY_IMPL__JOIN_TABLE: return OrmPackage.XML_RELATIONSHIP_MAPPING__JOIN_TABLE;
-				case OrmPackage.MANY_TO_MANY_IMPL__CASCADE: return OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE;
+				case OrmPackage.XML_MANY_TO_MANY_IMPL__TARGET_ENTITY: return OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY;
+				case OrmPackage.XML_MANY_TO_MANY_IMPL__FETCH: return OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH;
+				case OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE: return OrmPackage.XML_RELATIONSHIP_MAPPING__JOIN_TABLE;
+				case OrmPackage.XML_MANY_TO_MANY_IMPL__CASCADE: return OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE;
 				default: return -1;
 			}
 		}
@@ -653,9 +653,9 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.MANY_TO_MANY_IMPL__MAPPED_BY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY;
-				case OrmPackage.MANY_TO_MANY_IMPL__ORDER_BY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY;
-				case OrmPackage.MANY_TO_MANY_IMPL__MAP_KEY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY;
+				case OrmPackage.XML_MANY_TO_MANY_IMPL__MAPPED_BY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY;
+				case OrmPackage.XML_MANY_TO_MANY_IMPL__ORDER_BY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY;
+				case OrmPackage.XML_MANY_TO_MANY_IMPL__MAP_KEY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY;
 				default: return -1;
 			}
 		}
@@ -681,10 +681,10 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY: return OrmPackage.MANY_TO_MANY_IMPL__TARGET_ENTITY;
-				case OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH: return OrmPackage.MANY_TO_MANY_IMPL__FETCH;
-				case OrmPackage.XML_RELATIONSHIP_MAPPING__JOIN_TABLE: return OrmPackage.MANY_TO_MANY_IMPL__JOIN_TABLE;
-				case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE: return OrmPackage.MANY_TO_MANY_IMPL__CASCADE;
+				case OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY: return OrmPackage.XML_MANY_TO_MANY_IMPL__TARGET_ENTITY;
+				case OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH: return OrmPackage.XML_MANY_TO_MANY_IMPL__FETCH;
+				case OrmPackage.XML_RELATIONSHIP_MAPPING__JOIN_TABLE: return OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE;
+				case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE: return OrmPackage.XML_MANY_TO_MANY_IMPL__CASCADE;
 				default: return -1;
 			}
 		}
@@ -692,9 +692,9 @@ public class ManyToManyImpl extends AbstractXmlAttributeMapping implements XmlMa
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY: return OrmPackage.MANY_TO_MANY_IMPL__MAPPED_BY;
-				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY: return OrmPackage.MANY_TO_MANY_IMPL__ORDER_BY;
-				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY: return OrmPackage.MANY_TO_MANY_IMPL__MAP_KEY;
+				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY: return OrmPackage.XML_MANY_TO_MANY_IMPL__MAPPED_BY;
+				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY: return OrmPackage.XML_MANY_TO_MANY_IMPL__ORDER_BY;
+				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY: return OrmPackage.XML_MANY_TO_MANY_IMPL__MAP_KEY;
 				default: return -1;
 			}
 		}

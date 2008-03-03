@@ -28,7 +28,7 @@ public class ColumnTranslator extends Translator
 	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return OrmFactory.eINSTANCE.createColumnImpl();
+		return OrmFactory.eINSTANCE.createXmlColumnImpl();
 	}
 
 	@Override

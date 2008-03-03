@@ -27,7 +27,7 @@ public class VersionTranslator extends Translator
 	
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return OrmFactory.eINSTANCE.createVersionImpl();
+		return OrmFactory.eINSTANCE.createXmlVersionImpl();
 	}
 
 	@Override

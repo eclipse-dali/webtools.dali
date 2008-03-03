@@ -29,7 +29,7 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getJoinColumnImpl()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinColumnImpl()
  * @model kind="class"
  * @generated
  */
@@ -73,7 +73,7 @@ public class XmlJoinColumnImpl extends AbstractXmlAbstractColumn implements XmlJ
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.JOIN_COLUMN_IMPL;
+		return OrmPackage.Literals.XML_JOIN_COLUMN_IMPL;
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class XmlJoinColumnImpl extends AbstractXmlAbstractColumn implements XmlJ
 		String oldReferencedColumnName = referencedColumnName;
 		referencedColumnName = newReferencedColumnName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.JOIN_COLUMN_IMPL__REFERENCED_COLUMN_NAME, oldReferencedColumnName, referencedColumnName));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_JOIN_COLUMN_IMPL__REFERENCED_COLUMN_NAME, oldReferencedColumnName, referencedColumnName));
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class XmlJoinColumnImpl extends AbstractXmlAbstractColumn implements XmlJ
 	{
 		switch (featureID)
 		{
-			case OrmPackage.JOIN_COLUMN_IMPL__REFERENCED_COLUMN_NAME:
+			case OrmPackage.XML_JOIN_COLUMN_IMPL__REFERENCED_COLUMN_NAME:
 				return getReferencedColumnName();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -137,7 +137,7 @@ public class XmlJoinColumnImpl extends AbstractXmlAbstractColumn implements XmlJ
 	{
 		switch (featureID)
 		{
-			case OrmPackage.JOIN_COLUMN_IMPL__REFERENCED_COLUMN_NAME:
+			case OrmPackage.XML_JOIN_COLUMN_IMPL__REFERENCED_COLUMN_NAME:
 				setReferencedColumnName((String)newValue);
 				return;
 		}
@@ -154,7 +154,7 @@ public class XmlJoinColumnImpl extends AbstractXmlAbstractColumn implements XmlJ
 	{
 		switch (featureID)
 		{
-			case OrmPackage.JOIN_COLUMN_IMPL__REFERENCED_COLUMN_NAME:
+			case OrmPackage.XML_JOIN_COLUMN_IMPL__REFERENCED_COLUMN_NAME:
 				setReferencedColumnName(REFERENCED_COLUMN_NAME_EDEFAULT);
 				return;
 		}
@@ -171,7 +171,7 @@ public class XmlJoinColumnImpl extends AbstractXmlAbstractColumn implements XmlJ
 	{
 		switch (featureID)
 		{
-			case OrmPackage.JOIN_COLUMN_IMPL__REFERENCED_COLUMN_NAME:
+			case OrmPackage.XML_JOIN_COLUMN_IMPL__REFERENCED_COLUMN_NAME:
 				return REFERENCED_COLUMN_NAME_EDEFAULT == null ? referencedColumnName != null : !REFERENCED_COLUMN_NAME_EDEFAULT.equals(referencedColumnName);
 		}
 		return super.eIsSet(featureID);
@@ -189,7 +189,7 @@ public class XmlJoinColumnImpl extends AbstractXmlAbstractColumn implements XmlJ
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.JOIN_COLUMN_IMPL__REFERENCED_COLUMN_NAME: return OrmPackage.XML_JOIN_COLUMN__REFERENCED_COLUMN_NAME;
+				case OrmPackage.XML_JOIN_COLUMN_IMPL__REFERENCED_COLUMN_NAME: return OrmPackage.XML_JOIN_COLUMN__REFERENCED_COLUMN_NAME;
 				default: return -1;
 			}
 		}
@@ -208,7 +208,7 @@ public class XmlJoinColumnImpl extends AbstractXmlAbstractColumn implements XmlJ
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_JOIN_COLUMN__REFERENCED_COLUMN_NAME: return OrmPackage.JOIN_COLUMN_IMPL__REFERENCED_COLUMN_NAME;
+				case OrmPackage.XML_JOIN_COLUMN__REFERENCED_COLUMN_NAME: return OrmPackage.XML_JOIN_COLUMN_IMPL__REFERENCED_COLUMN_NAME;
 				default: return -1;
 			}
 		}

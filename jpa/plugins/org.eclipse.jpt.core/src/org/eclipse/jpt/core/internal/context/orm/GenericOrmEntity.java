@@ -444,7 +444,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 			throw new IllegalStateException("sequenceGenerator already exists");
 		}
 		this.sequenceGenerator = jpaFactory().buildOrmSequenceGenerator(this);
-		typeMappingResource().setSequenceGenerator(OrmFactory.eINSTANCE.createSequenceGeneratorImpl());
+		typeMappingResource().setSequenceGenerator(OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl());
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
 		return this.sequenceGenerator;
 	}
@@ -474,7 +474,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 			throw new IllegalStateException("tableGenerator already exists");
 		}
 		this.tableGenerator = jpaFactory().buildOrmTableGenerator(this);
-		typeMappingResource().setTableGenerator(OrmFactory.eINSTANCE.createTableGeneratorImpl());
+		typeMappingResource().setTableGenerator(OrmFactory.eINSTANCE.createXmlTableGeneratorImpl());
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
 		return this.tableGenerator;
 	}
@@ -625,7 +625,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 
 	public OrmAttributeOverride addSpecifiedAttributeOverride(int index) {
-		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createAttributeOverrideImpl();
+		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl();
 		OrmAttributeOverride attributeOverride = buildAttributeOverride(xmlAttributeOverride);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
 		this.typeMappingResource().getAttributeOverrides().add(index, xmlAttributeOverride);

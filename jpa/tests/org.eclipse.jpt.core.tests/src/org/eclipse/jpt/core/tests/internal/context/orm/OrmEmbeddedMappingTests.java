@@ -300,9 +300,9 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		OrmEmbeddedMapping ormEmbeddedMapping = (OrmEmbeddedMapping) ormPersistentAttribute.getMapping();
 		XmlEmbedded embeddedResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddeds().get(0);
 		
-		embeddedResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverrideImpl());
-		embeddedResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverrideImpl());
-		embeddedResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createAttributeOverrideImpl());
+		embeddedResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
+		embeddedResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
+		embeddedResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
 		
 		embeddedResource.getAttributeOverrides().get(0).setName("FOO");
 		embeddedResource.getAttributeOverrides().get(1).setName("BAR");
