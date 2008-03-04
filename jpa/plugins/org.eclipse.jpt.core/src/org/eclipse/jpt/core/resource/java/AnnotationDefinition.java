@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.internal.jdtutility.Member;
  * to create a new JpaPlatform by extending GenericJpaPlatform.
  * 
  * @see MappingAnnotation
- * @see GenericJpaPlatform
+ * @see org.eclipse.jpt.core.internal.platform.GenericJpaPlatform
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching

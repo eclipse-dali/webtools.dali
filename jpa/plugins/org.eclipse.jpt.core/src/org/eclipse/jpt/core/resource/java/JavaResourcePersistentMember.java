@@ -41,8 +41,8 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	/**
 	 * Return the <code>JavaResource</code> specified on this JavaPersistentResource
 	 * In the case of multiples the first one will be returned as defined by the order of
-	 * {@link GenericJpaPlatform#typeMappingAnnotationDefinitions()} or 
-	 * {@link GenericJpaPlatform#attributeMappingAnnotationDefinitions()}
+	 * {@link org.eclipse.jpt.core.internal.platform.GenericJpaPlatform#typeMappingAnnotationDefinitions()} or 
+	 * {@link org.eclipse.jpt.core.internal.platform.GenericJpaPlatform#attributeMappingAnnotationDefinitions()}
 	 * @return
 	 */
 	JavaResourceNode mappingAnnotation();

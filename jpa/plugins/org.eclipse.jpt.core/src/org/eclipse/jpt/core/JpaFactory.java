@@ -127,7 +127,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlProperty;
  *   
  *   ... and associated objects.
  *
- * @see GenericJpaFactory
+ * @see org.eclipse.jpt.core.internal.platform.GenericJpaFactory
  */
 public interface JpaFactory 
 {

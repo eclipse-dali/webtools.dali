@@ -33,7 +33,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * {@link JavaTypeMappingProvider} and {@link JavaAttributeMappingProvider} use this factory.
  * See {@link JpaPlatform#javaTypeMappingProviders()} and {@link JpaPlatform#javaAttributeMappingProviders()
  * for creating new mappings types.
- * @see BaseJpaUiFactory
+ * @see org.eclipse.jpt.ui.internal.BaseJpaUiFactory
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
