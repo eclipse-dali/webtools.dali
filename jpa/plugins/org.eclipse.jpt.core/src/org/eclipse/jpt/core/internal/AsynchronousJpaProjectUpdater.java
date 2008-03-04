@@ -47,7 +47,7 @@ public class AsynchronousJpaProjectUpdater implements JpaProject.Updater {
 	 */
 	public void dispose() {
 		this.job.setShouldSchedule(false);
-		this.job.cancel();
+		this.job.cancel();  // this will cancel the job if it is currently WAITING
 		try {
 			this.job.join();
 		} catch (InterruptedException ex) {
