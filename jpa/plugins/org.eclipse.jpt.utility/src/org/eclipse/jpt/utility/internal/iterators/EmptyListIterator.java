@@ -27,6 +27,7 @@ public final class EmptyListIterator<E>
 	/**
 	 * Return the singleton.
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> ListIterator<T> instance() {
 		return INSTANCE;
 	}
