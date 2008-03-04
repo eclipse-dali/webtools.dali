@@ -94,7 +94,8 @@ public class TextFieldModelAdapter {
 		this.textFieldDisposeListener = this.buildTextFieldDisposeListener();
 		this.textField.addDisposeListener(this.textFieldDisposeListener);
 
-		this.textField.setText(textHolder.value());
+		String text = textHolder.value();
+		this.textField.setText((text == null) ? "" : text);
 	}
 
 
