@@ -10,10 +10,9 @@
 package org.eclipse.jpt.ui.details;
 
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Link;
 
 /**
- * A {@link Link JpaComposite} defines the common behavior of the JPA related
+ * A {@link JpaComposite} defines the common behavior of the JPA related
  * widgets.
  * 
  * Provisional API: This interface is part of an interim API that is still

@@ -22,7 +22,6 @@ import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jem.util.plugin.JEMUtilPlugin;
 import org.eclipse.jpt.core.ResourceModelListener;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
-import org.eclipse.wst.common.internal.emf.resource.TranslatorResource;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceImpl;
 
 /**
@@ -65,6 +64,7 @@ public abstract class JpaXmlResource extends TranslatorResourceImpl
 	/**
 	 * @see TranslatorResourceImpl#getDefaultPublicId() 
 	 */
+	@Override
 	protected String getDefaultPublicId() {
 		return null;
 		// only applicable for DTD-based files
@@ -73,6 +73,7 @@ public abstract class JpaXmlResource extends TranslatorResourceImpl
 	/**
 	 * @see TranslatorResourceImpl#getDefaultSystemId() 
 	 */
+	@Override
 	protected String getDefaultSystemId() {
 		return null;
 		// only applicable for DTD-based files
@@ -81,6 +82,7 @@ public abstract class JpaXmlResource extends TranslatorResourceImpl
 	/**
 	 * @see TranslatorResourceImpl#getDefaultVersionId() 
 	 */
+	@Override
 	protected int getDefaultVersionID() {
 		return 10;
 		// this seems to be the default version of the spec for this doc

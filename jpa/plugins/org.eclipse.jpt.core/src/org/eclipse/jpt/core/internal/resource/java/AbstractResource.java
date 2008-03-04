@@ -15,7 +15,6 @@ import org.eclipse.jpt.core.internal.jdtutility.AnnotationEditFormatter;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.node.AbstractNode;
-import org.eclipse.jpt.utility.internal.node.Node;
 
 public abstract class AbstractResource extends AbstractNode
 	implements JavaResourceNode
