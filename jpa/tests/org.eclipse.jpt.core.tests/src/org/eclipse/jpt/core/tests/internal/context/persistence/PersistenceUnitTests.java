@@ -509,21 +509,21 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		// test there are none initially
 		assertEquals(0, xmlPersistenceUnit.getClasses().size());
-		assertEquals(0, CollectionTools.size(persistenceUnit.specifiedClassRefs()));
+		assertEquals(0, persistenceUnit.specifiedClassRefsSize());
 		
 		// add mapping file ref, test that it's added to context
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		xmlClassRef.setJavaClass("com.foo.Bar");
 		xmlPersistenceUnit.getClasses().add(xmlClassRef);
 		
-		assertEquals(1, CollectionTools.size(persistenceUnit.specifiedClassRefs()));
+		assertEquals(1, persistenceUnit.specifiedClassRefsSize());
 		
 		// add another ...
 		xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		xmlClassRef.setJavaClass("com.foo.Baz");
 		xmlPersistenceUnit.getClasses().add(xmlClassRef);
 		
-		assertEquals(2, CollectionTools.size(persistenceUnit.specifiedClassRefs()));
+		assertEquals(2, persistenceUnit.specifiedClassRefsSize());
 	}
 	
 	public void testUpdateClassRefs2() {
