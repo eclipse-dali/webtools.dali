@@ -126,6 +126,15 @@ public interface WidgetFactory {
 	List createList(Composite container, int style);
 
 	/**
+	 * Creates a new editable text area.
+	 *
+	 * @param parent The parent container
+	 * @param parent The number of lines the text area should display
+	 * @return A new <code>Text</code>
+	 */
+	Text createMultiLineText(Composite parent);
+
+	/**
 	 * Creates a new push button (toggle between selected and unselected).
 	 *
 	 * @param parent The parent container

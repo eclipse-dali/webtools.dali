@@ -26,7 +26,7 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 public abstract class AbstractFormPane<T extends Model> extends AbstractPane<T>
 {
 	/**
-	 * Creates a new <code>BaseJpaController</code>.
+	 * Creates a new <code>AbstractFormPane</code>.
 	 *
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container

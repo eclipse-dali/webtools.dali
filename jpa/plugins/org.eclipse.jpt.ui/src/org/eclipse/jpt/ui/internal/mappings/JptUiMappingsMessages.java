@@ -54,6 +54,8 @@ public class JptUiMappingsMessages extends NLS
 	public static String EntityComposite_tableDefault;
 	public static String EntityComposite_tableNoDefaultSpecified;
 	public static String EntityComposite_inheritance;
+	public static String EntityComposite_queries;
+
 	public static String TableComposite_tableSection;
 	public static String TableComposite_defaultEmpty;
 	public static String TableComposite_defaultWithOneParam;
@@ -242,6 +244,33 @@ public class JptUiMappingsMessages extends NLS
 
 	public static String MetaDataCompleteComboViewer_true;
 	public static String MetaDataCompleteComboViewer_false;
+
+	public static String NamedQueriesComposite_addQueryDescription;
+	public static String NamedQueriesComposite_addQueryDescriptionTitle;
+	public static String NamedQueriesComposite_addQueryTitle;
+	public static String NamedQueriesComposite_edit;
+	public static String NamedQueriesComposite_editQueryDescription;
+	public static String NamedQueriesComposite_editQueryDescriptionTitle;
+	public static String NamedQueriesComposite_editQueryTitle;
+	public static String NamedQueriesComposite_label;
+	public static String NamedQueriesComposite_title;
+	public static String NamedNativeQueriesComposite_addQueryDescription;
+	public static String NamedNativeQueriesComposite_addQueryDescriptionTitle;
+	public static String NamedNativeQueriesComposite_addQueryTitle;
+	public static String NamedNativeQueriesComposite_edit;
+	public static String NamedNativeQueriesComposite_editQueryDescription;
+	public static String NamedNativeQueriesComposite_editQueryDescriptionTitle;
+	public static String NamedNativeQueriesComposite_editQueryTitle;
+	public static String NamedNativeQueriesComposite_label;
+	public static String NamedNativeQueriesComposite_title;
+	public static String NamedQueryPropertyComposite_query;
+	public static String NamedQueryPropertyComposite_queryHintsGroupBox;
+
+	public static String NewNameStateObject_nameMustBeSpecified;
+	public static String NewNameStateObject_nameAlreadyExists;
+
+	public static String QueryHintsComposite_nameColumn;
+	public static String QueryHintsComposite_valueColumn;
 
 	static {
 		// initialize resource bundle

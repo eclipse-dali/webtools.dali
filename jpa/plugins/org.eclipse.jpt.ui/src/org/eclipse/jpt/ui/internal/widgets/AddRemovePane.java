@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
-import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -40,7 +40,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	private Adapter adapter;
 	private Button addButton;
 	private Composite container;
-	private ILabelProvider labelProvider;
+	private IBaseLabelProvider labelProvider;
 	private ListValueModel<?> listHolder;
 	private Button optionalButton;
 	private Button removeButton;
@@ -65,7 +65,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	                        Adapter adapter,
 	                        ListValueModel<?> listHolder,
 	                        WritablePropertyValueModel<?> selectedItemHolder,
-	                        ILabelProvider labelProvider) {
+	                        IBaseLabelProvider labelProvider) {
 
 		this(parentPane,
 		     parent,
@@ -95,7 +95,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	                        Adapter adapter,
 	                        ListValueModel<?> listHolder,
 	                        WritablePropertyValueModel<?> selectedItemHolder,
-	                        ILabelProvider labelProvider,
+	                        IBaseLabelProvider labelProvider,
 	                        String helpId) {
 
 		super(parentPane, parent);
@@ -136,7 +136,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	                        Adapter adapter,
 	                        ListValueModel<?> listHolder,
 	                        WritablePropertyValueModel<?> selectedItemHolder,
-	                        ILabelProvider labelProvider) {
+	                        IBaseLabelProvider labelProvider) {
 
 		this(parentPane,
 		     subjectHolder,
@@ -169,7 +169,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	                        Adapter adapter,
 	                        ListValueModel<?> listHolder,
 	                        WritablePropertyValueModel<?> selectedItemHolder,
-	                        ILabelProvider labelProvider,
+	                        IBaseLabelProvider labelProvider,
 	                        String helpId) {
 
 		super(parentPane, subjectHolder, parent);
@@ -229,7 +229,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	private ListChangeListener buildListChangeListener() {
 		return new SWTListChangeListenerWrapper(buildListChangeListener_());
 	}
-	
+
 	private ListChangeListener buildListChangeListener_() {
 		return new ListChangeListener() {
 
@@ -333,7 +333,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		return container;
 	}
 
-	protected final ILabelProvider getLabelProvider() {
+	protected IBaseLabelProvider getLabelProvider() {
 		return labelProvider;
 	}
 
@@ -366,7 +366,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	protected void initialize(Adapter adapter,
 	                          ListValueModel<?> listHolder,
 	                          WritablePropertyValueModel<?> selectedItemHolder,
-	                          ILabelProvider labelProvider)
+	                          IBaseLabelProvider labelProvider)
 	{
 		this.listHolder         = listHolder;
 		this.labelProvider      = labelProvider;
@@ -441,7 +441,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	protected void initializeLayout(Adapter adapter,
     	                             ListValueModel<?> listHolder,
    	                             WritablePropertyValueModel<?> selectedItemHolder,
-   	                             ILabelProvider labelProvider,
+   	                             IBaseLabelProvider labelProvider,
    	                             String helpId) {
 
 		initializeMainComposite(
@@ -484,7 +484,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	                                                Adapter adapter,
 	                   	                           ListValueModel<?> listHolder,
 	                  	                           WritablePropertyValueModel<?> selectedItemHolder,
-	                  	                           ILabelProvider labelProvider,
+	                  	                           IBaseLabelProvider labelProvider,
 	                  	                           String helpId);
 
 	/**
@@ -492,6 +492,15 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	 */
 	protected void removeItems() {
 		adapter.removeSelectedItems(selectionModel);
+	}
+
+	/**
+	 * Selects the given value, which can be <code>null</code>.
+	 *
+	 * @param value The new selected value
+	 */
+	public void setSelectedItem(Object value) {
+		selectedItemHolder.setValue(value);
 	}
 
 	/**

@@ -291,6 +291,15 @@ public abstract class AbstractDialog<T extends Node> extends TitleAreaDialog
 	}
 
 	/**
+	 * Gives access to the dialog's main pane.
+	 *
+	 * @return The pane showing the custom widgets
+	 */
+	AbstractDialogPane<?> pane() {
+		return pane;
+	}
+
+	/**
 	 * Returns the subject of this dialog.
 	 *
 	 * @return The subject of this dialog or <code>null</code> if no subject was

@@ -12,7 +12,9 @@ package org.eclipse.jpt.ui.internal.widgets;
 import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.jpt.utility.internal.node.Problem;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -100,6 +102,18 @@ public abstract class AbstractValidatingDialog<T extends Node> extends AbstractD
 	 */
 	protected String descriptionTitle() {
 		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected Point getInitialSize() {
+		Point result = getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		Point paneSize = pane().getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		int width = convertHorizontalDLUsToPixels(400);
+		result.x = Math.max(width, paneSize.x);
+		return result;
 	}
 
 	/*
