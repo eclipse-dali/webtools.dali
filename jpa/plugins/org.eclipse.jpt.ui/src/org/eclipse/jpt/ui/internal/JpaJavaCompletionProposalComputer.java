@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
-import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
@@ -71,7 +71,7 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 		if (jpaFile == null) {
 			return Collections.emptyList();
 		}
-// TODO use interface
+		// TODO use interface
 		JavaResourceModel javaResourceModel = (JavaResourceModel) jpaFile.getResourceModel();
 
 		if (javaResourceModel.rootStructureNodesSize() == 0) {

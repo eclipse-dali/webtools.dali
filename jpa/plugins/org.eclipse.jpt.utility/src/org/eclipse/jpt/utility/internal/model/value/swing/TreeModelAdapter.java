@@ -18,19 +18,19 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
-import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.internal.model.event.StateChangeEvent;
-import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
-import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTListChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTStateChangeListenerWrapper;
-import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.TreeNodeValueModel;
+import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.event.StateChangeEvent;
+import org.eclipse.jpt.utility.model.listener.ListChangeListener;
+import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.model.listener.StateChangeListener;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.model.value.TreeNodeValueModel;
 
 /**
  * This javax.swing.tree.TreeModel can be used to keep a TreeModelListener

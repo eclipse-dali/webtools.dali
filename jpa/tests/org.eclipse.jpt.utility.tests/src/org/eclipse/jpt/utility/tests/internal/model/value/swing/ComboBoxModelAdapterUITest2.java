@@ -12,8 +12,8 @@ package org.eclipse.jpt.utility.tests.internal.model.value.swing;
 import javax.swing.ListCellRenderer;
 
 import org.eclipse.jpt.utility.internal.model.value.ExtendedListValueModelWrapper;
-import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
 import org.eclipse.jpt.utility.internal.swing.SimpleListCellRenderer;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * 

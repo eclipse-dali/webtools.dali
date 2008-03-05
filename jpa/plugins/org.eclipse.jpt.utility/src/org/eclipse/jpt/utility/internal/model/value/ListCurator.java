@@ -16,11 +16,13 @@ import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
-import org.eclipse.jpt.utility.internal.model.Model;
-import org.eclipse.jpt.utility.internal.model.event.StateChangeEvent;
-import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
-import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
-import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
+import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.StateChangeEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
+import org.eclipse.jpt.utility.model.listener.ListChangeListener;
+import org.eclipse.jpt.utility.model.listener.StateChangeListener;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
 /**
  * This extension of AspectAdapter provides ListChange support

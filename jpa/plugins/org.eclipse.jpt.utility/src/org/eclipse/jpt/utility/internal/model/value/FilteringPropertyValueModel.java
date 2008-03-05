@@ -9,8 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
-import org.eclipse.jpt.utility.internal.Filter;
-import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
 /**
  * A <code>FilteringPropertyValueModel</code> wraps another

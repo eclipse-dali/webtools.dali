@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.java.details;
 
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 

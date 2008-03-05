@@ -46,9 +46,9 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.utility.CommandExecutor;
+import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.CommandExecutor;
-import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -419,6 +419,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		};
 	}
 
+	// look for binary stuff here...
 	public JavaResourcePersistentType javaPersistentTypeResource(String typeName) {
 		for (JpaCompilationUnitResource jpCompilationUnitResource : CollectionTools.iterable(this.jpaCompilationUnitResources())) {
 			JavaResourcePersistentType jptr =  jpCompilationUnitResource.javaPersistentTypeResource(typeName);
@@ -426,6 +427,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 				return jptr;
 			}
 		}
+//		this.javaProject().findType(typeName);
 		return null;
 	}
 

@@ -16,7 +16,9 @@ import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
-import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * An adapter that allows us to transform a ListValueModel

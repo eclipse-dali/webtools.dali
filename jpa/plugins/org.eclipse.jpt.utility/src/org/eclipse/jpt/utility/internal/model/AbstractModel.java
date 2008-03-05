@@ -20,16 +20,17 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
-import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
-import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.internal.model.event.StateChangeEvent;
-import org.eclipse.jpt.utility.internal.model.event.TreeChangeEvent;
-import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
-import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
-import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
-import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
+import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.event.StateChangeEvent;
+import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
+import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
+import org.eclipse.jpt.utility.model.listener.ListChangeListener;
+import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.model.listener.StateChangeListener;
+import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 
 /**
  * Convenience implementation of Model protocol.

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import org.eclipse.jpt.utility.internal.BidiFilter;
+import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
 /**
  * A <code>FilteringWritablePropertyValueModel</code> wraps another

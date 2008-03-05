@@ -12,9 +12,9 @@ package org.eclipse.jpt.utility.tests.internal.model;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
-import org.eclipse.jpt.utility.internal.model.Model;
-import org.eclipse.jpt.utility.internal.model.event.ChangeEvent;
-import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
+import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.ChangeEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;

@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.utility.internal.model.value;
+package org.eclipse.jpt.utility.model.value;
 
 /**
  * Extend WritablePropertyValueModel to better support TreeModelAdapter.
@@ -20,7 +20,13 @@ package org.eclipse.jpt.utility.internal.model.value;
  * event whenever the node's value changes. Typically, only nodes that
  * hold "primitive" data will fire this event.
  * 
- * @see AbstractTreeNodeValueModel
+ * @see org.eclipse.jpt.utility.internal.model.value.AbstractTreeNodeValueModel
+ * 
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface TreeNodeValueModel<T>
 	extends WritablePropertyValueModel<T>

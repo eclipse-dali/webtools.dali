@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
-import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 
 /**
  * 

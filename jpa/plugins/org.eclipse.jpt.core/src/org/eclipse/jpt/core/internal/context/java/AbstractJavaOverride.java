@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.OverrideAnnotation;
-import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 

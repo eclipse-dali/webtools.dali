@@ -20,8 +20,8 @@ import org.eclipse.jpt.core.ResourceModelListener;
 import org.eclipse.jpt.core.internal.AbstractResourceModel;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
+import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.BitTools;
-import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
 
 public class JavaResourceModel
 	extends AbstractResourceModel

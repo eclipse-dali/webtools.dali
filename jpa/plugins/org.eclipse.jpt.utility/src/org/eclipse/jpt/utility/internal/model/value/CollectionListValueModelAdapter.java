@@ -18,9 +18,11 @@ import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
-import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
-import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
-import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
+import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
+import org.eclipse.jpt.utility.model.listener.ListChangeListener;
+import org.eclipse.jpt.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * An adapter that allows us to make a CollectionValueModel behave like

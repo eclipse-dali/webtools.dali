@@ -17,7 +17,8 @@ import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
-import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
+import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
+import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
 /**
  * Implementation of CollectionValueModel and Collection that simply holds a

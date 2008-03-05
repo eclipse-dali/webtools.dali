@@ -31,12 +31,12 @@ import javax.swing.WindowConstants;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.DateSpinnerModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.swing.ListSpinnerModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.swing.NumberSpinnerModelAdapter;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
 /**
  * Play around with a set of spinners.

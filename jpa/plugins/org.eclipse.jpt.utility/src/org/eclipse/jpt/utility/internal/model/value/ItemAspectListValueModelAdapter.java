@@ -18,8 +18,10 @@ import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.Counter;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
-import org.eclipse.jpt.utility.internal.model.Model;
-import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * Abstract list value model that provides behavior for wrapping a list value

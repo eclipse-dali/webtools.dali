@@ -20,9 +20,9 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
-import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
-import org.eclipse.jpt.utility.internal.model.value.ListValueModel;
+import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.listener.ListChangeListener;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * Helper class that keeps an internal list in synch with the

@@ -15,8 +15,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import junit.framework.TestCase;
+
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.jpt.utility.internal.SimpleFilter;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 

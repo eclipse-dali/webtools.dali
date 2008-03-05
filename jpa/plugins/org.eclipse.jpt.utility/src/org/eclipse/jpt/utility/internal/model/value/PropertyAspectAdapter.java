@@ -12,10 +12,12 @@ package org.eclipse.jpt.utility.internal.model.value;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.eclipse.jpt.utility.internal.model.Model;
-import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
-import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
+import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
 /**
  * This AspectAdapter provides basic PropertyChange support.

@@ -12,6 +12,8 @@ package org.eclipse.jpt.utility.internal;
 import java.io.Serializable;
 import java.util.regex.Pattern;
 
+import org.eclipse.jpt.utility.Filter;
+
 // TODO the regex code is not very fast - we could probably do better,
 // hand-coding the matching algorithm (eclipse StringMatcher?)
 /**

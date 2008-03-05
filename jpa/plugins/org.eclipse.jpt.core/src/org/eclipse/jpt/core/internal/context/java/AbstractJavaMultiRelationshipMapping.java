@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.MapKey;
 import org.eclipse.jpt.core.resource.java.OrderBy;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
-import org.eclipse.jpt.utility.internal.Filter;
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;

@@ -11,7 +11,8 @@ package org.eclipse.jpt.utility.internal.iterators;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import org.eclipse.jpt.utility.internal.Filter;
+
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**

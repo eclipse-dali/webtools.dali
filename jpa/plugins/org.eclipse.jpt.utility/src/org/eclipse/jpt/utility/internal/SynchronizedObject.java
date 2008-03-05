@@ -11,6 +11,8 @@ package org.eclipse.jpt.utility.internal;
 
 import java.io.Serializable;
 
+import org.eclipse.jpt.utility.Command;
+
 /**
  * This class provides synchronized access to an object of type T.
  * It also provides protocol for suspending a thread until the

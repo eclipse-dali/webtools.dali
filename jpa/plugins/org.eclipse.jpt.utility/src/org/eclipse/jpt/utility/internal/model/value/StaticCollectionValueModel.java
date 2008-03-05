@@ -15,6 +15,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
 /**
  * Implementation of CollectionValueModel that can be used for

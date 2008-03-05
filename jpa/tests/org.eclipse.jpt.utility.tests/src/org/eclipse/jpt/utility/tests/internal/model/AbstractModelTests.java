@@ -15,18 +15,18 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
-import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
-import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
-import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.internal.model.event.StateChangeEvent;
-import org.eclipse.jpt.utility.internal.model.event.TreeChangeEvent;
-import org.eclipse.jpt.utility.internal.model.listener.ChangeListener;
-import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
-import org.eclipse.jpt.utility.internal.model.listener.ListChangeAdapter;
-import org.eclipse.jpt.utility.internal.model.listener.ListChangeListener;
-import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.internal.model.listener.StateChangeListener;
-import org.eclipse.jpt.utility.internal.model.listener.TreeChangeListener;
+import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.event.StateChangeEvent;
+import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
+import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
+import org.eclipse.jpt.utility.model.listener.ListChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ListChangeListener;
+import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.model.listener.StateChangeListener;
+import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 public class AbstractModelTests
@@ -1311,7 +1311,7 @@ public class AbstractModelTests
 
 	// ********** serialization test **********	
 
-//TODO - This test doesn't pass in the Eclipse build environment for some reason
+//TODO - This test doesn't pass in the Eclipse build environment (Linux) for some reason
 //	public void testSerialization() throws IOException, ClassNotFoundException {
 //		LocalModel model1 = new LocalModel();
 //		Foo foo1 = new Foo();

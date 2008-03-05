@@ -11,9 +11,11 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Arrays;
 
-import org.eclipse.jpt.utility.internal.model.Model;
-import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
-import org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener;
+import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
+import org.eclipse.jpt.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * Extend ItemAspectListValueModelAdapter to listen to one or more collection

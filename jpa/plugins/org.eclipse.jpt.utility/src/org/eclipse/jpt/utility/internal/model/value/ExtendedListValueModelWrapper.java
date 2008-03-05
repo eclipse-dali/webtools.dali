@@ -18,7 +18,8 @@ import java.util.ListIterator;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
-import org.eclipse.jpt.utility.internal.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * This wrapper extends a ListValueModel (or CollectionValueModel)

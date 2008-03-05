@@ -7,13 +7,13 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.utility.internal.model.event;
+package org.eclipse.jpt.utility.model.event;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.eclipse.jpt.utility.internal.model.Model;
+import org.eclipse.jpt.utility.model.Model;
 
 /**
  * A "collection change" event gets delivered whenever a model changes a "bound"
@@ -36,6 +36,12 @@ import org.eclipse.jpt.utility.internal.model.Model;
  * 
  * - add protocol to support both single items and collections
  * 	adds conditional logic to downstream code
+ * 
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public class CollectionChangeEvent extends ChangeEvent {
 

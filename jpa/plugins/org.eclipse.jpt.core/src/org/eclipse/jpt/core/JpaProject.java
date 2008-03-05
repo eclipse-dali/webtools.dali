@@ -23,8 +23,8 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Schema;
-import org.eclipse.jpt.utility.internal.CommandExecutor;
-import org.eclipse.jpt.utility.internal.CommandExecutorProvider;
+import org.eclipse.jpt.utility.CommandExecutor;
+import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**

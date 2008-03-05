@@ -10,6 +10,7 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import org.eclipse.jpt.utility.internal.BidiTransformer;
+import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
 /**
  * A <code>TransformationWritablePropertyValueModel</code> wraps another

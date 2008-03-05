@@ -12,6 +12,8 @@ package org.eclipse.jpt.utility.internal;
 import java.io.Serializable;
 import java.util.EmptyStackException;
 
+import org.eclipse.jpt.utility.Command;
+
 /**
  * Thread-safe implementation of the Stack interface.
  * This also provides protocol for suspending a thread until the

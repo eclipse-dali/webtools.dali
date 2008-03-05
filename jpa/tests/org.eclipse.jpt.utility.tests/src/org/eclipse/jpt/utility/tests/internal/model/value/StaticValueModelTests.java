@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 import junit.framework.TestCase;

@@ -24,8 +24,8 @@ import org.eclipse.jpt.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode

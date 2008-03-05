@@ -11,7 +11,7 @@ package org.eclipse.jpt.core;
 
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ElementChangedEvent;
-import org.eclipse.jpt.utility.internal.model.Model;
+import org.eclipse.jpt.utility.model.Model;
 
 /**
  * 

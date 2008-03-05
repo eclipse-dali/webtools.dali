@@ -10,7 +10,8 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import org.eclipse.jpt.utility.internal.Transformer;
-import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
 /**
  * A <code>TransformationPropertyValueModel</code> wraps another

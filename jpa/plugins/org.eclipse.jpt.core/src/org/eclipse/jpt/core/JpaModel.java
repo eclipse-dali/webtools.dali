@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jpt.utility.internal.model.Model;
+import org.eclipse.jpt.utility.model.Model;
 
 /**
  * The JPA model holds all the JPA projects.

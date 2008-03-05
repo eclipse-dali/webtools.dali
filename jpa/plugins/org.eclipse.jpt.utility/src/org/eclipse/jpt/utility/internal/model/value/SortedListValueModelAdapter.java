@@ -16,7 +16,9 @@ import java.util.List;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Range;
-import org.eclipse.jpt.utility.internal.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * An adapter that allows us to make a <code>CollectionValueModel</code>

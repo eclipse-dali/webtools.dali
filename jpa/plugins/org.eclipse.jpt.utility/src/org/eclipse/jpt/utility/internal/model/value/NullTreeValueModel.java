@@ -14,6 +14,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.utility.model.value.TreeValueModel;
 
 /**
  * A tree value model for when you

@@ -37,7 +37,7 @@ import org.eclipse.jpt.ui.internal.mappings.details.OneToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.OneToOneMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TransientMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.VersionMappingComposite;
-import org.eclipse.jpt.utility.internal.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 

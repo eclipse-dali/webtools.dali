@@ -11,9 +11,10 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Arrays;
 
-import org.eclipse.jpt.utility.internal.model.Model;
-import org.eclipse.jpt.utility.internal.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
 /**
  * Extend ValueAspectAdapter to listen to one or more
