@@ -26,7 +26,6 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Here the layout of this pane:
@@ -74,8 +73,8 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected TableGenerator buildGenerator() {
-		return subject().addTableGenerator();
+	protected TableGenerator buildGenerator(IdMapping subject) {
+		return subject.addTableGenerator();
 	}
 
 	private ColumnCombo<TableGenerator> buildPkColumnNameCombo(Composite parent) {
@@ -91,7 +90,9 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected void buildSubject() {
-				TableGeneratorComposite.this.buildGenerator();
+				TableGeneratorComposite.this.buildGenerator(
+					TableGeneratorComposite.this.subject()
+				);
 			}
 
 			@Override
@@ -147,7 +148,9 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected void buildSubject() {
-				TableGeneratorComposite.this.buildGenerator();
+				TableGeneratorComposite.this.buildGenerator(
+					TableGeneratorComposite.this.subject()
+				);
 			}
 
 			@Override
@@ -191,7 +194,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	}
 
 	private PropertyValueModel<TableGenerator> buildTableGeneratorHolder() {
-		return new PropertyAspectAdapter<IdMapping, TableGenerator>(getSubjectHolder(), propertyName()) {
+		return new PropertyAspectAdapter<IdMapping, TableGenerator>(getSubjectHolder(), IdMapping.TABLE_GENERATOR_PROPERTY) {
 			@Override
 			protected TableGenerator buildValue_() {
 				return subject.getTableGenerator();
@@ -212,7 +215,9 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected void buildSubject() {
-				TableGeneratorComposite.this.buildGenerator();
+				TableGeneratorComposite.this.buildGenerator(
+					TableGeneratorComposite.this.subject()
+				);
 			}
 
 			@Override
@@ -281,7 +286,9 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected void buildSubject() {
-				TableGeneratorComposite.this.buildGenerator();
+				TableGeneratorComposite.this.buildGenerator(
+					TableGeneratorComposite.this.subject()
+				);
 			}
 
 			@Override
@@ -339,13 +346,10 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	protected void initializeLayout(Composite container) {
 
 		// Name widgets
-		Text nameText = buildNameText(container);
-		setNameText(nameText);
-
-		buildLabeledComposite(
+		buildLabeledText(
 			container,
 			JptUiMappingsMessages.TableGeneratorComposite_name,
-			nameText.getParent(),
+			buildGeneratorNameHolder(),
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_NAME
 		);
 

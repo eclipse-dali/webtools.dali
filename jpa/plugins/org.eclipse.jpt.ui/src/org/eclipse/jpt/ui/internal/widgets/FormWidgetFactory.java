@@ -56,6 +56,11 @@ public final class FormWidgetFactory implements WidgetFactory {
 		this.widgetFactory = widgetFactory;
 	}
 
+	private Text buildText(Composite parent, int style) {
+		parent = fixTextBorderNotPainted(parent);
+		return widgetFactory.createText(parent, null, SWT.FLAT | style);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
@@ -145,6 +150,13 @@ public final class FormWidgetFactory implements WidgetFactory {
 	/*
 	 * (non-Javadoc)
 	 */
+	public Text createMultiLineText(Composite parent) {
+		return buildText(parent, SWT.MULTI | SWT.V_SCROLL);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
 	public Button createPushButton(Composite parent, String text) {
 		return this.createButton(parent, text, SWT.PUSH);
 	}
@@ -167,16 +179,7 @@ public final class FormWidgetFactory implements WidgetFactory {
 	 * (non-Javadoc)
 	 */
 	public Text createText(Composite parent) {
-		parent = fixTextBorderNotPainted(parent);
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-
-		Text text = widgetFactory.createText(parent, null, SWT.FLAT);
-		text.setLayoutData(gridData);
-
-		return text;
+		return buildText(parent, SWT.NULL);
 	}
 
 	/*

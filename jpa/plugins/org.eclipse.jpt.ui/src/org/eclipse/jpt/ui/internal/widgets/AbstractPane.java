@@ -18,6 +18,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.swt.BooleanButtonModelAdapter;
+import org.eclipse.jpt.ui.internal.swt.TextFieldModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.TriStateCheckBoxModelAdapter;
 import org.eclipse.jpt.ui.internal.util.ControlAligner;
 import org.eclipse.jpt.ui.internal.util.LabeledButton;
@@ -52,6 +53,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
@@ -1262,6 +1264,145 @@ public abstract class AbstractPane<T extends Model>
 	 * labeled with the given label.
 	 *
 	 * @param container The parent container
+	 * @param labelText The text area's label
+	 * @param textHolder The holder of the text field's input
+	 * @return The newly created <code>Text</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildLabeledMultiLineText(Composite container,
+	                                               String labelText,
+	                                               WritablePropertyValueModel<String> textHolder) {
+
+		return this.buildLabeledMultiLineText(
+			container,
+			labelText,
+			textHolder,
+			null
+		);
+	}
+
+	/**
+	 * Creates a new container that will have a text field as the center control
+	 * labeled with the given label.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text area's label
+	 * @param textHolder The holder of the text field's input
+	 * @param rightControl The widget to be placed to the right of the text area
+	 * @return The newly created <code>Text</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildLabeledMultiLineText(Composite container,
+	                                               String labelText,
+	                                               WritablePropertyValueModel<String> textHolder,
+	                                               Control rightControl,
+	                                               String helpId) {
+
+		Text text = this.buildMultiLineText(container, textHolder);
+
+		this.buildLabeledComposite(
+			container,
+			labelText,
+			text,
+			rightControl,
+			helpId
+		);
+
+		return text;
+	}
+
+	/**
+	 * Creates a new container that will have a text field as the center control
+	 * labeled with the given label.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text area's label
+	 * @param textHolder The holder of the text field's input
+	 * @param lineCount The number of lines the text area should display
+	 * @return The newly created <code>Text</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildLabeledMultiLineText(Composite container,
+	                                               String labelText,
+	                                               WritablePropertyValueModel<String> textHolder,
+	                                               int lineCount) {
+
+		return this.buildLabeledMultiLineText(
+			container,
+			labelText,
+			textHolder,
+			lineCount,
+			null
+		);
+	}
+
+	/**
+	 * Creates a new container that will have a text field as the center control
+	 * labeled with the given label.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text area's label
+	 * @param textHolder The holder of the text field's input
+	 * @param lineCount The number of lines the text area should display
+	 * @return The newly created <code>Text</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildLabeledMultiLineText(Composite container,
+	                                               String labelText,
+	                                               WritablePropertyValueModel<String> textHolder,
+	                                               int lineCount,
+	                                               String helpId) {
+
+		Text text = this.buildMultiLineText(container, textHolder, lineCount);
+
+		this.buildLabeledComposite(
+			container,
+			labelText,
+			text,
+			helpId
+		);
+
+		GridData gridData = (GridData) text.getLayoutData();
+		gridData.heightHint = text.getLineHeight() * lineCount;
+
+		return text;
+	}
+
+	/**
+	 * Creates a new container that will have a text field as the center control
+	 * labeled with the given label.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text area's label
+	 * @param textHolder The holder of the text field's input
+	 * @return The newly created <code>Text</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildLabeledMultiLineText(Composite container,
+	                                               String labelText,
+	                                               WritablePropertyValueModel<String> textHolder,
+	                                               String helpId) {
+
+		return this.buildLabeledMultiLineText(
+			container,
+			labelText,
+			textHolder,
+			3,
+			helpId
+		);
+	}
+
+	/**
+	 * Creates a new container that will have a text field as the center control
+	 * labeled with the given label.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text field's label
 	 * @param textListener The listener that is notified when the text field's
 	 * input changes
 	 * @return The newly created <code>Text</code>
@@ -1378,6 +1519,82 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
+	 * Creates a new container that will have a text field as the center control
+	 * labeled with the given label.
+	 *
+	 * @param container The parent container
+	 * @param textHolder The holder of the text field's input
+	 * @return The newly created <code>Text</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildLabeledText(Composite container,
+	                                      String labelText,
+	                                      WritablePropertyValueModel<String> textHolder) {
+
+		return this.buildLabeledText(container, labelText, textHolder, null);
+	}
+
+	/**
+	 * Creates a new container that will have a text field as the center control
+	 * labeled with the given label.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text field's label
+	 * @param rightComponent The component to be placed to the right of the text
+	 * field
+	 * @param textHolder The holder of the text field's input
+	 * @param helpId The topic help ID to be registered for the text field
+	 * @return The newly created <code>Text</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildLabeledText(Composite container,
+	                                      String labelText,
+	                                      WritablePropertyValueModel<String> textHolder,
+	                                      Control rightComponent,
+	                                      String helpId) {
+
+		Text text = this.buildText(container);
+		TextFieldModelAdapter.adapt(textHolder, text);
+
+		this.buildLabeledComposite(
+			container,
+			labelText,
+			text,
+			rightComponent,
+			helpId
+		);
+
+		return text;
+	}
+
+	/**
+	 * Creates a new container that will have a text field as the center control
+	 * labeled with the given label.
+	 *
+	 * @param container The parent container
+	 * @param textHolder The holder of the text field's input
+	 * @param helpId The topic help ID to be registered for the text field
+	 * @return The newly created <code>Text</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildLabeledText(Composite container,
+	                                      String labelText,
+	                                      WritablePropertyValueModel<String> textHolder,
+	                                      String helpId) {
+
+		return this.buildLabeledText(
+			container,
+			labelText,
+			textHolder,
+			null,
+			helpId
+		);
+	}
+
+	/**
 	 * Creates a new list and notify the given selection holder when the
 	 * selection changes. If the selection count is different than one than the
 	 * holder will receive <code>null</code>.
@@ -1388,7 +1605,6 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Layout
 	 */
 	protected final List buildList(Composite container) {
-
 		return this.buildList(container, (String) null);
 	}
 
@@ -1464,6 +1680,130 @@ public abstract class AbstractPane<T extends Model>
 		}
 
 		return list;
+	}
+
+	/**
+	 * Creates a new <code>Text</code> widget that has multiple lines.
+	 *
+	 * @param container The parent container
+	 * @return The newly created <code>Text</code> widget
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildMultiLineText(Composite container) {
+		return this.buildMultiLineText(container, 3, null);
+	}
+
+	/**
+	 * Creates a new <code>Text</code> widget that has multiple lines.
+	 *
+	 * @param container The parent container
+	 * @param lineCount The number of lines the text area should display
+	 * @param helpId The topic help ID to be registered for the new text
+	 * @return The newly created <code>Text</code> widget
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildMultiLineText(Composite container,
+	                                        int lineCount,
+	                                        String helpId) {
+
+		Text text = this.widgetFactory.createMultiLineText(container);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment       = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.heightHint                = text.getLineHeight() * lineCount;
+		text.setLayoutData(gridData);
+
+		if (helpId != null) {
+			helpSystem().setHelp(text, helpId);
+		}
+
+		return text;
+	}
+
+	/**
+	 * Creates a new <code>Text</code> widget that has multiple lines.
+	 *
+	 * @param container The parent container
+	 * @param helpId The topic help ID to be registered for the new text
+	 * @return The newly created <code>Text</code> widget
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildMultiLineText(Composite container, String helpId) {
+
+		return this.buildMultiLineText(container, 3, helpId);
+	}
+
+	/**
+	 * Creates a new <code>Text</code> widget that has multiple lines.
+	 *
+	 * @param container The parent container
+	 * @param textHolder The holder of the text field's input
+	 * @return The newly created <code>Text</code> widget
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildMultiLineText(Composite container,
+	                                        WritablePropertyValueModel<String> textHolder) {
+
+		return this.buildMultiLineText(container, textHolder, null);
+	}
+
+	/**
+	 * Creates a new <code>Text</code> widget that has multiple lines.
+	 *
+	 * @param container The parent container
+	 * @param textHolder The holder of the text field's input
+	 * @param lineCount The number of lines the text area should display
+	 * @return The newly created <code>Text</code> widget
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildMultiLineText(Composite container,
+	                                        WritablePropertyValueModel<String> textHolder,
+	                                        int lineCount) {
+
+		return this.buildMultiLineText(container, textHolder, lineCount, null);
+	}
+
+	/**
+	 * Creates a new <code>Text</code> widget that has multiple lines.
+	 *
+	 * @param container The parent container
+	 * @param textHolder The holder of the text field's input
+	 * @param helpId The topic help ID to be registered for the new text
+	 * @return The newly created <code>Text</code> widget
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildMultiLineText(Composite container,
+	                                        WritablePropertyValueModel<String> textHolder,
+	                                        int lineCount,
+	                                        String helpId) {
+
+		Text text = this.buildMultiLineText(container, lineCount, helpId);
+		TextFieldModelAdapter.adapt(textHolder, text);
+		return text;
+	}
+
+	/**
+	 * Creates a new <code>Text</code> widget that has multiple lines.
+	 *
+	 * @param container The parent container
+	 * @param textHolder The holder of the text field's input
+	 * @param helpId The topic help ID to be registered for the new text
+	 * @return The newly created <code>Text</code> widget
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildMultiLineText(Composite container,
+	                                        WritablePropertyValueModel<String> textHolder,
+	                                        String helpId) {
+
+		return this.buildMultiLineText(container, textHolder, 3, helpId);
 	}
 
 	/**
@@ -1608,8 +1948,8 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new <code>Section</code> with flat style. A sub-pane is
-	 * automatically added as its client and is the returned <code>Composite</code>.
+	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
+	 * its client and is the returned <code>Composite</code>.
 	 *
 	 * @param container The container of the new widget
 	 * @param sectionText The text of the new section
@@ -1628,8 +1968,8 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new <code>Section</code> with flat style. A sub-pane is
-	 * automatically added as its client and is the returned <code>Composite</code>.
+	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
+	 * its client and is the returned <code>Composite</code>.
 	 *
 	 * @param container The container of the new widget
 	 * @param sectionText The text of the new section
@@ -1651,8 +1991,8 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new <code>Section</code> with flat style.  A sub-pane is
-	 * automatically added as its client and is the returned <code>Composite</code>.
+	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
+	 * its client and is the returned <code>Composite</code>.
 	 *
 	 * @param container The container of the new widget
 	 * @param sectionText The text of the new section
@@ -1698,8 +2038,8 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new <code>Section</code> with flat style. A sub-pane is
-	 * automatically added as its client and is the returned <code>Composite</code>.
+	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
+	 * its client and is the returned <code>Composite</code>.
 	 *
 	 * @param container The container of the new widget
 	 * @param sectionText The text of the new section
@@ -1877,9 +2217,8 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new <code>Section</code> with flat style. A sub-pane is
-	 * automatically added as its client which can be typed cast directly as a
-	 * <code>Composite</code>.
+	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
+	 * its client which can be typed cast directly as a <code>Composite</code>.
 	 *
 	 * @param container The container of the new widget
 	 * @param sectionText The text of the new section
@@ -1898,9 +2237,8 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new <code>Section</code> with flat style. A sub-pane is
-	 * automatically added as its client which can be typed cast directly as a
-	 * <code>Composite</code>.
+	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
+	 * its client which can be typed cast directly as a <code>Composite</code>.
 	 *
 	 * @param container The container of the new widget
 	 * @param sectionText The text of the new section
@@ -1923,8 +2261,57 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new <code>Text</code> widget, the widget is created with the
-	 * flat-style look.
+	 * Creates a new list and notify the given selection holder when the
+	 * selection changes. If the selection count is different than one than the
+	 * holder will receive <code>null</code>.
+	 *
+	 * @param container The parent container
+	 * @return The newly created <code>Table</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Table buildTable(Composite container) {
+		return this.buildTable(container, null);
+	}
+
+	/**
+	 * Creates a new list and notify the given selection holder when the
+	 * selection changes. If the selection count is different than one than the
+	 * holder will receive <code>null</code>.
+	 *
+	 * @param container The parent container
+	 * @param helpId The topic help ID to be registered for the new radio button
+	 * @return The newly created <code>Table</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Table buildTable(Composite container, String helpId) {
+
+		Table table = new Table(
+			container,
+			SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI
+		);
+
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment       = GridData.FILL;
+		gridData.verticalAlignment         = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace   = true;
+		gridData.heightHint                = table.getItemHeight() * 4;
+		table.setLayoutData(gridData);
+
+		if (helpId != null) {
+			helpSystem().setHelp(table, helpId);
+		}
+
+		return table;
+	}
+
+	/**
+	 * Creates a new <code>Text</code> widget.
 	 *
 	 * @param container The parent container
 	 * @return The newly created <code>Text</code> widget
@@ -1936,8 +2323,7 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new <code>Text</code> widget, the widget is created with the
-	 * flat-style look.
+	 * Creates a new <code>Text</code> widget.
 	 *
 	 * @param container The parent container
 	 * @param helpId The topic help ID to be registered for the new text
@@ -1946,7 +2332,52 @@ public abstract class AbstractPane<T extends Model>
 	 * @category Layout
 	 */
 	protected final Text buildText(Composite container, String helpId) {
+
 		Text text = this.widgetFactory.createText(container);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment       = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		text.setLayoutData(gridData);
+
+		if (helpId != null) {
+			helpSystem().setHelp(text, helpId);
+		}
+
+		return text;
+	}
+
+	/**
+	 * Creates a new <code>Text</code> widget.
+	 *
+	 * @param container The parent container
+	 * @param textHolder The holder of the text field's input
+	 * @return The newly created <code>Text</code> widget
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildText(Composite container,
+	                               WritablePropertyValueModel<String> textHolder) {
+
+		return this.buildText(container, textHolder, null);
+	}
+
+	/**
+	 * Creates a new <code>Text</code> widget.
+	 *
+	 * @param container The parent container
+	 * @param textHolder The holder of the text field's input
+	 * @param helpId The topic help ID to be registered for the new text
+	 * @return The newly created <code>Text</code> widget
+	 *
+	 * @category Layout
+	 */
+	protected final Text buildText(Composite container,
+	                               WritablePropertyValueModel<String> textHolder,
+	                               String helpId) {
+
+		Text text = this.widgetFactory.createText(container);
+		TextFieldModelAdapter.adapt(textHolder, text);
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment       = GridData.FILL;

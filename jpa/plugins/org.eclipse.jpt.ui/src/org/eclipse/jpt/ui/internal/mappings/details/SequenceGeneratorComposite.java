@@ -21,7 +21,6 @@ import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Here the layout of this pane:
@@ -61,12 +60,12 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected SequenceGenerator buildGenerator() {
-		return subject().addSequenceGenerator();
+	protected SequenceGenerator buildGenerator(IdMapping subject) {
+		return subject.addSequenceGenerator();
 	}
 
 	private PropertyValueModel<SequenceGenerator> buildSequenceGeneratorHolder() {
-		return new PropertyAspectAdapter<IdMapping, SequenceGenerator>(getSubjectHolder(), propertyName()) {
+		return new PropertyAspectAdapter<IdMapping, SequenceGenerator>(getSubjectHolder(), IdMapping.SEQUENCE_GENERATOR_PROPERTY) {
 			@Override
 			protected SequenceGenerator buildValue_() {
 				return subject.getSequenceGenerator();
@@ -87,7 +86,9 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 
 			@Override
 			protected void buildSubject() {
-				SequenceGeneratorComposite.this.buildGenerator();
+				SequenceGeneratorComposite.this.buildGenerator(
+					SequenceGeneratorComposite.this.subject()
+				);
 			}
 
 			@Override
@@ -113,7 +114,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 
 			@Override
 			protected void setValue(String value) {
-				retrieveGenerator().setSpecifiedSequenceName(value);
+				subject().setSpecifiedSequenceName(value);
 			}
 
 			@Override
@@ -144,13 +145,10 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 	protected void initializeLayout(Composite container) {
 
 		// Name widgets
-		Text nameText = buildNameText(container);
-		setNameText(nameText);
-
-		buildLabeledComposite(
+		buildLabeledText(
 			container,
 			JptUiMappingsMessages.SequenceGeneratorComposite_name,
-			nameText,
+			buildGeneratorNameHolder(),
 			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_NAME
 		);
 

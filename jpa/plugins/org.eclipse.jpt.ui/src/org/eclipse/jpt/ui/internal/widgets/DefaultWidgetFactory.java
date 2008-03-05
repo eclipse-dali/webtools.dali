@@ -142,6 +142,13 @@ public final class DefaultWidgetFactory implements WidgetFactory {
 	/*
 	 * (non-Javadoc)
 	 */
+	public Text createMultiLineText(Composite parent) {
+		return new Text(parent, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
 	public Button createPushButton(Composite parent, String text) {
 		return this.createButton(parent, text, SWT.PUSH);
 	}

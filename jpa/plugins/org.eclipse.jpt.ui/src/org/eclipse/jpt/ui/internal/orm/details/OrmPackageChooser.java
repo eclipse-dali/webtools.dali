@@ -27,8 +27,8 @@ import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -110,13 +110,22 @@ public class OrmPackageChooser extends AbstractFormPane<EntityMappings>
 		};
 	}
 
-	private ModifyListener buildPackageModifyListener() {
-		return new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				if (!isPopulating()) {
-					Text text = (Text) e.widget;
-					textChanged(text.getText());
+	private WritablePropertyValueModel<String> buildPackageHolder() {
+		return new PropertyAspectAdapter<EntityMappings, String>(getSubjectHolder(), EntityMappings.PACKAGE_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+				IPackageFragmentRoot root = getPackageFragmentRoot(subject);
+
+				if (root != null) {
+					((JavaPackageCompletionProcessor) contentAssistProcessor).setPackageFragmentRoot(root);
 				}
+
+				return subject.getPackage();
+			}
+
+			@Override
+			protected void setValue_(String value) {
+				subject.setPackage(value);
 			}
 		};
 	}
@@ -138,7 +147,7 @@ public class OrmPackageChooser extends AbstractFormPane<EntityMappings>
 		try {
 			selectionDialog = JavaUI.createPackageDialog(
 				shell(),
-				getPackageFragmentRoot()
+				getPackageFragmentRoot(subject())
 			);
 		}
 		catch (JavaModelException e) {
@@ -149,7 +158,7 @@ public class OrmPackageChooser extends AbstractFormPane<EntityMappings>
 		selectionDialog.setTitle(JptUiOrmMessages.OrmPackageChooser_PackageDialog_title);
 		selectionDialog.setMessage(JptUiOrmMessages.OrmPackageChooser_PackageDialog_message);
 		selectionDialog.setHelpAvailable(false);
-		IPackageFragment pack = getPackageFragment();
+		IPackageFragment pack = getPackageFragment(subject());
 
 		if (pack != null) {
 			selectionDialog.setInitialSelections(new Object[] { pack });
@@ -162,27 +171,19 @@ public class OrmPackageChooser extends AbstractFormPane<EntityMappings>
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void doPopulate() {
-		super.doPopulate();
-		populateText();
-	}
-
 	/**
 	 * Returns the package fragment corresponding to the current input.
 	 *
+	 * @param subject
 	 * @return a package fragment or <code>null</code> if the input
 	 * could not be resolved.
 	 */
-	public IPackageFragment getPackageFragment() {
+	private IPackageFragment getPackageFragment(EntityMappings subject) {
 		String packageString = this.text.getText();
-		return getPackageFragmentRoot().getPackageFragment(packageString);
+		return getPackageFragmentRoot(subject).getPackageFragment(packageString);
 	}
 
-	private IPackageFragmentRoot getPackageFragmentRoot() {
+	private IPackageFragmentRoot getPackageFragmentRoot(EntityMappings subject) {
 
 		IProject project = subject().jpaProject().project();
 		IJavaProject root = JavaCore.create(project);
@@ -206,7 +207,7 @@ public class OrmPackageChooser extends AbstractFormPane<EntityMappings>
 		text = buildLabeledText(
 			container,
 			JptUiOrmMessages.EntityMappingsDetailsPage_package,
-			buildPackageModifyListener(),
+			buildPackageHolder(),
 			buildBrowseButton(container),
 			JpaHelpContextIds.ENTITY_ORM_PACKAGE
 		);
@@ -219,53 +220,5 @@ public class OrmPackageChooser extends AbstractFormPane<EntityMappings>
 			text,
 			contentAssistProcessor
 		);
-	}
-
-	private void populateText() {
-
-		EntityMappings subject = subject();
-		text.setText("");
-
-		if (subject == null) {
-			return;
-		}
-
-		IPackageFragmentRoot root = getPackageFragmentRoot();
-
-		if (root != null) {
-			((JavaPackageCompletionProcessor) contentAssistProcessor).setPackageFragmentRoot(root);
-		}
-
-		String packageName = subject.getPackage();
-
-		if (packageName == null) {
-			packageName = "";
-		}
-
-		text.setText(packageName);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void propertyChanged(String propertyName) {
-		super.propertyChanged(propertyName);
-
-		if (propertyName == EntityMappings.PACKAGE_PROPERTY) {
-			populateText();
-		}
-	}
-
-	private void textChanged(String text) {
-
-		setPopulating(true);
-
-		try {
-			subject().setPackage(text);
-		}
-		finally {
-			setPopulating(false);
-		}
 	}
 }
