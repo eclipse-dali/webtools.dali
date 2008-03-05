@@ -13,10 +13,10 @@ import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * Here the layout of this pane:
@@ -54,7 +54,7 @@ public class VersionMappingComposite extends AbstractFormPane<VersionMapping>
 	 */
 	public VersionMappingComposite(PropertyValueModel<? extends VersionMapping> subjectHolder,
 	                               Composite parent,
-	                               TabbedPropertySheetWidgetFactory widgetFactory) {
+	                               WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}

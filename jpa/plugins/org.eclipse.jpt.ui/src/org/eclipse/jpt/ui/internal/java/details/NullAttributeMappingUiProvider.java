@@ -13,10 +13,10 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.ui.java.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 @SuppressWarnings("nls")
 public class NullAttributeMappingUiProvider
@@ -62,7 +62,7 @@ public class NullAttributeMappingUiProvider
 			JpaUiFactory factory,
 			PropertyValueModel<AttributeMapping> subjectHolder,
 			Composite parent,
-			TabbedPropertySheetWidgetFactory widgetFactory) {
+			WidgetFactory widgetFactory) {
 
 		return new NullComposite(subjectHolder, parent, widgetFactory);
 	}
@@ -72,7 +72,7 @@ public class NullAttributeMappingUiProvider
 
 		NullComposite(PropertyValueModel<AttributeMapping> subjectHolder,
 		              Composite parent,
-		              TabbedPropertySheetWidgetFactory widgetFactory) {
+		              WidgetFactory widgetFactory) {
 
 			super(subjectHolder, parent, widgetFactory);
 		}

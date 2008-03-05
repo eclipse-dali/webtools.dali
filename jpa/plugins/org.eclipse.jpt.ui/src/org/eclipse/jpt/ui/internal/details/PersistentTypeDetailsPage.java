@@ -127,7 +127,7 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 		return uiProvider.buildPersistentTypeMappingComposite(
 			buildMappingHolder(key),
 			pageBook,
-			getFormWidgetFactory()
+			getWidgetFactory()
 		);
 	}
 

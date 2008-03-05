@@ -14,10 +14,10 @@ import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.ui.java.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class TransientMappingUiProvider
 	implements AttributeMappingUiProvider<TransientMapping>
@@ -52,7 +52,7 @@ public class TransientMappingUiProvider
 			JpaUiFactory factory,
 			PropertyValueModel<TransientMapping> subjectHolder,
 			Composite parent,
-			TabbedPropertySheetWidgetFactory widgetFactory) {
+			WidgetFactory widgetFactory) {
 
 		return factory.createTransientMappingComposite(subjectHolder, parent, widgetFactory);
 	}

@@ -37,9 +37,9 @@ import org.eclipse.jpt.ui.internal.mappings.details.OneToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.OneToOneMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TransientMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.VersionMappingComposite;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * The default implementation of the UI factory required to show the information
@@ -58,7 +58,7 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 	public JpaComposite<BasicMapping> createBasicMappingComposite(
 		PropertyValueModel<BasicMapping> subjectHolder,
 		Composite parent,
-		TabbedPropertySheetWidgetFactory widgetFactory) {
+		WidgetFactory widgetFactory) {
 
 		return new BasicMappingComposite(subjectHolder, parent, widgetFactory);
 	}
@@ -69,7 +69,7 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 	public JpaComposite<Embeddable> createEmbeddableComposite(
 		PropertyValueModel<Embeddable> subjectHolder,
 		Composite parent,
-		TabbedPropertySheetWidgetFactory widgetFactory) {
+		WidgetFactory widgetFactory) {
 
 		return new EmbeddableComposite(subjectHolder, parent, widgetFactory);
 	}
@@ -80,7 +80,7 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 	public JpaComposite<EmbeddedIdMapping> createEmbeddedIdMappingComposite(
 		PropertyValueModel<EmbeddedIdMapping> subjectHolder,
 		Composite parent,
-		TabbedPropertySheetWidgetFactory widgetFactory) {
+		WidgetFactory widgetFactory) {
 
 		return new EmbeddedIdMappingComposite(subjectHolder, parent, widgetFactory);
 	}
@@ -91,7 +91,7 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 	public JpaComposite<EmbeddedMapping> createEmbeddedMappingComposite(
 		PropertyValueModel<EmbeddedMapping> subjectHolder,
 		Composite parent,
-		TabbedPropertySheetWidgetFactory widgetFactory) {
+		WidgetFactory widgetFactory) {
 
 		return new EmbeddedMappingComposite(subjectHolder, parent, widgetFactory);
 	}
@@ -102,7 +102,7 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 	public JpaComposite<Entity> createEntityComposite(
 		PropertyValueModel<Entity> subjectHolder,
 		Composite parent,
-		TabbedPropertySheetWidgetFactory widgetFactory) {
+		WidgetFactory widgetFactory) {
 
 		return new EntityComposite(subjectHolder, parent, widgetFactory);
 	}
@@ -113,7 +113,7 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 	public JpaComposite<IdMapping> createIdMappingComposite(
 		PropertyValueModel<IdMapping> subjectHolder,
 		Composite parent,
-		TabbedPropertySheetWidgetFactory widgetFactory) {
+		WidgetFactory widgetFactory) {
 
 		return new IdMappingComposite(subjectHolder, parent, widgetFactory);
 	}
@@ -124,7 +124,7 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 	public JpaComposite<ManyToManyMapping> createManyToManyMappingComposite(
 		PropertyValueModel<ManyToManyMapping> subjectHolder,
 		Composite parent,
-		TabbedPropertySheetWidgetFactory widgetFactory) {
+		WidgetFactory widgetFactory) {
 
 		return new ManyToManyMappingComposite(subjectHolder, parent, widgetFactory);
 	}
@@ -135,7 +135,7 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 	public JpaComposite<ManyToOneMapping> createManyToOneMappingComposite(
 		PropertyValueModel<ManyToOneMapping> subjectHolder,
 		Composite parent,
-		TabbedPropertySheetWidgetFactory widgetFactory) {
+		WidgetFactory widgetFactory) {
 
 		return new ManyToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
@@ -146,7 +146,7 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 	public JpaComposite<MappedSuperclass> createMappedSuperclassComposite(
 		PropertyValueModel<MappedSuperclass> subjectHolder,
 		Composite parent,
-		TabbedPropertySheetWidgetFactory widgetFactory) {
+		WidgetFactory widgetFactory) {
 
 		return new MappedSuperclassComposite(subjectHolder, parent, widgetFactory);
 	}
@@ -157,7 +157,7 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 	public JpaComposite<OneToManyMapping> createOneToManyMappingComposite(
 		PropertyValueModel<OneToManyMapping> subjectHolder,
 		Composite parent,
-		TabbedPropertySheetWidgetFactory widgetFactory) {
+		WidgetFactory widgetFactory) {
 
 		return new OneToManyMappingComposite(subjectHolder, parent, widgetFactory);
 	}
@@ -168,7 +168,7 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 	public JpaComposite<OneToOneMapping> createOneToOneMappingComposite(
 		PropertyValueModel<OneToOneMapping> subjectHolder,
 		Composite parent,
-		TabbedPropertySheetWidgetFactory widgetFactory) {
+		WidgetFactory widgetFactory) {
 
 		return new OneToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
@@ -179,7 +179,7 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 	public JpaComposite<TransientMapping> createTransientMappingComposite(
 		PropertyValueModel<TransientMapping> subjectHolder,
 		Composite parent,
-		TabbedPropertySheetWidgetFactory widgetFactory) {
+		WidgetFactory widgetFactory) {
 
 		return new TransientMappingComposite(subjectHolder, parent, widgetFactory);
 	}
@@ -190,7 +190,7 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 	public JpaComposite<VersionMapping> createVersionMappingComposite(
 		PropertyValueModel<VersionMapping> subjectHolder,
 		Composite parent,
-		TabbedPropertySheetWidgetFactory widgetFactory) {
+		WidgetFactory widgetFactory) {
 
 		return new VersionMappingComposite(subjectHolder, parent, widgetFactory);
 	}

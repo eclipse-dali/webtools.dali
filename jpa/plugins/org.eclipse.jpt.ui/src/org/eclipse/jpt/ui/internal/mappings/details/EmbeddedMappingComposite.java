@@ -12,9 +12,9 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * Here the layout of this pane:
@@ -46,7 +46,7 @@ public class EmbeddedMappingComposite extends AbstractFormPane<EmbeddedMapping>
 	 */
 	public EmbeddedMappingComposite(PropertyValueModel<? extends EmbeddedMapping> subjectHolder,
 	                                Composite parent,
-	                                TabbedPropertySheetWidgetFactory widgetFactory) {
+	                                WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}

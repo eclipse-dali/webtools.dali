@@ -14,10 +14,10 @@ import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.MappedSuperclassComposite;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.ui.java.details.TypeMappingUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class MappedSuperclassUiProvider implements TypeMappingUiProvider<MappedSuperclass>
 {
@@ -49,7 +49,7 @@ public class MappedSuperclassUiProvider implements TypeMappingUiProvider<MappedS
 	public JpaComposite<MappedSuperclass> buildPersistentTypeMappingComposite(
 			PropertyValueModel<MappedSuperclass> subjectHolder,
 			Composite parent,
-			TabbedPropertySheetWidgetFactory widgetFactory) {
+			WidgetFactory widgetFactory) {
 
 		return new MappedSuperclassComposite(subjectHolder, parent, widgetFactory);
 	}

@@ -13,10 +13,10 @@ import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * Here the layout of this pane:
@@ -78,7 +78,7 @@ public class OneToOneMappingComposite extends AbstractFormPane<OneToOneMapping>
 	 */
 	public OneToOneMappingComposite(PropertyValueModel<? extends OneToOneMapping> subjectHolder,
 	                                Composite parent,
-	                                TabbedPropertySheetWidgetFactory widgetFactory) {
+	                                WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}

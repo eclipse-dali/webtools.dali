@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -11,13 +11,13 @@ package org.eclipse.jpt.ui.java.details;
 
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
- * 
- * 
+ *
+ *
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,17 +26,6 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  */
 public interface TypeMappingUiProvider<T extends TypeMapping>
 {
-	/**
-	 * A unique string that corresponds to the key of a MappingProvider in the core
-	 */
-	String mappingKey();
-
-	/**
-	 * A label to be displayed to the label as an option in the mapping type combo box
-	 * @return
-	 */
-	String label();
-
 	/**
 	 * The IJpaComposite that correponds to this mapping type.  This will be displayed
 	 * by the PersistentTypeDetailsPage when the mapping key matches the key given
@@ -47,8 +36,18 @@ public interface TypeMappingUiProvider<T extends TypeMapping>
 	 * @return
 	 */
 	JpaComposite<T> buildPersistentTypeMappingComposite(
-			PropertyValueModel<T> subjectHolder,
-			Composite parent,
-			TabbedPropertySheetWidgetFactory widgetFactory);
+		PropertyValueModel<T> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory);
 
+	/**
+	 * A label to be displayed to the label as an option in the mapping type combo box
+	 * @return
+	 */
+	String label();
+
+	/**
+	 * A unique string that corresponds to the key of a MappingProvider in the core
+	 */
+	String mappingKey();
 }

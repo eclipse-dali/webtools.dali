@@ -14,10 +14,10 @@ import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.ui.java.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class VersionMappingUiProvider
 	implements AttributeMappingUiProvider<VersionMapping>
@@ -52,7 +52,7 @@ public class VersionMappingUiProvider
 			JpaUiFactory factory,
 			PropertyValueModel<VersionMapping> subjectHolder,
 			Composite parent,
-			TabbedPropertySheetWidgetFactory widgetFactory) {
+			WidgetFactory widgetFactory) {
 
 		return factory.createVersionMappingComposite(subjectHolder, parent, widgetFactory);
 	}

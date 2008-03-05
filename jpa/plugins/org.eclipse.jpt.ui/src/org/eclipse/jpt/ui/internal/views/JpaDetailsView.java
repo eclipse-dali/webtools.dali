@@ -96,8 +96,8 @@ public class JpaDetailsView extends AbstractJpaView
 
 	private JpaDetailsPage<? extends JpaStructureNode> getDetailsPage(JpaStructureNode structureNode) {
 		if (detailsPages.containsKey(structureNode.getId())) {
-			JpaDetailsPage page =  detailsPages.get(structureNode.getId());
-			
+			JpaDetailsPage<? extends JpaStructureNode> page =  detailsPages.get(structureNode.getId());
+
 			if ((page != null) &&
 					(page.getControl().isDisposed())) {
 				detailsPages.remove(structureNode.getId());
@@ -166,6 +166,7 @@ public class JpaDetailsView extends AbstractJpaView
 	 *
 	 * @param newPage The new page to display
 	 */
+	@SuppressWarnings("unchecked")
 	private void setCurrentPage(JpaDetailsPage<? extends JpaStructureNode> page) {
 
 		// Unpopulate old page

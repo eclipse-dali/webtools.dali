@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -13,10 +13,10 @@ import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * Here the layout of this pane:
@@ -60,7 +60,7 @@ public class IdMappingComposite extends AbstractFormPane<IdMapping>
 	 */
 	public IdMappingComposite(PropertyValueModel<? extends IdMapping> subjectHolder,
 	                          Composite parent,
-	                          TabbedPropertySheetWidgetFactory widgetFactory) {
+	                          WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}

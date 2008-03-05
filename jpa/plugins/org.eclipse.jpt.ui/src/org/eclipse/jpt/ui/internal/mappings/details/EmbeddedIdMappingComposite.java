@@ -12,9 +12,9 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * This pane does not have any widgets.
@@ -37,7 +37,7 @@ public class EmbeddedIdMappingComposite extends AbstractFormPane<EmbeddedIdMappi
 	 */
 	public EmbeddedIdMappingComposite(PropertyValueModel<? extends EmbeddedIdMapping> subjectHolder,
 	                                  Composite parent,
-	                                  TabbedPropertySheetWidgetFactory widgetFactory) {
+	                                  WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}

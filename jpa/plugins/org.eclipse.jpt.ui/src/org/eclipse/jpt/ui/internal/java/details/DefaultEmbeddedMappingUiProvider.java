@@ -14,11 +14,11 @@ import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.ui.java.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class DefaultEmbeddedMappingUiProvider
 	implements AttributeMappingUiProvider<EmbeddedMapping>
@@ -55,7 +55,7 @@ public class DefaultEmbeddedMappingUiProvider
 			JpaUiFactory factory,
 			PropertyValueModel<EmbeddedMapping> subjectHolder,
 			Composite parent,
-			TabbedPropertySheetWidgetFactory widgetFactory) {
+			WidgetFactory widgetFactory) {
 
 		return factory.createEmbeddedMappingComposite(subjectHolder, parent, widgetFactory);
 	}

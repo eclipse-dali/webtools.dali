@@ -168,7 +168,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 			jpaUiFactory(),
 			buildMappingHolder(key),
 			pageBook,
-			getFormWidgetFactory()
+			getWidgetFactory()
 		);
 	}
 

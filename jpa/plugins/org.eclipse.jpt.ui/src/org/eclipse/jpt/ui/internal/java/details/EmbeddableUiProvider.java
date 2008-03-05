@@ -14,10 +14,10 @@ import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.EmbeddableComposite;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.ui.java.details.TypeMappingUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 public class EmbeddableUiProvider implements TypeMappingUiProvider<Embeddable>
 {
@@ -49,7 +49,7 @@ public class EmbeddableUiProvider implements TypeMappingUiProvider<Embeddable>
 	public JpaComposite<Embeddable> buildPersistentTypeMappingComposite(
 			PropertyValueModel<Embeddable> subjectHolder,
 			Composite parent,
-			TabbedPropertySheetWidgetFactory widgetFactory) {
+			WidgetFactory widgetFactory) {
 
 		return new EmbeddableComposite(subjectHolder, parent, widgetFactory);
 	}

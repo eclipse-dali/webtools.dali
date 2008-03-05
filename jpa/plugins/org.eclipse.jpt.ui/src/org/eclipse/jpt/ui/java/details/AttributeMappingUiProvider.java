@@ -12,13 +12,13 @@ package org.eclipse.jpt.ui.java.details;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
- * 
- * 
+ *
+ *
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -47,7 +47,7 @@ public interface AttributeMappingUiProvider<T extends AttributeMapping>
 			JpaUiFactory factory,
 			PropertyValueModel<T> subjectHolder,
 			Composite parent,
-			TabbedPropertySheetWidgetFactory widgetFactory);
+			WidgetFactory widgetFactory);
 
 	/**
 	 * A label to be displayed to the label as an option in the mapping type combo box
