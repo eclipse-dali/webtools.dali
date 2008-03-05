@@ -208,7 +208,7 @@ public class GenericPersistence extends AbstractPersistenceJpaContextNode
 		if (xmlPersistence.getPersistenceUnits().size() > 1) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+						IMessage.NORMAL_SEVERITY,
 						JpaValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS,
 						this, 
 						this.validationTextRange())
