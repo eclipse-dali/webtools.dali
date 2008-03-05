@@ -54,6 +54,12 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode imple
 		this.queryResource.setName(newName);
 		firePropertyChanged(Query.NAME_PROPERTY, oldName, newName);
 	}
+	
+	protected void setName_(String newName) {
+		String oldName = this.name;
+		this.name = newName;
+		firePropertyChanged(Query.NAME_PROPERTY, oldName, newName);
+	}
 
 	public String getQuery() {
 		return this.query;
@@ -63,6 +69,12 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode imple
 		String oldQuery = this.query;
 		this.query = newQuery;
 		this.queryResource.setQuery(newQuery);
+		firePropertyChanged(Query.QUERY_PROPERTY, oldQuery, newQuery);
+	}
+	
+	protected void setQuery_(String newQuery) {
+		String oldQuery = this.query;
+		this.query = newQuery;
 		firePropertyChanged(Query.QUERY_PROPERTY, oldQuery, newQuery);
 	}
 
@@ -115,8 +127,8 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode imple
 
 	protected void update(QueryAnnotation queryResource) {
 		this.queryResource = queryResource;
-		this.setName(queryResource.getName());
-		this.setQuery(queryResource.getQuery());
+		this.setName_(queryResource.getName());
+		this.setQuery_(queryResource.getQuery());
 		this.updateQueryHints(queryResource);
 	}
 
