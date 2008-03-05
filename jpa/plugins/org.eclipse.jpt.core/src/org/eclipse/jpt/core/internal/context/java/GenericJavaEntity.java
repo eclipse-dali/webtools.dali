@@ -972,7 +972,8 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	public JavaNamedQuery addNamedQuery(int index) {
 		JavaNamedQuery namedQuery = jpaFactory().buildJavaNamedQuery(this);
 		this.namedQueries.add(index, namedQuery);
-		this.persistentTypeResource.addAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueries.ANNOTATION_NAME);
+		NamedQueryAnnotation namedQueryAnnotation = (NamedQueryAnnotation) this.persistentTypeResource.addAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueries.ANNOTATION_NAME);
+		namedQuery.initializeFromResource(namedQueryAnnotation);
 		fireItemAdded(Entity.NAMED_QUERIES_LIST, index, namedQuery);
 		return namedQuery;
 	}
@@ -1012,7 +1013,8 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	public JavaNamedNativeQuery addNamedNativeQuery(int index) {
 		JavaNamedNativeQuery namedNativeQuery = jpaFactory().buildJavaNamedNativeQuery(this);
 		this.namedNativeQueries.add(index, namedNativeQuery);
-		this.persistentTypeResource.addAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueries.ANNOTATION_NAME);
+		NamedNativeQueryAnnotation namedNativeQueryAnnotation = (NamedNativeQueryAnnotation) this.persistentTypeResource.addAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueries.ANNOTATION_NAME);
+		namedNativeQuery.initializeFromResource(namedNativeQueryAnnotation);		
 		fireItemAdded(Entity.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
 		return namedNativeQuery;
 	}
