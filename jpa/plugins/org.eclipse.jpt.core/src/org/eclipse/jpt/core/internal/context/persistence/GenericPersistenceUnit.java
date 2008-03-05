@@ -487,6 +487,17 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		return null;
 	}
 
+	public ListIterator<Property> propertiesWithPrefix(String keyPrefix) {
+		List<Property> properties = new ArrayList<Property>();
+		
+		for(Property property : this.properties) {
+			if(property.getName().startsWith(keyPrefix)) {
+				properties.add( property);
+			}
+		}
+		return properties.listIterator();
+	}
+	
 	public Property getProperty(String key, String value) {
 		for(Property property : this.properties) {
 			if(property.getName().equals(key) && property.getValue().equals(value)) {

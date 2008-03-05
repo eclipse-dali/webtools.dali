@@ -406,6 +406,8 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	Property getProperty(String key);
 	
 	Property getProperty(String key, String value);
+
+	ListIterator<Property> propertiesWithPrefix(String keyPrefix);
 	
 	void putProperty(String key, String value, boolean allowDuplicates);
 	
