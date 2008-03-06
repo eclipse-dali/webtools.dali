@@ -12,15 +12,23 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import java.util.Collection;
 import org.eclipse.jpt.core.context.GeneratedValue;
 import org.eclipse.jpt.core.context.GenerationType;
+import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.listener.ListChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.custom.CCombo;
@@ -53,6 +61,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 	private PropertyChangeListener generatedValuePropertyChangeListener;
 	private CCombo generatorNameCombo;
 	private PropertyChangeListener generatorNamePropertyChangeListener;
+	private ListChangeListener generatorsListChangeListener;
 
 	/**
 	 * Creates a new <code>GeneratedValueComposite</code>.
@@ -131,12 +140,36 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 					setPopulating(true);
 
 					try {
-						populateGeneratorNameCombo();
+						populateGeneratorName();
 					}
 					finally {
 						setPopulating(false);
 					}
 				}
+			}
+		};
+	}
+	
+	private ListChangeListener buildGeneratorsListChangeListener() {
+		return new SWTListChangeListenerWrapper(
+			buildGeneratorsListChangeListener_());
+	}
+	
+	private ListChangeListener buildGeneratorsListChangeListener_() {
+		return new ListChangeAdapter() {
+			// should only have to listen to this event - others aren't created
+			public void listChanged(ListChangeEvent event) {
+				if (! isPopulating()) {
+					setPopulating(true);
+					
+					try {
+						populateGeneratorChoices();
+					}
+					finally {
+						setPopulating(false);
+					}
+				}
+				
 			}
 		};
 	}
@@ -205,6 +238,11 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 				GeneratedValue.SPECIFIED_GENERATOR_PROPERTY,
 				generatorNamePropertyChangeListener
 			);
+			
+			generatedValue.persistenceUnit().removeListChangeListener(
+				PersistenceUnit.GENERATORS_LIST,
+				generatorsListChangeListener
+			);
 		}
 	}
 
@@ -245,6 +283,11 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 				GeneratedValue.SPECIFIED_GENERATOR_PROPERTY,
 				generatorNamePropertyChangeListener
 			);
+			
+			generatedValue.persistenceUnit().addListChangeListener(
+				PersistenceUnit.GENERATORS_LIST,
+				generatorsListChangeListener
+			);
 		}
 	}
 
@@ -272,6 +315,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 
 		generatedValuePropertyChangeListener = buildGeneratedValuePropertyChangeListener();
 		generatorNamePropertyChangeListener  = buildGeneratorNamePropertyChangeListener();
+		generatorsListChangeListener = buildGeneratorsListChangeListener();
 	}
 
 	/*
@@ -321,15 +365,31 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 			}
 		}
 	}
+	
+	private void populateGeneratorChoices() {
+		if (subject() == null) {
+			this.generatorNameCombo.setItems(new String[0]);
+		}
+		else {
+			this.generatorNameCombo.setItems(this.sortedUniqueGeneratorNames());
+		}
+	}
+	
+	private String[] sortedUniqueGeneratorNames() {
+		return CollectionTools.array(
+			CollectionTools.sortedSet(
+				new TransformationIterator<Generator, String>(subject().persistenceUnit().allGenerators()) {
+					@Override
+					protected String transform(Generator next) {
+						return next.getName();
+					}
+				}),
+			new String[0]);
+	}
 
 	private void populateGeneratorNameCombo() {
-		this.generatorNameCombo.removeAll();
-		//TODO
-//		for (Iterator<String> i = getGeneratorRepository().generatorNames(); i.hasNext(); ){
-//			this.generatorNameCombo.add(i.next());
-//		}
-
 		populateGeneratorName();
+		populateGeneratorChoices();
 	}
 
 	private GeneratedValue retrieveGeneratedValue() {
