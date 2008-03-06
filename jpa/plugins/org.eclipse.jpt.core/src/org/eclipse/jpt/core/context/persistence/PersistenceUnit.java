@@ -373,7 +373,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	/** 
 	 * Return the default "exclude unlisted classes" setting
 	 */
-	Boolean getDefaultExcludeUnlistedClasses();
+	boolean getDefaultExcludeUnlistedClasses();
 	
 	
 	// **************** properties *********************************************

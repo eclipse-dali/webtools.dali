@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -91,7 +90,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	protected Boolean specifiedExcludeUnlistedClasses;
 	
-	protected Boolean defaultExcludeUnlistedClasses = Boolean.FALSE;
+	protected boolean defaultExcludeUnlistedClasses = false;
 	
 	protected final List<Property> properties;
 	
@@ -451,7 +450,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	// **************** exclude unlisted classes *******************************
 	
 	public boolean isExcludeUnlistedClasses() {
-		return getSpecifiedExcludeUnlistedClasses() == null ? getDefaultExcludeUnlistedClasses().booleanValue() : getSpecifiedExcludeUnlistedClasses().booleanValue();
+		return getSpecifiedExcludeUnlistedClasses() == null ? getDefaultExcludeUnlistedClasses() : getSpecifiedExcludeUnlistedClasses().booleanValue();
 	}
 	
 	public Boolean getSpecifiedExcludeUnlistedClasses() {
@@ -467,7 +466,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		firePropertyChanged(SPECIFIED_EXCLUDE_UNLISTED_CLASSED_PROPERTY, oldExcludeUnlistedClasses, newExcludeUnlistedClasses);
 	}
 
-	public Boolean getDefaultExcludeUnlistedClasses() {
+	public boolean getDefaultExcludeUnlistedClasses() {
 		// TODO - calculate default
 		//  This is determined from the project
 		return this.defaultExcludeUnlistedClasses;
@@ -558,7 +557,6 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 			this.removeProperty(key);
 			return;
 		}
-		EList<XmlProperty> xmlProperties = this.xmlPersistenceUnit.getProperties().getProperties();
 
 		XmlProperty xmlProperty = this.getXmlProperty(key, oldValue);
 		if(xmlProperty == null) {
