@@ -39,6 +39,7 @@ import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class OrmIdMappingTests extends ContextModelTestCase
@@ -315,15 +316,17 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		
 		assertNull(ormIdMapping.getSequenceGenerator());
 		assertNull(idResource.getSequenceGenerator());
+		assertEquals(0, CollectionTools.size(ormIdMapping.persistenceUnit().allGenerators()));
 		
 		idResource.setSequenceGenerator(OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl());
-				
 		assertNotNull(ormIdMapping.getSequenceGenerator());
 		assertNotNull(idResource.getSequenceGenerator());
+		assertEquals(1, CollectionTools.size(ormIdMapping.persistenceUnit().allGenerators()));
 				
 		idResource.setSequenceGenerator(null);
 		assertNull(ormIdMapping.getSequenceGenerator());
 		assertNull(idResource.getSequenceGenerator());
+		assertEquals(0, CollectionTools.size(ormIdMapping.persistenceUnit().allGenerators()));
 	}
 	
 	public void testAddTableGenerator() throws Exception {
@@ -384,15 +387,17 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		
 		assertNull(ormIdMapping.getTableGenerator());
 		assertNull(idResource.getTableGenerator());
+		assertEquals(0, CollectionTools.size(ormIdMapping.persistenceUnit().allGenerators()));
 		
-		idResource.setTableGenerator(OrmFactory.eINSTANCE.createXmlTableGeneratorImpl());
-				
+		idResource.setTableGenerator(OrmFactory.eINSTANCE.createXmlTableGeneratorImpl());		
 		assertNotNull(ormIdMapping.getTableGenerator());
 		assertNotNull(idResource.getTableGenerator());
-				
+		assertEquals(1, CollectionTools.size(ormIdMapping.persistenceUnit().allGenerators()));
+		
 		idResource.setTableGenerator(null);
 		assertNull(ormIdMapping.getTableGenerator());
 		assertNull(idResource.getTableGenerator());
+		assertEquals(0, CollectionTools.size(ormIdMapping.persistenceUnit().allGenerators()));
 	}
 
 	public void testAddGeneratedValue() throws Exception {
