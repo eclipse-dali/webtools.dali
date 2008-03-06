@@ -12,7 +12,9 @@ package org.eclipse.jpt.core.context.persistence;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 
 /**
@@ -444,6 +446,53 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	
 	boolean getDefaultCascadePersist();
 		String DEFAULT_CASCADE_PERSIST_PROPERTY = "defaultCascadePersist";
+	
+	
+	// **************** global generator and query support *********************
+	
+	/**
+	 * Identifier for changes to the list of global generators.
+	 * Note that there are no granular changes to this list.  There is only
+	 * notification that the entire list has changed.
+	 */
+	String GENERATORS_LIST = "generators";
+	
+	/**
+	 * Add the generator (defined elsewhere) to the list of generators defined
+	 * within this persistence unit.
+	 * Note that this should only be called during the process of updating the
+	 * local generator definition.
+	 * No change notification accompanies this action specifically.
+	 */
+	void addGenerator(Generator generator);
+	
+	/**
+	 * Return an iterator on all generators defined within this persistence unit,
+	 * included duplicately named generators.
+	 */
+	ListIterator<Generator> allGenerators();
+	
+	/**
+	 * Identifier for changes to the list of global queries.
+	 * Note that there are no granular changes to this list.  There is only
+	 * notification that the entire list has changed.
+	 */
+	String QUERIES_LIST = "queries";
+	
+	/**
+	 * Add the query (defined elsewhere) to the list of queries defined 
+	 * within this persistence unit.
+	 * Note that this should only be called during the process of updating the
+	 * local query definition.
+	 * No change notification accompanies this action specifically.
+	 */
+	void addQuery(Query query);
+	
+	/**
+	 * Return an iterator on all queries defined within this persistence unit,
+	 * included duplicately named queries.
+	 */
+	ListIterator<Query> allQueries();
 	
 	
 	// **************** updating ***********************************************

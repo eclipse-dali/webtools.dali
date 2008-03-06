@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
@@ -1069,6 +1070,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		this.initializeNamedQueries(entity);
 		this.initializeNamedNativeQueries(entity);
 		this.initializeIdClass(this.idClassResource());
+		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
 	
 	protected void initializeInheritance(Inheritance inheritanceResource) {
@@ -1184,6 +1186,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		this.updateNamedQueries(entity);
 		this.updateNamedNativeQueries(entity);
 		this.updateIdClass(this.idClassResource());
+		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
 
 	protected String defaultName() {
@@ -1445,22 +1448,43 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	protected void updateIdClass(IdClass idClassResource) {
 		this.setIdClass_(this.idClass(idClassResource));
 	}
-
+	
+	protected void updatePersistenceUnitGeneratorsAndQueries() {
+		if (getTableGenerator() != null) {
+			persistenceUnit().addGenerator(getTableGenerator());
+		}
+		
+		if (getSequenceGenerator() != null) {
+			persistenceUnit().addGenerator(getSequenceGenerator());
+		}
+		
+		for (Query query : CollectionTools.iterable(namedQueries())) {
+			persistenceUnit().addQuery(query);
+		}
+		
+		for (Query query : CollectionTools.iterable(namedNativeQueries())) {
+			persistenceUnit().addQuery(query);
+		}
+	}
+	
+	
+	// *************************************************************************
+	
 	public String primaryKeyColumnName() {
 		return GenericJavaEntity.primaryKeyColumnName(persistentType().allAttributes());
 	}
-
-		
+	
 	public ColumnMapping columnMapping(String attributeName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	public boolean isVirtual(BaseOverride override) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
+	
 	//**********  Validation **************************
 	
 	@Override

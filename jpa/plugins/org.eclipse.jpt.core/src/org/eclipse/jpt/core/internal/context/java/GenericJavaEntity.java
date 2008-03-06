@@ -31,6 +31,7 @@ import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
@@ -205,6 +206,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		this.initializeNamedQueries(persistentTypeResource);
 		this.initializeNamedNativeQueries(persistentTypeResource);
 		this.initializeIdClass(persistentTypeResource);
+		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
 	
 	protected void initializeSecondaryTables(JavaResourcePersistentType persistentTypeResource) {
@@ -1253,6 +1255,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		this.updateNamedQueries(persistentTypeResource);
 		this.updateNamedNativeQueries(persistentTypeResource);
 		this.updateIdClass(persistentTypeResource);
+		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
 		
 	protected String specifiedName(EntityAnnotation entityResource) {
@@ -1290,6 +1293,30 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	protected void updateDiscriminatorValue(DiscriminatorValue discriminatorValueResource) {
 		this.setSpecifiedDiscriminatorValue_(discriminatorValueResource.getValue());
 		this.setDefaultDiscriminatorValue(this.javaDefaultDiscriminatorValue());
+	}
+	
+	/**
+	 * From the Spec:
+	 * If the DiscriminatorValue annotation is not specified, a
+	 * provider-specific function to generate a value representing
+	 * the entity type is used for the value of the discriminator
+	 * column. If the DiscriminatorType is STRING, the discriminator
+	 * value default is the entity name.
+	 * 
+	 * TODO extension point for provider-specific function?
+	 */
+	protected String javaDefaultDiscriminatorValue() {
+		if (this.persistentTypeResource.isAbstract()) {
+			return null;
+		}
+		if (this.discriminatorType() != DiscriminatorType.STRING) {
+			return null;
+		}
+		return this.getName();
+	}
+
+	protected DiscriminatorType discriminatorType() {
+		return this.getDiscriminatorColumn().getDiscriminatorType();
 	}
 	
 	protected boolean discriminatorValueIsAllowed(JavaResourcePersistentType persistentTypeResource) {
@@ -1529,7 +1556,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		
 		while (resourceNamedQueries.hasNext()) {
 			addNamedQuery(namedQueriesSize(), createNamedQuery((NamedQueryAnnotation) resourceNamedQueries.next()));
-		}	
+		}
 	}
 	
 	protected void updateNamedNativeQueries(JavaResourcePersistentType persistentTypeResource) {
@@ -1573,29 +1600,23 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			setIdClass_(null);
 		}
 	}
-
-	/**
-	 * From the Spec:
-	 * If the DiscriminatorValue annotation is not specified, a
-	 * provider-specific function to generate a value representing
-	 * the entity type is used for the value of the discriminator
-	 * column. If the DiscriminatorType is STRING, the discriminator
-	 * value default is the entity name.
-	 * 
-	 * TODO extension point for provider-specific function?
-	 */
-	protected String javaDefaultDiscriminatorValue() {
-		if (this.persistentTypeResource.isAbstract()) {
-			return null;
+	
+	protected void updatePersistenceUnitGeneratorsAndQueries() {
+		if (getTableGenerator() != null) {
+			persistenceUnit().addGenerator(getTableGenerator());
 		}
-		if (this.discriminatorType() != DiscriminatorType.STRING) {
-			return null;
+		
+		if (getSequenceGenerator() != null) {
+			persistenceUnit().addGenerator(getSequenceGenerator());
 		}
-		return this.getName();
-	}
-
-	protected DiscriminatorType discriminatorType() {
-		return this.getDiscriminatorColumn().getDiscriminatorType();
+		
+		for (Query query : CollectionTools.iterable(namedQueries())) {
+			persistenceUnit().addQuery(query);
+		}
+		
+		for (Query query : CollectionTools.iterable(namedNativeQueries())) {
+			persistenceUnit().addQuery(query);
+		}
 	}
 
 

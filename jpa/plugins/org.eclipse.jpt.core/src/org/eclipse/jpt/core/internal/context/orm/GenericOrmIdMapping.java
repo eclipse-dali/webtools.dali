@@ -234,6 +234,11 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		this.initializeSequenceGenerator(id);
 		this.initializeTableGenerator(id);
 		this.initializeGeneratedValue(id);
+		this.updatePersistenceUnitGenerators();
+	}
+	
+	protected TemporalType specifiedTemporal(XmlId id) {
+		return TemporalType.fromOrmResourceModel(id.getTemporal());
 	}
 	
 	protected void initializeSequenceGenerator(XmlId id) {
@@ -279,6 +284,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		this.updateSequenceGenerator(id);
 		this.updateTableGenerator(id);
 		this.updateGeneratedValue(id);
+		this.updatePersistenceUnitGenerators();
 	}
 	
 	protected void updateSequenceGenerator(XmlId id) {
@@ -330,9 +336,14 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		}
 	}
 	
-
-	protected TemporalType specifiedTemporal(XmlId id) {
-		return TemporalType.fromOrmResourceModel(id.getTemporal());
+	protected void updatePersistenceUnitGenerators() {
+		if (getTableGenerator() != null) {
+			persistenceUnit().addGenerator(getTableGenerator());
+		}
+		
+		if (getSequenceGenerator() != null) {
+			persistenceUnit().addGenerator(getSequenceGenerator());
+		}
 	}
 
 	//***************** IXmlColumn.Owner implementation ****************

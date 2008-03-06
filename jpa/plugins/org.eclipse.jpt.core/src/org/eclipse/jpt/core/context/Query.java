@@ -22,21 +22,28 @@ import java.util.ListIterator;
  */
 public interface Query extends JpaContextNode
 {
-
-	//************************ name ***********************
-
+	// **************** name ***************************************************
+	
+	String NAME_PROPERTY = "nameProperty";
+	
 	String getName();
+	
 	void setName(String value);
-		String NAME_PROPERTY = "nameProperty";
-
+	
+	
 	//************************ query ***********************
-
+	
+	String QUERY_PROPERTY = "queryProperty";
+	
 	String getQuery();
+	
 	void setQuery(String value);
-		String QUERY_PROPERTY = "queryProperty";
-
-
+	
+	
 	//************************ hints ***********************
+	
+	String HINTS_LIST = "hintsList";
+	
 	/**
 	 * Return a list iterator of the hints.  This will not be null.
 	 */
@@ -66,6 +73,4 @@ public interface Query extends JpaContextNode
 	 * Move the hint from the source index to the target index.
 	 */
 	void moveHint(int targetIndex, int sourceIndex);
-		String HINTS_LIST = "hintsList";
-
 }

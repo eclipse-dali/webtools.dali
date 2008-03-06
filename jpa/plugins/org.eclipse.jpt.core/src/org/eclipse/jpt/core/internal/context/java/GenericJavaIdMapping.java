@@ -65,6 +65,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping implement
 		this.initializeTableGenerator(persistentAttributeResource);
 		this.initializeSequenceGenerator(persistentAttributeResource);
 		this.initializeGeneratedValue(persistentAttributeResource);
+		this.updatePersistenceUnitGenerators();
 	}
 	
 	protected void initializeTableGenerator(JavaResourcePersistentAttribute persistentAttributeResource) {
@@ -258,6 +259,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping implement
 		this.updateTableGenerator(persistentAttributeResource);
 		this.updateSequenceGenerator(persistentAttributeResource);
 		this.updateGeneratedValue(persistentAttributeResource);
+		this.updatePersistenceUnitGenerators();
 	}
 	
 	protected TemporalType temporal(Temporal temporal) {
@@ -344,7 +346,19 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping implement
 //			((JavaGeneratedValue) getGeneratedValue()).updateFromJava(astRoot);
 //		}
 //	}
-
+	
+	protected void updatePersistenceUnitGenerators() {
+		if (getTableGenerator() != null) {
+			persistenceUnit().addGenerator(getTableGenerator());
+		}
+		
+		if (getSequenceGenerator() != null) {
+			persistenceUnit().addGenerator(getSequenceGenerator());
+		}
+	}
+	
+	
+	// *************************************************************************
 
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {

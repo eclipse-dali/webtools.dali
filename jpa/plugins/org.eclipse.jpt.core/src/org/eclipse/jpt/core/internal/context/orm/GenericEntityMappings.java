@@ -17,6 +17,8 @@ import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.Generator;
+import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
@@ -287,6 +289,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		fireItemMoved(PERSISTENT_TYPES_LIST, targetIndex, sourceIndex);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public ListIterator<OrmSequenceGenerator> sequenceGenerators() {
 		return new CloneListIterator<OrmSequenceGenerator>(this.sequenceGenerators);
 	}
@@ -328,7 +331,8 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		this.xmlEntityMappings.getSequenceGenerators().move(targetIndex, sourceIndex);
 		fireItemMoved(EntityMappings.SEQUENCE_GENERATORS_LIST, targetIndex, sourceIndex);	
 	}
-
+	
+	@SuppressWarnings("unchecked")
 	public ListIterator<OrmTableGenerator> tableGenerators() {
 		return new CloneListIterator<OrmTableGenerator>(this.tableGenerators);
 	}
@@ -481,6 +485,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		this.initializeSequenceGenerators(entityMappings);
 		this.initializeNamedQueries(entityMappings);
 		this.initializeNamedNativeQueries(entityMappings);
+		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
 	
 	protected void initializePersistentTypes(XmlEntityMappings entityMappings) {
@@ -553,6 +558,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		this.updateSequenceGenerators(entityMappings);
 		this.updateNamedQueries(entityMappings);
 		this.updateNamedNativeQueries(entityMappings);
+		this.updatePersistenceUnitGeneratorsAndQueries();
 	}
 	
 	protected AccessType specifiedAccess(XmlEntityMappings entityMappings) {
@@ -618,7 +624,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 				tableGenerator.update(resourceTableGenerators.next());
 			}
 			else {
-				removeTableGenerator(tableGenerator);
+				removeTableGenerator_(tableGenerator);
 			}
 		}
 		
@@ -642,7 +648,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 				sequenceGenerator.update(resourceSequenceGenerators.next());
 			}
 			else {
-				removeSequenceGenerator(sequenceGenerator);
+				removeSequenceGenerator_(sequenceGenerator);
 			}
 		}
 		
@@ -667,7 +673,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 				namedQuery.update(resourceNamedQueries.next());
 			}
 			else {
-				removeNamedQuery(namedQuery);
+				removeNamedQuery_(namedQuery);
 			}
 		}
 		
@@ -692,7 +698,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 				namedQuery.update(resourceNamedNativeQueries.next());
 			}
 			else {
-				removeNamedNativeQuery(namedQuery);
+				removeNamedNativeQuery_(namedQuery);
 			}
 		}
 		
@@ -705,6 +711,24 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		OrmNamedNativeQuery ormNamedNativeQuery =jpaFactory().buildOrmNamedNativeQuery(this);
 		ormNamedNativeQuery.initialize(namedQuery);
 		return ormNamedNativeQuery;
+	}
+	
+	protected void updatePersistenceUnitGeneratorsAndQueries() {
+		for (Generator generator : CollectionTools.iterable(tableGenerators())) {
+			persistenceUnit().addGenerator(generator);
+		}
+		
+		for (Generator generator : CollectionTools.iterable(sequenceGenerators())) {
+			persistenceUnit().addGenerator(generator);
+		}
+		
+		for (Query query : CollectionTools.iterable(namedQueries())) {
+			persistenceUnit().addQuery(query);
+		}
+		
+		for (Query query : CollectionTools.iterable(namedNativeQueries())) {
+			persistenceUnit().addQuery(query);
+		}
 	}
 
 	

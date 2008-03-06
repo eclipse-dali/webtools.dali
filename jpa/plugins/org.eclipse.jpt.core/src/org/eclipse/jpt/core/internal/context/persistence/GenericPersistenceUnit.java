@@ -16,13 +16,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
@@ -58,6 +61,12 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 {
 	protected XmlPersistenceUnit xmlPersistenceUnit;
 	
+	/* global generator definitions, defined elsewhere in model */
+	protected final GenericGeneratorRepository generatorRepository;
+	
+	/* global query definitions, defined elsewhere in model */
+	protected final GenericQueryRepository queryRepository;
+	
 	protected String name;
 	
 	protected PersistenceUnitTransactionType transactionType;
@@ -86,6 +95,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	protected final List<Property> properties;
 	
+	
 	protected String defaultSchema;
 	protected String defaultCatalog;
 	protected AccessType defaultAccess;
@@ -93,12 +103,21 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	public GenericPersistenceUnit(Persistence parent, XmlPersistenceUnit persistenceUnit) {
 		super(parent);
+		this.generatorRepository = new GenericGeneratorRepository(this);
+		this.queryRepository = new GenericQueryRepository(this);
 		this.transactionType = PersistenceUnitTransactionType.DEFAULT;
 		this.specifiedMappingFileRefs = new ArrayList<MappingFileRef>();
 		this.specifiedClassRefs = new ArrayList<ClassRef>();
 		this.impliedClassRefs = new ArrayList<ClassRef>();
 		this.properties = new ArrayList<Property>();
 		this.initialize(persistenceUnit);
+	}
+	
+	@Override
+	protected void addNonUpdateAspectNamesTo(Set<String> nonUpdateAspectNames) {
+		super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
+		nonUpdateAspectNames.add(GENERATORS_LIST);
+		nonUpdateAspectNames.add(QUERIES_LIST);
 	}
 	
 	public String getId() {
@@ -117,7 +136,8 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	public Persistence parent() {
 		return (Persistence) super.parent();
 	}
-
+	
+	
 	// **************** name ***************************************************
 	
 	public String getName() {
@@ -686,6 +706,25 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	
+	// **************** global generator and query support *********************
+	
+	public void addGenerator(Generator generator) {
+		this.generatorRepository.add(generator);
+	}
+	
+	public ListIterator<Generator> allGenerators() {
+		return this.generatorRepository.allGenerators();
+	}
+	
+	public void addQuery(Query query) {
+		this.queryRepository.add(query);
+	}
+	
+	public ListIterator<Query> allQueries() {
+		return this.queryRepository.allQueries();
+	}
+	
+
 	// **************** updating ***********************************************
 	
 	protected void initialize(XmlPersistenceUnit xmlPersistenceUnit) {
@@ -747,6 +786,8 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 
 	public void update(XmlPersistenceUnit persistenceUnit) {
 		this.xmlPersistenceUnit = persistenceUnit;
+		this.generatorRepository.clear();
+		this.queryRepository.clear();
 		updateName(persistenceUnit);
 		updateTransactionType(persistenceUnit);
 		updateDescription(persistenceUnit);
@@ -758,6 +799,8 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		updateExcludeUnlistedClasses(persistenceUnit);
 		updateProperties(persistenceUnit);
 		updatePersistenceUnitDefaults();
+		generatorRepositoryUpdated();
+		queryRepositoryUpdated();
 	}
 	
 	protected void updateName(XmlPersistenceUnit persistenceUnit) {
@@ -1014,6 +1057,18 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		return persistenceUnitDefaults == null ? false : persistenceUnitDefaults.isCascadePersist();
 	}
 	
+	// This is called after the persistence unit has been updated to ensure
+	// we catch all added generators
+	protected void generatorRepositoryUpdated() {
+		fireListChanged(GENERATORS_LIST);
+	}
+	
+	// This is called after the persistence unit has been updated to ensure
+	// we catch all added queries
+	protected void queryRepositoryUpdated() {
+		fireListChanged(QUERIES_LIST);
+	}
+	
 	
 	// ********** Validation ***********************************************
 	
@@ -1021,7 +1076,9 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
 		addMappingFileMessages(messages);	
-		addClassMessages(messages);	
+		addClassMessages(messages);
+		addGeneratorMessages(messages);
+		addQueryMessages(messages);
 	}
 	
 	protected void addMappingFileMessages(List<IMessage> messages) {
@@ -1135,7 +1192,14 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 			}
 		}
 	}
+	
+	protected void addGeneratorMessages(List<IMessage> messages) {
 		
+	}
+	
+	protected void addQueryMessages(List<IMessage> messages) {
+		
+	}
 	
 	private Collection<PersistenceUnitDefaults> persistenceUnitDefaultsForValidation() {
 		ArrayList<PersistenceUnitDefaults> puDefaults = new ArrayList<PersistenceUnitDefaults>();
