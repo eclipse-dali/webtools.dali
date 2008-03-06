@@ -15,7 +15,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.core.ContextModel;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
@@ -24,8 +23,8 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
-import org.eclipse.jpt.core.context.BaseJpaContent;
 import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.java.JavaAbstractJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -112,7 +111,7 @@ import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.GenericJpaDataSource;
 import org.eclipse.jpt.core.internal.GenericJpaFile;
 import org.eclipse.jpt.core.internal.GenericJpaProject;
-import org.eclipse.jpt.core.internal.context.GenericJpaContent;
+import org.eclipse.jpt.core.internal.context.GenericRootContextNode;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaAssociationOverride;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaAttributeOverride;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaBasicMapping;
@@ -305,11 +304,11 @@ public class GenericJpaFactory implements JpaFactory
 	
 	// **************** Context objects ***************************************
 	
-	public ContextModel buildContextModel(JpaProject parent) {
-		return new GenericJpaContent(parent);
+	public JpaRootContextNode buildRootContext(JpaProject parent) {
+		return new GenericRootContextNode(parent);
 	}
 	
-	public PersistenceXml buildPersistenceXml(BaseJpaContent parent, PersistenceResource persistenceResource) {
+	public PersistenceXml buildPersistenceXml(JpaRootContextNode parent, PersistenceResource persistenceResource) {
 		return new GenericPersistenceXml(parent, persistenceResource);
 	}
 	

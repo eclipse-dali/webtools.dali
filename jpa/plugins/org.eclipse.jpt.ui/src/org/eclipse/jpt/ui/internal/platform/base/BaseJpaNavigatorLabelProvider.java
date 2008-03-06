@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.platform.base;
 
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.core.ContextModel;
+import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceXml;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
@@ -47,19 +47,19 @@ public class BaseJpaNavigatorLabelProvider extends LabelProvider
 	// **************** ILabelProvider implementation **************************
 	
 	public Image getImage(Object element) {
-		if (element instanceof ContextModel) {
-			return JptUiPlugin.getPlugin().getImage(JptUiIcons.JPA_CONTENT);
+		if (element instanceof JpaRootContextNode) {
+			return JptUiPlugin.getImage(JptUiIcons.JPA_CONTENT);
 		}
 		
 		if (element instanceof GenericPersistenceXml) {
-			return JptUiPlugin.getPlugin().getImage(JptUiIcons.JPA_FILE);
+			return JptUiPlugin.getImage(JptUiIcons.JPA_FILE);
 		}
 		
 		return super.getImage(element);
 	}
 	
 	public String getText(Object element) {		
-		if (element instanceof ContextModel) {
+		if (element instanceof JpaRootContextNode) {
 			return "JPA Content";
 		}
 		

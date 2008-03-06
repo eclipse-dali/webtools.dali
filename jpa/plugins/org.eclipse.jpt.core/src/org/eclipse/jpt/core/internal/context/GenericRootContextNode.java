@@ -10,11 +10,13 @@
 package org.eclipse.jpt.core.internal.context;
 
 import java.util.List;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.context.BaseJpaContent;
+import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -27,20 +29,28 @@ import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericJpaContent extends AbstractJpaContextNode 
-	implements BaseJpaContent
+public class GenericRootContextNode extends AbstractJpaContextNode 
+	implements JpaRootContextNode
 {
+	/* This object has no parent, so it must point to the JPA project */
+	protected JpaProject jpaProject;
+	
+	/* Main context object */
 	protected PersistenceXml persistenceXml;
 	
 	
-	public GenericJpaContent(JpaProject jpaProject) {
-		super(jpaProject);
+	public GenericRootContextNode(JpaProject jpaProject) {
+		super(null);
+		initialize(jpaProject);
 	}
 	
-	@Override
-	protected void initialize(Node parentNode) {
-		super.initialize(parentNode);
-		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForRead(jpaProject().project());
+	
+	protected void initialize(JpaProject jpaProject) {
+		if (jpaProject == null) {
+			throw new IllegalArgumentException("The JPA project must not be null");
+		}
+		this.jpaProject = jpaProject;
+		PersistenceArtifactEdit pae = PersistenceArtifactEdit.getArtifactEditForRead(jpaProject.project());
 		PersistenceResource pr = pae.getResource();
 		
 		if (pr.exists()) {
@@ -51,18 +61,60 @@ public class GenericJpaContent extends AbstractJpaContextNode
 	}
 	
 	@Override
+	protected void checkParent(Node parentNode) {
+		if (parentNode != null) {
+			throw new IllegalArgumentException("The parent node must be null");
+		}
+	}
+	
+	
+	// **************** JpaNode impl *******************************************
+	
+	@Override
+	public JpaProject jpaProject() {
+		return jpaProject;
+	}
+	
+	@Override
+	public IResource resource() {
+		return jpaProject().project();
+	}
+	
+	@Override
+	public JpaContextNode parent() {
+		return null;
+	}
+	
+	@Override
+	public Validator validator() {
+		return NULL_VALIDATOR;
+	}
+	
+	
+	// **************** JpaContextNode impl ************************************
+	
+	@Override
+	public PersistenceUnit persistenceUnit() {
+		// No PersistenceUnit in this context
+		return null;
+	}
+	
+	@Override
 	public EntityMappings entityMappings() {
+		// No EntityMappings in this context
 		return null;
 	}
 	
 	@Override
 	public OrmPersistentType ormPersistentType() {
+		// No OrmPersistentType in this context
 		return null;
 	}
 	
+	
 	// **************** persistence xml ****************************************
 	
-	public PersistenceXml getPersistenceXml() {
+	public PersistenceXml persistenceXml() {
 		return this.persistenceXml;
 	}
 	
@@ -99,7 +151,7 @@ public class GenericJpaContent extends AbstractJpaContextNode
 		}
 		
 		if (! pr.exists()) {
-			this.setPersistenceXml(null);
+			setPersistenceXml(null);
 		}
 	}
 	
@@ -130,15 +182,7 @@ public class GenericJpaContent extends AbstractJpaContextNode
 	}
 	
 	
-	// *************************************************************************
-	
-	@Override
-	public PersistenceUnit persistenceUnit() {
-		throw new UnsupportedOperationException("No PersistenceUnit in this context");
-	}
-
-	
-	//******** Validation *************************************************
+	// **************** Validation *********************************************
 	
 	/* If this is true, it may be assumed that all the requirements are valid 
 	 * for further validation.  For example, if this is true at the point we
@@ -153,7 +197,7 @@ public class GenericJpaContent extends AbstractJpaContextNode
 		addOrphanedJavaClassMessages(messages);
 		
 		if(okToContinueValidation) {
-			getPersistenceXml().addToMessages(messages);
+			persistenceXml().addToMessages(messages);
 		}
 		
 	}

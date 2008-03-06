@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-import org.eclipse.jpt.core.ContextModel;
+import java.util.List;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * 
@@ -21,9 +23,8 @@ import org.eclipse.jpt.core.context.persistence.PersistenceXml;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface BaseJpaContent extends JpaContextNode, ContextModel
+public interface JpaRootContextNode extends JpaContextNode
 {
-	
 	/**
 	 * String constant associated with changes to the persistenceXml property
 	 */
@@ -34,7 +35,7 @@ public interface BaseJpaContent extends JpaContextNode, ContextModel
 	 * this project.
 	 * This may be null. 
 	 */
-	PersistenceXml getPersistenceXml();
+	PersistenceXml persistenceXml();
 	
 	/**
 	 * Add a persistence.xml file to this content and return the content associated
@@ -48,4 +49,21 @@ public interface BaseJpaContent extends JpaContextNode, ContextModel
 	 * Throws {@link IllegalStateException} if a persistence.xml does not exist.
 	 */
 	void removePersistenceXml();
+	
+	
+	// **************** updating ***********************************************
+	
+	/**
+	 * Update the context model with the content of the JPA project
+	 */
+	void update(IProgressMonitor monitor);
+	
+	
+	// **************** validation *********************************************
+	
+	/**
+	 * All subclass implementations {@link #addToMessages(List<IMessage>)} 
+	 * should be preceded by a "super" call to this method
+	 */
+	public void addToMessages(List<IMessage> messages);
 }

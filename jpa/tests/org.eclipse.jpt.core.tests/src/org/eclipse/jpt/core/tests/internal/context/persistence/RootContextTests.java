@@ -10,14 +10,14 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.persistence;
 
-import org.eclipse.jpt.core.context.BaseJpaContent;
+import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
-public class BaseJpaContentTests extends ContextModelTestCase
+public class RootContextTests extends ContextModelTestCase
 {
-	public BaseJpaContentTests(String name) {
+	public RootContextTests(String name) {
 		super(name);
 	}
 	
@@ -27,12 +27,12 @@ public class BaseJpaContentTests extends ContextModelTestCase
 		
 		assertFalse(pr.exists());
 		
-		BaseJpaContent baseJpaContent = (BaseJpaContent) getJavaProject().getJpaProject().contextModel();
-		assertNull(baseJpaContent.getPersistenceXml());
+		JpaRootContextNode baseJpaContent = (JpaRootContextNode) getJavaProject().getJpaProject().rootContext();
+		assertNull(baseJpaContent.persistenceXml());
 		
 		baseJpaContent.addPersistenceXml();
 		
-		assertNotNull(baseJpaContent.getPersistenceXml());
+		assertNotNull(baseJpaContent.persistenceXml());
 		
 		boolean exceptionThrown = false;
 		try {
@@ -46,14 +46,14 @@ public class BaseJpaContentTests extends ContextModelTestCase
 	}
 	
 	public void testModifyRemovePersistenceXml() throws Exception {
-		BaseJpaContent baseJpaContent = (BaseJpaContent) getJavaProject().getJpaProject().contextModel();
+		JpaRootContextNode baseJpaContent = (JpaRootContextNode) getJavaProject().getJpaProject().rootContext();
 		
-		assertNotNull(baseJpaContent.getPersistenceXml());
+		assertNotNull(baseJpaContent.persistenceXml());
 		
 		baseJpaContent.removePersistenceXml();
 		waitForWorkspaceJobs();
 		
-		assertNull(baseJpaContent.getPersistenceXml());
+		assertNull(baseJpaContent.persistenceXml());
 		
 		boolean exceptionThrown = false;
 		try {
@@ -66,29 +66,28 @@ public class BaseJpaContentTests extends ContextModelTestCase
 		assertTrue(exceptionThrown);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void testUpdateAddPersistenceXml() throws Exception {
 		PersistenceResource pr = persistenceResource();
 		deleteResource(pr);
 		
 		assertFalse(pr.exists());
 		
-		BaseJpaContent baseJpaContent = (BaseJpaContent) getJavaProject().getJpaProject().contextModel();
-		assertNull(baseJpaContent.getPersistenceXml());
+		JpaRootContextNode baseJpaContent = (JpaRootContextNode) getJavaProject().getJpaProject().rootContext();
+		assertNull(baseJpaContent.persistenceXml());
 		
 		pr.getContents().add(PersistenceFactory.eINSTANCE.createXmlPersistence());
 		pr.save(null);
-		assertNotNull(baseJpaContent.getPersistenceXml());
+		assertNotNull(baseJpaContent.persistenceXml());
 	}
 	
 	public void testUpdateRemovePersistenceXml() throws Exception {
 		PersistenceResource pr = persistenceResource();
-		BaseJpaContent baseJpaContent = (BaseJpaContent) getJavaProject().getJpaProject().contextModel();
+		JpaRootContextNode baseJpaContent = (JpaRootContextNode) getJavaProject().getJpaProject().rootContext();
 		
-		assertNotNull(baseJpaContent.getPersistenceXml());
+		assertNotNull(baseJpaContent.persistenceXml());
 		
 		deleteResource(pr);
 		
-		assertNull(baseJpaContent.getPersistenceXml());
+		assertNull(baseJpaContent.persistenceXml());
 	}
 }

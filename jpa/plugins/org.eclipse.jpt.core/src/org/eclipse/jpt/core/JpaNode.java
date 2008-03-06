@@ -36,10 +36,8 @@ public interface JpaNode extends Node, IAdaptable
 	 */
 	IResource resource();
 	
+	
 	// ********** covariant overrides **********
-
+	
 	JpaNode parent();
-
-	JpaProject root();
-
 }

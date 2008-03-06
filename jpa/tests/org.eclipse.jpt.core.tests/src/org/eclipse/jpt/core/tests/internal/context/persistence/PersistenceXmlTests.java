@@ -22,7 +22,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 	}
 	
 	protected PersistenceXml persistenceXml() {
-		return jpaContent().getPersistenceXml();
+		return rootContext().persistenceXml();
 	}
 	
 	public void testUpdateAddPersistence() throws Exception {

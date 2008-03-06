@@ -20,7 +20,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.BaseJpaContent;
+import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
@@ -131,7 +131,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	protected PersistenceUnit persistenceUnit() {
-		return jpaContent().getPersistenceXml().getPersistence().persistenceUnits().next();
+		return rootContext().persistenceXml().getPersistence().persistenceUnits().next();
 	}
 	
 	protected ClassRef classRef() {
@@ -168,8 +168,8 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		xmlPersistenceUnit.getClasses().remove(xmlJavaClassRefToRemove);
 	}
 
-	protected BaseJpaContent jpaContent() {
-		return (BaseJpaContent) getJavaProject().getJpaProject().contextModel();
+	protected JpaRootContextNode rootContext() {
+		return (JpaRootContextNode) getJavaProject().getJpaProject().rootContext();
 	}
 	
 	@Override

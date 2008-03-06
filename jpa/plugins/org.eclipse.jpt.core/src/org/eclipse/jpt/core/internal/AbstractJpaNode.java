@@ -56,7 +56,7 @@ public abstract class AbstractJpaNode
 	}
 
 	public JpaProject jpaProject() {
-		return this.root();
+		return parent().jpaProject();
 	}
 
 	public String displayString() {
@@ -70,11 +70,7 @@ public abstract class AbstractJpaNode
 	public JpaNode parent() {
 		return (JpaNode) super.parent();
 	}
-
-	@Override
-	public JpaProject root() {
-		return (JpaProject) super.root();
-	}
+	
 
 	// ********** convenience methods **********
 

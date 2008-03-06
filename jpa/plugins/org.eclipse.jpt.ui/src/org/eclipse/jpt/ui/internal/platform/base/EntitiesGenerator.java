@@ -24,7 +24,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.context.BaseJpaContent;
+import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.synch.SynchronizeClassesJob;
 import org.eclipse.jpt.db.internal.Table;
@@ -132,7 +132,7 @@ public class EntitiesGenerator
 				// we currently only support *one* persistence.xml file per project
 				//TODO casting to IBaseJpaContent, IContextModel doesn't seem useful to me 
 				//just trying to get rid of all compiler errors for now KFB
-				PersistenceXml persistenceXml = ((BaseJpaContent) this.project.contextModel()).getPersistenceXml();
+				PersistenceXml persistenceXml = ((JpaRootContextNode) this.project.rootContext()).persistenceXml();
 				if (persistenceXml != null) {
 					//TODO casting to IFile - just trying to get rid of all compiler errors for now
 					SynchronizeClassesJob job = new SynchronizeClassesJob((IFile) persistenceXml.resource());

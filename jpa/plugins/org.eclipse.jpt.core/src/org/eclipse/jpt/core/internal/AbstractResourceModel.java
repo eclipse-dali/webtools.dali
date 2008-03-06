@@ -22,46 +22,46 @@ public abstract class AbstractResourceModel
 	implements ResourceModel
 {
 	private final List<JpaStructureNode> rootStructureNodes;
-
-
+	
+	
 	protected AbstractResourceModel() {
 		this.rootStructureNodes = new ArrayList<JpaStructureNode>();
 	}
-
+	
 	public abstract Object resource();
-
+	
 	public ListIterator<JpaStructureNode> rootStructureNodes() {
-		return new CloneListIterator<JpaStructureNode>(this.rootStructureNodes);
+		return new CloneListIterator<JpaStructureNode>(rootStructureNodes);
 	}
-
+	
 	public int rootStructureNodesSize() {
-		return this.rootStructureNodes.size();
+		return rootStructureNodes.size();
 	}
-
+	
 	/**
 	 * Add the new node to the end of the list.
 	 */
 	public void addRootStructureNode(JpaStructureNode structureNode) {
-		this.addRootStructureNode(this.rootStructureNodes.size(), structureNode);
+		this.addRootStructureNode(rootStructureNodes.size(), structureNode);
 	}
-
+	
 	public void addRootStructureNode(int index, JpaStructureNode structureNode) {
-		if ( ! this.rootStructureNodes.contains(structureNode)) {
+		if ( ! rootStructureNodes.contains(structureNode)) {
 			this.addItemToList(index, structureNode, this.rootStructureNodes, ROOT_STRUCTURE_NODES_LIST);
 		}
 	}
-
+	
 	public void removeRootStructureNode(JpaStructureNode structureNode) {
-		this.removeItemFromList(structureNode, this.rootStructureNodes, ROOT_STRUCTURE_NODES_LIST);
+		this.removeItemFromList(structureNode, rootStructureNodes, ROOT_STRUCTURE_NODES_LIST);
 	}
-
+	
 	public void removeRootStructureNode(int index) {
-		this.removeItemFromList(index, this.rootStructureNodes, ROOT_STRUCTURE_NODES_LIST);
+		this.removeItemFromList(index, rootStructureNodes, ROOT_STRUCTURE_NODES_LIST);
 	}
-
+	
 	public JpaStructureNode structureNode(int textOffset) {
-		synchronized (this.rootStructureNodes) {
-			for (JpaStructureNode rootNode : this.rootStructureNodes) {
+		synchronized (rootStructureNodes) {
+			for (JpaStructureNode rootNode : rootStructureNodes) {
 				JpaStructureNode node = rootNode.structureNode(textOffset);
 				if (node != null) {
 					return node;
@@ -70,9 +70,8 @@ public abstract class AbstractResourceModel
 		}
 		return null;
 	}
-
+	
 	public void dispose() {
 		this.clearList(this.rootStructureNodes, ROOT_STRUCTURE_NODES_LIST);
 	}
-
 }

@@ -18,9 +18,9 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.core.ContextModel;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.internal.GenericJpaProject;
 import org.eclipse.jpt.core.internal.SimpleJpaProjectConfig;
 import org.eclipse.jpt.core.internal.jdtutility.NullAnnotationEditFormatter;
@@ -96,10 +96,10 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 				}
 			};
 		}
-
+		
 		@Override
-		protected ContextModel buildContextModel() {
-			return null;  // no context model
+		protected JpaRootContextNode buildRootContextNode() {
+			return null;  // no root context
 		}
 
 		@Override

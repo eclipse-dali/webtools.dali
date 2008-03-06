@@ -31,7 +31,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.core.ContextModel;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaPlatform;
@@ -39,6 +38,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.ResourceModelListener;
+import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitResource;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -91,10 +91,10 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	protected final Vector<JpaFile> jpaFiles;
 
 	/**
-	 * The model representing the collated resources associated
-	 * with the JPA project.
+	 * The root of the model representing the collated resources associated with 
+	 * the JPA project.
 	 */
-	protected ContextModel contextModel;
+	protected JpaRootContextNode rootContextNode;
 
 	/**
 	 * The visitor passed to resource deltas.
@@ -153,7 +153,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		// build the JPA files corresponding to the Eclipse project's files
 		this.project.accept(this.buildInitialResourceProxyVisitor(), IResource.NONE);
 
-		this.contextModel = this.buildContextModel();
+		this.rootContextNode = this.buildRootContextNode();
 
 		this.update();
 	}
@@ -198,8 +198,8 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		return new InitialResourceProxyVisitor();
 	}
 
-	protected ContextModel buildContextModel() {
-		return this.jpaFactory().buildContextModel(this);
+	protected JpaRootContextNode buildRootContextNode() {
+		return this.jpaFactory().buildRootContext(this);
 	}
 
 	// ***** inner class
@@ -227,7 +227,12 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	// ********** general queries **********
 
 	@Override
-	public JpaProject root() {
+	public Node root() {
+		return this;
+	}
+	
+	@Override
+	public JpaProject jpaProject() {
 		return this;
 	}
 
@@ -364,8 +369,8 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 
 	// ********** context model **********
 
-	public ContextModel contextModel() {
-		return this.contextModel;
+	public JpaRootContextNode rootContext() {
+		return this.rootContextNode;
 	}
 
 
@@ -462,7 +467,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		addProjectLevelMessages(messages);
 		
 		//context model validation
-		contextModel().addToMessages(messages);
+		rootContext().addToMessages(messages);
 	}
 
 	protected void addProjectLevelMessages(List<IMessage> messages) {
@@ -661,7 +666,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	 */
 	public IStatus update(IProgressMonitor monitor) {
 		try {
-			this.contextModel.update(monitor);
+			this.rootContext().update(monitor);
 		} catch (OperationCanceledException ex) {
 			return Status.CANCEL_STATUS;
 		} catch (Throwable ex) {

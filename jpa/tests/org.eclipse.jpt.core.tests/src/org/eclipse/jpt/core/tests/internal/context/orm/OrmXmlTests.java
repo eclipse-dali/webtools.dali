@@ -36,7 +36,7 @@ public class OrmXmlTests extends ContextModelTestCase
 	}
 	
 	protected PersistenceXml persistenceXml() {
-		return jpaContent().getPersistenceXml();
+		return rootContext().persistenceXml();
 	}
 	
 	protected OrmXml ormXml() {

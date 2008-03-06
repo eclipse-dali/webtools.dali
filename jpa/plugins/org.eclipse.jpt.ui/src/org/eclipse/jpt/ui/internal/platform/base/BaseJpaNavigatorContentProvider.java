@@ -11,7 +11,7 @@
 package org.eclipse.jpt.ui.internal.platform.base;
 
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jpt.core.context.BaseJpaContent;
+import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.eclipse.ui.navigator.ICommonContentProvider;
@@ -23,10 +23,10 @@ public class BaseJpaNavigatorContentProvider implements ICommonContentProvider
 	}
 
 	public Object[] getChildren(Object parentElement) {
-		if (parentElement instanceof BaseJpaContent) {
-			BaseJpaContent baseJpaContent = (BaseJpaContent) parentElement;
-			if (baseJpaContent.getPersistenceXml() != null) {
-				return new Object[] {baseJpaContent.getPersistenceXml()};
+		if (parentElement instanceof JpaRootContextNode) {
+			JpaRootContextNode rootContext = (JpaRootContextNode) parentElement;
+			if (rootContext.persistenceXml() != null) {
+				return new Object[] {rootContext.persistenceXml()};
 			}
 		}
 		
@@ -39,7 +39,7 @@ public class BaseJpaNavigatorContentProvider implements ICommonContentProvider
 	}
 
 	public boolean hasChildren(Object element) {
-		return element instanceof BaseJpaContent;
+		return element instanceof JpaRootContextNode;
 	}
 
 	public Object[] getElements(Object inputElement) {

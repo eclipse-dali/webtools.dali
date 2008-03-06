@@ -13,8 +13,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
-import org.eclipse.jpt.core.context.BaseJpaContent;
 import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.java.JavaAbstractJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -164,16 +164,17 @@ public interface JpaFactory
 	ResourceModel buildResourceModel(JpaProject jpaProject, IFile file);
 	
 	/**
-	 * Build a (updated) context model to be associated with the given JPA project.
-	 * The context model will be built once, but updated many times.
+	 * Build a (/an updated) root context node to be associated with the given 
+	 * JPA project.
+	 * The root context node will be built once, but updated many times.
 	 * @see JpaProject.update(ProgressMonitor)
 	 */
-	ContextModel buildContextModel(JpaProject jpaProject);
+	JpaRootContextNode buildRootContext(JpaProject jpaProject);
 	
 	
 	// **************** persistence context objects ****************************
 	
-	PersistenceXml buildPersistenceXml(BaseJpaContent parent, PersistenceResource persistenceResource);
+	PersistenceXml buildPersistenceXml(JpaRootContextNode parent, PersistenceResource persistenceResource);
 	
 	Persistence buildPersistence(PersistenceXml parent, XmlPersistence xmlPersistence);
 	

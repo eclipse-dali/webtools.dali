@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
-import org.eclipse.jpt.core.JpaNode;
+import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.persistence.PersistenceJpaContextNode;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -19,7 +19,7 @@ public abstract class AbstractPersistenceJpaContextNode extends AbstractJpaConte
 {
 	// ********** constructor **********
 
-	protected AbstractPersistenceJpaContextNode(JpaNode parent) {
+	protected AbstractPersistenceJpaContextNode(JpaContextNode parent) {
 		super(parent);
 	}
 	

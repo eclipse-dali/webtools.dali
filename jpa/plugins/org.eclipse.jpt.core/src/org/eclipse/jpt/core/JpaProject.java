@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.db.internal.ConnectionProfile;
 import org.eclipse.jpt.db.internal.Schema;
@@ -141,9 +142,9 @@ public interface JpaProject extends JpaNode {
 	String rootDeployLocation();
 	
 	/**
-	 * Return the context model representing the JPA content of this project
+	 * Return the {@link JpaRootContextNode} representing the JPA content of this project
 	 */
-	ContextModel contextModel();
+	JpaRootContextNode rootContext();
 	
 	/**
 	 * Return an iterator on all ITypes that are annotated within this project
