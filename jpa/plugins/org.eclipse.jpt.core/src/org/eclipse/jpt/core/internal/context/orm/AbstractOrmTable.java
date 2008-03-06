@@ -250,21 +250,30 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 
 	protected TextRange nameTextRange() {
 		if (table() != null) {
-			return table().nameTextRange();
+			TextRange textRange = table().nameTextRange();
+			if (textRange != null) {
+				return textRange;
+			}
 		}
 		return this.parent().validationTextRange(); 
 	}
 	
 	protected TextRange catalogTextRange() {
 		if (table() != null) {
-			return table().catalogTextRange();
+			TextRange textRange = table().catalogTextRange();
+			if (textRange != null) {
+				return textRange;
+			}
 		}
 		return this.parent().validationTextRange(); 
 	}
 	
 	protected TextRange schemaTextRange() {
 		if (table() != null) {
-			return table().schemaTextRange();
+			TextRange textRange = table().schemaTextRange();
+			if (textRange != null) {
+				return textRange;
+			}
 		}
 		return this.parent().validationTextRange(); 
 	}

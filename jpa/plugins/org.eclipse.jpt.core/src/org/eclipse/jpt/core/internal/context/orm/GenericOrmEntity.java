@@ -1468,24 +1468,21 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		super.addToMessages(messages);
 		getTable().addToMessages(messages);	
 		addIdMessages(messages);
-		//TODO what about virtual secondary tables??		
-		for (OrmSecondaryTable secondaryTable : CollectionTools.iterable(specifiedSecondaryTables())) {
+		for (OrmSecondaryTable secondaryTable : CollectionTools.iterable(secondaryTables())) {
 			secondaryTable.addToMessages(messages);
 		}
 
-		for (Iterator<OrmAttributeOverride> stream = this.attributeOverrides(); stream.hasNext();) {
-			stream.next().addToMessages(messages);
+		for (OrmAttributeOverride attributeOverride : CollectionTools.iterable(attributeOverrides())) {
+			attributeOverride.addToMessages(messages);
 		}
-		
-		for (Iterator<OrmAssociationOverride> stream = this.associationOverrides(); stream.hasNext();) {
-			stream.next().addToMessages(messages);
+
+		for (OrmAssociationOverride associationOverride : CollectionTools.iterable(associationOverrides())) {
+			associationOverride.addToMessages(messages);
 		}
-	
 	}
 	
 	protected void addIdMessages(List<IMessage> messages) {
 		addNoIdMessage(messages);
-		
 	}
 	
 	protected void addNoIdMessage(List<IMessage> messages) {
