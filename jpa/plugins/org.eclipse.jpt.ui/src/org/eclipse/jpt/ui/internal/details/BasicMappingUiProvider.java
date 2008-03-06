@@ -7,52 +7,53 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal.java.details;
+package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.ManyToManyMapping;
+import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
+import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
-import org.eclipse.jpt.ui.java.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class ManyToManyMappingUiProvider
-	implements AttributeMappingUiProvider<ManyToManyMapping>
+public class BasicMappingUiProvider
+	implements AttributeMappingUiProvider<BasicMapping>
 {
+
 	// singleton
-	private static final ManyToManyMappingUiProvider INSTANCE = new ManyToManyMappingUiProvider();
+	private static final BasicMappingUiProvider INSTANCE = new BasicMappingUiProvider();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static AttributeMappingUiProvider<ManyToManyMapping> instance() {
+	public static AttributeMappingUiProvider<BasicMapping> instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private ManyToManyMappingUiProvider() {
+	private BasicMappingUiProvider() {
 		super();
 	}
 
-	public String attributeMappingKey() {
-		return MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
+	public String mappingKey() {
+		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
 
 	public String label() {
-		return JptUiMappingsMessages.PersistentAttributePage_ManyToManyLabel;
+		return JptUiMappingsMessages.PersistentAttributePage_BasicLabel;
 	}
 
-	public JpaComposite<ManyToManyMapping> buildAttributeMappingComposite(
+	public JpaComposite<BasicMapping> buildAttributeMappingComposite(
 			JpaUiFactory factory,
-			PropertyValueModel<ManyToManyMapping> subjectHolder,
+			PropertyValueModel<BasicMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 
-		return factory.createManyToManyMappingComposite(subjectHolder, parent, widgetFactory);
+		return factory.createBasicMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

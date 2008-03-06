@@ -75,9 +75,10 @@ public interface SecondaryTable extends Table
 	 * Move the specified primary key join column from the source index to the target index.
 	 */
 	void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex);
-	
 
-//	boolean containsSpecifiedPrimaryKeyJoinColumns();
-//
-//	boolean isVirtual();
+	/**
+	 * Return true if the secondary table exists as specified on the owning object, 
+	 * or false if the secondary table is a result of defaults calculation
+	 */
+	boolean isVirtual();
 }

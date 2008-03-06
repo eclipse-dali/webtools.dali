@@ -9,22 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.SecondaryTable;
-import org.eclipse.jpt.core.context.Table;
-import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -46,16 +40,15 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see Entity
- * @see EntityComposite - The container of this pane
+ * @see OrmEntity
+ * @see OrmEntityComposite - The container of this pane
  * @see AddRemoveListPane
  * @see PrimaryKeyJoinColumnsInSecondaryTableComposite
  *
- * @TODO handle xml, how to handle virtual secondaryTables, adding them to xml, are they overriden, etc??
  * @version 2.0
  * @since 1.0
  */
-public class SecondaryTablesComposite extends AbstractFormPane<Entity>
+public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends AbstractFormPane<T>
 {
 	/**
 	 * Creates a new <code>SecondaryTablesComposite</code>.
@@ -63,7 +56,7 @@ public class SecondaryTablesComposite extends AbstractFormPane<Entity>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public SecondaryTablesComposite(AbstractFormPane<? extends Entity> parentPane,
+	public AbstractSecondaryTablesComposite(AbstractFormPane<? extends T> parentPane,
 	                                Composite parent) {
 
 		super(parentPane, parent, false);
@@ -76,7 +69,7 @@ public class SecondaryTablesComposite extends AbstractFormPane<Entity>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public SecondaryTablesComposite(PropertyValueModel<? extends Entity> subjectHolder,
+	public AbstractSecondaryTablesComposite(PropertyValueModel<? extends T> subjectHolder,
 	                                Composite parent,
 	                                TabbedPropertySheetWidgetFactory widgetFactory) {
 
@@ -99,11 +92,11 @@ public class SecondaryTablesComposite extends AbstractFormPane<Entity>
 		}
 	}
 
-	private WritablePropertyValueModel<SecondaryTable> buildSecondaryTableHolder() {
+	protected WritablePropertyValueModel<SecondaryTable> buildSecondaryTableHolder() {
 		return new SimplePropertyValueModel<SecondaryTable>();
 	}
 
-	private ILabelProvider buildSecondaryTableLabelProvider() {
+	protected ILabelProvider buildSecondaryTableLabelProvider() {
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
@@ -117,7 +110,7 @@ public class SecondaryTablesComposite extends AbstractFormPane<Entity>
 		};
 	}
 
-	private AddRemoveListPane.Adapter buildSecondaryTablesAdapter() {
+	protected AddRemoveListPane.Adapter buildSecondaryTablesAdapter() {
 		return new AddRemoveListPane.AbstractAdapter() {
 
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
@@ -150,24 +143,23 @@ public class SecondaryTablesComposite extends AbstractFormPane<Entity>
 					entity.removeSpecifiedSecondaryTable(selectedIndices[index]);
 				}
 			}
-		};
-	}
-	
-	private ListValueModel<SecondaryTable> buildSecondaryTablesListModel() {
-		return new ItemPropertyListValueModelAdapter<SecondaryTable>(buildSecondaryTablesListHolder(), 
-			Table.SPECIFIED_NAME_PROPERTY);
-	}	
-
-	private ListValueModel<SecondaryTable> buildSecondaryTablesListHolder() {
-		return new ListAspectAdapter<Entity, SecondaryTable>(getSubjectHolder(), Entity.SPECIFIED_SECONDARY_TABLES_LIST) {
+			
 			@Override
-			protected ListIterator<SecondaryTable> listIterator_() {
-				return subject.secondaryTables();
+			public boolean enableOptionOnSelectionChange(ObjectListSelectionModel listSelectionModel) {
+				if (listSelectionModel.selectedValuesSize() != 1) {
+					return false;
+				}
+				SecondaryTable secondaryTable = (SecondaryTable) listSelectionModel.selectedValue();
+				return !secondaryTable.isVirtual();
 			}
-
+			
 			@Override
-			protected int size_() {
-				return subject.secondaryTablesSize();
+			public boolean enableRemoveOnSelectionChange(ObjectListSelectionModel listSelectionModel) {
+				if (listSelectionModel.selectedValue() == null) {
+					return false;
+				}
+				SecondaryTable secondaryTable = (SecondaryTable) listSelectionModel.selectedValue();
+				return !secondaryTable.isVirtual();				
 			}
 		};
 	}
@@ -206,33 +198,4 @@ public class SecondaryTablesComposite extends AbstractFormPane<Entity>
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		int groupBoxMargin = groupBoxMargin();
-
-		WritablePropertyValueModel<SecondaryTable> secondaryTableHolder =
-			buildSecondaryTableHolder();
-
-		// Secondary Tables add/remove list pane
-		new AddRemoveListPane<Entity>(
-			this,
-			buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
-			buildSecondaryTablesAdapter(),
-			buildSecondaryTablesListModel(),
-			secondaryTableHolder,
-			buildSecondaryTableLabelProvider(),
-			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS//TODO need a help context id for this
-		);
-
-		// Primary Key Join Columns pane
-		new PrimaryKeyJoinColumnsInSecondaryTableComposite(
-			this,
-			secondaryTableHolder,
-			container
-		);
-	}
 }

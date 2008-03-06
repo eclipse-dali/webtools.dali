@@ -10,10 +10,11 @@
 package org.eclipse.jpt.ui.internal.java.details;
 
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
-import org.eclipse.jpt.ui.java.details.TypeMappingUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -46,6 +47,7 @@ public class NullTypeMappingUiProvider implements TypeMappingUiProvider<TypeMapp
 	}
 
 	public JpaComposite<TypeMapping> buildPersistentTypeMappingComposite(
+			JpaUiFactory jpaUiFactory,
 			PropertyValueModel<TypeMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {

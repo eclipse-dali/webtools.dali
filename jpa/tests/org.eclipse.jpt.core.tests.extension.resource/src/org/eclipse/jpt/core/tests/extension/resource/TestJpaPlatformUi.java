@@ -15,9 +15,9 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
+import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
-import org.eclipse.jpt.ui.java.details.AttributeMappingUiProvider;
-import org.eclipse.jpt.ui.java.details.TypeMappingUiProvider;
 
 public class TestJpaPlatformUi extends BaseJpaPlatformUi
 {

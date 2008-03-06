@@ -7,52 +7,52 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal.java.details;
+package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
+import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
-import org.eclipse.jpt.ui.java.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class IdMappingUiProvider
-	implements AttributeMappingUiProvider<IdMapping>
+public class OneToManyMappingUiProvider
+	implements AttributeMappingUiProvider<OneToManyMapping>
 {
 	// singleton
-	private static final IdMappingUiProvider INSTANCE = new IdMappingUiProvider();
+	private static final OneToManyMappingUiProvider INSTANCE = new OneToManyMappingUiProvider();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static AttributeMappingUiProvider<IdMapping> instance() {
+	public static AttributeMappingUiProvider<OneToManyMapping> instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private IdMappingUiProvider() {
+	private OneToManyMappingUiProvider() {
 		super();
 	}
 
-	public String attributeMappingKey() {
-		return MappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
+	public String mappingKey() {
+		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
 	public String label() {
-		return JptUiMappingsMessages.PersistentAttributePage_IdLabel;
+		return JptUiMappingsMessages.PersistentAttributePage_OneToManyLabel;
 	}
 
-	public JpaComposite<IdMapping> buildAttributeMappingComposite(
+	public JpaComposite<OneToManyMapping> buildAttributeMappingComposite(
 			JpaUiFactory factory,
-			PropertyValueModel<IdMapping> subjectHolder,
+			PropertyValueModel<OneToManyMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 
-		return factory.createIdMappingComposite(subjectHolder, parent, widgetFactory);
+		return factory.createOneToManyMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

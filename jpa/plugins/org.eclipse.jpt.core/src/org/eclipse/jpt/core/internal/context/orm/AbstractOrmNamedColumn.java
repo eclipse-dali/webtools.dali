@@ -54,14 +54,6 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 		return this.owner;
 	}
 
-//	@Override
-//	protected void addInsignificantXmlFeatureIdsTo(Set<Integer> insignificantXmlFeatureIds) {
-//		super.addInsignificantXmlFeatureIdsTo(insignificantXmlFeatureIds);
-//		insignificantXmlFeatureIds.add(JpaCoreMappingsPackage.INAMED_COLUMN__DEFAULT_NAME);
-//		insignificantXmlFeatureIds.add(JpaCoreMappingsPackage.INAMED_COLUMN__NAME);
-//	}
-
-
 	public String getName() {
 		return (this.specifiedName != null) ? this.specifiedName : this.defaultName;
 	}

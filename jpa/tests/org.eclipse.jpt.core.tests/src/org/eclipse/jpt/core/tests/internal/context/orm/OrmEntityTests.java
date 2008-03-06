@@ -17,6 +17,8 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.InheritanceType;
+import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
@@ -760,27 +762,30 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertFalse(ormEntity.specifiedSecondaryTables().hasNext());
 	}
 	
-	//test adding 2 secondary tables to java entity
-	//override one in ormEntity, verify other one still exists as a default
-	//change xml-mapping-metadata complete setting in both locations and verify defaults from java are gone
-	public void testDefaultSecondaryTables() throws Exception {
-		createTestEntityDefaultFieldAccess();
+	public void testVirtualSecondaryTables() throws Exception {
+		createTestEntityFieldAccess();
 		createTestSubType();
 	
 		OrmPersistentType parentPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentType childPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
 		OrmEntity parentOrmEntity = (OrmEntity) parentPersistentType.getMapping();
 		OrmEntity childOrmEntity = (OrmEntity) childPersistentType.getMapping();
+		JavaEntity javaEntity = childOrmEntity.javaEntity();
 		
-		childOrmEntity.javaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
-		
-		assertEquals("FOO", childOrmEntity.virtualSecondaryTables().next().getName());
+		JavaSecondaryTable javaSecondaryTableFoo = javaEntity.addSpecifiedSecondaryTable(0);
+		javaSecondaryTableFoo.setSpecifiedName("FOO");
+		OrmSecondaryTable virtualSecondaryTableFoo = childOrmEntity.virtualSecondaryTables().next();
 		assertEquals("FOO", childOrmEntity.secondaryTables().next().getName());
+		assertEquals("FOO", virtualSecondaryTableFoo.getName());
+		assertEquals(0, virtualSecondaryTableFoo.specifiedPrimaryKeyJoinColumnsSize());
+		assertEquals("id", virtualSecondaryTableFoo.getDefaultPrimaryKeyJoinColumn().getDefaultName());
+		assertEquals("id", virtualSecondaryTableFoo.getDefaultPrimaryKeyJoinColumn().getDefaultReferencedColumnName());
+		
 		assertEquals(0, childOrmEntity.specifiedSecondaryTablesSize());
 		assertEquals(1, childOrmEntity.virtualSecondaryTablesSize());
 		assertEquals(1, childOrmEntity.secondaryTablesSize());
-	
-		childOrmEntity.javaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("BAR");
+		
+		javaEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("BAR");
 		ListIterator<OrmSecondaryTable> virtualSecondaryTables = childOrmEntity.virtualSecondaryTables();
 		ListIterator<OrmSecondaryTable> secondaryTables = childOrmEntity.secondaryTables();
 		assertEquals("BAR", virtualSecondaryTables.next().getName());
@@ -791,51 +796,45 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(2, childOrmEntity.virtualSecondaryTablesSize());
 		assertEquals(2, childOrmEntity.secondaryTablesSize());
 		
-		childOrmEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("BAZ");
-		virtualSecondaryTables = childOrmEntity.virtualSecondaryTables();
-		secondaryTables = childOrmEntity.secondaryTables();
-		assertFalse(virtualSecondaryTables.hasNext());
-		assertEquals("BAZ", secondaryTables.next().getName());
+		childOrmEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		assertEquals(0, childOrmEntity.virtualSecondaryTablesSize());
+		
+		childOrmEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
+		assertEquals(2, childOrmEntity.virtualSecondaryTablesSize());
+		
+		
+		childOrmEntity.setSecondaryTablesDefinedInXml(true);
+		assertEquals(0, childOrmEntity.virtualSecondaryTablesSize());
+		assertEquals(2, childOrmEntity.specifiedSecondaryTablesSize());
+		assertEquals(2, childOrmEntity.secondaryTablesSize());
+		ListIterator<OrmSecondaryTable> specifiedSecondaryTables = childOrmEntity.specifiedSecondaryTables();
+		assertEquals("BAR", specifiedSecondaryTables.next().getName());
+		OrmSecondaryTable specifiedSecondaryTableFoo = specifiedSecondaryTables.next();
+		assertEquals("FOO", specifiedSecondaryTableFoo.getName());
+		assertEquals(0, specifiedSecondaryTableFoo.specifiedPrimaryKeyJoinColumnsSize());
+		assertEquals("id", specifiedSecondaryTableFoo.getDefaultPrimaryKeyJoinColumn().getDefaultName());
+		assertEquals("id", specifiedSecondaryTableFoo.getDefaultPrimaryKeyJoinColumn().getDefaultReferencedColumnName());
+		
+		
+		childOrmEntity.removeSpecifiedSecondaryTable(0);
+		assertEquals(0, childOrmEntity.virtualSecondaryTablesSize());
 		assertEquals(1, childOrmEntity.specifiedSecondaryTablesSize());
-		assertEquals(0, childOrmEntity.virtualSecondaryTablesSize());
 		assertEquals(1, childOrmEntity.secondaryTablesSize());
+		assertEquals("FOO", childOrmEntity.specifiedSecondaryTables().next().getName());
 		
-		childOrmEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
-		virtualSecondaryTables = childOrmEntity.virtualSecondaryTables();
-		secondaryTables = childOrmEntity.secondaryTables();
-		assertFalse(virtualSecondaryTables.hasNext());
-		assertEquals("FOO", secondaryTables.next().getName());
-		assertEquals("BAZ", secondaryTables.next().getName());
-		assertFalse(secondaryTables.hasNext());
-		assertEquals(2, childOrmEntity.specifiedSecondaryTablesSize());
-		assertEquals(0, childOrmEntity.virtualSecondaryTablesSize());
-		assertEquals(2, childOrmEntity.secondaryTablesSize());
-		
-		//add a specified secondary table to the parent, this will not affect virtual secondaryTables in child
-		parentOrmEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("PARENT_TABLE");
-		virtualSecondaryTables = childOrmEntity.virtualSecondaryTables();
-		secondaryTables = childOrmEntity.secondaryTables();
-		assertFalse(virtualSecondaryTables.hasNext());
-		assertEquals("FOO", secondaryTables.next().getName());
-		assertEquals("BAZ", secondaryTables.next().getName());
-		assertFalse(secondaryTables.hasNext());
-		assertEquals(2, childOrmEntity.specifiedSecondaryTablesSize());
-		assertEquals(0, childOrmEntity.virtualSecondaryTablesSize());
-		assertEquals(2, childOrmEntity.secondaryTablesSize());
-		
+	
 		childOrmEntity.removeSpecifiedSecondaryTable(0);
-		childOrmEntity.removeSpecifiedSecondaryTable(0);
-		virtualSecondaryTables = childOrmEntity.virtualSecondaryTables();
-		secondaryTables = childOrmEntity.secondaryTables();
-		assertEquals("BAR", virtualSecondaryTables.next().getName());
-		assertEquals("FOO", virtualSecondaryTables.next().getName());
-		assertFalse(virtualSecondaryTables.hasNext());
-		assertEquals("BAR", secondaryTables.next().getName());
-		assertEquals("FOO", secondaryTables.next().getName());
-		assertFalse(secondaryTables.hasNext());
 		assertEquals(0, childOrmEntity.specifiedSecondaryTablesSize());
 		assertEquals(2, childOrmEntity.virtualSecondaryTablesSize());
 		assertEquals(2, childOrmEntity.secondaryTablesSize());
+		virtualSecondaryTables = childOrmEntity.virtualSecondaryTables();
+		assertEquals("BAR", virtualSecondaryTables.next().getName());
+		assertEquals("FOO", virtualSecondaryTables.next().getName());
+		
+		
+		//add a specified secondary table to the parent, this will not affect virtual secondaryTables in child
+		parentOrmEntity.addSpecifiedSecondaryTable(0).setSpecifiedName("PARENT_TABLE");
+		assertEquals(2, childOrmEntity.virtualSecondaryTablesSize());	
 	}
 
 	//test that inherited tables don't show up in this list
@@ -1244,9 +1243,9 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-		entityResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
-		entityResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
-		entityResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
+		entityResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl());
+		entityResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl());
+		entityResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl());
 		
 		entityResource.getPrimaryKeyJoinColumns().get(0).setName("FOO");
 		entityResource.getPrimaryKeyJoinColumns().get(1).setName("BAR");

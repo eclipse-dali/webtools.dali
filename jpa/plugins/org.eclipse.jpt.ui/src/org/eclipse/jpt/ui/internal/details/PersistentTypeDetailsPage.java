@@ -26,9 +26,9 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.Tracing;
-import org.eclipse.jpt.ui.java.details.TypeMappingUiProvider;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.FilteringPropertyValueModel;
@@ -125,6 +125,7 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 			(TypeMappingUiProvider<TypeMapping>) typeMappingUiProvider(key);
 
 		return uiProvider.buildPersistentTypeMappingComposite(
+			jpaUiFactory(),
 			buildMappingHolder(key),
 			pageBook,
 			getWidgetFactory()

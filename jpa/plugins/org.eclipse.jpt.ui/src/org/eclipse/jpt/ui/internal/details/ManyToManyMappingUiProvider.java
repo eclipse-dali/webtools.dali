@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,53 +7,52 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal.java.details;
+package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.TransientMapping;
+import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
+import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
-import org.eclipse.jpt.ui.java.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class TransientMappingUiProvider
-	implements AttributeMappingUiProvider<TransientMapping>
+public class ManyToManyMappingUiProvider
+	implements AttributeMappingUiProvider<ManyToManyMapping>
 {
-
 	// singleton
-	private static final TransientMappingUiProvider INSTANCE = new TransientMappingUiProvider();
+	private static final ManyToManyMappingUiProvider INSTANCE = new ManyToManyMappingUiProvider();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static AttributeMappingUiProvider<TransientMapping> instance() {
+	public static AttributeMappingUiProvider<ManyToManyMapping> instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private TransientMappingUiProvider() {
+	private ManyToManyMappingUiProvider() {
 		super();
 	}
 
-	public String attributeMappingKey() {
-		return MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
+	public String mappingKey() {
+		return MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
 	public String label() {
-		return JptUiMappingsMessages.PersistentAttributePage_TransientLabel;
+		return JptUiMappingsMessages.PersistentAttributePage_ManyToManyLabel;
 	}
 
-	public JpaComposite<TransientMapping> buildAttributeMappingComposite(
+	public JpaComposite<ManyToManyMapping> buildAttributeMappingComposite(
 			JpaUiFactory factory,
-			PropertyValueModel<TransientMapping> subjectHolder,
+			PropertyValueModel<ManyToManyMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 
-		return factory.createTransientMappingComposite(subjectHolder, parent, widgetFactory);
+		return factory.createManyToManyMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

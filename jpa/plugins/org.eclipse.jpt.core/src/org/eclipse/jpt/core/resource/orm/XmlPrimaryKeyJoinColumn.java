@@ -9,13 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.TextRange;
-import org.eclipse.jpt.core.internal.emfutility.DOMUtilities;
-import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,51 +30,11 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
  * </p>
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPrimaryKeyJoinColumn()
- * @model kind="class"
+ * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn
+public interface XmlPrimaryKeyJoinColumn extends XmlNamedColumn
 {
-	/**
-	 * The default value of the '{@link #getReferencedColumnName() <em>Referenced Column Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReferencedColumnName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String REFERENCED_COLUMN_NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getReferencedColumnName() <em>Referenced Column Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReferencedColumnName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String referencedColumnName = REFERENCED_COLUMN_NAME_EDEFAULT;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected XmlPrimaryKeyJoinColumn()
-	{
-		super();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	protected EClass eStaticClass()
-	{
-		return OrmPackage.Literals.XML_PRIMARY_KEY_JOIN_COLUMN;
-	}
 
 	/**
 	 * Returns the value of the '<em><b>Referenced Column Name</b></em>' attribute.
@@ -96,10 +50,7 @@ public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
-	public String getReferencedColumnName()
-	{
-		return referencedColumnName;
-	}
+	String getReferencedColumnName();
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn#getReferencedColumnName <em>Referenced Column Name</em>}' attribute.
@@ -109,101 +60,13 @@ public class XmlPrimaryKeyJoinColumn extends AbstractXmlNamedColumn
 	 * @see #getReferencedColumnName()
 	 * @generated
 	 */
-	public void setReferencedColumnName(String newReferencedColumnName)
-	{
-		String oldReferencedColumnName = referencedColumnName;
-		referencedColumnName = newReferencedColumnName;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME, oldReferencedColumnName, referencedColumnName));
-	}
+	void setReferencedColumnName(String value);
+
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
+	 * Return the {@link TextRange} for the referenced-column-name attibute.  If the referenced-column-name attibute 
+	 * does not exist return the {@link TextRange} for the *table element.
 	 */
-	@Override
-	public Object eGet(int featureID, boolean resolve, boolean coreType)
-	{
-		switch (featureID)
-		{
-			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
-				return getReferencedColumnName();
-		}
-		return super.eGet(featureID, resolve, coreType);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eSet(int featureID, Object newValue)
-	{
-		switch (featureID)
-		{
-			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
-				setReferencedColumnName((String)newValue);
-				return;
-		}
-		super.eSet(featureID, newValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public void eUnset(int featureID)
-	{
-		switch (featureID)
-		{
-			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
-				setReferencedColumnName(REFERENCED_COLUMN_NAME_EDEFAULT);
-				return;
-		}
-		super.eUnset(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public boolean eIsSet(int featureID)
-	{
-		switch (featureID)
-		{
-			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
-				return REFERENCED_COLUMN_NAME_EDEFAULT == null ? referencedColumnName != null : !REFERENCED_COLUMN_NAME_EDEFAULT.equals(referencedColumnName);
-		}
-		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString()
-	{
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (referencedColumnName: ");
-		result.append(referencedColumnName);
-		result.append(')');
-		return result.toString();
-	}
-	
-	public TextRange referencedColumnNameTextRange() {
-		IDOMNode referencedColumnNameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(this.node, OrmXmlMapper.REFERENCED_COLUMN_NAME);
-		return (referencedColumnNameNode == null) ? validationTextRange() : buildTextRange(referencedColumnNameNode);
-	}
-
+	TextRange referencedColumnNameTextRange();
 
 } // PrimaryKeyJoinColumn

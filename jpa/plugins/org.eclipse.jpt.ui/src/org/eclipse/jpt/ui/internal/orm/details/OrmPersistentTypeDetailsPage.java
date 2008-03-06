@@ -18,13 +18,12 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.details.EmbeddableUiProvider;
+import org.eclipse.jpt.ui.internal.details.MappedSuperclassUiProvider;
 import org.eclipse.jpt.ui.internal.details.PersistentTypeDetailsPage;
-import org.eclipse.jpt.ui.internal.java.details.EmbeddableUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.EntityUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.MappedSuperclassUiProvider;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
-import org.eclipse.jpt.ui.java.details.TypeMappingUiProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -64,7 +63,7 @@ public class OrmPersistentTypeDetailsPage extends PersistentTypeDetailsPage<OrmP
 	}
 
 	protected void addOrmTypeMappingUiProvidersTo(Collection<TypeMappingUiProvider<? extends TypeMapping>> providers) {
-		providers.add(EntityUiProvider.instance());
+		providers.add(OrmEntityUiProvider.instance());
 		providers.add(MappedSuperclassUiProvider.instance());
 		providers.add(EmbeddableUiProvider.instance());
 	}

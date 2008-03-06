@@ -129,7 +129,7 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.PRE_PERSIST: return (EObject)createPrePersist();
 			case OrmPackage.PRE_REMOVE: return (EObject)createPreRemove();
 			case OrmPackage.PRE_UPDATE: return (EObject)createPreUpdate();
-			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN: return (EObject)createXmlPrimaryKeyJoinColumn();
+			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN_IMPL: return (EObject)createXmlPrimaryKeyJoinColumnImpl();
 			case OrmPackage.XML_QUERY_HINT: return (EObject)createXmlQueryHint();
 			case OrmPackage.XML_TABLE: return (EObject)createXmlTable();
 			case OrmPackage.XML_SECONDARY_TABLE_IMPL: return (EObject)createXmlSecondaryTableImpl();
@@ -705,10 +705,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlPrimaryKeyJoinColumn createXmlPrimaryKeyJoinColumn()
+	public XmlPrimaryKeyJoinColumnImpl createXmlPrimaryKeyJoinColumnImpl()
 	{
-		XmlPrimaryKeyJoinColumn xmlPrimaryKeyJoinColumn = new XmlPrimaryKeyJoinColumn();
-		return xmlPrimaryKeyJoinColumn;
+		XmlPrimaryKeyJoinColumnImpl xmlPrimaryKeyJoinColumnImpl = new XmlPrimaryKeyJoinColumnImpl();
+		return xmlPrimaryKeyJoinColumnImpl;
 	}
 
 	/**

@@ -277,6 +277,8 @@ public class JptUiMappingsMessages extends NLS
 	public static String QueryHintsComposite_nameColumn;
 	public static String QueryHintsComposite_valueColumn;
 
+	public static String OrmSecondaryTablesComposite_defineInXml;
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, JptUiMappingsMessages.class);

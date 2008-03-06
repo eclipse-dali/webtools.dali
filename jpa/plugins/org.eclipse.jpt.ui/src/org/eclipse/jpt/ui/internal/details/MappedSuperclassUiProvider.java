@@ -7,55 +7,51 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal.java.details;
+package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.BasicMapping;
+import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.ui.JpaUiFactory;
-import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 
-public class DefaultBasicMappingUiProvider
-	implements AttributeMappingUiProvider<BasicMapping>
+public class MappedSuperclassUiProvider implements TypeMappingUiProvider<MappedSuperclass>
 {
 	// singleton
-	private static final DefaultBasicMappingUiProvider INSTANCE = new DefaultBasicMappingUiProvider();
+	private static final MappedSuperclassUiProvider INSTANCE = new MappedSuperclassUiProvider();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static AttributeMappingUiProvider<BasicMapping> instance() {
+	public static TypeMappingUiProvider<MappedSuperclass> instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private DefaultBasicMappingUiProvider() {
+	private MappedSuperclassUiProvider() {
 		super();
 	}
 
 	public String mappingKey() {
-		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
+		return MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY;
 	}
 
 	public String label() {
-		return NLS.bind(
-			JptUiMappingsMessages.DefaultBasicMappingUiProvider_Default,
-			JptUiMappingsMessages.PersistentAttributePage_BasicLabel
-		);
+		return JptUiMappingsMessages.PersistentTypePage_MappedSuperclassLabel;
 	}
 
-	public JpaComposite<BasicMapping> buildAttributeMappingComposite(JpaUiFactory factory,
-			PropertyValueModel<BasicMapping> subjectHolder,
+	public JpaComposite<MappedSuperclass> buildPersistentTypeMappingComposite(
+			JpaUiFactory factory,
+			PropertyValueModel<MappedSuperclass> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 
-		return factory.createBasicMappingComposite(subjectHolder, parent, widgetFactory);
+		return factory.createMappedSuperclassComposite(subjectHolder, parent, widgetFactory);
 	}
 }

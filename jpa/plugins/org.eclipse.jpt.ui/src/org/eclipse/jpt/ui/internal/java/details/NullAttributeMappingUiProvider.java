@@ -11,10 +11,10 @@ package org.eclipse.jpt.ui.internal.java.details;
 
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
+import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
-import org.eclipse.jpt.ui.java.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -44,7 +44,7 @@ public class NullAttributeMappingUiProvider
 	/*
 	 * (non-Javadoc)
 	 */
-	public String attributeMappingKey() {
+	public String mappingKey() {
 		return null;
 	}
 

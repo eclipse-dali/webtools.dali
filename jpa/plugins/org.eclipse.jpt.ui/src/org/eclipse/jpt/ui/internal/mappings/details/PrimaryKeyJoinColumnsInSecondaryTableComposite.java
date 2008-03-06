@@ -130,7 +130,10 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 		return new TransformationPropertyValueModel<SecondaryTable, Boolean>(getSubjectHolder()) {
 			@Override
 			protected Boolean transform(SecondaryTable value) {
-				return (value != null);
+				if (value == null) {
+					return Boolean.FALSE;
+				}
+				return Boolean.valueOf(!value.isVirtual());
 			}
 		};
 	}
@@ -209,10 +212,6 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 				return buildJoinColumnLabel(joinColumn);
 			}
 		};
-	}
-
-	private WritablePropertyValueModel<Boolean> buildOverrideDefaultHolder() {
-		return new OverrideDefaultJoinColumnHolder();
 	}
 
 	private WritablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
@@ -324,7 +323,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 		Button button = buildCheckBox(
 			buildSubPane(groupPane, 8),
 			JptUiMappingsMessages.PrimaryKeyJoinColumnsComposite_overrideDefaultPrimaryKeyJoinColumns,
-			buildOverrideDefaultHolder()
+			buildOverrideDefaultJoinColumnHolder()
 		);
 
 		installOverrideDefaultButtonEnabler(button);
@@ -415,7 +414,10 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends AbstractForm
 
 		@Override
 		protected Boolean buildValue() {
-			return listHolder.size() > 0;
+			if (subject() == null) {
+				return Boolean.FALSE;
+			}
+			return !subject().isVirtual() && listHolder.size() > 0;
 		}
 
 		public void setValue(Boolean value) {

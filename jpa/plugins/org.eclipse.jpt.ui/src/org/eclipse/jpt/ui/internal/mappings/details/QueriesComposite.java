@@ -45,7 +45,7 @@ public class QueriesComposite extends AbstractFormPane<Entity>
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	public QueriesComposite(AbstractFormPane<Entity> parentPane,
+	public QueriesComposite(AbstractFormPane<? extends Entity> parentPane,
 	                        Composite parent) {
 
 		super(parentPane, parent);

@@ -509,7 +509,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	protected void updateAddButton(Button addButton) {
 		addButton.setEnabled(
 			getControl().isEnabled() &&
-			(subject() != null)
+			subject() != null
 		);
 	}
 
@@ -542,7 +542,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	protected void updateRemoveButton(Button removeButton) {
 		removeButton.setEnabled(
 			getControl().isEnabled() &&
-			selectionModel.selectedValue() != null
+			adapter.enableRemoveOnSelectionChange(selectionModel)
 		);
 	}
 
@@ -642,7 +642,11 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		public String addButtonText() {
 			return addButtonText;
 		}
-
+		
+		public boolean enableRemoveOnSelectionChange(ObjectListSelectionModel listSelectionModel) {
+			return listSelectionModel.selectedValue() != null;
+		}
+		
 		/*
 		 * (non-Javadoc)
 		 */
@@ -738,6 +742,12 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		 * Invoked when the user selects the Add button.
 		 */
 		void addNewItem(ObjectListSelectionModel listSelectionModel);
+
+		/**
+		 * Invoked when selection changes. Implementation dictates whether remove button
+		 * should be enabled.
+		 */
+		boolean enableRemoveOnSelectionChange(ObjectListSelectionModel listSelectionModel);
 
 		/**
 		 * Invoked when selection changes. Implementation dictates whether button

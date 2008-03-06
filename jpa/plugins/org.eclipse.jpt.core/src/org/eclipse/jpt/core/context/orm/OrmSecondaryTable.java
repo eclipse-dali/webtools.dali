@@ -24,6 +24,14 @@ import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
  */
 public interface OrmSecondaryTable extends SecondaryTable, OrmJpaContextNode
 {
+
+	void update(XmlSecondaryTable secondaryTable);
+
+	void initializeFrom(SecondaryTable oldSecondaryTable);
+
+	
+	//************ covariant overrides *************
+
 	OrmEntity parent();
 	
 	@SuppressWarnings("unchecked")
@@ -36,7 +44,4 @@ public interface OrmSecondaryTable extends SecondaryTable, OrmJpaContextNode
 	
 	OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 
-	void initialize(XmlSecondaryTable secondaryTable);
-
-	void update(XmlSecondaryTable secondaryTable);
 }

@@ -313,6 +313,7 @@
     <genClasses ecoreClass="orm.ecore#//XmlPrimaryKeyJoinColumn">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlPrimaryKeyJoinColumn/referencedColumnName"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlPrimaryKeyJoinColumnImpl"/>
     <genClasses ecoreClass="orm.ecore#//XmlQueryHint">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlQueryHint/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlQueryHint/value"/>

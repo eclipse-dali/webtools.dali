@@ -274,10 +274,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	}
 	
 	public OrmSecondaryTable addSpecifiedSecondaryTable(int index) {
-		OrmSecondaryTable secondaryTable =  jpaFactory().buildOrmSecondaryTable(this);
-		this.specifiedSecondaryTables.add(index, secondaryTable);
+		if (!secondaryTablesDefinedInXml()) {
+			throw new IllegalStateException("Virtual secondary tables exist, must first call setSecondaryTablesDefinedInXml(true)");
+		}
 		XmlSecondaryTable secondaryTableResource = OrmFactory.eINSTANCE.createXmlSecondaryTableImpl();
-		secondaryTable.initialize(secondaryTableResource);
+		OrmSecondaryTable secondaryTable =  buildSecondaryTable(secondaryTableResource);
+		this.specifiedSecondaryTables.add(index, secondaryTable);
 		typeMappingResource().getSecondaryTables().add(index, secondaryTableResource);
 		fireItemAdded(Entity.SPECIFIED_SECONDARY_TABLES_LIST, index, secondaryTable);
 		return secondaryTable;
@@ -333,6 +335,70 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		return false;
 	}
 
+	public boolean secondaryTablesDefinedInXml() {
+		return virtualSecondaryTablesSize() == 0;
+	}
+	
+	public void setSecondaryTablesDefinedInXml(boolean defineInXml) {
+		if (defineInXml == secondaryTablesDefinedInXml()) {
+			return;
+		}
+		if (defineInXml) {
+			specifySecondaryTablesInXml();
+		}
+		else {
+			removeSecondaryTablesFromXml();
+		}
+	}
+	
+	/**
+	 * This is used to take all the java secondary tables and specify them in the xml.  You must
+	 * use setSecondaryTablesDefinedInXml(boolean) before calling addSpecifiedSecondaryTable().
+	 * 
+	 * Yes this code looks odd, but be careful making changes to it
+	 */
+	protected void specifySecondaryTablesInXml() {
+		if (virtualSecondaryTablesSize() != 0) {
+			List<OrmSecondaryTable> virtualSecondaryTables = CollectionTools.list(this.virtualSecondaryTables());
+			List<OrmSecondaryTable> virtualSecondaryTable2 = CollectionTools.list(this.virtualSecondaryTables());
+			//remove all the virtual secondary tables without firing change notification.
+			for (OrmSecondaryTable virtualSecondaryTable : CollectionTools.iterable(virtualSecondaryTables())) {
+				this.virtualSecondaryTables.remove(virtualSecondaryTable);				
+			}
+			//add specified secondary tables for each virtual secondary table. If the virtual secondary tables
+			//are not removed first, they will be removed as a side effect of adding the first specified secondary table.
+			//This screws up the change notification to the UI, since that change notification is in a different thread
+			for (OrmSecondaryTable virtualSecondaryTable : virtualSecondaryTable2) {
+				XmlSecondaryTable secondaryTableResource = OrmFactory.eINSTANCE.createXmlSecondaryTableImpl();
+				OrmSecondaryTable specifiedSecondaryTable =  buildSecondaryTable(secondaryTableResource);
+				this.specifiedSecondaryTables.add(specifiedSecondaryTable);
+				typeMappingResource().getSecondaryTables().add(secondaryTableResource);
+				specifiedSecondaryTable.initializeFrom(virtualSecondaryTable);
+			}
+			//fire change notification at the end
+			fireItemsRemoved(OrmEntity.VIRTUAL_SECONDARY_TABLES_LIST, 0, virtualSecondaryTables);
+			fireItemsAdded(Entity.SPECIFIED_SECONDARY_TABLES_LIST, 0, this.specifiedSecondaryTables);		
+		}
+	}
+	
+	protected void removeSecondaryTablesFromXml() {
+		if (specifiedSecondaryTablesSize() != 0) {
+			List<OrmSecondaryTable> specifiedSecondaryTables = CollectionTools.list(this.specifiedSecondaryTables());
+			for (OrmSecondaryTable specifiedSecondaryTable : CollectionTools.iterable(specifiedSecondaryTables())) {
+				int index = this.specifiedSecondaryTables.indexOf(specifiedSecondaryTable);
+				this.specifiedSecondaryTables.remove(specifiedSecondaryTable);
+				if (this.specifiedSecondaryTables.size() == 0) {
+					initializeVirtualSecondaryTables();
+				}
+				typeMappingResource().getSecondaryTables().remove(index);
+			}
+			fireItemsRemoved(Entity.SPECIFIED_SECONDARY_TABLES_LIST, 0, specifiedSecondaryTables);
+			if (this.virtualSecondaryTables.size() != 0) {
+				fireItemsAdded(OrmEntity.VIRTUAL_SECONDARY_TABLES_LIST, 0, this.virtualSecondaryTables);
+			}
+		}
+	}
+	
 	protected Iterator<String> tableNames(Iterator<Table> tables) {
 		return new TransformationIterator<Table, String>(tables) {
 			@Override
@@ -566,7 +632,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	public OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index) {
 		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
-		this.typeMappingResource().getPrimaryKeyJoinColumns().add(index, OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
+		this.typeMappingResource().getPrimaryKeyJoinColumns().add(index, OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl());
 		this.fireItemAdded(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
 		return primaryKeyJoinColumn;
 	}
@@ -1012,7 +1078,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 
 	protected void initializeSpecifiedSecondaryTables(XmlEntity entity) {
 		for (XmlSecondaryTable secondaryTable : entity.getSecondaryTables()) {
-			this.specifiedSecondaryTables.add(createSecondaryTable(secondaryTable));
+			this.specifiedSecondaryTables.add(buildSecondaryTable(secondaryTable));
 		}
 	}
 	
@@ -1159,7 +1225,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 		
 		while (resourceSecondaryTables.hasNext()) {
-			addSpecifiedSecondaryTable(specifiedSecondaryTablesSize(), createSecondaryTable(resourceSecondaryTables.next()));
+			addSpecifiedSecondaryTable(specifiedSecondaryTablesSize(), buildSecondaryTable(resourceSecondaryTables.next()));
 		}
 	}
 	
@@ -1188,17 +1254,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 	}
 
-	protected OrmSecondaryTable createSecondaryTable(XmlSecondaryTable secondaryTable) {
-		OrmSecondaryTable ormSecondaryTable = jpaFactory().buildOrmSecondaryTable(this);
-		ormSecondaryTable.initialize(secondaryTable);
-		return ormSecondaryTable;
+	protected OrmSecondaryTable buildSecondaryTable(XmlSecondaryTable xmlSecondaryTable) {
+		return jpaFactory().buildOrmSecondaryTable(this, xmlSecondaryTable);
 	}
 	
 	protected OrmSecondaryTable buildVirtualSecondaryTable(JavaSecondaryTable javaSecondaryTable) {
-		OrmSecondaryTable virtualSecondaryTable = jpaFactory().buildOrmSecondaryTable(this);
-		VirtualXmlSecondaryTable virtualXmlSecondaryTable = new VirtualXmlSecondaryTable(javaSecondaryTable);
-		virtualSecondaryTable.initialize(virtualXmlSecondaryTable);
-		return virtualSecondaryTable;
+		return buildSecondaryTable(new VirtualXmlSecondaryTable(javaSecondaryTable));
 	}
 	
 	protected void updateTableGenerator(XmlEntity entity) {

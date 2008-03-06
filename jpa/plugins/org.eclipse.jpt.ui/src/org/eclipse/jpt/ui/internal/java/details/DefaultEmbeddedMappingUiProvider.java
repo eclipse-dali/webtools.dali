@@ -12,10 +12,10 @@ package org.eclipse.jpt.ui.internal.java.details;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
+import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
-import org.eclipse.jpt.ui.java.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
@@ -40,7 +40,7 @@ public class DefaultEmbeddedMappingUiProvider
 		super();
 	}
 
-	public String attributeMappingKey() {
+	public String mappingKey() {
 		return MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
 	}
 

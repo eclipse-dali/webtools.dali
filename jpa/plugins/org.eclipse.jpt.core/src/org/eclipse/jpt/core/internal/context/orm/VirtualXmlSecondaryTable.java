@@ -12,13 +12,23 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.UniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
+/**
+ * A virtual secondary table is used to represent the XmlSecondaryTable resource object.
+ * A virtual secondary table is one which is not specified in the orm.xml file, 
+ * but is implied from the underlying java.  Virtual secondary table
+ * is not used when the secondary table is specified in the orm.xml.
+ * 
+ * A virtual secondary table delegates to the underlying java secondary table for its state. 
+ */
 public class VirtualXmlSecondaryTable extends AbstractJpaEObject implements XmlSecondaryTable
 {
 	
@@ -62,6 +72,11 @@ public class VirtualXmlSecondaryTable extends AbstractJpaEObject implements XmlS
 		{
 			primaryKeyJoinColumns = new EObjectContainmentEList<XmlPrimaryKeyJoinColumn>(XmlPrimaryKeyJoinColumn.class, this, OrmPackage.XML_SECONDARY_TABLE_IMPL__PRIMARY_KEY_JOIN_COLUMNS);
 		}
+		for (JavaPrimaryKeyJoinColumn pkJoinColumn : CollectionTools.iterable(javaSecondaryTable.specifiedPrimaryKeyJoinColumns())) {
+			XmlPrimaryKeyJoinColumn xmlPkJoinColumn = new VirtualXmlPrimaryKeyJoinColumn(pkJoinColumn);
+			primaryKeyJoinColumns.add(xmlPkJoinColumn);
+		}
+		
 		return primaryKeyJoinColumns;
 	}
 	

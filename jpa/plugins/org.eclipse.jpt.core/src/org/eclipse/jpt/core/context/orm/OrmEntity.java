@@ -23,8 +23,55 @@ import org.eclipse.jpt.core.resource.orm.XmlEntity;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmEntity extends Entity, OrmTypeMapping
+public interface OrmEntity extends OrmTypeMapping, Entity
 {
+
+	/**
+	 * Return a list iterator of the virtual(not specified) secondary tables.
+	 * This will not be null.
+	 */
+	ListIterator<OrmSecondaryTable> virtualSecondaryTables();
+		String VIRTUAL_SECONDARY_TABLES_LIST = "virtualSecondaryTablesList";
+	
+	/**
+	 * Return the number of virtual secondary tables.
+	 */
+	int virtualSecondaryTablesSize();
+	
+	/**
+	 * Return whether the entity contains the given secondary table in its list of
+	 * virtual secondary tables
+	 */	
+	boolean containsVirtualSecondaryTable(OrmSecondaryTable secondaryTable);
+	
+	/**
+	 * Return true if there are no virtual secondary tables on the orm entity.
+	 * This is used to determine whether you can add specified secondary tables.
+	 * You must first make sure all virtual secondary tables have been specified
+	 * in xml before adding more.  This is because adding one secondary table to xml
+	 * will override all the secondary tables specified in the java entity
+	 */
+	boolean secondaryTablesDefinedInXml();
+	
+	/**
+	 * If true, then all virtual secondary tables are added in as specified secondary tables to the xml.
+	 * If false, then all the specified secondary tables are remvoed from the xml.
+	 */
+	void setSecondaryTablesDefinedInXml(boolean defineInXml);
+	
+	/**
+	 * Return the Java Entity this ORM Entity corresponds to.  Return null if there is no
+	 * java entity.
+	 */
+	JavaEntity javaEntity();
+
+	void initialize(XmlEntity entity);
+
+	void update(XmlEntity entity);
+	
+	
+	//************ covariant overrides *************
+	
 	OrmTable getTable();
 	
 	OrmDiscriminatorColumn getDiscriminatorColumn();
@@ -41,12 +88,6 @@ public interface OrmEntity extends Entity, OrmTypeMapping
 	ListIterator<OrmSecondaryTable> specifiedSecondaryTables();
 	OrmSecondaryTable addSpecifiedSecondaryTable(int index);
 
-	ListIterator<OrmSecondaryTable> virtualSecondaryTables();
-	int virtualSecondaryTablesSize();
-	boolean containsVirtualSecondaryTable(OrmSecondaryTable secondaryTable);
-	//TODO this might need to move to IEntity, for the UI
-	String VIRTUAL_SECONDARY_TABLES_LIST = "virtualSecondaryTablesList";
-	
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns();
@@ -79,10 +120,4 @@ public interface OrmEntity extends Entity, OrmTypeMapping
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmNamedNativeQuery> namedNativeQueries();
 	OrmNamedNativeQuery addNamedNativeQuery(int index);
-	
-	JavaEntity javaEntity();
-
-	void initialize(XmlEntity entity);
-
-	void update(XmlEntity entity);
 }

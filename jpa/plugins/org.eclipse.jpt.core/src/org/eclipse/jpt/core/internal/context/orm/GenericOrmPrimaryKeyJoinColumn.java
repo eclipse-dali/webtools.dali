@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmAbstractJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
@@ -30,6 +31,11 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 		super(parent, owner);
 	}
 
+	public void initializeFrom(PrimaryKeyJoinColumn oldPkJoinColumn) {
+		super.initializeFrom(oldPkJoinColumn);
+		setSpecifiedReferencedColumnName(oldPkJoinColumn.getSpecifiedReferencedColumnName());
+	}
+	
 	@Override
 	protected XmlPrimaryKeyJoinColumn columnResource() {
 		return this.primaryKeyJoinColumn;
@@ -59,6 +65,12 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 		String oldSpecifiedReferencedColumnName = this.specifiedReferencedColumnName;
 		this.specifiedReferencedColumnName = newSpecifiedReferencedColumnName;
 		columnResource().setReferencedColumnName(newSpecifiedReferencedColumnName);
+		firePropertyChanged(SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
+	}
+	
+	protected void setSpecifiedReferencedColumnName_(String newSpecifiedReferencedColumnName) {
+		String oldSpecifiedReferencedColumnName = this.specifiedReferencedColumnName;
+		this.specifiedReferencedColumnName = newSpecifiedReferencedColumnName;
 		firePropertyChanged(SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
 	}
 
@@ -111,7 +123,7 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	public void initialize(XmlPrimaryKeyJoinColumn column) {
 		this.primaryKeyJoinColumn = column;
 		super.initialize(column);
-		this.specifiedReferencedColumnName = column.getReferencedColumnName();
+		this.specifiedReferencedColumnName = specifiedReferencedColumnName(column);
 		this.defaultReferencedColumnName = defaultReferencedColumnName();
 	}
 	
@@ -119,12 +131,16 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	public void update(XmlPrimaryKeyJoinColumn column) {
 		this.primaryKeyJoinColumn = column;
 		super.update(column);
-		this.setSpecifiedReferencedColumnName(column.getReferencedColumnName());
+		this.setSpecifiedReferencedColumnName_(specifiedReferencedColumnName(column));
 		this.setDefaultReferencedColumnName(defaultReferencedColumnName());
 	}
 	
+	protected String specifiedReferencedColumnName(XmlPrimaryKeyJoinColumn column) {
+		return column == null ? null : column.getReferencedColumnName();
+	}
+	
+	//TODO not correct when we start supporting primaryKeyJoinColumns in 1-1 mappings
 	protected String defaultReferencedColumnName() {
-		//TODO
-		return null;
+		return defaultName();
 	}
 }

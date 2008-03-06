@@ -7,53 +7,53 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal.java.details;
+package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
+import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
-import org.eclipse.jpt.ui.java.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class VersionMappingUiProvider
-	implements AttributeMappingUiProvider<VersionMapping>
+public class OneToOneMappingUiProvider
+	implements AttributeMappingUiProvider<OneToOneMapping>
 {
 
 	// singleton
-	private static final VersionMappingUiProvider INSTANCE = new VersionMappingUiProvider();
+	private static final OneToOneMappingUiProvider INSTANCE = new OneToOneMappingUiProvider();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static AttributeMappingUiProvider<VersionMapping> instance() {
+	public static AttributeMappingUiProvider<OneToOneMapping> instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure non-instantiability.
 	 */
-	private VersionMappingUiProvider() {
+	private OneToOneMappingUiProvider() {
 		super();
 	}
 
-	public String attributeMappingKey() {
-		return MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
+	public String mappingKey() {
+		return MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
 
 	public String label() {
-		return JptUiMappingsMessages.PersistentAttributePage_VersionLabel;
+		return JptUiMappingsMessages.PersistentAttributePage_OneToOneLabel;
 	}
 
-	public JpaComposite<VersionMapping> buildAttributeMappingComposite(
+	public JpaComposite<OneToOneMapping> buildAttributeMappingComposite(
 			JpaUiFactory factory,
-			PropertyValueModel<VersionMapping> subjectHolder,
+			PropertyValueModel<OneToOneMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 
-		return factory.createVersionMappingComposite(subjectHolder, parent, widgetFactory);
+		return factory.createOneToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

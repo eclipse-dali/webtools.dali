@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,11 +30,11 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.java.details.EmbeddableUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.EntityUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.MappedSuperclassUiProvider;
-import org.eclipse.jpt.ui.java.details.TypeMappingUiProvider;
+import org.eclipse.jpt.ui.internal.details.EmbeddableUiProvider;
+import org.eclipse.jpt.ui.internal.details.MappedSuperclassUiProvider;
+import org.eclipse.jpt.ui.internal.orm.details.OrmEntityUiProvider;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -113,7 +113,7 @@ public class AddPersistentClassDialog extends StatusDialog
 				public Object[] getElements(Object inputElement) {
 					return new Object[] {
 						MappedSuperclassUiProvider.instance(), 
-						EntityUiProvider.instance(), 
+						OrmEntityUiProvider.instance(), 
 						EmbeddableUiProvider.instance()
 					};
 				}

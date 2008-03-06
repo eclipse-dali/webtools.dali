@@ -7,10 +7,10 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.java.details;
+package org.eclipse.jpt.ui.details;
 
-import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -24,21 +24,23 @@ import org.eclipse.swt.widgets.Composite;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface TypeMappingUiProvider<T extends TypeMapping>
+public interface AttributeMappingUiProvider<T extends AttributeMapping>
 {
 	/**
 	 * The IJpaComposite that correponds to this mapping type.  This will be displayed
-	 * by the PersistentTypeDetailsPage when the mapping key matches the key given
+	 * by the PersistentAttributeDetailsPage when the mapping key matches the key given
 	 * by this provider.  The composites will be stored in a Map with the mapping key as the key.
-	 *
+	 * @param factory
 	 * @param parent
 	 * @param widgetFactory
+	 *
 	 * @return
 	 */
-	JpaComposite<T> buildPersistentTypeMappingComposite(
-		PropertyValueModel<T> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory);
+	JpaComposite<T> buildAttributeMappingComposite(
+			JpaUiFactory factory,
+			PropertyValueModel<T> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory);
 
 	/**
 	 * A label to be displayed to the label as an option in the mapping type combo box
@@ -48,6 +50,7 @@ public interface TypeMappingUiProvider<T extends TypeMapping>
 
 	/**
 	 * A unique string that corresponds to the key of a MappingProvider in the core
+	 * (JavaAttributeMappingProvider and/or OrmAttributeMappingProvider)
 	 */
 	String mappingKey();
 }

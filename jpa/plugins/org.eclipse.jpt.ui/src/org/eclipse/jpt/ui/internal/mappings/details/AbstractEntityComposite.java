@@ -14,6 +14,11 @@ import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.details.EntityNameCombo;
+import org.eclipse.jpt.ui.internal.mappings.details.InheritanceComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.OverridesComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.QueriesComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.TableComposite;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -64,7 +69,7 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see BasicMapping
+ * @see Entity
  * @see BaseJpaUiFactory - The factory creating this pane
  * @see EntityNameCombo
  * @see InheritanceComposite
@@ -77,8 +82,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class EntityComposite extends AbstractFormPane<Entity>
-                             implements JpaComposite<Entity>
+public abstract class AbstractEntityComposite<T extends Entity> extends AbstractFormPane<T>
+                             implements JpaComposite<T>
 {
 	/**
 	 * Creates a new <code>EntityComposite</code>.
@@ -87,7 +92,7 @@ public class EntityComposite extends AbstractFormPane<Entity>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EntityComposite(PropertyValueModel<? extends Entity> subjectHolder,
+	public AbstractEntityComposite(PropertyValueModel<? extends T> subjectHolder,
 	                       Composite parent,
 	                       WidgetFactory widgetFactory) {
 
@@ -179,7 +184,8 @@ public class EntityComposite extends AbstractFormPane<Entity>
 			container,
 			JptUiMappingsMessages.SecondaryTablesComposite_secondaryTables
 		);
-
-		new SecondaryTablesComposite(this, container);
+		buildSecondaryTablesComposite(container);
 	}
+	
+	protected abstract void buildSecondaryTablesComposite(Composite container);
 }

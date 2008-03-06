@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.core.context.EmbeddedMapping;
-import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
@@ -22,13 +21,15 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.java.details.JavaEntityComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.BasicMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.EmbeddableComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.EmbeddedIdMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.EmbeddedMappingComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.EntityComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.IdMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.ManyToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.ManyToOneMappingComposite;
@@ -37,6 +38,7 @@ import org.eclipse.jpt.ui.internal.mappings.details.OneToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.OneToOneMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TransientMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.VersionMappingComposite;
+import org.eclipse.jpt.ui.internal.orm.details.OrmEntityComposite;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -52,9 +54,6 @@ import org.eclipse.swt.widgets.Composite;
  */
 public abstract class BaseJpaUiFactory implements JpaUiFactory
 {
-	/*
-	 * (non-Javadoc)
-	 */
 	public JpaComposite<BasicMapping> createBasicMappingComposite(
 		PropertyValueModel<BasicMapping> subjectHolder,
 		Composite parent,
@@ -63,9 +62,6 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 		return new BasicMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	public JpaComposite<Embeddable> createEmbeddableComposite(
 		PropertyValueModel<Embeddable> subjectHolder,
 		Composite parent,
@@ -74,9 +70,6 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 		return new EmbeddableComposite(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	public JpaComposite<EmbeddedIdMapping> createEmbeddedIdMappingComposite(
 		PropertyValueModel<EmbeddedIdMapping> subjectHolder,
 		Composite parent,
@@ -85,9 +78,6 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 		return new EmbeddedIdMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	public JpaComposite<EmbeddedMapping> createEmbeddedMappingComposite(
 		PropertyValueModel<EmbeddedMapping> subjectHolder,
 		Composite parent,
@@ -96,20 +86,22 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 		return new EmbeddedMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	public JpaComposite<Entity> createEntityComposite(
-		PropertyValueModel<Entity> subjectHolder,
+	public JpaComposite<JavaEntity> createJavaEntityComposite(
+		PropertyValueModel<JavaEntity> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory) {
 
-		return new EntityComposite(subjectHolder, parent, widgetFactory);
+		return new JavaEntityComposite(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
+	public JpaComposite<OrmEntity> createOrmEntityComposite(
+		PropertyValueModel<OrmEntity> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
+
+		return new OrmEntityComposite(subjectHolder, parent, widgetFactory);
+	}
+
 	public JpaComposite<IdMapping> createIdMappingComposite(
 		PropertyValueModel<IdMapping> subjectHolder,
 		Composite parent,
@@ -118,9 +110,6 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 		return new IdMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	public JpaComposite<ManyToManyMapping> createManyToManyMappingComposite(
 		PropertyValueModel<ManyToManyMapping> subjectHolder,
 		Composite parent,
@@ -129,9 +118,6 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 		return new ManyToManyMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	public JpaComposite<ManyToOneMapping> createManyToOneMappingComposite(
 		PropertyValueModel<ManyToOneMapping> subjectHolder,
 		Composite parent,
@@ -140,9 +126,6 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 		return new ManyToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	public JpaComposite<MappedSuperclass> createMappedSuperclassComposite(
 		PropertyValueModel<MappedSuperclass> subjectHolder,
 		Composite parent,
@@ -151,9 +134,6 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 		return new MappedSuperclassComposite(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	public JpaComposite<OneToManyMapping> createOneToManyMappingComposite(
 		PropertyValueModel<OneToManyMapping> subjectHolder,
 		Composite parent,
@@ -162,9 +142,6 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 		return new OneToManyMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	public JpaComposite<OneToOneMapping> createOneToOneMappingComposite(
 		PropertyValueModel<OneToOneMapping> subjectHolder,
 		Composite parent,
@@ -173,9 +150,6 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 		return new OneToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	public JpaComposite<TransientMapping> createTransientMappingComposite(
 		PropertyValueModel<TransientMapping> subjectHolder,
 		Composite parent,
@@ -184,9 +158,6 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 		return new TransientMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	public JpaComposite<VersionMapping> createVersionMappingComposite(
 		PropertyValueModel<VersionMapping> subjectHolder,
 		Composite parent,

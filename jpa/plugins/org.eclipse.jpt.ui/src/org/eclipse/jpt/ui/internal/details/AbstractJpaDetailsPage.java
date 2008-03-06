@@ -9,7 +9,11 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.ui.JpaPlatformUi;
+import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
+import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
+import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -39,6 +43,18 @@ public abstract class AbstractJpaDetailsPage<T extends JpaStructureNode>
 
 		super(new SimplePropertyValueModel<T>(), parent, widgetFactory);
 	}
+
+
+	protected JpaPlatformUi jpaPlatformUi() {
+		String platformId = subject().jpaProject().jpaPlatform().getId();
+		return JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
+	}
+
+	protected JpaUiFactory jpaUiFactory() {
+		// TODO: Remove the type cast, used for testing
+		return ((BaseJpaPlatformUi) jpaPlatformUi()).getJpaUiFactory();
+	}
+
 
 	/**
 	 * There is an issue with <code>ScrolledForm</code>, it doesn't repaint the

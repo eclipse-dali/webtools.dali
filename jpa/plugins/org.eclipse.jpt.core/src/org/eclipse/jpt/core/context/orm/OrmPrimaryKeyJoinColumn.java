@@ -26,4 +26,6 @@ public interface OrmPrimaryKeyJoinColumn extends PrimaryKeyJoinColumn, OrmAbstra
 	void initialize(XmlPrimaryKeyJoinColumn column);
 	
 	void update(XmlPrimaryKeyJoinColumn column);
+	
+	void initializeFrom(PrimaryKeyJoinColumn oldPkJoinColumn);
 }

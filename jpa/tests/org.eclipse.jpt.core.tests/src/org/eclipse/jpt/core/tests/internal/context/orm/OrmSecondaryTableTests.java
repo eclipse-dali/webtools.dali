@@ -143,9 +143,17 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		
 		ormEntity.javaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
-		OrmSecondaryTable secondaryTable = ormEntity.addSpecifiedSecondaryTable(0);
-		secondaryTable.setSpecifiedName("FOO");
-		assertNull(secondaryTable.getDefaultName());
+
+		OrmSecondaryTable ormSecondaryTable = ormEntity.virtualSecondaryTables().next();
+		assertEquals("FOO", ormSecondaryTable.getSpecifiedName());
+		
+		ormEntity.javaEntity().specifiedSecondaryTables().next().setSpecifiedName("BAZ");
+		assertEquals("BAZ", ormSecondaryTable.getSpecifiedName());
+		
+		ormEntity.setSecondaryTablesDefinedInXml(true);
+		assertNull(ormEntity.specifiedSecondaryTables().next().getDefaultName());
+		assertEquals("BAZ", ormEntity.specifiedSecondaryTables().next().getSpecifiedName());
+
 	}
 
 	public void testUpdateSpecifiedSchema() throws Exception {
@@ -202,9 +210,17 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		SecondaryTable javaSecondaryTable = ormEntity.javaEntity().addSpecifiedSecondaryTable(0);
 		javaSecondaryTable.setSpecifiedName("FOO");
 		javaSecondaryTable.setSpecifiedSchema("BAR");
-		OrmSecondaryTable secondaryTable = ormEntity.addSpecifiedSecondaryTable(0);
-		secondaryTable.setSpecifiedName("FOO");
-		assertNull(secondaryTable.getDefaultSchema());
+		
+		OrmSecondaryTable ormSecondaryTable = ormEntity.virtualSecondaryTables().next();
+		assertEquals("BAR", ormSecondaryTable.getSpecifiedSchema());
+		
+		javaSecondaryTable.setSpecifiedSchema("BAZ");
+		assertEquals("BAZ", ormSecondaryTable.getSpecifiedSchema());
+
+		
+		ormEntity.setSecondaryTablesDefinedInXml(true);
+		assertNull(ormEntity.specifiedSecondaryTables().next().getDefaultSchema());
+		assertEquals("BAZ", ormEntity.specifiedSecondaryTables().next().getSpecifiedSchema());
 	}
 
 	public void testUpdateDefaultSchemaFromParent() throws Exception {
@@ -309,9 +325,16 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		SecondaryTable javaSecondaryTable = ormEntity.javaEntity().addSpecifiedSecondaryTable(0);
 		javaSecondaryTable.setSpecifiedName("FOO");
 		javaSecondaryTable.setSpecifiedCatalog("BAR");
-		OrmSecondaryTable secondaryTable = ormEntity.addSpecifiedSecondaryTable(0);
-		secondaryTable.setSpecifiedName("FOO");
-		assertNull(secondaryTable.getDefaultCatalog());
+		
+		OrmSecondaryTable ormSecondaryTable = ormEntity.virtualSecondaryTables().next();
+		assertEquals("BAR", ormSecondaryTable.getSpecifiedCatalog());
+		
+		javaSecondaryTable.setSpecifiedCatalog("BAZ");
+		assertEquals("BAZ", ormSecondaryTable.getSpecifiedCatalog());
+		
+		ormEntity.setSecondaryTablesDefinedInXml(true);
+		assertNull(ormEntity.specifiedSecondaryTables().next().getDefaultCatalog());
+		assertEquals("BAZ", ormEntity.specifiedSecondaryTables().next().getSpecifiedCatalog());
 	}
 
 	public void testUpdateDefaultCatalogFromPersistenceUnitDefaults() throws Exception {
@@ -452,9 +475,9 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 		XmlSecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
 		
-		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
-		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
-		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
+		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl());
+		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl());
+		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl());
 		
 		secondaryTableResource.getPrimaryKeyJoinColumns().get(0).setName("FOO");
 		secondaryTableResource.getPrimaryKeyJoinColumns().get(1).setName("BAR");

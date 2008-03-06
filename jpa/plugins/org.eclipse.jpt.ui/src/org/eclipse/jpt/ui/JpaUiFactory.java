@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.core.context.EmbeddedMapping;
-import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
@@ -22,6 +21,8 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -102,15 +103,28 @@ public interface JpaUiFactory
 		WidgetFactory widgetFactory);
 
 	/**
-	 * Creates a new <code>JpaComposite</code> used to edit an <code>Entity</code>.
+	 * Creates a new <code>JpaComposite</code> used to edit an <code>JavaEntity</code>.
 	 *
-	 * @param subjectHolder The holder of the entity
+	 * @param subjectHolder The holder of the java entity
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create the widgets
 	 * @return A new <code>JpaComposite</code>
 	 */
-	JpaComposite<Entity> createEntityComposite(
-		PropertyValueModel<Entity> subjectHolder,
+	JpaComposite<JavaEntity> createJavaEntityComposite(
+		PropertyValueModel<JavaEntity> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory);
+
+	/**
+	 * Creates a new <code>JpaComposite</code> used to edit a <code>OrmEntity</code>.
+	 *
+	 * @param subjectHolder The holder of the orm entity
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create the widgets
+	 * @return A new <code>JpaComposite</code>
+	 */
+	JpaComposite<OrmEntity> createOrmEntityComposite(
+		PropertyValueModel<OrmEntity> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
 

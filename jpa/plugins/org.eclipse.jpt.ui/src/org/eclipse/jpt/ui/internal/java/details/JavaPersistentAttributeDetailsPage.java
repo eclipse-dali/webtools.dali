@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,9 +13,9 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
-import org.eclipse.jpt.ui.java.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -80,7 +80,7 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 	protected AttributeMappingUiProvider<? extends AttributeMapping> defaultAttributeMappingUiProvider(String key) {
 		for (ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> i = defaultAttributeMappingUiProviders(); i.hasNext(); ) {
 			AttributeMappingUiProvider<? extends AttributeMapping> provider = i.next();
-			if (provider.attributeMappingKey() == key) {
+			if (provider.mappingKey() == key) {
 				return provider;
 			}
 		}

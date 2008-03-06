@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,31 +27,31 @@ import org.eclipse.jpt.core.resource.orm.OrmResourceModel;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResourceModel;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaUiFactory;
+import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
-import org.eclipse.jpt.ui.internal.java.details.BasicMappingUiProvider;
+import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
+import org.eclipse.jpt.ui.internal.details.BasicMappingUiProvider;
+import org.eclipse.jpt.ui.internal.details.EmbeddableUiProvider;
+import org.eclipse.jpt.ui.internal.details.EmbeddedIdMappingUiProvider;
+import org.eclipse.jpt.ui.internal.details.EmbeddedMappingUiProvider;
+import org.eclipse.jpt.ui.internal.details.IdMappingUiProvider;
+import org.eclipse.jpt.ui.internal.details.ManyToManyMappingUiProvider;
+import org.eclipse.jpt.ui.internal.details.ManyToOneMappingUiProvider;
+import org.eclipse.jpt.ui.internal.details.MappedSuperclassUiProvider;
+import org.eclipse.jpt.ui.internal.details.OneToManyMappingUiProvider;
+import org.eclipse.jpt.ui.internal.details.OneToOneMappingUiProvider;
+import org.eclipse.jpt.ui.internal.details.TransientMappingUiProvider;
+import org.eclipse.jpt.ui.internal.details.VersionMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.DefaultBasicMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.DefaultEmbeddedMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.EmbeddableUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.EmbeddedIdMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.EmbeddedMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.EntityUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.IdMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaEntityUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaDetailsProvider;
-import org.eclipse.jpt.ui.internal.java.details.ManyToManyMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.ManyToOneMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.MappedSuperclassUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.NullTypeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.OneToManyMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.OneToOneMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.TransientMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.VersionMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmDetailsProvider;
 import org.eclipse.jpt.ui.internal.structure.JavaResourceModelStructureProvider;
 import org.eclipse.jpt.ui.internal.structure.JpaStructureProvider;
 import org.eclipse.jpt.ui.internal.structure.OrmResourceModelStructureProvider;
 import org.eclipse.jpt.ui.internal.structure.PersistenceResourceModelStructureProvider;
-import org.eclipse.jpt.ui.java.details.AttributeMappingUiProvider;
-import org.eclipse.jpt.ui.java.details.TypeMappingUiProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.ui.navigator.ICommonContentProvider;
@@ -166,7 +166,7 @@ public abstract class BaseJpaPlatformUi implements JpaPlatformUi
 	 */
 	protected void addJavaTypeMappingUiProvidersTo(List<TypeMappingUiProvider<? extends TypeMapping>> providers) {
 		providers.add(NullTypeMappingUiProvider.instance());
-		providers.add(EntityUiProvider.instance());
+		providers.add(JavaEntityUiProvider.instance());
 		providers.add(MappedSuperclassUiProvider.instance());
 		providers.add(EmbeddableUiProvider.instance());
 	}

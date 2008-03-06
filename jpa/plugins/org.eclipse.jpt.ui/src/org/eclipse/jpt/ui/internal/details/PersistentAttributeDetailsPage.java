@@ -24,15 +24,11 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.ui.JpaPlatformUi;
-import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.Tracing;
-import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
-import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
-import org.eclipse.jpt.ui.java.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.FilteringPropertyValueModel;
@@ -87,7 +83,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	protected AttributeMappingUiProvider<? extends AttributeMapping> attributeMappingUiProvider(String key) {
 		for (ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> i = attributeMappingUiProviders(); i.hasNext(); ) {
 			AttributeMappingUiProvider<? extends AttributeMapping> provider = i.next();
-			if (provider.attributeMappingKey() == key) {
+			if (provider.mappingKey() == key) {
 				return provider;
 			}
 		}
@@ -245,16 +241,6 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		this.mappingComposites = new HashMap<String, JpaComposite<AttributeMapping>>();
 	}
 
-	protected JpaPlatformUi jpaPlatformUi() {
-		String platformId = subject().jpaProject().jpaPlatform().getId();
-		return JpaPlatformUiRegistry.instance().jpaPlatform(platformId);
-	}
-
-	protected JpaUiFactory jpaUiFactory() {
-		// TODO: Remove the type cast, used for testing
-		return ((BaseJpaPlatformUi) jpaPlatformUi()).getJpaUiFactory();
-	}
-
 	/*
 	 * (non-Javadoc)
 	 */
@@ -272,7 +258,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	private void mappingChanged(SelectionChangedEvent event) {
 		if (event.getSelection() instanceof StructuredSelection) {
 			AttributeMappingUiProvider<?> provider = (AttributeMappingUiProvider<?>) ((StructuredSelection) event.getSelection()).getFirstElement();
-			String key = (CollectionTools.contains(defaultAttributeMappingUiProviders(), provider) ? null : provider.attributeMappingKey());
+			String key = (CollectionTools.contains(defaultAttributeMappingUiProviders(), provider) ? null : provider.mappingKey());
 			this.subject().setSpecifiedMappingKey(key);
 		}
 	}

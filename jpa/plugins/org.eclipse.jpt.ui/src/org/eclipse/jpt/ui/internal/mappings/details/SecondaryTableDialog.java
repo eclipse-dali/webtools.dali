@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved. This
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved. This
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
@@ -46,12 +46,12 @@ public class SecondaryTableDialog extends Dialog {
 	private boolean defaultSchemaSelected;
 	private boolean defaultCatalogSelected;
 
-	SecondaryTableDialog(Shell parent, Entity entity) {
+	public SecondaryTableDialog(Shell parent, Entity entity) {
 		super(parent);
 		this.entity = entity;
 	}
 
-	SecondaryTableDialog(Shell parent, SecondaryTable secondaryTable, Entity entity) {
+	public SecondaryTableDialog(Shell parent, SecondaryTable secondaryTable, Entity entity) {
 		super(parent);
 		this.secondaryTable = secondaryTable;
 		this.entity = entity;
@@ -212,23 +212,23 @@ public class SecondaryTableDialog extends Dialog {
 	}
 
 
-	protected String getSelectedName() {
+	public String getSelectedName() {
 		return this.selectedName;
 	}
 
-	protected String getSelectedCatalog() {
+	public String getSelectedCatalog() {
 		return this.selectedCatalog;
 	}
 
-	protected String getSelectedSchema() {
+	public String getSelectedSchema() {
 		return this.selectedSchema;
 	}
 
-	protected boolean isDefaultSchemaSelected() {
+	public boolean isDefaultSchemaSelected() {
 		return this.defaultSchemaSelected;
 	}
 
-	protected boolean isDefaultCatalogSelected() {
+	public boolean isDefaultCatalogSelected() {
 		return this.defaultCatalogSelected;
 	}
 
