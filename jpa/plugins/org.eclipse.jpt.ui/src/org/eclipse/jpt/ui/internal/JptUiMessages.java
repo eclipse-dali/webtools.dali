@@ -90,8 +90,8 @@ public class JptUiMessages extends NLS
 	public static String OrmItemLabelProviderFactory_entityMappingsLabel;
 	public static String OverwriteConfirmerDialog_text;
 	public static String OverwriteConfirmerDialog_title;
-	public static String PackageChooser_dialogMessage;
-	public static String PackageChooserPane_dialogtitle;
+	public static String PackageChooserPane_dialogMessage;
+	public static String PackageChooserPane_dialogTitle;
 	public static String PersistenceItemLabelProviderFactory_persistenceLabel;
 	public static String PersistentAttributePage_mapAs;
 	public static String PersistentTypePage_mapAs;
