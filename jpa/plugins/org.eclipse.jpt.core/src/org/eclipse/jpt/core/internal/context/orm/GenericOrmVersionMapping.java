@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.TemporalType;
-import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
@@ -151,12 +150,11 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	}
 	
 	protected void addColumnMessages(List<IMessage> messages) {
-		TypeMapping typeMapping = typeMapping();
 		OrmColumn column = getColumn();
 		String table = column.getTable();
 		boolean doContinue = entityOwned() &&  isConnected();
 		
-		if (doContinue && typeMapping.tableNameIsInvalid(table)) {
+		if (doContinue && typeMapping().tableNameIsInvalid(table)) {
 			if (persistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
