@@ -1359,15 +1359,26 @@ public abstract class AbstractPane<T extends Model>
 
 		Text text = this.buildMultiLineText(container, textHolder, lineCount);
 
-		this.buildLabeledComposite(
+		container = this.buildLabeledComposite(
 			container,
 			labelText,
 			text,
 			helpId
 		);
 
+		int textHeight = text.computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
+
+		// Specify the number of lines the text area should display
 		GridData gridData = (GridData) text.getLayoutData();
 		gridData.heightHint = text.getLineHeight() * lineCount;
+
+		// Move the label to the top of its cell
+		Control label = container.getChildren()[0];
+		int labelHeight = label.computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
+
+		gridData = (GridData) label.getLayoutData();
+		gridData.verticalAlignment = SWT.TOP;
+		gridData.verticalIndent   += (Math.abs(textHeight - labelHeight) / 2);
 
 		return text;
 	}
@@ -2423,9 +2434,9 @@ public abstract class AbstractPane<T extends Model>
 		GridLayout layout = new GridLayout(1, false);
 		layout.marginHeight = 0;
 		layout.marginWidth  = 0;
-		layout.marginTop    = 2;
+		layout.marginTop    = 5;
 		layout.marginLeft   = 5;
-		layout.marginBottom = 9;
+		layout.marginBottom = 5;
 		layout.marginRight  = 5;
 		group.setLayout(layout);
 

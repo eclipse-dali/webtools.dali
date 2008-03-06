@@ -25,6 +25,7 @@ import org.eclipse.jpt.ui.internal.widgets.NewNameDialog;
 import org.eclipse.jpt.ui.internal.widgets.NewNameDialogBuilder;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -34,6 +35,7 @@ import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionMod
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -152,8 +154,15 @@ public class NamedNativeQueriesComposite extends AbstractFormPane<Entity>
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				NamedNativeQuery namedQuery = (NamedNativeQuery) element;
-				return namedQuery.getName();
+				NamedNativeQuery namedNativeQuery = (NamedNativeQuery) element;
+				String name = namedNativeQuery.getName();
+
+				if (name == null) {
+					int index = CollectionTools.indexOf(subject().namedNativeQueries(), namedNativeQuery);
+					name = NLS.bind(JptUiMappingsMessages.NamedNativeQueriesComposite_displayString, index);
+				}
+
+				return name;
 			}
 		};
 	}
@@ -215,6 +224,8 @@ public class NamedNativeQueriesComposite extends AbstractFormPane<Entity>
 	@Override
 	protected void initializeLayout(Composite container) {
 
+		int groupBoxMargin = groupBoxMargin();
+
 		container = buildTitledPane(
 			container,
 			JptUiMappingsMessages.NamedNativeQueriesComposite_title
@@ -223,7 +234,7 @@ public class NamedNativeQueriesComposite extends AbstractFormPane<Entity>
 		// List pane
 		new AddRemoveListPane<Entity>(
 			this,
-			container,
+			buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
 			buildNamedNativeQueriesAdapter(),
 			buildDisplayableNamedNativeQueriesListHolder(),
 			namedNativeQueryHolder,

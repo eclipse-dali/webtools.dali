@@ -9,43 +9,30 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.orm.details;
 
-import java.util.Collection;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
-import org.eclipse.jdt.core.search.SearchEngine;
-import org.eclipse.jdt.internal.ui.refactoring.contentassist.ControlContentAssistHelper;
-import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaTypeCompletionProcessor;
-import org.eclipse.jdt.ui.IJavaElementSearchConstants;
-import org.eclipse.jdt.ui.JavaUI;
-import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.dialogs.SelectionDialog;
-import org.eclipse.ui.progress.IProgressService;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * Here the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
- * |             ----------------------------------------------- ------------- |
- * | Java Class: | I                                           | | Browse... | |
- * |             ----------------------------------------------- ------------- |
+ * |                                                                           |
+ * | ClassChooserPane                                                          |
+ * |                                                                           |
  * -----------------------------------------------------------------------------</pre>
  *
  * TODO possibly help the user and if they have chosen a package at the
@@ -55,15 +42,12 @@ import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
  *
  * @see OrmTypeMapping
  * @see OrmPersistentTypeDetailsPage - The parent container
+ * @see ClassChooserPane
  *
  * @version 2.0
  * @since 1.0
  */
-@SuppressWarnings("nls")
 public class OrmJavaClassChooser extends AbstractFormPane<OrmTypeMapping> {
-
-	private JavaTypeCompletionProcessor javaTypeCompletionProcessor;
-	private Text text;
 
 	/**
 	 * Creates a new <code>XmlJavaClassChooser</code>.
@@ -93,120 +77,60 @@ public class OrmJavaClassChooser extends AbstractFormPane<OrmTypeMapping> {
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void addPropertyNames(Collection<String> propertyNames) {
-		super.addPropertyNames(propertyNames);
-		propertyNames.add(OrmTypeMapping.CLASS_PROPERTY);
-	}
+	private ClassChooserPane<OrmTypeMapping> initializeClassChooser(Composite container) {
 
-	private void browseType() {
+		return new ClassChooserPane<OrmTypeMapping>(this, container) {
 
-		IType type = chooseType();
+			@Override
+			protected WritablePropertyValueModel<String> buildTextHolder() {
+				return new PropertyAspectAdapter<OrmTypeMapping, String>(getSubjectHolder(), OrmTypeMapping.CLASS_PROPERTY) {
+					@Override
+					protected String buildValue_() {
+						return subject.getClass_();
+					}
 
-		if (type != null) {
-
-			setPopulating(true);
-
-			try {
-				String className = type.getFullyQualifiedName();
-				text.setText(className);
-				subject().setClass(className);
+					@Override
+					protected void setValue_(String value) {
+						subject.setClass(value);
+					}
+				};
 			}
-			finally {
-				setPopulating(false);
+
+			@Override
+			protected String className() {
+				return subject().getClass_();
 			}
-		}
-	}
 
-	private Button buildBrowseButton(Composite container) {
-		return buildButton(
-			container,
-			JptUiOrmMessages.OrmJavaClassChooser_browse,
-			buildBrowseButtonAction()
-		);
-	}
-
-	private Runnable buildBrowseButtonAction() {
-		return new Runnable() {
-			public void run() {
-				browseType();
+			@Override
+			protected String labelText() {
+				return JptUiOrmMessages.PersistentTypePage_javaClassLabel;
 			}
-		};
-	}
 
-	private ModifyListener buildPackageTextModifyListener() {
-		return new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				if (!isPopulating()) {
-					Text text = (Text) e.widget;
-					textChanged(text.getText());
+			@Override
+			protected IPackageFragmentRoot packageFragmentRoot() {
+				IProject project = subject().jpaProject().project();
+				IJavaProject root = JavaCore.create(project);
+
+				try {
+					return root.getAllPackageFragmentRoots()[0];
+				}
+				catch (JavaModelException e) {
+					JptUiPlugin.log(e);
+				}
+
+				return null;
+			}
+
+			@Override
+			protected void promptType() {
+				IType type = chooseType();
+
+				if (type != null) {
+					String className = type.getFullyQualifiedName();
+					subject().setClass(className);
 				}
 			}
 		};
-	}
-
-	private IType chooseType() {
-
-		IPackageFragmentRoot root = getPackageFragmentRoot();
-
-		if (root == null) {
-			return null;
-		}
-
-		IJavaElement[] elements= new IJavaElement[] { root.getJavaProject() };
-		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements);
-		IProgressService service = PlatformUI.getWorkbench().getProgressService();
-		SelectionDialog typeSelectionDialog;
-
-		try {
-			typeSelectionDialog = JavaUI.createTypeDialog(
-				shell(),
-				service,
-				scope,
-				IJavaElementSearchConstants.CONSIDER_CLASSES,
-				false,
-				text.getText()
-			);
-		}
-		catch (JavaModelException e) {
-			JptUiPlugin.log(e);
-			return null;
-		}
-
-		typeSelectionDialog.setTitle(JptUiOrmMessages.OrmJavaClassChooser_XmlJavaClassDialog_title);
-		typeSelectionDialog.setMessage(JptUiOrmMessages.OrmJavaClassChooser_XmlJavaClassDialog_message);
-
-		if (typeSelectionDialog.open() == Window.OK) {
-			return (IType) typeSelectionDialog.getResult()[0];
-		}
-
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void doPopulate() {
-		super.doPopulate();
-		populateText();
-	}
-
-	private IPackageFragmentRoot getPackageFragmentRoot() {
-		IProject project = subject().jpaProject().project();
-		IJavaProject root = JavaCore.create(project);
-
-		try {
-			return root.getAllPackageFragmentRoots()[0];
-		}
-		catch (JavaModelException e) {
-			JptUiPlugin.log(e);
-		}
-
-		return null;
 	}
 
 	/*
@@ -214,64 +138,6 @@ public class OrmJavaClassChooser extends AbstractFormPane<OrmTypeMapping> {
 	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		text = buildLabeledText(
-			container,
-			JptUiOrmMessages.PersistentTypePage_javaClassLabel,
-			buildPackageTextModifyListener(),
-			buildBrowseButton(container)
-		);
-
-		//TODO bug 156185 - when this is fixed there should be api for this
-		this.javaTypeCompletionProcessor = new JavaTypeCompletionProcessor(false, false);
-		ControlContentAssistHelper.createTextContentAssistant(this.text,  this.javaTypeCompletionProcessor);
-	}
-
-	private void populateText() {
-
-		OrmTypeMapping subject = subject();
-		text.setText("");
-
-		if (subject == null) {
-			return;
-		}
-
-		IPackageFragmentRoot root = getPackageFragmentRoot();
-
-		if (root != null) {
-			 javaTypeCompletionProcessor.setPackageFragment(root.getPackageFragment(""));
-		}
-
-		String javaClass = subject.getClass_();
-
-		if (javaClass == null) {
-			javaClass = "";
-		}
-
-		text.setText(javaClass);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void propertyChanged(String propertyName) {
-		super.propertyChanged(propertyName);
-
-		if (propertyName == OrmTypeMapping.CLASS_PROPERTY) {
-			populateText();
-		}
-	}
-
-	private void textChanged(String text) {
-
-		setPopulating(true);
-
-		try {
-			subject().setClass(text);
-		}
-		finally {
-			setPopulating(false);
-		}
+		initializeClassChooser(container);
 	}
 }

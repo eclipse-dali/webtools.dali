@@ -22,6 +22,9 @@ public class JptUiMessages extends NLS
 {
 	private static final String BUNDLE_NAME = "jpt_ui";
 
+	public static String AbstractChooserPane_browseButton;
+	public static String ClassChooserPane_dialogMessage;
+	public static String ClassChooserPane_dialogTitle;
 	public static String AddPersistentAttributeDialog_attributeLabel;
 	public static String AddPersistentAttributeDialog_mappingLabel;
 	public static String AddPersistentAttributeDialog_noMappingKeyError;
@@ -87,6 +90,8 @@ public class JptUiMessages extends NLS
 	public static String OrmItemLabelProviderFactory_entityMappingsLabel;
 	public static String OverwriteConfirmerDialog_text;
 	public static String OverwriteConfirmerDialog_title;
+	public static String PackageChooser_dialogMessage;
+	public static String PackageChooserPane_dialogtitle;
 	public static String PersistenceItemLabelProviderFactory_persistenceLabel;
 	public static String PersistentAttributePage_mapAs;
 	public static String PersistentTypePage_mapAs;

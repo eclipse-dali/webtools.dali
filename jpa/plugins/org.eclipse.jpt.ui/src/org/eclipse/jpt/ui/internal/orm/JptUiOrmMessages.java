@@ -14,9 +14,6 @@ public class JptUiOrmMessages
 {
 	private static final String BUNDLE_NAME = "jpt_ui_orm"; //$NON-NLS-1$
 
-
-
-
 	public static String PersistentTypePage_javaClassLabel;
 	public static String PersistentTypePage_MetadataCompleteLabel;
 	public static String PersistentTypePage_AccessLabel;
@@ -38,12 +35,6 @@ public class JptUiOrmMessages
 
 	public static String OrmSchemaChooser_SchemaChooser;
 	public static String OrmCatalogChooser_CatalogChooser;
-
-	public static String OrmJavaClassChooser_browse;
-	public static String OrmJavaClassChooser_XmlJavaClassDialog_title;
-	public static String OrmJavaClassChooser_XmlJavaClassDialog_message;
-	public static String OrmPackageChooser_PackageDialog_title;
-	public static String OrmPackageChooser_PackageDialog_message;
 
 	public static String AccessTypeComposite_field;
 	public static String AccessTypeComposite_property;
