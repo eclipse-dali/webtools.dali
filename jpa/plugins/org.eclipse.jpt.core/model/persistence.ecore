@@ -25,8 +25,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="classes" unique="false"
         upperBound="-1" eType="#//XmlJavaClassRef" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeUnlistedClasses"
-        unique="false" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"
-        defaultValueLiteral="false" unsettable="true"/>
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="properties" eType="#//XmlProperties"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" unique="false" lowerBound="1"

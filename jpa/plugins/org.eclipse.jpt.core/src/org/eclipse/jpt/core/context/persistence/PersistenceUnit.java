@@ -343,35 +343,27 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	
 	// **************** exclude unlisted classes *******************************
 	
+	/** 
+	 * Return the "exclude unlisted classes" setting of the persistence unit.
+	 */
+	boolean isExcludeUnlistedClasses();
+
 	/**
 	 * String constant associated with changes to the persistence unit's 
 	 * "exclude unlisted classes" setting
 	 */
-	final static String EXCLUDE_UNLISTED_CLASSED_PROPERTY = "excludeUnlistedClasses";
+	final static String SPECIFIED_EXCLUDE_UNLISTED_CLASSED_PROPERTY = "specifiedExcludeUnlistedClasses";
 	
 	/** 
 	 * Return the "exclude unlisted classes" setting of the persistence unit.
 	 */
-	boolean getExcludeUnlistedClasses();
+	Boolean getSpecifiedExcludeUnlistedClasses();
 	
 	/** 
 	 * Set the "exclude unlisted classes" setting of the persistence unit.
 	 */
-	void setExcludeUnlistedClasses(boolean excludeUnlistedClasses);
-	
-	/** 
-	 * Return true if the "exclude unlisted classes" setting is default rather 
-	 * than overridden
-	 * (corresponds to missing tag in persistence.xml)
-	 */
-	boolean isExcludeUnlistedClassesDefault();
-	
-	/** 
-	 * Set the "exclude unlisted classes" setting of the persistence unit to the 
-	 * default 
-	 */
-	void setExcludeUnlistedClassesToDefault();
-	
+	void setSpecifiedExcludeUnlistedClasses(Boolean excludeUnlistedClasses);
+		
 	/**
 	 * String constant associated with changes to the persistence unit's 
 	 * default "exclude unlisted classes" setting (not typically changed)
@@ -381,7 +373,7 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	/** 
 	 * Return the default "exclude unlisted classes" setting
 	 */
-	boolean getDefaultExcludeUnlistedClasses();
+	Boolean getDefaultExcludeUnlistedClasses();
 	
 	
 	// **************** properties *********************************************

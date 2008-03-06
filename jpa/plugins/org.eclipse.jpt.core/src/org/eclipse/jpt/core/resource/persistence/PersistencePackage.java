@@ -689,11 +689,11 @@ public class PersistencePackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#isExcludeUnlistedClasses <em>Exclude Unlisted Classes</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#getExcludeUnlistedClasses <em>Exclude Unlisted Classes</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Exclude Unlisted Classes</em>'.
-	 * @see org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#isExcludeUnlistedClasses()
+	 * @see org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#getExcludeUnlistedClasses()
 	 * @see #getXmlPersistenceUnit()
 	 * @generated
 	 */
@@ -1040,7 +1040,7 @@ public class PersistencePackage extends EPackageImpl
 		initEReference(getXmlPersistenceUnit_MappingFiles(), this.getXmlMappingFileRef(), null, "mappingFiles", null, 0, -1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlPersistenceUnit_JarFiles(), theXMLTypePackage.getString(), "jarFiles", null, 0, -1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlPersistenceUnit_Classes(), this.getXmlJavaClassRef(), null, "classes", null, 0, -1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlPersistenceUnit_ExcludeUnlistedClasses(), theXMLTypePackage.getBoolean(), "excludeUnlistedClasses", "false", 0, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlPersistenceUnit_ExcludeUnlistedClasses(), theXMLTypePackage.getBooleanObject(), "excludeUnlistedClasses", null, 0, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlPersistenceUnit_Properties(), this.getXmlProperties(), null, "properties", null, 0, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlPersistenceUnit_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlPersistenceUnit_TransactionType(), this.getXmlPersistenceUnitTransactionType(), "transactionType", "JTA", 0, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

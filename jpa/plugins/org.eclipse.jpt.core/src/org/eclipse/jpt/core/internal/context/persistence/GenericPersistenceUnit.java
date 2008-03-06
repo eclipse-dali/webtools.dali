@@ -89,9 +89,9 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	protected final List<ClassRef> impliedClassRefs;
 	
-	protected Boolean excludeUnlistedClasses;
+	protected Boolean specifiedExcludeUnlistedClasses;
 	
-	protected boolean defaultExcludeUnlistedClasses = false;
+	protected Boolean defaultExcludeUnlistedClasses = Boolean.FALSE;
 	
 	protected final List<Property> properties;
 	
@@ -450,44 +450,30 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	// **************** exclude unlisted classes *******************************
 	
-	public boolean getExcludeUnlistedClasses() {
-		return (isExcludeUnlistedClassesDefault()) ? 
-				getDefaultExcludeUnlistedClasses() : this.excludeUnlistedClasses;
+	public boolean isExcludeUnlistedClasses() {
+		return getSpecifiedExcludeUnlistedClasses() == null ? getDefaultExcludeUnlistedClasses().booleanValue() : getSpecifiedExcludeUnlistedClasses().booleanValue();
 	}
 	
-	public void setExcludeUnlistedClasses(boolean newExcludeUnlistedClasses) {
-		setExcludeUnlistedClasses((Boolean) newExcludeUnlistedClasses);
+	public Boolean getSpecifiedExcludeUnlistedClasses() {
+		return this.specifiedExcludeUnlistedClasses;
 	}
 	
-	public boolean isExcludeUnlistedClassesDefault() {
-		return this.excludeUnlistedClasses == null;
+	public void setSpecifiedExcludeUnlistedClasses(Boolean newExcludeUnlistedClasses) {
+		Boolean oldExcludeUnlistedClasses = this.specifiedExcludeUnlistedClasses;
+		this.specifiedExcludeUnlistedClasses = newExcludeUnlistedClasses;
+		
+		this.xmlPersistenceUnit.setExcludeUnlistedClasses(this.specifiedExcludeUnlistedClasses);
+		
+		firePropertyChanged(SPECIFIED_EXCLUDE_UNLISTED_CLASSED_PROPERTY, oldExcludeUnlistedClasses, newExcludeUnlistedClasses);
 	}
-	
-	public boolean getDefaultExcludeUnlistedClasses() {
+
+	public Boolean getDefaultExcludeUnlistedClasses() {
 		// TODO - calculate default
 		//  This is determined from the project
 		return this.defaultExcludeUnlistedClasses;
 	}
-	
-	public void setExcludeUnlistedClassesToDefault() {
-		setExcludeUnlistedClasses(null);
-	}
-	
-	protected void setExcludeUnlistedClasses(Boolean newExcludeUnlistedClasses) {
-		Boolean oldExcludeUnlistedClasses = this.excludeUnlistedClasses;
-		this.excludeUnlistedClasses = newExcludeUnlistedClasses;
-		
-		if (this.excludeUnlistedClasses != null) {
-			this.xmlPersistenceUnit.setExcludeUnlistedClasses(this.excludeUnlistedClasses);
-		}
-		else {
-			this.xmlPersistenceUnit.unsetExcludeUnlistedClasses();
-		}
-		
-		firePropertyChanged(EXCLUDE_UNLISTED_CLASSED_PROPERTY, oldExcludeUnlistedClasses, newExcludeUnlistedClasses);
-	}
-	
-	
+
+
 	// **************** properties *********************************************
 	
 	public ListIterator<Property> properties() {
@@ -733,6 +719,8 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		initializeMappingFileRefs(xmlPersistenceUnit);
 		initializeClassRefs(xmlPersistenceUnit);
 		initializeProperties(xmlPersistenceUnit);
+		this.specifiedExcludeUnlistedClasses = xmlPersistenceUnit.getExcludeUnlistedClasses();
+		//TODO more things to initialize
 	}
 	
 	protected void initializeMappingFileRefs(XmlPersistenceUnit xmlPersistenceUnit) {
@@ -749,7 +737,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 			specifiedClassRefs.add(buildClassRef(xmlJavaClassRef));
 		}
 		
-		if (jpaProject().discoversAnnotatedClasses() && ! getExcludeUnlistedClasses()) {
+		if (jpaProject().discoversAnnotatedClasses() && !isExcludeUnlistedClasses()) {
 			for (IType type : CollectionTools.iterable(jpaProject().annotatedClasses())) {
 				if (! classIsSpecified(type.getFullyQualifiedName())) {
 					impliedClassRefs.add(buildClassRef(type.getFullyQualifiedName()));
@@ -920,7 +908,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		Iterator<IType> annotatedClasses = jpaProject().annotatedClasses();
 		
 		
-		if (jpaProject().discoversAnnotatedClasses() && ! getExcludeUnlistedClasses()) {
+		if (jpaProject().discoversAnnotatedClasses() && !isExcludeUnlistedClasses()) {
 			while (impliedRefs.hasNext()) {
 				ClassRef classRef = impliedRefs.next();
 				boolean updated = false;
@@ -968,12 +956,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	protected void updateExcludeUnlistedClasses(XmlPersistenceUnit persistenceUnit) {
-		if (persistenceUnit.isSetExcludeUnlistedClasses()) {
-			setExcludeUnlistedClasses(persistenceUnit.isExcludeUnlistedClasses());
-		}
-		else {
-			setExcludeUnlistedClassesToDefault();
-		}
+		setSpecifiedExcludeUnlistedClasses(persistenceUnit.getExcludeUnlistedClasses());
 	}
 	
 	protected void updateProperties(XmlPersistenceUnit persistenceUnit) {

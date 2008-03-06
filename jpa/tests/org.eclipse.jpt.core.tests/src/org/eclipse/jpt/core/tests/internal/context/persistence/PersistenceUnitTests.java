@@ -604,29 +604,29 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		PersistenceUnit persistenceUnit = persistenceUnit();
 		
 		// 1 - initial value is default
-		assertFalse(xmlPersistenceUnit.isSetExcludeUnlistedClasses());
-		assertTrue(persistenceUnit.isExcludeUnlistedClassesDefault());
-		assertEquals(persistenceUnit.getExcludeUnlistedClasses(), xmlPersistenceUnit.isExcludeUnlistedClasses());
+		assertNull(persistenceUnit.getSpecifiedExcludeUnlistedClasses());
+		assertFalse(persistenceUnit.isExcludeUnlistedClasses());
+		assertNull(xmlPersistenceUnit.getExcludeUnlistedClasses());
 		
 		// 2 - set value, context changed
-		xmlPersistenceUnit.setExcludeUnlistedClasses(true);
+		xmlPersistenceUnit.setExcludeUnlistedClasses(Boolean.TRUE);
 		
-		assertTrue(xmlPersistenceUnit.isSetExcludeUnlistedClasses());
-		assertFalse(persistenceUnit.isExcludeUnlistedClassesDefault());
-		assertEquals(persistenceUnit.getExcludeUnlistedClasses(), xmlPersistenceUnit.isExcludeUnlistedClasses());
+		assertEquals(Boolean.TRUE, persistenceUnit.getSpecifiedExcludeUnlistedClasses());
+		assertTrue(persistenceUnit.isExcludeUnlistedClasses());
+		assertEquals(Boolean.TRUE, xmlPersistenceUnit.getExcludeUnlistedClasses());
 		
-		xmlPersistenceUnit.setExcludeUnlistedClasses(false);
+		xmlPersistenceUnit.setExcludeUnlistedClasses(Boolean.FALSE);
 		
-		assertTrue(xmlPersistenceUnit.isSetExcludeUnlistedClasses());
-		assertFalse(persistenceUnit.isExcludeUnlistedClassesDefault());
-		assertEquals(persistenceUnit.getExcludeUnlistedClasses(), xmlPersistenceUnit.isExcludeUnlistedClasses());
+		assertEquals(Boolean.FALSE, persistenceUnit.getSpecifiedExcludeUnlistedClasses());
+		assertFalse(persistenceUnit.isExcludeUnlistedClasses());
+		assertEquals(Boolean.FALSE, xmlPersistenceUnit.getExcludeUnlistedClasses());
 		
 		// 3 - unset value, context changed
-		xmlPersistenceUnit.unsetExcludeUnlistedClasses();
+		xmlPersistenceUnit.setExcludeUnlistedClasses(null);
 		
-		assertFalse(xmlPersistenceUnit.isSetExcludeUnlistedClasses());
-		assertTrue(persistenceUnit.isExcludeUnlistedClassesDefault());
-		assertEquals(persistenceUnit.getExcludeUnlistedClasses(), xmlPersistenceUnit.isExcludeUnlistedClasses());
+		assertNull(persistenceUnit.getSpecifiedExcludeUnlistedClasses());
+		assertFalse(persistenceUnit.isExcludeUnlistedClasses());
+		assertNull(xmlPersistenceUnit.getExcludeUnlistedClasses());
 	}
 	
 	public void testModifyExcludeUnlistedClasses() {
@@ -634,29 +634,29 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		PersistenceUnit persistenceUnit = persistenceUnit();
 		
 		// 1 - initial value is default
-		assertFalse(xmlPersistenceUnit.isSetExcludeUnlistedClasses());
-		assertTrue(persistenceUnit.isExcludeUnlistedClassesDefault());
-		assertEquals(persistenceUnit.getExcludeUnlistedClasses(), xmlPersistenceUnit.isExcludeUnlistedClasses());
+		assertNull(persistenceUnit.getSpecifiedExcludeUnlistedClasses());
+		assertFalse(persistenceUnit.isExcludeUnlistedClasses());
+		assertNull(xmlPersistenceUnit.getExcludeUnlistedClasses());
 		
 		// 2 - set value, resource changed
-		persistenceUnit.setExcludeUnlistedClasses(true);
+		persistenceUnit.setSpecifiedExcludeUnlistedClasses(Boolean.TRUE);
 		
-		assertTrue(xmlPersistenceUnit.isSetExcludeUnlistedClasses());
-		assertFalse(persistenceUnit.isExcludeUnlistedClassesDefault());
-		assertEquals(persistenceUnit.getExcludeUnlistedClasses(), xmlPersistenceUnit.isExcludeUnlistedClasses());
+		assertEquals(Boolean.TRUE, persistenceUnit.getSpecifiedExcludeUnlistedClasses());
+		assertTrue(persistenceUnit.isExcludeUnlistedClasses());
+		assertEquals(Boolean.TRUE, xmlPersistenceUnit.getExcludeUnlistedClasses());
 		
-		persistenceUnit.setExcludeUnlistedClasses(false);
+		persistenceUnit.setSpecifiedExcludeUnlistedClasses(Boolean.FALSE);
 		
-		assertTrue(xmlPersistenceUnit.isSetExcludeUnlistedClasses());
-		assertFalse(persistenceUnit.isExcludeUnlistedClassesDefault());
-		assertEquals(persistenceUnit.getExcludeUnlistedClasses(), xmlPersistenceUnit.isExcludeUnlistedClasses());
+		assertEquals(Boolean.FALSE, persistenceUnit.getSpecifiedExcludeUnlistedClasses());
+		assertFalse(persistenceUnit.isExcludeUnlistedClasses());
+		assertEquals(Boolean.FALSE, xmlPersistenceUnit.getExcludeUnlistedClasses());
 		
 		// 3 - set context to default, resource unset
-		persistenceUnit.setExcludeUnlistedClassesToDefault();
+		persistenceUnit.setSpecifiedExcludeUnlistedClasses(null);
 		
-		assertFalse(xmlPersistenceUnit.isSetExcludeUnlistedClasses());
-		assertTrue(persistenceUnit.isExcludeUnlistedClassesDefault());
-		assertEquals(persistenceUnit.getExcludeUnlistedClasses(), xmlPersistenceUnit.isExcludeUnlistedClasses());
+		assertNull(persistenceUnit.getSpecifiedExcludeUnlistedClasses());
+		assertFalse(persistenceUnit.isExcludeUnlistedClasses());
+		assertNull(xmlPersistenceUnit.getExcludeUnlistedClasses());
 	}
 	
 	public void testUpdateProperties1() {

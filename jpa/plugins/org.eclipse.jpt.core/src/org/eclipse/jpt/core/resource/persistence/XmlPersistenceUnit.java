@@ -43,7 +43,7 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  *   <li>{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#getMappingFiles <em>Mapping Files</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#getJarFiles <em>Jar Files</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#getClasses <em>Classes</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#isExcludeUnlistedClasses <em>Exclude Unlisted Classes</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#getExcludeUnlistedClasses <em>Exclude Unlisted Classes</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#getProperties <em>Properties</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#getName <em>Name</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#getTransactionType <em>Transaction Type</em>}</li>
@@ -168,33 +168,24 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 	protected EList<XmlJavaClassRef> classes;
 
 	/**
-	 * The default value of the '{@link #isExcludeUnlistedClasses() <em>Exclude Unlisted Classes</em>}' attribute.
+	 * The default value of the '{@link #getExcludeUnlistedClasses() <em>Exclude Unlisted Classes</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isExcludeUnlistedClasses()
+	 * @see #getExcludeUnlistedClasses()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final boolean EXCLUDE_UNLISTED_CLASSES_EDEFAULT = false;
+	protected static final Boolean EXCLUDE_UNLISTED_CLASSES_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #isExcludeUnlistedClasses() <em>Exclude Unlisted Classes</em>}' attribute.
+	 * The cached value of the '{@link #getExcludeUnlistedClasses() <em>Exclude Unlisted Classes</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #isExcludeUnlistedClasses()
+	 * @see #getExcludeUnlistedClasses()
 	 * @generated
 	 * @ordered
 	 */
-	protected boolean excludeUnlistedClasses = EXCLUDE_UNLISTED_CLASSES_EDEFAULT;
-
-	/**
-	 * This is true if the Exclude Unlisted Classes attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean excludeUnlistedClassesESet;
+	protected Boolean excludeUnlistedClasses = EXCLUDE_UNLISTED_CLASSES_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference.
@@ -597,7 +588,6 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 
 	/**
 	 * Returns the value of the '<em><b>Exclude Unlisted Classes</b></em>' attribute.
-	 * The default value is <code>"false"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Exclude Unlisted Classes</em>' attribute isn't clear,
@@ -605,70 +595,30 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Exclude Unlisted Classes</em>' attribute.
-	 * @see #isSetExcludeUnlistedClasses()
-	 * @see #unsetExcludeUnlistedClasses()
-	 * @see #setExcludeUnlistedClasses(boolean)
+	 * @see #setExcludeUnlistedClasses(Boolean)
 	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlPersistenceUnit_ExcludeUnlistedClasses()
-	 * @model default="false" unique="false" unsettable="true" dataType="org.eclipse.emf.ecore.xml.type.Boolean"
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
-	public boolean isExcludeUnlistedClasses()
+	public Boolean getExcludeUnlistedClasses()
 	{
 		return excludeUnlistedClasses;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#isExcludeUnlistedClasses <em>Exclude Unlisted Classes</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#getExcludeUnlistedClasses <em>Exclude Unlisted Classes</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Exclude Unlisted Classes</em>' attribute.
-	 * @see #isSetExcludeUnlistedClasses()
-	 * @see #unsetExcludeUnlistedClasses()
-	 * @see #isExcludeUnlistedClasses()
+	 * @see #getExcludeUnlistedClasses()
 	 * @generated
 	 */
-	public void setExcludeUnlistedClasses(boolean newExcludeUnlistedClasses)
+	public void setExcludeUnlistedClasses(Boolean newExcludeUnlistedClasses)
 	{
-		boolean oldExcludeUnlistedClasses = excludeUnlistedClasses;
+		Boolean oldExcludeUnlistedClasses = excludeUnlistedClasses;
 		excludeUnlistedClasses = newExcludeUnlistedClasses;
-		boolean oldExcludeUnlistedClassesESet = excludeUnlistedClassesESet;
-		excludeUnlistedClassesESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES, oldExcludeUnlistedClasses, excludeUnlistedClasses, !oldExcludeUnlistedClassesESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#isExcludeUnlistedClasses <em>Exclude Unlisted Classes</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetExcludeUnlistedClasses()
-	 * @see #isExcludeUnlistedClasses()
-	 * @see #setExcludeUnlistedClasses(boolean)
-	 * @generated
-	 */
-	public void unsetExcludeUnlistedClasses()
-	{
-		boolean oldExcludeUnlistedClasses = excludeUnlistedClasses;
-		boolean oldExcludeUnlistedClassesESet = excludeUnlistedClassesESet;
-		excludeUnlistedClasses = EXCLUDE_UNLISTED_CLASSES_EDEFAULT;
-		excludeUnlistedClassesESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, PersistencePackage.XML_PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES, oldExcludeUnlistedClasses, EXCLUDE_UNLISTED_CLASSES_EDEFAULT, oldExcludeUnlistedClassesESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#isExcludeUnlistedClasses <em>Exclude Unlisted Classes</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Exclude Unlisted Classes</em>' attribute is set.
-	 * @see #unsetExcludeUnlistedClasses()
-	 * @see #isExcludeUnlistedClasses()
-	 * @see #setExcludeUnlistedClasses(boolean)
-	 * @generated
-	 */
-	public boolean isSetExcludeUnlistedClasses()
-	{
-		return excludeUnlistedClassesESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES, oldExcludeUnlistedClasses, excludeUnlistedClasses));
 	}
 
 	/**
@@ -776,7 +726,7 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 			case PersistencePackage.XML_PERSISTENCE_UNIT__CLASSES:
 				return getClasses();
 			case PersistencePackage.XML_PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES:
-				return isExcludeUnlistedClasses() ? Boolean.TRUE : Boolean.FALSE;
+				return getExcludeUnlistedClasses();
 			case PersistencePackage.XML_PERSISTENCE_UNIT__PROPERTIES:
 				return getProperties();
 			case PersistencePackage.XML_PERSISTENCE_UNIT__NAME:
@@ -823,7 +773,7 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 				getClasses().addAll((Collection<? extends XmlJavaClassRef>)newValue);
 				return;
 			case PersistencePackage.XML_PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES:
-				setExcludeUnlistedClasses(((Boolean)newValue).booleanValue());
+				setExcludeUnlistedClasses((Boolean)newValue);
 				return;
 			case PersistencePackage.XML_PERSISTENCE_UNIT__PROPERTIES:
 				setProperties((XmlProperties)newValue);
@@ -870,7 +820,7 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 				getClasses().clear();
 				return;
 			case PersistencePackage.XML_PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES:
-				unsetExcludeUnlistedClasses();
+				setExcludeUnlistedClasses(EXCLUDE_UNLISTED_CLASSES_EDEFAULT);
 				return;
 			case PersistencePackage.XML_PERSISTENCE_UNIT__PROPERTIES:
 				setProperties((XmlProperties)null);
@@ -910,7 +860,7 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 			case PersistencePackage.XML_PERSISTENCE_UNIT__CLASSES:
 				return classes != null && !classes.isEmpty();
 			case PersistencePackage.XML_PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES:
-				return isSetExcludeUnlistedClasses();
+				return EXCLUDE_UNLISTED_CLASSES_EDEFAULT == null ? excludeUnlistedClasses != null : !EXCLUDE_UNLISTED_CLASSES_EDEFAULT.equals(excludeUnlistedClasses);
 			case PersistencePackage.XML_PERSISTENCE_UNIT__PROPERTIES:
 				return properties != null;
 			case PersistencePackage.XML_PERSISTENCE_UNIT__NAME:
@@ -943,7 +893,7 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 		result.append(", jarFiles: ");
 		result.append(jarFiles);
 		result.append(", excludeUnlistedClasses: ");
-		if (excludeUnlistedClassesESet) result.append(excludeUnlistedClasses); else result.append("<unset>");
+		result.append(excludeUnlistedClasses);
 		result.append(", name: ");
 		result.append(name);
 		result.append(", transactionType: ");
