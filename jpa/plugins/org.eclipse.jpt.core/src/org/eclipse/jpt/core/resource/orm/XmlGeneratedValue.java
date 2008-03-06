@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.resource.common.JpaEObject;
 
 /**
@@ -93,4 +94,9 @@ public interface XmlGeneratedValue extends JpaEObject
 	 */
 	void setStrategy(GenerationType value);
 
+	/**
+	 * Return the {@link TextRange} for the generator attibute.  If the generator attibute 
+	 * does not exist return the {@link TextRange} for the generated-value element.
+	 */
+	TextRange generatorTextRange();
 } // GeneratedValue

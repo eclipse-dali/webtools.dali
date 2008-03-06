@@ -9,9 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.List;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.TemporalType;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
@@ -20,6 +22,8 @@ import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
@@ -28,6 +32,7 @@ import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
@@ -343,5 +348,96 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	
 	public void removeColumnResource() {
 		this.attributeMapping().setColumn(null);
+	}
+	
+	// ****************** validation ****************
+
+	@Override
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
+		
+		if (entityOwned()) {
+			addColumnMessages(messages);
+		}
+		addGeneratorMessages(messages);
+	}
+	
+	protected void addColumnMessages(List<IMessage> messages) {
+		TypeMapping typeMapping = typeMapping();
+		OrmColumn column = getColumn();
+		String table = column.getTable();
+		boolean doContinue = isConnected();
+		
+		if (doContinue && typeMapping.tableNameIsInvalid(table)) {
+			if (persistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_TABLE,
+						new String[] {persistentAttribute().getName(), table, column.getName()},
+						column, 
+						column.tableTextRange())
+				);
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
+						new String[] {table, column.getName()}, 
+						column, 
+						column.tableTextRange())
+				);
+			}
+			doContinue = false;
+		}
+		
+		if (doContinue && ! column.isResolved()) {
+			if (persistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
+						new String[] {persistentAttribute().getName(), column.getName()}, 
+						column, 
+						column.nameTextRange())
+				);
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
+						new String[] {column.getName()}, 
+						column, 
+						column.nameTextRange())
+				);
+			}
+		}
+	}
+	
+	protected void addGeneratorMessages(List<IMessage> messages) {
+		OrmGeneratedValue generatedValue = getGeneratedValue();
+		if (generatedValue == null) {
+			return;
+		}
+		String generatorName = generatedValue.getGenerator();
+		if (generatorName == null) {
+			return;
+		}
+		//TODO generator validation
+//		IGeneratorRepository generatorRepository = getPersistenceUnitContext().getGeneratorRepository();		
+//		IGenerator generator = generatorRepository.generator(generatorName);
+//		
+//		if (generator == null) {
+//			messages.add(
+//				JpaValidationMessages.buildMessage(
+//					IMessage.HIGH_SEVERITY,
+//					IJpaValidationMessages.GENERATED_VALUE_UNRESOLVED_GENERATOR,
+//					new String[] {generatorName}, 
+//					generatedValue,
+//					generatedValue.generatorTextRange())
+//			);
+//		}
 	}
 }

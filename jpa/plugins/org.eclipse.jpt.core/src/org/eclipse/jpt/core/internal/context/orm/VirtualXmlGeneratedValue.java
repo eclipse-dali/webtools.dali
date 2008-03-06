@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.GenerationType;
@@ -50,11 +51,11 @@ public class VirtualXmlGeneratedValue extends AbstractJpaEObject implements XmlG
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
 	}
 
-	
+	public TextRange generatorTextRange() {
+		return null;
+	}
 
 	public void update(JavaGeneratedValue javaGeneratedValue) {
 		this.javaGeneratedValue = javaGeneratedValue;
 	}
-
-
 }

@@ -89,7 +89,7 @@ public class GenericJavaGeneratedValue extends AbstractJavaJpaContextNode implem
 	}
 	
 	public TextRange validationTextRange(CompilationUnit astRoot) {
-		return null;//TODO //this.member.annotationTextRange(DECLARATION_ANNOTATION_ADAPTER);
+		return this.generatedValueResource.textRange(astRoot);
 	}
 
 	public TextRange generatorTextRange(CompilationUnit astRoot) {

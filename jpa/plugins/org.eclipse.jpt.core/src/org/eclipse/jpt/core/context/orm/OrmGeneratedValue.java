@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.GeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 
@@ -23,6 +24,11 @@ import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
  */
 public interface OrmGeneratedValue extends GeneratedValue, OrmJpaContextNode
 {
+	/**
+	 * Return the (best guess) text location of the generator.
+	 */
+	TextRange generatorTextRange();
+
 	void initialize(XmlGeneratedValue generatedValue);
 
 	void update(XmlGeneratedValue generatedValue);

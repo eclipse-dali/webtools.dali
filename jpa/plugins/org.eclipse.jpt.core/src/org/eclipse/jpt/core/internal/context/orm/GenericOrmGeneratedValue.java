@@ -87,16 +87,9 @@ public class GenericOrmGeneratedValue extends AbstractOrmJpaContextNode implemen
 	}
 
 	public TextRange generatorTextRange() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.generatedValue.generatorTextRange();
 	}
-//	public ITextRange generatorTextRange() {
-//		if (node == null) {
-//			return ((XmlEObject) eContainer()).validationTextRange();
-//		}
-//		IDOMNode nameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.GENERATED_VALUE__GENERATOR);
-//		return (nameNode == null) ? validationTextRange() : buildTextRange(nameNode);
-//	}
+
 	
 	// ********** resource model -> java context model **********
 
