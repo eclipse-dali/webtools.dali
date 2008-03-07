@@ -314,6 +314,15 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		}
 	}
 
+	/*
+	 * @see NewContainerWizardPage#handleFieldChanged
+	 */
+	protected void handleFieldChanged(String fieldName) {
+		super.handleFieldChanged(fieldName);
+		
+		doStatusUpdate();
+	}
+	
 	private void doStatusUpdate() {
 		// status of all used components
 		IStatus[] status= new IStatus[] {
