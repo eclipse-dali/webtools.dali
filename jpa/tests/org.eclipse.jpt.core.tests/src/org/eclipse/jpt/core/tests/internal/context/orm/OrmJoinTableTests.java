@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
+ *  Copyright (c) 2007, 2008 Oracle. 
  *  All rights reserved.  This program and the accompanying materials 
  *  are made available under the terms of the Eclipse Public License v1.0 
  *  which accompanies this distribution, and is available at 
@@ -10,20 +10,31 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
+import java.util.Iterator;
 import java.util.ListIterator;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaJoinTable;
+import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
+import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class OrmJoinTableTests extends ContextModelTestCase
 {
@@ -40,6 +51,75 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		persistenceResource().save(null);
 	}
 	
+	private void createEntityAnnotation() throws Exception {
+		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
+	}
+	
+	private void createIdAnnotation() throws Exception {
+		this.createAnnotationAndMembers("Id", "");		
+	}
+	
+	private void createManyToManyAnnotation() throws Exception{
+		this.createAnnotationAndMembers("ManyToMany", "");		
+	}
+
+	private void createJoinTableAnnotation() throws Exception{
+		//TODO
+		this.createAnnotationAndMembers("JoinTable", 
+			"String name() default \"\"; " +
+			"String catalog() default \"\"; " +
+			"String schema() default \"\";");		
+	}
+
+	private IType createTestEntityWithValidManyToMany() throws Exception {
+		createEntityAnnotation();
+		createManyToManyAnnotation();
+		createJoinTableAnnotation();
+		createIdAnnotation();
+		
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.MANY_TO_MANY, JPA.ID, "java.util.Collection");
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@ManyToMany").append(CR);
+				sb.append("    private Collection<Project> projects;").append(CR);
+				sb.append("@Id").append(CR);
+			}
+		});
+	}
+	
+	private IType createTargetEntity() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ENTITY);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ID);
+					sb.append(";");
+					sb.append(CR);
+				sb.append(CR);
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class Project {").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private int proj_id;").append(CR);
+				sb.append(CR);
+			}
+		};
+		return this.javaProject.createType(PACKAGE_NAME, "Project.java", sourceWriter);
+	}
+
 	public void testUpdateSpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToManyMapping");
@@ -94,61 +174,115 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		assertNull(manyToMany.getJoinTable());
 	}
 	
-//	public void testUpdateDefaultNameFromJavaTable() throws Exception {
-//		createTestEntity();
-//		
-//		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		XmlEntity xmlEntity = (XmlEntity) ormPersistentType.getMapping();
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-//		
-//		xmlEntity.javaEntity().getTable().setSpecifiedName("Foo");
-//		assertEquals("Foo", xmlEntity.getTable().getDefaultName());
-//		
-//		xmlEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-//
-//		xmlEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-//		xmlEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-//	
-//		xmlEntity.setSpecifiedMetadataComplete(null);
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-//		
-//		xmlEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
-//		assertEquals("Foo", xmlEntity.getTable().getDefaultName());
-//		
-//		xmlEntity.getTable().setSpecifiedName("Bar");
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-//	}
-//	
-//	public void testUpdateDefaultNameNoJava() throws Exception {
-//		createTestEntity();
-//		
-//		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-//		XmlEntity xmlEntity = (XmlEntity) ormPersistentType.getMapping();
-//		assertEquals("Foo", xmlEntity.getTable().getDefaultName());
-//	}
-//	
-//	public void testUpdateDefaultNameFromParent() throws Exception {
-//		createTestEntity();
-//		createTestSubType();
-//		
-//		OrmPersistentType parentOrmPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		OrmPersistentType childOrmPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
-//		XmlEntity parentXmlEntity = (XmlEntity) parentOrmPersistentType.getMapping();
-//		XmlEntity childXmlEntity = (XmlEntity) childOrmPersistentType.getMapping();
-//		
-//		assertEquals(TYPE_NAME, parentXmlEntity.getTable().getDefaultName());
-//		assertEquals(TYPE_NAME, childXmlEntity.getTable().getDefaultName());
-//		
-//		parentXmlEntity.getTable().setSpecifiedName("FOO");
-//		assertEquals(TYPE_NAME, parentXmlEntity.getTable().getDefaultName());
-//		assertEquals("FOO", childXmlEntity.getTable().getDefaultName());
-//
-//		parentXmlEntity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
-//		assertEquals(TYPE_NAME, parentXmlEntity.getTable().getDefaultName());
-//		assertEquals("AnnotationTestTypeChild", childXmlEntity.getTable().getDefaultName());
-//	}
+	public void testVirtualJoinTable() throws Exception {
+		createTestEntityWithValidManyToMany();
+		createTargetEntity();
+		
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.attributeNamed("projects");
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();
+	
+		assertTrue(ormPersistentAttribute.isVirtual());
+		assertNull(ormJoinTable.getSpecifiedName());
+
+		entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Project");
+
+		assertEquals(TYPE_NAME + "_Project", ormJoinTable.getSpecifiedName());
+		assertNull(ormJoinTable.getSpecifiedCatalog());
+		assertNull(ormJoinTable.getSpecifiedSchema());
+		assertEquals(0, ormJoinTable.specifiedJoinColumnsSize());
+		assertEquals(0, ormJoinTable.specifiedInverseJoinColumnsSize());
+		OrmJoinColumn ormJoinColumn = ormJoinTable.getDefaultJoinColumn();
+//TODO need to test joinColumn defaults here as well as in java and all the relatioship mapping types
+//		assertEquals("id_project_id", ormJoinColumn.getDefaultName());
+//		assertEquals("id_project_id", ormJoinColumn.getDefaultReferencedColumnName());
+		OrmJoinColumn inverseOrmJoinColumn = ormJoinTable.getDefaultInverseJoinColumn();
+//		assertEquals("id_project_id", inverseOrmJoinColumn.getDefaultName());
+//		assertEquals("id_project_id", inverseOrmJoinColumn.getDefaultReferencedColumnName());
+	
+		JavaPersistentAttribute javaPersistentAttribute = ormManyToManyMapping.getJavaPersistentAttribute();
+		JavaManyToManyMapping javaManyToManyMapping = (JavaManyToManyMapping) javaPersistentAttribute.getMapping();
+		JavaJoinTable javaJoinTable = javaManyToManyMapping.getJoinTable();
+		javaJoinTable.setSpecifiedName("FOO");
+		javaJoinTable.setSpecifiedCatalog("CATALOG");
+		javaJoinTable.setSpecifiedSchema("SCHEMA");
+		JavaJoinColumn javaJoinColumn = javaJoinTable.addSpecifiedJoinColumn(0);
+		javaJoinColumn.setSpecifiedName("NAME");
+		javaJoinColumn.setSpecifiedReferencedColumnName("REFERENCED_NAME");
+		JavaJoinColumn inverseJavaJoinColumn = javaJoinTable.addSpecifiedInverseJoinColumn(0);
+		inverseJavaJoinColumn.setSpecifiedName("INVERSE_NAME");
+		inverseJavaJoinColumn.setSpecifiedReferencedColumnName("INVERSE_REFERENCED_NAME");
+		
+		assertEquals("FOO", ormJoinTable.getSpecifiedName());
+		assertEquals("CATALOG", ormJoinTable.getSpecifiedCatalog());
+		assertEquals("SCHEMA", ormJoinTable.getSpecifiedSchema());
+		assertEquals(1, ormJoinTable.specifiedJoinColumnsSize());
+		assertEquals(1, ormJoinTable.specifiedInverseJoinColumnsSize());
+		ormJoinColumn = ormJoinTable.specifiedJoinColumns().next();
+		assertEquals("NAME", ormJoinColumn.getSpecifiedName());
+		assertEquals("REFERENCED_NAME", ormJoinColumn.getSpecifiedReferencedColumnName());
+		inverseOrmJoinColumn = ormJoinTable.specifiedInverseJoinColumns().next();
+		assertEquals("INVERSE_NAME", inverseOrmJoinColumn.getSpecifiedName());
+		assertEquals("INVERSE_REFERENCED_NAME", inverseOrmJoinColumn.getSpecifiedReferencedColumnName());
+	}
+	
+	public void testUpdateDefaultNameFromJavaTable() throws Exception {
+		createTestEntityWithValidManyToMany();
+		createTargetEntity();
+
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "projects");
+		OrmManyToManyMapping ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		
+		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();
+		assertNull(ormJoinTable.getDefaultName());
+		
+		OrmPersistentType targetPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Project");
+		assertEquals(TYPE_NAME + "_Project", ormJoinTable.getDefaultName());
+
+		
+		((JavaEntity) targetPersistentType.javaPersistentType().getMapping()).getTable().setSpecifiedName("FOO");
+		assertEquals(TYPE_NAME + "_FOO", ormJoinTable.getDefaultName());
+		
+		((JavaEntity) ormPersistentType.javaPersistentType().getMapping()).getTable().setSpecifiedName("BAR");
+		assertEquals("BAR_FOO", ormJoinTable.getDefaultName());
+		
+		ormPersistentType.javaPersistentType().attributeNamed("projects").setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		JavaManyToManyMapping javaManyMapping = (JavaManyToManyMapping) ormPersistentType.javaPersistentType().attributeNamed("projects").getMapping();
+		javaManyMapping.getJoinTable().setSpecifiedName("JAVA_JOIN_TABLE");
+		
+		assertEquals("BAR_FOO", ormJoinTable.getDefaultName());
+
+		
+		//set metadata-complete to true, will ignore java annotation settings
+		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		//ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
+		assertEquals(TYPE_NAME + "_Project", ormJoinTable.getDefaultName());
+		
+		
+		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
+		//remove m-m mapping from the orm.xml file
+		ormPersistentAttribute.setVirtual(true);
+		//ormPersistentType.getMapping().setSpecifiedMetadataComplete(null);
+		ormPersistentAttribute = ormPersistentType.attributeNamed("projects");
+		ormManyToManyMapping = (OrmManyToManyMapping) ormPersistentAttribute.getMapping();
+		ormJoinTable = ormManyToManyMapping.getJoinTable();
+		assertTrue(ormPersistentAttribute.isVirtual());
+		assertEquals("JAVA_JOIN_TABLE", ormManyToManyMapping.getJoinTable().getSpecifiedName());//specifiedName since this is a virtual mapping now
+		
+		javaManyMapping.getJoinTable().setSpecifiedName(null);
+		assertEquals("BAR_FOO", ormJoinTable.getSpecifiedName());
+		assertEquals("BAR_FOO", ormJoinTable.getDefaultName());
+		
+		((OrmEntity) ormPersistentType.getMapping()).getTable().setSpecifiedName("ORM_TABLE_NAME");
+		assertEquals("ORM_TABLE_NAME_FOO", ormJoinTable.getDefaultName());
+		
+		((OrmEntity) targetPersistentType.getMapping()).getTable().setSpecifiedName("ORM_TARGET");
+		assertEquals("ORM_TABLE_NAME_ORM_TARGET", ormJoinTable.getDefaultName());
+	}
 
 	public void testUpdateSpecifiedSchema() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");

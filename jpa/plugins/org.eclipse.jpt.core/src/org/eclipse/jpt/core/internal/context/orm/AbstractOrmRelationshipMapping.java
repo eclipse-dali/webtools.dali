@@ -1,19 +1,26 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved. This
- * program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0 which accompanies this distribution, and is
- * available at http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
- * Contributors: Oracle. - initial API and implementation
- *******************************************************************************/
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Fetchable;
+import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
+import org.eclipse.jpt.core.internal.context.RelationshipMappingTools;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
@@ -111,39 +118,8 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 		setSpecifiedTargetEntity(oldMapping.getSpecifiedTargetEntity());
 		setSpecifiedFetch(oldMapping.getSpecifiedFetch());
 		getCascade().initializeFrom(oldMapping.getCascade());
+		//TODO should we set the fetch type from a BasicMapping??
 	}
-	//TODO should we set the fetch type from a BasicMapping??
-
-	
-//	public boolean targetEntityIsValid(String targetEntity) {
-//		return RelationshipMappingTools.targetEntityIsValid(targetEntity);
-//	}
-//
-//	public IEntity getEntity() {
-//		ITypeMapping typeMapping = getPersistentType().getMapping();
-//		if (typeMapping instanceof IEntity) {
-//			return (IEntity) typeMapping;
-//		}
-//		return null;
-//	}
-//
-//	public String fullyQualifiedTargetEntity(CompilationUnit astRoot) {
-//		if (getTargetEntity() == null) {
-//			return null;
-//		}
-//		if (targetEntityIncludesPackage()) {
-//			return getTargetEntity();
-//		}
-//		String package_ = persistentType().getMapping().getEntityMappings().getPackage();
-//		if (package_ != null) {
-//			return package_ + '.' + getTargetEntity();
-//		}
-//		return getTargetEntity();
-//	}
-//
-//	private boolean targetEntityIncludesPackage() {
-//		return getTargetEntity().lastIndexOf('.') != -1;
-//	}
 
 	public Iterator<String> allTargetEntityAttributeNames() {
 		Entity targetEntity = this.getResolvedTargetEntity();
@@ -153,59 +129,24 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	public Iterator<String> candidateMappedByAttributeNames() {
 		return this.allTargetEntityAttributeNames();
 	}
-
-//	@Override
-//	public void refreshDefaults(DefaultsContext defaultsContext) {
-//		super.refreshDefaults(defaultsContext);
-//		setDefaultTargetEntity((String) defaultsContext.getDefault(GenericJpaPlatform.DEFAULT_TARGET_ENTITY_KEY));
-//		String targetEntity = fullyQualifiedTargetEntity(defaultsContext.astRoot());
-//		if (targetEntity != null) {
-//			IPersistentType persistentType = defaultsContext.persistentType(targetEntity);
-//			if (persistentType != null) {
-//				if (persistentType.getMapping() instanceof IEntity) {
-//					setResolvedTargetEntity((IEntity) persistentType.getMapping());
-//					return;
-//				}
-//			}
-//		}
-//		setResolvedTargetEntity(null);
-//	}
-//
-//	/**
-//	 * the default 'targetEntity' is calculated from the attribute type;
-//	 * return null if the attribute type cannot possibly be an entity
-//	 */
-//	public String javaDefaultTargetEntity(CompilationUnit astRoot) {
-//		ITypeBinding typeBinding = this.getPersistentAttribute().getAttribute().typeBinding(astRoot);
-//		if (typeBinding != null) {
-//			return this.javaDefaultTargetEntity(typeBinding);
-//		}
-//		return null;
-//	}
-//
-//	protected String javaDefaultTargetEntity(ITypeBinding typeBinding) {
-//		return buildReferenceEntityTypeName(typeBinding);
-//	}
-//
-//	protected String buildReferenceEntityTypeName(ITypeBinding typeBinding) {
-//		return JavaRelationshipMapping.buildReferenceEntityTypeName(typeBinding);
-//	}
 		
 	public Entity getEntity() {
-		// TODO Auto-generated method stub
+		if (typeMapping() instanceof Entity) {
+			return (Entity) typeMapping();
+		}
 		return null;
 	}
 	
 	public boolean targetEntityIsValid(String targetEntity) {
-		// TODO Auto-generated method stub
-		return false;
+		return RelationshipMappingTools.targetEntityIsValid(targetEntity);
 	}
 	
 	@Override
 	public void initialize(T relationshipMapping) {
 		super.initialize(relationshipMapping);
 		this.specifiedTargetEntity = relationshipMapping.getTargetEntity();
-		this.defaultTargetEntity = null;//TODO default target entity
+		this.defaultTargetEntity = this.defaultTargetEntity();
+		this.resolvedTargetEntity = this.resolveTargetEntity();
 		this.specifiedFetch = this.specifiedFetch(relationshipMapping);
 		this.cascade.initialize(relationshipMapping);
 	}
@@ -214,7 +155,8 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	public void update(T relationshipMapping) {
 		super.update(relationshipMapping);
 		this.setSpecifiedTargetEntity_(relationshipMapping.getTargetEntity());
-		this.setDefaultTargetEntity(null);//TODO default target entity
+		this.setDefaultTargetEntity(this.defaultTargetEntity());
+		this.setResolvedTargetEntity(this.resolveTargetEntity());
 		this.setSpecifiedFetch_(this.specifiedFetch(relationshipMapping));
 		this.cascade.update(relationshipMapping);
 	}
@@ -222,5 +164,63 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	protected FetchType specifiedFetch(XmlRelationshipMapping relationshipMapping) {
 		return FetchType.fromOrmResourceModel(relationshipMapping.getFetch());
 	}
+	
+	protected RelationshipMapping javaRelationshipMapping() {
+		if (javaPersistentAttribute() == null) {
+			return null;
+		}
+		AttributeMapping javaAttributeMapping = javaPersistentAttribute().getMapping();
+		if (javaAttributeMapping instanceof RelationshipMapping) {
+			return ((RelationshipMapping) javaAttributeMapping);
+		}
+		return null;
+	}
+	
+	protected String defaultTargetEntity() {
+		RelationshipMapping javaMapping = javaRelationshipMapping();
+		if (javaMapping != null) {
+			if (persistentAttribute().isVirtual() && !typeMapping().isMetadataComplete()) {
+				return javaMapping.getTargetEntity();
+			}
+		}
+		if (javaPersistentAttribute() != null) {
+			return defaultTargetEntity(javaPersistentAttribute().getResourcePersistentAttribute());
+		}
+		return null;
+	}
+	
+	protected abstract String defaultTargetEntity(JavaResourcePersistentAttribute persistentAttributeResource);
 
+	protected Entity resolveTargetEntity() {
+		String qualifiedTargetEntity = getDefaultTargetEntity();
+		if (getSpecifiedTargetEntity() != null) {
+			qualifiedTargetEntity = fullyQualifiedTargetEntity();
+		}
+		if (qualifiedTargetEntity == null) {
+			return null;
+		}
+		PersistentType persistentType = persistenceUnit().persistentType(qualifiedTargetEntity);
+		if (persistentType != null && persistentType.mappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
+			return (Entity) persistentType.getMapping();
+		}
+		return null;
+	}
+	
+	protected String fullyQualifiedTargetEntity() {
+		if (getTargetEntity() == null) {
+			return null;
+		}
+		if (targetEntityIncludesPackage()) {
+			return getTargetEntity();
+		}
+		String package_ = entityMappings().getPackage();
+		if (package_ != null) {
+			return package_ + '.' + getTargetEntity();
+		}
+		return getTargetEntity();
+	}
+
+	private boolean targetEntityIncludesPackage() {
+		return getTargetEntity().lastIndexOf('.') != -1;
+	}
 }

@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
@@ -39,13 +40,13 @@ public class VirtualXmlManyToMany extends AbstractJpaEObject implements XmlManyT
 	//TODO joinColumns not yet supported in the context model
 //	protected EList<JoinColumn> virtualJoinColumns;
 
-	public VirtualXmlManyToMany(JavaManyToManyMapping javaManyToManyMapping, boolean metadataComplete) {
+	public VirtualXmlManyToMany(OrmPersistentAttribute ormPersistentAttribute, JavaManyToManyMapping javaManyToManyMapping, boolean metadataComplete) {
 		super();
 		this.javaManyToManyMapping = javaManyToManyMapping;
 		this.metadataComplete = metadataComplete;
 //		this.initializeJoinColumns(javaOneToManyMapping);
 		this.virtualCascadeType = new VirtualCascadeType(javaManyToManyMapping.getCascade(), this.metadataComplete);
-		this.virtualJoinTable = new VirtualXmlJoinTable(javaManyToManyMapping.getJoinTable(), metadataComplete);
+		this.virtualJoinTable = new VirtualXmlJoinTable(ormPersistentAttribute, javaManyToManyMapping.getJoinTable(), metadataComplete);
 		this.mapKey = new VirtualMapKey(javaManyToManyMapping, metadataComplete);
 	}
 	
@@ -96,8 +97,7 @@ public class VirtualXmlManyToMany extends AbstractJpaEObject implements XmlManyT
 	}
 	
 	public XmlJoinTable getJoinTable() {
-		//TODO we don't yet support JoinTable in the context model for many-to-one mappings
-		return null;//this.virtualJoinTable;
+		return this.virtualJoinTable;
 	}
 
 	public void setJoinTable(XmlJoinTable value) {
@@ -183,4 +183,7 @@ public class VirtualXmlManyToMany extends AbstractJpaEObject implements XmlManyT
 		return null;
 	}
 
+	public TextRange mappedByTextRange() {
+		return null;
+	}
 }

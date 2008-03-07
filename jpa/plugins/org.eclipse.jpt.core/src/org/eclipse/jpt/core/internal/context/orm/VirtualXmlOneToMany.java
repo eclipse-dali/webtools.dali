@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
@@ -39,13 +40,13 @@ public class VirtualXmlOneToMany extends AbstractJpaEObject implements XmlOneToM
 	//TODO joinColumns not yet supported in the context model
 //	protected EList<JoinColumn> virtualJoinColumns;
 
-	public VirtualXmlOneToMany(JavaOneToManyMapping javaOneToManyMapping, boolean metadataComplete) {
+	public VirtualXmlOneToMany(OrmPersistentAttribute ormPersistentAttribute, JavaOneToManyMapping javaOneToManyMapping, boolean metadataComplete) {
 		super();
 		this.javaOneToManyMapping = javaOneToManyMapping;
 		this.metadataComplete = metadataComplete;
 //		this.initializeJoinColumns(javaOneToManyMapping);
 		this.virtualCascadeType = new VirtualCascadeType(javaOneToManyMapping.getCascade(), this.metadataComplete);
-		this.virtualJoinTable = new VirtualXmlJoinTable(javaOneToManyMapping.getJoinTable(), metadataComplete);
+		this.virtualJoinTable = new VirtualXmlJoinTable(ormPersistentAttribute, javaOneToManyMapping.getJoinTable(), metadataComplete);
 		this.mapKey = new VirtualMapKey(javaOneToManyMapping, metadataComplete);
 	}
 	
@@ -96,8 +97,7 @@ public class VirtualXmlOneToMany extends AbstractJpaEObject implements XmlOneToM
 	}
 	
 	public XmlJoinTable getJoinTable() {
-		//TODO we don't yet support JoinTable in the context model for many-to-one mappings
-		return null;//this.virtualJoinTable;
+		return this.virtualJoinTable;
 	}
 
 	public void setJoinTable(XmlJoinTable value) {
@@ -182,5 +182,8 @@ public class VirtualXmlOneToMany extends AbstractJpaEObject implements XmlOneToM
 	public TextRange nameTextRange() {
 		return null;
 	}
-
+	
+	public TextRange mappedByTextRange() {
+		return null;
+	}
 }

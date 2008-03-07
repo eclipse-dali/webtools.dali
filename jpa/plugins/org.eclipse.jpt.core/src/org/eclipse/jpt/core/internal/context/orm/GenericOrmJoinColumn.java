@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,10 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
+import org.eclipse.jpt.core.internal.context.RelationshipMappingTools;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
@@ -118,7 +120,7 @@ public class GenericOrmJoinColumn extends AbstractOrmColumn<XmlJoinColumn> imple
 	public void initialize(XmlJoinColumn column) {
 		this.joinColumn = column;
 		super.initialize(column);
-		this.specifiedReferencedColumnName = column.getReferencedColumnName();
+		this.specifiedReferencedColumnName = specifiedReferencedColumnName(column);
 		this.defaultReferencedColumnName = defaultReferencedColumnName();
 	}
 	
@@ -126,34 +128,48 @@ public class GenericOrmJoinColumn extends AbstractOrmColumn<XmlJoinColumn> imple
 	public void update(XmlJoinColumn column) {
 		this.joinColumn = column;
 		super.update(column);
-		this.setSpecifiedReferencedColumnName_(column.getReferencedColumnName());
+		this.setSpecifiedReferencedColumnName_(specifiedReferencedColumnName(column));
 		this.setDefaultReferencedColumnName(defaultReferencedColumnName());
+	}
+
+	protected String specifiedReferencedColumnName(XmlJoinColumn column) {
+		return column == null ? null : column.getReferencedColumnName();
+	}
+
+	@Override
+	protected String defaultName() {
+		RelationshipMapping relationshipMapping = owner().relationshipMapping();
+		if (relationshipMapping == null) {
+			return null;
+		}
+		if (!owner().relationshipMapping().isRelationshipOwner()) {
+			return null;
+		}
+		return RelationshipMappingTools.buildJoinColumnDefaultName(this);
 	}
 	
 	protected String defaultReferencedColumnName() {
-//		if (!owner().relationshipMapping().isRelationshipOwner()) {
-//			return null;
-//		}
-		//TODO
-		return null;
-	}
-	
-	@Override
-	protected String defaultName() {
-//		if (!owner().relationshipMapping().isRelationshipOwner()) {
-//			return null;
-//		}
-		//TODO
-		return super.defaultName();
+		RelationshipMapping relationshipMapping = owner().relationshipMapping();
+		if (relationshipMapping == null) {
+			return null;
+		}
+		if (!relationshipMapping.isRelationshipOwner()) {
+			return null;
+		}
+		return RelationshipMappingTools.buildJoinColumnDefaultReferencedColumnName(this);
 	}
 	
 	@Override
 	protected String defaultTable() {
-//		if (!owner().relationshipMapping().isRelationshipOwner()) {
-//			return null;
-//		}
-		//TODO
+		RelationshipMapping relationshipMapping = owner().relationshipMapping();
+		if (relationshipMapping == null) {
+			return null;
+		}
+		if (!relationshipMapping.isRelationshipOwner()) {
+			return null;
+		}
 		return super.defaultTable();
 	}
+	
 
 }

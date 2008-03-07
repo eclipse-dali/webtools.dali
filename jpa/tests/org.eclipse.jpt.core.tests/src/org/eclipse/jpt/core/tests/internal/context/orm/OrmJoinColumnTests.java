@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
+ *  Copyright (c) 2007, 2008 Oracle. 
  *  All rights reserved.  This program and the accompanying materials 
  *  are made available under the terms of the Eclipse Public License v1.0 
  *  which accompanies this distribution, and is available at 
@@ -68,7 +68,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		assertEquals("FOO", joinColumnResource.getName());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(ormJoinTable.joinColumns().hasNext());
+		assertFalse(ormJoinTable.specifiedJoinColumns().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -127,7 +127,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		assertEquals("FOO", joinColumnResource.getReferencedColumnName());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(ormJoinTable.joinColumns().hasNext());
+		assertFalse(ormJoinTable.specifiedJoinColumns().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -155,63 +155,6 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		assertNull(joinColumn.getSpecifiedReferencedColumnName());
 		assertNull(joinTableResource.getJoinColumns().get(0).getReferencedColumnName());
 	}
-
-//	public void testUpdateDefaultNameFromJavaTable() throws Exception {
-//		createTestEntity();
-//		
-//		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		XmlEntity xmlEntity = (XmlEntity) ormPersistentType.getMapping();
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-//		
-//		xmlEntity.javaEntity().getTable().setSpecifiedName("Foo");
-//		assertEquals("Foo", xmlEntity.getTable().getDefaultName());
-//		
-//		xmlEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-//
-//		xmlEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-//		xmlEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-//	
-//		xmlEntity.setSpecifiedMetadataComplete(null);
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-//		
-//		xmlEntity.entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
-//		assertEquals("Foo", xmlEntity.getTable().getDefaultName());
-//		
-//		xmlEntity.getTable().setSpecifiedName("Bar");
-//		assertEquals(TYPE_NAME, xmlEntity.getTable().getDefaultName());
-//	}
-//	
-//	public void testUpdateDefaultNameNoJava() throws Exception {
-//		createTestEntity();
-//		
-//		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-//		XmlEntity xmlEntity = (XmlEntity) ormPersistentType.getMapping();
-//		assertEquals("Foo", xmlEntity.getTable().getDefaultName());
-//	}
-//	
-//	public void testUpdateDefaultNameFromParent() throws Exception {
-//		createTestEntity();
-//		createTestSubType();
-//		
-//		OrmPersistentType parentOrmPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		OrmPersistentType childOrmPersistentType = entityMappings().addOrmPersistentType(IMappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
-//		XmlEntity parentXmlEntity = (XmlEntity) parentOrmPersistentType.getMapping();
-//		XmlEntity childXmlEntity = (XmlEntity) childOrmPersistentType.getMapping();
-//		
-//		assertEquals(TYPE_NAME, parentXmlEntity.getTable().getDefaultName());
-//		assertEquals(TYPE_NAME, childXmlEntity.getTable().getDefaultName());
-//		
-//		parentXmlEntity.getTable().setSpecifiedName("FOO");
-//		assertEquals(TYPE_NAME, parentXmlEntity.getTable().getDefaultName());
-//		assertEquals("FOO", childXmlEntity.getTable().getDefaultName());
-//
-//		parentXmlEntity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
-//		assertEquals(TYPE_NAME, parentXmlEntity.getTable().getDefaultName());
-//		assertEquals("AnnotationTestTypeChild", childXmlEntity.getTable().getDefaultName());
-//	}
-	
 
 	public void testUpdateSpecifiedColumnDefinition() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
@@ -242,7 +185,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		assertEquals("FOO", joinColumnResource.getColumnDefinition());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(ormJoinTable.joinColumns().hasNext());
+		assertFalse(ormJoinTable.specifiedJoinColumns().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -300,7 +243,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		assertEquals("FOO", joinColumnResource.getTable());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(ormJoinTable.joinColumns().hasNext());
+		assertFalse(ormJoinTable.specifiedJoinColumns().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -358,7 +301,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		assertEquals(Boolean.FALSE, joinColumnResource.getNullable());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(ormJoinTable.joinColumns().hasNext());
+		assertFalse(ormJoinTable.specifiedJoinColumns().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -416,7 +359,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		assertEquals(Boolean.FALSE, joinColumnResource.getUpdatable());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(ormJoinTable.joinColumns().hasNext());
+		assertFalse(ormJoinTable.specifiedJoinColumns().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -474,7 +417,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		assertEquals(Boolean.FALSE, joinColumnResource.getInsertable());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(ormJoinTable.joinColumns().hasNext());
+		assertFalse(ormJoinTable.specifiedJoinColumns().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	
@@ -532,7 +475,7 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 		assertEquals(Boolean.FALSE, joinColumnResource.getUnique());
 
 		joinTableResource.getJoinColumns().remove(0);
-		assertFalse(ormJoinTable.joinColumns().hasNext());
+		assertFalse(ormJoinTable.specifiedJoinColumns().hasNext());
 		assertTrue(joinTableResource.getJoinColumns().isEmpty());
 	}
 	

@@ -1,24 +1,32 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. All rights reserved. This
- *  program and the accompanying materials are made available under the terms of
- *  the Eclipse Public License v1.0 which accompanies this distribution, and is
- *  available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: Oracle. - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
+import java.util.List;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.MultiRelationshipMapping;
+import org.eclipse.jpt.core.context.NonOwningMapping;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRelationshipMapping>
@@ -149,14 +157,6 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 		this.isCustomOrdering = newCustomOrdering;
 		firePropertyChanged(CUSTOM_ORDERING_PROPERTY, oldCustomOrdering, newCustomOrdering);
 	}
-
-//	public ITextRange mappedByTextRange() {
-//		if (node == null) {
-//			return typeMapping().validationTextRange();
-//		}
-//		IDOMNode mappedByNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.MAPPED_BY);
-//		return (mappedByNode == null) ? validationTextRange() : buildTextRange(mappedByNode);
-//	}
 	
 	public OrmJoinTable getJoinTable() {
 		return this.joinTable;
@@ -244,8 +244,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 //	}
 	
 	public TextRange mappedByTextRange() {
-		// TODO Auto-generated method stub
-		return null;
+		return attributeMapping().mappedByTextRange();
 	}
 	
 	public boolean mappedByIsValid(AttributeMapping mappedByMapping) {
@@ -293,5 +292,88 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 	
 	protected String orderBy(T multiRelationshipMapping) {
 		return multiRelationshipMapping.getOrderBy();
+	}
+	
+	@Override
+	protected String defaultTargetEntity(JavaResourcePersistentAttribute persistentAttributeResource) {
+		if (!persistentAttributeResource.typeIsContainer()) {
+			return null;
+		}
+		return persistentAttributeResource.getQualifiedReferenceEntityElementTypeName();
+	}
+
+	//****************** validation ******************8
+	
+	@Override
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
+		
+		if (entityOwned() && (this.isJoinTableSpecified() || isRelationshipOwner())) {
+			getJoinTable().addToMessages(messages);
+		}
+		if (getMappedBy() != null) {
+			addMappedByMessages(messages);
+		}
+	}
+	
+	protected void addMappedByMessages(List<IMessage> messages) {	
+		if (isJoinTableSpecified()) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE,
+						getJoinTable(),
+						getJoinTable().validationTextRange())
+				);
+		}
+		
+		if (getResolvedTargetEntity() == null) {
+			// already have validation messages for that
+			return;
+		}
+		
+		PersistentAttribute attribute = getResolvedTargetEntity().persistentType().attributeNamed(getMappedBy());
+		
+		if (attribute == null) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
+						new String[] {getMappedBy()}, 
+						this,
+						mappedByTextRange())
+				);
+			return;
+		}
+		
+		if (! mappedByIsValid(attribute.getMapping())) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
+						new String[] {getMappedBy()}, 
+						this,
+						mappedByTextRange())
+				);
+			return;
+		}
+		
+		NonOwningMapping mappedByMapping;
+		try {
+			mappedByMapping = (NonOwningMapping) attribute.getMapping();
+		} catch (ClassCastException cce) {
+			// there is no error then
+			return;
+		}
+		
+		if (mappedByMapping.getMappedBy() != null) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
+						this,
+						mappedByTextRange())
+				);
+		}
 	}
 }

@@ -13,10 +13,10 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
-import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.internal.context.RelationshipMappingTools;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
@@ -164,10 +164,10 @@ public class GenericJavaJoinColumn extends AbstractJavaColumn<JoinColumnAnnotati
 		if (relationshipMapping == null) {
 			return null;
 		}
-		if (!relationshipMapping.isRelationshipOwner()) {
+		if (!owner().relationshipMapping().isRelationshipOwner()) {
 			return null;
 		}
-		return buildDefaultName();
+		return RelationshipMappingTools.buildJoinColumnDefaultName(this);
 	}
 	
 	protected String defaultReferencedColumnName() {
@@ -175,10 +175,10 @@ public class GenericJavaJoinColumn extends AbstractJavaColumn<JoinColumnAnnotati
 		if (relationshipMapping == null) {
 			return null;
 		}
-		if (!relationshipMapping.isRelationshipOwner()) {
+		if (!owner().relationshipMapping().isRelationshipOwner()) {
 			return null;
 		}
-		return buildDefaultReferencedColumnName();
+		return RelationshipMappingTools.buildJoinColumnDefaultReferencedColumnName(this);
 	}
 	
 	@Override
@@ -187,65 +187,9 @@ public class GenericJavaJoinColumn extends AbstractJavaColumn<JoinColumnAnnotati
 		if (relationshipMapping == null) {
 			return null;
 		}
-		if (!relationshipMapping.isRelationshipOwner()) {
+		if (!owner().relationshipMapping().isRelationshipOwner()) {
 			return null;
 		}
 		return super.defaultTable();
 	}
-	
-	/**
-	 * return the join column's default name;
-	 * which is typically &lt;attribute name&gt;_&lt;referenced column name&gt;
-	 * but, if we don't have an attribute name (e.g. in a unidirectional
-	 * OneToMany or ManyToMany) is
-	 * &lt;target entity name&gt;_&lt;referenced column name&gt;
-	 */
-	// <attribute name>_<referenced column name>
-	//     or
-	// <target entity name>_<referenced column name>
-	protected String buildDefaultName() {
-		if (owner().joinColumnsSize() != 1) {
-			return null;
-		}
-		String prefix = owner().attributeName();
-		if (prefix == null) {
-			prefix = targetEntityName();
-		}
-		if (prefix == null) {
-			return null;
-		}
-		// TODO not sure which of these is correct...
-		// (the spec implies that the referenced column is always the
-		// primary key column of the target entity)
-		// String targetColumn = this.targetPrimaryKeyColumnName();
-		String targetColumn = getReferencedColumnName();
-		if (targetColumn == null) {
-			return null;
-		}
-		return prefix + "_" + targetColumn;
-	}
-	
-	/**
-	 * return the name of the target entity
-	 */
-	protected String targetEntityName() {
-		Entity targetEntity = owner().targetEntity();
-		return (targetEntity == null) ? null : targetEntity.getName();
-	}
-
-	protected String buildDefaultReferencedColumnName() {
-		if (owner().joinColumnsSize() != 1) {
-			return null;
-		}
-		return this.targetPrimaryKeyColumnName();
-	}
-	
-	/**
-	 * return the name of the single primary key column of the target entity
-	 */
-	protected String targetPrimaryKeyColumnName() {
-		Entity targetEntity = owner().targetEntity();
-		return (targetEntity == null) ? null : targetEntity.primaryKeyColumnName();
-	}
-
 }

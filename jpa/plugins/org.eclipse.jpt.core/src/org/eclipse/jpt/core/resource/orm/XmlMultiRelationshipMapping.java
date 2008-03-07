@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
+import org.eclipse.jpt.core.TextRange;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -114,4 +116,5 @@ public interface XmlMultiRelationshipMapping extends XmlRelationshipMapping
 	 */
 	void setMappedBy(String value);
 
+	TextRange mappedByTextRange();
 } // MultiRelationshipMapping

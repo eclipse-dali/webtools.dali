@@ -376,7 +376,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
 		
-		if (this.isJoinTableSpecified() || isRelationshipOwner()) {
+		if (entityOwned() && (this.isJoinTableSpecified() || isRelationshipOwner())) {
 			getJoinTable().addToMessages(messages, astRoot);
 		}
 		if (this.getMappedBy() != null) {
@@ -392,7 +392,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE,
-						this.getJoinTable(), this.getJoinTable().validationTextRange(astRoot))
+						this.getJoinTable(), 
+						this.getJoinTable().validationTextRange(astRoot))
 				);
 						
 		}

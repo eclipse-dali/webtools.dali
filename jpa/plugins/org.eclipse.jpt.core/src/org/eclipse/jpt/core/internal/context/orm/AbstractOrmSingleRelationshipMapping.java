@@ -1,11 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved. This
- * program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0 which accompanies this distribution, and is
- * available at http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
- * Contributors: Oracle. - initial API and implementation
- *******************************************************************************/
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmSingleRelationshipMapping;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlSingleRelationshipMapping;
@@ -212,7 +214,17 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 		}
 	}
 
-	
+	/**
+	 * eliminate any "container" types
+	 */
+	@Override
+	protected String defaultTargetEntity(JavaResourcePersistentAttribute persistentAttributeResource) {
+		if (persistentAttributeResource.typeIsContainer()) {
+			return null;
+		}
+		return persistentAttributeResource.getQualifiedReferenceEntityTypeName();
+	}
+
 	public class JoinColumnOwner implements OrmJoinColumn.Owner
 	{
 

@@ -18,6 +18,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.internal.emfutility.DOMUtilities;
+import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
  * <!-- begin-user-doc -->
@@ -783,5 +787,9 @@ public class XmlOneToManyImpl extends AbstractXmlAttributeMapping implements Xml
 		result.append(')');
 		return result.toString();
 	}
-
+	
+	public TextRange mappedByTextRange() {
+		IDOMNode mappedByNode = (IDOMNode) DOMUtilities.getChildAttributeNode(getNode(), OrmXmlMapper.MAPPED_BY);
+		return (mappedByNode == null) ? validationTextRange() : buildTextRange(mappedByNode);
+	}
 } // OneToMany

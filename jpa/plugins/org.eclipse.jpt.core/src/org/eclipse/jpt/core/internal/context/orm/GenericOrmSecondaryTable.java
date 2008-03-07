@@ -118,8 +118,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 			this.defaultPrimaryKeyJoinColumn = null;
 		}
 		XmlPrimaryKeyJoinColumn xmlPrimaryKeyJoinColumn = OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl();
-		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = jpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
-		primaryKeyJoinColumn.initialize(xmlPrimaryKeyJoinColumn);
+		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = createPrimaryKeyJoinColumn(xmlPrimaryKeyJoinColumn);
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
 		this.secondaryTable.getPrimaryKeyJoinColumns().add(index, xmlPrimaryKeyJoinColumn);
 		
@@ -194,7 +193,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 		this.secondaryTable = secondaryTable;
 		super.initialize(secondaryTable);
 		this.initializeSpecifiedPrimaryKeyJoinColumns(secondaryTable);
-		this.initializeDefaultPrimaryKeyJoinColumn(secondaryTable);
+		this.initializeDefaultPrimaryKeyJoinColumn();
 	}
 	
 	protected void initializeSpecifiedPrimaryKeyJoinColumns(XmlSecondaryTable secondaryTable) {
@@ -207,19 +206,18 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 		return !containsSpecifiedPrimaryKeyJoinColumns();
 	}
 
-	protected void initializeDefaultPrimaryKeyJoinColumn(XmlSecondaryTable secondaryTable) {
+	protected void initializeDefaultPrimaryKeyJoinColumn() {
 		if (!shouldBuildDefaultPrimaryKeyJoinColumn()) {
 			return;
 		}
-		this.defaultPrimaryKeyJoinColumn = this.jpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
-		this.defaultPrimaryKeyJoinColumn.initialize(null);
+		this.defaultPrimaryKeyJoinColumn = createPrimaryKeyJoinColumn(null);
 	}	
 
 	public void update(XmlSecondaryTable secondaryTable) {
 		this.secondaryTable = secondaryTable;
 		super.update(secondaryTable);
 		this.updateSpecifiedPrimaryKeyJoinColumns(secondaryTable);
-		this.updateDefaultPrimaryKeyJoinColumn(secondaryTable);
+		this.updateDefaultPrimaryKeyJoinColumn();
 	}
 		
 	protected void updateSpecifiedPrimaryKeyJoinColumns(XmlSecondaryTable secondaryTable) {
@@ -241,24 +239,22 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 		}
 	}
 	
-	protected void updateDefaultPrimaryKeyJoinColumn(XmlSecondaryTable secondaryTable) {
+	protected void updateDefaultPrimaryKeyJoinColumn() {
 		if (!shouldBuildDefaultPrimaryKeyJoinColumn()) {
 			setDefaultPrimaryKeyJoinColumn(null);
 			return;
 		}
 		if (getDefaultPrimaryKeyJoinColumn() == null) {
-			OrmPrimaryKeyJoinColumn joinColumn = this.jpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
-			joinColumn.initialize(null);
-			this.setDefaultPrimaryKeyJoinColumn(joinColumn);
+			this.setDefaultPrimaryKeyJoinColumn(createPrimaryKeyJoinColumn(null));
 		}
 		else {
 			this.defaultPrimaryKeyJoinColumn.update(null);
 		}
 	}	
 
-	protected OrmPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn primaryKeyJoinColumn) {
+	protected OrmPrimaryKeyJoinColumn createPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn xmlPrimaryKeyJoinColumn) {
 		OrmPrimaryKeyJoinColumn ormPrimaryKeyJoinColumn = jpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner());
-		ormPrimaryKeyJoinColumn.initialize(primaryKeyJoinColumn);
+		ormPrimaryKeyJoinColumn.initialize(xmlPrimaryKeyJoinColumn);
 		return ormPrimaryKeyJoinColumn;
 	}
 

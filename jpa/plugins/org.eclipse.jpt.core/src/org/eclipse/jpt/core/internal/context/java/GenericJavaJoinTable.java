@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
+import org.eclipse.jpt.core.internal.context.RelationshipMappingTools;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinColumn;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -79,24 +80,9 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	 */
 	@Override
 	protected String defaultName() {
-		if (!relationshipMapping().isRelationshipOwner()) {
-			return null;
-		}
-		String owningTableName = relationshipMapping().typeMapping().tableName();
-		if (owningTableName == null) {
-			return null;
-		}
-		Entity targetEntity = relationshipMapping().getResolvedTargetEntity();
-		if (targetEntity == null) {
-			return null;
-		}
-		String targetTableName = targetEntity.tableName();
-		if (targetTableName == null) {
-			return null;
-		}
-		return owningTableName + "_" + targetTableName;
+		return RelationshipMappingTools.buildJoinTableDefaultName(relationshipMapping());
 	}
-	
+
 	@Override
 	protected String defaultCatalog() {
 		if (!relationshipMapping().isRelationshipOwner()) {
@@ -337,7 +323,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 
 
 	public RelationshipMapping relationshipMapping() {
-		return (RelationshipMapping) this.parent();
+		return this.parent();
 	}
 
 	public boolean isSpecified() {
@@ -640,7 +626,6 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		public TextRange validationTextRange(CompilationUnit astRoot) {
 			return GenericJavaJoinTable.this.validationTextRange(astRoot);
 		}
-
 	}
 
 
