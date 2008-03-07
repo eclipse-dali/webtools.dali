@@ -25,8 +25,6 @@ import org.eclipse.jpt.core.resource.java.TableAnnotation;
 
 public class TableImpl extends AbstractTableResource
 {
-	private static final String ANNOTATION_NAME = JPA.TABLE;
-
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.TABLE__NAME);
@@ -44,19 +42,19 @@ public class TableImpl extends AbstractTableResource
 	}
 	
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> nameAdapter(@SuppressWarnings("unused") DeclarationAnnotationAdapter declarationAnnotationAdapter) {
+	protected DeclarationAnnotationElementAdapter<String> nameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
 		// ignore the daa passed in, @Table is never nested
 		return NAME_ADAPTER;
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> schemaAdapter(@SuppressWarnings("unused") DeclarationAnnotationAdapter declarationAnnotationAdapter) {
+	protected DeclarationAnnotationElementAdapter<String> schemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
 		// ignore the daa passed in, @Table is never nested
 		return SCHEMA_ADAPTER;
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> catalogAdapter(@SuppressWarnings("unused") DeclarationAnnotationAdapter declarationAnnotationAdapter) {
+	protected DeclarationAnnotationElementAdapter<String> catalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
 		// ignore the daa passed in, @Table is never nested
 		return CATALOG_ADAPTER;
 	}

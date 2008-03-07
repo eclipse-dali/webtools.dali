@@ -43,6 +43,7 @@ public class SynchronizeClassesJob extends Job
 		this.persistenceXmlFile = file;
 	}
 	
+	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 		monitor.beginTask(JptCoreMessages.SYNCHRONIZING_CLASSES_TASK, 150);
 		

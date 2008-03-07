@@ -101,7 +101,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 			//anything set here
 			return true;
 		}
-		return (this.getSpecifiedMetadataComplete() == null) ? this.isDefaultMetadataComplete() : this.getSpecifiedMetadataComplete();
+		return (this.getSpecifiedMetadataComplete() == null) ? this.isDefaultMetadataComplete() : this.getSpecifiedMetadataComplete().booleanValue();
 	}
 
 	public boolean isDefaultMetadataComplete() {
@@ -290,10 +290,10 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 	}
 
 	public boolean containsOffset(int textOffset) {
-		if (typeMapping == null) {
+		if (this.typeMapping == null) {
 			return false;
 		}
-		return typeMapping.containsOffset(textOffset);
+		return this.typeMapping.containsOffset(textOffset);
 	}
 	
 	//************************* validation ************************

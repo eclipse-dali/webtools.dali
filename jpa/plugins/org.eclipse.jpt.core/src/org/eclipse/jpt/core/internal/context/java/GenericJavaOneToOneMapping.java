@@ -201,13 +201,6 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 	@Override
 	@SuppressWarnings("unchecked")
 	//overriding purely to suppress the warning you get at the class level
-	public ListIterator<JavaJoinColumn> defaultJoinColumns() {
-		return super.defaultJoinColumns();
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	//overriding purely to suppress the warning you get at the class level
 	public ListIterator<JavaJoinColumn> specifiedJoinColumns() {
 		return super.specifiedJoinColumns();
 	}

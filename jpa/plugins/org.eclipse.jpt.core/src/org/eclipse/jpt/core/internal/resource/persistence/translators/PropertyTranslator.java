@@ -14,7 +14,7 @@ public class PropertyTranslator extends Translator
 		super(domNameAndPath, aFeature, END_TAG_NO_INDENT);
 	}
 	
-	
+	@Override	
 	public Translator[] getChildren(Object target, int versionID) {
 		if (children == null) {
 			children = createChildren();

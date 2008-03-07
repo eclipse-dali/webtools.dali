@@ -28,7 +28,7 @@ public class JavaClassRefTranslator extends Translator
 		super(domNameAndPath, feature);
 	}
 	
-	
+	@Override
 	public Translator[] getChildren(Object target, int versionID) {
 		if (children == null) {
 			children = createChildren();

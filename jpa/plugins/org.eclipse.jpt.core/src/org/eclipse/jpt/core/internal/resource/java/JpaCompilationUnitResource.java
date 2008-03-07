@@ -111,7 +111,7 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 	
 	@Override
 	public JavaResourceModel resourceModel() {
-		return javaResourceModel;
+		return this.javaResourceModel;
 	}
 	
 	

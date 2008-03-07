@@ -40,6 +40,7 @@ public class JavaNullTypeMapping extends AbstractJavaTypeMapping
 		return EmptyIterator.instance();
 	}
 	
+	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		// no-op, nothing to really add
 	}

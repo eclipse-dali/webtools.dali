@@ -71,19 +71,19 @@ public class JoinTableImpl extends AbstractTableResource implements JoinTableAnn
 	}
 	
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> nameAdapter(@SuppressWarnings("unused") DeclarationAnnotationAdapter declarationAnnotationAdapter) {
+	protected DeclarationAnnotationElementAdapter<String> nameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
 		// ignore the daa passed in, @JoinTable is never nested
 		return NAME_ADAPTER;
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> schemaAdapter(@SuppressWarnings("unused") DeclarationAnnotationAdapter declarationAnnotationAdapter) {
+	protected DeclarationAnnotationElementAdapter<String> schemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
 		// ignore the daa passed in, @JoinTable is never nested
 		return SCHEMA_ADAPTER;
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> catalogAdapter(@SuppressWarnings("unused") DeclarationAnnotationAdapter declarationAnnotationAdapter) {
+	protected DeclarationAnnotationElementAdapter<String> catalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
 		// ignore the daa passed in, @JoinTable is never nested
 		return CATALOG_ADAPTER;
 	}

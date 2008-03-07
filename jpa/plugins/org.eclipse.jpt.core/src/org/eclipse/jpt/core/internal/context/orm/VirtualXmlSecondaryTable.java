@@ -68,24 +68,23 @@ public class VirtualXmlSecondaryTable extends AbstractJpaEObject implements XmlS
 	}
 	
 	public EList<XmlPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
-		if (primaryKeyJoinColumns == null)
-		{
-			primaryKeyJoinColumns = new EObjectContainmentEList<XmlPrimaryKeyJoinColumn>(XmlPrimaryKeyJoinColumn.class, this, OrmPackage.XML_SECONDARY_TABLE_IMPL__PRIMARY_KEY_JOIN_COLUMNS);
-		}
-		for (JavaPrimaryKeyJoinColumn pkJoinColumn : CollectionTools.iterable(javaSecondaryTable.specifiedPrimaryKeyJoinColumns())) {
-			XmlPrimaryKeyJoinColumn xmlPkJoinColumn = new VirtualXmlPrimaryKeyJoinColumn(pkJoinColumn);
-			primaryKeyJoinColumns.add(xmlPkJoinColumn);
+		if (this.primaryKeyJoinColumns == null) {
+			this.primaryKeyJoinColumns = new EObjectContainmentEList<XmlPrimaryKeyJoinColumn>(XmlPrimaryKeyJoinColumn.class, this, OrmPackage.XML_SECONDARY_TABLE_IMPL__PRIMARY_KEY_JOIN_COLUMNS);
 		}
 		
-		return primaryKeyJoinColumns;
+		for (JavaPrimaryKeyJoinColumn pkJoinColumn : CollectionTools.iterable(this.javaSecondaryTable.specifiedPrimaryKeyJoinColumns())) {
+			XmlPrimaryKeyJoinColumn xmlPkJoinColumn = new VirtualXmlPrimaryKeyJoinColumn(pkJoinColumn);
+			this.primaryKeyJoinColumns.add(xmlPkJoinColumn);
+		}
+		
+		return this.primaryKeyJoinColumns;
 	}
 	
 	public EList<UniqueConstraint> getUniqueConstraints() {
-		if (uniqueConstraints == null)
-		{
-			uniqueConstraints = new EObjectContainmentEList<UniqueConstraint>(UniqueConstraint.class, this, OrmPackage.XML_SECONDARY_TABLE_IMPL__UNIQUE_CONSTRAINTS);
+		if (this.uniqueConstraints == null) {
+			this.uniqueConstraints = new EObjectContainmentEList<UniqueConstraint>(UniqueConstraint.class, this, OrmPackage.XML_SECONDARY_TABLE_IMPL__UNIQUE_CONSTRAINTS);
 		}
-		return uniqueConstraints;
+		return this.uniqueConstraints;
 	}
 	
 	public TextRange nameTextRange() {

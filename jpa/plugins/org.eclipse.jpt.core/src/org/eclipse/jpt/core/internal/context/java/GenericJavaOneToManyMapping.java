@@ -77,7 +77,8 @@ public class GenericJavaOneToManyMapping extends AbstractJavaMultiRelationshipMa
 		String mappedByKey = mappedByMapping.getKey();
 		return (mappedByKey == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 	}
-		
+
+	@Override
 	public TextRange mappedByTextRange(CompilationUnit astRoot) {
 		return this.relationshipMapping().mappedByTextRange(astRoot);
 	}

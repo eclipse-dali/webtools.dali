@@ -27,7 +27,7 @@ public class PersistenceTranslator extends RootTranslator
 		super(PERSISTENCE, PERSISTENCE_PKG.eINSTANCE.getXmlPersistence());
 	}
 	
-	
+	@Override
 	public Translator[] getChildren(Object target, int versionID) {
 		if (children == null) {
 			children = createChildren();
