@@ -28,7 +28,7 @@ import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
  * time, but at runtime; although we *do* check the method as soon as the
  * listener is instantiated.
  * 
- * Provisional API: This interface is part of an interim API that is still
+ * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API

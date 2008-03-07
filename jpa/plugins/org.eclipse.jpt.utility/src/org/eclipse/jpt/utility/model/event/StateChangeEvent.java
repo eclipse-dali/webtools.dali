@@ -16,7 +16,7 @@ import org.eclipse.jpt.utility.model.Model;
  * such extent that it cannot be delineated all aspects of it that have changed. 
  * A StateChangeEvent is sent as an argument to the StateChangeListener.
  * 
- * Provisional API: This interface is part of an interim API that is still
+ * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
