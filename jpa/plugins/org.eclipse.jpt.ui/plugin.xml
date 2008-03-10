@@ -39,6 +39,29 @@
 		
 	</extension>
 	
+<!-- =================================================================================== -->
+<!-- Extension: Java Completion Proposal Computer                                        -->
+<!-- =================================================================================== -->
+	
+	<extension
+		point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
+		id="JpaCompletionProposalComputer">
+		<javaCompletionProposalComputer 
+			class="org.eclipse.jpt.ui.internal.JpaJavaCompletionProposalComputer"
+			categoryId="org.eclipse.jpt.ui.jpaProposalCategory">
+			<partition type="__dftl_partition_content_type"/>
+			<partition type="__java_string"/>
+		</javaCompletionProposalComputer>
+	</extension>
+
+	<extension
+		point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
+		id="jpaProposalCategory"
+		name="%JpaProposalCategory">
+		<proposalCategory
+			icon="$nl$/icons/full/eview16/jpa_perspective.gif"/>
+	</extension>
+	
 	
 	<extension
 		point="org.eclipse.jpt.ui.jpaPlatform">
@@ -150,9 +173,17 @@
 			</enablement>
 
 			<action
-				class="org.eclipse.jpt.ui.internal.actions.GenerateEntitiesAction"
 				id="org.eclipse.jpt.ui.generateEntities"
 				label="%generateEntities"
+				class="org.eclipse.jpt.ui.internal.actions.GenerateEntitiesAction"
+				enablesFor="1"
+				menubarPath="org.eclipse.jpt.ui.project.JPATools/content"/>
+			
+			<action
+				id="org.eclipse.jpt.ui.generateDDL"
+				label="%generateDDL"
+				class="org.eclipse.jpt.ui.internal.actions.GenerateDDLAction"
+				enablesFor="1"
 				menubarPath="org.eclipse.jpt.ui.project.JPATools/content"/>
 				
 		</objectContribution>
@@ -164,15 +195,25 @@
 			<menu
 				id="org.eclipse.jpt.ui.project.JPATools"
 				label="%jpaMenuName"/>
-
-			<enablement>
-					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa"/>
-			</enablement>
-
+			
+			<visibility>
+				<and>
+					<objectState 
+						name="projectNature" 
+						value="org.eclipse.jdt.core.javanature"/>
+					<not>
+						<objectState 
+							name="projectNature" 
+							value="org.eclipse.wst.common.project.facet.core.nature"/>
+					</not>
+				</and>
+			</visibility>
+			
 			<action
-				class="org.eclipse.jpt.ui.internal.actions.GenerateDDLAction"
 				id="org.eclipse.jpt.ui.generateDDL"
-				label="%generateDDL"
+				label="%migrateJavaProject"
+				class="org.eclipse.jpt.ui.internal.actions.MigrateJavaProjectAction"
+				enablesFor="1"
 				menubarPath="org.eclipse.jpt.ui.project.JPATools/content"/>
 				
 		</objectContribution>
@@ -356,29 +397,6 @@
 			<page class="org.eclipse.jpt.ui.internal.wizards.JpaFacetWizardPage"/>
 		</wizard-pages>
 		
-	</extension>
-	
-<!-- =================================================================================== -->
-<!-- Extension: Java Completion Proposal Computer                                        -->
-<!-- =================================================================================== -->
-	
-	<extension
-		point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
-		id="JpaCompletionProposalComputer">
-		<javaCompletionProposalComputer 
-			class="org.eclipse.jpt.ui.internal.JpaJavaCompletionProposalComputer"
-			categoryId="org.eclipse.jpt.ui.jpaProposalCategory">
-			<partition type="__dftl_partition_content_type"/>
-			<partition type="__java_string"/>
-		</javaCompletionProposalComputer>
-	</extension>
-
-	<extension
-		point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
-		id="jpaProposalCategory"
-		name="%JpaProposalCategory">
-		<proposalCategory
-			icon="$nl$/icons/full/eview16/jpa_perspective.gif"/>
 	</extension>
 
 </plugin>
