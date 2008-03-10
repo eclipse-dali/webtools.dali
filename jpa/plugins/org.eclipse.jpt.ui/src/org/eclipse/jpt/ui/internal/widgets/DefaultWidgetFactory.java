@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.widgets;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -18,8 +19,12 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.widgets.FormText;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.forms.widgets.TableWrapData;
+import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 /**
  * This <code>IWidgetFactory</code> simply creates plain SWT widgets.
@@ -127,7 +132,7 @@ public final class DefaultWidgetFactory implements WidgetFactory {
 	 * (non-Javadoc)
 	 */
 	public Label createLabel(Composite parent, String labelText) {
-		Label label = new Label(parent, SWT.LEFT);
+		Label label = new Label(parent, SWT.WRAP);
 		label.setText(labelText);
 		return label;
 	}
@@ -137,6 +142,34 @@ public final class DefaultWidgetFactory implements WidgetFactory {
 	 */
 	public List createList(Composite parent, int style) {
 		return new List(parent, SWT.BORDER | style);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	public FormText createMultiLineLabel(Composite parent, String labelText) {
+
+		Composite container = new Composite(parent, SWT.NONE);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment       = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		container.setLayoutData(gridData);
+
+		TableWrapLayout layout = new TableWrapLayout();
+		layout.numColumns   = 1;
+		layout.bottomMargin = 0;
+		layout.leftMargin   = 0;
+		layout.rightMargin  = 0;
+		layout.topMargin    = 0;
+		container.setLayout(layout);
+
+		FormToolkit widgetFactory = new FormToolkit(parent.getDisplay());
+		FormText text = widgetFactory.createFormText(container, true);
+		text.setText(labelText, false, false);
+		text.setLayoutData(new TableWrapData(TableWrapData.FILL_GRAB));
+
+		return text;
 	}
 
 	/*

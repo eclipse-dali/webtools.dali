@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.widgets;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 
 /**
  * The abstract pane to use when the pane is shown using the form look and feel,
@@ -122,7 +122,7 @@ public abstract class AbstractFormPane<T extends Model> extends AbstractPane<T>
 	 */
 	protected AbstractFormPane(PropertyValueModel<? extends T> subjectHolder,
 	                           Composite parent,
-	                           TabbedPropertySheetWidgetFactory widgetFactory) {
+	                           FormToolkit widgetFactory) {
 
 		this(subjectHolder, parent, new FormWidgetFactory(widgetFactory));
 	}
@@ -133,7 +133,7 @@ public abstract class AbstractFormPane<T extends Model> extends AbstractPane<T>
 	 * @return The factory used to create the widgets with the form style
 	 * (flat-style) look and feel
 	 */
-	protected final TabbedPropertySheetWidgetFactory getFormWidgetFactory() {
+	protected final FormToolkit getFormWidgetFactory() {
 		FormWidgetFactory widgetFactory = (FormWidgetFactory) getWidgetFactory();
 		return widgetFactory.getWidgetFactory();
 	}

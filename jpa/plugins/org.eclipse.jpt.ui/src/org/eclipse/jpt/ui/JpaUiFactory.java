@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
@@ -21,9 +22,11 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -203,6 +206,21 @@ public interface JpaUiFactory
 	 */
 	JpaComposite<OneToOneMapping> createOneToOneMappingComposite(
 		PropertyValueModel<OneToOneMapping> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory);
+
+	/**
+	 * Creates the list of <code>JpaComposite</code>s used to edit a
+	 * <code>PersistenceUnit</code>. The properties can be regrouped into
+	 * sections that will be shown in the editor as pages.
+	 *
+	 * @param subjectHolder The holder of the pertistence unit
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create the widgets
+	 * @return A new <code>JpaComposite</code>
+	 */
+	ListIterator<JpaPageComposite<PersistenceUnit>> createPersistenceUnitComposites(
+		PropertyValueModel<PersistenceUnit> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
 

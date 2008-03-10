@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal;
 
+import java.util.ArrayList;
+import java.util.ListIterator;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
@@ -23,8 +25,10 @@ import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.java.details.JavaEntityComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.BasicMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.EmbeddableComposite;
@@ -39,6 +43,8 @@ import org.eclipse.jpt.ui.internal.mappings.details.OneToOneMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TransientMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.VersionMappingComposite;
 import org.eclipse.jpt.ui.internal.orm.details.OrmEntityComposite;
+import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitConnectionComposite;
+import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitGeneralComposite;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -148,6 +154,20 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 		WidgetFactory widgetFactory) {
 
 		return new OneToOneMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+
+	public ListIterator<JpaPageComposite<PersistenceUnit>> createPersistenceUnitComposites(
+		PropertyValueModel<PersistenceUnit> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
+
+		ArrayList<JpaPageComposite<PersistenceUnit>> pages =
+			new ArrayList<JpaPageComposite<PersistenceUnit>>(1);
+
+		pages.add(new PersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory));
+		pages.add(new PersistenceUnitConnectionComposite(subjectHolder, parent, widgetFactory));
+
+		return pages.listIterator();
 	}
 
 	public JpaComposite<TransientMapping> createTransientMappingComposite(

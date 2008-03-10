@@ -21,27 +21,30 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.widgets.FormText;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
+import org.eclipse.ui.forms.widgets.TableWrapData;
+import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 /**
  * This <code>IWidgetFactory</code> is responsible to create the widgets
- * using the <code>TabbedPropertySheetWidgetFactory</code> in order use the
- * form style (flat-style) look and feel.
+ * using the <code>FormToolkit</code> in order use the form style (flat-style)
+ * look and feel.
  *
- * @see TabbedPropertySheetWidgetFactory
+ * @see FormToolkit
  *
  * @version 2.0
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public final class FormWidgetFactory implements WidgetFactory {
+public class FormWidgetFactory implements WidgetFactory {
 
 	/**
 	 * The actual factory responsible for creating the new widgets.
 	 */
-	private final TabbedPropertySheetWidgetFactory widgetFactory;
+	private final FormToolkit widgetFactory;
 
 	/**
 	 * Creates a new <code>FormWidgetFactory</code>.
@@ -49,15 +52,14 @@ public final class FormWidgetFactory implements WidgetFactory {
 	 * @param widgetFactory The actual factory responsible for creating the new
 	 * widgets
 	 */
-	public FormWidgetFactory(TabbedPropertySheetWidgetFactory widgetFactory) {
+	public FormWidgetFactory(FormToolkit widgetFactory) {
 		super();
 
 		Assert.isNotNull(widgetFactory, "The widget factory cannot be null");
 		this.widgetFactory = widgetFactory;
 	}
 
-	private Text buildText(Composite parent, int style) {
-		parent = fixTextBorderNotPainted(parent);
+	protected Text buildText(Composite parent, int style) {
 		return widgetFactory.createText(parent, null, SWT.FLAT | style);
 	}
 
@@ -68,7 +70,7 @@ public final class FormWidgetFactory implements WidgetFactory {
 		return this.createButton(parent, text, SWT.NULL);
 	}
 
-	private Button createButton(Composite parent, String text, int style) {
+	protected final Button createButton(Composite parent, String text, int style) {
 		return widgetFactory.createButton(parent, text, SWT.FLAT | style);
 	}
 
@@ -76,7 +78,21 @@ public final class FormWidgetFactory implements WidgetFactory {
 	 * (non-Javadoc)
 	 */
 	public CCombo createCCombo(Composite parent) {
-		return createCombo(parent, SWT.READ_ONLY);
+		return createCCombo(parent, SWT.READ_ONLY);
+	}
+
+	protected CCombo createCCombo(Composite parent, int style) {
+		parent = fixComboBorderNotPainted(parent);
+
+		CCombo combo = new CCombo(parent, style);
+		widgetFactory.adapt(combo, true, false);
+
+		// Bugzilla 145837 - workaround for no borders on Windows XP
+		if (widgetFactory.getBorderStyle() == SWT.BORDER) {
+			combo.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
+		}
+
+		return combo;
 	}
 
 	/*
@@ -93,23 +109,20 @@ public final class FormWidgetFactory implements WidgetFactory {
 		return new Combo(parent, SWT.READ_ONLY);
 	}
 
-	private CCombo createCombo(Composite parent, int style) {
-		parent = fixComboBorderNotPainted(parent);
-		return widgetFactory.createCCombo(parent, SWT.FLAT | style);
-	}
-
 	/*
 	 * (non-Javadoc)
 	 */
 	public Composite createComposite(Composite parent) {
-		return widgetFactory.createComposite(parent);
+		Composite composite = widgetFactory.createComposite(parent);
+      widgetFactory.paintBordersFor(composite);
+		return composite;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	public CCombo createEditableCCombo(Composite parent) {
-		return createCombo(parent, SWT.NULL);
+		return createCCombo(parent, SWT.NULL);
 	}
 
 	/*
@@ -123,7 +136,11 @@ public final class FormWidgetFactory implements WidgetFactory {
 	 * (non-Javadoc)
 	 */
 	public Group createGroup(Composite parent, String title) {
-		return widgetFactory.createGroup(parent, title);
+		Group group = new Group(parent, SWT.SHADOW_NONE);
+		group.setText(title);
+		group.setBackground(widgetFactory.getColors().getBackground());
+		group.setForeground(widgetFactory.getColors().getForeground());
+		return group;
 	}
 
 	/*
@@ -137,14 +154,41 @@ public final class FormWidgetFactory implements WidgetFactory {
 	 * (non-Javadoc)
 	 */
 	public Label createLabel(Composite container, String labelText) {
-		return widgetFactory.createLabel(container, labelText);
+		return widgetFactory.createLabel(container, labelText, SWT.WRAP);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	public List createList(Composite container, int style) {
-		return widgetFactory.createList(container, SWT.FLAT | style);
+		return new List(container, SWT.FLAT | style);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	public FormText createMultiLineLabel(Composite parent, String labelText) {
+
+		Composite container = widgetFactory.createComposite(parent, SWT.NONE);
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment       = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+		container.setLayoutData(gridData);
+
+		TableWrapLayout layout = new TableWrapLayout();
+		layout.numColumns   = 1;
+		layout.bottomMargin = 0;
+		layout.leftMargin   = 0;
+		layout.rightMargin  = 0;
+		layout.topMargin    = 0;
+		container.setLayout(layout);
+
+		FormText text = widgetFactory.createFormText(container, true);
+		text.setText(labelText, false, false);
+		text.setLayoutData(new TableWrapData(TableWrapData.FILL_GRAB));
+
+		return text;
 	}
 
 	/*
@@ -199,7 +243,7 @@ public final class FormWidgetFactory implements WidgetFactory {
 	 * @return A new <code>Composite</code> that has the necessary space to paint
 	 * the border
 	 */
-	private Composite fixComboBorderNotPainted(Composite container) {
+	protected final Composite fixComboBorderNotPainted(Composite container) {
 
 		GridLayout layout = new GridLayout(1, false);
 		layout.marginHeight = 0;
@@ -229,15 +273,15 @@ public final class FormWidgetFactory implements WidgetFactory {
 	 * @return A new <code>Composite</code> that has the necessary space to paint
 	 * the border
 	 */
-	private Composite fixTextBorderNotPainted(Composite container) {
+	protected final Composite fixTextBorderNotPainted(Composite container) {
 
 		GridLayout layout = new GridLayout(1, false);
 		layout.marginHeight = 0;
 		layout.marginWidth  = 0;
-		layout.marginTop    = 2;
-		layout.marginLeft   = 2;
-		layout.marginBottom = 2;
-		layout.marginRight  = 2;
+		layout.marginTop    = 1;
+		layout.marginLeft   = 1;
+		layout.marginBottom = 1;
+		layout.marginRight  = 1;
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment       = GridData.FILL;
@@ -255,7 +299,7 @@ public final class FormWidgetFactory implements WidgetFactory {
 	 *
 	 * @return The factory creating the widgets with the form style (flat-style)
 	 */
-	public TabbedPropertySheetWidgetFactory getWidgetFactory() {
+	public FormToolkit getWidgetFactory() {
 		return widgetFactory;
 	}
 }

@@ -398,5 +398,20 @@
 		</wizard-pages>
 		
 	</extension>
-
+	
+<!-- =================================================================================== -->
+<!-- Extension: Persistence Editor                                                  -->
+<!-- =================================================================================== -->
+	
+	<extension 
+		point="org.eclipse.ui.editors">
+       <editor
+       		class="org.eclipse.jpt.ui.internal.editors.PersistenceEditor"
+          contributorClass="org.eclipse.jpt.ui.internal.editors.PersistenceContributor"
+          filenames="persistence.xml"
+          icon="$nl$/icons/full/obj16/jpa-file.gif"
+          id="org.eclipse.jpt.ui.internal.editors.PersistenceEditor"
+          name="persistence.xml">
+       </editor>
+ 	</extension>
 </plugin>

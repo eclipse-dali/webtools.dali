@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 
@@ -126,6 +127,15 @@ public interface WidgetFactory {
 	List createList(Composite container, int style);
 
 	/**
+	 * Creates a new label that can be wrapped on multiple lines.
+	 *
+	 * @param container The parent container
+	 * @param labelText The label's text
+	 * @return A new <code>FormText</code>
+	 */
+	FormText createMultiLineLabel(Composite container, String labelText);
+
+	/**
 	 * Creates a new editable text area.
 	 *
 	 * @param parent The parent container
@@ -170,6 +180,7 @@ public interface WidgetFactory {
 	 * @return A new <code>Text</code>
 	 */
 	Text createText(Composite parent);
+
 
 	/**
 	 * Creates a new tri-state check box.

@@ -105,4 +105,8 @@ public interface JpaHelpContextIds {
 
 	//Other
 	public static final String PERSISTENCE_OUTLINE = PREFIX + "persistenceOutline";
+
+	//PersistenceUnit
+	public static final String PERSISTENCE_UNIT_GENERAL = PREFIX + "persistenceUnit_general";
+	public static final String PERSISTENCE_UNIT_CONNECTION = PREFIX + "persistenceUnit_connection";
 }

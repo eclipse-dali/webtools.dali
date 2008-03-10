@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -31,7 +31,7 @@ public abstract class EnumFormComboViewer<T extends Model, V> extends AbstractEn
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various widgets
 	 */
-	protected EnumFormComboViewer(AbstractFormPane<? extends T> parentPane,
+	protected EnumFormComboViewer(AbstractPane<? extends T> parentPane,
 	                              Composite parent) {
 
 		super(parentPane, parent);
@@ -44,7 +44,7 @@ public abstract class EnumFormComboViewer<T extends Model, V> extends AbstractEn
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various widgets
 	 */
-	protected EnumFormComboViewer(AbstractFormPane<?> parentPane,
+	protected EnumFormComboViewer(AbstractPane<?> parentPane,
 	                              PropertyValueModel<? extends T> subjectHolder,
 	                              Composite parent) {
 

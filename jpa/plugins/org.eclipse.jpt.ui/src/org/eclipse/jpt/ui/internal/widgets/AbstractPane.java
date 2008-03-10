@@ -468,6 +468,88 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
+	 * Creates a new <code>Section</code> that can be collapsed. A sub-pane is
+	 * automatically added as its client and is the returned <code>Composite</code>.
+	 *
+	 * @param container The container of the new widget
+	 * @param sectionText The text of the new section
+	 * @return The <code>Section</code>'s sub-pane
+	 *
+	 * @category Layout
+	 */
+	protected final Composite buildCollapsableSection(Composite container,
+	                                                  String sectionText) {
+
+		return this.buildCollapsableSection(
+			container,
+			sectionText,
+			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
+		);
+	}
+
+	/**
+	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
+	 * its client and is the returned <code>Composite</code>.
+	 *
+	 * @param container The container of the new widget
+	 * @param sectionText The text of the new section
+	 * @param type The type of section to create
+	 * @param expandedStateHolder The holder of the boolean that will dictate
+	 * when to expand or collapse the section
+	 * @return The <code>Section</code>'s sub-pane
+	 *
+	 * @category Layout
+	 */
+	private Composite buildCollapsableSection(Composite container,
+	                                          String sectionText,
+	                                          int type,
+	                                          PropertyValueModel<Boolean> expandedStateHolder) {
+
+		Composite subPane = this.buildSection(
+			container,
+			sectionText,
+			ExpandableComposite.TWISTIE | type
+		);
+
+		Section section = (Section) subPane.getParent();
+
+		expandedStateHolder.addPropertyChangeListener(
+			PropertyValueModel.VALUE,
+			buildExpandedStateChangeListener(section)
+		);
+
+		section.setExpanded(
+			expandedStateHolder.value() != null ? expandedStateHolder.value() : true
+		);
+
+		return subPane;
+	}
+
+	/**
+	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
+	 * its client and is the returned <code>Composite</code>.
+	 *
+	 * @param container The container of the new widget
+	 * @param sectionText The text of the new section
+	 * @param expandedStateHolder The holder of the boolean that will dictate
+	 * when to expand or collapse the section
+	 * @return The <code>Section</code>'s sub-pane
+	 *
+	 * @category Layout
+	 */
+	protected final Composite buildCollapsableSection(Composite container,
+	                                                  String sectionText,
+	                                                  PropertyValueModel<Boolean> expandedStateHolder) {
+
+		return this.buildCollapsableSection(
+			container,
+			sectionText,
+			ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE,
+			expandedStateHolder
+		);
+	}
+
+	/**
 	 * Creates a new non-editable <code>Combo</code>.
 	 *
 	 * @param container The parent container
@@ -1694,6 +1776,20 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
+	 * Creates a new lable expanding on multiple lines.
+	 *
+	 * @param parent The parent container
+	 * @param labelText The label's text
+	 *
+	 * @category Layout
+	 */
+	protected final void buildMultiLineLabel(Composite container,
+	                                         String labelText) {
+
+		this.widgetFactory.createMultiLineLabel(container, labelText);
+	}
+
+	/**
 	 * Creates a new <code>Text</code> widget that has multiple lines.
 	 *
 	 * @param container The parent container
@@ -1985,29 +2081,6 @@ public abstract class AbstractPane<T extends Model>
 	 * @param container The container of the new widget
 	 * @param sectionText The text of the new section
 	 * @param type The type of section to create
-	 * @return The <code>Section</code>'s sub-pane
-	 *
-	 * @category Layout
-	 */
-	private Composite buildSection(Composite container,
-	                               String sectionText,
-	                               int type) {
-
-		return this.buildSection(
-			container,
-			sectionText,
-			type,
-			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
-		);
-	}
-
-	/**
-	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
-	 * its client and is the returned <code>Composite</code>.
-	 *
-	 * @param container The container of the new widget
-	 * @param sectionText The text of the new section
-	 * @param type The type of section to create
 	 * @param expandedStateHolder The holder of the boolean that will dictate
 	 * when to expand or collapse the section
 	 * @return The <code>Section</code>'s sub-pane
@@ -2016,14 +2089,9 @@ public abstract class AbstractPane<T extends Model>
 	 */
 	private Composite buildSection(Composite container,
 	                               String sectionText,
-	                               int type,
-	                               PropertyValueModel<Boolean> expandedStateHolder) {
+	                               int type) {
 
-		Section section = this.widgetFactory.createSection(
-			container,
-			ExpandableComposite.TWISTIE | type
-		);
-
+		Section section = this.widgetFactory.createSection(container, type);
 		section.setText(sectionText);
 		section.marginWidth  = 0;
 		section.marginHeight = 0;
@@ -2036,40 +2104,7 @@ public abstract class AbstractPane<T extends Model>
 		Composite subPane = this.buildSubPane(section);
 		section.setClient(subPane);
 
-		expandedStateHolder.addPropertyChangeListener(
-			PropertyValueModel.VALUE,
-			buildExpandedStateChangeListener(section)
-		);
-
-		section.setExpanded(
-			expandedStateHolder.value() != null ? expandedStateHolder.value() : true
-		);
-
 		return subPane;
-	}
-
-	/**
-	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
-	 * its client and is the returned <code>Composite</code>.
-	 *
-	 * @param container The container of the new widget
-	 * @param sectionText The text of the new section
-	 * @param expandedStateHolder The holder of the boolean that will dictate
-	 * when to expand or collapse the section
-	 * @return The <code>Section</code>'s sub-pane
-	 *
-	 * @category Layout
-	 */
-	protected final Composite buildSection(Composite container,
-	                                       String sectionText,
-	                                       PropertyValueModel<Boolean> expandedStateHolder) {
-
-		return this.buildSection(
-			container,
-			sectionText,
-			ExpandableComposite.TITLE_BAR,
-			expandedStateHolder
-		);
 	}
 
 	private SelectionListener buildSelectionListener(final WritablePropertyValueModel<String> selectionHolder) {
@@ -2266,8 +2301,7 @@ public abstract class AbstractPane<T extends Model>
 		return this.buildSection(
 			container,
 			sectionText,
-			SWT.NULL,
-			expandedStateHolder
+			SWT.NULL
 		);
 	}
 
