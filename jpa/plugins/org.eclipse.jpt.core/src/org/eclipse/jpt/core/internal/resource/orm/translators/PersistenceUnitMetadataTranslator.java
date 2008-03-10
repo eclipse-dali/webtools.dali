@@ -9,7 +9,6 @@
 package org.eclipse.jpt.core.internal.resource.orm.translators;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.wst.common.internal.emf.resource.IDTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 public class PersistenceUnitMetadataTranslator extends Translator implements OrmXmlMapper
@@ -31,7 +30,6 @@ public class PersistenceUnitMetadataTranslator extends Translator implements Orm
 	
 	private Translator[] createChildren() {
 		return new Translator[] {
-			IDTranslator.INSTANCE,
 			createXmlMappingMetadataCompleteTranslator(),
 			createPersistenceUnitDefaultsTranslator(),
 		};

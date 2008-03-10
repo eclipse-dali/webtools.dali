@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.resource.orm.translators;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.wst.common.internal.emf.resource.IDTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 public class AttributeOverrideTranslator extends Translator 
@@ -39,7 +38,6 @@ public class AttributeOverrideTranslator extends Translator
 		
 	protected Translator[] createChildren() {
 		return new Translator[] {
-			IDTranslator.INSTANCE,
 			createNameTranslator(),
 			createColumnTranslator()
 		};

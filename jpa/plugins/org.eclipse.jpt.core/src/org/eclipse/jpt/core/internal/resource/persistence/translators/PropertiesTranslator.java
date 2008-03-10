@@ -1,7 +1,6 @@
 package org.eclipse.jpt.core.internal.resource.persistence.translators;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.wst.common.internal.emf.resource.IDTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 public class PropertiesTranslator extends Translator
@@ -24,7 +23,6 @@ public class PropertiesTranslator extends Translator
 	
 	protected Translator[] createChildren() {
 		return new Translator[] {
-			IDTranslator.INSTANCE,
 			createPropertyTranslator()
 		};
 	}

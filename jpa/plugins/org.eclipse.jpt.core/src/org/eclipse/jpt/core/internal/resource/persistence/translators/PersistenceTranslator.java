@@ -11,7 +11,6 @@
 package org.eclipse.jpt.core.internal.resource.persistence.translators;
 
 import org.eclipse.wst.common.internal.emf.resource.ConstantAttributeTranslator;
-import org.eclipse.wst.common.internal.emf.resource.IDTranslator;
 import org.eclipse.wst.common.internal.emf.resource.RootTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -37,7 +36,6 @@ public class PersistenceTranslator extends RootTranslator
 	
 	protected Translator[] createChildren() {
 		return new Translator[] {
-			IDTranslator.INSTANCE,
 			createVersionTranslator(),
 			new ConstantAttributeTranslator(XML_NS, PERSISTENCE_NS_URL),
 			new ConstantAttributeTranslator(XML_NS_XSI, XSI_NS_URL),

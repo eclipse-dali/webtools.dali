@@ -9,7 +9,6 @@
 package org.eclipse.jpt.core.internal.resource.orm.translators;
 
 import org.eclipse.wst.common.internal.emf.resource.ConstantAttributeTranslator;
-import org.eclipse.wst.common.internal.emf.resource.IDTranslator;
 import org.eclipse.wst.common.internal.emf.resource.RootTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -36,7 +35,6 @@ public class EntityMappingsTranslator extends RootTranslator
 	
 	private Translator[] createChildren() {
 		return new Translator[] {
-			IDTranslator.INSTANCE,
 			new ConstantAttributeTranslator(XML_NS, PERSISTENCE_NS_URL),
 			new ConstantAttributeTranslator(XML_NS_XSI, XSI_NS_URL),
 			new ConstantAttributeTranslator(XSI_SCHEMA_LOCATION, PERSISTENCE_NS_URL + ' ' + ORM_SCHEMA_LOC_1_0),
