@@ -16,12 +16,12 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.PageBook;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * The default implementation of the details page used for the Java persistent
@@ -41,7 +41,7 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public JavaPersistentAttributeDetailsPage(Composite parent,
-	                                          TabbedPropertySheetWidgetFactory widgetFactory) {
+	                                          WidgetFactory widgetFactory) {
 
 		super(parent, widgetFactory);
 	}

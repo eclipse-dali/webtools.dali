@@ -11,11 +11,15 @@ package org.eclipse.jpt.ui.internal.views;
 import org.eclipse.jpt.ui.internal.selection.JpaSelection;
 import org.eclipse.jpt.ui.internal.selection.JpaSelectionManager;
 import org.eclipse.jpt.ui.internal.selection.SelectionManagerFactory;
+import org.eclipse.jpt.ui.internal.widgets.FormWidgetFactory;
+import org.eclipse.jpt.ui.internal.widgets.PropertySheetWidgetFactory;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.ViewPart;
@@ -48,9 +52,9 @@ public abstract class AbstractJpaView extends ViewPart
 	private PageBook pageBook;
 
 	/**
-	 *
+	 * The factory used to create the various widgets.
 	 */
-	private TabbedPropertySheetWidgetFactory widgetFactory;
+	private WidgetFactory widgetFactory;
 
 	/**
 	 * Creates a new <code>AbstractJpaView</code>.
@@ -64,7 +68,7 @@ public abstract class AbstractJpaView extends ViewPart
 	}
 
 	private Composite buildDefaultComposite() {
-		Composite composite = getWidgetFactory().createComposite(pageBook, SWT.NONE);
+		Composite composite = widgetFactory.createComposite(pageBook);
 		composite.setLayout(new FillLayout(SWT.VERTICAL));
 		getWidgetFactory().createLabel(composite, defaultLabel);
 		return composite;
@@ -93,7 +97,7 @@ public abstract class AbstractJpaView extends ViewPart
 		return pageBook;
 	}
 
-	public final TabbedPropertySheetWidgetFactory getWidgetFactory() {
+	public final WidgetFactory getWidgetFactory() {
 		return this.widgetFactory;
 	}
 
@@ -101,7 +105,13 @@ public abstract class AbstractJpaView extends ViewPart
 	 * Initializes this JPA view.
 	 */
 	protected void initialize() {
-		this.widgetFactory = new TabbedPropertySheetWidgetFactory();
+		this.widgetFactory = new PropertySheetWidgetFactory(
+			new TabbedPropertySheetWidgetFactory()
+		);
+	}
+
+	private FormToolkit getFormWidgetFactory() {
+		return ((FormWidgetFactory) widgetFactory).getWidgetFactory();
 	}
 
 	/**
@@ -139,7 +149,7 @@ public abstract class AbstractJpaView extends ViewPart
 			// the page, if it is installed during the creation of the pane then
 			// its layout will not always revalidate correctly, i.e. will not show
 			// all the time the vertical scroll bar
-			ScrolledForm scrolledForm = widgetFactory.createScrolledForm(pageBook);
+			ScrolledForm scrolledForm = getFormWidgetFactory().createScrolledForm(pageBook);
 			scrolledForm.getBody().setLayout(new GridLayout(1, false));
 			page.setParent(scrolledForm.getBody());
 

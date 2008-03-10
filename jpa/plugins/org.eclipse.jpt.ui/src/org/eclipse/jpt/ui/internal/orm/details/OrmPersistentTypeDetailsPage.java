@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -24,6 +24,7 @@ import org.eclipse.jpt.ui.internal.details.EmbeddableUiProvider;
 import org.eclipse.jpt.ui.internal.details.MappedSuperclassUiProvider;
 import org.eclipse.jpt.ui.internal.details.PersistentTypeDetailsPage;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -31,7 +32,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.PageBook;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * The default implementation of the details page used for the XML persistent
@@ -57,7 +57,7 @@ public class OrmPersistentTypeDetailsPage extends PersistentTypeDetailsPage<OrmP
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public OrmPersistentTypeDetailsPage(Composite parent,
-	                                    TabbedPropertySheetWidgetFactory widgetFactory) {
+	                                    WidgetFactory widgetFactory) {
 
 		super(parent, widgetFactory);
 	}

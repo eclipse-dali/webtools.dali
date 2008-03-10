@@ -13,8 +13,8 @@ import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * This provider is responsible for creating the <code>IJpaDetailsPage</code>
@@ -39,7 +39,7 @@ public class JavaDetailsProvider
 	public JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(
 		Composite parent,
 		Object contentNodeId,
-		TabbedPropertySheetWidgetFactory widgetFactory) {
+		WidgetFactory widgetFactory) {
 
 		if (contentNodeId == JavaStructureNodes.PERSISTENT_TYPE_ID) {
 			return new JavaPersistentTypeDetailsPage(parent, widgetFactory);

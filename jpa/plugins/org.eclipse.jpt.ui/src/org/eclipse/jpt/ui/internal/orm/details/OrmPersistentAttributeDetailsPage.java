@@ -29,6 +29,7 @@ import org.eclipse.jpt.ui.internal.details.OneToOneMappingUiProvider;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.details.TransientMappingUiProvider;
 import org.eclipse.jpt.ui.internal.details.VersionMappingUiProvider;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -40,7 +41,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.PageBook;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * The default implementation of the details page used for the XML persistent
@@ -64,7 +64,7 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public OrmPersistentAttributeDetailsPage(Composite parent,
-	                                         TabbedPropertySheetWidgetFactory widgetFactory) {
+	                                         WidgetFactory widgetFactory) {
 
 		super(parent, widgetFactory);
 	}

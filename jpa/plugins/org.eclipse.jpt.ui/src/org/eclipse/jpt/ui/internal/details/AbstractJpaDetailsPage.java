@@ -13,12 +13,11 @@ import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
-import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * The base class for the details view.
@@ -39,11 +38,10 @@ public abstract class AbstractJpaDetailsPage<T extends JpaStructureNode>
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	protected AbstractJpaDetailsPage(Composite parent,
-	                             TabbedPropertySheetWidgetFactory widgetFactory) {
+	                                 WidgetFactory widgetFactory) {
 
 		super(new SimplePropertyValueModel<T>(), parent, widgetFactory);
 	}
-
 
 	protected JpaPlatformUi jpaPlatformUi() {
 		String platformId = subject().jpaProject().jpaPlatform().getId();
@@ -51,10 +49,8 @@ public abstract class AbstractJpaDetailsPage<T extends JpaStructureNode>
 	}
 
 	protected JpaUiFactory jpaUiFactory() {
-		// TODO: Remove the type cast, used for testing
-		return ((BaseJpaPlatformUi) jpaPlatformUi()).getJpaUiFactory();
+		return jpaPlatformUi().getJpaUiFactory();
 	}
-
 
 	/**
 	 * There is an issue with <code>ScrolledForm</code>, it doesn't repaint the

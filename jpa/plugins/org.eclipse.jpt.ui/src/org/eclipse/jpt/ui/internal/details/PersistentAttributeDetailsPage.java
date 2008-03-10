@@ -29,6 +29,7 @@ import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.Tracing;
+import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.FilteringPropertyValueModel;
@@ -38,7 +39,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.PageBook;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * The abstract definition of the details page responsible to show the
@@ -65,7 +65,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	protected PersistentAttributeDetailsPage(Composite parent,
-                                            TabbedPropertySheetWidgetFactory widgetFactory) {
+                                            WidgetFactory widgetFactory) {
 
 		super(parent, widgetFactory);
 	}
