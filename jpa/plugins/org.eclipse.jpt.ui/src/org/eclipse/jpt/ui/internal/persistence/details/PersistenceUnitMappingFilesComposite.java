@@ -11,11 +11,21 @@ package org.eclipse.jpt.ui.internal.persistence.details;
 
 import java.util.ListIterator;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.JptUiPlugin;
@@ -35,7 +45,11 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog;
+import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
+import org.eclipse.ui.dialogs.ISelectionStatusValidator;
+import org.eclipse.ui.model.WorkbenchContentProvider;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
+import org.eclipse.ui.views.navigator.ResourceComparator;
 
 /**
  * Here the layout of this pane:
@@ -58,16 +72,17 @@ import org.eclipse.ui.dialogs.FilteredResourcesSelectionDialog;
  * @version 2.0
  * @since 2.0
  */
+@SuppressWarnings("nls")
 public class PersistenceUnitMappingFilesComposite extends AbstractPane<PersistenceUnit>
 {
 	/**
-	 * Creates a new <code>PersistenceUnitJPAMappingDescriptorsComposite</code>.
+	 * Creates a new <code>PersistenceUnitMappingFilesComposite</code>.
 	 *
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
 	public PersistenceUnitMappingFilesComposite(AbstractPane<? extends PersistenceUnit> parentPane,
-	                                                     Composite parent) {
+	                                            Composite parent) {
 
 		super(parentPane, parent);
 	}
@@ -75,23 +90,30 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 	private void addJPAMappingDescriptor(ObjectListSelectionModel listSelectionModel) {
 
 		IProject project = subject().jpaProject().project();
-		// TODO: Retrieve the META-INF directory
 
-		FilteredResourcesSelectionDialog dialog = new FilteredResourcesSelectionDialog(
+		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
 			shell(),
-			true,
-			project,
-			IResource.FILE
+			new WorkbenchLabelProvider(),
+			new WorkbenchContentProvider()
 		);
+
+		dialog.setHelpAvailable(false);
+		dialog.setValidator(buildValidator());
+		dialog.setTitle(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_title);
+		dialog.setMessage(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_message);
+		dialog.addFilter(buildFilter());
+		dialog.setInput(project);
+		dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
 
 		if (dialog.open() == IDialogConstants.OK_ID) {
 			int index = subject().specifiedMappingFileRefsSize();
 
 			for (Object result : dialog.getResult()) {
 				IFile file = (IFile) result;
+				IPath filePath = removeSourcePath(file);
 
 				MappingFileRef mappingFileRef = subject().addSpecifiedMappingFileRef(index++);
-				mappingFileRef.setFileName(file.getProjectRelativePath().toPortableString());
+				mappingFileRef.setFileName(filePath.toPortableString());
 
 				listSelectionModel.addSelectedValue(mappingFileRef);
 			}
@@ -132,6 +154,53 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 		return container;
 	}
 
+	private ViewerFilter buildFilter() {
+		return new ViewerFilter() {
+
+			private boolean isXmlFile(IFile file) {
+				return "xml".equalsIgnoreCase(file.getFileExtension());
+			}
+
+			@Override
+			public boolean select(Viewer viewer,
+			                      Object parentElement,
+			                      Object element) {
+
+				if (element instanceof IFile) {
+					// TODO: Partially read the XML file to check the root tag
+					IFile file = (IFile) element;
+					return isXmlFile(file);
+				}
+				else if (element instanceof IFolder) {
+					IJavaProject javaProject = subject().jpaProject().javaProject();
+					IFolder folder = (IFolder) element;
+
+					try {
+						for (IClasspathEntry entry : javaProject.getRawClasspath()) {
+							if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+								if (!entry.getPath().isPrefixOf(folder.getFullPath().makeRelative()))
+									return false;
+							}
+						}
+
+						for (IResource resource : folder.members()) {
+							if (select(viewer, folder, resource)) {
+								return true;
+							}
+						}
+					}
+					catch (JavaModelException e) {
+						JptUiPlugin.log(e.getStatus());
+					}
+					catch (CoreException e) {
+						JptUiPlugin.log(e.getStatus());
+					}
+				}
+				return false;
+			}
+		};
+	}
+
 	private ListValueModel<MappingFileRef> buildItemListHolder() {
 		return new ItemPropertyListValueModelAdapter<MappingFileRef>(
 			buildListHolder(),
@@ -152,7 +221,7 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 				String name = mappingFileRef.getFileName();
 
 				if (name == null) {
-					name = JptUiPersistenceMessages.PersistenceUnitJPAMappingDescriptorsComposite_ormNoName;
+					name = JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_ormNoName;
 				}
 
 				return name;
@@ -178,6 +247,25 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 		return new SimplePropertyValueModel<MappingFileRef>();
 	}
 
+	private ISelectionStatusValidator buildValidator() {
+		return new ISelectionStatusValidator() {
+			public IStatus validate(Object[] selection) {
+
+				if (selection.length == 0) {
+					return new Status(IStatus.ERROR, JptUiPlugin.PLUGIN_ID, "");
+				}
+
+				for (Object item : selection) {
+					if (item instanceof IFolder) {
+						return new Status(IStatus.ERROR, JptUiPlugin.PLUGIN_ID, "");
+					}
+				}
+
+				return new Status(IStatus.OK, JptUiPlugin.PLUGIN_ID, "");
+			}
+		};
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
@@ -187,7 +275,7 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 		// Description
 		buildMultiLineLabel(
 			container,
-			JptUiPersistenceMessages.PersistenceUnitJPAMappingDescriptorsComposite_description
+			JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_description
 		);
 
 		// List pane
@@ -212,6 +300,42 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 				updateGridData(getContainer());
 			}
 		};
+	}
+
+	/**
+	 * Returns the path of the given file excluding the source folder.
+	 *
+	 * @param file The file to retrieve its path minus the source folder
+	 * @return The relative path of the given path, the path is relative to the
+	 * source path
+	 */
+	private IPath removeSourcePath(IFile file) {
+		IJavaProject javaProject = subject().jpaProject().javaProject();
+		IPath filePath = file.getProjectRelativePath();
+
+		try {
+			for (IClasspathEntry entry : javaProject.getRawClasspath()) {
+
+				// Only check for source paths
+				if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+
+					// Retrieve the source path relative to the project
+					IPath sourcePath = entry.getPath().removeFirstSegments(1);
+
+					// Check to see if the file path starts with the source path
+					if (sourcePath.isPrefixOf(filePath)) {
+						int count = sourcePath.segmentCount();
+						filePath = filePath.removeFirstSegments(count);
+						break;
+					}
+				}
+			}
+		}
+		catch (JavaModelException e) {
+			JptUiPlugin.log(e.getStatus());
+		}
+
+		return filePath;
 	}
 
 	private void updateGridData(Composite container) {

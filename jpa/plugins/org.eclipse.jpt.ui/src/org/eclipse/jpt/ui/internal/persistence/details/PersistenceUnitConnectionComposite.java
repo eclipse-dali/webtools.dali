@@ -135,7 +135,7 @@ public class PersistenceUnitConnectionComposite extends AbstractFormPane<Persist
 	 * (non-Javadoc)
 	 */
 	public String pageText() {
-		return JptUiPersistenceMessages.PersistenceUnitComposite_connection;
+		return JptUiPersistenceMessages.PersistenceUnitConnectionComposite_connection;
 	}
 
 	private void updateGridData(Composite container) {

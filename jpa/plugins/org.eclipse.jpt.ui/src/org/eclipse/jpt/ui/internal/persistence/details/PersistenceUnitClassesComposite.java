@@ -171,13 +171,13 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 						                                           JptUiPersistenceMessages.Boolean_False;
 
 						return NLS.bind(
-							JptUiPersistenceMessages.PersistenceUnitMappedClassesComposite_excludeUnlistedMappedClassesWithDefault,
+							JptUiPersistenceMessages.PersistenceUnitClassesComposite_excludeUnlistedMappedClassesWithDefault,
 							defaultStringValue
 						);
 					}
 				}
 
-				return JptUiPersistenceMessages.PersistenceUnitMappedClassesComposite_excludeUnlistedMappedClasses;
+				return JptUiPersistenceMessages.PersistenceUnitClassesComposite_excludeUnlistedMappedClasses;
 			}
 		};
 	}
@@ -206,7 +206,7 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 				String name = classRef.getClassName();
 
 				if (name == null) {
-					name = JptUiPersistenceMessages.PersistenceUnitMappedClassesComposite_mappedClassesNoName;
+					name = JptUiPersistenceMessages.PersistenceUnitClassesComposite_mappedClassesNoName;
 				}
 
 				return name;
@@ -285,7 +285,7 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 		// Description
 		buildMultiLineLabel(
 			container,
-			JptUiPersistenceMessages.PersistenceUnitMappedClassesComposite_description
+			JptUiPersistenceMessages.PersistenceUnitClassesComposite_description
 		);
 
 		// List pane
@@ -313,7 +313,7 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 
 		buildTriStateCheckBoxWithDefault(
 			container,
-			JptUiPersistenceMessages.PersistenceUnitMappedClassesComposite_excludeUnlistedMappedClasses,
+			JptUiPersistenceMessages.PersistenceUnitClassesComposite_excludeUnlistedMappedClasses,
 			buildExcludeUnlistedMappedClassesHolder(),
 			buildExcludeUnlistedMappedClassesStringHolder()
 		);

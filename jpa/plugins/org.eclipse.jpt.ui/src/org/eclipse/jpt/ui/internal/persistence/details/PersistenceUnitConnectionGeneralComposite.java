@@ -56,15 +56,13 @@ public class PersistenceUnitConnectionGeneralComposite extends AbstractPane<Pers
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(PersistenceUnit.TRANSACTION_TYPE_PROPERTY);
+				propertyNames.add(PersistenceUnit.SPECIFIED_TRANSACTION_TYPE_PROPERTY);
+				propertyNames.add(PersistenceUnit.DEFAULT_TRANSACTION_TYPE_PROPERTY);
 			}
 
 			@Override
 			protected PersistenceUnitTransactionType[] choices() {
-				return new PersistenceUnitTransactionType[] {
-					PersistenceUnitTransactionType.JTA,
-					PersistenceUnitTransactionType.RESOURCE_LOCAL
-				};
+				return PersistenceUnitTransactionType.values();
 			}
 
 			@Override
@@ -83,17 +81,12 @@ public class PersistenceUnitConnectionGeneralComposite extends AbstractPane<Pers
 
 			@Override
 			protected PersistenceUnitTransactionType getValue() {
-				return subject().getTransactionType();
+				return subject().getSpecifiedTransactionType();
 			}
 
 			@Override
 			protected void setValue(PersistenceUnitTransactionType value) {
-				if (value == PersistenceUnitTransactionType.DEFAULT || value == null) {
-					subject().setTransactionTypeToDefault();
-				}
-				else {
-					subject().setTransactionType(value);
-				}
+				subject().setSpecifiedTransactionType(value);
 			}
 		};
 	}

@@ -114,6 +114,9 @@ public class PersistenceUnitGeneralComposite extends AbstractFormPane<Persistenc
 
 			@Override
 			protected void setValue_(String value) {
+				if (value.length() == 0) {
+					value = null;
+				}
 				subject.setProvider(value);
 			}
 		};
@@ -190,7 +193,7 @@ public class PersistenceUnitGeneralComposite extends AbstractFormPane<Persistenc
 	 * (non-Javadoc)
 	 */
 	public String pageText() {
-		return JptUiPersistenceMessages.PersistenceUnitComposite_general;
+		return JptUiPersistenceMessages.PersistenceUnitGeneralComposite_general;
 	}
 
 	private void updateGridData(Composite container) {

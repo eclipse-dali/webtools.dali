@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -243,6 +243,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 				Object selectedItem = selectedItemHolder.value();
 
 				if (selectedItem == null) {
+					updateButtons();
 					return;
 				}
 
@@ -642,11 +643,11 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		public String addButtonText() {
 			return addButtonText;
 		}
-		
+
 		public boolean enableRemoveOnSelectionChange(ObjectListSelectionModel listSelectionModel) {
 			return listSelectionModel.selectedValue() != null;
 		}
-		
+
 		/*
 		 * (non-Javadoc)
 		 */

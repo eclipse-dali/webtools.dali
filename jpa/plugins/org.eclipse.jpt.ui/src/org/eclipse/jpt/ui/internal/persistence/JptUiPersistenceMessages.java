@@ -19,16 +19,17 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("nls")
 public class JptUiPersistenceMessages
 {
-	private static final String BUNDLE_NAME = "jpt_ui_persistence";
-
 	public static String Boolean_False;
 	public static String Boolean_True;
 
 	public static String PersistenceEditor_Page_help;
 
-	public static String PersistenceUnitComposite_connection;
-	public static String PersistenceUnitComposite_general;
+	public static String PersistenceUnitClassesComposite_description;
+	public static String PersistenceUnitClassesComposite_excludeUnlistedMappedClasses;
+	public static String PersistenceUnitClassesComposite_excludeUnlistedMappedClassesWithDefault;
+	public static String PersistenceUnitClassesComposite_mappedClassesNoName;
 
+	public static String PersistenceUnitConnectionComposite_connection;
 	public static String PersistenceUnitConnectionComposite_database;
 	public static String PersistenceUnitConnectionComposite_general;
 
@@ -39,7 +40,6 @@ public class JptUiPersistenceMessages
 	public static String PersistenceUnitConnectionGeneralComposite_default;
 	public static String PersistenceUnitConnectionGeneralComposite_description;
 	public static String PersistenceUnitConnectionGeneralComposite_jta;
-	public static String PersistenceUnitConnectionGeneralComposite_serverProvider;
 	public static String PersistenceUnitConnectionGeneralComposite_resource_local;
 	public static String PersistenceUnitConnectionGeneralComposite_transactionType;
 
@@ -49,16 +49,13 @@ public class JptUiPersistenceMessages
 	public static String PersistenceUnitGeneralComposite_mappedClasses;
 	public static String PersistenceUnitGeneralComposite_persistenceProvider;
 
-	public static String PersistenceUnitJPAMappingDescriptorsComposite_description;
-	public static String PersistenceUnitJPAMappingDescriptorsComposite_ormNoName;
-
-	public static String PersistenceUnitMappedClassesComposite_description;
-	public static String PersistenceUnitMappedClassesComposite_excludeUnlistedMappedClasses;
-	public static String PersistenceUnitMappedClassesComposite_excludeUnlistedMappedClassesWithDefault;
-	public static String PersistenceUnitMappedClassesComposite_mappedClassesNoName;
+	public static String PersistenceUnitMappingFilesComposite_description;
+	public static String PersistenceUnitMappingFilesComposite_mappingFileDialog_message;
+	public static String PersistenceUnitMappingFilesComposite_mappingFileDialog_title;
+	public static String PersistenceUnitMappingFilesComposite_ormNoName;
 
 	static {
-		NLS.initializeMessages(BUNDLE_NAME, JptUiPersistenceMessages.class);
+		NLS.initializeMessages("jpt_ui_persistence", JptUiPersistenceMessages.class);
 	}
 
 	private JptUiPersistenceMessages() {

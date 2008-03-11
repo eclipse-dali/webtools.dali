@@ -74,6 +74,9 @@ public class PersistenceUnitConnectionDatabaseComposite extends AbstractPane<Per
 
 			@Override
 			protected void setValue_(String value) {
+				if (value.length() == 0) {
+					value = null;
+				}
 				subject.setJtaDataSource(value);
 			}
 		};
@@ -97,6 +100,9 @@ public class PersistenceUnitConnectionDatabaseComposite extends AbstractPane<Per
 
 			@Override
 			protected void setValue_(String value) {
+				if (value.length() == 0) {
+					value = null;
+				}
 				subject.setNonJtaDataSource(value);
 			}
 		};
@@ -106,7 +112,7 @@ public class PersistenceUnitConnectionDatabaseComposite extends AbstractPane<Per
 		return new PropertyAspectAdapter<PersistenceUnit, PersistenceUnitTransactionType>(
 			getSubjectHolder(),
 			PersistenceUnit.DEFAULT_TRANSACTION_TYPE_PROPERTY,
-			PersistenceUnit.TRANSACTION_TYPE_PROPERTY)
+			PersistenceUnit.SPECIFIED_TRANSACTION_TYPE_PROPERTY)
 		{
 			@Override
 			protected PersistenceUnitTransactionType buildValue_() {
@@ -137,7 +143,7 @@ public class PersistenceUnitConnectionDatabaseComposite extends AbstractPane<Per
 		installJTADatasourceNameEnabler(text);
 
 		// Non-JTA Datasource Name widgets
-		buildLabeledText(
+		text = buildLabeledText(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitConnectionDatabaseComposite_nonJtaDatasourceName,
 			buildNonJTADatasourceNameHolder()
