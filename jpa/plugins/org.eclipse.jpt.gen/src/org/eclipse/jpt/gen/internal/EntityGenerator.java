@@ -56,7 +56,7 @@ public class EntityGenerator {
 
 	// ********** public API **********
 
-	public static void generateEntity(Config config, IPackageFragment packageFragment, GenTable genTable, OverwriteConfirmer overwriteConfirmer, IProgressMonitor monitor) {
+	static void generateEntity(Config config, IPackageFragment packageFragment, GenTable genTable, OverwriteConfirmer overwriteConfirmer, IProgressMonitor monitor) {
 		if ((config == null) || (packageFragment == null) || (genTable == null)) {
 			throw new NullPointerException();
 		}

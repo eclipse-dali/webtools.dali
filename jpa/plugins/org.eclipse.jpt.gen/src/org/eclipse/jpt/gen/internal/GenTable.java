@@ -153,7 +153,7 @@ class GenTable {
 	 * return the columns that are part of the table's primary key
 	 * but are also part of an "in-scope" foreign key
 	 */
-	public Iterator<Column> readOnlyPrimaryKeyColumns() {
+	Iterator<Column> readOnlyPrimaryKeyColumns() {
 		return new FilteringIterator<Column, Column>(this.table.primaryKeyColumns()) {
 			@Override
 			protected boolean accept(Column column) {
@@ -179,7 +179,7 @@ class GenTable {
 	 * return the columns that NEITHER part of the table's primary key
 	 * NOR part of any foreign key
 	 */
-	public Iterator<Column> nonPrimaryKeyBasicColumns() {
+	Iterator<Column> nonPrimaryKeyBasicColumns() {
 		return new FilteringIterator<Column, Column>(this.table.columns()) {
 			@Override
 			protected boolean accept(Column column) {
