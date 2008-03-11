@@ -31,7 +31,6 @@ import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
@@ -237,18 +236,13 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 	}
 
 	private String buildOverrideDisplayString(BaseOverride override) {
-
-		Entity subject = subject();
 		String overrideType;
-		int index = 0;
 
-		// Retrieve the index and type
+		// Retrieve the type
 		if (override instanceof AssociationOverride) {
-			index = CollectionTools.indexOf(subject.associationOverrides(), override);
 			overrideType = JptUiMappingsMessages.OverridesComposite_association;
 		}
 		else {
-			index = CollectionTools.indexOf(subject.attributeOverrides(), override);
 			overrideType = JptUiMappingsMessages.OverridesComposite_attribute;
 		}
 
@@ -258,18 +252,12 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		if (StringTools.stringIsEmpty(name)) {
 			name = JptUiMappingsMessages.OverridesComposite_noName;
 		}
-		else {
-			name = name.trim();
-		}
 
-		// Format: <name> (Association <index>), we show the index since
-		// it's possible to have one than one override with the same name
+		// Format: <name> (Attribute/Association Override)
 		StringBuilder sb = new StringBuilder();
 		sb.append(name);
 		sb.append(" (");
 		sb.append(overrideType);
-		sb.append(" ");
-		sb.append(index + 1);
 		sb.append(") ");
 		return sb.toString();
 	}
