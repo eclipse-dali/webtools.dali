@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.Hyperlink;
@@ -174,13 +175,20 @@ public interface WidgetFactory {
 	Section createSection(Composite parent, int style);
 
 	/**
+	 * Creates a new table.
+	 *
+	 * @param container The parent container
+	 * @return A new <code>Table</code>
+	 */
+	Table createTable(Composite parent);
+
+	/**
 	 * Creates a new editable text field.
 	 *
 	 * @param container The parent container
 	 * @return A new <code>Text</code>
 	 */
 	Text createText(Composite parent);
-
 
 	/**
 	 * Creates a new tri-state check box.

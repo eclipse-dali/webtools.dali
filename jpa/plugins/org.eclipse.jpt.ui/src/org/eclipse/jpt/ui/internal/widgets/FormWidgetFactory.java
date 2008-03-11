@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -29,7 +30,7 @@ import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 /**
- * This <code>IWidgetFactory</code> is responsible to create the widgets
+ * This <code>WidgetFactory</code> is responsible to create the widgets
  * using the <code>FormToolkit</code> in order use the form style (flat-style)
  * look and feel.
  *
@@ -217,6 +218,16 @@ public class FormWidgetFactory implements WidgetFactory {
 	 */
 	public Section createSection(Composite parent, int style) {
 		return widgetFactory.createSection(parent, SWT.FLAT | style);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	public Table createTable(Composite parent) {
+		return this.widgetFactory.createTable(
+			parent,
+			SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI
+		);
 	}
 
 	/*

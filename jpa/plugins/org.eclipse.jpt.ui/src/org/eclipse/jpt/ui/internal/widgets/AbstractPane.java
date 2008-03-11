@@ -2306,9 +2306,7 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new list and notify the given selection holder when the
-	 * selection changes. If the selection count is different than one than the
-	 * holder will receive <code>null</code>.
+	 * Creates a new table.
 	 *
 	 * @param container The parent container
 	 * @return The newly created <code>Table</code>
@@ -2320,23 +2318,18 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new list and notify the given selection holder when the
-	 * selection changes. If the selection count is different than one than the
-	 * holder will receive <code>null</code>.
+	 * Creates a new table.
 	 *
 	 * @param container The parent container
-	 * @param helpId The topic help ID to be registered for the new radio button
+	 * @param helpId The topic help ID to be registered for the new table or
+	 * <code>null</code> if no help ID is required
 	 * @return The newly created <code>Table</code>
 	 *
 	 * @category Layout
 	 */
 	protected final Table buildTable(Composite container, String helpId) {
 
-		Table table = new Table(
-			container,
-			SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI
-		);
-
+		Table table = this.widgetFactory.createTable(container);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 

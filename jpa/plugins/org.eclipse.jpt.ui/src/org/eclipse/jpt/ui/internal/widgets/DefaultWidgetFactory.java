@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormText;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -27,12 +28,12 @@ import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 /**
- * This <code>IWidgetFactory</code> simply creates plain SWT widgets.
+ * This <code>WidgetFactory</code> simply creates plain SWT widgets.
  *
  * @version 2.0
  * @since 2.0
  */
-public final class DefaultWidgetFactory implements WidgetFactory {
+public class DefaultWidgetFactory implements WidgetFactory {
 
 	/**
 	 * The singleton instance of this <code>IWidgetFactory</code>
@@ -198,6 +199,16 @@ public final class DefaultWidgetFactory implements WidgetFactory {
 	 */
 	public Section createSection(Composite parent, int style) {
 		return new Section(parent, style);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	public Table createTable(Composite parent) {
+		return new Table(
+			parent,
+			SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI
+		);
 	}
 
 	/*
