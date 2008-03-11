@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
-import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.NameTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -296,7 +296,7 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 		return (textRange != null) ? textRange : this.parent().validationTextRange(astRoot);
 	}
 
-	public org.eclipse.jpt.db.internal.Table dbTable() {
+	public org.eclipse.jpt.db.Table dbTable() {
 		Schema schema = this.dbSchema();
 		return (schema == null) ? null : schema.tableNamed(this.getName());
 	}

@@ -22,7 +22,6 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -30,6 +29,9 @@ import org.eclipse.swt.widgets.Shell;
  *  ConnectionProfileUiTools
  */
 public class DTPUiTools {
+
+	private static final String DATABASE_CATEGORY_ID = "org.eclipse.datatools.connectivity.db.category"; //$NON-NLS-1$
+
 	
 	/**
 	 * Launch the DTP New Connection Profile wizard to create a new database connection profile.
@@ -54,7 +56,7 @@ public class DTPUiTools {
 					
 					// Only display wizards belong to database category
 					while( cat != null) {
-						if( cat.getId().equals( ConnectionProfileRepository.DATABASE_CATEGORY_ID))
+						if( cat.getId().equals(DATABASE_CATEGORY_ID))
 							return true;
 						cat = cat.getParent();
 					}

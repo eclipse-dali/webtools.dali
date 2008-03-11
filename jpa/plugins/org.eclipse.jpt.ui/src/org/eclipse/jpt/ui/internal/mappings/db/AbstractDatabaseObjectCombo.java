@@ -10,13 +10,18 @@
 package org.eclipse.jpt.ui.internal.mappings.db;
 
 import java.util.Iterator;
+
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.db.internal.ConnectionListener;
-import org.eclipse.jpt.db.internal.ConnectionProfile;
-import org.eclipse.jpt.db.internal.Database;
-import org.eclipse.jpt.db.internal.Schema;
-import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.db.Catalog;
+import org.eclipse.jpt.db.Column;
+import org.eclipse.jpt.db.ConnectionListener;
+import org.eclipse.jpt.db.ConnectionProfile;
+import org.eclipse.jpt.db.Database;
+import org.eclipse.jpt.db.ForeignKey;
+import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.Sequence;
+import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
@@ -158,15 +163,43 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 				});
 			}
 
+			public void catalogChanged(ConnectionProfile profile,
+			                          final Catalog catalog) {
+
+				SWTUtil.asyncExec(new Runnable() {
+					public void run() {
+						log(Tracing.UI_DB, "catalogChanged: " + catalog.name());
+
+						if (!getCombo().isDisposed()) {
+							AbstractDatabaseObjectCombo.this.catalogChanged(catalog);
+						}
+					}
+				});
+			}
+
 			public void schemaChanged(ConnectionProfile profile,
 			                          final Schema schema) {
 
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
-						log(Tracing.UI_DB, "schemaChanged: " + schema.getName());
+						log(Tracing.UI_DB, "schemaChanged: " + schema.name());
 
 						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.schemaChanged(schema);
+						}
+					}
+				});
+			}
+
+			public void sequenceChanged(ConnectionProfile profile,
+			                          final Sequence sequence) {
+
+				SWTUtil.asyncExec(new Runnable() {
+					public void run() {
+						log(Tracing.UI_DB, "sequenceChanged: " + sequence.name());
+
+						if (!getCombo().isDisposed()) {
+							AbstractDatabaseObjectCombo.this.sequenceChanged(sequence);
 						}
 					}
 				});
@@ -177,10 +210,38 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 
 				SWTUtil.asyncExec(new Runnable() {
 					public void run() {
-						log(Tracing.UI_DB, "tableChanged: " + table.getName());
+						log(Tracing.UI_DB, "tableChanged: " + table.name());
 
 						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.tableChanged(table);
+						}
+					}
+				});
+			}
+
+			public void columnChanged(ConnectionProfile profile,
+			                         final Column column) {
+
+				SWTUtil.asyncExec(new Runnable() {
+					public void run() {
+						log(Tracing.UI_DB, "columnChanged: " + column.name());
+
+						if (!getCombo().isDisposed()) {
+							AbstractDatabaseObjectCombo.this.columnChanged(column);
+						}
+					}
+				});
+			}
+
+			public void foreignKeyChanged(ConnectionProfile profile,
+			                         final ForeignKey foreignKey) {
+
+				SWTUtil.asyncExec(new Runnable() {
+					public void run() {
+						log(Tracing.UI_DB, "foreignKeyChanged: " + foreignKey.name());
+
+						if (!getCombo().isDisposed()) {
+							AbstractDatabaseObjectCombo.this.foreignKeyChanged(foreignKey);
 						}
 					}
 				});
@@ -271,7 +332,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 * connection profile was set or the
 	 */
 	protected final Database database() {
-		return connectionProfile().getDatabase();
+		return connectionProfile().database();
 	}
 
 	/**
@@ -411,7 +472,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 
 		ConnectionProfile connectionProfile = connectionProfile();
 
-		if ((connectionProfile != null) && connectionProfile.isConnected()) {
+		if ((connectionProfile != null) && connectionProfile.isActive()) {
 
 			for (Iterator<String> iter = CollectionTools.sort(values()); iter.hasNext(); ) {
 				combo.add(iter.next());
@@ -451,9 +512,25 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	/**
 	 * The
 	 *
+	 * @param catalog
+	 */
+	protected void catalogChanged(Catalog catalog) {
+	}
+
+	/**
+	 * The
+	 *
 	 * @param schema
 	 */
 	protected void schemaChanged(Schema schema) {
+	}
+
+	/**
+	 * The
+	 *
+	 * @param sequence
+	 */
+	protected void sequenceChanged(Sequence sequence) {
 	}
 
 	/**
@@ -466,9 +543,25 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	/**
 	 * The
 	 *
-	 * @param catalog
+	 * @param table
 	 */
 	protected void tableChanged(Table table) {
+	}
+
+	/**
+	 * The
+	 *
+	 * @param column
+	 */
+	protected void columnChanged(Column column) {
+	}
+
+	/**
+	 * The
+	 *
+	 * @param foreignKey
+	 */
+	protected void foreignKeyChanged(ForeignKey foreignKey) {
 	}
 
 	/**

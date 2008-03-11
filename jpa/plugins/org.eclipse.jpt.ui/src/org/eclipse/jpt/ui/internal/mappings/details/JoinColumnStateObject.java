@@ -11,8 +11,8 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.AbstractJoinColumn;
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.db.internal.Schema;
-import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.Table;
 
 /**
  * @version 2.0

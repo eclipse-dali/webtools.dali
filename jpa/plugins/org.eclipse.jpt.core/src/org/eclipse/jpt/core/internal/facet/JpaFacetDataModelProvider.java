@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.facet;
 
 import java.util.Set;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaCore;
@@ -17,7 +18,7 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
-import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
+import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.componentcore.datamodel.FacetInstallDataModelProvider;
@@ -80,13 +81,13 @@ public class JpaFacetDataModelProvider
 			return null;
 		}
 		if (propertyName.equals(USE_SERVER_JPA_IMPLEMENTATION)) {
-			return this.runtimeSupportsEjb30(this.runtime());
+			return Boolean.valueOf(this.runtimeSupportsEjb30(this.runtime()));
 		}
 		if (propertyName.equals(JPA_LIBRARY)) {
 			return JptCorePlugin.instance().getPluginPreferences().getString(JpaPreferenceConstants.PREF_DEFAULT_JPA_LIB);
 		}
 		if (propertyName.equals(DISCOVER_ANNOTATED_CLASSES)) {
-			return runtimeSupportsEjb30(this.runtime());
+			return Boolean.valueOf(this.runtimeSupportsEjb30(this.runtime()));
 		}
 		if (propertyName.equals(CREATE_ORM_XML)) {
 			return Boolean.TRUE;
@@ -158,7 +159,7 @@ public class JpaFacetDataModelProvider
 	}
 
 	private IStatus validateConnectionName(String connectionName) {
-		return ConnectionProfileRepository.instance().profileNamed(connectionName).isConnected() ?
+		return JptDbPlugin.instance().connectionProfileRepository().connectionProfileNamed(connectionName).isActive() ?
 				OK_STATUS
 			:
 				CONNECTION_NOT_CONNECTED_STATUS;

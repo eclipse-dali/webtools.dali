@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
-import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
+import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
@@ -271,7 +271,7 @@ public class JpaFacetWizardPage
 			//clear out connection entries from previous login.
 			connectionCombo.removeAll();
 			
-			for (Iterator stream = ConnectionProfileRepository.instance().profileNames(); stream.hasNext(); ) {
+			for (Iterator stream = JptDbPlugin.instance().connectionProfileRepository().connectionProfileNames(); stream.hasNext(); ) {
 				connectionCombo.add((String) stream.next());
 			}
 		}

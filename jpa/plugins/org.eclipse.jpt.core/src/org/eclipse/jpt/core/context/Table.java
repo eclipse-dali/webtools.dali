@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.Schema;
 
 /**
  * 
@@ -54,14 +54,14 @@ public interface Table extends JpaContextNode
 //	EList<IUniqueConstraint> getUniqueConstraints();
 //	IUniqueConstraint createUniqueConstraint(int index);
 
-	org.eclipse.jpt.db.internal.Table dbTable();
+	org.eclipse.jpt.db.Table dbTable();
 
 	Schema dbSchema();
 	
 	/**
 	 * Return true if this table is connected to a datasource
 	 */
-	boolean isConnected();
+	boolean connectionProfileIsActive();
 
 	/** 
 	 * Return true if this table's schema can be resolved to a schema on the active connection

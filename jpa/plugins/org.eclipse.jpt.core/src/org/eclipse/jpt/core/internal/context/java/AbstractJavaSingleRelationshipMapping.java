@@ -34,7 +34,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinColumns;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
-import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -317,7 +317,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		for (Iterator<JavaJoinColumn> stream = this.joinColumns(); stream.hasNext();) {
 			JavaJoinColumn joinColumn = stream.next();
 			String table = joinColumn.getTable();
-			boolean doContinue = joinColumn.isConnected();
+			boolean doContinue = joinColumn.connectionProfileIsActive();
 			
 			if (doContinue && this.typeMapping().tableNameIsInvalid(table)) {
 				messages.add(

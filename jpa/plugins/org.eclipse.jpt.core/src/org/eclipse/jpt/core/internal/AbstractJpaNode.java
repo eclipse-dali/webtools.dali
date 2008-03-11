@@ -13,14 +13,15 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.db.internal.ConnectionProfile;
-import org.eclipse.jpt.db.internal.Database;
+import org.eclipse.jpt.db.ConnectionProfile;
+import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.utility.internal.node.Node;
@@ -96,11 +97,11 @@ public abstract class AbstractJpaNode
 	}
 
 	protected Database database() {
-		return this.connectionProfile().getDatabase();
+		return this.connectionProfile().database();
 	}
 
-	public boolean isConnected() {
-		return this.connectionProfile().isConnected();
+	public boolean connectionProfileIsActive() {
+		return this.connectionProfile().isActive();
 	}
 
 	// ********** update model **********

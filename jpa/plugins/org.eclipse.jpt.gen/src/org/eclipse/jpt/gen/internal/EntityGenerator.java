@@ -27,9 +27,9 @@ import org.eclipse.jdt.core.IJavaModelStatusConstants;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.db.internal.Column;
-import org.eclipse.jpt.db.internal.ForeignKey;
-import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.db.Column;
+import org.eclipse.jpt.db.ForeignKey;
+import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.IndentingPrintWriter;
 import org.eclipse.jpt.utility.internal.JavaType;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -193,7 +193,7 @@ public class EntityGenerator {
 		if ( ! this.table().matchesShortJavaClassName(this.entityName())) {
 			pw.printAnnotation(JPA.TABLE);
 			pw.print("(name=\"");
-			pw.print(this.table().getName());
+			pw.print(this.table().name());
 			pw.print("\")");
 			pw.println();
 		}
@@ -254,7 +254,7 @@ public class EntityGenerator {
 			if (column.matchesJavaFieldName(fieldName)) {
 				this.printReadOnlyColumnAnnotationOn(pw);  // no Column name needed
 			} else {
-				this.printReadOnlyColumnAnnotationOn(column.getName(), pw);
+				this.printReadOnlyColumnAnnotationOn(column.name(), pw);
 			}
 		}
 		pw.printVisibility(this.config.fieldVisibility());
@@ -300,7 +300,7 @@ public class EntityGenerator {
 				pw.println();
 			}
 			if ( ! column.matchesJavaFieldName(fieldName)) {
-				this.printColumnAnnotationOn(column.getName(), pw);
+				this.printColumnAnnotationOn(column.name(), pw);
 			}
 		}
 		pw.printVisibility(this.config.fieldVisibility());
@@ -322,10 +322,10 @@ public class EntityGenerator {
 		String fieldName = this.genTable.fieldNameFor(column);
 		if (this.config.fieldAccessType()) {
 			if ( ! column.matchesJavaFieldName(fieldName)) {
-				this.printColumnAnnotationOn(column.getName(), pw);
+				this.printColumnAnnotationOn(column.name(), pw);
 			}
 		}
-		if (column.isLob()) {
+		if (column.dataTypeIsLOB()) {
 			pw.printAnnotation(JPA.LOB);
 			pw.println();
 		}
@@ -370,13 +370,13 @@ public class EntityGenerator {
 		pw.printAnnotation(JPA.MANY_TO_ONE);
 		pw.println();
 		ForeignKey fk = relation.getForeignKey();
-		if (fk.matchesJavaFieldName(fieldName)) {
+		if (fk.defaultMatchesJavaFieldName(fieldName)) {
 			return;  // no JoinColumn annotation needed
 		}
 		if (fk.referencesSingleColumnPrimaryKey()) {
 			pw.printAnnotation(JPA.JOIN_COLUMN);
 			pw.print("(name=\"");
-			pw.print(fk.columnPairs().next().getBaseColumn().getName());
+			pw.print(fk.columnPair().baseColumn().name());
 			pw.print("\")");
 		} else {
 			if (fk.columnPairsSize() > 1) {
@@ -405,7 +405,7 @@ public class EntityGenerator {
 	}
 
 	private void printJoinColumnAnnotationOn(ForeignKey.ColumnPair columnPair, EntitySourceWriter pw) {
-		this.printJoinColumnAnnotationOn(columnPair.getBaseColumn().getName(), columnPair.getReferencedColumn().getName(), pw);
+		this.printJoinColumnAnnotationOn(columnPair.baseColumn().name(), columnPair.referencedColumn().name(), pw);
 	}
 
 	/**
@@ -540,26 +540,26 @@ public class EntityGenerator {
 	private void printJoinTableJoinColumnsOn(String elementName, String fieldName, ForeignKey foreignKey, EntitySourceWriter pw) {
 		if (foreignKey.columnPairsSize() != 1) {
 			this.printJoinTableJoinColumnsOn(elementName, foreignKey, pw);
-		} else if (foreignKey.getReferencedTable().primaryKeyColumnsSize() != 1) {
+		} else if (foreignKey.referencedTable().primaryKeyColumnsSize() != 1) {
 			// if the referenced table has a composite primary key, neither of the columns can be a default
 			// since both of the defaults require a single-column primary key
 			this.printJoinTableJoinColumnsOn(elementName, foreignKey, pw);
 		} else {
-			ForeignKey.ColumnPair columnPair = foreignKey.columnPairs().next();
-			Column pkColumn = foreignKey.getReferencedTable().primaryKeyColumns().next();
-			if (columnPair.getBaseColumn().matchesJavaFieldName(fieldName + "_" + pkColumn.getName())) {
-				if (columnPair.getReferencedColumn() == pkColumn) {
+			ForeignKey.ColumnPair columnPair = foreignKey.columnPair();
+			Column pkColumn = foreignKey.referencedTable().primaryKeyColumn();
+			if (columnPair.baseColumn().matchesJavaFieldName(fieldName + "_" + pkColumn.name())) {
+				if (columnPair.referencedColumn() == pkColumn) {
 					// we shouldn't get here...
 				} else {
 					pw.print(elementName);
 					pw.print('=');
-					this.printJoinColumnAnnotationOn(null, columnPair.getReferencedColumn().getName(), pw);
+					this.printJoinColumnAnnotationOn(null, columnPair.referencedColumn().name(), pw);
 				}
 			} else {
-				if (columnPair.getReferencedColumn() == pkColumn) {
+				if (columnPair.referencedColumn() == pkColumn) {
 					pw.print(elementName);
 					pw.print('=');
-					this.printJoinColumnAnnotationOn(columnPair.getBaseColumn().getName(), null, pw);
+					this.printJoinColumnAnnotationOn(columnPair.baseColumn().name(), null, pw);
 				} else {
 					this.printJoinTableJoinColumnsOn(elementName, foreignKey, pw);
 				}
@@ -681,7 +681,7 @@ public class EntityGenerator {
 			if (column.matchesJavaFieldName(propertyName)) {
 				this.printReadOnlyColumnAnnotationOn(pw);  // no Column name needed
 			} else {
-				this.printReadOnlyColumnAnnotationOn(column.getName(), pw);
+				this.printReadOnlyColumnAnnotationOn(column.name(), pw);
 			}
 		}
 
@@ -708,7 +708,7 @@ public class EntityGenerator {
 				pw.println();
 			}
 			if ( ! column.matchesJavaFieldName(propertyName)) {
-				this.printColumnAnnotationOn(column.getName(), pw);
+				this.printColumnAnnotationOn(column.name(), pw);
 			}
 		}
 
@@ -725,7 +725,7 @@ public class EntityGenerator {
 		String propertyName = this.genTable.fieldNameFor(column);
 		if (this.config.propertyAccessType()) {
 			if ( ! column.matchesJavaFieldName(propertyName)) {
-				this.printColumnAnnotationOn(column.getName(), pw);
+				this.printColumnAnnotationOn(column.name(), pw);
 			}
 		}
 

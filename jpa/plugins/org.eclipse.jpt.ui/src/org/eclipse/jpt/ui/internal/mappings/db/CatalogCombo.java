@@ -10,11 +10,10 @@
 package org.eclipse.jpt.ui.internal.mappings.db;
 
 import java.util.Iterator;
+
 import org.eclipse.jpt.core.JpaNode;
-import org.eclipse.jpt.db.internal.Database;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -52,18 +51,8 @@ public abstract class CatalogCombo<T extends JpaNode> extends AbstractDatabaseOb
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Iterator<String> values() {
-
-		Database database = database();
-
-		if (database != null) {
-			return database.catalogNames();
-		}
-
-		return EmptyIterator.instance();
+		return this.database().catalogNames();
 	}
 }

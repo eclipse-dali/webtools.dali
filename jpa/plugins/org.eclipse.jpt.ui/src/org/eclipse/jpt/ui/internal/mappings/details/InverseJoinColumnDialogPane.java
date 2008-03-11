@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.RelationshipMapping;
-import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;

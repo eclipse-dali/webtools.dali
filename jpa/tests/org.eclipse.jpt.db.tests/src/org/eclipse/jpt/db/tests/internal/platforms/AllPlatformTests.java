@@ -11,16 +11,11 @@ package org.eclipse.jpt.db.tests.internal.platforms;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import junit.swingui.TestRunner;
 
 /**
  *  AllPlatformTests
  */
 public class AllPlatformTests {
-
-    public static void main( String[] args) {
-        TestRunner.main( new String[] { "-c",  AllPlatformTests.class.getName()});
-    }
 
     public static Test suite() {
 		TestSuite suite = new TestSuite(AllPlatformTests.class.getPackage().getName());

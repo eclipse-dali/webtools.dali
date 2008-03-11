@@ -118,7 +118,7 @@ public class JptCorePlugin extends Plugin {
 	private static JptCorePlugin INSTANCE;
 
 	/**
-	 * Return the singleton JPA plug-in.
+	 * Return the singleton JPT plug-in.
 	 */
 	public static JptCorePlugin instance() {
 		return INSTANCE;

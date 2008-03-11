@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,7 +31,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
-import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.gen.internal.EntityGenerator;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -191,7 +191,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		this.tableTable.setSorter(new ViewerSorter() {
 			@Override
 			public int compare(Viewer viewer, Object e1, Object e2) {
-				return ((Table) e1).getName().compareTo(((Table) e2).getName());
+				return ((Table) e1).name().compareTo(((Table) e2).name());
 			}
 		});
 		
@@ -432,7 +432,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 
 		@Override
 		public String getText(Object element) {
-			return ((Table) element).getName();
+			return ((Table) element).name();
 		}
 
 		public Image getColumnImage(Object element, int columnIndex) {
@@ -445,7 +445,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 			}
 			switch (columnIndex) {
 				case TABLE_COLUMN_INDEX:
-					return ((Table) element).getName();
+					return ((Table) element).name();
 
 				case ENTITY_NAME_COLUMN_INDEX:
 					return GenerateEntitiesWizardPage.this.entityName((Table) element);

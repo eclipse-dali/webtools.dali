@@ -31,7 +31,7 @@ import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
-import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
+import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
@@ -332,7 +332,7 @@ public class JpaProjectPropertiesPage
 			//clear out connection entries from previous login.
 			connectionCombo.removeAll();
 			
-			for (Iterator<String> stream = ConnectionProfileRepository.instance().profileNames(); stream.hasNext(); ) {
+			for (Iterator<String> stream = JptDbPlugin.instance().connectionProfileRepository().connectionProfileNames(); stream.hasNext(); ) {
 				connectionCombo.add(stream.next());
 			}
 		}
@@ -403,7 +403,7 @@ public class JpaProjectPropertiesPage
 					new IDataModelListener() {
 						public void propertyChanged(DataModelEvent event) {
 							if (DISCOVER_ANNOTATED_CLASSES.equals(event.getPropertyName())) {
-								boolean discoverClasses = (Boolean) event.getProperty();
+								boolean discoverClasses = ((Boolean) event.getProperty()).booleanValue();
 								discoverClassesButton.setSelection(discoverClasses);
 								listClassesButton.setSelection(! discoverClasses);
 							}
@@ -416,7 +416,7 @@ public class JpaProjectPropertiesPage
 		
 		void performDefaults() {
 			boolean discoverClasses = getJpaProject().discoversAnnotatedClasses();
-			model.setProperty(DISCOVER_ANNOTATED_CLASSES, discoverClasses);
+			model.setProperty(DISCOVER_ANNOTATED_CLASSES, Boolean.valueOf(discoverClasses));
 			discoverClassesButton.setSelection(discoverClasses);
 			listClassesButton.setSelection(! discoverClasses);
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
-import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
@@ -286,7 +286,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	protected void addColumnMessages(List<IMessage> messages) {
 		OrmColumn column = getColumn();
 		String table = column.getTable();
-		boolean doContinue = isConnected();
+		boolean doContinue = connectionProfileIsActive();
 		
 		if (doContinue && typeMapping().tableNameIsInvalid(table)) {
 			if (persistentAttribute().isVirtual()) {

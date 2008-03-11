@@ -403,7 +403,7 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping implement
 	protected void addColumnMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		JavaColumn column = this.getColumn();
 		String table = column.getTable();
-		boolean doContinue = entityOwned() && column.isConnected();
+		boolean doContinue = entityOwned() && column.connectionProfileIsActive();
 		
 		if (doContinue && this.typeMapping().tableNameIsInvalid(table)) {
 			messages.add(

@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.db.Table;
 
 /**
  * The state object used to create or edit a primary key join column on an

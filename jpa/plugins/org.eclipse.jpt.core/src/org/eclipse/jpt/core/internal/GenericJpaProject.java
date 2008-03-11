@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -44,8 +45,8 @@ import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitResource;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.db.internal.ConnectionProfile;
-import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.ConnectionProfile;
+import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -495,7 +496,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	}
 	
 	protected void addInactiveConnectionMessage(List<IMessage> messages) {
-		if (okToProceedForConnectionValidation && ! this.dataSource().isConnected()) {
+		if (okToProceedForConnectionValidation && ! this.dataSource().connectionProfileIsActive()) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,

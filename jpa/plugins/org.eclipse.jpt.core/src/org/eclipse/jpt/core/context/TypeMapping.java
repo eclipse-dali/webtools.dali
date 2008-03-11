@@ -10,7 +10,8 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.Iterator;
-import org.eclipse.jpt.db.internal.Schema;
+
+import org.eclipse.jpt.db.Schema;
 
 /**
  * 
@@ -62,14 +63,14 @@ public interface TypeMapping extends JpaContextNode
 	/**
 	 * return the resolved primary db table
 	 */
-	org.eclipse.jpt.db.internal.Table primaryDbTable();
+	org.eclipse.jpt.db.Table primaryDbTable();
 
 	Schema dbSchema();
 
 	/**
 	 * return the resolved associated db table with the passed in name
 	 */
-	org.eclipse.jpt.db.internal.Table dbTable(String tableName);
+	org.eclipse.jpt.db.Table dbTable(String tableName);
 
 	/**
 	 * Return whether the specified table is invalid for any annotations

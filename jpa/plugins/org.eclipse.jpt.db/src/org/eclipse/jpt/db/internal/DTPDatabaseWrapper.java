@@ -9,228 +9,299 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
-import java.util.Collections;
-import java.util.HashSet;
+import java.text.Collator;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.List;
 
 import org.eclipse.datatools.connectivity.sqm.core.definition.DatabaseDefinition;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
-import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
 import org.eclipse.datatools.connectivity.sqm.internal.core.RDBCorePlugin;
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.jpt.db.Catalog;
+import org.eclipse.jpt.db.Database;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
- *  Wrap a DTP Database
+ * Wrap a DTP Database.
+ * Sometimes the database will directly hold schemata; but if the database
+ * supports catalogs, it will not hold the schemata directly, but will delegate
+ * to the "default" catalog.
  */
-public final class DTPDatabaseWrapper extends Database {
-	
-	final ConnectionProfile profile;
-	final org.eclipse.datatools.modelbase.sql.schema.Database dtpDatabase;
-	private ICatalogObjectListener databaseListener;
-	
-	private Set<Catalog> catalogs;  // lazy-initialized
-	private Set<Schema> schemata;  // lazy-initialized
+final class DTPDatabaseWrapper
+	extends DTPSchemaContainerWrapper
+	implements InternalDatabase
+{
+	// backpointer to parent
+	private final DTPConnectionProfileWrapper connectionProfile;
 
-	DTPDatabaseWrapper( ConnectionProfile profile, org.eclipse.datatools.modelbase.sql.schema.Database dtpDatabase) {
-		super();
+	// the wrapped DTP database
+	private final org.eclipse.datatools.modelbase.sql.schema.Database dtpDatabase;
+
+	// lazy-initialized
+	private DTPCatalogWrapper[] catalogs;
+
+	// lazy-initialized
+	private DTPCatalogWrapper defaultCatalog;
+	private boolean defaultCatalogCalculated = false;
+
+	// TODO allow user to configure?
+	private boolean caseSensitive = false;
+
+
+	private static final DTPCatalogWrapper[] EMPTY_CATALOGS = new DTPCatalogWrapper[0];
+
+
+	// ********** constructor **********
+
+	DTPDatabaseWrapper(DTPConnectionProfileWrapper connectionProfile, org.eclipse.datatools.modelbase.sql.schema.Database dtpDatabase) {
+		super(connectionProfile);
+		this.connectionProfile = connectionProfile;
 		this.dtpDatabase = dtpDatabase;
-		this.profile = profile;
-		this.initialize();
 	}
 
-	// ********** behavior **********
 
-	private void initialize() {
-		if( this.connectionIsOnline()) {
-			this.databaseListener = this.buildDatabaseListener();
-			this.addCatalogObjectListener(( ICatalogObject) this.dtpDatabase, this.databaseListener);
-		}
+	// ********** DTPWrapper implementation **********
+
+	@Override
+	ICatalogObject catalogObject() {
+		return (ICatalogObject) this.dtpDatabase;
 	}
 
 	@Override
-	protected boolean connectionIsOnline() {
-		return this.profile.connectionIsOnline();
-	}
-	
-	private ICatalogObjectListener buildDatabaseListener() {
-	   return new ICatalogObjectListener() {
-		    public void notifyChanged( final ICatalogObject database, final int eventType) {     
-				if( database == DTPDatabaseWrapper.this.dtpDatabase) {	
-					DTPDatabaseWrapper.this.refresh();
-					DTPDatabaseWrapper.this.profile.databaseChanged( DTPDatabaseWrapper.this, eventType);
-				}
-		    }
-	    };
+	synchronized void catalogObjectChanged(int eventType) {
+		super.catalogObjectChanged(eventType);
+		this.connectionProfile().databaseChanged(this, eventType);
 	}
 
-	@Override
-	void refresh() {
-		this.disposeSchemata();
-		this.disposeCatalogs();
-		
-		this.schemata = null;
-		this.catalogs = null;
-	}
-	
-	@Override
-	void catalogChanged( Catalog catalog, int eventType) {
-		this.profile.catalogChanged( catalog, this, eventType);
-		return;
-	}	
-		
-	@Override
-	void schemaChanged( Schema schema, int eventType) {
-		this.profile.schemaChanged( schema, this, eventType);
-		return;
-	}
+
+	// ********** Database implementation **********
 
 	@Override
-	void tableChanged( Table table,  Schema schema, int eventType) {
-		this.profile.tableChanged( table, schema, this, eventType);
-		return;
-	}
-	
-	@Override
-	protected void dispose() {
-		this.removeCatalogObjectListener(( ICatalogObject) this.dtpDatabase, this.databaseListener);
-
-		this.disposeSchemata();
-		this.disposeCatalogs();
-	}
-
-	private void disposeSchemata() {
-		if( this.schemata != null) {
-			for( Iterator<Schema> stream = this.schemata(); stream.hasNext(); ) {
-				stream.next().dispose();
-			}
-		}
-	}
-	
-	private void disposeCatalogs() {
-		if( this.catalogs != null) {
-			for( Iterator<Catalog> stream = this.catalogs(); stream.hasNext(); ) {
-				stream.next().dispose();
-			}
-		}
-	}
-	
-	
-	// ********** queries **********
-
-	@Override
-	public String getName() {
-
+	public String name() {
 		return this.dtpDatabase.getName();
 	}
 
-	@Override
-	public String getVendor() {
-		
+	public String vendor() {
 		return this.dtpDatabase.getVendor();
 	}
-	
-	@Override
-	public String getVersion() {
-		
+
+	public String version() {
 		return this.dtpDatabase.getVersion();
 	}
-	
-	@Override
+
 	public DatabaseDefinition dtpDefinition() {
 		return RDBCorePlugin.getDefault().getDatabaseDefinitionRegistry().getDefinition(this.dtpDatabase);
 	}
 
-	
-	// ***** schemata
+	// ***** caseSensitive
 
 	@Override
-	synchronized Set<Schema> getSchemata() {
-		if( this.schemata == null) {
-			this.schemata = this.buildSchemata();
-		}
-		return this.schemata;
+	public boolean isCaseSensitive() {
+		return this.caseSensitive;
 	}
 
-	@SuppressWarnings("unchecked")
-	private EList<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata() {
-		return this.dtpDatabase.getSchemas();
+	// TODO
+	public void setCaseSensitive(boolean caseSensitive) {
+		this.caseSensitive = caseSensitive;
 	}
 
-	private Set<Schema> buildSchemata() {
-		Set<Schema> result;
-		if( this.supportsCatalogs()) {
-			result = this.getSchemataForCatalogNamed( this.profile.getCatalogName());
-		}
-		else {
-			EList<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata = this.dtpSchemata();
-			result = new HashSet<Schema>( dtpSchemata.size());
-			for (org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema : dtpSchemata) {
-				result.add( this.wrap(dtpSchema));
-			}
-		}
-		return result;
-	}
-	
 	// ***** catalogs
 
-	@Override
 	public boolean supportsCatalogs() {
-		EList<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata = this.dtpSchemata();
-		return ( dtpSchemata == null || dtpSchemata.size() == 0);
+		// if the DTP database does not have any schemata, it must have catalogs...
+		List<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata = this.dtpSchemata();
+		return (dtpSchemata == null) || dtpSchemata.isEmpty();
 	}
 
-	@SuppressWarnings("unchecked")
-	private EList<org.eclipse.datatools.modelbase.sql.schema.Catalog> dtpCatalogs() {
-		return this.dtpDatabase.getCatalogs();
+	public Iterator<Catalog> catalogs() {
+		return new ArrayIterator<Catalog>(this.catalogs_());
 	}
 
-	@Override
-	public String getDefaultCatalogName() {
-		
-		if( !this.supportsCatalogs()) {	// this database doesn't support catalogs
-			return "";
-		}
-		String userName = this.profile.getUserName();
-		for (org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog : this.dtpCatalogs()) {
-			if( dtpCatalog.getName().length() == 0) {	// special catalog that contains all schemata
-				return "";
-			}
-			else if( dtpCatalog.getName().equals( userName)) {
-				return userName;		// returns user name as default catalog
-			}
-			else if( dtpCatalog.getName().equals( this.getName())) {
-				return this.getName();		 // special catalog with same name as DB (PostgreSQL)
-			}
-		}
-		throw new NoSuchElementException();
+	private Iterator<DTPCatalogWrapper> catalogWrappers() {
+		return new ArrayIterator<DTPCatalogWrapper>(this.catalogs_());
 	}
-	
-	@Override
-	synchronized Set<Catalog> getCatalogs() {
-		if( this.catalogs == null) {
+
+	private synchronized DTPCatalogWrapper[] catalogs_() {
+		if (this.catalogs == null) {
 			this.catalogs = this.buildCatalogs();
 		}
 		return this.catalogs;
 	}
 
-	private Set<Catalog> buildCatalogs() {
-		
-		EList<org.eclipse.datatools.modelbase.sql.schema.Catalog> dtpCatalogs = this.dtpCatalogs();
-		if( dtpCatalogs == null) {
-			return Collections.emptySet();
+	private DTPCatalogWrapper[] buildCatalogs() {
+		List<org.eclipse.datatools.modelbase.sql.schema.Catalog> dtpCatalogs = this.dtpCatalogs();
+		if ((dtpCatalogs == null) || dtpCatalogs.isEmpty()) {
+			return EMPTY_CATALOGS;
 		}
-		Set<Catalog> result = new HashSet<Catalog>( dtpCatalogs.size());
-		for (org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog : dtpCatalogs) {
-			result.add( this.wrap(dtpCatalog));
+		DTPCatalogWrapper[] result = new DTPCatalogWrapper[dtpCatalogs.size()];
+		for (int i = result.length; i-- > 0;) {
+			result[i] = new DTPCatalogWrapper(this, dtpCatalogs.get(i));
 		}
 		return result;
 	}
-	
-	private Set<Schema> getSchemataForCatalogNamed( String catalogName) {
 
-		Catalog catalog = this.catalogNamed( catalogName);
-		return ( catalog != null) ? catalog.buildSchemata() : Collections.<Schema>emptySet();
+	// minimize scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	private List<org.eclipse.datatools.modelbase.sql.schema.Catalog> dtpCatalogs() {
+		return this.dtpDatabase.getCatalogs();
 	}
+
+	public int catalogsSize() {
+		return this.catalogs_().length;
+	}
+
+	public Iterator<String> catalogNames() {
+		return new TransformationIterator<DTPCatalogWrapper, String>(this.catalogWrappers()) {
+			@Override
+			protected String transform(DTPCatalogWrapper catalog) {
+				 return catalog.name();
+			}
+		};
+	}
+
+	public boolean containsCatalogNamed(String name) {
+		return this.catalogNamed(name) != null;
+	}
+
+	public DTPCatalogWrapper catalogNamed(String name) {
+		return this.isCaseSensitive() ? this.catalogNamedCaseSensitive(name) : this.catalogNamedIgnoreCase(name);
+	}
+	
+	private DTPCatalogWrapper catalogNamedCaseSensitive(String name) {
+		for (Iterator<DTPCatalogWrapper> stream = this.catalogWrappers(); stream.hasNext(); ) {
+			DTPCatalogWrapper catalog = stream.next();
+			if (catalog.name().equals(name)) {
+				return catalog;
+			}
+		}
+		return null;
+	}
+	
+	private DTPCatalogWrapper catalogNamedIgnoreCase(String name) {
+		for (Iterator<DTPCatalogWrapper> stream = this.catalogWrappers(); stream.hasNext(); ) {
+			DTPCatalogWrapper catalog = stream.next();
+			if (StringTools.stringsAreEqualIgnoreCase(catalog.name(), name)) {
+				return catalog;
+			}
+		}
+		return null;
+	}
+
+	public synchronized DTPCatalogWrapper defaultCatalog() {
+		if ( ! this.defaultCatalogCalculated) {
+			this.defaultCatalogCalculated = true;
+			this.defaultCatalog = this.buildDefaultCatalog();
+		}
+		return this.defaultCatalog;
+	}
+
+	private DTPCatalogWrapper buildDefaultCatalog() {
+		if ( ! this.supportsCatalogs()) {
+			return null;
+		}
+		String userName = this.connectionProfile.userName();
+		for (Iterator<DTPCatalogWrapper> stream = this.catalogWrappers(); stream.hasNext(); ) {
+			DTPCatalogWrapper catalog = stream.next();
+			if (catalog.name().length() == 0) {
+				return catalog;  // special catalog that contains all schemata
+			}
+			if (catalog.name().equals(userName)) {
+				return catalog;  // user name is default catalog
+			}
+			if (catalog.name().equals(this.name())) {
+				return catalog;  // special catalog with same name as DB (PostgreSQL)
+			}
+		}
+		throw new IllegalStateException("unknown default catalog");  //$NON-NLS-1$
+	}
+
+	/**
+	 * return the catalog for the specified DTP catalog
+	 */
+	DTPCatalogWrapper catalog(org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog) {
+		for (Iterator<DTPCatalogWrapper> stream = this.catalogWrappers(); stream.hasNext(); ) {
+			DTPCatalogWrapper catalog = stream.next();
+			if (catalog.wraps(dtpCatalog)) {
+				return catalog;
+			}
+		}
+		throw new IllegalArgumentException("invalid DTP catalog: " + dtpCatalog);  //$NON-NLS-1$
+	}
+
+	// ***** schemata
+
+	@Override
+	@SuppressWarnings("unchecked")
+	List<org.eclipse.datatools.modelbase.sql.schema.Schema> dtpSchemata() {
+		return this.dtpDatabase.getSchemas();
+	}
+
+	@Override
+	synchronized DTPSchemaWrapper[] schemata_() {
+		return (this.supportsCatalogs()) ?
+			this.defaultCatalog().schemata_()
+		:
+			super.schemata_();
+	}
+
+
+	// ********** Comparable implementation **********
+
+	public int compareTo(Database database) {
+		return Collator.getInstance().compare(this.name(), database.name());
+	}
+
+
+	// ********** internal methods **********
+
+	boolean wraps(org.eclipse.datatools.modelbase.sql.schema.Database database) {
+		return this.dtpDatabase == database;
+	}
+
+	/**
+	 * return the table for the specified DTP table
+	 */
+	DTPTableWrapper table(org.eclipse.datatools.modelbase.sql.tables.Table dtpTable) {
+		return this.schema(dtpTable.getSchema()).table(dtpTable);
+	}
+
+	/**
+	 * return the column for the specified DTP column
+	 */
+	DTPColumnWrapper column(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
+		return this.table(dtpColumn.getTable()).column(dtpColumn);
+	}
+
+	@Override
+	DTPDatabaseWrapper database() {
+		return this;
+	}
+	
+
+	// ********** disposal **********
+
+	// must be public because it is defined in InternalDatabase interface
+	@Override
+	public synchronized void dispose() {
+		super.dispose();
+	}
+
+	@Override
+	void dispose_() {
+		this.defaultCatalogCalculated = false;
+		this.defaultCatalog = null;
+		this.disposeCatalogs();
+		super.dispose_();
+	}
+
+	private void disposeCatalogs() {
+		if (this.catalogs != null) {
+			for (DTPCatalogWrapper catalog : this.catalogs) {
+				catalog.dispose();
+			}
+			this.catalogs = null;
+		}
+	}
+
 }

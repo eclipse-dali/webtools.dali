@@ -45,7 +45,8 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnitTransactionType;
 import org.eclipse.jpt.core.resource.persistence.XmlProperties;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
-import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.Catalog;
+import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
@@ -1004,7 +1005,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 			}
 		}
 		Schema projectDefaultSchema = projectDefaultSchema();
-		return projectDefaultSchema == null ? null : projectDefaultSchema.getName();
+		return projectDefaultSchema == null ? null : projectDefaultSchema.name();
 	}
 	
 	protected Schema projectDefaultSchema() {
@@ -1017,17 +1018,12 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 				return persistenceUnitDefaults.getCatalog();
 			}
 		}
-		String catalog = projectDefaultCatalog();
-		//the context model uses nulls for defaults that don't exist. currently
-		//the DB model is using "" to represent no catalog, changing this here
-		if (catalog == "") {
-			catalog = null;
-		}
-		return catalog;
+		return projectDefaultCatalogName();
 	}
 
-	protected String projectDefaultCatalog() {
-		return jpaProject().connectionProfile().getCatalogName();
+	protected String projectDefaultCatalogName() {
+		Catalog catalog = jpaProject().connectionProfile().defaultCatalog();
+		return (catalog == null) ? null : catalog.name();
 	}
 	
 	protected AccessType access(PersistenceUnitDefaults persistenceUnitDefaults) {

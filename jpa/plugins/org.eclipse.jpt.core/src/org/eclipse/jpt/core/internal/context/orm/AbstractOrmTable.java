@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlBaseTable;
-import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.NameTools;
 
 public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode implements Table
@@ -191,13 +191,13 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 //		return uniqueConstraints;
 //	}
 
-	public org.eclipse.jpt.db.internal.Table dbTable() {
+	public org.eclipse.jpt.db.Table dbTable() {
 		Schema schema = this.dbSchema();
 		return (schema == null) ? null : schema.tableNamed(getName());
 	}
 
 	public Schema dbSchema() {
-		return connectionProfile().getDatabase().schemaNamed(getSchema());
+		return connectionProfile().database().schemaNamed(getSchema());
 	}
 
 	public boolean hasResolvedSchema() {

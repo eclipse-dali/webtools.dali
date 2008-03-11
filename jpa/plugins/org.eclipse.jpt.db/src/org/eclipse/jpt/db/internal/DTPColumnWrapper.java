@@ -12,10 +12,11 @@ package org.eclipse.jpt.db.internal;
 import java.text.Collator;
 
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
-import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObjectListener;
 import org.eclipse.datatools.modelbase.dbdefinition.PredefinedDataTypeDefinition;
 import org.eclipse.datatools.modelbase.sql.datatypes.DataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.PredefinedDataType;
+import org.eclipse.datatools.modelbase.sql.datatypes.PrimitiveType;
+import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.JavaType;
 import org.eclipse.jpt.utility.internal.NameTools;
@@ -23,11 +24,18 @@ import org.eclipse.jpt.utility.internal.NameTools;
 /**
  *  Wrap a DTP Column
  */
-public final class Column extends DTPWrapper implements Comparable<Column> {
-	private final Table table;
-	private final org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn;
-	private ICatalogObjectListener columnListener;
+final class DTPColumnWrapper
+	extends DTPWrapper
+	implements Column
+{
+	// backpointer to parent
+	private final DTPTableWrapper table;
 
+	// the wrapped DTP column
+	private final org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn;
+
+
+	// ***** some constants used when converting the column to a Java field
 	// TODO Object is the default?
 	private static final JavaType DEFAULT_JAVA_TYPE = new JavaType(java.lang.Object.class);
 
@@ -46,55 +54,33 @@ public final class Column extends DTPWrapper implements Comparable<Column> {
 	private static final JavaType LONG_JAVA_TYPE = new JavaType(long.class);
 
 
-	// ********** constructors **********
+	// ********** constructor **********
 
-	Column( Table table, org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
-		super();
+	DTPColumnWrapper(DTPTableWrapper table, org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
+		super(table);
 		this.table = table;
 		this.dtpColumn = dtpColumn;
-		this.initialize();
 	}
 
-	// ********** behavior **********
 
-	private void initialize() {
-		if( this.connectionIsOnline()) {
-			this.columnListener = this.buildColumnListener();
-			this.addCatalogObjectListener(( ICatalogObject) this.dtpColumn, this.columnListener);
-		}
-	}
-	
-	@Override
-	protected boolean connectionIsOnline() {
-		return this.table.connectionIsOnline();
-	}
-	
-	private ICatalogObjectListener buildColumnListener() {
-       return new ICatalogObjectListener() {
-    	    public void notifyChanged( final ICatalogObject column, final int eventType) { 
-//				TODO
-//    			if( column == Column.this.dtpColumn) {	    	    	
-//    				Column.this.table.columnChanged( Column.this, eventType);
-//    			}
-    	    }
-        };
-    }
-	
-	@Override
-	protected void dispose() {
-		
-		this.removeCatalogObjectListener(( ICatalogObject) this.dtpColumn, this.columnListener);
-	}
-	
-	// ********** queries **********
+	// ********** DTPWrapper implementation **********
 
 	@Override
-	public String getName() {
+	ICatalogObject catalogObject() {
+		return (ICatalogObject) this.dtpColumn;
+	}
+
+	@Override
+	synchronized void catalogObjectChanged(int eventType) {
+		this.connectionProfile().columnChanged(this, eventType);
+	}
+
+
+	// ********** Column implementation **********
+
+	@Override
+	public String name() {
 		return this.dtpColumn.getName();
-	}
-
-	boolean isCaseSensitive() {
-		return this.table.isCaseSensitive();
 	}
 
 	public String dataTypeName() {
@@ -103,7 +89,7 @@ public final class Column extends DTPWrapper implements Comparable<Column> {
 	}
 
 	public String javaFieldName() {
-		String jName = this.getName();
+		String jName = this.name();
 		if ( ! this.isCaseSensitive()) {
 			jName = jName.toLowerCase();
 		}
@@ -112,25 +98,15 @@ public final class Column extends DTPWrapper implements Comparable<Column> {
 
 	public boolean matchesJavaFieldName(String javaFieldName) {
 		return this.isCaseSensitive() ?
-			this.getName().equals(javaFieldName)
+			this.name().equals(javaFieldName)
 		:
-			this.getName().equalsIgnoreCase(javaFieldName);
+			this.name().equalsIgnoreCase(javaFieldName);
 	}
 
-	/**
-	 * Return a Java type declaration that is reasonably
-	 * similar to the column's data type and suitable for use as a
-	 * primary key field.
-	 */
 	public String primaryKeyJavaTypeDeclaration() {
 		return this.primaryKeyJavaType().declaration();
 	}
 
-	/**
-	 * Return a Java type that is reasonably
-	 * similar to the column's data type and suitable for use as a
-	 * primary key field.
-	 */
 	public JavaType primaryKeyJavaType() {
 		return this.jpaSpecCompliantPrimaryKeyJavaType(this.javaType());
 	}
@@ -165,18 +141,10 @@ public final class Column extends DTPWrapper implements Comparable<Column> {
 		return STRING_JAVA_TYPE;
 	}
 
-	/**
-	 * Return a Java type declaration that is reasonably
-	 * similar to the column's data type.
-	 */
 	public String javaTypeDeclaration() {
 		return this.javaType().declaration();
 	}
 
-	/**
-	 * Return a Java type that is reasonably
-	 * similar to the column's data type.
-	 */
 	public JavaType javaType() {
 		DataType dataType = this.dtpColumn.getDataType();
 		return (dataType instanceof PredefinedDataType) ?
@@ -209,26 +177,40 @@ public final class Column extends DTPWrapper implements Comparable<Column> {
 		return javaType;
 	}
 
-	public boolean isLob() {
+	public boolean dataTypeIsLOB() {
 		DataType dataType = this.dtpColumn.getDataType();
 		return (dataType instanceof PredefinedDataType) ?
-			DTPTools.dataTypeIsLob(((PredefinedDataType) dataType).getPrimitiveType())
+			this.primitiveTypeIsLob(((PredefinedDataType) dataType).getPrimitiveType())
 		:
 			false;
 	}
 
-	boolean wraps( org.eclipse.datatools.modelbase.sql.tables.Column column) {
+	private boolean primitiveTypeIsLob(PrimitiveType primitiveType) {
+		return (primitiveType == PrimitiveType.BINARY_LARGE_OBJECT_LITERAL)
+				|| (primitiveType == PrimitiveType.CHARACTER_LARGE_OBJECT_LITERAL)
+				|| (primitiveType == PrimitiveType.NATIONAL_CHARACTER_LARGE_OBJECT_LITERAL);
+	}
+
+
+	// ********** Comparable implementation **********
+
+	public int compareTo(Column column) {
+		return Collator.getInstance().compare(this.name(), column.name());
+	}
+
+
+	// ********** internal methods **********
+
+	boolean wraps(org.eclipse.datatools.modelbase.sql.tables.Column column) {
 		return this.dtpColumn == column;
 	}
 
-	public Database database() {
+	boolean isCaseSensitive() {
+		return this.table.isCaseSensitive();
+	}
+
+	DTPDatabaseWrapper database() {
 		return this.table.database();
 	}
 
-	// ********** Comparable implementation **********
-	
-	public int compareTo( Column column) {
-		return Collator.getInstance().compare( this.getName(), column.getName());
-	}
 }
-

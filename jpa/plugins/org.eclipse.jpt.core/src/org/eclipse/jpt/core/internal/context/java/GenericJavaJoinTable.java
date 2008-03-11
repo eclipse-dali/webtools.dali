@@ -499,7 +499,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);
-		boolean doContinue = isConnected();
+		boolean doContinue = connectionProfileIsActive();
 		String schema = getSchema();
 		
 		if (doContinue && ! hasResolvedSchema()) {
@@ -607,7 +607,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			return false;
 		}
 
-		public org.eclipse.jpt.db.internal.Table dbTable(String tableName) {
+		public org.eclipse.jpt.db.Table dbTable(String tableName) {
 			if (GenericJavaJoinTable.this.getName() == null) {
 				return null;
 			}
@@ -647,8 +647,8 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		}
 
 		@Override
-		public org.eclipse.jpt.db.internal.Table dbTable(String tableName) {
-			org.eclipse.jpt.db.internal.Table dbTable = super.dbTable(tableName);
+		public org.eclipse.jpt.db.Table dbTable(String tableName) {
+			org.eclipse.jpt.db.Table dbTable = super.dbTable(tableName);
 			if (dbTable != null) {
 				return dbTable;
 			}
@@ -656,7 +656,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			return (targetEntity == null) ? null : targetEntity.dbTable(tableName);
 		}
 
-		public org.eclipse.jpt.db.internal.Table dbReferencedColumnTable() {
+		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
 			Entity targetEntity = targetEntity();
 			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
 		}
@@ -710,15 +710,15 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		}
 
 		@Override
-		public org.eclipse.jpt.db.internal.Table dbTable(String tableName) {
-			org.eclipse.jpt.db.internal.Table dbTable = super.dbTable(tableName);
+		public org.eclipse.jpt.db.Table dbTable(String tableName) {
+			org.eclipse.jpt.db.Table dbTable = super.dbTable(tableName);
 			if (dbTable != null) {
 				return dbTable;
 			}
 			return typeMapping().dbTable(tableName);
 		}
 
-		public org.eclipse.jpt.db.internal.Table dbReferencedColumnTable() {
+		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
 			return typeMapping().primaryDbTable();
 		}
 		

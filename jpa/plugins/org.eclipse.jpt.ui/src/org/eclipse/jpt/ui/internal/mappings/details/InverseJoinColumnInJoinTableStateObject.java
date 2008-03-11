@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.RelationshipMapping;
-import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.db.Table;
 
 /**
  * The state object used to create or edit a primary key join column on a join

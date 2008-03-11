@@ -20,8 +20,8 @@ import org.eclipse.jpt.core.internal.context.RelationshipMappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
-import org.eclipse.jpt.db.internal.Column;
-import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.db.Column;
+import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class GenericOrmJoinColumn extends AbstractOrmColumn<XmlJoinColumn> implements OrmJoinColumn
@@ -188,7 +188,7 @@ public class GenericOrmJoinColumn extends AbstractOrmColumn<XmlJoinColumn> imple
 	@Override
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
-		this.doContinue = isConnected();
+		this.doContinue = this.connectionProfileIsActive();
 	
 		OrmRelationshipMapping mapping = (OrmRelationshipMapping) owner().relationshipMapping();
 		//TODO why is this commented out?  i copied it like this from the maintenance stream

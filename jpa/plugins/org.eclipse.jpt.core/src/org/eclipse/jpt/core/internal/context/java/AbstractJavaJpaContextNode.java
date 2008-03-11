@@ -27,7 +27,7 @@ public abstract class AbstractJavaJpaContextNode extends AbstractJpaContextNode 
 	}
 
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		if (this.isConnected()) {
+		if (this.connectionProfileIsActive()) {
 			Iterator<String> result = this.connectedCandidateValuesFor(pos, filter, astRoot);
 			if (result != null) {
 				return result;

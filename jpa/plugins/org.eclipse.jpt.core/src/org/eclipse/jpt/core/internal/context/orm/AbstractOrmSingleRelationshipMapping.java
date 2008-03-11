@@ -30,7 +30,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlSingleRelationshipMapping;
-import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
@@ -292,7 +292,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	}
 
 	protected void addJoinColumnMessages(List<IMessage> messages) {
-		boolean doContinue = isConnected();
+		boolean doContinue = this.connectionProfileIsActive();
 		
 		for (OrmJoinColumn joinColumn : CollectionTools.iterable(joinColumns())) {
 			String table = joinColumn.getTable();

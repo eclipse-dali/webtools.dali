@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.db;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.JpaNode;
-import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;

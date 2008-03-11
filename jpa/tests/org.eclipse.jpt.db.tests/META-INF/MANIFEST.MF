@@ -6,6 +6,8 @@ Bundle-SymbolicName: org.eclipse.jpt.db.tests
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.jpt.db.tests.internal.JptDbTestsPlugin
 Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
 Eclipse-LazyStart: false
 Require-Bundle: org.eclipse.core.runtime,
  org.junit,
@@ -15,4 +17,3 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jpt.db
 Export-Package: org.eclipse.jpt.db.tests.internal;x-internal:=true,
  org.eclipse.jpt.db.tests.internal.platforms;x-internal:=true
-Bundle-RequiredExecutionEnvironment: J2SE-1.5

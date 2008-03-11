@@ -77,7 +77,7 @@ import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
 import org.eclipse.jpt.core.resource.java.SecondaryTables;
 import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
-import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -162,7 +162,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	
 	protected JavaNamedColumn.Owner buildDiscriminatorColumnOwner() {
 		return new JavaNamedColumn.Owner(){
-			public org.eclipse.jpt.db.internal.Table dbTable(String tableName) {
+			public org.eclipse.jpt.db.Table dbTable(String tableName) {
 				return GenericJavaEntity.this.dbTable(tableName);
 			}
 
@@ -337,14 +337,14 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	@Override
-	public org.eclipse.jpt.db.internal.Table primaryDbTable() {
+	public org.eclipse.jpt.db.Table primaryDbTable() {
 		return getTable().dbTable();
 	}
 
 	@Override
-	public org.eclipse.jpt.db.internal.Table dbTable(String tableName) {
+	public org.eclipse.jpt.db.Table dbTable(String tableName) {
 		for (Iterator<Table> stream = this.associatedTablesIncludingInherited(); stream.hasNext();) {
-			org.eclipse.jpt.db.internal.Table dbTable = stream.next().dbTable();
+			org.eclipse.jpt.db.Table dbTable = stream.next().dbTable();
 			if (dbTable != null && dbTable.matchesShortJavaClassName(tableName)) {
 				return dbTable;
 			}
@@ -1736,11 +1736,11 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			return GenericJavaEntity.this;
 		}
 
-		public org.eclipse.jpt.db.internal.Table dbTable(String tableName) {
+		public org.eclipse.jpt.db.Table dbTable(String tableName) {
 			return GenericJavaEntity.this.dbTable(tableName);
 		}
 
-		public org.eclipse.jpt.db.internal.Table dbReferencedColumnTable() {
+		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
 			Entity parentEntity = GenericJavaEntity.this.parentEntity();
 			return (parentEntity == null) ? null : parentEntity.primaryDbTable();
 		}

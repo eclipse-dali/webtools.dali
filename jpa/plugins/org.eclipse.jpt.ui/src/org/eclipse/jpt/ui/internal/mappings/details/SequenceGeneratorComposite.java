@@ -13,7 +13,7 @@ import java.util.Collection;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.SequenceGenerator;
-import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.SequenceCombo;

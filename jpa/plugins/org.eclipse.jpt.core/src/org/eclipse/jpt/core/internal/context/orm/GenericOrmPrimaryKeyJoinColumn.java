@@ -15,8 +15,8 @@ import org.eclipse.jpt.core.context.orm.OrmAbstractJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
-import org.eclipse.jpt.db.internal.Column;
-import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.db.Column;
+import org.eclipse.jpt.db.Table;
 
 public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPrimaryKeyJoinColumn>
 	implements OrmPrimaryKeyJoinColumn

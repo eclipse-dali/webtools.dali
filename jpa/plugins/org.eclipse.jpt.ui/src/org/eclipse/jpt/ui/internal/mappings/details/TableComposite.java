@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.Table;
-import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
@@ -162,7 +162,7 @@ public class TableComposite extends AbstractFormPane<Table>
 			}
 
 			@Override
-			protected org.eclipse.jpt.db.internal.Table table() {
+			protected org.eclipse.jpt.db.Table table() {
 				return subject().dbTable();
 			}
 

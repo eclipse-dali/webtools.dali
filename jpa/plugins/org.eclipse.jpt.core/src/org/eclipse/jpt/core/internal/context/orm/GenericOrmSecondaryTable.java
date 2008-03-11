@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
-import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
@@ -286,7 +286,7 @@ public class GenericOrmSecondaryTable extends AbstractOrmTable
 	}
 	
 	protected void addTableMessages(List<IMessage> messages) {
-		boolean doContinue = isConnected();
+		boolean doContinue = connectionProfileIsActive();
 		String schema = getSchema();
 		
 		if (doContinue && ! hasResolvedSchema()) {

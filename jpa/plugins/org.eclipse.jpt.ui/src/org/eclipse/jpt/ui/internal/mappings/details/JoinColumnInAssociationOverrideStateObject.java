@@ -14,8 +14,8 @@ import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.db.internal.Schema;
-import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.Table;
 
 /**
  * @version 2.0

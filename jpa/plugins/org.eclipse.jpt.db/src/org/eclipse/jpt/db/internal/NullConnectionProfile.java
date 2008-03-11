@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,196 +11,165 @@ package org.eclipse.jpt.db.internal;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jpt.db.Catalog;
+import org.eclipse.jpt.db.ConnectionListener;
+import org.eclipse.jpt.db.ConnectionProfile;
+import org.eclipse.jpt.db.Database;
+import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.ClassTools;
 
 /**
- *  NullConnectionProfile
+ *  "null" connection profile
  */
-public final class NullConnectionProfile extends ConnectionProfile {
-	
+final class NullConnectionProfile
+	implements ConnectionProfile
+{
+	private static final String EMPTY_STRING = "";  //$NON-NLS-1$
+
+
+	// ********** singleton **********
+
 	private static final NullConnectionProfile INSTANCE = new NullConnectionProfile();
 
-	/**
-	 * singleton support
-	 */
-	static synchronized ConnectionProfile instance() {
+	static ConnectionProfile instance() {
 		return INSTANCE;
 	}
 
+	/**
+	 * 'private' to ensure singleton
+	 */
 	private NullConnectionProfile() {
-		super( null);
+		super();
 	}
 
-	// ********** behavior **********
 
-	@Override
-	protected Database buildDatabase() {
-		return NullDatabase.instance();
-	}
-	
-	@Override
+	// ********** ConnectionProfile implementation **********
+
 	public void connect() {
 		// do nothing
 	}
 
-	@Override
 	public void disconnect() {
 		// do nothing
 	}
-	
-	@Override
-	void databaseChanged( Database database, int eventType) {
-		// do nothing
-	}
-	
-	@Override
-	 void catalogChanged( Catalog catalog, Database database, int eventType) {
-		// do nothing
-	}
-	
-	@Override
-	 void schemaChanged( Schema schema, Database database, int eventType) {
-		// do nothing
-	}
-	
-	@Override
-	 void tableChanged( Table table, Schema schema, Database database, int eventType) {
-		// do nothing
-	}
-	
-	@Override
+
 	public IStatus saveWorkOfflineData() {
 		return Status.CANCEL_STATUS;
 	}
-	
-	@Override
+
 	public IStatus workOffline() {
 		return Status.CANCEL_STATUS;
 	}
-	
-	@Override
-	boolean wraps( org.eclipse.datatools.connectivity.IConnectionProfile dtpProfile) {
-		return false;
-	}
-	
-	
-	// ********** queries **********
-		
-	@Override
-	public Database getDatabase() {
+
+	public Database database() {
 		return NullDatabase.instance();
 	}
-	
-	@Override
-	public String getName() {
-		return ClassTools.shortClassNameForObject( this);
+
+	public String name() {
+		return ClassTools.shortClassNameForObject(this);
 	}
 
-	@Override
-	public String getDatabaseName() {
-		return "";
+	public String databaseName() {
+		return EMPTY_STRING;
 	}
 
-	@Override
-	public String getDatabaseProduct() {
-		return "";
+	public String databaseProduct() {
+		return EMPTY_STRING;
 	}
 
-	@Override
-	public String getDatabaseVendor() {
-		return "";
+	public String databaseVendor() {
+		return EMPTY_STRING;
 	}
 
-	@Override
-	public String getDatabaseVersion() {
-		return "";
+	public String databaseVersion() {
+		return EMPTY_STRING;
 	}
 
-	@Override
-	public String getUserName() {
-		return "";
+	public String userName() {
+		return EMPTY_STRING;
 	}
 
-	@Override
-	public String getUserPassword() {
-		return "";
+	public String userPassword() {
+		return EMPTY_STRING;
 	}
 
-	@Override
-	public String getDefaultSchemaName() {
-		return "";
-	}
-	
-	@Override
-	public String getDriverClass() {
-		return "";
+	public String driverClassName() {
+		return EMPTY_STRING;
 	}
 
-	@Override
-	public String getUrl() {
-		return "";
-	}
-	
-	@Override
-	public String getInstanceId() {
-		return "";
+	public String url() {
+		return EMPTY_STRING;
 	}
 
-	@Override
-	public String getProviderId() {
-		return "";
+	public String instanceID() {
+		return EMPTY_STRING;
 	}
 
-	@Override
-	public String getDriverDefinitionId() {
-		return "";
+	public String providerID() {
+		return EMPTY_STRING;
 	}
 
-	@Override
-	public String getDriverJarList() {
-		return "";
+	public String driverDefinitionID() {
+		return EMPTY_STRING;
 	}
-	
-	@Override
+
+	public String driverJarList() {
+		return EMPTY_STRING;
+	}
+
+	public boolean isActive() {
+		return false;
+	}
+
+	public boolean isWorkingOffline() {
+		return false;
+	}
+
 	public boolean isConnected() {
 		return false;
 	}
 
-	@Override
-	public boolean isWorkingOffline() {
-		return false;
-	}
-	
-	@Override
 	public boolean supportsWorkOfflineMode() {
 		return false;
 	}
-	
-	@Override
+
 	public boolean canWorkOffline() {
 		return false;
 	}
-	
-	// ********** listeners **********
 
-	@Override
-	public void addProfileListener( ProfileListener listener) {
-		// do nothing
-	}
-
-	@Override
-	public void removeProfileListener( ProfileListener listener) {
-		// do nothing
-	}
-	
-	@Override
 	public void addConnectionListener( ConnectionListener listener) {
 		// do nothing
 	}
 
-	@Override
 	public void removeConnectionListener( ConnectionListener listener) {
 		// do nothing
+	}
+
+	public Schema defaultSchema() {
+		return null;
+	}
+
+	public Catalog defaultCatalog() {
+		return null;
+	}
+
+	public boolean isNull() {
+		return true;
+	}
+
+
+	// ********** Comparable implementation **********
+
+	public int compareTo(ConnectionProfile o) {
+		throw new UnsupportedOperationException("the \"null\" connection profile should not be in a sorted list");  //$NON-NLS-1$
+	}
+
+
+	// ********** Object overrides **********
+
+	@Override
+	public String toString() {
+		return ClassTools.toStringClassNameForObject(this);
 	}
 
 }

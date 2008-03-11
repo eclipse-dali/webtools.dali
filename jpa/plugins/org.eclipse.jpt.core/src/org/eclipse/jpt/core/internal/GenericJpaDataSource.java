@@ -11,13 +11,12 @@ package org.eclipse.jpt.core.internal;
 
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.db.internal.ConnectionListener;
-import org.eclipse.jpt.db.internal.ConnectionProfile;
-import org.eclipse.jpt.db.internal.ConnectionProfileRepository;
-import org.eclipse.jpt.db.internal.Database;
-import org.eclipse.jpt.db.internal.ProfileListener;
-import org.eclipse.jpt.db.internal.Schema;
-import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.db.ConnectionAdapter;
+import org.eclipse.jpt.db.ConnectionListener;
+import org.eclipse.jpt.db.ConnectionProfile;
+import org.eclipse.jpt.db.ConnectionProfileRepository;
+import org.eclipse.jpt.db.JptDbPlugin;
+import org.eclipse.jpt.db.ConnectionProfileListener;
 
 /**
  * 
@@ -41,7 +40,7 @@ public class GenericJpaDataSource
 	/**
 	 * listen for the connection to be added or removed or its name changed
 	 */
-	protected final ProfileListener profileListener;
+	protected final ConnectionProfileListener connectionProfileListener;
 
 	/**
 	 * listen for the connection to be opened or closed
@@ -51,11 +50,15 @@ public class GenericJpaDataSource
 
 	// ********** constructor/initialization **********
 
+	private ConnectionProfileRepository connectionProfileRepository() {
+		return JptDbPlugin.instance().connectionProfileRepository();
+	}
+
 	public GenericJpaDataSource(JpaProject jpaProject, String connectionProfileName) {
 		super(jpaProject);
 
-		this.profileListener = this.buildProfileListener();
-		ConnectionProfileRepository.instance().addProfileListener(this.profileListener);
+		this.connectionProfileListener = this.buildConnectionProfileListener();
+		this.connectionProfileRepository().addConnectionProfileListener(this.connectionProfileListener);
 
 		this.connectionListener = this.buildConnectionListener();
 		this.connectionProfileName = connectionProfileName;
@@ -63,8 +66,8 @@ public class GenericJpaDataSource
 		this.connectionProfile.addConnectionListener(this.connectionListener);
 	}
 
-	protected ProfileListener buildProfileListener() {
-		return new LocalProfileListener();
+	protected ConnectionProfileListener buildConnectionProfileListener() {
+		return new LocalConnectionProfileListener();
 	}
 
 	protected ConnectionListener buildConnectionListener() {
@@ -97,14 +100,14 @@ public class GenericJpaDataSource
 
 	public void dispose() {
 		this.connectionProfile.removeConnectionListener(this.connectionListener);
-		ConnectionProfileRepository.instance().removeProfileListener(this.profileListener);
+		this.connectionProfileRepository().removeConnectionProfileListener(this.connectionProfileListener);
 	}
 
 
 	// ********** internal methods **********
 
 	private ConnectionProfile connectionProfileNamed(String name) {
-		return ConnectionProfileRepository.instance().profileNamed(name);
+		return this.connectionProfileRepository().connectionProfileNamed(name);
 	}
 
 	protected void setConnectionProfile(ConnectionProfile connectionProfile) {
@@ -119,8 +122,8 @@ public class GenericJpaDataSource
 	// ********** overrides **********
 
 	@Override
-	public boolean isConnected() {
-		return this.connectionProfile.isConnected();
+	public boolean connectionProfileIsActive() {
+		return this.connectionProfile.isActive();
 	}
 
 	@Override
@@ -135,20 +138,20 @@ public class GenericJpaDataSource
 	 * Listen for a connection profile with our name being added or removed.
 	 * Also listen for our connection's name being changed.
 	 */
-	protected class LocalProfileListener implements ProfileListener {
-		protected LocalProfileListener() {
+	protected class LocalConnectionProfileListener implements ConnectionProfileListener {
+		protected LocalConnectionProfileListener() {
 			super();
 		}
 
 		// possible name change
-		public void profileChanged(ConnectionProfile profile) {
+		public void connectionProfileChanged(ConnectionProfile profile) {
 			if (profile == GenericJpaDataSource.this.connectionProfile) {
-				GenericJpaDataSource.this.setConnectionProfileName(profile.getName());
+				GenericJpaDataSource.this.setConnectionProfileName(profile.name());
 			}
 		}
 
 		// profile added or removed
-		public void profileReplaced(ConnectionProfile oldProfile, ConnectionProfile newProfile) {
+		public void connectionProfileReplaced(ConnectionProfile oldProfile, ConnectionProfile newProfile) {
 			if (oldProfile == GenericJpaDataSource.this.connectionProfile) {
 				GenericJpaDataSource.this.setConnectionProfile(newProfile);
 			}
@@ -160,42 +163,16 @@ public class GenericJpaDataSource
 	/**
 	 * Whenever the connection is opened or closed trigger a project update.
 	 */
-	protected class LocalConnectionListener implements ConnectionListener {
+	protected class LocalConnectionListener extends ConnectionAdapter {
 
-		protected LocalConnectionListener() {
-			super();
-		}
-
+		@Override
 		public void opened(ConnectionProfile profile) {
 			GenericJpaDataSource.this.jpaProject().update();
 		}
 
-		public void aboutToClose(ConnectionProfile profile) {
-			// do nothing
-		}
-
-		public boolean okToClose(ConnectionProfile profile) {
-			return true;
-		}
-
+		@Override
 		public void closed(ConnectionProfile profile) {
 			GenericJpaDataSource.this.jpaProject().update();
-		}
-
-		public void modified(ConnectionProfile profile) {
-			// do nothing
-		}
-
-		public void databaseChanged(ConnectionProfile profile, Database database) {
-			// do nothing
-		}
-
-		public void schemaChanged(ConnectionProfile profile, Schema schema) {
-			// do nothing
-		}
-
-		public void tableChanged(ConnectionProfile profile, Table table) {
-			// do nothing
 		}
 
 	}

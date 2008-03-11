@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-import org.eclipse.jpt.db.internal.Schema;
-import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.Table;
 
 /**
  * 

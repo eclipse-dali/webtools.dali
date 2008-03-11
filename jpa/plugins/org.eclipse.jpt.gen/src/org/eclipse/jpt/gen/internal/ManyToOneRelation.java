@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.gen.internal;
 
-import org.eclipse.jpt.db.internal.ForeignKey;
+import org.eclipse.jpt.db.ForeignKey;
 
 class ManyToOneRelation {
 	private final GenTable baseTable;  // the "many" side

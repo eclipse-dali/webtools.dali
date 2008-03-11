@@ -9,104 +9,140 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
-import java.util.Collections;
-import java.util.Set;
+import java.util.Iterator;
+
 import org.eclipse.datatools.connectivity.sqm.core.definition.DatabaseDefinition;
+import org.eclipse.jpt.db.Catalog;
+import org.eclipse.jpt.db.Database;
+import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
- *  NullDatabase
+ *  "null" database
+ *  This is used when the connection profile is inactive (i.e. it is neither
+ *  connected to the database nor working off-line).
  */
-public final class NullDatabase extends Database {
+final class NullDatabase
+	implements InternalDatabase
+{
+	private static final String EMPTY_STRING = "";  //$NON-NLS-1$
+
+
+	// ********** singleton **********
 
 	private static final NullDatabase INSTANCE = new NullDatabase();
 
-	/**
-	 * singleton support
-	 */
-	static synchronized Database instance() {
+	static synchronized InternalDatabase instance() {
 		return INSTANCE;
 	}
 
+	/**
+	 * 'private' to ensure singleton
+	 */
 	private NullDatabase() {
 		super();
 	}
 
-	// ********** behavior **********
-	
-	@Override
-	void catalogChanged( Catalog catalog, int eventType) {
-		// do nothing
+
+	// ********** Database implementation **********
+
+	public String name() {
+		return ClassTools.shortClassNameForObject(this);
 	}
 
-	@Override
-	void schemaChanged( Schema schema, int eventType) {
-		// do nothing
+	public String vendor() {
+		return EMPTY_STRING;
 	}
 
-	@Override
-	void tableChanged( Table table,  Schema schema,int eventType) {
-		// do nothing
+	public String version() {
+		return EMPTY_STRING;
 	}
-	
-	@Override
-	void refresh() {
-		// do nothing
-	}
-	
-	@Override
-	protected void dispose() {
-		// do nothing
-	}
-	
-	@Override
-	protected boolean connectionIsOnline() {
+
+	public boolean isCaseSensitive() {
 		return false;
 	}
 
-	// ********** queries **********
-
-	@Override
-	public String getName() {
-		return ClassTools.shortClassNameForObject( this);
-	}
-
-	@Override
-	public String getVendor() {
-		return this.getName();
-	}
-	
-	@Override
-	public String getVersion() {
-		return "";
-	}
-
-	@Override
 	public DatabaseDefinition dtpDefinition() {
 		return null;
 	}
 
 	// ***** catalogs
 
-	@Override
 	public boolean supportsCatalogs() {
 		return false;
 	}
 
-	@Override
-	public String getDefaultCatalogName() {
-		return "";
+	public Iterator<Catalog> catalogs() {
+		return EmptyIterator.<Catalog>instance();
 	}
 
-	@Override
-	Set<Catalog> getCatalogs() {
-		return Collections.emptySet();
+	public int catalogsSize() {
+		return 0;
+	}
+
+	public Iterator<String> catalogNames() {
+		return EmptyIterator.<String>instance();
+	}
+
+	public boolean containsCatalogNamed(String name) {
+		return false;
+	}
+
+	public Catalog catalogNamed(String name) {
+		return null;
+	}
+
+	public String defaultCatalogName() {
+		return EMPTY_STRING;
+	}
+
+	public DTPCatalogWrapper defaultCatalog() {
+		return null;
 	}
 
 	// ***** schemata
-	
-	@Override
-	Set<Schema> getSchemata() {
-		return Collections.emptySet();
+
+	public Iterator<Schema> schemata() {
+		return EmptyIterator.<Schema>instance();
 	}
+
+	public int schemataSize() {
+		return 0;
+	}
+
+	public Iterator<String> schemaNames() {
+		return EmptyIterator.<String>instance();
+	}
+
+	public boolean containsSchemaNamed(String name) {
+		return false;
+	}
+
+	public Schema schemaNamed(String name) {
+		return null;
+	}
+
+
+	// ********** InternalDatabase implementation **********
+
+	public void dispose() {
+		// do nothing
+	}
+
+
+	// ********** Comparable implementation **********
+
+	public int compareTo(Database o) {
+		throw new UnsupportedOperationException("the \"null\" database should not be in a sorted list");  //$NON-NLS-1$
+	}
+
+
+	// ********** Object overrides **********
+
+	@Override
+	public String toString() {
+		return ClassTools.toStringClassNameForObject(this);
+	}
+
 }

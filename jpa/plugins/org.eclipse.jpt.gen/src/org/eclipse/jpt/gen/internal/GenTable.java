@@ -16,9 +16,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import org.eclipse.jpt.db.internal.Column;
-import org.eclipse.jpt.db.internal.ForeignKey;
-import org.eclipse.jpt.db.internal.Table;
+
+import org.eclipse.jpt.db.Column;
+import org.eclipse.jpt.db.ForeignKey;
+import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.NameTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -83,7 +84,7 @@ class GenTable {
 			return;
 		}
 		for (Iterator<Column> stream = this.table.columns(); stream.hasNext(); ) {
-			if ( ! this.table.foreignKeyColumnsContains(stream.next())) {
+			if ( ! this.table.foreignKeyBaseColumnsContains(stream.next())) {
 				// all the table's columns must belong to one (or both) of the 2 foreign keys
 				return;
 			}
@@ -91,8 +92,8 @@ class GenTable {
 		Iterator<ForeignKey> fKeys = this.table.foreignKeys();
 		ForeignKey owningFK = fKeys.next();
 		ForeignKey nonOwningFK = fKeys.next();
-		GenTable owningTable = this.scope.genTable(owningFK.getReferencedTable());
-		GenTable nonOwningTable = this.scope.genTable(nonOwningFK.getReferencedTable());
+		GenTable owningTable = this.scope.genTable(owningFK.referencedTable());
+		GenTable nonOwningTable = this.scope.genTable(nonOwningFK.referencedTable());
 		if ((owningTable == null) || (nonOwningTable == null)) {
 			// both tables must be in the scope
 			return;
@@ -103,7 +104,7 @@ class GenTable {
 	void addReferencedTablesTo(Set<GenTable> referencedTables) {
 		for (Iterator<ForeignKey> stream = this.table.foreignKeys(); stream.hasNext(); ) {
 			ForeignKey fk = stream.next();
-			GenTable genTable = this.scope.genTable(fk.getReferencedTable());
+			GenTable genTable = this.scope.genTable(fk.referencedTable());
 			if (genTable != null) {
 				referencedTables.add(genTable);
 			}
@@ -121,7 +122,7 @@ class GenTable {
 	void configureManyToOneRelations() {
 		for (Iterator<ForeignKey> stream = this.table.foreignKeys(); stream.hasNext(); ) {
 			ForeignKey fk = stream.next();
-			GenTable referencedtable = this.scope.genTable(fk.getReferencedTable());
+			GenTable referencedtable = this.scope.genTable(fk.referencedTable());
 			if (referencedtable == null) {
 				continue;  // skip to next FK
 			}
@@ -271,7 +272,7 @@ class GenTable {
 	}
 
 	String name() {
-		return this.table.getName();
+		return this.table.name();
 	}
 
 

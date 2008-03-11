@@ -481,7 +481,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 	}
 	
 	protected void addTableMessages(List<IMessage> messages) {
-		this.doContinue = isConnected();
+		this.doContinue = connectionProfileIsActive();
 		String schema = getSchema();
 		OrmRelationshipMapping mapping = relationshipMapping();
 	
@@ -565,7 +565,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 			return false;
 		}
 
-		public org.eclipse.jpt.db.internal.Table dbTable(String tableName) {
+		public org.eclipse.jpt.db.Table dbTable(String tableName) {
 			if (GenericOrmJoinTable.this.getName() == null) {
 				return null;
 			}
@@ -605,8 +605,8 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		}
 
 		@Override
-		public org.eclipse.jpt.db.internal.Table dbTable(String tableName) {
-			org.eclipse.jpt.db.internal.Table dbTable = super.dbTable(tableName);
+		public org.eclipse.jpt.db.Table dbTable(String tableName) {
+			org.eclipse.jpt.db.Table dbTable = super.dbTable(tableName);
 			if (dbTable != null) {
 				return dbTable;
 			}
@@ -614,7 +614,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 			return (targetEntity == null) ? null : targetEntity.dbTable(tableName);
 		}
 
-		public org.eclipse.jpt.db.internal.Table dbReferencedColumnTable() {
+		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
 			Entity targetEntity = targetEntity();
 			return (targetEntity == null) ? null : targetEntity.primaryDbTable();
 		}
@@ -669,15 +669,15 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 		}
 
 		@Override
-		public org.eclipse.jpt.db.internal.Table dbTable(String tableName) {
-			org.eclipse.jpt.db.internal.Table dbTable = super.dbTable(tableName);
+		public org.eclipse.jpt.db.Table dbTable(String tableName) {
+			org.eclipse.jpt.db.Table dbTable = super.dbTable(tableName);
 			if (dbTable != null) {
 				return dbTable;
 			}
 			return typeMapping().dbTable(tableName);
 		}
 
-		public org.eclipse.jpt.db.internal.Table dbReferencedColumnTable() {
+		public org.eclipse.jpt.db.Table dbReferencedColumnTable() {
 			return typeMapping().primaryDbTable();
 		}
 		

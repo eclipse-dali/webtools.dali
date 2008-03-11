@@ -15,7 +15,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.Table;
-import org.eclipse.jpt.db.internal.Schema;
+import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
@@ -238,7 +238,7 @@ public class JoinTableComposite extends AbstractFormPane<JoinTable>
 			}
 
 			@Override
-			protected org.eclipse.jpt.db.internal.Table table() {
+			protected org.eclipse.jpt.db.Table table() {
 				return subject().dbTable();
 			}
 

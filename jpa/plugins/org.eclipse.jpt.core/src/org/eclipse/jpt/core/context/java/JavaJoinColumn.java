@@ -25,7 +25,7 @@ public interface JavaJoinColumn extends JoinColumn, JavaAbstractJoinColumn, Java
 {
 	void initializeFromResource(JoinColumnAnnotation joinColumn);
 	
-	boolean isConnected();
+	boolean connectionProfileIsActive();
 	
 	void update(JoinColumnAnnotation joinColumn);
 

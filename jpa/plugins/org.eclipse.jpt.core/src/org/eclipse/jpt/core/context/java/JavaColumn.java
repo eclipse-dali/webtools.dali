@@ -27,7 +27,7 @@ public interface JavaColumn extends Column, JavaAbstractColumn
 	
 	void update(ColumnAnnotation columnResource);
 	
-	boolean isConnected();
+	boolean connectionProfileIsActive();
 	
 	Owner owner();
 	/**

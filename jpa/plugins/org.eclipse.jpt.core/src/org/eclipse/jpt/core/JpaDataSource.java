@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
-import org.eclipse.jpt.db.internal.ConnectionProfile;
+import org.eclipse.jpt.db.ConnectionProfile;
 
 /**
  * 
@@ -52,7 +52,7 @@ public interface JpaDataSource extends JpaNode {
 	 */
 	public static final String CONNECTION_PROFILE_PROPERTY = "connectionProfile";
 	
-	boolean isConnected();
+	boolean connectionProfileIsActive();
 	
 	boolean hasAConnection();
 	
