@@ -189,6 +189,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		this.tableTable.setLabelProvider(this.buildTableTableLabelProvider());
 		this.tableTable.setContentProvider(this.buildTableTableContentProvider());
 		this.tableTable.setSorter(new ViewerSorter() {
+			@Override
 			public int compare(Viewer viewer, Object e1, Object e2) {
 				return ((Table) e1).getName().compareTo(((Table) e2).getName());
 			}
@@ -201,6 +202,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		});
 		
 		table.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.keyCode == SWT.F2 && e.stateMask == SWT.NONE) {
 					editEntityNameIfPossible();
@@ -314,9 +316,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		}
 	}
 
-	/*
-	 * @see NewContainerWizardPage#handleFieldChanged
-	 */
+	@Override
 	protected void handleFieldChanged(String fieldName) {
 		super.handleFieldChanged(fieldName);
 		
@@ -336,6 +336,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 	/**
 	 * Update the status line and the OK button according to the given status
 	 */
+	@Override
 	protected void updateStatus(IStatus status) {
 		super.updateStatus(status);
 		if (this.isPageComplete() && ! this.hasTablesSelected()) {
@@ -429,6 +430,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 			super();
 		}
 
+		@Override
 		public String getText(Object element) {
 			return ((Table) element).getName();
 		}
@@ -469,7 +471,7 @@ class GenerateEntitiesWizardPage extends NewTypeWizardPage {
 		}
 	
 		public Object[] getElements(Object inputElement) {
-			return ((Collection) inputElement).toArray();
+			return ((Collection<?>) inputElement).toArray();
 		}
 
 	}

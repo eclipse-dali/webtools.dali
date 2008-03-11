@@ -35,18 +35,22 @@ public class NewJpaProjectWizard extends UtilityProjectWizard {
 //		return DataModelFactory.createDataModel(new UtilityProjectCreationDataModelProvider());
 //	}
 	
+	@Override
 	protected ImageDescriptor getDefaultPageImageDescriptor() {
-		return JptUiPlugin.getPlugin().getImageDescriptor(JptUiIcons.JPA_WIZ_BANNER);
+		return JptUiPlugin.getImageDescriptor(JptUiIcons.JPA_WIZ_BANNER);
 	}
 	
+	@Override
 	protected IFacetedProjectTemplate getTemplate() {
 		return ProjectFacetsManager.getTemplate("jpt.jpa.template");
 	}
 	
+	@Override
 	protected IWizardPage createFirstPage() {
 		return new NewJpaProjectFirstPage(model, "first.page"); //$NON-NLS-1$ 
 	}
 	
+	@Override
 	protected String getFinalPerspectiveID() {
 		return "org.eclipse.jpt.ui.jpaPerspective";
 	}

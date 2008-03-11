@@ -64,7 +64,7 @@ public class JpaFacetWizardPage
 		super("jpt.jpa.facet.install.page"); //$NON-NLS-1$
 		setTitle(JptUiMessages.JpaFacetWizardPage_title);
 		setDescription(JptUiMessages.JpaFacetWizardPage_description);
-		setImageDescriptor(JptUiPlugin.getPlugin().getImageDescriptor(JptUiIcons.JPA_WIZ_BANNER));
+		setImageDescriptor(JptUiPlugin.getImageDescriptor(JptUiIcons.JPA_WIZ_BANNER));
 	}
 	
 	
@@ -259,6 +259,7 @@ public class JpaFacetWizardPage
 			connectionLink.setText(JptUiMessages.JpaFacetWizardPage_connectionLink);
 			connectionLink.addSelectionListener(
 				new SelectionAdapter() {
+					@Override
 					public void widgetSelected(SelectionEvent e) {
 						openNewConnectionWizard();				
 					}
@@ -360,6 +361,7 @@ public class JpaFacetWizardPage
 			jpaPrefsLink.setText(JptUiMessages.JpaFacetWizardPage_jpaPrefsLink);
 			jpaPrefsLink.addSelectionListener(
 				new SelectionAdapter() {
+					@Override
 					public void widgetSelected(SelectionEvent e) {
 						promptToConfigJpaPrefs();				
 					}
@@ -373,6 +375,7 @@ public class JpaFacetWizardPage
 			userLibsLink.setText(JptUiMessages.JpaFacetWizardPage_userLibsLink);
 			userLibsLink.addSelectionListener(
 				new SelectionAdapter() {
+					@Override
 					public void widgetSelected(SelectionEvent e) {
 						promptToConfigUserLibraries();				
 					}

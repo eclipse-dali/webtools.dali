@@ -27,18 +27,22 @@ public class BaseJpaNavigatorLabelProvider extends LabelProvider
 	
 	// **************** IBaseLabelProvider implementation **********************
 	
+	@Override
 	public void addListener(ILabelProviderListener listener) {
 		super.addListener(listener);
 	}
 	
+	@Override
 	public void removeListener(ILabelProviderListener listener) {
 		super.addListener(listener);
 	}
 	
+	@Override
 	public boolean isLabelProperty(Object element, String property) {
 		return super.isLabelProperty(element, property);
 	}
 	
+	@Override
 	public void dispose() {
 		super.dispose();
 	}
@@ -46,6 +50,7 @@ public class BaseJpaNavigatorLabelProvider extends LabelProvider
 	
 	// **************** ILabelProvider implementation **************************
 	
+	@Override
 	public Image getImage(Object element) {
 		if (element instanceof JpaRootContextNode) {
 			return JptUiPlugin.getImage(JptUiIcons.JPA_CONTENT);
@@ -58,6 +63,7 @@ public class BaseJpaNavigatorLabelProvider extends LabelProvider
 		return super.getImage(element);
 	}
 	
+	@Override
 	public String getText(Object element) {		
 		if (element instanceof JpaRootContextNode) {
 			return "JPA Content";
