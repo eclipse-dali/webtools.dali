@@ -110,9 +110,9 @@ public class ArrayListIteratorTests extends ArrayIteratorTests {
 	@Override
 	public void testGenerics() {
 		Integer[] integers = new Integer[3];
-		integers[0] = 0;
-		integers[1] = 1;
-		integers[2] = 2;
+		integers[0] = new Integer(0);
+		integers[1] = new Integer(1);
+		integers[2] = new Integer(2);
 		int i = 0;
 		for (Iterator<Number> stream = new ArrayListIterator<Number>(integers); stream.hasNext();) {
 			assertEquals(i++, stream.next().intValue());
@@ -123,7 +123,7 @@ public class ArrayListIteratorTests extends ArrayIteratorTests {
 	@Override
 	public void testVarargs() {
 		int i = 0;
-		for (Iterator<Number> stream = new ArrayListIterator<Number>(0, 1, 2); stream.hasNext();) {
+		for (Iterator<Number> stream = new ArrayListIterator<Number>(new Integer(0), new Integer(1), new Integer(2)); stream.hasNext();) {
 			assertEquals(i++, stream.next().intValue());
 		}
 		assertEquals(3, i);

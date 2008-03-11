@@ -182,16 +182,16 @@ public class ReadOnlyCompositeListIteratorTests extends CompositeIteratorTests {
 
 	public void testVariedNestedIterators() {
 		List<Integer> integerList = new ArrayList<Integer>();
-		integerList.add(42);
-		integerList.add(22);
-		integerList.add(111);
-		integerList.add(77);
+		integerList.add(new Integer(42));
+		integerList.add(new Integer(42));
+		integerList.add(new Integer(111));
+		integerList.add(new Integer(77));
 
 		List<Float> floatList = new ArrayList<Float>();
-		floatList.add(42.42f);
-		floatList.add(22.22f);
-		floatList.add(111.111f);
-		floatList.add(77.77f);
+		floatList.add(new Float(42.42f));
+		floatList.add(new Float(22.22f));
+		floatList.add(new Float(111.111f));
+		floatList.add(new Float(77.77f));
 
 		List<ListIterator<? extends Number>> list = new ArrayList<ListIterator<? extends Number>>();
 		list.add(integerList.listIterator());
