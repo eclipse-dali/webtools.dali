@@ -87,15 +87,15 @@ public class GenericJavaMappedSuperclass extends AbstractJavaTypeMapping
 	}
 
 	protected IdClass idClassResource() {
-		return (IdClass) this.persistentTypeResource.annotation(IdClass.ANNOTATION_NAME);
+		return (IdClass) this.javaResourcePersistentType.annotation(IdClass.ANNOTATION_NAME);
 	}
 	
 	protected void addIdClassResource() {
-		this.persistentTypeResource.addAnnotation(IdClass.ANNOTATION_NAME);
+		this.javaResourcePersistentType.addAnnotation(IdClass.ANNOTATION_NAME);
 	}
 	
 	protected void removeIdClassResource() {
-		this.persistentTypeResource.removeAnnotation(IdClass.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeAnnotation(IdClass.ANNOTATION_NAME);
 	}
 	
 	@Override

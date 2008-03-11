@@ -146,11 +146,15 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 				return textRange;
 			}
 		}
-		return this.parent().validationTextRange(); 
+		return owner().validationTextRange();
 	}
 
 	public TextRange validationTextRange() {
-		return columnResource().validationTextRange();
+		TextRange textRange = columnResource().validationTextRange();
+		if (textRange != null) {
+			return textRange;
+		}
+		return owner().validationTextRange();
 	}
 
 	

@@ -9,20 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import java.util.ListIterator;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
-import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
-import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * VirtualManyToOne is an implementation of ManyToOne used when there is 
@@ -37,36 +36,12 @@ public class VirtualXmlManyToOne extends AbstractJpaEObject implements XmlManyTo
 //	protected VirtualJoinTable virtualJoinTable;
 	
 	protected final VirtualCascadeType virtualCascadeType;
-	
-	protected EList<XmlJoinColumn> virtualJoinColumns;
 
 	public VirtualXmlManyToOne(JavaManyToOneMapping javaManyToOneMapping, boolean metadataComplete) {
 		super();
 		this.javaManyToOneMapping = javaManyToOneMapping;
 		this.metadataComplete = metadataComplete;
-		this.initializeJoinColumns(javaManyToOneMapping);
 		this.virtualCascadeType = new VirtualCascadeType(javaManyToOneMapping.getCascade(), this.metadataComplete);
-	}
-	
-	protected void initializeJoinColumns(JavaManyToOneMapping javaManyToOneMapping) {
-		this.virtualJoinColumns = new BasicEList<XmlJoinColumn>();
-		ListIterator<JavaJoinColumn> javaJoinColumns;
-		if (this.metadataComplete) {
-			//TODO still need a default join column in xml
-			if (javaManyToOneMapping.getDefaultJoinColumn() == null) {
-				javaJoinColumns = EmptyListIterator.instance();
-			}
-			else {
-				javaJoinColumns = new SingleElementListIterator<JavaJoinColumn>(javaManyToOneMapping.getDefaultJoinColumn());
-			}
-		}
-		else {
-			javaJoinColumns = this.javaManyToOneMapping.joinColumns();			
-		}
-		
-		while (javaJoinColumns.hasNext()) {
-			this.virtualJoinColumns.add(new VirtualXmlJoinColumn(javaJoinColumns.next(), this.metadataComplete));
-		}
 	}
 	
 	public String getName() {
@@ -100,7 +75,13 @@ public class VirtualXmlManyToOne extends AbstractJpaEObject implements XmlManyTo
 	}
 
 	public EList<XmlJoinColumn> getJoinColumns() {
-		return this.virtualJoinColumns;
+		EList<XmlJoinColumn> joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__JOIN_COLUMNS);
+		//TODO here i'm using joinColumns() while VirtualXmlJoinTable uses specifiedJoinColumns()???
+		for (JavaJoinColumn joinColumn : CollectionTools.iterable(this.javaManyToOneMapping.joinColumns())) {
+			XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, this.metadataComplete);
+			joinColumns.add(xmlJoinColumn);
+		}
+		return joinColumns;
 	}
 
 	public CascadeType getCascade() {
@@ -134,43 +115,9 @@ public class VirtualXmlManyToOne extends AbstractJpaEObject implements XmlManyTo
 	public void update(JavaManyToOneMapping javaManyToOneMapping) {
 		this.javaManyToOneMapping = javaManyToOneMapping;
 		this.virtualCascadeType.update(javaManyToOneMapping.getCascade());
-		this.updateJoinColumns(javaManyToOneMapping);
-	}
-	
-	protected void updateJoinColumns(JavaManyToOneMapping javaManyToOneMapping) {
-		ListIterator<JavaJoinColumn> javaJoinColumns;
-		ListIterator<XmlJoinColumn> virtualJoinColumns = this.virtualJoinColumns.listIterator();
-		if (this.metadataComplete) {
-			//TODO still need a default join column in xml
-			if (javaManyToOneMapping.getDefaultJoinColumn() == null) {
-				javaJoinColumns = EmptyListIterator.instance();
-			}
-			else {
-				javaJoinColumns = new SingleElementListIterator<JavaJoinColumn>(javaManyToOneMapping.getDefaultJoinColumn());
-			}
-		}
-		else {
-			javaJoinColumns = this.javaManyToOneMapping.joinColumns();			
-		}
-		
-		while (javaJoinColumns.hasNext()) {
-			JavaJoinColumn javaJoinColumn = javaJoinColumns.next();
-			if (virtualJoinColumns.hasNext()) {
-				VirtualXmlJoinColumn virtualJoinColumn = (VirtualXmlJoinColumn) virtualJoinColumns.next();
-				virtualJoinColumn.update(javaJoinColumn);
-			}
-			else {
-				this.virtualJoinColumns.add(new VirtualXmlJoinColumn(javaJoinColumn, this.metadataComplete));
-			}
-		}
-		
-		while(virtualJoinColumns.hasNext()) {
-			this.virtualJoinColumns.remove(virtualJoinColumns.next());
-		}
 	}
 	
 	public TextRange nameTextRange() {
 		return null;
 	}
-
 }

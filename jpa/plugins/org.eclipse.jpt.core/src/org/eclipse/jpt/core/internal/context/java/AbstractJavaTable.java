@@ -10,13 +10,10 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
-import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
 import org.eclipse.jpt.db.internal.Schema;
 import org.eclipse.jpt.utility.Filter;
@@ -24,7 +21,6 @@ import org.eclipse.jpt.utility.internal.NameTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 {
@@ -404,34 +400,5 @@ public abstract class AbstractJavaTable extends AbstractJavaJpaContextNode
 	@Override
 	public String displayString() {
 		return qualifiedName();
-	}
-	
-	@Override
-	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
-		boolean doContinue = isConnected();
-		String schema = getSchema();
-		
-		if (doContinue && ! hasResolvedSchema()) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
-						new String[] {schema, getName()}, 
-						this, 
-						schemaTextRange(astRoot))
-				);
-			doContinue = false;
-		}
-		
-		if (doContinue && ! isResolved()) {
-			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.TABLE_UNRESOLVED_NAME,
-						new String[] {getName()}, 
-						this, 
-						nameTextRange(astRoot))
-				);
-		}
 	}
 }

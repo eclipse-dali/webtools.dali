@@ -200,7 +200,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			//create the defaultJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
-			this.defaultJoinColumn = createJoinColumn(new NullJoinColumn(tableResource()));
+			this.defaultJoinColumn = buildJoinColumn(new NullJoinColumn(tableResource()));
 		}
 		this.tableResource().removeJoinColumn(index);
 		fireItemRemoved(JoinTable.SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
@@ -301,7 +301,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			//create the defaultJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
-			this.defaultInverseJoinColumn = createInverseJoinColumn(new NullJoinColumn(tableResource()));
+			this.defaultInverseJoinColumn = buildInverseJoinColumn(new NullJoinColumn(tableResource()));
 		}
 		this.tableResource().removeInverseJoinColumn(index);
 		fireItemRemoved(JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, index, removedJoinColumn);
@@ -373,7 +373,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		ListIterator<JoinColumnAnnotation> annotations = joinTableResource.joinColumns();
 		
 		while(annotations.hasNext()) {
-			this.specifiedJoinColumns.add(createJoinColumn(annotations.next()));
+			this.specifiedJoinColumns.add(buildJoinColumn(annotations.next()));
 		}
 	}
 	
@@ -385,15 +385,14 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		if (!shouldBuildDefaultJoinColumn()) {
 			return;
 		}
-		this.defaultJoinColumn = this.jpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
-		this.defaultJoinColumn.initializeFromResource(new NullJoinColumn(joinTable));
+		this.defaultJoinColumn = buildJoinColumn(new NullJoinColumn(joinTable));
 	}	
 	
 	protected void initializeSpecifiedInverseJoinColumns(JoinTableAnnotation joinTableResource) {
 		ListIterator<JoinColumnAnnotation> annotations = joinTableResource.inverseJoinColumns();
 		
 		while(annotations.hasNext()) {
-			this.specifiedInverseJoinColumns.add(createInverseJoinColumn(annotations.next()));
+			this.specifiedInverseJoinColumns.add(buildInverseJoinColumn(annotations.next()));
 		}
 	}
 	
@@ -405,8 +404,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		if (!shouldBuildDefaultInverseJoinColumn()) {
 			return;
 		}
-		this.defaultInverseJoinColumn = this.jpaFactory().buildJavaJoinColumn(this, createInverseJoinColumnOwner());
-		this.defaultInverseJoinColumn.initializeFromResource(new NullJoinColumn(joinTable));		
+		this.defaultInverseJoinColumn = buildInverseJoinColumn(new NullJoinColumn(joinTable));		
 	}
 		
 	public void update(JavaResourcePersistentAttribute attributeResource) {
@@ -434,7 +432,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		}
 		
 		while (resourceJoinColumns.hasNext()) {
-			addSpecifiedJoinColumn(specifiedJoinColumnsSize(), createJoinColumn(resourceJoinColumns.next()));
+			addSpecifiedJoinColumn(specifiedJoinColumnsSize(), buildJoinColumn(resourceJoinColumns.next()));
 		}
 	}
 	
@@ -444,8 +442,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			return;
 		}
 		if (getDefaultJoinColumn() == null) {
-			JoinColumnAnnotation joinColumnResource = new NullJoinColumn(joinTable);
-			this.setDefaultJoinColumn(createJoinColumn(joinColumnResource));
+			this.setDefaultJoinColumn(buildJoinColumn(new NullJoinColumn(joinTable)));
 		}
 		else {
 			this.defaultJoinColumn.update(new NullJoinColumn(joinTable));
@@ -467,7 +464,7 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 		}
 		
 		while (resourceJoinColumns.hasNext()) {
-			addSpecifiedInverseJoinColumn(specifiedInverseJoinColumnsSize(), createInverseJoinColumn(resourceJoinColumns.next()));
+			addSpecifiedInverseJoinColumn(specifiedInverseJoinColumnsSize(), buildInverseJoinColumn(resourceJoinColumns.next()));
 		}
 	}
 	
@@ -477,26 +474,28 @@ public class GenericJavaJoinTable extends AbstractJavaTable implements JavaJoinT
 			return;
 		}
 		if (getDefaultInverseJoinColumn() == null) {
-			JoinColumnAnnotation joinColumnResource = new NullJoinColumn(joinTable);
-			this.setDefaultInverseJoinColumn(createInverseJoinColumn(joinColumnResource));
+			this.setDefaultInverseJoinColumn(buildInverseJoinColumn(new NullJoinColumn(joinTable)));
 		}
 		else {
 			this.defaultInverseJoinColumn.update(new NullJoinColumn(joinTable));
 		}
 	}	
 	
-	protected JavaJoinColumn createJoinColumn(JoinColumnAnnotation joinColumnResource) {
+	protected JavaJoinColumn buildJoinColumn(JoinColumnAnnotation joinColumnResource) {
 		JavaJoinColumn joinColumn = jpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
 		joinColumn.initializeFromResource(joinColumnResource);
 		return joinColumn;
 	}
 	
-	protected JavaJoinColumn createInverseJoinColumn(JoinColumnAnnotation joinColumnResource) {
+	protected JavaJoinColumn buildInverseJoinColumn(JoinColumnAnnotation joinColumnResource) {
 		JavaJoinColumn joinColumn = jpaFactory().buildJavaJoinColumn(this, createInverseJoinColumnOwner());
 		joinColumn.initializeFromResource(joinColumnResource);
 		return joinColumn;
 	}
 
+	
+	//********************* validation ********************
+	
 	@Override
 	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		super.addToMessages(messages, astRoot);

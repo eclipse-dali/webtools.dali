@@ -24,7 +24,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	implements JavaTypeMapping
 {
-	protected JavaResourcePersistentType persistentTypeResource;
+	protected JavaResourcePersistentType javaResourcePersistentType;
 	
 
 	protected AbstractJavaTypeMapping(JavaPersistentType parent) {
@@ -32,7 +32,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	}
 	
 	protected JavaResourceNode mappingResource() {
-		return this.persistentTypeResource.mappingAnnotation(annotationName());
+		return this.javaResourcePersistentType.mappingAnnotation(annotationName());
 	}
 
 	//***************** ITypeMapping implementation *****************
@@ -94,12 +94,12 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	}
 	
 	//******************** updatating *********************
-	public void initializeFromResource(JavaResourcePersistentType persistentTypeResource) {
-		this.persistentTypeResource = persistentTypeResource;
+	public void initializeFromResource(JavaResourcePersistentType javaResourcePersistentType) {
+		this.javaResourcePersistentType = javaResourcePersistentType;
 	}
 
-	public void update(JavaResourcePersistentType persistentTypeResource) {
-		this.persistentTypeResource = persistentTypeResource;
+	public void update(JavaResourcePersistentType javaResourcePersistentType) {
+		this.javaResourcePersistentType = javaResourcePersistentType;
 	}
 	
 	//******************** validation *********************
@@ -108,5 +108,4 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		TextRange textRange = this.mappingResource().textRange(astRoot);
 		return (textRange != null) ? textRange : this.persistentType().validationTextRange(astRoot);
 	}
-
 }

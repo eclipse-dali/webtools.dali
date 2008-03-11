@@ -279,7 +279,13 @@ public abstract class AbstractOrmTable extends AbstractOrmJpaContextNode impleme
 	}
 	
 	public TextRange validationTextRange() {
-		return this.table().validationTextRange();
+		if (table() != null) {
+			TextRange textRange = this.table().validationTextRange();
+			if (textRange != null) {
+				return textRange;
+			}
+		}
+		return parent().validationTextRange();
 	}
 
 	

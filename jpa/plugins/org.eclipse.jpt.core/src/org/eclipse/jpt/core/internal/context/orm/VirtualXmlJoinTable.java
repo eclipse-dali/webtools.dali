@@ -33,10 +33,6 @@ public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTa
 
 	protected OrmPersistentAttribute ormPersistentAttribute;
 	
-	protected EList<XmlJoinColumn> inverseJoinColumns;
-	
-	protected EList<XmlJoinColumn> joinColumns;
-	
 
 	protected VirtualXmlJoinTable(OrmPersistentAttribute ormPersistentAttribute, JavaJoinTable javaJoinTable, boolean metadataComplete) {
 		super();
@@ -84,27 +80,25 @@ public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTa
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping");
 	}
 	
+	//VirtualXmlJoinTable is rebuilt every time, so just rebuilding the joinColumns list as well
 	public EList<XmlJoinColumn> getJoinColumns() {
-		if (this.joinColumns == null) {
-			this.joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__JOIN_COLUMNS);
-		}
+		EList<XmlJoinColumn> joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__JOIN_COLUMNS);
 		for (JavaJoinColumn joinColumn : CollectionTools.iterable(this.javaJoinTable.specifiedJoinColumns())) {
 			XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, this.metadataComplete);
-			this.joinColumns.add(xmlJoinColumn);
+			joinColumns.add(xmlJoinColumn);
 		}
-		return this.joinColumns;
+		return joinColumns;
 	}
 	
+	//VirtualXmlJoinTable is rebuilt every time, so just rebuilding the joinColumns list as well
 	public EList<XmlJoinColumn> getInverseJoinColumns() {
-		if (this.inverseJoinColumns == null) {
-			this.inverseJoinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS);
-		}
+		EList<XmlJoinColumn> inverseJoinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS);
 		for (JavaJoinColumn joinColumn : CollectionTools.iterable(this.javaJoinTable.specifiedInverseJoinColumns())) {
 			XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, this.metadataComplete);
-			this.inverseJoinColumns.add(xmlJoinColumn);
+			inverseJoinColumns.add(xmlJoinColumn);
 		}
 
-		return this.inverseJoinColumns;
+		return inverseJoinColumns;
 	}
 
 	public EList<UniqueConstraint> getUniqueConstraints() {

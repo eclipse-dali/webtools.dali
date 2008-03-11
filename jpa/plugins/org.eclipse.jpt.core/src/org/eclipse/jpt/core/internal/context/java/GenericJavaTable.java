@@ -9,12 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaTable;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public class GenericJavaTable extends AbstractJavaTable implements JavaTable
@@ -94,15 +99,40 @@ public class GenericJavaTable extends AbstractJavaTable implements JavaTable
 		return super.defaultCatalog();
 	}
 	
-//	@Override
-//	protected JavaUniqueConstraint createJavaUniqueConstraint(int index) {
-//		return JavaUniqueConstraint.createTableUniqueConstraint(new UniqueConstraintOwner(this), this.getMember(), index);
-//	}
-	
-	
 	public void update(JavaResourcePersistentMember persistentResource) {
 		this.persistentResource = persistentResource;
 		this.update(tableResource());
 	}
 
+	//******************* validation **********************
+	
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+		boolean doContinue = isConnected();
+		String schema = getSchema();
+		
+		if (doContinue && ! hasResolvedSchema()) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
+						new String[] {schema, getName()}, 
+						this, 
+						schemaTextRange(astRoot))
+				);
+			doContinue = false;
+		}
+		
+		if (doContinue && ! isResolved()) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.TABLE_UNRESOLVED_NAME,
+						new String[] {getName()}, 
+						this, 
+						nameTextRange(astRoot))
+				);
+		}
+	}
 }

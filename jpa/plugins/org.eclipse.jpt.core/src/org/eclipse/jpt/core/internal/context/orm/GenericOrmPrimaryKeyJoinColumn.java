@@ -109,9 +109,12 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 
 	public TextRange referencedColumnNameTextRange() {
 		if (columnResource() != null) {
-			return columnResource().referencedColumnNameTextRange();
+			TextRange textRange = columnResource().referencedColumnNameTextRange();
+			if (textRange != null) {
+				return textRange;
+			}
 		}
-		return this.parent().validationTextRange(); 
+		return owner().validationTextRange();
 	}
 
 		

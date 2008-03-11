@@ -9,15 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.List;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
+import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.RelationshipMappingTools;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.db.internal.Column;
 import org.eclipse.jpt.db.internal.Table;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class GenericOrmJoinColumn extends AbstractOrmColumn<XmlJoinColumn> implements OrmJoinColumn
 {
@@ -92,9 +97,12 @@ public class GenericOrmJoinColumn extends AbstractOrmColumn<XmlJoinColumn> imple
 
 	public TextRange referencedColumnNameTextRange() {
 		if (columnResource() != null) {
-			return columnResource().referencedColumnNameTextRange();
+			TextRange textRange = columnResource().referencedColumnNameTextRange();
+			if (textRange != null) {
+				return textRange;
+			}
 		}
-		return this.parent().validationTextRange(); 
+		return owner().validationTextRange();
 	}
 
 
@@ -171,5 +179,62 @@ public class GenericOrmJoinColumn extends AbstractOrmColumn<XmlJoinColumn> imple
 		return super.defaultTable();
 	}
 	
-
+	
+	//******************* validation ***********************
+	
+	/** used internally as a mechanism to short circuit continued message adding */
+	private boolean doContinue;
+	
+	@Override
+	public void addToMessages(List<IMessage> messages) {
+		super.addToMessages(messages);
+		this.doContinue = isConnected();
+	
+		OrmRelationshipMapping mapping = (OrmRelationshipMapping) owner().relationshipMapping();
+		//TODO why is this commented out?  i copied it like this from the maintenance stream
+//		if (doContinue && typeMapping.tableNameIsInvalid(table)) {
+//			if (mapping.isVirtual()) {
+//				messages.add(
+//					JpaValidationMessages.buildMessage(
+//						IMessage.HIGH_SEVERITY,
+//						IJpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_TABLE,
+//						new String[] {mapping.getPersistentAttribute().getName(), table, column.getName()},
+//						column, column.getTableTextRange())
+//				);
+//			}
+//			else {
+//				messages.add(
+//					JpaValidationMessages.buildMessage(
+//						IMessage.HIGH_SEVERITY,
+//						IJpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
+//						new String[] {table, column.getName()}, 
+//						column, column.getTableTextRange())
+//				);
+//			}
+//			doContinue = false;
+//		}
+//		
+		if (this.doContinue && ! isResolved()) {
+			if (mapping.persistentAttribute().isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
+						new String[] {mapping.getName(), getName()}, 
+						this, 
+						nameTextRange())
+				);
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
+						new String[] {getName()}, 
+						this, 
+						nameTextRange())
+				);
+			}
+		}
+	}
 }
