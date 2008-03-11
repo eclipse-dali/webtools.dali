@@ -189,7 +189,8 @@ public class GenerationComposite extends AbstractFormPane<IdMapping>
 		// Primary Key Generation section
 		container = buildCollapsableSection(
 			container,
-			JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration
+			JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration,
+			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
 		);
 
 		// Primary Key Generation check box
@@ -223,7 +224,7 @@ public class GenerationComposite extends AbstractFormPane<IdMapping>
 	private void initializeSequenceGeneratorPane(Composite container) {
 
 		// Sequence Generator sub-section
-		container = buildSubSection(
+		container = buildCollapsableSubSection(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_sequenceGenerator,
 			sequenceGeneratorExpansionStateHolder
@@ -247,7 +248,7 @@ public class GenerationComposite extends AbstractFormPane<IdMapping>
 	private void initializeTableGeneratorPane(Composite container) {
 
 		// Table Generator sub-section
-		container = buildSubSection(
+		container = buildCollapsableSubSection(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_tableGenerator,
 			tableGeneratorExpansionStateHolder

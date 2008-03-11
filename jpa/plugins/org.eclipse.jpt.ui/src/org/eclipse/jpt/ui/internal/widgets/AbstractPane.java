@@ -2275,7 +2275,7 @@ public abstract class AbstractPane<T extends Model>
 	protected final Composite buildSubSection(Composite container,
 	                                          String sectionText) {
 
-		return this.buildSubSection(
+		return this.buildCollapsableSubSection(
 			container,
 			sectionText,
 			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
@@ -2294,14 +2294,15 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite buildSubSection(Composite container,
+	protected final Composite buildCollapsableSubSection(Composite container,
 	                                          String sectionText,
 	                                          PropertyValueModel<Boolean> expandedStateHolder) {
 
-		return this.buildSection(
+		return this.buildCollapsableSection(
 			container,
 			sectionText,
-			SWT.NULL
+			SWT.NULL,
+			expandedStateHolder
 		);
 	}
 
