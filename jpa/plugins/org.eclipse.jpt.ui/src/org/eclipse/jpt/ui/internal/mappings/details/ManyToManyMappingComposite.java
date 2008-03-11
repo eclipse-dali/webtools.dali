@@ -124,7 +124,7 @@ public class ManyToManyMappingComposite extends AbstractFormPane<ManyToManyMappi
 
 	private void initializeJoinTablePane(Composite container) {
 
-		container = buildSection(
+		container = buildCollapsableSection(
 			container,
 			JptUiMappingsMessages.MultiRelationshipMappingComposite_joinTable
 		);

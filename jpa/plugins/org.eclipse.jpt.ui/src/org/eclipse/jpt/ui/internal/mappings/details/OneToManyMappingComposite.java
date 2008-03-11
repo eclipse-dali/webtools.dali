@@ -121,7 +121,7 @@ public class OneToManyMappingComposite extends AbstractFormPane<OneToManyMapping
 
 	private void initializeJoinTablePane(Composite container) {
 
-		container = buildSection(
+		container = buildCollapsableSection(
 			container,
 			JptUiMappingsMessages.MultiRelationshipMappingComposite_joinTable
 		);

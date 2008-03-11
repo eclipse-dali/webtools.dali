@@ -117,14 +117,14 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 		};
 	}
 
-	private void initializeAttributeOverridesPane(Composite container) {
+	@Override
+	protected void initializeLayout(Composite container) {
 
-		container = buildSection(
-			container,
-			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
-		);
-
-		new OverridesComposite(this, container);
+		initializeGeneralPane(container);
+		initializeAttributeOverridesPane(container);
+		initializeSecondaryTablesPane(container);
+		initializeInheritancePane(container);
+		initializeQueriesPane(container);
 	}
 
 	private void initializeGeneralPane(Composite container) {
@@ -145,9 +145,19 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 		);
 	}
 
+	private void initializeAttributeOverridesPane(Composite container) {
+
+		container = buildCollapsableSection(
+			container,
+			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
+		);
+
+		new OverridesComposite(this, container);
+	}
+
 	private void initializeInheritancePane(Composite container) {
 
-		container = buildSection(
+		container = buildCollapsableSection(
 			container,
 			JptUiMappingsMessages.EntityComposite_inheritance
 		);
@@ -155,22 +165,9 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 		new InheritanceComposite(this, container);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		initializeGeneralPane(container);
-		initializeAttributeOverridesPane(container);
-		initializeSecondaryTablesPane(container);
-		initializeInheritancePane(container);
-		initializeQueriesPane(container);
-	}
-
 	private void initializeQueriesPane(Composite container) {
 
-		container = buildSection(
+		container = buildCollapsableSection(
 			container,
 			JptUiMappingsMessages.EntityComposite_queries
 		);
@@ -180,7 +177,7 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 
 	private void initializeSecondaryTablesPane(Composite container) {
 
-		container = buildSection(
+		container = buildCollapsableSection(
 			container,
 			JptUiMappingsMessages.SecondaryTablesComposite_secondaryTables
 		);

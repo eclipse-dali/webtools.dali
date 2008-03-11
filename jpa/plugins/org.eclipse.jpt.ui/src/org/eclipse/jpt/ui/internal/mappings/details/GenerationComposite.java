@@ -187,7 +187,7 @@ public class GenerationComposite extends AbstractFormPane<IdMapping>
 	protected void initializeLayout(Composite container) {
 
 		// Primary Key Generation section
-		container = buildSection(
+		container = buildCollapsableSection(
 			container,
 			JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration
 		);
