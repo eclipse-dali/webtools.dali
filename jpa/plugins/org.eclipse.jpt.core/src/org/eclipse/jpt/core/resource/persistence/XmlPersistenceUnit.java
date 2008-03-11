@@ -234,15 +234,6 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 	protected XmlPersistenceUnitTransactionType transactionType = TRANSACTION_TYPE_EDEFAULT;
 
 	/**
-	 * This is true if the Transaction Type attribute has been set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean transactionTypeESet;
-
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -310,11 +301,9 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Transaction Type</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnitTransactionType
-	 * @see #isSetTransactionType()
-	 * @see #unsetTransactionType()
 	 * @see #setTransactionType(XmlPersistenceUnitTransactionType)
 	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlPersistenceUnit_TransactionType()
-	 * @model default="JTA" unique="false" unsettable="true"
+	 * @model default="JTA" unique="false"
 	 * @generated
 	 */
 	public XmlPersistenceUnitTransactionType getTransactionType()
@@ -328,8 +317,6 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Transaction Type</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnitTransactionType
-	 * @see #isSetTransactionType()
-	 * @see #unsetTransactionType()
 	 * @see #getTransactionType()
 	 * @generated
 	 */
@@ -337,44 +324,8 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 	{
 		XmlPersistenceUnitTransactionType oldTransactionType = transactionType;
 		transactionType = newTransactionType == null ? TRANSACTION_TYPE_EDEFAULT : newTransactionType;
-		boolean oldTransactionTypeESet = transactionTypeESet;
-		transactionTypeESet = true;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PERSISTENCE_UNIT__TRANSACTION_TYPE, oldTransactionType, transactionType, !oldTransactionTypeESet));
-	}
-
-	/**
-	 * Unsets the value of the '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#getTransactionType <em>Transaction Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isSetTransactionType()
-	 * @see #getTransactionType()
-	 * @see #setTransactionType(XmlPersistenceUnitTransactionType)
-	 * @generated
-	 */
-	public void unsetTransactionType()
-	{
-		XmlPersistenceUnitTransactionType oldTransactionType = transactionType;
-		boolean oldTransactionTypeESet = transactionTypeESet;
-		transactionType = TRANSACTION_TYPE_EDEFAULT;
-		transactionTypeESet = false;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.UNSET, PersistencePackage.XML_PERSISTENCE_UNIT__TRANSACTION_TYPE, oldTransactionType, TRANSACTION_TYPE_EDEFAULT, oldTransactionTypeESet));
-	}
-
-	/**
-	 * Returns whether the value of the '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#getTransactionType <em>Transaction Type</em>}' attribute is set.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return whether the value of the '<em>Transaction Type</em>' attribute is set.
-	 * @see #unsetTransactionType()
-	 * @see #getTransactionType()
-	 * @see #setTransactionType(XmlPersistenceUnitTransactionType)
-	 * @generated
-	 */
-	public boolean isSetTransactionType()
-	{
-		return transactionTypeESet;
+			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_PERSISTENCE_UNIT__TRANSACTION_TYPE, oldTransactionType, transactionType));
 	}
 
 	/**
@@ -829,7 +780,7 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 				setName(NAME_EDEFAULT);
 				return;
 			case PersistencePackage.XML_PERSISTENCE_UNIT__TRANSACTION_TYPE:
-				unsetTransactionType();
+				setTransactionType(TRANSACTION_TYPE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -866,7 +817,7 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 			case PersistencePackage.XML_PERSISTENCE_UNIT__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case PersistencePackage.XML_PERSISTENCE_UNIT__TRANSACTION_TYPE:
-				return isSetTransactionType();
+				return transactionType != TRANSACTION_TYPE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -897,7 +848,7 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 		result.append(", name: ");
 		result.append(name);
 		result.append(", transactionType: ");
-		if (transactionTypeESet) result.append(transactionType); else result.append("<unset>");
+		result.append(transactionType);
 		result.append(')');
 		return result.toString();
 	}

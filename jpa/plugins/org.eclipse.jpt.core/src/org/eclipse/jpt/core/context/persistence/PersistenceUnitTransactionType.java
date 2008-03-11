@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.persistence;
 
+import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnitTransactionType;
+
 /**
  * 
  * 
@@ -24,8 +26,33 @@ public enum PersistenceUnitTransactionType
 	JTA,
 	
 	/** Corresponds to RESOURCE_LOCAL transaction type **/
-	RESOURCE_LOCAL,
+	RESOURCE_LOCAL;
 	
-	/** Corresponds to default transaction type **/
-	DEFAULT;
+	public static PersistenceUnitTransactionType fromXmlResourceModel(XmlPersistenceUnitTransactionType transactionType) {
+		if (transactionType == null) {
+			return null;
+		}
+		switch (transactionType) {
+			case JTA:
+				return JTA;
+			case RESOURCE_LOCAL:
+				return RESOURCE_LOCAL;
+			default:
+				throw new IllegalArgumentException("unknown transaction type: " + transactionType);
+		}
+	}
+	
+	public static XmlPersistenceUnitTransactionType toXmlResourceModel(PersistenceUnitTransactionType transactionType) {
+		if (transactionType == null) {
+			return null;
+		}
+		switch (transactionType) {
+			case JTA:
+				return XmlPersistenceUnitTransactionType.JTA;
+			case RESOURCE_LOCAL:
+				return XmlPersistenceUnitTransactionType.RESOURCE_LOCAL;
+			default:
+				throw new IllegalArgumentException("unknown transaction type: " + transactionType);
+		}
+	}
 }

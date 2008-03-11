@@ -53,34 +53,25 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	
 	// **************** transaction type ***************************************
 	
+	PersistenceUnitTransactionType getTransactionType();
+
 	/**
 	 * String constant associated with changes to the persistence unit's 
-	 * transaction type
+	 * specified transaction type
 	 */
-	final static String TRANSACTION_TYPE_PROPERTY = "transactionType";
+	String SPECIFIED_TRANSACTION_TYPE_PROPERTY = "transactionType";
 	
 	/** 
 	 * Return the transaction type of the persistence unit, one of the values of 
 	 * {@link PersistenceUnitTransactionType} 
 	 */
-	PersistenceUnitTransactionType getTransactionType();
+	PersistenceUnitTransactionType getSpecifiedTransactionType();
 	
 	/** 
 	 * Set the transaction type of the persistence unit, one of the values of 
 	 * {@link PersistenceUnitTransactionType} 
 	 */
-	void setTransactionType(PersistenceUnitTransactionType transactionType);
-	
-	/** 
-	 * Return true if the transaction type is default rather than overridden
-	 * (corresponds to missing tag in persistence.xml)
-	 */
-	boolean isTransactionTypeDefault();
-	
-	/** 
-	 * Set the transaction type of the persistence unit to the default 
-	 */
-	void setTransactionTypeToDefault();
+	void setSpecifiedTransactionType(PersistenceUnitTransactionType transactionType);
 	
 	/**
 	 * String constant associated with changes to the persistence unit's 

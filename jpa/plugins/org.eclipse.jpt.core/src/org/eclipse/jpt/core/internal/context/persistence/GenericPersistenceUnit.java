@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.persistence;
 
-import static org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -42,7 +41,6 @@ import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnitTransactionType;
 import org.eclipse.jpt.core.resource.persistence.XmlProperties;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 import org.eclipse.jpt.db.Catalog;
@@ -69,9 +67,9 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	protected String name;
 	
-	protected PersistenceUnitTransactionType transactionType;
+	protected PersistenceUnitTransactionType specifiedTransactionType;
 	
-	protected PersistenceUnitTransactionType defaultTransactionType = DEFAULT;
+	protected PersistenceUnitTransactionType defaultTransactionType;
 	
 	protected String description;
 	
@@ -105,7 +103,6 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		super(parent);
 		this.generatorRepository = new GenericGeneratorRepository(this);
 		this.queryRepository = new GenericQueryRepository(this);
-		this.transactionType = PersistenceUnitTransactionType.DEFAULT;
 		this.specifiedMappingFileRefs = new ArrayList<MappingFileRef>();
 		this.specifiedClassRefs = new ArrayList<ClassRef>();
 		this.impliedClassRefs = new ArrayList<ClassRef>();
@@ -156,48 +153,33 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	public PersistenceUnitTransactionType getTransactionType() {
 		return (isTransactionTypeDefault()) ?
-			getDefaultTransactionType() : this.transactionType;
+			getDefaultTransactionType() : getSpecifiedTransactionType();
 	}
 	
-	public void setTransactionType(PersistenceUnitTransactionType newTransactionType) {
-		if (newTransactionType == null) {
-			throw new IllegalArgumentException("null");
-		}
-		PersistenceUnitTransactionType oldTransactionType = this.transactionType;
-		this.transactionType = newTransactionType;
-		
-		if (this.transactionType == JTA) {
-			this.xmlPersistenceUnit.setTransactionType(XmlPersistenceUnitTransactionType.JTA);
-		}
-		else if (this.transactionType == RESOURCE_LOCAL) {
-			this.xmlPersistenceUnit.setTransactionType(XmlPersistenceUnitTransactionType.RESOURCE_LOCAL);
-		}
-		else if (this.transactionType == DEFAULT) {
-			this.xmlPersistenceUnit.unsetTransactionType();
-		}
-		else {
-			throw new IllegalArgumentException();
-		}
-		
-		firePropertyChanged(TRANSACTION_TYPE_PROPERTY, oldTransactionType, newTransactionType);
+	public PersistenceUnitTransactionType getSpecifiedTransactionType() {
+		return this.specifiedTransactionType;
+	}
+	
+	public void setSpecifiedTransactionType(PersistenceUnitTransactionType newTransactionType) {
+		PersistenceUnitTransactionType oldTransactionType = this.specifiedTransactionType;
+		this.specifiedTransactionType = newTransactionType;		
+		this.xmlPersistenceUnit.setTransactionType(PersistenceUnitTransactionType.toXmlResourceModel(newTransactionType));		
+		firePropertyChanged(SPECIFIED_TRANSACTION_TYPE_PROPERTY, oldTransactionType, newTransactionType);
 	}
 	
 	public boolean isTransactionTypeDefault() {
-		return this.transactionType == DEFAULT;
-	}
-	
-	public void setTransactionTypeToDefault() {
-		setTransactionType(DEFAULT);
+		return this.specifiedTransactionType == null;
 	}
 	
 	public PersistenceUnitTransactionType getDefaultTransactionType() {
-		// TODO - calculate default
-		//  From the JPA spec: "In a Java EE environment, if this element is not 
-		//  specified, the default is JTA. In a Java SE environment, if this element 
-		// is not specified, a default of RESOURCE_LOCAL may be assumed."
 		return this.defaultTransactionType;
 	}
 	
+	protected void setDefaultTransactionType(PersistenceUnitTransactionType newTransactionType) {
+		PersistenceUnitTransactionType oldTransactionType = this.defaultTransactionType;
+		this.defaultTransactionType = newTransactionType;		
+		firePropertyChanged(DEFAULT_TRANSACTION_TYPE_PROPERTY, oldTransactionType, newTransactionType);
+	}
 	
 	// **************** description ********************************************
 	
@@ -719,6 +701,8 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		initializeClassRefs(xmlPersistenceUnit);
 		initializeProperties(xmlPersistenceUnit);
 		this.specifiedExcludeUnlistedClasses = xmlPersistenceUnit.getExcludeUnlistedClasses();
+		this.specifiedTransactionType = specifiedTransactionType(xmlPersistenceUnit);
+		this.defaultTransactionType = defaultTransacationType();
 		//TODO more things to initialize
 	}
 	
@@ -776,7 +760,8 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		this.generatorRepository.clear();
 		this.queryRepository.clear();
 		updateName(persistenceUnit);
-		updateTransactionType(persistenceUnit);
+		updateSpecifiedTransactionType(persistenceUnit);
+		updateDefaultTransactionType();
 		updateDescription(persistenceUnit);
 		updateProvider(persistenceUnit);
 		updateJtaDataSource(persistenceUnit);
@@ -794,19 +779,24 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		setName(persistenceUnit.getName());
 	}
 	
-	protected void updateTransactionType(XmlPersistenceUnit persistenceUnit) {
-		if (! persistenceUnit.isSetTransactionType()) {
-			setTransactionType(DEFAULT);
-		}
-		else if (persistenceUnit.getTransactionType() == XmlPersistenceUnitTransactionType.JTA) {
-			setTransactionType(JTA);
-		}
-		else if (persistenceUnit.getTransactionType() == XmlPersistenceUnitTransactionType.RESOURCE_LOCAL) {
-			setTransactionType(RESOURCE_LOCAL);
-		}
-		else {
-			throw new IllegalStateException();
-		}
+	protected void updateSpecifiedTransactionType(XmlPersistenceUnit persistenceUnit) {
+		setSpecifiedTransactionType(specifiedTransactionType(persistenceUnit));
+	}
+	
+	protected PersistenceUnitTransactionType specifiedTransactionType(XmlPersistenceUnit persistenceUnit) {
+		return PersistenceUnitTransactionType.fromXmlResourceModel(persistenceUnit.getTransactionType());
+	}
+	
+	protected void updateDefaultTransactionType() {
+		setDefaultTransactionType(defaultTransacationType());
+	}
+	
+	protected PersistenceUnitTransactionType defaultTransacationType() {
+		// TODO - calculate default
+		//  From the JPA spec: "In a Java EE environment, if this element is not 
+		//  specified, the default is JTA. In a Java SE environment, if this element 
+		// is not specified, a default of RESOURCE_LOCAL may be assumed."
+		return null;
 	}
 	
 	protected void updateDescription(XmlPersistenceUnit persistenceUnit) {

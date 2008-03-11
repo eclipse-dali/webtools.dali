@@ -99,21 +99,21 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		// 1 - initial value is default
 		assertNull(xmlPersistenceUnit.getTransactionType());
-		assertEquals(PersistenceUnitTransactionType.DEFAULT, persistenceUnit.getTransactionType());
+		assertNull(persistenceUnit.getSpecifiedTransactionType());
 		
 		// 2 - set value, context changed
 		xmlPersistenceUnit.setTransactionType(XmlPersistenceUnitTransactionType.JTA);
 		
-		assertEquals(PersistenceUnitTransactionType.JTA, persistenceUnit.getTransactionType());
+		assertEquals(PersistenceUnitTransactionType.JTA, persistenceUnit.getSpecifiedTransactionType());
 		
 		xmlPersistenceUnit.setTransactionType(XmlPersistenceUnitTransactionType.RESOURCE_LOCAL);
 		
-		assertEquals(PersistenceUnitTransactionType.RESOURCE_LOCAL, persistenceUnit.getTransactionType());
+		assertEquals(PersistenceUnitTransactionType.RESOURCE_LOCAL, persistenceUnit.getSpecifiedTransactionType());
 		
 		// 3 - unset value, context changed
-		xmlPersistenceUnit.unsetTransactionType();
+		xmlPersistenceUnit.setTransactionType(null);
 		
-		assertEquals(PersistenceUnitTransactionType.DEFAULT, persistenceUnit.getTransactionType());
+		assertNull(persistenceUnit.getSpecifiedTransactionType());
 	}
 	
 	public void testModifyTransactionType() {
@@ -122,22 +122,22 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		// 1 - initial value is default
 		assertNull(xmlPersistenceUnit.getTransactionType());
-		assertEquals(persistenceUnit.getTransactionType(), PersistenceUnitTransactionType.DEFAULT);
+		assertNull(persistenceUnit.getSpecifiedTransactionType());
 		
 		// 2 - set context value, resource changed
-		persistenceUnit.setTransactionType(PersistenceUnitTransactionType.JTA);
+		persistenceUnit.setSpecifiedTransactionType(PersistenceUnitTransactionType.JTA);
 		
 		assertEquals(XmlPersistenceUnitTransactionType.JTA, xmlPersistenceUnit.getTransactionType());
 		
-		persistenceUnit.setTransactionType(PersistenceUnitTransactionType.RESOURCE_LOCAL);
+		persistenceUnit.setSpecifiedTransactionType(PersistenceUnitTransactionType.RESOURCE_LOCAL);
 		
 		assertEquals(XmlPersistenceUnitTransactionType.RESOURCE_LOCAL, xmlPersistenceUnit.getTransactionType());
 		
 		// 3 - set context value to default, resource unset
-		persistenceUnit.setTransactionTypeToDefault();
+		persistenceUnit.setSpecifiedTransactionType(null);
 		
-		assertTrue(persistenceUnit.isTransactionTypeDefault());
-		assertFalse(xmlPersistenceUnit.isSetTransactionType());
+		assertNull(persistenceUnit.getSpecifiedTransactionType());
+		assertNull(xmlPersistenceUnit.getTransactionType());
 	}
 	
 	public void testUpdateDescription() {

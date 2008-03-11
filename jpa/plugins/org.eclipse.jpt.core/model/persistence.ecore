@@ -31,7 +31,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" unique="false" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="transactionType" unique="false"
-        eType="#//XmlPersistenceUnitTransactionType" defaultValueLiteral="JTA" unsettable="true"/>
+        eType="#//XmlPersistenceUnitTransactionType" defaultValueLiteral="JTA"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlMappingFileRef">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileName" ordered="false"
