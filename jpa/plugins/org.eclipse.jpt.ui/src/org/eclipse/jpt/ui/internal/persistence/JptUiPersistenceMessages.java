@@ -22,12 +22,14 @@ public class JptUiPersistenceMessages
 	public static String Boolean_False;
 	public static String Boolean_True;
 
-	public static String PersistenceEditor_Page_help;
+	public static String PersistenceEditor_page_help;
+	public static String PersistenceEditor_sourceTab;
 
 	public static String PersistenceUnitClassesComposite_description;
 	public static String PersistenceUnitClassesComposite_excludeUnlistedMappedClasses;
 	public static String PersistenceUnitClassesComposite_excludeUnlistedMappedClassesWithDefault;
 	public static String PersistenceUnitClassesComposite_mappedClassesNoName;
+	public static String PersistenceUnitClassesComposite_open;
 
 	public static String PersistenceUnitConnectionComposite_connection;
 	public static String PersistenceUnitConnectionComposite_database;

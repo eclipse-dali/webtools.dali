@@ -150,7 +150,7 @@ public class PersistenceEditor extends FormEditor
 		try {
 			editor = new StructuredTextEditor();
 			int index = addPage(editor, getEditorInput());
-			setPageText(index, editor.getTitle());
+			setPageText(index, JptUiPersistenceMessages.PersistenceEditor_sourceTab);
 		}
 		catch (PartInitException e) {
 			// TODO
@@ -342,8 +342,17 @@ public class PersistenceEditor extends FormEditor
 	 */
 	private class Page extends FormPage {
 
-		private JpaPageComposite<PersistenceUnit> page;
+		/**
+		 * The wrapped page that actually contains the widgets to show with this
+		 * form page.
+		 */
+		private final JpaPageComposite<PersistenceUnit> page;
 
+		/**
+		 * Creates a new <code>Page</code>.
+		 *
+		 * @param page The wrapped <code>JpaPageComposite</code>
+		 */
 		private Page(JpaPageComposite<PersistenceUnit> page) {
 
 			super(PersistenceEditor.this,
@@ -353,6 +362,9 @@ public class PersistenceEditor extends FormEditor
 			this.page = page;
 		}
 
+		/*
+		 * (non-Javadoc)
+		 */
 		@Override
 		protected void createFormContent(IManagedForm managedForm) {
 
@@ -385,6 +397,20 @@ public class PersistenceEditor extends FormEditor
 			super.dispose();
 		}
 
+		/*
+		 * (non-Javadoc)
+		 */
+		@Override
+		public void setFocus() {
+			page.getControl().setFocus();
+		}
+
+		/**
+		 * Updates the text and image of the form.
+		 *
+		 * @param form The form to have its title bar updated by setting the text
+		 * and image, the image can be <code>null</code>
+		 */
 		private void updateForm(ScrolledForm form) {
 
 			form.setText(page.pageText());
@@ -406,6 +432,9 @@ public class PersistenceEditor extends FormEditor
 			container.setLayoutData(gridData);
 		}
 
+		/**
+		 * Adds a help button to the page's toolbar if a help ID exists.
+		 */
 		private void updateHelpButton() {
 
 			String helpID = page.helpID();
@@ -424,7 +453,7 @@ public class PersistenceEditor extends FormEditor
 			private final String helpID;
 
 			HelpAction(String helpID) {
-				super(JptUiPersistenceMessages.PersistenceEditor_Page_help,
+				super(JptUiPersistenceMessages.PersistenceEditor_page_help,
 				      JFaceResources.getImageRegistry().getDescriptor(Dialog.DLG_IMG_HELP));
 
 				this.helpID = helpID;

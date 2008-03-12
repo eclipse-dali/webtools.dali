@@ -223,11 +223,8 @@ public class FormWidgetFactory implements WidgetFactory {
 	/*
 	 * (non-Javadoc)
 	 */
-	public Table createTable(Composite parent) {
-		return this.widgetFactory.createTable(
-			parent,
-			SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI
-		);
+	public Table createTable(Composite parent, int style) {
+		return this.widgetFactory.createTable(parent, SWT.BORDER | style);
 	}
 
 	/*

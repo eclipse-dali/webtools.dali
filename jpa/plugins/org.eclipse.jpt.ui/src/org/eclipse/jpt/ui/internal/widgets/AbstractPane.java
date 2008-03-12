@@ -550,6 +550,30 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
+	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
+	 * its client which can be typed cast directly as a <code>Composite</code>.
+	 *
+	 * @param container The container of the new widget
+	 * @param sectionText The text of the new section
+	 * @param expandedStateHolder The holder of the boolean that will dictate
+	 * when to expand or collapse the section
+	 * @return The <code>Section</code>'s sub-pane
+	 *
+	 * @category Layout
+	 */
+	protected final Composite buildCollapsableSubSection(Composite container,
+	                                          String sectionText,
+	                                          PropertyValueModel<Boolean> expandedStateHolder) {
+
+		return this.buildCollapsableSection(
+			container,
+			sectionText,
+			SWT.NULL,
+			expandedStateHolder
+		);
+	}
+
+	/**
 	 * Creates a new non-editable <code>Combo</code>.
 	 *
 	 * @param container The parent container
@@ -2283,30 +2307,6 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
-	 * its client which can be typed cast directly as a <code>Composite</code>.
-	 *
-	 * @param container The container of the new widget
-	 * @param sectionText The text of the new section
-	 * @param expandedStateHolder The holder of the boolean that will dictate
-	 * when to expand or collapse the section
-	 * @return The <code>Section</code>'s sub-pane
-	 *
-	 * @category Layout
-	 */
-	protected final Composite buildCollapsableSubSection(Composite container,
-	                                          String sectionText,
-	                                          PropertyValueModel<Boolean> expandedStateHolder) {
-
-		return this.buildCollapsableSection(
-			container,
-			sectionText,
-			SWT.NULL,
-			expandedStateHolder
-		);
-	}
-
-	/**
 	 * Creates a new table.
 	 *
 	 * @param container The parent container
@@ -2322,15 +2322,31 @@ public abstract class AbstractPane<T extends Model>
 	 * Creates a new table.
 	 *
 	 * @param container The parent container
+	 * @param style The style to apply to the table
+	 * @return The newly created <code>Table</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Table buildTable(Composite container, int style) {
+		return this.buildTable(container, style, null);
+	}
+
+	/**
+	 * Creates a new table.
+	 *
+	 * @param container The parent container
+	 * @param style The style to apply to the table
 	 * @param helpId The topic help ID to be registered for the new table or
 	 * <code>null</code> if no help ID is required
 	 * @return The newly created <code>Table</code>
 	 *
 	 * @category Layout
 	 */
-	protected final Table buildTable(Composite container, String helpId) {
+	protected final Table buildTable(Composite container,
+	                                 int style,
+	                                 String helpId) {
 
-		Table table = this.widgetFactory.createTable(container);
+		Table table = this.widgetFactory.createTable(container, style);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 
@@ -2347,6 +2363,25 @@ public abstract class AbstractPane<T extends Model>
 		}
 
 		return table;
+	}
+
+	/**
+	 * Creates a new table.
+	 *
+	 * @param container The parent container
+	 * @param helpId The topic help ID to be registered for the new table or
+	 * <code>null</code> if no help ID is required
+	 * @return The newly created <code>Table</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Table buildTable(Composite container, String helpId) {
+
+		return this.buildTable(
+			container,
+			SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI,
+			helpId
+		);
 	}
 
 	/**

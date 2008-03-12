@@ -44,7 +44,7 @@ public class PersistenceUnitConnectionGeneralComposite extends AbstractPane<Pers
 	 * @param parent The parent container
 	 */
 	public PersistenceUnitConnectionGeneralComposite(AbstractPane<PersistenceUnit> subjectHolder,
-	                                          Composite container) {
+	                                                 Composite container) {
 
 		super(subjectHolder, container, false);
 	}

@@ -411,7 +411,7 @@
           filenames="persistence.xml"
           icon="$nl$/icons/full/obj16/jpa-file.gif"
           id="org.eclipse.jpt.ui.internal.editors.PersistenceEditor"
-          name="persistence.xml">
+          name="%persistenceEditor">
        </editor>
  	</extension>
 </plugin>

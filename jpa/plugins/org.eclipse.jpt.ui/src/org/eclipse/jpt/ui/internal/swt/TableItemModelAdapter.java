@@ -18,6 +18,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.TableItem;
 
 /**
@@ -135,11 +136,21 @@ public class TableItemModelAdapter {
 	// ********** behavior **********
 
 	protected void tableItemChanged(int index, Object subject) {
+		updateTableItemText(index, subject);
+		updateTableItemImage(index, subject);
+	}
+
+	private void updateTableItemText(int index, Object subject) {
 		String text = this.labelProvider.getColumnText(subject, index);
 		if (text == null) {
 			text = "";
 		}
 		this.tableItem.setText(index, text);
+	}
+
+	private void updateTableItemImage(int index, Object subject) {
+		Image image = this.labelProvider.getColumnImage(subject, index);
+		this.tableItem.setImage(index, image);
 	}
 
 	// ********** dispose **********

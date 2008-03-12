@@ -178,9 +178,10 @@ public interface WidgetFactory {
 	 * Creates a new table.
 	 *
 	 * @param container The parent container
+	 * @param style The style to apply to the table
 	 * @return A new <code>Table</code>
 	 */
-	Table createTable(Composite parent);
+	Table createTable(Composite parent, int style);
 
 	/**
 	 * Creates a new editable text field.

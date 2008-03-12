@@ -21,9 +21,13 @@ import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.JptUiPlugin;
@@ -48,6 +52,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.progress.IProgressService;
@@ -106,6 +111,30 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 		return new AddRemoveListPane.AbstractAdapter() {
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
 				addMappedClass(listSelectionModel);
+			}
+
+			@Override
+			public boolean enableOptionOnSelectionChange(ObjectListSelectionModel listSelectionModel) {
+				if (!super.enableOptionOnSelectionChange(listSelectionModel)) {
+					return false;
+				}
+
+				return findType((ClassRef) listSelectionModel.selectedValue()) != null;
+			}
+
+			@Override
+			public boolean hasOptionalButton() {
+				return true;
+			}
+
+			@Override
+			public String optionalButtonText() {
+				return JptUiPersistenceMessages.PersistenceUnitClassesComposite_open;
+			}
+
+			@Override
+			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
+				openMappedClass((ClassRef) listSelectionModel.selectedValue());
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
@@ -193,11 +222,33 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 		return new LabelProvider() {
 			@Override
 			public Image getImage(Object element) {
-				// TODO
 				ClassRef classRef = (ClassRef) element;
-				String key = classRef.getJavaPersistentType().getMapping().getKey();
-				System.out.println(key);
-				return JptUiPlugin.getImage(JptUiIcons.ENTITY);
+				JavaPersistentType persistentType = classRef.getJavaPersistentType();
+				String iconKey = null;
+
+				if (persistentType != null) {
+					String key = persistentType.getMapping().getKey();
+
+					// Entity
+					if (MappingKeys.ENTITY_TYPE_MAPPING_KEY.equals(key)) {
+						iconKey = JptUiIcons.ENTITY;
+					}
+					// Mapped Superclass
+					else if (MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY.equals(key)) {
+						iconKey = JptUiIcons.MAPPED_SUPERCLASS;
+					}
+					// Embeddable
+					else if (MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY.equals(key)) {
+						iconKey = JptUiIcons.EMBEDDABLE;
+					}
+				}
+
+				if (iconKey != null) {
+					return JptUiPlugin.getImage(iconKey);
+				}
+
+				// TODO: Use the right warning image
+				return JFaceResources.getImageRegistry().get(Dialog.DLG_IMG_WARNING);
 			}
 
 			@Override
@@ -276,6 +327,21 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 		return null;
 	}
 
+	private IType findType(ClassRef classRef) {
+		String className = classRef.getClassName();
+
+		if (className != null) {
+			try {
+				return subject().jpaProject().javaProject().findType(className);
+			}
+			catch (JavaModelException e) {
+				JptUiPlugin.log(e);
+			}
+		}
+
+		return null;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
@@ -317,6 +383,24 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 			buildExcludeUnlistedMappedClassesHolder(),
 			buildExcludeUnlistedMappedClassesStringHolder()
 		);
+	}
+
+	private void openMappedClass(ClassRef classRef) {
+
+		IType type = findType(classRef);
+
+		if (type != null) {
+			try {
+				IJavaElement javaElement = type.getParent();
+				JavaUI.openInEditor(javaElement, true, true);
+			}
+			catch (PartInitException e) {
+				JptUiPlugin.log(e);
+			}
+			catch (JavaModelException e) {
+				JptUiPlugin.log(e);
+			}
+		}
 	}
 
 	private IPackageFragmentRoot packageFragmentRoot() {

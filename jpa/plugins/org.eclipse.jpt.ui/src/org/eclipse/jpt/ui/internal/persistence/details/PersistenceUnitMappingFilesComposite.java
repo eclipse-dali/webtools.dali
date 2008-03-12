@@ -9,7 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.persistence.details;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ListIterator;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -28,11 +32,14 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
+import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
+import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -50,6 +57,10 @@ import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.views.navigator.ResourceComparator;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Here the layout of this pane:
@@ -87,6 +98,13 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 		super(parentPane, parent);
 	}
 
+	/**
+	 * Prompts a dialog showing a tree structure of the source paths where the
+	 * only files shown are JPA mapping descriptors file. The XML file has to be
+	 * an XML file with the root tag: &lt;entity-mappings&gt;.
+	 *
+	 * @param listSelectionModel The selection model used to select the new files
+	 */
 	private void addJPAMappingDescriptor(ObjectListSelectionModel listSelectionModel) {
 
 		IProject project = subject().jpaProject().project();
@@ -101,23 +119,14 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 		dialog.setValidator(buildValidator());
 		dialog.setTitle(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_title);
 		dialog.setMessage(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_message);
-		dialog.addFilter(buildFilter());
+		dialog.addFilter(new XmlFileViewerFilter(subject().jpaProject().javaProject()));
 		dialog.setInput(project);
 		dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
 
-		if (dialog.open() == IDialogConstants.OK_ID) {
-			int index = subject().specifiedMappingFileRefsSize();
-
-			for (Object result : dialog.getResult()) {
-				IFile file = (IFile) result;
-				IPath filePath = removeSourcePath(file);
-
-				MappingFileRef mappingFileRef = subject().addSpecifiedMappingFileRef(index++);
-				mappingFileRef.setFileName(filePath.toPortableString());
-
-				listSelectionModel.addSelectedValue(mappingFileRef);
-			}
-		}
+		SWTUtil.show(
+			dialog,
+			buildSelectionDialogPostExecution(listSelectionModel)
+		);
 	}
 
 	private Adapter buildAdapter() {
@@ -152,53 +161,6 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 		updateGridData(container);
 
 		return container;
-	}
-
-	private ViewerFilter buildFilter() {
-		return new ViewerFilter() {
-
-			private boolean isXmlFile(IFile file) {
-				return "xml".equalsIgnoreCase(file.getFileExtension());
-			}
-
-			@Override
-			public boolean select(Viewer viewer,
-			                      Object parentElement,
-			                      Object element) {
-
-				if (element instanceof IFile) {
-					// TODO: Partially read the XML file to check the root tag
-					IFile file = (IFile) element;
-					return isXmlFile(file);
-				}
-				else if (element instanceof IFolder) {
-					IJavaProject javaProject = subject().jpaProject().javaProject();
-					IFolder folder = (IFolder) element;
-
-					try {
-						for (IClasspathEntry entry : javaProject.getRawClasspath()) {
-							if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-								if (!entry.getPath().isPrefixOf(folder.getFullPath().makeRelative()))
-									return false;
-							}
-						}
-
-						for (IResource resource : folder.members()) {
-							if (select(viewer, folder, resource)) {
-								return true;
-							}
-						}
-					}
-					catch (JavaModelException e) {
-						JptUiPlugin.log(e.getStatus());
-					}
-					catch (CoreException e) {
-						JptUiPlugin.log(e.getStatus());
-					}
-				}
-				return false;
-			}
-		};
 	}
 
 	private ListValueModel<MappingFileRef> buildItemListHolder() {
@@ -245,6 +207,29 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 
 	private WritablePropertyValueModel<MappingFileRef> buildSelectedItemHolder() {
 		return new SimplePropertyValueModel<MappingFileRef>();
+	}
+
+	private PostExecution<ElementTreeSelectionDialog> buildSelectionDialogPostExecution(final ObjectListSelectionModel listSelectionModel) {
+		return new PostExecution<ElementTreeSelectionDialog>() {
+			public void execute(ElementTreeSelectionDialog dialog) {
+
+				if (dialog.getReturnCode() == IDialogConstants.CANCEL_ID) {
+					return;
+				}
+
+				int index = subject().specifiedMappingFileRefsSize();
+
+				for (Object result : dialog.getResult()) {
+					IFile file = (IFile) result;
+					IPath filePath = removeSourcePath(file);
+
+					MappingFileRef mappingFileRef = subject().addSpecifiedMappingFileRef(index++);
+					mappingFileRef.setFileName(filePath.toPortableString());
+
+					listSelectionModel.addSelectedValue(mappingFileRef);
+				}
+			}
+		};
 	}
 
 	private ISelectionStatusValidator buildValidator() {
@@ -346,5 +331,125 @@ public class PersistenceUnitMappingFilesComposite extends AbstractPane<Persisten
 		gridData.horizontalAlignment       = SWT.FILL;
 		gridData.verticalAlignment         = SWT.FILL;
 		container.setLayoutData(gridData);
+	}
+
+	//TODO might we want to do this with content-types instead?  is there
+	//the potential that an extender could hae a mapping file that doesn't have
+	//entity-mappings as the root node??
+	/**
+	 * This handler is responsible to parse the root tag (local name) only.
+	 */
+	private static class SAXHandler extends DefaultHandler {
+
+		private String rootTagName;
+
+		public String getRootTagName() {
+			return rootTagName;
+		}
+
+		@Override
+		public InputSource resolveEntity(String publicId,
+		                                 String systemId) throws IOException, SAXException {
+
+			InputSource inputSource = new InputSource();
+			inputSource.setByteStream(new ByteArrayInputStream(new byte[0]));
+			return inputSource;
+		}
+
+		@Override
+		public void startElement(String uri,
+		                         String localName,
+		                         String name,
+		                         Attributes attributes) throws SAXException {
+
+			this.rootTagName = name;
+			throw new SAXException();
+		}
+	}
+
+	/**
+	 * This filter will deny showing any file that are not XML files or folders
+	 * that don't contain any XML files in its sub-hierarchy. The XML files are
+	 * partially parsed to only accept JPA mapping descriptors.
+	 */
+	private static class XmlFileViewerFilter extends ViewerFilter {
+
+		private final IJavaProject javaProject;
+
+		XmlFileViewerFilter(IJavaProject javaProject) {
+			super();
+			this.javaProject = javaProject;
+		}
+
+		/**
+		 * Determines whether the given file (an XML file) is a JPA mapping
+		 * descriptor file. It has to be a valid XML file with a root element
+		 * named "entity-mappings".
+		 *
+		 * @param file The file to parse and see if it's a mapping descriptor file
+		 * @return <code>true</code> if the given file is a valid XML file with a
+		 * root element named "entity-mappings"; <code>false</code> in any other
+		 * case
+		 */
+		private boolean isMappingFile(IFile file) {
+			try {
+				SAXParserFactory factory = SAXParserFactory.newInstance();
+				SAXParser saxParser = factory.newSAXParser();
+				SAXHandler handler = new SAXHandler();
+				try {
+					saxParser.parse(file.getRawLocationURI().toURL().openStream(), handler);
+				}
+				catch (Exception e) {
+					// Ignore since it's caused by SAXHandler to stop the parsing
+					// the moment the local name is retrieved
+				}
+				return OrmXmlMapper.ENTITY_MAPPINGS.equalsIgnoreCase(handler.getRootTagName());
+			}
+			catch (Exception e) {
+				JptUiPlugin.log(e);
+				return false;
+			}
+		}
+
+		private boolean isXmlFile(IFile file) {
+			return "xml".equalsIgnoreCase(file.getFileExtension());
+		}
+
+		@Override
+		public boolean select(Viewer viewer,
+		                      Object parentElement,
+		                      Object element) {
+
+			if (element instanceof IFile) {
+				IFile file = (IFile) element;
+				return isXmlFile(file) && isMappingFile(file);
+			}
+			else if (element instanceof IFolder) {
+				IFolder folder = (IFolder) element;
+
+				try {
+					for (IClasspathEntry entry : javaProject.getRawClasspath()) {
+						if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
+							if (!entry.getPath().isPrefixOf(folder.getFullPath().makeRelative()))
+								return false;
+						}
+					}
+
+					for (IResource resource : folder.members()) {
+						if (select(viewer, folder, resource)) {
+							return true;
+						}
+					}
+				}
+				catch (JavaModelException e) {
+					JptUiPlugin.log(e.getStatus());
+				}
+				catch (CoreException e) {
+					JptUiPlugin.log(e.getStatus());
+				}
+			}
+
+			return false;
+		}
 	}
 }

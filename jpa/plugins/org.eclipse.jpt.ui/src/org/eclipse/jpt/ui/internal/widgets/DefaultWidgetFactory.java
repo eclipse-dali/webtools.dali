@@ -204,11 +204,8 @@ public class DefaultWidgetFactory implements WidgetFactory {
 	/*
 	 * (non-Javadoc)
 	 */
-	public Table createTable(Composite parent) {
-		return new Table(
-			parent,
-			SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL | SWT.FULL_SELECTION | SWT.MULTI
-		);
+	public Table createTable(Composite parent, int style) {
+		return new Table(parent, SWT.BORDER | style);
 	}
 
 	/*

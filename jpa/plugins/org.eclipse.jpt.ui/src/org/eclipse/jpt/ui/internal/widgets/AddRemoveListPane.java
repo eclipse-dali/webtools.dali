@@ -11,12 +11,15 @@ package org.eclipse.jpt.ui.internal.widgets;
 
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
-import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter;
-import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter.SelectionChangeEvent;
-import org.eclipse.jpt.ui.internal.swt.ListBoxModelAdapter.SelectionChangeListener;
+import org.eclipse.jpt.ui.internal.swt.ColumnAdapter;
+import org.eclipse.jpt.ui.internal.swt.TableModelAdapter;
+import org.eclipse.jpt.ui.internal.swt.TableModelAdapter.SelectionChangeEvent;
+import org.eclipse.jpt.ui.internal.swt.TableModelAdapter.SelectionChangeListener;
+import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.utility.model.Model;
@@ -25,12 +28,18 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Table;
 
 /**
- * This implementation of the <code>AddRemovePane</code> uses a <code>List</code>
- * as its main widget.
+ * This implementation of the <code>AddRemovePane</code> uses a <code>Table</code>
+ * as its main widget, a <code>List</code> can't be used because it doesn't
+ * support showing images. However, the table is displayed like a list.
  * <p>
  * Here the layot of this pane:
  * <pre>
@@ -50,19 +59,20 @@ import org.eclipse.swt.widgets.List;
  * @version 2.0
  * @since 1.0
  */
+@SuppressWarnings("nls")
 public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 {
-	/**
-	 * The main widget of this add/remove pane.
-	 */
-	private List list;
-
 	/**
 	 * Flag used to prevent circular
 	 */
 	private boolean locked;
 
 	/**
+	 * The main widget of this add/remove pane.
+	 */
+	private Table table;
+
+	/**
 	 * Creates a new <code>AddRemoveListPane</code>.
 	 *
 	 * @param parentPane The parent container of this one
@@ -71,7 +81,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * @param listHolder The <code>ListValueModel</code> containing the items
 	 * @param selectedItemHolder The holder of the selected item, if more than
 	 * one item or no items are selected, then <code>null</code> will be passed
-	 * @param labelProvider The renderer used to format the list holder's items
+	 * @param labelProvider The renderer used to format the table holder's items
 	 */
 	public AddRemoveListPane(AbstractPane<? extends T> parentPane,
 	                         Composite parent,
@@ -97,7 +107,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * @param listHolder The <code>ListValueModel</code> containing the items
 	 * @param selectedItemHolder The holder of the selected item, if more than
 	 * one item or no items are selected, then <code>null</code> will be passed
-	 * @param labelProvider The renderer used to format the list holder's items
+	 * @param labelProvider The renderer used to format the table holder's items
 	 * @param helpId The topic help ID to be registered with this pane
 	 */
 	public AddRemoveListPane(AbstractPane<? extends T> parentPane,
@@ -127,7 +137,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * @param listHolder The <code>ListValueModel</code> containing the items
 	 * @param selectedItemHolder The holder of the selected item, if more than
 	 * one item or no items are selected, then <code>null</code> will be passed
-	 * @param labelProvider The renderer used to format the list holder's items
+	 * @param labelProvider The renderer used to format the table holder's items
 	 */
 	public AddRemoveListPane(AbstractPane<?> parentPane,
 	                         PropertyValueModel<? extends T> subjectHolder,
@@ -156,7 +166,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 * @param listHolder The <code>ListValueModel</code> containing the items
 	 * @param selectedItemHolder The holder of the selected item, if more than
 	 * one item or no items are selected, then <code>null</code> will be passed
-	 * @param labelProvider The renderer used to format the list holder's items
+	 * @param labelProvider The renderer used to format the table holder's items
 	 * @param helpId The topic help ID to be registered with this pane
 	 */
 	public AddRemoveListPane(AbstractPane<?> parentPane,
@@ -178,8 +188,42 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		      helpId);
 	}
 
-	private WritablePropertyValueModel<String> buildSelectedItemHolder() {
-		return new SimplePropertyValueModel<String>();
+	private ColumnAdapter<Object> buildColumnAdapter() {
+		return new ColumnAdapter<Object>() {
+			public WritablePropertyValueModel<?>[] cellModels(Object subject) {
+				WritablePropertyValueModel<?>[] valueHolders = new WritablePropertyValueModel<?>[1];
+				valueHolders[0] = new SimplePropertyValueModel<Object>(subject);
+				return valueHolders;
+			}
+
+			public int columnCount() {
+				return 1;
+			}
+
+			public String columnName(int columnIndex) {
+				return "";
+			}
+		};
+	}
+
+	private ControlListener buildControlListener() {
+		return new ControlAdapter() {
+			private boolean locked;
+			@Override
+			public void controlResized(ControlEvent e) {
+				if (locked) {
+					return;
+				}
+
+				locked = true;
+
+				SWTUtil.asyncExec(new Runnable() {
+					public void run() {
+						updateColumnWidth();
+					}
+				});
+			}
+		};
 	}
 
 	private PropertyChangeListener buildSelectedItemPropertyChangeListener() {
@@ -191,7 +235,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	private PropertyChangeListener buildSelectedItemPropertyChangeListener_() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent e) {
-				if (list.isDisposed()) {
+				if (table.isDisposed()) {
 					return;
 				}
 
@@ -207,7 +251,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 							index = CollectionTools.indexOf(getListHolder().iterator(), value);
 						}
 
-						list.select(index);
+						table.select(index);
 						updateButtons();
 					}
 					finally {
@@ -226,12 +270,8 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		};
 	}
 
-	private StringConverter<Object> buildStringConverter(final ILabelProvider labelProvider) {
-		return new StringConverter<Object>() {
-			public String convertToString(Object item) {
-				return labelProvider.getText(item);
-			}
-		};
+	private ITableLabelProvider buiTableLabelProvider(ILabelProvider labelProvider) {
+		return new TableLabelProvider(labelProvider);
 	}
 
 	/*
@@ -246,16 +286,25 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	                                       IBaseLabelProvider labelProvider,
 	                                       String helpId) {
 
-		list = buildList(container, buildSelectedItemHolder(), helpId);
-
-		ListBoxModelAdapter<Object> listModel = ListBoxModelAdapter.adapt(
-			(ListValueModel<Object>) listHolder,
-			new SimplePropertyValueModel<Object>(),
-			list,
-			buildStringConverter((ILabelProvider) labelProvider)
+		table = buildTable(
+			container,
+			SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.MULTI,
+			helpId
 		);
 
-		listModel.addSelectionChangeListener(buildSelectionListener());
+		table.setHeaderVisible(false);
+		table.setLinesVisible(false);
+		table.addControlListener(buildControlListener());
+
+		TableModelAdapter model = TableModelAdapter.adapt(
+			(ListValueModel<Object>) listHolder,
+			new SimplePropertyValueModel<Object>(),
+			table,
+			buildColumnAdapter(),
+			buiTableLabelProvider((ILabelProvider) labelProvider)
+		);
+
+		model.addSelectionChangeListener(buildSelectionListener());
 
 		selectedItemHolder.addPropertyChangeListener(
 			PropertyValueModel.VALUE,
@@ -278,7 +327,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		try {
 			WritablePropertyValueModel<Object> selectedItemHolder = getSelectedItemHolder();
 			ObjectListSelectionModel selectionModel = getSelectionModel();
-			int selectionCount = list.getSelectionCount();
+			int selectionCount = table.getSelectionCount();
 
 			if (selectionCount == 0) {
 				selectedItemHolder.setValue(null);
@@ -288,12 +337,12 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 				selectedItemHolder.setValue(null);
 				selectionModel.clearSelection();
 
-				for (int index : list.getSelectionIndices()) {
+				for (int index : table.getSelectionIndices()) {
 					selectionModel.addSelectionInterval(index, index);
 				}
 			}
 			else {
-				int selectedIndex = list.getSelectionIndex();
+				int selectedIndex = table.getSelectionIndex();
 				Object selectedItem = getListHolder().get(selectedIndex);
 
 				selectedItemHolder.setValue(selectedItem);
@@ -304,6 +353,55 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		}
 		finally {
 			locked = false;
+		}
+	}
+
+	private void updateColumnWidth() {
+		if (table.isDisposed()) {
+			return;
+		}
+		if (table.getColumnCount() > 0) {
+
+			int width = table.getSize().x;
+			width -= (table.getBorderWidth() * 2);
+
+			if (table.getVerticalBar().isVisible()) {
+				width -= table.getVerticalBar().getSize().x;
+			}
+
+			table.setRedraw(false);
+			table.getColumn(0).setWidth(width);
+			table.setRedraw(true);
+			locked = false;
+		}
+	}
+
+	private class TableLabelProvider extends LabelProvider
+	                                 implements ITableLabelProvider {
+
+		private ILabelProvider labelProvider;
+
+		TableLabelProvider(ILabelProvider labelProvider) {
+			super();
+			this.labelProvider = labelProvider;
+		}
+
+		public Image getColumnImage(Object element, int columnIndex) {
+			return labelProvider.getImage(element);
+		}
+
+		public String getColumnText(Object element, int columnIndex) {
+			return labelProvider.getText(element);
+		}
+
+		@Override
+		public Image getImage(Object element) {
+			return labelProvider.getImage(element);
+		}
+
+		@Override
+		public String getText(Object element) {
+			return labelProvider.getText(element);
 		}
 	}
 }
