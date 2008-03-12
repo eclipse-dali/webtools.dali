@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.jpt.patch"
+      label="%pluginName"
+      version="1.0.0"
+      provider-name="%providerName">
+
+   <description url="http://download.eclipse.org/webtools/patches/">
+      Patch features for Java Persistence API (JPA) Tools
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <url>
+      <update label="Web Tools Platform (WTP) Patches" url="http://download.eclipse.org/webtools/patches/"/>
+   </url>
+
+   <requires>
+      <import feature="org.eclipse.jpt.feature" version="1.0.2.qualifier" patch="true"/>
+   </requires>
+
+   <includes
+         id="org.eclipse.jpt.gen"
+         version="0.0.0"/>
+
+</feature>
