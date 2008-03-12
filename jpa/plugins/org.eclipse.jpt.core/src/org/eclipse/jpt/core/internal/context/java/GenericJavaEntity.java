@@ -187,13 +187,13 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		
 		this.specifiedName = this.specifiedName(this.entityResource);
 		this.defaultName = this.defaultName(persistentTypeResource);
-		this.table.initializeFromResource(persistentTypeResource);
 		this.defaultInheritanceStrategy = this.defaultInheritanceStrategy();
 		this.specifiedInheritanceStrategy = this.specifiedInheritanceStrategy(inheritanceResource());
 		this.specifiedDiscriminatorValue = this.discriminatorValueResource().getValue();
 		this.defaultDiscriminatorValue = this.javaDefaultDiscriminatorValue();
 		this.discriminatorValueAllowed = this.discriminatorValueIsAllowed(persistentTypeResource);
 		this.discriminatorColumn.initializeFromResource(persistentTypeResource);
+		this.table.initializeFromResource(persistentTypeResource);
 		this.initializeSecondaryTables(persistentTypeResource);
 		this.initializeTableGenerator(persistentTypeResource);
 		this.initializeSequenceGenerator(persistentTypeResource);
@@ -1236,11 +1236,11 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		this.setSpecifiedName(this.specifiedName(this.entityResource));
 		this.setDefaultName(this.defaultName(persistentTypeResource));
 		
-		this.updateTable(persistentTypeResource);
 		this.updateInheritance(inheritanceResource());
 		this.updateDiscriminatorColumn(persistentTypeResource);
 		this.updateDiscriminatorValue(discriminatorValueResource());
 		this.setDiscriminatorValueAllowed(discriminatorValueIsAllowed(persistentTypeResource));
+		this.updateTable(persistentTypeResource);
 		this.updateSecondaryTables(persistentTypeResource);
 		this.updateTableGenerator(persistentTypeResource);
 		this.updateSequenceGenerator(persistentTypeResource);

@@ -700,6 +700,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		initializeMappingFileRefs(xmlPersistenceUnit);
 		initializeClassRefs(xmlPersistenceUnit);
 		initializeProperties(xmlPersistenceUnit);
+		initializePersistenceUnitDefaults();
 		this.specifiedExcludeUnlistedClasses = xmlPersistenceUnit.getExcludeUnlistedClasses();
 		this.specifiedTransactionType = specifiedTransactionType(xmlPersistenceUnit);
 		this.defaultTransactionType = defaultTransacationType();
@@ -742,10 +743,10 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	protected void initializePersistenceUnitDefaults() {
 		PersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		if (persistenceUnitDefaults != null) {
-			this.defaultSchema = persistenceUnitDefaults.getSchema();
-			this.defaultCatalog = persistenceUnitDefaults.getCatalog();
-			this.defaultAccess = persistenceUnitDefaults.getAccess();
-			this.defaultCascadePersist = persistenceUnitDefaults.isCascadePersist();
+			this.defaultSchema = this.schema(persistenceUnitDefaults);
+			this.defaultCatalog = this.catalog(persistenceUnitDefaults);
+			this.defaultAccess = this.access(persistenceUnitDefaults);
+			this.defaultCascadePersist = this.cascadePersist(persistenceUnitDefaults);
 		}
 		else {
 			this.defaultSchema = null;
