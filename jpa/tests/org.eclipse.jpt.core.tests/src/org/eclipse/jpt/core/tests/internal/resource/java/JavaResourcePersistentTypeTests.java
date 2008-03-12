@@ -38,7 +38,24 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 	private void createEntityAnnotation() throws Exception{
 		this.createAnnotationAndMembers("Entity", "String name() default \"\";");		
 	}
-		
+	
+	private void createEmbeddableAnnotation() throws Exception{
+		this.createAnnotationAndMembers("Embeddable", "");		
+	}
+	
+	private void createMappedSuperclassAnnotation() throws Exception{
+		this.createAnnotationAndMembers("MappedSuperclass", "");		
+	}
+	
+	private void createSecondaryTableAnnotation() throws Exception{
+		this.createAnnotationAndMembers("SecondaryTable", "String name();");		
+	}
+	
+	private void createSecondaryTablesAnnotation() throws Exception{
+		this.createAnnotationAndMembers("SecondaryTables", "");		
+	}
+	
+	
 	private IType createTestEntity() throws Exception {
 		createEntityAnnotation();
 
@@ -76,7 +93,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 
 	private IType createTestEntityWithMemberEmbeddable() throws Exception {
 		createEntityAnnotation();
-		this.createAnnotationAndMembers("Embeddable", "String name();");
+		createEmbeddableAnnotation();
 
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -116,7 +133,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 
 	private IType createTestEntityWithEmbeddable() throws Exception {
 		createEntityAnnotation();
-		this.createAnnotationAndMembers("Embeddable", "String name();");
+		createEmbeddableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -371,7 +388,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 
 	private IType createTestEntityWithSecondaryTable() throws Exception {
 		createEntityAnnotation();
-		this.createAnnotationAndMembers("SecondaryTable", "String name();");
+		createSecondaryTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -534,6 +551,8 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 	
 	public void testMultipleTypeMappings() throws Exception {
 		IType testType = this.createTestEntityWithEmbeddable();
+		createMappedSuperclassAnnotation();
+
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
 		assertEquals(2, typeResource.mappingAnnotationsSize());
@@ -556,6 +575,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 	}
 	
 	public void testSetJavaTypeMappingAnnotation() throws Exception {
+		createEntityAnnotation();
 		IType testType = createTestType();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		assertEquals(0, typeResource.mappingAnnotationsSize());
@@ -567,6 +587,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 
 	public void testSetJavaTypeMappingAnnotation2() throws Exception {
 		IType testType = createTestEntityWithTable();
+		createEmbeddableAnnotation();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		assertTrue(typeResource.mappingAnnotation() instanceof EntityAnnotation);
 		
@@ -665,6 +686,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 	//	@SecondaryTable(name="FOO")			@SecondaryTables({@SecondaryTable(name="FOO"), @SecondaryTable(name="BAR")})	
 	public void testAddJavaTypeAnnotationNestableContainer2() throws Exception {
 		IType jdtType = createTestEntityWithSecondaryTable();
+		createSecondaryTablesAnnotation();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(jdtType);
 		
 		SecondaryTableAnnotation secondaryTableResource = (SecondaryTableAnnotation) typeResource.addAnnotation(1, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);

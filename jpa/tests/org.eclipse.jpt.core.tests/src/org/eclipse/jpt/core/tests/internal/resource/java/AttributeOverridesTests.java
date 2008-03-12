@@ -86,7 +86,7 @@ public class AttributeOverridesTests extends JavaResourceModelTestCase {
 	}
 	
 	private IType createTestAttributeOverride() throws Exception {
-		createAttributeOverrideAnnotation();
+		createAttributeOverridesAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

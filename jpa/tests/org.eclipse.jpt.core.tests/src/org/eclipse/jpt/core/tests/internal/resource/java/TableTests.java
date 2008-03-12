@@ -26,8 +26,17 @@ public class TableTests extends JavaResourceModelTestCase {
 		super(name);
 	}
 
+	private void createTableAnnotation() throws Exception {
+		createUniqueConstraintAnnotation();
+		this.createAnnotationAndMembers("Table", "String name() default \"\"; String catalog() default \"\"; String schema() default \"\"; UniqueConstraint[] uniqueConstraints() default {};");
+	}
+	
+	private void createUniqueConstraintAnnotation() throws Exception {
+		createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
+	}
+	
 	private IType createTestTable() throws Exception {
-		this.createAnnotationAndMembers("Table", "String name() default \"\"; String catalog() default \"\"; String schema() default \"\";");
+		createTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -41,7 +50,7 @@ public class TableTests extends JavaResourceModelTestCase {
 	}
 	
 	private IType createTestTableWithName() throws Exception {
-		this.createAnnotationAndMembers("Table", "String name() default \"\"; String catalog() default \"\"; String schema() default \"\";");
+		createTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -55,7 +64,7 @@ public class TableTests extends JavaResourceModelTestCase {
 	}
 	
 	private IType createTestTableWithSchema() throws Exception {
-		this.createAnnotationAndMembers("Table", "String name() default \"\"; String catalog() default \"\"; String schema() default \"\";");
+		createTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -67,8 +76,9 @@ public class TableTests extends JavaResourceModelTestCase {
 			}
 		});
 	}
+	
 	private IType createTestTableWithCatalog() throws Exception {
-		this.createAnnotationAndMembers("Table", "String name() default \"\"; String catalog() default \"\"; String schema() default \"\";");
+		createTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -82,8 +92,7 @@ public class TableTests extends JavaResourceModelTestCase {
 	}
 	
 	private IType createTestTableWithUniqueConstraints() throws Exception {
-		this.createAnnotationAndMembers("Table", "UniqueConstraint[] uniqueConstraints() default{}");
-		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
+		createTableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -225,7 +234,6 @@ public class TableTests extends JavaResourceModelTestCase {
 	
 	public void testUniqueConstraints2() throws Exception {
 		IType testType = this.createTestTable();
-		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
 		
@@ -245,7 +253,6 @@ public class TableTests extends JavaResourceModelTestCase {
 	
 	public void testAddUniqueConstraint() throws Exception {
 		IType testType = this.createTestTable();
-		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
 		
@@ -262,7 +269,6 @@ public class TableTests extends JavaResourceModelTestCase {
 	
 	public void testAddUniqueConstraint2() throws Exception {
 		IType testType = this.createTestTable();
-		this.createAnnotationAndMembers("UniqueConstraint", "String[] columnNames();");
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		TableAnnotation table = (TableAnnotation) typeResource.annotation(JPA.TABLE);
 		

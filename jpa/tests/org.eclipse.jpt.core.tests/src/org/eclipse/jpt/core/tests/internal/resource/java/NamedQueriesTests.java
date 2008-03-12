@@ -98,7 +98,7 @@ public class NamedQueriesTests extends JavaResourceModelTestCase {
 
 
 	private IType createTestNamedQuery() throws Exception {
-		createNamedQueryAnnotation();
+		createNamedQueriesAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

@@ -82,7 +82,7 @@ public class AssociationOverridesTests extends JavaResourceModelTestCase {
 	}
 	
 	private IType createTestAssociationOverride() throws Exception {
-		createAssociationOverrideAnnotation();
+		createAssociationOverridesAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
