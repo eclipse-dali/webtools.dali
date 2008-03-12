@@ -242,9 +242,6 @@ public class JptUiMappingsMessages extends NLS
 	public static String InheritanceComposite_char;
 	public static String InheritanceComposite_integer;
 
-	public static String MetaDataCompleteComboViewer_true;
-	public static String MetaDataCompleteComboViewer_false;
-
 	public static String NamedNativeQueriesComposite_addQueryDescription;
 	public static String NamedNativeQueriesComposite_addQueryDescriptionTitle;
 	public static String NamedNativeQueriesComposite_addQueryTitle;

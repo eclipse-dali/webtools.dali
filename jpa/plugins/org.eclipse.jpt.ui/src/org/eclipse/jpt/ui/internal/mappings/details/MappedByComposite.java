@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.NonOwningMapping;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
@@ -81,6 +82,9 @@ public class MappedByComposite extends AbstractFormPane<NonOwningMapping>
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
+
+		propertyNames.add(RelationshipMapping.RESOLVED_TARGET_ENTITY_PROPERTY);
+
 		propertyNames.add(NonOwningMapping.MAPPED_BY_PROPERTY);
 	}
 
@@ -179,7 +183,9 @@ public class MappedByComposite extends AbstractFormPane<NonOwningMapping>
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
 
-		if (propertyName == NonOwningMapping.MAPPED_BY_PROPERTY) {
+		if (propertyName == NonOwningMapping.MAPPED_BY_PROPERTY ||
+		    propertyName == RelationshipMapping.RESOLVED_TARGET_ENTITY_PROPERTY) {
+
 			populateCombo();
 		}
 	}

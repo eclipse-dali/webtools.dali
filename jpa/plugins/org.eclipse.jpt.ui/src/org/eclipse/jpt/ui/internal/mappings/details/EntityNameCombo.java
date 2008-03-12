@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see Entity
- * @see EntityComposite - The parent container
+ * @see AbstractEntityComposite - The parent container
  *
  * @version 2.0
  * @since 1.0

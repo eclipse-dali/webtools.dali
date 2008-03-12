@@ -149,19 +149,20 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 			}
 		};
 	}
-	
+
 	private ListChangeListener buildGeneratorsListChangeListener() {
 		return new SWTListChangeListenerWrapper(
 			buildGeneratorsListChangeListener_());
 	}
-	
+
 	private ListChangeListener buildGeneratorsListChangeListener_() {
 		return new ListChangeAdapter() {
+			@Override
 			// should only have to listen to this event - others aren't created
 			public void listChanged(ListChangeEvent event) {
 				if (! isPopulating()) {
 					setPopulating(true);
-					
+
 					try {
 						populateGeneratorChoices();
 					}
@@ -169,7 +170,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 						setPopulating(false);
 					}
 				}
-				
+
 			}
 		};
 	}
@@ -238,7 +239,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 				GeneratedValue.SPECIFIED_GENERATOR_PROPERTY,
 				generatorNamePropertyChangeListener
 			);
-			
+
 			generatedValue.persistenceUnit().removeListChangeListener(
 				PersistenceUnit.GENERATORS_LIST,
 				generatorsListChangeListener
@@ -283,7 +284,7 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 				GeneratedValue.SPECIFIED_GENERATOR_PROPERTY,
 				generatorNamePropertyChangeListener
 			);
-			
+
 			generatedValue.persistenceUnit().addListChangeListener(
 				PersistenceUnit.GENERATORS_LIST,
 				generatorsListChangeListener
@@ -343,6 +344,15 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 		generatorNameCombo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
 	}
 
+	private void populateGeneratorChoices() {
+		if (subject() == null) {
+			this.generatorNameCombo.setItems(new String[0]);
+		}
+		else {
+			this.generatorNameCombo.setItems(this.sortedUniqueGeneratorNames());
+		}
+	}
+
 	private void populateGeneratorName() {
 		if (subject() == null) {
 			this.generatorNameCombo.setText("");
@@ -365,27 +375,6 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 			}
 		}
 	}
-	
-	private void populateGeneratorChoices() {
-		if (subject() == null) {
-			this.generatorNameCombo.setItems(new String[0]);
-		}
-		else {
-			this.generatorNameCombo.setItems(this.sortedUniqueGeneratorNames());
-		}
-	}
-	
-	private String[] sortedUniqueGeneratorNames() {
-		return CollectionTools.array(
-			CollectionTools.sortedSet(
-				new TransformationIterator<Generator, String>(subject().persistenceUnit().allGenerators()) {
-					@Override
-					protected String transform(Generator next) {
-						return next.getName();
-					}
-				}),
-			new String[0]);
-	}
 
 	private void populateGeneratorNameCombo() {
 		populateGeneratorName();
@@ -407,5 +396,17 @@ public class GeneratedValueComposite extends AbstractFormPane<IdMapping>
 		}
 
 		return generatedValue;
+	}
+
+	private String[] sortedUniqueGeneratorNames() {
+		return CollectionTools.array(
+			CollectionTools.sortedSet(
+				new TransformationIterator<Generator, String>(subject().persistenceUnit().allGenerators()) {
+					@Override
+					protected String transform(Generator next) {
+						return next.getName();
+					}
+				}),
+			new String[0]);
 	}
 }

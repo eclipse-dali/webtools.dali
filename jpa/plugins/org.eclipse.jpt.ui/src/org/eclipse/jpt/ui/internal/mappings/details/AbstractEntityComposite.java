@@ -14,11 +14,6 @@ import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.mappings.details.EntityNameCombo;
-import org.eclipse.jpt.ui.internal.mappings.details.InheritanceComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.OverridesComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.QueriesComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.TableComposite;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -83,18 +78,18 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 public abstract class AbstractEntityComposite<T extends Entity> extends AbstractFormPane<T>
-                             implements JpaComposite<T>
+                                                                implements JpaComposite<T>
 {
 	/**
-	 * Creates a new <code>EntityComposite</code>.
+	 * Creates a new <code>AbstractEntityComposite</code>.
 	 *
 	 * @param subjectHolder The holder of the subject <code>IEntity</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public AbstractEntityComposite(PropertyValueModel<? extends T> subjectHolder,
-	                       Composite parent,
-	                       WidgetFactory widgetFactory) {
+	                               Composite parent,
+	                               WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
@@ -183,6 +178,6 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 		);
 		buildSecondaryTablesComposite(container);
 	}
-	
+
 	protected abstract void buildSecondaryTablesComposite(Composite container);
 }
