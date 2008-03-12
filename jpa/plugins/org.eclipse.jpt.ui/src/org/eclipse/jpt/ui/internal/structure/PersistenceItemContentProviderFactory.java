@@ -130,6 +130,7 @@ public class PersistenceItemContentProviderFactory
 						PersistenceUnit.SPECIFIED_MAPPING_FILE_REF_LIST,
 						(PersistenceUnit) model()) {
 					@Override
+					@SuppressWarnings("unchecked")
 					protected ListIterator<JpaStructureNode> listIterator_() {
 						return new ReadOnlyCompositeListIterator<JpaStructureNode>(
 							subject.specifiedMappingFileRefs());
@@ -152,6 +153,7 @@ public class PersistenceItemContentProviderFactory
 						new String[] {PersistenceUnit.SPECIFIED_CLASS_REF_LIST, PersistenceUnit.IMPLIED_CLASS_REF_LIST},
 						(PersistenceUnit) model()) {
 					@Override
+					@SuppressWarnings("unchecked")
 					protected ListIterator<JpaStructureNode> listIterator_() {
 						return new ReadOnlyCompositeListIterator<JpaStructureNode>(
 							subject.classRefs());

@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.navigator;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -20,10 +18,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.ui.IMemento;
@@ -48,24 +44,15 @@ import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent
 public class JpaNavigatorContentProvider
 	implements ICommonContentProvider
 {
+	private JpaNavigatorContentAndLabelProvider delegate;
+	
 	private IFacetedProjectListener facetListener;
 	
 	private StructuredViewer viewer;
 	
-	/**
-	 * Exactly *one* of these is created for each view that utilizes it.  Therefore, 
-	 * as we delegate to the platform UI for each project, we should maintain the 
-	 * same multiplicity.  That is, if there is a delegate for each platform UI, we 
-	 * should maintain *one* delegate for each view.
-	 * 
-	 * Key: platform id,  Value: delegate content provider
-	 */
-	private Map<String, ICommonContentProvider> delegateContentProviders;
-	
 	
 	public JpaNavigatorContentProvider() {
 		super();
-		delegateContentProviders = new HashMap<String, ICommonContentProvider>();
 		facetListener = new FacetListener();
 		FacetedProjectFramework.addListener(
 				facetListener, 
@@ -75,22 +62,25 @@ public class JpaNavigatorContentProvider
 	}
 	
 	
+	public JpaNavigatorContentAndLabelProvider delegate() {
+		return delegate;
+	}
+	
+	
 	// **************** IContentProvider implementation ************************
 	
 	public void dispose() {
 		FacetedProjectFramework.removeListener(facetListener);
-		for (ICommonContentProvider delegate : delegateContentProviders.values()) {
+		if (delegate != null) {
 			delegate.dispose();
 		}
-		delegateContentProviders.clear();
 	}
 	
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		// should always be a StructuredViewer
-		this.viewer = (StructuredViewer) viewer;
-		for (ICommonContentProvider delegate : delegateContentProviders.values()) {
+		if (delegate != null) {
 			delegate.inputChanged(viewer, oldInput, newInput);
 		}
+		this.viewer = (StructuredViewer) viewer;
 	}
 	
 	
@@ -104,8 +94,6 @@ public class JpaNavigatorContentProvider
 	// **************** ITreeContentProvider implementation ********************
 	
 	public Object getParent(Object element) {
-		ICommonContentProvider delegate = getDelegate(element);
-		
 		if (delegate != null) {
 			return delegate.getParent(element);
 		}
@@ -126,8 +114,6 @@ public class JpaNavigatorContentProvider
 				}	
 			}
 		}
-		
-		ICommonContentProvider delegate = getDelegate(element);
 		
 		if (delegate != null) {
 			return delegate.hasChildren(element);
@@ -152,8 +138,6 @@ public class JpaNavigatorContentProvider
 			}
 		}
 		
-		ICommonContentProvider delegate = getDelegate(parentElement);
-		
 		if (delegate != null) {
 			return delegate.getChildren(parentElement);
 		}
@@ -165,51 +149,26 @@ public class JpaNavigatorContentProvider
 	// **************** IMementoAware implementation ***************************
 	
 	public void saveState(IMemento memento) {
-		for (ICommonContentProvider delegate : delegateContentProviders.values()) {
-			delegate.saveState(memento);
-		}
+		// no op
 	}
 	
 	public void restoreState(IMemento memento) {
-		for (ICommonContentProvider delegate : delegateContentProviders.values()) {
-			delegate.restoreState(memento);
-		}
+		// no op
 	}
 	
 	
 	// **************** ICommonContentProvider implementation ******************
 	
 	public void init(ICommonContentExtensionSite config) {
-		for (ICommonContentProvider delegate : delegateContentProviders.values()) {
-			delegate.init(config);
+		if (delegate == null) {
+			JpaNavigatorLabelProvider labelProvider = (JpaNavigatorLabelProvider) config.getExtension().getLabelProvider();
+			if (labelProvider != null && labelProvider.delegate() != null) {
+				delegate = labelProvider.delegate();
+			}
+			else {
+				delegate = new JpaNavigatorContentAndLabelProvider();
+			}
 		}
-	}
-	
-	
-	// *************** internal ************************************************
-	
-	private ICommonContentProvider getDelegate(Object element) {
-		if (! (element instanceof IAdaptable)) {
-			return null;
-		}
-		
-		JpaContextNode contextNode = (JpaContextNode) ((IAdaptable) element).getAdapter(JpaContextNode.class);
-		
-		if (contextNode == null) {
-			return null;
-		}
-		
-		JpaPlatform platform = contextNode.jpaProject().jpaPlatform();
-		JpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(platform);
-		
-		ICommonContentProvider delegate = delegateContentProviders.get(platform.getId());
-		
-		if (delegate == null && platform != null && ! delegateContentProviders.containsKey(platform.getId())) {
-			delegate = platformUi.buildNavigatorContentProvider();
-			delegateContentProviders.put(platform.getId(), delegate);
-		}
-		
-		return delegate;
 	}
 	
 	

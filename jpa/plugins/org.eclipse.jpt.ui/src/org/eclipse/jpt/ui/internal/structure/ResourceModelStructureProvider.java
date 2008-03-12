@@ -11,6 +11,7 @@
 package org.eclipse.jpt.ui.internal.structure;
 
 import org.eclipse.jpt.core.ResourceModel;
+import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
 public abstract class ResourceModelStructureProvider
 	implements JpaStructureProvider

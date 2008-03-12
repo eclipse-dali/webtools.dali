@@ -6,11 +6,26 @@
  *
  *  Contributors: Oracle. - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.ui.internal.structure;
+package org.eclipse.jpt.ui.structure;
 
+import org.eclipse.jpt.ui.internal.jface.ItemLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.ItemLabelProviderFactory;
+import org.eclipse.jpt.ui.internal.jface.TreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.TreeItemContentProviderFactory;
 
+/**
+ * This provider is responsible to create the JPA Structure view contents and 
+ * labels for a given JPA resource.
+ *
+ * @version 2.0
+ * @since 2.0
+ * 
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ */
 public interface JpaStructureProvider
 {
 	// TODO - change this

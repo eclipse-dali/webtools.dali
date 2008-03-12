@@ -11,12 +11,12 @@ package org.eclipse.jpt.ui;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
-import org.eclipse.jpt.ui.internal.structure.JpaStructureProvider;
-import org.eclipse.ui.navigator.ICommonContentProvider;
-import org.eclipse.ui.navigator.ICommonLabelProvider;
+import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
+import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
 /**
  * This interface is to be implemented by a JPA vendor to provide extensions to
@@ -39,17 +39,11 @@ import org.eclipse.ui.navigator.ICommonLabelProvider;
 public interface JpaPlatformUi
 {
 	/**
-	 * Return a *new* navigator content provider.  There will be (at most) one
-	 * of these per view that uses it.
+	 * Return a *new* {@link JpaNavigatorProvider}, which determines 
+	 * Project Explorer content and look
 	 */
-	ICommonContentProvider buildNavigatorContentProvider();
-
-	/**
-	 * Return a *new* navigator label provider.  There will be (at most) one
-	 * of these per view that uses it.
-	 */
-	ICommonLabelProvider buildNavigatorLabelProvider();
-
+	JpaNavigatorProvider buildNavigatorProvider();
+	
 	/**
 	 * Return a *new* structure provider for the given JPA file
 	 */

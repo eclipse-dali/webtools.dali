@@ -16,7 +16,7 @@ import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.selection.JpaSelection;
 import org.eclipse.jpt.ui.internal.selection.JpaSelectionManager;
 import org.eclipse.jpt.ui.internal.selection.SelectionManagerFactory;
-import org.eclipse.jpt.ui.internal.structure.JpaStructureProvider;
+import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;

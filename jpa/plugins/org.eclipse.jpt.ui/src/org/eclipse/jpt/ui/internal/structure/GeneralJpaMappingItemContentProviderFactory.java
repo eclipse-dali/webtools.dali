@@ -12,11 +12,11 @@ package org.eclipse.jpt.ui.internal.structure;
 
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.TreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.TreeItemContentProviderFactory;
+import org.eclipse.jpt.ui.internal.platform.generic.PersistentAttributeItemContentProvider;
 
 public abstract class GeneralJpaMappingItemContentProviderFactory
 	implements TreeItemContentProviderFactory
@@ -34,25 +34,4 @@ public abstract class GeneralJpaMappingItemContentProviderFactory
 	}
 	
 	protected abstract TreeItemContentProvider buildPersistentTypeItemContentProvider(PersistentType persistentType, DelegatingTreeContentAndLabelProvider treeContentProvider);
-
-	
-	
-	@SuppressWarnings("unchecked")
-	public static class PersistentAttributeItemContentProvider extends AbstractTreeItemContentProvider
-	{
-		public PersistentAttributeItemContentProvider(
-				PersistentAttribute persistentAttribute, DelegatingTreeContentAndLabelProvider contentProvider) {
-			super(persistentAttribute, contentProvider);
-		}
-		
-		@Override
-		public Object getParent() {
-			return ((PersistentAttribute) model()).parent();
-		}
-		
-		@Override
-		public boolean hasChildren() {
-			return false;
-		}
-	}
 }

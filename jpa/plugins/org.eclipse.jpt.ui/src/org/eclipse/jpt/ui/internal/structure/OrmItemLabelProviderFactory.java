@@ -10,15 +10,9 @@
 package org.eclipse.jpt.ui.internal.structure;
 
 import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.ui.JptUiPlugin;
-import org.eclipse.jpt.ui.internal.JptUiIcons;
-import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.jface.AbstractItemLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.ItemLabelProvider;
-import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.jpt.ui.internal.platform.generic.EntityMappingsItemLabelProvider;
 
 public class OrmItemLabelProviderFactory extends GeneralJpaMappingItemLabelProviderFactory
 {
@@ -28,24 +22,5 @@ public class OrmItemLabelProviderFactory extends GeneralJpaMappingItemLabelProvi
 			return new EntityMappingsItemLabelProvider((EntityMappings) item, labelProvider);
 		}
 		else return super.buildItemLabelProvider(item, labelProvider);
-	}
-	
-	
-	public static class EntityMappingsItemLabelProvider extends AbstractItemLabelProvider
-	{
-		public EntityMappingsItemLabelProvider(
-				EntityMappings entityMappings, DelegatingContentAndLabelProvider labelProvider) {
-			super(entityMappings, labelProvider);
-		}
-		
-		@Override
-		protected PropertyValueModel<String> buildTextModel() {
-			return new StaticPropertyValueModel<String>(JptUiMessages.OrmItemLabelProviderFactory_entityMappingsLabel);
-		}
-		
-		@Override
-		protected PropertyValueModel<Image> buildImageModel() {
-			return new StaticPropertyValueModel<Image>(JptUiPlugin.getImage(JptUiIcons.ENTITY_MAPPINGS));
-		}	
 	}
 }

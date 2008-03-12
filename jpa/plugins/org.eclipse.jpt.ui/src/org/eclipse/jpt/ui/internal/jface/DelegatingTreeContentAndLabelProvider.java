@@ -36,14 +36,17 @@ public class DelegatingTreeContentAndLabelProvider extends DelegatingContentAndL
 	}
 	
 	public Object[] getChildren(Object parentElement) {
-		return itemContentProvider(parentElement).getChildren();
+		TreeItemContentProvider provider = itemContentProvider(parentElement);
+		return (provider == null) ? new Object[0] : provider.getChildren();
 	}
 
 	public Object getParent(Object element) {
-		return itemContentProvider(element).getParent();
+		TreeItemContentProvider provider = itemContentProvider(element);
+		return (provider == null) ? null : provider.getParent();
 	}
 	
 	public boolean hasChildren(Object element) {
-		return itemContentProvider(element).hasChildren();
+		TreeItemContentProvider provider = itemContentProvider(element);
+		return (provider == null) ? false : provider.hasChildren();
 	}
 }

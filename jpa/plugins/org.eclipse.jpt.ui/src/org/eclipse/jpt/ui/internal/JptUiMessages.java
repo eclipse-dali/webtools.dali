@@ -62,6 +62,7 @@ public class JptUiMessages extends NLS
 	public static String GenerateEntitiesWizardPage_tables;
 	public static String GenericPlatformUiDialog_notSupportedMessageText;
 	public static String GenericPlatformUiDialog_notSupportedMessageTitle;
+	public static String JpaContent_label;
 	public static String JpaDetailsView_viewNotAvailable;
 	public static String JpaFacetWizardPage_connectionLabel;
 	public static String JpaFacetWizardPage_connectionLink;
@@ -95,7 +96,7 @@ public class JptUiMessages extends NLS
 	public static String PersistenceItemLabelProviderFactory_persistenceLabel;
 	public static String PersistentAttributePage_mapAs;
 	public static String PersistentTypePage_mapAs;
-
+	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, JptUiMessages.class);

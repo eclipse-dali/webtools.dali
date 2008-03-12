@@ -28,7 +28,7 @@ import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.selection.DefaultJpaSelection;
 import org.eclipse.jpt.ui.internal.selection.JpaSelection;
-import org.eclipse.jpt.ui.internal.structure.JpaStructureProvider;
+import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;

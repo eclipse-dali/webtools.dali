@@ -12,13 +12,14 @@ package org.eclipse.jpt.ui.internal.structure;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.ResourceModel;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.TreeItemContentProvider;
+import org.eclipse.jpt.ui.internal.platform.generic.JavaPersistentTypeItemContentProvider;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
@@ -37,36 +38,9 @@ public class JavaItemContentProviderFactory extends GeneralJpaMappingItemContent
 	
 	@Override
 	protected TreeItemContentProvider buildPersistentTypeItemContentProvider(PersistentType persistentType, DelegatingTreeContentAndLabelProvider treeContentProvider) {
-		return new PersistentTypeItemContentProvider(persistentType, treeContentProvider);
+		return new JavaPersistentTypeItemContentProvider((JavaPersistentType) persistentType, treeContentProvider);
 	}
 	
-	public static class PersistentTypeItemContentProvider extends AbstractTreeItemContentProvider<PersistentAttribute>
-	{
-		public PersistentTypeItemContentProvider(
-				PersistentType persistentType, DelegatingTreeContentAndLabelProvider contentProvider) {
-			super(persistentType, contentProvider);
-		}
-		
-		@Override
-		public Object getParent() {
-			return ((PersistentType) model()).parent();
-		}
-		
-		@Override
-		protected ListValueModel<PersistentAttribute> buildChildrenModel() {
-			return new ListAspectAdapter<PersistentType, PersistentAttribute>(new String[]{PersistentType.SPECIFIED_ATTRIBUTES_LIST}, (PersistentType) model()) {
-				@Override
-				protected ListIterator<PersistentAttribute> listIterator_() {
-					return subject.attributes();
-				}
-				
-				@Override
-				protected int size_() {
-					return subject.attributesSize();
-				}
-			};
-		}
-	}
 	public static class JavaResourceModelItemContentProvider extends AbstractTreeItemContentProvider<JpaStructureNode>
 	{
 		public JavaResourceModelItemContentProvider(

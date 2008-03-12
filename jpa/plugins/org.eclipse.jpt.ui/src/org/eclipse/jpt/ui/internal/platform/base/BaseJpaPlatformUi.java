@@ -44,18 +44,16 @@ import org.eclipse.jpt.ui.internal.details.TransientMappingUiProvider;
 import org.eclipse.jpt.ui.internal.details.VersionMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.DefaultBasicMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.DefaultEmbeddedMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.JavaEntityUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaDetailsProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaEntityUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.NullTypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmDetailsProvider;
 import org.eclipse.jpt.ui.internal.structure.JavaResourceModelStructureProvider;
-import org.eclipse.jpt.ui.internal.structure.JpaStructureProvider;
 import org.eclipse.jpt.ui.internal.structure.OrmResourceModelStructureProvider;
 import org.eclipse.jpt.ui.internal.structure.PersistenceResourceModelStructureProvider;
+import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
-import org.eclipse.ui.navigator.ICommonContentProvider;
-import org.eclipse.ui.navigator.ICommonLabelProvider;
 
 public abstract class BaseJpaPlatformUi implements JpaPlatformUi
 {
@@ -72,17 +70,6 @@ public abstract class BaseJpaPlatformUi implements JpaPlatformUi
 	protected BaseJpaPlatformUi() {
 		super();
 		this.jpaUiFactory = createJpaUiFactory();
-	}
-
-
-	// **************** navigator content **************************************
-
-	public ICommonContentProvider buildNavigatorContentProvider() {
-		return new BaseJpaNavigatorContentProvider();
-	}
-
-	public ICommonLabelProvider buildNavigatorLabelProvider() {
-		return new BaseJpaNavigatorLabelProvider();
 	}
 	
 	
