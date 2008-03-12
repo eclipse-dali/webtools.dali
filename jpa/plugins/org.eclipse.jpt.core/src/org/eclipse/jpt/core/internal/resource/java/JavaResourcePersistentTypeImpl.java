@@ -37,7 +37,9 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
-public class JavaResourcePersistentTypeImpl extends AbstractJavaResourcePersistentMember<Type> implements JavaResourcePersistentType
+public class JavaResourcePersistentTypeImpl
+	extends AbstractJavaResourcePersistentMember<Type>
+	implements JavaResourcePersistentType
 {	
 	/**
 	 * store all member types including those that aren't persistable so we can include validation errors.

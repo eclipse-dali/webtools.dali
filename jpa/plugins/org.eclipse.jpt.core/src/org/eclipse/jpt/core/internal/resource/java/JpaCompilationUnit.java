@@ -24,7 +24,9 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.node.Node;
 
-public class JpaCompilationUnitResource extends AbstractResource implements JavaResourceNode
+public class JpaCompilationUnit
+	extends AbstractJavaResourceNode
+	implements JavaResourceNode
 {
 	protected final JpaAnnotationProvider annotationProvider;
 	
@@ -45,7 +47,7 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 	
 	protected final JavaResourceModel javaResourceModel;
 	
-	public JpaCompilationUnitResource(
+	public JpaCompilationUnit(
 			IFile file, 
 			JpaAnnotationProvider annotationProvider, 
 			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
@@ -62,14 +64,14 @@ public class JpaCompilationUnitResource extends AbstractResource implements Java
 	}
 	
 	protected ICompilationUnit compilationUnitFrom(IFile file) {
-		ICompilationUnit compilationUnit = JavaCore.createCompilationUnitFrom(file);
+		ICompilationUnit cu = JavaCore.createCompilationUnitFrom(file);
 		try {
-			compilationUnit.open(null);
+			cu.open(null);
 		}
 		catch (JavaModelException jme) {
 			// do nothing - we just won't have a primary type in this case
 		}
-		return compilationUnit;
+		return cu;
 	}
 	
 	public void initialize(CompilationUnit astRoot) {

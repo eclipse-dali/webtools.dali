@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.internal.jdtutility.ShortCircuitAnnotationElementAda
 import org.eclipse.jpt.core.resource.java.GeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 
-public abstract class GeneratorImpl extends AbstractAnnotationResource<Member> implements GeneratorAnnotation
+public abstract class GeneratorImpl extends AbstractResourceAnnotation<Member> implements GeneratorAnnotation
 {
 	// hold this so we can get the 'name' text range
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,7 +31,7 @@ import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 
-public abstract class AbstractRelationshipMappingAnnotation extends AbstractAnnotationResource<Attribute> implements RelationshipMappingAnnotation
+public abstract class AbstractRelationshipMappingAnnotation extends AbstractResourceAnnotation<Attribute> implements RelationshipMappingAnnotation
 {
 	// hold this so we can get the 'targetEntity' text range
 	private final DeclarationAnnotationElementAdapter<String> targetEntityDeclarationAdapter;

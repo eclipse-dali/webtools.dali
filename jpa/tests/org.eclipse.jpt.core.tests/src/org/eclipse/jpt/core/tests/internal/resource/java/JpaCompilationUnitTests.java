@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
-import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitResource;
+import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.tests.internal.jdtutility.AnnotationTestCase;
@@ -25,9 +25,9 @@ import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JpaCompilationUnitResourceTests extends AnnotationTestCase {
+public class JpaCompilationUnitTests extends AnnotationTestCase {
 	
-	public JpaCompilationUnitResourceTests(String name) {
+	public JpaCompilationUnitTests(String name) {
 		super(name);
 	}
 
@@ -60,7 +60,7 @@ public class JpaCompilationUnitResourceTests extends AnnotationTestCase {
 		});
 	}
 	
-	protected JpaCompilationUnitResource getJpaCompilationUnitResource(ICompilationUnit testCompilationUnit) throws CoreException {
+	protected JpaCompilationUnit getJpaCompilationUnitResource(ICompilationUnit testCompilationUnit) throws CoreException {
 		JpaProject jpaProject = ((TestJpaProject) this.javaProject).getJpaProject();
 		JpaFile jpaFile = jpaProject.jpaFile((IFile) testCompilationUnit.getResource());
 		JavaResourceModel javaResourceModel = (JavaResourceModel) jpaFile.getResourceModel();
@@ -69,7 +69,7 @@ public class JpaCompilationUnitResourceTests extends AnnotationTestCase {
 	
 	public void testGetPersistentType() throws Exception {
 		ICompilationUnit compilationUnit = this.createTestCompilationUnit();
-		JpaCompilationUnitResource jpaCompilationUnit = getJpaCompilationUnitResource(compilationUnit);
+		JpaCompilationUnit jpaCompilationUnit = getJpaCompilationUnitResource(compilationUnit);
 		
 		assertTrue(jpaCompilationUnit.getPersistentType().mappingAnnotation() instanceof EntityAnnotation);
 	}

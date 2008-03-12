@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.resource.java.Enumerated;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 
 
-public class NullEnumerated extends AbstractResource implements Enumerated, Annotation
+public class NullEnumerated extends AbstractJavaResourceNode implements Enumerated, Annotation
 {	
 	protected NullEnumerated(JavaResourcePersistentMember parent) {
 		super(parent);

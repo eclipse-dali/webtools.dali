@@ -16,10 +16,10 @@ import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.node.AbstractNode;
 
-public abstract class AbstractResource extends AbstractNode
+public abstract class AbstractJavaResourceNode extends AbstractNode
 	implements JavaResourceNode
 {	
-	protected AbstractResource(JavaResourceNode parent) {
+	protected AbstractJavaResourceNode(JavaResourceNode parent) {
 		super(parent);
 	}
 	
@@ -32,8 +32,8 @@ public abstract class AbstractResource extends AbstractNode
 	}
 	
 	@Override
-	public JpaCompilationUnitResource root() {
-		return (JpaCompilationUnitResource) super.root();
+	public JpaCompilationUnit root() {
+		return (JpaCompilationUnit) super.root();
 	}
 	
 	

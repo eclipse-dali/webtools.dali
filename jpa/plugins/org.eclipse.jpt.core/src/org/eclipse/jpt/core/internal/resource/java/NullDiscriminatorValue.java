@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.resource.java.DiscriminatorValue;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 
 
-public class NullDiscriminatorValue extends AbstractResource implements DiscriminatorValue, Annotation
+public class NullDiscriminatorValue extends AbstractJavaResourceNode implements DiscriminatorValue, Annotation
 {	
 	protected NullDiscriminatorValue(JavaResourcePersistentMember parent) {
 		super(parent);

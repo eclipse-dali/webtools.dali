@@ -28,7 +28,7 @@ public class JavaResourceModel
 {
 	private final Collection<ResourceModelListener> resourceModelListeners;
 	
-	private final JpaCompilationUnitResource compilationUnitResource;
+	private final JpaCompilationUnit compilationUnitResource;
 	
 	
 	public JavaResourceModel(
@@ -38,7 +38,7 @@ public class JavaResourceModel
 		super();
 		this.resourceModelListeners = new ArrayList<ResourceModelListener>();
 		this.compilationUnitResource = 
-			new JpaCompilationUnitResource(file, annotationProvider, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter, this);
+			new JpaCompilationUnit(file, annotationProvider, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter, this);
 	}
 	
 	public String getResourceType() {
@@ -46,7 +46,7 @@ public class JavaResourceModel
 	}
 	
 	@Override
-	public JpaCompilationUnitResource resource() {
+	public JpaCompilationUnit resource() {
 		return this.compilationUnitResource;
 	}
 	

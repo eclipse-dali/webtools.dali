@@ -41,7 +41,7 @@ import org.eclipse.jpt.core.ResourceModel;
 import org.eclipse.jpt.core.ResourceModelListener;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
-import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitResource;
+import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -399,9 +399,9 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	
 	protected Iterator<JavaResourcePersistentType> annotatedJavaPersistentTypes() {
 		return new FilteringIterator<JavaResourcePersistentType, JavaResourcePersistentType>(
-				new TransformationIterator<JpaCompilationUnitResource, JavaResourcePersistentType>(jpaCompilationUnitResources()) {
+				new TransformationIterator<JpaCompilationUnit, JavaResourcePersistentType>(jpaCompilationUnitResources()) {
 					@Override
-					protected JavaResourcePersistentType transform(JpaCompilationUnitResource next) {
+					protected JavaResourcePersistentType transform(JpaCompilationUnit next) {
 						return next.getPersistentType();
 					}
 				}) {
@@ -416,10 +416,10 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		return this.jpaFiles(ResourceModel.JAVA_RESOURCE_TYPE);
 	}
 	
-	protected Iterator<JpaCompilationUnitResource> jpaCompilationUnitResources() {
-		return new TransformationIterator<JpaFile, JpaCompilationUnitResource>(this.javaJpaFiles()) {
+	protected Iterator<JpaCompilationUnit> jpaCompilationUnitResources() {
+		return new TransformationIterator<JpaFile, JpaCompilationUnit>(this.javaJpaFiles()) {
 			@Override
-			protected JpaCompilationUnitResource transform(JpaFile jpaFile) {
+			protected JpaCompilationUnit transform(JpaFile jpaFile) {
 				return ((JavaResourceModel) jpaFile.getResourceModel()).resource();
 			}
 		};
@@ -427,7 +427,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 
 	// look for binary stuff here...
 	public JavaResourcePersistentType javaPersistentTypeResource(String typeName) {
-		for (JpaCompilationUnitResource jpCompilationUnitResource : CollectionTools.iterable(this.jpaCompilationUnitResources())) {
+		for (JpaCompilationUnit jpCompilationUnitResource : CollectionTools.iterable(this.jpaCompilationUnitResources())) {
 			JavaResourcePersistentType jptr =  jpCompilationUnitResource.javaPersistentTypeResource(typeName);
 			if (jptr != null) {
 				return jptr;

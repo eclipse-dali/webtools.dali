@@ -32,9 +32,12 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 
-public abstract class AbstractJavaResourcePersistentMember<E extends Member> extends AbstractMemberResource<E> 
+public abstract class AbstractJavaResourcePersistentMember<E extends Member>
+	extends AbstractJavaResourceNode
 	implements JavaResourcePersistentMember
 {	
+	private final E member;
+
 	/**
 	 * stores all annotations(non-mapping) except duplicates, java compiler has an error for duplicates
 	 */
@@ -47,8 +50,9 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member> ext
 	
 	private boolean persistable;
 
-	public AbstractJavaResourcePersistentMember(JavaResourceNode parent, E member){
-		super(parent, member);
+	AbstractJavaResourcePersistentMember(JavaResourceNode parent, E member){
+		super(parent);
+		this.member = member;
 		this.annotations = new ArrayList<Annotation>();
 		this.mappingAnnotations = new ArrayList<Annotation>();
 	}
@@ -107,6 +111,10 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member> ext
 		}
 	}
 
+	public E getMember() {
+		return this.member;
+	}
+	
 	protected abstract Annotation buildAnnotation(String annotationName);
 	
 	protected abstract Annotation buildNullAnnotation(String annotationName);
@@ -489,8 +497,8 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member> ext
 		}
 	}
 
-	public boolean isFor(IMember member) {
-		return getMember().wraps(member);
+	public boolean isFor(IMember iMember) {
+		return getMember().wraps(iMember);
 	}
 	
 	public boolean isPersistable() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 
 
-public class NullAttributeOverride extends AbstractResource implements AttributeOverrideAnnotation, Annotation
+public class NullAttributeOverride extends AbstractJavaResourceNode implements AttributeOverrideAnnotation, Annotation
 {	
 	//TODO should I hold on to the IColumnMapping that this attribute override is built from?
 	//this would make it more similar to the Virtual mappings concept in xml

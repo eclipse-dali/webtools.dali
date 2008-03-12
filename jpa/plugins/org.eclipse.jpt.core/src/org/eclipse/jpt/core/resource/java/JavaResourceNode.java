@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
-import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitResource;
+import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.node.Node;
 
@@ -32,7 +32,7 @@ public interface JavaResourceNode extends Node
 	
 	JavaResourceModel resourceModel();
 	
-	JpaCompilationUnitResource root();
+	JpaCompilationUnit root();
 	
 	JpaAnnotationProvider annotationProvider();
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -153,7 +153,7 @@ public class AssociationOverrideImpl
 		return new NestedIndexedDeclarationAnnotationAdapter(attributeOverridesAdapter, index, JPA.ASSOCIATION_OVERRIDE);
 	}
 	
-	private class JoinColumnsContainerAnnotation extends AbstractResource 
+	private class JoinColumnsContainerAnnotation extends AbstractJavaResourceNode 
 		implements ContainerAnnotation<NestableJoinColumn> 
 	{
 		public JoinColumnsContainerAnnotation() {

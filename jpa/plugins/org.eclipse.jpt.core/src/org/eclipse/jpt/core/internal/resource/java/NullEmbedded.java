@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.resource.java.Embedded;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 
 
-public class NullEmbedded extends AbstractResource implements Embedded, Annotation
+public class NullEmbedded extends AbstractJavaResourceNode implements Embedded, Annotation
 {	
 	protected NullEmbedded(JavaResourcePersistentMember parent) {
 		super(parent);

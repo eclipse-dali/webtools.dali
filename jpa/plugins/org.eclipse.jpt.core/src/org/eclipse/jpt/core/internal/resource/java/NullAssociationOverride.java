@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 
-public class NullAssociationOverride extends AbstractResource implements AssociationOverrideAnnotation, Annotation
+public class NullAssociationOverride extends AbstractJavaResourceNode implements AssociationOverrideAnnotation, Annotation
 {	
 	private String name;
 

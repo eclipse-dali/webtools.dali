@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,7 +30,7 @@ import org.eclipse.jpt.core.resource.java.UniqueConstraint;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public abstract class AbstractTableResource extends AbstractAnnotationResource<Member> implements TableAnnotation
+public abstract class AbstractTableResource extends AbstractResourceAnnotation<Member> implements TableAnnotation
 {
 	// hold this so we can get the 'name' text range
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
@@ -230,7 +230,7 @@ public abstract class AbstractTableResource extends AbstractAnnotationResource<M
 	}
 
 	
-	private class UniqueConstraintsContainerAnnotation extends AbstractResource 
+	private class UniqueConstraintsContainerAnnotation extends AbstractJavaResourceNode 
 		implements ContainerAnnotation<NestableUniqueConstraint> 
 	{
 		public UniqueConstraintsContainerAnnotation() {
