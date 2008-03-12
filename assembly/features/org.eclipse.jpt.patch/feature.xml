@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.jpt.patch"
-      label="%pluginName"
-      version="1.0.0"
+      label="%featureName"
+      version="1.0.2.qualifier"
       provider-name="%providerName">
 
    <description url="http://download.eclipse.org/webtools/patches/">
-      Patch features for Java Persistence API (JPA) Tools
+      %description
    </description>
 
    <copyright>
@@ -22,11 +22,14 @@
    </url>
 
    <requires>
-      <import feature="org.eclipse.jpt.feature" version="1.0.2.qualifier" patch="true"/>
+      <import feature="org.eclipse.jpt.feature" version="1.0.2.v200802140100-77-7_CYQCD2CaLYCHCD" patch="true"/>
    </requires>
 
-   <includes
+   <plugin
          id="org.eclipse.jpt.gen"
-         version="0.0.0"/>
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>
