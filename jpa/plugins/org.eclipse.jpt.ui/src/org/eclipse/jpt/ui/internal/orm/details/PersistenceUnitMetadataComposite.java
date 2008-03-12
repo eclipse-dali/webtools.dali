@@ -230,13 +230,13 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 		// Section
 		container = buildCollapsableSection(
 			container,
-			JptUiOrmMessages.EntityMappingsPage_PersistenceUnitSection
+			JptUiOrmMessages.PersistenceUnitMetadataComposite_persistenceUnitSection
 		);
 
 		// XML mapping metadata complete check box
 		buildCheckBox(
 			container,
-			JptUiOrmMessages.EntityMappingsPage_XmlMappingMetadataCompleteCheckBox,
+			JptUiOrmMessages.PersistenceUnitMetadataComposite_xmlMappingMetadataCompleteCheckBox,
 			buildXmlMappingMetadataCompleteHolder(),
 			JpaHelpContextIds.ENTITY_ORM_XML
 		);
@@ -244,7 +244,7 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 		// Cascade Persist widgets
 		buildCheckBox(
 			container,
-			JptUiOrmMessages.EntityMappingsPage_CascadePersistCheckBox,
+			JptUiOrmMessages.PersistenceUnitMetadataComposite_cascadePersistCheckBox,
 			buildCascadePersistHolder(),
 			JpaHelpContextIds.ENTITY_ORM_CASCADE
 		);
@@ -252,7 +252,7 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 		// Schema widgets
 		buildLabeledComposite(
 			container,
-			JptUiOrmMessages.OrmSchemaChooser_SchemaChooser,
+			JptUiOrmMessages.PersistenceUnitMetadataComposite_schema,
 			buildSchemaComboViewer(container),
 			JpaHelpContextIds.ENTITY_ORM_SCHEMA
 		);
@@ -260,7 +260,7 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 		// Catalog widgets
 		buildLabeledComposite(
 			container,
-			JptUiOrmMessages.OrmCatalogChooser_CatalogChooser,
+			JptUiOrmMessages.PersistenceUnitMetadataComposite_catalog,
 			buildCatalogComboViewer(container),
 			JpaHelpContextIds.ENTITY_ORM_CATALOG
 		);
@@ -268,7 +268,7 @@ public class PersistenceUnitMetadataComposite extends AbstractFormPane<Persisten
 		// Access Type widgets
 		buildLabeledComposite(
 			container,
-			JptUiOrmMessages.PersistentTypePage_AccessLabel,
+			JptUiOrmMessages.PersistenceUnitMetadataComposite_access,
 			buildAccessTypeCombo(container),
 			JpaHelpContextIds.ENTITY_ORM_ACCESS
 		);

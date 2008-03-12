@@ -67,15 +67,15 @@ import org.eclipse.swt.widgets.Composite;
 public class OrmEntityComposite extends AbstractEntityComposite<OrmEntity>
 {
 	/**
-	 * Creates a new <code>EntityComposite</code>.
+	 * Creates a new <code>OrmEntityComposite</code>.
 	 *
 	 * @param subjectHolder The holder of the subject <code>IEntity</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public OrmEntityComposite(PropertyValueModel<? extends OrmEntity> subjectHolder,
-	                       Composite parent,
-	                       WidgetFactory widgetFactory) {
+	                          Composite parent,
+	                          WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}

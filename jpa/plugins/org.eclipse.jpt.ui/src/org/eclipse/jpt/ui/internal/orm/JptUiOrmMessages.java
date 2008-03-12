@@ -10,44 +10,47 @@ package org.eclipse.jpt.ui.internal.orm;
 
 import org.eclipse.osgi.util.NLS;
 
-public class JptUiOrmMessages
-{
-	private static final String BUNDLE_NAME = "jpt_ui_orm"; //$NON-NLS-1$
+/**
+ * The localized messages used by the ORM widgets.
+ *
+ * @version 2.0
+ * @since 1.0
+ */
+@SuppressWarnings("nls")
+public class JptUiOrmMessages {
 
-	public static String PersistentTypePage_javaClassLabel;
-	public static String PersistentTypePage_MetadataCompleteLabel;
-	public static String PersistentTypePage_AccessLabel;
-
-	public static String PersistenceUnitMetadataSection_SchemaDefault;
-	public static String PersistenceUnitMetadataSection_CatalogDefault;
-
-	public static String PersistentAttributePage_javaAttributeLabel;
-
-	public static String EntityMappingsDetailsPage_package;
-
-	public static String EntityMappingsPage_XmlMappingMetadataCompleteCheckBox;
-	public static String EntityMappingsPage_CascadePersistCheckBox;
-	public static String EntityMappingsPage_PersistenceUnitSection;
-	public static String EntityMappingsPage_SchemaDefault;
-	public static String EntityMappingsPage_SchemaNoDefaultSpecified;
-	public static String EntityMappingsPage_CatalogDefault;
-	public static String EntityMappingsPage_CatalogNoDefaultSpecified;
-
-	public static String OrmSchemaChooser_SchemaChooser;
-	public static String OrmCatalogChooser_CatalogChooser;
-
+	public static String AccessTypeComposite_access;
 	public static String AccessTypeComposite_field;
 	public static String AccessTypeComposite_property;
-
+	public static String Boolean_False;
+	public static String Boolean_True;
+	public static String EntityMappingsDetailsPage_access;
+	public static String EntityMappingsDetailsPage_catalog;
 	public static String EntityMappingsDetailsPage_field;
+	public static String EntityMappingsDetailsPage_package;
 	public static String EntityMappingsDetailsPage_property;
-
+	public static String EntityMappingsDetailsPage_schema;
+	public static String EntityMappingsPage_catalogDefault;
+	public static String EntityMappingsPage_catalogNoDefaultSpecified;
+	public static String EntityMappingsPage_schemaDefault;
+	public static String EntityMappingsPage_schemaNoDefaultSpecified;
+	public static String OrmJavaAttributeChooser_javaAttribute;
+	public static String OrmJavaClassChooser_javaClass;
+	public static String OrmPersistentTypeDetailsPage_metadataComplete;
+	public static String OrmPersistentTypeDetailsPage_metadataCompleteWithDefault;
+	public static String PersistenceUnitMetadataComposite_access;
+	public static String PersistenceUnitMetadataComposite_cascadePersistCheckBox;
+	public static String PersistenceUnitMetadataComposite_catalog;
 	public static String PersistenceUnitMetadataComposite_field;
+	public static String PersistenceUnitMetadataComposite_persistenceUnitSection;
 	public static String PersistenceUnitMetadataComposite_property;
+	public static String PersistenceUnitMetadataComposite_schema;
+	public static String PersistenceUnitMetadataComposite_xmlMappingMetadataCompleteCheckBox;
+	public static String PersistenceUnitMetadataSection_catalogDefault;
+	public static String PersistenceUnitMetadataSection_schemaDefault;
 
 	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, JptUiOrmMessages.class);
+		NLS.initializeMessages("jpt_ui_orm", JptUiOrmMessages.class);
 	}
 
 	private JptUiOrmMessages() {

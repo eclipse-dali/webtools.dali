@@ -215,7 +215,7 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 
 		buildLabeledComposite(
 			container,
-			JptUiOrmMessages.OrmSchemaChooser_SchemaChooser,
+			JptUiOrmMessages.EntityMappingsDetailsPage_schema,
 			schemaComboViewer.getControl(),
 			JpaHelpContextIds.ENTITY_ORM_SCHEMA
 		);
@@ -226,7 +226,7 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 
 		buildLabeledComposite(
 			container,
-			JptUiOrmMessages.OrmCatalogChooser_CatalogChooser,
+			JptUiOrmMessages.EntityMappingsDetailsPage_catalog,
 			catalogComboViewer.getControl(),
 			JpaHelpContextIds.ENTITY_ORM_CATALOG
 		);
@@ -237,7 +237,7 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 
 		buildLabeledComposite(
 			container,
-			JptUiOrmMessages.PersistentTypePage_AccessLabel,
+			JptUiOrmMessages.EntityMappingsDetailsPage_access,
 			accessTypeComposite.getControl(),
 			JpaHelpContextIds.ENTITY_ORM_ACCESS
 		);

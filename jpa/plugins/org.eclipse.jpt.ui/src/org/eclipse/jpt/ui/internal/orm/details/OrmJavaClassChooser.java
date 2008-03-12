@@ -103,7 +103,7 @@ public class OrmJavaClassChooser extends AbstractFormPane<OrmTypeMapping> {
 
 			@Override
 			protected String labelText() {
-				return JptUiOrmMessages.PersistentTypePage_javaClassLabel;
+				return JptUiOrmMessages.OrmJavaClassChooser_javaClass;
 			}
 
 			@Override
