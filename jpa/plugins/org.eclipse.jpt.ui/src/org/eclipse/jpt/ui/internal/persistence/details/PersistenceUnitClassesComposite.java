@@ -26,12 +26,11 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.JptUiPlugin;
-import org.eclipse.jpt.ui.internal.JptUiIcons;
+import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
@@ -211,40 +210,20 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 		};
 	}
 
-	private ListValueModel<ClassRef> buildItemListHolder() {
-		return new ItemPropertyListValueModelAdapter<ClassRef>(
-			buildListHolder(),
-			ClassRef.CLASS_NAME_PROPERTY
-		);
-	}
-
 	private ILabelProvider buildLabelProvider() {
 		return new LabelProvider() {
 			@Override
 			public Image getImage(Object element) {
 				ClassRef classRef = (ClassRef) element;
 				JavaPersistentType persistentType = classRef.getJavaPersistentType();
-				String iconKey = null;
+				Image image = null;
 
 				if (persistentType != null) {
-					String key = persistentType.getMapping().getKey();
-
-					// Entity
-					if (MappingKeys.ENTITY_TYPE_MAPPING_KEY.equals(key)) {
-						iconKey = JptUiIcons.ENTITY;
-					}
-					// Mapped Superclass
-					else if (MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY.equals(key)) {
-						iconKey = JptUiIcons.MAPPED_SUPERCLASS;
-					}
-					// Embeddable
-					else if (MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY.equals(key)) {
-						iconKey = JptUiIcons.EMBEDDABLE;
-					}
+					image = JpaMappingImageHelper.imageForTypeMapping(persistentType.mappingKey());
 				}
 
-				if (iconKey != null) {
-					return JptUiPlugin.getImage(iconKey);
+				if (image != null) {
+					return image;
 				}
 
 				// TODO: Use the right warning image
@@ -263,6 +242,14 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 				return name;
 			}
 		};
+	}
+
+	private ListValueModel<ClassRef> buildItemListHolder() {
+		return new ItemPropertyListValueModelAdapter<ClassRef>(
+			buildListHolder(),
+			ClassRef.JAVA_PERSISTENT_TYPE_PROPERTY, 
+			ClassRef.CLASS_NAME_PROPERTY
+		);
 	}
 
 	private ListValueModel<ClassRef> buildListHolder() {
