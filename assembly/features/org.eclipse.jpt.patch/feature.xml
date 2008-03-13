@@ -5,7 +5,7 @@
       version="1.0.2.qualifier"
       provider-name="%providerName">
 
-   <description url="http://download.eclipse.org/webtools/patches/">
+   <description>
       %description
    </description>
 
@@ -16,10 +16,6 @@
    <license url="%licenseURL">
       %license
    </license>
-
-   <url>
-      <update label="Web Tools Platform (WTP) Patches" url="http://download.eclipse.org/webtools/patches/"/>
-   </url>
 
    <requires>
       <import feature="org.eclipse.jpt.feature" version="1.0.2.v200802140100-77-7_CYQCD2CaLYCHCD" patch="true"/>
