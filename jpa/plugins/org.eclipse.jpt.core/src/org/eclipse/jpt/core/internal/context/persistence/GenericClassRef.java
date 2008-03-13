@@ -73,8 +73,10 @@ public class GenericClassRef extends AbstractPersistenceJpaContextNode
 	}
 	
 	public void setClassName(String newClassName) {
+		String oldClassName = this.className;
+		this.className = newClassName;
 		this.xmlJavaClassRef.setJavaClass(newClassName);
-		setClassName_(newClassName);
+		firePropertyChanged(CLASS_NAME_PROPERTY, oldClassName, newClassName);
 	}
 	
 	protected void setClassName_(String newClassName) {

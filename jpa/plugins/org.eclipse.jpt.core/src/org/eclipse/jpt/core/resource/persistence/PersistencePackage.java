@@ -1049,7 +1049,7 @@ public class PersistencePackage extends EPackageImpl
 		initEAttribute(getXmlMappingFileRef_FileName(), theEcorePackage.getEString(), "fileName", "", 0, 1, XmlMappingFileRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(xmlJavaClassRefEClass, XmlJavaClassRef.class, "XmlJavaClassRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlJavaClassRef_JavaClass(), theEcorePackage.getEString(), "javaClass", null, 0, 1, XmlJavaClassRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+		initEAttribute(getXmlJavaClassRef_JavaClass(), theEcorePackage.getEString(), "javaClass", "", 0, 1, XmlJavaClassRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		initEClass(xmlPropertiesEClass, XmlProperties.class, "XmlProperties", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlProperties_Properties(), this.getXmlProperty(), null, "properties", null, 0, -1, XmlProperties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

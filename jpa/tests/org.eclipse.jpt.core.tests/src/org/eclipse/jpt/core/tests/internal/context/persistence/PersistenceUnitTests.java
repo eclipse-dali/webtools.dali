@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.persistence;
 
+import java.io.IOException;
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -467,14 +468,24 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(0, CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()));
 		
 		// add mapping file ref, test that it's added to resource
-		persistenceUnit.addSpecifiedMappingFileRef();
+		persistenceUnit.addSpecifiedMappingFileRef().setFileName("foo");
 		
 		assertEquals(1, xmlPersistenceUnit.getMappingFiles().size());
+		assertEquals("foo", xmlPersistenceUnit.getMappingFiles().get(0).getFileName());
 		
 		// add another ...
-		persistenceUnit.addSpecifiedMappingFileRef();
+		persistenceUnit.addSpecifiedMappingFileRef().setFileName("bar");
+		assertEquals("foo", xmlPersistenceUnit.getMappingFiles().get(0).getFileName());
+		assertEquals("bar", xmlPersistenceUnit.getMappingFiles().get(1).getFileName());
 		
 		assertEquals(2, xmlPersistenceUnit.getMappingFiles().size());
+		
+		// add another, testing order
+		persistenceUnit.addSpecifiedMappingFileRef(0).setFileName("baz");
+		assertEquals(3, xmlPersistenceUnit.getMappingFiles().size());
+		assertEquals("baz", xmlPersistenceUnit.getMappingFiles().get(0).getFileName());
+		assertEquals("foo", xmlPersistenceUnit.getMappingFiles().get(1).getFileName());
+		assertEquals("bar", xmlPersistenceUnit.getMappingFiles().get(2).getFileName());
 	}
 	
 	public void testModifySpecifiedMappingFileRefs2() {
@@ -563,14 +574,32 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(0, persistenceUnit.specifiedClassRefsSize());
 		
 		// add class ref, test that it's added to context
-		persistenceUnit.addSpecifiedClassRef();
+		persistenceUnit.addSpecifiedClassRef().setClassName("Foo");
 		
+		try {
+			persistenceResource().save(null);
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		assertEquals(1, xmlPersistenceUnit.getClasses().size());
-		
+		assertEquals("Foo", xmlPersistenceUnit.getClasses().get(0).getJavaClass());
+	
 		// add another ...
-		persistenceUnit.addSpecifiedClassRef();
+		persistenceUnit.addSpecifiedClassRef().setClassName("Bar");
 		
 		assertEquals(2, xmlPersistenceUnit.getClasses().size());
+		assertEquals("Foo", xmlPersistenceUnit.getClasses().get(0).getJavaClass());
+		assertEquals("Bar", xmlPersistenceUnit.getClasses().get(1).getJavaClass());
+	
+		
+		persistenceUnit.addSpecifiedClassRef(0).setClassName("Baz");
+		
+		assertEquals(3, xmlPersistenceUnit.getClasses().size());
+		assertEquals("Baz", xmlPersistenceUnit.getClasses().get(0).getJavaClass());
+		assertEquals("Foo", xmlPersistenceUnit.getClasses().get(1).getJavaClass());
+		assertEquals("Bar", xmlPersistenceUnit.getClasses().get(2).getJavaClass());
 	}
 	
 	public void testModifyClassRefs2() {
@@ -730,15 +759,26 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(0, persistenceUnit.propertiesSize());
 		
 		// add property, test that it's added to resource
-		persistenceUnit.addProperty();
+		persistenceUnit.addProperty().setName("foo");
 		
 		assertNotNull(xmlPersistenceUnit.getProperties());
 		assertEquals(1, xmlPersistenceUnit.getProperties().getProperties().size());
+		assertEquals("foo", xmlPersistenceUnit.getProperties().getProperties().get(0).getName());
 		
 		// add another ...
-		persistenceUnit.addProperty();
+		persistenceUnit.addProperty().setName("bar");
 		
 		assertEquals(2, xmlPersistenceUnit.getProperties().getProperties().size());
+		assertEquals("foo", xmlPersistenceUnit.getProperties().getProperties().get(0).getName());
+		assertEquals("bar", xmlPersistenceUnit.getProperties().getProperties().get(1).getName());
+
+		// add another testing order
+		persistenceUnit.addProperty(0).setName("baz");
+		
+		assertEquals(3, xmlPersistenceUnit.getProperties().getProperties().size());
+		assertEquals("baz", xmlPersistenceUnit.getProperties().getProperties().get(0).getName());
+		assertEquals("foo", xmlPersistenceUnit.getProperties().getProperties().get(1).getName());
+		assertEquals("bar", xmlPersistenceUnit.getProperties().getProperties().get(2).getName());
 	}
 	
 	public void testModifyProperties2() {

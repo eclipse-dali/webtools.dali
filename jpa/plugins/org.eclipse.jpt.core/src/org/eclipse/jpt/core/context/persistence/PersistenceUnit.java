@@ -388,6 +388,8 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	 */
 	Property addProperty();
 	
+	Property addProperty(int index);
+
 	Property getProperty(String key);
 	
 	Property getProperty(String key, String value);

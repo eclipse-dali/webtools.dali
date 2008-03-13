@@ -274,7 +274,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		XmlMappingFileRef xmlMappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		MappingFileRef mappingFileRef = buildMappingFileRef(xmlMappingFileRef);
 		specifiedMappingFileRefs.add(index, mappingFileRef);
-		this.xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
+		this.xmlPersistenceUnit.getMappingFiles().add(index, xmlMappingFileRef);
 		fireItemAdded(SPECIFIED_MAPPING_FILE_REF_LIST, index, mappingFileRef);
 		return mappingFileRef;
 	}
@@ -354,18 +354,18 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 	
 	public ClassRef addSpecifiedClassRef() {
-		return addSpecifiedClassRef(this.specifiedClassRefs.size());
+		return addSpecifiedClassRef(this.specifiedClassRefsSize());
 	}
 	
 	public ClassRef addSpecifiedClassRef(int index) {
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		ClassRef classRef = buildClassRef(xmlClassRef);
 		this.specifiedClassRefs.add(index, classRef);
-		this.xmlPersistenceUnit.getClasses().add(xmlClassRef);
+		this.xmlPersistenceUnit.getClasses().add(index, xmlClassRef);
 		fireItemAdded(SPECIFIED_CLASS_REF_LIST, index, classRef);
 		return classRef;
 	}
-	
+
 	public void removeSpecifiedClassRef(ClassRef classRef) {
 		removeSpecifiedClassRef(this.specifiedClassRefs.indexOf(classRef));
 	}
@@ -409,7 +409,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	public ClassRef addImpliedClassRef(int index, String className) {
 		ClassRef classRef = buildClassRef(className);
-		addItemToList(classRef, impliedClassRefs, IMPLIED_CLASS_REF_LIST);
+		addItemToList(index, classRef, impliedClassRefs, IMPLIED_CLASS_REF_LIST);
 		return classRef;
 	}
 	
@@ -525,7 +525,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 			xmlProperty.setName(key);
 			xmlProperty.setValue(value);
 			
-			this.addXmlProperty(xmlProperty);
+			this.addXmlProperty(xmlProperty, propertiesSize());
 			return;
 		}
 	}
@@ -553,15 +553,16 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	}
 
 	public Property addProperty() {
-		XmlProperty xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
-		
-		return this.addXmlProperty(xmlProperty);
+		return addProperty(propertiesSize());
 	}
 	
-	protected Property addXmlProperty(XmlProperty xmlProperty) {
+	public Property addProperty(int index) {
+		return this.addXmlProperty(PersistenceFactory.eINSTANCE.createXmlProperty(), index);
+	}
+	
+	protected Property addXmlProperty(XmlProperty xmlProperty, int index) {
 
 		Property property = buildProperty(xmlProperty);
-		int index = this.properties.size();
 		this.properties.add(index, property);
 		
 		if (this.xmlPersistenceUnit.getProperties() == null) {
@@ -569,7 +570,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 			this.xmlPersistenceUnit.setProperties(xmlProperties);
 		}
 		
-		this.xmlPersistenceUnit.getProperties().getProperties().add(xmlProperty);
+		this.xmlPersistenceUnit.getProperties().getProperties().add(index, xmlProperty);
 		this.fireItemAdded(PROPERTIES_LIST, index, property);
 		return property;
 	}
