@@ -340,14 +340,15 @@ public class TableModelAdapter<E> {
 		if (this.table.isDisposed()) {
 			return;
 		}
-		for (ListIterator<E> stream = this.items(event); stream.hasNext(); ) {
-			TableItem tableItem = new TableItem(this.table, SWT.NULL);
+		int i = event.index();
+		for (ListIterator<E> stream = this.items(event); stream.hasNext(); i++) {
+			TableItem tableItem = new TableItem(this.table, SWT.NULL, i);
 			tableItem.setData(stream.next());
 
 			TableItemModelAdapter adapter =
 				TableItemModelAdapter.adapt(tableItem, columnAdapter, labelProvider);
 
-			tableItemModelAdapters.add(adapter);
+			tableItemModelAdapters.add(i, adapter);
 		}
 	}
 
