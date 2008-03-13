@@ -155,17 +155,17 @@ final class DTPConnectionProfileWrapper
 		return this.property(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID);
 	}
 
-	public InternalDatabase database() {
+	public synchronized InternalDatabase database() {
 		if (this.database == null) {
 			this.database = this.buildDatabase();
 		}
 		return this.database;
 	}
-	
+
 	public DTPCatalogWrapper defaultCatalog() {
 		return this.database().defaultCatalog();
 	}
-	
+
 	public void addConnectionListener(ConnectionListener listener) {
 		this.connectionListener.addConnectionListener(listener);
 	}
@@ -291,13 +291,13 @@ final class DTPConnectionProfileWrapper
 
 	// ********** disposal **********
 
-	void dispose() {
+	synchronized void dispose() {
 		this.disposeDatabase();
 		this.dtpOfflineConnection().removeConnectionListener(this.connectionListener);
 		this.dtpLiveConnection().removeConnectionListener(this.connectionListener);
 	}
 
-	void disposeDatabase() {
+	synchronized void disposeDatabase() {
 		if (this.database != null) {
 			this.database.dispose();
 			this.database = null;
@@ -350,11 +350,11 @@ final class DTPConnectionProfileWrapper
 
 		public void opened(ConnectEvent event) {
 			if (event.getConnection() == DTPConnectionProfileWrapper.this.dtpLiveConnection()) {
+				// clear the database so it will be rebuilt
+				DTPConnectionProfileWrapper.this.disposeDatabase();
 				for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 					stream.next().opened(DTPConnectionProfileWrapper.this);
 				}
-				// clear the database so it will be rebuilt
-				DTPConnectionProfileWrapper.this.disposeDatabase();
 			}
 		}
 
@@ -384,12 +384,12 @@ final class DTPConnectionProfileWrapper
 		}
 
 		public void closed(ConnectEvent event) {
-			// There is no DETACHED event, therefore closed is sent twice (i.e. by both connections)
+			// clear the database so it will be rebuilt
+			DTPConnectionProfileWrapper.this.disposeDatabase();
+			// there is no DETACHED event, therefore closed is sent twice (i.e. by both connections)
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().closed(DTPConnectionProfileWrapper.this);
 			}
-			// clear the database so it will be rebuilt
-			DTPConnectionProfileWrapper.this.disposeDatabase();
 		}
 
 
@@ -418,11 +418,11 @@ final class DTPConnectionProfileWrapper
 
 		// live => off-line
 		public void workingOffline(ConnectEvent event) {
+			// clear the database so it will be rebuilt
+			DTPConnectionProfileWrapper.this.disposeDatabase();
 			for (Iterator<ConnectionListener> stream = this.listeners(); stream.hasNext(); ) {
 				stream.next().opened(DTPConnectionProfileWrapper.this);
 			}
-			// clear the database so it will be rebuilt
-			DTPConnectionProfileWrapper.this.disposeDatabase();
 		}
 
 		// off-line => live

@@ -324,7 +324,7 @@ final class DTPTableWrapper
 	// ********** disposal **********
 
 	@Override
-	void dispose() {
+	synchronized void dispose() {
 		this.dispose_();
 		super.dispose();
 	}

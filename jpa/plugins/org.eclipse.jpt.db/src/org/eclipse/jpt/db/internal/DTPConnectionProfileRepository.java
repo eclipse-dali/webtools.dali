@@ -119,7 +119,7 @@ public final class DTPConnectionProfileRepository
 	synchronized DTPConnectionProfileWrapper addConnectionProfile(IConnectionProfile dtpConnectionProfile) {
 		for (DTPConnectionProfileWrapper wrapper : this.connectionProfiles) {
 			if (wrapper.wraps(dtpConnectionProfile)) {
-				throw new IllegalStateException("duplicate profile: " + dtpConnectionProfile.getName());  //$NON-NLS-1$
+				throw new IllegalStateException("duplicate connection profile: " + dtpConnectionProfile.getName());  //$NON-NLS-1$
 			}
 		}
 		DTPConnectionProfileWrapper wrapper = new DTPConnectionProfileWrapper(dtpConnectionProfile);
@@ -135,7 +135,7 @@ public final class DTPConnectionProfileRepository
 				return wrapper;
 			}
 		}
-		throw new IllegalStateException("invalid profile: " + dtpConnectionProfile);  //$NON-NLS-1$
+		throw new IllegalStateException("invalid connection profile: " + dtpConnectionProfile.getName());  //$NON-NLS-1$
 	}
 
 	synchronized DTPConnectionProfileWrapper connectionProfile(IConnectionProfile dtpConnectionProfile) {
@@ -144,7 +144,7 @@ public final class DTPConnectionProfileRepository
 				return wrapper;
 			}
 		}
-		throw new IllegalStateException("invalid profile: " + dtpConnectionProfile);  //$NON-NLS-1$
+		throw new IllegalStateException("invalid connection profile: " + dtpConnectionProfile.getName());  //$NON-NLS-1$
 	}
 
 
@@ -154,7 +154,7 @@ public final class DTPConnectionProfileRepository
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(ClassTools.toStringClassNameForObject(this));
-		sb.append((this.connectionProfiles != null) ? this.connectionProfiles : "<'profiles' uninitialized>");  //$NON-NLS-1$
+		sb.append((this.connectionProfiles != null) ? this.connectionProfiles : "<'connectionProfiles' uninitialized>");  //$NON-NLS-1$
 		return sb.toString();
 	}
 
