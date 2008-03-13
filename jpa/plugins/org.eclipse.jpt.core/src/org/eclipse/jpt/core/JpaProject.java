@@ -81,7 +81,7 @@ public interface JpaProject extends JpaNode {
 	
 	/** 
 	 * ID string used when discoversAnnotatedClasses property is changed.
-	 * @see org.eclipse.jpt.utility.internal.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener)
+	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
 	 */
 	String DISCOVERS_ANNOTATED_CLASSES_PROPERTY = "discoversAnnotatedClasses";
 	
@@ -104,7 +104,7 @@ public interface JpaProject extends JpaNode {
 	
 	/** 
 	 * ID string used when jpaFiles collection is changed.
-	 * @see org.eclipse.jpt.utility.internal.model.Model#addCollectionChangeListener(String, org.eclipse.jpt.utility.internal.model.listener.CollectionChangeListener)
+	 * @see org.eclipse.jpt.utility.model.Model#addCollectionChangeListener(String, org.eclipse.jpt.utility.model.listener.CollectionChangeListener)
 	 */
 	String JPA_FILES_COLLECTION = "jpaFiles";
 

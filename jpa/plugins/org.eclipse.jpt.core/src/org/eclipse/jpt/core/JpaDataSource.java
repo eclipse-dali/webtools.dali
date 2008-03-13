@@ -36,7 +36,7 @@ public interface JpaDataSource extends JpaNode {
 	
 	/**
 	 * ID string used when connectionProfileName property is changed
-	 * @see org.eclipse.jpt.utility.internal.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener)
+	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
 	 */
 	public static final String CONNECTION_PROFILE_NAME_PROPERTY = "connectionProfileName";
 	
@@ -48,7 +48,7 @@ public interface JpaDataSource extends JpaNode {
 	
 	/**
 	 * ID string used when connectionProfile property is changed
-	 * @see org.eclipse.jpt.utility.internal.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.internal.model.listener.PropertyChangeListener)
+	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
 	 */
 	public static final String CONNECTION_PROFILE_PROPERTY = "connectionProfile";
 	
