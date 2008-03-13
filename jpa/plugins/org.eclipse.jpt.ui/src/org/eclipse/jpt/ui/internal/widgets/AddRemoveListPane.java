@@ -13,28 +13,32 @@ import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.ui.internal.swt.TableModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.TableModelAdapter.SelectionChangeEvent;
 import org.eclipse.jpt.ui.internal.swt.TableModelAdapter.SelectionChangeListener;
-import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 
 /**
  * This implementation of the <code>AddRemovePane</code> uses a <code>Table</code>
@@ -206,24 +210,52 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		};
 	}
 
-	private ControlListener buildControlListener() {
-		return new ControlAdapter() {
-			private boolean locked;
-			@Override
-			public void controlResized(ControlEvent e) {
-				if (locked) {
-					return;
+	private ListChangeListener buildListChangeListener() {
+		return new SWTListChangeListenerWrapper(buildListChangeListener_());
+	}
+
+	private ListChangeListener buildListChangeListener_() {
+		return new ListChangeListener() {
+			public void itemsAdded(ListChangeEvent e) {
+				if (!table.isDisposed()) {
+					table.getParent().layout();
 				}
+			}
 
-				locked = true;
+			public void itemsMoved(ListChangeEvent e) {
+				if (!table.isDisposed()) {
+					table.getParent().layout();
+				}
+			}
 
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						updateColumnWidth();
-					}
-				});
+			public void itemsRemoved(ListChangeEvent e) {
+				if (!table.isDisposed()) {
+					table.getParent().layout();
+				}
+			}
+
+			public void itemsReplaced(ListChangeEvent e) {
+				if (!table.isDisposed()) {
+					table.getParent().layout();
+				}
+			}
+
+			public void listChanged(ListChangeEvent e) {
+				if (!table.isDisposed()) {
+					table.getParent().layout();
+				}
+			}
+
+			public void listCleared(ListChangeEvent e) {
+				if (!table.isDisposed()) {
+					table.getParent().layout();
+				}
 			}
 		};
+	}
+
+	private SimplePropertyValueModel<Object> buildSelectedItemHolder() {
+		return new SimplePropertyValueModel<Object>();
 	}
 
 	private PropertyChangeListener buildSelectedItemPropertyChangeListener() {
@@ -270,8 +302,87 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		};
 	}
 
-	private ITableLabelProvider buiTableLabelProvider(ILabelProvider labelProvider) {
-		return new TableLabelProvider(labelProvider);
+	private Composite buildTableContainer(Composite container) {
+
+		container = buildPane(container, buildTableContainerLayout());
+
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace   = true;
+		gridData.horizontalAlignment       = SWT.FILL;
+		gridData.verticalAlignment         = SWT.FILL;
+		container.setLayoutData(gridData);
+
+		return container;
+	}
+
+	private Layout buildTableContainerLayout() {
+		return new Layout() {
+			@Override
+			protected Point computeSize(Composite composite,
+			                            int widthHint,
+			                            int heightHint,
+			                            boolean flushCache) {
+
+				Table table = (Table) composite.getChildren()[0];
+
+				// Pack the column so we can get the right table size
+				TableColumn tableColumn = table.getColumn(0);
+				table.setRedraw(false);
+				table.setLayoutDeferred(true);
+				tableColumn.pack();
+				table.setRedraw(true);
+				table.setLayoutDeferred(false);
+
+				// Calculate the table size and adjust it with the hints
+				Point size = table.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+
+				if (widthHint != SWT.DEFAULT) {
+					size.x = widthHint;
+				}
+
+				if (heightHint != SWT.DEFAULT) {
+					size.y = heightHint;
+				}
+
+				return size;
+			}
+
+			@Override
+			protected void layout(Composite composite, boolean flushCache) {
+
+				Rectangle bounds = composite.getClientArea();
+
+				if (bounds.width > 0) {
+					Table table = (Table) composite.getChildren()[0];
+					table.setBounds(0, 0, bounds.width, bounds.height);
+					updateTableColumnWidth(table, bounds.width);
+				}
+			}
+
+			private void updateTableColumnWidth(Table table, int width) {
+
+				TableColumn tableColumn = table.getColumn(0);
+
+				// Remove the border from the width
+				width -= (table.getBorderWidth() * 2);
+
+				// Remove the scrollbar from the width if it is shown
+				if (table.getVerticalBar().isVisible()) {
+					width -= table.getVerticalBar().getSize().x;
+				}
+
+				// Use the table width if the table column is smaller, otherwise
+				// use the table column since the rows are never smaller than the
+				// smallest row
+				width = Math.max(width, tableColumn.getWidth());
+				tableColumn.setWidth(width);
+			}
+		};
+	}
+
+	private ITableLabelProvider buiTableLabelProvider(IBaseLabelProvider labelProvider) {
+		return new TableLabelProvider((ILabelProvider) labelProvider);
 	}
 
 	/*
@@ -287,21 +398,20 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	                                       String helpId) {
 
 		table = buildTable(
-			container,
-			SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.MULTI,
+			buildTableContainer(container),
+			SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.MULTI,
 			helpId
 		);
 
 		table.setHeaderVisible(false);
 		table.setLinesVisible(false);
-		table.addControlListener(buildControlListener());
 
 		TableModelAdapter model = TableModelAdapter.adapt(
 			(ListValueModel<Object>) listHolder,
-			new SimplePropertyValueModel<Object>(),
+			buildSelectedItemHolder(),
 			table,
 			buildColumnAdapter(),
-			buiTableLabelProvider((ILabelProvider) labelProvider)
+			buiTableLabelProvider(labelProvider)
 		);
 
 		model.addSelectionChangeListener(buildSelectionListener());
@@ -309,6 +419,11 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		selectedItemHolder.addPropertyChangeListener(
 			PropertyValueModel.VALUE,
 			buildSelectedItemPropertyChangeListener()
+		);
+
+		listHolder.addListChangeListener(
+			ListValueModel.LIST_VALUES,
+			buildListChangeListener()
 		);
 	}
 
@@ -356,26 +471,10 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		}
 	}
 
-	private void updateColumnWidth() {
-		if (table.isDisposed()) {
-			return;
-		}
-		if (table.getColumnCount() > 0) {
-
-			int width = table.getSize().x;
-			width -= (table.getBorderWidth() * 2);
-
-			if (table.getVerticalBar().isVisible()) {
-				width -= table.getVerticalBar().getSize().x;
-			}
-
-			table.setRedraw(false);
-			table.getColumn(0).setWidth(width);
-			table.setRedraw(true);
-			locked = false;
-		}
-	}
-
+	/**
+	 * This label provider simply delegates the rendering to the provided
+	 * <code>ILabelProvider</code>.
+	 */
 	private class TableLabelProvider extends LabelProvider
 	                                 implements ITableLabelProvider {
 
@@ -391,16 +490,6 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 		}
 
 		public String getColumnText(Object element, int columnIndex) {
-			return labelProvider.getText(element);
-		}
-
-		@Override
-		public Image getImage(Object element) {
-			return labelProvider.getImage(element);
-		}
-
-		@Override
-		public String getText(Object element) {
 			return labelProvider.getText(element);
 		}
 	}

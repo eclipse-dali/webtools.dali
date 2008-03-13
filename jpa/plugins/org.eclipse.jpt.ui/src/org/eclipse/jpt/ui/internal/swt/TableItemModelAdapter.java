@@ -16,9 +16,11 @@ import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.TableItem;
 
 /**
@@ -136,8 +138,10 @@ public class TableItemModelAdapter {
 	// ********** behavior **********
 
 	protected void tableItemChanged(int index, Object subject) {
-		updateTableItemText(index, subject);
-		updateTableItemImage(index, subject);
+		if (!this.tableItem.isDisposed()) {
+			updateTableItemText(index, subject);
+			updateTableItemImage(index, subject);
+		}
 	}
 
 	private void updateTableItemText(int index, Object subject) {
@@ -146,11 +150,19 @@ public class TableItemModelAdapter {
 			text = "";
 		}
 		this.tableItem.setText(index, text);
+		this.layoutTable();
 	}
 
 	private void updateTableItemImage(int index, Object subject) {
 		Image image = this.labelProvider.getColumnImage(subject, index);
 		this.tableItem.setImage(index, image);
+		this.layoutTable();
+	}
+
+	private void layoutTable() {
+		// Refresh the table in order to show the scrollbar if required
+		Point size = this.tableItem.getParent().getParent().computeSize(SWT.DEFAULT, SWT.DEFAULT);
+		this.tableItem.getParent().setSize(size);
 	}
 
 	// ********** dispose **********
