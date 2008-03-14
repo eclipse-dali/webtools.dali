@@ -258,4 +258,7 @@ public class XmlJoinTableImpl extends AbstractXmlBaseTable implements XmlJoinTab
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
+	public boolean isSpecified() {
+		return true;
+	}
 } // JoinTable

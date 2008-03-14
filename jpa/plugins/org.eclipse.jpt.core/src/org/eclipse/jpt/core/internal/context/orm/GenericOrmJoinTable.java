@@ -307,7 +307,7 @@ public class GenericOrmJoinTable extends AbstractOrmTable implements OrmJoinTabl
 	
 	// ****************** OrmJoinTable implementation *****************
 	public boolean isSpecified() {
-		return this.table() != null;
+		return this.table() != null && table().isSpecified();
 	}	
 	
 	public void initialize(XmlRelationshipMapping relationshipMapping) {

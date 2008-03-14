@@ -68,4 +68,5 @@ public interface XmlJoinTable extends XmlBaseTable
 	 */
 	EList<XmlJoinColumn> getInverseJoinColumns();
 
+	boolean isSpecified();
 } // JoinTable
