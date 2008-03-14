@@ -97,15 +97,15 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 	
 	protected OrderBy orderByResource() {
-		return (OrderBy) this.persistentAttributeResource.annotation(OrderBy.ANNOTATION_NAME);
+		return (OrderBy) getResourcePersistentAttribute().annotation(OrderBy.ANNOTATION_NAME);
 	}
 	
 	protected OrderBy addOrderByResource() {
-		return (OrderBy) this.persistentAttributeResource.addAnnotation(OrderBy.ANNOTATION_NAME);
+		return (OrderBy) getResourcePersistentAttribute().addAnnotation(OrderBy.ANNOTATION_NAME);
 	}
 	
 	protected void removeOrderByResource() {
-		this.persistentAttributeResource.removeAnnotation(OrderBy.ANNOTATION_NAME);
+		getResourcePersistentAttribute().removeAnnotation(OrderBy.ANNOTATION_NAME);
 	}
 	
 	public boolean isNoOrdering() {
@@ -199,17 +199,17 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		String oldMapKey = this.mapKey;
 		this.mapKey = newMapKey;
 		if (oldMapKey != newMapKey) {
-			if (this.mapKeyResource(this.persistentAttributeResource) != null) {
+			if (this.mapKeyResource(getResourcePersistentAttribute()) != null) {
 				if (newMapKey != null) {
-					this.mapKeyResource(this.persistentAttributeResource).setName(newMapKey);
+					this.mapKeyResource(getResourcePersistentAttribute()).setName(newMapKey);
 				}
 				else {
-					this.persistentAttributeResource.removeAnnotation(MapKey.ANNOTATION_NAME);				
+					getResourcePersistentAttribute().removeAnnotation(MapKey.ANNOTATION_NAME);				
 				}
 			}
 			else if (newMapKey != null) {
-				this.persistentAttributeResource.addAnnotation(MapKey.ANNOTATION_NAME);
-				mapKeyResource(this.persistentAttributeResource).setName(newMapKey);
+				getResourcePersistentAttribute().addAnnotation(MapKey.ANNOTATION_NAME);
+				mapKeyResource(getResourcePersistentAttribute()).setName(newMapKey);
 			}
 		}
 		firePropertyChanged(MultiRelationshipMapping.MAP_KEY_PROPERTY, oldMapKey, newMapKey);
@@ -238,24 +238,24 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 //	}
 
 	@Override
-	protected String defaultTargetEntity(JavaResourcePersistentAttribute persistentAttributeResource) {
-		if (!persistentAttributeResource.typeIsContainer()) {
+	protected String defaultTargetEntity(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		if (!resourcePersistentAttribute.typeIsContainer()) {
 			return null;
 		}
-		return persistentAttributeResource.getQualifiedReferenceEntityElementTypeName();
+		return resourcePersistentAttribute.getQualifiedReferenceEntityElementTypeName();
 	}
 	
 	protected abstract boolean mappedByTouches(int pos, CompilationUnit astRoot);
 
 	protected boolean mapKeyNameTouches(int pos, CompilationUnit astRoot) {
-		if (mapKeyResource(this.persistentAttributeResource) != null) {
-			return mapKeyResource(this.persistentAttributeResource).nameTouches(pos, astRoot);
+		if (mapKeyResource(getResourcePersistentAttribute()) != null) {
+			return mapKeyResource(getResourcePersistentAttribute()).nameTouches(pos, astRoot);
 		}
 		return false;
 	}
 	
-	protected MapKey mapKeyResource(JavaResourcePersistentAttribute persistentAttributeResource) {
-		return (MapKey) persistentAttributeResource.annotation(MapKey.ANNOTATION_NAME);
+	protected MapKey mapKeyResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		return (MapKey) resourcePersistentAttribute.annotation(MapKey.ANNOTATION_NAME);
 	}
 
 	public Iterator<String> candidateMapKeyNames() {
@@ -290,14 +290,14 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 	
 	@Override
-	public void initializeFromResource(JavaResourcePersistentAttribute persistentAttributeResource) {
-		super.initializeFromResource(persistentAttributeResource);
-		MapKey mapKey = this.mapKeyResource(persistentAttributeResource);
+	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.initializeFromResource(resourcePersistentAttribute);
+		MapKey mapKey = this.mapKeyResource(resourcePersistentAttribute);
 		if (mapKey != null) {
 			this.mapKey = mapKey.getName();
 		}
 		this.initializeOrderBy(this.orderByResource());
-		this.joinTable.initializeFromResource(persistentAttributeResource);
+		this.joinTable.initializeFromResource(resourcePersistentAttribute);
 	}
 	
 	@Override
@@ -322,11 +322,11 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 	
 	@Override
-	public void update(JavaResourcePersistentAttribute persistentAttributeResource) {
-		super.update(persistentAttributeResource);
-		this.updateMapKey(persistentAttributeResource);
+	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.update(resourcePersistentAttribute);
+		this.updateMapKey(resourcePersistentAttribute);
 		this.updateOrderBy(this.orderByResource());
-		this.joinTable.update(persistentAttributeResource);
+		this.joinTable.update(resourcePersistentAttribute);
 	}	
 	
 	@Override
@@ -335,8 +335,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		this.setMappedBy(this.mappedBy(relationshipMapping));
 	}
 	
-	protected void updateMapKey(JavaResourcePersistentAttribute persistentAttributeResource) {
-		MapKey mapKey = this.mapKeyResource(persistentAttributeResource);
+	protected void updateMapKey(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		MapKey mapKey = this.mapKeyResource(resourcePersistentAttribute);
 		if (mapKey != null) {
 			setMapKey_(mapKey.getName());
 		}

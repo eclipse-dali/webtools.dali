@@ -14,17 +14,18 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 
-public class GenericJavaNullAttributeMapping extends AbstractJavaAttributeMapping
+public class GenericJavaNullAttributeMapping extends AbstractJavaAttributeMapping<JavaResourceNode>
 {
 	public GenericJavaNullAttributeMapping(JavaPersistentAttribute parent) {
 		super(parent);
 	}
-
+	
 	public String getKey() {
 		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
 	}
@@ -35,6 +36,11 @@ public class GenericJavaNullAttributeMapping extends AbstractJavaAttributeMappin
 	
 	public Iterator<String> correspondingAnnotationNames() {
 		return EmptyIterator.instance();
+	}
+	
+	@Override
+	protected JavaResourceNode mappingResource() {
+		return null;
 	}
 	
 	@Override

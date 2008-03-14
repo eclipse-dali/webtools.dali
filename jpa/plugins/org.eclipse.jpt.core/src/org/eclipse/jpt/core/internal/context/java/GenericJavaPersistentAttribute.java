@@ -37,7 +37,7 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 
 	protected JavaAttributeMapping specifiedMapping;
 
-	protected JavaResourcePersistentAttribute persistentAttributeResource;
+	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
 
 	public GenericJavaPersistentAttribute(JavaPersistentType parent) {
 		super(parent);
@@ -48,14 +48,15 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	}
 
 	public void initializeFromResource(JavaResourcePersistentAttribute persistentAttributeResource) {
-		this.persistentAttributeResource = persistentAttributeResource;
+		this.resourcePersistentAttribute = persistentAttributeResource;
 		this.name = this.name(persistentAttributeResource);
 		initializeDefaultMapping(persistentAttributeResource);
 		initializeSpecifiedMapping(persistentAttributeResource);
 	}
 	
 	protected void initializeDefaultMapping(JavaResourcePersistentAttribute persistentAttributeResource) {
-		this.defaultMapping = createDefaultJavaAttributeMapping(persistentAttributeResource);
+		this.defaultMapping = jpaPlatform().buildDefaultJavaAttributeMapping(this);
+		this.defaultMapping.initializeFromResource(persistentAttributeResource);
 	}
 
 	protected void initializeSpecifiedMapping(JavaResourcePersistentAttribute persistentAttributeResource) {
@@ -64,7 +65,7 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	}
 	
 	public JavaResourcePersistentAttribute getResourcePersistentAttribute() {
-		return this.persistentAttributeResource;
+		return this.resourcePersistentAttribute;
 	}
 	
 	public JavaPersistentType persistentType() {
@@ -167,10 +168,10 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 
 		this.specifiedMapping = newMapping;	
 		if (newMapping != null) {
-			this.persistentAttributeResource.setMappingAnnotation(newMapping.annotationName());
+			this.resourcePersistentAttribute.setMappingAnnotation(newMapping.annotationName());
 		}
 		else {
-			this.persistentAttributeResource.setMappingAnnotation(null);			
+			this.resourcePersistentAttribute.setMappingAnnotation(null);			
 		}
 		firePropertyChanged(PersistentAttribute.SPECIFIED_MAPPING_PROPERTY, oldMapping, newMapping);
 		
@@ -181,7 +182,7 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 			}
 			
 			for (String annotationName : annotationsToRemove) {
-				this.persistentAttributeResource.removeAnnotation(annotationName);
+				this.resourcePersistentAttribute.removeAnnotation(annotationName);
 			}
 		}
 	}
@@ -206,7 +207,7 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 
 
 	public TextRange fullTextRange(CompilationUnit astRoot) {
-		return this.persistentAttributeResource.textRange(astRoot);
+		return this.resourcePersistentAttribute.textRange(astRoot);
 	}
 
 	public TextRange validationTextRange(CompilationUnit astRoot) {
@@ -214,53 +215,56 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 	}
 
 	public TextRange selectionTextRange(CompilationUnit astRoot) {
-		return this.persistentAttributeResource.nameTextRange(astRoot);
+		return this.resourcePersistentAttribute.nameTextRange(astRoot);
 	}
 	
 	public TextRange selectionTextRange() {
-		return selectionTextRange(this.persistentAttributeResource.getMember().astRoot());
+		return selectionTextRange(this.resourcePersistentAttribute.getMember().astRoot());
 	}
 	
 
-	public void update(JavaResourcePersistentAttribute persistentAttributeResource) {
-		this.persistentAttributeResource = persistentAttributeResource;
-		this.setName(this.name(persistentAttributeResource));
-		this.updateDefaultMapping(persistentAttributeResource);
-		this.updateSpecifiedMapping(persistentAttributeResource);
+	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		this.resourcePersistentAttribute = resourcePersistentAttribute;
+		this.setName(this.name(resourcePersistentAttribute));
+		this.updateDefaultMapping(resourcePersistentAttribute);
+		this.updateSpecifiedMapping(resourcePersistentAttribute);
 	}
 	
-	protected String name(JavaResourcePersistentAttribute persistentAttributeResource) {
-		return persistentAttributeResource.getName();	
+	protected String name(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		return resourcePersistentAttribute.getName();	
 	}
 	
 	public String specifiedMappingAnnotationName() {
 		return (this.specifiedMapping == null) ? null : this.specifiedMapping.annotationName();
 	}
 	
-	protected void updateSpecifiedMapping(JavaResourcePersistentAttribute persistentAttributeResource) {
-		String javaMappingAnnotationName = this.javaMappingAnnotationName(persistentAttributeResource);
+	protected void updateSpecifiedMapping(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		String javaMappingAnnotationName = this.javaMappingAnnotationName(resourcePersistentAttribute);
 		if (specifiedMappingAnnotationName() != javaMappingAnnotationName) {
-			setSpecifiedMapping(createJavaAttributeMappingFromAnnotation(javaMappingAnnotationName, persistentAttributeResource));
+			setSpecifiedMapping(createJavaAttributeMappingFromAnnotation(javaMappingAnnotationName, resourcePersistentAttribute));
 		}
 		else {
 			if (getSpecifiedMapping() != null) {
-				getSpecifiedMapping().update(persistentAttributeResource);
+				getSpecifiedMapping().update(resourcePersistentAttribute);
 			}
 		}
 	}
 	
-	protected void updateDefaultMapping(JavaResourcePersistentAttribute persistentAttributeResource) {
+	protected void updateDefaultMapping(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		String defaultMappingKey = jpaPlatform().defaultJavaAttributeMappingKey(this);
 		if (getDefaultMapping().getKey() != defaultMappingKey) {
-			setDefaultMapping(createDefaultJavaAttributeMapping(persistentAttributeResource));
+			JavaAttributeMapping oldDefaultMapping = this.defaultMapping;
+			this.defaultMapping = jpaPlatform().buildDefaultJavaAttributeMapping(this);
+			this.defaultMapping.initializeFromResource(resourcePersistentAttribute);
+			firePropertyChanged(PersistentAttribute.DEFAULT_MAPPING_PROPERTY, oldDefaultMapping, this.defaultMapping);
 		}
 		else {
-			getDefaultMapping().update(persistentAttributeResource);
+			getDefaultMapping().update(resourcePersistentAttribute);
 		}
 	}
 	
-	protected String javaMappingAnnotationName(JavaResourcePersistentAttribute persistentAttributeResource) {
-		Annotation mappingAnnotation = (Annotation) persistentAttributeResource.mappingAnnotation();
+	protected String javaMappingAnnotationName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		Annotation mappingAnnotation = (Annotation) resourcePersistentAttribute.mappingAnnotation();
 		if (mappingAnnotation != null) {
 			return mappingAnnotation.getAnnotationName();
 		}
@@ -274,26 +278,20 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		return jpaPlatform().buildJavaAttributeMappingFromMappingKey(key, this);
 	}
 
-	protected JavaAttributeMapping createJavaAttributeMappingFromAnnotation(String annotationName, JavaResourcePersistentAttribute persistentAttributeResource) {
+	protected JavaAttributeMapping createJavaAttributeMappingFromAnnotation(String annotationName, JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		if (annotationName == null) {
 			return null;
 		}
 		JavaAttributeMapping mapping = jpaPlatform().buildJavaAttributeMappingFromAnnotation(annotationName, this);
-		mapping.initializeFromResource(persistentAttributeResource);
+		mapping.initializeFromResource(resourcePersistentAttribute);
 		return mapping;
-	}
-
-	protected JavaAttributeMapping createDefaultJavaAttributeMapping(JavaResourcePersistentAttribute persistentAttributeResource) {		
-		JavaAttributeMapping defaultMapping = jpaPlatform().buildDefaultJavaAttributeMapping(this);
-		defaultMapping.initializeFromResource(persistentAttributeResource);
-		return defaultMapping;
 	}
 
 	/**
 	 * the mapping might be "default", but it still might be a "null" mapping...
 	 */
-	public boolean mappingIsDefault() {
-		return this.specifiedMapping == null;
+	public boolean mappingIsDefault(JavaAttributeMapping mapping) {
+		return this.defaultMapping == mapping;
 	}
 
 	@Override
@@ -317,7 +315,6 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		else if (this.defaultMapping != null) {
 			this.defaultMapping.addToMessages(messages, astRoot);
 		}
-		
 	}
 	
 	@Override
@@ -325,5 +322,4 @@ public class GenericJavaPersistentAttribute extends AbstractJavaJpaContextNode
 		super.toString(sb);
 		sb.append(getName());
 	}
-	
 }

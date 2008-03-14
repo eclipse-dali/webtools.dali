@@ -55,11 +55,6 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 	public String getKey() {
 		return MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
-	
-	@Override
-	protected OneToOne relationshipMapping() {
-		return (OneToOne) this.persistentAttributeResource.mappingAnnotation();
-	}
 
 	public boolean isRelationshipOwner() {
 		return getMappedBy() == null;
@@ -72,7 +67,7 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 	public void setMappedBy(String newMappedBy) {
 		String oldMappedBy = this.mappedBy;
 		this.mappedBy = newMappedBy;
-		this.relationshipMapping().setMappedBy(newMappedBy);
+		this.mappingResource().setMappedBy(newMappedBy);
 		firePropertyChanged(NonOwningMapping.MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
 	}
 
@@ -83,15 +78,15 @@ public class GenericJavaOneToOneMapping extends AbstractJavaSingleRelationshipMa
 
 	@Override
 	protected void setOptionalOnResourceModel(Boolean newOptional) {
-		this.relationshipMapping().setOptional(newOptional);
+		this.mappingResource().setOptional(newOptional);
 	}
 	
 	public TextRange mappedByTextRange(CompilationUnit astRoot) {
-		return this.relationshipMapping().mappedByTextRange(astRoot);
+		return this.mappingResource().mappedByTextRange(astRoot);
 	}
 
 	public boolean mappedByTouches(int pos, CompilationUnit astRoot) {
-		return this.relationshipMapping().mappedByTouches(pos, astRoot);
+		return this.mappingResource().mappedByTouches(pos, astRoot);
 	}
 
 	@Override

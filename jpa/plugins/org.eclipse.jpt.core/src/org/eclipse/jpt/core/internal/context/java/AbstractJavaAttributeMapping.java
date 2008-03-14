@@ -26,34 +26,38 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public abstract class AbstractJavaAttributeMapping extends AbstractJavaJpaContextNode
+public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> extends AbstractJavaJpaContextNode
 	implements JavaAttributeMapping
 {
-	protected JavaResourcePersistentAttribute persistentAttributeResource;
+	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
 	
 
 	protected AbstractJavaAttributeMapping(JavaPersistentAttribute parent) {
 		super(parent);
 	}
-
-	public void initializeFromResource(JavaResourcePersistentAttribute persistentAttributeResource) {
-		this.persistentAttributeResource = persistentAttributeResource;
-	}
-
-	protected JavaResourceNode mappingResource() {
-		return this.persistentAttributeResource.mappingAnnotation(annotationName());
+	
+	@SuppressWarnings("unchecked")
+	protected T mappingResource() {
+		if (isDefault()) {
+			return (T) this.resourcePersistentAttribute.nullMappingAnnotation(annotationName());
+		}
+		return (T) this.resourcePersistentAttribute.mappingAnnotation(annotationName());
 	}
 	
 	public GenericJavaPersistentAttribute persistentAttribute() {
 		return (GenericJavaPersistentAttribute) this.parent();
 	}
 
+	protected JavaResourcePersistentAttribute getResourcePersistentAttribute() {
+		return this.resourcePersistentAttribute;
+	}
+	
 	/**
 	 * the persistent attribute can tell whether there is a "specified" mapping
 	 * or a "default" one
 	 */
 	public boolean isDefault() {
-		return this.persistentAttribute().mappingIsDefault();
+		return this.persistentAttribute().mappingIsDefault(this);
 	}
 
 	protected boolean embeddableOwned() {
@@ -80,11 +84,7 @@ public abstract class AbstractJavaAttributeMapping extends AbstractJavaJpaContex
 		TextRange textRange = this.mappingResource().textRange(astRoot);
 		return (textRange != null) ? textRange : this.persistentAttribute().validationTextRange(astRoot);
 	}
-
-	public void update(JavaResourcePersistentAttribute persistentAttributeResource) {
-		this.persistentAttributeResource = persistentAttributeResource;
-	}
-
+	
 	public String primaryKeyColumnName() {
 		return null;
 	}
@@ -100,6 +100,25 @@ public abstract class AbstractJavaAttributeMapping extends AbstractJavaJpaContex
 	public boolean isIdMapping() {
 		return false;
 	}
+
+	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		this.resourcePersistentAttribute = resourcePersistentAttribute;
+		initialize(mappingResource());
+	}
+
+	protected void initialize(T mappingResource) {
+		
+	}
+
+	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		this.resourcePersistentAttribute = resourcePersistentAttribute;
+		this.update(mappingResource());
+	}
+	
+	protected void update(T mappingResource) {
+		
+	}
+
 	
 	//************ Validation *************************
 	
@@ -115,11 +134,11 @@ public abstract class AbstractJavaAttributeMapping extends AbstractJavaJpaContex
 	protected void addModifierMessages(List<IMessage> messages, CompilationUnit astRoot) {
 		GenericJavaPersistentAttribute attribute = this.persistentAttribute();
 		if (attribute.getMapping().getKey() != MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY
-				&& persistentAttributeResource.isForField()) {
+				&& this.resourcePersistentAttribute.isForField()) {
 			int flags;
 			
 			try {
-				flags = persistentAttributeResource.getMember().getJdtMember().getFlags();
+				flags = this.resourcePersistentAttribute.getMember().getJdtMember().getFlags();
 			} catch (JavaModelException jme) { 
 				/* no error to log, in that case */ 
 				return;

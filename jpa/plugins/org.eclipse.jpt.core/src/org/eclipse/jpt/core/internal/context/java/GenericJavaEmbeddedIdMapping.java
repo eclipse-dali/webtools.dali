@@ -44,7 +44,7 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public class GenericJavaEmbeddedIdMapping extends AbstractJavaAttributeMapping
+public class GenericJavaEmbeddedIdMapping extends AbstractJavaAttributeMapping<EmbeddedId>
 	implements JavaEmbeddedIdMapping
 {
 	protected final List<JavaAttributeOverride> specifiedAttributeOverrides;
@@ -120,7 +120,7 @@ public class GenericJavaEmbeddedIdMapping extends AbstractJavaAttributeMapping
 	public JavaAttributeOverride addSpecifiedAttributeOverride(int index) {
 		JavaAttributeOverride attributeOverride = jpaFactory().buildJavaAttributeOverride(this, this);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
-		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) this.persistentAttributeResource.addAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
+		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) getResourcePersistentAttribute().addAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		attributeOverride.initializeFromResource(attributeOverrideResource);
 		this.fireItemAdded(EmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
@@ -143,12 +143,12 @@ public class GenericJavaEmbeddedIdMapping extends AbstractJavaAttributeMapping
 		JavaAttributeOverride defaultAttributeOverride = null;
 		if (removedAttributeOverride.getName() != null) {
 			if (CollectionTools.contains(allOverridableAttributeNames(), removedAttributeOverride.getName())) {
-				defaultAttributeOverride = createAttributeOverride(new NullAttributeOverride(this.persistentAttributeResource, removedAttributeOverride.getName()));
+				defaultAttributeOverride = createAttributeOverride(new NullAttributeOverride(getResourcePersistentAttribute(), removedAttributeOverride.getName()));
 				this.defaultAttributeOverrides.add(defaultAttributeOverride);
 			}
 		}
 		
-		this.persistentAttributeResource.removeAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
+		getResourcePersistentAttribute().removeAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		fireItemRemoved(EmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, removedAttributeOverride);
 	
 		if (defaultAttributeOverride != null) {
@@ -162,7 +162,7 @@ public class GenericJavaEmbeddedIdMapping extends AbstractJavaAttributeMapping
 
 	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedAttributeOverrides, targetIndex, sourceIndex);
-		this.persistentAttributeResource.move(targetIndex, sourceIndex, AttributeOverrides.ANNOTATION_NAME);
+		getResourcePersistentAttribute().move(targetIndex, sourceIndex, AttributeOverrides.ANNOTATION_NAME);
 		fireItemMoved(EmbeddedIdMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 	
@@ -214,15 +214,15 @@ public class GenericJavaEmbeddedIdMapping extends AbstractJavaAttributeMapping
 	
 	
 	@Override
-	public void initializeFromResource(JavaResourcePersistentAttribute persistentAttributeResource) {
-		super.initializeFromResource(persistentAttributeResource);
-		this.initializeAttributeOverrides(persistentAttributeResource);
-		this.initializeDefaultAttributeOverrides(persistentAttributeResource);
+	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.initializeFromResource(resourcePersistentAttribute);
+		this.initializeAttributeOverrides(resourcePersistentAttribute);
+		this.initializeDefaultAttributeOverrides(resourcePersistentAttribute);
 		this.embeddable = embeddableFor(persistentAttribute());
 	}
 	
-	protected void initializeAttributeOverrides(JavaResourcePersistentAttribute persistentAttributeResource) {
-		ListIterator<JavaResourceNode> annotations = persistentAttributeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
+	protected void initializeAttributeOverrides(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		ListIterator<JavaResourceNode> annotations = resourcePersistentAttribute.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
 			JavaAttributeOverride attributeOverride = jpaFactory().buildJavaAttributeOverride(this, this);
@@ -231,26 +231,26 @@ public class GenericJavaEmbeddedIdMapping extends AbstractJavaAttributeMapping
 		}
 	}
 	
-	protected void initializeDefaultAttributeOverrides(JavaResourcePersistentAttribute persistentAttributeResource) {
+	protected void initializeDefaultAttributeOverrides(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		for (Iterator<String> i = allOverridableAttributeNames(); i.hasNext(); ) {
 			String attributeName = i.next();
 			JavaAttributeOverride attributeOverride = attributeOverrideNamed(attributeName);
 			if (attributeOverride == null) {
-				attributeOverride = createAttributeOverride(new NullAttributeOverride(persistentAttributeResource, attributeName));
+				attributeOverride = createAttributeOverride(new NullAttributeOverride(resourcePersistentAttribute, attributeName));
 				this.defaultAttributeOverrides.add(attributeOverride);
 			}
 		}
 	}	@Override
-	public void update(JavaResourcePersistentAttribute persistentAttributeResource) {
-		super.update(persistentAttributeResource);
+	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.update(resourcePersistentAttribute);
 		this.embeddable = embeddableFor(persistentAttribute());
-		this.updateSpecifiedAttributeOverrides(persistentAttributeResource);
-		this.updateDefaultAttributeOverrides(persistentAttributeResource);
+		this.updateSpecifiedAttributeOverrides(resourcePersistentAttribute);
+		this.updateDefaultAttributeOverrides(resourcePersistentAttribute);
 		
 	}
-	protected void updateSpecifiedAttributeOverrides(JavaResourcePersistentAttribute persistentAttributeResource) {
+	protected void updateSpecifiedAttributeOverrides(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		ListIterator<JavaAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
-		ListIterator<JavaResourceNode> resourceAttributeOverrides = persistentAttributeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
+		ListIterator<JavaResourceNode> resourceAttributeOverrides = resourcePersistentAttribute.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverrides.ANNOTATION_NAME);
 		
 		while (attributeOverrides.hasNext()) {
 			JavaAttributeOverride attributeOverride = attributeOverrides.next();
@@ -273,16 +273,16 @@ public class GenericJavaEmbeddedIdMapping extends AbstractJavaAttributeMapping
 		return attributeOverride;
 	}
 	
-	protected void updateDefaultAttributeOverrides(JavaResourcePersistentAttribute persistentAttributeResource) {
+	protected void updateDefaultAttributeOverrides(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		for (Iterator<String> i = allOverridableAttributeNames(); i.hasNext(); ) {
 			String attributeName = i.next();
 			JavaAttributeOverride attributeOverride = attributeOverrideNamed(attributeName);
 			if (attributeOverride == null) {
-				attributeOverride = createAttributeOverride(new NullAttributeOverride(persistentAttributeResource, attributeName));
+				attributeOverride = createAttributeOverride(new NullAttributeOverride(resourcePersistentAttribute, attributeName));
 				addDefaultAttributeOverride(attributeOverride);
 			}
 			else if (attributeOverride.isVirtual()) {
-				attributeOverride.getColumn().update(new NullColumn(persistentAttributeResource));
+				attributeOverride.getColumn().update(new NullColumn(resourcePersistentAttribute));
 			}
 		}
 		

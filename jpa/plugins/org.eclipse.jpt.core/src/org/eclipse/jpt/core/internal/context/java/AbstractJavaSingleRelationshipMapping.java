@@ -115,7 +115,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		}
 		JavaJoinColumn joinColumn = jpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
 		this.specifiedJoinColumns.add(index, joinColumn);
-		JoinColumnAnnotation joinColumnResource = (JoinColumnAnnotation) this.persistentAttributeResource.addAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
+		JoinColumnAnnotation joinColumnResource = (JoinColumnAnnotation) getResourcePersistentAttribute().addAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
 		joinColumn.initializeFromResource(joinColumnResource);
 		this.fireItemAdded(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
 		if (oldDefaultJoinColumn != null) {
@@ -138,9 +138,9 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 			//create the defaultJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
-			this.defaultJoinColumn = buildJoinColumn(new NullJoinColumn(this.persistentAttributeResource));
+			this.defaultJoinColumn = buildJoinColumn(new NullJoinColumn(getResourcePersistentAttribute()));
 		}
-		this.persistentAttributeResource.removeAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
+		getResourcePersistentAttribute().removeAnnotation(index, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
 		fireItemRemoved(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 		if (this.defaultJoinColumn != null) {
 			//fire change notification if a defaultJoinColumn was created above
@@ -154,7 +154,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedJoinColumns, targetIndex, sourceIndex);
-		this.persistentAttributeResource.move(targetIndex, sourceIndex, JoinColumns.ANNOTATION_NAME);
+		getResourcePersistentAttribute().move(targetIndex, sourceIndex, JoinColumns.ANNOTATION_NAME);
 		fireItemMoved(SingleRelationshipMapping.SPECIFIED_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
 
@@ -181,10 +181,10 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 
 
 	@Override
-	public void initializeFromResource(JavaResourcePersistentAttribute persistentAttributeResource) {
-		super.initializeFromResource(persistentAttributeResource);
-		this.initializeSpecifiedJoinColumns(persistentAttributeResource);
-		this.initializeDefaultJoinColumn(persistentAttributeResource);
+	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.initializeFromResource(resourcePersistentAttribute);
+		this.initializeSpecifiedJoinColumns(resourcePersistentAttribute);
+		this.initializeDefaultJoinColumn(resourcePersistentAttribute);
 	}
 	
 	@Override
@@ -193,8 +193,8 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		this.specifiedOptional = this.specifiedOptional(relationshipMapping);
 	}
 	
-	protected void initializeSpecifiedJoinColumns(JavaResourcePersistentAttribute persistentAttributeResource) {
-		ListIterator<JavaResourceNode> annotations = persistentAttributeResource.annotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
+	protected void initializeSpecifiedJoinColumns(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		ListIterator<JavaResourceNode> annotations = resourcePersistentAttribute.annotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
 			this.specifiedJoinColumns.add(buildJoinColumn((JoinColumnAnnotation) annotations.next()));
@@ -205,19 +205,19 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		return !containsSpecifiedJoinColumns() && isRelationshipOwner();
 	}
 	
-	protected void initializeDefaultJoinColumn(JavaResourcePersistentAttribute persistentAttributeResource) {
+	protected void initializeDefaultJoinColumn(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		if (!shouldBuildDefaultJoinColumn()) {
 			return;
 		}
-		this.defaultJoinColumn = buildJoinColumn(new NullJoinColumn(persistentAttributeResource));
+		this.defaultJoinColumn = buildJoinColumn(new NullJoinColumn(resourcePersistentAttribute));
 	}	
 	
 	
 	@Override
-	public void update(JavaResourcePersistentAttribute persistentAttributeResource) {
-		super.update(persistentAttributeResource);
-		this.updateSpecifiedJoinColumns(persistentAttributeResource);
-		this.updateDefaultJoinColumn(persistentAttributeResource);
+	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.update(resourcePersistentAttribute);
+		this.updateSpecifiedJoinColumns(resourcePersistentAttribute);
+		this.updateDefaultJoinColumn(resourcePersistentAttribute);
 	}
 	
 	@Override
@@ -229,9 +229,9 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	protected abstract Boolean specifiedOptional(T relationshipMapping);
 	
 	
-	protected void updateSpecifiedJoinColumns(JavaResourcePersistentAttribute persistentAttributeResource) {
+	protected void updateSpecifiedJoinColumns(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		ListIterator<JavaJoinColumn> joinColumns = specifiedJoinColumns();
-		ListIterator<JavaResourceNode> resourceJoinColumns = persistentAttributeResource.annotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
+		ListIterator<JavaResourceNode> resourceJoinColumns = resourcePersistentAttribute.annotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumns.ANNOTATION_NAME);
 		
 		while (joinColumns.hasNext()) {
 			JavaJoinColumn joinColumn = joinColumns.next();
@@ -248,16 +248,16 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		}
 	}
 	
-	protected void updateDefaultJoinColumn(JavaResourcePersistentAttribute persistentAttributeResource) {
+	protected void updateDefaultJoinColumn(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		if (!shouldBuildDefaultJoinColumn()) {
 			setDefaultJoinColumn(null);
 			return;
 		}
 		if (getDefaultJoinColumn() == null) {
-			this.setDefaultJoinColumn(buildJoinColumn(new NullJoinColumn(persistentAttributeResource)));
+			this.setDefaultJoinColumn(buildJoinColumn(new NullJoinColumn(resourcePersistentAttribute)));
 		}
 		else {
-			this.defaultJoinColumn.update(new NullJoinColumn(persistentAttributeResource));
+			this.defaultJoinColumn.update(new NullJoinColumn(resourcePersistentAttribute));
 		}
 	}	
 
@@ -275,11 +275,11 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	 * eliminate any "container" types
 	 */
 	@Override
-	protected String defaultTargetEntity(JavaResourcePersistentAttribute persistentAttributeResource) {
-		if (persistentAttributeResource.typeIsContainer()) {
+	protected String defaultTargetEntity(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		if (resourcePersistentAttribute.typeIsContainer()) {
 			return null;
 		}
-		return persistentAttributeResource.getQualifiedReferenceEntityTypeName();
+		return resourcePersistentAttribute.getQualifiedReferenceEntityTypeName();
 	}
 
 	@Override

@@ -48,22 +48,17 @@ public class GenericJavaOneToManyMapping extends AbstractJavaMultiRelationshipMa
 	public String annotationName() {
 		return OneToMany.ANNOTATION_NAME;
 	}
-	
-	@Override
-	protected OneToMany relationshipMapping() {
-		return (OneToMany) this.persistentAttributeResource.mappingAnnotation();
-	}
 
 	// ********** JavaMultiRelationshipMapping implementation **********
 
 	@Override
 	protected boolean mappedByTouches(int pos, CompilationUnit astRoot) {
-		return this.relationshipMapping().mappedByTouches(pos, astRoot);
+		return this.mappingResource().mappedByTouches(pos, astRoot);
 	}
 
 	@Override
 	protected void setMappedByOnResourceModel(String mappedBy) {
-		this.relationshipMapping().setMappedBy(mappedBy);
+		this.mappingResource().setMappedBy(mappedBy);
 	}
 	
 	@Override
@@ -80,7 +75,7 @@ public class GenericJavaOneToManyMapping extends AbstractJavaMultiRelationshipMa
 
 	@Override
 	public TextRange mappedByTextRange(CompilationUnit astRoot) {
-		return this.relationshipMapping().mappedByTextRange(astRoot);
+		return this.mappingResource().mappedByTextRange(astRoot);
 	}
 	
 	@Override

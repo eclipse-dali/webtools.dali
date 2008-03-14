@@ -37,7 +37,7 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping implements JavaBasicMapping
+public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<Basic> implements JavaBasicMapping
 {
 	protected FetchType specifiedFetch;
 
@@ -61,32 +61,30 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping implem
 	}
 
 	@Override
-	public void initializeFromResource(JavaResourcePersistentAttribute persistentAttributeResource) {
-		super.initializeFromResource(persistentAttributeResource);
+	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.initializeFromResource(resourcePersistentAttribute);
 		this.column.initializeFromResource(this.columnResource());
-		Basic basicResource = this.mappingResource();
-		this.specifiedFetch = this.specifiedFetchType(basicResource);
-		this.specifiedOptional = this.specifiedOptional(basicResource);
 		this.specifiedEnumerated = this.specifiedEnumerated(this.enumeratedResource());
-		this.lob = this.lob(persistentAttributeResource);
+		this.lob = this.lob(resourcePersistentAttribute);
 		this.temporal = this.temporal(this.temporalResource());
 	}
 	
 	@Override
-	protected Basic mappingResource() {
-		return (Basic) this.persistentAttributeResource.nonNullMappingAnnotation(annotationName());
+	protected void initialize(Basic basicResource) {
+		this.specifiedFetch = this.specifiedFetchType(basicResource);
+		this.specifiedOptional = this.specifiedOptional(basicResource);
 	}
 	
 	protected Enumerated enumeratedResource() {
-		return (Enumerated) this.persistentAttributeResource.nonNullAnnotation(Enumerated.ANNOTATION_NAME);
+		return (Enumerated) getResourcePersistentAttribute().nonNullAnnotation(Enumerated.ANNOTATION_NAME);
 	}
 	
 	protected Temporal temporalResource() {
-		return (Temporal) this.persistentAttributeResource.nonNullAnnotation(Temporal.ANNOTATION_NAME);
+		return (Temporal) getResourcePersistentAttribute().nonNullAnnotation(Temporal.ANNOTATION_NAME);
 	}
 
 	public ColumnAnnotation columnResource() {
-		return (ColumnAnnotation) this.persistentAttributeResource.nonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+		return (ColumnAnnotation) getResourcePersistentAttribute().nonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 	
 	//************** IJavaAttributeMapping implementation ***************
@@ -170,6 +168,11 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping implem
 		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
 	}
 
+	protected void setSpecifiedOptional_(Boolean newSpecifiedOptional) {
+		Boolean oldOptional = this.specifiedOptional;
+		this.specifiedOptional = newSpecifiedOptional;
+		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
+	}
 
 	public boolean isLob() {
 		return this.lob;
@@ -179,13 +182,13 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping implem
 		boolean oldLob = this.lob;
 		this.lob = newLob;
 		if (newLob) {
-			if (lobResource(this.persistentAttributeResource) == null) {
-				this.persistentAttributeResource.addAnnotation(Lob.ANNOTATION_NAME);
+			if (lobResource(getResourcePersistentAttribute()) == null) {
+				getResourcePersistentAttribute().addAnnotation(Lob.ANNOTATION_NAME);
 			}
 		}
 		else {
-			if (lobResource(this.persistentAttributeResource) != null) {
-				this.persistentAttributeResource.removeAnnotation(Lob.ANNOTATION_NAME);
+			if (lobResource(getResourcePersistentAttribute()) != null) {
+				getResourcePersistentAttribute().removeAnnotation(Lob.ANNOTATION_NAME);
 			}
 		}
 		firePropertyChanged(BasicMapping.LOB_PROPERTY, oldLob, newLob);
@@ -246,17 +249,19 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping implem
 	}
 
 	@Override
-	public void update(JavaResourcePersistentAttribute persistentAttributeResource) {
-		super.update(persistentAttributeResource);
+	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.update(resourcePersistentAttribute);
 		this.column.update(this.columnResource());
-		Basic basicResource = this.mappingResource();
-		this.setSpecifiedFetch_(this.specifiedFetchType(basicResource));
-		this.setSpecifiedOptional(this.specifiedOptional(basicResource));
 		this.setSpecifiedEnumerated_(this.specifiedEnumerated(this.enumeratedResource()));
-		this.setLob(this.lob(persistentAttributeResource));
+		this.setLob(this.lob(resourcePersistentAttribute));
 		this.setTemporal_(this.temporal(this.temporalResource()));
 	}
 	
+	@Override
+	protected void update(Basic basicResource) {
+		this.setSpecifiedFetch_(this.specifiedFetchType(basicResource));
+		this.setSpecifiedOptional_(this.specifiedOptional(basicResource));
+	}
 	
 	protected FetchType specifiedFetchType(Basic basic) {
 		return FetchType.fromJavaResourceModel(basic.getFetch());
@@ -270,12 +275,12 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping implem
 		return EnumType.fromJavaResourceModel(enumerated.getValue());
 	}
 	
-	protected boolean lob(JavaResourcePersistentAttribute persistentAttributeResource) {
-		return lobResource(persistentAttributeResource) != null;
+	protected boolean lob(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		return lobResource(resourcePersistentAttribute) != null;
 	}
 	
-	protected Lob lobResource(JavaResourcePersistentAttribute persistentAttributeResource) {
-		return (Lob) persistentAttributeResource.annotation(Lob.ANNOTATION_NAME);
+	protected Lob lobResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		return (Lob) resourcePersistentAttribute.annotation(Lob.ANNOTATION_NAME);
 	}
 	
 	protected TemporalType temporal(Temporal temporal) {

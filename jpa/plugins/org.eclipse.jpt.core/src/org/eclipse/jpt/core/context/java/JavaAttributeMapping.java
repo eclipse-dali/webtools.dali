@@ -26,9 +26,9 @@ public interface JavaAttributeMapping extends AttributeMapping, JavaJpaContextNo
 {
 	JavaPersistentAttribute persistentAttribute();
 	
-	void initializeFromResource(JavaResourcePersistentAttribute persistentAttributeResource);
+	void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute);
 
-	void update(JavaResourcePersistentAttribute persistentAttributeResource);
+	void update(JavaResourcePersistentAttribute resourcePersistentAttribute);
 	
 	String annotationName();
 	

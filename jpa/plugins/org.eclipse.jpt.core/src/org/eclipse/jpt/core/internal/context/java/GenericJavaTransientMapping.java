@@ -20,7 +20,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public class GenericJavaTransientMapping extends AbstractJavaAttributeMapping
+public class GenericJavaTransientMapping extends AbstractJavaAttributeMapping<Transient>
 	implements JavaTransientMapping
 {
 	public GenericJavaTransientMapping(JavaPersistentAttribute parent) {

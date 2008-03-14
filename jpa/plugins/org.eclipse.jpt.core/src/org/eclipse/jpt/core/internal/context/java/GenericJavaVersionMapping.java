@@ -30,7 +30,7 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping implements JavaVersionMapping
+public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Version> implements JavaVersionMapping
 {
 	protected final JavaColumn column;
 	
@@ -46,18 +46,18 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping impl
 	}
 	
 	@Override
-	public void initializeFromResource(JavaResourcePersistentAttribute persistentAttributeResource) {
-		super.initializeFromResource(persistentAttributeResource);
+	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.initializeFromResource(resourcePersistentAttribute);
 		this.column.initializeFromResource(this.columnResource());
 		this.temporal = this.temporal(this.temporalResource());
 	}
 	
 	protected Temporal temporalResource() {
-		return (Temporal) this.persistentAttributeResource.nonNullAnnotation(Temporal.ANNOTATION_NAME);
+		return (Temporal) getResourcePersistentAttribute().nonNullAnnotation(Temporal.ANNOTATION_NAME);
 	}
 	
 	public ColumnAnnotation columnResource() {
-		return (ColumnAnnotation) this.persistentAttributeResource.nonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+		return (ColumnAnnotation) getResourcePersistentAttribute().nonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
 	//************** IJavaAttributeMapping implementation ***************
@@ -104,8 +104,8 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping impl
 	}
 
 	@Override
-	public void update(JavaResourcePersistentAttribute persistentAttributeResource) {
-		super.update(persistentAttributeResource);
+	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.update(resourcePersistentAttribute);
 		this.column.update(this.columnResource());
 		this.setTemporal(this.temporal(this.temporalResource()));
 	}

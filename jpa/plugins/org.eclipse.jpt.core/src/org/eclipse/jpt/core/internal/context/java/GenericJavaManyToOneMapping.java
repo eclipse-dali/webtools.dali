@@ -46,18 +46,13 @@ public class GenericJavaManyToOneMapping extends AbstractJavaSingleRelationshipM
 	}
 	
 	@Override
-	protected ManyToOne relationshipMapping() {
-		return (ManyToOne) this.persistentAttributeResource.mappingAnnotation();
-	}
-	
-	@Override
 	public boolean isOverridableAssociationMapping() {
 		return true;
 	}
 	
 	@Override
 	protected void setOptionalOnResourceModel(Boolean newOptional) {
-		this.relationshipMapping().setOptional(newOptional);
+		this.mappingResource().setOptional(newOptional);
 	}
 	
 	@Override

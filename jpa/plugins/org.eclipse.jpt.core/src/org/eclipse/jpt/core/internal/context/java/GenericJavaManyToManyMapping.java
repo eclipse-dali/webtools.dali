@@ -45,23 +45,18 @@ public class GenericJavaManyToManyMapping extends AbstractJavaMultiRelationshipM
 			JPA.MAP_KEY,
 			JPA.JOIN_TABLE);
 	}
-	
-	@Override
-	protected ManyToMany relationshipMapping() {
-		return (ManyToMany) this.persistentAttributeResource.mappingAnnotation();
-	}
-	
+		
 	// ********** JavaMultiRelationshipMapping implementation **********
 
 	@Override
 	protected boolean mappedByTouches(int pos, CompilationUnit astRoot) {
-		return this.relationshipMapping().mappedByTouches(pos, astRoot);
+		return this.mappingResource().mappedByTouches(pos, astRoot);
 	}
 	
 	
 	@Override
 	protected void setMappedByOnResourceModel(String mappedBy) {
-		relationshipMapping().setMappedBy(mappedBy);
+		mappingResource().setMappedBy(mappedBy);
 	}
 	
 	@Override
@@ -78,7 +73,7 @@ public class GenericJavaManyToManyMapping extends AbstractJavaMultiRelationshipM
 	
 	@Override
 	public TextRange mappedByTextRange(CompilationUnit astRoot) {
-		return this.relationshipMapping().mappedByTextRange(astRoot);
+		return this.mappingResource().mappedByTextRange(astRoot);
 	}
 	
 	@Override

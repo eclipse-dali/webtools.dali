@@ -26,7 +26,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
-public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMappingAnnotation> extends AbstractJavaAttributeMapping
+public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMappingAnnotation> extends AbstractJavaAttributeMapping<T>
 	implements JavaRelationshipMapping
 {
 
@@ -44,8 +44,6 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 		super(parent);
 		this.cascade = new JavaCascade(this);
 	}
-
-	protected abstract T relationshipMapping();
 	
 	public String getTargetEntity() {
 		return (this.getSpecifiedTargetEntity() == null) ? getDefaultTargetEntity() : this.getSpecifiedTargetEntity();
@@ -58,7 +56,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	public void setSpecifiedTargetEntity(String newSpecifiedTargetEntity) {
 		String oldSpecifiedTargetEntity = this.specifiedTargetEntity;
 		this.specifiedTargetEntity = newSpecifiedTargetEntity;
-		this.relationshipMapping().setTargetEntity(newSpecifiedTargetEntity);
+		this.mappingResource().setTargetEntity(newSpecifiedTargetEntity);
 		firePropertyChanged(RelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY, oldSpecifiedTargetEntity, newSpecifiedTargetEntity);
 	}
 
@@ -97,24 +95,23 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
 		FetchType oldFetch = this.specifiedFetch;
 		this.specifiedFetch = newSpecifiedFetch;
-		this.relationshipMapping().setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
+		this.mappingResource().setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
 		firePropertyChanged(Fetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
 
 	@Override
-	public void initializeFromResource(JavaResourcePersistentAttribute persistentAttributeResource) {
-		super.initializeFromResource(persistentAttributeResource);
-		this.defaultTargetEntity = this.defaultTargetEntity(persistentAttributeResource);
-		initialize(this.relationshipMapping());
+	public void initializeFromResource(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.initializeFromResource(resourcePersistentAttribute);
+		this.defaultTargetEntity = this.defaultTargetEntity(resourcePersistentAttribute);
 	}
 	
 	@Override
-	public void update(JavaResourcePersistentAttribute persistentAttributeResource) {
-		super.update(persistentAttributeResource);
-		this.setDefaultTargetEntity(this.defaultTargetEntity(persistentAttributeResource));
-		this.update(this.relationshipMapping());
+	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super.update(resourcePersistentAttribute);
+		this.setDefaultTargetEntity(this.defaultTargetEntity(resourcePersistentAttribute));
 	}
 	
+	@Override
 	protected void initialize(T relationshipMapping) {
 		this.specifiedFetch = this.fetch(relationshipMapping);
 		this.cascade.initialize(relationshipMapping);
@@ -122,6 +119,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 		this.resolvedTargetEntity = this.resolveTargetEntity(relationshipMapping);
 	}
 
+	@Override
 	protected void update(T relationshipMapping) {
 		this.setSpecifiedFetch(this.fetch(relationshipMapping));
 		this.cascade.update(relationshipMapping);
@@ -137,7 +135,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 		return relationshipMapping.getTargetEntity();
 	}
 	
-	protected abstract String defaultTargetEntity(JavaResourcePersistentAttribute persistentAttributeResource);
+	protected abstract String defaultTargetEntity(JavaResourcePersistentAttribute resourcePersistentAttribute);
 	
 	protected Entity resolveTargetEntity(T relationshipMapping) {
 		String qualifiedTargetEntity = getDefaultTargetEntity();

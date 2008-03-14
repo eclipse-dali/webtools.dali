@@ -107,13 +107,13 @@ public interface JavaResourcePersistentMember extends JavaResourceNode
 	JavaResourceNode nonNullAnnotation(String annotationName);
 
 	/**
-	 * Returns the <code>JavaResource</code> with this fully qualifed annotation name. 
-	 * Return the first if there are duplicates in the source code.  Will not return null,
-	 * but a null Object instead if no annotation with this name exists in the java source.
+	 * Return a null implementation of <code>JavaResourceNode</code> with this fully qualifed annotation name.
+	 * The corresponding AnnotationDefinition needs to implement buildNullAnnotation()
+	 * {@link AnnotationDefinition#buildNullAnnotation(JavaResourcePersistentMember, org.eclipse.jpt.core.internal.jdtutility.Member)}
 	 * @param annotationName
 	 * @return
 	 */
-	JavaResourceNode nonNullMappingAnnotation(String annotationName);
+	JavaResourceNode nullMappingAnnotation(String annotationName);
 
 	/**
 	 * Add an annotation for the given fully qualified annotation name

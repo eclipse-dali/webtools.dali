@@ -159,14 +159,10 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 		return null;
 	}
 
-	public JavaResourceNode nonNullMappingAnnotation(String annotationName) {
-		Annotation annotation = mappingAnnotation(annotationName);
-		if (annotation == null) {
-			return buildNullMappingAnnotation(annotationName);	
-		}
-		return annotation;
+	public JavaResourceNode nullMappingAnnotation(String annotationName) {
+		return buildNullMappingAnnotation(annotationName);	
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public Iterator<Annotation> annotations() {
 		return new CloneIterator<Annotation>(this.annotations);
