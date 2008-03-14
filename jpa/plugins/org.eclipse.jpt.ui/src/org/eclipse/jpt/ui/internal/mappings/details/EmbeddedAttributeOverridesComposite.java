@@ -16,9 +16,9 @@ import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.core.context.AttributeOverride;
+import org.eclipse.jpt.core.context.BaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Column;
-import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
@@ -67,7 +67,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<EmbeddedMapping>
+public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEmbeddedMapping>
 {
 	private WritablePropertyValueModel<AttributeOverride> attributeOverrideHolder;
 
@@ -77,7 +77,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<Embedd
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public EmbeddedAttributeOverridesComposite(AbstractFormPane<? extends EmbeddedMapping> parentPane,
+	public EmbeddedAttributeOverridesComposite(AbstractFormPane<? extends BaseEmbeddedMapping> parentPane,
 	                                           Composite parent) {
 
 		super(parentPane, parent);
@@ -90,7 +90,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<Embedd
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EmbeddedAttributeOverridesComposite(PropertyValueModel<? extends EmbeddedMapping> subjectHolder,
+	public EmbeddedAttributeOverridesComposite(PropertyValueModel<? extends BaseEmbeddedMapping> subjectHolder,
 	             	                            Composite parent,
 	            	                            WidgetFactory widgetFactory) {
 
@@ -145,9 +145,9 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<Embedd
 	}
 
 	private ListValueModel<AttributeOverride> buildDefaultAttributeOverridesListHolder() {
-		return new ListAspectAdapter<EmbeddedMapping, AttributeOverride>(
+		return new ListAspectAdapter<BaseEmbeddedMapping, AttributeOverride>(
 			this.getSubjectHolder(),
-			EmbeddedMapping.DEFAULT_ATTRIBUTE_OVERRIDES_LIST)
+			BaseEmbeddedMapping.DEFAULT_ATTRIBUTE_OVERRIDES_LIST)
 		{
 			@Override
 			protected ListIterator<AttributeOverride> listIterator_() {
@@ -199,9 +199,9 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<Embedd
 	}
 
 	private ListValueModel<AttributeOverride> buildSpecifiedAttributeOverridesListHolder() {
-		return new ListAspectAdapter<EmbeddedMapping, AttributeOverride>(
+		return new ListAspectAdapter<BaseEmbeddedMapping, AttributeOverride>(
 			this.getSubjectHolder(),
-			EmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST)
+			BaseEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST)
 		{
 			@Override
 			protected ListIterator<AttributeOverride> listIterator_() {
@@ -224,9 +224,9 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<Embedd
 		this.attributeOverrideHolder = buildAttributeOverrideHolder();
 	}
 
-	private AddRemoveListPane<EmbeddedMapping> initializeAttributeOverridesList(Composite container) {
+	private AddRemoveListPane<BaseEmbeddedMapping> initializeAttributeOverridesList(Composite container) {
 
-		return new AddRemoveListPane<EmbeddedMapping>(
+		return new AddRemoveListPane<BaseEmbeddedMapping>(
 			this,
 			buildSubPane(container, 8),
 			buildAttributeOverridesAdapter(),
@@ -309,7 +309,7 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<Embedd
 		setPopulating(true);
 
 		try {
-			EmbeddedMapping subject = subject();
+			BaseEmbeddedMapping subject = subject();
 			AttributeOverride override = attributeOverrideHolder.value();
 
 			// Add a new association override

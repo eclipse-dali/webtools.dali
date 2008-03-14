@@ -165,10 +165,13 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlId/sequenceGenerator"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlIdImpl"/>
-    <genClasses image="false" ecoreClass="orm.ecore#//XmlEmbeddedId">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEmbeddedId/attributeOverrides"/>
+    <genClasses image="false" ecoreClass="orm.ecore#//BaseXmlEmbedded">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//BaseXmlEmbedded/attributeOverrides"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlEmbeddedId"/>
     <genClasses ecoreClass="orm.ecore#//XmlEmbeddedIdImpl"/>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlEmbedded"/>
+    <genClasses ecoreClass="orm.ecore#//XmlEmbeddedImpl"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlBasic">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBasic/fetch"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBasic/optional"/>
@@ -194,10 +197,6 @@
     <genClasses ecoreClass="orm.ecore#//XmlOneToOneImpl"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlManyToMany"/>
     <genClasses ecoreClass="orm.ecore#//XmlManyToManyImpl"/>
-    <genClasses image="false" ecoreClass="orm.ecore#//XmlEmbedded">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEmbedded/attributeOverrides"/>
-    </genClasses>
-    <genClasses ecoreClass="orm.ecore#//XmlEmbeddedImpl"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlTransient"/>
     <genClasses ecoreClass="orm.ecore#//XmlTransientImpl"/>
     <genClasses ecoreClass="orm.ecore#//XmlAssociationOverride">

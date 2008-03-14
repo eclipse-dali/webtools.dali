@@ -197,12 +197,17 @@
         containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlIdImpl" eSuperTypes="#//AbstractXmlAttributeMapping #//XmlId"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedId" abstract="true" interface="true"
+  <eClassifiers xsi:type="ecore:EClass" name="BaseXmlEmbedded" abstract="true" interface="true"
       eSuperTypes="#//XmlAttributeMapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributeOverrides" upperBound="-1"
         eType="#//XmlAttributeOverride" containment="true" resolveProxies="false"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedId" abstract="true" interface="true"
+      eSuperTypes="#//XmlAttributeMapping #//BaseXmlEmbedded"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedIdImpl" eSuperTypes="#//AbstractXmlAttributeMapping #//XmlEmbeddedId"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" abstract="true" interface="true"
+      eSuperTypes="#//BaseXmlEmbedded"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedImpl" eSuperTypes="#//AbstractXmlAttributeMapping #//XmlEmbedded"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlBasic" abstract="true" interface="true"
       eSuperTypes="#//XmlAttributeMapping #//ColumnMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fetch" eType="#//FetchType"
@@ -237,12 +242,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" abstract="true" interface="true"
       eSuperTypes="#//XmlMultiRelationshipMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToManyImpl" eSuperTypes="#//AbstractXmlAttributeMapping #//XmlManyToMany"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" abstract="true" interface="true"
-      eSuperTypes="#//XmlAttributeMapping">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="attributeOverrides" upperBound="-1"
-        eType="#//XmlAttributeOverride" containment="true" resolveProxies="false"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedImpl" eSuperTypes="#//AbstractXmlAttributeMapping #//XmlEmbedded"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTransient" abstract="true" interface="true"
       eSuperTypes="#//XmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTransientImpl" eSuperTypes="#//AbstractXmlAttributeMapping #//XmlTransient"/>

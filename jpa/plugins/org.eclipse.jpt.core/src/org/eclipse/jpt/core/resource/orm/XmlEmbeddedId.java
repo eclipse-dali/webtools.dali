@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
-import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,33 +21,12 @@ import org.eclipse.emf.common.util.EList;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEmbeddedId#getAttributeOverrides <em>Attribute Overrides</em>}</li>
- * </ul>
- * </p>
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEmbeddedId()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlEmbeddedId extends XmlAttributeMapping
+public interface XmlEmbeddedId extends XmlAttributeMapping, BaseXmlEmbedded
 {
-	/**
-	 * Returns the value of the '<em><b>Attribute Overrides</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlAttributeOverride}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Attribute Overrides</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Attribute Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEmbeddedId_AttributeOverrides()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<XmlAttributeOverride> getAttributeOverrides();
 
 } // EmbeddedId

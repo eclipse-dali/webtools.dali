@@ -9,8 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.context.EmbeddedMapping;
+import org.eclipse.jpt.core.context.BaseEmbeddedMapping;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -26,26 +27,36 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see EmbeddedMapping
+ * @see BaseEmbeddedMapping
  * @see BaseJpaUiFactory - The factory creating this pane
+ * @see EmbeddedAttributeOverridesComposite
  *
  * @version 2.0
  * @since 1.0
  */
-public class EmbeddedMappingComposite extends AbstractEmbeddedMappingComposite<EmbeddedMapping>
-                                      implements JpaComposite<EmbeddedMapping>
+public abstract class AbstractEmbeddedMappingComposite<T extends BaseEmbeddedMapping> extends AbstractFormPane<T>
+                                      implements JpaComposite<T>
 {
 	/**
-	 * Creates a new <code>EmbeddedMappingComposite</code>.
+	 * Creates a new <code>AbstractEmbeddedMappingComposite</code>.
 	 *
-	 * @param subjectHolder The holder of the subject <code>EmbeddedMapping</code>
+	 * @param subjectHolder The holder of the subject <code>BaseEmbeddedMapping</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EmbeddedMappingComposite(PropertyValueModel<? extends EmbeddedMapping> subjectHolder,
+	protected AbstractEmbeddedMappingComposite(PropertyValueModel<? extends T> subjectHolder,
 	                                Composite parent,
 	                                WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
+	}
+
+	@Override
+	protected void initializeLayout(Composite container) {
+
+		new EmbeddedAttributeOverridesComposite(
+			this,
+			container
+		);
 	}
 }

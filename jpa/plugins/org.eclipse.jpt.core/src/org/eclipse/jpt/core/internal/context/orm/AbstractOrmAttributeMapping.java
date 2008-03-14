@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.core.context.orm.OrmBaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
@@ -121,12 +122,16 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		initializeFromOrmAttributeMapping(oldMapping);
 	}
 
-	public void initializeFromOrmEmbeddedMapping(OrmEmbeddedMapping oldMapping) {
+	public void initializeFromOrmBaseEmbeddedMapping(OrmBaseEmbeddedMapping oldMapping) {
 		initializeFromOrmAttributeMapping(oldMapping);
 	}
 
+	public void initializeFromOrmEmbeddedMapping(OrmEmbeddedMapping oldMapping) {
+		initializeFromOrmBaseEmbeddedMapping(oldMapping);
+	}
+
 	public void initializeFromOrmEmbeddedIdMapping(OrmEmbeddedIdMapping oldMapping) {
-		initializeFromOrmAttributeMapping(oldMapping);
+		initializeFromOrmBaseEmbeddedMapping(oldMapping);
 	}
 
 	public void initializeFromOrmVersionMapping(OrmVersionMapping oldMapping) {

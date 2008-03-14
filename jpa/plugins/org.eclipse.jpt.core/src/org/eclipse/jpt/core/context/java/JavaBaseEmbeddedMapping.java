@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.context.java;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.EmbeddedMapping;
+import org.eclipse.jpt.core.context.BaseEmbeddedMapping;
 
 /**
  * 
@@ -21,10 +21,14 @@ import org.eclipse.jpt.core.context.EmbeddedMapping;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaEmbeddedMapping extends JavaBaseEmbeddedMapping, EmbeddedMapping
+public interface JavaBaseEmbeddedMapping extends JavaAttributeMapping, BaseEmbeddedMapping
 {
+	@SuppressWarnings("unchecked")
 	ListIterator<JavaAttributeOverride> attributeOverrides();
+	@SuppressWarnings("unchecked")
 	ListIterator<JavaAttributeOverride> defaultAttributeOverrides();
+	@SuppressWarnings("unchecked")
 	ListIterator<JavaAttributeOverride> specifiedAttributeOverrides();
 	JavaAttributeOverride addSpecifiedAttributeOverride(int index);
+
 }

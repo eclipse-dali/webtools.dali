@@ -11,13 +11,20 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * This pane does not have any widgets.
+ * Here's the layout of this pane:
+ * <pre>
+ * -----------------------------------------------------------------------------
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | EmbeddedAttributeOverridesComposite                                   | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * -----------------------------------------------------------------------------</pre>
  *
  * @see EmbeddedIdMapping
  * @see BaseJpaUiFactory - The factory creating this pane
@@ -25,13 +32,13 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class EmbeddedIdMappingComposite extends AbstractFormPane<EmbeddedIdMapping>
+public class EmbeddedIdMappingComposite extends AbstractEmbeddedMappingComposite<EmbeddedIdMapping>
                                         implements JpaComposite<EmbeddedIdMapping>
 {
 	/**
 	 * Creates a new <code>EmbeddedIdMappingComposite</code>.
 	 *
-	 * @param subjectHolder The holder of the subject <code>IEmbeddedIdMapping</code>
+	 * @param subjectHolder The holder of the subject <code>EmbeddedIdMapping</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
@@ -40,12 +47,5 @@ public class EmbeddedIdMappingComposite extends AbstractFormPane<EmbeddedIdMappi
 	                                  WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite composite) {
 	}
 }

@@ -22,13 +22,10 @@ import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmEmbeddedMapping extends EmbeddedMapping, OrmAttributeMapping
+public interface OrmEmbeddedMapping extends EmbeddedMapping, OrmBaseEmbeddedMapping
 {
-	@SuppressWarnings("unchecked")
 	ListIterator<OrmAttributeOverride> attributeOverrides();
-	@SuppressWarnings("unchecked")
 	ListIterator<OrmAttributeOverride> defaultAttributeOverrides();
-	@SuppressWarnings("unchecked")
 	ListIterator<OrmAttributeOverride> specifiedAttributeOverrides();
 	OrmAttributeOverride addSpecifiedAttributeOverride(int index);
 

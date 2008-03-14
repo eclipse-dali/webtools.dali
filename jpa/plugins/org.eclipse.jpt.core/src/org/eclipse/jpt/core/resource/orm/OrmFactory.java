@@ -94,13 +94,13 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.ATTRIBUTES: return (EObject)createAttributes();
 			case OrmPackage.XML_ID_IMPL: return (EObject)createXmlIdImpl();
 			case OrmPackage.XML_EMBEDDED_ID_IMPL: return (EObject)createXmlEmbeddedIdImpl();
+			case OrmPackage.XML_EMBEDDED_IMPL: return (EObject)createXmlEmbeddedImpl();
 			case OrmPackage.XML_BASIC_IMPL: return (EObject)createXmlBasicImpl();
 			case OrmPackage.XML_VERSION_IMPL: return (EObject)createXmlVersionImpl();
 			case OrmPackage.XML_MANY_TO_ONE_IMPL: return (EObject)createXmlManyToOneImpl();
 			case OrmPackage.XML_ONE_TO_MANY_IMPL: return (EObject)createXmlOneToManyImpl();
 			case OrmPackage.XML_ONE_TO_ONE_IMPL: return (EObject)createXmlOneToOneImpl();
 			case OrmPackage.XML_MANY_TO_MANY_IMPL: return (EObject)createXmlManyToManyImpl();
-			case OrmPackage.XML_EMBEDDED_IMPL: return (EObject)createXmlEmbeddedImpl();
 			case OrmPackage.XML_TRANSIENT_IMPL: return (EObject)createXmlTransientImpl();
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE: return (EObject)createXmlAssociationOverride();
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE_IMPL: return (EObject)createXmlAttributeOverrideImpl();

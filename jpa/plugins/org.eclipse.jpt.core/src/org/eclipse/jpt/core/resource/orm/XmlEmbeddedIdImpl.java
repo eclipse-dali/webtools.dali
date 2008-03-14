@@ -76,7 +76,7 @@ public class XmlEmbeddedIdImpl extends AbstractXmlAttributeMapping implements Xm
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attribute Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEmbeddedId_AttributeOverrides()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getBaseXmlEmbedded_AttributeOverrides()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -181,11 +181,18 @@ public class XmlEmbeddedIdImpl extends AbstractXmlAttributeMapping implements Xm
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == BaseXmlEmbedded.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_EMBEDDED_ID_IMPL__ATTRIBUTE_OVERRIDES: return OrmPackage.BASE_XML_EMBEDDED__ATTRIBUTE_OVERRIDES;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlEmbeddedId.class)
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.XML_EMBEDDED_ID_IMPL__ATTRIBUTE_OVERRIDES: return OrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_OVERRIDES;
 				default: return -1;
 			}
 		}
@@ -200,11 +207,18 @@ public class XmlEmbeddedIdImpl extends AbstractXmlAttributeMapping implements Xm
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == BaseXmlEmbedded.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.BASE_XML_EMBEDDED__ATTRIBUTE_OVERRIDES: return OrmPackage.XML_EMBEDDED_ID_IMPL__ATTRIBUTE_OVERRIDES;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlEmbeddedId.class)
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_OVERRIDES: return OrmPackage.XML_EMBEDDED_ID_IMPL__ATTRIBUTE_OVERRIDES;
 				default: return -1;
 			}
 		}
