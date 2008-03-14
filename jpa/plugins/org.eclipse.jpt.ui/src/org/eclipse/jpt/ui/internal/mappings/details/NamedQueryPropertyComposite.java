@@ -83,7 +83,7 @@ public class NamedQueryPropertyComposite extends AbstractFormPane<NamedQuery>
 
 		// Query text area
 		buildLabeledMultiLineText(
-			buildSubPane(container, 0, groupBoxMargin, 0, 0),
+			buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
 			JptUiMappingsMessages.NamedQueryPropertyComposite_query,
 			buildQueryHolder(),
 			4
