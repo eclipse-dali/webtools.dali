@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -161,6 +161,18 @@ public class ColumnComposite extends AbstractFormPane<Column>
 			protected void setValue_(Boolean value) {
 				subject.setSpecifiedInsertable(value);
 			}
+
+			@Override
+			protected void subjectChanged() {
+				Object oldValue = this.value();
+				super.subjectChanged();
+				Object newValue = this.value();
+
+				// Make sure the default value is appended to the text
+				if (oldValue == newValue && newValue == null) {
+					this.fireAspectChange(Boolean.TRUE, newValue);
+				}
+			}
 		};
 	}
 
@@ -244,6 +256,18 @@ public class ColumnComposite extends AbstractFormPane<Column>
 			@Override
 			protected void setValue_(Boolean value) {
 				subject.setSpecifiedUpdatable(value);
+			}
+
+			@Override
+			protected void subjectChanged() {
+				Object oldValue = this.value();
+				super.subjectChanged();
+				Object newValue = this.value();
+
+				// Make sure the default value is appended to the text
+				if (oldValue == newValue && newValue == null) {
+					this.fireAspectChange(Boolean.TRUE, newValue);
+				}
 			}
 		};
 	}

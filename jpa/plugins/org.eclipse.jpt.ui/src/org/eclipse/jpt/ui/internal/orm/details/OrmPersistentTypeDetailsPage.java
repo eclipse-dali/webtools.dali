@@ -123,6 +123,18 @@ public class OrmPersistentTypeDetailsPage extends PersistentTypeDetailsPage<OrmP
 			protected void setValue_(Boolean value) {
 				subject.setSpecifiedMetadataComplete(value);
 			}
+
+			@Override
+			protected void subjectChanged() {
+				Object oldValue = this.value();
+				super.subjectChanged();
+				Object newValue = this.value();
+
+				// Make sure the default value is appended to the text
+				if (oldValue == newValue && newValue == null) {
+					this.fireAspectChange(Boolean.TRUE, newValue);
+				}
+			}
 		};
 	}
 

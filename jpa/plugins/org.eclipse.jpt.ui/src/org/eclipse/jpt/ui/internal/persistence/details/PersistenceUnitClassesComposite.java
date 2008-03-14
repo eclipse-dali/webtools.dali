@@ -179,6 +179,18 @@ public class PersistenceUnitClassesComposite extends AbstractPane<PersistenceUni
 			protected void setValue_(Boolean value) {
 				subject.setSpecifiedExcludeUnlistedClasses(value);
 			}
+
+			@Override
+			protected void subjectChanged() {
+				Object oldValue = this.value();
+				super.subjectChanged();
+				Object newValue = this.value();
+
+				// Make sure the default value is appended to the text
+				if (oldValue == newValue && newValue == null) {
+					this.fireAspectChange(Boolean.TRUE, newValue);
+				}
+			}
 		};
 	}
 
