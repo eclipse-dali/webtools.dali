@@ -18,11 +18,17 @@ import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
+import org.eclipse.jpt.ui.internal.platform.generic.GenericNavigatorProvider;
+import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
 
 public class TestJpaPlatformUi extends BaseJpaPlatformUi
 {
 	public TestJpaPlatformUi() {
 		super();
+	}
+
+	public JpaNavigatorProvider buildNavigatorProvider() {
+		return new GenericNavigatorProvider();
 	}
 
 	@Override
