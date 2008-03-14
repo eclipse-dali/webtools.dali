@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.model;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import junit.framework.TestCase;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
