@@ -25,7 +25,8 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 
-public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode implements JavaQuery
+public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode 
+	implements JavaQuery
 {
 	protected String name;
 
@@ -166,7 +167,15 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode imple
 	}
 
 	public TextRange validationTextRange(CompilationUnit astRoot) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.queryResource.textRange(astRoot);
+	}
+	
+	public TextRange nameTextRange(CompilationUnit astRoot) {
+		return this.queryResource.nameTextRange(astRoot);
+	}
+	
+	public boolean overrides(Query query) {
+		// java is at the base of the tree
+		return false;
 	}
 }

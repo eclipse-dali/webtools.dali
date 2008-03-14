@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.NamedQuery;
@@ -41,11 +42,13 @@ import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaGenerator;
 import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaQuery;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.context.java.JavaTable;
@@ -84,8 +87,10 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -645,6 +650,13 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		this.sequenceGenerator = newSequenceGenerator;
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, newSequenceGenerator);
 	}
+	
+	@SuppressWarnings("unchecked")
+	protected Iterator<JavaGenerator> generators() {
+		return new CompositeIterator<JavaGenerator>(
+			(getSequenceGenerator() == null) ? EmptyIterator.instance() : new SingleElementIterator(getSequenceGenerator()),
+			(getTableGenerator() == null) ? EmptyIterator.instance() : new SingleElementIterator(getTableGenerator()));
+	}
 
 	public ListIterator<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns() {
 		return this.containsSpecifiedPrimaryKeyJoinColumns() ? this.specifiedPrimaryKeyJoinColumns() : this.defaultPrimaryKeyJoinColumns();
@@ -1041,6 +1053,11 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		CollectionTools.move(this.namedNativeQueries, targetIndex, sourceIndex);
 		this.javaResourcePersistentType.move(targetIndex, sourceIndex, NamedNativeQueries.ANNOTATION_NAME);
 		fireItemMoved(Entity.NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);		
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Iterator<JavaQuery> queries() {
+		return new CompositeIterator<JavaQuery>(this.namedNativeQueries(), this.namedQueries());
 	}
 
 	public String getIdClass() {
@@ -1682,6 +1699,8 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		
 		getTable().addToMessages(messages, astRoot);
 		addIdMessages(messages, astRoot);
+		addGeneratorMessages(messages, astRoot);
+		addQueryMessages(messages, astRoot);
 		
 		for (Iterator<JavaSecondaryTable> stream = this.specifiedSecondaryTables(); stream.hasNext();) {
 			stream.next().addToMessages(messages, astRoot);
@@ -1724,6 +1743,54 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 			}
 		}
 		return false;
+	}
+	
+	protected void addGeneratorMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		List<Generator> masterList = CollectionTools.list(persistenceUnit().allGenerators());
+		
+		for (Iterator<JavaGenerator> stream = this.generators(); stream.hasNext() ; ) {
+			JavaGenerator current = stream.next();
+			masterList.remove(current);
+			
+			for (Generator each : masterList) {
+				if (! each.overrides(current) && each.getName().equals(current.getName())) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+							new String[] {current.getName()},
+							current,
+							current.nameTextRange(astRoot))
+					);
+				}
+			}
+			
+			masterList.add(current);
+		}
+	}
+	
+	protected void addQueryMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		List<Query> masterList = CollectionTools.list(persistenceUnit().allQueries());
+		
+		for (Iterator<JavaQuery> stream = this.queries(); stream.hasNext() ; ) {
+			JavaQuery current = stream.next();
+			masterList.remove(current);
+			
+			for (Query each : masterList) {
+				if (! each.overrides(current) && each.getName().equals(current.getName())) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.QUERY_DUPLICATE_NAME,
+							new String[] {current.getName()},
+							current,
+							current.nameTextRange(astRoot))
+					);
+				}
+			}
+			
+			masterList.add(current);
+		}
 	}
 	
 	class PrimaryKeyJoinColumnOwner implements JavaAbstractJoinColumn.Owner

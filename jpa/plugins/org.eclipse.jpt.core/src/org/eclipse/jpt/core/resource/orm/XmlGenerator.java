@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.resource.common.JpaEObject;
 
 /**
@@ -115,5 +116,6 @@ public interface XmlGenerator extends JpaEObject
 	 * @generated
 	 */
 	void setAllocationSize(Integer value);
-
-} // Generator
+	
+	public TextRange nameTextRange();
+}

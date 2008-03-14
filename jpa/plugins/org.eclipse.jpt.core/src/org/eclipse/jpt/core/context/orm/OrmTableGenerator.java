@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmTableGenerator extends TableGenerator, OrmJpaContextNode
+public interface OrmTableGenerator extends TableGenerator, OrmGenerator, OrmJpaContextNode
 {
 	void initialize(XmlTableGenerator tableGenerator);
 

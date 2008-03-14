@@ -12,11 +12,13 @@ package org.eclipse.jpt.core.internal.context.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.Generator;
+import org.eclipse.jpt.core.context.java.JavaGenerator;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.GeneratorAnnotation;
 
 
-public abstract class AbstractJavaGenerator extends AbstractJavaJpaContextNode implements Generator
+public abstract class AbstractJavaGenerator extends AbstractJavaJpaContextNode 
+	implements JavaGenerator
 {
 	protected String name;
 
@@ -124,6 +126,10 @@ public abstract class AbstractJavaGenerator extends AbstractJavaJpaContextNode i
 	public TextRange selectionTextRange(CompilationUnit astRoot) {
 		return this.generatorResource.textRange(astRoot);
 	}
+	
+	public TextRange nameTextRange(CompilationUnit astRoot) {
+		return this.generatorResource.nameTextRange(astRoot);
+	}
 
 	protected void update(GeneratorAnnotation generatorResource) {
 		this.generatorResource = generatorResource;
@@ -131,5 +137,9 @@ public abstract class AbstractJavaGenerator extends AbstractJavaJpaContextNode i
 		this.setSpecifiedInitialValue_(this.specifiedInitialValue(generatorResource));
 		this.setSpecifiedAllocationSize_(this.specifiedAllocationSize(generatorResource));
 	}
-
+	
+	public boolean overrides(Generator generator) {
+		// java is at the base of the tree
+		return false;
+	}
 }

@@ -11,11 +11,14 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.Generator;
+import org.eclipse.jpt.core.context.java.JavaGenerator;
+import org.eclipse.jpt.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlGenerator;
 
 
-public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends AbstractOrmJpaContextNode implements Generator
+public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends AbstractOrmJpaContextNode 
+	implements OrmGenerator
 {
 
 	protected String name;
@@ -127,6 +130,11 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 		this.setSpecifiedAllocationSize_(this.specifiedAllocationSize(generatorResource));
 		//TODO defaults
 	}
+	
+	public boolean overrides(Generator generator) {
+		// this isn't ideal, but it will have to do until we have further adopter input
+		return this.getName().equals(generator.getName()) && generator instanceof JavaGenerator;
+	}
 
 	protected T generatorResource() {
 		return this.generatorResource;
@@ -146,5 +154,9 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator> extends Abstr
 
 	public TextRange validationTextRange() {
 		return this.generatorResource().validationTextRange();
+	}
+	
+	public TextRange nameTextRange() {
+		return this.generatorResource().nameTextRange();
 	}
 }

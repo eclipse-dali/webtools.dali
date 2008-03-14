@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+
 /**
  * 
  * 
@@ -20,29 +21,53 @@ package org.eclipse.jpt.core.context;
  */
 public interface Generator extends JpaContextNode
 {
-
+	// **************** name ***************************************************
+	
+	String NAME_PROPERTY = "nameProperty";
+	
 	String getName();
+	
 	void setName(String value);
-		String NAME_PROPERTY = "nameProperty";
-
+	
+	
+	// **************** initial value ******************************************
+	
 	Integer getInitialValue();
-
+	
+	String DEFAULT_INITIAL_VALUE_PROPERTY = "defaultInitialValueProperty";
+	
 	Integer getDefaultInitialValue();
-		String DEFAULT_INITIAL_VALUE_PROPERTY = "defaultInitialValueProperty";
-
+	
+	String SPECIFIED_INITIAL_VALUE_PROPERTY = "specifiedInitialValueProperty";
+	
 	Integer getSpecifiedInitialValue();
+	
 	void setSpecifiedInitialValue(Integer value);
-		String SPECIFIED_INITIAL_VALUE_PROPERTY = "specifiedInitialValueProperty";
-
-
+	
+	
+	// **************** allocation size ****************************************
+	
 	Integer getAllocationSize();
-
+	
+	String DEFAULT_ALLOCATION_SIZE_PROPERTY = "defaultAllocationSizeProperty";
+	
+	Integer DEFAULT_ALLOCATION_SIZE = Integer.valueOf(50);
+	
 	Integer getDefaultAllocationSize();
-		Integer DEFAULT_ALLOCATION_SIZE = Integer.valueOf(50);
-		String DEFAULT_ALLOCATION_SIZE_PROPERTY = "defaultAllocationSizeProperty";
+		
+	String SPECIFIED_ALLOCATION_SIZE_PROPERTY = "specifiedAllocationSizeProperty";
 	
 	Integer getSpecifiedAllocationSize();
+	
 	void setSpecifiedAllocationSize(Integer value);
-		String SPECIFIED_ALLOCATION_SIZE_PROPERTY = "specifiedAllocationSizeProperty";
-
+	
+	
+	// **************** validation *********************************************
+	
+	/**
+	 * Return true if this generator overrides the definition of the specified
+	 * generator
+	 * (for example, a generator defined in orm.xml overrides one defined in java)
+	 */
+	boolean overrides(Generator generator);
 }

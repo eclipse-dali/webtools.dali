@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.NamedQuery;
@@ -41,11 +42,13 @@ import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
+import org.eclipse.jpt.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTable;
@@ -72,6 +75,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
@@ -565,6 +569,13 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		this.tableGenerator = newTableGenerator;
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, newTableGenerator);
 	}
+	
+	@SuppressWarnings("unchecked")
+	protected Iterator<OrmGenerator> generators() {
+		return new CompositeIterator<OrmGenerator>(
+			(getSequenceGenerator() == null) ? EmptyIterator.instance() : new SingleElementIterator(getSequenceGenerator()),
+			(getTableGenerator() == null) ? EmptyIterator.instance() : new SingleElementIterator(getTableGenerator()));
+	}
 
 	public String getDefaultDiscriminatorValue() {
 		return this.defaultDiscriminatorValue;
@@ -860,6 +871,11 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		CollectionTools.move(this.namedNativeQueries, targetIndex, sourceIndex);
 		this.typeMappingResource().getNamedNativeQueries().move(targetIndex, sourceIndex);
 		fireItemMoved(Entity.NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);		
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Iterator<OrmQuery> queries() {
+		return new CompositeIterator<OrmQuery>(this.namedQueries(), this.namedNativeQueries());
 	}
 
 	public String getIdClass() {
@@ -1435,7 +1451,7 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		}
 		
 		while (resourceNamedNativeQueries.hasNext()) {
-			addNamedNativeQuery(namedQueriesSize(), buildNamedNativeQuery(resourceNamedNativeQueries.next()));
+			addNamedNativeQuery(namedNativeQueriesSize(), buildNamedNativeQuery(resourceNamedNativeQueries.next()));
 		}
 	}
 
@@ -1492,6 +1508,8 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		super.addToMessages(messages);
 		getTable().addToMessages(messages);	
 		addIdMessages(messages);
+		addGeneratorMessages(messages);
+		addQueryMessages(messages);
 		for (OrmSecondaryTable secondaryTable : CollectionTools.iterable(secondaryTables())) {
 			secondaryTable.addToMessages(messages);
 		}
@@ -1524,6 +1542,54 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	
 	private boolean entityHasNoId() {
 		return ! this.entityHasId();
+	}
+	
+	protected void addGeneratorMessages(List<IMessage> messages) {
+		List<Generator> masterList = CollectionTools.list(persistenceUnit().allGenerators());
+		
+		for (Iterator<OrmGenerator> stream = this.generators(); stream.hasNext() ; ) {
+			OrmGenerator current = stream.next();
+			masterList.remove(current);
+			
+			for (Generator each : masterList) {
+				if (! each.overrides(current) && each.getName().equals(current.getName())) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+							new String[] {current.getName()},
+							current,
+							current.nameTextRange())
+					);
+				}
+			}
+		
+			masterList.add(current);
+		}
+	}
+	
+	protected void addQueryMessages(List<IMessage> messages) {
+		List<Query> masterList = CollectionTools.list(persistenceUnit().allQueries());
+		
+		for (Iterator<OrmQuery> stream = this.queries(); stream.hasNext() ; ) {
+			OrmQuery current = stream.next();
+			masterList.remove(current);
+			
+			for (Query each : masterList) {
+				if (! each.overrides(current) && each.getName().equals(current.getName())) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.QUERY_DUPLICATE_NAME,
+							new String[] {current.getName()},
+							current,
+							current.nameTextRange())
+					);
+				}
+			}
+			
+			masterList.add(current);
+		}
 	}
 
 	private boolean entityHasId() {

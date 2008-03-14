@@ -9,14 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.ColumnMapping;
+import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.TemporalType;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
+import org.eclipse.jpt.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
@@ -31,6 +34,10 @@ import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
@@ -183,7 +190,13 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		this.tableGenerator = newTableGenerator;
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, newTableGenerator);
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	protected Iterator<OrmGenerator> generators() {
+		return new CompositeIterator<OrmGenerator>(
+			(getSequenceGenerator() == null) ? EmptyIterator.instance() : new SingleElementIterator(getSequenceGenerator()),
+			(getTableGenerator() == null) ? EmptyIterator.instance() : new SingleElementIterator(getTableGenerator()));
+	}
 
 	@Override
 	public String primaryKeyColumnName() {
@@ -369,6 +382,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		if (entityOwned()) {
 			addColumnMessages(messages);
 		}
+		addGeneratedValueMessages(messages);
 		addGeneratorMessages(messages);
 	}
 	
@@ -425,7 +439,7 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		}
 	}
 	
-	protected void addGeneratorMessages(List<IMessage> messages) {
+	protected void addGeneratedValueMessages(List<IMessage> messages) {
 		OrmGeneratedValue generatedValue = getGeneratedValue();
 		if (generatedValue == null) {
 			return;
@@ -434,19 +448,44 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 		if (generatorName == null) {
 			return;
 		}
-		//TODO generator validation
-//		IGeneratorRepository generatorRepository = getPersistenceUnitContext().getGeneratorRepository();		
-//		IGenerator generator = generatorRepository.generator(generatorName);
-//		
-//		if (generator == null) {
-//			messages.add(
-//				JpaValidationMessages.buildMessage(
-//					IMessage.HIGH_SEVERITY,
-//					IJpaValidationMessages.GENERATED_VALUE_UNRESOLVED_GENERATOR,
-//					new String[] {generatorName}, 
-//					generatedValue,
-//					generatedValue.generatorTextRange())
-//			);
-//		}
+		
+		for (Generator nextMasterGenerator : CollectionTools.iterable(persistenceUnit().allGenerators())) {
+			if (generatorName.equals(nextMasterGenerator.getName())) {
+				return;
+			}
+		}
+		
+		messages.add(
+			DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME,
+				new String[] {generatorName},
+				this,
+				generatedValue.generatorTextRange())
+			);
+	}
+	
+	protected void addGeneratorMessages(List<IMessage> messages) {
+		List<Generator> masterList = CollectionTools.list(persistenceUnit().allGenerators());
+		
+		for (Iterator<OrmGenerator> stream = this.generators(); stream.hasNext() ; ) {
+			OrmGenerator current = stream.next();
+			masterList.remove(current);
+			
+			for (Generator each : masterList) {
+				if (! each.overrides(current) && each.getName().equals(current.getName())) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+							new String[] {current.getName()},
+							current,
+							current.nameTextRange())
+					);
+				}
+			}
+			
+			masterList.add(current);
+		}
 	}
 }

@@ -59,12 +59,6 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 {
 	protected XmlPersistenceUnit xmlPersistenceUnit;
 	
-	/* global generator definitions, defined elsewhere in model */
-	protected final GenericGeneratorRepository generatorRepository;
-	
-	/* global query definitions, defined elsewhere in model */
-	protected final GenericQueryRepository queryRepository;
-	
 	protected String name;
 	
 	protected PersistenceUnitTransactionType specifiedTransactionType;
@@ -93,6 +87,12 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	protected final List<Property> properties;
 	
+	/* global generator definitions, defined elsewhere in model */
+	protected final List<Generator> generators;
+	
+	/* global query definitions, defined elsewhere in model */
+	protected final List<Query> queries;
+	
 	
 	protected String defaultSchema;
 	protected String defaultCatalog;
@@ -101,12 +101,12 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	public GenericPersistenceUnit(Persistence parent, XmlPersistenceUnit persistenceUnit) {
 		super(parent);
-		this.generatorRepository = new GenericGeneratorRepository(this);
-		this.queryRepository = new GenericQueryRepository(this);
 		this.specifiedMappingFileRefs = new ArrayList<MappingFileRef>();
 		this.specifiedClassRefs = new ArrayList<ClassRef>();
 		this.impliedClassRefs = new ArrayList<ClassRef>();
 		this.properties = new ArrayList<Property>();
+		this.generators = new ArrayList<Generator>();
+		this.queries = new ArrayList<Query>();
 		this.initialize(persistenceUnit);
 	}
 	
@@ -334,6 +334,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	
 	// **************** class refs *********************************************
 	
+	@SuppressWarnings("unchecked")
 	public ListIterator<ClassRef> classRefs() {
 		return new ReadOnlyCompositeListIterator<ClassRef>(
 			specifiedClassRefs(), impliedClassRefs());
@@ -677,19 +678,19 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 	// **************** global generator and query support *********************
 	
 	public void addGenerator(Generator generator) {
-		this.generatorRepository.add(generator);
+		this.generators.add(generator);
 	}
 	
 	public ListIterator<Generator> allGenerators() {
-		return this.generatorRepository.allGenerators();
+		return new CloneListIterator<Generator>(this.generators);
 	}
 	
 	public void addQuery(Query query) {
-		this.queryRepository.add(query);
+		this.queries.add(query);
 	}
 	
 	public ListIterator<Query> allQueries() {
-		return this.queryRepository.allQueries();
+		return new CloneListIterator<Query>(this.queries);
 	}
 	
 
@@ -759,8 +760,8 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 
 	public void update(XmlPersistenceUnit persistenceUnit) {
 		this.xmlPersistenceUnit = persistenceUnit;
-		this.generatorRepository.clear();
-		this.queryRepository.clear();
+		this.generators.clear();
+		this.queries.clear();
 		updateName(persistenceUnit);
 		updateSpecifiedTransactionType(persistenceUnit);
 		updateDefaultTransactionType();
@@ -1046,8 +1047,6 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		super.addToMessages(messages);
 		addMappingFileMessages(messages);	
 		addClassMessages(messages);
-		addGeneratorMessages(messages);
-		addQueryMessages(messages);
 	}
 	
 	protected void addMappingFileMessages(List<IMessage> messages) {
@@ -1160,14 +1159,6 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 				);
 			}
 		}
-	}
-	
-	protected void addGeneratorMessages(List<IMessage> messages) {
-		
-	}
-	
-	protected void addQueryMessages(List<IMessage> messages) {
-		
 	}
 	
 	private Collection<PersistenceUnitDefaults> persistenceUnitDefaultsForValidation() {

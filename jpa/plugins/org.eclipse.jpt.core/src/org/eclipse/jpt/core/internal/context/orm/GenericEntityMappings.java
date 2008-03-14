@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaStructureNode;
@@ -22,9 +23,11 @@ import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
@@ -32,6 +35,8 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
@@ -44,6 +49,7 @@ import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
@@ -703,7 +709,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		}
 		
 		while (resourceNamedNativeQueries.hasNext()) {
-			addNamedNativeQuery(namedQueriesSize(), buildNamedNativeQuery(resourceNamedNativeQueries.next()));
+			addNamedNativeQuery(namedNativeQueriesSize(), buildNamedNativeQuery(resourceNamedNativeQueries.next()));
 		}
 	}
 
@@ -761,8 +767,58 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	@Override
 	public void addToMessages(List<IMessage> messages) {
 		super.addToMessages(messages);
+		addGeneratorMessages(messages);
+		addQueryMessages(messages);
 		for (OrmPersistentType ormPersistentType : CollectionTools.iterable(this.ormPersistentTypes())) {
 			ormPersistentType.addToMessages(messages);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected void addGeneratorMessages(List<IMessage> messages) {
+		List<Generator> masterList = CollectionTools.list(persistenceUnit().allGenerators());
+		
+		for (Iterator<OrmGenerator> stream = new CompositeIterator<OrmGenerator>(this.tableGenerators(), this.sequenceGenerators()); stream.hasNext() ; ) {
+			OrmGenerator current = stream.next();
+			masterList.remove(current);
+			
+			for (Generator each : masterList) {
+				if (! each.overrides(current) && each.getName().equals(current.getName())) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+							new String[] {current.getName()},
+							current,
+							current.nameTextRange())
+					);
+				}
+			}
+			masterList.add(current);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected void addQueryMessages(List<IMessage> messages) {
+		List<Query> masterList = CollectionTools.list(persistenceUnit().allQueries());
+		
+		for (Iterator<OrmQuery> stream = new CompositeIterator<OrmQuery>(this.namedQueries(), this.namedNativeQueries()); stream.hasNext() ; ) {
+			OrmQuery current = stream.next();
+			masterList.remove(current);
+			
+			for (Query each : masterList) {
+				if (! each.overrides(current) && each.getName().equals(current.getName())) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.QUERY_DUPLICATE_NAME,
+							new String[] {current.getName()},
+							current,
+							current.nameTextRange())
+					);
+				}
+			}
+			masterList.add(current);
 		}
 	}
 }

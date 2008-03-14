@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.Generator;
 
 /**
@@ -22,5 +24,5 @@ import org.eclipse.jpt.core.context.Generator;
  */
 public interface JavaGenerator extends Generator, JavaJpaContextNode
 {
-	// nothing yet
+	TextRange nameTextRange(CompilationUnit astRoot);
 }

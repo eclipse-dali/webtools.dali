@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.resource.common.JpaEObject;
 
 /**
@@ -106,5 +107,6 @@ public interface XmlQuery extends JpaEObject
 	 * @generated
 	 */
 	EList<XmlQueryHint> getHints();
-
-} // Query
+	
+	public TextRange nameTextRange();
+}

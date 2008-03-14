@@ -73,4 +73,14 @@ public interface Query extends JpaContextNode
 	 * Move the hint from the source index to the target index.
 	 */
 	void moveHint(int targetIndex, int sourceIndex);
+	
+	
+	// **************** validation *********************************************
+	
+	/**
+	 * Return true if this query overrides the definition of the specified
+	 * query
+	 * (for example, a query defined in orm.xml overrides one defined in java)
+	 */
+	boolean overrides(Query query);
 }

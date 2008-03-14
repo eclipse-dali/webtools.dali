@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmSequenceGenerator extends SequenceGenerator, OrmJpaContextNode
+public interface OrmSequenceGenerator extends SequenceGenerator, OrmGenerator, OrmJpaContextNode
 {
 	void initialize(XmlSequenceGenerator sequenceGenerator);
 

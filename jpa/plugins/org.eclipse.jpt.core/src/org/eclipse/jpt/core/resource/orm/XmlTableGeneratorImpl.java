@@ -18,7 +18,11 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.internal.emfutility.DOMUtilities;
+import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
  * <!-- begin-user-doc -->
@@ -793,5 +797,9 @@ public class XmlTableGeneratorImpl extends AbstractJpaEObject implements XmlTabl
 		result.append(')');
 		return result.toString();
 	}
-
-} // TableGenerator
+	
+	public TextRange nameTextRange() {
+		IDOMNode nameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(getNode(), OrmXmlMapper.NAME);
+		return (nameNode == null) ? validationTextRange() : buildTextRange(nameNode);
+	}
+}

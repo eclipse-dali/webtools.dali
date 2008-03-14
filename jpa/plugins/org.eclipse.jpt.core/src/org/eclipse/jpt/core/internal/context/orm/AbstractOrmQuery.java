@@ -15,6 +15,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.QueryHint;
+import org.eclipse.jpt.core.context.java.JavaQuery;
 import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryHint;
@@ -24,7 +25,8 @@ import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 
-public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJpaContextNode implements OrmQuery
+public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJpaContextNode 
+	implements OrmQuery
 {
 
 	protected String name;
@@ -151,9 +153,17 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmJp
 			addHint(hintsSize(), createHint(resourceHints.next()));
 		}
 	}
-
-	public TextRange validationTextRange() {
-		return this.queryResource.validationTextRange();
+	
+	public boolean overrides(Query query) {
+		// this isn't ideal, but it will have to do until we have further adopter input
+		return this.getName().equals(query.getName()) && query instanceof JavaQuery;
 	}
 
+	public TextRange validationTextRange() {
+		return this.queryResource().validationTextRange();
+	}
+	
+	public TextRange nameTextRange() {
+		return this.queryResource().nameTextRange();
+	}
 }

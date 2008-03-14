@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.orm.UniqueConstraint;
@@ -137,5 +138,8 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 	public void update(JavaTableGenerator javaTableGenerator) {
 		this.javaTableGenerator = javaTableGenerator;
 	}
-
+	
+	public TextRange nameTextRange() {
+		return validationTextRange();
+	}
 }
