@@ -40,6 +40,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	private Adapter adapter;
 	private Button addButton;
 	private Composite container;
+	private boolean enabled;
 	private IBaseLabelProvider labelProvider;
 	private ListValueModel<?> listHolder;
 	private Button optionalButton;
@@ -327,6 +328,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	@Override
 	public void enableWidgets(boolean enabled) {
 		super.enableWidgets(enabled);
+		this.enabled = enabled;
 		updateButtons();
 	}
 
@@ -509,7 +511,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	 */
 	protected void updateAddButton(Button addButton) {
 		addButton.setEnabled(
-			getControl().isEnabled() &&
+			enabled &&
 			subject() != null
 		);
 	}
@@ -531,7 +533,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	protected void updateOptionalButton(Button optionalButton) {
 		if (optionalButton != null) {
 			optionalButton.setEnabled(
-				getControl().isEnabled() &&
+				enabled &&
 				adapter.enableOptionOnSelectionChange(selectionModel)
 			);
 		}
@@ -542,7 +544,7 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	 */
 	protected void updateRemoveButton(Button removeButton) {
 		removeButton.setEnabled(
-			getControl().isEnabled() &&
+			enabled &&
 			adapter.enableRemoveOnSelectionChange(selectionModel)
 		);
 	}

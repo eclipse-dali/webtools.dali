@@ -10,8 +10,13 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.ListIterator;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.QueryHint;
@@ -28,6 +33,8 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 
 /**
  * Here the layout of this pane:
@@ -45,6 +52,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
+@SuppressWarnings("nls")
 public class QueryHintsComposite extends AbstractPane<Query>
 {
 	private WritablePropertyValueModel<QueryHint> queryHintHolder;
@@ -113,19 +121,7 @@ public class QueryHintsComposite extends AbstractPane<Query>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		new AddRemoveTablePane<Query>(
-			this,
-			container,
-			buildQueryHintAdapter(),
-			buildQueryHintListHolder(),
-			queryHintHolder,
-			buildQueryHintLabelProvider()
-		) {
-			@Override
-			protected ColumnAdapter<?> buildColumnAdapter() {
-				return new QueryHintColumnAdapter();
-			}
-		};
+		new TablePane(container);
 	}
 
 	private static class QueryHintColumnAdapter implements ColumnAdapter<QueryHint> {
@@ -134,21 +130,7 @@ public class QueryHintsComposite extends AbstractPane<Query>
 		static final int NAME_COLUMN_INDEX = 0;
 		static final int VALUE_COLUMN_INDEX = 1;
 
-		private WritablePropertyValueModel<?> buildNameHolder(QueryHint subject) {
-			return new PropertyAspectAdapter<QueryHint, String>(QueryHint.VALUE_PROPERTY, subject) {
-				@Override
-				protected String buildValue_() {
-					return subject.getValue();
-				}
-
-				@Override
-				protected void setValue_(String value) {
-					subject.setValue(value);
-				}
-			};
-		}
-
-		private WritablePropertyValueModel<String> buildValueHolder(QueryHint subject) {
+		private WritablePropertyValueModel<String> buildNameHolder(QueryHint subject) {
 			return new PropertyAspectAdapter<QueryHint, String>(QueryHint.NAME_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
@@ -158,6 +140,20 @@ public class QueryHintsComposite extends AbstractPane<Query>
 				@Override
 				protected void setValue_(String value) {
 					subject.setName(value);
+				}
+			};
+		}
+
+		private WritablePropertyValueModel<?> buildValueHolder(QueryHint subject) {
+			return new PropertyAspectAdapter<QueryHint, String>(QueryHint.VALUE_PROPERTY, subject) {
+				@Override
+				protected String buildValue_() {
+					return subject.getValue();
+				}
+
+				@Override
+				protected void setValue_(String value) {
+					subject.setValue(value);
 				}
 			};
 		}
@@ -201,20 +197,127 @@ public class QueryHintsComposite extends AbstractPane<Query>
 		public String getColumnText(Object element, int columnIndex) {
 
 			QueryHint queryHint = (QueryHint) element;
+			String value = "";
 
 			switch (columnIndex) {
 				case QueryHintColumnAdapter.NAME_COLUMN_INDEX: {
-					return queryHint.getName();
+					value = queryHint.getName();
+					break;
 				}
 
 				case QueryHintColumnAdapter.VALUE_COLUMN_INDEX: {
-					return queryHint.getValue();
-				}
-
-				default: {
-					return null;
+					value = queryHint.getValue();
+					break;
 				}
 			}
+
+			if (value == null) {
+				value = "";
+			}
+
+			return value;
+		}
+	}
+
+	private class TablePane extends AddRemoveTablePane<Query> {
+
+		private TablePane(Composite parent) {
+			super(QueryHintsComposite.this,
+			      parent,
+			      buildQueryHintAdapter(),
+			      buildQueryHintListHolder(),
+			      queryHintHolder,
+			      buildQueryHintLabelProvider());
+		}
+
+		private CellEditor[] buildCellEditors(Table table) {
+			return new CellEditor[] {
+				new TextCellEditor(table),
+				new TextCellEditor(table)
+			};
+		}
+
+		private ICellModifier buildCellModifier() {
+			return new ICellModifier() {
+
+				public boolean canModify(Object element, String property) {
+					return true;
+				}
+
+				public Object getValue(Object element, String property) {
+					QueryHint queryHint = (QueryHint) element;
+					String value = "";
+
+					if (property == QueryHint.NAME_PROPERTY) {
+						value = queryHint.getName();
+					}
+					else if (property == QueryHint.VALUE_PROPERTY) {
+						value = queryHint.getValue();
+					}
+
+					if (value == null) {
+						value = "";
+					}
+
+					return value;
+				}
+
+				public void modify(Object element, String property, Object value) {
+					QueryHint queryHint;
+
+					if (element instanceof TableItem) {
+						TableItem tableItem = (TableItem) element;
+						queryHint = (QueryHint) tableItem.getData();
+					}
+					else {
+						queryHint = (QueryHint) element;
+					}
+
+					if (property == QueryHint.NAME_PROPERTY) {
+						 queryHint.setName(value.toString());
+					}
+					else if (property == QueryHint.VALUE_PROPERTY) {
+						 queryHint.setValue(value.toString());
+					}
+				}
+			};
+		}
+
+		@Override
+		protected ColumnAdapter<?> buildColumnAdapter() {
+			return new QueryHintColumnAdapter();
+		}
+
+		private String[] buildColumnProperties() {
+			return new String[] {
+				QueryHint.NAME_PROPERTY,
+				QueryHint.VALUE_PROPERTY
+			};
+		}
+
+		@Override
+		protected void initializeMainComposite(Composite container,
+		                                       Adapter adapter,
+		                                       ListValueModel<?> listHolder,
+		                                       WritablePropertyValueModel<?> selectedItemHolder,
+		                                       IBaseLabelProvider labelProvider,
+		                                       String helpId) {
+
+			super.initializeMainComposite(
+				container,
+				adapter,
+				listHolder,
+				selectedItemHolder,
+				labelProvider,
+				helpId
+			);
+
+			Table table = getTable();
+
+			TableViewer tableViewer = new TableViewer(table);
+			tableViewer.setCellEditors(buildCellEditors(table));
+			tableViewer.setCellModifier(buildCellModifier());
+			tableViewer.setColumnProperties(buildColumnProperties());
 		}
 	}
 }

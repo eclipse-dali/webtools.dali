@@ -95,7 +95,7 @@ public class TableItemModelAdapter {
 		this.propertyChangeListeners = this.buildPropertyChangeListeners();
 
 		for (int index = this.columnAdapter.columnCount(); --index >= 0; ) {
-			tableItemChanged(index, tableItem.getData());
+			tableItemChanged(index, tableItem.getData(), false);
 			valueHolders[index].addPropertyChangeListener(PropertyValueModel.VALUE, propertyChangeListeners[index]);
 		}
 	}
@@ -137,10 +137,15 @@ public class TableItemModelAdapter {
 
 	// ********** behavior **********
 
-	protected void tableItemChanged(int index, Object subject) {
+	protected void tableItemChanged(int index, Object subject, boolean revalidate) {
+
 		if (!this.tableItem.isDisposed()) {
-			updateTableItemText(index, subject);
-			updateTableItemImage(index, subject);
+			this.updateTableItemText(index, subject);
+			this.updateTableItemImage(index, subject);
+
+			if (revalidate) {
+				this.layoutTable();
+			}
 		}
 	}
 
@@ -150,13 +155,11 @@ public class TableItemModelAdapter {
 			text = "";
 		}
 		this.tableItem.setText(index, text);
-		this.layoutTable();
 	}
 
 	private void updateTableItemImage(int index, Object subject) {
 		Image image = this.labelProvider.getColumnImage(subject, index);
 		this.tableItem.setImage(index, image);
-		this.layoutTable();
 	}
 
 	private void layoutTable() {
@@ -195,7 +198,7 @@ public class TableItemModelAdapter {
    	}
 
    	public void propertyChanged(PropertyChangeEvent event) {
-   		tableItemChanged(index, event.getSource());
+   		tableItemChanged(index, tableItem.getData(), true);
    	}
    }
 }

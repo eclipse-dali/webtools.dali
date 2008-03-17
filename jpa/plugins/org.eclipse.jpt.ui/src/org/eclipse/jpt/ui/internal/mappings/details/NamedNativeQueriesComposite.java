@@ -86,7 +86,7 @@ public class NamedNativeQueriesComposite extends AbstractFormPane<QueryHolder>
 		builder.setExistingNames(namedNativeQueryNames());
 
 		NewNameDialog dialog = builder.buildDialog();
-		dialog.openDialog(buildNewNamedNativeQueryPostExecution());
+		dialog.openDialog(buildNewNamedNativeQueryPostExecution(listSelectionModel));
 	}
 
 	private ListValueModel<NamedNativeQuery> buildDisplayableNamedNativeQueriesListHolder() {
@@ -171,13 +171,14 @@ public class NamedNativeQueriesComposite extends AbstractFormPane<QueryHolder>
 		return new SimplePropertyValueModel<NamedNativeQuery>();
 	}
 
-	private PostExecution<NewNameDialog> buildNewNamedNativeQueryPostExecution() {
+	private PostExecution<NewNameDialog> buildNewNamedNativeQueryPostExecution(final ObjectListSelectionModel listSelectionModel) {
 		return new PostExecution<NewNameDialog>() {
 			public void execute(NewNameDialog dialog) {
 				if (dialog.wasConfirmed()) {
 					NamedNativeQuery namedNativeQuery = subject().addNamedNativeQuery(subject().namedNativeQueriesSize());
 					namedNativeQuery.setName(dialog.getName());
 					namedNativeQueryHolder.setValue(namedNativeQuery);
+					listSelectionModel.setSelectedValue(namedNativeQuery);
 				}
 			}
 		};

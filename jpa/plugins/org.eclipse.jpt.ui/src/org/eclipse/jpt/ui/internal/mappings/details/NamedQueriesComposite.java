@@ -86,7 +86,7 @@ public class NamedQueriesComposite extends AbstractFormPane<QueryHolder>
 		builder.setExistingNames(namedQueryNames());
 
 		NewNameDialog dialog = builder.buildDialog();
-		dialog.openDialog(buildNewNamedQueryPostExecution());
+		dialog.openDialog(buildNewNamedQueryPostExecution(listSelectionModel));
 	}
 
 	private PostExecution<NewNameDialog> buildEditNamedQueryPostExecution() {
@@ -171,13 +171,14 @@ public class NamedQueriesComposite extends AbstractFormPane<QueryHolder>
 		return new SimplePropertyValueModel<NamedQuery>();
 	}
 
-	private PostExecution<NewNameDialog> buildNewNamedQueryPostExecution() {
+	private PostExecution<NewNameDialog> buildNewNamedQueryPostExecution(final ObjectListSelectionModel selectionModel) {
 		return new PostExecution<NewNameDialog>() {
 			public void execute(NewNameDialog dialog) {
 				if (dialog.wasConfirmed()) {
 					NamedQuery namedQuery = subject().addNamedQuery(subject().namedQueriesSize());
 					namedQuery.setName(dialog.getName());
 					namedQueryHolder.setValue(namedQuery);
+					selectionModel.setSelectedValue(namedQuery);
 				}
 			}
 		};

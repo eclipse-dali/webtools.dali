@@ -405,7 +405,7 @@ public class TableModelAdapter<E> {
 			TableItemModelAdapter adapter = tableItemModelAdapters.get(rowIndex);
 
 			for (int columnIndex = this.columnAdapter.columnCount(); --columnIndex >= 0; ) {
-				adapter.tableItemChanged(columnIndex, tableItem.getData());
+				adapter.tableItemChanged(columnIndex, tableItem.getData(), true);
 			}
 
 			rowIndex++;

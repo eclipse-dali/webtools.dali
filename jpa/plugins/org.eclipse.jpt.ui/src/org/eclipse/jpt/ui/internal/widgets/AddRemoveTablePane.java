@@ -229,6 +229,15 @@ public abstract class AddRemoveTablePane<T extends Model> extends AddRemovePane<
 		};
 	}
 
+	/**
+	 * Gives access to the main widget of this add/remove pane.
+	 *
+	 * @return The main widget of this pane
+	 */
+	protected Table getTable() {
+		return table;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
