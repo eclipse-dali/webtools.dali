@@ -180,6 +180,9 @@ public class OrmPersistentTypeDetailsPage extends PersistentTypeDetailsPage<OrmP
 			typeMappingCombo.getControl().getParent()
 		);
 
+		// Access widgets
+		new AccessTypeComposite(this, buildMappingHolder(), container);
+
 		// Metadata complete widgets
 		buildTriStateCheckBoxWithDefault(
 			container,
@@ -187,9 +190,6 @@ public class OrmPersistentTypeDetailsPage extends PersistentTypeDetailsPage<OrmP
 			buildMetadataCompleteHolder(),
 			buildMetadataCompleteStringHolder()
 		);
-
-		// Access widgets
-		new AccessTypeComposite(this, buildMappingHolder(), container);
 
 		// Type mapping pane
 		PageBook typeMappingPageBook = buildTypeMappingPageBook(container);

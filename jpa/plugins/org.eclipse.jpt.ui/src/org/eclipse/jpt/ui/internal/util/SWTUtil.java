@@ -16,6 +16,11 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.ui.internal.widgets.NullPostExecution;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
+import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -49,6 +54,133 @@ public class SWTUtil {
 	 */
 	public static void asyncExec(Runnable runnable) {
 		getStandardDisplay().asyncExec(runnable);
+	}
+
+	/**
+	 * Tweaks the given <code>CCombo</code> to remove the default value when the
+	 * widget receives the focus and to show the default when the widget loses
+	 * the focus.
+	 *
+	 * @param combo The widget having a default value that is always at the
+	 * beginning of the list
+	 */
+	public static void attachDefaultValueHandler(CCombo combo) {
+		combo.addFocusListener(buildCComboFocusListener());
+	}
+
+	/**
+	 * Tweaks the given <code>Combo</code> to remove the default value when the
+	 * widget receives the focus and to show the default when the widget loses
+	 * the focus.
+	 *
+	 * @param combo The widget having a default value that is always at the
+	 * beginning of the list
+	 */
+	public static void attachDefaultValueHandler(Combo combo) {
+		combo.addFocusListener(buildComboFocusListener());
+	}
+
+	private static FocusListener buildCComboFocusListener() {
+		return new FocusListener() {
+
+			public void focusGained(FocusEvent e) {
+				CCombo combo = (CCombo) e.widget;
+				if (combo.getSelectionIndex() == 0) {
+					combo.setData("populating", Boolean.TRUE);
+					try {
+						combo.setText("");
+					}
+					finally {
+						combo.setData("populating", Boolean.FALSE);
+					}
+				}
+			}
+
+			public void focusLost(FocusEvent e) {
+				CCombo combo = (CCombo) e.widget;
+				if (combo.getText().length() == 0) {
+					combo.setData("populating", Boolean.TRUE);
+					try {
+						combo.select(0);
+					}
+					finally {
+						combo.setData("populating", Boolean.FALSE);
+					}
+				}
+			}
+		};
+	}
+
+	private static FocusListener buildComboFocusListener() {
+		return new FocusListener() {
+
+			public void focusGained(FocusEvent e) {
+				Combo combo = (Combo) e.widget;
+				if (combo.getSelectionIndex() == 0) {
+					combo.setData("populating", Boolean.TRUE);
+					try {
+						combo.setText("");
+					}
+					finally {
+						combo.setData("populating", Boolean.FALSE);
+					}
+				}
+			}
+
+			public void focusLost(FocusEvent e) {
+				Combo combo = (Combo) e.widget;
+				if (combo.getText().length() == 0) {
+					combo.setData("populating", Boolean.TRUE);
+					try {
+						combo.select(0);
+					}
+					finally {
+						combo.setData("populating", Boolean.FALSE);
+					}
+				}
+			}
+		};
+	}
+
+	/**
+	 * Retrieves the localized string from the given NLS class by creating the
+	 * key. That key is the concatenation of the composite's short class name
+	 * with the toString() of the given value separated by an underscore.
+	 *
+	 * @param nlsClass The NLS class used to retrieve the localized text
+	 * @param compositeClass The class used for creating the key, its short class
+	 * name is the beginning of the key
+	 * @param value The value used to append its toString() to the generated key
+	 * @return The localized text associated with the value
+	 */
+	public static String buildDisplayString(Class<?> nlsClass,
+	                                        Class<?> compositeClass,
+	                                        Object value) {
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(ClassTools.shortNameFor(compositeClass));
+		sb.append("_");
+		sb.append(value.toString().toLowerCase());
+
+		return (String) ClassTools.staticFieldValue(nlsClass, sb.toString());
+	}
+
+	/**
+	 * Retrieves the localized string from the given NLS class by creating the
+	 * key. That key is the concatenation of the composite's short class name
+	 * with the toString() of the given value separated by an underscore.
+	 *
+	 * @param nlsClass The NLS class used to retrieve the localized text
+	 * @param composite The object used to retrieve the short class name that is
+	 * the beginning of the key
+	 * @param value The value used to append its toString() to the generated key
+	 * @return The localized text associated with the value
+	 */
+	public static final String buildDisplayString(Class<?> nlsClass,
+	                                              Object composite,
+	                                              Object value) {
+
+		return buildDisplayString(nlsClass, composite.getClass(), value);
 	}
 
 	/**

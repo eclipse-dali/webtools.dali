@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
- * | | EntityNameCombo                                                       | |
+ * | | EntityNameComposite                                                       | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
@@ -61,7 +61,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see BasicMapping
  * @see BaseJpaUiFactory - The factory creating this pane
- * @see EntityNameCombo
+ * @see EntityNameComposite
  * @see InheritanceComposite
  * @see OverridesComposite
  * @see SecondaryTablesComposite

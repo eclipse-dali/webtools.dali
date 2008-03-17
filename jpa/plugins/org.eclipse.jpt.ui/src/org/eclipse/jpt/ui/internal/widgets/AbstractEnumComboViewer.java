@@ -19,7 +19,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
@@ -146,12 +146,7 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	                                          Class<?> compositeClass,
 	                                          Object value) {
 
-		StringBuilder sb = new StringBuilder();
-		sb.append(ClassTools.shortNameFor(compositeClass));
-		sb.append("_");
-		sb.append(value.toString().toLowerCase());
-
-		return (String) ClassTools.staticFieldValue(nlsClass, sb.toString());
+		return SWTUtil.buildDisplayString(nlsClass, compositeClass, value);
 	}
 
 	/**
@@ -169,7 +164,7 @@ abstract class AbstractEnumComboViewer<T extends Model, V> extends AbstractPane<
 	                                          Object composite,
 	                                          Object value) {
 
-		return this.buildDisplayString(nlsClass, composite.getClass(), value);
+		return SWTUtil.buildDisplayString(nlsClass, composite, value);
 	}
 
 	/**

@@ -18,6 +18,8 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.swt.BooleanButtonModelAdapter;
+import org.eclipse.jpt.ui.internal.swt.CComboModelAdapter;
+import org.eclipse.jpt.ui.internal.swt.ComboModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.TextFieldModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.TriStateCheckBoxModelAdapter;
 import org.eclipse.jpt.ui.internal.util.ControlAligner;
@@ -25,10 +27,12 @@ import org.eclipse.jpt.ui.internal.util.LabeledButton;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.utility.internal.ClassTools;
+import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
@@ -407,6 +411,57 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
+	 * Creates a new non-editable <code>CCombo</code>.
+	 *
+	 * @param container The parent container
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @return The newly created <code>CCombo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> CCombo buildCCombo(Composite container,
+	                                       ListValueModel<V> listHolder,
+	                                       WritablePropertyValueModel<V> selectedItemHolder) {
+
+		return this.buildCCombo(
+			container,
+			listHolder,
+			selectedItemHolder,
+			StringConverter.Default.<V>instance()
+		);
+	}
+
+	/**
+	 * Creates a new non-editable <code>CCombo</code>.
+	 *
+	 * @param container The parent container
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param stringConverter The converter responsible to transform each item
+	 * into a string representation
+	 * @return The newly created <code>CCombo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> CCombo buildCCombo(Composite container,
+	                                       ListValueModel<V> listHolder,
+	                                       WritablePropertyValueModel<V> selectedItemHolder,
+	                                       StringConverter<V> stringConverter) {
+
+		CCombo combo = this.buildCCombo(container);
+
+		CComboModelAdapter.adapt(
+			listHolder,
+			selectedItemHolder,
+			combo,
+			stringConverter
+		);
+
+		return combo;
+	}
+
+	/**
 	 * Creates a new <code>ComboViewer</code> using a <code>CCombo</code>.
 	 *
 	 * @param container The parent container
@@ -594,6 +649,57 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
+	 * Creates a new non-editable <code>Combo</code>.
+	 *
+	 * @param container The parent container
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @return The newly created <code>Combo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> Combo buildCombo(Composite container,
+	                                     ListValueModel<V> listHolder,
+	                                     WritablePropertyValueModel<V> selectedItemHolder) {
+
+		return this.buildCombo(
+			container,
+			listHolder,
+			selectedItemHolder,
+			StringConverter.Default.<V>instance()
+		);
+	}
+
+	/**
+	 * Creates a new non-editable <code>Combo</code>.
+	 *
+	 * @param container The parent container
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param stringConverter The converter responsible to transform each item
+	 * into a string representation
+	 * @return The newly created <code>Combo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> Combo buildCombo(Composite container,
+	                                     ListValueModel<V> listHolder,
+	                                     WritablePropertyValueModel<V> selectedItemHolder,
+	                                     StringConverter<V> stringConverter) {
+
+		Combo combo = this.buildCombo(container);
+
+		ComboModelAdapter.adapt(
+			listHolder,
+			selectedItemHolder,
+			combo,
+			stringConverter
+		);
+
+		return combo;
+	}
+
+	/**
 	 * Creates a new <code>ComboViewer</code> using a <code>Combo</code>.
 	 *
 	 * @param container The parent container
@@ -645,6 +751,57 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
+	 * Creates a new editable <code>CCombo</code>.
+	 *
+	 * @param container The parent container
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @return The newly created <code>CCombo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> CCombo buildEditableCCombo(Composite container,
+	                                               ListValueModel<V> listHolder,
+	                                               WritablePropertyValueModel<V> selectedItemHolder) {
+
+		return this.buildEditableCCombo(
+			container,
+			listHolder,
+			selectedItemHolder,
+			StringConverter.Default.<V>instance()
+		);
+	}
+
+	/**
+	 * Creates a new editable <code>CCombo</code>.
+	 *
+	 * @param container The parent container
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param stringConverter The converter responsible to transform each item
+	 * into a string representation
+	 * @return The newly created <code>CCombo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> CCombo buildEditableCCombo(Composite container,
+	                                               ListValueModel<V> listHolder,
+	                                               WritablePropertyValueModel<V> selectedItemHolder,
+	                                               StringConverter<V> stringConverter) {
+
+		CCombo combo = this.buildEditableCCombo(container);
+
+		CComboModelAdapter.adapt(
+			listHolder,
+			selectedItemHolder,
+			combo,
+			stringConverter
+		);
+
+		return combo;
+	}
+
+	/**
 	 * Creates a new editable <code>ComboViewer</code> using a <code>CCombo</code>.
 	 *
 	 * @param container The parent container
@@ -679,6 +836,57 @@ public abstract class AbstractPane<T extends Model>
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		combo.setLayoutData(gridData);
+
+		return combo;
+	}
+
+	/**
+	 * Creates a new editable <code>Combo</code>.
+	 *
+	 * @param container The parent container
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @return The newly created <code>Combo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> Combo buildEditableCombo(Composite container,
+	                                             ListValueModel<V> listHolder,
+	                                             WritablePropertyValueModel<V> selectedItemHolder) {
+
+		return this.buildEditableCombo(
+			container,
+			listHolder,
+			selectedItemHolder,
+			StringConverter.Default.<V>instance()
+		);
+	}
+
+	/**
+	 * Creates a new editable <code>Combo</code>.
+	 *
+	 * @param container The parent container
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param stringConverter The converter responsible to transform each item
+	 * into a string representation
+	 * @return The newly created <code>Combo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> Combo buildEditableCombo(Composite container,
+	                                             ListValueModel<V> listHolder,
+	                                             WritablePropertyValueModel<V> selectedItemHolder,
+	                                             StringConverter<V> stringConverter) {
+
+		Combo combo = this.buildEditableCombo(container);
+
+		ComboModelAdapter.adapt(
+			listHolder,
+			selectedItemHolder,
+			combo,
+			stringConverter
+		);
 
 		return combo;
 	}
@@ -757,6 +965,110 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
+	 * Creates a new container that will have the given center control labeled
+	 * with the given label.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The newly created <code>CCombo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> CCombo buildLabeledCCombo(Composite container,
+	                                              String labelText,
+	                                              ListValueModel<V> listHolder,
+	                                              WritablePropertyValueModel<V> selectedItemHolder,
+	                                              String helpId) {
+
+		return this.buildLabeledCCombo(
+			container,
+			labelText,
+			listHolder,
+			selectedItemHolder,
+			StringConverter.Default.<V>instance(),
+			helpId
+		);
+	}
+
+	/**
+	 * Creates a new container that will have a non-editable combo labeled with
+	 * the given text.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param rightControl The control shown to the right of the main widget
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The newly created <code>CCombo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> CCombo buildLabeledCCombo(Composite container,
+	                                              String labelText,
+	                                              ListValueModel<V> listHolder,
+	                                              WritablePropertyValueModel<V> selectedItemHolder,
+	                                              StringConverter<V> stringConverter,
+	                                              Control rightControl,
+	                                              String helpId) {
+
+		CCombo combo = this.buildCCombo(
+			container,
+			listHolder,
+			selectedItemHolder,
+			stringConverter
+		);
+
+		this.buildLabeledComposite(
+			container,
+			labelText,
+			(combo.getParent() != container) ? combo.getParent() : combo,
+			rightControl,
+			helpId
+		);
+
+		return combo;
+	}
+
+	/**
+	 * Creates a new container that will have a non-editable combo labeled with
+	 * the given text.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param rightControl The control shown to the right of the main widget
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The newly created <code>CCombo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> CCombo buildLabeledCCombo(Composite container,
+	                                              String labelText,
+	                                              ListValueModel<V> listHolder,
+	                                              WritablePropertyValueModel<V> selectedItemHolder,
+	                                              StringConverter<V> stringConverter,
+	                                              String helpId) {
+
+		return this.buildLabeledCCombo(
+			container,
+			labelText,
+			listHolder,
+			selectedItemHolder,
+			stringConverter,
+			null,
+			helpId
+		);
+	}
+
+	/**
 	 * Creates a new container that will have a non-editable combo labeled with
 	 * the given text.
 	 *
@@ -816,6 +1128,110 @@ public abstract class AbstractPane<T extends Model>
 			null,
 			helpId
 		);
+	}
+
+	/**
+	 * Creates a new container that will have a non-editable combo labeled with
+	 * the given text.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param rightControl The control shown to the right of the main widget
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The container of the label and the given center control
+	 *
+	 * @category Layout
+	 */
+	protected final <V> Combo buildLabeledCombo(Composite container,
+	                                            String labelText,
+	                                            ListValueModel<V> listHolder,
+	                                            WritablePropertyValueModel<V> selectedItemHolder,
+	                                            Control rightControl,
+	                                            String helpId) {
+
+		return this.buildLabeledCombo(
+			container,
+			labelText,
+			listHolder,
+			selectedItemHolder,
+			StringConverter.Default.<V>instance(),
+			rightControl,
+			helpId
+		);
+	}
+
+	/**
+	 * Creates a new container that will have the given center control labeled
+	 * with the given label.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The container of the label and the given center control
+	 *
+	 * @category Layout
+	 */
+	protected final <V> Combo buildLabeledCombo(Composite container,
+	                                            String labelText,
+	                                            ListValueModel<V> listHolder,
+	                                            WritablePropertyValueModel<V> selectedItemHolder,
+	                                            String helpId) {
+
+		return this.buildLabeledCombo(
+			container,
+			labelText,
+			listHolder,
+			selectedItemHolder,
+			null,
+			helpId
+		);
+	}
+
+	/**
+	 * Creates a new container that will have a non-editable combo labeled with
+	 * the given text.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param rightControl The control shown to the right of the main widget
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The container of the label and the given center control
+	 *
+	 * @category Layout
+	 */
+	protected final <V> Combo buildLabeledCombo(Composite container,
+	                                            String labelText,
+	                                            ListValueModel<V> listHolder,
+	                                            WritablePropertyValueModel<V> selectedItemHolder,
+	                                            StringConverter<V> stringConverter,
+	                                            Control rightControl,
+	                                            String helpId) {
+
+		Combo combo = this.buildCombo(
+			container,
+			listHolder,
+			selectedItemHolder,
+			stringConverter
+		);
+
+		this.buildLabeledComposite(
+			container,
+			labelText,
+			(combo.getParent() != container) ? combo.getParent() : combo,
+			rightControl,
+			helpId
+		);
+
+		return combo;
 	}
 
 	/**
@@ -1173,6 +1589,147 @@ public abstract class AbstractPane<T extends Model>
 	 * with the given label.
 	 *
 	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param rightControl The control shown to the right of the main widget
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The newly created <code>CCombo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> CCombo buildLabeledEditableCCombo(Composite container,
+	                                                      String labelText,
+	                                                      ListValueModel<V> listHolder,
+	                                                      WritablePropertyValueModel<V> selectedItemHolder,
+	                                                      Control rightControl,
+	                                                      String helpId) {
+
+		return this.buildLabeledEditableCCombo(
+			container,
+			labelText,
+			listHolder,
+			selectedItemHolder,
+			StringConverter.Default.<V>instance(),
+			rightControl,
+			helpId
+		);
+	}
+
+	/**
+	 * Creates a new container that will have an editable combo labeled with the
+	 * given text.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The newly created <code>CCombo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> CCombo buildLabeledEditableCCombo(Composite container,
+	                                                      String labelText,
+	                                                      ListValueModel<V> listHolder,
+	                                                      WritablePropertyValueModel<V> selectedItemHolder,
+	                                                      String helpId) {
+
+		return this.buildLabeledEditableCCombo(
+			container,
+			labelText,
+			listHolder,
+			selectedItemHolder,
+			StringConverter.Default.<V>instance(),
+			null,
+			helpId
+		);
+	}
+
+	/**
+	 * Creates a new container that will have the given center control labeled
+	 * with the given label.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param stringConverter The converter responsible to transform each item
+	 * into a string representation
+	 * @param rightControl The control shown to the right of the main widget
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The newly created <code>CCombo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> CCombo buildLabeledEditableCCombo(Composite container,
+	                                                      String labelText,
+	                                                      ListValueModel<V> listHolder,
+	                                                      WritablePropertyValueModel<V> selectedItemHolder,
+	                                                      StringConverter<V> stringConverter,
+	                                                      Control rightControl,
+	                                                      String helpId) {
+
+		CCombo combo = this.buildEditableCCombo(
+			container,
+			listHolder,
+			selectedItemHolder,
+			stringConverter
+		);
+
+		this.buildLabeledComposite(
+			container,
+			labelText,
+			(combo.getParent() != container) ? combo.getParent() : combo,
+			rightControl,
+			helpId
+		);
+
+		return combo;
+	}
+
+	/**
+	 * Creates a new container that will have an editable combo labeled with the
+	 * given text.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param stringConverter The converter responsible to transform each item
+	 * into a string representation
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The newly created <code>CCombo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> CCombo buildLabeledEditableCCombo(Composite container,
+	                                                      String labelText,
+	                                                      ListValueModel<V> listHolder,
+	                                                      WritablePropertyValueModel<V> selectedItemHolder,
+	                                                      StringConverter<V> stringConverter,
+	                                                      String helpId) {
+
+		return this.buildLabeledEditableCCombo(
+			container,
+			labelText,
+			listHolder,
+			selectedItemHolder,
+			stringConverter,
+			null,
+			helpId
+		);
+	}
+
+	/**
+	 * Creates a new container that will have the given center control labeled
+	 * with the given label.
+	 *
+	 * @param container The parent container
 	 * @param leftControl The widget shown to the left of the main widget
 	 * @param centerControl The main widget
 	 * @param rightControl The control shown to the right of the main widget
@@ -1298,6 +1855,147 @@ public abstract class AbstractPane<T extends Model>
 			container,
 			labelText,
 			comboListener,
+			null,
+			helpId
+		);
+	}
+
+	/**
+	 * Creates a new container that will have the given center control labeled
+	 * with the given label.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param rightControl The control shown to the right of the main widget
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The newly created <code>Combo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> Combo buildLabeledEditableCombo(Composite container,
+	                                                    String labelText,
+	                                                    ListValueModel<V> listHolder,
+	                                                    WritablePropertyValueModel<V> selectedItemHolder,
+	                                                    Control rightControl,
+	                                                    String helpId) {
+
+		return this.buildLabeledEditableCombo(
+			container,
+			labelText,
+			listHolder,
+			selectedItemHolder,
+			StringConverter.Default.<V>instance(),
+			rightControl,
+			helpId
+		);
+	}
+
+	/**
+	 * Creates a new container that will have an editable combo labeled with the
+	 * given text.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The newly created <code>Combo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> Combo buildLabeledEditableCombo(Composite container,
+	                                                    String labelText,
+	                                                    ListValueModel<V> listHolder,
+	                                                    WritablePropertyValueModel<V> selectedItemHolder,
+	                                                    String helpId) {
+
+		return this.buildLabeledEditableCombo(
+			container,
+			labelText,
+			listHolder,
+			selectedItemHolder,
+			StringConverter.Default.<V>instance(),
+			null,
+			helpId
+		);
+	}
+
+	/**
+	 * Creates a new container that will have the given center control labeled
+	 * with the given label.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param stringConverter The converter responsible to transform each item
+	 * into a string representation
+	 * @param rightControl The control shown to the right of the main widget
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The newly created <code>Combo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> Combo buildLabeledEditableCombo(Composite container,
+	                                                    String labelText,
+	                                                    ListValueModel<V> listHolder,
+	                                                    WritablePropertyValueModel<V> selectedItemHolder,
+	                                                    StringConverter<V> stringConverter,
+	                                                    Control rightControl,
+	                                                    String helpId) {
+
+		Combo combo = this.buildEditableCombo(
+			container,
+			listHolder,
+			selectedItemHolder,
+			stringConverter
+		);
+
+		this.buildLabeledComposite(
+			container,
+			labelText,
+			(combo.getParent() != container) ? combo.getParent() : combo,
+			rightControl,
+			helpId
+		);
+
+		return combo;
+	}
+
+	/**
+	 * Creates a new container that will have an editable combo labeled with the
+	 * given text.
+	 *
+	 * @param container The parent container
+	 * @param labelText The text of the label
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param stringConverter The converter responsible to transform each item
+	 * into a string representation
+	 * @param helpId The topic help ID to be registered for the given center
+	 * compositer
+	 * @return The newly created <code>Combo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> Combo buildLabeledEditableCombo(Composite container,
+	                                                    String labelText,
+	                                                    ListValueModel<V> listHolder,
+	                                                    WritablePropertyValueModel<V> selectedItemHolder,
+	                                                    StringConverter<V> stringConverter,
+	                                                    String helpId) {
+
+		return this.buildLabeledEditableCombo(
+			container,
+			labelText,
+			listHolder,
+			selectedItemHolder,
+			stringConverter,
 			null,
 			helpId
 		);
@@ -3140,7 +3838,10 @@ public abstract class AbstractPane<T extends Model>
 	}
 
 	/**
-	 * Sets (TODO)
+	 * Sets the internal flag that is used to determine whether the pane is being
+	 * populated or not. During population, it is required to not update the
+	 * widgets when the model is updated nor to update the model when the widgets
+	 * are being synchronized with the model's values.
 	 *
 	 * @param populating
 	 *

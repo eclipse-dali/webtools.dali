@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
@@ -26,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
- * | | EntityNameCombo                                                       | |
+ * | | EntityNameComposite                                                   | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
@@ -66,7 +65,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see Entity
  * @see BaseJpaUiFactory - The factory creating this pane
- * @see EntityNameCombo
+ * @see EntityNameComposite
  * @see InheritanceComposite
  * @see OverridesComposite
  * @see SecondaryTablesComposite
@@ -94,15 +93,6 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private Composite buildEntityContainer(Composite container) {
-		int groupBoxMargin = groupBoxMargin();
-		return buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-	}
-
-	private EntityNameCombo buildEntityNameCombo(Composite container) {
-		return new EntityNameCombo(this, container);
-	}
-
 	private PropertyValueModel<Table> buildTableHolder() {
 		return new TransformationPropertyValueModel<Entity, Table>(getSubjectHolder()) {
 			@Override
@@ -124,12 +114,12 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 
 	private void initializeGeneralPane(Composite container) {
 
+		int groupBoxMargin = groupBoxMargin();
+
 		// Entity Name widgets
-		buildLabeledComposite(
-			buildEntityContainer(container),
-			JptUiMappingsMessages.EntityGeneralSection_name,
-			buildEntityNameCombo(container),
-			JpaHelpContextIds.ENTITY_NAME
+		new EntityNameComposite(
+			this,
+			buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin)
 		);
 
 		// Table widgets

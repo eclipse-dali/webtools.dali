@@ -56,6 +56,8 @@ public class JptUiMappingsMessages extends NLS
 	public static String EntityComposite_inheritance;
 	public static String EntityComposite_queries;
 
+	public static String EntityNameComposite_name;
+
 	public static String TableComposite_tableSection;
 	public static String TableComposite_defaultEmpty;
 	public static String TableComposite_defaultWithOneParam;
