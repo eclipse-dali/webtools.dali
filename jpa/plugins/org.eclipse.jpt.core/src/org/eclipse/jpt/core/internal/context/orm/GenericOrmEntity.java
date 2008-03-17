@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.Query;
+import org.eclipse.jpt.core.context.QueryHolder;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
@@ -805,12 +806,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		OrmNamedQuery namedQuery = jpaFactory().buildOrmNamedQuery(this);
 		this.namedQueries.add(index, namedQuery);
 		this.typeMappingResource().getNamedQueries().add(index, OrmFactory.eINSTANCE.createXmlNamedQuery());
-		this.fireItemAdded(Entity.NAMED_QUERIES_LIST, index, namedQuery);
+		this.fireItemAdded(QueryHolder.NAMED_QUERIES_LIST, index, namedQuery);
 		return namedQuery;
 	}
 	
 	protected void addNamedQuery(int index, OrmNamedQuery namedQuery) {
-		addItemToList(index, namedQuery, this.namedQueries, Entity.NAMED_QUERIES_LIST);
+		addItemToList(index, namedQuery, this.namedQueries, QueryHolder.NAMED_QUERIES_LIST);
 	}
 		
 	public void removeNamedQuery(NamedQuery namedQuery) {
@@ -820,17 +821,17 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	public void removeNamedQuery(int index) {
 		OrmNamedQuery namedQuery = this.namedQueries.remove(index);
 		this.typeMappingResource().getNamedQueries().remove(index);
-		fireItemRemoved(Entity.NAMED_QUERIES_LIST, index, namedQuery);
+		fireItemRemoved(QueryHolder.NAMED_QUERIES_LIST, index, namedQuery);
 	}
 	
 	protected void removeNamedQuery_(OrmNamedQuery namedQuery) {
-		removeItemFromList(namedQuery, this.namedQueries, Entity.NAMED_QUERIES_LIST);
+		removeItemFromList(namedQuery, this.namedQueries, QueryHolder.NAMED_QUERIES_LIST);
 	}
 	
 	public void moveNamedQuery(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.namedQueries, targetIndex, sourceIndex);
 		this.typeMappingResource().getNamedQueries().move(targetIndex, sourceIndex);
-		fireItemMoved(Entity.NAMED_QUERIES_LIST, targetIndex, sourceIndex);		
+		fireItemMoved(QueryHolder.NAMED_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
 	
 	public ListIterator<OrmNamedNativeQuery> namedNativeQueries() {
@@ -845,12 +846,12 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 		OrmNamedNativeQuery namedNativeQuery = jpaFactory().buildOrmNamedNativeQuery(this);
 		this.namedNativeQueries.add(index, namedNativeQuery);
 		this.typeMappingResource().getNamedNativeQueries().add(index, OrmFactory.eINSTANCE.createXmlNamedNativeQuery());
-		this.fireItemAdded(Entity.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
+		this.fireItemAdded(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
 		return namedNativeQuery;
 	}
 	
 	protected void addNamedNativeQuery(int index, OrmNamedNativeQuery namedNativeQuery) {
-		addItemToList(index, namedNativeQuery, this.namedNativeQueries, Entity.NAMED_NATIVE_QUERIES_LIST);
+		addItemToList(index, namedNativeQuery, this.namedNativeQueries, QueryHolder.NAMED_NATIVE_QUERIES_LIST);
 	}
 	
 	public void removeNamedNativeQuery(NamedNativeQuery namedNativeQuery) {
@@ -860,17 +861,17 @@ public class GenericOrmEntity extends AbstractOrmTypeMapping<XmlEntity> implemen
 	public void removeNamedNativeQuery(int index) {
 		OrmNamedNativeQuery namedNativeQuery = this.namedNativeQueries.remove(index);
 		this.typeMappingResource().getNamedNativeQueries().remove(index);
-		fireItemRemoved(Entity.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
+		fireItemRemoved(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
 	}
 
 	protected void removeNamedNativeQuery_(OrmNamedNativeQuery namedNativeQuery) {
-		removeItemFromList(namedNativeQuery, this.namedNativeQueries, Entity.NAMED_NATIVE_QUERIES_LIST);
+		removeItemFromList(namedNativeQuery, this.namedNativeQueries, QueryHolder.NAMED_NATIVE_QUERIES_LIST);
 	}
 		
 	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.namedNativeQueries, targetIndex, sourceIndex);
 		this.typeMappingResource().getNamedNativeQueries().move(targetIndex, sourceIndex);
-		fireItemMoved(Entity.NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);		
+		fireItemMoved(QueryHolder.NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
 	
 	@SuppressWarnings("unchecked")

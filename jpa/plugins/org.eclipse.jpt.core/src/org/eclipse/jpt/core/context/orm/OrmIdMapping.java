@@ -21,17 +21,11 @@ import org.eclipse.jpt.core.resource.orm.XmlId;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmIdMapping extends IdMapping, OrmColumnMapping, OrmAttributeMapping 
+public interface OrmIdMapping extends IdMapping, OrmColumnMapping, OrmAttributeMapping, OrmGeneratorHolder
 {
 	OrmGeneratedValue getGeneratedValue();
 	OrmGeneratedValue addGeneratedValue();	
 	
-	OrmSequenceGenerator getSequenceGenerator();
-	OrmSequenceGenerator addSequenceGenerator();
-	
-	OrmTableGenerator getTableGenerator();
-	OrmTableGenerator addTableGenerator();
-
 	void initialize(XmlId id);
 
 	void update(XmlId id);

@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.context.GeneratorHolder;
 import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.Schema;
@@ -64,7 +64,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TableGeneratorComposite(AbstractFormPane<? extends IdMapping> parentPane,
+	public TableGeneratorComposite(AbstractFormPane<? extends GeneratorHolder> parentPane,
 	                               Composite parent) {
 
 		super(parentPane, parent);
@@ -74,7 +74,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected TableGenerator buildGenerator(IdMapping subject) {
+	protected TableGenerator buildGenerator(GeneratorHolder subject) {
 		return subject.addTableGenerator();
 	}
 
@@ -195,7 +195,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	}
 
 	private PropertyValueModel<TableGenerator> buildTableGeneratorHolder() {
-		return new PropertyAspectAdapter<IdMapping, TableGenerator>(getSubjectHolder(), IdMapping.TABLE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapter<GeneratorHolder, TableGenerator>(getSubjectHolder(), GeneratorHolder.TABLE_GENERATOR_PROPERTY) {
 			@Override
 			protected TableGenerator buildValue_() {
 				return subject.getTableGenerator();
@@ -336,7 +336,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected TableGenerator generator(IdMapping subject) {
+	protected TableGenerator generator(GeneratorHolder subject) {
 		return (subject != null) ? subject.getTableGenerator() : null;
 	}
 
@@ -392,6 +392,6 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	 */
 	@Override
 	protected String propertyName() {
-		return IdMapping.TABLE_GENERATOR_PROPERTY;
+		return GeneratorHolder.TABLE_GENERATOR_PROPERTY;
 	}
 }

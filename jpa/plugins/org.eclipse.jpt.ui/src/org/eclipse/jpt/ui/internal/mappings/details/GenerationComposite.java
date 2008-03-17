@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.GeneratedValue;
+import org.eclipse.jpt.core.context.GeneratorHolder;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.context.TableGenerator;
@@ -102,7 +103,7 @@ public class GenerationComposite extends AbstractFormPane<IdMapping>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildSequenceGeneratorBooleanHolder() {
-		return new PropertyAspectAdapter<IdMapping, Boolean>(getSubjectHolder(), IdMapping.SEQUENCE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapter<IdMapping, Boolean>(getSubjectHolder(), GeneratorHolder.SEQUENCE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.getSequenceGenerator() != null;
@@ -130,7 +131,7 @@ public class GenerationComposite extends AbstractFormPane<IdMapping>
 	}
 
  	private WritablePropertyValueModel<Boolean> buildTableGeneratorBooleanHolder() {
-		return new PropertyAspectAdapter<IdMapping, Boolean>(getSubjectHolder(), IdMapping.TABLE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapter<IdMapping, Boolean>(getSubjectHolder(), GeneratorHolder.TABLE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.getTableGenerator() != null;

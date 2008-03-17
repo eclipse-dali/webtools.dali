@@ -20,7 +20,7 @@ import java.util.ListIterator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface Entity extends TypeMapping
+public interface Entity extends TypeMapping, GeneratorHolder, QueryHolder
 {
 	// **************** name **************************************
 
@@ -138,22 +138,6 @@ public interface Entity extends TypeMapping
 	//TODO add tests in java and xml for this
  	boolean isDiscriminatorValueAllowed();
  		String DISCRIMINATOR_VALUE_ALLOWED_PROPERTY = "discriminatorValueAllowedProperty";
-
- 	
- 	// **************** table generator **************************************
-	
-	TableGenerator getTableGenerator();
-	TableGenerator addTableGenerator();
-	void removeTableGenerator();
-		String TABLE_GENERATOR_PROPERTY = "tableGeneratorProperty";
-
-
-	// **************** sequence generator **************************************
-		
-	SequenceGenerator getSequenceGenerator();
-	SequenceGenerator addSequenceGenerator();
-	void removeSequenceGenerator();
-		String SEQUENCE_GENERATOR_PROPERTY = "sequenceGeneratorProperty";
 
 	
 	// **************** primary key join columns **************************************
@@ -296,76 +280,6 @@ public interface Entity extends TypeMapping
 
 	
 	// **************** named queries **************************************
-
-	/**
-	 * Return a list iterator of the named queries.
-	 * This will not be null.
-	 */
-	<T extends NamedQuery> ListIterator<T> namedQueries();
-	
-	/**
-	 * Return the number of named queries.
-	 */
-	int namedQueriesSize();
-	
-	/**
-	 * Add a named query to the entity return the object representing it.
-	 */
-	NamedQuery addNamedQuery(int index);
-	
-	/**
-	 * Remove the named query at the index from the entity.
-	 */
-	void removeNamedQuery(int index);
-	
-	/**
-	 * Remove the named query at from the entity.
-	 */
-	void removeNamedQuery(NamedQuery namedQuery);
-	
-	/**
-	 * Move the named query from the source index to the target index.
-	 */
-	void moveNamedQuery(int targetIndex, int sourceIndex);
-		String NAMED_QUERIES_LIST = "namedQueriesList";
-
-		
-	// **************** named native queries **************************************
-	
-	/**
-	 * Return a list iterator of the specified named native queries.
-	 * This will not be null.
-	 */
-	<T extends NamedNativeQuery> ListIterator<T> namedNativeQueries();
-	
-	/**
-	 * Return the number of named native queries.
-	 */
-	int namedNativeQueriesSize();
-	
-	/**
-	 * Add a named native query to the entity return the object representing it.
-	 */
-	NamedNativeQuery addNamedNativeQuery(int index);
-	
-	/**
-	 * Remove the named native query at the index from the entity.
-	 */
-	void removeNamedNativeQuery(int index);
-	
-	/**
-	 * Remove the named native query at from the entity.
-	 */
-	void removeNamedNativeQuery(NamedNativeQuery namedNativeQuery);
-
-	/**
-	 * Move the named native query from the source index to the target index.
-	 */
-	void moveNamedNativeQuery(int targetIndex, int sourceIndex);
-		String NAMED_NATIVE_QUERIES_LIST = "namedNativeQueriesList";
-
-
-	// **************** id class **************************************
 
 	String getIdClass();
 	void setIdClass(String value);

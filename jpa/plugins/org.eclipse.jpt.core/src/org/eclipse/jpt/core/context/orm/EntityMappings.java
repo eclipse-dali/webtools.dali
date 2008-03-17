@@ -12,8 +12,7 @@ package org.eclipse.jpt.core.context.orm;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
-import org.eclipse.jpt.core.context.SequenceGenerator;
-import org.eclipse.jpt.core.context.TableGenerator;
+import org.eclipse.jpt.core.context.QueryHolder;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 
 /**
@@ -25,7 +24,7 @@ import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface EntityMappings extends OrmJpaContextNode, JpaStructureNode
+public interface EntityMappings extends OrmJpaContextNode, JpaStructureNode, QueryHolder
 {
 	
 	String getVersion();
@@ -82,35 +81,35 @@ public interface EntityMappings extends OrmJpaContextNode, JpaStructureNode
 		String PERSISTENT_TYPES_LIST = "persistentTypes";
 	
 
-	<T extends SequenceGenerator> ListIterator<T> sequenceGenerators();
+	ListIterator<OrmSequenceGenerator> sequenceGenerators();
 	int sequenceGeneratorsSize();
-	SequenceGenerator addSequenceGenerator(int index);
+	OrmSequenceGenerator addSequenceGenerator(int index);
 	void removeSequenceGenerator(int index);
-	void removeSequenceGenerator(SequenceGenerator sequenceGenerator);
+	void removeSequenceGenerator(OrmSequenceGenerator sequenceGenerator);
 	void moveSequenceGenerator(int targetIndex, int sourceIndex);
 		String SEQUENCE_GENERATORS_LIST = "sequenceGeneratorsList";
 
-	<T extends TableGenerator> ListIterator<T> tableGenerators();
+	ListIterator<OrmTableGenerator> tableGenerators();
 	int tableGeneratorsSize();
-	TableGenerator addTableGenerator(int index);
+	OrmTableGenerator addTableGenerator(int index);
 	void removeTableGenerator(int index);
-	void removeTableGenerator(TableGenerator tableGenerator);
+	void removeTableGenerator(OrmTableGenerator tableGenerator);
 	void moveTableGenerator(int targetIndex, int sourceIndex);
 		String TABLE_GENERATORS_LIST = "tableGeneratorsList";
 
+	@SuppressWarnings("unchecked")
 	ListIterator<OrmNamedQuery> namedQueries();
 	int namedQueriesSize();
 	OrmNamedQuery addNamedQuery(int index);
 	void removeNamedQuery(int index);
-	void removeNamedQuery(OrmNamedQuery namedQuery);
 	void moveNamedQuery(int targetIndex, int sourceIndex);
 		String NAMED_QUERIES_LIST = "namedQueriesList";
 
+		@SuppressWarnings("unchecked")
 	ListIterator<OrmNamedNativeQuery> namedNativeQueries();
 	int namedNativeQueriesSize();
 	OrmNamedNativeQuery addNamedNativeQuery(int index);
 	void removeNamedNativeQuery(int index);
-	void removeNamedNativeQuery(OrmNamedNativeQuery namedNativeQuery);
 	void moveNamedNativeQuery(int targetIndex, int sourceIndex);
 		String NAMED_NATIVE_QUERIES_LIST = "namedNativeQueriesList";
 

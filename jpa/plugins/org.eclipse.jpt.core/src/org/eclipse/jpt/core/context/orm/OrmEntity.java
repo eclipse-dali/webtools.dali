@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.resource.orm.XmlEntity;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmEntity extends OrmTypeMapping, Entity
+public interface OrmEntity extends OrmTypeMapping, Entity, OrmGeneratorHolder
 {
 
 	/**
@@ -75,12 +75,6 @@ public interface OrmEntity extends OrmTypeMapping, Entity
 	OrmTable getTable();
 	
 	OrmDiscriminatorColumn getDiscriminatorColumn();
-
-	OrmTableGenerator getTableGenerator();	
-	OrmTableGenerator addTableGenerator();
-	
-	OrmSequenceGenerator getSequenceGenerator();	
-	OrmSequenceGenerator addSequenceGenerator();
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmSecondaryTable> secondaryTables();	

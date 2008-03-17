@@ -13,9 +13,9 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.context.Query;
+import org.eclipse.jpt.core.context.QueryHolder;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
@@ -61,7 +61,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class NamedQueriesComposite extends AbstractFormPane<Entity>
+public class NamedQueriesComposite extends AbstractFormPane<QueryHolder>
 {
 	private WritablePropertyValueModel<NamedQuery> namedQueryHolder;
 
@@ -71,7 +71,7 @@ public class NamedQueriesComposite extends AbstractFormPane<Entity>
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	public NamedQueriesComposite(AbstractFormPane<? extends Entity> parentPane,
+	public NamedQueriesComposite(AbstractFormPane<? extends QueryHolder> parentPane,
 	                             Composite parent) {
 		super(parentPane, parent);
 	}
@@ -137,7 +137,7 @@ public class NamedQueriesComposite extends AbstractFormPane<Entity>
 	}
 
 	private ListValueModel<NamedQuery> buildNamedQueriesListHolder() {
-		return new ListAspectAdapter<Entity, NamedQuery>(getSubjectHolder(), Entity.NAMED_QUERIES_LIST) {
+		return new ListAspectAdapter<QueryHolder, NamedQuery>(getSubjectHolder(), QueryHolder.NAMED_QUERIES_LIST) {
 			@Override
 			protected ListIterator<NamedQuery> listIterator_() {
 				return subject.namedQueries();
@@ -229,7 +229,7 @@ public class NamedQueriesComposite extends AbstractFormPane<Entity>
 		);
 
 		// List pane
-		new AddRemoveListPane<Entity>(
+		new AddRemoveListPane<QueryHolder>(
 			this,
 			buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
 			buildNamedQueriesAdapter(),

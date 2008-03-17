@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.context.GeneratorHolder;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
@@ -50,7 +50,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public SequenceGeneratorComposite(AbstractFormPane<? extends IdMapping> parentPane,
+	public SequenceGeneratorComposite(AbstractFormPane<? extends GeneratorHolder> parentPane,
 	                                  Composite parent) {
 
 		super(parentPane, parent);
@@ -60,12 +60,12 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected SequenceGenerator buildGenerator(IdMapping subject) {
+	protected SequenceGenerator buildGenerator(GeneratorHolder subject) {
 		return subject.addSequenceGenerator();
 	}
 
 	private PropertyValueModel<SequenceGenerator> buildSequenceGeneratorHolder() {
-		return new PropertyAspectAdapter<IdMapping, SequenceGenerator>(getSubjectHolder(), IdMapping.SEQUENCE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapter<GeneratorHolder, SequenceGenerator>(getSubjectHolder(), GeneratorHolder.SEQUENCE_GENERATOR_PROPERTY) {
 			@Override
 			protected SequenceGenerator buildValue_() {
 				return subject.getSequenceGenerator();
@@ -134,7 +134,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected SequenceGenerator generator(IdMapping subject) {
+	protected SequenceGenerator generator(GeneratorHolder subject) {
 		return subject.getSequenceGenerator();
 	}
 
@@ -166,6 +166,6 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 	 */
 	@Override
 	protected String propertyName() {
-		return IdMapping.SEQUENCE_GENERATOR_PROPERTY;
+		return GeneratorHolder.SEQUENCE_GENERATOR_PROPERTY;
 	}
 }

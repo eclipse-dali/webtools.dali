@@ -18,6 +18,8 @@ import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
+import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
+import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
@@ -489,7 +491,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		tableGeneratorResource2.setName("BAR");
 		ormResource().save(null);
 		
-		ListIterator<TableGenerator> tableGenerators = entityMappings().tableGenerators();
+		ListIterator<OrmTableGenerator> tableGenerators = entityMappings().tableGenerators();
 		assertEquals("BAR", tableGenerators.next().getName());
 		assertEquals("FOO", tableGenerators.next().getName());
 		assertFalse(tableGenerators.hasNext());
@@ -551,7 +553,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("FOO", ormResource().getEntityMappings().getTableGenerators().get(1).getName());
 		assertEquals(2, ormResource().getEntityMappings().getTableGenerators().size());
 		
-		ListIterator<TableGenerator> tableGenerators = entityMappings().tableGenerators();
+		ListIterator<OrmTableGenerator> tableGenerators = entityMappings().tableGenerators();
 		assertEquals("BAR", tableGenerators.next().getName());
 		assertEquals("FOO", tableGenerators.next().getName());
 		assertFalse(tableGenerators.hasNext());
@@ -576,8 +578,8 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("BAR", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
 		assertEquals("BAZ", ormResource().getEntityMappings().getTableGenerators().get(1).getName());
 		
-		ListIterator<TableGenerator> tableGenerators = entityMappings().tableGenerators();
-		TableGenerator xmlTableGenerator = tableGenerators.next();
+		ListIterator<OrmTableGenerator> tableGenerators = entityMappings().tableGenerators();
+		OrmTableGenerator xmlTableGenerator = tableGenerators.next();
 		assertEquals("BAR", xmlTableGenerator.getName());
 		assertEquals(tableGenerator2, xmlTableGenerator);
 		xmlTableGenerator = tableGenerators.next();
@@ -668,7 +670,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		sequenceGeneratorResource2.setName("BAR");
 		ormResource().save(null);
 		
-		ListIterator<SequenceGenerator> sequenceGenerators = entityMappings().sequenceGenerators();
+		ListIterator<OrmSequenceGenerator> sequenceGenerators = entityMappings().sequenceGenerators();
 		assertEquals("BAR", sequenceGenerators.next().getName());
 		assertEquals("FOO", sequenceGenerators.next().getName());
 		assertFalse(sequenceGenerators.hasNext());
@@ -729,7 +731,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("FOO", ormResource().getEntityMappings().getSequenceGenerators().get(1).getName());
 		assertEquals(2, ormResource().getEntityMappings().getSequenceGenerators().size());
 		
-		ListIterator<SequenceGenerator> sequenceGenerators = entityMappings().sequenceGenerators();
+		ListIterator<OrmSequenceGenerator> sequenceGenerators = entityMappings().sequenceGenerators();
 		assertEquals("BAR", sequenceGenerators.next().getName());
 		assertEquals("FOO", sequenceGenerators.next().getName());
 		assertFalse(sequenceGenerators.hasNext());
@@ -754,7 +756,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("BAR", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
 		assertEquals("BAZ", ormResource().getEntityMappings().getSequenceGenerators().get(1).getName());
 		
-		ListIterator<SequenceGenerator> sequenceGenerators = entityMappings().sequenceGenerators();
+		ListIterator<OrmSequenceGenerator> sequenceGenerators = entityMappings().sequenceGenerators();
 		SequenceGenerator xmlSequenceGenerator = sequenceGenerators.next();
 		assertEquals("BAR", xmlSequenceGenerator.getName());
 		assertEquals(sequenceGenerator2, xmlSequenceGenerator);

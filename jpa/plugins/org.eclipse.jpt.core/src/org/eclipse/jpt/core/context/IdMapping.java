@@ -18,21 +18,11 @@ package org.eclipse.jpt.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface IdMapping extends AttributeMapping, ColumnMapping
+public interface IdMapping extends AttributeMapping, ColumnMapping, GeneratorHolder
 {
 	GeneratedValue getGeneratedValue();
 	GeneratedValue addGeneratedValue();
 	void removeGeneratedValue();
 		String GENERATED_VALUE_PROPERTY = "generatedValueProperty";
-	
-	TableGenerator getTableGenerator();
-	TableGenerator addTableGenerator();
-	void removeTableGenerator();
-		String TABLE_GENERATOR_PROPERTY = "tableGeneratorProperty";
-
-	SequenceGenerator getSequenceGenerator();
-	SequenceGenerator addSequenceGenerator();
-	void removeSequenceGenerator();
-		String SEQUENCE_GENERATOR_PROPERTY = "sequenceGeneratorProperty";
 
 }

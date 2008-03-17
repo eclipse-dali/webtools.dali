@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.Generator;
-import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.context.GeneratorHolder;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public abstract class GeneratorComposite<T extends Generator> extends AbstractFormPane<IdMapping>
+public abstract class GeneratorComposite<T extends Generator> extends AbstractFormPane<GeneratorHolder>
 {
 	/**
 	 * Creates a new <code>GeneratorComposite</code>.
@@ -37,7 +37,7 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractFo
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public GeneratorComposite(AbstractFormPane<? extends IdMapping> parentPane,
+	public GeneratorComposite(AbstractFormPane<? extends GeneratorHolder> parentPane,
                              Composite parent) {
 
 		super(parentPane, parent);
@@ -49,10 +49,10 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractFo
 	 * @param subject The subject used to retrieve the generator
 	 * @return The newly created <code>IGenerator</code>
 	 */
-	protected abstract T buildGenerator(IdMapping subject);
+	protected abstract T buildGenerator(GeneratorHolder subject);
 
 	private PropertyValueModel<Generator> buildGeneratorHolder() {
-		return new PropertyAspectAdapter<IdMapping, Generator>(getSubjectHolder(), propertyName()) {
+		return new PropertyAspectAdapter<GeneratorHolder, Generator>(getSubjectHolder(), propertyName()) {
 			@Override
 			protected Generator buildValue_() {
 				return GeneratorComposite.this.generator(subject);
@@ -93,7 +93,7 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractFo
 	 * @return The <code>Generator</code> or <code>null</code> if it doesn't
 	 * exists
 	 */
-	protected abstract T generator(IdMapping subject);
+	protected abstract T generator(GeneratorHolder subject);
 
 	/**
 	 * Retrieves the JPA project.
@@ -119,7 +119,7 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractFo
 	 * @param subject The subject used to retrieve the generator
 	 * @return The <code>Generator</code> which should never be <code>null</code>
 	 */
-	protected final T retrieveGenerator(IdMapping subject) {
+	protected final T retrieveGenerator(GeneratorHolder subject) {
 		T generator = this.generator(subject);
 
 		if (generator == null) {

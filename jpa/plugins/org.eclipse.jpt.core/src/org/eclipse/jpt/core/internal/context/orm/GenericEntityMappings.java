@@ -19,9 +19,9 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.Generator;
+import org.eclipse.jpt.core.context.NamedNativeQuery;
+import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.context.Query;
-import org.eclipse.jpt.core.context.SequenceGenerator;
-import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
@@ -295,7 +295,6 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		fireItemMoved(PERSISTENT_TYPES_LIST, targetIndex, sourceIndex);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<OrmSequenceGenerator> sequenceGenerators() {
 		return new CloneListIterator<OrmSequenceGenerator>(this.sequenceGenerators);
 	}
@@ -304,7 +303,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		return this.sequenceGenerators.size();
 	}
 	
-	public SequenceGenerator addSequenceGenerator(int index) {
+	public OrmSequenceGenerator addSequenceGenerator(int index) {
 		OrmSequenceGenerator ormSequenceGenerator = jpaFactory().buildOrmSequenceGenerator(this);
 		this.sequenceGenerators.add(index, ormSequenceGenerator);
 		XmlSequenceGenerator sequenceGenerator = OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
@@ -318,7 +317,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		addItemToList(index, sequenceGenerator, this.sequenceGenerators, EntityMappings.SEQUENCE_GENERATORS_LIST);
 	}
 
-	public void removeSequenceGenerator(SequenceGenerator sequenceGenerator) {
+	public void removeSequenceGenerator(OrmSequenceGenerator sequenceGenerator) {
 		removeSequenceGenerator(this.sequenceGenerators.indexOf(sequenceGenerator));
 	}
 	
@@ -338,7 +337,6 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		fireItemMoved(EntityMappings.SEQUENCE_GENERATORS_LIST, targetIndex, sourceIndex);	
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ListIterator<OrmTableGenerator> tableGenerators() {
 		return new CloneListIterator<OrmTableGenerator>(this.tableGenerators);
 	}
@@ -347,7 +345,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		return this.tableGenerators.size();
 	}
 	
-	public TableGenerator addTableGenerator(int index) {
+	public OrmTableGenerator addTableGenerator(int index) {
 		OrmTableGenerator xmlTableGenerator = jpaFactory().buildOrmTableGenerator(this);
 		this.tableGenerators.add(index, xmlTableGenerator);
 		XmlTableGenerator tableGenerator = OrmFactory.eINSTANCE.createXmlTableGeneratorImpl();
@@ -361,7 +359,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		addItemToList(index, tableGenerator, this.tableGenerators, EntityMappings.TABLE_GENERATORS_LIST);
 	}
 
-	public void removeTableGenerator(TableGenerator tableGenerator) {
+	public void removeTableGenerator(OrmTableGenerator tableGenerator) {
 		removeTableGenerator(this.tableGenerators.indexOf(tableGenerator));
 	}
 
@@ -401,7 +399,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		addItemToList(index, namedQuery, this.namedQueries, EntityMappings.NAMED_QUERIES_LIST);
 	}
 	
-	public void removeNamedQuery(OrmNamedQuery namedQuery) {
+	public void removeNamedQuery(NamedQuery namedQuery) {
 		this.removeNamedQuery(this.namedQueries.indexOf(namedQuery));
 	}
 
@@ -440,7 +438,7 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 		addItemToList(index, namedNativeQuery, this.namedNativeQueries, EntityMappings.NAMED_NATIVE_QUERIES_LIST);
 	}
 	
-	public void removeNamedNativeQuery(OrmNamedNativeQuery namedNativeQuery) {
+	public void removeNamedNativeQuery(NamedNativeQuery namedNativeQuery) {
 		removeNamedNativeQuery(this.namedNativeQueries.indexOf(namedNativeQuery));
 	}
 
@@ -750,14 +748,14 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	}
 	
 	public boolean containsOffset(int textOffset) {
-		if (xmlEntityMappings == null) {
+		if (this.xmlEntityMappings == null) {
 			return false;
 		}
-		return xmlEntityMappings.containsOffset(textOffset);
+		return this.xmlEntityMappings.containsOffset(textOffset);
 	}
 	
 	public TextRange selectionTextRange() {
-		return xmlEntityMappings.selectionTextRange();
+		return this.xmlEntityMappings.selectionTextRange();
 	}
 	
 	public TextRange validationTextRange() {

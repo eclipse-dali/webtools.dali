@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
-import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.context.GeneratorHolder;
 
 /**
  * 
@@ -20,8 +20,13 @@ import org.eclipse.jpt.core.context.IdMapping;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaIdMapping extends JavaAttributeMapping, IdMapping, JavaColumnMapping, JavaGeneratorHolder
+public interface JavaGeneratorHolder extends GeneratorHolder
 {
-	JavaGeneratedValue getGeneratedValue();
-	JavaGeneratedValue addGeneratedValue();
-} 
+	JavaSequenceGenerator getSequenceGenerator();
+
+	JavaSequenceGenerator addSequenceGenerator();
+
+	JavaTableGenerator getTableGenerator();
+
+	JavaTableGenerator addTableGenerator();
+}
