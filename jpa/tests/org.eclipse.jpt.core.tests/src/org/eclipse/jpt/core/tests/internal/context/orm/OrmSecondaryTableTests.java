@@ -372,24 +372,18 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		XmlSecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
 		
 		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = ormSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
-		ormResource().save(null);
 		primaryKeyJoinColumn.setSpecifiedName("FOO");
-		ormResource().save(null);
 				
 		assertEquals("FOO", secondaryTableResource.getPrimaryKeyJoinColumns().get(0).getName());
 		
 		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn2 = ormSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
-		ormResource().save(null);
 		primaryKeyJoinColumn2.setSpecifiedName("BAR");
-		ormResource().save(null);
 		
 		assertEquals("BAR", secondaryTableResource.getPrimaryKeyJoinColumns().get(0).getName());
 		assertEquals("FOO", secondaryTableResource.getPrimaryKeyJoinColumns().get(1).getName());
 		
 		OrmPrimaryKeyJoinColumn primaryKeyJoinColumn3 = ormSecondaryTable.addSpecifiedPrimaryKeyJoinColumn(1);
-		ormResource().save(null);
 		primaryKeyJoinColumn3.setSpecifiedName("BAZ");
-		ormResource().save(null);
 		
 		assertEquals("BAR", secondaryTableResource.getPrimaryKeyJoinColumns().get(0).getName());
 		assertEquals("BAZ", secondaryTableResource.getPrimaryKeyJoinColumns().get(1).getName());

@@ -100,13 +100,11 @@ public class OrmPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		
 		//set name in the resource model, verify context model updated
 		primaryKeyJoinColumnResource.setName("FOO");
-		ormResource().save(null);
 		assertEquals("FOO", ormPrimaryKeyJoinColumn.getSpecifiedName());
 		assertEquals("FOO", primaryKeyJoinColumnResource.getName());
 	
 		//set name to null in the resource model
 		primaryKeyJoinColumnResource.setName(null);
-		ormResource().save(null);
 		assertNull(ormPrimaryKeyJoinColumn.getSpecifiedName());
 		assertNull(primaryKeyJoinColumnResource.getName());
 		
@@ -115,7 +113,6 @@ public class OrmPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		assertEquals("FOO", primaryKeyJoinColumnResource.getName());
 
 		entityResource.getPrimaryKeyJoinColumns().remove(0);
-		ormResource().save(null);
 		assertFalse(ormEntity.primaryKeyJoinColumns().hasNext());
 		assertTrue(entityResource.getPrimaryKeyJoinColumns().isEmpty());
 	}
@@ -155,7 +152,6 @@ public class OrmPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		
 		//set name in the resource model, verify context model updated
 		primaryKeyJoinColumnResource.setReferencedColumnName("FOO");
-		ormResource().save(null);
 		assertEquals("FOO", ormPrimaryKeyJoinColumn.getSpecifiedReferencedColumnName());
 		assertEquals("FOO", primaryKeyJoinColumnResource.getReferencedColumnName());
 	

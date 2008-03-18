@@ -53,13 +53,11 @@ public class OrmAttributeOverrideTests extends ContextModelTestCase
 		
 		//set name in the resource model, verify context model updated
 		attributeOverrideResource.setName("FOO");
-		ormResource().save(null);
 		assertEquals("FOO", ormAttributeOverride.getName());
 		assertEquals("FOO", attributeOverrideResource.getName());
 	
 		//set name to null in the resource model
 		attributeOverrideResource.setName(null);
-		ormResource().save(null);
 		assertNull(ormAttributeOverride.getName());
 		assertNull(attributeOverrideResource.getName());
 		
@@ -68,7 +66,6 @@ public class OrmAttributeOverrideTests extends ContextModelTestCase
 		assertEquals("FOO", attributeOverrideResource.getName());
 
 		entityResource.getAttributeOverrides().remove(0);
-		ormResource().save(null);
 		assertFalse(ormEntity.attributeOverrides().hasNext());
 		assertTrue(entityResource.getAttributeOverrides().isEmpty());
 	}

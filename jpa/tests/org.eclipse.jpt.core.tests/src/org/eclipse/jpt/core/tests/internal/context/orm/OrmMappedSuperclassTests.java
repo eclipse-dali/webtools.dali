@@ -51,7 +51,6 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		
 		//set class in the resource model, verify context model updated
 		mappedSuperclassResource.setClassName("com.Bar");
-		ormResource().save(null);
 		assertEquals("com.Bar", ormMappedSuperclass.getClass_());
 		assertEquals("com.Bar", mappedSuperclassResource.getClassName());
 	
@@ -212,10 +211,8 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		OrmMappedSuperclass mappedSuperclass = (OrmMappedSuperclass) mappedSuperclassPersistentType.getMapping();
 		mappedSuperclass.setSpecifiedAccess(AccessType.PROPERTY);
 		mappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
-		ormResource().save(null);
 	
 		mappedSuperclassPersistentType.setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
-		ormResource().save(null);
 		
 		XmlEntity entity = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals("model.Foo", entity.getClassName());
@@ -237,10 +234,8 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		OrmMappedSuperclass mappedSuperclass = (OrmMappedSuperclass) mappedSuperclassPersistentType.getMapping();
 		mappedSuperclass.setSpecifiedAccess(AccessType.PROPERTY);
 		mappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
-		ormResource().save(null);
 	
 		mappedSuperclassPersistentType.setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
-		ormResource().save(null);
 		
 		XmlEntity entity = ormResource().getEntityMappings().getEntities().get(0);
 		assertEquals("model.Foo", entity.getClassName());
@@ -264,10 +259,8 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		OrmMappedSuperclass mappedSuperclass = (OrmMappedSuperclass) mappedSuperclassPersistentType.getMapping();
 		mappedSuperclass.setSpecifiedAccess(AccessType.PROPERTY);
 		mappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
-		ormResource().save(null);
 	
 		mappedSuperclassPersistentType.setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
-		ormResource().save(null);
 		
 		XmlEmbeddable embeddable = ormResource().getEntityMappings().getEmbeddables().get(0);
 		assertEquals("model.Foo", embeddable.getClassName());
@@ -286,10 +279,8 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		OrmMappedSuperclass mappedSuperclass = (OrmMappedSuperclass) mappedSuperclassPersistentType.getMapping();
 		mappedSuperclass.setSpecifiedAccess(AccessType.PROPERTY);
 		mappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
-		ormResource().save(null);
 	
 		mappedSuperclassPersistentType.setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
-		ormResource().save(null);
 		
 		XmlEmbeddable embeddable = ormResource().getEntityMappings().getEmbeddables().get(0);
 		assertEquals("model.Foo", embeddable.getClassName());

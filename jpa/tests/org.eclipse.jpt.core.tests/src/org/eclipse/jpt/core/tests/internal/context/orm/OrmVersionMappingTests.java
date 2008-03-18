@@ -148,30 +148,25 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionMapping");
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		XmlVersion versionResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
-		ormResource().save(null);
 		
 		assertNull(ormVersionMapping.getTemporal());
 		assertNull(versionResource.getTemporal());
 				
 		//set temporal in the resource model, verify context model updated
 		versionResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.DATE);
-		ormResource().save(null);
 		assertEquals(TemporalType.DATE, ormVersionMapping.getTemporal());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.DATE, versionResource.getTemporal());
 	
 		versionResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIME);
-		ormResource().save(null);
 		assertEquals(TemporalType.TIME, ormVersionMapping.getTemporal());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIME, versionResource.getTemporal());
 
 		versionResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP);
-		ormResource().save(null);
 		assertEquals(TemporalType.TIMESTAMP, ormVersionMapping.getTemporal());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP, versionResource.getTemporal());
 
 		//set temporal to null in the resource model
 		versionResource.setTemporal(null);
-		ormResource().save(null);
 		assertNull(ormVersionMapping.getTemporal());
 		assertNull(versionResource.getTemporal());
 	}
@@ -181,30 +176,25 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionMapping");
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
 		XmlVersion versionResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
-		ormResource().save(null);
 		
 		assertNull(ormVersionMapping.getTemporal());
 		assertNull(versionResource.getTemporal());
 				
 		//set temporal in the context model, verify resource model updated
 		ormVersionMapping.setTemporal(TemporalType.DATE);
-		ormResource().save(null);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.DATE, versionResource.getTemporal());
 		assertEquals(TemporalType.DATE, ormVersionMapping.getTemporal());
 	
 		ormVersionMapping.setTemporal(TemporalType.TIME);
-		ormResource().save(null);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIME, versionResource.getTemporal());
 		assertEquals(TemporalType.TIME, ormVersionMapping.getTemporal());
 
 		ormVersionMapping.setTemporal(TemporalType.TIMESTAMP);
-		ormResource().save(null);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP, versionResource.getTemporal());
 		assertEquals(TemporalType.TIMESTAMP, ormVersionMapping.getTemporal());
 
 		//set temporal to null in the context model
 		ormVersionMapping.setTemporal(null);
-		ormResource().save(null);
 		assertNull(versionResource.getTemporal());
 		assertNull(ormVersionMapping.getTemporal());
 	}

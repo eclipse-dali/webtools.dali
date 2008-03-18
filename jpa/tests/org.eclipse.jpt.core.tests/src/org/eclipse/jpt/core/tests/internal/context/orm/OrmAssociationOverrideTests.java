@@ -55,13 +55,11 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		
 		//set name in the resource model, verify context model updated
 		xmlAssociationOverride.setName("FOO");
-		ormResource().save(null);
 		assertEquals("FOO", ormAssociationOverride.getName());
 		assertEquals("FOO", xmlAssociationOverride.getName());
 	
 		//set name to null in the resource model
 		xmlAssociationOverride.setName(null);
-		ormResource().save(null);
 		assertNull(ormAssociationOverride.getName());
 		assertNull(xmlAssociationOverride.getName());
 		
@@ -70,7 +68,6 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		assertEquals("FOO", xmlAssociationOverride.getName());
 
 		entityResource.getAssociationOverrides().remove(0);
-		ormResource().save(null);
 		assertFalse(ormEntity.associationOverrides().hasNext());
 		assertTrue(entityResource.getAssociationOverrides().isEmpty());
 	}
@@ -115,17 +112,13 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		assertEquals("FOO", xmlAssociationOverride.getJoinColumns().get(0).getName());
 		
 		OrmJoinColumn joinColumn2 = ormAssociationOverride.addSpecifiedJoinColumn(0);
-		ormResource().save(null);
 		joinColumn2.setSpecifiedName("BAR");
-		ormResource().save(null);
 		
 		assertEquals("BAR", xmlAssociationOverride.getJoinColumns().get(0).getName());
 		assertEquals("FOO", xmlAssociationOverride.getJoinColumns().get(1).getName());
 		
 		OrmJoinColumn joinColumn3 = ormAssociationOverride.addSpecifiedJoinColumn(1);
-		ormResource().save(null);
 		joinColumn3.setSpecifiedName("BAZ");
-		ormResource().save(null);
 		
 		assertEquals("BAR", xmlAssociationOverride.getJoinColumns().get(0).getName());
 		assertEquals("BAZ", xmlAssociationOverride.getJoinColumns().get(1).getName());

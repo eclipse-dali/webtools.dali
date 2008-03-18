@@ -312,24 +312,18 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		XmlManyToOne manyToOneResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
 		
 		OrmJoinColumn joinColumn = ormManyToOneMapping.addSpecifiedJoinColumn(0);
-		ormResource().save(null);
 		joinColumn.setSpecifiedName("FOO");
-		ormResource().save(null);
 				
 		assertEquals("FOO", manyToOneResource.getJoinColumns().get(0).getName());
 		
 		OrmJoinColumn joinColumn2 = ormManyToOneMapping.addSpecifiedJoinColumn(0);
-		ormResource().save(null);
 		joinColumn2.setSpecifiedName("BAR");
-		ormResource().save(null);
 		
 		assertEquals("BAR", manyToOneResource.getJoinColumns().get(0).getName());
 		assertEquals("FOO", manyToOneResource.getJoinColumns().get(1).getName());
 		
 		OrmJoinColumn joinColumn3 = ormManyToOneMapping.addSpecifiedJoinColumn(1);
-		ormResource().save(null);
 		joinColumn3.setSpecifiedName("BAZ");
-		ormResource().save(null);
 		
 		assertEquals("BAR", manyToOneResource.getJoinColumns().get(0).getName());
 		assertEquals("BAZ", manyToOneResource.getJoinColumns().get(1).getName());

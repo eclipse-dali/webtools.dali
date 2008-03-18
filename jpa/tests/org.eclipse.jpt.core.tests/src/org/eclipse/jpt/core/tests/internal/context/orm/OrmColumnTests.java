@@ -164,7 +164,6 @@ public class OrmColumnTests extends ContextModelTestCase
 		//set name in the resource model, verify context model updated
 		basic.setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
 		basic.getColumn().setColumnDefinition("FOO");
-		ormResource().save(null);
 		assertEquals("FOO", ormColumn.getColumnDefinition());
 		assertEquals("FOO", basic.getColumn().getColumnDefinition());
 	

@@ -174,24 +174,18 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 	
 		
 		QueryHint queryHint = namedQuery.addHint(0);
-		ormResource().save(null);
 		queryHint.setName("FOO");
-		ormResource().save(null);
 
 		assertEquals("FOO", javaNamedQuery.hintAt(0).getName());
 		
 		QueryHint queryHint2 = namedQuery.addHint(0);
-		ormResource().save(null);
 		queryHint2.setName("BAR");
-		ormResource().save(null);
 		
 		assertEquals("BAR", javaNamedQuery.hintAt(0).getName());
 		assertEquals("FOO", javaNamedQuery.hintAt(1).getName());
 		
 		QueryHint queryHint3 = namedQuery.addHint(1);
-		ormResource().save(null);
 		queryHint3.setName("BAZ");
-		ormResource().save(null);
 		
 		assertEquals("BAR", javaNamedQuery.hintAt(0).getName());
 		assertEquals("BAZ", javaNamedQuery.hintAt(1).getName());

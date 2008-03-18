@@ -262,7 +262,6 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		//set access in the resource model, verify context model updated
 		entityResource.setAccess(org.eclipse.jpt.core.resource.orm.AccessType.FIELD);
-		ormResource().save(null);
 		assertEquals(AccessType.FIELD, ormEntity.getSpecifiedAccess());
 		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.FIELD, entityResource.getAccess());
 	
@@ -408,19 +407,16 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertNull(entityResource.getMetadataComplete());
 		
 		//set metadata-complete in the resource model, verify context model updated
-		entityResource.setMetadataComplete(true);
-		ormResource().save(null);
-		assertTrue(ormEntity.getSpecifiedMetadataComplete());
-		assertTrue(entityResource.getMetadataComplete());
+		entityResource.setMetadataComplete(Boolean.TRUE);
+		assertEquals(Boolean.TRUE, ormEntity.getSpecifiedMetadataComplete());
+		assertEquals(Boolean.TRUE, entityResource.getMetadataComplete());
 	
 		//set access to false in the resource model
-		entityResource.setMetadataComplete(false);
-		ormResource().save(null);
-		assertFalse(ormEntity.getSpecifiedMetadataComplete());
-		assertFalse(entityResource.getMetadataComplete());
+		entityResource.setMetadataComplete(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, ormEntity.getSpecifiedMetadataComplete());
+		assertEquals(Boolean.FALSE, entityResource.getMetadataComplete());
 		
 		entityResource.setMetadataComplete(null);
-		ormResource().save(null);
 		assertNull(ormEntity.getSpecifiedMetadataComplete());
 		assertNull(entityResource.getMetadataComplete());
 	}
@@ -467,8 +463,8 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertNull(entityResource.getMetadataComplete());
 		
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		ormEntity.setSpecifiedMetadataComplete(false);
-		assertFalse(ormEntity.getSpecifiedMetadataComplete());
+		ormEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, ormEntity.getSpecifiedMetadataComplete());
 		assertTrue(ormEntity.isDefaultMetadataComplete());
 		assertTrue(ormEntity.isMetadataComplete());
 	}
@@ -521,16 +517,13 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(InheritanceType.JOINED, ormEntity.getDefaultInheritanceStrategy());
 			
 		ormEntity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
-		ormResource().save(null);
 		//inheritance tag exists in xml, so it overrides anything in java
 		assertEquals(InheritanceType.SINGLE_TABLE, ormEntity.getDefaultInheritanceStrategy());
 
 		ormEntity.setSpecifiedInheritanceStrategy(null);		
-		ormResource().save(null);
 		assertEquals(InheritanceType.JOINED, ormEntity.getDefaultInheritanceStrategy());
 
 		ormEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
-		ormResource().save(null);
 		assertEquals(InheritanceType.SINGLE_TABLE, ormEntity.getDefaultInheritanceStrategy());
 		
 		ormEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
@@ -623,24 +616,18 @@ public class OrmEntityTests extends ContextModelTestCase
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
 
 		OrmSecondaryTable secondaryTable = ormEntity.addSpecifiedSecondaryTable(0);
-		ormResource().save(null);
 		secondaryTable.setSpecifiedName("FOO");
-		ormResource().save(null);
 				
 		assertEquals("FOO", entityResource.getSecondaryTables().get(0).getName());
 		
 		OrmSecondaryTable secondaryTable2 = ormEntity.addSpecifiedSecondaryTable(0);
-		ormResource().save(null);
 		secondaryTable2.setSpecifiedName("BAR");
-		ormResource().save(null);
 		
 		assertEquals("BAR", entityResource.getSecondaryTables().get(0).getName());
 		assertEquals("FOO", entityResource.getSecondaryTables().get(1).getName());
 		
 		OrmSecondaryTable secondaryTable3 = ormEntity.addSpecifiedSecondaryTable(1);
-		ormResource().save(null);
 		secondaryTable3.setSpecifiedName("BAZ");
-		ormResource().save(null);
 		
 		assertEquals("BAR", entityResource.getSecondaryTables().get(0).getName());
 		assertEquals("BAZ", entityResource.getSecondaryTables().get(1).getName());
@@ -859,10 +846,8 @@ public class OrmEntityTests extends ContextModelTestCase
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
 		entity.setSpecifiedMetadataComplete(Boolean.TRUE);
 		entity.setSpecifiedName("ENTITY_NAME");
-		ormResource().save(null);
 	
 		entityPersistentType.setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
-		ormResource().save(null);
 		
 		XmlEmbeddable embeddable = ormResource().getEntityMappings().getEmbeddables().get(0);
 		assertEquals("model.Foo", embeddable.getClassName());
@@ -886,10 +871,8 @@ public class OrmEntityTests extends ContextModelTestCase
 		entity.setSpecifiedMetadataComplete(Boolean.TRUE);
 		entity.setSpecifiedName("ENTITY_NAME");
 //		entityPersistentType.addSpecifiedPersistentAttribute(IMappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
-		ormResource().save(null);
 	
 		entityPersistentType.setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
-		ormResource().save(null);
 		
 		XmlEmbeddable embeddable = ormResource().getEntityMappings().getEmbeddables().get(0);
 		assertEquals("model.Foo", embeddable.getClassName());
@@ -912,10 +895,8 @@ public class OrmEntityTests extends ContextModelTestCase
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
 		entity.setSpecifiedMetadataComplete(Boolean.TRUE);
 		entity.setSpecifiedName("ENTITY_NAME");
-		ormResource().save(null);
 	
 		entityPersistentType.setMappingKey(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
-		ormResource().save(null);
 		
 		XmlMappedSuperclass mappedSuperclass = ormResource().getEntityMappings().getMappedSuperclasses().get(0);
 		assertEquals("model.Foo", mappedSuperclass.getClassName());
@@ -937,10 +918,8 @@ public class OrmEntityTests extends ContextModelTestCase
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
 		entity.setSpecifiedMetadataComplete(Boolean.TRUE);
 		entity.setSpecifiedName("ENTITY_NAME");
-		ormResource().save(null);
 	
 		entityPersistentType.setMappingKey(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
-		ormResource().save(null);
 		
 		XmlMappedSuperclass mappedSuperclass = ormResource().getEntityMappings().getMappedSuperclasses().get(0);
 		assertEquals("model.Foo", mappedSuperclass.getClassName());

@@ -596,25 +596,19 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();
 		
 		OrmJoinColumn joinColumn = ormJoinTable.addSpecifiedJoinColumn(0);
-		ormResource().save(null);
 		joinColumn.setSpecifiedName("FOO");
-		ormResource().save(null);
 				
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		assertEquals("FOO", joinTableResource.getJoinColumns().get(0).getName());
 		
 		OrmJoinColumn joinColumn2 = ormJoinTable.addSpecifiedJoinColumn(0);
-		ormResource().save(null);
 		joinColumn2.setSpecifiedName("BAR");
-		ormResource().save(null);
 		
 		assertEquals("BAR", joinTableResource.getJoinColumns().get(0).getName());
 		assertEquals("FOO", joinTableResource.getJoinColumns().get(1).getName());
 		
 		OrmJoinColumn joinColumn3 = ormJoinTable.addSpecifiedJoinColumn(1);
-		ormResource().save(null);
 		joinColumn3.setSpecifiedName("BAZ");
-		ormResource().save(null);
 		
 		assertEquals("BAR", joinTableResource.getJoinColumns().get(0).getName());
 		assertEquals("BAZ", joinTableResource.getJoinColumns().get(1).getName());
@@ -759,25 +753,19 @@ public class OrmJoinTableTests extends ContextModelTestCase
 		OrmJoinTable ormJoinTable = ormManyToManyMapping.getJoinTable();
 		
 		OrmJoinColumn joinColumn = ormJoinTable.addSpecifiedInverseJoinColumn(0);
-		ormResource().save(null);
 		joinColumn.setSpecifiedName("FOO");
-		ormResource().save(null);
 				
 		XmlJoinTable joinTableResource = manyToMany.getJoinTable();
 		assertEquals("FOO", joinTableResource.getInverseJoinColumns().get(0).getName());
 		
 		OrmJoinColumn joinColumn2 = ormJoinTable.addSpecifiedInverseJoinColumn(0);
-		ormResource().save(null);
 		joinColumn2.setSpecifiedName("BAR");
-		ormResource().save(null);
 		
 		assertEquals("BAR", joinTableResource.getInverseJoinColumns().get(0).getName());
 		assertEquals("FOO", joinTableResource.getInverseJoinColumns().get(1).getName());
 		
 		OrmJoinColumn joinColumn3 = ormJoinTable.addSpecifiedInverseJoinColumn(1);
-		ormResource().save(null);
 		joinColumn3.setSpecifiedName("BAZ");
-		ormResource().save(null);
 		
 		assertEquals("BAR", joinTableResource.getInverseJoinColumns().get(0).getName());
 		assertEquals("BAZ", joinTableResource.getInverseJoinColumns().get(1).getName());

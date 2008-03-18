@@ -76,7 +76,7 @@ public class OrmCascadeTests extends ContextModelTestCase
 		assertNull(oneToOne.getCascade());
 					
 		//set all in the context model, verify resource model updated
-		cascade.setAll(true);		ormResource().save(null);
+		cascade.setAll(true);
 		assertEquals(true, cascade.isAll());
 		assertEquals(true, oneToOne.getCascade().isCascadeAll());
 	
@@ -124,7 +124,7 @@ public class OrmCascadeTests extends ContextModelTestCase
 		assertNull(oneToOne.getCascade());
 					
 		//set Persist in the context model, verify resource model updated
-		cascade.setPersist(true);		ormResource().save(null);
+		cascade.setPersist(true);
 		assertEquals(true, cascade.isPersist());
 		assertEquals(true, oneToOne.getCascade().isCascadePersist());
 	
@@ -172,7 +172,7 @@ public class OrmCascadeTests extends ContextModelTestCase
 		assertNull(oneToOne.getCascade());
 					
 		//set Merge in the context model, verify resource model updated
-		cascade.setMerge(true);		ormResource().save(null);
+		cascade.setMerge(true);
 		assertEquals(true, cascade.isMerge());
 		assertEquals(true, oneToOne.getCascade().isCascadeMerge());
 	
@@ -220,7 +220,7 @@ public class OrmCascadeTests extends ContextModelTestCase
 		assertNull(oneToOne.getCascade());
 					
 		//set Remove in the context model, verify resource model updated
-		cascade.setRemove(true);		ormResource().save(null);
+		cascade.setRemove(true);
 		assertEquals(true, cascade.isRemove());
 		assertEquals(true, oneToOne.getCascade().isCascadeRemove());
 	
@@ -268,7 +268,7 @@ public class OrmCascadeTests extends ContextModelTestCase
 		assertNull(oneToOne.getCascade());
 					
 		//set Refresh in the context model, verify resource model updated
-		cascade.setRefresh(true);		ormResource().save(null);
+		cascade.setRefresh(true);
 		assertEquals(true, cascade.isRefresh());
 		assertEquals(true, oneToOne.getCascade().isCascadeRefresh());
 	

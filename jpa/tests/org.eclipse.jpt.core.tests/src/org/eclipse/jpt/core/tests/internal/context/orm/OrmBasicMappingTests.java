@@ -308,20 +308,17 @@ public class OrmBasicMappingTests extends ContextModelTestCase
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
-		ormResource().save(null);
 		
 		assertFalse(ormBasicMapping.isLob());
 		assertFalse(basicResource.isLob());
 				
 		//set lob in the resource model, verify context model updated
 		basicResource.setLob(true);
-		ormResource().save(null);
 		assertTrue(ormBasicMapping.isLob());
 		assertTrue(basicResource.isLob());
 
 		//set lob to null in the resource model
 		basicResource.setLob(false);
-		ormResource().save(null);
 		assertFalse(ormBasicMapping.isLob());
 		assertFalse(basicResource.isLob());
 	}
@@ -331,20 +328,17 @@ public class OrmBasicMappingTests extends ContextModelTestCase
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
-		ormResource().save(null);
 	
 		assertFalse(ormBasicMapping.isLob());
 		assertFalse(basicResource.isLob());
 				
 		//set lob in the context model, verify resource model updated
 		ormBasicMapping.setLob(true);
-		ormResource().save(null);
 		assertTrue(basicResource.isLob());
 		assertTrue(ormBasicMapping.isLob());
 	
 		//set lob to false in the context model
 		ormBasicMapping.setLob(false);
-		ormResource().save(null);
 		assertFalse(basicResource.isLob());
 		assertFalse(ormBasicMapping.isLob());
 	}
@@ -354,30 +348,25 @@ public class OrmBasicMappingTests extends ContextModelTestCase
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
-		ormResource().save(null);
 		
 		assertNull(ormBasicMapping.getTemporal());
 		assertNull(basicResource.getTemporal());
 				
 		//set temporal in the resource model, verify context model updated
 		basicResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.DATE);
-		ormResource().save(null);
 		assertEquals(TemporalType.DATE, ormBasicMapping.getTemporal());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.DATE, basicResource.getTemporal());
 	
 		basicResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIME);
-		ormResource().save(null);
 		assertEquals(TemporalType.TIME, ormBasicMapping.getTemporal());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIME, basicResource.getTemporal());
 
 		basicResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP);
-		ormResource().save(null);
 		assertEquals(TemporalType.TIMESTAMP, ormBasicMapping.getTemporal());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP, basicResource.getTemporal());
 
 		//set temporal to null in the resource model
 		basicResource.setTemporal(null);
-		ormResource().save(null);
 		assertNull(ormBasicMapping.getTemporal());
 		assertNull(basicResource.getTemporal());
 	}
@@ -387,30 +376,25 @@ public class OrmBasicMappingTests extends ContextModelTestCase
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicMapping");
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
-		ormResource().save(null);
 		
 		assertNull(ormBasicMapping.getTemporal());
 		assertNull(basicResource.getTemporal());
 				
 		//set temporal in the context model, verify resource model updated
 		ormBasicMapping.setTemporal(TemporalType.DATE);
-		ormResource().save(null);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.DATE, basicResource.getTemporal());
 		assertEquals(TemporalType.DATE, ormBasicMapping.getTemporal());
 	
 		ormBasicMapping.setTemporal(TemporalType.TIME);
-		ormResource().save(null);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIME, basicResource.getTemporal());
 		assertEquals(TemporalType.TIME, ormBasicMapping.getTemporal());
 
 		ormBasicMapping.setTemporal(TemporalType.TIMESTAMP);
-		ormResource().save(null);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP, basicResource.getTemporal());
 		assertEquals(TemporalType.TIMESTAMP, ormBasicMapping.getTemporal());
 
 		//set temporal to null in the context model
 		ormBasicMapping.setTemporal(null);
-		ormResource().save(null);
 		assertNull(basicResource.getTemporal());
 		assertNull(ormBasicMapping.getTemporal());
 	}

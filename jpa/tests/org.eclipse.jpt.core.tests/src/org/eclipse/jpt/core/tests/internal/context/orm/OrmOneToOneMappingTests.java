@@ -365,24 +365,18 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		XmlOneToOne oneToOneResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
 		
 		OrmJoinColumn joinColumn = ormOneToOneMapping.addSpecifiedJoinColumn(0);
-		ormResource().save(null);
 		joinColumn.setSpecifiedName("FOO");
-		ormResource().save(null);
 				
 		assertEquals("FOO", oneToOneResource.getJoinColumns().get(0).getName());
 		
 		OrmJoinColumn joinColumn2 = ormOneToOneMapping.addSpecifiedJoinColumn(0);
-		ormResource().save(null);
 		joinColumn2.setSpecifiedName("BAR");
-		ormResource().save(null);
 		
 		assertEquals("BAR", oneToOneResource.getJoinColumns().get(0).getName());
 		assertEquals("FOO", oneToOneResource.getJoinColumns().get(1).getName());
 		
 		OrmJoinColumn joinColumn3 = ormOneToOneMapping.addSpecifiedJoinColumn(1);
-		ormResource().save(null);
 		joinColumn3.setSpecifiedName("BAZ");
-		ormResource().save(null);
 		
 		assertEquals("BAR", oneToOneResource.getJoinColumns().get(0).getName());
 		assertEquals("BAZ", oneToOneResource.getJoinColumns().get(1).getName());

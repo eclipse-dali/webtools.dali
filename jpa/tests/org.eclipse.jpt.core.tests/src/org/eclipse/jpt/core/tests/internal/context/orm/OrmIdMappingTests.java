@@ -193,30 +193,25 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
-		ormResource().save(null);
 		
 		assertNull(ormIdMapping.getTemporal());
 		assertNull(idResource.getTemporal());
 				
 		//set temporal in the resource model, verify context model updated
 		idResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.DATE);
-		ormResource().save(null);
 		assertEquals(TemporalType.DATE, ormIdMapping.getTemporal());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.DATE, idResource.getTemporal());
 	
 		idResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIME);
-		ormResource().save(null);
 		assertEquals(TemporalType.TIME, ormIdMapping.getTemporal());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIME, idResource.getTemporal());
 
 		idResource.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP);
-		ormResource().save(null);
 		assertEquals(TemporalType.TIMESTAMP, ormIdMapping.getTemporal());
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP, idResource.getTemporal());
 
 		//set temporal to null in the resource model
 		idResource.setTemporal(null);
-		ormResource().save(null);
 		assertNull(ormIdMapping.getTemporal());
 		assertNull(idResource.getTemporal());
 	}
@@ -226,30 +221,25 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
-		ormResource().save(null);
 		
 		assertNull(ormIdMapping.getTemporal());
 		assertNull(idResource.getTemporal());
 				
 		//set temporal in the context model, verify resource model updated
 		ormIdMapping.setTemporal(TemporalType.DATE);
-		ormResource().save(null);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.DATE, idResource.getTemporal());
 		assertEquals(TemporalType.DATE, ormIdMapping.getTemporal());
 	
 		ormIdMapping.setTemporal(TemporalType.TIME);
-		ormResource().save(null);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIME, idResource.getTemporal());
 		assertEquals(TemporalType.TIME, ormIdMapping.getTemporal());
 
 		ormIdMapping.setTemporal(TemporalType.TIMESTAMP);
-		ormResource().save(null);
 		assertEquals(org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP, idResource.getTemporal());
 		assertEquals(TemporalType.TIMESTAMP, ormIdMapping.getTemporal());
 
 		//set temporal to null in the context model
 		ormIdMapping.setTemporal(null);
-		ormResource().save(null);
 		assertNull(idResource.getTemporal());
 		assertNull(ormIdMapping.getTemporal());
 	}

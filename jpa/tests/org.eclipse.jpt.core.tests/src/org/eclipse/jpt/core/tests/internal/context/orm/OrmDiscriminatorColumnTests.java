@@ -101,7 +101,6 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 		//set name in the resource model, verify context model updated
 		entityResource.setDiscriminatorColumn(OrmFactory.eINSTANCE.createXmlDiscriminatorColumn());
 		entityResource.getDiscriminatorColumn().setName("FOO");
-		ormResource().save(null);
 		assertEquals("FOO", ormColumn.getSpecifiedName());
 		assertEquals("FOO", entityResource.getDiscriminatorColumn().getName());
 	
@@ -260,7 +259,6 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 		//set name in the resource model, verify context model updated
 		entityResource.setDiscriminatorColumn(OrmFactory.eINSTANCE.createXmlDiscriminatorColumn());
 		entityResource.getDiscriminatorColumn().setColumnDefinition("FOO");
-		ormResource().save(null);
 		assertEquals("FOO", ormColumn.getColumnDefinition());
 		assertEquals("FOO", entityResource.getDiscriminatorColumn().getColumnDefinition());
 	
@@ -312,7 +310,6 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 		//set discriminator type in the resource model, verify context model updated
 		entityResource.setDiscriminatorColumn(OrmFactory.eINSTANCE.createXmlDiscriminatorColumn());
 		entityResource.getDiscriminatorColumn().setDiscriminatorType(org.eclipse.jpt.core.resource.orm.DiscriminatorType.STRING);
-		ormResource().save(null);
 		assertEquals(DiscriminatorType.STRING, ormColumn.getSpecifiedDiscriminatorType());
 		assertEquals(org.eclipse.jpt.core.resource.orm.DiscriminatorType.STRING, entityResource.getDiscriminatorColumn().getDiscriminatorType());
 	

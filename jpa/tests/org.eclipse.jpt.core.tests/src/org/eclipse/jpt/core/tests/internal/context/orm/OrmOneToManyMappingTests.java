@@ -95,20 +95,17 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, "oneToManyMapping");
 		OrmOneToManyMapping ormOneToManyMapping = (OrmOneToManyMapping) ormPersistentAttribute.getMapping();
 		XmlOneToMany oneToMany = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getOneToManys().get(0);
-		ormResource().save(null);
 		
 		assertNull(ormOneToManyMapping.getSpecifiedTargetEntity());
 		assertNull(oneToMany.getTargetEntity());
 				
 		//set target entity in the resource model, verify context model updated
 		oneToMany.setTargetEntity("newTargetEntity");
-		ormResource().save(null);
 		assertEquals("newTargetEntity", ormOneToManyMapping.getSpecifiedTargetEntity());
 		assertEquals("newTargetEntity", oneToMany.getTargetEntity());
 	
 		//set target entity to null in the resource model
 		oneToMany.setTargetEntity(null);
-		ormResource().save(null);
 		assertNull(ormOneToManyMapping.getSpecifiedTargetEntity());
 		assertNull(oneToMany.getTargetEntity());
 	}

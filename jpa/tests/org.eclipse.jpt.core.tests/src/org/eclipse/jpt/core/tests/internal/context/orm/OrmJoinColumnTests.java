@@ -113,7 +113,6 @@ public class OrmJoinColumnTests extends ContextModelTestCase
 				
 		//set name in the resource model, verify context model updated
 		joinColumnResource.setReferencedColumnName("FOO");
-		ormResource().save(null);
 		assertEquals("FOO", joinColumn.getSpecifiedReferencedColumnName());
 		assertEquals("FOO", joinColumnResource.getReferencedColumnName());
 	
