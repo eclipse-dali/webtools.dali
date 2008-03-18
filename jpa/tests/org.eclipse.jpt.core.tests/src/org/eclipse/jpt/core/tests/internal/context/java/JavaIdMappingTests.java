@@ -515,6 +515,9 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		attributeResource.addAnnotation(JPA.SEQUENCE_GENERATOR);
 		assertNotNull(idMapping.getSequenceGenerator());
 		assertEquals(1, attributeResource.annotationsSize());
+		assertEquals(0, CollectionTools.size(idMapping.persistenceUnit().allGenerators()));
+		
+		idMapping.getSequenceGenerator().setName("foo");
 		assertEquals(1, CollectionTools.size(idMapping.persistenceUnit().allGenerators()));
 	}
 	
@@ -584,6 +587,9 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		attributeResource.addAnnotation(JPA.TABLE_GENERATOR);
 		assertNotNull(idMapping.getTableGenerator());		
 		assertEquals(1, attributeResource.annotationsSize());
+		assertEquals(0, CollectionTools.size(idMapping.persistenceUnit().allGenerators()));
+		
+		idMapping.getTableGenerator().setName("foo");
 		assertEquals(1, CollectionTools.size(idMapping.persistenceUnit().allGenerators()));
 	}
 	

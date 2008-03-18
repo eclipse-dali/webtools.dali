@@ -1143,6 +1143,9 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertNotNull(javaEntity().getSequenceGenerator());
 		assertEquals(1, typeResource.annotationsSize());
+		assertEquals(0, CollectionTools.size(javaEntity().persistenceUnit().allGenerators()));
+		
+		javaEntity().getSequenceGenerator().setName("foo");
 		assertEquals(1, CollectionTools.size(javaEntity().persistenceUnit().allGenerators()));
 	}
 	
@@ -1201,6 +1204,9 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertNotNull(javaEntity().getTableGenerator());		
 		assertEquals(1, typeResource.annotationsSize());
+		assertEquals(0, CollectionTools.size(javaEntity().persistenceUnit().allGenerators()));
+		
+		javaEntity().getTableGenerator().setName("foo");
 		assertEquals(1, CollectionTools.size(javaEntity().persistenceUnit().allGenerators()));
 	}
 	
