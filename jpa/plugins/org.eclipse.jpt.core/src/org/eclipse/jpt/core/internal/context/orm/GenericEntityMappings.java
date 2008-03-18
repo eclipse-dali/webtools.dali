@@ -719,19 +719,27 @@ public class GenericEntityMappings extends AbstractOrmJpaContextNode implements 
 	
 	protected void updatePersistenceUnitGeneratorsAndQueries() {
 		for (Generator generator : CollectionTools.iterable(tableGenerators())) {
-			persistenceUnit().addGenerator(generator);
+			if (generator.getName() != null) {
+				persistenceUnit().addGenerator(generator);
+			}
 		}
 		
 		for (Generator generator : CollectionTools.iterable(sequenceGenerators())) {
-			persistenceUnit().addGenerator(generator);
+			if (generator.getName() != null) {
+				persistenceUnit().addGenerator(generator);
+			}
 		}
 		
 		for (Query query : CollectionTools.iterable(namedQueries())) {
-			persistenceUnit().addQuery(query);
+			if (query.getName() != null) {
+				persistenceUnit().addQuery(query);
+			}
 		}
 		
 		for (Query query : CollectionTools.iterable(namedNativeQueries())) {
-			persistenceUnit().addQuery(query);
+			if (query.getName() != null) {
+				persistenceUnit().addQuery(query);
+			}
 		}
 	}
 

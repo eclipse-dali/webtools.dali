@@ -350,11 +350,11 @@ public class GenericOrmIdMapping extends AbstractOrmAttributeMapping<XmlId>
 	}
 	
 	protected void updatePersistenceUnitGenerators() {
-		if (getTableGenerator() != null) {
+		if (getTableGenerator() != null && getTableGenerator().getName() != null) {
 			persistenceUnit().addGenerator(getTableGenerator());
 		}
 		
-		if (getSequenceGenerator() != null) {
+		if (getSequenceGenerator() != null && getSequenceGenerator().getName() != null) {
 			persistenceUnit().addGenerator(getSequenceGenerator());
 		}
 	}

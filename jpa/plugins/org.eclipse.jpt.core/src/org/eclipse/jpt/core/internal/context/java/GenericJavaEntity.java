@@ -1665,20 +1665,24 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 	
 	protected void updatePersistenceUnitGeneratorsAndQueries() {
-		if (getTableGenerator() != null) {
+		if (getTableGenerator() != null && getTableGenerator().getName() != null) {
 			persistenceUnit().addGenerator(getTableGenerator());
 		}
 		
-		if (getSequenceGenerator() != null) {
+		if (getSequenceGenerator() != null && getSequenceGenerator().getName() != null) {
 			persistenceUnit().addGenerator(getSequenceGenerator());
 		}
 		
 		for (Query query : CollectionTools.iterable(namedQueries())) {
-			persistenceUnit().addQuery(query);
+			if (query.getName() != null) {
+				persistenceUnit().addQuery(query);
+			}
 		}
 		
 		for (Query query : CollectionTools.iterable(namedNativeQueries())) {
-			persistenceUnit().addQuery(query);
+			if (query.getName() != null) {
+				persistenceUnit().addQuery(query);
+			}
 		}
 	}
 

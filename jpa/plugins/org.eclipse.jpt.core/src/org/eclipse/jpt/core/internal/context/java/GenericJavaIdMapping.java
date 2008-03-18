@@ -343,28 +343,13 @@ public class GenericJavaIdMapping extends AbstractJavaAttributeMapping<Id> imple
 	protected GeneratedValueAnnotation generatedValue(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		return (GeneratedValueAnnotation) resourcePersistentAttribute.annotation(GeneratedValueAnnotation.ANNOTATION_NAME);
 	}
-
-
-//	private void updateGeneratedValueFromJava(CompilationUnit astRoot) {
-//		if (this.generatedValueAnnotationAdapter.getAnnotation(astRoot) == null) {
-//			if (getGeneratedValue() != null) {
-//				setGeneratedValue(null);
-//			}
-//		}
-//		else {
-//			if (getGeneratedValue() == null) {
-//				setGeneratedValue(createGeneratedValue());
-//			}
-//			((JavaGeneratedValue) getGeneratedValue()).updateFromJava(astRoot);
-//		}
-//	}
 	
 	protected void updatePersistenceUnitGenerators() {
-		if (getTableGenerator() != null) {
+		if (getTableGenerator() != null && getTableGenerator().getName() != null) {
 			persistenceUnit().addGenerator(getTableGenerator());
 		}
 		
-		if (getSequenceGenerator() != null) {
+		if (getSequenceGenerator() != null && getSequenceGenerator().getName() != null) {
 			persistenceUnit().addGenerator(getSequenceGenerator());
 		}
 	}
