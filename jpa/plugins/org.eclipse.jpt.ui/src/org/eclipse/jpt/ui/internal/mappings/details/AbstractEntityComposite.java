@@ -61,6 +61,13 @@ import org.eclipse.swt.widgets.Composite;
  * | | QueriesComposite                                                      | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
+ * |                                                                           |
+ * | - v Generators ---------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | GeneratorsComposite                                                   | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see Entity
@@ -70,6 +77,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see OverridesComposite
  * @see SecondaryTablesComposite
  * @see TableComposite
+ * @see GeneratorsComposite
  *
  * TODO talk to JavaEditor people about what we can do to hook in TabbedProperties for the JavaEditor
  *
@@ -93,6 +101,8 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 		super(subjectHolder, parent, widgetFactory);
 	}
 
+	protected abstract void buildSecondaryTablesComposite(Composite container);
+
 	private PropertyValueModel<Table> buildTableHolder() {
 		return new TransformationPropertyValueModel<Entity, Table>(getSubjectHolder()) {
 			@Override
@@ -102,14 +112,14 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 		};
 	}
 
-	@Override
-	protected void initializeLayout(Composite container) {
+	private void initializeAttributeOverridesPane(Composite container) {
 
-		initializeGeneralPane(container);
-		initializeAttributeOverridesPane(container);
-		initializeSecondaryTablesPane(container);
-		initializeInheritancePane(container);
-		initializeQueriesPane(container);
+		container = buildCollapsableSection(
+			container,
+			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
+		);
+
+		new OverridesComposite(this, container);
 	}
 
 	private void initializeGeneralPane(Composite container) {
@@ -130,14 +140,14 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 		);
 	}
 
-	private void initializeAttributeOverridesPane(Composite container) {
+	private void initializeGeneratorsPane(Composite container) {
 
 		container = buildCollapsableSection(
 			container,
-			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
+			JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration
 		);
 
-		new OverridesComposite(this, container);
+		new GeneratorsComposite<Entity>(this, container);
 	}
 
 	private void initializeInheritancePane(Composite container) {
@@ -148,6 +158,17 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 		);
 
 		new InheritanceComposite(this, container);
+	}
+
+	@Override
+	protected void initializeLayout(Composite container) {
+
+		initializeGeneralPane(container);
+		initializeAttributeOverridesPane(container);
+		initializeSecondaryTablesPane(container);
+		initializeInheritancePane(container);
+		initializeQueriesPane(container);
+		initializeGeneratorsPane(container);
 	}
 
 	private void initializeQueriesPane(Composite container) {
@@ -168,6 +189,4 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 		);
 		buildSecondaryTablesComposite(container);
 	}
-
-	protected abstract void buildSecondaryTablesComposite(Composite container);
 }

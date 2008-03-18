@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.db;
 import java.util.Iterator;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -32,7 +32,7 @@ public abstract class ColumnCombo<T extends JpaNode> extends AbstractDatabaseObj
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public ColumnCombo(AbstractFormPane<? extends T> parentPane,
+	public ColumnCombo(AbstractPane<? extends T> parentPane,
 	                   Composite parent) {
 
 		super(parentPane, parent);
@@ -45,7 +45,7 @@ public abstract class ColumnCombo<T extends JpaNode> extends AbstractDatabaseObj
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public ColumnCombo(AbstractFormPane<?> parentPane,
+	public ColumnCombo(AbstractPane<?> parentPane,
 	                   PropertyValueModel<? extends T> subjectHolder,
 	                   Composite parent) {
 

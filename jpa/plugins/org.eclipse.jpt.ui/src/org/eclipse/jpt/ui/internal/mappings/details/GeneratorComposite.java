@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.GeneratorHolder;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public abstract class GeneratorComposite<T extends Generator> extends AbstractFormPane<GeneratorHolder>
+public abstract class GeneratorComposite<T extends Generator> extends AbstractPane<GeneratorHolder>
 {
 	/**
 	 * Creates a new <code>GeneratorComposite</code>.
@@ -37,7 +37,7 @@ public abstract class GeneratorComposite<T extends Generator> extends AbstractFo
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public GeneratorComposite(AbstractFormPane<? extends GeneratorHolder> parentPane,
+	public GeneratorComposite(AbstractPane<? extends GeneratorHolder> parentPane,
                              Composite parent) {
 
 		super(parentPane, parent);

@@ -3,14 +3,13 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.db;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.db.Catalog;
@@ -25,7 +24,7 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -53,7 +52,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends AbstractFormPane<T>
+public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends AbstractPane<T>
 {
 	/**
 	 * The main widget of this pane.
@@ -72,7 +71,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	protected AbstractDatabaseObjectCombo(AbstractFormPane<? extends T> parentPane,
+	protected AbstractDatabaseObjectCombo(AbstractPane<? extends T> parentPane,
 	                                      Composite parent) {
 
 		super(parentPane, parent);
@@ -85,7 +84,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	protected AbstractDatabaseObjectCombo(AbstractFormPane<?> parentPane,
+	protected AbstractDatabaseObjectCombo(AbstractPane<?> parentPane,
 	                                      PropertyValueModel<? extends T> subjectHolder,
 	                                      Composite parent) {
 

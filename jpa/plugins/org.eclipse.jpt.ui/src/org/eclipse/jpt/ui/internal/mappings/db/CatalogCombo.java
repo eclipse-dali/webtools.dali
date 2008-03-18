@@ -10,9 +10,8 @@
 package org.eclipse.jpt.ui.internal.mappings.db;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.core.JpaNode;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -31,7 +30,7 @@ public abstract class CatalogCombo<T extends JpaNode> extends AbstractDatabaseOb
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public CatalogCombo(AbstractFormPane<? extends T> parentPane,
+	public CatalogCombo(AbstractPane<? extends T> parentPane,
 	                    Composite parent) {
 
 		super(parentPane, parent);

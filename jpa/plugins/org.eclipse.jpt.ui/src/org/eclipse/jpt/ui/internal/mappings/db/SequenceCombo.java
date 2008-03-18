@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.db;
 import java.util.Iterator;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -33,7 +33,7 @@ public abstract class SequenceCombo<T extends JpaNode> extends AbstractDatabaseO
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public SequenceCombo(AbstractFormPane<? extends T> parentPane, Composite parent)
+	public SequenceCombo(AbstractPane<? extends T> parentPane, Composite parent)
 	{
 		super(parentPane, parent);
 	}
@@ -45,7 +45,7 @@ public abstract class SequenceCombo<T extends JpaNode> extends AbstractDatabaseO
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public SequenceCombo(AbstractFormPane<?> parentPane,
+	public SequenceCombo(AbstractPane<?> parentPane,
 	                     PropertyValueModel<? extends T> subjectHolder,
 	                     Composite parent) {
 

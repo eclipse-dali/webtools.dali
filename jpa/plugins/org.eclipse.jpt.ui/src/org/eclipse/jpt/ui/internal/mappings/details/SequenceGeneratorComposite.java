@@ -17,7 +17,7 @@ import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.SequenceCombo;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -50,7 +50,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public SequenceGeneratorComposite(AbstractFormPane<? extends GeneratorHolder> parentPane,
+	public SequenceGeneratorComposite(AbstractPane<? extends GeneratorHolder> parentPane,
 	                                  Composite parent) {
 
 		super(parentPane, parent);

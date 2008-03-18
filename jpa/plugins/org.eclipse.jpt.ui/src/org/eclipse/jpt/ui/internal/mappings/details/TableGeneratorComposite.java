@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.GeneratorHolder;
 import org.eclipse.jpt.core.context.TableGenerator;
@@ -22,7 +21,7 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -64,7 +63,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TableGeneratorComposite(AbstractFormPane<? extends GeneratorHolder> parentPane,
+	public TableGeneratorComposite(AbstractPane<? extends GeneratorHolder> parentPane,
 	                               Composite parent) {
 
 		super(parentPane, parent);
