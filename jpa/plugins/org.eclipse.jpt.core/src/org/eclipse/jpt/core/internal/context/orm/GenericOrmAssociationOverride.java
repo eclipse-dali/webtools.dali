@@ -51,6 +51,10 @@ public class GenericOrmAssociationOverride extends AbstractOrmJpaContextNode
 		this.initialize(associationOverride);
 	}
 	
+	public OrmAssociationOverride setVirtual(boolean virtual) {
+		return (OrmAssociationOverride) owner().setVirtual(virtual, this);
+	}
+	
 	public Owner owner() {
 		return this.owner;
 	}

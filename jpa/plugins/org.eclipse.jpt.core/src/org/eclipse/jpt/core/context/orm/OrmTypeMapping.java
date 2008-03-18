@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -80,4 +81,10 @@ public interface OrmTypeMapping extends TypeMapping, OrmJpaContextNode
 	boolean containsOffset(int textOffset);
 	
 	OrmPersistentType persistentType();
+	
+	@SuppressWarnings("unchecked")
+	Iterator<OrmPersistentAttribute> overridableAttributes();
+	
+	@SuppressWarnings("unchecked")
+	Iterator<OrmPersistentAttribute> overridableAssociations();
 }

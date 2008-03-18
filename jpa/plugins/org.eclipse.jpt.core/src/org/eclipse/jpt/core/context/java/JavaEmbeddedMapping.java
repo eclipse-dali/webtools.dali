@@ -24,7 +24,6 @@ import org.eclipse.jpt.core.context.EmbeddedMapping;
 public interface JavaEmbeddedMapping extends JavaBaseEmbeddedMapping, EmbeddedMapping
 {
 	ListIterator<JavaAttributeOverride> attributeOverrides();
-	ListIterator<JavaAttributeOverride> defaultAttributeOverrides();
+	ListIterator<JavaAttributeOverride> virtualAttributeOverrides();
 	ListIterator<JavaAttributeOverride> specifiedAttributeOverrides();
-	JavaAttributeOverride addSpecifiedAttributeOverride(int index);
 }

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.context.MappedSuperclass;
 
 /**
@@ -23,5 +24,7 @@ import org.eclipse.jpt.core.context.MappedSuperclass;
 public interface JavaMappedSuperclass
 	extends JavaTypeMapping, MappedSuperclass
 {
-	// nothing yet
+	Iterator<JavaPersistentAttribute> overridableAttributes();
+	
+	Iterator<JavaPersistentAttribute> overridableAssociations();
 }

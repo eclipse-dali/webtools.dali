@@ -211,9 +211,9 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 				
 		Entity entity = javaEntity();
 		assertEquals("AnnotationTestTypeChild", entity.getName());
-		assertEquals(2, entity.defaultAttributeOverridesSize());
+		assertEquals(2, entity.virtualAttributeOverridesSize());
 		
-		AttributeOverride attributeOverride = entity.defaultAttributeOverrides().next();
+		AttributeOverride attributeOverride = entity.virtualAttributeOverrides().next();
 		assertEquals("id", attributeOverride.getColumn().getDefaultName());
 		
 		
@@ -221,7 +221,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		BasicMapping basicMapping = (BasicMapping) mappedSuperclass.attributeNamed("id").getMapping();
 		basicMapping.getColumn().setSpecifiedName("FOO");
 	
-		attributeOverride = entity.defaultAttributeOverrides().next();
+		attributeOverride = entity.virtualAttributeOverrides().next();
 		assertEquals("FOO", attributeOverride.getColumn().getDefaultName());
 	}
 	
@@ -233,9 +233,9 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 				
 		Entity entity = javaEntity();
 		assertEquals("AnnotationTestTypeChild", entity.getName());
-		assertEquals(2, entity.defaultAttributeOverridesSize());
+		assertEquals(2, entity.virtualAttributeOverridesSize());
 		
-		AttributeOverride attributeOverride = entity.defaultAttributeOverrides().next();
+		AttributeOverride attributeOverride = entity.virtualAttributeOverrides().next();
 		assertEquals("AnnotationTestTypeChild", attributeOverride.getColumn().getDefaultTable());
 
 		
@@ -243,7 +243,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		BasicMapping basicMapping = (BasicMapping) mappedSuperclass.attributeNamed("id").getMapping();
 		basicMapping.getColumn().setSpecifiedTable("BAR");
 	
-		attributeOverride = entity.defaultAttributeOverrides().next();
+		attributeOverride = entity.virtualAttributeOverrides().next();
 		assertEquals("BAR", attributeOverride.getColumn().getDefaultTable());
 	}
 	
@@ -255,9 +255,9 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		
 		Entity entity = javaEntity();	
 		assertEquals("AnnotationTestTypeChild", entity.getName());
-		assertEquals(2, entity.defaultAttributeOverridesSize());
+		assertEquals(2, entity.virtualAttributeOverridesSize());
 		
-		AttributeOverride attributeOverride = entity.defaultAttributeOverrides().next();
+		AttributeOverride attributeOverride = entity.virtualAttributeOverrides().next();
 		assertEquals("id", attributeOverride.getName());
 	}
 	
@@ -269,23 +269,25 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		
 		Entity entity = javaEntity();	
 		assertEquals("AnnotationTestTypeChild", entity.getName());
-		assertEquals(2, entity.defaultAttributeOverridesSize());
+		assertEquals(2, entity.virtualAttributeOverridesSize());
 		
-		AttributeOverride attributeOverride = entity.defaultAttributeOverrides().next();
+		AttributeOverride attributeOverride = entity.virtualAttributeOverrides().next();
 		assertTrue(attributeOverride.isVirtual());
 	}
 	
 	public void testSetColumn() throws Exception {
-		createTestEntity();
+		createTestMappedSuperclass();
+		createTestSubType();
+		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Entity entity = javaEntity();
-		AttributeOverride attributeOverride = entity.addSpecifiedAttributeOverride(0);
-		
+		Entity entity = javaEntity();	
+		AttributeOverride attributeOverride = entity.virtualAttributeOverrides().next();
+		attributeOverride = attributeOverride.setVirtual(false);
 		attributeOverride.getColumn().setSpecifiedName("FOO");
 		
 		
-		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) typeResource.annotation(JPA.ATTRIBUTE_OVERRIDE);
 	
 		assertEquals("FOO", attributeOverrideResource.getColumn().getName());

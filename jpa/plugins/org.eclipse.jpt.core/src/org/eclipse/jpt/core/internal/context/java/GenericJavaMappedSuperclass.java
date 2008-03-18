@@ -44,6 +44,7 @@ public class GenericJavaMappedSuperclass extends AbstractJavaTypeMapping
 	public String annotationName() {
 		return MappedSuperclassAnnotation.ANNOTATION_NAME;
 	}
+	
 	public Iterator<String> correspondingAnnotationNames() {
 		return new ArrayIterator<String>(
 			JPA.ID_CLASS,
@@ -103,7 +104,8 @@ public class GenericJavaMappedSuperclass extends AbstractJavaTypeMapping
 		return this.namesOf(this.overridableAttributes());
 	}
 
-	protected Iterator<JavaPersistentAttribute> overridableAttributes() {
+	@Override
+	public Iterator<JavaPersistentAttribute> overridableAttributes() {
 		return new FilteringIterator<JavaPersistentAttribute, JavaPersistentAttribute>(this.persistentType().attributes()) {
 			@Override
 			protected boolean accept(JavaPersistentAttribute o) {
@@ -117,7 +119,8 @@ public class GenericJavaMappedSuperclass extends AbstractJavaTypeMapping
 		return this.namesOf(this.overridableAssociations());
 	}
 
-	protected Iterator<JavaPersistentAttribute> overridableAssociations() {
+	@Override
+	public Iterator<JavaPersistentAttribute> overridableAssociations() {
 		return new FilteringIterator<JavaPersistentAttribute, JavaPersistentAttribute>(this.persistentType().attributes()) {
 			@Override
 			protected boolean accept(JavaPersistentAttribute o) {

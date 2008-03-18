@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.context.Embeddable;
 
 /**
@@ -23,5 +24,8 @@ import org.eclipse.jpt.core.context.Embeddable;
 public interface JavaEmbeddable
 	extends JavaTypeMapping, Embeddable
 {
-	// nothing yet
+	Iterator<JavaPersistentAttribute> overridableAttributes();
+	
+	Iterator<JavaPersistentAttribute> overridableAssociations();
+
 }

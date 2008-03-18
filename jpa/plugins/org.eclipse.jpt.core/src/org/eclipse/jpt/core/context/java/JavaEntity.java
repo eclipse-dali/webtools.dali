@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
+import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.Entity;
 
@@ -45,16 +46,14 @@ public interface JavaEntity extends JavaTypeMapping, Entity, JavaGeneratorHolder
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaAttributeOverride> specifiedAttributeOverrides();
 	@SuppressWarnings("unchecked")
-	ListIterator<JavaAttributeOverride> defaultAttributeOverrides();
-	JavaAttributeOverride addSpecifiedAttributeOverride(int index);
+	ListIterator<JavaAttributeOverride> virtualAttributeOverrides();
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaAssociationOverride> associationOverrides();
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaAssociationOverride> specifiedAssociationOverrides();
 	@SuppressWarnings("unchecked")
-	ListIterator<JavaAssociationOverride> defaultAssociationOverrides();
-	JavaAssociationOverride addSpecifiedAssociationOverride(int index);
+	ListIterator<JavaAssociationOverride> virtualAssociationOverrides();
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaNamedQuery> namedQueries();
@@ -63,5 +62,9 @@ public interface JavaEntity extends JavaTypeMapping, Entity, JavaGeneratorHolder
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaNamedNativeQuery> namedNativeQueries();
 	JavaNamedNativeQuery addNamedNativeQuery(int index);
+	
+	Iterator<JavaPersistentAttribute> overridableAttributes();
+	
+	Iterator<JavaPersistentAttribute> overridableAssociations();
 
 }

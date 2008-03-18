@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.java.JavaEntity;
@@ -96,16 +97,14 @@ public interface OrmEntity extends OrmTypeMapping, Entity, OrmGeneratorHolder
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmAttributeOverride> specifiedAttributeOverrides();
 	@SuppressWarnings("unchecked")
-	ListIterator<OrmAttributeOverride> defaultAttributeOverrides();
-	OrmAttributeOverride addSpecifiedAttributeOverride(int index);
+	ListIterator<OrmAttributeOverride> virtualAttributeOverrides();
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmAssociationOverride> associationOverrides();
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmAssociationOverride> specifiedAssociationOverrides();
 	@SuppressWarnings("unchecked")
-	ListIterator<OrmAssociationOverride> defaultAssociationOverrides();
-	OrmAssociationOverride addSpecifiedAssociationOverride(int index);
+	ListIterator<OrmAssociationOverride> virtualAssociationOverrides();
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmNamedQuery> namedQueries();
@@ -114,4 +113,9 @@ public interface OrmEntity extends OrmTypeMapping, Entity, OrmGeneratorHolder
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmNamedNativeQuery> namedNativeQueries();
 	OrmNamedNativeQuery addNamedNativeQuery(int index);
+	
+	Iterator<OrmPersistentAttribute> overridableAttributes();
+
+	Iterator<OrmPersistentAttribute> overridableAssociations();
+
 }

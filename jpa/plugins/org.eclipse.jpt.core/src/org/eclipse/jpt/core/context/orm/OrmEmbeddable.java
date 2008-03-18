@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 
@@ -27,4 +28,7 @@ public interface OrmEmbeddable extends Embeddable, OrmTypeMapping
 
 	void update(XmlEmbeddable mappedSuperclass);
 	
+	Iterator<OrmPersistentAttribute> overridableAttributes();
+
+	Iterator<OrmPersistentAttribute> overridableAssociations();
 }

@@ -14,7 +14,9 @@ import java.util.List;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
@@ -164,19 +166,35 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping> e
 		return true;
 	}
 
-	public Iterator<String> overridableAssociationNames() {
+	public Iterator<OrmPersistentAttribute> overridableAttributes() {
 		return EmptyIterator.instance();
 	}
 
 	public Iterator<String> overridableAttributeNames() {
 		return EmptyIterator.instance();
 	}
-
-	public Iterator<String> allOverridableAssociationNames() {
+	
+	public Iterator<PersistentAttribute> allOverridableAttributes() {
 		return EmptyIterator.instance();
 	}
 
 	public Iterator<String> allOverridableAttributeNames() {
+		return EmptyIterator.instance();
+	}
+
+	public Iterator<OrmPersistentAttribute> overridableAssociations() {
+		return EmptyIterator.instance();
+	}	
+	
+	public Iterator<String> overridableAssociationNames() {
+		return EmptyIterator.instance();
+	}
+
+	public Iterator<PersistentAttribute> allOverridableAssociations() {
+		return EmptyIterator.instance();
+	}
+
+	public Iterator<String> allOverridableAssociationNames() {
 		return EmptyIterator.instance();
 	}
 

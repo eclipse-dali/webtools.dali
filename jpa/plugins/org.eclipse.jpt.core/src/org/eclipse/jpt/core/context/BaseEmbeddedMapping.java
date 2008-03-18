@@ -24,7 +24,7 @@ public interface BaseEmbeddedMapping extends AttributeMapping, AttributeOverride
 {
 
 	/**
-	 * Return a list iterator of the attribute overrides whether specified or default.
+	 * Return a list iterator of the attribute overrides whether specified or virtual.
 	 * This will not be null.
 	 */
 	<T extends AttributeOverride> ListIterator<T> attributeOverrides();
@@ -47,33 +47,17 @@ public interface BaseEmbeddedMapping extends AttributeMapping, AttributeOverride
 	int specifiedAttributeOverridesSize();
 
 	/**
-	 * Return a list iterator of the default attribute overrides.
+	 * Return a list iterator of the virtual attribute overrides.
 	 * This will not be null.
 	 */
-	<T extends AttributeOverride> ListIterator<T> defaultAttributeOverrides();
-		String DEFAULT_ATTRIBUTE_OVERRIDES_LIST = "defaultAttributeOverridesList";
+	<T extends AttributeOverride> ListIterator<T> virtualAttributeOverrides();
+		String VIRTUAL_ATTRIBUTE_OVERRIDES_LIST = "virtualAttributeOverridesList";
 
 	/**
-	 * Return the number of default attribute overrides.
+	 * Return the number of virtual attribute overrides.
 	 */
-	int defaultAttributeOverridesSize();
-
-	/**
-	 * Add a specified attribute override to the entity return the object 
-	 * representing it.
-	 */
-	AttributeOverride addSpecifiedAttributeOverride(int index);
-	
-	/**
-	 * Remove the specified attribute override from the entity.
-	 */
-	void removeSpecifiedAttributeOverride(int index);
-	
-	/**
-	 * Remove the specified attribute override at the index from the entity.
-	 */
-	void removeSpecifiedAttributeOverride(AttributeOverride attributeOverride);
-	
+	int virtualAttributeOverridesSize();
+		
 	/**
 	 * Move the specified attribute override from the source index to the target index.
 	 */

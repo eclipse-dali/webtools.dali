@@ -25,9 +25,8 @@ import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
 public interface OrmEmbeddedIdMapping extends EmbeddedIdMapping, OrmBaseEmbeddedMapping
 {
 	ListIterator<OrmAttributeOverride> attributeOverrides();
-	ListIterator<OrmAttributeOverride> defaultAttributeOverrides();
+	ListIterator<OrmAttributeOverride> virtualAttributeOverrides();
 	ListIterator<OrmAttributeOverride> specifiedAttributeOverrides();
-	OrmAttributeOverride addSpecifiedAttributeOverride(int index);
 
 	void initialize(XmlEmbeddedId embeddedId);
 

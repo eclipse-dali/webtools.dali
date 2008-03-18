@@ -99,6 +99,7 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 		return this.namesOf(this.overridableAttributes());
 	}
 
+	@Override
 	public Iterator<OrmPersistentAttribute> overridableAttributes() {
 		return new FilteringIterator<OrmPersistentAttribute, OrmPersistentAttribute>(this.persistentType().attributes()) {
 			@Override
@@ -113,6 +114,7 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 		return this.namesOf(this.overridableAssociations());
 	}
 
+	@Override
 	public Iterator<OrmPersistentAttribute> overridableAssociations() {
 		return new FilteringIterator<OrmPersistentAttribute, OrmPersistentAttribute>(this.persistentType().attributes()) {
 			@Override

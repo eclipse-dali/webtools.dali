@@ -178,7 +178,10 @@ public interface Entity extends TypeMapping, GeneratorHolder, QueryHolder
 
 	/**
 	 * Return a list iterator of the specified attribute overrides.
-	 * This will not be null.
+	 * This will not be null.  No add/remove for specified attribute overrides, the
+	 * virtual attribute overrides will be populated from superclasses, then use
+	 * {@link AttributeOverride#setVirtual(boolean)} to add/remove the attribute
+	 * override from the source
 	 */
 	<T extends AttributeOverride> ListIterator<T> specifiedAttributeOverrides();
 	
@@ -188,38 +191,22 @@ public interface Entity extends TypeMapping, GeneratorHolder, QueryHolder
 	int specifiedAttributeOverridesSize();
 
 	/**
-	 * Return a list iterator of the default attribute overrides.
+	 * Return a list iterator of the virtual attribute overrides, those not specified.
 	 * This will not be null.
 	 */
-	<T extends AttributeOverride> ListIterator<T> defaultAttributeOverrides();
+	<T extends AttributeOverride> ListIterator<T> virtualAttributeOverrides();
 
 	/**
 	 * Return the number of default attribute overrides.
 	 */
-	int defaultAttributeOverridesSize();
-
-	/**
-	 * Add a specified attribute override to the entity return the object 
-	 * representing it.
-	 */
-	AttributeOverride addSpecifiedAttributeOverride(int index);
-	
-	/**
-	 * Remove the specified attribute override from the entity.
-	 */
-	void removeSpecifiedAttributeOverride(int index);
-	
-	/**
-	 * Remove the specified attribute override at the index from the entity.
-	 */
-	void removeSpecifiedAttributeOverride(AttributeOverride attributeOverride);
+	int virtualAttributeOverridesSize();
 	
 	/**
 	 * Move the specified attribute override from the source index to the target index.
 	 */
 	void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex);
 		String SPECIFIED_ATTRIBUTE_OVERRIDES_LIST = "specifiedAttributeOverridesList";
-		String DEFAULT_ATTRIBUTE_OVERRIDES_LIST = "defaultAttributeOverridesList";
+		String VIRTUAL_ATTRIBUTE_OVERRIDES_LIST = "virtualAttributeOverridesList";
 
 	// **************** association overrides **************************************
 	
@@ -236,7 +223,10 @@ public interface Entity extends TypeMapping, GeneratorHolder, QueryHolder
 	
 	/**
 	 * Return a list iterator of the specified association overrides.
-	 * This will not be null.
+	 * This will not be null.  No add/remove for specified association overrides, the
+	 * virtual association overrides will be populated from superclasses, then use
+	 * {@link AssociationOverride#setVirtual(boolean)} to add/remove the association
+	 * override from the source
 	 */
 	<T extends AssociationOverride> ListIterator<T> specifiedAssociationOverrides();
 	
@@ -248,35 +238,19 @@ public interface Entity extends TypeMapping, GeneratorHolder, QueryHolder
 	/**
 	 * Return the number of default association overrides.
 	 */
-	<T extends AssociationOverride> ListIterator<T> defaultAssociationOverrides();
+	<T extends AssociationOverride> ListIterator<T> virtualAssociationOverrides();
 
 	/**
 	 * Return the number of default association overrides.
 	 */
-	int defaultAssociationOverridesSize();
-
-	/**
-	 * Add a specified association override to the entity return the object 
-	 * representing it.
-	 */
-	AssociationOverride addSpecifiedAssociationOverride(int index);
-	
-	/**
-	 * Remove the specified association override at the index from the entity.
-	 */
-	void removeSpecifiedAssociationOverride(int index);
-	
-	/**
-	 * Remove the specified association override from the entity.
-	 */
-	void removeSpecifiedAssociationOverride(AssociationOverride associationOverride);
+	int virtualAssociationOverridesSize();
 
 	/**
 	 * Move the specified association override from the source index to the target index.
 	 */
 	void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex);
 		String SPECIFIED_ASSOCIATION_OVERRIDES_LIST = "specifiedAssociationOverridesList";
-		String DEFAULT_ASSOCIATION_OVERRIDES_LIST = "defaulAssociationOverridesList";
+		String VIRTUAL_ASSOCIATION_OVERRIDES_LIST = "virtualAssociationOverridesList";
 
 	
 	// **************** named queries **************************************

@@ -24,6 +24,8 @@ public interface AttributeOverride extends BaseOverride, Column.Owner
 
 	AttributeOverride.Owner owner();
 	
+	AttributeOverride setVirtual(boolean virtual);
+	
 	interface Owner extends BaseOverride.Owner
 	{
 		/**

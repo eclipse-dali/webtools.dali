@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,10 +7,12 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.java;
+package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.internal.resource.java.AbstractJavaResourceNode;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
@@ -18,20 +20,16 @@ import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 
 
-public class NullAttributeOverride extends AbstractJavaResourceNode implements AttributeOverrideAnnotation, Annotation
+public class VirtualAttributeOverride extends AbstractJavaResourceNode implements AttributeOverrideAnnotation, Annotation
 {	
-	//TODO should I hold on to the IColumnMapping that this attribute override is built from?
-	//this would make it more similar to the Virtual mappings concept in xml
-	
-	
-	private final NullAttributeOverrideColumn column;
+	private final VirtualAttributeOverrideColumn column;
 	
 	private String name;
-	
-	public NullAttributeOverride(JavaResourceNode parent, String name) {
+		
+	public VirtualAttributeOverride(JavaResourceNode parent, String name, Column column) {
 		super(parent);
 		this.name = name;
-		this.column = new NullAttributeOverrideColumn(this);
+		this.column = new VirtualAttributeOverrideColumn(this, column);
 	}
 
 	public void initialize(CompilationUnit astRoot) {

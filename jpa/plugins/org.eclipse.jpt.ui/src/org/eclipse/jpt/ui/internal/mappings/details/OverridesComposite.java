@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -166,29 +165,29 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 	}
 
 	private ListValueModel<AssociationOverride> buildDefaultAssociationOverridesListHolder() {
-		return new ListAspectAdapter<Entity, AssociationOverride>(getSubjectHolder(), Entity.DEFAULT_ASSOCIATION_OVERRIDES_LIST) {
+		return new ListAspectAdapter<Entity, AssociationOverride>(getSubjectHolder(), Entity.VIRTUAL_ASSOCIATION_OVERRIDES_LIST) {
 			@Override
 			protected ListIterator<AssociationOverride> listIterator_() {
-				return subject.defaultAssociationOverrides();
+				return subject.virtualAssociationOverrides();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.defaultAssociationOverridesSize();
+				return subject.virtualAssociationOverridesSize();
 			}
 		};
 	}
 
 	private ListValueModel<AttributeOverride> buildDefaultAttributeOverridesListHolder() {
-		return new ListAspectAdapter<Entity, AttributeOverride>(getSubjectHolder(), Entity.DEFAULT_ATTRIBUTE_OVERRIDES_LIST) {
+		return new ListAspectAdapter<Entity, AttributeOverride>(getSubjectHolder(), Entity.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST) {
 			@Override
 			protected ListIterator<AttributeOverride> listIterator_() {
-				return subject.defaultAttributeOverrides();
+				return subject.virtualAttributeOverrides();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.defaultAttributeOverridesSize();
+				return subject.virtualAttributeOverridesSize();
 			}
 		};
 	}
@@ -211,7 +210,7 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		return new TransformationWritablePropertyValueModel<AssociationOverride, Boolean>(buildAssociationOverrideHolder()) {
 			@Override
 			public void setValue(Boolean value) {
-				updateAssociationOverride(value);
+				updateOverride(value);
 			}
 
 			@Override
@@ -225,7 +224,7 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		return new TransformationWritablePropertyValueModel<AttributeOverride, Boolean>(buildAttributeOverrideHolder()) {
 			@Override
 			public void setValue(Boolean value) {
-				updateAttributeOverride(value);
+				updateOverride(value);
 			}
 
 			@Override
@@ -282,7 +281,6 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				removeOverrides(listSelectionModel);
 			}
 		};
 	}
@@ -495,25 +493,7 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		);
 	}
 
-	private void removeOverrides(ObjectListSelectionModel listSelectionModel) {
-
-		Entity subject = subject();
-		Object[] selectedItems = listSelectionModel.selectedValues();
-
-		for (int index = selectedItems.length; --index >= 0; ) {
-
-			Object override = selectedItems[index];
-
-			if (override instanceof AttributeOverride) {
-				subject.removeSpecifiedAttributeOverride((AttributeOverride) override);
-			}
-			else if (override instanceof AssociationOverride) {
-				subject.removeSpecifiedAssociationOverride((AssociationOverride) override);
-			}
-		}
-	}
-
-	private void updateAssociationOverride(boolean selected) {
+	private void updateOverride(boolean selected) {
 
 		if (isPopulating()) {
 			return;
@@ -522,74 +502,10 @@ public class OverridesComposite extends AbstractFormPane<Entity>
 		setPopulating(true);
 
 		try {
-			Entity subject = subject();
-			AssociationOverride override = (AssociationOverride) overrideHolder.value();
+			BaseOverride override = overrideHolder.value();
 
-			// Add a new association override
-			if (selected) {
-				int index = subject.specifiedAssociationOverridesSize();
-				AssociationOverride associationOverride = subject.addSpecifiedAssociationOverride(index);
-				associationOverride.setName(override.getName());
-
-				overrideHolder.setValue(associationOverride);
-			}
-			// Remove the specified association override
-			else {
-				String name = override.getName();
-				subject.removeSpecifiedAssociationOverride(override);
-
-				// Select the default association override
-				for (Iterator<AssociationOverride> iter = subject.defaultAssociationOverrides(); iter.hasNext(); ) {
-					AssociationOverride associationOverride = iter.next();
-
-					if (associationOverride.getName().equals(name)) {
-						overrideHolder.setValue(associationOverride);
-						break;
-					}
-				}
-			}
-		}
-		finally {
-			setPopulating(false);
-		}
-	}
-
-	private void updateAttributeOverride(boolean selected) {
-
-		if (isPopulating()) {
-			return;
-		}
-
-		setPopulating(true);
-
-		try {
-			Entity subject = subject();
-			AttributeOverride override = (AttributeOverride) overrideHolder.value();
-
-			// Add a new attribute override
-			if (selected) {
-				int index = subject.specifiedAttributeOverridesSize();
-				AttributeOverride attributeOverride = subject.addSpecifiedAttributeOverride(index);
-				attributeOverride.setName(override.getName());
-				attributeOverride.getColumn().setSpecifiedName(override.getColumn().getName());
-
-				overrideHolder.setValue(attributeOverride);
-			}
-			// Remove the specified attribute override
-			else {
-				String name = override.getName();
-				subject.removeSpecifiedAttributeOverride(override);
-
-				// Select the default attribute override
-				for (Iterator<AttributeOverride> iter = subject.defaultAttributeOverrides(); iter.hasNext(); ) {
-					AttributeOverride attributeOverride = iter.next();
-
-					if (attributeOverride.getName().equals(name)) {
-						overrideHolder.setValue(attributeOverride);
-						break;
-					}
-				}
-			}
+			BaseOverride newOverride = override.setVirtual(!selected);
+			overrideHolder.setValue(newOverride);
 		}
 		finally {
 			setPopulating(false);

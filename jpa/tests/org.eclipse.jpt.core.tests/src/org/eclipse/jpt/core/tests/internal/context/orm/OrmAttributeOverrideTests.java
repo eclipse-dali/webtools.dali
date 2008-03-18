@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
@@ -39,10 +40,11 @@ public class OrmAttributeOverrideTests extends ContextModelTestCase
 	public void testUpdateName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
-		OrmAttributeOverride ormAttributeOverride = ormEntity.addSpecifiedAttributeOverride(0);
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
 		XmlAttributeOverride attributeOverrideResource = entityResource.getAttributeOverrides().get(0);
+		OrmAttributeOverride ormAttributeOverride = ormEntity.specifiedAttributeOverrides().next();
 		
 		assertNull(ormAttributeOverride.getName());
 		assertNull(attributeOverrideResource.getName());
@@ -74,10 +76,11 @@ public class OrmAttributeOverrideTests extends ContextModelTestCase
 	public void testModifyName() throws Exception {
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
-		OrmAttributeOverride ormAttributeOverride = ormEntity.addSpecifiedAttributeOverride(0);
 		
 		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
 		XmlAttributeOverride attributeOverrideResource = entityResource.getAttributeOverrides().get(0);
+		OrmAttributeOverride ormAttributeOverride = ormEntity.specifiedAttributeOverrides().next();
 
 		assertNull(ormAttributeOverride.getName());
 		assertNull(attributeOverrideResource.getName());

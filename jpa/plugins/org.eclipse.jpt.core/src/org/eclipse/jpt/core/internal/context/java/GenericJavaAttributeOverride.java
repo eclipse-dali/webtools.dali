@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.ColumnMapping;
@@ -17,10 +18,13 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public class GenericJavaAttributeOverride extends AbstractJavaOverride
@@ -33,6 +37,11 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	public GenericJavaAttributeOverride(JavaJpaContextNode parent, AttributeOverride.Owner owner) {
 		super(parent, owner);
 		this.column = jpaFactory().buildJavaColumn(this, this);
+	}
+	
+	@Override
+	public JavaAttributeOverride setVirtual(boolean virtual) {
+		return (JavaAttributeOverride) super.setVirtual(virtual);
 	}
 	
 	@Override
@@ -119,15 +128,65 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 		return null;
 	}
 	
-
-
-	// ********** static methods **********
-//	static JavaAttributeOverride createAttributeOverride(Owner owner, Member member, int index) {
-//		return JpaJavaMappingsFactory.eINSTANCE.createJavaAttributeOverride(owner, member, buildAnnotationAdapter(index));
-//	}
-//
-//	private static IndexedDeclarationAnnotationAdapter buildAnnotationAdapter(int index) {
-//		return new CombinationIndexedDeclarationAnnotationAdapter(SINGLE_DECLARATION_ANNOTATION_ADAPTER, MULTIPLE_DECLARATION_ANNOTATION_ADAPTER, index, JPA.ATTRIBUTE_OVERRIDE);
-//	}
+	
+	//******************** validation **********************
+	@Override
+	public void addToMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		super.addToMessages(messages, astRoot);
+	
+		addColumnMessages(messages, astRoot);
+	}
+	
+	protected void addColumnMessages(List<IMessage> messages, CompilationUnit astRoot) {
+		String table = getColumn().getTable();
+		boolean doContinue = connectionProfileIsActive();
+		
+		if (doContinue && typeMapping().tableNameIsInvalid(table)) {
+			if (isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_TABLE,
+						new String[] {getName(), table, getColumn().getName()},
+						getColumn(), 
+						getColumn().tableTextRange(astRoot))
+				);
+			}
+			else {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.COLUMN_UNRESOLVED_TABLE,
+							new String[] {table, getColumn().getName()}, 
+							getColumn(), 
+							getColumn().tableTextRange(astRoot))
+					);
+			}
+			doContinue = false;
+		}
+		
+		if (doContinue && ! getColumn().isResolved()) {
+			if (isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,
+						new String[] {getName(), getColumn().getName()}, 
+						getColumn(), 
+						getColumn().nameTextRange(astRoot))
+				);
+			}
+			else {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
+							new String[] {getColumn().getName()}, 
+							getColumn(), 
+							getColumn().nameTextRange(astRoot))
+					);
+			}
+		}
+	}
 
 }

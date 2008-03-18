@@ -227,7 +227,8 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 	}
 
 	public TextRange tableTextRange(CompilationUnit astRoot) {
-		return columnResource().tableTextRange(astRoot);
+		TextRange textRange = this.columnResource().tableTextRange(astRoot);
+		return (textRange != null) ? textRange : this.owner().validationTextRange(astRoot);
 	}
 
 	public boolean tableTouches(int pos, CompilationUnit astRoot) {

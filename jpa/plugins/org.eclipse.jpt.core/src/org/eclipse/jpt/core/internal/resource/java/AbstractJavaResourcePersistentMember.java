@@ -325,9 +325,19 @@ public abstract class AbstractJavaResourcePersistentMember<E extends Member>
 		}
 		else if (containerAnnotation.nestedAnnotationsSize() == 1) {
 			NestableAnnotation nestedAnnotation = containerAnnotation.nestedAnnotationAt(0);
-			removeAnnotation(containerAnnotation);
-			NestableAnnotation newAnnotation = (NestableAnnotation) addAnnotation(containerAnnotation.getNestableAnnotationName());
+			
+			this.annotations.remove(containerAnnotation);
+			containerAnnotation.removeAnnotation();
+
+
+			NestableAnnotation newAnnotation = (NestableAnnotation) buildAnnotation(containerAnnotation.getNestableAnnotationName());
+			this.annotations.add(newAnnotation);
+			newAnnotation.newAnnotation();
+
 			newAnnotation.initializeFrom(nestedAnnotation);
+			
+			this.fireItemAdded(ANNOTATIONS_COLLECTION, newAnnotation);
+			fireItemRemoved(ANNOTATIONS_COLLECTION, containerAnnotation);
 		}
 	}
 	// removes all other *mapping* annotations that exist, not just the one returned by mappingAnnotation()

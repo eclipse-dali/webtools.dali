@@ -46,14 +46,14 @@ public class VirtualXmlEmbedded extends AbstractJpaEObject implements XmlEmbedde
 		this.virtualAttributeOverrides = new BasicEList<XmlAttributeOverride>();
 		ListIterator<JavaAttributeOverride> javaAttributesOverrides;
 		if (this.metadataComplete) {
-			javaAttributesOverrides = this.javaEmbeddedMapping.defaultAttributeOverrides();
+			javaAttributesOverrides = javaEmbeddedMapping.virtualAttributeOverrides();
 		}
 		else {
-			javaAttributesOverrides = this.javaEmbeddedMapping.attributeOverrides();			
+			javaAttributesOverrides = javaEmbeddedMapping.attributeOverrides();			
 		}
 		
 		while (javaAttributesOverrides.hasNext()) {
-			this.virtualAttributeOverrides.add(new VirtualXmlAttributeOverride(ormTypeMapping, javaAttributesOverrides.next(), this.metadataComplete));
+			this.virtualAttributeOverrides.add(new VirtualXmlAttributeOverride(this.ormTypeMapping, javaAttributesOverrides.next(), this.metadataComplete));
 		}
 	}
 	
@@ -79,10 +79,10 @@ public class VirtualXmlEmbedded extends AbstractJpaEObject implements XmlEmbedde
 		ListIterator<JavaAttributeOverride> javaAttributesOverrides;
 		ListIterator<XmlAttributeOverride> virtualAttributeOverrides = this.virtualAttributeOverrides.listIterator();
 		if (this.metadataComplete) {
-			javaAttributesOverrides = this.javaEmbeddedMapping.defaultAttributeOverrides();
+			javaAttributesOverrides = javaEmbeddedMapping.virtualAttributeOverrides();
 		}
 		else {
-			javaAttributesOverrides = this.javaEmbeddedMapping.attributeOverrides();			
+			javaAttributesOverrides = javaEmbeddedMapping.attributeOverrides();			
 		}
 		
 		while (javaAttributesOverrides.hasNext()) {
@@ -92,7 +92,7 @@ public class VirtualXmlEmbedded extends AbstractJpaEObject implements XmlEmbedde
 				virtualAttributeOverride.update(javaAttributeOverride);
 			}
 			else {
-				this.virtualAttributeOverrides.add(new VirtualXmlAttributeOverride(ormTypeMapping, javaAttributeOverride, this.metadataComplete));
+				this.virtualAttributeOverrides.add(new VirtualXmlAttributeOverride(this.ormTypeMapping, javaAttributeOverride, this.metadataComplete));
 			}
 		}
 		

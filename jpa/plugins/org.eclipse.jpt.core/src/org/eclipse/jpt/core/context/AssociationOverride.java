@@ -38,6 +38,8 @@ public interface AssociationOverride extends BaseOverride
 
 	AssociationOverride.Owner owner();
 	
+	AssociationOverride setVirtual(boolean virtual);
+	
 	interface Owner extends BaseOverride.Owner
 	{
 		/**

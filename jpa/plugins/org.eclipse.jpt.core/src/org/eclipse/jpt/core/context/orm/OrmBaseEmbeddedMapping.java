@@ -26,9 +26,8 @@ public interface OrmBaseEmbeddedMapping extends BaseEmbeddedMapping, OrmAttribut
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmAttributeOverride> attributeOverrides();
 	@SuppressWarnings("unchecked")
-	ListIterator<OrmAttributeOverride> defaultAttributeOverrides();
+	ListIterator<OrmAttributeOverride> virtualAttributeOverrides();
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmAttributeOverride> specifiedAttributeOverrides();
-	OrmAttributeOverride addSpecifiedAttributeOverride(int index);
 
 }

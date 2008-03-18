@@ -73,6 +73,10 @@ public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode im
 		return owner().isVirtual(this);
 	}
 
+	public BaseOverride setVirtual(boolean virtual) {
+		return owner().setVirtual(virtual, this);
+	}
+	
 	public Owner owner() {
 		return this.owner;
 	}

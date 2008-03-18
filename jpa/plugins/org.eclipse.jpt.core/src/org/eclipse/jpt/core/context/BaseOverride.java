@@ -31,6 +31,8 @@ public interface BaseOverride extends JpaContextNode
 	 */
 	boolean isVirtual();
 
+	BaseOverride setVirtual(boolean virtual);
+	
 	interface Owner
 	{
 		/**
@@ -40,11 +42,18 @@ public interface BaseOverride extends JpaContextNode
 		TypeMapping typeMapping();
 
 		/**
-		 * Teturn whether the given override is virtual. virtual means that
+		 * Return whether the given override is virtual. Virtual means that
 		 * it is not specified, but defaulted in from the mapped superclass or
 		 * embeddable.
 		 */
 		boolean isVirtual(BaseOverride override);
-
+		
+		/**
+		 * If false, add the give override as a specified override and remove
+		 * it from the list of virtual overrides.  If true, then remove it
+		 * from the specified overrides and add it to the virtual overrides
+		 * as applicable.  Return the new override (whether virtual or specified)
+		 */
+		BaseOverride setVirtual(boolean virtual, BaseOverride override);	
 	}
 }

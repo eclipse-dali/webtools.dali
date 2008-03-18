@@ -24,8 +24,6 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
  */
 public interface JavaTypeMapping extends TypeMapping, JavaJpaContextNode
 {
-	JavaPersistentType persistentType();
-	
 	void initializeFromResource(JavaResourcePersistentType persistentTypeResource);
 	
 	void update(JavaResourcePersistentType persistentTypeResource);
@@ -33,5 +31,12 @@ public interface JavaTypeMapping extends TypeMapping, JavaJpaContextNode
 	String annotationName();
 	
 	Iterator<String> correspondingAnnotationNames();
-
+	
+	JavaPersistentType persistentType();
+	
+	@SuppressWarnings("unchecked")
+	Iterator<JavaPersistentAttribute> overridableAttributes();
+	
+	@SuppressWarnings("unchecked")
+	Iterator<JavaPersistentAttribute> overridableAssociations();
 }

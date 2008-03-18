@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -147,16 +146,16 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 	private ListValueModel<AttributeOverride> buildDefaultAttributeOverridesListHolder() {
 		return new ListAspectAdapter<BaseEmbeddedMapping, AttributeOverride>(
 			this.getSubjectHolder(),
-			BaseEmbeddedMapping.DEFAULT_ATTRIBUTE_OVERRIDES_LIST)
+			BaseEmbeddedMapping.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST)
 		{
 			@Override
 			protected ListIterator<AttributeOverride> listIterator_() {
-				return subject.defaultAttributeOverrides();
+				return subject.virtualAttributeOverrides();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.defaultAttributeOverridesSize();
+				return subject.virtualAttributeOverridesSize();
 			}
 		};
 	}
@@ -309,34 +308,10 @@ public class EmbeddedAttributeOverridesComposite extends AbstractFormPane<BaseEm
 		setPopulating(true);
 
 		try {
-			BaseEmbeddedMapping subject = subject();
-			AttributeOverride override = attributeOverrideHolder.value();
+			AttributeOverride override = this.attributeOverrideHolder.value();
 
-			// Add a new association override
-			if (selected) {
-				int index = this.subject().specifiedAttributeOverridesSize();
-
-				AttributeOverride attributeOverride = subject.addSpecifiedAttributeOverride(index);
-				attributeOverride.setName(override.getName());
-				attributeOverride.getColumn().setSpecifiedName(override.getColumn().getName());
-
-				attributeOverrideHolder.setValue(attributeOverride);
-			}
-			// Remove the specified association override
-			else {
-				String name = override.getName();
-				subject.removeSpecifiedAttributeOverride(override);
-
-				// Select the default attribute override
-				for (Iterator<AttributeOverride> iter = subject.defaultAttributeOverrides(); iter.hasNext(); ) {
-					AttributeOverride attributeOverride = iter.next();
-
-					if (attributeOverride.getName().equals(name)) {
-						attributeOverrideHolder.setValue(attributeOverride);
-						break;
-					}
-				}
-			}
+			AttributeOverride newOverride = override.setVirtual(!selected);
+			this.attributeOverrideHolder.setValue(newOverride);
 		}
 		finally {
 			setPopulating(false);

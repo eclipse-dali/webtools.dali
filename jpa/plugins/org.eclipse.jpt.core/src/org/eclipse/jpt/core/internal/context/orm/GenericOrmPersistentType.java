@@ -46,7 +46,6 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
@@ -306,9 +305,9 @@ public class GenericOrmPersistentType extends AbstractOrmJpaContextNode implemen
 			getMapping().typeMappingResource().setAttributes(OrmFactory.eINSTANCE.createAttributes());
 		}
 		this.specifiedPersistentAttributes.add(index, persistentAttribute);
-		XmlAttributeMapping attributeMapping = persistentAttribute.getMapping().addToResourceModel(getMapping().typeMappingResource());
+		persistentAttribute.getMapping().addToResourceModel(getMapping().typeMappingResource());
 		
-		attributeMapping.setName(attributeName);
+		persistentAttribute.getSpecifiedMapping().setName(attributeName);
 		fireItemAdded(PersistentType.SPECIFIED_ATTRIBUTES_LIST, index, persistentAttribute);
 		return persistentAttribute;
 	}

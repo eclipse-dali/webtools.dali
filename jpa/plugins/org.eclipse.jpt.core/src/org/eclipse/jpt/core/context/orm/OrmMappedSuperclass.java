@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 
@@ -26,4 +27,8 @@ public interface OrmMappedSuperclass extends MappedSuperclass, OrmTypeMapping
 	void initialize(XmlMappedSuperclass mappedSuperclass);
 
 	void update(XmlMappedSuperclass mappedSuperclass);
+	
+	Iterator<OrmPersistentAttribute> overridableAttributes();
+
+	Iterator<OrmPersistentAttribute> overridableAssociations();
 }

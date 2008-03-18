@@ -12,7 +12,9 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
@@ -73,10 +75,14 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		return EmptyIterator.instance();
 	}
 
-	public Iterator<String> overridableAssociationNames() {
+	public Iterator<JavaPersistentAttribute> overridableAttributes() {
 		return EmptyIterator.instance();
 	}
-
+	
+	public Iterator<PersistentAttribute> allOverridableAttributes() {
+		return EmptyIterator.instance();
+	}
+	
 	public Iterator<String> overridableAttributeNames() {
 		return EmptyIterator.instance();
 	}
@@ -85,6 +91,18 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		return EmptyIterator.instance();
 	}
 
+	public Iterator<JavaPersistentAttribute> overridableAssociations() {
+		return EmptyIterator.instance();
+	}
+	
+	public Iterator<String> overridableAssociationNames() {
+		return EmptyIterator.instance();
+	}
+
+	public Iterator<PersistentAttribute> allOverridableAssociations() {
+		return EmptyIterator.instance();
+	}
+	
 	public Iterator<String> allOverridableAssociationNames() {
 		return EmptyIterator.instance();
 	}
