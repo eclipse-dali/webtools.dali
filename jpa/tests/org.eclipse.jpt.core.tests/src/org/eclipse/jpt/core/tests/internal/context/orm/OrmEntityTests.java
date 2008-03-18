@@ -1087,7 +1087,7 @@ public class OrmEntityTests extends ContextModelTestCase
 				
 		assertNotNull(ormEntity.getTableGenerator());
 		assertNotNull(entityResource.getTableGenerator());
-		assertEquals(1, CollectionTools.size(ormEntity.persistenceUnit().allGenerators()));
+		assertEquals(0, CollectionTools.size(ormEntity.persistenceUnit().allGenerators()));
 
 		ormEntity.getTableGenerator().setName("foo");
 		assertEquals(1, CollectionTools.size(ormEntity.persistenceUnit().allGenerators()));
