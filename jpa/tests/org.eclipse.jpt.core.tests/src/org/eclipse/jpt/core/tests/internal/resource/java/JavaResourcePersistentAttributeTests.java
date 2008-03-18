@@ -749,7 +749,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		
 		assertEquals("foo", attributeResource.getName());
 		assertTrue(attributeResource.isForField());
-		assertFalse(attributeResource.isPersistable());
+		assertTrue(attributeResource.isPersistable()); //bug 196200 changed this
 
 		this.javaProject.createType("test", "Foo.java", "public class Foo {}");
 		this.javaResourceModel.resolveTypes();
@@ -764,7 +764,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		JavaResourcePersistentAttribute attributeResource = attributes.iterator().next();
 		
 		assertEquals("foo", attributeResource.getName());
-		assertNull(attributeResource.getQualifiedTypeName());
+		assertEquals("test.Foo", attributeResource.getQualifiedTypeName()); //bug 196200 changed this
 
 		this.javaProject.createType("test", "Foo.java", "public class Foo {}");
 		this.javaResourceModel.resolveTypes();
@@ -790,7 +790,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		
 		assertEquals("foo", attributeResource.getName());
 		assertTrue(attributeResource.isForProperty());
-		assertFalse(attributeResource.isPersistable());
+		assertTrue(attributeResource.isPersistable());//bug 196200 changed this
 
 		this.javaProject.createType("test", "Foo.java", "public class Foo {}");
 		this.javaResourceModel.resolveTypes();

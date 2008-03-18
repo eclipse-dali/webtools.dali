@@ -199,7 +199,7 @@ public class NamedNativeQueryTests extends JavaResourceModelTestCase {
 
 		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.annotation(JPA.NAMED_NATIVE_QUERY);
 		assertNotNull(namedQuery.getResultClass());
-		assertNull(namedQuery.getFullyQualifiedResultClass());
+		assertEquals("Result", namedQuery.getFullyQualifiedResultClass());//bug 196200 changed this
 
 		namedQuery.setResultClass(TYPE_NAME);		
 		

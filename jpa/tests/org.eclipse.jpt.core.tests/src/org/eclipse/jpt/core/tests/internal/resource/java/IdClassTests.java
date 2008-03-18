@@ -99,7 +99,7 @@ public class IdClassTests extends JavaResourceModelTestCase {
 
 		IdClass idClass = (IdClass) typeResource.annotation(JPA.ID_CLASS);
 		assertNotNull(idClass.getValue());
-		assertNull(idClass.getFullyQualifiedClass());
+		assertEquals("MyClass", idClass.getFullyQualifiedClass()); //bug 196200 changed this
 
 
 		idClass.setValue(TYPE_NAME);

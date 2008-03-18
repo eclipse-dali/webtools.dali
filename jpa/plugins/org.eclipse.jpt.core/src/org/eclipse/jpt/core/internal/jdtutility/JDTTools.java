@@ -77,6 +77,7 @@ public class JDTTools {
 		ASTParser parser = ASTParser.newParser(AST.JLS3);
 		parser.setSource(compilationUnit);
 		parser.setResolveBindings(resolveBindings);
+		parser.setBindingsRecovery(true); //see bugs 196200, 222735
 		return (CompilationUnit) parser.createAST(null);
 	}
 

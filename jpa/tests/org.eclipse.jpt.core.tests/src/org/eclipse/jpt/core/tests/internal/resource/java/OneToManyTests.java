@@ -226,7 +226,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		
 		assertEquals("Foo", oneToMany.getTargetEntity());
 		
-		assertNull(oneToMany.getFullyQualifiedTargetEntity());
+		assertEquals("Foo", oneToMany.getFullyQualifiedTargetEntity()); //bug 196200 changed this
 	}
 	
 	public void testGetMappedBy() throws Exception {
