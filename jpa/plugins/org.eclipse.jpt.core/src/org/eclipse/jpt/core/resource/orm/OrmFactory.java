@@ -102,7 +102,7 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.XML_ONE_TO_ONE_IMPL: return (EObject)createXmlOneToOneImpl();
 			case OrmPackage.XML_MANY_TO_MANY_IMPL: return (EObject)createXmlManyToManyImpl();
 			case OrmPackage.XML_TRANSIENT_IMPL: return (EObject)createXmlTransientImpl();
-			case OrmPackage.XML_ASSOCIATION_OVERRIDE: return (EObject)createXmlAssociationOverride();
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE_IMPL: return (EObject)createXmlAssociationOverrideImpl();
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE_IMPL: return (EObject)createXmlAttributeOverrideImpl();
 			case OrmPackage.CASCADE_TYPE_IMPL: return (EObject)createCascadeTypeImpl();
 			case OrmPackage.XML_COLUMN_IMPL: return (EObject)createXmlColumnImpl();
@@ -408,10 +408,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlAssociationOverride createXmlAssociationOverride()
+	public XmlAssociationOverrideImpl createXmlAssociationOverrideImpl()
 	{
-		XmlAssociationOverride xmlAssociationOverride = new XmlAssociationOverride();
-		return xmlAssociationOverride;
+		XmlAssociationOverrideImpl xmlAssociationOverrideImpl = new XmlAssociationOverrideImpl();
+		return xmlAssociationOverrideImpl;
 	}
 
 	/**

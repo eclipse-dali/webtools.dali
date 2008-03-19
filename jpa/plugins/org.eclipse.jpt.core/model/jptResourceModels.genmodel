@@ -203,6 +203,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlAssociationOverride/joinColumns"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAssociationOverride/name"/>
     </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlAssociationOverrideImpl"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlAttributeOverride">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlAttributeOverride/column"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAttributeOverride/name"/>

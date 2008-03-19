@@ -245,11 +245,13 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlTransient" abstract="true" interface="true"
       eSuperTypes="#//XmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTransientImpl" eSuperTypes="#//AbstractXmlAttributeMapping #//XmlTransient"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlAssociationOverride">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlAssociationOverride" abstract="true"
+      interface="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="joinColumns" lowerBound="1"
         upperBound="-1" eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlAssociationOverrideImpl" eSuperTypes="#//XmlAssociationOverride"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeOverride" abstract="true"
       interface="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="column" lowerBound="1"
