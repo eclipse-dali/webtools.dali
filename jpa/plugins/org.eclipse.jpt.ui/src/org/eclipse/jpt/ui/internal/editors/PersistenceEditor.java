@@ -58,7 +58,6 @@ import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
 
@@ -223,7 +222,7 @@ public class PersistenceEditor extends FormEditor
 
 						for (int index = 0; index<pages.length; index++){
 
-							FileEditorInput fileEditorInput = (FileEditorInput) editor.getEditorInput();
+							IFileEditorInput fileEditorInput = (IFileEditorInput) editor.getEditorInput();
 
 							if (fileEditorInput.getFile().getProject().equals(event.getResource())) {
 								IEditorPart editorPart = pages[index].findEditor(editor.getEditorInput());
