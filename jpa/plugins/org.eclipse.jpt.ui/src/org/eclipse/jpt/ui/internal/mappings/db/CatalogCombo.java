@@ -39,6 +39,20 @@ public abstract class CatalogCombo<T extends JpaNode> extends AbstractDatabaseOb
 	/**
 	 * Creates a new <code>CatalogCombo</code>.
 	 *
+	 * @param parentPane The parent container of this one
+	 * @param subjectHolder The holder of this pane's subject
+	 * @param parent The parent container
+	 */
+	public CatalogCombo(AbstractPane<?> parentPane,
+	                    PropertyValueModel<? extends T> subjectHolder,
+	                    Composite parent) {
+
+		super(parentPane, subjectHolder, parent);
+	}
+
+	/**
+	 * Creates a new <code>CatalogCombo</code>.
+	 *
 	 * @param subjectHolder The holder of the subject
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets

@@ -113,6 +113,20 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 				log(Tracing.UI_DB, "aboutToClose");
 			}
 
+			public void catalogChanged(ConnectionProfile profile,
+			                          final Catalog catalog) {
+
+				SWTUtil.asyncExec(new Runnable() {
+					public void run() {
+						log(Tracing.UI_DB, "catalogChanged: " + catalog.name());
+
+						if (!getCombo().isDisposed()) {
+							AbstractDatabaseObjectCombo.this.catalogChanged(catalog);
+						}
+					}
+				});
+			}
+
 			public void closed(ConnectionProfile profile) {
 
 				SWTUtil.asyncExec(new Runnable() {
@@ -126,10 +140,38 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 				});
 			}
 
+			public void columnChanged(ConnectionProfile profile,
+			                         final Column column) {
+
+				SWTUtil.asyncExec(new Runnable() {
+					public void run() {
+						log(Tracing.UI_DB, "columnChanged: " + column.name());
+
+						if (!getCombo().isDisposed()) {
+							AbstractDatabaseObjectCombo.this.columnChanged(column);
+						}
+					}
+				});
+			}
+
 			public void databaseChanged(ConnectionProfile profile,
 			                            Database database) {
 
 				log(Tracing.UI_DB, "databaseChanged");
+			}
+
+			public void foreignKeyChanged(ConnectionProfile profile,
+			                         final ForeignKey foreignKey) {
+
+				SWTUtil.asyncExec(new Runnable() {
+					public void run() {
+						log(Tracing.UI_DB, "foreignKeyChanged: " + foreignKey.name());
+
+						if (!getCombo().isDisposed()) {
+							AbstractDatabaseObjectCombo.this.foreignKeyChanged(foreignKey);
+						}
+					}
+				});
 			}
 
 			public void modified(ConnectionProfile profile) {
@@ -157,20 +199,6 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 
 						if (!getCombo().isDisposed()) {
 							AbstractDatabaseObjectCombo.this.repopulate();
-						}
-					}
-				});
-			}
-
-			public void catalogChanged(ConnectionProfile profile,
-			                          final Catalog catalog) {
-
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						log(Tracing.UI_DB, "catalogChanged: " + catalog.name());
-
-						if (!getCombo().isDisposed()) {
-							AbstractDatabaseObjectCombo.this.catalogChanged(catalog);
 						}
 					}
 				});
@@ -217,34 +245,6 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 					}
 				});
 			}
-
-			public void columnChanged(ConnectionProfile profile,
-			                         final Column column) {
-
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						log(Tracing.UI_DB, "columnChanged: " + column.name());
-
-						if (!getCombo().isDisposed()) {
-							AbstractDatabaseObjectCombo.this.columnChanged(column);
-						}
-					}
-				});
-			}
-
-			public void foreignKeyChanged(ConnectionProfile profile,
-			                         final ForeignKey foreignKey) {
-
-				SWTUtil.asyncExec(new Runnable() {
-					public void run() {
-						log(Tracing.UI_DB, "foreignKeyChanged: " + foreignKey.name());
-
-						if (!getCombo().isDisposed()) {
-							AbstractDatabaseObjectCombo.this.foreignKeyChanged(foreignKey);
-						}
-					}
-				});
-			}
 		};
 	}
 
@@ -278,6 +278,13 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 						setPopulating(true);
 
 						try {
+							// Make sure the selection is really changed to the default
+							// value by changing it first to nothing
+							if (combo.getSelectionIndex() == 0) {
+								combo.select(-1);
+							}
+
+							// Now select the default value
 							combo.select(0);
 						}
 						finally {
@@ -305,6 +312,42 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 * create the subject.
 	 */
 	protected void buildSubject() {
+	}
+
+	/**
+	 * The
+	 *
+	 * @param catalog
+	 */
+	protected void catalogChanged(Catalog catalog) {
+	}
+
+	/**
+	 * Makes sure the combo shows nothing instead of the default value because
+	 * the focus is still on the combo. The user can start typing something and
+	 * we don't want to start the typing after the default value.
+	 */
+	private void clearDefaultValue() {
+
+		if (this.combo.isFocusControl()) {
+
+			setPopulating(true);
+
+			try {
+				combo.setText("");
+			}
+			finally {
+				setPopulating(false);
+			}
+		}
+	}
+
+	/**
+	 * The
+	 *
+	 * @param column
+	 */
+	protected void columnChanged(Column column) {
 	}
 
 	/**
@@ -391,6 +434,14 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 		if (jpaProject != null) {
 			jpaProject.connectionProfile().addConnectionListener(this.connectionListener);
 		}
+	}
+
+	/**
+	 * The
+	 *
+	 * @param foreignKey
+	 */
+	protected void foreignKeyChanged(ForeignKey foreignKey) {
 	}
 
 	public final CCombo getCombo() {
@@ -511,14 +562,6 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	/**
 	 * The
 	 *
-	 * @param catalog
-	 */
-	protected void catalogChanged(Catalog catalog) {
-	}
-
-	/**
-	 * The
-	 *
 	 * @param schema
 	 */
 	protected void schemaChanged(Schema schema) {
@@ -545,22 +588,6 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 	 * @param table
 	 */
 	protected void tableChanged(Table table) {
-	}
-
-	/**
-	 * The
-	 *
-	 * @param column
-	 */
-	protected void columnChanged(Column column) {
-	}
-
-	/**
-	 * The
-	 *
-	 * @param foreignKey
-	 */
-	protected void foreignKeyChanged(ForeignKey foreignKey) {
 	}
 
 	/**
@@ -645,6 +672,7 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 
 		// Nothing to change
 		if ((oldValue == value) && value == null) {
+			clearDefaultValue();
 			return;
 		}
 
@@ -664,6 +692,10 @@ public abstract class AbstractDatabaseObjectCombo<T extends JpaNode> extends Abs
 			}
 			finally {
 				setPopulating(false);
+			}
+
+			if (value == null) {
+				clearDefaultValue();
 			}
 		}
 	}

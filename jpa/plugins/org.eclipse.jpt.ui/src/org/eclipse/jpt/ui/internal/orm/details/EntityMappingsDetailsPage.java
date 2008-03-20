@@ -15,6 +15,8 @@ import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.AbstractJpaDetailsPage;
+import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
+import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
@@ -32,10 +34,10 @@ import org.eclipse.swt.widgets.Composite;
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * |              ------------------------------------------------------------ |
- * | Schema:      |                                                        |v| |
+ * | Schema:      | SchemaCombo                                              | |
  * |              ------------------------------------------------------------ |
  * |              ------------------------------------------------------------ |
- * | Catalog:     |                                                        |v| |
+ * | Catalog:     | CatalogCombo                                             | |
  * |              ------------------------------------------------------------ |
  * |              ------------------------------------------------------------ |
  * | Access Type: |                                                        |v| |
@@ -52,6 +54,9 @@ import org.eclipse.swt.widgets.Composite;
  * @see EntityMappingsDetailsPage - The parent container
  * @see PersistenceUnitMetadataComposite
  * @see OrmPackageChooser
+ * @see CatalogCombo
+ * @see SchemaCombo
+ * @see EnumFormComboViewer
  *
  * @version 2.0
  * @since 2.0
@@ -112,9 +117,9 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 		};
 	}
 
-	private EnumFormComboViewer<EntityMappings, String> buildCatalogComboViewer(Composite container) {
+	private CatalogCombo<EntityMappings> buildCatalogCombo(Composite container) {
 
-		return new EnumFormComboViewer<EntityMappings, String>(this, container) {
+		return new CatalogCombo<EntityMappings>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -124,28 +129,18 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 			}
 
 			@Override
-			protected String[] choices() {
-				return new String[0];
-			}
-
-			@Override
 			protected String defaultValue() {
 				return subject().getDefaultCatalog();
 			}
 
 			@Override
-			protected String displayString(String value) {
-				return value;
-			}
-
-			@Override
-			protected String getValue() {
-				return subject().getSpecifiedCatalog();
-			}
-
-			@Override
 			protected void setValue(String value) {
 				subject().setSpecifiedCatalog(value);
+			}
+
+			@Override
+			protected String value() {
+				return subject().getSpecifiedCatalog();
 			}
 		};
 	}
@@ -159,9 +154,9 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 		};
 	}
 
-	private EnumFormComboViewer<EntityMappings, String> buildSchemaComboViewer(Composite container) {
+	private SchemaCombo<EntityMappings> buildSchemaCombo(Composite container) {
 
-		return new EnumFormComboViewer<EntityMappings, String>(this, container) {
+		return new SchemaCombo<EntityMappings>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -171,28 +166,18 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 			}
 
 			@Override
-			protected String[] choices() {
-				return new String[0];
-			}
-
-			@Override
 			protected String defaultValue() {
 				return subject().getDefaultSchema();
 			}
 
 			@Override
-			protected String displayString(String value) {
-				return value;
-			}
-
-			@Override
-			protected String getValue() {
-				return subject().getSpecifiedSchema();
-			}
-
-			@Override
 			protected void setValue(String value) {
 				subject().setSpecifiedSchema(value);
+			}
+
+			@Override
+			protected String value() {
+				return subject().getSpecifiedSchema();
 			}
 		};
 	}
@@ -204,41 +189,29 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 	protected void initializeLayout(Composite container) {
 
 		// Package widgets
-		new OrmPackageChooser(
-			this,
-			container
-		);
+		new OrmPackageChooser(this, container);
 
 		// Schema widgets
-		EnumFormComboViewer<EntityMappings, String> schemaComboViewer =
-			buildSchemaComboViewer(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiOrmMessages.EntityMappingsDetailsPage_schema,
-			schemaComboViewer.getControl(),
+			buildSchemaCombo(container),
 			JpaHelpContextIds.ENTITY_ORM_SCHEMA
 		);
 
 		// Catalog widgets
-		EnumFormComboViewer<EntityMappings, String> catalogComboViewer =
-			buildCatalogComboViewer(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiOrmMessages.EntityMappingsDetailsPage_catalog,
-			catalogComboViewer.getControl(),
+			buildCatalogCombo(container),
 			JpaHelpContextIds.ENTITY_ORM_CATALOG
 		);
 
 		// Access Type widgets
-		EnumFormComboViewer<EntityMappings, AccessType> accessTypeComposite =
-			buildAccessTypeCombo(container);
-
 		buildLabeledComposite(
 			container,
 			JptUiOrmMessages.EntityMappingsDetailsPage_access,
-			accessTypeComposite.getControl(),
+			buildAccessTypeCombo(container),
 			JpaHelpContextIds.ENTITY_ORM_ACCESS
 		);
 
