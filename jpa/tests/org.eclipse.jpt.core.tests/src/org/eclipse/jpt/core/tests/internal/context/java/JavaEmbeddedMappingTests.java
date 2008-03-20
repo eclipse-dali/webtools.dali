@@ -402,7 +402,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		assertFalse(specifiedAttributeOverrides.hasNext());
 	}
 
-	public void testDefaultAttributeOverrides() throws Exception {
+	public void testVirtualAttributeOverrides() throws Exception {
 		createTestEntityWithEmbeddedMapping();
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
