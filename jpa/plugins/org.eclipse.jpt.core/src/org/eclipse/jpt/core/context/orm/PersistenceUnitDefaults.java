@@ -24,13 +24,25 @@ import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 public interface PersistenceUnitDefaults extends OrmJpaContextNode
 {
 
+	/**
+	 * Return the specifiedSchema if not null, otherwise return the defaultSchema.
+	 */
 	String getSchema();
-	void setSchema(String value);
-		String SCHEMA_PROPERTY = "schemaProperty";
-		
+	String getDefaultSchema();
+		String DEFAULT_SCHEMA_PROPERTY = "defaultSchemaProperty";
+	String getSpecifiedSchema();
+	void setSpecifiedSchema(String newSpecifiedSchema);
+		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchemaProperty";
+
+	/**
+	 * Return the specifiedCatalog if not null, otherwise return the defaultCatalog.
+	 */
 	String getCatalog();
-	void setCatalog(String value);
-		String CATALOG_PROPERTY = "catalogProperty";
+	String getDefaultCatalog();
+		String DEFAULT_CATALOG_PROPERTY = "defaultCatalogProperty";
+	String getSpecifiedCatalog();
+	void setSpecifiedCatalog(String newSpecifiedCatalog);
+		String SPECIFIED_CATALOG_PROPERTY = "specifiedCatalogProperty";
 
 	AccessType getAccess();
 	void setAccess(AccessType value);

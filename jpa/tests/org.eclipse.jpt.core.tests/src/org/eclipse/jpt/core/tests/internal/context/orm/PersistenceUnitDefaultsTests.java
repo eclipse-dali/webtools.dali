@@ -105,12 +105,12 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		
 		//set schema in the context model, verify resource model modified
-		persistenceUnitDefaults.setSchema("MY_SCHEMA");
+		persistenceUnitDefaults.setSpecifiedSchema("MY_SCHEMA");
 		assertEquals("MY_SCHEMA", persistenceUnitDefaults.getSchema());
 		assertEquals("MY_SCHEMA", ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
 		
 		//set schema to null in the context model
-		persistenceUnitDefaults.setSchema(null);
+		persistenceUnitDefaults.setSpecifiedSchema(null);
 		assertNull(persistenceUnitDefaults.getSchema());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 	}
@@ -121,14 +121,14 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		
 		//set schema in the context model, verify resource model modified
-		persistenceUnitDefaults.setSchema("MY_SCHEMA");
+		persistenceUnitDefaults.setSpecifiedSchema("MY_SCHEMA");
 		assertEquals("MY_SCHEMA", persistenceUnitDefaults.getSchema());
 		assertEquals("MY_SCHEMA", ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
 		
 		//set another element on the persistence-unit-defaults element so it doesn't get removed
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("MY_CATALOG");
 		//set schema to null in the context model
-		persistenceUnitDefaults.setSchema(null);
+		persistenceUnitDefaults.setSpecifiedSchema(null);
 		assertNull(persistenceUnitDefaults.getSchema());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
 	}
@@ -142,12 +142,12 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		
 		//set schema in the context model, verify resource model modified
-		persistenceUnitDefaults.setSchema("MY_SCHEMA");
+		persistenceUnitDefaults.setSpecifiedSchema("MY_SCHEMA");
 		assertEquals("MY_SCHEMA", persistenceUnitDefaults.getSchema());
 		assertEquals("MY_SCHEMA", ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
 		
 		//set schema to null in the context model
-		persistenceUnitDefaults.setSchema(null);
+		persistenceUnitDefaults.setSpecifiedSchema(null);
 		assertNull(persistenceUnitDefaults.getSchema());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults());
 	}
@@ -176,12 +176,12 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		
 		//set catalog in the context model, verify resource model modified
-		persistenceUnitDefaults.setCatalog("MY_CATALOG");
+		persistenceUnitDefaults.setSpecifiedCatalog("MY_CATALOG");
 		assertEquals("MY_CATALOG", persistenceUnitDefaults.getCatalog());
 		assertEquals("MY_CATALOG", ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
 		
 		//set catalog to null in the context model
-		persistenceUnitDefaults.setCatalog(null);
+		persistenceUnitDefaults.setSpecifiedCatalog(null);
 		assertNull(persistenceUnitDefaults.getCatalog());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 	}
@@ -192,14 +192,14 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
 		
 		//set catalog in the context model, verify resource model modified
-		persistenceUnitDefaults.setCatalog("MY_CATALOG");
+		persistenceUnitDefaults.setSpecifiedCatalog("MY_CATALOG");
 		assertEquals("MY_CATALOG", persistenceUnitDefaults.getCatalog());
 		assertEquals("MY_CATALOG", ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
 		
 		//set another element on the persistence-unit-defaults element so it doesn't get removed
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema("MY_SCHEMA");
 		//set catalog to null in the context model
-		persistenceUnitDefaults.setCatalog(null);
+		persistenceUnitDefaults.setSpecifiedCatalog(null);
 		assertNull(persistenceUnitDefaults.getCatalog());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
 	}
@@ -213,12 +213,12 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		
 		//set catalog in the context model, verify resource model modified
-		persistenceUnitDefaults.setCatalog("MY_CATALOG");
+		persistenceUnitDefaults.setSpecifiedCatalog("MY_CATALOG");
 		assertEquals("MY_CATALOG", persistenceUnitDefaults.getCatalog());
 		assertEquals("MY_CATALOG", ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
 		
 		//set catalog to null in the context model
-		persistenceUnitDefaults.setCatalog(null);
+		persistenceUnitDefaults.setSpecifiedCatalog(null);
 		assertNull(persistenceUnitDefaults.getCatalog());
 		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults());
 	}

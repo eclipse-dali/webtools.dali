@@ -194,13 +194,13 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(entityMappings().getSpecifiedSchema());
 		assertNull(ormResource().getEntityMappings().getSchema());
 
-		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema("DEFAULT_SCHEMA");
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("DEFAULT_SCHEMA");
 		assertEquals("DEFAULT_SCHEMA", entityMappings().getDefaultSchema());
 		assertEquals("DEFAULT_SCHEMA", entityMappings().getSchema());
 		assertNull(entityMappings().getSpecifiedSchema());
 		assertNull(ormResource().getEntityMappings().getSchema());
 		
-		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema(null);
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema(null);
 		assertNull(entityMappings().getDefaultSchema());
 		assertNull(entityMappings().getSchema());
 		assertNull(entityMappings().getSpecifiedSchema());
@@ -261,13 +261,13 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(entityMappings().getSpecifiedCatalog());
 		assertNull(ormResource().getEntityMappings().getCatalog());
 
-		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("DEFAULT_CATALOG");
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("DEFAULT_CATALOG");
 		assertEquals("DEFAULT_CATALOG", entityMappings().getDefaultCatalog());
 		assertEquals("DEFAULT_CATALOG", entityMappings().getCatalog());
 		assertNull(entityMappings().getSpecifiedCatalog());
 		assertNull(ormResource().getEntityMappings().getCatalog());
 		
-		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog(null);
+		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog(null);
 		assertNull(entityMappings().getDefaultCatalog());
 		assertNull(entityMappings().getCatalog());
 		assertNull(entityMappings().getSpecifiedCatalog());

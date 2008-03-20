@@ -253,7 +253,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		ormSecondaryTable.setSpecifiedName("FOO");
 		assertNull(ormSecondaryTable.getDefaultSchema());
 		
-		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema("FOO");
+		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
 		assertEquals("FOO", ormSecondaryTable.getDefaultSchema());
 		
 		ormEntity.entityMappings().setSpecifiedSchema("BAR");
@@ -267,7 +267,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		ormEntity.entityMappings().setSpecifiedSchema(null);
 		assertEquals("FOO", ormSecondaryTable.getDefaultSchema());
 
-		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema(null);
+		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema(null);
 		assertNull(ormSecondaryTable.getDefaultSchema());
 	}
 	
@@ -346,7 +346,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		ormSecondaryTable.setSpecifiedName("FOO");
 		assertNull(ormSecondaryTable.getDefaultCatalog());
 		
-		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("FOO");
+		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");
 		assertEquals("FOO", ormSecondaryTable.getDefaultCatalog());
 		
 		ormEntity.entityMappings().setSpecifiedCatalog("BAR");
@@ -360,7 +360,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		ormEntity.entityMappings().setSpecifiedCatalog(null);
 		assertEquals("FOO", ormSecondaryTable.getDefaultCatalog());
 
-		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog(null);
+		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog(null);
 		assertNull(ormSecondaryTable.getDefaultCatalog());
 	}
 	

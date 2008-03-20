@@ -281,7 +281,7 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		assertNull(ormEntity.getTable().getDefaultSchema());
 		
-		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema("FOO");
+		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
 		assertEquals("FOO", ormEntity.getTable().getDefaultSchema());
 		
 		ormEntity.entityMappings().setSpecifiedSchema("BAR");
@@ -298,7 +298,7 @@ public class OrmTableTests extends ContextModelTestCase
 		ormEntity.entityMappings().setSpecifiedSchema(null);
 		assertEquals("FOO", ormEntity.getTable().getDefaultSchema());
 
-		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema(null);
+		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema(null);
 		assertNull(ormEntity.getTable().getDefaultSchema());
 		
 		ormEntity.getTable().setSpecifiedName(null);
@@ -434,7 +434,7 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		assertNull(ormEntity.getTable().getDefaultCatalog());
 		
-		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("FOO");
+		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");
 		assertEquals("FOO", ormEntity.getTable().getDefaultCatalog());
 		
 		ormEntity.entityMappings().setSpecifiedCatalog("BAR");
@@ -451,7 +451,7 @@ public class OrmTableTests extends ContextModelTestCase
 		ormEntity.entityMappings().setSpecifiedCatalog(null);
 		assertEquals("FOO", ormEntity.getTable().getDefaultCatalog());
 
-		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog(null);
+		ormEntity.entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog(null);
 		assertNull(ormEntity.getTable().getDefaultCatalog());
 		
 		ormEntity.getTable().setSpecifiedName(null);
