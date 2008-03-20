@@ -9,16 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.details;
 
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-@SuppressWarnings("nls")
 public class NullAttributeMappingUiProvider
 	implements AttributeMappingUiProvider<AttributeMapping>
 {
@@ -40,29 +43,35 @@ public class NullAttributeMappingUiProvider
 		super();
 	}
 
-
 	/*
 	 * (non-Javadoc)
 	 */
 	public String mappingKey() {
-		return null;
+		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	public String label() {
-		return "";
+		return JptUiMappingsMessages.NullAttributeMappingUiProvider_label;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	public Image image() {
+		return JpaMappingImageHelper.imageForAttributeMapping(mappingKey());
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	public JpaComposite<AttributeMapping> buildAttributeMappingComposite(
-			JpaUiFactory factory,
-			PropertyValueModel<AttributeMapping> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
+		JpaUiFactory factory,
+		PropertyValueModel<AttributeMapping> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
 
 		return new NullComposite(subjectHolder, parent, widgetFactory);
 	}

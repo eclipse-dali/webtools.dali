@@ -11,17 +11,8 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.ListIterator;
+import java.util.Iterator;
 import java.util.Map;
-import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.IBaseLabelProvider;
-import org.eclipse.jface.viewers.IContentProvider;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.ui.JptUiPlugin;
@@ -31,7 +22,6 @@ import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.FilteringPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -54,7 +44,6 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 {
 	private JpaComposite<AttributeMapping> currentMappingComposite;
 	private String currentMappingKey;
-	private ComboViewer mappingCombo;
 	private Map<String, JpaComposite<AttributeMapping>> mappingComposites;
 	private PageBook mappingPageBook;
 
@@ -81,7 +70,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	}
 
 	protected AttributeMappingUiProvider<? extends AttributeMapping> attributeMappingUiProvider(String key) {
-		for (ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> i = attributeMappingUiProviders(); i.hasNext(); ) {
+		for (Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> i = attributeMappingUiProviders(); i.hasNext(); ) {
 			AttributeMappingUiProvider<? extends AttributeMapping> provider = i.next();
 			if (provider.mappingKey() == key) {
 				return provider;
@@ -90,30 +79,11 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		throw new IllegalArgumentException("Unsupported attribute mapping UI provider key: ");
 	}
 
-	protected abstract ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>>
+	protected abstract Iterator<AttributeMappingUiProvider<? extends AttributeMapping>>
 		attributeMappingUiProviders();
 
 	protected abstract AttributeMappingUiProvider<? extends AttributeMapping>[]
 		attributeMappingUiProvidersFor(PersistentAttribute persistentAttribute);
-
-	private IContentProvider buildContentProvider() {
-		return new IStructuredContentProvider() {
-			public void dispose() {
-				// do nothing
-			}
-
-			public Object[] getElements(Object inputElement) {
-				if (inputElement == null) {
-					return new Object[0];
-				}
-				return attributeMappingUiProvidersFor((PersistentAttribute) inputElement);
-			}
-
-			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-				// do nothing
-			}
-		};
-	}
 
 	private PropertyAspectAdapter<PersistentAttribute, AttributeMapping> buildGenericMappingHolder() {
 		return new PropertyAspectAdapter<PersistentAttribute, AttributeMapping>(
@@ -128,52 +98,23 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		};
 	}
 
-	private IBaseLabelProvider buildLabelProvider() {
-		return new LabelProvider() {
-			@Override
-			public String getText(Object element) {
-				return ((AttributeMappingUiProvider<?>) element).label();
-			}
-		};
-	}
-
-	protected ComboViewer buildMappingCombo(Composite parent) {
-
-		this.mappingCombo = buildCComboViewer(parent, buildLabelProvider());
-		this.mappingCombo.getCCombo().setVisibleItemCount(Integer.MAX_VALUE);
-		this.mappingCombo.setContentProvider(buildContentProvider());
-		this.mappingCombo.addSelectionChangedListener(buildMappingComboModifyListener());
-		return this.mappingCombo;
-	}
-
-	private ISelectionChangedListener buildMappingComboModifyListener() {
-		return new ISelectionChangedListener() {
-			public void selectionChanged(SelectionChangedEvent e) {
-				mappingChanged(e);
-			}
-		};
-	}
-
 	@SuppressWarnings("unchecked")
 	protected JpaComposite<AttributeMapping> buildMappingComposite(PageBook pageBook,
-	                                                                 String key) {
+	                                                               String mappingKey) {
 
-		AttributeMappingUiProvider<AttributeMapping> uiProvider = (AttributeMappingUiProvider<AttributeMapping>) mappingUIProvider(key);
+		AttributeMappingUiProvider<AttributeMapping> uiProvider =
+			(AttributeMappingUiProvider<AttributeMapping>) mappingUIProvider(mappingKey);
 
 		return uiProvider.buildAttributeMappingComposite(
 			jpaUiFactory(),
-			buildMappingHolder(key),
+			buildMappingHolder(mappingKey),
 			pageBook,
 			getWidgetFactory()
 		);
 	}
 
-	private Filter<AttributeMapping> buildMappingFilter(final String key) {
-		return new Filter<AttributeMapping>() {
-			public boolean accept(AttributeMapping value) {
-				return (value == null) || key.equals(value.getKey());
-			}
-		};
+	private Filter<AttributeMapping> buildMappingFilter(String mappingKey) {
+		return new MappingFilter(mappingKey);
 	}
 
 	private PropertyValueModel<AttributeMapping> buildMappingHolder(final String key) {
@@ -189,13 +130,14 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 
 	protected PageBook buildMappingPageBook(Composite parent) {
 		this.mappingPageBook = new PageBook(parent, SWT.NONE);
+		this.mappingPageBook.showPage(this.buildLabel(this.mappingPageBook, ""));
 		return this.mappingPageBook;
 	}
 
 	protected abstract AttributeMappingUiProvider<? extends AttributeMapping>
 		defaultAttributeMappingUiProvider(String key);
 
-	protected abstract ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>>
+	protected abstract Iterator<AttributeMappingUiProvider<? extends AttributeMapping>>
 		defaultAttributeMappingUiProviders();
 
 	/*
@@ -210,15 +152,6 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 			this.currentMappingComposite = null;
 		}
 
-//		for (IJpaComposite<IAttributeMapping> composite : this.mappingComposites.values()) {
-//			try {
-//				composite.dispose();
-//			}
-//			catch (Exception e) {
-//				JptUiPlugin.log(e);
-//			}
-//		}
-
 		this.mappingComposites.clear();
 		super.doDispose();
 	}
@@ -229,7 +162,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
-		populateMappingComboAndPage();
+		updateMappingPage();
 	}
 
 	/*
@@ -252,14 +185,6 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		    Tracing.booleanDebugOption(Tracing.UI_DETAILS_VIEW))
 		{
 			Tracing.log(message);
-		}
-	}
-
-	private void mappingChanged(SelectionChangedEvent event) {
-		if (event.getSelection() instanceof StructuredSelection) {
-			AttributeMappingUiProvider<?> provider = (AttributeMappingUiProvider<?>) ((StructuredSelection) event.getSelection()).getFirstElement();
-			String key = (CollectionTools.contains(defaultAttributeMappingUiProviders(), provider) ? null : provider.mappingKey());
-			this.subject().setSpecifiedMappingKey(key);
 		}
 	}
 
@@ -287,28 +212,6 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		}
 
 		return attributeMappingUiProvider(key);
-	}
-
-	private void populateMapAsCombo() {
-		if (this.subject() != this.mappingCombo.getInput()) {
-			this.mappingCombo.setInput(this.subject());
-		}
-		if (this.subject() != null) {
-			if (this.subject().getMapping() == null || this.subject().getMapping().isDefault()) {
-				this.mappingCombo.setSelection(new StructuredSelection(this.mappingCombo.getElementAt(0)));
-			}
-			else {
-				AttributeMappingUiProvider<? extends AttributeMapping> provider = attributeMappingUiProvider(this.subject().mappingKey());
-				if (provider != null && ! provider.equals(((StructuredSelection) this.mappingCombo.getSelection()).getFirstElement())) {
-					this.mappingCombo.setSelection(new StructuredSelection(provider));
-				}
-			}
-		}
-	}
-
-	private void populateMappingComboAndPage() {
-		populateMapAsCombo();
-		updateMappingPage();
 	}
 
 	private void populateMappingPage(String mappingKey) {
@@ -370,7 +273,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 
 				// Show an error message
 				// TODO: Replace the blank label with the error page
-				this.mappingPageBook.showPage(new Label(this.mappingPageBook, SWT.NULL));
+				this.mappingPageBook.showPage(this.buildLabel(this.mappingPageBook, ""));
 			}
 		}
 		else {
@@ -379,7 +282,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 				"PersistentAttributeDetailsPage.populateMappingPage() no page to show"
 			);
 
-			this.mappingPageBook.showPage(new Label(this.mappingPageBook, SWT.NULL));
+			this.mappingPageBook.showPage(this.buildLabel(this.mappingPageBook, ""));
 		}
 	}
 
@@ -393,7 +296,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		if (propertyName == PersistentAttribute.DEFAULT_MAPPING_PROPERTY ||
 		    propertyName == PersistentAttribute.SPECIFIED_MAPPING_PROPERTY) {
 
-			populateMappingComboAndPage();
+			updateMappingPage();
 		}
 	}
 
@@ -405,14 +308,21 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		return false;
 	}
 
-//TODO focus??
-//	public boolean setFocus() {
-//		super.setFocus();
-//		return mappingCombo.getCombo().setFocus();
-//	}
-
 	private void updateMappingPage() {
 		AttributeMapping mapping = (this.subject() != null) ? this.subject().getMapping() : null;
 		populateMappingPage(mapping == null ? null : mapping.getKey());
+	}
+
+	private class MappingFilter implements Filter<AttributeMapping> {
+		private String mappingKey;
+
+		MappingFilter(String mappingKey) {
+			super();
+			this.mappingKey = mappingKey;
+		}
+
+		public boolean accept(AttributeMapping mapping) {
+			return (mapping == null) || mappingKey.equals(mapping.getKey());
+		}
 	}
 }

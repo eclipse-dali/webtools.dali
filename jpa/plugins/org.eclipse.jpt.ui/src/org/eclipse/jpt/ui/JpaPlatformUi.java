@@ -9,11 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui;
 
+import java.util.Iterator;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
+import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
@@ -38,16 +43,20 @@ import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 public interface JpaPlatformUi
 {
 	/**
-	 * Return a *new* {@link JpaNavigatorProvider}, which determines 
+	 * Return a *new* {@link JpaNavigatorProvider}, which determines
 	 * Project Explorer content and look
 	 */
 	JpaNavigatorProvider buildNavigatorProvider();
-	
+
 	/**
 	 * Return a *new* structure provider for the given JPA file
 	 */
 	// TODO - binary java type support
 	JpaStructureProvider buildStructureProvider(JpaFile jpaFile);
+
+	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> defaultJavaAttributeMappingUiProviders();
+
+	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> defaultOrmAttributeMappingUiProviders();
 
 	JpaDetailsProvider detailsProvider(JpaStructureNode contextNode);
 
@@ -56,4 +65,12 @@ public interface JpaPlatformUi
 	void generateEntities(JpaProject project, IStructuredSelection selection);
 
 	JpaUiFactory getJpaUiFactory();
+
+	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> javaAttributeMappingUiProviders();
+
+	Iterator<TypeMappingUiProvider<? extends TypeMapping>> javaTypeMappingUiProviders();
+
+	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> ormAttributeMappingUiProviders();
+
+	Iterator<TypeMappingUiProvider<? extends TypeMapping>> ormTypeMappingUiProviders();
 }

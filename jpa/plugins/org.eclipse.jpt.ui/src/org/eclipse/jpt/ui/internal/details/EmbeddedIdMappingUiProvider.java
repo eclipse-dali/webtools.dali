@@ -14,9 +14,11 @@ import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class EmbeddedIdMappingUiProvider
@@ -48,11 +50,15 @@ public class EmbeddedIdMappingUiProvider
 		return JptUiMappingsMessages.PersistentAttributePage_EmbeddedIdLabel;
 	}
 
+	public Image image() {
+		return JpaMappingImageHelper.imageForAttributeMapping(mappingKey());
+	}
+
 	public JpaComposite<EmbeddedIdMapping> buildAttributeMappingComposite(
-			JpaUiFactory factory,
-			PropertyValueModel<EmbeddedIdMapping> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
+		JpaUiFactory factory,
+		PropertyValueModel<EmbeddedIdMapping> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
 
 		return factory.createEmbeddedIdMappingComposite(subjectHolder, parent, widgetFactory);
 	}

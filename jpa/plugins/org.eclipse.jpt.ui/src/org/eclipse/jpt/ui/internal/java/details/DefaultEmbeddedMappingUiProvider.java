@@ -14,10 +14,12 @@ import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class DefaultEmbeddedMappingUiProvider
@@ -51,11 +53,15 @@ public class DefaultEmbeddedMappingUiProvider
 		);
 	}
 
+	public Image image() {
+		return JpaMappingImageHelper.imageForAttributeMapping(mappingKey());
+	}
+
 	public JpaComposite<EmbeddedMapping> buildAttributeMappingComposite(
-			JpaUiFactory factory,
-			PropertyValueModel<EmbeddedMapping> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
+		JpaUiFactory factory,
+		PropertyValueModel<EmbeddedMapping> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
 
 		return factory.createEmbeddedMappingComposite(subjectHolder, parent, widgetFactory);
 	}

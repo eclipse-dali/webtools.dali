@@ -18,13 +18,9 @@ import org.eclipse.osgi.util.NLS;
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public class JptUiMessages extends NLS
-{
-	private static final String BUNDLE_NAME = "jpt_ui";
+public class JptUiMessages extends NLS {
 
 	public static String AbstractChooserPane_browseButton;
-	public static String ClassChooserPane_dialogMessage;
-	public static String ClassChooserPane_dialogTitle;
 	public static String AddPersistentAttributeDialog_attributeLabel;
 	public static String AddPersistentAttributeDialog_mappingLabel;
 	public static String AddPersistentAttributeDialog_noMappingKeyError;
@@ -40,6 +36,8 @@ public class JptUiMessages extends NLS
 	public static String AddPersistentClassDialog_title;
 	public static String AddRemovePane_AddButtonText;
 	public static String AddRemovePane_RemoveButtonText;
+	public static String ClassChooserPane_dialogMessage;
+	public static String ClassChooserPane_dialogTitle;
 	public static String DatabaseReconnectWizardPage_addConnectionLink;
 	public static String DatabaseReconnectWizardPage_connection;
 	public static String DatabaseReconnectWizardPage_database;
@@ -85,6 +83,31 @@ public class JptUiMessages extends NLS
 	public static String JpaStructureView_linkWithEditorText;
 	public static String JpaStructureView_linkWithEditorTooltip;
 	public static String JpaStructureView_structureNotAvailable;
+	public static String MapAsComposite_basic;
+	public static String MapAsComposite_basic_default;
+	public static String MapAsComposite_basic_default2;
+	public static String MapAsComposite_changeMappingType;
+	public static String MapAsComposite_default;
+	public static String MapAsComposite_dialogTitle;
+	public static String MapAsComposite_embeddable;
+	public static String MapAsComposite_embedded;
+	public static String MapAsComposite_embedded_default;
+	public static String MapAsComposite_embedded_default2;
+	public static String MapAsComposite_embeddedid;
+	public static String MapAsComposite_entity;
+	public static String MapAsComposite_id;
+	public static String MapAsComposite_labelText;
+	public static String MapAsComposite_manytomany;
+	public static String MapAsComposite_manytoone;
+	public static String MapAsComposite_mappedAttributeText;
+	public static String MapAsComposite_mappedsuperclass;
+	public static String MapAsComposite_mappedTypeText;
+	public static String MapAsComposite_onetomany;
+	public static String MapAsComposite_onetoone;
+	public static String MapAsComposite_transient;
+	public static String MapAsComposite_unmappedAttributeText;
+	public static String MapAsComposite_unmappedTypeText;
+	public static String MapAsComposite_version;
 	public static String NewJpaProjectWizard_firstPage_description;
 	public static String NewJpaProjectWizard_firstPage_title;
 	public static String NewJpaProjectWizard_title;
@@ -96,10 +119,9 @@ public class JptUiMessages extends NLS
 	public static String PersistenceItemLabelProviderFactory_persistenceLabel;
 	public static String PersistentAttributePage_mapAs;
 	public static String PersistentTypePage_mapAs;
-	
+
 	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, JptUiMessages.class);
+		NLS.initializeMessages("jpt_ui", JptUiMessages.class);
 	}
 
 	private JptUiMessages() {

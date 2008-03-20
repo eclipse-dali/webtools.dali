@@ -9,13 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.details;
 
-import java.util.ListIterator;
+import java.util.Iterator;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
-import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
@@ -26,8 +25,24 @@ import org.eclipse.ui.part.PageBook;
 /**
  * The default implementation of the details page used for the Java persistent
  * attribute.
+ * <p>
+ * Here the layout of this pane:
+ * <pre>
+ * -----------------------------------------------------------------------------
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | JavaPersistentAttributeMapAsComposite                                 | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | Type mapping pane                                                     | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * -----------------------------------------------------------------------------</pre>
  *
- * @see PersistentAttribute
+ * @see JavaPersistentAttribute
+ * @see JavaPersistentTypeMapAsComposite
  *
  * @version 2.0
  * @since 2.0
@@ -50,9 +65,8 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders() {
-		// TODO
-		return ((BaseJpaPlatformUi) jpaPlatformUi()).javaAttributeMappingUiProviders();
+	protected Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders() {
+		return jpaPlatformUi().javaAttributeMappingUiProviders();
 	}
 
 	/**
@@ -67,7 +81,7 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 		AttributeMappingUiProvider<? extends AttributeMapping>[] providers = new AttributeMappingUiProvider<?>[CollectionTools.size(attributeMappingUiProviders()) + 1];
 		providers[0] =  defaultAttributeMappingUiProvider(persistentAttribute.defaultMappingKey());
 		int i = 1;
-		for (ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> iterator = attributeMappingUiProviders(); iterator.hasNext(); ) {
+		for (Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> iterator = attributeMappingUiProviders(); iterator.hasNext(); ) {
 			providers[i++] = iterator.next();
 		}
 		return providers;
@@ -78,12 +92,14 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 	 */
 	@Override
 	protected AttributeMappingUiProvider<? extends AttributeMapping> defaultAttributeMappingUiProvider(String key) {
-		for (ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> i = defaultAttributeMappingUiProviders(); i.hasNext(); ) {
+		for (Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> i = defaultAttributeMappingUiProviders(); i.hasNext(); ) {
 			AttributeMappingUiProvider<? extends AttributeMapping> provider = i.next();
+
 			if (provider.mappingKey() == key) {
 				return provider;
 			}
 		}
+
 		return this.nullAttributeMappingUiProvider();
 	}
 
@@ -91,10 +107,8 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
-		// TODO
-//		return jpaPlatformUi().defaultJavaAttributeMappingUiProviders();
-		return ((BaseJpaPlatformUi) jpaPlatformUi()).defaultJavaAttributeMappingUiProviders();
+	protected Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
+		return jpaPlatformUi().defaultJavaAttributeMappingUiProviders();
 	}
 
 	/*
@@ -103,14 +117,13 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		// Note: The combo's parent is a container fixing the issue with the
-		// border not being painted
-		buildLabeledComposite(
-			container,
-			buildMappingLabel(container),
-			buildMappingCombo(container).getControl().getParent()
+		// Map as composite
+		new JavaPersistentAttributeMapAsComposite(
+			this,
+			buildSubPane(container, 0, 0, 5, 0)
 		);
 
+		// Mapping properties page
 		PageBook mappingPane = buildMappingPageBook(container);
 
 		GridData gridData = new GridData();

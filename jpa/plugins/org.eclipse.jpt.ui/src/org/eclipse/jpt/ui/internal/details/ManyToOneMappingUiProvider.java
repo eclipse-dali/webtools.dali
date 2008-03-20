@@ -14,9 +14,11 @@ import org.eclipse.jpt.core.context.ManyToOneMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class ManyToOneMappingUiProvider
@@ -47,11 +49,15 @@ public class ManyToOneMappingUiProvider
 		return JptUiMappingsMessages.PersistentAttributePage_ManyToOneLabel;
 	}
 
+	public Image image() {
+		return JpaMappingImageHelper.imageForAttributeMapping(mappingKey());
+	}
+
 	public JpaComposite<ManyToOneMapping> buildAttributeMappingComposite(
-			JpaUiFactory factory,
-			PropertyValueModel<ManyToOneMapping> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
+		JpaUiFactory factory,
+		PropertyValueModel<ManyToOneMapping> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
 
 		return factory.createManyToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}

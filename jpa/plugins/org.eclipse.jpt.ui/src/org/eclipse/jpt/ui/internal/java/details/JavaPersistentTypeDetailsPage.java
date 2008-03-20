@@ -9,23 +9,36 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.details;
 
-import java.util.ListIterator;
+import java.util.Iterator;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.details.PersistentTypeDetailsPage;
-import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
+import org.eclipse.jpt.ui.internal.mappings.details.JavaPersistentTypeMapAsComposite;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.part.PageBook;
 
 /**
  * The default implementation of the details page used for the Java persistent
  * type.
+ * <p>
+ * Here the layout of this pane:
+ * <pre>
+ * -----------------------------------------------------------------------------
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | JavaPersistentTypeMapAsComposite                                      | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | Type mapping pane                                                     | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * -----------------------------------------------------------------------------</pre>
  *
  * @see JavaPersistentType
+ * @see JavaPersistentTypeMapAsComposite
  *
  * @version 2.0
  * @since 2.0
@@ -48,9 +61,8 @@ public class JavaPersistentTypeDetailsPage extends PersistentTypeDetailsPage<Jav
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected ListIterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders() {
-		// TODO
-		return ((BaseJpaPlatformUi) jpaPlatformUi()).javaTypeMappingUiProviders();
+	protected Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders() {
+		return jpaPlatformUi().javaTypeMappingUiProviders();
 	}
 
 	/*
@@ -59,21 +71,13 @@ public class JavaPersistentTypeDetailsPage extends PersistentTypeDetailsPage<Jav
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		// Entity Type widgets
-		buildLabeledComposite(
-			container,
-			buildTypeMappingLabel(container),
-			buildTypeMappingCombo(container).getControl().getParent()
+		// Map As composite
+		new JavaPersistentTypeMapAsComposite(
+			this,
+			buildSubPane(container, 0, 0, 5, 0)
 		);
 
-		PageBook typeMappingPageBook = buildTypeMappingPageBook(container);
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = SWT.FILL;
-		gridData.verticalAlignment         = SWT.TOP;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace   = true;
-
-		typeMappingPageBook.setLayoutData(gridData);
+		// Type properties page
+		buildTypeMappingPageBook(container);
 	}
 }

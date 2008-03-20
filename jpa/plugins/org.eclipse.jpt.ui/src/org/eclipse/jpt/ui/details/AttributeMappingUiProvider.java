@@ -24,33 +24,24 @@ import org.eclipse.swt.widgets.Composite;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface AttributeMappingUiProvider<T extends AttributeMapping>
+public interface AttributeMappingUiProvider<T extends AttributeMapping> extends MappingUiProvider<T>
 {
 	/**
-	 * The IJpaComposite that correponds to this mapping type.  This will be displayed
-	 * by the PersistentAttributeDetailsPage when the mapping key matches the key given
-	 * by this provider.  The composites will be stored in a Map with the mapping key as the key.
-	 * @param factory
-	 * @param parent
-	 * @param widgetFactory
+	 * Creates <code>JpaComposite</code> that correponds to this mapping type.
+	 * This will be displayed by the <code>PersistentAttributeDetailsPage</code>
+	 * when the mapping key matches the key given by this provider. The
+	 * composites will be stored in a Map with the mapping key as the key.
 	 *
-	 * @return
+	 * @param factory The UI factory responsible to create the right composite
+	 * for any mapping type
+	 * @param subjectHolder The holder of the subject being displayed
+	 * @param parent The parent container
+	 * @param widgetFactory The factory used to create the various widgets
+	 * @return The composite displaying the information for a certain mapping
 	 */
 	JpaComposite<T> buildAttributeMappingComposite(
-			JpaUiFactory factory,
-			PropertyValueModel<T> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory);
-
-	/**
-	 * A label to be displayed to the label as an option in the mapping type combo box
-	 * @return
-	 */
-	String label();
-
-	/**
-	 * A unique string that corresponds to the key of a MappingProvider in the core
-	 * (JavaAttributeMappingProvider and/or OrmAttributeMappingProvider)
-	 */
-	String mappingKey();
+		JpaUiFactory factory,
+		PropertyValueModel<T> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory);
 }

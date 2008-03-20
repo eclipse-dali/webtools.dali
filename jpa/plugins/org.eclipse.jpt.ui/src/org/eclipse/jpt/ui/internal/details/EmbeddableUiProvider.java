@@ -14,9 +14,11 @@ import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
+import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class EmbeddableUiProvider implements TypeMappingUiProvider<Embeddable>
@@ -46,11 +48,15 @@ public class EmbeddableUiProvider implements TypeMappingUiProvider<Embeddable>
 		return JptUiMappingsMessages.PersistentTypePage_EmbeddableLabel;
 	}
 
+	public Image image() {
+		return JpaMappingImageHelper.imageForTypeMapping(mappingKey());
+	}
+
 	public JpaComposite<Embeddable> buildPersistentTypeMappingComposite(
-			JpaUiFactory factory,
-			PropertyValueModel<Embeddable> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
+		JpaUiFactory factory,
+		PropertyValueModel<Embeddable> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
 
 		return factory.createEmbeddableComposite(subjectHolder, parent, widgetFactory);
 	}

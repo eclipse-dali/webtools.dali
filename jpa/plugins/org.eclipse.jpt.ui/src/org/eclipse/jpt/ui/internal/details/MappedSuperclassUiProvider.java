@@ -14,9 +14,11 @@ import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
+import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class MappedSuperclassUiProvider implements TypeMappingUiProvider<MappedSuperclass>
@@ -46,11 +48,15 @@ public class MappedSuperclassUiProvider implements TypeMappingUiProvider<MappedS
 		return JptUiMappingsMessages.PersistentTypePage_MappedSuperclassLabel;
 	}
 
+	public Image image() {
+		return JpaMappingImageHelper.imageForTypeMapping(mappingKey());
+	}
+
 	public JpaComposite<MappedSuperclass> buildPersistentTypeMappingComposite(
-			JpaUiFactory factory,
-			PropertyValueModel<MappedSuperclass> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
+		JpaUiFactory factory,
+		PropertyValueModel<MappedSuperclass> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
 
 		return factory.createMappedSuperclassComposite(subjectHolder, parent, widgetFactory);
 	}
