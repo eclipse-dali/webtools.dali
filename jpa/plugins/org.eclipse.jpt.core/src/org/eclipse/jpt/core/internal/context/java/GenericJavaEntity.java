@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.Generator;
+import org.eclipse.jpt.core.context.IdClass;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.NamedQuery;
@@ -64,7 +65,7 @@ import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverrides;
 import org.eclipse.jpt.core.resource.java.DiscriminatorValue;
 import org.eclipse.jpt.core.resource.java.EntityAnnotation;
-import org.eclipse.jpt.core.resource.java.IdClass;
+import org.eclipse.jpt.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.core.resource.java.Inheritance;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
@@ -318,7 +319,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	protected void initializeIdClass(JavaResourcePersistentType typeResource) {
-		IdClass idClassResource = (IdClass) typeResource.annotation(IdClass.ANNOTATION_NAME);
+		IdClassAnnotation idClassResource = (IdClassAnnotation) typeResource.annotation(IdClassAnnotation.ANNOTATION_NAME);
 		if (idClassResource != null) {
 			this.idClass = idClassResource.getValue();
 		}
@@ -1118,25 +1119,25 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 				removeIdClassResource();
 			}
 		}
-		firePropertyChanged(Entity.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 	
 	protected void setIdClass_(String newIdClass) {
 		String oldIdClass = this.idClass;
 		this.idClass = newIdClass;
-		firePropertyChanged(Entity.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 
-	protected IdClass idClassResource() {
-		return (IdClass) this.javaResourcePersistentType.annotation(IdClass.ANNOTATION_NAME);
+	protected IdClassAnnotation idClassResource() {
+		return (IdClassAnnotation) this.javaResourcePersistentType.annotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void addIdClassResource() {
-		this.javaResourcePersistentType.addAnnotation(IdClass.ANNOTATION_NAME);
+		this.javaResourcePersistentType.addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void removeIdClassResource() {
-		this.javaResourcePersistentType.removeAnnotation(IdClass.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 
 	public Entity parentEntity() {
@@ -1655,7 +1656,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 	}
 
 	protected void updateIdClass(JavaResourcePersistentType resourcePersistentType) {
-		IdClass idClass = (IdClass) resourcePersistentType.annotation(IdClass.ANNOTATION_NAME);
+		IdClassAnnotation idClass = (IdClassAnnotation) resourcePersistentType.annotation(IdClassAnnotation.ANNOTATION_NAME);
 		if (idClass != null) {
 			setIdClass_(idClass.getValue());
 		}

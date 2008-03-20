@@ -11,11 +11,11 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.MappedSuperclass;
+import org.eclipse.jpt.core.context.IdClass;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.resource.java.IdClass;
+import org.eclipse.jpt.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.MappedSuperclassAnnotation;
@@ -78,25 +78,25 @@ public class GenericJavaMappedSuperclass extends AbstractJavaTypeMapping
 				removeIdClassResource();
 			}
 		}
-		firePropertyChanged(MappedSuperclass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 	
 	protected void setIdClass_(String newIdClass) {
 		String oldIdClass = this.idClass;
 		this.idClass = newIdClass;
-		firePropertyChanged(MappedSuperclass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 
-	protected IdClass idClassResource() {
-		return (IdClass) this.javaResourcePersistentType.annotation(IdClass.ANNOTATION_NAME);
+	protected IdClassAnnotation idClassResource() {
+		return (IdClassAnnotation) this.javaResourcePersistentType.annotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void addIdClassResource() {
-		this.javaResourcePersistentType.addAnnotation(IdClass.ANNOTATION_NAME);
+		this.javaResourcePersistentType.addAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected void removeIdClassResource() {
-		this.javaResourcePersistentType.removeAnnotation(IdClass.ANNOTATION_NAME);
+		this.javaResourcePersistentType.removeAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
 	
 	@Override
@@ -145,7 +145,7 @@ public class GenericJavaMappedSuperclass extends AbstractJavaTypeMapping
 	}
 
 	protected void initializeIdClass(JavaResourcePersistentType typeResource) {
-		IdClass idClassResource = (IdClass) typeResource.annotation(IdClass.ANNOTATION_NAME);
+		IdClassAnnotation idClassResource = (IdClassAnnotation) typeResource.annotation(IdClassAnnotation.ANNOTATION_NAME);
 		if (idClassResource != null) {
 			this.idClass = idClassResource.getValue();
 		}
@@ -158,7 +158,7 @@ public class GenericJavaMappedSuperclass extends AbstractJavaTypeMapping
 	}
 	
 	protected void updateIdClass(JavaResourcePersistentType typeResource) {
-		IdClass idClass = (IdClass) typeResource.annotation(IdClass.ANNOTATION_NAME);
+		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.annotation(IdClassAnnotation.ANNOTATION_NAME);
 		if (idClass != null) {
 			setIdClass_(idClass.getValue());
 		}

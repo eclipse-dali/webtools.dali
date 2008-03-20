@@ -20,7 +20,7 @@ import java.util.ListIterator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface Entity extends TypeMapping, GeneratorHolder, QueryHolder
+public interface Entity extends TypeMapping, GeneratorHolder, QueryHolder, IdClass
 {
 	// **************** name **************************************
 
@@ -251,13 +251,6 @@ public interface Entity extends TypeMapping, GeneratorHolder, QueryHolder
 	void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex);
 		String SPECIFIED_ASSOCIATION_OVERRIDES_LIST = "specifiedAssociationOverridesList";
 		String VIRTUAL_ASSOCIATION_OVERRIDES_LIST = "virtualAssociationOverridesList";
-
-	
-	// **************** named queries **************************************
-
-	String getIdClass();
-	void setIdClass(String value);
-		String ID_CLASS_PROPERTY = "idClassProperty";
 
 	/**
 	 * Return the ultimate top of the inheritance hierarchy 

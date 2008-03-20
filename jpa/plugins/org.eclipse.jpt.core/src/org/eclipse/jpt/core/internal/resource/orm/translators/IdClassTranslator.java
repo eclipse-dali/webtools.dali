@@ -36,6 +36,6 @@ public class IdClassTranslator extends Translator
 	}
 	
 	protected Translator createClassTranslator() {
-		return new Translator(CLASS, ORM_PKG.getIdClass_ClassName(), DOM_ATTRIBUTE);
+		return new Translator(CLASS, ORM_PKG.getXmlIdClass_ClassName(), DOM_ATTRIBUTE);
 	}
 }

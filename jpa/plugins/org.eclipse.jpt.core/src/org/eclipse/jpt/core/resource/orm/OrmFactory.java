@@ -114,7 +114,7 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.EVENT_METHOD: return (EObject)createEventMethod();
 			case OrmPackage.FIELD_RESULT: return (EObject)createFieldResult();
 			case OrmPackage.XML_GENERATED_VALUE_IMPL: return (EObject)createXmlGeneratedValueImpl();
-			case OrmPackage.ID_CLASS: return (EObject)createIdClass();
+			case OrmPackage.XML_ID_CLASS: return (EObject)createXmlIdClass();
 			case OrmPackage.INHERITANCE: return (EObject)createInheritance();
 			case OrmPackage.XML_JOIN_COLUMN_IMPL: return (EObject)createXmlJoinColumnImpl();
 			case OrmPackage.XML_JOIN_TABLE_IMPL: return (EObject)createXmlJoinTableImpl();
@@ -529,10 +529,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public IdClass createIdClass()
+	public XmlIdClass createXmlIdClass()
 	{
-		IdClass idClass = new IdClass();
-		return idClass;
+		XmlIdClass xmlIdClass = new XmlIdClass();
+		return xmlIdClass;
 	}
 
 	/**

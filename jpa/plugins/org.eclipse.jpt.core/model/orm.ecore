@@ -57,7 +57,7 @@
         containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="#//AbstractXmlTypeMapping">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="idClass" eType="#//IdClass"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="idClass" eType="#//XmlIdClass"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeDefaultListeners"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
@@ -88,7 +88,7 @@
         eType="#//XmlSecondaryTable" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="primaryKeyJoinColumns"
         upperBound="-1" eType="#//XmlPrimaryKeyJoinColumn" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="idClass" eType="#//IdClass"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="idClass" eType="#//XmlIdClass"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="inheritance" eType="#//Inheritance"
         containment="true" resolveProxies="false"/>
@@ -342,7 +342,7 @@
         defaultValueLiteral="TABLE"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlGeneratedValueImpl" eSuperTypes="#//XmlGeneratedValue"/>
-  <eClassifiers xsi:type="ecore:EClass" name="IdClass">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlIdClass">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>

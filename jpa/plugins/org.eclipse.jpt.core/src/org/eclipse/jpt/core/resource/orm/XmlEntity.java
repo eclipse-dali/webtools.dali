@@ -131,7 +131,7 @@ public class XmlEntity extends AbstractXmlTypeMapping
 	 * @generated
 	 * @ordered
 	 */
-	protected IdClass idClass;
+	protected XmlIdClass idClass;
 
 	/**
 	 * The cached value of the '{@link #getInheritance() <em>Inheritance</em>}' containment reference.
@@ -538,12 +538,12 @@ public class XmlEntity extends AbstractXmlTypeMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Id Class</em>' containment reference.
-	 * @see #setIdClass(IdClass)
+	 * @see #setIdClass(XmlIdClass)
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_IdClass()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public IdClass getIdClass()
+	public XmlIdClass getIdClass()
 	{
 		return idClass;
 	}
@@ -553,9 +553,9 @@ public class XmlEntity extends AbstractXmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetIdClass(IdClass newIdClass, NotificationChain msgs)
+	public NotificationChain basicSetIdClass(XmlIdClass newIdClass, NotificationChain msgs)
 	{
-		IdClass oldIdClass = idClass;
+		XmlIdClass oldIdClass = idClass;
 		idClass = newIdClass;
 		if (eNotificationRequired())
 		{
@@ -573,7 +573,7 @@ public class XmlEntity extends AbstractXmlTypeMapping
 	 * @see #getIdClass()
 	 * @generated
 	 */
-	public void setIdClass(IdClass newIdClass)
+	public void setIdClass(XmlIdClass newIdClass)
 	{
 		if (newIdClass != idClass)
 		{
@@ -1675,7 +1675,7 @@ public class XmlEntity extends AbstractXmlTypeMapping
 				getPrimaryKeyJoinColumns().addAll((Collection<? extends XmlPrimaryKeyJoinColumn>)newValue);
 				return;
 			case OrmPackage.XML_ENTITY__ID_CLASS:
-				setIdClass((IdClass)newValue);
+				setIdClass((XmlIdClass)newValue);
 				return;
 			case OrmPackage.XML_ENTITY__INHERITANCE:
 				setInheritance((Inheritance)newValue);
@@ -1769,7 +1769,7 @@ public class XmlEntity extends AbstractXmlTypeMapping
 				getPrimaryKeyJoinColumns().clear();
 				return;
 			case OrmPackage.XML_ENTITY__ID_CLASS:
-				setIdClass((IdClass)null);
+				setIdClass((XmlIdClass)null);
 				return;
 			case OrmPackage.XML_ENTITY__INHERITANCE:
 				setInheritance((Inheritance)null);

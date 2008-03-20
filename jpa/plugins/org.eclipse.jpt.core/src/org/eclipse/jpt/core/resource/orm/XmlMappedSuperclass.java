@@ -63,7 +63,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	 * @generated
 	 * @ordered
 	 */
-	protected IdClass idClass;
+	protected XmlIdClass idClass;
 
 	/**
 	 * The default value of the '{@link #isExcludeDefaultListeners() <em>Exclude Default Listeners</em>}' attribute.
@@ -219,12 +219,12 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Id Class</em>' containment reference.
-	 * @see #setIdClass(IdClass)
+	 * @see #setIdClass(XmlIdClass)
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMappedSuperclass_IdClass()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public IdClass getIdClass()
+	public XmlIdClass getIdClass()
 	{
 		return idClass;
 	}
@@ -234,9 +234,9 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetIdClass(IdClass newIdClass, NotificationChain msgs)
+	public NotificationChain basicSetIdClass(XmlIdClass newIdClass, NotificationChain msgs)
 	{
-		IdClass oldIdClass = idClass;
+		XmlIdClass oldIdClass = idClass;
 		idClass = newIdClass;
 		if (eNotificationRequired())
 		{
@@ -254,7 +254,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	 * @see #getIdClass()
 	 * @generated
 	 */
-	public void setIdClass(IdClass newIdClass)
+	public void setIdClass(XmlIdClass newIdClass)
 	{
 		if (newIdClass != idClass)
 		{
@@ -899,7 +899,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 		switch (featureID)
 		{
 			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
-				setIdClass((IdClass)newValue);
+				setIdClass((XmlIdClass)newValue);
 				return;
 			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS:
 				setExcludeDefaultListeners(((Boolean)newValue).booleanValue());
@@ -946,7 +946,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 		switch (featureID)
 		{
 			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
-				setIdClass((IdClass)null);
+				setIdClass((XmlIdClass)null);
 				return;
 			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS:
 				setExcludeDefaultListeners(EXCLUDE_DEFAULT_LISTENERS_EDEFAULT);

@@ -3721,16 +3721,6 @@ public class OrmPackage extends EPackageImpl
 	public static final int FIELD_RESULT = 53;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.IdClass <em>Id Class</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.resource.orm.IdClass
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getIdClass()
-	 * @generated
-	 */
-	public static final int ID_CLASS = 56;
-
-	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.Inheritance <em>Inheritance</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3890,22 +3880,32 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_GENERATED_VALUE_IMPL_FEATURE_COUNT = XML_GENERATED_VALUE_FEATURE_COUNT + 0;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlIdClass <em>Xml Id Class</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.resource.orm.XmlIdClass
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlIdClass()
+	 * @generated
+	 */
+	public static final int XML_ID_CLASS = 56;
+
+	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ID_CLASS__CLASS_NAME = 0;
+	public static final int XML_ID_CLASS__CLASS_NAME = 0;
 
 	/**
-	 * The number of structural features of the '<em>Id Class</em>' class.
+	 * The number of structural features of the '<em>Xml Id Class</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ID_CLASS_FEATURE_COUNT = 1;
+	public static final int XML_ID_CLASS_FEATURE_COUNT = 1;
 
 	/**
 	 * The feature id for the '<em><b>Strategy</b></em>' attribute.
@@ -6030,7 +6030,7 @@ public class OrmPackage extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass idClassEClass = null;
+	private EClass xmlIdClassEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -9204,31 +9204,33 @@ public class OrmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.IdClass <em>Id Class</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.XmlIdClass <em>Xml Id Class</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Id Class</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.IdClass
+	 * @return the meta object for class '<em>Xml Id Class</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlIdClass
 	 * @generated
 	 */
-	public EClass getIdClass()
+	public EClass getXmlIdClass()
 	{
-		return idClassEClass;
+		return xmlIdClassEClass;
 	}
 
+
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.IdClass#getClassName <em>Class Name</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlIdClass#getClassName <em>Class Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Class Name</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.IdClass#getClassName()
-	 * @see #getIdClass()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlIdClass#getClassName()
+	 * @see #getXmlIdClass()
 	 * @generated
 	 */
-	public EAttribute getIdClass_ClassName()
+	public EAttribute getXmlIdClass_ClassName()
 	{
-		return (EAttribute)idClassEClass.getEStructuralFeatures().get(0);
+		return (EAttribute)xmlIdClassEClass.getEStructuralFeatures().get(0);
 	}
+
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.Inheritance <em>Inheritance</em>}'.
@@ -10626,8 +10628,8 @@ public class OrmPackage extends EPackageImpl
 
 		xmlGeneratedValueImplEClass = createEClass(XML_GENERATED_VALUE_IMPL);
 
-		idClassEClass = createEClass(ID_CLASS);
-		createEAttribute(idClassEClass, ID_CLASS__CLASS_NAME);
+		xmlIdClassEClass = createEClass(XML_ID_CLASS);
+		createEAttribute(xmlIdClassEClass, XML_ID_CLASS__CLASS_NAME);
 
 		inheritanceEClass = createEClass(INHERITANCE);
 		createEAttribute(inheritanceEClass, INHERITANCE__STRATEGY);
@@ -10896,7 +10898,7 @@ public class OrmPackage extends EPackageImpl
 		initEReference(getAbstractXmlTypeMapping_Attributes(), this.getAttributes(), null, "attributes", null, 0, 1, AbstractXmlTypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMappedSuperclassEClass, XmlMappedSuperclass.class, "XmlMappedSuperclass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlMappedSuperclass_IdClass(), this.getIdClass(), null, "idClass", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlMappedSuperclass_IdClass(), this.getXmlIdClass(), null, "idClass", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlMappedSuperclass_ExcludeDefaultListeners(), theXMLTypePackage.getBoolean(), "excludeDefaultListeners", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlMappedSuperclass_ExcludeSuperclassListeners(), theXMLTypePackage.getBoolean(), "excludeSuperclassListeners", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlMappedSuperclass_EntityListeners(), this.getEntityListeners(), null, "entityListeners", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -10913,7 +10915,7 @@ public class OrmPackage extends EPackageImpl
 		initEReference(getXmlEntity_Table(), this.getXmlTable(), null, "table", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntity_SecondaryTables(), this.getXmlSecondaryTable(), null, "secondaryTables", null, 0, -1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntity_PrimaryKeyJoinColumns(), this.getXmlPrimaryKeyJoinColumn(), null, "primaryKeyJoinColumns", null, 0, -1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntity_IdClass(), this.getIdClass(), null, "idClass", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntity_IdClass(), this.getXmlIdClass(), null, "idClass", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntity_Inheritance(), this.getInheritance(), null, "inheritance", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlEntity_DiscriminatorValue(), this.getDiscriminatorValue(), "discriminatorValue", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntity_DiscriminatorColumn(), this.getXmlDiscriminatorColumn(), null, "discriminatorColumn", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -11109,8 +11111,8 @@ public class OrmPackage extends EPackageImpl
 
 		initEClass(xmlGeneratedValueImplEClass, XmlGeneratedValueImpl.class, "XmlGeneratedValueImpl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(idClassEClass, IdClass.class, "IdClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getIdClass_ClassName(), theXMLTypePackage.getString(), "className", null, 1, 1, IdClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(xmlIdClassEClass, XmlIdClass.class, "XmlIdClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlIdClass_ClassName(), theXMLTypePackage.getString(), "className", null, 1, 1, XmlIdClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(inheritanceEClass, Inheritance.class, "Inheritance", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getInheritance_Strategy(), this.getInheritanceType(), "strategy", "SINGLE_TABLE", 0, 1, Inheritance.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -12908,14 +12910,14 @@ public class OrmPackage extends EPackageImpl
 		public static final EClass XML_GENERATED_VALUE_IMPL = eINSTANCE.getXmlGeneratedValueImpl();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.IdClass <em>Id Class</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlIdClass <em>Xml Id Class</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.core.resource.orm.IdClass
-		 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getIdClass()
+		 * @see org.eclipse.jpt.core.resource.orm.XmlIdClass
+		 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlIdClass()
 		 * @generated
 		 */
-		public static final EClass ID_CLASS = eINSTANCE.getIdClass();
+		public static final EClass XML_ID_CLASS = eINSTANCE.getXmlIdClass();
 
 		/**
 		 * The meta object literal for the '<em><b>Class Name</b></em>' attribute feature.
@@ -12923,7 +12925,7 @@ public class OrmPackage extends EPackageImpl
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute ID_CLASS__CLASS_NAME = eINSTANCE.getIdClass_ClassName();
+		public static final EAttribute XML_ID_CLASS__CLASS_NAME = eINSTANCE.getXmlIdClass_ClassName();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.Inheritance <em>Inheritance</em>}' class.

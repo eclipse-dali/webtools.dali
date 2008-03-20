@@ -23,12 +23,12 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleTypeStringExpressionConver
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.resource.java.IdClass;
+import org.eclipse.jpt.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 
-public class IdClassImpl extends AbstractResourceAnnotation<Type> implements IdClass
+public class IdClassImpl extends AbstractResourceAnnotation<Type> implements IdClassAnnotation
 {
 	private final AnnotationElementAdapter<String> valueAdapter;
 
@@ -51,7 +51,7 @@ public class IdClassImpl extends AbstractResourceAnnotation<Type> implements IdC
 	}
 
 	public String getAnnotationName() {
-		return IdClass.ANNOTATION_NAME;
+		return IdClassAnnotation.ANNOTATION_NAME;
 	}
 
 	public String getValue() {
@@ -62,7 +62,7 @@ public class IdClassImpl extends AbstractResourceAnnotation<Type> implements IdC
 		String oldValue = this.value;
 		this.value = newValue;
 		this.valueAdapter.setValue(newValue);
-		firePropertyChanged(IdClass.VALUE_PROPERTY, oldValue, newValue);
+		firePropertyChanged(IdClassAnnotation.VALUE_PROPERTY, oldValue, newValue);
 	}
 
 	public String getFullyQualifiedClass() {
@@ -72,7 +72,7 @@ public class IdClassImpl extends AbstractResourceAnnotation<Type> implements IdC
 	private void setFullyQualifiedClass(String newQualifiedClass) {
 		String oldQualifiedClass = this.fullyQualifiedValue;
 		this.fullyQualifiedValue = newQualifiedClass;
-		firePropertyChanged(IdClass.FULLY_QUALIFIED_CLASS_PROPERTY, oldQualifiedClass, newQualifiedClass);
+		firePropertyChanged(IdClassAnnotation.FULLY_QUALIFIED_CLASS_PROPERTY, oldQualifiedClass, newQualifiedClass);
 	}
 
 	public TextRange valueTextRange(CompilationUnit astRoot) {

@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.resource.java.IdClass;
+import org.eclipse.jpt.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -60,7 +60,7 @@ public class IdClassTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestIdClass();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType); 
 		
-		IdClass idClass = (IdClass) typeResource.annotation(JPA.ID_CLASS);
+		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.annotation(JPA.ID_CLASS);
 		assertNotNull(idClass);
 		assertNull(idClass.getValue());
 	}
@@ -69,7 +69,7 @@ public class IdClassTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestIdClassWithValue();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
 		
-		IdClass idClass = (IdClass) typeResource.annotation(JPA.ID_CLASS);
+		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.annotation(JPA.ID_CLASS);
 		assertEquals(ID_CLASS_VALUE, idClass.getValue());
 	}
 
@@ -77,7 +77,7 @@ public class IdClassTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestIdClassWithValue();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
 		
-		IdClass idClass = (IdClass) typeResource.annotation(JPA.ID_CLASS);
+		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.annotation(JPA.ID_CLASS);
 		assertEquals(ID_CLASS_VALUE, idClass.getValue());
 		
 		idClass.setValue("foo");
@@ -89,7 +89,7 @@ public class IdClassTests extends JavaResourceModelTestCase {
 		
 		assertSourceDoesNotContain("@IdClass");
 				
-		idClass = (IdClass) typeResource.annotation(JPA.ID_CLASS);
+		idClass = (IdClassAnnotation) typeResource.annotation(JPA.ID_CLASS);
 		assertNull(idClass);
 	}
 	
@@ -97,7 +97,7 @@ public class IdClassTests extends JavaResourceModelTestCase {
 		IType testType = this.createTestIdClassWithValue();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(testType);
 
-		IdClass idClass = (IdClass) typeResource.annotation(JPA.ID_CLASS);
+		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.annotation(JPA.ID_CLASS);
 		assertNotNull(idClass.getValue());
 		assertEquals("MyClass", idClass.getFullyQualifiedClass()); //bug 196200 changed this
 

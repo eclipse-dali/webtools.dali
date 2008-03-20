@@ -29,16 +29,16 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.IdClass#getClassName <em>Class Name</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlIdClass#getClassName <em>Class Name</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getIdClass()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlIdClass()
  * @model kind="class"
  * @extends JpaEObject
  * @generated
  */
-public class IdClass extends AbstractJpaEObject implements JpaEObject
+public class XmlIdClass extends AbstractJpaEObject implements JpaEObject
 {
 	/**
 	 * The default value of the '{@link #getClassName() <em>Class Name</em>}' attribute.
@@ -65,7 +65,7 @@ public class IdClass extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected IdClass()
+	protected XmlIdClass()
 	{
 		super();
 	}
@@ -78,7 +78,7 @@ public class IdClass extends AbstractJpaEObject implements JpaEObject
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.ID_CLASS;
+		return OrmPackage.Literals.XML_ID_CLASS;
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class IdClass extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Class Name</em>' attribute.
 	 * @see #setClassName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getIdClass_ClassName()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlIdClass_ClassName()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -101,7 +101,7 @@ public class IdClass extends AbstractJpaEObject implements JpaEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.IdClass#getClassName <em>Class Name</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlIdClass#getClassName <em>Class Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Class Name</em>' attribute.
@@ -113,7 +113,7 @@ public class IdClass extends AbstractJpaEObject implements JpaEObject
 		String oldClassName = className;
 		className = newClassName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ID_CLASS__CLASS_NAME, oldClassName, className));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ID_CLASS__CLASS_NAME, oldClassName, className));
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class IdClass extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ID_CLASS__CLASS_NAME:
+			case OrmPackage.XML_ID_CLASS__CLASS_NAME:
 				return getClassName();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -142,7 +142,7 @@ public class IdClass extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ID_CLASS__CLASS_NAME:
+			case OrmPackage.XML_ID_CLASS__CLASS_NAME:
 				setClassName((String)newValue);
 				return;
 		}
@@ -159,7 +159,7 @@ public class IdClass extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ID_CLASS__CLASS_NAME:
+			case OrmPackage.XML_ID_CLASS__CLASS_NAME:
 				setClassName(CLASS_NAME_EDEFAULT);
 				return;
 		}
@@ -176,7 +176,7 @@ public class IdClass extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ID_CLASS__CLASS_NAME:
+			case OrmPackage.XML_ID_CLASS__CLASS_NAME:
 				return CLASS_NAME_EDEFAULT == null ? className != null : !CLASS_NAME_EDEFAULT.equals(className);
 		}
 		return super.eIsSet(featureID);

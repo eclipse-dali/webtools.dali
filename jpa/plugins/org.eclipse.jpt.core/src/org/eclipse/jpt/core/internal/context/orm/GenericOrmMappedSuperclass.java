@@ -11,13 +11,13 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.IdClass;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.core.resource.orm.IdClass;
+import org.eclipse.jpt.core.resource.orm.XmlIdClass;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -53,21 +53,21 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 				idClassResource().setClassName(newIdClass);
 			}
 		}
-		firePropertyChanged(Entity.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 	
 	protected void setIdClass_(String newIdClass) {
 		String oldIdClass = this.idClass;
 		this.idClass = newIdClass;
-		firePropertyChanged(Entity.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 
-	protected IdClass idClassResource() {
+	protected XmlIdClass idClassResource() {
 		return typeMappingResource().getIdClass();
 	}
 	
 	protected void addIdClassResource() {
-		typeMappingResource().setIdClass(OrmFactory.eINSTANCE.createIdClass());		
+		typeMappingResource().setIdClass(OrmFactory.eINSTANCE.createXmlIdClass());		
 	}
 	
 	protected void removeIdClassResource() {
@@ -160,7 +160,7 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 		this.initializeIdClass(this.idClassResource());
 	}
 	
-	protected void initializeIdClass(IdClass idClassResource) {
+	protected void initializeIdClass(XmlIdClass idClassResource) {
 		this.idClass = this.idClass(idClassResource);	
 	}
 	
@@ -170,11 +170,11 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 		this.updateIdClass(this.idClassResource());
 	}
 	
-	protected void updateIdClass(IdClass idClassResource) {
+	protected void updateIdClass(XmlIdClass idClassResource) {
 		this.setIdClass_(this.idClass(idClassResource));
 	}
 
-	protected String idClass(IdClass idClassResource) {
+	protected String idClass(XmlIdClass idClassResource) {
 		return idClassResource == null ? null : idClassResource.getClassName();
 	}
 
