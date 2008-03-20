@@ -22,14 +22,17 @@ import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.QueryHint;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.swt.ColumnAdapter;
+import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveTablePane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -69,6 +72,15 @@ public class QueryHintsComposite extends AbstractPane<Query>
 		super(parentPane, container);
 	}
 
+	private PropertyValueModel<Boolean> buildPaneEnableHolder() {
+		return new TransformationPropertyValueModel<Query, Boolean>(getSubjectHolder()) {
+			@Override
+			protected Boolean transform(Query query) {
+				return (query != null);
+			}
+		};
+	}
+
 	private Adapter buildQueryHintAdapter() {
 		return new AddRemoveTablePane.AbstractAdapter() {
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
@@ -86,11 +98,11 @@ public class QueryHintsComposite extends AbstractPane<Query>
 
 	private WritablePropertyValueModel<QueryHint> buildQueryHintHolder() {
 		return new SimplePropertyValueModel<QueryHint>();
-	}
+	};
 
 	private ITableLabelProvider buildQueryHintLabelProvider() {
 		return new TableLabelProvider();
-	};
+	}
 
 	private ListValueModel<QueryHint> buildQueryHintListHolder() {
 		return new ListAspectAdapter<Query, QueryHint>(getSubjectHolder(), NamedQuery.HINTS_LIST) {
@@ -121,7 +133,12 @@ public class QueryHintsComposite extends AbstractPane<Query>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		new TablePane(container);
+		TablePane tablePane = new TablePane(container);
+		installPaneEnabler(tablePane);
+	}
+
+	private PaneEnabler installPaneEnabler(TablePane tablePane) {
+		return new PaneEnabler(buildPaneEnableHolder(), tablePane);
 	}
 
 	private static class QueryHintColumnAdapter implements ColumnAdapter<QueryHint> {

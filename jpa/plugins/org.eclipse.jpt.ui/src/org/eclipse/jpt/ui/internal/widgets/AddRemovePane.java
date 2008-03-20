@@ -192,6 +192,32 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 	}
 
 	/**
+	 * Gives the possibility to add buttons after the Add button and before the
+	 * optional button.
+	 *
+	 * @param container The parent container
+	 * @param helpId The topic help ID to be registered with the buttons
+	 *
+	 * @category Layout
+	 */
+	protected void addCustomButtonAfterAddButton(Composite container,
+	                                             String helpId) {
+	}
+
+	/**
+	 * Gives the possibility to add buttons after the optional button and before
+	 * the Remove button.
+	 *
+	 * @param container The parent container
+	 * @param helpId The topic help ID to be registered with the buttons
+	 *
+	 * @category Layout
+	 */
+	protected void addCustomButtonAfterOptionalButton(Composite container,
+	                                                  String helpId) {
+	}
+
+	/**
 	 * @category Add
 	 */
 	protected void addItem() {
@@ -405,11 +431,17 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		addButton = buildAddButton(container);
 		addAlignRight(addButton);
 
+		// Custom button
+		addCustomButtonAfterAddButton(container, helpId);
+
 		// Optional button
 		if (adapter.hasOptionalButton()) {
 			optionalButton = buildOptionalButton(container);
 			addAlignRight(optionalButton);
 		}
+
+		// Custom button
+		addCustomButtonAfterOptionalButton(container, helpId);
 
 		// Remove button
 		removeButton = buildRemoveButton(container);
@@ -646,15 +678,15 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 			return addButtonText;
 		}
 
-		public boolean enableRemoveOnSelectionChange(ObjectListSelectionModel listSelectionModel) {
-			return listSelectionModel.selectedValue() != null;
-		}
-
 		/*
 		 * (non-Javadoc)
 		 */
 		public boolean enableOptionOnSelectionChange(ObjectListSelectionModel listSelectionModel) {
 			return listSelectionModel.selectedValuesSize() == 1;
+		}
+
+		public boolean enableRemoveOnSelectionChange(ObjectListSelectionModel listSelectionModel) {
+			return listSelectionModel.selectedValue() != null;
 		}
 
 		/*
@@ -747,16 +779,16 @@ public abstract class AddRemovePane<T extends Model> extends AbstractPane<T>
 		void addNewItem(ObjectListSelectionModel listSelectionModel);
 
 		/**
-		 * Invoked when selection changes. Implementation dictates whether remove button
-		 * should be enabled.
-		 */
-		boolean enableRemoveOnSelectionChange(ObjectListSelectionModel listSelectionModel);
-
-		/**
 		 * Invoked when selection changes. Implementation dictates whether button
 		 * should be enabled.
 		 */
 		boolean enableOptionOnSelectionChange(ObjectListSelectionModel listSelectionModel);
+
+		/**
+		 * Invoked when selection changes. Implementation dictates whether remove button
+		 * should be enabled.
+		 */
+		boolean enableRemoveOnSelectionChange(ObjectListSelectionModel listSelectionModel);
 
 		/**
 		 * Determines whether an optional button should be added between the add

@@ -56,7 +56,7 @@ public class NamedQueryPropertyComposite extends AbstractFormPane<NamedQuery>
 	                                   PropertyValueModel<? extends NamedQuery> subjectHolder,
 	                                   Composite parent) {
 
-		super(parentPane, subjectHolder, parent, false);
+		super(parentPane, subjectHolder, parent);
 	}
 
 	private WritablePropertyValueModel<String> buildQueryHolder() {
@@ -79,11 +79,9 @@ public class NamedQueryPropertyComposite extends AbstractFormPane<NamedQuery>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		int groupBoxMargin = groupBoxMargin();
-
 		// Query text area
 		buildLabeledMultiLineText(
-			buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
+			container,
 			JptUiMappingsMessages.NamedQueryPropertyComposite_query,
 			buildQueryHolder(),
 			4

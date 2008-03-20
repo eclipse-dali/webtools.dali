@@ -158,19 +158,12 @@ public class NamedNativeQueryPropertyComposite extends AbstractFormPane<NamedNat
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		int groupBoxMargin = groupBoxMargin();
-
-		Composite subPane = buildSubPane(
-			container,
-			0, groupBoxMargin, 0, groupBoxMargin
-		);
-
 		// Result class chooser
-		resultClassChooserPane = buildClassChooser(subPane);
+		resultClassChooserPane = buildClassChooser(container);
 
 		// Query text area
 		buildLabeledMultiLineText(
-			subPane,
+			container,
 			JptUiMappingsMessages.NamedNativeQueryPropertyComposite_query,
 			buildQueryHolder(),
 			4
