@@ -1638,7 +1638,7 @@ public class GenericJavaEntity extends AbstractJavaTypeMapping implements JavaEn
 		}
 		
 		while (resourceNamedNativeQueries.hasNext()) {
-			addNamedNativeQuery(namedQueriesSize(), buildNamedNativeQuery((NamedNativeQueryAnnotation) resourceNamedNativeQueries.next()));
+			addNamedNativeQuery(namedNativeQueriesSize(), buildNamedNativeQuery((NamedNativeQueryAnnotation) resourceNamedNativeQueries.next()));
 		}	
 	}
 	

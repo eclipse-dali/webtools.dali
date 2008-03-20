@@ -2496,6 +2496,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
+		
+		entity.addNamedNativeQuery(0).setName("foo");
 	}
 	
 	public void testRemoveNamedQuery() throws Exception {
@@ -2530,6 +2532,40 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(0, CollectionTools.size(javaNamedQueries));
 	}
 	
+	public void testAddNamedNativeQueryWithNamedQuery() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		Entity entity = javaEntity();		
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+
+		entity.addNamedQuery(0).setName("FOO");
+		
+		
+		NamedNativeQueryAnnotation nativeQuery = (NamedNativeQueryAnnotation) typeResource.addAnnotation(0, JPA.NAMED_NATIVE_QUERY, JPA.NAMED_NATIVE_QUERIES);
+		nativeQuery.setName("BAR");
+		
+		assertEquals(1, entity.namedNativeQueriesSize());
+		assertEquals("BAR", entity.namedNativeQueries().next().getName());
+	}
+	
+	public void testAddNamedQueryWithNamedNativeQuery() throws Exception {
+		createTestEntity();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		Entity entity = javaEntity();		
+		JavaResourcePersistentType typeResource = jpaProject().javaPersistentTypeResource(FULLY_QUALIFIED_TYPE_NAME);
+
+		entity.addNamedNativeQuery(0).setName("FOO");
+		
+		
+		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.addAnnotation(0, JPA.NAMED_QUERY, JPA.NAMED_QUERIES);
+		namedQuery.setName("BAR");
+		
+		assertEquals(1, entity.namedQueriesSize());
+		assertEquals("BAR", entity.namedQueries().next().getName());
+	}
+
 	public void testMoveNamedQuery() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
