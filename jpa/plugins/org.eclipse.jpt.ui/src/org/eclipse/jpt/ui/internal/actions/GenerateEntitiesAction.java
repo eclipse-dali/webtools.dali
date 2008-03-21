@@ -19,6 +19,7 @@ public class GenerateEntitiesAction extends ProjectAction {
 		super();
 	}
 
+	@Override
 	protected void execute(JpaProject project) {
         this.jpaPlatformUi(project).generateEntities(project, this.getCurrentSelection());
 	}
