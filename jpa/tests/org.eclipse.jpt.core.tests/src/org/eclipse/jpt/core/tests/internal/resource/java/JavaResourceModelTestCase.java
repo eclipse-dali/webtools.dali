@@ -86,6 +86,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	protected class TestJpaProject extends GenericJpaProject {
 		protected TestJpaProject(JpaProject.Config config) throws CoreException {
 			super(config);
+			this.setUpdater(Updater.Null.instance());// ignore all updates, since there is no context model
 		}
 
 		@Override
@@ -101,12 +102,6 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		protected JpaRootContextNode buildRootContextNode() {
 			return null;  // no root context
 		}
-
-		@Override
-		public void update() {
-			// ignore all updates, since there is no context model
-		}
-
 	}
 
 	private JpaProject.Config buildJpaProjectConfig(IProject project) {

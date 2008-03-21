@@ -148,15 +148,11 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		this.threadLocalModifySharedDocumentCommandExecutor = this.buildThreadLocalModifySharedDocumentCommandExecutor();
 		this.modifySharedDocumentCommandExecutorProvider = this.buildModifySharedDocumentCommandExecutorProvider();
 
-		this.updater = this.buildUpdater();
-
 		this.resourceModelListener = this.buildResourceModelListener();
 		// build the JPA files corresponding to the Eclipse project's files
 		this.project.accept(this.buildInitialResourceProxyVisitor(), IResource.NONE);
 
 		this.rootContextNode = this.buildRootContextNode();
-
-		this.update();
 	}
 
 	@Override
@@ -185,10 +181,6 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 
 	protected CommandExecutorProvider buildModifySharedDocumentCommandExecutorProvider() {
 		return new ModifySharedDocumentCommandExecutorProvider();
-	}
-
-	protected Updater buildUpdater() {
-		return new AsynchronousJpaProjectUpdater(this);
 	}
 
 	protected ResourceModelListener buildResourceModelListener() {
@@ -539,7 +531,9 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	// ********** dispose **********
 
 	public void dispose() {
-		this.updater.dispose();
+		if (this.updater != null) {
+			this.updater.dispose();
+		}
 		// use clone iterator while deleting JPA files
 		for (Iterator<JpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
 			this.removeJpaFile(stream.next());
@@ -653,12 +647,16 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 
 	public void setUpdater(Updater updater) {
 		this.updater = updater;
+		this.update();
 	}
 
 	/**
 	 * Delegate to the updater so clients can configure how updates occur.
 	 */
 	public void update() {
+		if (this.updater == null) {
+			throw new IllegalStateException("updater is null, use setUpdater(Updater) after construction of GenericJpaProject");
+		}
 		this.updater.update();
 	}
 

@@ -449,7 +449,9 @@ public class GenericJpaModel
 		}
 
 		private JpaProject buildJpaProject() throws CoreException {
-			return this.config.jpaPlatform().jpaFactory().buildJpaProject(this.config);
+			JpaProject jpaProject = this.config.jpaPlatform().jpaFactory().buildJpaProject(this.config);
+			jpaProject.setUpdater(new AsynchronousJpaProjectUpdater(jpaProject));
+			return jpaProject;
 		}
 
 		public void synchronizeJpaFiles(IResourceDelta delta) throws CoreException {

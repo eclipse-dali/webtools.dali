@@ -229,7 +229,7 @@ public interface JpaProject extends JpaNode {
 	 * Something in the JPA project has changed, "update" those parts of the
 	 * JPA project that are dependent on other parts of the JPA project.
 	 * This is called when
-	 * - the JPA project is first constructed
+	 * - The JPA project updater is changed {@link JpaProject#setUpdater(Updater)}
 	 * - anything in the JPA project changes
 	 * - the JPA project's database connection is changed, opened, or closed
 	 */
@@ -262,7 +262,7 @@ public interface JpaProject extends JpaNode {
 		 * This updater does nothing. Useful for testing.
 		 */
 		final class Null implements Updater {
-			public static final Updater INSTANCE = new Null();
+			private static final Updater INSTANCE = new Null();
 			public static Updater instance() {
 				return INSTANCE;
 			}
