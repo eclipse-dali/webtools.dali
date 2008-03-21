@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.platform.base;
 
 import java.util.Collection;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -77,7 +76,7 @@ public class EntitiesGenerator
 		dialog.create();
 		int returnCode = dialog.open();
 		if (returnCode == Window.OK) {
-			WorkspaceJob runnable = new GenerateEntitiesRunnable(
+			WorkspaceJob genEntitiesRunnable = new GenerateEntitiesRunnable(
 					wizard.getPackageGeneratorConfig(),
 					wizard.getEntityGeneratorConfig(),
 					wizard.getSelectedTables(),
@@ -86,7 +85,20 @@ public class EntitiesGenerator
 					new OverwriteConfirmer(this.getCurrentShell())
 			);
 			
-			runnable.schedule();
+			WorkspaceJob synchClassesRunnable = null;
+			
+			if (wizard.synchronizePersistenceXml()) {
+				// we currently only support *one* persistence.xml file per project
+				PersistenceXml persistenceXml = this.project.rootContext().persistenceXml();
+				if (persistenceXml != null) {
+					//TODO casting to IFile - just trying to get rid of all compiler errors for now
+					synchClassesRunnable = new SynchronizeClassesJob((IFile) persistenceXml.resource());
+				}
+			}
+			genEntitiesRunnable.schedule();
+			if (synchClassesRunnable != null) {
+				synchClassesRunnable.schedule();
+			}
 		}
 	}
 	
@@ -100,9 +112,7 @@ public class EntitiesGenerator
 		private final PackageGenerator.Config packageConfig;
 		private final EntityGenerator.Config entityConfig;
 		private final Collection<Table> selectedTables;
-		private final boolean synchronizePersistenceXml;
 		private final EntityGenerator.OverwriteConfirmer overwriteConfirmer;
-		private final JpaProject project;
 		
 		GenerateEntitiesRunnable(
 				PackageGenerator.Config packageConfig,
@@ -116,27 +126,13 @@ public class EntitiesGenerator
 			this.packageConfig = packageConfig;
 			this.entityConfig = entityConfig;
 			this.selectedTables = selectedTables;
-			this.synchronizePersistenceXml = synchronizePersistenceXml;
 			this.overwriteConfirmer = overwriteConfirmer;
-			this.project = project;
 			setRule(project.project());
 		}
 
 		@Override
 		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-			PackageGenerator.generateEntities(this.packageConfig, this.entityConfig, this.selectedTables, this.overwriteConfirmer, monitor);
-			//force resourceChangeEvents to be posted before synchronizing persistence.xml
-			ResourcesPlugin.getWorkspace().checkpoint(false);
-			if (this.synchronizePersistenceXml) {
-				// we currently only support *one* persistence.xml file per project
-				PersistenceXml persistenceXml = this.project.rootContext().persistenceXml();
-				if (persistenceXml != null) {
-					//TODO casting to IFile - just trying to get rid of all compiler errors for now
-					SynchronizeClassesJob job = new SynchronizeClassesJob((IFile) persistenceXml.resource());
-					job.schedule();
-				}
-			}
-			
+			PackageGenerator.generateEntities(this.packageConfig, this.entityConfig, this.selectedTables, this.overwriteConfirmer, monitor);			
 			return Status.OK_STATUS;
 		}
 
@@ -297,4 +293,6 @@ public class EntitiesGenerator
 			return this.noToAll;
 		}
 	}
+
+
 }

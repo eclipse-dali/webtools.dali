@@ -12,18 +12,18 @@ package org.eclipse.jpt.core.internal.synch;
 import java.io.IOException;
 import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.WorkspaceJob;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
+import org.eclipse.jpt.core.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
-import org.eclipse.jpt.core.resource.persistence.PersistenceResourceModel;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
@@ -32,7 +32,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
  * Synchronizes the lists of persistent classes in a persistence unit and a 
  * persistence project.
  */
-public class SynchronizeClassesJob extends Job
+public class SynchronizeClassesJob extends WorkspaceJob
 {
 	private IFile persistenceXmlFile;
 	
@@ -44,23 +44,20 @@ public class SynchronizeClassesJob extends Job
 	}
 	
 	@Override
-	protected IStatus run(IProgressMonitor monitor) {
-		monitor.beginTask(JptCoreMessages.SYNCHRONIZING_CLASSES_TASK, 150);
+	public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+		monitor.beginTask(JptCoreMessages.SYNCHRONIZING_CLASSES_TASK, 100);
 		
 		if (monitor.isCanceled()) {
 			return Status.CANCEL_STATUS;
 		}
 		
-		JpaFile jpaFile = JptCorePlugin.jpaFile(this.persistenceXmlFile);
-		PersistenceResourceModel persistenceResourceModel = (PersistenceResourceModel) jpaFile.getResourceModel();
-		PersistenceResource persistenceResource;
-		try {
-			persistenceResource = (PersistenceResource) persistenceResourceModel.resource();
-		}
-		catch (ClassCastException cce) {
-			return new Status(IStatus.ERROR, JptCorePlugin.PLUGIN_ID, JptCoreMessages.INVALID_PERSISTENCE_XML_CONTENT);
-		}
+		JpaProject jpaProject = JptCorePlugin.jpaProject(this.persistenceXmlFile.getProject());
+
+		PersistenceArtifactEdit persistenceArtifactEdit = PersistenceArtifactEdit.getArtifactEditForWrite(this.persistenceXmlFile.getProject());
+		PersistenceResource persistenceResource = persistenceArtifactEdit.getResource(this.persistenceXmlFile);
 		
+		monitor.worked(20);
+
 		XmlPersistence persistence = persistenceResource.getPersistence();
 		
 		if (persistence == null) {
@@ -80,17 +77,21 @@ public class SynchronizeClassesJob extends Job
 		}
 		
 		persistenceUnitResource.getClasses().clear();
-		JpaProject jpaProject = jpaFile.jpaProject();
 		
+		monitor.worked(20);
+
 		//TODO njh - should be checking to see if the reference is necessary
 		//			ref is not necessary if defined in the XML, see commented code below
-		for (Iterator<IType> stream = jpaProject.annotatedClasses(); stream.hasNext(); ) {
+		Iterator<IType> stream = jpaProject.annotatedClasses();
+		
+		monitor.worked(20);
+		while (stream.hasNext()) {
 			XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 			classRef.setJavaClass(stream.next().getFullyQualifiedName());
 			persistenceUnitResource.getClasses().add(classRef);
 		}
 		
-		monitor.worked(50);
+		monitor.worked(20);
 		
 		try {
 			persistenceResource.save(null);
@@ -98,7 +99,11 @@ public class SynchronizeClassesJob extends Job
 		catch (IOException ioe) {
 			return new Status(IStatus.ERROR, JptCorePlugin.PLUGIN_ID, JptCoreMessages.ERROR_WRITING_FILE, ioe);
 		}
-		
+		finally {
+			persistenceArtifactEdit.dispose();			
+			monitor.done();
+		}
+
 		return Status.OK_STATUS;
 	}
 }
