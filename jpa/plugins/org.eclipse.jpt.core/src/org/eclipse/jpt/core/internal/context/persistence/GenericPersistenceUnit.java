@@ -312,7 +312,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		return impliedMappingFileRef;
 	}
 	
-	public MappingFileRef setImpliedMappingFileRef() {
+	protected MappingFileRef setImpliedMappingFileRef() {
 		if (impliedMappingFileRef != null) {
 			throw new IllegalStateException("The implied mapping file ref is already set.");
 		}
@@ -322,7 +322,7 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		return mappingFileRef;
 	}
 	
-	public void unsetImpliedMappingFileRef() {
+	protected void unsetImpliedMappingFileRef() {
 		if (impliedMappingFileRef == null) {
 			throw new IllegalStateException("The implie mapping file ref is already unset.");
 		}
@@ -404,30 +404,22 @@ public class GenericPersistenceUnit extends AbstractPersistenceJpaContextNode
 		return impliedClassRefs.size();
 	}
 	
-	public ClassRef addImpliedClassRef(String className) {
+	protected ClassRef addImpliedClassRef(String className) {
 		return addImpliedClassRef(impliedClassRefs.size(), className);
 	}
 	
-	public ClassRef addImpliedClassRef(int index, String className) {
+	protected ClassRef addImpliedClassRef(int index, String className) {
 		ClassRef classRef = buildClassRef(className);
 		addItemToList(index, classRef, impliedClassRefs, IMPLIED_CLASS_REF_LIST);
 		return classRef;
 	}
 	
-	public void removeImpliedClassRef(ClassRef classRef) {
+	protected void removeImpliedClassRef(ClassRef classRef) {
 		removeImpliedClassRef(impliedClassRefs.indexOf(classRef));
 	}
 	
-	public void removeImpliedClassRef(int index) {
+	protected void removeImpliedClassRef(int index) {
 		removeItemFromList(index, impliedClassRefs, IMPLIED_CLASS_REF_LIST);
-	}
-	
-	protected void addImpliedClassRef_(ClassRef classRef) {
-		addImpliedClassRef_(impliedClassRefs.size(), classRef);
-	}
-	
-	protected void addImpliedClassRef_(int index, ClassRef classRef) {
-		addItemToList(index, classRef, impliedClassRefs, IMPLIED_CLASS_REF_LIST);
 	}
 	
 	

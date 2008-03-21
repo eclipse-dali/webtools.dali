@@ -226,16 +226,6 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	 */
 	MappingFileRef getImpliedMappingFileRef();
 	
-	/**
-	 * Adds the implied mapping file ref
-	 */
-	MappingFileRef setImpliedMappingFileRef();
-	
-	/**
-	 * Removes the implied mapping file ref
-	 */
-	void unsetImpliedMappingFileRef();
-	
 	
 	// **************** class refs *********************************************
 	
@@ -308,28 +298,6 @@ public interface PersistenceUnit extends PersistenceJpaContextNode, JpaStructure
 	 * Return the number of implied class refs.
 	 */
 	int impliedClassRefsSize();
-	
-	/**
-	 * Add an implied class ref to the persistence unit and return the object 
-	 * representing it.
-	 */
-	ClassRef addImpliedClassRef(String className);
-	
-	/**
-	 * Add an implied class ref to the persistence unit at the specified index and 
-	 * return the object representing it.
-	 */
-	ClassRef addImpliedClassRef(int index, String className);
-	
-	/**
-	 * Remove the implied class ref from the persistence unit.
-	 */
-	void removeImpliedClassRef(ClassRef classRef);
-	
-	/**
-	 * Remove the implied class ref at the specified index from the persistence unit.
-	 */
-	void removeImpliedClassRef(int index);
 	
 	
 	// **************** exclude unlisted classes *******************************
