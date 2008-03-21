@@ -33,6 +33,11 @@ import org.eclipse.swt.widgets.Composite;
  * | | TableComposite                                                        | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | IdClassComposite                                                      | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
  * |                                                                           |
  * | - v Attribute Overrides ------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
@@ -74,6 +79,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see BaseJpaUiFactory - The factory creating this pane
  * @see EntityNameComposite
  * @see InheritanceComposite
+ * @see IdClassComposite
  * @see OverridesComposite
  * @see SecondaryTablesComposite
  * @see TableComposite
@@ -115,7 +121,7 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 	private void initializeAttributeOverridesPane(Composite container) {
 
 		container = buildCollapsableSection(
-			container,
+			buildSubPane(container, 5),
 			JptUiMappingsMessages.AttributeOverridesComposite_attributeOverrides
 		);
 
@@ -136,7 +142,13 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 		new TableComposite(
 			this,
 			buildTableHolder(),
-			buildSubPane(container, 5)
+			container
+		);
+
+		// Primary Key Class widgets
+		new IdClassComposite(
+			this,
+			buildSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin)
 		);
 	}
 

@@ -17,8 +17,17 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
+ * Here the layout of this pane:
+ * <pre>
+ * -----------------------------------------------------------------------------
+ * |                                                                           |
+ * | IdClassComposite                                                          |
+ * |                                                                           |
+ * -----------------------------------------------------------------------------</pre>
+ *
  * @see MappedSuperclass
  * @see BaseJpaUiFactory - The factory creating this pane
+ * @see IdClassComposite
  *
  * @version 2.0
  * @since 2.0
@@ -40,38 +49,13 @@ public class MappedSuperclassComposite extends AbstractFormPane<MappedSuperclass
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-
-//	private ComboViewer buildAccessTypeCombo(Composite parent) {
-//		ComboViewer viewer = new ComboViewer(parent, SWT.READ_ONLY);
-//		viewer.add(AccessType.VALUES.toArray());
-//		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
-//			public void selectionChanged(SelectionChangedEvent event) {
-//				if (populating) {
-//					return;
-//				}
-//				if (event.getSelection() instanceof StructuredSelection) {
-//					StructuredSelection selection = (StructuredSelection) event.getSelection();
-//					editingDomain.getCommandStack().execute(SetCommand.create(editingDomain, persistentType, OrmPackage.eINSTANCE.getPersistentType_AccessType(), selection.getFirstElement()));
-//				}
-//			}
-//		});
-//		return viewer;
-//	}
-
-
+	/*
+	 * (non-Javadoc)
+	 */
 	@Override
-	protected void initializeLayout(Composite composite) {
+	protected void initializeLayout(Composite container) {
 
-//		Label accessTypeLabel = new Label(composite, SWT.LEFT);
-//		accessTypeLabel.setText(DaliUiMessages.MappedSuperclassComposite_accessType);
-//		this.accessTypeComboViewer = buildAccessTypeCombo(composite);
-//		//eventually this will be enabled if editing xml instead of java
-//		this.accessTypeComboViewer.getCombo().setEnabled(false);
-//		GridData gridData = new GridData();
-//		gridData.horizontalAlignment = GridData.FILL;
-//		gridData.grabExcessHorizontalSpace = true;
-//		this.accessTypeComboViewer.getCombo().setLayoutData(gridData);
-//		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.accessTypeComboViewer.getCombo(), IDaliHelpContextIds.ENTITY_ACCESS_TYPE);
-
+		// Primary Key Class widgets
+		new IdClassComposite(this, container);
 	}
 }
