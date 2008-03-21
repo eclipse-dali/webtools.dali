@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.context.QueryHolder;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.NewNameDialog;
 import org.eclipse.jpt.ui.internal.widgets.NewNameDialogBuilder;
@@ -70,15 +70,16 @@ import org.eclipse.ui.part.PageBook;
  * @see Query
  * @see NamedNativeQuery
  * @see NamedQuery
- * @see EntityComposite - The parent container
+ * @see AbstractEntityComposite - The parent container
  * @see NamedNativeQueryPropertyComposite
  * @see NamedQueryPropertyComposite
  *
  * @version 2.0
  * @since 2.0
  */
-public class QueriesComposite extends AbstractFormPane<QueryHolder>
+public class QueriesComposite extends AbstractPane<QueryHolder>
 {
+	private AddRemoveListPane<QueryHolder> listPane;
 	private NamedNativeQueryPropertyComposite namedNativeQueryPane;
 	private NamedQueryPropertyComposite namedQueryPane;
 	private WritablePropertyValueModel<Query> queryHolder;
@@ -89,7 +90,7 @@ public class QueriesComposite extends AbstractFormPane<QueryHolder>
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	public QueriesComposite(AbstractFormPane<? extends QueryHolder> parentPane,
+	public QueriesComposite(AbstractPane<? extends QueryHolder> parentPane,
 	                        Composite parent) {
 
 		super(parentPane, parent);
@@ -139,11 +140,73 @@ public class QueriesComposite extends AbstractFormPane<QueryHolder>
 		};
 	}
 
+	private AddRemoveListPane<QueryHolder> buildListPane(Composite container) {
+
+		return new AddRemoveListPane<QueryHolder>(
+			this,
+			container,
+			buildQueriesAdapter(),
+			buildDisplayableQueriesListHolder(),
+			queryHolder,
+			buildQueriesListLabelProvider(),
+			JpaHelpContextIds.MAPPING_NAMED_QUERIES
+		)
+		{
+			@Override
+			protected void addCustomButtonAfterAddButton(Composite container,
+			                                             String helpId) {
+
+				Button button = buildButton(
+					container,
+					JptUiMappingsMessages.QueriesComposite_addNamedNativeQuery,
+					helpId,
+					buildNewNamedNativeQueryAction(getSelectionModel())
+				);
+
+				addAlignRight(button);
+			}
+		};
+	}
+
+	private ListValueModel<NamedNativeQuery> buildNamedNativeQueriesListHolder() {
+		return new ListAspectAdapter<QueryHolder, NamedNativeQuery>(
+			getSubjectHolder(),
+			QueryHolder.NAMED_NATIVE_QUERIES_LIST)
+		{
+			@Override
+			protected ListIterator<NamedNativeQuery> listIterator_() {
+				return subject.namedNativeQueries();
+			}
+
+			@Override
+			protected int size_() {
+				return subject.namedNativeQueriesSize();
+			}
+		};
+	}
+
 	private PropertyValueModel<NamedNativeQuery> buildNamedNativeQueryHolder() {
 		return new TransformationPropertyValueModel<Query, NamedNativeQuery>(queryHolder) {
 			@Override
 			protected NamedNativeQuery transform_(Query value) {
 				return (value instanceof NamedNativeQuery) ? (NamedNativeQuery) value : null;
+			}
+		};
+	}
+
+	private ListValueModel<NamedQuery> buildNamedQueriesListHolder() {
+		return new ListAspectAdapter<QueryHolder, NamedQuery>(
+			getSubjectHolder(),
+			QueryHolder.NAMED_QUERIES_LIST)
+		{
+			@Override
+			protected ListIterator<NamedQuery> listIterator_() {
+				return subject.namedQueries();
+			}
+
+			@Override
+			protected int size_() {
+				return subject.namedQueriesSize();
 			}
 		};
 	}
@@ -207,7 +270,6 @@ public class QueriesComposite extends AbstractFormPane<QueryHolder>
 			}
 		};
 	}
-
 	private Adapter buildQueriesAdapter() {
 
 		return new AddRemoveListPane.AbstractAdapter() {
@@ -254,39 +316,6 @@ public class QueriesComposite extends AbstractFormPane<QueryHolder>
 		list.add(buildNamedQueriesListHolder());
 		list.add(buildNamedNativeQueriesListHolder());
 		return new CompositeListValueModel<ListValueModel<? extends Query>, Query>(list);
-	}
-
-	private ListValueModel<NamedQuery> buildNamedQueriesListHolder() {
-		return new ListAspectAdapter<QueryHolder, NamedQuery>(
-			getSubjectHolder(),
-			QueryHolder.NAMED_QUERIES_LIST)
-		{
-			@Override
-			protected ListIterator<NamedQuery> listIterator_() {
-				return subject.namedQueries();
-			}
-
-			@Override
-			protected int size_() {
-				return subject.namedQueriesSize();
-			}
-		};
-	}
-	private ListValueModel<NamedNativeQuery> buildNamedNativeQueriesListHolder() {
-		return new ListAspectAdapter<QueryHolder, NamedNativeQuery>(
-			getSubjectHolder(),
-			QueryHolder.NAMED_NATIVE_QUERIES_LIST)
-		{
-			@Override
-			protected ListIterator<NamedNativeQuery> listIterator_() {
-				return subject.namedNativeQueries();
-			}
-
-			@Override
-			protected int size_() {
-				return subject.namedNativeQueriesSize();
-			}
-		};
 	}
 
 	private ILabelProvider buildQueriesListLabelProvider() {
@@ -347,6 +376,15 @@ public class QueriesComposite extends AbstractFormPane<QueryHolder>
 	 * (non-Javadoc)
 	 */
 	@Override
+	public void enableWidgets(boolean enabled) {
+		super.enableWidgets(enabled);
+		listPane.enableWidgets(enabled);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
 	protected void initialize() {
 		super.initialize();
 		queryHolder = buildQueryHolder();
@@ -358,13 +396,8 @@ public class QueriesComposite extends AbstractFormPane<QueryHolder>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		container = buildTitledPane(
-			container,
-			JptUiMappingsMessages.QueriesComposite_groupBox
-		);
-
 		// List pane
-		initializeListPane(container);
+		listPane = buildListPane(container);
 
 		// Property pane
 		PageBook pageBook = new PageBook(container, SWT.NULL);
@@ -385,34 +418,6 @@ public class QueriesComposite extends AbstractFormPane<QueryHolder>
 		);
 
 		installPaneSwitcher(pageBook);
-	}
-
-	private void initializeListPane(Composite container) {
-
-		new AddRemoveListPane<QueryHolder>(
-			this,
-			container,
-			buildQueriesAdapter(),
-			buildDisplayableQueriesListHolder(),
-			queryHolder,
-			buildQueriesListLabelProvider(),
-			JpaHelpContextIds.MAPPING_NAMED_QUERIES
-		)
-		{
-			@Override
-			protected void addCustomButtonAfterAddButton(Composite container,
-			                                             String helpId) {
-
-				Button button = buildButton(
-					container,
-					JptUiMappingsMessages.QueriesComposite_addNamedNativeQuery,
-					helpId,
-					buildNewNamedNativeQueryAction(getSelectionModel())
-				);
-
-				addAlignRight(button);
-			}
-		};
 	}
 
 	private void installPaneSwitcher(PageBook pageBook) {

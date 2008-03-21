@@ -159,7 +159,7 @@ public abstract class AbstractEntityComposite<T extends Entity> extends Abstract
 			JptUiMappingsMessages.IdMappingComposite_primaryKeyGeneration
 		);
 
-		new GeneratorsComposite<Entity>(this, container);
+		new GeneratorsComposite(this, container);
 	}
 
 	private void initializeInheritancePane(Composite container) {

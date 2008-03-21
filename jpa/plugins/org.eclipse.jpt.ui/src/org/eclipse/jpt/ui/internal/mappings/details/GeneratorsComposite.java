@@ -51,7 +51,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class GeneratorsComposite<T extends GeneratorHolder> extends AbstractPane<T>
+public class GeneratorsComposite extends AbstractPane<GeneratorHolder>
 {
 	private WritablePropertyValueModel<Boolean> sequenceGeneratorExpansionStateHolder;
 	private WritablePropertyValueModel<Boolean> tableGeneratorExpansionStateHolder;
@@ -62,7 +62,7 @@ public class GeneratorsComposite<T extends GeneratorHolder> extends AbstractPane
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public GeneratorsComposite(AbstractPane<? extends T> parentPane,
+	public GeneratorsComposite(AbstractPane<? extends GeneratorHolder> parentPane,
 	                           Composite parent) {
 
 		super(parentPane, parent, false);

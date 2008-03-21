@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class NamedQueryPropertyComposite extends AbstractFormPane<NamedQuery>
+public class NamedQueryPropertyComposite extends AbstractPane<NamedQuery>
 {
 	/**
 	 * Creates a new <code>NamedQueryPropertyComposite</code>.
@@ -52,7 +52,7 @@ public class NamedQueryPropertyComposite extends AbstractFormPane<NamedQuery>
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public NamedQueryPropertyComposite(AbstractFormPane<?> parentPane,
+	public NamedQueryPropertyComposite(AbstractPane<?> parentPane,
 	                                   PropertyValueModel<? extends NamedQuery> subjectHolder,
 	                                   Composite parent) {
 

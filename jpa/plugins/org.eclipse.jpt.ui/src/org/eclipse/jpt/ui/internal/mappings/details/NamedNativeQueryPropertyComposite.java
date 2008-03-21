@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -55,7 +55,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class NamedNativeQueryPropertyComposite extends AbstractFormPane<NamedNativeQuery>
+public class NamedNativeQueryPropertyComposite extends AbstractPane<NamedNativeQuery>
 {
 	private ClassChooserPane<NamedNativeQuery> resultClassChooserPane;
 
@@ -66,7 +66,7 @@ public class NamedNativeQueryPropertyComposite extends AbstractFormPane<NamedNat
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public NamedNativeQueryPropertyComposite(AbstractFormPane<?> parentPane,
+	public NamedNativeQueryPropertyComposite(AbstractPane<?> parentPane,
 	                                         PropertyValueModel<? extends NamedNativeQuery> subjectHolder,
 	                                         Composite parent) {
 

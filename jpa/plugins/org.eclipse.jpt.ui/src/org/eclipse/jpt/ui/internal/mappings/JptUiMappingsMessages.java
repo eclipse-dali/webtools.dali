@@ -203,7 +203,6 @@ public class JptUiMappingsMessages extends NLS {
 	public static String QueriesComposite_editNamedQueryDescription;
 	public static String QueriesComposite_editNamedQueryDescriptionTitle;
 	public static String QueriesComposite_editNamedQueryTitle;
-	public static String QueriesComposite_groupBox;
 	public static String QueriesComposite_label;
 	public static String QueryHintsComposite_nameColumn;
 	public static String QueryHintsComposite_valueColumn;

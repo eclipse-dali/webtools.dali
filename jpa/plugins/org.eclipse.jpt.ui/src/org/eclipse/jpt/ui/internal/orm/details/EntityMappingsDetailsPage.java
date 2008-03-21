@@ -17,7 +17,6 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.AbstractJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
-import org.eclipse.jpt.ui.internal.mappings.details.QueriesComposite;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
@@ -51,7 +50,12 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
- * | | QueriesComposite                                                      | |
+ * | | OrmGeneratorsComposite                                                | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | OrmQueriesComposite                                                   | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
@@ -60,9 +64,10 @@ import org.eclipse.swt.widgets.Composite;
  * @see EntityMappingsDetailsPage - The parent container
  * @see CatalogCombo
  * @see EnumFormComboViewer
+ * @see OrmGeneratorsComposite
  * @see OrmPackageChooser
+ * @see OrmQueriesComposite
  * @see PersistenceUnitMetadataComposite
- * @see QueriesComposite
  * @see SchemaCombo
  *
  * @version 2.0
@@ -229,7 +234,16 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 			buildSubPane(container, 5)
 		);
 
-		// Queries
-		new QueriesComposite(this, container);
+		// Generators pane
+		new OrmGeneratorsComposite(
+			this,
+			buildSubPane(container, 5)
+		);
+
+		// Queries pane
+		new OrmQueriesComposite(
+			this,
+			buildSubPane(container, 5)
+		);
 	}
 }
