@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.context.Query;
@@ -78,7 +77,7 @@ import org.eclipse.ui.part.PageBook;
  * @version 2.0
  * @since 2.0
  */
-public class QueriesComposite extends AbstractFormPane<Entity>
+public class QueriesComposite extends AbstractFormPane<QueryHolder>
 {
 	private NamedNativeQueryPropertyComposite namedNativeQueryPane;
 	private NamedQueryPropertyComposite namedQueryPane;
@@ -90,7 +89,7 @@ public class QueriesComposite extends AbstractFormPane<Entity>
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	public QueriesComposite(AbstractFormPane<? extends Entity> parentPane,
+	public QueriesComposite(AbstractFormPane<? extends QueryHolder> parentPane,
 	                        Composite parent) {
 
 		super(parentPane, parent);
@@ -256,7 +255,7 @@ public class QueriesComposite extends AbstractFormPane<Entity>
 		list.add(buildNamedNativeQueriesListHolder());
 		return new CompositeListValueModel<ListValueModel<? extends Query>, Query>(list);
 	}
-	
+
 	private ListValueModel<NamedQuery> buildNamedQueriesListHolder() {
 		return new ListAspectAdapter<QueryHolder, NamedQuery>(
 			getSubjectHolder(),

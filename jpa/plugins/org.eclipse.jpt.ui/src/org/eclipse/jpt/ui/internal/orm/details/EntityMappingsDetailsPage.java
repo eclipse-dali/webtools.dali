@@ -17,6 +17,7 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.AbstractJpaDetailsPage;
 import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
+import org.eclipse.jpt.ui.internal.mappings.details.QueriesComposite;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
@@ -48,15 +49,21 @@ import org.eclipse.swt.widgets.Composite;
  * | | PersistenceUnitMetadataComposite                                      | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | QueriesComposite                                                      | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see EntityMappings
  * @see EntityMappingsDetailsPage - The parent container
- * @see PersistenceUnitMetadataComposite
- * @see OrmPackageChooser
  * @see CatalogCombo
- * @see SchemaCombo
  * @see EnumFormComboViewer
+ * @see OrmPackageChooser
+ * @see PersistenceUnitMetadataComposite
+ * @see QueriesComposite
+ * @see SchemaCombo
  *
  * @version 2.0
  * @since 2.0
@@ -221,5 +228,8 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 			buildPersistentUnitMetadaHolder(),
 			buildSubPane(container, 5)
 		);
+
+		// Queries
+		new QueriesComposite(this, container);
 	}
 }
