@@ -45,7 +45,7 @@ public class SynchronizeClassesJob extends WorkspaceJob
 	
 	@Override
 	public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-		monitor.beginTask(JptCoreMessages.SYNCHRONIZING_CLASSES_TASK, 100);
+		monitor.beginTask(JptCoreMessages.SYNCHRONIZING_CLASSES_TASK, 200);
 		
 		if (monitor.isCanceled()) {
 			return Status.CANCEL_STATUS;
@@ -56,7 +56,7 @@ public class SynchronizeClassesJob extends WorkspaceJob
 		PersistenceArtifactEdit persistenceArtifactEdit = PersistenceArtifactEdit.getArtifactEditForWrite(this.persistenceXmlFile.getProject());
 		PersistenceResource persistenceResource = persistenceArtifactEdit.getResource(this.persistenceXmlFile);
 		
-		monitor.worked(20);
+		monitor.worked(25);
 
 		XmlPersistence persistence = persistenceResource.getPersistence();
 		
@@ -78,20 +78,19 @@ public class SynchronizeClassesJob extends WorkspaceJob
 		
 		persistenceUnitResource.getClasses().clear();
 		
-		monitor.worked(20);
+		monitor.worked(25);
 
 		//TODO njh - should be checking to see if the reference is necessary
 		//			ref is not necessary if defined in the XML, see commented code below
-		Iterator<IType> stream = jpaProject.annotatedClasses();
 		
-		monitor.worked(20);
-		while (stream.hasNext()) {
+		
+		for (Iterator<IType> stream = jpaProject.annotatedClasses(); stream.hasNext(); ) {
 			XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 			classRef.setJavaClass(stream.next().getFullyQualifiedName());
 			persistenceUnitResource.getClasses().add(classRef);
 		}
 		
-		monitor.worked(20);
+		monitor.worked(100);
 		
 		try {
 			persistenceResource.save(null);
