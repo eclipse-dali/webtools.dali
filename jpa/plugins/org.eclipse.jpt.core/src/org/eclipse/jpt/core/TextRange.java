@@ -107,7 +107,7 @@ public interface TextRange {
 		}
 		@Override
 		public String toString() {
-			return "ITextRange.Empty";
+			return "TextRange.Empty";
 		}
 	}
 
