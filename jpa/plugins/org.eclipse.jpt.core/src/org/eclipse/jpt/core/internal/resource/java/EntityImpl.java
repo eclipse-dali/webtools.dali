@@ -73,7 +73,7 @@ public class EntityImpl extends AbstractResourceAnnotation<Type> implements Enti
 	}
 
 	protected String name(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+		return this.nameAdapter.value(astRoot);
 	}
 
 	//*********** static methods ****************

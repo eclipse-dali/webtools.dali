@@ -70,7 +70,7 @@ public class OrderByImpl extends AbstractResourceAnnotation<Attribute> implement
 	}
 	
 	protected String value(CompilationUnit astRoot) {
-		return this.valueAdapter.getValue(astRoot);
+		return this.valueAdapter.value(astRoot);
 	}
 	
 	// ********** static methods **********

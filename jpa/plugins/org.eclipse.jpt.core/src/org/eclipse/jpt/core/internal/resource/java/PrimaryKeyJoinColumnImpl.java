@@ -110,7 +110,7 @@ public class PrimaryKeyJoinColumnImpl extends AbstractNamedColumn implements Nes
 	}
 	
 	protected String referencedColumnName(CompilationUnit astRoot) {
-		return this.referencedColumnNameAdapter.getValue(astRoot);
+		return this.referencedColumnNameAdapter.value(astRoot);
 	}
 	
 	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {

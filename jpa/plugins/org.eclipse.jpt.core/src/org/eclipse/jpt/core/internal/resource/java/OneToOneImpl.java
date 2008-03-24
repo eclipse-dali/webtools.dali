@@ -124,15 +124,15 @@ public class OneToOneImpl extends AbstractRelationshipMappingAnnotation implemen
 	public void updateFromJava(CompilationUnit astRoot) {
 		super.updateFromJava(astRoot);
 		this.setOptional(this.optional(astRoot));
-		this.setMappedBy(this.mappedByAdapter.getValue(astRoot));
+		this.setMappedBy(this.mappedByAdapter.value(astRoot));
 	}
 
 	protected String mappedBy(CompilationUnit astRoot) {
-		return this.mappedByAdapter.getValue(astRoot);
+		return this.mappedByAdapter.value(astRoot);
 	}
 	
 	protected Boolean optional(CompilationUnit astRoot) {
-		return this.optionalAdapter.getValue(astRoot);
+		return this.optionalAdapter.value(astRoot);
 	}
 
 

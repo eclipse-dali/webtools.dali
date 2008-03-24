@@ -70,7 +70,7 @@ public class TemporalImpl extends AbstractResourceAnnotation<Attribute> implemen
 	}
 	
 	protected TemporalType value(CompilationUnit astRoot) {
-		return TemporalType.fromJavaAnnotationValue(this.valueAdapter.getValue(astRoot));
+		return TemporalType.fromJavaAnnotationValue(this.valueAdapter.value(astRoot));
 	}
 	
 	// ********** static methods **********

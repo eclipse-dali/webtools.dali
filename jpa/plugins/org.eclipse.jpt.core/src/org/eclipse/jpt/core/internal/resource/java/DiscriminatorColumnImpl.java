@@ -115,11 +115,11 @@ public class DiscriminatorColumnImpl extends AbstractNamedColumn implements Disc
 	}
 
 	protected Integer length(CompilationUnit astRoot) {
-		return this.lengthAdapter.getValue(astRoot);
+		return this.lengthAdapter.value(astRoot);
 	}
 	
 	protected DiscriminatorType discriminatorType(CompilationUnit astRoot) {
-		return DiscriminatorType.fromJavaAnnotationValue(this.discriminatorTypeAdapter.getValue(astRoot));
+		return DiscriminatorType.fromJavaAnnotationValue(this.discriminatorTypeAdapter.value(astRoot));
 	}
 	
 	// ********** static methods **********

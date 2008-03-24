@@ -116,11 +116,11 @@ public class QueryHintImpl extends AbstractResourceAnnotation<Type>
 	}
 	
 	protected String name(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+		return this.nameAdapter.value(astRoot);
 	}
 	
 	protected String value(CompilationUnit astRoot) {
-		return this.valueAdapter.getValue(astRoot);
+		return this.valueAdapter.value(astRoot);
 	}
 
 	// ********** persistence model -> java annotations **********

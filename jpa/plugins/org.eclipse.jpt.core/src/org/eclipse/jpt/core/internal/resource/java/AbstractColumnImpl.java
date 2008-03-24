@@ -196,23 +196,23 @@ public abstract class AbstractColumnImpl extends AbstractNamedColumn implements 
 	}
 	
 	protected String table(CompilationUnit astRoot) {
-		return this.tableAdapter.getValue(astRoot);
+		return this.tableAdapter.value(astRoot);
 	}
 	
 	protected Boolean unique(CompilationUnit astRoot) {
-		return this.uniqueAdapter.getValue(astRoot);
+		return this.uniqueAdapter.value(astRoot);
 	}
 	
 	protected Boolean nullable(CompilationUnit astRoot) {
-		return this.nullableAdapter.getValue(astRoot);
+		return this.nullableAdapter.value(astRoot);
 	}
 	
 	protected Boolean insertable(CompilationUnit astRoot) {
-		return this.insertableAdapter.getValue(astRoot);
+		return this.insertableAdapter.value(astRoot);
 	}
 	
 	protected Boolean updatable(CompilationUnit astRoot) {
-		return this.updatableAdapter.getValue(astRoot);
+		return this.updatableAdapter.value(astRoot);
 	}
 
 }

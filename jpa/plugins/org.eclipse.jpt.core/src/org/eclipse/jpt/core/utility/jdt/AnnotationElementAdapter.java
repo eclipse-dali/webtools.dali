@@ -29,19 +29,19 @@ public interface AnnotationElementAdapter<T> {
 	/**
 	 * Return the value of the adapter's annotation element.
 	 * Return null if the element is not present.
-	 * If the compilation unit is available, #getValue(CompilationUnit)
+	 * If the compilation unit is available, #value(CompilationUnit)
 	 * might be more performant.
-	 * @see #getValue(org.eclipse.jdt.core.dom.CompilationUnit)
+	 * @see #value(org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
-	T getValue();
+	T value();
 
 	/**
 	 * Given the specified compilation unit, return the value of the
 	 * adapter's annotation element.
 	 * Return null if the element is not present.
-	 * @see #getValue()
+	 * @see #value()
 	 */
-	T getValue(CompilationUnit astRoot);
+	T value(CompilationUnit astRoot);
 
 	/**
 	 * Set the value of the adapter's annotation element.

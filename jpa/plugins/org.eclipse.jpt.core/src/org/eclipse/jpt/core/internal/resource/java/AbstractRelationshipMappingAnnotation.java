@@ -98,7 +98,7 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractReso
 	}
 	
 	protected void initializeCascadeTypes(CompilationUnit astRoot) {
-		String[] javaValue = this.cascadeAdapter.getValue(astRoot);
+		String[] javaValue = this.cascadeAdapter.value(astRoot);
 		this.cascadeTypes = CascadeType.fromJavaAnnotationValue(javaValue);	
 	}
 	
@@ -236,15 +236,15 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractReso
 	}
 	
 	protected FetchType fetch(CompilationUnit astRoot) {
-		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot));
+		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.value(astRoot));
 	}
 	
 	protected String targetEntity(CompilationUnit astRoot) {
-		return this.targetEntityAdapter.getValue(astRoot);
+		return this.targetEntityAdapter.value(astRoot);
 	}
 	
 	private void updateCascadeFromJava(CompilationUnit astRoot) {
-		String[] javaValue = this.cascadeAdapter.getValue(astRoot);
+		String[] javaValue = this.cascadeAdapter.value(astRoot);
 		CascadeType[] cascadeTypes = CascadeType.fromJavaAnnotationValue(javaValue);
 		//TODO need to test this, i think it might result in incorrect java
 		setCascadeAll(CollectionTools.contains(cascadeTypes, CascadeType.ALL));

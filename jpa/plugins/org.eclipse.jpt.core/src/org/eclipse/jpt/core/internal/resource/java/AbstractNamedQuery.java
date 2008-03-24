@@ -171,11 +171,11 @@ public abstract class AbstractNamedQuery extends AbstractResourceAnnotation<Type
 	}
 
 	protected String name(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+		return this.nameAdapter.value(astRoot);
 	}
 	
 	protected String query(CompilationUnit astRoot) {
-		return this.queryAdapter.getValue(astRoot);
+		return this.queryAdapter.value(astRoot);
 	}
 	
 	private void updateQueryHintsFromJava(CompilationUnit astRoot) {

@@ -130,11 +130,11 @@ public abstract class AbstractNamedColumn extends AbstractResourceAnnotation<Mem
 	}
 	
 	protected String name(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+		return this.nameAdapter.value(astRoot);
 	}
 	
 	protected String columnDefinition(CompilationUnit astRoot) {
-		return this.columnDefinitionAdapter.getValue(astRoot);
+		return this.columnDefinitionAdapter.value(astRoot);
 	}
 
 }

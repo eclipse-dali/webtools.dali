@@ -100,7 +100,7 @@ public class SequenceGeneratorImpl extends GeneratorImpl implements SequenceGene
 	}
 	
 	protected String sequenceName(CompilationUnit astRoot) {
-		return this.sequenceNameAdapter.getValue(astRoot);
+		return this.sequenceNameAdapter.value(astRoot);
 	}
 
 	// ********** static methods **********

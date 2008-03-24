@@ -84,6 +84,6 @@ public abstract class OverrideImpl
 	}
 	
 	protected String name(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+		return this.nameAdapter.value(astRoot);
 	}
 }

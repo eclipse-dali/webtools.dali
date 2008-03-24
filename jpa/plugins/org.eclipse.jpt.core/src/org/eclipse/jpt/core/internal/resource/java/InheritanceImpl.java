@@ -69,7 +69,7 @@ public class InheritanceImpl extends AbstractResourceAnnotation<Type> implements
 	}
 	
 	protected InheritanceType strategy(CompilationUnit astRoot) {
-		return InheritanceType.fromJavaAnnotationValue(this.strategyAdapter.getValue(astRoot));
+		return InheritanceType.fromJavaAnnotationValue(this.strategyAdapter.value(astRoot));
 	}
 	
 	// ********** static methods **********

@@ -297,22 +297,22 @@ public class TableGeneratorImpl extends GeneratorImpl implements TableGeneratorA
 	}
 
 	protected String table(CompilationUnit astRoot) {
-		return this.tableAdapter.getValue(astRoot);
+		return this.tableAdapter.value(astRoot);
 	}
 	protected String catalog(CompilationUnit astRoot) {
-		return this.catalogAdapter.getValue(astRoot);
+		return this.catalogAdapter.value(astRoot);
 	}
 	protected String schema(CompilationUnit astRoot) {
-		return this.schemaAdapter.getValue(astRoot);
+		return this.schemaAdapter.value(astRoot);
 	}
 	protected String pkColumnName(CompilationUnit astRoot) {
-		return this.pkColumnNameAdapter.getValue(astRoot);
+		return this.pkColumnNameAdapter.value(astRoot);
 	}
 	protected String valueColumnName(CompilationUnit astRoot) {
-		return this.valueColumnNameAdapter.getValue(astRoot);
+		return this.valueColumnNameAdapter.value(astRoot);
 	}
 	protected String pkColumnValue(CompilationUnit astRoot) {
-		return this.pkColumnValueAdapter.getValue(astRoot);
+		return this.pkColumnValueAdapter.value(astRoot);
 	}
 	
 	/**

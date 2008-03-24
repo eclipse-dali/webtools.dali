@@ -210,15 +210,15 @@ public abstract class AbstractTableResource extends AbstractResourceAnnotation<M
 	}
 	
 	protected String name(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+		return this.nameAdapter.value(astRoot);
 	}
 	
 	protected String schema(CompilationUnit astRoot) {
-		return this.schemaAdapter.getValue(astRoot);
+		return this.schemaAdapter.value(astRoot);
 	}
 	
 	protected String catalog(CompilationUnit astRoot) {
-		return this.catalogAdapter.getValue(astRoot);
+		return this.catalogAdapter.value(astRoot);
 	}
 	
 	/**

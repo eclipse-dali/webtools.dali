@@ -102,7 +102,7 @@ public class OneToManyImpl extends AbstractRelationshipMappingAnnotation impleme
 	}
 
 	protected String mappedBy(CompilationUnit astRoot) {
-		return this.mappedByAdapter.getValue(astRoot);
+		return this.mappedByAdapter.value(astRoot);
 	}
 	
 	// ********** static methods **********

@@ -96,11 +96,11 @@ public class GeneratedValueImpl extends AbstractResourceAnnotation<Member> imple
 	}
 
 	protected GenerationType strategy(CompilationUnit astRoot) {
-		return GenerationType.fromJavaAnnotationValue(this.strategyAdapter.getValue(astRoot));
+		return GenerationType.fromJavaAnnotationValue(this.strategyAdapter.value(astRoot));
 	}
 	
 	protected String generator(CompilationUnit astRoot) {
-		return this.generatorAdapter.getValue(astRoot);
+		return this.generatorAdapter.value(astRoot);
 	}
 	
 	// ********** static methods **********

@@ -85,7 +85,7 @@ public class IdClassImpl extends AbstractResourceAnnotation<Type> implements IdC
 	}
 
 	protected String value(CompilationUnit astRoot) {
-		return this.valueAdapter.getValue(astRoot);
+		return this.valueAdapter.value(astRoot);
 	}
 	
 	private String fullyQualifiedClass(CompilationUnit astRoot) {

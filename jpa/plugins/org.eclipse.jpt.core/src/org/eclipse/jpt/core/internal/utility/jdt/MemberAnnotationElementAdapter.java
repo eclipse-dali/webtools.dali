@@ -39,11 +39,11 @@ public class MemberAnnotationElementAdapter<T>
 
 	// ********** AnnotationElementAdapter implementation **********
 
-	public T getValue() {
+	public T value() {
 		return this.daea.getValue(this.member.modifiedDeclaration());
 	}
 
-	public T getValue(CompilationUnit astRoot) {
+	public T value(CompilationUnit astRoot) {
 		return this.daea.getValue(this.member.modifiedDeclaration(astRoot));
 	}
 

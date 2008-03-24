@@ -70,7 +70,7 @@ public class EnumeratedImpl extends AbstractResourceAnnotation<Attribute> implem
 	}
 	
 	protected EnumType value(CompilationUnit astRoot) {
-		return EnumType.fromJavaAnnotationValue(this.valueAdapter.getValue(astRoot));
+		return EnumType.fromJavaAnnotationValue(this.valueAdapter.value(astRoot));
 	}
 	
 	// ********** static methods **********

@@ -177,15 +177,15 @@ public class ColumnImpl extends AbstractColumnImpl implements ColumnAnnotation, 
 	}
 
 	protected Integer length(CompilationUnit astRoot) {
-		return this.lengthAdapter.getValue(astRoot);
+		return this.lengthAdapter.value(astRoot);
 	}	
 	
 	protected Integer precision(CompilationUnit astRoot) {
-		return this.precisionAdapter.getValue(astRoot);
+		return this.precisionAdapter.value(astRoot);
 	}	
 	
 	protected Integer scale(CompilationUnit astRoot) {
-		return this.scaleAdapter.getValue(astRoot);
+		return this.scaleAdapter.value(astRoot);
 	}
 	
 	// ********** static methods **********

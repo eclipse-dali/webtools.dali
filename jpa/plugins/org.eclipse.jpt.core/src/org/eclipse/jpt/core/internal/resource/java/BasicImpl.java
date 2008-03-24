@@ -98,11 +98,11 @@ public class BasicImpl extends AbstractResourceAnnotation<Attribute> implements 
 	}
 	
 	protected FetchType fetch(CompilationUnit astRoot) {
-		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.getValue(astRoot));
+		return FetchType.fromJavaAnnotationValue(this.fetchAdapter.value(astRoot));
 	}
 	
 	protected Boolean optional(CompilationUnit astRoot) {
-		return this.optionalAdapter.getValue(astRoot);
+		return this.optionalAdapter.value(astRoot);
 	}
 	
 	// ********** static methods **********

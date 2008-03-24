@@ -100,7 +100,7 @@ public class ManyToOneImpl extends AbstractRelationshipMappingAnnotation impleme
 	}
 	
 	protected Boolean optional(CompilationUnit astRoot) {
-		return this.optionalAdapter.getValue(astRoot);
+		return this.optionalAdapter.value(astRoot);
 	}
 
 	// ********** static methods **********

@@ -132,15 +132,15 @@ public abstract class GeneratorImpl extends AbstractResourceAnnotation<Member> i
 	}
 
 	protected String name(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+		return this.nameAdapter.value(astRoot);
 	}
 	
 	protected Integer allocationSize(CompilationUnit astRoot) {
-		return this.allocationSizeAdapter.getValue(astRoot);
+		return this.allocationSizeAdapter.value(astRoot);
 	}
 	
 	protected Integer initialValue(CompilationUnit astRoot) {
-		return this.initialValueAdapter.getValue(astRoot);
+		return this.initialValueAdapter.value(astRoot);
 	}
 	
 	// ********** static methods **********

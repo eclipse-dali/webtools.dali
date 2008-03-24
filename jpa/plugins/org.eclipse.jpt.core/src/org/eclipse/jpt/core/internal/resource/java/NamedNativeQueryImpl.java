@@ -158,11 +158,11 @@ public class NamedNativeQueryImpl extends AbstractNamedQuery
 	}
 
 	protected String resultClass(CompilationUnit astRoot) {
-		return this.resultClassAdapter.getValue(astRoot);
+		return this.resultClassAdapter.value(astRoot);
 	}
 	
 	protected String resultSetMapping(CompilationUnit astRoot) {
-		return this.resultSetMappingAdapter.getValue(astRoot);
+		return this.resultSetMappingAdapter.value(astRoot);
 	}
 	
 	protected String fullyQualifiedResultClass(CompilationUnit astRoot) {

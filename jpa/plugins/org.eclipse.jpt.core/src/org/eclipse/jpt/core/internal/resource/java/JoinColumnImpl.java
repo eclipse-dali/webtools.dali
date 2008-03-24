@@ -143,7 +143,7 @@ public class JoinColumnImpl extends AbstractColumnImpl implements NestableJoinCo
 	}
 	
 	protected String referencedColumnName(CompilationUnit astRoot) {
-		return this.referencedColumnNameAdapter.getValue(astRoot);
+		return this.referencedColumnNameAdapter.value(astRoot);
 	}
 	
 	// ********** static methods **********

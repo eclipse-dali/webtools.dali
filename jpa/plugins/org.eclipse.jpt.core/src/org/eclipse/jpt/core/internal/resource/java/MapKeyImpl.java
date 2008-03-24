@@ -74,7 +74,7 @@ public class MapKeyImpl extends AbstractResourceAnnotation<Attribute> implements
 	}
 	
 	protected String name(CompilationUnit astRoot) {
-		return this.nameAdapter.getValue(astRoot);
+		return this.nameAdapter.value(astRoot);
 	}
 	
 	// ********** static methods **********
