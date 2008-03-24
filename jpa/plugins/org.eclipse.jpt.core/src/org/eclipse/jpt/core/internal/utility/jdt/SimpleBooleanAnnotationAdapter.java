@@ -40,11 +40,11 @@ public class SimpleBooleanAnnotationAdapter implements BooleanAnnotationAdapter 
 	}
 
 	public Annotation getAnnotation() {
-		return this.adapter.getAnnotation();
+		return this.adapter.annotation();
 	}
 
 	public Annotation getAnnotation(CompilationUnit astRoot) {
-		return this.adapter.getAnnotation(astRoot);
+		return this.adapter.annotation(astRoot);
 	}
 
 	public boolean getValue() {

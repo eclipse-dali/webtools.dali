@@ -37,11 +37,11 @@ public abstract class AbstractAnnotationAdapter implements AnnotationAdapter {
 
 	// ********** AnnotationAdapter implementation **********
 
-	public Annotation getAnnotation() {
+	public Annotation annotation() {
 		return this.daa.getAnnotation(this.member.modifiedDeclaration());
 	}
 
-	public Annotation getAnnotation(CompilationUnit astRoot) {
+	public Annotation annotation(CompilationUnit astRoot) {
 		return this.daa.getAnnotation(this.member.modifiedDeclaration(astRoot));
 	}
 

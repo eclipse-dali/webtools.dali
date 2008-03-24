@@ -28,18 +28,18 @@ public interface AnnotationAdapter {
 
 	/**
 	 * Return the value of the adapter's annotation.
-	 * If the compilation unit is available, #getAnnotation(CompilationUnit)
+	 * If the compilation unit is available, #annotation(CompilationUnit)
 	 * might be more performant.
-	 * @see #getAnnotation(org.eclipse.jdt.core.dom.CompilationUnit)
+	 * @see #annotation(org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
-	Annotation getAnnotation();
+	Annotation annotation();
 
 	/**
 	 * Given the specified compilation unit, return the value of the
 	 * adapter's annotation.
-	 * @see #getAnnotation()
+	 * @see #annotation()
 	 */
-	Annotation getAnnotation(CompilationUnit astRoot);
+	Annotation annotation(CompilationUnit astRoot);
 
 	/**
 	 * Build a new marker annotation, replacing the original annotation if present.

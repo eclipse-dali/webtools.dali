@@ -50,7 +50,7 @@ public abstract class AbstractResourceAnnotation<E extends Member>
 	}
 	
 	public org.eclipse.jdt.core.dom.Annotation jdtAnnotation(CompilationUnit astRoot) {
-		return getAnnotationAdapter().getAnnotation(astRoot);
+		return getAnnotationAdapter().annotation(astRoot);
 	}
 	
 	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {

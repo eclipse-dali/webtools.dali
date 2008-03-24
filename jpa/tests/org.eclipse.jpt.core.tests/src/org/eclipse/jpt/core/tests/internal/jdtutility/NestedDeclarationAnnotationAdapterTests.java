@@ -39,7 +39,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNotNull(annotation);
 		assertEquals("annot.Bar", annotation.getTypeName().getFullyQualifiedName());
 		assertTrue(annotation.isMarkerAnnotation());
@@ -55,7 +55,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa2 = new NestedDeclarationAnnotationAdapter(daa1, "nestedAnnotation", "annot.Bar");
 		DeclarationAnnotationAdapter daa3 = new NestedDeclarationAnnotationAdapter(daa2, "yana", "annot.Baz");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa3);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNotNull(annotation);
 		assertEquals("annot.Baz", annotation.getTypeName().getFullyQualifiedName());
 		assertTrue(annotation.isMarkerAnnotation());
@@ -69,7 +69,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNull(annotation);
 	}
 
@@ -81,7 +81,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNull(annotation);
 	}
 
@@ -93,7 +93,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNull(annotation);
 	}
 
@@ -106,7 +106,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNull(annotation);
 	}
 
@@ -120,7 +120,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNotNull(annotation);
 
 		aa.removeAnnotation();
@@ -138,7 +138,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar", false);
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNotNull(annotation);
 
 		aa.removeAnnotation();
@@ -155,7 +155,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNull(annotation);
 
 		aa.removeAnnotation();
@@ -172,7 +172,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNull(annotation);
 
 		aa.removeAnnotation();
@@ -190,7 +190,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNull(annotation);
 
 		aa.removeAnnotation();
@@ -209,7 +209,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daaBar = new NestedDeclarationAnnotationAdapter(daaFoo, "nestedAnnotation1", "annot.Bar");
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(daaBar, "nestedAnnotation2", "annot.Baz");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNotNull(annotation);
 
 		aa.removeAnnotation();
@@ -231,7 +231,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daaBar = new NestedDeclarationAnnotationAdapter(daaFoo, "nestedAnnotation1", "annot.Bar", false);
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(daaBar, "nestedAnnotation2", "annot.Baz", false);
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNotNull(annotation);
 
 		aa.removeAnnotation();
@@ -248,7 +248,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNull(annotation);
 
 		aa.newMarkerAnnotation();
@@ -264,7 +264,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", "annot.Bar");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNull(annotation);
 
 		aa.newMarkerAnnotation();
@@ -281,7 +281,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNull(annotation);
 
 		aa.newMarkerAnnotation();
@@ -298,7 +298,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", "annot.Bar");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNull(annotation);
 
 		aa.newMarkerAnnotation();
@@ -315,7 +315,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNull(annotation);
 
 		aa.newMarkerAnnotation();
@@ -332,7 +332,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", "annot.Bar");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNull(annotation);
 
 		aa.newMarkerAnnotation();
@@ -349,7 +349,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNull(annotation);
 
 		aa.newMarkerAnnotation();
@@ -366,7 +366,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", "annot.Bar");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		Annotation annotation = aa.getAnnotation();
+		Annotation annotation = aa.annotation();
 		assertNull(annotation);
 
 		aa.newMarkerAnnotation();
@@ -406,7 +406,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", "annot.Bar");
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(), daa);
-		SingleMemberAnnotation annotation = (SingleMemberAnnotation) aa.getAnnotation();
+		SingleMemberAnnotation annotation = (SingleMemberAnnotation) aa.annotation();
 		assertNull(annotation);
 
 		this.idField().edit(new Member.Editor() {
