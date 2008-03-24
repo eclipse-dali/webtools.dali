@@ -74,7 +74,7 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 
 	// ********** DeclarationAnnotationElementAdapter implementation **********
 
-	public String[] getValue(ModifiedDeclaration declaration) {
+	public String[] value(ModifiedDeclaration declaration) {
 		// ignore the adapter's getValue() - we want the expression
 		return this.resolve(this.adapter.expression(declaration), declaration);
 	}

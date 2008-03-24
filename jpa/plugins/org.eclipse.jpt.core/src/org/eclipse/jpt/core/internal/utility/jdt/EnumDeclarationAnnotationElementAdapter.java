@@ -58,7 +58,7 @@ public class EnumDeclarationAnnotationElementAdapter
 
 	// ********** DeclarationAnnotationElementAdapter implementation **********
 
-	public String getValue(ModifiedDeclaration declaration) {
+	public String value(ModifiedDeclaration declaration) {
 		return this.resolve(this.adapter.expression(declaration));
 	}
 

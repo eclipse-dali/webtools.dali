@@ -32,7 +32,7 @@ public interface DeclarationAnnotationElementAdapter<T> {
 	 * annotation element. Return null or an empty array
 	 * if the element is not present.
 	 */
-	T getValue(ModifiedDeclaration declaration);
+	T value(ModifiedDeclaration declaration);
 
 	/**
 	 * Given the specified declaration, set the value of the

@@ -68,8 +68,8 @@ public class ConversionDeclarationAnnotationElementAdapter<T>
 
 	// ********** DeclarationAnnotationElementAdapter implementation **********
 
-	public T getValue(ModifiedDeclaration declaration) {
-		Expression expression = this.adapter.getValue(declaration);
+	public T value(ModifiedDeclaration declaration) {
+		Expression expression = this.adapter.value(declaration);
 		return this.converter.convert(expression);
 	}
 

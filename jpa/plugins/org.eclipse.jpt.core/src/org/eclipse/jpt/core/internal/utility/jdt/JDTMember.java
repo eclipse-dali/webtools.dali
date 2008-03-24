@@ -295,7 +295,7 @@ public abstract class JDTMember
 	// ********** annotation elements **********
 
 	public <T> T annotationElementValue(DeclarationAnnotationElementAdapter<T> adapter, CompilationUnit astRoot) {
-		return adapter.getValue(this.modifiedDeclaration(astRoot));
+		return adapter.value(this.modifiedDeclaration(astRoot));
 	}
 
 	public <T> T annotationElementValue(DeclarationAnnotationElementAdapter<T> adapter) {

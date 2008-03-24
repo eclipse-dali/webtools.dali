@@ -41,7 +41,7 @@ public class NullDeclarationAnnotationElementAdapter<T>
 		super();
 	}
 
-	public T getValue(ModifiedDeclaration declaration) {
+	public T value(ModifiedDeclaration declaration) {
 		return null;
 	}
 

@@ -84,7 +84,7 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 
 	// ********** DeclarationAnnotationElementAdapter implementation **********
 
-	public E getValue(ModifiedDeclaration declaration) {
+	public E value(ModifiedDeclaration declaration) {
 		// return the expression unmodified
 		return this.expression(declaration);
 	}
