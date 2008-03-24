@@ -90,11 +90,11 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 	}
 
 	public void setValue(E value, ModifiedDeclaration declaration) {
-		this.setValue(value, this.annotationAdapter.getAnnotation(declaration), declaration);
+		this.setValue(value, this.annotationAdapter.annotation(declaration), declaration);
 	}
 
 	public E expression(ModifiedDeclaration declaration) {
-		return this.expression(this.annotationAdapter.getAnnotation(declaration));
+		return this.expression(this.annotationAdapter.annotation(declaration));
 	}
 
 	public ASTNode astNode(ModifiedDeclaration declaration) {

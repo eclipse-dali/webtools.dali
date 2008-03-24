@@ -140,7 +140,7 @@ public class NestedIndexedDeclarationAnnotationAdapter
 			return;
 		}
 
-		Annotation original = this.getAnnotation(declaration);
+		Annotation original = this.annotation(declaration);
 		if (original == null) {
 			this.index = newIndex;
 			this.removeAnnotation(declaration);  // clear out the new location (?)

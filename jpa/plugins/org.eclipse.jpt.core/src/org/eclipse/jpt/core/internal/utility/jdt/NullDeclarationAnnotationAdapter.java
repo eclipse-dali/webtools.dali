@@ -44,7 +44,7 @@ public final class NullDeclarationAnnotationAdapter
 
 	// ********** DeclarationAnnotationAdapter implementation **********
 
-	public Annotation getAnnotation(ModifiedDeclaration declaration) {
+	public Annotation annotation(ModifiedDeclaration declaration) {
 		return null;
 	}
 

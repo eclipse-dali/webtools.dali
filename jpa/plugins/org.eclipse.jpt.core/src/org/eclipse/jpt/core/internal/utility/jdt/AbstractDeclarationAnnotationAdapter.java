@@ -74,7 +74,7 @@ public abstract class AbstractDeclarationAnnotationAdapter implements Declaratio
 
 	// ********** abstract methods **********
 
-	public abstract Annotation getAnnotation(ModifiedDeclaration declaration);
+	public abstract Annotation annotation(ModifiedDeclaration declaration);
 
 	public abstract void removeAnnotation(ModifiedDeclaration declaration);
 

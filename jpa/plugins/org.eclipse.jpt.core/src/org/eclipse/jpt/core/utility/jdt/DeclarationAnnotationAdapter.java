@@ -34,7 +34,7 @@ public interface DeclarationAnnotationAdapter {
 	/**
 	 * Given the specified declaration, return the annotation.
 	 */
-	Annotation getAnnotation(ModifiedDeclaration declaration);
+	Annotation annotation(ModifiedDeclaration declaration);
 
 	/**
 	 * Given the specified declaration, modify it with

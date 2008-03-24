@@ -38,11 +38,11 @@ public abstract class AbstractAnnotationAdapter implements AnnotationAdapter {
 	// ********** AnnotationAdapter implementation **********
 
 	public Annotation annotation() {
-		return this.daa.getAnnotation(this.member.modifiedDeclaration());
+		return this.daa.annotation(this.member.modifiedDeclaration());
 	}
 
 	public Annotation annotation(CompilationUnit astRoot) {
-		return this.daa.getAnnotation(this.member.modifiedDeclaration(astRoot));
+		return this.daa.annotation(this.member.modifiedDeclaration(astRoot));
 	}
 
 	public void newMarkerAnnotation() {

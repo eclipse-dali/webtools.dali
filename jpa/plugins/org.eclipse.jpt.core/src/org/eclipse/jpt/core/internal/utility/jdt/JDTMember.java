@@ -181,7 +181,7 @@ public abstract class JDTMember
 	// ********** annotations **********
 
 	public Annotation annotation(DeclarationAnnotationAdapter adapter, CompilationUnit astRoot) {
-		return adapter.getAnnotation(this.modifiedDeclaration(astRoot));
+		return adapter.annotation(this.modifiedDeclaration(astRoot));
 	}
 
 	public Annotation annotation(DeclarationAnnotationAdapter adapter) {

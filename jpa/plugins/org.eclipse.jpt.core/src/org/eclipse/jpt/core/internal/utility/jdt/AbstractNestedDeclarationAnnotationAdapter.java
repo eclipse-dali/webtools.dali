@@ -60,8 +60,8 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 	// ********** AbstractDeclarationAnnotationAdapter implementation **********
 
 	@Override
-	public Annotation getAnnotation(ModifiedDeclaration declaration) {
-		Annotation outer = this.outerAnnotationAdapter.getAnnotation(declaration);
+	public Annotation annotation(ModifiedDeclaration declaration) {
+		Annotation outer = this.outerAnnotationAdapter.annotation(declaration);
 		if (outer == null) {
 			return null;
 		}
@@ -79,7 +79,7 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 
 	@Override
 	public void removeAnnotation(ModifiedDeclaration declaration) {
-		Annotation outer = this.outerAnnotationAdapter.getAnnotation(declaration);
+		Annotation outer = this.outerAnnotationAdapter.annotation(declaration);
 		if (outer == null) {
 			return;
 		}
@@ -104,13 +104,13 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 	@Override
 	public ASTNode astNode(ModifiedDeclaration declaration) {
 		// if the annotation is missing, return the outer annotation's node
-		Annotation annotation = this.getAnnotation(declaration);
+		Annotation annotation = this.annotation(declaration);
 		return (annotation != null) ? annotation : this.outerAnnotationAdapter.astNode(declaration);
 	}
 
 	@Override
 	protected void addAnnotation(ModifiedDeclaration declaration, Annotation inner) {
-		Annotation outer = this.outerAnnotationAdapter.getAnnotation(declaration);
+		Annotation outer = this.outerAnnotationAdapter.annotation(declaration);
 		if (outer == null) {
 			this.buildNewOuterAnnotation(declaration, inner);
 		} else if (outer.isMarkerAnnotation()) {
