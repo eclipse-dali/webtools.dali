@@ -10,11 +10,11 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.Temporal;
 import org.eclipse.jpt.core.resource.java.TemporalType;
+import org.eclipse.jpt.core.utility.TextRange;
 
 
 public class NullTemporal extends AbstractJavaResourceNode implements Temporal, Annotation

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.tests.internal.jdtutility;
 
 import java.util.Arrays;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.ASTNodeTextRange;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationStringArrayExpressionConverter;
@@ -30,6 +29,7 @@ import org.eclipse.jpt.core.internal.jdtutility.PrimitiveTypeStringExpressionCon
 import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.StringExpressionConverter;
+import org.eclipse.jpt.core.utility.TextRange;
 
 public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 

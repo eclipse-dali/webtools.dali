@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
+import org.eclipse.jpt.core.utility.TextRange;
 
 
 public class OrmCascade extends AbstractOrmJpaContextNode implements Cascade, OrmJpaContextNode

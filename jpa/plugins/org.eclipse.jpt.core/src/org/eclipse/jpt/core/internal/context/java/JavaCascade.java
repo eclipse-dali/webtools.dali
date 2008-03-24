@@ -10,10 +10,10 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
+import org.eclipse.jpt.core.utility.TextRange;
 
 public class JavaCascade extends AbstractJavaJpaContextNode implements Cascade
 {

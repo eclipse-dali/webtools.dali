@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
+import org.eclipse.jpt.core.utility.TextRange;
+
 
 /**
  * Implement this interface for objects that appear in the Structure view

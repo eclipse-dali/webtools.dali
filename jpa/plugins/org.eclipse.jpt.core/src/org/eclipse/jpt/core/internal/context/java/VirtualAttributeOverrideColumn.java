@@ -10,12 +10,12 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.internal.resource.java.NullAbstractColumn;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
+import org.eclipse.jpt.core.utility.TextRange;
 
 
 public class VirtualAttributeOverrideColumn extends NullAbstractColumn implements ColumnAnnotation, Annotation

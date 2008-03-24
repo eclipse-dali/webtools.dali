@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.context.orm;
 
 import java.util.List;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**

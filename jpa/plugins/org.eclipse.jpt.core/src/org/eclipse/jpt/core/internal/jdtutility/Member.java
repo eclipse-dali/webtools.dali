@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IBinding;
-import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.utility.TextRange;
 
 public interface Member {
 

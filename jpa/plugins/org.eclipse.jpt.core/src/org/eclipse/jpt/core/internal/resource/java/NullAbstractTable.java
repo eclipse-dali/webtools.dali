@@ -11,11 +11,11 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
 import org.eclipse.jpt.core.resource.java.UniqueConstraint;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 public abstract class NullAbstractTable extends AbstractJavaResourceNode implements TableAnnotation, Annotation

@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core;
+package org.eclipse.jpt.core.utility;
 
 /**
  * A text range defines the offset into, length of, and line of a piece

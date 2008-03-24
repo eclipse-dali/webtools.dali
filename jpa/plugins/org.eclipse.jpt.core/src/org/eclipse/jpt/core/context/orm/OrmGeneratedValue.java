@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.GeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * 

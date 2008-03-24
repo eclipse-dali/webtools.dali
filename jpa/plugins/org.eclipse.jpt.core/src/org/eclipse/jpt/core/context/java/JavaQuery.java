@@ -11,8 +11,8 @@ package org.eclipse.jpt.core.context.java;
 
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.Query;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * 

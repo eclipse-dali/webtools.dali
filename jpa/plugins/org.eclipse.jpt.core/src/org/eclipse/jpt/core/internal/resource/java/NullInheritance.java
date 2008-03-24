@@ -10,11 +10,11 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.Inheritance;
 import org.eclipse.jpt.core.resource.java.InheritanceType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.utility.TextRange;
 
 
 public class NullInheritance extends AbstractJavaResourceNode implements Inheritance, Annotation

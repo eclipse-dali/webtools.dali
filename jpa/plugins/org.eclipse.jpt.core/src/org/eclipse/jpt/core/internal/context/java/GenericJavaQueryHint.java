@@ -10,11 +10,11 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.QueryHint;
 import org.eclipse.jpt.core.context.java.JavaQuery;
 import org.eclipse.jpt.core.context.java.JavaQueryHint;
 import org.eclipse.jpt.core.resource.java.QueryHintAnnotation;
+import org.eclipse.jpt.core.utility.TextRange;
 
 public class GenericJavaQueryHint extends AbstractJavaJpaContextNode implements JavaQueryHint
 {

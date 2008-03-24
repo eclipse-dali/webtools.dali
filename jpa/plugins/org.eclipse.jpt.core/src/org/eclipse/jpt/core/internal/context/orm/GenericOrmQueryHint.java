@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.QueryHint;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryHint;
 import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
+import org.eclipse.jpt.core.utility.TextRange;
 
 
 public class GenericOrmQueryHint extends AbstractOrmJpaContextNode implements OrmQueryHint

@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.resource.common;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * 

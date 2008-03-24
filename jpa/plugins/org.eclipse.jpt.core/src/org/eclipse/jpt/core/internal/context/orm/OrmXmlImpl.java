@@ -13,7 +13,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
@@ -22,6 +21,7 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class OrmXmlImpl extends AbstractOrmJpaContextNode

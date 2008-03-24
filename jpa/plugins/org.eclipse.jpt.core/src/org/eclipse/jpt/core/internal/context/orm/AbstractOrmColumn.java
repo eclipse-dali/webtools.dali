@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.context.AbstractColumn;
 import org.eclipse.jpt.core.context.orm.OrmAbstractColumn;
 import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAbstractColumn;
+import org.eclipse.jpt.core.utility.TextRange;
 
 
 public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends AbstractOrmNamedColumn<T>

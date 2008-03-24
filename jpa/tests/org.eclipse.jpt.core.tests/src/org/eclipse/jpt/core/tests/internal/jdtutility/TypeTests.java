@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.tests.internal.jdtutility;
 
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.TextRange;
 import org.eclipse.jpt.core.internal.jdtutility.JDTType;
+import org.eclipse.jpt.core.utility.TextRange;
 
 public class TypeTests extends AnnotationTestCase {
 

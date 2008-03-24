@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.resource.java;
 
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.TextRange;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Corresponds to the javax.persistence.TableGenerator annotation
