@@ -140,7 +140,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	// ********** DeclarationAnnotationAdapter implementation **********
 
 	public Annotation annotation(ModifiedDeclaration declaration) {
-		if (this.getIndex() == 0) {
+		if (this.index() == 0) {
 			// check for the stand-alone annotation
 			Annotation standAloneAnnotation = this.standAloneAnnotation(declaration);
 			if (standAloneAnnotation != null) {
@@ -179,7 +179,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	}
 
 	public void removeAnnotation(ModifiedDeclaration declaration) {
-		if (this.getIndex() == 0) {
+		if (this.index() == 0) {
 			// check for the stand-alone annotation
 			if (this.standAloneAnnotationIsPresent(declaration)) {
 				this.removeStandAloneAnnotation(declaration);
@@ -206,12 +206,12 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 
 	// ********** IndexedDeclarationAnnotationAdapter implementation **********
 
-	public int getIndex() {
-		return this.nestedAnnotationAdapter.getIndex();
+	public int index() {
+		return this.nestedAnnotationAdapter.index();
 	}
 
 	public void moveAnnotation(int newIndex, ModifiedDeclaration declaration) {
-		int oldIndex = this.getIndex();
+		int oldIndex = this.index();
 		if (newIndex == oldIndex) {
 			return;
 		}
@@ -244,7 +244,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	 * which may require moving the 0th annotation from "stand-alone" to "nested"
 	 */
 	private Annotation newAnnotation(AnnotationFactory annotationFactory, ModifiedDeclaration declaration) {
-		if (this.getIndex() ==  0) {
+		if (this.index() ==  0) {
 			return this.newZeroAnnotation(annotationFactory, declaration);
 		}
 		if (this.zeroNestedAnnotationIsPresent(declaration)) {

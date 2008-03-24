@@ -126,7 +126,7 @@ public class NestedIndexedDeclarationAnnotationAdapter
 
 	// ********** IndexedDeclarationAnnotationAdapter implementation **********
 
-	public int getIndex() {
+	public int index() {
 		return this.index;
 	}
 

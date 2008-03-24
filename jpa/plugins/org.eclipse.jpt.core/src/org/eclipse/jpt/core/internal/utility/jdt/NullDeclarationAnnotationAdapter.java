@@ -71,7 +71,7 @@ public final class NullDeclarationAnnotationAdapter
 
 	// ********** IndexedDeclarationAnnotationAdapter implementation **********
 
-	public int getIndex() {
+	public int index() {
 		return -1;
 	}
 
