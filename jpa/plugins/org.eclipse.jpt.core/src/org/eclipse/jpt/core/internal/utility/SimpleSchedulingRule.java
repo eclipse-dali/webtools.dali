@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal;
+package org.eclipse.jpt.core.internal.utility;
 
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 
