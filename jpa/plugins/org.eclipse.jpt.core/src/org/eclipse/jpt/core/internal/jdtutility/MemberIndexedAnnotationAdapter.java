@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jdtutility;
 
+import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
+import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.utility.internal.StringTools;

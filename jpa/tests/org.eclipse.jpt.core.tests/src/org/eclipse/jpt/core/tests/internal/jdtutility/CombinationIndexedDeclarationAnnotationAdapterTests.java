@@ -13,13 +13,13 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
-import org.eclipse.jpt.core.internal.jdtutility.AnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.CombinationIndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.IndexedAnnotationAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.MemberIndexedAnnotationAdapter;
+import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
+import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 
 public class CombinationIndexedDeclarationAnnotationAdapterTests extends AnnotationTestCase {
 

@@ -11,14 +11,12 @@ package org.eclipse.jpt.core.tests.internal.jdtutility;
 
 import java.util.Arrays;
 import org.eclipse.jpt.core.internal.jdtutility.ASTNodeTextRange;
-import org.eclipse.jpt.core.internal.jdtutility.AnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationStringArrayExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.BooleanExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.CharacterStringExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.EnumArrayDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.jdtutility.ExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.jdtutility.NestedIndexedDeclarationAnnotationAdapter;
@@ -28,8 +26,10 @@ import org.eclipse.jpt.core.internal.jdtutility.SimpleDeclarationAnnotationAdapt
 import org.eclipse.jpt.core.internal.jdtutility.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.internal.jdtutility.StringExpressionConverter;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.utility.jdt.ExpressionConverter;
 
 public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 
