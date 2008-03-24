@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.emfutility;
+package org.eclipse.jpt.core.internal.utility.emf;
 
 import java.util.Iterator;
 import org.eclipse.core.resources.IFile;

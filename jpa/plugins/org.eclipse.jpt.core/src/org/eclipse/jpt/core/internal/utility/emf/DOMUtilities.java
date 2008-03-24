@@ -8,7 +8,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.internal.emfutility;
+package org.eclipse.jpt.core.internal.utility.emf;
 
 import org.w3c.dom.Node;
 
