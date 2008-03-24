@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
@@ -22,9 +23,10 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.core.internal.jdtutility.AnnotationEditFormatter;
 import org.eclipse.jpt.core.internal.jdtutility.Attribute;
-import org.eclipse.jpt.core.internal.jdtutility.FieldAttribute;
+import org.eclipse.jpt.core.internal.jdtutility.JDTFieldAttribute;
+import org.eclipse.jpt.core.internal.jdtutility.JDTMethodAttribute;
+import org.eclipse.jpt.core.internal.jdtutility.JDTType;
 import org.eclipse.jpt.core.internal.jdtutility.JPTTools;
-import org.eclipse.jpt.core.internal.jdtutility.MethodAttribute;
 import org.eclipse.jpt.core.internal.jdtutility.Type;
 import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.Annotation;
@@ -214,7 +216,7 @@ public class JavaResourcePersistentTypeImpl
 		AnnotationEditFormatter annotationEditFormatter, 
 		CompilationUnit astRoot) {
 		
-		Type type = new Type(nestedType, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
+		Type type = new JDTType(nestedType, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
 		JavaResourcePersistentTypeImpl javaPersistentType = new JavaResourcePersistentTypeImpl(parent, type);
 		javaPersistentType.initialize(astRoot);
 		return javaPersistentType;	
@@ -262,10 +264,10 @@ public class JavaResourcePersistentTypeImpl
 	protected JavaResourcePersistentAttribute createJavaPersistentAttribute(IMember member, CompilationUnit astRoot) {
 		Attribute attribute = null;
 		if (member instanceof IField) {
-			attribute = new FieldAttribute((IField) member, this.modifySharedDocumentCommandExecutorProvider(), this.annotationEditFormatter());
+			attribute = new JDTFieldAttribute((IField) member, this.modifySharedDocumentCommandExecutorProvider(), this.annotationEditFormatter());
 		}
 		else if (member instanceof IMethod) {
-			attribute = new MethodAttribute((IMethod) member, this.modifySharedDocumentCommandExecutorProvider(), this.annotationEditFormatter());
+			attribute = new JDTMethodAttribute((IMethod) member, this.modifySharedDocumentCommandExecutorProvider(), this.annotationEditFormatter());
 		}
 		else {
 			throw new IllegalArgumentException();

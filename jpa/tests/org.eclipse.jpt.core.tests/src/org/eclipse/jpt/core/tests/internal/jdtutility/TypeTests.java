@@ -11,12 +11,12 @@ package org.eclipse.jpt.core.tests.internal.jdtutility;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.TextRange;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.internal.jdtutility.JDTType;
 
 public class TypeTests extends AnnotationTestCase {
 
 	private IType jdtType;
-	private Type testType;
+	private JDTType testType;
 
 
 	public TypeTests(String name) {

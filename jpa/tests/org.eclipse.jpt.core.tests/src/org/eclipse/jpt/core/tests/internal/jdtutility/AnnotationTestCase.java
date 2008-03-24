@@ -27,9 +27,9 @@ import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
-import org.eclipse.jpt.core.internal.jdtutility.FieldAttribute;
-import org.eclipse.jpt.core.internal.jdtutility.MethodAttribute;
-import org.eclipse.jpt.core.internal.jdtutility.Type;
+import org.eclipse.jpt.core.internal.jdtutility.JDTFieldAttribute;
+import org.eclipse.jpt.core.internal.jdtutility.JDTMethodAttribute;
+import org.eclipse.jpt.core.internal.jdtutility.JDTType;
 import org.eclipse.jpt.core.tests.internal.ProjectUtility;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
@@ -223,44 +223,44 @@ public abstract class AnnotationTestCase extends TestCase {
 		return this.javaProject.findType(FULLY_QUALIFIED_TYPE_NAME);
 	}
 
-	protected Type testType() throws JavaModelException {
+	protected JDTType testType() throws JavaModelException {
 		return this.buildType(this.jdtType());
 	}
 
-	protected Type buildType(IType jdtType) {
-		return new Type(jdtType, this.modifySharedDocumentCommandExecutorProvider());
+	protected JDTType buildType(IType jdtType) {
+		return new JDTType(jdtType, this.modifySharedDocumentCommandExecutorProvider());
 	}
 
-	protected FieldAttribute idField() throws JavaModelException {
+	protected JDTFieldAttribute idField() throws JavaModelException {
 		return this.fieldNamed("id");
 	}
 
-	protected FieldAttribute nameField() throws JavaModelException {
+	protected JDTFieldAttribute nameField() throws JavaModelException {
 		return this.fieldNamed("name");
 	}
 
-	protected FieldAttribute fieldNamed(String fieldName) throws JavaModelException {
-		return new FieldAttribute(this.jdtType().getField(fieldName), this.modifySharedDocumentCommandExecutorProvider());
+	protected JDTFieldAttribute fieldNamed(String fieldName) throws JavaModelException {
+		return new JDTFieldAttribute(this.jdtType().getField(fieldName), this.modifySharedDocumentCommandExecutorProvider());
 	}
 
-	protected MethodAttribute idGetMethod() throws JavaModelException {
+	protected JDTMethodAttribute idGetMethod() throws JavaModelException {
 		return this.methodNamed("getId");
 	}
 	
-	protected MethodAttribute idSetMethod() throws JavaModelException {
+	protected JDTMethodAttribute idSetMethod() throws JavaModelException {
 		return this.method("setId", new String[] {"I"});
 	}
 
-	protected MethodAttribute nameGetMethod() throws JavaModelException {
+	protected JDTMethodAttribute nameGetMethod() throws JavaModelException {
 		return this.methodNamed("getName");
 	}
 
-	protected MethodAttribute methodNamed(String methodName) throws JavaModelException {
+	protected JDTMethodAttribute methodNamed(String methodName) throws JavaModelException {
 		return this.method(methodName, EMPTY_STRING_ARRAY);
 	}
 
-	protected MethodAttribute method(String methodName, String[] parameterTypeSignatures) throws JavaModelException {
-		return new MethodAttribute(this.jdtType().getMethod(methodName, parameterTypeSignatures), this.modifySharedDocumentCommandExecutorProvider());
+	protected JDTMethodAttribute method(String methodName, String[] parameterTypeSignatures) throws JavaModelException {
+		return new JDTMethodAttribute(this.jdtType().getMethod(methodName, parameterTypeSignatures), this.modifySharedDocumentCommandExecutorProvider());
 	}
 
 	protected String source() throws JavaModelException {
