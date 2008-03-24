@@ -10,7 +10,8 @@
 package org.eclipse.jpt.core.resource.java;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.internal.jdtutility.Member;
+
+import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
  * 

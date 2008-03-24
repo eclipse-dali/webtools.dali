@@ -25,52 +25,45 @@ import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
+import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 /**
- * Define a wrapper that provides a common protocol for all the various AST
- * declarations that have modifiers (i.e. there are a number of AST node
- * classes that implement the method #modifiers(), but they do not implement
- * a common interface):
- *     BodyDeclaration
- *     SingleVariableDeclaration
- *     VariableDeclarationExpression
- *     VariableDeclarationStatement
+ * 
  */
-public class ModifiedDeclaration {
+public class JDTModifiedDeclaration
+	implements ModifiedDeclaration
+{
 	private final Adapter adapter;
 
 
 	// ********** constructors **********
 
-	public ModifiedDeclaration(Adapter adapter) {
+	public JDTModifiedDeclaration(Adapter adapter) {
 		super();
 		this.adapter = adapter;
 	}
 
-	public ModifiedDeclaration(BodyDeclaration declaration) {
+	public JDTModifiedDeclaration(BodyDeclaration declaration) {
 		this(new BodyDeclarationAdapter(declaration));
 	}
 
-	public ModifiedDeclaration(SingleVariableDeclaration declaration) {
+	public JDTModifiedDeclaration(SingleVariableDeclaration declaration) {
 		this(new SingleVariableDeclarationAdapter(declaration));
 	}
 
-	public ModifiedDeclaration(VariableDeclarationExpression declaration) {
+	public JDTModifiedDeclaration(VariableDeclarationExpression declaration) {
 		this(new VariableDeclarationExpressionAdapter(declaration));
 	}
 
-	public ModifiedDeclaration(VariableDeclarationStatement declaration) {
+	public JDTModifiedDeclaration(VariableDeclarationStatement declaration) {
 		this(new VariableDeclarationStatementAdapter(declaration));
 	}
 
 
 	// ********** public methods **********
 
-	/**
-	 * Return the "declaration" AST node.
-	 */
 	public ASTNode getDeclaration() {
 		return this.adapter.declaration();
 	}
@@ -83,9 +76,6 @@ public class ModifiedDeclaration {
 		return this.adapter.modifiers();
 	}
 
-	/**
-	 * Return the "declaration" AST.
-	 */
 	public AST getAST() {
 		return this.getDeclaration().getAST();
 	}
@@ -114,10 +104,6 @@ public class ModifiedDeclaration {
 		};
 	}
 
-	/**
-	 * Return the *first* annotation with the specified name.
-	 * Return null if the declaration has no such annotation.
-	 */
 	public Annotation getAnnotationNamed(String annotationName) {
 		for (Iterator<Annotation> stream = this.annotations(); stream.hasNext(); ) {
 			Annotation annotation = stream.next();
@@ -152,9 +138,6 @@ public class ModifiedDeclaration {
 		modifiers.add(annotation);  // just tack it on to the end
 	}
 
-	/**
-	 * Remove the *first* annotation with the specified name from the declaration.
-	 */
 	public void removeAnnotationNamed(String annotationName) {
 		for (Iterator<IExtendedModifier> stream = this.modifiers().iterator(); stream.hasNext(); ) {
 			IExtendedModifier modifier = stream.next();
@@ -189,11 +172,6 @@ public class ModifiedDeclaration {
 		throw new IllegalArgumentException("invalid old annotation: " + oldAnnotation);
 	}
 
-	/**
-	 * Replace the specified old annotation with the specified new annotation.
-	 * If there is no annotation with the specified name, simply add the new
-	 * annotation to the declaration's modifiers.
-	 */
 	public void replaceAnnotationNamed(String oldAnnotationName, Annotation newAnnotation) {
 		List<IExtendedModifier> modifiers = this.modifiers();
 		for (ListIterator<IExtendedModifier> stream = modifiers.listIterator(); stream.hasNext(); ) {
@@ -208,23 +186,14 @@ public class ModifiedDeclaration {
 		this.addAnnotation(newAnnotation);
 	}
 
-	/**
-	 * Add the specified import to the declaration's compilation unit.
-	 */
 	public void addImport(String importName) {
 		this.addImport(importName, false);
 	}
 
-	/**
-	 * Add the specified static import to the declaration's compilation unit.
-	 */
 	public void addStaticImport(String importName) {
 		this.addImport(importName, true);
 	}
 
-	/**
-	 * Add the specified import to the declaration's compilation unit.
-	 */
 	public void addImport(String importName, boolean static_) {
 		if (importName.indexOf('.') != -1) {
 			this.addImportTo(this.compilationUnit(), importName, static_);
@@ -269,15 +238,12 @@ public class ModifiedDeclaration {
 
 	// ********** internal methods **********
 
-	/**
-	 * Return whether the specified annotation has the specified name.
-	 */
-	boolean annotationIsNamed(Annotation annotation, String name) {
+	public boolean annotationIsNamed(Annotation annotation, String name) {
 		String qualifiedName = this.qualifiedName(annotation);
 		return (qualifiedName != null) && qualifiedName.equals(name);
 	}
 
-	// TODO?
+	// TODO
 	private String qualifiedName(Annotation annotation) {
 		ITypeBinding typeBinding = annotation.resolveTypeBinding();
 		if (typeBinding != null) {

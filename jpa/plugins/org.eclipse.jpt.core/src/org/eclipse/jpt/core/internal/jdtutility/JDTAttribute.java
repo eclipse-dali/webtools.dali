@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
 
 /**
