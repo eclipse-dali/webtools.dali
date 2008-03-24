@@ -350,7 +350,7 @@ public abstract class MapAsComposite<T extends Model> extends AbstractPane<T> {
 		String mappingType = mappingChangeHandler.mappingType();
 		String text = buildText(name, mappingType);
 
-		mappingTypeStart  = text.indexOf(mappingType);
+		mappingTypeStart  = text.lastIndexOf(mappingType);
 		mappingTypeLength = mappingType.length();
 
 		nameStart  = text.indexOf(name);
