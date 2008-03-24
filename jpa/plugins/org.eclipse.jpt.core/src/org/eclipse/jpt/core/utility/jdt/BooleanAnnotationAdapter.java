@@ -29,9 +29,9 @@ public interface BooleanAnnotationAdapter {
 	/**
 	 * Return the "boolean" value of the adapter's annotation.
 	 * Return true if the annotation is present; otherwise return false.
-	 * If the compilation unit is available, #getValue(CompilationUnit)
+	 * If the compilation unit is available, #value(CompilationUnit)
 	 * might be more performant.
-	 * @see #getValue(org.eclipse.jdt.core.dom.CompilationUnit)
+	 * @see #value(org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
 	boolean value();
 
@@ -39,7 +39,7 @@ public interface BooleanAnnotationAdapter {
 	 * Given the specified compilation unit, return the "boolean" value of the
 	 * adapter's annotation.
 	 * Return true if the annotation is present; otherwise return false.
-	 * @see #getValue()
+	 * @see #value()
 	 */
 	boolean value(CompilationUnit astRoot);
 
