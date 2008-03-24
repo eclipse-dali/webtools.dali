@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.tests.internal.jdtutility;
+package org.eclipse.jpt.core.tests.internal.utility.jdt;
 
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
