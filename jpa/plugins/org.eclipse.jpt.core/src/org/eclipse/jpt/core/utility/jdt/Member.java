@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  */
 public interface Member {
 
-	IMember getJdtMember();
+	IMember jdtMember();
 
 	boolean wraps(IMember member);
 

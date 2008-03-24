@@ -75,7 +75,7 @@ public abstract class JDTMember
 
 	// ********** accessors **********
 
-	public IMember getJdtMember() {
+	public IMember jdtMember() {
 		return this.jdtMember;
 	}
 

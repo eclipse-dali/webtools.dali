@@ -290,7 +290,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		if (resourcePersistentAttribute.isForField()) {
 			int flags;
 			try {
-				flags = resourcePersistentAttribute.getMember().getJdtMember().getFlags();
+				flags = resourcePersistentAttribute.getMember().jdtMember().getFlags();
 			} catch (JavaModelException jme) { 
 				/* no error to log, in that case */ 
 				return;

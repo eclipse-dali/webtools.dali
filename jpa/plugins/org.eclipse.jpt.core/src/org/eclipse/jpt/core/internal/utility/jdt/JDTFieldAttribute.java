@@ -39,8 +39,8 @@ public class JDTFieldAttribute
 	}
 
 	@Override
-	public IField getJdtMember() {
-		return (IField) super.getJdtMember();
+	public IField jdtMember() {
+		return (IField) super.jdtMember();
 	}
 
 

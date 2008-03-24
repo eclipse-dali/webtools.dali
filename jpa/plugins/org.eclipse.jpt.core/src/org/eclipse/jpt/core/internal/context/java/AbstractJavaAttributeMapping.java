@@ -138,7 +138,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode> e
 			int flags;
 			
 			try {
-				flags = this.resourcePersistentAttribute.getMember().getJdtMember().getFlags();
+				flags = this.resourcePersistentAttribute.getMember().jdtMember().getFlags();
 			} catch (JavaModelException jme) { 
 				/* no error to log, in that case */ 
 				return;

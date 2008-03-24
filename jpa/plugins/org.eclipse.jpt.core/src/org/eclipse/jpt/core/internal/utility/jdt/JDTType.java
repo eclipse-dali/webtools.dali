@@ -38,8 +38,8 @@ public class JDTType
 	}
 
 	@Override
-	public IType getJdtMember() {
-		return (IType) super.getJdtMember();
+	public IType jdtMember() {
+		return (IType) super.jdtMember();
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class JDTType
 
 	public IType[] declaredTypes() {
 		try {
-			return getJdtMember().getTypes();
+			return jdtMember().getTypes();
 		}
 		catch(JavaModelException e) {
 			throw new RuntimeException(e);
@@ -58,7 +58,7 @@ public class JDTType
 	
 	public IField[] fields() {
 		try {
-			return getJdtMember().getFields();
+			return jdtMember().getFields();
 		}
 		catch(JavaModelException e) {
 			throw new RuntimeException(e);
@@ -67,7 +67,7 @@ public class JDTType
 	
 	public IMethod[] methods() {
 		try {
-			return getJdtMember().getMethods();
+			return jdtMember().getMethods();
 		}
 		catch(JavaModelException e) {
 			throw new RuntimeException(e);

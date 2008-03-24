@@ -47,8 +47,8 @@ public class JDTMethodAttribute
 	}
 
 	@Override
-	public IMethod getJdtMember() {
-		return (IMethod) super.getJdtMember();
+	public IMethod jdtMember() {
+		return (IMethod) super.jdtMember();
 	}
 	
 
@@ -57,7 +57,7 @@ public class JDTMethodAttribute
 	@Override
 	public MethodDeclaration bodyDeclaration(CompilationUnit astRoot) {
 		try {
-			return ASTNodeSearchUtil.getMethodDeclarationNode(getJdtMember(), astRoot);
+			return ASTNodeSearchUtil.getMethodDeclarationNode(jdtMember(), astRoot);
 		} catch(JavaModelException e) {
 			throw new RuntimeException(e);
 		}
