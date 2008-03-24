@@ -12,14 +12,14 @@ package org.eclipse.jpt.core.utility;
 /**
  * A text range defines the offset into, length of, and line of a piece
  * of text.
- * <p>
- * This interface is not intended to be implemented by clients.
- * </p>
+ * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * This interface is not intended to be implemented by clients.
  */
 public interface TextRange {
 
@@ -28,12 +28,12 @@ public interface TextRange {
 	 *
 	 * @return the offset of the text
 	 */
-	int getOffset();
+	int offset();
 	
 	/**
 	 * Return the length of the text.
 	 */
-	int getLength();
+	int length();
 
 	/**
 	 * Return whether the range includes the character at the specified index.
@@ -49,7 +49,7 @@ public interface TextRange {
 	/**
 	 * Return the line number of the text.
 	 */
-	int getLineNumber();
+	int lineNumber();
 
 	/**
 	 * Return true if the offsets and lengths are the same.
@@ -74,10 +74,10 @@ public interface TextRange {
 		private Empty() {
 			super();
 		}
-		public int getOffset() {
+		public int offset() {
 			return 0;
 		}
-		public int getLength() {
+		public int length() {
 			return 0;
 		}
 		public boolean includes(int index) {
@@ -86,7 +86,7 @@ public interface TextRange {
 		public boolean touches(int index) {
 			return index == 0;  // ???
 		}
-		public int getLineNumber() {
+		public int lineNumber() {
 			return 0;
 		}
 		@Override
@@ -98,8 +98,8 @@ public interface TextRange {
 				return false;
 			}
 			TextRange r = (TextRange) o;
-			return (r.getOffset() == 0)
-					&& (r.getLength() == 0);
+			return (r.offset() == 0)
+					&& (r.length() == 0);
 		}
 		@Override
 		public int hashCode() {

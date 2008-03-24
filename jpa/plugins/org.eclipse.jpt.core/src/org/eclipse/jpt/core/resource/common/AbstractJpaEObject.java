@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -20,9 +21,9 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
+import org.eclipse.jpt.core.utility.AbstractTextRange;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.ClassTools;
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.internal.emf.resource.EMF2DOMAdapter;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
@@ -225,9 +226,9 @@ public abstract class AbstractJpaEObject extends EObjectImpl implements JpaEObje
 	}
 	
 	/**
-	 * Implementation of ITextRange that adapts a IDOMNode.
+	 * Adapt an IDOMNode to the TextRange interface.
 	 */
-	private static class DOMNodeTextRange implements TextRange
+	private static class DOMNodeTextRange extends AbstractTextRange
 	{
 		private final IDOMNode node;
 
@@ -236,59 +237,20 @@ public abstract class AbstractJpaEObject extends EObjectImpl implements JpaEObje
 			this.node = node;
 		}
 
-		public int getOffset() {
+		public int offset() {
 			return this.node.getStartOffset();
 		}
 
-		public int getLength() {
+		public int length() {
 			if (this.node.getNodeType() == Node.ELEMENT_NODE) {
 				return ((IDOMElement) this.node).getStartEndOffset() - this.node.getStartOffset();
 			}
 			return this.node.getLength();
 		}
 
-		public int getLineNumber() {
-			return this.node.getStructuredDocument().getLineOfOffset(getOffset()) + 1;
+		public int lineNumber() {
+			return this.node.getStructuredDocument().getLineOfOffset(offset()) + 1;
 		}
 
-		public boolean includes(int index) {
-			return (this.getOffset() <= index) && (index < this.end());
-		}
-
-		public boolean touches(int index) {
-			return this.includes(index) || (index == this.end());
-		}
-
-		/**
-		 * The end offset is "exclusive", i.e. the element at the end offset
-		 * is not included in the range.
-		 */
-		private int end() {
-			return this.getOffset() + this.getLength();
-		}
-
-		@Override
-		public boolean equals(Object o) {
-			if (o == this) {
-				return true;
-			}
-			if (!(o instanceof TextRange)) {
-				return false;
-			}
-			TextRange r = (TextRange) o;
-			return (r.getOffset() == this.getOffset()) && (r.getLength() == this.getLength());
-		}
-
-		@Override
-		public int hashCode() {
-			return this.getOffset() ^ this.getLength();
-		}
-
-		@Override
-		public String toString() {
-			String start = String.valueOf(this.getOffset());
-			String end = String.valueOf(this.getOffset() + this.getLength() - 1);
-			return StringTools.buildToStringFor(this, start + ", " + end);
-		}
 	}
 }

@@ -337,9 +337,9 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
 
 		TextRange textRange = new ASTNodeTextRange(aea.astNode());
-		assertEquals(this.source().indexOf(value), textRange.getOffset());
-		assertEquals(value.length(), textRange.getLength());
-		assertEquals(8, textRange.getLineNumber());
+		assertEquals(this.source().indexOf(value), textRange.offset());
+		assertEquals(value.length(), textRange.length());
+		assertEquals(8, textRange.lineNumber());
 	}
 
 	public void testASTNode2() throws Exception {
@@ -357,7 +357,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		AnnotationElementAdapter<Boolean> aea = new MemberAnnotationElementAdapter<Boolean>(this.idField(), daea);
 		assertEquals(Boolean.FALSE, aea.getValue());
 		TextRange textRange = new ASTNodeTextRange(aea.astNode());
-		assertEquals(value.length(), textRange.getLength());
+		assertEquals(value.length(), textRange.length());
 	}
 
 	public void testASTNode3() throws Exception {
@@ -370,8 +370,8 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
 
 		TextRange textRange = new ASTNodeTextRange(aea.astNode());
-		assertEquals(this.source().indexOf(element), textRange.getOffset());
-		assertEquals(element.length(), textRange.getLength());
+		assertEquals(this.source().indexOf(element), textRange.offset());
+		assertEquals(element.length(), textRange.length());
 	}
 
 	public void testASTNode4() throws Exception {
@@ -383,8 +383,8 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(), daea);
 
 		TextRange textRange = new ASTNodeTextRange(aea.astNode());
-		assertEquals(this.source().indexOf(annotation), textRange.getOffset());
-		assertEquals(annotation.length(), textRange.getLength());
+		assertEquals(this.source().indexOf(annotation), textRange.offset());
+		assertEquals(annotation.length(), textRange.length());
 	}
 
 	public void testSetValue1() throws Exception {

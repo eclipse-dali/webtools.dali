@@ -56,7 +56,7 @@ public class TypeTests extends AnnotationTestCase {
 	public void testTextRange() throws Exception {
 		String source = this.jdtType.getOpenable().getBuffer().getContents();
 		TextRange textRange = this.testType.textRange();
-		String body = source.substring(textRange.getOffset());
+		String body = source.substring(textRange.offset());
 		assertTrue(body.startsWith("public class " + TYPE_NAME));
 	}
 

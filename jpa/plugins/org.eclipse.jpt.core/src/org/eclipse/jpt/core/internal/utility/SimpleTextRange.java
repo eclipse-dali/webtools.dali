@@ -9,13 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.utility;
 
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.core.utility.AbstractTextRange;
 
 /**
- * Straightforward, albeit almost useless, implementation of ITextRange.
+ * Straightforward implementation of TextRange.
  */
-public class SimpleTextRange implements TextRange {
+public class SimpleTextRange extends AbstractTextRange {
 	private final int offset;
 	private final int length;
 	private final int lineNumber;
@@ -27,57 +26,16 @@ public class SimpleTextRange implements TextRange {
 		this.lineNumber = lineNumber;
 	}
 
-	public int getOffset() {
+	public int offset() {
 		return this.offset;
 	}
 
-	public int getLength() {
+	public int length() {
 		return this.length;
 	}
 
-	public int getLineNumber() {
+	public int lineNumber() {
 		return this.lineNumber;
-	}
-
-	public boolean includes(int index) {
-		return (this.offset <= index) && (index < this.end());
-	}
-
-	public boolean touches(int index) {
-		return this.includes(index) || (index == this.end());
-	}
-
-	/**
-	 * The end offset is "exclusive", i.e. the element at the end offset
-	 * is not included in the range.
-	 */
-	private int end() {
-		return this.offset + this.length;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (o == this) {
-			return true;
-		}
-		if ( ! (o instanceof TextRange)) {
-			return false;
-		}
-		TextRange r = (TextRange) o;
-		return (r.getOffset() == this.offset)
-				&& (r.getLength() == this.length);
-	}
-
-	@Override
-	public int hashCode() {
-		return this.offset ^ this.length;
-	}
-
-	@Override
-	public String toString() {
-		String start = String.valueOf(this.offset);
-		String end = String.valueOf(this.end());
-		return StringTools.buildToStringFor(this, start + ", " + end);
 	}
 
 }

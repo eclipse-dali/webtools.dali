@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,13 +11,12 @@ package org.eclipse.jpt.core.internal.utility.jdt;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.core.utility.AbstractTextRange;
 
 /**
- * Straightforward implementation of ITextRange that adapts an ASTNode.
+ * Adapt an ASTNode to the TextRange interface.
  */
-public class ASTNodeTextRange implements TextRange {
+public class ASTNodeTextRange extends AbstractTextRange {
 	private final ASTNode astNode;
 
 	public ASTNodeTextRange(ASTNode astNode) {
@@ -25,57 +24,16 @@ public class ASTNodeTextRange implements TextRange {
 		this.astNode = astNode;
 	}
 
-	public int getOffset() {
+	public int offset() {
 		return this.astNode.getStartPosition();
 	}
 
-	public int getLength() {
+	public int length() {
 		return this.astNode.getLength();
 	}
 
-	public int getLineNumber() {
-		return ((CompilationUnit) this.astNode.getRoot()).getLineNumber(this.getOffset());
-	}
-
-	public boolean includes(int index) {
-		return (this.getOffset() <= index) && (index < this.end());
-	}
-
-	public boolean touches(int index) {
-		return this.includes(index) || (index == this.end());
-	}
-
-	/**
-	 * The end offset is "exclusive", i.e. the element at the end offset
-	 * is not included in the range.
-	 */
-	private int end() {
-		return this.getOffset() + this.getLength();
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (o == this) {
-			return true;
-		}
-		if ( ! (o instanceof TextRange)) {
-			return false;
-		}
-		TextRange r = (TextRange) o;
-		return (r.getOffset() == this.getOffset())
-				&& (r.getLength() == this.getLength());
-	}
-
-	@Override
-	public int hashCode() {
-		return this.getOffset() ^ this.getLength();
-	}
-
-	@Override
-	public String toString() {
-		String start = String.valueOf(this.getOffset());
-		String end = String.valueOf(this.getOffset() + this.getLength() - 1);
-		return StringTools.buildToStringFor(this, start + ", " + end);
+	public int lineNumber() {
+		return ((CompilationUnit) this.astNode.getRoot()).getLineNumber(this.offset());
 	}
 
 }
