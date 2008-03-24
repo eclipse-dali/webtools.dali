@@ -26,7 +26,7 @@ import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jpt.core.internal.SimpleTextRange;
+import org.eclipse.jpt.core.internal.utility.SimpleTextRange;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.CommandExecutor;
