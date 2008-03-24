@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.ResourceModelListener;
 import org.eclipse.jpt.core.internal.AbstractResourceModel;
-import org.eclipse.jpt.core.internal.jdtutility.JDTTools;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.BitTools;
