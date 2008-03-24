@@ -12,6 +12,8 @@ package org.eclipse.jpt.utility.internal;
 import java.sql.Types;
 import java.util.HashMap;
 
+import org.eclipse.jpt.utility.JavaType;
+
 /**
  * Helper methods for dealing with the JDBC API.
  */
@@ -78,7 +80,7 @@ public final class JDBCTools {
 	 * JDBC => Java type mappings, keyed by JDBC type name (e.g. "VARCHAR")
 	 */
 	private static HashMap<String, JDBCToJavaTypeMapping> JDBC_TO_JAVA_TYPE_MAPPINGS;  // pseudo 'final' - lazy-initialized
-	private static final JavaType DEFAULT_JAVA_TYPE = new JavaType(java.lang.Object.class);  // TODO Object is the default?
+	private static final JavaType DEFAULT_JAVA_TYPE = new SimpleJavaType(java.lang.Object.class);  // TODO Object is the default?
 
 
 	private static JDBCToJavaTypeMapping jdbcToJavaTypeMapping(String jdbcTypeName) {
@@ -148,7 +150,7 @@ public final class JDBCTools {
 	}
 
 	private static JDBCToJavaTypeMapping buildJDBCToJavaTypeMapping(JDBCType jdbcType, Class<?> javaClass) {
-		return new JDBCToJavaTypeMapping(jdbcType, new JavaType(javaClass));
+		return new JDBCToJavaTypeMapping(jdbcType, new SimpleJavaType(javaClass));
 	}
 
 
@@ -228,7 +230,7 @@ public final class JDBCTools {
 	}
 
 	private static JavaToJDBCTypeMapping buildJavaToJDBCTypeMapping(Class<?> javaClass, int jdbcTypeCode) {
-		return new JavaToJDBCTypeMapping(new JavaType(javaClass), JDBCType.type(jdbcTypeCode));
+		return new JavaToJDBCTypeMapping(new SimpleJavaType(javaClass), JDBCType.type(jdbcTypeCode));
 	}
 
 

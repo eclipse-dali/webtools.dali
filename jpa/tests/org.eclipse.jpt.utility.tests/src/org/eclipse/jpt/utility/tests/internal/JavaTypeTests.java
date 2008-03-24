@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
+import org.eclipse.jpt.utility.JavaType;
+import org.eclipse.jpt.utility.internal.SimpleJavaType;
+
 import junit.framework.TestCase;
-import org.eclipse.jpt.utility.internal.JavaType;
 
 public class JavaTypeTests extends TestCase {
 
@@ -21,7 +23,7 @@ public class JavaTypeTests extends TestCase {
 	public void testInvalidElementTypeNull() throws Exception {
 		boolean exCaught = false;
 		try {
-			JavaType javaType = new JavaType(null, 0);
+			JavaType javaType = new SimpleJavaType(null, 0);
 			fail("invalid JavaType: " + javaType);
 		} catch (IllegalArgumentException ex) {
 			exCaught = true;
@@ -32,7 +34,7 @@ public class JavaTypeTests extends TestCase {
 	public void testInvalidElementTypeEmpty() throws Exception {
 		boolean exCaught = false;
 		try {
-			JavaType javaType = new JavaType("", 0);
+			JavaType javaType = new SimpleJavaType("", 0);
 			fail("invalid JavaType: " + javaType);
 		} catch (IllegalArgumentException ex) {
 			exCaught = true;
@@ -43,7 +45,7 @@ public class JavaTypeTests extends TestCase {
 	public void testInvalidElementTypeArray() throws Exception {
 		boolean exCaught = false;
 		try {
-			JavaType javaType = new JavaType(java.lang.Object[].class.getName(), 0);
+			JavaType javaType = new SimpleJavaType(java.lang.Object[].class.getName(), 0);
 			fail("invalid JavaType: " + javaType);
 		} catch (IllegalArgumentException ex) {
 			exCaught = true;
@@ -54,7 +56,7 @@ public class JavaTypeTests extends TestCase {
 	public void testInvalidArrayDepthNegative() throws Exception {
 		boolean exCaught = false;
 		try {
-			JavaType javaType = new JavaType(java.lang.Object.class.getName(), -2);
+			JavaType javaType = new SimpleJavaType(java.lang.Object.class.getName(), -2);
 			fail("invalid JavaType: " + javaType);
 		} catch (IllegalArgumentException ex) {
 			exCaught = true;
@@ -65,7 +67,7 @@ public class JavaTypeTests extends TestCase {
 	public void testInvalidVoidArray() throws Exception {
 		boolean exCaught = false;
 		try {
-			JavaType javaType = new JavaType(void.class.getName(), 2);
+			JavaType javaType = new SimpleJavaType(void.class.getName(), 2);
 			fail("invalid JavaType: " + javaType);
 		} catch (IllegalArgumentException ex) {
 			exCaught = true;
@@ -75,73 +77,73 @@ public class JavaTypeTests extends TestCase {
 
 	public void testElementTypeName() throws Exception {
 		JavaType javaType;
-		javaType = new JavaType(java.lang.Object.class);
+		javaType = new SimpleJavaType(java.lang.Object.class);
 		assertEquals("java.lang.Object", javaType.elementTypeName());
 
-		javaType = new JavaType(java.lang.Object[].class);
+		javaType = new SimpleJavaType(java.lang.Object[].class);
 		assertEquals("java.lang.Object", javaType.elementTypeName());
 
-		javaType = new JavaType(int.class);
+		javaType = new SimpleJavaType(int.class);
 		assertEquals("int", javaType.elementTypeName());
 
-		javaType = new JavaType(int[].class);
+		javaType = new SimpleJavaType(int[].class);
 		assertEquals("int", javaType.elementTypeName());
 
-		javaType = new JavaType(void.class);
+		javaType = new SimpleJavaType(void.class);
 		assertEquals("void", javaType.elementTypeName());
 
-		javaType = new JavaType(java.util.Map.Entry.class);
+		javaType = new SimpleJavaType(java.util.Map.Entry.class);
 		assertEquals("java.util.Map$Entry", javaType.elementTypeName());
 
-		javaType = new JavaType(java.util.Map.Entry[][].class);
+		javaType = new SimpleJavaType(java.util.Map.Entry[][].class);
 		assertEquals("java.util.Map$Entry", javaType.elementTypeName());
 	}
 
 	public void testArrayDepth() throws Exception {
 		JavaType javaType;
-		javaType = new JavaType(java.lang.Object.class);
+		javaType = new SimpleJavaType(java.lang.Object.class);
 		assertEquals(0, javaType.arrayDepth());
 
-		javaType = new JavaType(java.lang.Object[].class);
+		javaType = new SimpleJavaType(java.lang.Object[].class);
 		assertEquals(1, javaType.arrayDepth());
 
-		javaType = new JavaType(int.class);
+		javaType = new SimpleJavaType(int.class);
 		assertEquals(0, javaType.arrayDepth());
 
-		javaType = new JavaType(int[].class);
+		javaType = new SimpleJavaType(int[].class);
 		assertEquals(1, javaType.arrayDepth());
 
-		javaType = new JavaType(void.class);
+		javaType = new SimpleJavaType(void.class);
 		assertEquals(0, javaType.arrayDepth());
 
-		javaType = new JavaType(java.util.Map.Entry.class);
+		javaType = new SimpleJavaType(java.util.Map.Entry.class);
 		assertEquals(0, javaType.arrayDepth());
 
-		javaType = new JavaType(java.util.Map.Entry[][].class);
+		javaType = new SimpleJavaType(java.util.Map.Entry[][].class);
 		assertEquals(2, javaType.arrayDepth());
 	}
 
 	public void testIsArray() throws Exception {
 		JavaType javaType;
-		javaType = new JavaType(java.lang.Object.class);
+		javaType = new SimpleJavaType(java.lang.Object.class);
 		assertFalse(javaType.isArray());
 
-		javaType = new JavaType(java.lang.Object[].class);
+		javaType = new SimpleJavaType(java.lang.Object[].class);
 		assertTrue(javaType.isArray());
 
-		javaType = new JavaType(int.class);
+		javaType = new SimpleJavaType(int.class);
 		assertFalse(javaType.isArray());
 
-		javaType = new JavaType(int[].class);
+		javaType = new SimpleJavaType(int[].class);
 		assertTrue(javaType.isArray());
 
-		javaType = new JavaType(void.class);
+		javaType = new SimpleJavaType(void.class);
 		assertFalse(javaType.isArray());
 
-		javaType = new JavaType(java.util.Map.Entry.class);
+		javaType = new SimpleJavaType(java.util.Map.Entry.class);
 		assertFalse(javaType.isArray());
 
-		javaType = new JavaType(java.util.Map.Entry[][].class);
+		javaType = new SimpleJavaType(java.util.Map.Entry[][].class);
 		assertTrue(javaType.isArray());
 	}
 
@@ -156,31 +158,31 @@ public class JavaTypeTests extends TestCase {
 	}
 
 	private void verifyJavaClass(Class<?> javaClass) throws Exception {
-		JavaType javaType = new JavaType(javaClass);
+		JavaType javaType = new SimpleJavaType(javaClass);
 		assertEquals(javaClass, javaType.javaClass());
 	}
 
 	public void testJavaClassName() throws Exception {
 		JavaType javaType;
-		javaType = new JavaType(java.lang.Object.class);
+		javaType = new SimpleJavaType(java.lang.Object.class);
 		assertEquals("java.lang.Object", javaType.javaClassName());
 
-		javaType = new JavaType(java.lang.Object[].class);
+		javaType = new SimpleJavaType(java.lang.Object[].class);
 		assertEquals("[Ljava.lang.Object;", javaType.javaClassName());
 
-		javaType = new JavaType(int.class);
+		javaType = new SimpleJavaType(int.class);
 		assertEquals("int", javaType.javaClassName());
 
-		javaType = new JavaType(int[].class);
+		javaType = new SimpleJavaType(int[].class);
 		assertEquals("[I", javaType.javaClassName());
 
-		javaType = new JavaType(void.class);
+		javaType = new SimpleJavaType(void.class);
 		assertEquals("void", javaType.javaClassName());
 
-		javaType = new JavaType(java.util.Map.Entry.class);
+		javaType = new SimpleJavaType(java.util.Map.Entry.class);
 		assertEquals("java.util.Map$Entry", javaType.javaClassName());
 
-		javaType = new JavaType(java.util.Map.Entry[][].class);
+		javaType = new SimpleJavaType(java.util.Map.Entry[][].class);
 		assertEquals("[[Ljava.util.Map$Entry;", javaType.javaClassName());
 	}
 
@@ -195,55 +197,55 @@ public class JavaTypeTests extends TestCase {
 	}
 
 	private void verifyDescribes(Class<?> javaClass) throws Exception {
-		JavaType javaType = new JavaType(javaClass);
+		JavaType javaType = new SimpleJavaType(javaClass);
 		assertTrue(javaType.describes(javaClass));
 	}
 
 	public void testDeclaration() throws Exception {
 		JavaType javaType;
-		javaType = new JavaType(java.lang.Object.class);
+		javaType = new SimpleJavaType(java.lang.Object.class);
 		assertEquals("java.lang.Object", javaType.declaration());
 
-		javaType = new JavaType(java.lang.Object[].class);
+		javaType = new SimpleJavaType(java.lang.Object[].class);
 		assertEquals("java.lang.Object[]", javaType.declaration());
 
-		javaType = new JavaType(int.class);
+		javaType = new SimpleJavaType(int.class);
 		assertEquals("int", javaType.declaration());
 
-		javaType = new JavaType(int[].class);
+		javaType = new SimpleJavaType(int[].class);
 		assertEquals("int[]", javaType.declaration());
 
-		javaType = new JavaType(void.class);
+		javaType = new SimpleJavaType(void.class);
 		assertEquals("void", javaType.declaration());
 
-		javaType = new JavaType(java.util.Map.Entry.class);
+		javaType = new SimpleJavaType(java.util.Map.Entry.class);
 		assertEquals("java.util.Map.Entry", javaType.declaration());
 
-		javaType = new JavaType(java.util.Map.Entry[][].class);
+		javaType = new SimpleJavaType(java.util.Map.Entry[][].class);
 		assertEquals("java.util.Map.Entry[][]", javaType.declaration());
 	}
 
 	public void testIsPrimitive() throws Exception {
 		JavaType javaType;
-		javaType = new JavaType(java.lang.Object.class);
+		javaType = new SimpleJavaType(java.lang.Object.class);
 		assertFalse(javaType.isPrimitive());
 
-		javaType = new JavaType(java.lang.Object[].class);
+		javaType = new SimpleJavaType(java.lang.Object[].class);
 		assertFalse(javaType.isPrimitive());
 
-		javaType = new JavaType(int.class);
+		javaType = new SimpleJavaType(int.class);
 		assertTrue(javaType.isPrimitive());
 
-		javaType = new JavaType(int[].class);
+		javaType = new SimpleJavaType(int[].class);
 		assertFalse(javaType.isPrimitive());
 
-		javaType = new JavaType(void.class);
+		javaType = new SimpleJavaType(void.class);
 		assertTrue(javaType.isPrimitive());
 
-		javaType = new JavaType(java.util.Map.Entry.class);
+		javaType = new SimpleJavaType(java.util.Map.Entry.class);
 		assertFalse(javaType.isPrimitive());
 
-		javaType = new JavaType(java.util.Map.Entry[][].class);
+		javaType = new SimpleJavaType(java.util.Map.Entry[][].class);
 		assertFalse(javaType.isPrimitive());
 	}
 

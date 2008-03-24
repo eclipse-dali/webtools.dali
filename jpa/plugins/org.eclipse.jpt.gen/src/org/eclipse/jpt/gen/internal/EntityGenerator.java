@@ -30,8 +30,8 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.JavaType;
 import org.eclipse.jpt.utility.internal.IndentingPrintWriter;
-import org.eclipse.jpt.utility.internal.JavaType;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 

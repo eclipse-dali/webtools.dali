@@ -13,13 +13,13 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.text.Collator;
 
+import org.eclipse.jpt.utility.JavaType;
+
 /**
- * This class describes a Java type; i.e. its "element type"
- * and its "array depth". The element type is referenced by name,
- * allowing us to reference classes that are not (or cannot be) loaded.
+ * Straightforward implementation of the JavaType interface.
  */
-public final class JavaType
-	implements Comparable<JavaType>, Cloneable, Serializable
+public final class SimpleJavaType
+	implements JavaType, Cloneable, Serializable
 {
 
 	/**
@@ -41,7 +41,7 @@ public final class JavaType
 	/**
 	 * Construct a Java type with the specified element type and array depth.
 	 */
-	public JavaType(String elementTypeName, int arrayDepth) {
+	public SimpleJavaType(String elementTypeName, int arrayDepth) {
 		super();
 		if ((elementTypeName == null) || (elementTypeName.length() == 0)) {
 			throw new IllegalArgumentException("The element type name is required.");
@@ -69,31 +69,24 @@ public final class JavaType
 	 *     [I
 	 *     [Ljava.util.Map$Entry;
 	 */
-	public JavaType(String javaClassName) {
+	public SimpleJavaType(String javaClassName) {
 		this(ClassTools.elementTypeNameForClassNamed(javaClassName), ClassTools.arrayDepthForClassNamed(javaClassName));
 	}
 
 	/**
 	 * Construct a Java type for the specified class.
 	 */
-	public JavaType(Class<?> javaClass) {
+	public SimpleJavaType(Class<?> javaClass) {
 		this(javaClass.getName());
 	}
 
 
 	// ********** accessors **********
 
-	/**
-	 * Return the name of the type's "element type".
-	 * A member type will have one or more '$' characters in its name.
-	 */
 	public String elementTypeName() {
 		return this.elementTypeName;
 	}
 
-	/**
-	 * Return the type's "array depth".
-	 */
 	public int arrayDepth() {
 		return this.arrayDepth;
 	}
@@ -105,46 +98,26 @@ public final class JavaType
 		return this.arrayDepth > 0;
 	}
 
-	/**
-	 * NB: void.class.isPrimitive() == true
-	 */
 	public boolean isPrimitive() {
 		return (this.arrayDepth == 0) && ClassTools.classNamedIsPrimitive(this.elementTypeName);
 	}
 
-	/**
-	 * NB: void.class.isPrimitive() == true
-	 */
 	public boolean isPrimitiveWrapper() {
 		return (this.arrayDepth == 0) && ClassTools.classNamedIsPrimitiveWrapperClass(this.elementTypeName);
 	}
 
-	/**
-	 * NB: variables cannot be declared 'void'
-	 */
 	public boolean isVariablePrimitive() {
 		return (this.arrayDepth == 0) && ClassTools.classNamedIsVariablePrimitive(this.elementTypeName);
 	}
 
-	/**
-	 * NB: variables cannot be declared 'void'
-	 */
 	public boolean isVariablePrimitiveWrapper() {
 		return (this.arrayDepth == 0) && ClassTools.classNamedIsVariablePrimitiveWrapperClass(this.elementTypeName);
 	}
 
-	/**
-	 * Return the class corresponding to the type's element type and array depth.
-	 */
 	public Class<?> javaClass() throws ClassNotFoundException {
 		return ClassTools.classForTypeDeclaration(this.elementTypeName, this.arrayDepth);
 	}
 
-	/**
-	 * Return the version of the type's name that matches that
-	 * returned by java.lang.Class#getName()
-	 * (e.g. "[[J", "[Ljava.lang.Object;", "java.util.Map$Entry").
-	 */
 	public String javaClassName() {
 		return ClassTools.classNameForTypeDeclaration(this.elementTypeName, this.arrayDepth);
 	}
@@ -166,7 +139,7 @@ public final class JavaType
 	}
 
 	public boolean equals(JavaType other) {
-		return this.equals(other.elementTypeName, other.arrayDepth);
+		return this.equals(other.elementTypeName(), other.arrayDepth());
 	}
 
 	@Override
@@ -180,8 +153,8 @@ public final class JavaType
 	}
 
 	public int compareTo(JavaType jt) {
-		int x = Collator.getInstance().compare(this.elementTypeName, jt.elementTypeName);
-		return (x != 0) ? x : (this.arrayDepth - jt.arrayDepth);
+		int x = Collator.getInstance().compare(this.elementTypeName, jt.elementTypeName());
+		return (x != 0) ? x : (this.arrayDepth - jt.arrayDepth());
 	}
 
 

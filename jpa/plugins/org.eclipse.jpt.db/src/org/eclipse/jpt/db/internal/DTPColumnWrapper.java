@@ -17,9 +17,10 @@ import org.eclipse.datatools.modelbase.sql.datatypes.DataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.PredefinedDataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.PrimitiveType;
 import org.eclipse.jpt.db.Column;
+import org.eclipse.jpt.utility.JavaType;
 import org.eclipse.jpt.utility.internal.ClassTools;
-import org.eclipse.jpt.utility.internal.JavaType;
 import org.eclipse.jpt.utility.internal.NameTools;
+import org.eclipse.jpt.utility.internal.SimpleJavaType;
 
 /**
  *  Wrap a DTP Column
@@ -37,21 +38,21 @@ final class DTPColumnWrapper
 
 	// ***** some constants used when converting the column to a Java field
 	// TODO Object is the default?
-	private static final JavaType DEFAULT_JAVA_TYPE = new JavaType(java.lang.Object.class);
+	private static final JavaType DEFAULT_JAVA_TYPE = new SimpleJavaType(java.lang.Object.class);
 
-	private static final JavaType BLOB_JAVA_TYPE = new JavaType(java.sql.Blob.class);
-	private static final JavaType BYTE_ARRAY_JAVA_TYPE = new JavaType(byte[].class);
+	private static final JavaType BLOB_JAVA_TYPE = new SimpleJavaType(java.sql.Blob.class);
+	private static final JavaType BYTE_ARRAY_JAVA_TYPE = new SimpleJavaType(byte[].class);
 
-	private static final JavaType CLOB_JAVA_TYPE = new JavaType(java.sql.Clob.class);
-	private static final JavaType STRING_JAVA_TYPE = new JavaType(java.lang.String.class);
+	private static final JavaType CLOB_JAVA_TYPE = new SimpleJavaType(java.sql.Clob.class);
+	private static final JavaType STRING_JAVA_TYPE = new SimpleJavaType(java.lang.String.class);
 
-	private static final JavaType UTIL_DATE_JAVA_TYPE = new JavaType(java.util.Date.class);
-	private static final JavaType SQL_DATE_JAVA_TYPE = new JavaType(java.sql.Date.class);
-	private static final JavaType SQL_TIME_JAVA_TYPE = new JavaType(java.sql.Time.class);
-	private static final JavaType SQL_TIMESTAMP_JAVA_TYPE = new JavaType(java.sql.Timestamp.class);
+	private static final JavaType UTIL_DATE_JAVA_TYPE = new SimpleJavaType(java.util.Date.class);
+	private static final JavaType SQL_DATE_JAVA_TYPE = new SimpleJavaType(java.sql.Date.class);
+	private static final JavaType SQL_TIME_JAVA_TYPE = new SimpleJavaType(java.sql.Time.class);
+	private static final JavaType SQL_TIMESTAMP_JAVA_TYPE = new SimpleJavaType(java.sql.Timestamp.class);
 
-	private static final JavaType BIG_DECIMAL_JAVA_TYPE = new JavaType(java.math.BigDecimal.class);
-	private static final JavaType LONG_JAVA_TYPE = new JavaType(long.class);
+	private static final JavaType BIG_DECIMAL_JAVA_TYPE = new SimpleJavaType(java.math.BigDecimal.class);
+	private static final JavaType LONG_JAVA_TYPE = new SimpleJavaType(long.class);
 
 
 	// ********** constructor **********
@@ -156,7 +157,7 @@ final class DTPColumnWrapper
 	private JavaType javaType(PredefinedDataType dataType) {
 		// this is just a bit hacky: moving from a type declaration to a class name to a type declaration...
 		String dtpJavaClassName = this.predefinedDataTypeDefinition(dataType).getJavaClassName();
-		return new JavaType(ClassTools.classNameForTypeDeclaration(dtpJavaClassName));
+		return new SimpleJavaType(ClassTools.classNameForTypeDeclaration(dtpJavaClassName));
 	}
 
 	private PredefinedDataTypeDefinition predefinedDataTypeDefinition(PredefinedDataType dataType) {

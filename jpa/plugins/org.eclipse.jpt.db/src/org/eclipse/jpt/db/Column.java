@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.db;
 
-import org.eclipse.jpt.utility.internal.JavaType;
+import org.eclipse.jpt.utility.JavaType;
 
 /**
  * Database column
