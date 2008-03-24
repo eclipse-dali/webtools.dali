@@ -39,24 +39,24 @@ public class SimpleBooleanAnnotationAdapter implements BooleanAnnotationAdapter 
 		return this.adapter.astNode(astRoot);
 	}
 
-	public Annotation getAnnotation() {
+	public Annotation annotation() {
 		return this.adapter.annotation();
 	}
 
-	public Annotation getAnnotation(CompilationUnit astRoot) {
+	public Annotation annotation(CompilationUnit astRoot) {
 		return this.adapter.annotation(astRoot);
 	}
 
-	public boolean getValue() {
-		return this.getValue(this.getAnnotation());
+	public boolean value() {
+		return this.getValue(this.annotation());
 	}
 
-	public boolean getValue(CompilationUnit astRoot) {
-		return this.getValue(this.getAnnotation(astRoot));
+	public boolean value(CompilationUnit astRoot) {
+		return this.getValue(this.annotation(astRoot));
 	}
 
 	public void setValue(boolean value) {
-		this.setValue(this.getValue(), value);
+		this.setValue(this.value(), value);
 	}
 
 

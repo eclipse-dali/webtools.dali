@@ -33,7 +33,7 @@ public interface BooleanAnnotationAdapter {
 	 * might be more performant.
 	 * @see #getValue(org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
-	boolean getValue();
+	boolean value();
 
 	/**
 	 * Given the specified compilation unit, return the "boolean" value of the
@@ -41,7 +41,7 @@ public interface BooleanAnnotationAdapter {
 	 * Return true if the annotation is present; otherwise return false.
 	 * @see #getValue()
 	 */
-	boolean getValue(CompilationUnit astRoot);
+	boolean value(CompilationUnit astRoot);
 
 	/**
 	 * Set the "boolean" value of the adapter's annotation.
@@ -53,18 +53,18 @@ public interface BooleanAnnotationAdapter {
 
 	/**
 	 * Return the value of the adapter's annotation.
-	 * If the compilation unit is available, #getAnnotation(CompilationUnit)
+	 * If the compilation unit is available, #annotation(CompilationUnit)
 	 * might be more performant.
-	 * @see #getAnnotation(org.eclipse.jdt.core.dom.CompilationUnit)
+	 * @see #annotation(org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
-	Annotation getAnnotation();
+	Annotation annotation();
 
 	/**
 	 * Given the specified compilation unit, return the value of the
 	 * adapter's annotation.
-	 * @see #getAnnotation()
+	 * @see #annotation()
 	 */
-	Annotation getAnnotation(CompilationUnit astRoot);
+	Annotation annotation(CompilationUnit astRoot);
 
 	/**
 	 * Return the AST node corresponding to the annotation.
