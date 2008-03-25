@@ -42,7 +42,7 @@ public class SimpleDeclarationAnnotationAdapter extends AbstractDeclarationAnnot
 
 	@Override
 	public Annotation annotation(ModifiedDeclaration declaration) {
-		return declaration.getAnnotationNamed(this.getAnnotationName());
+		return declaration.annotationNamed(this.getAnnotationName());
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class SimpleDeclarationAnnotationAdapter extends AbstractDeclarationAnnot
 	public ASTNode astNode(ModifiedDeclaration declaration) {
 		// if the annotation is missing, return the declaration
 		Annotation annotation = this.annotation(declaration);
-		return (annotation != null) ? annotation : declaration.getDeclaration();
+		return (annotation != null) ? annotation : declaration.declaration();
 	}
 
 }

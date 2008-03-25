@@ -65,7 +65,7 @@ public final class NullDeclarationAnnotationAdapter
 	}
 
 	public ASTNode astNode(ModifiedDeclaration declaration) {
-		return declaration.getDeclaration();
+		return declaration.declaration();
 	}
 
 

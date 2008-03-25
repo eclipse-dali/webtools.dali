@@ -39,19 +39,19 @@ public abstract class AbstractDeclarationAnnotationAdapter implements Declaratio
 	// ********** DeclarationAnnotationAdapter implementation **********
 
 	public MarkerAnnotation newMarkerAnnotation(ModifiedDeclaration declaration) {
-		MarkerAnnotation annotation = this.newMarkerAnnotation(declaration.getAST());
+		MarkerAnnotation annotation = this.newMarkerAnnotation(declaration.ast());
 		this.addAnnotationAndImport(declaration, annotation);
 		return annotation;
 	}
 
 	public SingleMemberAnnotation newSingleMemberAnnotation(ModifiedDeclaration declaration) {
-		SingleMemberAnnotation annotation = this.newSingleMemberAnnotation(declaration.getAST());
+		SingleMemberAnnotation annotation = this.newSingleMemberAnnotation(declaration.ast());
 		this.addAnnotationAndImport(declaration, annotation);
 		return annotation;
 	}
 
 	public NormalAnnotation newNormalAnnotation(ModifiedDeclaration declaration) {
-		NormalAnnotation annotation = this.newNormalAnnotation(declaration.getAST());
+		NormalAnnotation annotation = this.newNormalAnnotation(declaration.ast());
 		this.addAnnotationAndImport(declaration, annotation);
 		return annotation;
 	}
@@ -62,7 +62,7 @@ public abstract class AbstractDeclarationAnnotationAdapter implements Declaratio
 	 */
 	protected void addAnnotationAndImport(ModifiedDeclaration declaration, Annotation annotation) {
 		declaration.addImport(this.annotationName);
-		annotation.setTypeName(declaration.getAST().newName(this.shortAnnotationName()));
+		annotation.setTypeName(declaration.ast().newName(this.shortAnnotationName()));
 		this.addAnnotation(declaration, annotation);
 	}
 

@@ -76,7 +76,7 @@ public class ConversionDeclarationAnnotationElementAdapter<T>
 	public void setValue(T value, ModifiedDeclaration declaration) {
 		Expression expression;
 		try {
-			expression = this.converter.convert(value, declaration.getAST());
+			expression = this.converter.convert(value, declaration.ast());
 		} catch (IllegalArgumentException ex) {
 			// if there is a problem converting the 'value' to an Expression we get this exception
 			return;  // don't set the value if it is "illegal"

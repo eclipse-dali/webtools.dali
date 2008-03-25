@@ -64,7 +64,7 @@ public class JDTModifiedDeclaration
 
 	// ********** public methods **********
 
-	public ASTNode getDeclaration() {
+	public ASTNode declaration() {
 		return this.adapter.declaration();
 	}
 
@@ -76,12 +76,12 @@ public class JDTModifiedDeclaration
 		return this.adapter.modifiers();
 	}
 
-	public AST getAST() {
-		return this.getDeclaration().getAST();
+	public AST ast() {
+		return this.declaration().getAST();
 	}
 
 	public CompilationUnit compilationUnit() {
-		return (CompilationUnit) this.getDeclaration().getRoot();
+		return (CompilationUnit) this.declaration().getRoot();
 	}
 
 	public ICompilationUnit iCompilationUnit() {
@@ -104,7 +104,7 @@ public class JDTModifiedDeclaration
 		};
 	}
 
-	public Annotation getAnnotationNamed(String annotationName) {
+	public Annotation annotationNamed(String annotationName) {
 		for (Iterator<Annotation> stream = this.annotations(); stream.hasNext(); ) {
 			Annotation annotation = stream.next();
 			if (this.annotationIsNamed(annotation, annotationName)) {
@@ -118,7 +118,7 @@ public class JDTModifiedDeclaration
 	 * Return whether the declaration has an annotation with the specified name.
 	 */
 	public boolean containsAnnotationNamed(String annotationName) {
-		return this.getAnnotationNamed(annotationName) != null;
+		return this.annotationNamed(annotationName) != null;
 	}
 
 	/**

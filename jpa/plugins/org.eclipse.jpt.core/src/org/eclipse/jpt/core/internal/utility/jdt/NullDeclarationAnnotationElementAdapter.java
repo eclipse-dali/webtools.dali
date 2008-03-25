@@ -50,7 +50,7 @@ public class NullDeclarationAnnotationElementAdapter<T>
 	}
 
 	public ASTNode astNode(ModifiedDeclaration declaration) {
-		return declaration.getDeclaration();
+		return declaration.declaration();
 	}
 
 	public Expression expression(ModifiedDeclaration declaration) {
