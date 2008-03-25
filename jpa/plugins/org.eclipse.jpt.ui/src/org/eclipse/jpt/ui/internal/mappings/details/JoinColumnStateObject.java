@@ -22,11 +22,15 @@ import org.eclipse.jpt.db.Table;
 public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObject
 {
 	private Boolean insertable;
+	private Boolean nullable;
 	private String table;
+	private Boolean unique;
 	private Boolean updatable;
 
 	public static final String INSERTABLE_PROPERTY = "insertable";
+	public static final String NULLABLE_PROPERTY = "nullable";
 	public static final String TABLE_PROPERTY = "table";
+	public static final String UNIQUE_PROPERTY = "unique";
 	public static final String UPDATABLE_PROPERTY = "updatable";
 
 	/**
@@ -49,7 +53,29 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 			return joinColumn.getDefaultInsertable();
 		}
 
-		return null;
+		return JoinColumn.DEFAULT_INSERTABLE;
+	}
+
+	public Boolean getDefaultNullable() {
+
+		JoinColumn joinColumn = getJoinColumn();
+
+		if (joinColumn != null) {
+			return joinColumn.getDefaultNullable();
+		}
+
+		return JoinColumn.DEFAULT_NULLABLE;
+	}
+
+	public Boolean getDefaultUnique() {
+
+		JoinColumn joinColumn = getJoinColumn();
+
+		if (joinColumn != null) {
+			return joinColumn.getDefaultUnique();
+		}
+
+		return JoinColumn.DEFAULT_UNIQUE;
 	}
 
 	public Boolean getDefaultUpdatable() {
@@ -60,7 +86,7 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 			return joinColumn.getDefaultUpdatable();
 		}
 
-		return null;
+		return JoinColumn.DEFAULT_UPDATABLE;
 	}
 
 	public Boolean getInsertable() {
@@ -83,6 +109,10 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 		return null;
 	}
 
+	public Boolean getNullable() {
+		return nullable;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
@@ -95,6 +125,10 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 
 	public String getTable() {
 		return table;
+	}
+
+	public Boolean getUnique() {
+		return unique;
 	}
 
 	public Boolean getUpdatable() {
@@ -115,6 +149,8 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 
 			table      = joinColumn.getSpecifiedTable();
 			insertable = joinColumn.getSpecifiedInsertable();
+			nullable   = joinColumn.getSpecifiedNullable();
+			unique     = joinColumn.getSpecifiedUnique();
 			updatable  = joinColumn.getSpecifiedUpdatable();
 		}
 	}
@@ -125,10 +161,22 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 		firePropertyChanged(INSERTABLE_PROPERTY, oldInsertable, insertable);
 	}
 
+	public void setNullable(Boolean nullable) {
+		Boolean oldNullable = this.nullable;
+		this.nullable = nullable;
+		firePropertyChanged(NULLABLE_PROPERTY, oldNullable, nullable);
+	}
+
 	public void setTable(String table) {
 		String oldTable = this.table;
 		this.table = table;
 		firePropertyChanged(TABLE_PROPERTY, oldTable, table);
+	}
+
+	public void setUnique(Boolean unique) {
+		Boolean oldUnique = this.unique;
+		this.unique = unique;
+		firePropertyChanged(UNIQUE_PROPERTY, oldUnique, unique);
 	}
 
 	public void setUpdatable(Boolean updatable) {
@@ -175,6 +223,16 @@ public abstract class JoinColumnStateObject extends AbstractJoinColumnStateObjec
 		// Updatable
 		if (joinColumn.getSpecifiedUpdatable() != updatable){
 			joinColumn.setSpecifiedUpdatable(updatable);
+		}
+
+		// Unique
+		if (joinColumn.getSpecifiedUnique() != unique){
+			joinColumn.setSpecifiedUnique(unique);
+		}
+
+		// Nullable
+		if (joinColumn.getSpecifiedNullable() != nullable){
+			joinColumn.setSpecifiedNullable(nullable);
 		}
 	}
 }

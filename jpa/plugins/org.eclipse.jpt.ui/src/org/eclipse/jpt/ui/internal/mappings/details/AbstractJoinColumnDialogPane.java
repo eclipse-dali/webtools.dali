@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -167,12 +166,12 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 
 		if (defaultName != null) {
 			nameCombo.add(NLS.bind(
-				JptUiMappingsMessages.JoinColumnDialog_defaultWithOneParam,
+				JptUiMappingsMessages.JoinColumnDialogPane_defaultWithOneParam,
 				defaultName
 			));
 		}
 		else {
-			nameCombo.add(JptUiMappingsMessages.JoinColumnDialog_defaultEmpty);
+			nameCombo.add(JptUiMappingsMessages.JoinColumnDialogPane_defaultEmpty);
 		}
 
 		// Populate the combo with the column names
@@ -211,7 +210,7 @@ public class AbstractJoinColumnDialogPane<T extends AbstractJoinColumnStateObjec
 
 		if (defaultReferencedColumnName != null) {
 			referencedColumnNameCombo.add(NLS.bind(
-				JptUiMappingsMessages.JoinColumnDialog_defaultWithOneParam,
+				JptUiMappingsMessages.JoinColumnDialogPane_defaultWithOneParam,
 				defaultReferencedColumnName)
 			);
 		}

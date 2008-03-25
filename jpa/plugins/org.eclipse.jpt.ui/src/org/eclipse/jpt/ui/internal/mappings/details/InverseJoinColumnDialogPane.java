@@ -66,12 +66,12 @@ public class InverseJoinColumnDialogPane extends AbstractJoinColumnDialogPane<Jo
 
 		if (defaultName != null) {
 			nameCombo.add(NLS.bind(
-				JptUiMappingsMessages.JoinColumnDialog_defaultWithOneParam,
+				JptUiMappingsMessages.JoinColumnDialogPane_defaultWithOneParam,
 				defaultName
 			));
 		}
 		else {
-			nameCombo.add(JptUiMappingsMessages.JoinColumnDialog_defaultEmpty);
+			nameCombo.add(JptUiMappingsMessages.JoinColumnDialogPane_defaultEmpty);
 		}
 
 		// Populate the combo with the column names
@@ -122,7 +122,7 @@ public class InverseJoinColumnDialogPane extends AbstractJoinColumnDialogPane<Jo
 
 		if (defaultReferencedColumnName != null) {
 			referencedColumnNameCombo.add(NLS.bind(
-				JptUiMappingsMessages.JoinColumnDialog_defaultWithOneParam,
+				JptUiMappingsMessages.JoinColumnDialogPane_defaultWithOneParam,
 				defaultReferencedColumnName
 			));
 		}

@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormText;
@@ -61,18 +62,54 @@ public class FormWidgetFactory implements WidgetFactory {
 		this.widgetFactory = widgetFactory;
 	}
 
-	protected Text buildText(Composite parent, int style) {
-		return widgetFactory.createText(parent, null, SWT.FLAT | style);
+	/**
+	 * Wraps the given <code>Composite</code> into a new <code>Composite</code>
+	 * in order to have the widgets' border painted. Except for <code>CCombo</code>,
+	 * the top and bottom margins have to be 2 pixel and the left and right
+	 * margins have to be 1 pixel.
+	 *
+	 * @param container The parent of the sub-pane
+	 * @return A new <code>Composite</code> that has the necessary space to paint
+	 * the border
+	 */
+	protected Composite createBorderContainer(Composite container) {
+
+		GridLayout layout = new GridLayout(1, false);
+		layout.marginHeight = 0;
+		layout.marginWidth  = 0;
+		layout.marginTop    = 2;
+		layout.marginLeft   = 1;
+		layout.marginBottom = 2;
+		layout.marginRight  = 1;
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment       = GridData.FILL;
+		gridData.grabExcessHorizontalSpace = true;
+
+		container = widgetFactory.createComposite(container);
+		container.setLayoutData(gridData);
+		container.setLayout(layout);
+
+		return container;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	public Button createButton(Composite parent, String text) {
-		return this.createButton(parent, text, SWT.NULL);
+		return createButton(parent, text, SWT.NULL);
 	}
 
-	protected final Button createButton(Composite parent, String text, int style) {
+	/**
+	 * Creates a new button.
+	 *
+	 * @param parent The parent container
+	 * @param text The button's text
+	 * @param style The style to apply to the button, which determines its type:
+	 * toggle, push, check box, radio
+	 * @return The newly created <code>Button</code>
+	 */
+	protected Button createButton(Composite parent, String text, int style) {
 		return widgetFactory.createButton(parent, text, SWT.FLAT | style);
 	}
 
@@ -83,8 +120,15 @@ public class FormWidgetFactory implements WidgetFactory {
 		return createCCombo(parent, SWT.READ_ONLY);
 	}
 
+	/**
+	 * Creates a new combo.
+	 *
+	 * @param parent The parent container
+	 * @param style The style to apply to the combo, usually read-only, flat
+	 * @return The newly created <code>CCombo</code>
+	 */
 	protected CCombo createCCombo(Composite parent, int style) {
-		parent = fixComboBorderNotPainted(parent);
+		parent = createBorderContainer(parent);
 
 		CCombo combo = new CCombo(parent, style);
 		widgetFactory.adapt(combo, true, false);
@@ -101,7 +145,7 @@ public class FormWidgetFactory implements WidgetFactory {
 	 * (non-Javadoc)
 	 */
 	public Button createCheckBox(Composite parent, String text) {
-		return this.createButton(parent, text, SWT.CHECK);
+		return createButton(parent, text, SWT.CHECK);
 	}
 
 	/*
@@ -131,7 +175,9 @@ public class FormWidgetFactory implements WidgetFactory {
 	 * (non-Javadoc)
 	 */
 	public Combo createEditableCombo(Composite parent) {
-		return new Combo(parent, SWT.FLAT);
+		Combo combo = new Combo(parent, SWT.FLAT);
+		combo.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
+		return combo;
 	}
 
 	/*
@@ -163,7 +209,9 @@ public class FormWidgetFactory implements WidgetFactory {
 	 * (non-Javadoc)
 	 */
 	public List createList(Composite container, int style) {
-		return new List(container, SWT.FLAT | style);
+		List list = new List(container, SWT.FLAT | style);
+		list.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
+		return list;
 	}
 
 	/*
@@ -187,8 +235,8 @@ public class FormWidgetFactory implements WidgetFactory {
 		container.setLayout(layout);
 
 		FormText text = widgetFactory.createFormText(container, true);
-		text.setText(labelText, false, false);
 		text.setLayoutData(new TableWrapData(TableWrapData.FILL_GRAB));
+		text.setText(labelText, false, false);
 
 		return text;
 	}
@@ -197,21 +245,21 @@ public class FormWidgetFactory implements WidgetFactory {
 	 * (non-Javadoc)
 	 */
 	public Text createMultiLineText(Composite parent) {
-		return buildText(parent, SWT.MULTI | SWT.V_SCROLL);
+		return createText(parent, SWT.MULTI | SWT.V_SCROLL);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	public Button createPushButton(Composite parent, String text) {
-		return this.createButton(parent, text, SWT.PUSH);
+		return createButton(parent, text, SWT.PUSH);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	public Button createRadioButton(Composite parent, String text) {
-		return this.createButton(parent, text, SWT.RADIO);
+		return createButton(parent, text, SWT.RADIO);
 	}
 
 	/*
@@ -224,15 +272,34 @@ public class FormWidgetFactory implements WidgetFactory {
 	/*
 	 * (non-Javadoc)
 	 */
+	public Spinner createSpinner(Composite parent) {
+		parent = createBorderContainer(parent);
+
+		Spinner spinner = new Spinner(parent, SWT.FLAT);
+		spinner.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
+		widgetFactory.adapt(spinner, true, false);
+
+		return spinner;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
 	public Table createTable(Composite parent, int style) {
-		return this.widgetFactory.createTable(parent, SWT.BORDER | style);
+		Table table = this.widgetFactory.createTable(parent, SWT.BORDER | style);
+		table.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
+		return table;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	public Text createText(Composite parent) {
-		return buildText(parent, SWT.NULL);
+		return createText(parent, SWT.NULL);
+	}
+
+	protected Text createText(Composite parent, int style) {
+		return widgetFactory.createText(parent, null, SWT.FLAT | style);
 	}
 
 	/*
@@ -241,66 +308,6 @@ public class FormWidgetFactory implements WidgetFactory {
 	public Button createTriStateCheckBox(Composite parent, String text) {
 		TriStateCheckBox checkBox = new TriStateCheckBox(parent, text, this);
 		return checkBox.getCheckBox();
-	}
-
-	/**
-	 * Wraps the given <code>Composite</code> into a new <code>Composite</code>
-	 * in order to have the widgets' border painted. This must be a bug in the
-	 * <code>GridLayout</code> used in a form.
-	 *
-	 * @param container The parent of the sub-pane with 1 pixel border
-	 * @return A new <code>Composite</code> that has the necessary space to paint
-	 * the border
-	 */
-	protected final Composite fixComboBorderNotPainted(Composite container) {
-
-		GridLayout layout = new GridLayout(1, false);
-		layout.marginHeight = 0;
-		layout.marginWidth  = 0;
-		layout.marginTop    = 1;
-		layout.marginLeft   = 1;
-		layout.marginBottom = 1;
-		layout.marginRight  = 1;
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-
-		container = widgetFactory.createComposite(container);
-		container.setLayoutData(gridData);
-		container.setLayout(layout);
-
-		return container;
-	}
-
-	/**
-	 * Wraps the given <code>Composite</code> into a new <code>Composite</code>
-	 * in order to have the widgets' border painted. This must be a bug in the
-	 * <code>GridLayout</code> used in a form.
-	 *
-	 * @param container The parent of the sub-pane with 2 pixel border
-	 * @return A new <code>Composite</code> that has the necessary space to paint
-	 * the border
-	 */
-	protected final Composite fixTextBorderNotPainted(Composite container) {
-
-		GridLayout layout = new GridLayout(1, false);
-		layout.marginHeight = 0;
-		layout.marginWidth  = 0;
-		layout.marginTop    = 1;
-		layout.marginLeft   = 1;
-		layout.marginBottom = 1;
-		layout.marginRight  = 1;
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-
-		container = widgetFactory.createComposite(container);
-		container.setLayoutData(gridData);
-		container.setLayout(layout);
-
-		return container;
 	}
 
 	/**

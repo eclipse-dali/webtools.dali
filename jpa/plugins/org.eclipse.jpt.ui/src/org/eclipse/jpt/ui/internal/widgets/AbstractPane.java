@@ -21,6 +21,7 @@ import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.swt.BooleanButtonModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.CComboModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.ComboModelAdapter;
+import org.eclipse.jpt.ui.internal.swt.SpinnerModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.TextFieldModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.TriStateCheckBoxModelAdapter;
 import org.eclipse.jpt.ui.internal.util.ControlAligner;
@@ -30,6 +31,7 @@ import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationWritablePropertyValueModel;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
@@ -38,6 +40,8 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -58,6 +62,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
@@ -402,12 +407,7 @@ public abstract class AbstractPane<T extends Model>
 	protected final CCombo buildCCombo(Composite container) {
 
 		CCombo combo = this.widgetFactory.createCCombo(container);
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		combo.setLayoutData(gridData);
-
+		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		return combo;
 	}
 
@@ -640,12 +640,7 @@ public abstract class AbstractPane<T extends Model>
 	protected final Combo buildCombo(Composite container) {
 
 		Combo combo = this.widgetFactory.createCombo(container);
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		combo.setLayoutData(gridData);
-
+		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		return combo;
 	}
 
@@ -726,6 +721,8 @@ public abstract class AbstractPane<T extends Model>
 	 * @param parent The parent container
 	 * @return The newly created <code>Composite</code> that will holds all the
 	 * widgets created by this pane through {@link #initializeLayout(Composite)}
+	 *
+	 * @category Layout
 	 */
 	protected Composite buildContainer(Composite parent) {
 		return this.buildSubPane(parent);
@@ -742,12 +739,7 @@ public abstract class AbstractPane<T extends Model>
 	protected final CCombo buildEditableCCombo(Composite container) {
 
 		CCombo combo = this.widgetFactory.createEditableCCombo(container);
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		combo.setLayoutData(gridData);
-
+		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		return combo;
 	}
 
@@ -832,12 +824,7 @@ public abstract class AbstractPane<T extends Model>
 	protected final Combo buildEditableCombo(Composite container) {
 
 		Combo combo = this.widgetFactory.createEditableCombo(container);
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		combo.setLayoutData(gridData);
-
+		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		return combo;
 	}
 
@@ -936,6 +923,8 @@ public abstract class AbstractPane<T extends Model>
 	 * @param text The hyperlink's text
 	 * @param hyperLinkAction The action to be invoked when the link was selected
 	 * return The newly created <code>Hyperlink</code>
+	 *
+	 * @category Layout
 	 */
 	protected final Hyperlink buildHyperLink(Composite parent,
 	                                         String text,
@@ -1331,10 +1320,7 @@ public abstract class AbstractPane<T extends Model>
 		this.leftControlAligner.add(leftControl);
 
 		// Center control
-		gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		centerControl.setLayoutData(gridData);
+		centerControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// Re-parent the center control to the new sub pane
 		centerControl.setParent(container);
@@ -2095,6 +2081,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @param labelText The text area's label
 	 * @param textHolder The holder of the text field's input
 	 * @param rightControl The widget to be placed to the right of the text area
+	 * @param helpId The topic help ID to be registered for the text field
 	 * @return The newly created <code>Text</code>
 	 *
 	 * @category Layout
@@ -2152,6 +2139,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @param labelText The text area's label
 	 * @param textHolder The holder of the text field's input
 	 * @param lineCount The number of lines the text area should display
+	 * @param helpId The topic help ID to be registered for the text field
 	 * @return The newly created <code>Text</code>
 	 *
 	 * @category Layout
@@ -2195,6 +2183,7 @@ public abstract class AbstractPane<T extends Model>
 	 * @param container The parent container
 	 * @param labelText The text area's label
 	 * @param textHolder The holder of the text field's input
+	 * @param helpId The topic help ID to be registered for the text field
 	 * @return The newly created <code>Text</code>
 	 *
 	 * @category Layout
@@ -2209,6 +2198,214 @@ public abstract class AbstractPane<T extends Model>
 			labelText,
 			textHolder,
 			3,
+			helpId
+		);
+	}
+
+	/**
+	 * Creates a new spinner.
+	 *
+	 * @param parent The parent container
+	 * @param labelText The label's text
+	 * @param numberHolder The holder of the integer value
+	 * @param defaultValue The value shown when the holder has <code>null</code>
+	 * @return The newly created <code>Spinner</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Spinner buildLabeledSpinner(Composite parent,
+	                                            String labelText,
+	                                            WritablePropertyValueModel<Integer> numberHolder,
+	                                            int defaultValue) {
+
+		return this.buildLabeledSpinner(
+			container,
+			labelText,
+			numberHolder,
+			defaultValue,
+			null
+		);
+	}
+
+	/**
+	 * Creates a new spinner.
+	 *
+	 * @param parent The parent container
+	 * @param labelText The label's text
+	 * @param numberHolder The holder of the integer value
+	 * @param defaultValue The value shown when the holder has <code>null</code>
+	 * @param minimumValue The minimum value that the spinner will allow
+	 * @param maximumValue The maximum value that the spinner will allow
+	 * @param helpId The topic help ID to be registered for the spinner
+	 * @return The newly created <code>Spinner</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Spinner buildLabeledSpinner(Composite parent,
+	                                            String labelText,
+	                                            WritablePropertyValueModel<Integer> numberHolder,
+	                                            int defaultValue,
+	                                            int minimumValue,
+	                                            int maximumValue,
+	                                            String helpId) {
+
+		Spinner spinner = this.buildSpinner(
+			parent,
+			numberHolder,
+			defaultValue,
+			minimumValue,
+			maximumValue
+		);
+
+		buildLabeledComposite(
+			parent,
+			labelText,
+			(spinner.getParent() != parent) ? spinner.getParent() : spinner,
+			helpId
+		);
+
+		GridData gridData = (GridData) spinner.getLayoutData();
+		gridData.horizontalAlignment = GridData.BEGINNING;
+
+		return spinner;
+	}
+
+	/**
+	 * Creates a new spinner.
+	 *
+	 * @param parent The parent container
+	 * @param labelText The label's text
+	 * @param numberHolder The holder of the integer value
+	 * @param defaultValue The value shown when the holder has <code>null</code>
+	 * @param helpId The topic help ID to be registered for the spinner
+	 * @return The newly created <code>Spinner</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Spinner buildLabeledSpinner(Composite parent,
+	                                            String labelText,
+	                                            WritablePropertyValueModel<Integer> numberHolder,
+	                                            int defaultValue,
+	                                            String helpId) {
+
+		return this.buildLabeledSpinner(
+			parent,
+			labelText,
+			numberHolder,
+			defaultValue,
+			0,
+			Integer.MAX_VALUE,
+			null
+		);
+	}
+
+	/**
+	 * Creates a new spinner.
+	 *
+	 * @param parent The parent container
+	 * @param labelText The label's text
+	 * @param numberHolder The holder of the integer value
+	 * @param defaultValue The value shown when the holder has <code>null</code>
+	 * @param minimumValue The minimum value that the spinner will allow
+	 * @param maximumValue The maximum value that the spinner will allow
+	 * @return The newly created <code>Spinner</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Spinner buildLabeledSpinnerWithDefault(Composite parent,
+	                                                       String labelText,
+	                                                       WritablePropertyValueModel<Integer> numberHolder,
+	                                                       int defaultValue,
+	                                                       int minimumValue,
+	                                                       int maximumValue) {
+
+		return this.buildLabeledSpinnerWithDefault(
+			parent,
+			labelText,
+			numberHolder,
+			defaultValue,
+			minimumValue,
+			maximumValue,
+			null
+		);
+	}
+
+	/**
+	 * Creates a new spinner.
+	 *
+	 * @param parent The parent container
+	 * @param labelText The label's text
+	 * @param numberHolder The holder of the integer value
+	 * @param defaultValue The value shown when the holder has <code>null</code>
+	 * @param minimumValue The minimum value that the spinner will allow
+	 * @param maximumValue The maximum value that the spinner will allow
+	 * @param helpId The topic help ID to be registered for the spinner
+	 * @return The newly created <code>Spinner</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Spinner buildLabeledSpinnerWithDefault(Composite parent,
+	                                                       String labelText,
+	                                                       WritablePropertyValueModel<Integer> numberHolder,
+	                                                       int defaultValue,
+	                                                       int minimumValue,
+	                                                       int maximumValue,
+	                                                       String helpId) {
+
+		WritablePropertyValueModel<Integer> numberHolderWrapper = new TransformationWritablePropertyValueModel<Integer, Integer>(numberHolder) {
+			@Override
+			protected Integer reverseTransform_(Integer value) {
+				return (value == -1) ? null : value;
+			}
+
+			@Override
+			protected Integer transform(Integer value) {
+				return (value == null) ? -1 : value;
+			}
+		};
+
+		Spinner spinner = this.buildLabeledSpinner(
+			parent,
+			labelText,
+			numberHolderWrapper,
+			defaultValue,
+			-1,
+			maximumValue,
+			helpId
+		);
+
+		spinner.setData("defaultValue", defaultValue);
+		spinner.setData("usingDefault", numberHolder.value() == null);
+		spinner.addFocusListener(buildSpinnerFocusListener());
+
+		return spinner;
+	}
+
+	/**
+	 * Creates a new spinner.
+	 *
+	 * @param parent The parent container
+	 * @param labelText The label's text
+	 * @param numberHolder The holder of the integer value
+	 * @param defaultValue The value shown when the holder has <code>null</code>
+	 * @param helpId The topic help ID to be registered for the spinner
+	 * @return The newly created <code>Spinner</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Spinner buildLabeledSpinnerWithDefault(Composite parent,
+	                                                       String labelText,
+	                                                       WritablePropertyValueModel<Integer> numberHolder,
+	                                                       int defaultValue,
+	                                                       String helpId) {
+
+		return this.buildLabeledSpinnerWithDefault(
+			parent,
+			labelText,
+			numberHolder,
+			defaultValue,
+			0,
+			Integer.MAX_VALUE,
 			helpId
 		);
 	}
@@ -2483,13 +2680,7 @@ public abstract class AbstractPane<T extends Model>
 		);
 
 		list.addSelectionListener(buildSelectionListener(selectionHolder));
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.verticalAlignment         = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace   = true;
-		list.setLayoutData(gridData);
+		list.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		if (helpId != null) {
 			helpSystem().setHelp(list, helpId);
@@ -2540,10 +2731,8 @@ public abstract class AbstractPane<T extends Model>
 
 		Text text = this.widgetFactory.createMultiLineText(container);
 
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.heightHint                = text.getLineHeight() * lineCount;
+		GridData gridData   = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.heightHint = text.getLineHeight() * lineCount;
 		text.setLayoutData(gridData);
 
 		if (helpId != null) {
@@ -2642,6 +2831,8 @@ public abstract class AbstractPane<T extends Model>
 	 *
 	 * @param container The parent container
 	 * @return The newly created <code>PageBook</code>
+	 *
+	 * @category Layout
 	 */
 	protected final PageBook buildPageBook(Composite container) {
 
@@ -2675,12 +2866,7 @@ public abstract class AbstractPane<T extends Model>
 
 		container = this.widgetFactory.createComposite(container);
 		container.setLayout(layout);
-
-		GridData gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.horizontalAlignment       = SWT.FILL;
-		container.setLayoutData(gridData);
-
+		container.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		return container;
 	}
 
@@ -2815,14 +3001,10 @@ public abstract class AbstractPane<T extends Model>
 	                               int type) {
 
 		Section section = this.widgetFactory.createSection(container, type);
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		section.setText(sectionText);
 		section.marginWidth  = 0;
 		section.marginHeight = 0;
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		section.setLayoutData(gridData);
 
 		Composite subPane = this.buildSubPane(section);
 		section.setClient(subPane);
@@ -2846,6 +3028,13 @@ public abstract class AbstractPane<T extends Model>
 		};
 	}
 
+	/**
+	 * Creates the layout responsible to compute the size of the
+	 * <code>Composite</code> created for the right widget, it helps to align all
+	 * the center widgets.
+	 *
+	 * @category Layout
+	 */
 	private Layout buildSpacerLayout() {
 
 		return new Layout() {
@@ -2863,6 +3052,152 @@ public abstract class AbstractPane<T extends Model>
 			protected void layout(Composite composite, boolean flushCache) {
 				GridData data = (GridData) composite.getLayoutData();
 				composite.setBounds(0, 0, data.widthHint, data.heightHint);
+			}
+		};
+	}
+
+	/**
+	 * Creates a new spinner.
+	 *
+	 * @param parent The parent container
+	 * @param numberHolder The holder of the integer value
+	 * @param defaultValue The value shown when the holder has <code>null</code>
+	 * @return The newly created <code>Spinner</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Spinner buildSpinner(Composite parent,
+	                                     WritablePropertyValueModel<Integer> numberHolder,
+	                                     int defaultValue) {
+
+		return this.buildSpinner(
+			parent,
+			numberHolder,
+			defaultValue,
+			0,
+			Integer.MAX_VALUE
+		);
+	}
+
+	/**
+	 * Creates a new spinner.
+	 *
+	 * @param parent The parent container
+	 * @param numberHolder The holder of the integer value
+	 * @param defaultValue The value shown when the holder has <code>null</code>
+	 * @param minimumValue The minimum value that the spinner will allow
+	 * @param maximumValue The maximum value that the spinner will allow
+	 * @return The newly created <code>Spinner</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Spinner buildSpinner(Composite parent,
+	                                     WritablePropertyValueModel<Integer> numberHolder,
+	                                     int defaultValue,
+	                                     int minimumValue,
+	                                     int maximumValue) {
+
+		return this.buildSpinner(
+			parent,
+			numberHolder,
+			defaultValue,
+			minimumValue,
+			maximumValue,
+			null
+		);
+	}
+
+	/**
+	 * Creates a new spinner.
+	 *
+	 * @param parent The parent container
+	 * @param numberHolder The holder of the integer value
+	 * @param defaultValue The value shown when the holder has <code>null</code>
+	 * @param minimumValue The minimum value that the spinner will allow
+	 * @param maximumValue The maximum value that the spinner will allow
+	 * @param helpId The topic help ID to be registered for the new button
+	 * @return The newly created <code>Spinner</code>
+	 *
+	 * @category Layout
+	 */
+	protected final Spinner buildSpinner(Composite parent,
+	                                     WritablePropertyValueModel<Integer> numberHolder,
+	                                     int defaultValue,
+	                                     int minimumValue,
+	                                     int maximumValue,
+	                                     String helpId) {
+
+		Spinner spinner = this.widgetFactory.createSpinner(parent);
+		spinner.setMinimum(minimumValue);
+		spinner.setMaximum(maximumValue);
+		spinner.setLayoutData(new GridData(GridData.BEGINNING));
+
+		SpinnerModelAdapter.adapt(numberHolder, spinner, defaultValue);
+
+		if (helpId != null) {
+			helpSystem().setHelp(spinner, helpId);
+		}
+
+		return spinner;
+	}
+
+	/**
+	 * Creates the listener responsible to show the default value in the spinner
+	 * when the focus is lost and the value is -1. If the spinner gains the focus
+	 * and the default
+	 *
+	 * @return
+	 *
+	 * @category Layout
+	 */
+	private FocusListener buildSpinnerFocusListener() {
+
+		return new FocusListener() {
+
+			public void focusGained(FocusEvent e) {
+
+				if (!isPopulating()) {
+					Spinner spinner = (Spinner) e.widget;
+					Boolean usingDefault = (Boolean) spinner.getData("usingDefault");
+
+					if (usingDefault) {
+						setPopulating(true);
+
+						try {
+							spinner.setSelection(-1);
+							spinner.setData("usingDefault", Boolean.TRUE);
+						}
+						finally {
+							setPopulating(false);
+						}
+					}
+					else {
+						spinner.setData("usingDefault", Boolean.FALSE);
+					}
+				}
+			}
+
+			public void focusLost(FocusEvent e) {
+
+				if (!isPopulating()) {
+					Spinner spinner = (Spinner) e.widget;
+
+					if (spinner.getSelection() == -1) {
+						setPopulating(true);
+
+						try {
+							Integer defaultValue = (Integer) spinner.getData("defaultValue");
+							spinner.setSelection(defaultValue);
+							spinner.setData("usingDefault", Boolean.TRUE);
+						}
+						finally {
+							setPopulating(false);
+						}
+					}
+					else {
+						spinner.setData("usingDefault", Boolean.FALSE);
+					}
+				}
 			}
 		};
 	}
@@ -3049,12 +3384,8 @@ public abstract class AbstractPane<T extends Model>
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.verticalAlignment         = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.grabExcessVerticalSpace   = true;
-		gridData.heightHint                = table.getItemHeight() * 4;
+		GridData gridData   = new GridData(GridData.FILL_BOTH);
+		gridData.heightHint = table.getItemHeight() * 4;
 		table.setLayoutData(gridData);
 
 		if (helpId != null) {
@@ -3107,11 +3438,7 @@ public abstract class AbstractPane<T extends Model>
 	protected final Text buildText(Composite container, String helpId) {
 
 		Text text = this.widgetFactory.createText(container);
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		text.setLayoutData(gridData);
+		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		if (helpId != null) {
 			helpSystem().setHelp(text, helpId);
@@ -3150,12 +3477,9 @@ public abstract class AbstractPane<T extends Model>
 	                               String helpId) {
 
 		Text text = this.widgetFactory.createText(container);
-		TextFieldModelAdapter.adapt(textHolder, text);
+		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		text.setLayoutData(gridData);
+		TextFieldModelAdapter.adapt(textHolder, text);
 
 		if (helpId != null) {
 			helpSystem().setHelp(text, helpId);
@@ -3192,6 +3516,7 @@ public abstract class AbstractPane<T extends Model>
 	                                      String helpId) {
 
 		Group group = this.widgetFactory.createGroup(container, title);
+		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		GridLayout layout = new GridLayout(1, false);
 		layout.marginHeight = 0;
@@ -3201,12 +3526,6 @@ public abstract class AbstractPane<T extends Model>
 		layout.marginBottom = 5;
 		layout.marginRight  = 5;
 		group.setLayout(layout);
-
-		GridData gridData = new GridData();
-		gridData.horizontalAlignment       = GridData.FILL;
-		gridData.grabExcessHorizontalSpace = true;
-		gridData.verticalIndent            = 0;
-		group.setLayoutData(gridData);
 
 		if (helpId != null) {
 			helpSystem().setHelp(group, helpId);
@@ -3267,6 +3586,8 @@ public abstract class AbstractPane<T extends Model>
 	 * @param booleanHolder The holder of the boolean value where <code>null</code>
 	 * means partially selected
 	 * @return The newly created <code>TriStateCheckBox</code>
+	 *
+	 * @category Layout
 	 */
 	protected final TriStateCheckBox buildTriStateCheckBox(Composite parent,
 	                                                       String text,
@@ -3285,6 +3606,8 @@ public abstract class AbstractPane<T extends Model>
 	 * means partially selected
 	 * @param helpId The topic help ID to be registered for the new check box
 	 * @return The newly created <code>TriStateCheckBox</code>
+	 *
+	 * @category Layout
 	 */
 	protected final TriStateCheckBox buildTriStateCheckBox(Composite parent,
 	                                                       String text,
@@ -3320,6 +3643,8 @@ public abstract class AbstractPane<T extends Model>
 	 * @param stringHolder The holder of the string to put in parenthesis after
 	 * the check box's text when it is partially selected
 	 * @return The newly created <code>TriStateCheckBox</code>
+	 *
+	 * @category Layout
 	 */
 	protected final TriStateCheckBox buildTriStateCheckBoxWithDefault(Composite parent,
 	                                                                  String text,
@@ -3347,6 +3672,8 @@ public abstract class AbstractPane<T extends Model>
 	 * the check box's text when it is partially selected
 	 * @param helpId The topic help ID to be registered for the new check box
 	 * @return The newly created <code>TriStateCheckBox</code>
+	 *
+	 * @category Layout
 	 */
 	protected final TriStateCheckBox buildTriStateCheckBoxWithDefault(Composite parent,
 	                                                                  String text,
@@ -3833,6 +4160,7 @@ public abstract class AbstractPane<T extends Model>
 	 * <code>null</code>.
 	 *
 	 * @return <code>true</code> is returned by default
+	 * @category Populate
 	 */
 	protected boolean repopulateWithNullSubject() {
 		return true;

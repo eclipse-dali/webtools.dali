@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.Column;
@@ -19,14 +20,18 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
+import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.ui.internal.widgets.TriStateCheckBox;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Spinner;
 
 /**
  * Here the layout of this pane:
@@ -43,10 +48,25 @@ import org.eclipse.swt.widgets.Composite;
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * |                                                                           |
- * | x Insertable                                                              |
+ * | > Details                                                                 |
  * |                                                                           |
- * | x Updatable                                                               |
+ * |   x Insertable                                                            |
  * |                                                                           |
+ * |   x Updatable                                                             |
+ * |                                                                           |
+ * |   x Unique                                                                |
+ * |                                                                           |
+ * |   x Nullable                                                              |
+ * |                                                                           |
+ * |              ---------------                                              |
+ * |   Length:    |           |I|                                              |
+ * |              ---------------                                              |
+ * |              ---------------                                              |
+ * |   Precision: |           |I|                                              |
+ * |              ---------------                                              |
+ * |              ---------------                                              |
+ * |   Scale:     |           |I|                                              |
+ * |              ---------------                                              |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see Column
@@ -64,8 +84,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class ColumnComposite extends AbstractFormPane<Column>
 {
-	private TriStateCheckBox insertableCheckBox;
-	private TriStateCheckBox updatableCheckBox;
+	private WritablePropertyValueModel<Boolean> enablementHolder;
 
 	/**
 	 * Creates a new <code>ColumnComposite</code>.
@@ -204,6 +223,121 @@ public class ColumnComposite extends AbstractFormPane<Column>
 		};
 	}
 
+	private WritablePropertyValueModel<Integer> buildLengthHolder() {
+
+		return new PropertyAspectAdapter<Column, Integer>(
+			getSubjectHolder(),
+			Column.DEFAULT_UPDATABLE_PROPERTY,
+			Column.SPECIFIED_UPDATABLE_PROPERTY)
+		{
+			@Override
+			protected Integer buildValue_() {
+				return subject.getSpecifiedLength();
+			}
+
+			@Override
+			protected void setValue_(Integer value) {
+				subject.setSpecifiedLength(value);
+			}
+		};
+	}
+
+	private WritablePropertyValueModel<Boolean> buildNullableHolder() {
+		return new PropertyAspectAdapter<Column, Boolean>(
+			getSubjectHolder(),
+			Column.DEFAULT_NULLABLE_PROPERTY,
+			Column.SPECIFIED_NULLABLE_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				return subject.getSpecifiedNullable();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				subject.setSpecifiedNullable(value);
+			}
+
+			@Override
+			protected void subjectChanged() {
+				Object oldValue = this.value();
+				super.subjectChanged();
+				Object newValue = this.value();
+
+				// Make sure the default value is appended to the text
+				if (oldValue == newValue && newValue == null) {
+					this.fireAspectChange(Boolean.TRUE, newValue);
+				}
+			}
+		};
+	}
+
+	private PropertyValueModel<String> buildNullableStringHolder() {
+
+		return new TransformationPropertyValueModel<Boolean, String>(buildNullableHolder()) {
+
+			@Override
+			protected String transform(Boolean value) {
+
+				if ((subject() != null) && (value == null)) {
+
+					Boolean defaultValue = subject().getDefaultNullable();
+
+					if (defaultValue != null) {
+
+						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+						                                           JptUiMappingsMessages.Boolean_False;
+
+						return NLS.bind(
+							JptUiMappingsMessages.ColumnComposite_nullableWithDefault,
+							defaultStringValue
+						);
+					}
+				}
+
+				return JptUiMappingsMessages.ColumnComposite_nullable;
+			}
+		};
+	}
+
+	private WritablePropertyValueModel<Integer> buildPrecisionHolder() {
+
+		return new PropertyAspectAdapter<Column, Integer>(
+			getSubjectHolder(),
+			Column.DEFAULT_PRECISION_PROPERTY,
+			Column.SPECIFIED_PRECISION_PROPERTY)
+		{
+			@Override
+			protected Integer buildValue_() {
+				return subject.getSpecifiedPrecision();
+			}
+
+			@Override
+			protected void setValue_(Integer value) {
+				subject.setSpecifiedPrecision(value);
+			}
+		};
+	}
+
+	private WritablePropertyValueModel<Integer> buildScaleHolder() {
+
+		return new PropertyAspectAdapter<Column, Integer>(
+			getSubjectHolder(),
+			Column.DEFAULT_SCALE_PROPERTY,
+			Column.SPECIFIED_SCALE_PROPERTY)
+		{
+			@Override
+			protected Integer buildValue_() {
+				return subject.getSpecifiedScale();
+			}
+
+			@Override
+			protected void setValue_(Integer value) {
+				subject.setSpecifiedScale(value);
+			}
+		};
+	}
+
 	private TableCombo<Column> buildTableCombo(Composite container) {
 
 		return new TableCombo<Column>(this, container) {
@@ -238,6 +372,64 @@ public class ColumnComposite extends AbstractFormPane<Column>
 			@Override
 			protected Iterator<String> values() {
 				return subject().owner().typeMapping().associatedTableNamesIncludingInherited();
+			}
+		};
+	}
+
+	private WritablePropertyValueModel<Boolean> buildUniqueHolder() {
+		return new PropertyAspectAdapter<Column, Boolean>(
+			getSubjectHolder(),
+			Column.DEFAULT_UNIQUE_PROPERTY,
+			Column.SPECIFIED_UNIQUE_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				return subject.getSpecifiedUnique();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				subject.setSpecifiedUnique(value);
+			}
+
+			@Override
+			protected void subjectChanged() {
+				Object oldValue = this.value();
+				super.subjectChanged();
+				Object newValue = this.value();
+
+				// Make sure the default value is appended to the text
+				if (oldValue == newValue && newValue == null) {
+					this.fireAspectChange(Boolean.TRUE, newValue);
+				}
+			}
+		};
+	}
+
+	private PropertyValueModel<String> buildUniqueStringHolder() {
+
+		return new TransformationPropertyValueModel<Boolean, String>(buildUniqueHolder()) {
+
+			@Override
+			protected String transform(Boolean value) {
+
+				if ((subject() != null) && (value == null)) {
+
+					Boolean defaultValue = subject().getDefaultUnique();
+
+					if (defaultValue != null) {
+
+						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+						                                           JptUiMappingsMessages.Boolean_False;
+
+						return NLS.bind(
+							JptUiMappingsMessages.ColumnComposite_uniqueWithDefault,
+							defaultStringValue
+						);
+					}
+				}
+
+				return JptUiMappingsMessages.ColumnComposite_unique;
 			}
 		};
 	}
@@ -306,8 +498,100 @@ public class ColumnComposite extends AbstractFormPane<Column>
 	@Override
 	public void enableWidgets(boolean enabled) {
 		super.enableWidgets(enabled);
-		insertableCheckBox.setEnabled(enabled);
-		updatableCheckBox.setEnabled(enabled);
+		enablementHolder.setValue(enabled);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected void initialize() {
+		super.initialize();
+		enablementHolder = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
+	}
+
+	private void initializeDetailsPane(Composite container) {
+
+		Collection<Control> widgets = new ArrayList<Control>();
+
+		// Insertable tri-state check box
+		TriStateCheckBox insertableCheckBox = buildTriStateCheckBoxWithDefault(
+			buildSubPane(container, 4),
+			JptUiMappingsMessages.ColumnComposite_insertable,
+			buildInsertableHolder(),
+			buildInsertableStringHolder(),
+			JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
+		);
+
+		widgets.add(insertableCheckBox.getCheckBox());
+
+		// Updatable tri-state check box
+		TriStateCheckBox updatableCheckBox = buildTriStateCheckBoxWithDefault(
+			container,
+			JptUiMappingsMessages.ColumnComposite_updatable,
+			buildUpdatableHolder(),
+			buildUpdatableStringHolder(),
+			JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
+		);
+
+		widgets.add(updatableCheckBox.getCheckBox());
+
+		// Unique tri-state check box
+		TriStateCheckBox uniqueCheckBox = buildTriStateCheckBoxWithDefault(
+			container,
+			JptUiMappingsMessages.ColumnComposite_unique,
+			buildUniqueHolder(),
+			buildUniqueStringHolder(),
+			JpaHelpContextIds.MAPPING_COLUMN_UNIQUE
+		);
+
+		widgets.add(uniqueCheckBox.getCheckBox());
+
+		// Nullable tri-state check box
+		TriStateCheckBox nullableCheckBox = buildTriStateCheckBoxWithDefault(
+			container,
+			JptUiMappingsMessages.ColumnComposite_nullable,
+			buildNullableHolder(),
+			buildNullableStringHolder(),
+			JpaHelpContextIds.MAPPING_COLUMN_NULLABLE
+		);
+
+		widgets.add(nullableCheckBox.getCheckBox());
+
+		// Length widgets
+		Spinner lengthSpinner = buildLabeledSpinnerWithDefault(
+			container,
+			JptUiMappingsMessages.ColumnComposite_length,
+			buildLengthHolder(),
+			Column.DEFAULT_LENGTH,
+			JpaHelpContextIds.MAPPING_COLUMN_LENGTH
+		);
+
+		widgets.add(lengthSpinner);
+
+		// Precision widgets
+		Spinner precisionSpinner = buildLabeledSpinnerWithDefault(
+			container,
+			JptUiMappingsMessages.ColumnComposite_precision,
+			buildPrecisionHolder(),
+			Column.DEFAULT_PRECISION,
+			JpaHelpContextIds.MAPPING_COLUMN_PRECISION
+		);
+
+		widgets.add(precisionSpinner);
+
+		// Scale widgets
+		Spinner scaleSpinner = buildLabeledSpinnerWithDefault(
+			container,
+			JptUiMappingsMessages.ColumnComposite_scale,
+			buildScaleHolder(),
+			Column.DEFAULT_SCALE,
+			JpaHelpContextIds.MAPPING_COLUMN_SCALE
+		);
+
+		widgets.add(scaleSpinner);
+
+		installControlEnabler(widgets);
 	}
 
 	/*
@@ -325,7 +609,7 @@ public class ColumnComposite extends AbstractFormPane<Column>
 		// Column widgets
 		buildLabeledComposite(
 			container,
-			JptUiMappingsMessages.ColumnChooser_label,
+			JptUiMappingsMessages.ColumnComposite_name,
 			buildColumnCombo(container),
 			JpaHelpContextIds.MAPPING_COLUMN
 		);
@@ -333,27 +617,22 @@ public class ColumnComposite extends AbstractFormPane<Column>
 		// Table widgets
 		buildLabeledComposite(
 			container,
-			JptUiMappingsMessages.ColumnTableChooser_label,
+			JptUiMappingsMessages.ColumnComposite_table,
 			buildTableCombo(container),
 			JpaHelpContextIds.MAPPING_COLUMN_TABLE
 		);
 
-		// Insertable widgets
-		insertableCheckBox = buildTriStateCheckBoxWithDefault(
-			buildSubPane(container, 4),
-			JptUiMappingsMessages.ColumnComposite_insertable,
-			buildInsertableHolder(),
-			buildInsertableStringHolder(),
-			JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
+		// Details sub-pane
+		container = buildCollapsableSubSection(
+			container,
+			JptUiMappingsMessages.ColumnComposite_details,
+			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
 		);
 
-		// Updatable widgets
-		updatableCheckBox = buildTriStateCheckBoxWithDefault(
-			container,
-			JptUiMappingsMessages.ColumnComposite_updatable,
-			buildUpdatableHolder(),
-			buildUpdatableStringHolder(),
-			JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
-		);
+		initializeDetailsPane(buildSubPane(container, 0, 16));
+	}
+
+	private void installControlEnabler(Collection<Control> widgets) {
+		new ControlEnabler(enablementHolder, widgets);
 	}
 }

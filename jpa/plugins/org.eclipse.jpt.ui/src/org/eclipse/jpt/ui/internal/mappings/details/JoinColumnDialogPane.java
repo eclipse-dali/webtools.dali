@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -35,6 +34,10 @@ import org.eclipse.swt.widgets.Composite;
  * |        ------------------------------------------------------------------ |
  * |                                                                           |
  * | x Insertable                                                              |
+ * |                                                                           |
+ * | x Nullable                                                                |
+ * |                                                                           |
+ * | x Unique                                                                  |
  * |                                                                           |
  * | x Updatable                                                               |
  * |                                                                           |
@@ -70,6 +73,14 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
 		propertyNames.add(JoinColumnStateObject.TABLE_PROPERTY);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected Composite buildContainer(Composite parent) {
+		return buildSubPane(parent, 0, 7, 0, 5);
 	}
 
 	private WritablePropertyValueModel<Boolean> buildInsertableHolder() {
@@ -115,13 +126,70 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 						                                           JptUiMappingsMessages.Boolean_False;
 
 						return NLS.bind(
-							JptUiMappingsMessages.JoinColumnDialog_insertableWithDefault,
+							JptUiMappingsMessages.JoinColumnDialogPane_insertableWithDefault,
 							defaultStringValue
 						);
 					}
 				}
 
-				return JptUiMappingsMessages.JoinColumnDialog_insertable;
+				return JptUiMappingsMessages.JoinColumnDialogPane_insertable;
+			}
+		};
+	}
+
+	private WritablePropertyValueModel<Boolean> buildNullableHolder() {
+		return new PropertyAspectAdapter<JoinColumnStateObject, Boolean>(
+			getSubjectHolder(),
+			JoinColumnStateObject.NULLABLE_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				return subject.getNullable();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				subject.setNullable(value);
+			}
+
+			@Override
+			protected void subjectChanged() {
+				Object oldValue = this.value();
+				super.subjectChanged();
+				Object newValue = this.value();
+
+				// Make sure the default value is appended to the text
+				if (oldValue == newValue && newValue == null) {
+					this.fireAspectChange(Boolean.TRUE, newValue);
+				}
+			}
+		};
+	}
+
+	private PropertyValueModel<String> buildNullableStringHolder() {
+
+		return new TransformationPropertyValueModel<Boolean, String>(buildNullableHolder()) {
+
+			@Override
+			protected String transform(Boolean value) {
+
+				if ((subject() != null) && (value == null)) {
+
+					Boolean defaultValue = subject().getDefaultNullable();
+
+					if (defaultValue != null) {
+
+						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+						                                           JptUiMappingsMessages.Boolean_False;
+
+						return NLS.bind(
+							JptUiMappingsMessages.JoinColumnDialogPane_nullableWithDefault,
+							defaultStringValue
+						);
+					}
+				}
+
+				return JptUiMappingsMessages.JoinColumnDialogPane_nullable;
 			}
 		};
 	}
@@ -145,6 +213,63 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 						setPopulating(false);
 					}
 				}
+			}
+		};
+	}
+
+	private WritablePropertyValueModel<Boolean> buildUniqueHolder() {
+		return new PropertyAspectAdapter<JoinColumnStateObject, Boolean>(
+			getSubjectHolder(),
+			JoinColumnStateObject.UNIQUE_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				return subject.getUnique();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				subject.setUnique(value);
+			}
+
+			@Override
+			protected void subjectChanged() {
+				Object oldValue = this.value();
+				super.subjectChanged();
+				Object newValue = this.value();
+
+				// Make sure the default value is appended to the text
+				if (oldValue == newValue && newValue == null) {
+					this.fireAspectChange(Boolean.TRUE, newValue);
+				}
+			}
+		};
+	}
+
+	private PropertyValueModel<String> buildUniqueStringHolder() {
+
+		return new TransformationPropertyValueModel<Boolean, String>(buildUniqueHolder()) {
+
+			@Override
+			protected String transform(Boolean value) {
+
+				if ((subject() != null) && (value == null)) {
+
+					Boolean defaultValue = subject().getDefaultUnique();
+
+					if (defaultValue != null) {
+
+						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+						                                           JptUiMappingsMessages.Boolean_False;
+
+						return NLS.bind(
+							JptUiMappingsMessages.JoinColumnDialogPane_uniqueWithDefault,
+							defaultStringValue
+						);
+					}
+				}
+
+				return JptUiMappingsMessages.JoinColumnDialogPane_unique;
 			}
 		};
 	}
@@ -192,13 +317,13 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 						                                           JptUiMappingsMessages.Boolean_False;
 
 						return NLS.bind(
-							JptUiMappingsMessages.JoinColumnDialog_updatableWithDefault,
+							JptUiMappingsMessages.JoinColumnDialogPane_updatableWithDefault,
 							defaultStringValue
 						);
 					}
 				}
 
-				return JptUiMappingsMessages.JoinColumnDialog_updatable;
+				return JptUiMappingsMessages.JoinColumnDialogPane_updatable;
 			}
 		};
 	}
@@ -212,6 +337,45 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 		populateTableCombo();
 	}
 
+	private void initializeDetailsPane(Composite container) {
+
+		// Insertable check box
+		buildTriStateCheckBoxWithDefault(
+			buildSubPane(container, 4),
+			JptUiMappingsMessages.JoinColumnDialogPane_insertable,
+			buildInsertableHolder(),
+			buildInsertableStringHolder(),
+			JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
+		);
+
+		// Updatable check box
+		buildTriStateCheckBoxWithDefault(
+			container,
+			JptUiMappingsMessages.JoinColumnDialogPane_updatable,
+			buildUpdatableHolder(),
+			buildUpdatableStringHolder(),
+			JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
+		);
+
+		// Unique tri-state check box
+		buildTriStateCheckBoxWithDefault(
+			container,
+			JptUiMappingsMessages.ColumnComposite_unique,
+			buildUniqueHolder(),
+			buildUniqueStringHolder(),
+			JpaHelpContextIds.MAPPING_COLUMN_UNIQUE
+		);
+
+		// Nullable tri-state check box
+		buildTriStateCheckBoxWithDefault(
+			container,
+			JptUiMappingsMessages.ColumnComposite_nullable,
+			buildNullableHolder(),
+			buildNullableStringHolder(),
+			JpaHelpContextIds.MAPPING_COLUMN_NULLABLE
+		);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 */
@@ -222,28 +386,12 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 		// Join Referenced Column widgets
 		tableCombo = buildLabeledEditableCombo(
 			container,
-			JptUiMappingsMessages.JoinColumnDialog_table,
+			JptUiMappingsMessages.JoinColumnDialogPane_table,
 			buildTableComboSelectionListener(),
 			JpaHelpContextIds.MAPPING_JOIN_REFERENCED_COLUMN
 		);
 
-		// Insertable check box
-		buildTriStateCheckBoxWithDefault(
-			buildSubPane(container, 4),
-			JptUiMappingsMessages.JoinColumnDialog_insertable,
-			buildInsertableHolder(),
-			buildInsertableStringHolder(),
-			JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
-		);
-
-		// Updatable check box
-		buildTriStateCheckBoxWithDefault(
-			container,
-			JptUiMappingsMessages.JoinColumnDialog_updatable,
-			buildUpdatableHolder(),
-			buildUpdatableStringHolder(),
-			JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
-		);
+		initializeDetailsPane(container);
 	}
 
 	private void populateTableCombo() {
@@ -259,12 +407,12 @@ public class JoinColumnDialogPane extends AbstractJoinColumnDialogPane<JoinColum
 
 		if (defaultTableName != null) {
 			tableCombo.add(NLS.bind(
-				JptUiMappingsMessages.JoinColumnDialog_defaultWithOneParam,
+				JptUiMappingsMessages.JoinColumnDialogPane_defaultWithOneParam,
 				defaultTableName
 			));
 		}
 		else {
-			tableCombo.add(JptUiMappingsMessages.JoinColumnDialog_defaultEmpty);
+			tableCombo.add(JptUiMappingsMessages.JoinColumnDialogPane_defaultEmpty);
 		}
 
 		// Populate the combo with the table names

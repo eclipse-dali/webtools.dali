@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormText;
@@ -179,6 +180,14 @@ public interface WidgetFactory {
 	 * @return A new <code>Section</code>
 	 */
 	Section createSection(Composite parent, int style);
+
+	/**
+	 * Creates a new spinner.
+	 *
+	 * @param parent The parent container
+	 * @return A new <code>Spinner</code>
+	 */
+	Spinner createSpinner(Composite parent);
 
 	/**
 	 * Creates a new table.

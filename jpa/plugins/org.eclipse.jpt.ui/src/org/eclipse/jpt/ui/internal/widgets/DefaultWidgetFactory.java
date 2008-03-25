@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormText;
@@ -64,6 +65,15 @@ public class DefaultWidgetFactory implements WidgetFactory {
 		return this.createButton(parent, text, SWT.NULL);
 	}
 
+	/**
+	 * Creates a new button.
+	 *
+	 * @param parent The parent container
+	 * @param text The button's text
+	 * @param style The style to apply to the button, which determines its type:
+	 * toggle, push, check box, radio
+	 * @return The newly created <code>Button</code>
+	 */
 	private Button createButton(Composite parent, String text, int style) {
 		Button button = new Button(parent, style);
 		button.setText(text);
@@ -168,8 +178,8 @@ public class DefaultWidgetFactory implements WidgetFactory {
 
 		FormToolkit widgetFactory = new FormToolkit(parent.getDisplay());
 		FormText text = widgetFactory.createFormText(container, true);
-		text.setText(labelText, false, false);
 		text.setLayoutData(new TableWrapData(TableWrapData.FILL_GRAB));
+		text.setText(labelText, false, false);
 
 		return text;
 	}
@@ -200,6 +210,13 @@ public class DefaultWidgetFactory implements WidgetFactory {
 	 */
 	public Section createSection(Composite parent, int style) {
 		return new Section(parent, style);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	public Spinner createSpinner(Composite parent) {
+		return new Spinner(parent, SWT.NULL);
 	}
 
 	/*

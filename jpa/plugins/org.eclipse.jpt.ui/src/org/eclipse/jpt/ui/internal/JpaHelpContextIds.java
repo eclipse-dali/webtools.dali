@@ -47,7 +47,12 @@ public interface JpaHelpContextIds {
 	public static final String MAPPING_CASCADE_TYPE = PREFIX + "mapping_cascadeType";
 	public static final String MAPPING_COLUMN = PREFIX + "mapping_column";
 	public static final String MAPPING_COLUMN_INSERTABLE = PREFIX + "mapping_columnInsertable";
+	public static final String MAPPING_COLUMN_LENGTH = PREFIX + "mapping_columnLength";
+	public static final String MAPPING_COLUMN_NULLABLE = PREFIX + "mapping_columnNullable";
+	public static final String MAPPING_COLUMN_PRECISION = PREFIX + "mapping_columnPrecision";
+	public static final String MAPPING_COLUMN_SCALE = PREFIX + "mapping_columnScale";
 	public static final String MAPPING_COLUMN_TABLE = PREFIX + "mapping_columnTable";
+	public static final String MAPPING_COLUMN_UNIQUE = PREFIX + "mapping_columnUnique";
 	public static final String MAPPING_COLUMN_UPDATABLE= PREFIX + "mapping_columnUpdatable";
 	public static final String MAPPING_EMBEDDED_ATTRIBUTE_OVERRIDES = PREFIX + "mapping_embeddedAttributeOverrides";
 	public static final String MAPPING_EMBEDDED_ATTRIBUTE_OVERRIDES_COLUMN = PREFIX + "mapping_embeddedAttributeOverridesColumn";

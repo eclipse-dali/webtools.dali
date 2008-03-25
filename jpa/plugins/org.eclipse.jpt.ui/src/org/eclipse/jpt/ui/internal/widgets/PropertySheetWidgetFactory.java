@@ -17,9 +17,9 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
- * This <code>IWidgetFactory</code> is responsible to create the widgets
- * using the <code>TabbedPropertySheetWidgetFactory</code> in order use the
- * form style (flat-style) look and feel.
+ * This <code>WidgetFactory</code> is responsible to create the widgets using
+ * <code>TabbedPropertySheetWidgetFactory</code> in order use the form style
+ * (flat-style) look and feel.
  *
  * @see TabbedPropertySheetWidgetFactory
  *
@@ -42,17 +42,8 @@ public class PropertySheetWidgetFactory extends FormWidgetFactory {
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected Text buildText(Composite parent, int style) {
-		parent = fixTextBorderNotPainted(parent);
-		return getWidgetFactory().createText(parent, null, SWT.FLAT | style);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
 	protected CCombo createCCombo(Composite parent, int style) {
-		parent = fixComboBorderNotPainted(parent);
+		parent = createBorderContainer(parent);
 		return getWidgetFactory().createCCombo(parent, style);
 	}
 
@@ -70,6 +61,15 @@ public class PropertySheetWidgetFactory extends FormWidgetFactory {
 	@Override
 	public Group createGroup(Composite parent, String title) {
 		return getWidgetFactory().createGroup(parent, title);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	protected Text createText(Composite parent, int style) {
+		parent = createBorderContainer(parent);
+		return getWidgetFactory().createText(parent, null, SWT.FLAT | style);
 	}
 
 	/*
