@@ -31,7 +31,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		this.javaProject.createType("annot", annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 
-	public void testGetAnnotation1() throws Exception {
+	public void testAnnotation1() throws Exception {
 		this.createAnnotationAndMembers("JoinColumn", "String name();");
 		this.createAnnotationAndMembers("JoinColumns", "JoinColumn[] value();");
 		this.createTestType("@annot.JoinColumn(name=\"ADDRESS_ID\")");
@@ -44,7 +44,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		assertTrue(annotation.isNormalAnnotation());
 	}
 
-	public void testGetAnnotation2() throws Exception {
+	public void testAnnotation2() throws Exception {
 		this.createAnnotationAndMembers("JoinColumn", "String name();");
 		this.createAnnotationAndMembers("JoinColumns", "JoinColumn[] value();");
 		this.createTestType("@annot.JoinColumn(name=\"ADDRESS_ID\")");
@@ -55,7 +55,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		assertNull(annotation);
 	}
 
-	public void testGetAnnotation3() throws Exception {
+	public void testAnnotation3() throws Exception {
 		this.createAnnotationAndMembers("JoinColumn", "String name();");
 		this.createAnnotationAndMembers("JoinColumns", "JoinColumn[] value();");
 		this.createTestType("@annot.JoinColumns(@annot.JoinColumn(name=\"ADDRESS_ID\"))");
@@ -68,7 +68,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		assertTrue(annotation.isNormalAnnotation());
 	}
 
-	public void testGetAnnotation4() throws Exception {
+	public void testAnnotation4() throws Exception {
 		this.createAnnotationAndMembers("JoinColumn", "String name();");
 		this.createAnnotationAndMembers("JoinColumns", "JoinColumn[] value();");
 		this.createTestType("@annot.JoinColumns(@annot.JoinColumn(name=\"ADDRESS_ID\"))");
@@ -79,7 +79,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		assertNull(annotation);
 	}
 
-	public void testGetAnnotation5() throws Exception {
+	public void testAnnotation5() throws Exception {
 		this.createAnnotationAndMembers("JoinColumn", "String name();");
 		this.createAnnotationAndMembers("JoinColumns", "JoinColumn[] value();");
 		this.createTestType("@annot.JoinColumns({@annot.JoinColumn(name=\"ADDRESS_ID1\"), @annot.JoinColumn(name=\"ADDRESS_ID2\")})");
@@ -94,7 +94,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		assertEquals("ADDRESS_ID2", value);
 	}
 
-	public void testGetAnnotation6() throws Exception {
+	public void testAnnotation6() throws Exception {
 		this.createAnnotationAndMembers("JoinColumn", "String name();");
 		this.createAnnotationAndMembers("JoinColumns", "JoinColumn[] value();");
 		this.createTestType("@annot.JoinColumns({@annot.JoinColumn(name=\"ADDRESS_ID1\"), @annot.JoinColumn(name=\"ADDRESS_ID2\")})");
@@ -105,7 +105,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		assertNull(annotation);
 	}
 
-	public void testGetAnnotation7() throws Exception {
+	public void testAnnotation7() throws Exception {
 		this.createAnnotationAndMembers("JoinColumn", "String name();");
 		this.createAnnotationAndMembers("JoinColumns", "JoinColumn[] columns();");
 		this.createTestType("@annot.JoinColumns(columns={@annot.JoinColumn(name=\"ADDRESS_ID1\"), @annot.JoinColumn(name=\"ADDRESS_ID2\")})");
@@ -120,7 +120,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		assertEquals("ADDRESS_ID2", value);
 	}
 
-	public void testGetAnnotation8() throws Exception {
+	public void testAnnotation8() throws Exception {
 		this.createAnnotationAndMembers("JoinColumn", "String name();");
 		this.createAnnotationAndMembers("JoinColumns", "JoinColumn[] columns();");
 		this.createTestType("@annot.JoinColumns(columns={@annot.JoinColumn(name=\"ADDRESS_ID1\"), @annot.JoinColumn(name=\"ADDRESS_ID2\")})");
