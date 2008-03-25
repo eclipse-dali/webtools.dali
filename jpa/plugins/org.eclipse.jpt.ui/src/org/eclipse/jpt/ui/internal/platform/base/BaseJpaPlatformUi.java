@@ -82,7 +82,7 @@ public abstract class BaseJpaPlatformUi implements JpaPlatformUi
 	// **************** structure view content *********************************
 
 	public JpaStructureProvider buildStructureProvider(JpaFile jpaFile) {
-		ResourceModel resourceModel = jpaFile.getResourceModel();
+		ResourceModel resourceModel = jpaFile.resourceModel();
 		String resourceType = resourceModel.getResourceType();
 
 		if (resourceType == ResourceModel.JAVA_RESOURCE_TYPE) {

@@ -27,17 +27,17 @@ public interface JpaFile extends JpaNode
 	 * Return the type of resource represented by this JPA file
 	 * @see ResourceModel#getResourceType()
 	 */
-	String getResourceType();
+	String resourceType();
 
 	/**
 	 * Return the IFile associated with this JPA file
 	 */
-	IFile getFile();
+	IFile file();
 
 	/**
 	 * Return the resource model represented by this JPA file
 	 */
-	ResourceModel getResourceModel();
+	ResourceModel resourceModel();
 	
 	/**
 	 * Return the structure node best represented by the location in the file

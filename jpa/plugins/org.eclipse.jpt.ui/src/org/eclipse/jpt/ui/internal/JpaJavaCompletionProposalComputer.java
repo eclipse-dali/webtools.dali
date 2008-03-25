@@ -72,7 +72,7 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 			return Collections.emptyList();
 		}
 		// TODO use interface
-		JavaResourceModel javaResourceModel = (JavaResourceModel) jpaFile.getResourceModel();
+		JavaResourceModel javaResourceModel = (JavaResourceModel) jpaFile.resourceModel();
 
 		if (javaResourceModel.rootStructureNodesSize() == 0) {
 			return Collections.emptyList();

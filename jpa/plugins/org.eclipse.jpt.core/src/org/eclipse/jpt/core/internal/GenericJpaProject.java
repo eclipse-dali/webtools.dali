@@ -296,7 +296,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	public JpaFile jpaFile(IFile file) {
 		synchronized (this.jpaFiles) {
 			for (JpaFile jpaFile : this.jpaFiles) {
-				if (jpaFile.getFile().equals(file)) {
+				if (jpaFile.file().equals(file)) {
 					return jpaFile;
 				}
 			}
@@ -308,7 +308,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		return new FilteringIterator<JpaFile, JpaFile>(this.jpaFiles()) {
 			@Override
 			protected boolean accept(JpaFile o) {
-				return o.getResourceType().equals(resourceType);
+				return o.resourceType().equals(resourceType);
 			}
 		};
 	}
@@ -337,7 +337,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 			return null;
 		}
 		this.jpaFiles.add(jpaFile);
-		jpaFile.getResourceModel().addResourceModelChangeListener(this.resourceModelListener);
+		jpaFile.resourceModel().addResourceModelChangeListener(this.resourceModelListener);
 		return jpaFile;
 	}
 
@@ -345,9 +345,9 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	 * Remove the specified JPA file and dispose it.
 	 */
 	protected void removeJpaFile(JpaFile jpaFile) {
-		jpaFile.getResourceModel().removeResourceModelChangeListener(this.resourceModelListener);
+		jpaFile.resourceModel().removeResourceModelChangeListener(this.resourceModelListener);
 		if ( ! this.removeItemFromCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION)) {
-			throw new IllegalArgumentException("JPA file: " + jpaFile.getFile().getName());
+			throw new IllegalArgumentException("JPA file: " + jpaFile.file().getName());
 		}
 		for (Iterator<JpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
 			stream.next().fileRemoved(jpaFile);
@@ -412,7 +412,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		return new TransformationIterator<JpaFile, JpaCompilationUnit>(this.javaJpaFiles()) {
 			@Override
 			protected JpaCompilationUnit transform(JpaFile jpaFile) {
-				return ((JavaResourceModel) jpaFile.getResourceModel()).resource();
+				return ((JavaResourceModel) jpaFile.resourceModel()).resource();
 			}
 		};
 	}
