@@ -26,7 +26,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 
-public class GenericJavaJoinColumn extends AbstractJavaColumn<JoinColumnAnnotation> implements JavaJoinColumn
+public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnnotation> implements JavaJoinColumn
 {
 
 	protected String specifiedReferencedColumnName;

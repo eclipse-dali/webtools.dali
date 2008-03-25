@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.jpt.core.context.AbstractColumn;
+import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmAbstractColumn extends AbstractColumn, OrmNamedColumn
+public interface OrmBaseColumn extends BaseColumn, OrmNamedColumn
 {
 
 	/**
@@ -36,8 +36,8 @@ public interface OrmAbstractColumn extends AbstractColumn, OrmNamedColumn
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)
 	 */
-	interface Owner extends OrmNamedColumn.Owner, AbstractColumn.Owner
+	interface Owner extends OrmNamedColumn.Owner, BaseColumn.Owner
 	{
-
+		// nothing?
 	}
 }

@@ -24,7 +24,7 @@ import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericOrmJoinColumn extends AbstractOrmColumn<XmlJoinColumn> implements OrmJoinColumn
+public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> implements OrmJoinColumn
 {
 
 	protected String specifiedReferencedColumnName;

@@ -11,8 +11,8 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.AbstractColumn;
-import org.eclipse.jpt.core.context.java.JavaAbstractColumn;
+import org.eclipse.jpt.core.context.BaseColumn;
+import org.eclipse.jpt.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.AbstractColumnAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -21,8 +21,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
-public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> extends AbstractJavaNamedColumn<T>
-	implements JavaAbstractColumn
+public abstract class AbstractJavaBaseColumn<T extends AbstractColumnAnnotation> extends AbstractJavaNamedColumn<T>
+	implements JavaBaseColumn
 {
 
 	protected String specifiedTable;
@@ -37,7 +37,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 	
 	protected Boolean specifiedUpdatable;
 
-	protected AbstractJavaColumn(JavaJpaContextNode parent, JavaAbstractColumn.Owner owner) {
+	protected AbstractJavaBaseColumn(JavaJpaContextNode parent, JavaBaseColumn.Owner owner) {
 		super(parent, owner);
 	}
 	
@@ -53,8 +53,8 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 	}
 	
 	@Override
-	public JavaAbstractColumn.Owner owner() {
-		return (JavaAbstractColumn.Owner) super.owner();
+	public JavaBaseColumn.Owner owner() {
+		return (JavaBaseColumn.Owner) super.owner();
 	}
 
 	//************** IAbstractColumn implementation *******************
@@ -72,7 +72,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 		String oldSpecifiedTable = this.specifiedTable;
 		this.specifiedTable = newSpecifiedTable;
 		columnResource().setTable(newSpecifiedTable);
-		firePropertyChanged(AbstractColumn.SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
+		firePropertyChanged(BaseColumn.SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
 	}
 	
 	/**
@@ -84,7 +84,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 	protected void setSpecifiedTable_(String newSpecifiedTable) {
 		String oldSpecifiedTable = this.specifiedTable;
 		this.specifiedTable = newSpecifiedTable;
-		firePropertyChanged(AbstractColumn.SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
+		firePropertyChanged(BaseColumn.SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
 	}
 
 	public String getDefaultTable() {
@@ -94,7 +94,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 	protected void setDefaultTable(String newDefaultTable) {
 		String oldDefaultTable = this.defaultTable;
 		this.defaultTable = newDefaultTable;
-		firePropertyChanged(AbstractColumn.DEFAULT_TABLE_PROPERTY, oldDefaultTable, newDefaultTable);
+		firePropertyChanged(BaseColumn.DEFAULT_TABLE_PROPERTY, oldDefaultTable, newDefaultTable);
 	}
 
 	public Boolean getUnique() {
@@ -102,7 +102,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 	}
 	
 	public Boolean getDefaultUnique() {
-		return AbstractColumn.DEFAULT_UNIQUE;
+		return BaseColumn.DEFAULT_UNIQUE;
 	}
 	
 	public Boolean getSpecifiedUnique() {
@@ -113,7 +113,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 		Boolean oldSpecifiedUnique = this.specifiedUnique;
 		this.specifiedUnique = newSpecifiedUnique;
 		this.columnResource().setUnique(newSpecifiedUnique);
-		firePropertyChanged(AbstractColumn.SPECIFIED_UNIQUE_PROPERTY, oldSpecifiedUnique, newSpecifiedUnique);
+		firePropertyChanged(BaseColumn.SPECIFIED_UNIQUE_PROPERTY, oldSpecifiedUnique, newSpecifiedUnique);
 	}
 	
 	/**
@@ -125,7 +125,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 	protected void setSpecifiedUnique_(Boolean newSpecifiedUnique) {
 		Boolean oldSpecifiedUnique = this.specifiedUnique;
 		this.specifiedUnique = newSpecifiedUnique;
-		firePropertyChanged(AbstractColumn.SPECIFIED_UNIQUE_PROPERTY, oldSpecifiedUnique, newSpecifiedUnique);
+		firePropertyChanged(BaseColumn.SPECIFIED_UNIQUE_PROPERTY, oldSpecifiedUnique, newSpecifiedUnique);
 	}
 	
 	public Boolean getNullable() {
@@ -133,7 +133,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 	}
 	
 	public Boolean getDefaultNullable() {
-		return AbstractColumn.DEFAULT_NULLABLE;
+		return BaseColumn.DEFAULT_NULLABLE;
 	}
 	
 	public Boolean getSpecifiedNullable() {
@@ -144,7 +144,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 		Boolean oldSpecifiedNullable = this.specifiedNullable;
 		this.specifiedNullable = newSpecifiedNullable;
 		this.columnResource().setNullable(newSpecifiedNullable);
-		firePropertyChanged(AbstractColumn.SPECIFIED_NULLABLE_PROPERTY, oldSpecifiedNullable, newSpecifiedNullable);
+		firePropertyChanged(BaseColumn.SPECIFIED_NULLABLE_PROPERTY, oldSpecifiedNullable, newSpecifiedNullable);
 	}
 	
 	/**
@@ -156,7 +156,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 	protected void setSpecifiedNullable_(Boolean newSpecifiedNullable) {
 		Boolean oldSpecifiedNullable = this.specifiedNullable;
 		this.specifiedNullable = newSpecifiedNullable;
-		firePropertyChanged(AbstractColumn.SPECIFIED_NULLABLE_PROPERTY, oldSpecifiedNullable, newSpecifiedNullable);
+		firePropertyChanged(BaseColumn.SPECIFIED_NULLABLE_PROPERTY, oldSpecifiedNullable, newSpecifiedNullable);
 	}
 	
 	public Boolean getInsertable() {
@@ -164,7 +164,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 	}
 	
 	public Boolean getDefaultInsertable() {
-		return AbstractColumn.DEFAULT_INSERTABLE;
+		return BaseColumn.DEFAULT_INSERTABLE;
 	}
 	
 	public Boolean getSpecifiedInsertable() {
@@ -175,7 +175,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 		Boolean oldSpecifiedInsertable = this.specifiedInsertable;
 		this.specifiedInsertable = newSpecifiedInsertable;
 		this.columnResource().setInsertable(newSpecifiedInsertable);
-		firePropertyChanged(AbstractColumn.SPECIFIED_INSERTABLE_PROPERTY, oldSpecifiedInsertable, newSpecifiedInsertable);
+		firePropertyChanged(BaseColumn.SPECIFIED_INSERTABLE_PROPERTY, oldSpecifiedInsertable, newSpecifiedInsertable);
 	}
 	
 	/**
@@ -187,7 +187,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 	protected void setSpecifiedInsertable_(Boolean newSpecifiedInsertable) {
 		Boolean oldSpecifiedInsertable = this.specifiedInsertable;
 		this.specifiedInsertable = newSpecifiedInsertable;
-		firePropertyChanged(AbstractColumn.SPECIFIED_INSERTABLE_PROPERTY, oldSpecifiedInsertable, newSpecifiedInsertable);
+		firePropertyChanged(BaseColumn.SPECIFIED_INSERTABLE_PROPERTY, oldSpecifiedInsertable, newSpecifiedInsertable);
 	}
 	
 	public Boolean getUpdatable() {
@@ -195,7 +195,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 	}
 	
 	public Boolean getDefaultUpdatable() {
-		return AbstractColumn.DEFAULT_UPDATABLE;
+		return BaseColumn.DEFAULT_UPDATABLE;
 	}
 	
 	public Boolean getSpecifiedUpdatable() {
@@ -206,7 +206,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 		Boolean oldSpecifiedUpdatable = this.specifiedUpdatable;
 		this.specifiedUpdatable = newSpecifiedUpdatable;
 		this.columnResource().setUpdatable(newSpecifiedUpdatable);
-		firePropertyChanged(AbstractColumn.SPECIFIED_UPDATABLE_PROPERTY, oldSpecifiedUpdatable, newSpecifiedUpdatable);
+		firePropertyChanged(BaseColumn.SPECIFIED_UPDATABLE_PROPERTY, oldSpecifiedUpdatable, newSpecifiedUpdatable);
 	}
 
 	/**
@@ -218,7 +218,7 @@ public abstract class AbstractJavaColumn<T extends AbstractColumnAnnotation> ext
 	protected void setSpecifiedUpdatable_(Boolean newSpecifiedUpdatable) {
 		Boolean oldSpecifiedUpdatable = this.specifiedUpdatable;
 		this.specifiedUpdatable = newSpecifiedUpdatable;
-		firePropertyChanged(AbstractColumn.SPECIFIED_UPDATABLE_PROPERTY, oldSpecifiedUpdatable, newSpecifiedUpdatable);
+		firePropertyChanged(BaseColumn.SPECIFIED_UPDATABLE_PROPERTY, oldSpecifiedUpdatable, newSpecifiedUpdatable);
 	}
 
 	@Override

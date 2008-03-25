@@ -10,11 +10,19 @@
 package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.AbstractColumn;
+import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 
-
-public interface JavaAbstractColumn extends AbstractColumn, JavaNamedColumn
+/**
+ * 
+ * 
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ */
+public interface JavaBaseColumn extends BaseColumn, JavaNamedColumn
 {
 
 	/**
@@ -28,8 +36,8 @@ public interface JavaAbstractColumn extends AbstractColumn, JavaNamedColumn
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)
 	 */
-	interface Owner extends JavaNamedColumn.Owner, AbstractColumn.Owner
+	interface Owner extends JavaNamedColumn.Owner, BaseColumn.Owner
 	{
-
+		// nothing?
 	}
 }

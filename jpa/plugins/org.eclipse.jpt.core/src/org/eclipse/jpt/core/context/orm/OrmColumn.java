@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.resource.orm.XmlColumn;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmColumn extends Column, OrmAbstractColumn
+public interface OrmColumn extends Column, OrmBaseColumn
 {
 	
 	Owner owner();
@@ -34,7 +34,7 @@ public interface OrmColumn extends Column, OrmAbstractColumn
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)
 	 */
-	interface Owner extends OrmAbstractColumn.Owner
+	interface Owner extends OrmBaseColumn.Owner
 	{
 		XmlColumn columnResource();
 		

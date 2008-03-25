@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaColumn extends Column, JavaAbstractColumn
+public interface JavaColumn extends Column, JavaBaseColumn
 {
 	void initializeFromResource(ColumnAnnotation columnResource);
 	
@@ -34,7 +34,7 @@ public interface JavaColumn extends Column, JavaAbstractColumn
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)
 	 */
-	interface Owner extends JavaAbstractColumn.Owner
+	interface Owner extends JavaBaseColumn.Owner
 	{
 		ColumnAnnotation columnResource();
 	}

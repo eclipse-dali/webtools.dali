@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,15 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.AbstractColumn;
-import org.eclipse.jpt.core.context.orm.OrmAbstractColumn;
+import org.eclipse.jpt.core.context.BaseColumn;
+import org.eclipse.jpt.core.context.orm.OrmBaseColumn;
 import org.eclipse.jpt.core.context.orm.OrmJpaContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAbstractColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
-public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends AbstractOrmNamedColumn<T>
-	implements OrmAbstractColumn
+public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends AbstractOrmNamedColumn<T>
+	implements OrmBaseColumn
 {
 	protected String specifiedTable;
 	
@@ -31,11 +31,11 @@ public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends Abs
 	
 	protected Boolean specifiedUpdatable;
 
-	protected AbstractOrmColumn(OrmJpaContextNode parent, OrmAbstractColumn.Owner owner) {
+	protected AbstractOrmBaseColumn(OrmJpaContextNode parent, OrmBaseColumn.Owner owner) {
 		super(parent, owner);
 	}
 	
-	public void initializeFrom(AbstractColumn oldColumn) {
+	public void initializeFrom(BaseColumn oldColumn) {
 		super.initializeFrom(oldColumn);
 		setSpecifiedTable(oldColumn.getSpecifiedTable());
 		setSpecifiedUnique(oldColumn.getSpecifiedUnique());
@@ -45,8 +45,8 @@ public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends Abs
 	}
 	
 	@Override
-	public OrmAbstractColumn.Owner owner() {
-		return (OrmAbstractColumn.Owner) super.owner();
+	public OrmBaseColumn.Owner owner() {
+		return (OrmBaseColumn.Owner) super.owner();
 	}
 	
 //	@Override
@@ -79,13 +79,13 @@ public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends Abs
 				columnResource().setTable(newSpecifiedTable);
 			}
 		}
-		firePropertyChanged(AbstractColumn.SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
+		firePropertyChanged(BaseColumn.SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
 	}
 	
 	protected void setSpecifiedTable_(String newSpecifiedTable) {
 		String oldSpecifiedTable = this.specifiedTable;
 		this.specifiedTable = newSpecifiedTable;
-		firePropertyChanged(AbstractColumn.SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
+		firePropertyChanged(BaseColumn.SPECIFIED_TABLE_PROPERTY, oldSpecifiedTable, newSpecifiedTable);
 	}
 
 	public String getDefaultTable() {
@@ -95,7 +95,7 @@ public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends Abs
 	protected void setDefaultTable(String newDefaultTable) {
 		String oldDefaultTable = this.defaultTable;
 		this.defaultTable = newDefaultTable;
-		firePropertyChanged(AbstractColumn.DEFAULT_TABLE_PROPERTY, oldDefaultTable, newDefaultTable);
+		firePropertyChanged(BaseColumn.DEFAULT_TABLE_PROPERTY, oldDefaultTable, newDefaultTable);
 	}
 
 	public Boolean getUnique() {
@@ -103,7 +103,7 @@ public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends Abs
 	}
 	
 	public Boolean getDefaultUnique() {
-		return AbstractColumn.DEFAULT_UNIQUE;
+		return BaseColumn.DEFAULT_UNIQUE;
 	}
 	
 	public Boolean getSpecifiedUnique() {
@@ -125,13 +125,13 @@ public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends Abs
 				columnResource().setUnique(newSpecifiedUnique);
 			}
 		}
-		firePropertyChanged(AbstractColumn.SPECIFIED_UNIQUE_PROPERTY, oldSpecifiedUnique, newSpecifiedUnique);
+		firePropertyChanged(BaseColumn.SPECIFIED_UNIQUE_PROPERTY, oldSpecifiedUnique, newSpecifiedUnique);
 	}
 	
 	protected void setSpecifiedUnique_(Boolean newSpecifiedUnique) {
 		Boolean oldSpecifiedUnique = this.specifiedUnique;
 		this.specifiedUnique = newSpecifiedUnique;
-		firePropertyChanged(AbstractColumn.SPECIFIED_UNIQUE_PROPERTY, oldSpecifiedUnique, newSpecifiedUnique);
+		firePropertyChanged(BaseColumn.SPECIFIED_UNIQUE_PROPERTY, oldSpecifiedUnique, newSpecifiedUnique);
 	}
 	
 	public Boolean getNullable() {
@@ -139,7 +139,7 @@ public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends Abs
 	}
 	
 	public Boolean getDefaultNullable() {
-		return AbstractColumn.DEFAULT_NULLABLE;
+		return BaseColumn.DEFAULT_NULLABLE;
 	}
 	
 	public Boolean getSpecifiedNullable() {
@@ -161,13 +161,13 @@ public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends Abs
 				columnResource().setNullable(newSpecifiedNullable);
 			}
 		}
-		firePropertyChanged(AbstractColumn.SPECIFIED_NULLABLE_PROPERTY, oldSpecifiedNullable, newSpecifiedNullable);
+		firePropertyChanged(BaseColumn.SPECIFIED_NULLABLE_PROPERTY, oldSpecifiedNullable, newSpecifiedNullable);
 	}
 
 	protected void setSpecifiedNullable_(Boolean newSpecifiedNullable) {
 		Boolean oldSpecifiedNullable = this.specifiedNullable;
 		this.specifiedNullable = newSpecifiedNullable;
-		firePropertyChanged(AbstractColumn.SPECIFIED_NULLABLE_PROPERTY, oldSpecifiedNullable, newSpecifiedNullable);
+		firePropertyChanged(BaseColumn.SPECIFIED_NULLABLE_PROPERTY, oldSpecifiedNullable, newSpecifiedNullable);
 	}
 
 	public Boolean getInsertable() {
@@ -175,7 +175,7 @@ public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends Abs
 	}
 	
 	public Boolean getDefaultInsertable() {
-		return AbstractColumn.DEFAULT_INSERTABLE;
+		return BaseColumn.DEFAULT_INSERTABLE;
 	}
 	
 	public Boolean getSpecifiedInsertable() {
@@ -197,13 +197,13 @@ public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends Abs
 				columnResource().setInsertable(newSpecifiedInsertable);
 			}
 		}
-		firePropertyChanged(AbstractColumn.SPECIFIED_INSERTABLE_PROPERTY, oldSpecifiedInsertable, newSpecifiedInsertable);
+		firePropertyChanged(BaseColumn.SPECIFIED_INSERTABLE_PROPERTY, oldSpecifiedInsertable, newSpecifiedInsertable);
 	}
 	
 	protected void setSpecifiedInsertable_(Boolean newSpecifiedInsertable) {
 		Boolean oldSpecifiedInsertable = this.specifiedInsertable;
 		this.specifiedInsertable = newSpecifiedInsertable;
-		firePropertyChanged(AbstractColumn.SPECIFIED_INSERTABLE_PROPERTY, oldSpecifiedInsertable, newSpecifiedInsertable);
+		firePropertyChanged(BaseColumn.SPECIFIED_INSERTABLE_PROPERTY, oldSpecifiedInsertable, newSpecifiedInsertable);
 	}
 
 	public Boolean getUpdatable() {
@@ -211,7 +211,7 @@ public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends Abs
 	}
 	
 	public Boolean getDefaultUpdatable() {
-		return AbstractColumn.DEFAULT_UPDATABLE;
+		return BaseColumn.DEFAULT_UPDATABLE;
 	}
 	
 	public Boolean getSpecifiedUpdatable() {
@@ -233,13 +233,13 @@ public abstract class AbstractOrmColumn<T extends XmlAbstractColumn> extends Abs
 				columnResource().setUpdatable(newSpecifiedUpdatable);
 			}
 		}
-		firePropertyChanged(AbstractColumn.SPECIFIED_UPDATABLE_PROPERTY, oldSpecifiedUpdatable, newSpecifiedUpdatable);
+		firePropertyChanged(BaseColumn.SPECIFIED_UPDATABLE_PROPERTY, oldSpecifiedUpdatable, newSpecifiedUpdatable);
 	}
 	
 	protected void setSpecifiedUpdatable_(Boolean newSpecifiedUpdatable) {
 		Boolean oldSpecifiedUpdatable = this.specifiedUpdatable;
 		this.specifiedUpdatable = newSpecifiedUpdatable;
-		firePropertyChanged(AbstractColumn.SPECIFIED_UPDATABLE_PROPERTY, oldSpecifiedUpdatable, newSpecifiedUpdatable);
+		firePropertyChanged(BaseColumn.SPECIFIED_UPDATABLE_PROPERTY, oldSpecifiedUpdatable, newSpecifiedUpdatable);
 	}
 
 	@Override

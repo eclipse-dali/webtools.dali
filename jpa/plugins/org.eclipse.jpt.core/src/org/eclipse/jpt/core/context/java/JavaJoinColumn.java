@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaJoinColumn extends JoinColumn, JavaAbstractJoinColumn, JavaAbstractColumn
+public interface JavaJoinColumn extends JoinColumn, JavaAbstractJoinColumn, JavaBaseColumn
 {
 	void initializeFromResource(JoinColumnAnnotation joinColumn);
 	
@@ -35,7 +35,7 @@ public interface JavaJoinColumn extends JoinColumn, JavaAbstractJoinColumn, Java
 	 * interface allowing join columns to be used in multiple places
 	 * (e.g. 1:1 mappings and join tables)
 	 */
-	interface Owner extends JoinColumn.Owner, JavaAbstractJoinColumn.Owner, JavaAbstractColumn.Owner
+	interface Owner extends JoinColumn.Owner, JavaAbstractJoinColumn.Owner, JavaBaseColumn.Owner
 	{
 		// nothing yet
 	}
