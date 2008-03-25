@@ -10,11 +10,11 @@
 package org.eclipse.jpt.eclipselink.ui.internal.persistencexml.details;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.ui.internal.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
-import org.eclipse.jpt.ui.internal.jface.TreeItemContentProvider;
-import org.eclipse.jpt.ui.internal.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.ui.internal.platform.generic.PersistenceXmlItemContentProvider;
+import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
+import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
+import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 
 /**
  * EclipseLinkNavigatorItemContentProviderFactory

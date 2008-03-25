@@ -11,8 +11,8 @@ package org.eclipse.jpt.eclipselink.ui.internal.persistencexml.details;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkJpaProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkProperties;
+import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractJpaDetailsPage;
-import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 

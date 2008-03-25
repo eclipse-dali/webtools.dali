@@ -11,8 +11,8 @@ package org.eclipse.jpt.eclipselink.ui.internal.platform;
 
 import org.eclipse.jpt.eclipselink.ui.internal.persistencexml.details.EclipseLinkNavigatorItemContentProviderFactory;
 import org.eclipse.jpt.eclipselink.ui.internal.persistencexml.details.EclipseLinkNavigatorItemLabelProviderFactory;
-import org.eclipse.jpt.ui.internal.jface.ItemLabelProviderFactory;
-import org.eclipse.jpt.ui.internal.jface.TreeItemContentProviderFactory;
+import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
+import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
 
 /**
