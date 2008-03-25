@@ -46,7 +46,7 @@ public interface ResourceModel extends Model
 	/**
 	 * Return a unique identifier for all resource models of this type
 	 */
-	String getResourceType();
+	String resourceType();
 	
 	
 	// **************** root structure nodes *************************************

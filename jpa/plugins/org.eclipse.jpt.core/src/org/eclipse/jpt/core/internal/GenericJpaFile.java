@@ -48,7 +48,7 @@ public class GenericJpaFile extends AbstractJpaNode implements JpaFile
 	}
 	
 	public String resourceType() {
-		return resourceModel().getResourceType();
+		return resourceModel().resourceType();
 	}
 	
 	public void dispose() {

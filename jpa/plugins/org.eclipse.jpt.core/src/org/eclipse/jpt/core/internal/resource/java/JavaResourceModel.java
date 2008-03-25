@@ -41,7 +41,7 @@ public class JavaResourceModel
 			new JpaCompilationUnit(file, annotationProvider, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter, this);
 	}
 	
-	public String getResourceType() {
+	public String resourceType() {
 		return JAVA_RESOURCE_TYPE;
 	}
 	
