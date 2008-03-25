@@ -69,7 +69,7 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 		if (value == null) {
 			return null;
 		}
-		Annotation inner = this.getAnnotation(value);
+		Annotation inner = this.annotation(value);
 		if (inner == null) {
 			return null;
 		}
@@ -131,7 +131,7 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 	 * Return an annotation extracted from the specified expression,
 	 * which is the value of the adapter's element.
 	 */
-	protected abstract Annotation getAnnotation(Expression value);
+	protected abstract Annotation annotation(Expression value);
 
 	/**
 	 * Remove the annotation from the specified expression,
@@ -155,11 +155,11 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 
 	// ********** public methods **********
 
-	public DeclarationAnnotationAdapter getOuterAnnotationAdapter() {
+	public DeclarationAnnotationAdapter outerAnnotationAdapter() {
 		return this.outerAnnotationAdapter;
 	}
 
-	public String getElementName() {
+	public String elementName() {
 		return this.elementName;
 	}
 

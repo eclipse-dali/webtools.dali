@@ -512,7 +512,7 @@ public abstract class AbstractXmlAbstractColumn extends AbstractXmlNamedColumn i
 	}
 
 	public TextRange tableTextRange() {
-		IDOMNode tableNode = (IDOMNode) DOMUtilities.getChildAttributeNode(this.node, OrmXmlMapper.TABLE);
+		IDOMNode tableNode = (IDOMNode) DOMUtilities.childAttributeNode(this.node, OrmXmlMapper.TABLE);
 		return (tableNode == null) ? validationTextRange() : buildTextRange(tableNode);
 	}
 } // AbstractXmlAbstractColumn

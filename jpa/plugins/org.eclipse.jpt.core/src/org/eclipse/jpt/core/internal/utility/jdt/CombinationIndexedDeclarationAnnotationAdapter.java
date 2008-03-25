@@ -425,7 +425,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	}
 
 	private Annotation containerAnnotation(ModifiedDeclaration declaration) {
-		return this.nestedAnnotationAdapter.getOuterAnnotationAdapter().annotation(declaration);
+		return this.nestedAnnotationAdapter.outerAnnotationAdapter().annotation(declaration);
 	}
 
 	private boolean zeroNestedAnnotationIsPresent(ModifiedDeclaration declaration) {
@@ -437,11 +437,11 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 	}
 
 	private String annotationName() {
-		return this.nestedAnnotationAdapter.getAnnotationName();
+		return this.nestedAnnotationAdapter.annotationName();
 	}
 
 	private String elementName() {
-		return this.nestedAnnotationAdapter.getElementName();
+		return this.nestedAnnotationAdapter.elementName();
 	}
 
 	@SuppressWarnings("unchecked")

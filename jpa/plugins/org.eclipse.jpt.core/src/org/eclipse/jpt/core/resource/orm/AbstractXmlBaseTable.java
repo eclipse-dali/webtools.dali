@@ -404,17 +404,17 @@ public abstract class AbstractXmlBaseTable extends AbstractJpaEObject implements
 
 
 	public TextRange nameTextRange() {
-		IDOMNode nameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(this.node, OrmXmlMapper.NAME);
+		IDOMNode nameNode = (IDOMNode) DOMUtilities.childAttributeNode(this.node, OrmXmlMapper.NAME);
 		return (nameNode == null) ? validationTextRange() : buildTextRange(nameNode);
 	}
 	
 	public TextRange catalogTextRange() {
-		IDOMNode catalogNode = (IDOMNode) DOMUtilities.getChildAttributeNode(this.node, OrmXmlMapper.CATALOG);
+		IDOMNode catalogNode = (IDOMNode) DOMUtilities.childAttributeNode(this.node, OrmXmlMapper.CATALOG);
 		return (catalogNode == null) ? validationTextRange() : buildTextRange(catalogNode);
 	}
 	
 	public TextRange schemaTextRange() {
-		IDOMNode schemaNode = (IDOMNode) DOMUtilities.getChildAttributeNode(this.node, OrmXmlMapper.SCHEMA);
+		IDOMNode schemaNode = (IDOMNode) DOMUtilities.childAttributeNode(this.node, OrmXmlMapper.SCHEMA);
 		return (schemaNode == null) ? validationTextRange() : buildTextRange(schemaNode);
 	}
 

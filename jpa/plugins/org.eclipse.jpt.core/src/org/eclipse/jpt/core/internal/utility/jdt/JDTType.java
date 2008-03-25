@@ -44,7 +44,7 @@ public class JDTType
 
 	@Override
 	public Type topLevelDeclaringType() {
-		return (this.getDeclaringType() == null) ? this : super.topLevelDeclaringType();
+		return (this.declaringType() == null) ? this : super.topLevelDeclaringType();
 	}
 
 	public IType[] jdtTypes() {
@@ -78,7 +78,7 @@ public class JDTType
 
 	@Override
 	public AbstractTypeDeclaration bodyDeclaration(CompilationUnit astRoot) {
-		Type declaringType = this.getDeclaringType();
+		Type declaringType = this.declaringType();
 		if (declaringType != null) {
 			return this.typeDeclaration(declaringType.bodyDeclaration(astRoot));
 		}
@@ -90,7 +90,7 @@ public class JDTType
 	}
 	
 	private AbstractTypeDeclaration typeDeclaration(List<AbstractTypeDeclaration> typeDeclarations) {
-		String name = this.getName();
+		String name = this.name();
 		for (AbstractTypeDeclaration typeDeclaration : typeDeclarations) {
 			if (typeDeclaration.getName().getFullyQualifiedName().equals(name)) {
 				return typeDeclaration;

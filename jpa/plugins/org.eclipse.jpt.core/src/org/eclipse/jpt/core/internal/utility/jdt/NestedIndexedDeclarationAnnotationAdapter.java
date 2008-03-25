@@ -68,9 +68,9 @@ public class NestedIndexedDeclarationAnnotationAdapter
 	// ********** AbstractNestedDeclarationAnnotationAdapter implementation **********
 
 	@Override
-	protected Annotation getAnnotation(Expression value) {
+	protected Annotation annotation(Expression value) {
 		if (value.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
-			return this.getAnnotation((ArrayInitializer) value);
+			return this.annotation((ArrayInitializer) value);
 		}
 		return (this.index == 0) ? this.annotationValue(value) : null;
 	}
@@ -160,7 +160,7 @@ public class NestedIndexedDeclarationAnnotationAdapter
 	/**
 	 * Return the adapter's annotation from the specified array initializer.
 	 */
-	private Annotation getAnnotation(ArrayInitializer value) {
+	private Annotation annotation(ArrayInitializer value) {
 		List<Expression> expressions = this.expressions(value);
 		return (this.index >= expressions.size()) ? null : this.annotationValue(expressions.get(this.index));
 	}

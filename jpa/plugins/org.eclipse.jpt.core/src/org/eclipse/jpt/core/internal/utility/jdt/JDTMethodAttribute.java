@@ -80,7 +80,7 @@ public class JDTMethodAttribute
 	 */
 	@Override
 	public String attributeName() {
-		String methodName = super.getName();
+		String methodName = super.name();
 		int beginIndex = 0;
 		if (methodName.startsWith("get")) {
 			beginIndex = 3;

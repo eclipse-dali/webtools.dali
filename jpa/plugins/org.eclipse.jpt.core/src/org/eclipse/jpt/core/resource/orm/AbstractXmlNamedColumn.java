@@ -266,7 +266,7 @@ public abstract class AbstractXmlNamedColumn extends AbstractJpaEObject implemen
 	}
 	
 	public TextRange nameTextRange() {
-		IDOMNode nameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(this.node, OrmXmlMapper.NAME);
+		IDOMNode nameNode = (IDOMNode) DOMUtilities.childAttributeNode(this.node, OrmXmlMapper.NAME);
 		return (nameNode == null) ? validationTextRange() : buildTextRange(nameNode);
 	}
 

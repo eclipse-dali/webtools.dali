@@ -42,17 +42,17 @@ public class SimpleDeclarationAnnotationAdapter extends AbstractDeclarationAnnot
 
 	@Override
 	public Annotation annotation(ModifiedDeclaration declaration) {
-		return declaration.annotationNamed(this.getAnnotationName());
+		return declaration.annotationNamed(this.annotationName());
 	}
 
 	@Override
 	public void removeAnnotation(ModifiedDeclaration declaration) {
-		declaration.removeAnnotationNamed(this.getAnnotationName());
+		declaration.removeAnnotationNamed(this.annotationName());
 	}
 
 	@Override
 	protected void addAnnotation(ModifiedDeclaration declaration, Annotation annotation) {
-		declaration.replaceAnnotationNamed(this.getAnnotationName(), annotation);
+		declaration.replaceAnnotationNamed(this.annotationName(), annotation);
 	}
 
 	@Override

@@ -48,11 +48,11 @@ public class SimpleBooleanAnnotationAdapter implements BooleanAnnotationAdapter 
 	}
 
 	public boolean value() {
-		return this.getValue(this.annotation());
+		return this.value(this.annotation());
 	}
 
 	public boolean value(CompilationUnit astRoot) {
-		return this.getValue(this.annotation(astRoot));
+		return this.value(this.annotation(astRoot));
 	}
 
 	public void setValue(boolean value) {
@@ -62,7 +62,7 @@ public class SimpleBooleanAnnotationAdapter implements BooleanAnnotationAdapter 
 
 	// ********** internal methods **********
 
-	protected boolean getValue(Annotation annotation) {
+	protected boolean value(Annotation annotation) {
 		return annotation != null;
 	}
 

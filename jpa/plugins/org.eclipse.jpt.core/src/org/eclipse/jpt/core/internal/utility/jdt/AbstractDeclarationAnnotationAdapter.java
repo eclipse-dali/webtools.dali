@@ -89,7 +89,7 @@ public abstract class AbstractDeclarationAnnotationAdapter implements Declaratio
 
 	// ********** public methods **********
 
-	public String getAnnotationName() {
+	public String annotationName() {
 		return this.annotationName;
 	}
 

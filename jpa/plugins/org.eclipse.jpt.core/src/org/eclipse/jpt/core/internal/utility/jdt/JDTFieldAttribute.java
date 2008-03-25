@@ -48,7 +48,7 @@ public class JDTFieldAttribute
 
 	@Override
 	public FieldDeclaration bodyDeclaration(CompilationUnit astRoot) {
-		String fieldName = this.getName();
+		String fieldName = this.name();
 		for (FieldDeclaration fieldDeclaration : this.declaringTypeDeclaration(astRoot).getFields()) {
 			// handle multiple fields declared in a single statement:
 			//     private int foo, bar;
@@ -64,7 +64,7 @@ public class JDTFieldAttribute
 	private VariableDeclarationFragment fragment(CompilationUnit astRoot) {
 		FieldDeclaration fieldDeclaration = bodyDeclaration(astRoot);
 		for (VariableDeclarationFragment fragment : this.fragments(fieldDeclaration)) {
-			if (fragment.getName().getFullyQualifiedName().equals(getName())) {
+			if (fragment.getName().getFullyQualifiedName().equals(name())) {
 				return fragment;
 			}
 		}
@@ -86,7 +86,7 @@ public class JDTFieldAttribute
 
 	@Override
 	public String attributeName() {
-		return this.getName();
+		return this.name();
 	}
 
 	@Override

@@ -508,7 +508,7 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 	
 
 	public TextRange classTextRange() {
-		IDOMNode classNode = (IDOMNode) DOMUtilities.getChildAttributeNode(node, OrmXmlMapper.CLASS);
+		IDOMNode classNode = (IDOMNode) DOMUtilities.childAttributeNode(node, OrmXmlMapper.CLASS);
 		if (classNode != null) {
 			return buildTextRange(classNode);
 		}

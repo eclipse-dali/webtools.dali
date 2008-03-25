@@ -736,7 +736,7 @@ public class XmlManyToManyImpl extends AbstractXmlAttributeMapping implements Xm
 	}
 
 	public TextRange mappedByTextRange() {
-		IDOMNode mappedByNode = (IDOMNode) DOMUtilities.getChildAttributeNode(getNode(), OrmXmlMapper.MAPPED_BY);
+		IDOMNode mappedByNode = (IDOMNode) DOMUtilities.childAttributeNode(getNode(), OrmXmlMapper.MAPPED_BY);
 		return (mappedByNode == null) ? validationTextRange() : buildTextRange(mappedByNode);
 	}
 }

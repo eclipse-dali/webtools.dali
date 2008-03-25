@@ -87,7 +87,7 @@ public abstract class JDTMember
 	/**
 	 * this will return null for a top-level type
 	 */
-	public Type getDeclaringType() {
+	public Type declaringType() {
 		return this.declaringType;
 	}
 
@@ -98,7 +98,7 @@ public abstract class JDTMember
 		return this.jdtMember.getCompilationUnit();
 	}
 
-	public String getName() {
+	public String name() {
 		return this.jdtMember.getElementName();
 	}
 
@@ -164,7 +164,7 @@ public abstract class JDTMember
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.getName());
+		return StringTools.buildToStringFor(this, this.name());
 	}
 
 

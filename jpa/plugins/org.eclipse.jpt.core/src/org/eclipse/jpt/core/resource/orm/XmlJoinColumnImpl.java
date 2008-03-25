@@ -233,7 +233,7 @@ public class XmlJoinColumnImpl extends AbstractXmlAbstractColumn implements XmlJ
 	}
 	
 	public TextRange referencedColumnNameTextRange() {
-		IDOMNode referencedColumnNameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(this.node, OrmXmlMapper.REFERENCED_COLUMN_NAME);
+		IDOMNode referencedColumnNameNode = (IDOMNode) DOMUtilities.childAttributeNode(this.node, OrmXmlMapper.REFERENCED_COLUMN_NAME);
 		return (referencedColumnNameNode == null) ? validationTextRange() : buildTextRange(referencedColumnNameNode);
 	}
 } // JoinColumn

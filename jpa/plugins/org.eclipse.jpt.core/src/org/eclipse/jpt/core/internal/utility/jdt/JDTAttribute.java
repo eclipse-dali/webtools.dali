@@ -59,7 +59,7 @@ public abstract class JDTAttribute
 	 */
 	TypeDeclaration declaringTypeDeclaration(CompilationUnit astRoot) {
 		//assume no enums or annotation types since they have no field or method declarations
-		return (TypeDeclaration) this.getDeclaringType().bodyDeclaration(astRoot);
+		return (TypeDeclaration) this.declaringType().bodyDeclaration(astRoot);
 	}
 
 

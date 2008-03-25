@@ -45,12 +45,12 @@ public class TypeTests extends AnnotationTestCase {
 		assertEquals(this.testType, this.testType.topLevelDeclaringType());
 	}
 
-	public void testGetDeclaringType() throws Exception {
-		assertNull(this.testType.getDeclaringType());
+	public void testDeclaringType() throws Exception {
+		assertNull(this.testType.declaringType());
 	}
 
-	public void testGetName() throws Exception {
-		assertEquals(TYPE_NAME, this.testType.getName());
+	public void testName() throws Exception {
+		assertEquals(TYPE_NAME, this.testType.name());
 	}
 
 	public void testTextRange() throws Exception {

@@ -397,7 +397,7 @@ public class XmlSequenceGeneratorImpl extends AbstractJpaEObject implements XmlS
 	}
 	
 	public TextRange nameTextRange() {
-		IDOMNode nameNode = (IDOMNode) DOMUtilities.getChildAttributeNode(getNode(), OrmXmlMapper.NAME);
+		IDOMNode nameNode = (IDOMNode) DOMUtilities.childAttributeNode(getNode(), OrmXmlMapper.NAME);
 		return (nameNode == null) ? validationTextRange() : buildTextRange(nameNode);
 	}
 }
