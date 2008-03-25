@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
-public class TableImpl extends AbstractTableResource
+public class TableImpl extends AbstractResourceTable
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 

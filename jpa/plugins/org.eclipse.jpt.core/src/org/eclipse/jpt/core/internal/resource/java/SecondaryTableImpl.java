@@ -41,7 +41,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class SecondaryTableImpl extends AbstractTableResource implements NestableSecondaryTable
+public class SecondaryTableImpl extends AbstractResourceTable implements NestableSecondaryTable
 {	
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(SecondaryTableAnnotation.ANNOTATION_NAME);
 	

@@ -30,7 +30,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public abstract class AbstractTableResource extends AbstractResourceAnnotation<Member> implements TableAnnotation
+public abstract class AbstractResourceTable extends AbstractResourceAnnotation<Member> implements TableAnnotation
 {
 	// hold this so we can get the 'name' text range
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
@@ -57,7 +57,7 @@ public abstract class AbstractTableResource extends AbstractResourceAnnotation<M
 	
 	private final UniqueConstraintsContainerAnnotation uniqueConstraintsContainerAnnotation;
 	
-	protected AbstractTableResource(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected AbstractResourceTable(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.nameAdapter(daa);
 		this.schemaDeclarationAdapter = this.schemaAdapter(daa);
@@ -234,7 +234,7 @@ public abstract class AbstractTableResource extends AbstractResourceAnnotation<M
 		implements ContainerAnnotation<NestableUniqueConstraint> 
 	{
 		public UniqueConstraintsContainerAnnotation() {
-			super(AbstractTableResource.this);
+			super(AbstractResourceTable.this);
 		}
 		
 		public void initialize(CompilationUnit astRoot) {
@@ -242,19 +242,19 @@ public abstract class AbstractTableResource extends AbstractResourceAnnotation<M
 		}
 
 		public NestableUniqueConstraint addInternal(int index) {
-			NestableUniqueConstraint uniqueConstraint = AbstractTableResource.this.createUniqueConstraint(index);
-			AbstractTableResource.this.uniqueConstraints.add(index, uniqueConstraint);			
+			NestableUniqueConstraint uniqueConstraint = AbstractResourceTable.this.createUniqueConstraint(index);
+			AbstractResourceTable.this.uniqueConstraints.add(index, uniqueConstraint);			
 			return uniqueConstraint;
 		}
 		
 		public NestableUniqueConstraint add(int index) {
-			NestableUniqueConstraint uniqueConstraint = AbstractTableResource.this.createUniqueConstraint(index);
-			AbstractTableResource.this.addUniqueConstraint(index, uniqueConstraint);
+			NestableUniqueConstraint uniqueConstraint = AbstractResourceTable.this.createUniqueConstraint(index);
+			AbstractResourceTable.this.addUniqueConstraint(index, uniqueConstraint);
 			return uniqueConstraint;
 		}
 		
 		public String getAnnotationName() {
-			return AbstractTableResource.this.getAnnotationName();
+			return AbstractResourceTable.this.getAnnotationName();
 		}
 
 		public String getNestableAnnotationName() {
@@ -262,19 +262,19 @@ public abstract class AbstractTableResource extends AbstractResourceAnnotation<M
 		}
 
 		public int indexOf(NestableUniqueConstraint uniqueConstraint) {
-			return AbstractTableResource.this.indexOfUniqueConstraint(uniqueConstraint);
+			return AbstractResourceTable.this.indexOfUniqueConstraint(uniqueConstraint);
 		}
 
 		public void move(int targetIndex, int sourceIndex) {
-			AbstractTableResource.this.moveUniqueConstraint(targetIndex, sourceIndex);
+			AbstractResourceTable.this.moveUniqueConstraint(targetIndex, sourceIndex);
 		}
 		
 		public void moveInternal(int targetIndex, int sourceIndex) {
-			AbstractTableResource.this.moveUniqueConstraintInternal(targetIndex, sourceIndex);
+			AbstractResourceTable.this.moveUniqueConstraintInternal(targetIndex, sourceIndex);
 		}
 
 		public NestableUniqueConstraint nestedAnnotationAt(int index) {
-			return AbstractTableResource.this.uniqueConstraintAt(index);
+			return AbstractResourceTable.this.uniqueConstraintAt(index);
 		}
 
 		public NestableUniqueConstraint nestedAnnotationFor(Annotation jdtAnnotation) {
@@ -287,15 +287,15 @@ public abstract class AbstractTableResource extends AbstractResourceAnnotation<M
 		}
 
 		public ListIterator<NestableUniqueConstraint> nestedAnnotations() {
-			return new CloneListIterator<NestableUniqueConstraint>(AbstractTableResource.this.uniqueConstraints);
+			return new CloneListIterator<NestableUniqueConstraint>(AbstractResourceTable.this.uniqueConstraints);
 		}
 
 		public int nestedAnnotationsSize() {
-			return AbstractTableResource.this.uniqueConstraintsSize();
+			return AbstractResourceTable.this.uniqueConstraintsSize();
 		}
 
 		public void remove(NestableUniqueConstraint uniqueConstraint) {
-			AbstractTableResource.this.removeUniqueConstraint(uniqueConstraint);	
+			AbstractResourceTable.this.removeUniqueConstraint(uniqueConstraint);	
 		}
 
 		public void remove(int index) {
@@ -303,23 +303,23 @@ public abstract class AbstractTableResource extends AbstractResourceAnnotation<M
 		}
 
 		public Annotation jdtAnnotation(CompilationUnit astRoot) {
-			return AbstractTableResource.this.jdtAnnotation(astRoot);
+			return AbstractResourceTable.this.jdtAnnotation(astRoot);
 		}
 
 		public void newAnnotation() {
-			AbstractTableResource.this.newAnnotation();
+			AbstractResourceTable.this.newAnnotation();
 		}
 
 		public void removeAnnotation() {
-			AbstractTableResource.this.removeAnnotation();
+			AbstractResourceTable.this.removeAnnotation();
 		}
 
 		public void updateFromJava(CompilationUnit astRoot) {
-			AbstractTableResource.this.updateFromJava(astRoot);
+			AbstractResourceTable.this.updateFromJava(astRoot);
 		}
 		
 		public TextRange textRange(CompilationUnit astRoot) {
-			return AbstractTableResource.this.textRange(astRoot);
+			return AbstractResourceTable.this.textRange(astRoot);
 		}
 		
 		public String getElementName() {

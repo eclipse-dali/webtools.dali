@@ -33,7 +33,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class JoinTableImpl extends AbstractTableResource implements JoinTableAnnotation
+public class JoinTableImpl extends AbstractResourceTable implements JoinTableAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JoinTableAnnotation.ANNOTATION_NAME);
 	
