@@ -30,14 +30,11 @@ public interface Type extends Member {
 
 	ITypeBinding binding(CompilationUnit astRoot);
 
-	// jdtTypes()???
-	IType[] declaredTypes();
+	IType[] jdtTypes();
 
-	// jdtFields()???
-	IField[] fields();
+	IField[] jdtFields();
 
-	// jdtMethods()???
-	IMethod[] methods();
+	IMethod[] jdtMethods();
 
 	AbstractTypeDeclaration bodyDeclaration(CompilationUnit astRoot);
 

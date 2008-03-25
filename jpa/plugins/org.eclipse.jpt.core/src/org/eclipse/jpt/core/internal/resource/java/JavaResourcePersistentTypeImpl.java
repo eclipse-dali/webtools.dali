@@ -79,16 +79,16 @@ public class JavaResourcePersistentTypeImpl
 	}
 	
 	protected void initializeNestedTypes(CompilationUnit astRoot) {
-		for (IType declaredType : getMember().declaredTypes()) {
+		for (IType declaredType : getMember().jdtTypes()) {
 			this.nestedTypes.add(buildJavaResourcePersistentType(declaredType, astRoot));
 		}
 	}
 	
 	protected void initializeAttributes(CompilationUnit astRoot) {
-		for (IField field : getMember().fields()) {
+		for (IField field : getMember().jdtFields()) {
 			this.attributes.add(createJavaPersistentAttribute(field, astRoot));
 		}
-		for (IMethod method : getMember().methods()) {
+		for (IMethod method : getMember().jdtMethods()) {
 			this.attributes.add(createJavaPersistentAttribute(method, astRoot));
 		}
 	}
@@ -384,7 +384,7 @@ public class JavaResourcePersistentTypeImpl
 	}
 	
 	protected void updateNestedTypes(CompilationUnit astRoot) {
-		IType[] declaredTypes = getMember().declaredTypes();
+		IType[] declaredTypes = getMember().jdtTypes();
 		
 		List<JavaResourcePersistentType> nestedTypesToRemove = new ArrayList<JavaResourcePersistentType>(this.nestedTypes);
 		for (IType declaredType : declaredTypes) {
@@ -412,11 +412,11 @@ public class JavaResourcePersistentTypeImpl
 	}
 	
 	protected void updatePersistentFields(CompilationUnit astRoot, List<JavaResourcePersistentAttribute> persistentAttributesToRemove) {
-		updatePersistentAttributes(astRoot, persistentAttributesToRemove, getMember().fields());
+		updatePersistentAttributes(astRoot, persistentAttributesToRemove, getMember().jdtFields());
 	}
 
 	protected void updatePersistentProperties(CompilationUnit astRoot, List<JavaResourcePersistentAttribute> persistentAttributesToRemove) {
-		updatePersistentAttributes(astRoot, persistentAttributesToRemove, getMember().methods());
+		updatePersistentAttributes(astRoot, persistentAttributesToRemove, getMember().jdtMethods());
 	}
 
 	protected void updatePersistentAttributes(CompilationUnit astRoot, List<JavaResourcePersistentAttribute> persistentAttributesToRemove, IMember[] members) {

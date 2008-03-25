@@ -47,7 +47,7 @@ public class JDTType
 		return (this.getDeclaringType() == null) ? this : super.topLevelDeclaringType();
 	}
 
-	public IType[] declaredTypes() {
+	public IType[] jdtTypes() {
 		try {
 			return jdtMember().getTypes();
 		}
@@ -56,7 +56,7 @@ public class JDTType
 		}
 	}
 	
-	public IField[] fields() {
+	public IField[] jdtFields() {
 		try {
 			return jdtMember().getFields();
 		}
@@ -65,7 +65,7 @@ public class JDTType
 		}
 	}
 	
-	public IMethod[] methods() {
+	public IMethod[] jdtMethods() {
 		try {
 			return jdtMember().getMethods();
 		}
