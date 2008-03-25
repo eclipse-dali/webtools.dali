@@ -14,6 +14,12 @@ package org.eclipse.jpt.ui.jface;
  * content information for a particular item.
  * @see DelegatingContentProvider
  * @see ItemContentProviderFactory
+ * 
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface ItemContentProvider
 {

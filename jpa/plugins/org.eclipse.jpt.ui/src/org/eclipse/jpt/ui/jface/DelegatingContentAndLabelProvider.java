@@ -28,6 +28,12 @@ import org.eclipse.swt.graphics.Image;
  * NB: This class, if used as a label provider *MUST* be used as a content provider
  * for the same viewer.  It may be used as a content provider with a different
  * label provider, however.
+ * 
+ * Provisional API: This class is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public abstract class DelegatingContentAndLabelProvider extends BaseLabelProvider
 	implements IStructuredContentProvider, ILabelProvider
