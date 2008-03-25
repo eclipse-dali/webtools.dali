@@ -65,6 +65,12 @@ public class GenericJavaColumn extends AbstractJavaColumn<ColumnAnnotation> impl
 		columnResource().setLength(newSpecifiedLength);
 		firePropertyChanged(SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
 	}
+	
+	protected void setSpecifiedLength_(Integer newSpecifiedLength) {
+		Integer oldSpecifiedLength = this.specifiedLength;
+		this.specifiedLength = newSpecifiedLength;
+		firePropertyChanged(SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
+	}
 
 	public Integer getPrecision() {
 		return (this.getSpecifiedPrecision() == null) ? getDefaultPrecision() : this.getSpecifiedPrecision();
@@ -82,6 +88,12 @@ public class GenericJavaColumn extends AbstractJavaColumn<ColumnAnnotation> impl
 		Integer oldSpecifiedPrecision = this.specifiedPrecision;
 		this.specifiedPrecision = newSpecifiedPrecision;
 		columnResource().setPrecision(newSpecifiedPrecision);
+		firePropertyChanged(SPECIFIED_PRECISION_PROPERTY, oldSpecifiedPrecision, newSpecifiedPrecision);
+	}
+	
+	protected void setSpecifiedPrecision_(Integer newSpecifiedPrecision) {
+		Integer oldSpecifiedPrecision = this.specifiedPrecision;
+		this.specifiedPrecision = newSpecifiedPrecision;
 		firePropertyChanged(SPECIFIED_PRECISION_PROPERTY, oldSpecifiedPrecision, newSpecifiedPrecision);
 	}
 
@@ -103,6 +115,12 @@ public class GenericJavaColumn extends AbstractJavaColumn<ColumnAnnotation> impl
 		columnResource().setScale(newSpecifiedScale);
 		firePropertyChanged(SPECIFIED_SCALE_PROPERTY, oldSpecifiedScale, newSpecifiedScale);
 	}
+	
+	protected void setSpecifiedScale_(Integer newSpecifiedScale) {
+		Integer oldSpecifiedScale = this.specifiedScale;
+		this.specifiedScale = newSpecifiedScale;
+		firePropertyChanged(SPECIFIED_SCALE_PROPERTY, oldSpecifiedScale, newSpecifiedScale);
+	}
 
 	@Override
 	public boolean tableIsAllowed() {
@@ -117,9 +135,9 @@ public class GenericJavaColumn extends AbstractJavaColumn<ColumnAnnotation> impl
 	@Override
 	public void update(ColumnAnnotation column) {
 		super.update(column);
-		this.setSpecifiedLength(this.specifiedLength(column));
-		this.setSpecifiedPrecision(this.specifiedPrecision(column));
-		this.setSpecifiedScale(this.specifiedScale(column));
+		this.setSpecifiedLength_(this.specifiedLength(column));
+		this.setSpecifiedPrecision_(this.specifiedPrecision(column));
+		this.setSpecifiedScale_(this.specifiedScale(column));
 	}
 	
 	protected Integer specifiedLength(ColumnAnnotation column) {
