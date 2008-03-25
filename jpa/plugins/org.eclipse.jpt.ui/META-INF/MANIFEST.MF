@@ -65,6 +65,7 @@ Export-Package: org.eclipse.jpt.ui,
  org.eclipse.jpt.ui.internal.views.structure;x-internal:=true,
  org.eclipse.jpt.ui.internal.widgets;x-internal:=true,
  org.eclipse.jpt.ui.internal.wizards;x-internal:=true,
+ org.eclipse.jpt.ui.jface,
  org.eclipse.jpt.ui.navigator,
  org.eclipse.jpt.ui.structure
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

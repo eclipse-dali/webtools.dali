@@ -11,6 +11,10 @@
 package org.eclipse.jpt.ui.internal.jface;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
+import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
+import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
+import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 
 /**
  * Extension of {@link DelegatingContentAndLabelProvider} that provides an extension

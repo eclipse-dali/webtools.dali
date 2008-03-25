@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.jface;
 
+import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
+import org.eclipse.jpt.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;

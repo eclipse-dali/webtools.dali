@@ -1,14 +1,13 @@
 /*******************************************************************************
- *  Copyright (c) 2008 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
-package org.eclipse.jpt.ui.internal.jface;
+ * Copyright (c) 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
+package org.eclipse.jpt.ui.jface;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +40,7 @@ public abstract class DelegatingContentAndLabelProvider extends BaseLabelProvide
 	
 	private final Map<Object, ItemLabelProvider> itemLabelProviders;
 	
-	private StructuredViewer viewer;
+	StructuredViewer viewer;
 	
 	
 	protected DelegatingContentAndLabelProvider(
@@ -109,6 +108,7 @@ public abstract class DelegatingContentAndLabelProvider extends BaseLabelProvide
 	/**
 	 * Disposes all items
 	 */
+	@Override
 	public void dispose() {
 		// coded this way to allow some item providers to dispose of their child 
 		// elements without disrupting the entire process
@@ -121,12 +121,13 @@ public abstract class DelegatingContentAndLabelProvider extends BaseLabelProvide
 		while (! itemLabelProviders.isEmpty()) {
 			dispose(itemLabelProviders.keySet().iterator().next());
 		}
+		super.dispose();
 	}
 	
 	/**
 	 * Disposes item
 	 */
-	protected void dispose(Object item) {
+	public void dispose(Object item) {
 		if (itemContentProviders.containsKey(item)) {
 			itemContentProviders.get(item).dispose();
 			itemContentProviders.remove(item);
@@ -137,11 +138,11 @@ public abstract class DelegatingContentAndLabelProvider extends BaseLabelProvide
 		}
 	}
 	
-	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+	public void inputChanged(Viewer structuredViewer, Object oldInput, Object newInput) {
 		if (oldInput != newInput) {
 			dispose();
 		}
-		this.viewer = (StructuredViewer) viewer;
+		this.viewer = (StructuredViewer) structuredViewer;
 	}
 	
 	/**
@@ -156,6 +157,12 @@ public abstract class DelegatingContentAndLabelProvider extends BaseLabelProvide
 			}
 		};
 		viewer.getControl().getDisplay().asyncExec(runnable);
+	}
+	
+	// open up visibility a bit for inner classes
+	@Override
+	protected void fireLabelProviderChanged(LabelProviderChangedEvent event) {
+		super.fireLabelProviderChanged(event);
 	}
 	
 	/**
