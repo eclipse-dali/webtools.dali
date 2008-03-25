@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
@@ -60,33 +60,25 @@ public class EntityDialog extends Dialog
 		Composite composite = (Composite) super.createDialogArea(parent);
 		GridLayout gridLayout = (GridLayout) composite.getLayout();
 		gridLayout.numColumns = 2;
-		
+
 		Label nameLabel = new Label(composite, SWT.LEFT);
 		nameLabel.setText(EclipseLinkUiMessages.EntityDialog_name);
 		GridData gridData = new GridData();
 		nameLabel.setLayoutData(gridData);
-		
+
 		this.nameCombo = new Combo(composite, SWT.LEFT);
 		gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.FILL;
 		this.nameCombo.setLayoutData(gridData);
-		
+
 		populateNameCombo();
 		return composite;
 	}
 
 	protected void populateNameCombo() {
-		// TODO
-		// Iterator<Entity> entities = this.jpaProject.entities();
-		// for (Iterator<Entity> stream = CollectionTools.sort( entities);
-		// stream.hasNext(); ) {
-		// this.nameCombo.add( stream.next().getSpecifiedName());
-		// }
-		if (getEntity() != null) {
-			if (getEntity().getSpecifiedName() != null) {
-				this.nameCombo.setText(getEntity().getSpecifiedName());
-			}
+		if (selectedName != null) {
+			this.nameCombo.setText(selectedName);
 		}
 	}
 
@@ -100,6 +92,10 @@ public class EntityDialog extends Dialog
 
 	public String getSelectedName() {
 		return this.selectedName;
+	}
+
+	public void setSelectedName(String selectedName) {
+		this.selectedName = selectedName;
 	}
 
 	@Override

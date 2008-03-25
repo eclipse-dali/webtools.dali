@@ -3,48 +3,41 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.caching;
 
 import java.util.Collection;
-
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.CacheType;
 import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
+import org.eclipse.jpt.ui.internal.widgets.AbstractPane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * CacheTypeComposite
  */
-public class CacheTypeComposite extends AbstractFormPane<Caching>
+public class CacheTypeComposite extends AbstractPane<EntityCaching>
 {
-	private EntityListComposite entitiesComposite;
-
 	/**
 	 * Creates a new <code>CacheTypeComposite</code>.
-	 * 
+	 *
 	 * @param parentController
 	 *            The parent container of this one
 	 * @param parent
 	 *            The parent container
 	 */
-	public CacheTypeComposite(
-									AbstractFormPane<? extends Caching> parentComposite, 
-									Composite parent, 
-									EntityListComposite entitiesComposite) {
+	public CacheTypeComposite(AbstractPane<EntityCaching> parentComposite,
+	                          Composite parent) {
 
 		super(parentComposite, parent);
-		this.entitiesComposite = entitiesComposite;
 	}
 
-	private EnumFormComboViewer<Caching, CacheType> buildCacheTypeCombo(Composite container) {
-		return new EnumFormComboViewer<Caching, CacheType>(this, container) {
+	private EnumFormComboViewer<EntityCaching, CacheType> buildCacheTypeCombo(Composite container) {
+		return new EnumFormComboViewer<EntityCaching, CacheType>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
@@ -68,27 +61,16 @@ public class CacheTypeComposite extends AbstractFormPane<Caching>
 
 			@Override
 			protected CacheType getValue() {
-				String entityName = CacheTypeComposite.this.getSelection();
-				if (!StringTools.stringIsEmpty(entityName)) {
-					return this.subject().getCacheType(entityName);
-				}
-				return null;
+				return this.subject().getCacheType();
 			}
 
 			@Override
 			protected void setValue(CacheType value) {
-				String entityName = CacheTypeComposite.this.getSelection();
-				if (!StringTools.stringIsEmpty(entityName)) {
-					this.subject().setCacheType(value, entityName);
-				}
+				this.subject().setCacheType(value);
 			}
 		};
 	}
 
-	protected String getSelection() {
-		return (String) this.entitiesComposite.listPane().getSelectionModel().selectedValue();
-	}
-	
 	@Override
 	protected void initializeLayout(Composite container) {
 

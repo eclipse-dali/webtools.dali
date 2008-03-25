@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
@@ -20,22 +20,22 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * DefaultShareCacheComposite 
+ * DefaultShareCacheComposite
  */
 public class DefaultSharedCacheComposite extends AbstractFormPane<Caching>
 {
 	/**
 	 * Creates a new <code>DefaultShareCacheComposite</code>.
-	 * 
+	 *
 	 * @param parentController
 	 *            The parent container of this one
 	 * @param parent
 	 *            The parent container
 	 */
 	public DefaultSharedCacheComposite(
-					AbstractFormPane<? extends Caching> parentComposite, 
+					AbstractFormPane<? extends Caching> parentComposite,
 					Composite parent) {
-		
+
 		super(parentComposite, parent);
 	}
 
@@ -49,6 +49,18 @@ public class DefaultSharedCacheComposite extends AbstractFormPane<Caching>
 			@Override
 			protected void setValue_(Boolean value) {
 				subject.setSharedCacheDefault(value);
+			}
+
+			@Override
+			protected void subjectChanged() {
+				Object oldValue = this.value();
+				super.subjectChanged();
+				Object newValue = this.value();
+
+				// Make sure the default value is appended to the text
+				if (oldValue == newValue && newValue == null) {
+					this.fireAspectChange(Boolean.TRUE, newValue);
+				}
 			}
 		};
 	}
