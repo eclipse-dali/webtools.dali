@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal.widgets;
+package org.eclipse.jpt.ui;
 
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Button;
@@ -26,6 +26,12 @@ import org.eclipse.ui.forms.widgets.Section;
  * A widget factory is responsible for creating an SWT widget based on the right
  * style. Some style shows the widgets differently, for instance, the flat style
  * shows the widgets with less borders.
+ * <p>
+ * Provisional API: This interface is part of an interim API that is still under
+ * development and expected to change significantly before reaching stability.
+ * It is available at this early stage to solicit feedback from pioneering
+ * adopters on the understanding that any code that uses this API will almost
+ * certainly be broken (repeatedly) as the API evolves.
  *
  * @version 2.0
  * @since 2.0

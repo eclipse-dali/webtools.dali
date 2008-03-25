@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.details;
 
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
-import org.eclipse.jpt.ui.internal.widgets.WidgetFactory;
+import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 

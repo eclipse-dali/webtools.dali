@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.widgets;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.layout.GridData;
