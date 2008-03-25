@@ -52,9 +52,12 @@ public class EclipseLinkUiMessages extends NLS
 	public static String PersistenceXmlSchemaGenerationTab_sectionTitle;
 	public static String PersistenceXmlSchemaGenerationTab_sectionDescription;
 	public static String PersistenceXmlSchemaGenerationTab_defaultWithOneParam;
+	public static String PersistenceXmlSchemaGenerationTab_defaultEmpty;
 	
 	public static String PersistenceXmlSchemaGenerationTab_ddlGenerationType;
 	public static String PersistenceXmlSchemaGenerationTab_outputMode;
+	
+	public static String PersistenceXmlSchemaGenerationTab_createDdlFileName;
 
 	public static String OutputModeComposite_both;
 	public static String OutputModeComposite_sql_script;

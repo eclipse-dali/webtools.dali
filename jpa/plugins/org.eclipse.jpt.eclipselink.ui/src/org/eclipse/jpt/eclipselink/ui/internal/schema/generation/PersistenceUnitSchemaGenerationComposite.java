@@ -48,8 +48,8 @@ public class PersistenceUnitSchemaGenerationComposite
 		new OutputModeComposite(this, composite);
 		
 		// Create DDL File Name:
+		new CreateDdlFileNameComposite(this, composite);
 		// TODO
-		// new CreateDdlFileNameCombo( this, composite);
 		// // Drop DDL File Name:
 		// this.dropDdlFileNameComboViewer = new DropDdlChooser( composite,
 		// this.commandStack, getWidgetFactory());
