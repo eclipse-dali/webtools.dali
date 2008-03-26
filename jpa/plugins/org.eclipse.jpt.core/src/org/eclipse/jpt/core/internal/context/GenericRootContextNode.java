@@ -25,7 +25,6 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.persistence.PersistenceArtifactEdit;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
-import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -33,7 +32,7 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 	implements JpaRootContextNode
 {
 	/* This object has no parent, so it must point to the JPA project */
-	protected JpaProject jpaProject;
+	protected final JpaProject jpaProject;
 	
 	/* Main context object */
 	protected PersistenceXml persistenceXml;
@@ -41,11 +40,6 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 	
 	public GenericRootContextNode(JpaProject jpaProject) {
 		super(null);
-		initialize(jpaProject);
-	}
-	
-	
-	protected void initialize(JpaProject jpaProject) {
 		if (jpaProject == null) {
 			throw new IllegalArgumentException("The JPA project must not be null");
 		}
@@ -61,10 +55,8 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 	}
 	
 	@Override
-	protected void checkParent(Node parentNode) {
-		if (parentNode != null) {
-			throw new IllegalArgumentException("The parent node must be null");
-		}
+	protected boolean requiresParent() {
+		return false;
 	}
 	
 	
@@ -83,11 +75,6 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 	@Override
 	public JpaContextNode getParent() {
 		return null;
-	}
-	
-	@Override
-	public Validator validator() {
-		return NULL_VALIDATOR;
 	}
 	
 	

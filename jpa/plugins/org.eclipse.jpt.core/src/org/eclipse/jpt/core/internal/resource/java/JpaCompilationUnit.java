@@ -22,7 +22,6 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
-import org.eclipse.jpt.utility.internal.node.Node;
 
 public class JpaCompilationUnit
 	extends AbstractJavaResourceNode
@@ -85,17 +84,15 @@ public class JpaCompilationUnit
 	
 	
 	@Override
-	public Validator validator() {
-		return Node.NULL_VALIDATOR;
+	protected boolean requiresParent() {
+		return false;
 	}
 
 	@Override
-	protected void checkParent(Node parentNode) {
-		if (parentNode != null) {
-			throw new IllegalArgumentException("The parent node must be null");
-		}
+	public JpaCompilationUnit getJpaCompilationUnit() {
+		return this;
 	}
-	
+
 	@Override
 	public JpaAnnotationProvider annotationProvider() {
 		return this.annotationProvider;

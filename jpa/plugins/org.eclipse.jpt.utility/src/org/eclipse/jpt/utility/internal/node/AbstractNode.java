@@ -23,6 +23,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.utility.internal.model.CallbackChangeSupport;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 
 /**
@@ -55,7 +56,7 @@ import org.eclipse.jpt.utility.internal.model.ChangeSupport;
  */
 public abstract class AbstractNode 
 	extends AbstractModel
-	implements Node
+	implements Node, CallbackChangeSupport.Source
 {
 
 	/** Containment hierarchy. */
@@ -149,7 +150,7 @@ public abstract class AbstractNode
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new LocalChangeSupport(this);
+		return new CallbackChangeSupport(this);
 	}
 
 
@@ -381,7 +382,7 @@ public abstract class AbstractNode
 	 * 	- if it is a persistent aspect, mark the object dirty
 	 * 	- if it is a significant aspect, validate the object
 	 */
-	protected void aspectChanged(String aspectName) {
+	public void aspectChanged(String aspectName) {
 		if (this.aspectIsPersistent(aspectName)) {
 			// System.out.println(Thread.currentThread() + " dirty change: " + this + ": " + aspectName);
 			this.markDirty();
@@ -935,57 +936,6 @@ public abstract class AbstractNode
 	@Override
 	public final String toString() {
 		return super.toString();
-	}
-
-
-	// ********** member classes **********
-
-	/**
-	 * This change support class will:
-	 *   - notify the source node when one of the node's aspects has changed
-	 *   - allow the source node to supply the change event dispatcher
-	 *   - build a custom "child" change support
-	 * @see AbstractNode#aspectChanged(String)
-	 * @see AbstractNode#changeEventDispatcher()
-	 * @see AbstractNode.LocalChildChangeSupport
-	 */
-	protected static class LocalChangeSupport extends ChangeSupport {
-		private static final long serialVersionUID = 1L;
-		public LocalChangeSupport(AbstractNode source) {
-			super(source);
-		}
-		protected AbstractNode sourceNode() {
-			return (AbstractNode) this.source;
-		}
-		@Override
-		protected ChangeSupport buildChildChangeSupport() {
-			return new LocalChildChangeSupport(this.sourceNode());
-		}
-		@Override
-		protected void sourceChanged(String aspectName) {
-			super.sourceChanged(aspectName);
-			this.sourceNode().aspectChanged(aspectName);
-		}
-	}
-
-	/**
-	 * The aspect-specific change support class does not need to
-	 * notify the source node of changes (the parent will take care of that);
-	 * nor does it need to build "grandchildren" change support objects.
-	 */
-	protected static class LocalChildChangeSupport extends ChangeSupport {
-		private static final long serialVersionUID = 1L;
-		public LocalChildChangeSupport(AbstractNode source) {
-			super(source);
-		}
-		protected AbstractNode sourceNode() {
-			return (AbstractNode) this.source;
-		}
-		@Override
-		protected ChangeSupport buildChildChangeSupport() {
-			// there are no grandchildren
-			throw new UnsupportedOperationException();
-		}
 	}
 
 }

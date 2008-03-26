@@ -11,10 +11,10 @@ package org.eclipse.jpt.core;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jpt.utility.internal.node.Node;
+import org.eclipse.jpt.utility.model.Model;
 
 /**
- * Tweak the node interface with JPA-specific protocol.
+ * JPA-specific protocol.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,7 +22,7 @@ import org.eclipse.jpt.utility.internal.node.Node;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaNode extends Node, IAdaptable
+public interface JpaNode extends Model, IAdaptable
 {
 
 	/**
@@ -35,9 +35,10 @@ public interface JpaNode extends Node, IAdaptable
 	 * This is used by JpaHelper.
 	 */
 	IResource getResource();
-	
-	
-	// ********** covariant overrides **********
-	
+
+	/**
+	 * Return the JPA node's parent. The JPA project will not have a parent.
+	 */
 	JpaNode getParent();
+
 }

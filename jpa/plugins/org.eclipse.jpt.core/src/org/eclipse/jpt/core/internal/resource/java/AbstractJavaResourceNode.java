@@ -14,57 +14,83 @@ import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
-import org.eclipse.jpt.utility.internal.node.AbstractNode;
+import org.eclipse.jpt.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.utility.internal.model.CallbackChangeSupport;
+import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 
-public abstract class AbstractJavaResourceNode extends AbstractNode
-	implements JavaResourceNode
-{	
+public abstract class AbstractJavaResourceNode
+	extends AbstractModel
+	implements JavaResourceNode, CallbackChangeSupport.Source
+{
+	private final JavaResourceNode parent;
+
 	protected AbstractJavaResourceNode(JavaResourceNode parent) {
-		super(parent);
+		super();
+		this.checkParent(parent);
+		this.parent = parent;
 	}
-	
-	
-	// **************** overrides **********************************************
-	
+
+	protected void checkParent(JavaResourceNode p) {
+		if (p == null) {
+			if (this.requiresParent()) {
+				throw new IllegalArgumentException("'parent' cannot be null");
+			}
+		} else {
+			if (this.forbidsParent()) {
+				throw new IllegalArgumentException("'parent' must be null");
+			}
+		}
+	}
+
+	protected boolean requiresParent() {
+		return true;
+	}
+
+	protected boolean forbidsParent() {
+		return ! this.requiresParent();  // assume 'parent' is not optional
+	}
+
 	@Override
+	protected ChangeSupport buildChangeSupport() {
+		return new CallbackChangeSupport(this);
+	}
+
 	public JavaResourceNode getParent() {
-		return (JavaResourceNode) super.getParent();
+		return this.parent;
 	}
 	
-	@Override
-	public JpaCompilationUnit root() {
-		return (JpaCompilationUnit) super.root();
+	public JpaCompilationUnit getJpaCompilationUnit() {
+		return this.parent.getJpaCompilationUnit();
 	}
 	
 	
 	// **************** JavaResource implementation ****************************
 	
 	public JpaAnnotationProvider annotationProvider() {
-		return root().annotationProvider();
+		return this.getJpaCompilationUnit().annotationProvider();
 	}
 	
 	public CommandExecutorProvider modifySharedDocumentCommandExecutorProvider() {
-		return root().modifySharedDocumentCommandExecutorProvider();
+		return this.getJpaCompilationUnit().modifySharedDocumentCommandExecutorProvider();
 	}
 	
 	public AnnotationEditFormatter annotationEditFormatter()  {
-		return root().annotationEditFormatter();
+		return this.getJpaCompilationUnit().annotationEditFormatter();
 	}
 
 	public JavaResourceModel resourceModel() {
-		return root().resourceModel();
+		return this.getJpaCompilationUnit().resourceModel();
 	}
 	
-	public void resolveTypes(CompilationUnit astRoot) {	
+	public void resolveTypes(CompilationUnit astRoot) {
+		// nothing
 	}
 	
 	public String displayString() {
 		return toString();
 	}
 	
-	@Override
-	protected void aspectChanged(String aspectName) {
-		super.aspectChanged(aspectName);
-		root().resourceChanged();
+	public void aspectChanged(String aspectName) {
+		this.getJpaCompilationUnit().resourceChanged();
 	}
 }

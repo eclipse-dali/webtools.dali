@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.core.resources.IResource;
@@ -22,25 +21,53 @@ import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.Database;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
-import org.eclipse.jpt.utility.internal.node.AbstractNode;
-import org.eclipse.jpt.utility.internal.node.Node;
+import org.eclipse.jpt.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.utility.internal.model.CallbackChangeSupport;
+import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 
 /**
  * 
  */
 public abstract class AbstractJpaNode
-	extends AbstractNode
-	implements JpaNode
+	extends AbstractModel
+	implements JpaNode, CallbackChangeSupport.Source
 {
+	private final JpaNode parent;
 
 
 	// ********** constructor **********
 
 	protected AbstractJpaNode(JpaNode parent) {
-		super(parent);
+		super();
+		this.checkParent(parent);
+		this.parent = parent;
 	}
 	
+	protected void checkParent(JpaNode p) {
+		if (p == null) {
+			if (this.requiresParent()) {
+				throw new IllegalArgumentException("'parent' cannot be null");
+			}
+		} else {
+			if (this.forbidsParent()) {
+				throw new IllegalArgumentException("'parent' must be null");
+			}
+		}
+	}
+
+	protected boolean requiresParent() {
+		return true;
+	}
+
+	protected boolean forbidsParent() {
+		return ! this.requiresParent();  // assume 'parent' is not optional
+	}
+
+	@Override
+	protected ChangeSupport buildChangeSupport() {
+		return new CallbackChangeSupport(this);
+	}
+
 	
 	// ********** IAdaptable implementation **********
 	
@@ -50,14 +77,18 @@ public abstract class AbstractJpaNode
 	}
 
 
-	// ********** IJpaNodeModel implementation **********
+	// ********** IJpaNode implementation **********
 
+	public JpaNode getParent() {
+		return this.parent;
+	}
+	
 	public IResource getResource() {
-		return getParent().getResource();
+		return this.parent.getResource();
 	}
 
 	public JpaProject getJpaProject() {
-		return getParent().getJpaProject();
+		return this.parent.getJpaProject();
 	}
 
 	public String displayString() {
@@ -65,24 +96,7 @@ public abstract class AbstractJpaNode
 	}
 
 
-	// ********** overrides **********
-
-	@Override
-	public JpaNode getParent() {
-		return (JpaNode) super.getParent();
-	}
-	
-
 	// ********** convenience methods **********
-
-	public Iterator<JpaNode> jpaChildren() {
-		return new TransformationIterator<Node, JpaNode>(this.children()) {
-			@Override
-			protected JpaNode transform(Node next) {
-				return (JpaNode) next;
-			}
-		};
-	}
 
 	protected JpaPlatform getJpaPlatform() {
 		return this.getJpaProject().getJpaPlatform();
@@ -106,11 +120,9 @@ public abstract class AbstractJpaNode
 
 	// ********** update model **********
 
-	private static final HashMap<Class<? extends AbstractNode>, HashSet<String>> nonUpdateAspectNameSets = new HashMap<Class<? extends AbstractNode>, HashSet<String>>();
+	private static final HashMap<Class<? extends AbstractJpaNode>, HashSet<String>> nonUpdateAspectNameSets = new HashMap<Class<? extends AbstractJpaNode>, HashSet<String>>();
 
-	@Override
-	protected void aspectChanged(String aspectName) {
-		super.aspectChanged(aspectName);
+	public void aspectChanged(String aspectName) {
 		if (this.aspectTriggersUpdate(aspectName)) {
 			// System.out.println(Thread.currentThread() + " \"update\" change: " + this + ": " + aspectName);
 			this.getJpaProject().update();
@@ -138,10 +150,6 @@ public abstract class AbstractJpaNode
 	}
 
 	protected void addNonUpdateAspectNamesTo(Set<String> nonUpdateAspectNames) {
-		nonUpdateAspectNames.add(COMMENT_PROPERTY);
-		nonUpdateAspectNames.add(DIRTY_BRANCH_PROPERTY);
-		nonUpdateAspectNames.add(BRANCH_PROBLEMS_LIST);
-		nonUpdateAspectNames.add(HAS_BRANCH_PROBLEMS_PROPERTY);
 	// when you override this method, don't forget to include:
 	//	super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
 	}

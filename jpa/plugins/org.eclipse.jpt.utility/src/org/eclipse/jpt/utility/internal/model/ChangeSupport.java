@@ -56,7 +56,10 @@ import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
  * "concurrently" it will *not* be notified. (See the code that uses the
  * 'stillListening' local boolean flag.)
  * 
- * NB3: This class is serializable, but it will only write out listeners that
+ * NB3: Any listener that is added during the firing of events will *not* be
+ * also notified.
+ * 
+ * NB4: This class is serializable, but it will only write out listeners that
  * are also serializable while silently leaving behind listeners that are not.
  * 
  * TODO fire a state change event with *every* change?

@@ -11,11 +11,11 @@ package org.eclipse.jpt.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
-	import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
-	import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnit;
+import org.eclipse.jpt.core.internal.resource.java.JavaResourceModel;
+import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
-import org.eclipse.jpt.utility.internal.node.Node;
+import org.eclipse.jpt.utility.model.Model;
 
 /**
  * 
@@ -26,13 +26,13 @@ import org.eclipse.jpt.utility.internal.node.Node;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaResourceNode extends Node
+public interface JavaResourceNode extends Model
 {
 	void initialize(CompilationUnit astRoot);
 	
 	JavaResourceModel resourceModel();
 	
-	JpaCompilationUnit root();
+	JpaCompilationUnit getJpaCompilationUnit();
 	
 	JpaAnnotationProvider annotationProvider();
 	

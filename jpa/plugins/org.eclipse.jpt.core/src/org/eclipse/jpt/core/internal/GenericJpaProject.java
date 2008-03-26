@@ -156,10 +156,8 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	}
 
 	@Override
-	protected void checkParent(Node parentNode) {
-		if (parentNode != null) {
-			throw new IllegalArgumentException("The parent node must be null");
-		}
+	protected boolean requiresParent() {
+		return false;
 	}
 	
 	@Override
@@ -220,11 +218,6 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	// ********** general queries **********
 
 	@Override
-	public Node root() {
-		return this;
-	}
-	
-	@Override
 	public JpaProject getJpaProject() {
 		return this;
 	}
@@ -259,11 +252,6 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		return getConnectionProfile().getDefaultSchema();
 	}
 	
-	@Override
-	public Validator validator() {
-		return NULL_VALIDATOR;
-	}
-
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getName());
